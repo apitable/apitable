@@ -28,16 +28,14 @@ import {
 } from './interface';
 import { isSafeOrigin } from './utils';
 
-type IWidgetListenEvents = {
-  [key in WidgetMessageType]: (res: IResponse) => void;
-};
+type IWidgetListenEvents = Map<WidgetMessageType, (res: IResponse) => void>;
 
 class WidgetMessageBase {
   widgetId: string;
   /** As the window for sending messages */
   private contentWindow: IContentWindow | null = null;
 
-  private listenEvents: IWidgetListenEvents | {} = {};
+  private listenEvents: IWidgetListenEvents = new Map();
 
   constructor(widgetId: string) {
     this.widgetId = widgetId;
@@ -47,7 +45,8 @@ class WidgetMessageBase {
         return;
       }
       const { type } = data;
-      this.listenEvents[type]?.(data.response);
+      const func = this.listenEvents.get(type);
+      typeof func === 'function' && func(data.response);
     }, false);
   }
   
@@ -69,7 +68,7 @@ class WidgetMessageBase {
   }
 
   on(type: WidgetMessageType, callback: (data: IResponse) => void) {
-    this.listenEvents[type] = callback;
+    this.listenEvents.set(type, callback);
   }
 
   setContentWindow(contentWindow: IContentWindow) {

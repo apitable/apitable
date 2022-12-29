@@ -156,6 +156,13 @@
         WHERE id = #{userId} AND is_deleted = 0
     </update>
 
+    <update id="updateUserAvatarInfo">
+        UPDATE ${tablePrefix}user
+        SET avatar = #{avatar},
+            color = #{color}
+        WHERE id = #{userId} AND is_deleted = 0
+    </update>
+
     <select id="selectEmailByUserIds" resultType="java.lang.String">
         SELECT vu.email
         FROM ${tablePrefix}user vu

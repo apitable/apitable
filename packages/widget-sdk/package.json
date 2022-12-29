@@ -48,7 +48,7 @@
     "fundebug-javascript": "^2.1.2",
     "loadjs": "^4.2.0",
     "localforage": "^1.10.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "lodash.without": "^4.4.0",
     "mime-types": "^2.1.29",
     "re-reselect": "^4.0.0",

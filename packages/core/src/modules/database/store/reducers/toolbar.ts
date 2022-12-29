@@ -17,8 +17,8 @@
  */
 
 import { produce } from 'immer';
-import * as actions from '../../../shared/store/action_constants';
 import { ISetToolBarMenuCardStateAction, IToolBar } from '../../../org/store/interface/tool_bar';
+import * as actions from '../../../shared/store/action_constants';
 import { ToolBarMenuCardOpenState } from '../../../shared/store/constants';
 
 const defaultState: IToolBar = {
@@ -33,4 +33,4 @@ export const toolbar = produce(
       default:
         return state;
     }
-  });
+  }, defaultState);
