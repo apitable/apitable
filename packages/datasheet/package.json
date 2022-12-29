@@ -105,7 +105,7 @@
     "path-browserify": "^1.0.1",
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
-    "prismjs": "^1.22.0",
+    "prismjs": "^1.27.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.4.4",
     "query-string": "^7.1.1",
