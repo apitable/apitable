@@ -28,6 +28,7 @@ jobs:
           cache: "gradle"
       - name: Test
         run: |
+          make install
           make build
 
   unit-test: ## unit test with docker-compose.unit-test.yaml
