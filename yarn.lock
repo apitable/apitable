@@ -15867,26 +15867,15 @@ __metadata:
   linkType: hard
 
 "bl@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "bl@npm:3.0.0"
+  version: 3.0.1
+  resolution: "bl@npm:3.0.1"
   dependencies:
     readable-stream: ^3.0.1
-  checksum: 4008ef4eb7916c0ba6ab7fadca6918a35da7510e1c19c23c33076ed923838ef25e508d4604dee3856df50b1d59c69527d60303c1fa3b7b4ecbde11bbe453696e
+  checksum: c94e9f44b81baae0b916fefcb095bf2829c132a23b36a338e9a948616fdffbd4f6c73c692e87d96cffdee4d45f0b8e64929ecc76e9cc592a01d2bd22adadf76e
   languageName: node
   linkType: hard
 
-"bl@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "bl@npm:4.0.3"
-  dependencies:
-    buffer: ^5.5.0
-    inherits: ^2.0.4
-    readable-stream: ^3.4.0
-  checksum: 4e011e5985ebecfc4ec2874f12e3d094b4e516610686caa26d93b07961c8053545e607d6fb1d6ba16559ac2b3dba3e8517a68380b377e58ab73fa09831319c29
-  languageName: node
-  linkType: hard
-
-"bl@npm:^4.1.0":
+"bl@npm:^4.0.3, bl@npm:^4.1.0":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
   dependencies:
