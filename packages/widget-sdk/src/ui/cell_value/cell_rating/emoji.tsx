@@ -17,7 +17,7 @@
  */
 
 import { Loading } from '@apitable/components';
-import { integrateCdnHost } from '@apitable/core';
+import { integrateCdnHost, SystemConfig } from '@apitable/core';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -26,7 +26,8 @@ const EmojiEmoji = dynamic<any>(() => import('emoji-mart/dist/components/emoji/e
   loading: () => <Loading />
 });
 const getEmojiSource = (set = 'apple', size = 32) => {
-  return integrateCdnHost(`emoji-${set}-${size}.png`);
+  const emojiPath = SystemConfig.settings[`emoji_${set}_${size}`]?.value;
+  return integrateCdnHost(emojiPath);
 };
 
 interface IEmoji {
