@@ -664,7 +664,7 @@ __metadata:
     lodash: ^4.17.21
     logform: ^2.2.0
     minio: ^7.0.26
-    moment-timezone: ^0.5.31
+    moment-timezone: ^0.5.35
     mysql2: ^2.3.2
     nest-winston: ^1.8.0
     nestjs-i18n: ^8.3.2
@@ -32203,12 +32203,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:^0.5.31":
-  version: 0.5.31
-  resolution: "moment-timezone@npm:0.5.31"
+"moment-timezone@npm:^0.5.35":
+  version: 0.5.40
+  resolution: "moment-timezone@npm:0.5.40"
   dependencies:
     moment: ">= 2.9.0"
-  checksum: 6abe1dd6545dc39205243e4af9718172e7a8024ca0572789649b7f6982b24e47a99c906234a3b53094f910ed3c6e5428b63b37ccb7bc01f8c39a39ac1820c613
+  checksum: 6f6be5412b37fd937bb143efe74bf65b2c3f115fd967a6dc13b717a126ed6dd198bff6db6e179d69a089e20ac03ce7622c6b5598dd585005195554487a91b528
   languageName: node
   linkType: hard
 
