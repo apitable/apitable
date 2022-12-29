@@ -1,0 +1,24 @@
+@import "~pc/styles/lib_mixins.less";
+
+.title {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    display: flex;
+    align-items: center;
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+
+  .name {
+    flex: 1;
+    .ellipsis();
+  }
+}
+
+.tags {
+  margin-top: 16px;
+}

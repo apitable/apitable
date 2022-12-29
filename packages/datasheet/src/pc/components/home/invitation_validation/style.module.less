@@ -1,0 +1,96 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.invitationValidation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // max-width: 350px;
+
+  .welcomePng {
+    height: 240px;
+    width: 320px;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    padding-top: 24px;
+    color: var(--firstLevelText);
+  }
+
+  .tip {
+    display: flex;
+    align-items: center;
+    padding: 16px 0 32px;
+
+    .getInvitationCodeBtn {
+      cursor: pointer;
+      color: var(--primaryColor);
+    }
+  }
+
+  .form {
+    width: 350px;
+    .label {
+      padding-bottom: 6px;
+    }
+
+    .getInvitationCodeBtn {
+      display: flex;
+      align-items: center;
+      color: var(--primaryColor);
+      cursor: pointer;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--primaryColor);
+      }
+    }
+
+    .errMsg {
+      height: 14px;
+      font-size: 10px;
+      margin: 4px 0 14px;
+      color: var(--errorColor);
+    }
+  }
+
+  .submitBtn {
+    margin-bottom: 22px;
+  }
+
+  .skipBtn {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .invitationValidation {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: translate(0, 0);
+    padding: 32px 24px 24px;
+    max-width: 100%;
+
+    .welcomePng {
+      height: 180px;
+      width: auto;
+    }
+
+    .tip {
+      flex-direction: column;
+    }
+
+    .form {
+      width: 100%;
+    }
+  }
+}

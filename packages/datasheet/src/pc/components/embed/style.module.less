@@ -1,0 +1,332 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.iframeShare {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.share {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+
+  &.formShare {
+    :global {
+      .formVikaLogo {
+        display: none;
+      }
+    }
+  }
+
+  .splitLeft {
+    box-sizing: border-box;
+    height: 100%;
+    // position: relative;
+
+    .closeBtn {
+      position: absolute;
+      top: 13px;
+      right: 0px;
+      transform: translateX(50%);
+      z-index: var(--catalogCloseBtn);
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--lineColor);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--defaultBg);
+      cursor: pointer;
+      border-radius: 50%;
+
+      svg {
+        fill: var(--thirdLevelText);
+        pointer-events: none;
+        transform: translateX(-1px);
+      }
+
+      &.isPanelClose {
+        right: -30px;
+        box-shadow: 0px 1px 6px 0px rgba(214, 218, 238, 1);
+        border: none;
+
+        svg {
+          fill: var(--primaryColor);
+          pointer-events: none;
+          transform: translateX(1px);
+        }
+
+        &:hover {
+          // FIXME:THEME
+          box-shadow: 0px 1px 6px 0px rgba(var(--primaryColor-rgb), 40%);
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+      }
+
+      &:hover {
+        background-color: var(--defaultBg);
+// FIXME:THEME
+        border-color: rgba(var(--primaryColor-rgb), 40%);
+
+        svg {
+          fill: var(--primaryColor);
+        }
+      }
+    }
+  }
+
+  :global {
+    .Resizer {
+      background: var(--lineColor);
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -moz-background-clip: padding;
+      -webkit-background-clip: padding;
+      background-clip: padding-box;
+    }
+
+    .Resizer:hover {
+      -webkit-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+
+    .Resizer.horizontal {
+      height: 11px;
+      margin: -5px 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      cursor: row-resize;
+      width: 100%;
+    }
+
+    .Resizer.horizontal:hover {
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .Resizer.vertical {
+      margin: 0 -5px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      cursor: col-resize;
+    }
+
+    .Resizer.vertical:hover {
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+
+    .Resizer.disabled {
+      cursor: not-allowed;
+    }
+
+    .Resizer.disabled:hover {
+      border-color: transparent;
+    }
+
+    .ant-modal-header {
+      display: none !important;
+    }
+  }
+}
+
+.hiddenCatalog {
+  :global {
+    .Resizer.vertical {
+      margin: 0 -6px;
+    }
+  }
+}
+
+.nickNameWrapper {
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nickNameImg {
+    width: 210px;
+    margin: 0 auto;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .err {
+    width: 330px;
+    font-size: 12px;
+    color: var(--errorColor);
+    margin-top: 8px;
+    height: 12px;
+    line-height: 12px;
+  }
+
+  .tip {
+    text-align: center;
+    color: var(--firstLevelText);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 40px 0 50px 0;
+  }
+
+  .nickName,
+  .submit {
+    width: 330px;
+    height: 50px;
+  }
+
+  .submit {
+    margin-top: 30px;
+  }
+}
+
+.gridContainer {
+  min-width: 800px;
+  position: relative;
+  min-height: 500px;
+
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: var(--defaultBg);
+    border-radius: 8px;
+    overflow: hidden;
+    // Compatible with safari bug
+    transform: translateZ(0);
+  }
+}
+
+.containerAfter {
+  &:after {
+    content: " ";
+    display: block;
+    background: var(--primaryColor);
+    width: 16px;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    bottom: 0;
+  }
+}
+
+
+
+.noFolder {
+  background: var(--defaultBg);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile {
+  width: 100%;
+  height: 100%;
+
+  :global {
+    #DATASHEET_VIEW_CONTAINER_ID {
+      padding-left: 0;
+    }
+  }
+}
+
+.side {
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--primaryColor);
+  transition: all 0.3s;
+
+  .shareButton {
+    width: 76%;
+    color: var(--defaultBg);
+    background: var(--warningColor);
+    font-size: 14px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
+  .shareReport {
+    cursor: pointer;
+    width: 32px;
+    height: 40px;
+    // FIXME:THEME
+    background: rgba(var(--defaultBg-rgb), 80%);
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 87px;
+    left: 0;
+  }
+}
+
+.brandContainer {
+  width: 100%;
+  height: 40px;
+  background-color: var(--bgCommonDefault);
+  border-top: 1px solid var(--borderCommon);
+  padding: 10px 16px;
+  position: fixed;
+  bottom: 0;
+  img {
+    height: auto;
+    width: 75px;
+  }
+}
+
+
+
+
+.loginButton {
+  position: absolute;
+  height: 42px;
+  left: calc(50% - 176px/2);
+  bottom: 64px;
+  background-color: var(--bgBrandLightDefault);
+  border: 1px solid var(--borderOnbrandLight);
+  border-radius: 4px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 16px;
+  gap: 16px;
+  p {
+    margin: 0 0;
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--textCommonPrimary);
+  }
+}
+
+.closeBtn {
+  fill: var(--textCommonPrimary);
+  cursor: pointer;
+}

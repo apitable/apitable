@@ -1,0 +1,56 @@
+@import '~pc/styles/lib_mixins.less';
+
+.capacityRewardModal {
+  .content {
+    height: 510px;
+  }
+
+  .source {
+    display: flex;
+    align-items: center;
+    .unitTag {
+      margin: 2px 0;
+    }
+  }
+}
+
+.rewardTable {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  .light-scroll-bar();
+  :global {
+    .ant-table {
+      line-height: 1;
+      color: var(--secondLevelText);
+      .antdTable();
+      .ant-table-body {
+        overflow-y: hidden !important;
+        .light-scroll-bar();
+        &:hover {
+          overflow-y: auto !important; // Firefox compatible, the second overflow in chrome can override the first overflow
+          overflow-y: overlay !important;
+        }
+      }
+      td,
+      th {
+        text-align: left !important;
+      }
+      .ant-table-hide-scrollbar {
+        overflow-y: overlay !important;
+        &:hover {
+          overflow-y: overlay !important;
+        }
+      }
+    }
+
+    .ant-table-placeholder {
+      &:hover {
+        td {
+          background-color: var(--primary) !important;
+        }
+      }
+    }
+  }
+}

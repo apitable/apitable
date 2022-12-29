@@ -1,0 +1,12 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(":shared:social:wecom"))
+  
+  implementation(rootProject.ext.dependencies['spring-data-redis'])
+  implementation(rootProject.ext.dependencies['jackson'])
+  implementation(rootProject.ext.dependencies['hutool'])
+}

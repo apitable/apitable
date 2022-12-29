@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220211-001" author="shawn" labels="social">
+        <comment>第三方集成-租户用户表增加app_id</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant_user`
+                ADD COLUMN `app_id` varchar(255) null comment '应用标识' AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220211-002" author="shawn" labels="social">
+        <comment>第三方集成-租户用户表删除索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant_user` DROP INDEX `uk_tenant_user`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220211-003" author="shawn" labels="social">
+        <comment>第三方集成-租户用户表添加唯一索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant_user`
+                ADD UNIQUE KEY `uk_tenant_user` (`app_id`, `tenant_id`, `open_id`);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

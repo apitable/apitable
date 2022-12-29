@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.workspace.mapper.NodeMapper">
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}node(id, space_id, parent_id, pre_node_id, node_id, node_name, icon, type, cover, is_template,
+        created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.parentId},#{item.preNodeId},#{item.nodeId},#{item.nodeName},
+                #{item.icon},#{item.type},#{item.cover},#{item.isTemplate},#{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectNodeNameByNodeId" resultType="java.lang.String">
+        SELECT node_name
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectNodeNameByNodeIdIncludeDeleted" resultType="java.lang.String">
+        SELECT node_name
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectNameList" resultType="java.lang.String">
+        select node_name from ${tablePrefix}node
+        where parent_id = #{parentId} and type = #{nodeType} and is_rubbish = 0
+        <if test="nodeId">
+            and node_id != #{nodeId}
+        </if>
+    </select>
+
+    <select id="selectRootNodeIdBySpaceId" resultType="java.lang.String">
+        SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
+    </select>
+
+    <select id="selectBatchAllSubNodeIds" resultType="java.lang.String">
+        WITH RECURSIVE parent (node_id) AS
+        (SELECT node_id FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = #{isRubbish} AND is_deleted = 0
+        UNION ALL
+        SELECT t.node_id
+        FROM parent p JOIN ${tablePrefix}node t ON p.node_id = t.parent_id AND t.is_rubbish = #{isRubbish} AND t.is_deleted = 0
+        )SELECT * FROM parent
+    </select>
+
+    <select id="countByNodeIds" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND type != 0 AND is_rubbish = 0
+    </select>
+
+    <select id="selectSpaceIdByNodeId" resultType="java.lang.String">
+        select space_id
+        from ${tablePrefix}node
+        where node_id = #{nodeId} and is_rubbish = 0
+    </select>
+
+    <select id="selectSpaceIdsByNodeIds" resultType="java.lang.String">
+        SELECT DISTINCT space_id
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectByNodeIdIncludeDeleted" resultType="com.vikadata.entity.NodeEntity">
+        SELECT *
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+        LIMIT 1
+    </select>
+
+    <select id="selectByNodeIdsIncludeDeleted" resultType="com.vikadata.entity.NodeEntity">
+        SELECT *
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByNodeId" resultType="com.vikadata.entity.NodeEntity">
+        SELECT *
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+        LIMIT 0,1
+    </select>
+
+    <select id="selectByNodeIds" resultType="com.vikadata.entity.NodeEntity">
+        SELECT *
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectSubNodeIds" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{parentId} and is_rubbish = 0
+    </select>
+
+    <select id="selectSubNodeInfo"
+            resultType="com.vikadata.api.workspace.vo.SimpleSortableNodeInfo">
+        SELECT node_id, pre_node_id
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{parentId} and is_rubbish = 0
+    </select>
+
+    <select id="selectOrderSubNodeIds" resultType="java.lang.String">
+        WITH RECURSIVE pre (node_id, pre_node_id, type) AS (
+        SELECT vn.node_id,
+        vn.pre_node_id,
+        vn.type
+        FROM ${tablePrefix}node vn
+        WHERE vn.parent_id = #{nodeId}
+        AND vn.pre_node_id IS NULL
+        AND vn.is_rubbish = 0
+        UNION ALL
+        SELECT vn.node_id,
+        vn.pre_node_id,
+        vn.type
+        FROM pre p
+        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id
+        AND vn.is_rubbish = 0
+        )
+        SELECT node_id
+        FROM pre
+        <if test="nodeType != null">
+            WHERE pre.type = #{nodeType.nodeType}
+        </if>
+    </select>
+
+    <select id="selectAllSubNodeIds" resultType="java.lang.String">
+        WITH RECURSIVE sub_ids (node_id) AS
+        (
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{nodeId} and is_rubbish = 0
+        UNION ALL
+        SELECT c.node_id
+        FROM sub_ids AS cp
+        JOIN ${tablePrefix}node AS c
+        ON cp.node_id = c.parent_id and c.is_rubbish = 0
+        )
+        SELECT distinct *
+        FROM sub_ids;
+    </select>
+
+    <select id="selectAllSubNodeIdsByNodeType" resultType="java.lang.String">
+        WITH RECURSIVE sub_ids (node_id, type) AS
+        (
+        SELECT node_id, type
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{nodeId} and is_rubbish = 0
+        UNION ALL
+        SELECT c.node_id, c.type
+        FROM sub_ids AS cp
+        JOIN ${tablePrefix}node AS c
+        ON cp.node_id = c.parent_id and c.is_rubbish = 0
+        )
+        SELECT distinct node_id
+        FROM sub_ids
+        WHERE type = #{nodeType}
+    </select>
+
+    <select id="selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId} AND node_name LIKE CONCAT('%', #{likeName}, '%')
+        AND type != 0 AND is_template = 0
+    </select>
+
+    <select id="selectLikeNodeName" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE is_rubbish = 0
+        and space_id = #{spaceId}
+        and node_name LIKE CONCAT('%', #{likeName}, '%')
+        and parent_id != '0'
+        and is_template = 0
+        ORDER BY (case
+        when node_name = #{likeName} then 1
+        when node_name like CONCAT(#{likeName}, '%') then 2
+        when node_name like CONCAT('%', #{likeName}) then 3
+        when node_name like CONCAT('%', #{likeName}, '%') then 4
+        else 0
+        end)
+        limit 0,50
+    </select>
+
+    <resultMap id="nodeInfo" type="com.vikadata.api.workspace.vo.BaseNodeInfo">
+        <result column="node_id" property="nodeId"/>
+        <result column="node_name" property="nodeName"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <select id="selectBaseNodeInfoByNodeId" resultMap="nodeInfo">
+        SELECT node_id, node_name, type
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectBaseNodeInfoByNodeIds" resultMap="nodeInfo">
+        SELECT node_id, node_name, type
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectNodeIdByNodeIdIn" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectNodeIdBySpaceIdAndType" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+        AND type = #{nodeType}
+        AND is_rubbish = 0
+        AND is_template = 0
+    </select>
+
+    <select id="selectInfoByNodeIds" resultType="com.vikadata.api.workspace.vo.NodeInfo">
+        SELECT node_id, node_name, type, icon
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <resultMap id="nodeInfoMap" type="com.vikadata.api.workspace.vo.NodeInfoVo" extends="nodeInfo">
+        <result column="space_id" property="spaceId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="pre_node_id" property="preNodeId"/>
+        <result column="icon" property="icon"/>
+        <result column="node_shared" property="nodeShared"/>
+        <result column="node_permit_set" property="nodePermitSet"/>
+        <result column="node_favorite" property="nodeFavorite"/>
+        <result column="created_at" property="createTime"/>
+        <result column="updated_at" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectNodeInfoByNodeId" resultMap="nodeInfoMap">
+        SELECT vn.node_id,
+        vn.space_id,
+        IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name,
+        vn.type,
+        vn.parent_id,
+        vn.pre_node_id,
+        vn.icon,
+        vn.is_template,
+        IF(leaf.id IS NULL, 0, 1) has_children,
+        vdm.meta_data,
+        IF(vnss.id IS NULL, 0, 1) node_shared,
+        IF(vc.id IS NULL, 0, 1) node_permit_set,
+        vn.created_at,
+        vn.updated_at
+        FROM ${tablePrefix}node vn
+        JOIN ${tablePrefix}space vs on vn.space_id = vs.space_id
+        LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
+        LEFT JOIN ${tablePrefix}datasheet_meta vdm ON vdm.dst_id = vn.node_id AND vdm.is_deleted = 0
+        LEFT JOIN ${tablePrefix}node_share_setting vnss on vn.node_id = vnss.node_id AND vnss.is_enabled = 1
+        LEFT JOIN ${tablePrefix}control vc on vn.node_id = vc.control_id AND vc.is_deleted = 0
+        WHERE vn.is_rubbish = 0 and vn.node_id = #{nodeId}
+        GROUP BY vn.id
+    </select>
+
+    <select id="selectNodeInfoByNodeIds" resultMap="nodeInfoMap">
+        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type,
+        vn.parent_id,
+        vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,vdm.meta_data,
+        vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) AS node_shared,
+        IF(vc.id IS NULL, 0 ,1) as node_permit_set, IF(vnf.id IS NULL, 0 ,1) as node_favorite
+        FROM ${tablePrefix}node vn
+        JOIN ${tablePrefix}space vs on vn.space_id = vs.space_id
+        LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
+        LEFT JOIN ${tablePrefix}node_favorite vnf ON vnf.node_id = vn.node_id AND vnf.member_id = #{memberId}
+        LEFT JOIN ${tablePrefix}datasheet_meta vdm ON vdm.dst_id = vn.node_id AND vdm.is_deleted = 0
+        LEFT JOIN ${tablePrefix}node_share_setting vnss on vn.node_id = vnss.node_id AND vnss.is_enabled = 1
+        LEFT JOIN ${tablePrefix}control vc on vn.node_id = vc.control_id AND vc.is_deleted = 0
+        WHERE vn.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vn.is_rubbish = 0
+        GROUP BY vn.node_id
+    </select>
+
+    <resultMap id="nodeInfoTree" type="com.vikadata.api.workspace.vo.NodeInfoTreeVo" extends="nodeInfoMap"/>
+
+    <select id="selectNodeInfoTreeByNodeIds" resultMap="nodeInfoTree">
+        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type,
+        vn.parent_id,
+        vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,
+        JSON_LENGTH(vdm.meta_data -> '$.fieldMap') AS md_field_map_size,
+        vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) as node_shared,
+        IF(vc.id IS NULL, 0 ,1) AS node_permit_set, IF(vnf.id IS NULL, 0 ,1) AS node_favorite
+        FROM ${tablePrefix}node vn
+        JOIN ${tablePrefix}space vs on vn.space_id = vs.space_id
+        LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
+        LEFT JOIN ${tablePrefix}node_favorite vnf ON vnf.node_id = vn.node_id AND vnf.member_id = #{memberId}
+        LEFT JOIN ${tablePrefix}datasheet_meta vdm ON vdm.dst_id = vn.node_id AND vdm.is_deleted = 0
+        LEFT JOIN ${tablePrefix}node_share_setting vnss on vn.node_id = vnss.node_id AND vnss.is_enabled = 1
+        LEFT JOIN ${tablePrefix}control vc on vn.node_id = vc.control_id AND vc.is_deleted = 0
+        WHERE vn.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vn.is_rubbish = 0
+        GROUP BY vn.node_id
+    </select>
+
+    <select id="selectSubNodesByOrder" resultType="java.lang.String">
+        WITH RECURSIVE tree_view(node_id) AS (
+        SELECT vn.node_id
+        FROM ${tablePrefix}node vn
+        WHERE vn.space_id = #{spaceId} AND vn.pre_node_id IS NULL AND vn.is_rubbish = 0 AND vn.parent_id IN
+        (
+        WITH RECURSIVE tree (node_id, type, lvl) AS (
+        SELECT node_id,
+        type,
+        1 lvl
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+        UNION ALL
+        SELECT vn.node_id,
+        vn.type,
+        c.lvl + 1
+        FROM tree c
+        JOIN ${tablePrefix}node vn ON vn.parent_id = c.node_id AND vn.is_rubbish = 0
+        <if test="depth != 0">
+            WHERE c.lvl <![CDATA[<]]> #{depth}
+        </if>
+        )
+        SELECT node_id
+        FROM tree
+        WHERE type != 2
+        )
+        UNION ALL
+        SELECT vn.node_id
+        FROM tree_view p
+        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
+        )
+        SELECT node_id FROM tree_view GROUP BY node_id
+        UNION
+        SELECT #{nodeId} AS node_id
+    </select>
+
+    <select id="selectParentNodesByOrder" resultType="java.lang.String">
+        WITH RECURSIVE pre (node_id) AS
+        ( SELECT vn.node_id
+        FROM ${tablePrefix}node vn
+        WHERE vn.pre_node_id IS NULL AND vn.space_id = #{spaceId} AND vn.is_rubbish = 0 AND vn.parent_id IN (
+        WITH RECURSIVE child (parent_id) AS
+        ( SELECT parent_id
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+        UNION ALL
+        SELECT vn.parent_id
+        FROM child AS c
+        JOIN ${tablePrefix}node vn ON vn.node_id = c.parent_id AND vn.is_rubbish = 0
+        )SELECT * FROM child
+        )
+        UNION ALL
+        SELECT vn.node_id
+        FROM pre p
+        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
+        )SELECT DISTINCT node_id FROM pre
+    </select>
+
+    <select id="selectShareTreeByNodeId" resultType="com.vikadata.api.workspace.vo.NodeShareTree">
+        WITH RECURSIVE pre (node_id, node_name, icon, parent_id, pre_node_id, type, cover, extra) AS
+        (SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
+        FROM ${tablePrefix}node vn
+        WHERE vn.space_id = #{spaceId}
+        AND vn.pre_node_id IS NULL
+        AND vn.is_rubbish = 0
+        AND vn.parent_id IN (
+        WITH RECURSIVE sub_ids (node_id, parent_id) AS (
+        SELECT node_id,
+        parent_id
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{nodeId} AND is_rubbish = 0
+        UNION ALL
+        SELECT c.node_id,
+        c.parent_id
+        FROM sub_ids AS cp JOIN ${tablePrefix}node AS c ON cp.node_id = c.parent_id AND c.is_rubbish = 0
+        )
+        SELECT parent_id
+        FROM sub_ids
+        GROUP BY parent_id
+        )
+        GROUP BY vn.node_id
+        UNION ALL
+        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
+        FROM pre p
+        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
+        )
+        SELECT *
+        FROM pre
+    </select>
+
+    <select id="selectShareTree" resultType="com.vikadata.api.workspace.vo.NodeShareTree">
+        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover
+        FROM ${tablePrefix}node vn
+        WHERE vn.is_rubbish = 0 AND vn.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectHasChildren" resultType="boolean">
+        SELECT COUNT(leaf.id) > 0
+        FROM ${tablePrefix}node vn
+        LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
+        WHERE vn.node_id = #{nodeId}
+    </select>
+
+    <select id="selectParentNodePath" resultType="java.lang.String">
+        WITH RECURSIVE parent_view (node_id, parent_id, lvl) AS (
+        SELECT n.node_id,
+        n.parent_id,
+        0 lvl
+        FROM ${tablePrefix}node n
+        WHERE n.node_id = #{nodeId}
+        AND n.is_rubbish = 0
+        UNION ALL
+        SELECT c.node_id,
+        c.parent_id,
+        pv.lvl + 1
+        FROM parent_view AS pv
+        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
+        )
+        SELECT node_id
+        FROM parent_view
+        WHERE parent_id != '0'
+        ORDER BY lvl DESC
+    </select>
+
+    <select id="selectParentNodeListByNodeId" resultType="com.vikadata.api.workspace.vo.NodePathVo">
+        WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS (
+        SELECT n.node_id,
+        IF(n.parent_id = '0', s.NAME, n.node_name) node_name,
+        n.parent_id,
+        0 lvl
+        FROM ${tablePrefix}node n
+        JOIN ${tablePrefix}space as s ON s.space_id = n.space_id
+        WHERE n.node_id = #{nodeId} AND n.space_id = #{spaceId} AND n.is_rubbish = 0
+        UNION ALL
+        SELECT c.node_id,
+        IF(c.parent_id = '0', s.NAME, c.node_name) node_name,
+        c.parent_id,
+        pv.lvl + 1
+        FROM parent_view AS pv
+        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
+        JOIN ${tablePrefix}space AS s ON s.space_id = c.space_id
+        )
+        SELECT node_id,
+        node_name
+        FROM parent_view
+        ORDER BY lvl DESC
+    </select>
+
+    <select id="selectParentNodeByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
+        WITH RECURSIVE parent_view (node_id, node_name, parent_id) AS (
+        SELECT n.node_id, n.node_name, n.parent_id
+        FROM ${tablePrefix}node n
+        WHERE n.space_id = #{spaceId} AND n.node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND n.is_rubbish = 0
+        UNION
+        SELECT c.node_id, c.node_name, c.parent_id
+        FROM parent_view AS pv
+        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
+        )
+        SELECT node_id, node_name, parent_id
+        FROM parent_view
+        WHERE parent_id != '0'
+    </select>
+
+    <update id="updateInfoByNodeId">
+        UPDATE ${tablePrefix}node
+        SET pre_node_id = #{preNodeId},
+        parent_id = #{parentId},
+        node_name = #{name},
+        is_rubbish = 0
+        WHERE node_id = #{nodeId}
+    </update>
+
+    <update id="updateIsRubbishByNodeIdIn">
+        UPDATE ${tablePrefix}node
+        SET is_rubbish = #{isRubbish}, updated_by = #{userId}
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish != #{isRubbish} AND is_deleted = 0
+    </update>
+
+    <update id="updateIsDeletedByNodeId">
+        UPDATE ${tablePrefix}node
+        SET is_deleted = 1, updated_by = #{userId}
+        WHERE node_id = #{nodeId} AND is_rubbish = 1 AND is_deleted = 0
+    </update>
+
+    <update id="updateDeletedPathByNodeId">
+        UPDATE ${tablePrefix}node
+        SET deleted_path = #{delPath}, parent_id = -1
+        WHERE node_id = #{nodeId}
+    </update>
+
+    <update id="updatePreNodeIdByJoinSelf">
+        UPDATE ${tablePrefix}node vn
+        JOIN ${tablePrefix}node vn2 ON vn.pre_node_id = vn2.node_id
+        SET vn.pre_node_id = vn2.pre_node_id
+        WHERE vn.parent_id = #{parentId}
+        AND vn.pre_node_id = #{preNodeId}
+        AND vn.is_rubbish = 0
+    </update>
+
+    <update id="updatePreNodeIdBySelf">
+        UPDATE ${tablePrefix}node
+        SET pre_node_id = #{newPreNodeId}
+        WHERE parent_id = #{parentId}
+        <choose>
+            <when test="originPreNodeId != null">
+                AND pre_node_id = #{originPreNodeId}
+            </when>
+            <otherwise>
+                AND pre_node_id IS NULL
+            </otherwise>
+        </choose>
+        AND is_rubbish = 0
+    </update>
+
+    <select id="selectParentIdByNodeId" resultType="java.lang.String">
+        SELECT parent_id
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </select>
+
+    <update id="updateIconByNodeId">
+        UPDATE ${tablePrefix}node
+        SET icon = #{icon}
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <update id="updateNameByNodeId">
+        UPDATE ${tablePrefix}node
+        SET node_name = #{nodeName}
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <update id="updateCoverByNodeId">
+        UPDATE ${tablePrefix}node
+        SET cover = #{cover}
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <update id="updateNodeBanStatus">
+        UPDATE ${tablePrefix}node
+        SET is_banned = #{status}
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <select id="selectNodeTypeByNodeId" resultType="java.lang.Integer">
+        SELECT type
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectNodeIdByPreNodeIdIn" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE pre_node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.vikadata.api.workspace.dto.SimpleNodeInfo">
+        WITH RECURSIVE parent_view ( node_id, parent_id, extend, lvl ) AS (
+        SELECT
+        n.node_id,
+        n.parent_id,
+        IF(vc.id IS NULL, 1, 0) extend,
+        0 lvl
+        FROM ${tablePrefix}node n
+        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = n.node_id AND vc.is_deleted = 0
+        WHERE n.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND n.is_rubbish = 0
+        UNION ALL
+        SELECT
+        c.node_id,
+        c.parent_id,
+        IF(vc.id IS NULL, 1, 0) extend,
+        pv.lvl + 1
+        FROM parent_view AS pv
+        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
+        <if test="!includeRoot">
+            AND c.parent_id != '0'
+        </if>
+        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = c.node_id AND vc.is_deleted = 0
+        )
+        SELECT DISTINCTROW node_id, parent_id, extend
+        FROM parent_view
+        ORDER BY lvl DESC
+    </select>
+
+    <select id="selectSpaceIdByNodeIdIncludeDeleted" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectIsTemplateByNodeId" resultType="java.lang.Boolean">
+        SELECT DISTINCT is_template
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
+    <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
+        SELECT node_id, node_name, icon, type
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectRubbishUpdatedAtByNodeId" resultType="java.time.LocalDateTime">
+        SELECT updated_at
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND parent_id = '-1' AND is_rubbish = 1 AND is_deleted = 0
+    </select>
+
+    <select id="selectRubbishNodeIds" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId} AND parent_id = '-1'
+        AND updated_at > #{beginTime} AND is_rubbish = 1 AND is_deleted = 0
+        <if test="endTime != null">
+            AND updated_at &lt; #{endTime}
+        </if>
+        ORDER BY updated_at DESC
+        LIMIT #{size}
+    </select>
+
+    <select id="selectRubbishNodeInfo" resultType="com.vikadata.api.workspace.vo.RubbishNodeVo">
+        SELECT vn.node_id, vn.space_id, vn.node_name, vn.type, vn.icon, vn.updated_at AS deletedAt, vn.deleted_path AS
+        delPath,
+        vu.uuid, vu.avatar, vum.member_name, #{retainDay} AS retainDay,
+        IFNULL(vu.is_social_name_modified, 2) > 0 AS isNickNameModified,
+        IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}node vn
+        LEFT JOIN ${tablePrefix}user vu ON vn.updated_by = vu.id AND vu.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_member vum ON vu.id = vum.user_id AND vum.space_id = #{spaceId} AND vum.is_deleted = 0
+        WHERE vn.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vn.parent_id = '-1' AND vn.is_rubbish = 1 AND vn.is_deleted = 0
+        ORDER BY vn.updated_at DESC
+    </select>
+
+    <select id="selectNodeBaseInfoByNodeId" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
+        SELECT node_id, node_name, icon
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
+    </select>
+
+    <update id="updateExtraShowRecordHistoryByNodeId">
+        UPDATE ${tablePrefix}node
+        SET extra = JSON_SET(extra, '$.showRecordHistory', #{showRecordHistory})
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <update id="updateExtraByNodeId">
+        UPDATE ${tablePrefix}node
+        SET extra = #{extra}
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <update id="updateDingTalkDaStatusByNodeId">
+        UPDATE ${tablePrefix}node
+        SET extra = JSON_SET(extra, '$.dingTalkDaStatus', #{dingTalkDaStatus})
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
+
+    <select id="selectDingTalkDaStatusByNodeId" resultType="java.lang.Integer">
+        SELECT extra->>'$.dingTalkDaStatus'
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
+    </select>
+
+    <select id="selectExtraByNodeId" resultType="java.lang.String">
+        SELECT extra from ${tablePrefix}node
+        WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeIdByNodeIds" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach collection="nodeIds" item="nodeId" index="index" open="(" close=")" separator=",">
+            #{nodeId}
+        </foreach>
+        AND is_rubbish = 0
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectSpaceIdAndNodeNameByNodeId" resultType="com.vikadata.api.workspace.dto.UrlNodeInfoDTO">
+        SELECT space_id, node_name
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+        AND is_rubbish = 0
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectSpaceIdAndNodeNameByNodeIds" resultType="com.vikadata.api.workspace.dto.UrlNodeInfoDTO">
+        SELECT space_id, node_name, node_id
+        FROM ${tablePrefix}node
+        WHERE node_id IN
+        <foreach collection="nodeIds" item="nodeId" index="index" open="(" close=")" separator=",">
+            #{nodeId}
+        </foreach>
+        AND is_rubbish = 0
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCreatedByByNodeId" resultType="java.lang.Long">
+        SELECT created_by
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+        AND is_rubbish = 0
+        AND is_deleted = 0
+    </select>
+</mapper>

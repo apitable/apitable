@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200924-001" author="Chambers" labels="third_party">
+        <comment>第三方系统-会员信息表新增唯一索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}third_party_member`
+            ADD UNIQUE INDEX `uk_app_union`(`app_id`, `union_id`) USING BTREE COMMENT '同一个第三方平台类型唯一索引';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,222 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-016" author="ShawnDeng" labels="space">
+        <comment>创建工作空间表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间唯一标识字符',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间名称',
+            `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间图标',
+            `level` bigint(2) DEFAULT NULL COMMENT '空间级别',
+            `owner_member_id` bigint(20) DEFAULT NULL COMMENT '所有者用户',
+            `creator_member_id` bigint(20) DEFAULT NULL COMMENT '创建者用户',
+            `pre_deletion_time` timestamp NULL DEFAULT NULL COMMENT '预删除时间',
+            `is_invite` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否全员可邀请成员(0:否,1:是)',
+            `is_forbid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁止全员导出维格表(0:否,1:是)',
+            `node_visible` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否节点全员可见(0:否,1:是)',
+            `ding_corp_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '钉钉企业ID',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_space_id` (`space_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-017" author="ShawnDeng" labels="space">
+        <comment>创建工作空间附件表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_asset` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(关联#vika_space#space_id)',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表节点Id(关联#vika_node#node_id)',
+            `asset_id` bigint(20) DEFAULT NULL COMMENT '资源ID(关联#vika_asset#id)',
+            `asset_checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '[冗余]md5摘要',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '类型 (0:用户头像1:空间logo2:数表附件3:缩略图)',
+            `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名，本次上传的文件名',
+            `file_size` int(11) NOT NULL COMMENT '[冗余]文件大小(单位:byte)',
+            `height` int(11) DEFAULT NULL COMMENT '图片高度',
+            `width` int(11) DEFAULT NULL COMMENT '图片宽度',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_space_id` (`space_id`) USING BTREE,
+            KEY `idx_digest` (`asset_checksum`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-附件表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_asset"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-018" author="ShawnDeng" labels="space">
+        <comment>创建工作空间邀请成员记录表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_invite_record` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `invite_member_id` bigint(20) DEFAULT NULL COMMENT '邀请者成员ID',
+            `invite_space_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邀请空间ID',
+            `invite_space_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邀请空间名',
+            `invite_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邀请邮箱',
+            `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邀请链接唯一令牌标识',
+            `Invite_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邀请链接',
+            `send_status` tinyint(1) unsigned DEFAULT '0' COMMENT '邮件发送状态(0:失败,1:成功)',
+            `status_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '状态描述',
+            `is_expired` tinyint(1) unsigned DEFAULT '0' COMMENT '是否已失效(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `invite_token` (`invite_token`) COMMENT '唯一性令牌'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-邀请成员记录';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_invite_record"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-019" author="ShawnDeng" labels="space">
+        <comment>创建角色权限关联表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_member_role_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
+            `member_id` bigint(20) unsigned NOT NULL COMMENT '成员ID',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色编码',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_member_id` (`member_id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-角色权限关联表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_member_role_rel"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-020" author="ShawnDeng" labels="space">
+        <comment>创建工作空间菜单表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_menu` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `parent_code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '父级编码',
+            `menu_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单编码',
+            `menu_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单名称',
+            `menu_url` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '菜单相对路径',
+            `sequence` int(3) unsigned DEFAULT '1' COMMENT '排序',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_menu_code` (`menu_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='工作空间-菜单表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_menu"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-021" author="ShawnDeng" labels="space">
+        <comment>创建工作空间菜单资源关联表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_menu_resource_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `menu_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单编码',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源编码',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_menu_code` (`menu_code`) USING BTREE,
+            KEY `k_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-菜单资源关联表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_menu_resource_rel"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-022" author="ShawnDeng" labels="space">
+        <comment>创建工作空间权限资源表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_resource` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `group_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分组编码',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '编码',
+            `resource_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+            `resource_url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '地址',
+            `resource_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '描述',
+            `assignable` tinyint(1) unsigned DEFAULT '1' COMMENT '是否可分配(0:否,1:是)',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0:禁用,1:启用)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-权限资源表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_resource"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-023" author="ShawnDeng" labels="space">
+        <comment>创建工作空间权限资源分组表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_resource_group` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `group_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分组编码',
+            `group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分类名称',
+            `group_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分类描述',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-权限资源分组表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_resource_group"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-024" author="ShawnDeng" labels="space">
+        <comment>创建工作空间角色表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_role` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '编码',
+            `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+            `role_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0:禁用,1:启用)',
+            `creator` bigint(20) DEFAULT NULL COMMENT '创建者ID',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_role_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-角色表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_role"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-025" author="ShawnDeng" labels="space">
+        <comment>创建工作空间角色权限资源关联表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_role_resource_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色编码',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源编码',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE,
+            KEY `k_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-角色权限资源关联表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_role_resource_rel"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

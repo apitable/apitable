@@ -1,0 +1,22 @@
+.objectFieldTemplateWrapper {
+  display: flex;
+  flex-direction: column;
+  :global {
+    .field-object {
+      padding-top: 0!important;
+    }
+  }
+}
+
+.inlineObjectChildren {
+  align-items: flex-start;
+  display: block;
+  &.inline {
+    display: flex;
+  }
+}
+
+.inlineArrayItem {
+  display: flex;
+  align-items: center;
+}

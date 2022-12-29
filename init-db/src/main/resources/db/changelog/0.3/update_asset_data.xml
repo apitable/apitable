@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.3-20200427-001" author="Chamber" labels="base">
+        <comment>更换初始化附件资源数据（静态资源）</comment>
+        <sqlFile path="db/changelog/0.3/update_asset_data.sql"/>
+    </changeSet>
+</databaseChangeLog>

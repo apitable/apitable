@@ -1,0 +1,62 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220121-001" author="胡海平" labels="history">
+       <comment>新增用户uuid字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `uuid` varchar(32) NOT NULL COMMENT '用户ID' AFTER `user_id`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-002" author="胡海平" labels="history">
+        <comment>新增用户昵称字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `nick_name` varchar(50) NULL COMMENT '昵称' AFTER `uuid`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-003" author="胡海平" labels="history">
+        <comment>新增用户手机区号字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `code` varchar(50) NULL COMMENT '区号' AFTER `nick_name`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-004" author="胡海平" labels="history">
+        <comment>新增用户手机号字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `mobile_phone` varchar(50) NULL COMMENT '手机号码' AFTER `code`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-005" author="胡海平" labels="history">
+        <comment>新增用户邮箱字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `email` varchar(100) NULL COMMENT '邮箱' AFTER `mobile_phone`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-006" author="胡海平" labels="history">
+        <comment>新增用户头像字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `avatar` varchar(255) NULL COMMENT '头像' AFTER `email`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-007" author="胡海平" labels="history">
+        <comment>新增用户语言字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `locale` varchar(50) NULL COMMENT '语言' AFTER `avatar`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

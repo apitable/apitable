@@ -1,0 +1,148 @@
+import { Button } from './index';
+import { RobotOutlined } from '@apitable/icons';
+import { purple, yellow, pink, orange } from '../../colors';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Button 按钮/基础按钮/文档" />
+
+# Button 按钮
+
+## 使用方式
+
+```jsx
+import { Button } from '@apitable/components';
+```
+
+## 使用场景
+
+点击按钮即时执行某个动作
+
+## 快捷键支持
+
+https://www.w3.org/TR/wai-aria-practices/#keyboard-interaction-3
+
+| Key   | Function    |
+| ----- | ----------- |
+| Enter | 激活 Button |
+| Space | 激活 Button |
+
+
+### 按钮类型
+
++ 实心按钮 - Contained Buttons，主要 Button。
++ 果冻按钮 - 浅色按钮 ，次级 Button。
+
+<Canvas>
+<ThemeToggle>
+  <Button color="primary"> 默认 fill Button </Button>
+  <Button variant="jelly" color="primary">果冻 Button </Button>
+</ThemeToggle>
+</Canvas>
+
+
+### 各种大小的 Button
+
+<Canvas>
+<ThemeToggle>
+  <Button color="primary" variant="fill" size="small"> Small Button </Button>
+  <Button color="primary" variant="fill" size="middle"> Medium Button </Button>
+  <Button color="primary" variant="fill" size="large"> Large Button </Button>
+</ThemeToggle>
+</Canvas>
+
+### 禁用的 Button
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill" size="middle" disabled> Disabled Button </Button>
+  <Button variant="jelly" color="primary" size="middle" disabled> Disabled Text Button </Button>
+</ThemeToggle>
+</Canvas>
+
+
+### 实心按钮颜色
+
+<Canvas>
+<ThemeToggle>
+  <Button> 默认 Button </Button>
+  <Button variant="fill" color="danger"> 危险 Button </Button>
+  <Button variant="fill" color="primary"> 主题 Button</Button>
+  <Button variant="fill" color="warning"> 告警 Button </Button>
+</ThemeToggle>
+</Canvas>
+
+### 果冻按钮颜色
+
+设置 `variant` 属性为 jelly 可以得到果冻按钮
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="jelly"> 默认 Button </Button>
+  <Button variant="jelly" color="danger"> 危险 Button </Button>
+  <Button variant="jelly" color="primary"> 主题 Button</Button>
+  <Button variant="jelly" color="warning"> 告警 Button </Button>
+</ThemeToggle>
+</Canvas>
+
+button 内的文字，会根据背景色自动计算（黑色/白色），使其大致满足可访问性。
+
+### 圆角按钮
+
+<Canvas>
+<ThemeToggle>
+<Story id="基础组件-button-按钮-基础按钮--round-shape" />
+</ThemeToggle>
+</Canvas>
+
+### 前置后置 Icon
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill"  color="primary" prefixIcon={ <RobotOutlined currentColor/>} > RobotOutlined </Button>
+  <Button variant="fill"  color="primary" suffixIcon={ <RobotOutlined currentColor/>}> RobotOutlined </Button>
+</ThemeToggle>
+</Canvas>
+
+### 占满容器宽度的 Button
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill" color="primary" block> block 属性占据整行 </Button>
+</ThemeToggle>
+</Canvas>
+
+### 处于 loading 的 Button
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill" loading color="primary"> 加载中 </Button>
+</ThemeToggle>
+</Canvas>
+
+### 自定义颜色
+
+`Fill Button` 支持修改颜色, 除了默认的三种颜色： default、primary、danger。
+
++ 如果传入的颜色(6位hex字符串) 存在于调色板中。则 button 的 hover press 的背景色，会自动设置。
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill" color={orange[500]}> orange[500] </Button>
+  <Button variant="fill" color={purple[200]}> purple[200] </Button>
+  <Button variant="fill" color="#D8ACFA"> #D8ACFA（purple[200]） </Button>
+  <Button variant="fill" color={pink[200]}> pink[200] </Button>
+</ThemeToggle>
+</Canvas>
+
++ 如果传入的颜色不存在于调色板中。hover press 背景色不变，这种情况需要用户主动覆盖样式。
+
+<Canvas>
+<ThemeToggle>
+  <Button variant="fill" color="#345"> 自定义颜色 </Button>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Button} />

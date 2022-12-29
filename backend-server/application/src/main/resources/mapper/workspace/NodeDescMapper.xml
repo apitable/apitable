@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.workspace.mapper.NodeDescMapper">
+
+    <select id="selectIdByNodeId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}node_desc
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectDescriptionByNodeId" resultType="java.lang.String">
+        SELECT `description`
+        FROM ${tablePrefix}node_desc
+        WHERE node_id = #{nodeId}
+    </select>
+
+    <select id="selectByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeDescDTO">
+        SELECT node_id, `description`
+        FROM ${tablePrefix}node_desc
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateDescByNodeId">
+        UPDATE ${tablePrefix}node_desc
+        SET `description` = #{desc}
+        WHERE node_id = #{nodeId}
+    </update>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}node_desc(id, node_id, description)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.nodeId},#{item.description}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

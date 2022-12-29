@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211026-001" author="HumphreyHu" labels="labs">
+        <comment>『内测实验性功能申请表』中新增『申请记录创建人』</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_applicant`
+            ADD COLUMN `created_by` varchar(100) NOT NULL COMMENT '申请记录创建人' AFTER `is_deleted`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211026-002" author="HumphreyHu" labels="labs">
+        <comment>『内测实验性功能信息表』中新增『实验性功能类别』</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_features`
+            ADD COLUMN `feature_scope` tinyint(2) NOT NULL COMMENT '实验性功能类别(user:用户级别,space:空间站级别)' AFTER `feature_key`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211026-003" author="HumphreyHu" labels="labs">
+        <comment>『内测实验性功能信息表』中新增『删除标记』</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_features`
+            ADD COLUMN `is_deleted` tinyint(1) NOT NULL COMMENT '删除标记(0:否, 1:是)' AFTER `url`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

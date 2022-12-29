@@ -1,0 +1,167 @@
+import { Button, ThemeName, ThemeProvider, Typography } from '@apitable/components';
+import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
+import { Form } from 'antd';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
+import { execNoTraceVerification } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import * as React from 'react';
+import { FC } from 'react';
+import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
+import { initMode } from '../home/login/identifying_code_login/identifying_code_login';
+import { IdentifyingCodeModes, IIdentifyingCodeData } from '../home/login/identifying_code_login/identifying_code_modes';
+import styles from './style.module.less';
+
+interface IState {
+  areaCode: string;
+  account: string;
+  identifyingCode: string;
+  password: string;
+  secondPassword: string;
+}
+
+const defaultErrMsg = {
+  accountErrMsg: '',
+  identifyingCodeErrMsg: '',
+  passwordErrMsg: '',
+};
+
+const ResetPassword: FC = () => {
+  const [state, setState] = useSetState<IState>({
+    areaCode: '',
+    account: '',
+    identifyingCode: '',
+    password: '',
+    secondPassword: ''
+  });
+  const { LOGIN_DEFAULT_ACCOUNT_TYPE } = getEnvVariables();
+  const [mode, setMode] = React.useState(LOGIN_DEFAULT_ACCOUNT_TYPE || ConfigConstant.LoginMode.PHONE);
+  const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
+  const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
+  const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
+
+  const resetErrMsg = () => {
+    const { accountErrMsg, identifyingCodeErrMsg, passwordErrMsg } = errMsg;
+    if (accountErrMsg || identifyingCodeErrMsg || passwordErrMsg) {
+      setErrMsg(defaultErrMsg);
+    }
+  };
+
+  const handleIdentifyingCodeChange = (data: IIdentifyingCodeData) => {
+    resetErrMsg();
+    const { areaCode, account, credential } = data;
+    setState({ areaCode, account, identifyingCode: credential });
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+    const value = e.target.value.trim();
+    resetErrMsg();
+    setState({ [key]: value });
+  };
+
+  const handleSubmit = async() => {
+    const { areaCode, account, identifyingCode, password, secondPassword } = state;
+    if (password !== secondPassword) {
+      setErrMsg({ passwordErrMsg: t(Strings.password_not_identical_err) });
+      return;
+    }
+    const type = mode === ConfigConstant.LoginMode.PHONE ? ConfigConstant.CodeTypes.SMS_CODE :
+      ConfigConstant.CodeTypes.EMAIL_CODE;
+
+    const result = await retrievePwd(areaCode, account, identifyingCode, password, type);
+    const { code, success, message } = result;
+    if (!success) {
+      switch (code) {
+        case StatusCode.ACCOUNT_ERROR:
+          setErrMsg({ accountErrMsg: message });
+          break;
+        case StatusCode.PASSWORD_ERR:
+          setErrMsg({ passwordErrMsg: message });
+          break;
+        default:
+          setErrMsg({ identifyingCodeErrMsg: message });
+      }
+      return;
+    }
+
+    // Automatic login after success
+    setTimeout(() => {
+      execNoTraceVerification((data?: string) => {
+        loginOrRegisterReq({
+          username: account,
+          credential: password,
+          type: ConfigConstant.LoginTypes.PASSWORD,
+          areaCode,
+          data,
+        });
+      });
+    }, 1000);
+  };
+
+  const handleBackLogin = () => {
+    Router.push(Navigation.LOGIN);
+  };
+
+  const onModeChange = mode => {
+    setMode(mode);
+  };
+  const btnDisable = !(state.account && state.identifyingCode && state.password && state.secondPassword);
+
+  return (
+    <ThemeProvider theme={ThemeName.Light}>
+      <Wrapper>
+        <div className={styles.resetPwdWrapper}>
+          <div className={styles.resetPwdBox}>
+            <Typography variant='h5' className={styles.title}>{t(Strings.reset_password)}</Typography>
+            <Form onFinish={handleSubmit}>
+              <IdentifyingCodeModes
+                smsType={ConfigConstant.SmsTypes.MODIFY_PASSWORD}
+                emailType={ConfigConstant.EmailCodeType.COMMON}
+                onModeChange={onModeChange}
+                defaultIdentifyingCodeMode={initMode()}
+                error={{ accountErrMsg: errMsg.accountErrMsg, identifyingCodeErrMsg: errMsg.identifyingCodeErrMsg }}
+                onChange={handleIdentifyingCodeChange}
+                mode={LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes}
+              />
+              <Typography variant='body2' className={styles.gap}>{t(Strings.input_new_password)}</Typography>
+              <WithTipWrapper tip={errMsg.passwordErrMsg}>
+                <PasswordInput
+                  placeholder={t(Strings.password_rules)}
+                  onChange={e => handlePasswordChange(e, 'password')}
+                  autoComplete='new-password'
+                  block
+                />
+              </WithTipWrapper>
+              <Typography variant='body2' className={styles.gap}>{t(Strings.input_confirmation_password)}</Typography>
+              <WithTipWrapper tip=''>
+                <PasswordInput
+                  error={Boolean(errMsg.passwordErrMsg)}
+                  placeholder={t(Strings.placeholder_input_new_password_again)}
+                  onChange={e => handlePasswordChange(e, 'secondPassword')}
+                  autoComplete='new-password'
+                  block
+                />
+              </WithTipWrapper>
+              <Button
+                className={styles.confirmBtn}
+                type='submit'
+                color='primary'
+                size='large'
+                disabled={btnDisable}
+                loading={loading}
+                block
+              >
+                {t(Strings.confirm)}
+              </Button>
+              <div className={styles.backBtn}>
+                <span onClick={handleBackLogin}>{t(Strings.back_login)}</span>
+              </div>
+            </Form>
+          </div>
+        </div>
+      </Wrapper>
+    </ThemeProvider>
+  );
+};
+
+export default ResetPassword;

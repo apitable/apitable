@@ -1,0 +1,25 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.overlay {
+   font-size: 13px;
+   position: absolute;
+   left: 0;
+   top: -1px;
+   background-color: var(--lowestBg);
+   width: 100%;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   border-radius: 4px;
+}
+
+@media screen and (max-width: @w-md) {
+  .overlay {
+    top: 0;
+    font-size: 14px;
+    border-radius: 8px;
+    padding-left: 6px;
+  }
+}

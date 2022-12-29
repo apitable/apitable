@@ -1,0 +1,422 @@
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: service-api
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:1GB}
+      max-request-size: ${MAX_REQUEST_SIZE:1GB}
+  session:
+    timeout: ${SESSION_TIMEOUT:30d}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:vika_dev}?characterEncoding=utf8&autoReconnect=true
+    username: ${MYSQL_USERNAME:vika}
+    password: ${MYSQL_PASSWORD:password}
+  # Redis
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    username: ${REDIS_USERNAME:}
+    password: ${REDIS_PASSWORD:}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:3}
+    timeout: 30000
+  rabbitmq:
+    addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:vika}
+    password: ${RABBITMQ_PASSWORD:password}
+    publisher-returns: true
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 5
+    virtual-host: ${RABBITMQ_VHOST:/}
+  mail:
+    host: ${MAIL_HOST:smtp.feishu.cn}
+    username: ${MAIL_USERNAME:email-server@vikadata.com}
+    password: ${MAIL_PASSWORD:Qwer123456}
+    protocol: smtp
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_BASE_URL}
+    discovery-client-enabled: ${ZIPKIN_DISCOVERY_CLIENT_ENABLED:false}
+    service:
+      name: ${ZIPKIN_SERVICE_NAME:}
+    sender:
+      type: ${ZIPKIN_SENDER_TYPE:web}
+
+vikadata:
+  selfhost:
+    enabled: ${SELFHOST_ENABLED:false}
+    expired-At: ${SELFHOST_EXPIRED_AT:}
+  billing:
+    channel: ${BILLING_CHANNEL:vika}
+  cookie:
+    domain-name: ${DOMAIN_NAME:}
+  cors:
+    origins: ${CORS_ORIGINS:*}
+  const:
+    language-tag: ${LANGUAGE_TAG:zh-CN}
+    server-domain: ${SERVER_DOMAIN:}
+    callback-domain: ${CALLBACK_DOMAIN:}
+    oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
+    ossBuckets:
+      vk_assets_ltd:
+        resource-url: ${VK_ASSETS_LTD_URL:https://s1.vika.cn}
+        bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
+        type: ${VK_ASSETS_LTD_TYPE:QNY1}
+      vk_public_assets_ltd:
+        resource-url: ${VK_PUBLIC_ASSETS_LTD_URL:https://s1-applets.vika.cn}
+        bucket-name: ${VK_PUBLIC_ASSETS_LTD_BUCKET:vk-public-assets-ltd}
+        type: ${VK_PUBLIC_ASSETS_LTD_TYPE:QNY3}
+    login-token: ${LOGIN_TOKEN:FutureIsComing,TheyAreTheFuture}
+    default-avatar-list: ${DEFAULT_AVATARS:space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e}
+    user-white-list: ${WHITE_USERS}
+    template-space: ${TEMPLATE_SPACE:spcNA5eN3Sj6Q}
+    quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
+    quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
+    gm-config-unit: ${GM_CONFIG_UNIT:1217029305187893249}
+    invite-code-keyword: vika
+    invite-code-message: '{V_CODE}'
+    invite-code-expire-time: 2099-01-01 00:00:00
+    invite-code-expire-reply: 活动已结束
+    v-code-length: 8
+    qr-code-reply-id: ${QRCODE_REPLY_ID:HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE}
+    ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
+  limit:
+    space-max-count: ${SPACE_MAX_COUNT:10}
+    max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}
+    max-column-count: ${MAX_COLUMN_COUNT:200}
+    max-row-count: ${MAX_ROW_COUNT:50000}
+    template-max-count: ${TEMPLATE_MAX_COUNT:20}
+    dsb-widget-max-count: ${DSB_WIDGET_MAX_COUNT:30}
+    dst-robot-max-count: ${DST_ROBOT_MAX_COUNT:10}
+  socket:
+    domain: ${SOCKET_DOMAIN:http://127.0.0.1:3001/socket}
+  wx:
+    open-redirect-uri: ${OPEN_REDIRECT_URI:http://1527fy8352.iok.la/api/v1/wechat/open/getQueryAuth}
+  feishu:
+    app:
+      v2-enable: ${FEISHU_APP_ENABLE:false}
+      help-desk-uri: ${FEISHU_APP_HELPDESK:https://applink.feishu.cn/client/helpdesk/open?id=6909791310909652995&extra=%7B%22channel%22%3A1%2C%22created_at%22%3A1609215935%7D}
+  subscription:
+    test-mode: ${SUBSCRIPTION_TEST_MODE:false}
+  test:
+    test-mode: ${CLOCK_TEST_MODE:false}
+  lbs:
+    amap:
+      jscode: ${AMAP_JSCODE:e21828e25e02c281835f7b65c42fc418}
+      styles:
+        proxy-pass: ${AMAP_STYLES_PROXY:https://webapi.amap.com/v4/map/styles}
+      vectormap:
+        proxy-pass: ${AMAP_VECTORMAP_PROXY:https://fmap01.amap.com/v3/vectormap}
+      restapi:
+        proxy-pass: ${AMAP_RESTAPI_PROXY:https://restapi.amap.com/}
+  oneaccess:
+    enabled: ${ONEACCESS_ENABLED:false}
+    iam-host: ${ONEACCESS_IAM_HOST:https://wecom.com}
+    encrypt-alg: AES
+    encrypt-key: ${ONEACCESS_ENCRYPT_KEY:123456}
+    client-id: ${ONEACCESS_CLIENT_ID:123}
+    client-secret: ${ONEACCESS_CLIENT_SECRET:vk-xxxxxx}
+    collaboration-space-id: ${COLLABORATION_SPACE_ID:""}
+    we-com:
+      corpid: ${ONEACCESS_WECOM_CORPID:wwf4021212121}
+      secret: ${ONEACCESS_WECOM_SECRET:wcxxxxx}
+      agent-id: ${ONEACCESS_WECOM_AGENT_ID:1000065}
+      base-api-url: ${ONEACCESS_BASE_API_URL:https://exampe.wecom.com}
+  permission-control:
+    infoflow:
+      enabled: ${INFOFLOW_PERMISSIONS_ENABLED:false}
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: ${DATABASE_TABLE_PREFIX:vika_}
+  configuration-properties:
+    tablePrefix: ${DATABASE_TABLE_PREFIX:vika_}
+
+vikadata-starter:
+  socketio:
+    client:
+      url: ${SOCKET_URL:http://127.0.0.1:3002}
+      path: ${SOCKET_PATH:/notification}
+      reconnection-attempts: ${SOCKET_RECONNECTION_ATTEMPTS:2}
+      reconnection-delay: ${SOCKET_RECONNECTION_DELAY:1000}
+      timeout: ${SOCKET_TIMEOUT:1000}
+  oss:
+    enabled: ${OSS_ENABLED:true}
+    type: ${OSS_TYPE:aws}
+    aws:
+      access-key-id: ${AWS_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
+      access-key-secret: ${AWS_ACCESS_SECRET:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      endpoint: ${AWS_ENDPOINT:s3-cn-south-1.qiniucs.com}
+      region: ${AWS_REGION:cn-south-1}
+    qiniu:
+      access-key: ${QINIU_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
+      secret-key: ${QINIU_SECRET_KEY:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      region: ${QINIU_REGION:z2}
+      download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
+      upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
+      callback:
+        url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
+        body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}
+    minio:
+      endpoint: ${MINIO_ENDPOINT:http://minio:9000}
+      access-key: ${MINIO_ACCESS_KEY:vika}
+      secret-key: ${MINIO_SECRET_KEY:vikadata@com}
+      bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
+  sms:
+    enabled: ${SMS_ENABLED:false}
+    local-area-code: ${SMS_LOCAL_AREA_CODE:+86}
+    local:
+      type: ${SMS_LOCAL_TYPE:tencent}
+      tencent:
+        app-id: ${SMS_TENCENT_APP_ID:1400261864}
+        app-key: ${SMS_TENCENT_APP_KEY:393f363b9710ede454eacdc5e6114fb4}
+        sign: ${SMS_TENCENT_SIGN:Cloud}
+    outland:
+      type: ${SMS_OUTLAND_TYPE:yunpian}
+      yunpian:
+        apikey: ${SMS_YUNPIAN_APIKEY:c62e64fe947c252761f1f6dbd944d288}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    type: ${MAIL_TYPE:tencent}
+    region: ${MAIL_REGION:ap-hongkong}
+    from: ${MAIL_FROM:noreply@notify.vika.cn}
+    reply: ${MAIL_REPLY:support@vikadata.com}
+    tencent:
+      secret-id: ${MAIL_TENCENT_SECRET_ID:AKIDua7RYR5WihT1KQIuHPIvJRKyOaXHoFcp}
+      secret-key: ${MAIL_TENCENT_SECRET_KEY:3rRlqgHemfLo58wuqfIgplTvAAvQghU2}
+  tencent:
+    webapp:
+      enabled: ${TENCENT_WEBAPP_ENABLED:false}
+      app-id: ${TENCENT_WEBAPP_APP_ID:101907145}
+      app-key: ${TENCENT_WEBAPP_APP_KEY:03484c5d9ebabc6ceb02eb7b626011c6}
+      redirect-uri: ${TENCENT_WEBAPP_REDIRECT_URI:http://shawn.vaiwan.com/user/qq_connect/callback}
+      apply-union: ${TENCENT_WEBAPP_APPLY_UNION:true}
+  afs:
+    enabled: ${AFS_ENABLED:false}
+    aliyun:
+      access-key-id: ${AFS_ALIYUN_ACCESS_KEY:LTAI4FbrkR6v4RfpAgL7GRN7}
+      secret: ${AFS_ALIYUN_SECRET:XxYFF7e8RkSuOdszPqugrmaY83hNfR}
+      region-id: ${AFS_ALIYUN_REGION_ID:cn-shenzhen}
+  data:
+    analyze:
+      enabled: ${DATA_ANALYZE_ENABLED:false}
+      sensors:
+        enabled: ${SENSORS_ENABLED:false}
+  social:
+    feishu:
+      enabled: ${FEISHU_ENABLED:false}
+      app-name: ${FEISHU_APP_NAME:assistant}
+      app-id: ${FEISHU_APP_ID:cli_a2d96e91ac3b100d}
+      app-secret: ${FEISHU_APP_SECRET:vNr7CIxa4q2jYQjNmQb4zbgJsjn2Ao1P}
+      encrypt-key: ${FEISHU_ENCRYPT_KEY:fMhQmSpUsXuZx4z6B9Eb}
+      verification-token: ${FEISHU_VERIFICATION_TOKEN:vVuJKuBGAAUqVaD2BeTQLbH3hLMoskzG}
+      isv: ${FEISHU_ISV:false}
+    dingtalk:
+      enabled: ${DINGTALK_ENABLED:false}
+      isv-corp-id: ${DINGTALK_ISV_CORP_ID:dingc7ad99cf1e0ad49a35c2f4657eb6378f}
+      corp-secret: ${DINGTALK_ISV_SECRET:mj3j3b15Gc3w6JPp46lvmM7lEXzavfZUEgUKsy72s3YZWRC7RkBTRTgKQ2mSfVWP}
+      suite-id: ${DINGTALK_SUITE_ID:7242002}
+      suite-key: ${DINGTALK_SUITE_KEY:suite88qw1yq0q48b4tez}
+      suite-secret: ${DINGTALK_SUITE_SECRET:6ITdgMwVcDYgnHT-IfG8_Szvc8-vMWBwwkCUjdlNaxWgGDFXQaYAsO_jhpyXdpg1}
+      corp-h5-app:
+        app-key: ${DINGTALK_CORP_APP_KEY:dingpp0pil1snqypkjym}
+        app-secret: ${DINGTALK_CORP_APP_SECRET:ZrVyKPrGkOeLMTmlDmFmcPK3eUIEDmABwT2DxuQONBOoTqZ0p1JEOedqxV_rNBo3}
+      mobile-app:
+        app-id: ${DINGTALK_APP_ID:dingoaumy4mh7oesecamid}
+        app-secret: ${DINGTALK_APP_SECRET:A1-kYsquLtLr9e_XXnOAoMaqxEjC5xvMUeAztFxPy8YGgsYmeXsSu7QvwrmCcw1P}
+      isv-app-list:
+        - suite-id: ${DINGTALK_ISV_SUITE_ID:20303001}
+          app-id: ${DINGTALK_ISV_APP_ID:87343}
+          suite-key: ${DINGTALK_ISV_SUITE_KEY:suitek31nyhjbb65itdvp}
+          suite-secret: ${DINGTALK_ISV_SUITE_SECRET:TJqspsouY3vxJ3GNHrlr0xRUVIl3wuste8ERERtLetBuOJCfgY6ggj_vb0J4euwb}
+          aes-key: ${DINGTALK_ISV_AES_KEY:cha7KYiRod1bQINsHIJlQSqJlHC01LyuKa6S1iQBkIB}
+          token: ${DINGTALK_ISV_TOKEN:Ivs5LO39ucfXPZfTd8cal1D66oHslG2C}
+          goods-code: ${DINGTALK_ISV_GOODS_CODE:DT_GOODS_881635221357061}
+          msg-tpl-id:
+            welcome: ${DINGTALK_ISV_MSG_WELCOME:3f7cec2386f74f5c8aec1a48395abeb0}
+            comment: ${DINGTALK_ISV_MSG_COMMENT:b4ac28623fd5493dbc5f995bb1cc17c7}
+            member: ${DINGTALK_ISV_MSG_MEMBER:5994e97c8766482bb971e6253ad7f6f1}
+          ding-talk-da:
+            key: ${DINGTALK_DA_KEY:ddd0001}
+            secret: ${DINGTALK_DA_SECRET:imwqxfuujnlarnnx}
+      agent-app:
+        - agent-id: ${DINGTALK_AGENT_ID:1409847725}
+          custom-key: ${DINGTALK_AGENT_CUSTOM_KEY:suitetpxzdtp3oo8wowup}
+          custom-secret: ${DINGTALK_AGENT_CUSTOM_SECRET:8eQlKS619ygImlWRAStPZbtbjuVlR_lrXYH8kL_dBEjknrgYCgf3LgZHeTr2gkK9}
+          corp-id: ${DINGTALK_AGENT_CORP_ID:ding4878c658801eaec8a39a90f97fcb1e09}
+          suite-ticket: ${DINGTALK_AGENT_SUITE_TICKET:integration_1}
+          aes-key: ${DINGTALK_AGENT_AES_KEY:UeLONuTAGG3fBejeJRZwmPmNRGhCdHpEh5TuSgiSmGg}
+          token: ${DINGTALK_AGENT_TOKEN:1lTi8eF3z7pxuKkWetmpDTA1vzhvjNt7}
+    wecom:
+      enabled: ${WECOM_ENABLED:false}
+      vika-we-com-app-id: ${WECOM_APP_ID:ina5200279359980055}
+      init-menus:
+        - name: 进空间站
+          type: view
+          url: /
+        - name: 联系客服
+          sub-buttons:
+            - name: 使用咨询
+              type: view
+              url: https://s1.vika.cn/space/2021/06/17/3565d5fcc43542d0b245ffb41685523c
+            - name: 加入社群
+              type: view
+              url: https://t.1yb.co/AAAT
+        - name: 产品手册
+          type: view
+          url: /help
+      config-storage:
+        storage-type: ${WECOM_STORAGE_TYPE:redis}
+      operate-enp-ddns:
+        api-host: ${WECOM_API_HOST:https://inner.vika.ltd}
+        action-ddns-url: ${WECOM_DDNS:/ddns}
+        apply-enp-domain-template: ${WECOM_ENP:'%s.enp'}
+      isv-app-list:
+        - name: ${WECOM_ISV_NAME:datasheet}
+          corp-id: ${WECOM_CORP_ID:ww11761d11177ae10b}
+          provider-secret: ${WECOM_PROVIDER_SECRET:xxU3s7QBBBO6D8NTJ4BweUDFLLM2FgxQ2VQTZpnVOCP1YbtnwIUAppZEWYRKJsHL}
+          suite-id: ${WECOM_SUITE_ID:wwc98ec5fc01dfdaeb}
+          suite-secret: ${WECOM_SUITE_SECRET:YxSXxEAGHSV0kD-JCe6wtq1EWhZANscbx5PtLFjhBs4}
+          token: ${WECOM_TOKEN:pN3lrzosJ5rF6ZpAXPC}
+          aes-key: ${WECOM_AES_KEY:fNSi7zaeG3wwnpW4LN1f4FTChMqcGK8MTwGCCEuMm7m}
+          template-id: ${WECOM_TEMPLATE_ID:ttOhr1DQAAGJnvV6ypPO9nI_f7T_ad7w}
+          invite-template-id: ${WECOM_INVITE_TEMPLATE_ID:ttOhr1DQAA4K2IrL60vlkKvu8aYPs5mQ}
+          manual-auth-datetime: ${WECOM_AUTH_DATETIME:'2022-03-15T17:46:03+0800'}
+          subscription-trial-edition-id: ${WECOM_SUBSCRIPTION_TRIAL_EDITION_ID}
+          permit-trial-days: ${WECOM_PERMIT_TRIAL_DAYS:90}
+          permit-trial-expired-template-id: ${WECOM_PERMIT_TRIAL_EXPIRED_TEMPLATE_ID:space_wecom_api_trial_end}
+          permit-buy-notify-before-days: ${WECOM_PERMIT_BUY_NOTIFY_BEFORE_DAYS:'1,3,7,15,30'}
+          permit-buyer-user-id: ${WECOM_PERMIT_BUYER_USER_ID:kelvinpoon}
+          permit-compatible-days: ${WECOM_PERMIT_COMPATIBLE_DAYS:80}
+          permit-notify-webhook-url: ${WECOM_PERMIT_NOTIFY_WEBHOOK_URL}
+          permit-notify-webhook-secret: ${WECOM_PERMIT_NOTIFY_WEBHOOK_SECRET}
+          permit-notify-time-start: ${WECOM_PERMIT_NOTIFY_TIME_START:'09:00+0800'}
+          permit-notify-time-end: ${WECOM_PERMIT_NOTIFY_TIME_END:'10:00+0800'}
+  vika:
+    enabled: ${VIKA_ENABLED:false}
+    host: ${VIKA_HOST:https://integration.vika.ltd}
+    token: ${VIKA_TOKEN:usk8qo1Dk9PbecBlaqFIvbb}
+  swagger:
+    enabled: ${SWAGGER_ENABLED:false}
+  wx:
+    miniapp:
+      enabled: ${WX_MINIAPP_ENABLED:false}
+      app-id: ${WX_MINIAPP_APP_ID:wxa53e1166321e4958}
+      secret: ${WX_MINIAPP_SECRET:653ada352c97a52499b33aedf56f2645}
+      config-storage:
+        storage-type: ${WX_MINIAPP_STORAGE_TYPE:redistemplate}
+    open:
+      enabled: ${WX_OPEN_ENABLED:false}
+      app-id: ${WX_OPEN_APP_ID:wx73eb0ebe3b141189}
+      secret: ${WX_OPEN_SECRET:a4b35bd59863c30c29dce1468043d968}
+      token: ${WX_OPEN_TOKEN:vikadataWechat2020}
+      aes-key: ${WX_OPEN_AES_KEY:6UymNoC90oXNjO109ro1UoDJ45cd1G3syLa08VZUYu8}
+      config-storage:
+        storage-type: ${WX_OPEN_STORAGE_TYPE:redistemplate}
+    mp:
+      enabled: ${WX_MP_ENABLED:false}
+      app-id: ${WX_MP_APP_ID:wx3ccd2f6264309a7c}
+      secret: ${WX_MP_SECRET:62cbaf84054c062f21899c4209b318a3}
+      token: ${WX_MP_TOKEN:vikadataWechat2020}
+      aes-key: ${WX_MP_AES_KEY:6UymNoC90oXNjO109ro1UoDJ45cd1G3syLa08VZUYu8}
+      config-storage:
+        storage-type: ${WX_MP_STORAGE_TYPE:redistemplate}
+    pay:
+      enabled: ${WX_PAY_ENABLED:false}
+      app-id: ${WX_PAY_APP_ID:wx1c297da2ee48065b}
+      mch-id: ${WX_PAY_MCH_ID:1606798457}
+      mch-key: ${WX_PAY_MCH_KEY:c6ad2c1d7fcd08c060014d959cf23556}
+      key-path: ${WX_PAY_KEY_PATH:http://duoweibiaoge.com/pay/apiclient_cert.p12}
+      private-key-path: ${WX_PAY_PRIVATE_KEY_PATH:http://duoweibiaoge.com/pay/apiclient_key.pem}
+      private-cert-path: ${WX_PAY_PRIVATE_CERT_PATH:http://duoweibiaoge.com/pay/apiclient_cert.pem}
+  yozo:
+    enabled: ${YOZO_ENABLED:false}
+    app-id: ${YOZO_APP_ID:ina5645957505507647}
+    key: ${YOZO_KEY:55143998003190169672618}
+    uri:
+      preview: ${YOZO_URI:http://api.yozocloud.cn/getPreview}
+  pingpp:
+    enabled: ${PINGPP_ENABLED:true}
+    app-id: ${PINGPP_APP_ID:app_z5qTy9TGqPG4j14O}
+    api-key: ${PINGPP_APP_KEY:sk_test_yH8erPj1W1eLKKa9KCij9qPK}
+  idaas:
+    enabled: ${IDAAS_ENABLED:true}
+    self-hosted: ${IDAAS_SELF_HOSTED:false}
+    manage-host: ${IDAAS_MANAGE_HOST:https://demo-admin.cig.tencentcs.com}
+    contact-host: ${IDAAS_CONTACT_HOST:https://{tenantName}-admin.cig.tencentcs.com}
+    server-host: ${IDAAS_SERVER_HOST:https://test.vika.ltd}
+  auth0:
+    enabled: ${AUTH0_ENABLED:false}
+    client-id: ${AUTH0_CLIENT_ID:A0cdTZ00DNNbI1uJFVFTMn1rGfLKkVr2}
+    client-secret: ${AUTH0_CLIENT_SECRET:e3D6B-ZHn5VHqhVAO0QPV6P34qERfeBksIXaxqeBkWDa1fcsVHAi_QRmiOyECTB5}
+    issuer-uri: ${AUTH0_CLIENT_ISSUER_URI:https://apitable.us.auth0.com/}
+    redirect-uri: ${AUTH0_REDIRECT_URI:http://127.0.0.1:8081/api/v1/auth0/callback}
+    db-connection-id: ${AUTH0_DB_CONNECTION_ID:con_7R0apN7yVNGiVNez}
+    db-connection-name: ${AUTH0_DB_CONNECTION_NAME:DB-APITable-Integration}
+  teg:
+    enabled: ${TEG_ENBALED:false}
+    token-key: ${TEG_TOKEN:teg000001}
+    ignore-urls: ${TEG_IGNORE_URLS:'/internal/**,/client/**,/actuator/**'}
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  send-default-pii: true
+  environment: ${ENV}
+  use-git-commit-id-as-release: false
+  max-breadcrumbs: 150
+  traces-sample-rate: 1.0
+  logging:
+    minimum-breadcrumb-level: debug
+    minimum-event-level: info
+  release: ${BUILD_VERSION:develop}
+
+client:
+  datasheet:
+    env: ${ENV}
+    host: ${SERVER_DOMAIN}
+    publish:
+      auth-user:
+        - devops@vikadata.com
+        - kelly@vikadata.com
+        - chenjiabei@vikadata.com
+        - chenbochao@vikadata.com
+        - dengguiheng@vikadata.com
+        - sujian@vikadata.com
+        - zhengxu@vikadata.com
+        - yaomingyang@vikadata.com
+        - huangchangpeng@vikadata.com
+        - ouyangyu@vikadata.com
+        - wangkailang@vikadata.com
+        - zhangsong@vikadata.com
+        - penganping@vikadata.com
+        - wangbo@vikadata.com
+        - pengjin@vikadata.com
+        - lixueyuan@vikadata.com
+        - huanghao@vikadata.com
+        - zhaomengzhe@vikadata.com
+        - liuyi@vikadata.com
+    notify:
+      email-to: all@vikadata.com
+      sender-name: Devops
+      title: Release
+
+grpc:
+  server:
+    port: ${BACKEND_GRPC_PORT:0}
+  client:
+    nest-grpc-server:
+      address: ${NEST_GRPC_ADDRESS:static://localhost:3334}
+    dingtalk-grpc-server:
+      address: ${DINGTALK_GRPC_ADDRESS:}
+      security:
+        clientAuthEnabled: false
+        authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
+#      address: ${DINGTALK_GRPC_ADDRESS:static://localhost:9092}
+#      negotiationType: PLAINTEXT

@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(rootProject.ext.dependencies['wx-open'])
+  implementation(rootProject.ext.dependencies['spring-data-redis'])
+  implementation(rootProject.ext.dependencies['jedis'])
+}

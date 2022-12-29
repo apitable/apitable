@@ -1,0 +1,106 @@
+import {
+  BasicValueType, Field, FieldType, handleNullArray, ILookUpField, LookUpField, LOOKUP_VALUE_FUNC_SET,
+  ORIGIN_VALUES_FUNC_SET, RollUpFuncType
+} from '@apitable/core';
+import { useContext, useMemo } from 'react';
+import * as React from 'react';
+import { CellCheckbox } from '../cell_checkbox';
+import { CellLink } from '../cell_link';
+import { CellMember } from '../cell_member';
+import { CellText } from '../cell_text';
+import { ICellProps } from '../cell_value';
+import { CellAttachment } from '../cell_attachment';
+import { CellMultiSelect } from '../cell_multi_select';
+import { KonvaGridContext } from 'pc/components/konva_grid';
+
+const CellPlaceHolder = props => {
+  const { rowHeight } = props;
+  const { setActiveCellBound } = useContext(KonvaGridContext);
+  useMemo(() => setActiveCellBound({ height: rowHeight }), [rowHeight, setActiveCellBound]);
+  return null;
+};
+
+export const CellLookUp: React.FC<ICellProps> = props => {
+  const { field, cellValue: originCellValue, rowHeight } = props;
+  const cellValue = handleNullArray(originCellValue);
+  const realField = (Field.bindModel(field) as LookUpField).getLookUpEntityField();
+  const valueType = (Field.bindModel(field) as LookUpField).basicValueType;
+
+  if (cellValue == null || !realField) return <CellPlaceHolder rowHeight={rowHeight} />;
+
+  const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
+  const commonProps = { ...props, cellValue, editable: false };
+
+  if (!ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
+    switch (valueType) {
+      case BasicValueType.String:
+      case BasicValueType.Number:
+        return (
+          <CellText {...commonProps} />
+        );
+      case BasicValueType.Boolean:
+        return (
+          <CellCheckbox {...commonProps} />
+        );
+      case BasicValueType.Array:
+      default:
+        break;
+    }
+  }
+
+  if (!Array.isArray(cellValue)) {
+    return <CellText {...commonProps} />;
+  }
+
+  if (LOOKUP_VALUE_FUNC_SET.has(rollUpType)) {
+    return (
+      <CellText {...commonProps} />
+    );
+  }
+
+  // Non-plain text fields are displayed as-is.
+  switch (realField.type) {
+    case FieldType.Attachment:
+      return (
+        <CellAttachment {...commonProps} />
+      );
+    case FieldType.SingleSelect:
+    case FieldType.MultiSelect:
+      return (
+        <CellMultiSelect {...commonProps} />
+      );
+    case FieldType.Member:
+    case FieldType.CreatedBy:
+    case FieldType.LastModifiedBy:
+      return (
+        <CellMember {...commonProps} />
+      );
+    case FieldType.Checkbox:
+      return <CellPlaceHolder rowHeight={rowHeight} />;
+    case FieldType.Link:
+      return (
+        <CellLink {...commonProps} />
+      );
+    // Text comma splitting
+    case FieldType.Number:
+    case FieldType.Percent:
+    case FieldType.Currency:
+    case FieldType.AutoNumber:
+    case FieldType.DateTime:
+    case FieldType.Text:
+    case FieldType.Email:
+    case FieldType.Phone:
+    case FieldType.URL:
+    case FieldType.Rating:
+    case FieldType.Formula:
+    case FieldType.SingleText:
+    case FieldType.CreatedTime:
+    case FieldType.LastModifiedTime:
+      return (
+        <CellText {...commonProps} />
+      );
+    case FieldType.NotSupport:
+    default:
+      return <CellPlaceHolder rowHeight={rowHeight} />;
+  }
+};

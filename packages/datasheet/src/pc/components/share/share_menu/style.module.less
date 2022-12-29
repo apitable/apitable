@@ -1,0 +1,107 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.shareMenu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--primaryColor);
+  width: 100%;
+  padding: 24px;
+
+  .logo {
+    height: 32px;
+    cursor: pointer;
+  }
+
+  .shareInfo {
+    padding: 32px 0;
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      position: relative;
+      & > span {
+        border-color: var(--staticWhite0);
+      }
+
+      .littleTip {
+        padding: 3px 4px;
+        font-size: 8px;
+        display: inline-block;
+        background: var(--warningColor);
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        border-radius: 3px;
+        color: var(--staticWhite0);
+        user-select: none;
+      }
+    }
+
+    .customerBane {
+      font-size: 16px;
+      color: var(--staticWhite0);
+      text-align: center;
+      padding-top: 16px;
+    }
+
+    .spaceName {
+      width: 152px;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 auto;
+      font-size: 13px;
+      color: #d5c9ff;
+      text-align: center;
+      background: #7657e6;
+      border-radius: 19px;
+      padding: 0 8px;
+      .ellipsis();
+    }
+  }
+
+  .treeWrapper {
+    overflow: auto;
+    flex: 1;
+    .lightTree();
+    .light-scroll-bar();
+  }
+}
+
+@media (max-height: 800px) {
+  .shareMenu {
+    .shareInfo {
+      padding: 24px 0;
+
+      .customerBane {
+        font-size: 14px;
+      }
+
+      .spaceName {
+        height: 28px;
+        line-height: 28px;
+      }
+    }
+    .tree {
+      padding-top: 20px;
+    }
+  }
+}
+
+@media (max-width: @w-md) {
+  .shareMenu {
+    box-shadow: -9px 0px 14px -17px black inset;
+    .shareInfo {
+      .avatar {
+        transform: scale(0.8);
+      }
+    }
+
+    .tree {
+      padding-top: 8px;
+    }
+  }
+}

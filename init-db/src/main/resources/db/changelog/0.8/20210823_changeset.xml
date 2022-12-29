@@ -1,0 +1,151 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210823-001" author="Mayne" labels="automation">
+        <comment>新建 automation robot 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_robot`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '绑定资源 ID(关联#vika_node#node_id)',
+                `robot_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义机器人ID',
+                `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '名称',
+                `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '描述',
+                `version`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '版本号',
+                `is_active`   tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '是否处于激活状态',
+                `is_deleted`  tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`  bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`  bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`  timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_robot_id` (`robot_id`) USING BTREE COMMENT '机器人唯一编码',
+                INDEX `idx_resource_id` (`resource_id`) COMMENT '资源ID索引'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-机器人表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-002" author="Mayne" labels="automation">
+        <comment>新建 automation trigger 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_trigger`
+            (
+                `id`              bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `robot_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机器人 ID (关联#vika_automation_robot#robot_id)',
+                `trigger_type_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'trigger 原型 ID (关联#vika_automation_trigger_type#trigger_type_id)',
+                `trigger_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义触发器ID',
+                `input`           json                                                                  DEFAULT NULL COMMENT 'trigger 实例的输入数据',
+                `is_deleted`      tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`      bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`      bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`      timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`      timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_trigger_id` (`trigger_id`) USING BTREE COMMENT '触发器唯一编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-触发器表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-003" author="Mayne" labels="automation">
+        <comment>新建 automation action 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_action`
+            (
+                `id`             bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `robot_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机器人 ID (关联#vika_automation_robot#robot_id)',
+                `action_type_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'action 原型 ID (关联#vika_automation_action_type#action_type_id)',
+                `action_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义动作ID',
+                `prev_action_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '上一个 action id',
+                `input`          json                                                                  DEFAULT NULL COMMENT 'action 实例的输入数据',
+                `is_deleted`     tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`     bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`     bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`     timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`     timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_action_id` (`action_id`) USING BTREE COMMENT '动作唯一编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-动作表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-004" author="Mayne" labels="automation">
+        <comment>新建 automation service 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_service`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `service_id`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义服务ID',
+                `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '服务名',
+                `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '描述',
+                `logo`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'logo 地址',
+                `base_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '基础 URL 地址',
+                `is_deleted`  tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`  bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`  bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`  timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_service_id` (`service_id`) USING BTREE COMMENT '服务唯一编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-服务表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-005" author="Mayne" labels="automation">
+        <comment>新建 automation trigger type 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_trigger_type`
+            (
+                `id`                 bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `service_id`         varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '服务ID (关联#vika_automation_service#service_id)',
+                `trigger_type_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义触发器原型ID',
+                `name`               varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '名称',
+                `description`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '描述',
+                `input_json_schema`  json                                                                  DEFAULT NULL COMMENT '输入 JSON 范式',
+                `output_json_schema` json                                                                  DEFAULT NULL COMMENT '输出 JSON 范式',
+                `is_deleted`         tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`         bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`         bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`         timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`         timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_trigger_type_id` (`trigger_type_id`) USING BTREE COMMENT '触发器原型唯一编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-触发器原型表';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-006" author="Mayne" labels="automation">
+        <comment>新建 automation action type 表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_action_type`
+            (
+                `id`                 bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
+                `service_id`         varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '服务ID (关联#vika_automation_service#service_id)',
+                `action_type_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义动作原型ID',
+                `name`               varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '名称',
+                `description`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '描述',
+                `input_json_schema`  json                                                                  DEFAULT NULL COMMENT '输入 JSON 范式',
+                `output_json_schema` json                                                                  DEFAULT NULL COMMENT '输出 JSON 范式',
+                `endpoint`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '调用接口',
+                `is_deleted`         tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`         bigint(20)                                                            DEFAULT NULL COMMENT '创建者',
+                `updated_by`         bigint(20)                                                            DEFAULT NULL COMMENT '最后修改者',
+                `created_at`         timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`         timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_action_type_id` (`action_type_id`) USING BTREE COMMENT '动作原型唯一编码'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = '自动化-动作原型表';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

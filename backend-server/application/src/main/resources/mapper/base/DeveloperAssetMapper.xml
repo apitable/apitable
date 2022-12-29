@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.asset.mapper.DeveloperAssetMapper">
+    <update id="updateFileSizeById">
+        UPDATE ${tablePrefix}developer_asset
+        SET file_size = file_size + #{incrFileSize}
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+</mapper>

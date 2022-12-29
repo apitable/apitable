@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.4-20200520-001" author="Shawn" labels="open">
+        <comment>新增开发者配置表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_001.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-002" author="Shawn" labels="base">
+        <comment>修改表的注释</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_002.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-003" author="Benson" labels="content">
+        <comment>新增内容举报记录表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_003.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-004" author="Benson" labels="content">
+        <comment>新增内容审核结果记录表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_004.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-005" author="Chambers" labels="node">
+        <comment>节点表新增封面和模版标识字段</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_005.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-006" author="Zoe" labels="notification">
+        <comment>新增消息通知表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_006.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-007" author="Kelly" labels="template">
+        <comment>新增模版表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_007.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-008" author="Kelly" labels="developer">
+        <comment>新增开放平台SKU表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_008.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-009" author="Kelly" labels="developer">
+        <comment>新增开放商品表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_009.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-010" author="Kelly" labels="developer">
+        <comment>新增开放平台云程序表</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_010.sql"/>
+    </changeSet>
+</databaseChangeLog>

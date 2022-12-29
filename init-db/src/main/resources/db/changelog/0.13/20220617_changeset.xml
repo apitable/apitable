@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220617-001" author="Shawn" labels="billing">
+        <comment>bundle_history更改字段类型</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}billing_bundle_history`
+                MODIFY COLUMN `change_type` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '变更类型' AFTER `target_row_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220617-002" author="Shawn" labels="billing">
+        <comment>subscription_history更改字段类型</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}billing_subscription_history`
+                MODIFY COLUMN `change_type` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '变更类型' AFTER `target_row_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

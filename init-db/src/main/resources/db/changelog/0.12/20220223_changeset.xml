@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.12-20220223-001" author="Troy" labels="user">
+        <comment>用户表增加字段标识是否注销冷静期</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user`
+            ADD `is_paused` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否注销冷静期(1:是,0:否)' AFTER `last_login_time`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

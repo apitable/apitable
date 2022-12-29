@@ -1,0 +1,92 @@
+/* eslint-disable */
+export enum ContextName {
+  true = 'true',  // when is always true
+  isEditing = 'isEditing', // When cell editing.
+  isMenuOpening = 'isMenuOpening', // When a menu is open (e.g. column configuration menu)
+  isGlobalEditing = 'isGlobalEditing', // When any input box is in focus.
+  isFocusing = 'isFocusing', // When the cell is in focus.
+  hasActiveCell = 'hasActiveCell', // exists to activate the cell.
+  isRecordExpanding = 'isRecordExpanding', // When the card editor is activated.
+  visualizationEditable = 'visualizationEditable', // View toolbar editing
+  recordEditable = 'recordEditable', // Record Record Editing
+  modalVisible = 'modalVisible',  // Is the modal window currently open
+}
+
+export enum ShortcutActionName {
+  None = 'None', // -> When this happens, it is usually an error in filling out the config form
+  Help = 'Help', // Keyboard shortcuts help panel
+  Undo = 'Undo',
+  Redo = 'Redo',
+  ToastForSave = 'ToastForSave',
+  EndEdit = 'EndEdit',
+  ToggleEditing = 'ToggleEditing',
+  ToggleNextEditing = 'ToggleNextEditing',
+  ToggleWidgetPanel = 'ToggleWidgetPanel',
+
+  // Cell movement
+  CellLeft = 'CellLeft',
+  CellRight = 'CellRight',
+  CellUp = 'CellUp',
+  CellDown = 'CellDown',
+  CellUpEdge = 'CellUpEdge',
+  CellDownEdge = 'CellDownEdge',
+  CellLeftEdge = 'CellLeftEdge',
+  CellRightEdge = 'CellRightEdge',
+  CellTab = 'CellTab', // Exit the edit state and move one frame to the right
+  CellShiftTab = 'CellShiftTab', // Exit the edit state and move one space to the left
+  RecordTab = 'RecordTab', // In card editing, exit the edit state and move down one frame
+  RecordShiftTab = 'RecordShiftTab', // In a card edit, exit the edit state and move up one frame
+  // Constituency expansion
+  SelectionLeft = 'SelectionLeft',
+  SelectionRight = 'SelectionRight',
+  SelectionUp = 'SelectionUp',
+  SelectionDown = 'SelectionDown',
+  SelectionAll = 'SelectionAll',
+  SelectionUpEdge = 'SelectionUpEdge',
+  SelectionDownEdge = 'SelectionDownEdge',
+  SelectionLeftEdge = 'SelectionLeftEdge',
+  SelectionRightEdge = 'SelectionRightEdge',
+
+  ExpandRecord = 'ExpandRecord',
+  Clear = 'Clear',
+  CompleteEditing = 'CompleteEditing',
+  ExitEditing = 'ExitEditing',
+  AppendRow = 'AppendRow',
+  PrependRow = 'PrependRow',
+  Copy = 'Copy',
+  Cut = 'Cut',
+  Paste = 'Paste',
+  Focus = 'Focus',
+  PageDown = 'PageDown',
+  PageUp = 'PageUp',
+  PageLeft = 'PageLeft',
+  PageRight = 'PageRight',
+  PageDownEdge = 'PageDownEdge',
+  PageUpEdge = 'PageUpEdge',
+  ViewPrev = 'ViewPrev',
+  ViewNext = 'ViewNext',
+
+  // Catalogue tree
+  SearchNode = 'SearchNode',
+  NewFolder = 'NewFolder',
+  NewDatasheet = 'NewDatasheet',
+  RenameNode = 'Rename',
+  CopyNode = 'CopyNode',
+  Permission = 'Permission',
+  Share = 'Share',
+  SaveAsTemplate = 'SaveAsTemplate',
+  ToggleCatalogPanel = 'ToggleCatalogPanel',
+
+  // View toolbar
+  ToggleFindPanel = 'ToggleFindPanel',
+  ToggleApiPanel = 'ToggleApiPanel',
+  ToggleRobotPanel = 'ToggleRobotPanel',
+  ToggleTimeMachinePanel = 'ToggleTimeMachinePanel',
+  // Expand the card
+  PreviousRecord = 'PreviousRecord',
+  NextRecord = 'NextRecord',
+  // Close the unfolded card
+  CloseExpandRecord = 'CloseExpandRecord',
+  // Developer Panel
+  ToggleDevPanel = 'ToggleDevPanel',
+}

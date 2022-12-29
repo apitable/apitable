@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200917-001" author="Shawn" labels="player">
+        <comment>删除vika_player_answer表</comment>
+        <dropTable tableName="${table.prefix}player_answer"/>
+    </changeSet>
+    <changeSet id="V0.5-20200917-002" author="Shawn" labels="integral">
+        <comment>积分记录表增加参数字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}integral_history` ADD COLUMN `parameter` json NULL COMMENT '参数字段' AFTER `total_integral`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200917-003" author="Shawn" labels="datasheet">
+        <comment>vika_datasheet表添加索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}datasheet` ADD INDEX `IX_Space_Id`(`space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200917-004" author="Shawn" labels="node">
+        <comment>删除vika_node_favorite索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_favorite` DROP INDEX `fk_member_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200917-005" author="Shawn" labels="node">
+        <comment>添加vika_node_favorite新索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_favorite` ADD UNIQUE INDEX `uk_member_node_id`(`member_id`, `node_id`) USING BTREE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

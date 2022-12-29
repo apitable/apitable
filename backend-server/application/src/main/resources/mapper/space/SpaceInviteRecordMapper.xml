@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.space.mapper.SpaceInviteRecordMapper">
+
+    <update id="expireBySpaceIdAndEmail">
+        update ${tablePrefix}space_invite_record vir
+        set vir.is_expired = 1
+        where vir.invite_email = #{email} and vir.invite_space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="expireBySpaceIdAndEmails">
+        update ${tablePrefix}space_invite_record vir
+        set vir.is_expired = 1
+        where vir.invite_space_id = #{spaceId} and vir.invite_email IN
+        <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectByInviteToken" resultType="com.vikadata.entity.SpaceInviteRecordEntity">
+        SELECT *
+        FROM ${tablePrefix}space_invite_record
+        WHERE invite_token = #{inviteToken} and send_status = 1
+    </select>
+</mapper>

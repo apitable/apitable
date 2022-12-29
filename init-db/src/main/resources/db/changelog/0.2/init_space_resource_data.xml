@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.2-20200313-038" author="ShawnDeng" labels="space">
+        <comment>初始化空间管理资源数据</comment>
+        <sqlFile path="db/changelog/0.2/space_resource_data.sql"/>
+        <rollback>
+            <!--删除数据-->
+            <delete tableName="${table.prefix}space_menu"/>
+            <delete tableName="${table.prefix}space_menu_resource_rel"/>
+            <delete tableName="${table.prefix}space_resource"/>
+            <delete tableName="${table.prefix}space_resource_group"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

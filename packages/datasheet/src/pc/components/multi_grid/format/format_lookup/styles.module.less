@@ -1,0 +1,191 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.lookupDatasheetName {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--firstLevelText);
+  margin-bottom: 8px;
+  font-weight: bolder;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--thirdLevelText);
+  margin-top: 4px;
+}
+
+.modalSubtitle {
+  .subtitle();
+  font-weight: lighter;
+}
+
+.warningText {
+  font-weight: normal;
+  color: var(--thirdLevelText);
+}
+
+.noLinkTableTips {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--thirdLevelText);
+}
+
+.panel {
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHighest);
+  border-radius: 8px;
+  z-index: 101;
+  padding: 16px 16px 0 16px;
+
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+    line-height: 22px;
+  }
+
+  .searchInPut {
+    margin: 8px 0;
+    max-width: 100%;
+  }
+
+  .underline {
+    border-bottom: 1px solid var(--shadowColor);
+  }
+
+  .optList {
+    margin: 0 -16px;
+    padding: 0 16px;
+    max-height: 400px;
+    min-height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+    .light-scroll-bar();
+  }
+
+  .activeField {
+    color: var(--primaryColor);
+    // background-color: var(--rowSelectedBg);
+  }
+
+  .hover {
+    background: var(--rowSelectedBg);
+    position: relative;
+
+    &:after {
+      content: " ";
+      display: block;
+      width: 16px;
+      height: 100%;
+      background: var(--rowSelectedBg);
+      position: absolute;
+      top: 0;
+      left: -16px;
+    }
+
+    &:before {
+      content: " ";
+      display: block;
+      width: 16px;
+      height: 100%;
+      background: var(--rowSelectedBg);
+      position: absolute;
+      top: 0;
+      right: -16px;
+    }
+  }
+
+  .fieldItem {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover {
+      .hover();
+    }
+  }
+}
+
+.fieldIconAndTitle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.iconWithFieldNote {
+  .iconType();
+  align-self: flex-start;
+  padding-top: 4px;
+}
+
+.iconType {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.fieldName {
+  .ellipsis();
+}
+
+.relatedSheetName {
+  .ellipsis();
+  font-size: 12px;
+  margin-left: 20px;
+  color: var(--black_500);
+}
+
+.fieldNote {
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--thirdLevelText);
+  line-height: 17px;
+}
+
+.funcOptLabel {
+  color: var(--thirdLevelText);
+}
+
+.funcLabelName {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: start;
+}
+
+.funcLabel {
+  font-size: 12px;
+  font-weight: normal;
+  opacity: 0.7;
+  text-align: start;
+}
+
+.notFoundSearchKeyword {
+  max-width: 50px;
+  .ellipsis();
+}
+
+.plzSelectFieldText {
+  color: var(--thirdLevelText);
+  opacity: 0.5;
+}
+
+@media screen and(max-width: @w-md) {
+  .panel {
+    padding: 24px;
+    box-shadow: none;
+  }
+}
+
+.cryptoLinkField {
+  display: flex;
+  align-items: center;
+  color: var(--thirdLevelText);
+}

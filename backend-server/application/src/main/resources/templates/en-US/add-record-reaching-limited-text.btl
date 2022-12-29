@@ -1,0 +1,11 @@
+
+Warning: The Number of Records Will Reach Limit
+
+
+Your datasheet ${NODE_NAME} has ${USAGE} records and will reach the maximum limit (${COUNT} records) soon. To continue to
+add records via API, please clean up your outdated data or write data into another datasheet before you reach the limit.
+
+
+copyright © 2019-${YEARS} vikadata All rights reserved.
+
+Contact us

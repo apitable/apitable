@@ -1,0 +1,22 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.tip {
+  position: absolute;
+  bottom: -40px;
+  background-color: var(--fc5);
+  color: var(--defaultBg);
+  border-radius: 4px;
+  padding: 7px 8px;
+  font-size: 12px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #373737;
+  transform-origin: left top;
+
+  .inner {
+    .ellipsis();
+  }
+}

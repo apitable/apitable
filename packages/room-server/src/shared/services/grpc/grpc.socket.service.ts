@@ -1,0 +1,287 @@
+import { ICollaborator, OtErrorCode } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import * as Sentry from '@sentry/node';
+import { NodeService } from 'database/services/node/node.service';
+import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
+import { OtService } from 'database/services/ot/ot.service';
+import { ResourceService } from 'database/services/resource/resource.service';
+import { UserService } from 'database/services/user/user.service';
+import { ApiResponse } from 'fusion/vos/api.response';
+import { getIPAddress } from 'shared/helpers/system.helper';
+import { ClientStorage } from 'shared/services/socket/client.storage';
+import { RoomResourceRelService } from 'shared/services/socket/room.resource.rel.service';
+import { IClientRoomChangeResult, IWatchRoomMessage } from 'shared/services/socket/socket.interface';
+import { Logger } from 'winston';
+import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../common';
+import { PermissionException, ServerException } from '../../exception';
+import { IAuthHeader } from '../../interfaces';
+
+/**
+ *
+ * Socket client service
+ *
+ * Initialize and listen on socket events after the service is started.
+ *
+ * Implemented OnApplicationBootstrap interface to customize initialzation after the app starts.
+ */
+@Injectable()
+export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationShutdown {
+  constructor(
+    private readonly resourceService: ResourceService,
+    private readonly relService: RoomResourceRelService,
+    private readonly userService: UserService,
+    private readonly nodeService: NodeService,
+    private readonly nodeShareSettingService: NodeShareSettingService,
+    private readonly otService: OtService,
+    private readonly clientStorage: ClientStorage,
+    @InjectLogger() private readonly logger: Logger,
+    private readonly redisService: RedisService,
+  ) {}
+
+  /**
+   * Applies pub/sub mechanism here to ensure the IP registry is real-time.
+   *
+   * Redis is maintained by socket service.
+   *
+   * Application is not started if registry failed.
+   *
+   * registry mechanism is enabled only with APPLICATION_NAME = ROOM_SERVER
+   */
+  async onApplicationBootstrap() {
+    if ('ROOM_SERVER' === APPLICATION_NAME) {
+      let published = false;
+      // max retry time is 10
+      let maxTimes = 0;
+      do {
+        try {
+          const number = await this.publishIp(1);
+          if (!number) {
+            published = false;
+          } else {
+            published = true;
+          }
+        } catch (error) {
+          published = false;
+        }
+        maxTimes++;
+      } while (!published && maxTimes < 10);
+      // TODO consider notifying the developer that registry was failed after max retry time is exceeded.
+    }
+  }
+
+  async onApplicationShutdown(signal?: string): Promise<any> {
+    if ('ROOM_SERVER' === APPLICATION_NAME) {
+      let published = false;
+      // max retry time is 10
+      let maxTimes = 0;
+      do {
+        try {
+          const number = await this.publishIp(0);
+          if (!number) {
+            published = false;
+          } else {
+            published = true;
+          }
+        } catch (error) {
+          published = false;
+        }
+        maxTimes++;
+      } while (!published && maxTimes < 10);
+      // TODO consider notifying the developer that leaving room was failed after max retry time is exceeded.
+    }
+    return Promise.resolve(signal);
+  }
+
+  public errorCatch(e, message): any {
+    // may be OtException or other exceptions
+    const statusCode = e instanceof ServerException ? e.getCode() : OtErrorCode.SERVER_ERROR;
+    const errMsg = e instanceof ServerException ? e.getMessage() : CommonStatusMsg.DEFAULT_ERROR_MESSAGE;
+    this.logger.error('Handles OT data change exception ', { stack: e?.stack || errMsg, code: e?.code || statusCode });
+    if (!(e instanceof ServerException)) {
+      // Filter exception that isn't necessary to be reported.
+      message.cookie = undefined;
+      message.token = undefined;
+      Sentry.captureException(e, { extra: { message }});
+    }
+    return ApiResponse.error(errMsg, statusCode);
+  }
+
+  private async timeLogger<T>(key: string, func: string, promise: Promise<T>) {
+    const start = Date.now();
+    const result = await promise;
+    const end = Date.now();
+    this.logger.info(`${key} TIME [${func}]: ${end - start}ms`, {
+      logger: key,
+      func: func,
+      time: end - start,
+    });
+    return result;
+  }
+
+  private async watchRoomLogger<T>(func: string, promise: Promise<T>) {
+    return await this.timeLogger('WATCH_ROOM', func, promise);
+  }
+
+  /**
+   * Join the user in collaboration room
+   *
+   * @param message User message
+   * @param clientId client ID
+   * @param socketIds socket connection ID collection
+   * @param metadata grpc metadata
+   */
+  public async watchRoom(message: IWatchRoomMessage, clientId: string, socketIds: string[], metadata: any) {
+    const createTime = Date.now();
+    let userId;
+    let collaborator;
+    let spaceId;
+    this.logger.info(`Watch Room: ${message.roomId}, ShareId: ${message.shareId} | ClientId: ${clientId}`);
+    const nodeId = await this.watchRoomLogger('getNodeIdByResourceId', this.resourceService.getNodeIdByResourceId(message.roomId));
+    if (!nodeId) {
+      throw new ServerException(PermissionException.NODE_NOT_EXIST);
+    }
+    // reject template node watching
+    const isTemplate = await this.watchRoomLogger('isTemplate', this.nodeService.isTemplate(nodeId));
+    if (isTemplate) {
+      throw new ServerException(PermissionException.ACCESS_DENIED);
+    }
+    if (message.shareId || message.embedLinkId) {
+      if (message.shareId) {
+        // authorize share link
+        await this.watchRoomLogger('checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
+      }
+      const { uuid } = await this.watchRoomLogger('getMeNullable', this.userService.getMeNullable(message.cookie || ''));
+      userId = uuid;
+    } else {
+      // authorize space link
+      const user = await this.watchRoomLogger('getMe', this.userService.getMe({ cookie: message.cookie }));
+      // check if the current user is in the this space
+      await this.watchRoomLogger('checkUserForNode', this.nodeService.checkUserForNode(user.userId, nodeId));
+      // validate node permission
+      await this.watchRoomLogger('checkNodePermission', this.nodeService.checkNodePermission(nodeId, { cookie: message.cookie }));
+      userId = user.uuid;
+    }
+    // store current user info
+    await this.watchRoomLogger('set', this.clientStorage.set(clientId, { userId, socketId: clientId, createTime, shareId: message.shareId }));
+    // Obtain collaborator list of the room, ordered by join-time.
+    const collaborators = (await this.watchRoomLogger('mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
+    // Filter users who are not logged in
+    const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
+    if (roomUserIds.length) {
+      spaceId = await this.watchRoomLogger('getSpaceIdByNodeId', this.nodeService.getSpaceIdByNodeId(nodeId));
+      const userInfos = await this.watchRoomLogger('getUserInfo', this.userService.getUserInfo(spaceId, roomUserIds as string[]));
+      // Fill in info for logged-in users.
+      collaborators
+        .filter(collaborator => collaborator.userId)
+        .forEach(collaborator => {
+          const user = userInfos.find(user => collaborator.userId === user.userId);
+          if (!user) {
+            return;
+          }
+          collaborator.avatar = user.avatar;
+          collaborator.userName = user.name;
+          collaborator.memberName = 'unitId' in user ? user!.name : ''; // Only space member has unitId. Name means member nickname, empty for member not in space
+        });
+      // Current user info
+      if (userId) {
+        collaborator = collaborators.find(collaborator => collaborator.userId === userId);
+      }
+    }
+    // Obtain latest revision numbers of resources in the room
+    const resourceRevisions = await this.watchRoomLogger('getResourceRevisions', this.relService.getResourceRevisions(message.roomId));
+    const endTime = +new Date();
+    this.logger.info(`Watch Room: ${message.roomId} Success, duration: ${endTime - createTime}ms | uuid: ${userId} | SocketIds: ${socketIds}`);
+    return { resourceRevisions, collaborators, collaborator, spaceId };
+  }
+
+  /**
+   * Helper function for watchRoom, supports obtaining all user infos of active users in the current room cross-pod-ly
+   *
+   * @param {IWatchRoomMessage} message
+   * @param {string} spaceId
+   * @param {string[]} socketIds
+   * @returns {Promise<{collaborators: ICollaborator[]}>}
+   */
+  async getActiveCollaborators(spaceId: string, socketIds: string[]) {
+    if (!spaceId) {
+      throw new ServerException(PermissionException.NODE_NOT_EXIST);
+    }
+
+    // Obtain collaborator list of the room, ordered by join-time.
+    const collaborators = (await this.clientStorage.mget<ICollaborator>(socketIds)).filter(Boolean).sort();
+    // Filter users who are not logged in
+    const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
+    if (roomUserIds.length) {
+      const userInfos = await this.userService.getUserInfo(spaceId, roomUserIds as string[]);
+      // Fill in info for logged-in users.
+      collaborators
+        .filter(collaborator => collaborator.userId)
+        .forEach(collaborator => {
+          const user = userInfos.find(user => collaborator.userId === user.userId);
+          if (!user) {
+            return;
+          }
+          collaborator.avatar = user.avatar;
+          collaborator.userName = user.name;
+          collaborator.memberName = 'unitId' in user ? user!.name : ''; // Only members in space has unitId. name means member nickname, empty name for members not in space
+        });
+    }
+    return { collaborators };
+  }
+
+  private async roomChangeLogger<T>(func: string, promise: Promise<T>) {
+    return await this.timeLogger('CLIENT_ROOM_CHANGE', func, promise);
+  }
+
+  /**
+   * User changes node contents in the room
+   */
+  public async roomChange(message: IRoomChannelMessage, auth: IAuthHeader): Promise<IClientRoomChangeResult[]> {
+    this.logger.info(
+      `Start processing CLIENT_ROOM_CHANGE,room:[${message.roomId}],shareId: ${message.shareId},changesets length:[${message.changesets.length}]`,
+    );
+    const beginTime = +new Date();
+    const changesets = await this.roomChangeLogger('applyRoomChangeset', this.otService.applyRoomChangeset(message, auth));
+    const data = await this.roomChangeLogger('getRoomChangeResult', this.relService.getRoomChangeResult(message.roomId, changesets));
+    const endTime = +new Date();
+    this.logger.info(`room:[${message.roomId}] Finished CLIENT_ROOM_CHANGE, duration: ${endTime - beginTime}ms`);
+    return data;
+  }
+
+  /**
+   * User leaves collaboration room
+   */
+  public leaveRoom(clientId: string) {
+    return this.clientStorage.del(clientId);
+  }
+
+  async publishIp(action: number): Promise<number> {
+    const message = JSON.stringify({ ip: getIPAddress(), action });
+    try {
+      // Ensure stability of Redis connection
+      const redis = this.redisService.getClient().duplicate();
+      const number = await redis.publish(VIKA_NEST_CHANNEL, message);
+      if (!number) {
+        this.logger.error("socket service isn't started", { message, channel: VIKA_NEST_CHANNEL });
+      } else {
+        this.logger.info('IP publish succeeded', { message, channel: VIKA_NEST_CHANNEL });
+      }
+      // Disconnect manually
+      redis.disconnect();
+      return number;
+    } catch (e) {
+      this.logger.info('IP publish failed', { e: e.message, stack: e.stack, message });
+      throw e;
+    }
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  public async intervalReportAliveStatus() {
+    if ('ROOM_SERVER' === APPLICATION_NAME) {
+      await this.publishIp(1);
+    }
+  }
+}

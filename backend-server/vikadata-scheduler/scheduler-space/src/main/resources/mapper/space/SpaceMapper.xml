@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.space.SpaceMapper">
+
+    <select id="findDelSpaceIds" resultType="java.lang.String">
+        SELECT space_id FROM vika_space
+        WHERE #{deadline} &gt;= pre_deletion_time AND is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedBySpaceIdIn">
+        UPDATE vika_space
+        SET is_deleted = 1
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="countBySpaceId" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM vika_space
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+        <if test="isPreDel != null and isPreDel">
+            AND pre_deletion_time IS NOT NULL
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.organization.MemberMapper">
+
+    <select id="selectUserIdBySpaceIds" resultType="java.lang.Long">
+        SELECT user_id
+        FROM vika_unit_member
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND user_id IS NOT NULL AND `status` = 1 AND is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedBySpaceIds">
+        UPDATE vika_unit_member
+        SET is_deleted = 1, `status` = 2
+        WHERE is_deleted = 0
+        AND space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

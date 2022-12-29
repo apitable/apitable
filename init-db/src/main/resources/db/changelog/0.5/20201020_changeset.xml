@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20201020-001" author="Chambers" labels="third_party">
+        <comment>微信公众号日志表，事件类型字段增加长度</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}wechat_mp_log`
+            MODIFY COLUMN `event_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '事件类型' AFTER `msg_type`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

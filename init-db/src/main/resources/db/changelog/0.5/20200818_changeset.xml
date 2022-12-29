@@ -1,0 +1,86 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200818-001" author="Chambers" labels="node">
+        <comment>节点表 新增回收站标记</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_001.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-002" author="Chambers" labels="node">
+        <comment>新增 节点收藏表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_002.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-003" author="Chambers" labels="player">
+        <comment>新增 问卷调查答案表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_003.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-004" author="Chambers" labels="vcode">
+        <comment>新增活动表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_004.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-005" author="Chambers" labels="vcode">
+        <comment>新增V码表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_005.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-006" author="Chambers" labels="vcode">
+        <comment>新增V码记录表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_006.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-007" author="Chambers" labels="vcode">
+        <comment>新增兑换券模板表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_007.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-008" author="Chambers" labels="third_party">
+        <comment>新增会员信息表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_008.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-009" author="Chambers" labels="third_party">
+        <comment>新增微信公众号日志表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_009.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-010" author="Chambers" labels="third_party">
+        <comment>新增二维码信息表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_010.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-011" author="Chambers" labels="third_party">
+        <comment>微信相关表注释调整</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_011.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-012" author="Benson" labels="third_party">
+        <comment>新增微信关键词消息自动回复表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_012.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-013" author="ZoeZheng" labels="open">
+        <comment>新增api请求信息记录表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_013.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-014" author="Shawn" labels="subscribe">
+        <comment>新增订阅管理-killbill客户用户表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_014.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-015" author="Shawn" labels="subscribe">
+        <comment>新增订阅管理-killbill客户空间站表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_015.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.5-20200818-016" author="Shawn" labels="integral">
+        <comment>新增积分变更历史表</comment>
+        <sqlFile path="db/changelog/0.5/20200818_changeset_016.sql"/>
+    </changeSet>
+</databaseChangeLog>

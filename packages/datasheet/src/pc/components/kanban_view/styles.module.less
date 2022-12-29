@@ -1,0 +1,130 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.mask {
+  > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.addNewBoard {
+  min-width: 256px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lowestBg);
+  border-radius: 4px;
+  color: var(--secondLevelText);
+  cursor: pointer;
+  margin-right: 20px;
+  position: relative;
+
+  .addTip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 0.5;
+    }
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+}
+
+.collapse {
+  position: absolute;
+  height: 56px;
+  transform: rotate(-90deg) translateX(-100%);
+  transform-origin: left top;
+  background: var(--lowestBg);
+  overflow: hidden;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  &.isDragging {
+    box-shadow: 1px 1px 10px 0px fade(#000, 20%);
+  }
+
+  > div:nth-child(1) {
+    margin-bottom: 0;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.viewContainer {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 1px;
+// FIXME:THEME
+  .custom-scroll-bar(14px, 14px, var(--shadowColor));
+}
+
+.scrollArea {
+  position: absolute;
+  top: 20px;
+  width: 40px;
+  height: calc(100% - 20px);
+}
+
+.scrollAreaRight {
+  right: 0;
+}
+
+.scrollAreaLeft {
+  left: 0;
+}
+
+.tooltip {
+  position: absolute;
+  font-size: 12px;
+  bottom: 20px;
+  min-width: 30px;
+  min-height: 32px;
+  width: 166px;
+  padding: 6px 8px;
+  color: var(--defaultBg);
+  text-align: left;
+  text-decoration: none;
+  word-wrap: break-word;
+  background-color: var(--fc13);
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.arrow {
+  position: absolute;
+  bottom: -3px;
+  left: calc(50% - 6px);
+  display: block;
+  width: 6px;
+  height: 6px;
+  margin: auto;
+  background-color: var(--fc13);
+  transform: rotate(45deg);
+  z-index: 9999;
+}
+
+@media screen and (max-width: @w-md) {
+  .addNewBoard {
+    margin-top: 24px;
+  }
+}

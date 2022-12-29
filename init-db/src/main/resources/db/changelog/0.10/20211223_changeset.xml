@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.10-20211223-001" author="Chambers" labels="third_party">
+        <comment>第三方系统-会员信息表索引名称更正</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}third_party_member`
+            RENAME INDEX `inx_open_id` TO `idx_open_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20211223-002" author="Shawn" labels="feishu">
+        <comment>飞书事件记录增加租户索引-</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_feishu_event_log` ADD INDEX `idx_tenant_key`(`tenant_key`) USING BTREE COMMENT '租户索引';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20211223-003" author="Shawn" labels="feishu">
+        <comment>飞书事件记录增加应用索引-</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_feishu_event_log` ADD INDEX `idx_app_id`(`app_id`) USING BTREE COMMENT '应用索引';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

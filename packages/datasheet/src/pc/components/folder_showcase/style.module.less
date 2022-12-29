@@ -1,0 +1,393 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.folderShowcaseSkeleton {
+  width: 100%;
+  padding: 32px 68px;
+}
+
+.folderShowcaseWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--defaultBg);
+  padding: 32px 0;
+  padding-right: 0;
+  border-radius: 8px;
+
+  .status {
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-right: 80px;
+  }
+
+  .scrollWrapper {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-right: 68px;
+    padding-left: 80px;
+
+    .container {
+      max-width: 1680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .top {
+    display: flex;
+    flex-direction: row;
+
+    .folderShowcaseBanner {
+      position: relative;
+      min-width: 240px;
+      max-width: 400px;
+      height: auto;
+      border: 0.5px solid var(--rowSelectedBg);
+      border-radius: 8px;
+      overflow: hidden;
+
+      .banner {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        object-fit: cover;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      &:hover .editBtn {
+        display: flex;
+      }
+    }
+
+    .editBtn {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      display: none;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+// FIXME:THEME
+      background: rgba(var(--defaultBg-rgb), 50%);
+      border-radius: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .nodeInfo {
+    flex: 1;
+    padding-left: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 0;
+
+    .currentNodeName {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 28px;
+
+      font-weight: bold;
+      user-select: none;
+
+      .icon {
+        display: flex;
+        width: 20px;
+        height: 20px;
+      }
+
+      .nodeName {
+        font-size: 20px;
+        display: inline-block;
+        padding: 0 4px;
+        .ellipsis();
+      }
+
+      .token {
+        padding-left: 4px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+
+        & > div {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .nodeFavorite {
+        padding-left: 16px;
+      }
+    }
+
+    .onlyReadEditor {
+      padding: 0;
+    }
+
+    .descWrapper {
+      position: absolute;
+      top: 44px;
+      width: calc(100% - 20px);
+      height: calc(100% - 40px);
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 8px;
+      &:hover {
+        background: var(--rowSelectedBg);
+        &::before {
+          background: linear-gradient(
+            rgba(var(--fc7-rgb), 0),
+            rgba(var(--fc7-rgb), 1)
+          );
+        }
+      }
+
+      &.needPadding {
+        height: calc(100% - 100px);
+      }
+
+      &::before {
+        position: absolute;
+        bottom: 8px;
+        display: block;
+        width: 100%;
+        height: 12px;
+        content: "";
+        z-index: 2;
+        background: linear-gradient(
+          rgba(var(--defaultBg-rgb), 0),
+          rgba(var(--defaultBg-rgb), 1)
+        );
+      }
+    }
+
+    .desc {
+      cursor: pointer;
+      height: 100%;
+      overflow: hidden;
+
+      p {
+        min-height: 20px;
+        margin: 0;
+      }
+
+      .defaultText {
+        color: var(--thirdLevelText);
+      }
+    }
+
+    .btnGroup {
+      position: absolute;
+      bottom: 0;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      button:not(:last-child) {
+        margin-right: 24px;
+      }
+
+      .shareBtn {
+        display: flex;
+        align-items: center;
+      }
+      .settingBtn {
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        & > span {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .mobileDescWrapper {
+    display: none;
+  }
+
+  .editor {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .nodes {
+    max-width: 100%;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .nodeItem {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    border-radius: 4px;
+    user-select: none;
+    transition: all 0.2s;
+    margin-bottom: 32px;
+    flex-basis: 45%;
+    max-width: 45%;
+    background-color: var(--rowSelectedBg);
+    cursor: pointer;
+
+    @media screen and (max-width: @w-md) {
+      max-width: 100%;
+    }
+
+    .nodeName {
+      flex: 1;
+      padding-left: 8px;
+      font-size: 16px;
+      color: var(--firstLevelText);
+      width: 0;
+      .ellipsis();
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        transform: translate(0, -4px);
+        box-shadow: rgba(0, 0, 0, 0.01) 0px 2px 4px,
+          rgba(0, 0, 0, 0.03) 0px 4px 8px, rgba(0, 0, 0, 0.05) 0px 8px 16px,
+          rgba(0, 0, 0, 0.05) 0px 16px 16px;
+      }
+    }
+  }
+
+  &.readOnly {
+    .folderShowcaseBanner {
+      .editBtn {
+        display: none;
+      }
+    }
+
+    :global {
+      .ce-block,
+      .codex-editor__redactor {
+        pointer-events: none;
+      }
+
+      .ce-toolbar {
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: @w-md) {
+  .folderShowcaseBanner {
+    width: 25%;
+  }
+}
+
+@media only screen and (max-width: @w-md) {
+  .folderShowcaseWrapper {
+    padding: 0;
+
+    .scrollWrapper {
+      width: 100%;
+      height: calc(100% - 48px);
+      padding: 16px;
+
+      .nodes {
+        flex-direction: column;
+        padding-top: 24px;
+
+        .nodeItem {
+          max-width: none;
+          padding-bottom: 16px;
+        }
+      }
+
+      .folderShowcaseBanner {
+        min-width: 128px;
+        width: 128px;
+        height: 128px;
+      }
+
+      .descWrapper {
+        display: none;
+      }
+
+      .mobileDescWrapper {
+        position: relative;
+        height: 100px;
+        overflow: hidden;
+        display: block;
+        margin-top: 16px;
+
+        &::before {
+          position: absolute;
+          bottom: 0;
+          display: block;
+          width: 100%;
+          height: 12px;
+          content: "";
+          background: linear-gradient(
+            rgba(var(--defaultBg-rgb), 0),
+            rgba(var(--defaultBg-rgb), 1)
+          );
+        }
+
+        .desc {
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+.disabledBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--lowestBg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgWrapper{
+  & > span {
+    position: unset !important;
+  }
+
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    position: unset !important;
+  }
+}

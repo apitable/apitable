@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.organization.mapper.RoleMemberMapper">
+
+    <select id="selectUnitRefIdsByRoleId" resultType="java.lang.Long">
+        SELECT DISTINCT vurm.unit_ref_id
+        FROM ${tablePrefix}unit_role_member vurm
+        WHERE role_id = #{roleId}
+    </select>
+
+    <delete id="deleteByRoleIdAndUnitRefIds">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+        AND unit_ref_id in
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByRoleId">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="selectRoleMembersByRoleIds"
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id as unit_id,
+        vurm.role_id as role_id,
+        vurm.unit_ref_id as unit_ref_id,
+        vurm.unit_type as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id in
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
+
+    <select id="selectRoleMembersByRoleId"
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id            as unit_id,
+               vurm.unit_ref_id as unit_ref_id,
+               vurm.unit_type   as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+                 JOIN ${tablePrefix}unit vu
+                      ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id = #{roleId}
+        ORDER BY vurm.unit_ref_id
+    </select>
+
+    <delete id="deleteByUnitRefIds">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE unit_ref_id IN
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+    </delete>
+
+    <select id="selectRoleIdsByUnitRefId"
+            resultType="java.lang.Long">
+        SELECT role_id
+        FROM ${tablePrefix}unit_role_member
+        WHERE unit_ref_id = #{unitRefId}
+    </select>
+
+    <select id="selectRoleMembersByRoleIdAndUnitRefIds"
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id as unit_id,
+        vurm.unit_ref_id as unit_ref_id,
+        vurm.unit_type as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id = #{roleId}
+        AND vurm.unit_ref_id IN
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+        ORDER BY vurm.unit_ref_id
+    </select>
+
+    <select id="selectCountByRoleId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+    </select>
+</mapper>

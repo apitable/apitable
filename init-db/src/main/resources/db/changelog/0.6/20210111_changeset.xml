@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20210111-001" author="Chambers" labels="widget">
+        <comment>组件表删除字段数表ID</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget` DROP COLUMN `dst_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210111-002" author="Chambers" labels="widget">
+        <comment>组件表增加节点ID索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget` ADD INDEX `k_node_id`(`node_id`) USING BTREE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

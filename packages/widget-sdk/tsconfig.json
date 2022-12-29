@@ -1,0 +1,48 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "jsx": "react",
+    "rootDir": "src",
+    "outDir": "dist",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    },
+    "baseUrl": "src",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "plugins": [
+      {
+        "transform": "typescript-plugin-styled-components",
+        "type": "config",
+        "componentIdPrefix": "ws",
+        "displayName": false,
+        "minify": true,
+        "ssr": true
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "typings/index.d.ts"
+  ],
+  "typings": "./src/typings/",
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "__test__/*",
+    "src/setupTests.ts",
+    "tslint:latest",
+    "tslint-config-prettier"
+  ]
+}

@@ -1,0 +1,17 @@
+${MEMBER_NAME} commented on the record of datasheet "${NODE_NAME}" at space "${SPACE_NAME}
+
+--------------------------------------------------------------------------------
+
+From ${MEMBER_NAME}
+
+Record: ${RECORD_TITLE}
+
+${CONTENT}
+
+View record
+${URL}
+
+
+copyright © 2019-${YEARS} vikadata. All rights reserved.
+
+Contact us (http://vika.cn/)

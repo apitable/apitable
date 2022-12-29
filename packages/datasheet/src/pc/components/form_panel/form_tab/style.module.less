@@ -1,0 +1,150 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.tabBarWrapper {
+  height: 50px;
+  background-color: var(--defaultBg);
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  border-bottom: 1px solid var(--lowestBg);
+  .noSelect();
+}
+
+.nav {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  &.navMobile {
+    .sidebar {
+      background-color: var(--primaryColor);
+      width: 32px;
+      height: 32px;
+      border-radius: 0 50% 50% 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: .px2vw(16px) [ @res];
+      flex-shrink: 0;
+    }
+  }
+
+  :global {
+    .react-contextmenu {
+      z-index: var(--contextmenu);
+    }
+
+    .tab-context-menu {
+      background: var(--defaultBg);
+      box-shadow: 0px 1px 14px 0px var(--shadowColor);
+      border-radius: 4px;
+      border: 2px solid var(--lineColor);
+
+      .react-contextmenu-item {
+        width: 220px;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .react-contextmenu-item:hover {
+        background: var(--rowSelectedBg);
+      }
+    }
+
+    .ant-modal-confirm-content {
+      margin: 20px 0 0 0 !important;
+    }
+  }
+}
+
+.status {
+  max-width: 320px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 32px;
+  height: 100%;
+  padding-top: 10px;
+  margin-left: 32px;
+}
+
+.left {
+  max-width: 60%;
+  padding-left: 32px;
+  position: relative;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .nodeInfo {
+      flex: 1;
+    }
+
+    .sourceInfo {
+      display: flex;
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-left: 16px;
+      .datasheetInfo {
+        max-width: 120px;
+      }
+      .datasheetInfo {
+        margin-right: 4px;
+      }
+      .viewInfo {
+        display: flex;
+        align-items: center;
+        margin-left: 4px;
+        color: var(--primaryColor);
+        cursor: pointer;
+        .viewName {
+          max-width: 120px;
+          margin-left: 4px;
+          .ellipsis();
+        }
+        .viewIcon {
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+.right {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+
+  &.rightMobile {
+    width: 60%;
+  }
+
+  .tourDesc {
+    font-size: 13px;
+    & > span {
+      font-size: 13px;
+    }
+  }
+}

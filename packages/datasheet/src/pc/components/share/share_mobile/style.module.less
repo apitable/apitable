@@ -1,0 +1,141 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.mobile {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  :global {
+    #DATASHEET_VIEW_CONTAINER_ID {
+      padding-left: 0;
+    }
+  }
+}
+
+.side {
+  width: 100%;
+  height: 100%;
+
+  .shareButton {
+    width: 76%;
+    color: var(--defaultBg);
+    background: var(--warningColor);
+    font-size: 14px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
+  .shareReport {
+    cursor: pointer;
+    width: 32px;
+    height: 40px;
+    // FIXME:THEME
+    background: rgba(var(--defaultBg-rgb), 80%);
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 87px;
+    left: 0;
+  }
+}
+
+.friendlyTip {
+  position: absolute;
+  top: 56px;
+  left: 8px;
+  right: 8px;
+  height: 40px;
+  background: var(--defaultBg);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 200px;
+  z-index: var(--zIndex-1-mobileFriendlyTip);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  color: var(--primaryColor);
+  font-size: 14px;
+  transition: left 0.3s;
+  cursor: pointer;
+
+  svg {
+    vertical-align: -0.225em;
+  }
+
+  span {
+    flex: 1;
+    .ellipsis();
+  }
+}
+
+.floatBall {
+  font-size: 10px;
+// FIXME:THEME
+  background: var(--shadowColor);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: fixed;
+  right: 22px;
+  bottom: 50px;
+  box-shadow: 0px 2px 6px 0 blank;
+  color: var(--defaultBg);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.wechatShareGuide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: fade(#000, 40%);
+  z-index: var(--zIndex-2-wechatShareGuideZIndex);
+
+  .tip {
+    border-radius: 4px;
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--primaryColor);
+    color: var(--defaultBg);
+    font-size: 14px;
+  }
+
+  .box {
+    position: absolute;
+    top: 100px;
+    right: 14px;
+  }
+}
+
+.noFolder {
+  width: 100%;
+  & > img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.mobileShareDrawer {
+  :global {
+    .ant-drawer-body {
+      padding: 0;
+      height: 100%;
+    }
+  }
+}

@@ -1,0 +1,48 @@
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_var.less';
+
+.cardWrapper {
+  &:hover {
+    outline: 2px solid var(--primaryColor);
+  }
+}
+
+.dropWrapper {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.orgChartView {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--lowestBg);
+}
+
+.smoothStepEdge {
+  &>path {
+    fill: none;
+    stroke: var(--primaryColor);
+    stroke-width: 2;
+  }
+}
+
+.bezierEdge {
+  &>path {
+    fill: none;
+    stroke: var(--primaryColor);
+    stroke-width: 2;
+    stroke-dasharray: 5;
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}

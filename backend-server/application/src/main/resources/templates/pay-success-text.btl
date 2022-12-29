@@ -1,0 +1,22 @@
+感谢你的购买
+感谢你的购买，我们努力提供最好的购物体验，并希望得到你的反馈，以便我们提供更好的服务
+
+--------------------------------------------------------------------------------
+订单详情：
+订单号：${ORDER_NUMBER}
+空间站名称：${SPACE_NAME}
+站内昵称：${MEMBER_NAME}
+日期：${PAID_TIME}
+
+服务内容        有效期至             数量          价格
+${PLAIN_NAME}    ${EXPIRE_AT}      ${QUANTITY}      ¥ ${ORIGINAL_PRICE}
+                                           优惠
+                                        ¥ ${DISCOUNT_PRICE}
+                                           v币抵扣
+                                          ${V_DISCOUNT_PRICE}
+                                           实付款
+                                        ¥ ${FINAL_PRICE}
+
+                   了解更多 ${URL}
+如果您有任何与付款订单相关的问题，请随时与 客服联系
+获取提示、技巧和产品更新信息： https://vika.cn/help/

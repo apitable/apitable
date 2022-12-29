@@ -1,0 +1,188 @@
+import { Api, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import Router from 'next/router';
+import { Message } from 'pc/components/common/message/message';
+import { useDispatch } from 'react-redux';
+
+export const useTemplateRequest = () => {
+  const dispatch = useDispatch();
+
+  /**
+   * Create a template
+   * @param nodeId
+   * @param name
+   * @param data
+   */
+  function createTemplateReq(nodeId: string, name: string, data?: boolean) {
+    return Api.createTemplate(nodeId, name, data).then(res => {
+      const { success, message, data, code } = res.data;
+      return { success, message, data, code };
+    });
+  }
+
+  /**
+   * Get official template category content
+   * @param categoryCode
+   */
+  function getTemplateCategoriesReq(categoryCode: string) {
+    return Api.getTemplateCategories(categoryCode).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+    });
+  }
+
+  /**
+   * Get a list of official template categories
+   * @param categoryCodes List of category ids to be sorted
+   */
+  function getTemplateCategoryReq(categoryCodes?: string) {
+    return Api.getTemplateCategory(categoryCodes).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        dispatch(StoreActions.updateTemplateCategory(data));
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+    });
+  }
+
+  /**
+   * Get a list of templates
+   * @param spaceId Space Station ID
+   * @param categoryName Template Category Name
+   * @param templateIds List of stencil IDs
+   */
+  function getTemplateListReq(spaceId: string, categoryCode?: string, isPrivate?: boolean) {
+    return Api.getTemplateList(spaceId, categoryCode, isPrivate).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+      return false;
+    });
+  }
+
+  /**
+   * Delete template
+   * @param templateId
+   */
+  function deleteTemplateReq(templateId: string) {
+    return Api.deleteTemplate(templateId).then(res => {
+      const { success, code } = res.data;
+      if (success) {
+        Message.success({
+          content: t(Strings.message_delete_template_successfully),
+        });
+        return true;
+      }
+      if (code === StatusCode.TEMPLATE_NOT_EXIST) {
+        import('pc/components/common/modal/modal/modal').then(({ Modal }) => {
+          Modal.error({
+            title: t(Strings.template_has_been_deleted_title),
+            content: t(Strings.template_has_been_deleted),
+            onOk: () => Router.back()
+          });
+        });
+
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Get template catalogue information
+   * @param templateId
+   */
+  function getTemplateDirectoryReq(templateId: string, isPrivate: boolean, categoryCode?: string) {
+    return Api.templateDirectory(templateId, isPrivate, categoryCode).then(res => {
+      const { success, message, data } = res.data;
+      if (success) {
+        dispatch(StoreActions.updateTemplateDirectory(data));
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+      return false;
+    });
+  }
+
+  // Use of templates
+  function usingTemplateReq(templateId: string, parentId: string, data?: boolean) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return Api.useTemplate(templateId, parentId, data).then(res => {
+      const { success, data, code } = res.data;
+      if (success) {
+        Message.success({
+          content: t(Strings.using_templates_successful),
+        });
+        return data;
+      }
+      if (code === StatusCode.TEMPLATE_NOT_EXIST) {
+        import('pc/components/common/modal/modal/modal').then(({ Modal }) => {
+          Modal.error({
+            title: t(Strings.template_has_been_deleted_title),
+            content: t(Strings.template_has_been_deleted),
+            onOk: () => Router.back()
+          });
+        });
+      }
+      return false;
+    });
+  }
+
+  // Check if the template name already exists
+  function templateNameValidateReq(name: string) {
+    return Api.templateNameValidate(name).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+    });
+  }
+
+  // Get popular recommended content
+  function templateRecommendReq() {
+    return Api.templateRecommend().then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+      return;
+    });
+  }
+
+  // Fuzzy search templates
+  function searchTemplateReq(keyword: string) {
+    return Api.searchTemplate(keyword).then(res => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({
+        content: message,
+      });
+    });
+  }
+
+  return {
+    createTemplateReq, getTemplateCategoriesReq,
+    getTemplateCategoryReq, getTemplateListReq, deleteTemplateReq, getTemplateDirectoryReq,
+    usingTemplateReq, templateNameValidateReq, templateRecommendReq, searchTemplateReq,
+  };
+};

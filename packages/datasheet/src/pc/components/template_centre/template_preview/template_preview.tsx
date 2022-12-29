@@ -1,0 +1,101 @@
+import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@apitable/core';
+import { useRequest } from 'ahooks';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { CommonSide } from 'pc/components/common_side';
+import { LoginModal } from 'pc/components/home/login_modal';
+import { MobileBar } from 'pc/components/mobile_bar';
+import { Router } from 'pc/components/route_manager/router';
+import { useUserRequest } from 'pc/hooks';
+import { isRenderServer } from 'pc/utils';
+import * as React from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { TemplateCategoryDetail } from '../template_category_detail';
+import { TemplateChoice } from '../template_choice';
+import { UsingTemplateModal } from '../using_template_modal';
+import styles from './style.module.less';
+
+export const TemplatePreview: FC = () => {
+  // Template ID to use
+  const [usingTemplate, setUsingTemplate] = useState('');
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const { categoryId, templateId } = useSelector((state: IReduxState) => state.pageParams);
+  const { getLoginStatusReq } = useUserRequest();
+  const { run: getLoginStatus } = useRequest<IUserInfo | undefined, any[]>(getLoginStatusReq, { manual: true });
+
+  // Is the current display the official template or the space site template
+  const isOfficial = categoryId === 'tpcprivate';
+
+  const templateCategory = useSelector((state: IReduxState) => state.templateCentre.category);
+  useEffect(() => {
+    if (usingTemplate && !spaceId && !userInfo) {
+      setOpenLoginModal(true);
+      return;
+    }
+    // Current user is logged in
+    if (userInfo && userInfo.spaceId && usingTemplate && !spaceId) {
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usingTemplate]);
+
+  const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {
+    if (data) {
+      if (loginMode === ConfigConstant.LoginMode.PHONE) {
+        Router.push(Navigation.INVITATION_VALIDATION, { query: { token: data, reference: window.location.href }});
+      } else if (loginMode === ConfigConstant.LoginMode.MAIL) {
+        Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href }});
+      }
+    } else {
+      const userInfo = ((await getLoginStatus()) as any) as IUserInfo;
+      if (!userInfo) {
+        return;
+      }
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+    }
+  };
+
+  const MainComponent = (): React.ReactElement => (
+    <>
+      <div className={styles.templateList}>
+        <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+          <MobileBar />
+        </ComponentDisplay>
+        {(categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID && !templateId) || !categoryId ? (
+          <TemplateChoice setUsingTemplate={setUsingTemplate} />
+        ) : (
+          <TemplateCategoryDetail isOfficial={isOfficial} templateCategory={templateCategory || []} setUsingTemplate={setUsingTemplate} />
+        )}
+      </div>
+      {usingTemplate && userInfo && spaceId && <UsingTemplateModal templateId={usingTemplate!} onCancel={setUsingTemplate} />}
+      {openLoginModal && <LoginModal onCancel={() => setOpenLoginModal(false)} afterLogin={afterLogin} />}
+    </>
+  );
+
+  return (
+    <div className={styles.templatePreview}>
+      {/**
+       * note: Here is prepared for SSR, that is, to facilitate the return of html template data for easy crawling, 
+       * the following content wrapped by ComponentDisplay, due to the need to determine the browser size.
+       * It will not run on the server side.
+       * The content rendered here will not be rendered on the page, so don't worry.
+       */
+        isRenderServer() && (
+          <div style={{ display: 'none' }}>
+            <CommonSide />
+            {MainComponent()}
+          </div>
+        )}
+
+      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+        <CommonSide />
+        {MainComponent()}
+      </ComponentDisplay>
+
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>{MainComponent()}</ComponentDisplay>
+    </div>
+  );
+};

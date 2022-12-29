@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210712-001" author="Pengap" labels="widget">
+        <comment>组件包表增加author_icon字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `author_icon` varchar(255) NULL COMMENT '作者图标TOKEN' AFTER `author_email`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210712-002" author="Pengap" labels="widget">
+        <comment>组件包表修改注释</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            MODIFY COLUMN `status` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态(0:开发中,1:已封禁,2:待发布,3:已发布,4:已下架-全局暂不开放)目前保留3，4' AFTER `cover`,
+            MODIFY COLUMN `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '封面图TOKEN' AFTER `icon`,
+            MODIFY COLUMN `installed_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '安装次数' AFTER `status`,
+            MODIFY COLUMN `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '名称 - 【废弃删除】' AFTER `installed_num`,
+            MODIFY COLUMN `name_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '英文名称 - 【废弃删除】' AFTER `name`,
+            MODIFY COLUMN `version` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '版本 - 【废弃删除】' AFTER `name_en`,
+            MODIFY COLUMN `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '描述 - 【废弃删除】' AFTER `version`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210712-003" author="Pengap" labels="widget">
+        <comment>添加小组件包国际化字段兼容数据</comment>
+        <sql>
+            UPDATE `${table.prefix}widget_package` t1,
+                  (SELECT id,
+                    JSON_SET( IFNULL( i18n_name, '{}' ), '$."zh-CN"', `name`, '$."en-US"', name_en ) AS i18n_name,
+                    JSON_SET( IFNULL( i18n_description, '{}' ), '$."zh-CN"', `description` ) AS i18n_description
+                   FROM `${table.prefix}widget_package`
+                  ) t2
+            SET t1.i18n_name = t2.i18n_name, t1.i18n_description = t2.i18n_description
+            WHERE t1.id = t2.id
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

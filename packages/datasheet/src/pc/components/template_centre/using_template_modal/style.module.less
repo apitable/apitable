@@ -1,0 +1,103 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+@linkMarginRight: 24px;
+
+.baseModal {
+  position: relative;
+
+  .usingTemplateWrapper {
+    padding: 8px 24px 32px;
+    user-select: none;
+
+    .tip {
+      font-size: 14px;
+      color: var(--firstLevelText);
+      line-height: 20px;
+      padding-bottom: 8px;
+    }
+
+    .permissionTip {
+      font-size: 12px;
+      color: var(--errorColor);
+      line-height: 20px;
+      padding-top: 6px;
+    }
+
+    .selectWrapper {
+      height: 40px;
+    }
+
+    .checkbox {
+      position: absolute;
+      bottom: 28px;
+      left: 24px;
+    }
+
+    .checkboxText {
+      font-size: 14px;
+      color: var(--secondLevelText);
+    }
+
+    :global {
+      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+        border: none;
+        background-color: var(--fc6);
+      }
+      .ant-select {
+        width: 100% !important;
+        max-width: 480px;
+        margin-right: @linkMarginRight;
+      }
+      .ant-select-selection--single {
+        height: 40px;
+      }
+      .ant-select-selection__rendered {
+        line-height: 38px;
+        height: 38px;
+        margin-left: 14px;
+      }
+      .ant-select-selection {
+        background-color: var(--rowSelectedBg);
+        border: 1px solid var(--rowSelectedBg);
+        &:active {
+          box-shadow: none;
+          border: none;
+        }
+      }
+      .ant-select-selection:hover,
+      .ant-select-focused .ant-select-selection {
+        border: 1px solid var(--primaryColor);
+      }
+      .ant-select-selection__placeholder {
+        color: var(--fourthLevelText);
+      }
+      .ant-select-open .ant-select-selection,
+      .ant-select-focused .ant-select-selection {
+        box-shadow: none;
+      }
+      .ant-select-open .ant-select-arrow svg {
+        transform: rotate(180deg);
+      }
+      .ant-select-arrow {
+        top: 11px;
+        margin-top: 0;
+      }
+      .ant-select-arrow,
+      .ant-select-arrow svg {
+        transition: transform 0.3s;
+        width: 16px;
+        height: 16px;
+        fill: var(--thirdLevelText);
+      }
+      .ant-select-selection__clear {
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        background: var(--rowSelectedBg);
+        top: 13px;
+        margin-top: 0;
+      }
+    }
+  }
+}

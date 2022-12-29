@@ -1,0 +1,15 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  
+  implementation(rootProject.ext.dependencies['vika-client']) {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+  
+  implementation(rootProject.ext.dependencies['hutool'])
+  
+  testImplementation(rootProject.ext.dependencies['junit5'])
+}

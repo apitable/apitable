@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.asset.mapper.AssetAuditMapper">
+
+    <select id="getArtificialAssetsAuditList" resultType="com.vikadata.api.asset.vo.AssetsAuditVo">
+        SELECT asset_id,
+               asset_file_url,
+               asset_checksum,
+               audit_result_score,
+               audit_result_suggestion,
+               audit_scenes,
+               auditor_openid,
+               auditor_name,
+               is_audited
+        FROM ${tablePrefix}asset_audit
+        WHERE audit_result_suggestion = 'review' and audit_scenes = 'pulp' and is_audited = 0
+    </select>
+
+    <update id="updateByAssetId">
+        update ${tablePrefix}asset_audit
+        set is_audited              = 1,
+            audit_result_suggestion = #{auditResultSuggestion},
+            auditor_name            = #{auditorName},
+            auditor_openid          = #{auditorUserId}
+        where asset_file_url = #{assetFileUrl}
+    </update>
+</mapper>

@@ -1,0 +1,90 @@
+@import '~pc/styles/lib_var.less';
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  i {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+}
+
+.wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background-color: var(--fc8);
+  z-index: var(--zIndex-1);
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 49px;
+  padding: 0 16px;
+  box-shadow: inset 0px -1px 0px var(--lineColor);
+}
+
+.content {
+  position: absolute;
+  top: 49px;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  padding: 16px 0;
+  overflow: auto;
+}
+.bottomTip {
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.listItem {
+  padding: 8px 4px;
+  border-radius: 4px;
+  border-bottom: 1px solid var(--lineColor);
+  &[data-active="true"] {
+    background-color: rgba(237,234,255, 0.5);
+  }
+}
+
+.danger {
+  color: red;
+}
+
+.operationWrap {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  justify-content: space-between;
+}
+
+.cmdText {
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.operation {
+  display: flex;
+  align-items: center;
+}
+
+.noList {
+  text-align: center;
+}

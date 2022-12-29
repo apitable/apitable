@@ -1,0 +1,159 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+
+.kanbanFieldSetting {
+  width: 100%;
+  background: var(--defaultBg);
+  overflow: hidden;
+}
+
+.animation {
+  transition: transform 0.3s;
+  display: flex;
+}
+
+.submitButton {
+  position: absolute;
+  right: 24px;
+  bottom: 0;
+}
+
+.slide {
+  width: 100%;
+  flex-shrink: 0;
+  position: relative;
+  padding: 0 24px;
+}
+
+.fieldItem {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 4px;
+  margin-right: 8px;
+
+  svg {
+    vertical-align: -0.125em;
+    margin-right: 6px;
+  }
+
+  .addIcon {
+    margin-right: 8px;
+    fill: var(--thirdLevelText);
+  }
+
+  &:hover {
+    background: var(--rowSelectedBg);
+    border-radius: 4px;
+  }
+}
+
+.noFieldTip {
+  color: var(--secondLevelText);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .back {
+    display: flex;
+    align-items: center;
+    color: var(--primaryColor);
+    font-size: 13px;
+    cursor: pointer;
+
+    svg {
+      margin-right: 2px;
+      fill: var(--primaryColor);
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &.active {
+      opacity: 0.5;
+    }
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.settingTitle {
+  font-size: 14px;
+  color: var(--firstLevelText);
+  margin-bottom: 16px;
+  font-weight: normal;
+}
+
+.modalWrap {
+  position: absolute !important;
+
+  :global {
+    .ant-modal-body {
+      padding: 24px 0;
+    }
+  }
+}
+
+.radioGroup {
+  max-height: 40px * 8;
+  overflow: auto;
+}
+
+.radio {
+  line-height: 40px !important;
+  padding-left: 4px !important;
+
+  span:nth-of-type(2) {
+    padding-left: 8px;
+  }
+
+  svg {
+    vertical-align: -0.225em;
+    margin-right: 4px;
+  }
+}
+
+.notifySwitch {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--secondLevelText);
+}
+
+.error {
+  color: var(--errorColor);
+  margin-top: 4px;
+}
+
+.relativeButton {
+  margin-top: 32px;
+  position: relative;
+  float: right;
+  right: 0;
+}
+
+.radioWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-right: 4px;
+
+  &:hover {
+    background: var(--rowSelectedBg);
+    border-radius: 4px;
+  }
+}

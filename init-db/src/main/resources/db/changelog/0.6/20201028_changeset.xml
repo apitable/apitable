@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201028-001" author="Chambers" labels="space">
+        <comment>新增工作空间申请表</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-002" author="Chambers" labels="node">
+        <comment>节点表新增字段exra</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_002.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-003" author="Chambers" labels="node">
+        <comment>节点分享设置表新增字段视图ID</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_003.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-004" author="Chambers" labels="node">
+        <comment>节点分享设置表删除节点ID唯一索引</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_004.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-005" author="Chambers" labels="node">
+        <comment>节点分享设置表新增节点ID、视图ID唯一索引</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_005.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-006" author="Zoe" labels="datasheet">
+        <comment>新增数表评论表</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_006.sql"/>
+    </changeSet>
+</databaseChangeLog>

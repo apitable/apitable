@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220217-001" author="Pengap" labels="widget">
+        <comment>组件包信息表-新增sandbox字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `sandbox` tinyint(1) NULL COMMENT '是否沙箱运行(0:否,1:是)' AFTER `widget_body`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

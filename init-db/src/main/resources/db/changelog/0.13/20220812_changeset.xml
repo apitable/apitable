@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220812-001" author="刘斌华" labels="企微服务商">
+        <comment>修改延时数据结构以处理接口许可免费试用过期通知</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_wecom_permit_delay`
+                ADD COLUMN `delay_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '延时处理类型。1：接口许可免费试用过期通知；2：企业付费延时购买接口许可' AFTER `first_auth_time`,
+                MODIFY COLUMN `process_status` tinyint(1) NOT NULL COMMENT '处理状态。0：待处理；1：已发送到队列；5：已下单；9：已完成' AFTER `delay_type`,
+                ADD INDEX `idx_process_status`(`process_status`) USING BTREE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

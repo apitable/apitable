@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Title</title>
+    <style></style>
+  </head>
+
+  <body style="background:#f3f3f3">
+    <table cellpadding="0" cellspacing="0" width="100%" style="width: 650px; margin: 0 auto;background-color: #ffffff;box-shadow: 1px 2px 4px 4px #e9e9f5;">
+      <tr>
+        <td style="border-bottom: 8px solid #7b67ee; background-color: #ffffff;padding-top: 8px;padding-bottom: 8px;padding-left: 16px;">
+          <img src="https://s1.vika.cn/space/2021/12/09/3b09b857cee04a12b6b02cd63bb90a81" alt="vika logo" style="width: auto; height: 32px;"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:400;line-height:1.3; padding-top: 48px; padding-bottom: 48px;border-bottom: 2px solid #e9e9f5;padding-left: 30px;padding-right: 30px;">${MEMBER_NAME}对空间站「${SPACE_NAME}」的维格表「${NODE_NAME}」的记录进行了修改</td>
+      </tr>
+      <tr>
+        <td>
+          <table style="width: 85%; margin: 0 auto; padding-top: 48px;">
+            <tr>
+              <td>
+                来自${MEMBER_NAME}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table style="width: 100%;padding-top: 8px;">
+                  <tr>
+                    <td style="padding-top: 24px;padding-bottom: 24px;padding-left: 24px;padding-right: 24px;background: #f2f4f6;border-radius: 4px;"> 记录：<b>${RECORD_TITLE}</b></br></br>列名：<b>${FIELD_NAME}</b></br></br>修改前的内容：<span style="background:#FFD1C8;"><del>"${OLD_DISPLAY_VALUE}"</del></span></br></br>修改后的内容：<span style="background:#BDECDA;">"${NEW_DISPLAY_VALUE}"</span></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table style="width: 100%;padding-top: 32px;">
+                  <tr>
+                    <td align="center" >
+                      <a href="${URL}" style="display:inline-block;background: #7b67ee;color:#ffffff;padding-top: 8px;padding-bottom:8px; padding-left:24px;padding-right:24px;border-radius:4px;text-decoration: none;">去查看</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="padding-top: 48px;color:#8a8a8a;font-family:Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;">copyright &copy; 2019-${YEARS} 深圳维格云科技有限公司.All rights reserved.</td>
+      </tr>
+      <tr>
+        <td align="center" style="padding-top: 16px;padding-bottom: 48px;">
+          <a href="https://vika.cn/?home=1" target="_blank" style="color:#7b67ee;font-family:Helvetica,Arial,sans-serif;font-weight:400;text-decoration:none;">联系我们</a>
+          </td>
+      </tr>
+    </table>
+  </body>
+</html>

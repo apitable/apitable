@@ -1,0 +1,9 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  api(rootProject.ext.dependencies['spring-web'])
+  api(rootProject.ext.dependencies['spring-data-redis'])
+  implementation(rootProject.ext.dependencies['servlet-api'])
+}

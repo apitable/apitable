@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.scheduler.space.mapper.workspace.DatasheetRecordMapper">
+
+    <resultMap id="dataSheetRecordDto" type="com.vikadata.scheduler.space.model.DataSheetRecordDto">
+        <result column="dst_id" property="dstId"/>
+        <collection property="dataList" ofType="java.lang.String">
+            <result column="data"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectDtoByNodeIds" resultMap="dataSheetRecordDto">
+        SELECT dst_id, `data`
+        FROM vika_datasheet_record
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+</mapper>

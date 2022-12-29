@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210401-001" author="Benson" labels="markplace">
+        <comment>新增应用开通记录表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}marketplace_space_app_rel` (
+            `id` bigint unsigned NOT NULL COMMENT '主键',
+            `app_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
+            `status` tinyint unsigned DEFAULT '0' COMMENT '此空间站是否已开通(0:否,1:是)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_app_id` (`app_id`) USING BTREE,
+            KEY `k_space_id` (`space_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='应用市场-空间与应用开通记录表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

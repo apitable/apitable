@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper">
+
+    <select id="selectSubAdminBySpaceId" resultType="java.lang.Long">
+        SELECT member_id
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+        JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code AND vsrrr.resource_code = 'MANAGE_WORKBENCH_SETTING'
+        WHERE vsmrr.space_id = #{spaceId}
+        ORDER BY vsmrr.created_at DESC
+    </select>
+
+    <select id="selectRoleCodesBySpaceId" resultType="java.lang.String">
+        SELECT role_code
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+    </select>
+
+    <select id="selectCountBySpaceIdAndMemberId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE member_id = #{memberId}
+          and space_id = #{spaceId}
+    </select>
+
+    <select id="selectCountBySpaceIdAndMemberIds" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId} AND member_id IN
+        <foreach index="index" item="item" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectRoleCodeByMemberId" resultType="java.lang.String">
+        SELECT role_code
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE member_id = #{memberId} and space_id = #{spaceId}
+    </select>
+
+    <select id="selectRoleCodesBySpaceIdAndRoleCodes" resultType="java.lang.String">
+        SELECT role_code
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+        AND role_code IN
+        <foreach item="item" index="index" collection="roleCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIdBySpaceIdAndRoleCodes" resultType="long">
+        SELECT member_id
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+        AND role_code IN
+        <foreach item="item" index="index" collection="roleCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteBySpaceIdAndMemberId">
+        DELETE
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+          and member_id = #{memberId}
+    </delete>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}space_member_role_rel(id, space_id, member_id, role_code)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.memberId},#{item.roleCode}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectRoleCodeByMemberIds" resultType="java.lang.String">
+        SELECT role_code
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId} AND member_id IN
+        <foreach index="index" item="item" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="batchDeleteByMemberIds">
+        DELETE FROM ${tablePrefix}space_member_role_rel
+        WHERE member_id IN
+        <foreach index="index" item="item" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBySpaceId">
+        DELETE FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+    </delete>
+</mapper>

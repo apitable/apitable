@@ -1,0 +1,34 @@
+@import "~pc/styles/lib_screen.less";
+
+.improvingInfoWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.improvingInfo {
+  width: 320px;
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--black_1000);
+  }
+
+  .tip {
+    padding-top: 8px;
+    padding-bottom: 32px;
+    font-size: 14px;
+    color: var(--black_500);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .improvingInfoWrapper {
+    padding-top: 70px;
+    align-items: flex-start;
+    transform: translateY(0px);
+  }
+}

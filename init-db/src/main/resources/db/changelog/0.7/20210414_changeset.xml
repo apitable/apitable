@@ -1,0 +1,26 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210414-001" author="Zoe" labels="datasheet">
+        <comment>新增changeset的来源表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_changeset_source` (
+            `id` BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
+            `dst_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
+            `resource_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源ID',
+            `message_id` VARCHAR ( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'changeset请求的唯一标识，用于保证resource changeset的唯一',
+            `source_type` TINYINT ( 2 ) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据来源类型(0:收集表;1:API,2:JAVA)',
+            `created_by` bigint DEFAULT NULL COMMENT '创建者',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY ( `id` ) USING BTREE,
+            KEY `idx_dst_id` ( `dst_id` ) USING BTREE,
+            KEY `idx_resource_id` ( `resource_id` ) USING BTREE,
+            KEY `idx_message_id` ( `message_id` ( 50 ) ) USING BTREE
+            ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '工作台-数表变更集来源表';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

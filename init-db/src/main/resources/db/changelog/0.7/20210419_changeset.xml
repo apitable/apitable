@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210419-001" author="Shawn" labels="audit">
+        <comment>空间站审计表增加IP地址字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}audit_space` ADD COLUMN `ip_address` varchar(100) NULL COMMENT '操作地址' AFTER `space_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210419-002" author="Shawn" labels="audit">
+        <comment>系统审计表增加IP地址字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}audit_system` ADD COLUMN `ip_address` varchar(100) NULL COMMENT '操作地址' AFTER `info`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

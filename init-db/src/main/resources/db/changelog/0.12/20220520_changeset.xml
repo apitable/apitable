@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220520-001" author="Chambers" labels="automation">
+        <comment>机器人触发器表新增机器人ID索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_trigger`
+                ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220520-002" author="Chambers" labels="automation">
+        <comment>机器人运行历史表新增机器人ID索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_run_history`
+                ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

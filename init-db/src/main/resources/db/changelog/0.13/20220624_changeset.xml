@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220624-001" author="liuzijing" labels="widget">
+        <comment>工作台-组件包信息表新增安装环境编码字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+                ADD COLUMN `install_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '安装环境编码' AFTER `updated_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-002" author="liuzijing" labels="widget">
+        <comment>工作台-组件包信息表新增运行环境编码字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+                ADD COLUMN `runtime_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运行环境编码' AFTER `install_env_code`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-003" author="liuzijing" labels="widget">
+        <comment>工作台-组件发布历史表新增安装环境编码字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+                ADD COLUMN `install_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '安装环境编码' AFTER `updated_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-004" author="liuzijing" labels="widget">
+        <comment>工作台-组件发布历史表新增运行环境编码字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+                ADD COLUMN `runtime_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '运行环境编码' AFTER `install_env_code`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

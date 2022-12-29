@@ -1,0 +1,26 @@
+@import "~pc/styles/lib_var.less";
+.block {
+  flex: 1;
+  &.vertical {
+    flex-direction: column;
+
+    .blockContent {
+      width: auto;
+      height: calc(100% - 16px);
+    }
+  }
+}
+
+.blockContent {
+  border-radius: 8px;
+  margin: 8px;
+  width: calc(100% - 16px);
+}
+
+.contentShadow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
+  &:hover {
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.1);
+    // transform: translate(0, -2px);
+  }
+}

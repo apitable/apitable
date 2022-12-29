@@ -1,0 +1,88 @@
+import { Skeleton } from '@apitable/components';
+import { Navigation, Selectors, StatusCode, Strings, t } from '@apitable/core';
+import { ServerError } from 'pc/components/invalid_page/server_error';
+import { Mirror } from 'pc/components/mirror/mirror';
+import styles from 'pc/components/mirror/style.module.less';
+import { NoPermission } from 'pc/components/no_permission';
+import { Router } from 'pc/components/route_manager/router';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+
+export const MirrorRoute = () => {
+  const { mirrorId, shareId, datasheetId, templateId, categoryId } = useSelector(state => state.pageParams)!;
+  const mirrorSourceInfo = useSelector(state => {
+    return Selectors.getMirrorSourceInfo(state, mirrorId!);
+  });
+  const recordId = useSelector(state => {
+    return state.pageParams.recordId;
+  });
+  const mirror = useSelector(state => {
+    return Selectors.getMirror(state, mirrorId!);
+  });
+  const sourceDatasheet = useSelector(state => {
+    if (!mirror) {
+      return;
+    }
+    return Selectors.getDatasheet(state, mirror.sourceInfo.datasheetId);
+  });
+
+  useEffect(() => {
+    if (!mirrorSourceInfo) {
+      return;
+    }
+    // The mirror route is special compared to other nodes, in order to maintain the mapping relationship,
+    // an additional datasheetId will be displayed on the route, so here for the mirror jump will do special treatment
+    if (shareId) {
+      Router.push(Navigation.SHARE_SPACE, {
+        params: { shareId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
+      });
+      return;
+    }
+    if (templateId) {
+      Router.push(Navigation.TEMPLATE, {
+        params: { categoryId, templateId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
+      });
+      return;
+    }
+    Router.push(Navigation.WORKBENCH, {
+      params: { nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
+    });
+  }, [mirrorSourceInfo, mirrorId, categoryId, shareId, templateId, recordId, datasheetId]);
+
+  const errorCode = useSelector(state => {
+    return Selectors.getMirrorErrorCode(state, mirrorId!) ||
+      (mirrorSourceInfo?.datasheetId && Selectors.getDatasheetErrorCode(state, mirrorSourceInfo.datasheetId));
+  });
+
+  /**
+   * Here we mainly deal with the exception status:
+   * 1. mirror node is deleted
+   * 2. mirror The dependent source datasheet is deleted
+   */
+  const isNoPermission = errorCode === StatusCode.NODE_NOT_EXIST ||
+    errorCode === StatusCode.NOT_PERMISSION || errorCode === StatusCode.NODE_DELETED || errorCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST;
+
+  if (errorCode) {
+    return (isNoPermission ? <NoPermission
+      desc={errorCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ? t(Strings.mirror_resource_dst_been_deleted) : undefined}
+    /> : <ServerError />);
+  }
+  if (!mirror || !sourceDatasheet || !datasheetId || sourceDatasheet.isPartOfData) {
+    return <AutoSizer style={{ width: '100%', height: '100%' }}>
+      {({ width, height }) => {
+        return <div className={styles.skeletonWrapper} style={{ width, height }}>
+          <Skeleton height='24px' />
+          <Skeleton count={2} style={{ marginTop: '24px' }} height='80px' />
+        </div>;
+      }}
+    </AutoSizer>;
+  }
+
+  // The source datasheet is not deleted, the mirror node is not deleted, but the view from which the source datasheet generates the mirror is deleted
+  if (sourceDatasheet && !sourceDatasheet.snapshot.meta.views.find(item => item.id === mirrorSourceInfo?.viewId)) {
+    return <NoPermission desc={t(Strings.mirror_resource_view_been_deleted)} />;
+  }
+
+  return <Mirror mirror={mirror} />;
+};

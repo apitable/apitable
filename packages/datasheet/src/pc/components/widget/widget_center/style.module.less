@@ -1,0 +1,472 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.headImg {
+  // width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.widgetCenter {
+  :global {
+    .ant-modal-body {
+      padding: 0 0 24px;
+    }
+
+    .ant-modal-content {
+      border-radius: 12px;
+    }
+    .ant-modal-header {
+      padding: 24px 32px 8px;
+    }
+  }
+}
+
+.widgetCenterWrap {
+  :global {
+    .ant-modal-header {
+      padding: 24px 32px 8px;
+    }
+    .ant-tabs-tab {
+      margin: 0;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .ant-tabs-tab:hover {
+      color: var(--deepPurple_400);
+    }
+    .ant-modal-content {
+      overflow: hidden;
+    }
+  }
+  .headerBanner {
+    width: 100%;
+  }
+}
+
+.widgetCenterWrapHis {
+  :global {
+    .ant-modal-header {
+      padding: 24px 32px 16px;
+    }
+    .ant-modal-close-x svg {
+      fill: var(--defaultBg);
+    }
+    .ant-modal-close-x:hover {
+      svg {
+        fill: #666666;
+      }
+    }
+  }
+}
+
+.showCloseIconBg {
+  :global {
+    .ant-modal-close-x {
+      background: var(--black_100);
+      box-shadow: 0 0 0 4px var(--black_100);
+    }
+    .ant-modal-close-x svg {
+      fill: #666666;
+    }
+    .ant-modal-close-x:hover {
+      background: var(--fc11);
+      box-shadow: 0 0 0 4px var(--fc11);
+    }
+    .ant-modal-close-x:active {
+      background: var(--black_300);
+      box-shadow: 0 0 0 4px var(--black_300);
+    }
+  }
+}
+
+.widgetCenterModal {
+  height: 80vh;
+  overflow: auto;
+  & > h2 {
+    font-size: 24px;
+    margin: 24px 0;
+    padding: 0 24px;
+  }
+  .widgetCenterModalTab {
+    height: 100%;
+    :global {
+      .ant-tabs-content-holder {
+        height: 100%;
+      }
+      .ant-tabs-content {
+        height: 100%;
+      }
+      .ant-tabs-tabpane {
+        height: 100%;
+        overflow-y: auto;
+        overflow-y: overlay;
+        box-sizing: border-box;
+      }
+      .ant-tabs-tab-btn {
+        color: var(--fc3);
+      }
+    }
+    .tabNav {
+      margin: 0 32px;
+    }
+    .tabItemTips {
+      margin: 16px 32px;
+      display: flex;
+      align-items: center;
+      color: var(--thirdLevelText);
+      font-size: 13px;
+      span {
+        margin-left: 4px;
+      }
+    }
+    .listEmpty {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding-bottom: 30px;
+      img {
+        width: 240px;
+        height: 180px;
+      }
+      .emptyTitle {
+        margin: 0;
+        padding: 8px 0;
+        font-size: 16px;
+      }
+      .emptyDesc {
+        margin-bottom: 32px;
+        color: var(--thirdLevelText);
+        font-size: 13px;
+      }
+      .emptyFooter {
+        width: 200px;
+      }
+      .buttonWrap {
+        margin-top: 3px;
+        display: flex;
+        align-items: center;
+        svg {
+          margin-right: 4px;
+        }
+      }
+      .tips {
+        margin-top: 16px;
+        font-size: 12px;
+        line-height: 18px;
+        color: var(--thirdLevelText);
+      }
+    }
+  }
+}
+
+.widgetPackageList {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 20px;
+  .placeholder {
+    width: 1px;
+    height: 1px;
+  }
+}
+
+.skeletonWrap {
+  padding: 0 32px;
+}
+
+.widgetPackageItem {
+  width: 248px;
+  margin: 0 12px 24px;
+  box-shadow: var(--shadowCommonHigh);
+  border-radius: 4px;
+  overflow: hidden;
+  h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--fc1);
+    .ellipsis();
+  }
+
+  p {
+    color: var(--thirdLevelText);
+    font-size: 13px;
+    overflow: hidden;
+    height: 80px;
+    margin: 4px 0 16px;
+    line-height: 20px;
+    .multiLineEllipsis(4);
+  }
+
+  .spaceWidgetDesc {
+    margin: 16px 0;
+  }
+
+  .packageType {
+    font-size: 12px;
+    position: absolute;
+    padding: 0 8px;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    background: var(--successColor);
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .imgBox {
+    position: relative;
+    width: 100%;
+    padding-top: 56%;
+    position: relative;
+    .authorIconWrap {
+      position: absolute;
+      left: 8px;
+      bottom: -14px;
+      display: flex;
+      align-items: center;
+      .avatarWrap {
+        margin: 0;
+        padding: 1px;
+        border-radius: 4px;
+        background: var(--defaultBg);
+        .avatar {
+          border-radius: 4px !important;
+          border: 1px solid var(--lineColor);
+        }
+      }
+      .arcBoxLeft {
+        width: 6px;
+        height: 6px;
+        margin-bottom: 6px;
+        margin-right: -1px;
+        background: radial-gradient(
+          6px at left top,
+          transparent 100%,
+          var(--defaultBg) 100%
+        );
+      }
+      .arcBoxRight {
+        width: 6px;
+        height: 6px;
+        margin-bottom: 6px;
+        margin-left: -1px;
+        background: radial-gradient(
+          6px at right top,
+          transparent 100%,
+          var(--defaultBg) 100%
+        );
+      }
+    }
+    .website {
+      display: none;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      .iconButton {
+        background: var(--black_100);
+      }
+      &:hover {
+        .iconButton {
+          background: var(--black_200);
+        }
+      }
+      &:active {
+        .iconButton {
+          background: var(--black_300);
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .imgBox .website {
+      display: block;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .itemContent {
+    padding: 20px 16px 16px;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  .helpIcon {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.modalHeaderBanner {
+  padding: 32px 32px 24px;
+}
+
+.widgetPackageItem {
+  .headerBox {
+    display: flex;
+    align-items: center;
+    .widgetIcon {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    h3 {
+      margin: 0;
+      flex: 1;
+    }
+  }
+  .avatarWrap {
+    margin: 0 4px;
+  }
+  .developerWrap {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: center;
+    span {
+      font-size: 13px;
+      color: var(--thirdLevelText);
+    }
+    .triggerWrap {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+  .rotateIcon {
+    transform: rotate(90deg);
+  }
+  .hoverShow {
+    box-sizing: content-box;
+    border-radius: 50%;
+  }
+  &:hover {
+    .hoverShow {
+      opacity: 1;
+    }
+  }
+}
+
+.createWidgetWrapper {
+  height: 254px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background: var(--fc6);
+  }
+  &:active {
+    background: var(--fc5);
+  }
+  span {
+    margin-left: 4px;
+    font-size: 13px;
+    color: var(--thirdLevelText);
+  }
+}
+
+.disableCreateWidget {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background: var(--defaultBg);
+  &:hover {
+    background: var(--defaultBg);
+  }
+  &:active {
+    background: var(--defaultBg);
+  }
+}
+
+.spaceWidgetInfoContent {
+  line-height: 22px;
+  font-size: 14px;
+  color: var(--firstLevelText);
+  .creatorWrap {
+    display: inline-block;
+    vertical-align: bottom;
+    cursor: pointer;
+    padding: 0 4px;
+    .unitTag:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.widgetContextMenu {
+  position: fixed;
+  width: 240px;
+  background: var(--highestBg);
+  padding: 4px 8px;
+  box-shadow: var(--shadowCommonHighest);
+  border-radius: 4px;
+  transition: opacity 2s !important;
+  z-index: var(--zIndex-3);
+  .contextMenuItem {
+    padding: 0 8px;
+    border-radius: 4px;
+    &:hover {
+      background: var(--fc6);
+    }
+  }
+}
+.widgetPackageItemSpace {
+  padding: 16px;
+}
+
+.colorWhite {
+  color: var(--staticWhite0) !important;
+}
+
+.transferWidgetWrap {
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style: none;
+    position: relative;
+    & + li {
+      margin-top: 16px;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 22px;
+      color: var(--fc2);
+    }
+    p:first-child {
+      font-weight: bold;
+      padding-left: 25px;
+      color: var(--firstLevelText);
+      &::before {
+        content: "";
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        left: 9px;
+        top: 7px;
+        background: var(--firstLevelText);
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.warningBtn {
+  color: var(--defaultBg) !important;
+}

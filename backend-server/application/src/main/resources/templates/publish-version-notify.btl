@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            width: 600px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 1px 0px 0px rgba(225, 226, 233, 1);
+        }
+
+        .content {
+            width: 600px;
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: rgba(44, 44, 44, 1);
+            line-height: 22px;
+            margin-top: 37px;
+        }
+
+        .company {
+            margin-bottom: 30px;
+            width: 152px;
+            height: 40px;
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: rgba(44, 44, 44, 1);
+            line-height: 20px;
+        }
+
+        .email {
+            color: #2B68FF;
+        }
+
+        .space_name {
+            font-weight: 800;
+        }
+
+        .btn {
+            display: block;
+            width: 132px;
+            height: 44px;
+            text-align: center;
+            background: rgba(136, 106, 247, 1);
+            border-radius: 3px;
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            line-height: 44px;
+            margin: 60px auto;
+            text-decoration: none;
+        }
+
+        .footer {
+            width: 600px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px -1px 0px 0px rgba(225, 226, 233, 1);
+            font-size: 11px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: rgba(87, 94, 123, 1);
+            line-height: 22px;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <div>
+                发布作者：${publishUser}
+            </div>
+            <div>
+                发布内容：${content}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

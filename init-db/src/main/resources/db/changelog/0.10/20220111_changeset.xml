@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220111-001" author="Shawn" labels="apps">
+        <comment>应用商店-新增应用实例表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}app_instance`
+            (
+                `id`              bigint(20) unsigned NOT NULL COMMENT '主键',
+                `app_id`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商店应用ID',
+                `space_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
+                `app_instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '实例ID',
+                `app_key`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '实例应用配置ID',
+                `app_secret`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT '实例应用配置密钥',
+                `config`          json                                                         NOT NULL DEFAULT ('{}') COMMENT '实例配置',
+                `is_enabled`      tinyint(1) unsigned DEFAULT '1' COMMENT '是否开启(0:否,1:是)',
+                `is_deleted`      tinyint(1) unsigned DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`      bigint(20) unsigned NOT NULL COMMENT '创建用户',
+                `updated_by`      bigint(20) unsigned DEFAULT NULL COMMENT '最后一次更新用户',
+                `created_at`      timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`      timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `idx_space_app` (`space_id`, `app_id`) USING BTREE,
+                UNIQUE KEY `idx_app_instance_id` (`app_instance_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='应用商店-应用实例表';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

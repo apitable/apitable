@@ -1,0 +1,66 @@
+@import "~pc/styles/lib_var.less";
+
+.scanLogin {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  color: var(--black_1000);
+}
+
+.qrContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 380px;
+  justify-content: center;
+}
+
+.scanTip {
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0 0 48px;
+  text-align: center;
+}
+
+.tipHighlight {
+  color: var(--deepPurple_500);
+  font-weight: bold;
+}
+
+.qrWrapper {
+  display: flex;
+  margin: 0 0 56px;
+}
+
+.dingding {
+  height: 320px;
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  transition: transform 0.25s ease-in-out;
+
+  &:hover {
+    transform: scale(1.25);
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .text {
+    font-size: 13px;
+    color: var(--secondLevelText);
+  }
+}
+
+.iconRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 12px;
+  width: 100%;
+}

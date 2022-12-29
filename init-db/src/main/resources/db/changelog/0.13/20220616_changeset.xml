@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220616-001" author="Chambers" labels="developer">
+        <comment>API每日统计表新增创建时间字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}api_statistics_daily`
+                ADD COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `failure_count`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220616-002" author="Chambers" labels="developer">
+        <comment>API月度统计表新增创建时间字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}api_statistics_monthly`
+                ADD COLUMN `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `failure_count`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

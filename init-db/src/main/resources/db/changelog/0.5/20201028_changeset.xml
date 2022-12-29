@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20201028-001" author="Chambers" labels="base">
+        <comment>基础资源表，MimeType字段增加长度</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}asset`
+            MODIFY COLUMN `mime_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'MimeType' AFTER `file_url`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

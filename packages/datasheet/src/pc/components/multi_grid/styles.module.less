@@ -1,0 +1,12 @@
+@import '~pc/styles/lib_var.less';
+
+.multiGrid {
+  user-select: none;
+  // border: 1px solid @multigrid-border-color;
+  border-radius: 8px 8px 0 0;
+  &[data-scrolling="true"] {
+    & > div {
+      pointer-events: none;
+    }
+  }
+}

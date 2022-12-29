@@ -1,0 +1,285 @@
+import { Box, IOption, Skeleton } from '@apitable/components';
+import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
+import { useToggle } from 'ahooks';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { Message } from 'pc/components/common/message/message';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { permissionMenuData } from 'pc/utils';
+import { dispatch } from 'pc/worker/store';
+import { FC, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { MembersDetail } from './members_detail';
+import { PermissionInfoSetting } from './permission_info_setting';
+import styles from './style.module.less';
+import { UnitList } from './unit_list';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+
+export interface IPermissionSettingProps {
+  data: INodePermissionData;
+}
+
+type IRoleMap = INodeRoleMap & { belongRootFolder: boolean };
+
+export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
+  // Current operating mode
+  const [isAppointMode, setIsAppointMode] = useState(true);
+  // Whether to display the View Member Details modal box
+  const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
+  const ownUnitId = useSelector((state: IReduxState) => state.user.info?.unitId);
+  const { getNodeRoleListReq } = useCatalogTreeRequest();
+  const { run: getNodeRoleMap, data: roleMap } = useRequest<IRoleMap>(() => getNodeRoleListReq(data.nodeId));
+  const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
+  const nodeAssignable = treeNodesMap[data.nodeId]?.permissions.nodeAssignable;
+  const unitListScroll = useRef<HTMLDivElement>(null);
+  const spaceId = useSelector(state => state.space.activeId)!;
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+
+  useEffect(() => {
+    if (!roleMap) {
+      return;
+    }
+    setTimeout(() => {
+      if (roleMap.extend) {
+        TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.PERMISSION_SETTING_EXTEND);
+        return;
+      }
+      TriggerCommands.open_guide_wizard(ConfigConstant.WizardIdConstant.PERMISSION_SETTING_OPENED);
+    }, 0);
+  }, [roleMap]);
+
+  useEffect(() => {
+    if (roleMap && !isAppointMode !== roleMap.extend) {
+      setIsAppointMode(!roleMap.extend);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roleMap]);
+
+  /**
+   * Turn off inheritance mode of operation
+   * If the permission settings are not currently enabled, you will need to manually invoke them before the following actions can be performed
+   * 1. Add Roles
+   * 2. Editorial roles
+   * 3. Delete Role
+   * 4. Batch update roles
+   * @returns
+   */
+  const disableRoleExtend = async() => {
+    if (!roleMap?.extend) {
+      return true;
+    }
+
+    const result = triggerUsageAlert(
+      'nodePermissionNums',
+      { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
+    );
+    if (result) {
+      return false;
+    }
+    const res = await Api.disableRoleExtend(data.nodeId, true);
+    const { success, message } = res.data;
+    if (!success) {
+      Message.error({ content: message });
+      return false;
+    }
+    setIsAppointMode(true);
+    dispatch(StoreActions.updateTreeNodesMap(data.nodeId, { nodePermitSet: true }));
+    dispatch(StoreActions.getSpaceInfo(spaceId, true));
+    return success;
+  };
+
+  // Select member submission events
+  const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
+    if (!unitInfos.length) {
+      return;
+    }
+
+    const unitIds = unitInfos.map(item => item.unitId);
+    const res = await disableRoleExtend();
+    if (!res) {
+      return;
+    }
+    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
+      const { success, message } = res.data;
+      if (success) {
+        Message.success({ content: t(Strings.permission_add_success) });
+        await getNodeRoleMap();
+        scrollBottom();
+      } else {
+        Message.error({ content: message });
+      }
+    });
+  };
+
+  const deleteUnit = (unitId: string) => {
+    const isOwn = ownUnitId === unitId;
+    const onOk = async() => {
+      const res = await disableRoleExtend();
+      if (!res) {
+        return;
+      }
+      Api.deleteRole(data.nodeId, unitId).then(res => {
+        const { success } = res.data;
+        if (success) {
+          Message.success({ content: t(Strings.permission_delete_success) });
+          getNodeRoleMap();
+          return;
+        }
+        Message.error({ content: t(Strings.permission_delete_failed) });
+      });
+    };
+
+    Modal.confirm({
+      title: t(Strings.remove_permissions),
+      content: isOwn ? t(Strings.remove_own_permissions_desc) : t(Strings.remove_permissions_desc),
+      onOk,
+    });
+  };
+
+  const changeUnitRole = async(unitId: string, role: string) => {
+    const res = await disableRoleExtend();
+    if (!res) {
+      return;
+    }
+    Api.editRole(data.nodeId, unitId, role).then(res => {
+      const { success } = res.data;
+      if (success) {
+        getNodeRoleMap();
+        Message.success({ content: t(Strings.permission_switch_succeed) });
+      } else {
+        Message.error({ content: t(Strings.permission_switch_failed) });
+      }
+    });
+  };
+
+  const batchChangeUnitRole = async(role: string) => {
+    const res = await disableRoleExtend();
+    if (!res) {
+      return;
+    }
+    const unitIds = (roleMap?.roleUnits || []).map(v => v.unitId);
+    if (!unitIds.length) {
+      return;
+    }
+    Api.batchEditRole(data.nodeId, unitIds, role).then(res => {
+      const { success } = res.data;
+      if (success) {
+        getNodeRoleMap();
+        Message.success({ content: t(Strings.permission_switch_succeed) });
+      } else {
+        Message.error({ content: t(Strings.permission_switch_failed) });
+      }
+    });
+  };
+
+  const resetPermission = () => {
+    Api.enableRoleExtend(data.nodeId).then(res => {
+      const { success } = res.data;
+      if (success) {
+        Message.success({ content: t(Strings.permission_switch_succeed) });
+        setIsAppointMode(false);
+        dispatch(StoreActions.updateTreeNodesMap(data.nodeId, { nodePermitSet: false }));
+        dispatch(StoreActions.getSpaceInfo(spaceId, true));
+        getNodeRoleMap();
+        return;
+      }
+
+      Message.success({ content: t(Strings.permission_switch_failed) });
+    });
+  };
+
+  const batchDeleteRole = async() => {
+    const res = await disableRoleExtend();
+    if (!res) {
+      return;
+    }
+    const unitIds = (roleMap?.roleUnits || []).map(v => v.unitId);
+    if (!unitIds.length) {
+      return;
+    }
+    Api.batchDeleteRole(data.nodeId, unitIds).then(res => {
+      const { success } = res.data;
+      if (success) {
+        Message.success({ content: t(Strings.permission_delete_success) });
+        getNodeRoleMap();
+        return;
+      }
+      Message.error({ content: t(Strings.permission_delete_failed) });
+    });
+  };
+
+  if (!roleMap) {
+    return (
+      <Box padding={'0 16px 24px'}>
+        <Skeleton style={{ marginTop: 0 }} height={'16px'} />
+        <Skeleton count={2} height={'48px'} />
+      </Box>
+    );
+  }
+
+  const scrollBottom = () => {
+    if (unitListScroll.current) {
+      unitListScroll.current.scrollTop = unitListScroll.current.scrollHeight;
+    }
+  };
+
+  const adminAndOwnerUnitIds = [...roleMap.admins.map(v => v.unitId), roleMap.owner?.unitId || ''];
+
+  const isRootNode = roleMap.belongRootFolder;
+  const optionData = permissionMenuData(data.type);
+  return (
+    <div className={styles.permission}>
+      <div className={styles.permissionHeader}>
+        {nodeAssignable &&
+          <div className={styles.mainWrapper}>
+            <UnitPermissionSelect
+              classNames={styles.permissionSelect}
+              permissionList={optionData}
+              onSubmit={onSubmit}
+              adminAndOwnerUnitIds={adminAndOwnerUnitIds}
+            />
+          </div>
+        }
+        <PermissionInfoSetting
+          members={roleMap.members}
+          isExtend={!isAppointMode}
+          resetPermission={resetPermission}
+          toggleIsMemberDetail={toggleIsMemberDetail}
+          defaultRole={optionData}
+          batchEditRole={batchChangeUnitRole}
+          batchDeleteRole={batchDeleteRole}
+          readonly={!nodeAssignable}
+          tipOptions={{
+            extendTips: isRootNode ? t(Strings.inherit_permission_tip_root) : t(Strings.inherit_permission_tip),
+            resetPopConfirmTitle: isRootNode ? t(Strings.close_permission) : t(Strings.reset_permission),
+            resetPopConfirmContent: isRootNode ? t(Strings.close_permission_warning_content) : t(Strings.reset_permission_content),
+            resetPermissionDesc: isRootNode ? t(Strings.reset_permission_desc_root) : t(Strings.reset_permission_desc),
+          }}
+        />
+      </div>
+      <div className={styles.scrollContainer} ref={unitListScroll}>
+        <UnitList
+          owner={roleMap.owner}
+          admins={roleMap.admins}
+          roleUnits={roleMap.roleUnits}
+          onDelete={deleteUnit}
+          onChange={changeUnitRole}
+          roleOptions={optionData}
+          isAppointMode={isAppointMode || isRootNode}
+          readonly={!nodeAssignable}
+        />
+      </div>
+      {
+        isMemberDetail &&
+        (
+          <MembersDetail
+            data={roleMap}
+            onCancel={toggleIsMemberDetail}
+          />
+        )
+      }
+    </div>
+  );
+};

@@ -1,0 +1,83 @@
+# 数据库配置
+db:
+  host: 127.0.0.1
+  port: 33060
+  username: root
+  password: password
+  database: vika_dev
+  connectionLimit: 20
+  keepConnectionAlive: true
+  retryDelay: 300  # ms
+# REDIS 配置
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: 
+  # 不配置默认为0
+  db: 3
+
+# SOCKET 配置
+socket:
+  grpcUrl: 0.0.0.0:3007
+# 后端服务地址
+server:
+  url: http://localhost:8081/api/v1/
+  transformLimit: 100000
+  maxViewCount: 30
+  maxFieldCount: 200
+  maxRecordCount: 50000
+
+# 对象存储配置
+oss:
+  host: https://s1.vika.cn
+  bucket: QNY1
+  # cacheType:
+  minio:
+    endPoint: ''
+    port: 9000
+    useSSL: true
+    accessKey: ''
+    secretKey: ''
+    bucket:
+      cache:
+        name: api.cache
+  s3:
+    bucket:
+      cache:
+        name: api.cache
+        region: cn-northwest-1
+
+# 健康检查配置
+actuator:
+  dnsUrl: http://health-check-monitor.vika.cn
+  rssRatio: 90
+  heapRatio: 100
+
+# 限流配置
+limit:
+  points: 5
+  duration: 1
+  whiteList:
+    test1:
+      points: 5
+      duration: 1
+    test2:
+      points: 5
+      duration: 1
+
+# 私有化不需要配置
+# 开启追踪服务
+zipkin:
+  enabled: false
+  endpoint: http://161.189.41.224:29411
+
+# Sentry 上报Bug服务
+# sentry:
+#   dsn: https://14aceedcbea54ef8ac7ee4d70525f530@sentry.vika.cn/6
+
+grpc:
+  url: 0.0.0.0:3334
+
+queue:
+  uri: amqp://vika:password@127.0.0.1:56720
+  vhost: ''

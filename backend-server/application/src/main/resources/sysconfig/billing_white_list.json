@@ -1,0 +1,46 @@
+{
+    "spcLUu1soK6Pl": {
+        "capacity": 50,
+        "endDate": "2022-11-30"
+    },
+    "spcDX8X6klESV": {
+        "nodes": 2000,
+        "endDate": "2024-01-01"
+    },
+    "spcdPLDR8Mc9t": {
+        "capacity": 1000,
+        "endDate": "2022-12-28"
+    },
+    "spc1oyL9nakiG": {
+        "capacity": 50,
+        "endDate": "2022-08-21"
+    },
+    "spceNbhqeGlSr": {
+        "capacity": 50,
+        "endDate": "2022-08-26"
+    },
+    "spctVZWAf6ZCk": {
+        "nodes": 2000,
+        "endDate": "2023-03-01"
+    },
+    "spcyGZ1SALVdR": {
+        "capacity": 50,
+        "endDate": "2022-10-20"
+    },
+    "spcKFeg421gS9": {
+        "nodes": 2000,
+        "endDate": "2022-11-05"
+    },
+    "spc9Jc9He5zm0": {
+        "capacity": 50,
+        "endDate": "2023-01-11"
+    },
+    "spcFPwmyKwPyZ": {
+        "capacity": 1000,
+        "endDate": "2023-01-28"
+    },
+    "spcr9VvaA1TA5": {
+        "capacity": 200,
+        "endDate": "2023-03-23"
+    }
+}

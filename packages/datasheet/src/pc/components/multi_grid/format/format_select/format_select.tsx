@@ -1,0 +1,192 @@
+import { Divider, Typography, useThemeColors } from '@apitable/components';
+import {
+  Field, IField, ISelectField, ISelectFieldProperty, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
+} from '@apitable/core';
+import classNames from 'classnames';
+import produce from 'immer';
+import { omit } from 'lodash';
+import { OptionSetting } from 'pc/components/common/color_picker';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
+import { createRainbowColorsArr } from 'pc/utils/color_utils';
+import * as React from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
+import IconAdd from 'static/icon/common/common_icon_add_content.svg';
+import styles from '../styles.module.less';
+import { FormatSelectItem } from './format_select_item';
+import { FormatSelectMobile } from './mobile/format_select_mobile';
+
+interface IFormatSelect {
+  currentField: ISelectField;
+  setCurrentField: Dispatch<SetStateAction<IField>>;
+  isMulti: boolean;
+  datasheetId?: string;
+}
+
+const COLOR_COUNT = 50;
+
+export function setColor(index: number, theme: ThemeName) {
+  const [baseColor, vipColor] = createRainbowColorsArr(theme);
+
+  const ColorWheel: string[] = [...baseColor, ...vipColor];
+
+  if (index < COLOR_COUNT) {
+    return ColorWheel[index];
+  }
+  return ColorWheel[index % COLOR_COUNT];
+}
+
+interface ISortableContainerProps {
+  onSortEnd: (result: DropResult, provided: ResponderProvided) => void;
+  onDragUpdate?: (initial: DragUpdate, provided: ResponderProvided) => void;
+}
+
+const SortableContainer: React.FC<ISortableContainerProps> = ({ onDragUpdate, onSortEnd, children }) => {
+  return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
+    <Droppable droppableId='droppable'>
+      {(provided, snapshot) => (
+        <div
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+        >
+          {children}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>;
+};
+
+const FormatSelectBase = (props: IFormatSelect) => {
+  const colors = useThemeColors();
+
+  const { currentField, setCurrentField, isMulti, datasheetId } = props;
+  const { options, defaultValue } = currentField.property;
+  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
+  const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
+
+  function addNewItem() {
+    const newItem = (Field.bindModel(currentField) as SelectField).createNewOption('');
+    if (!newItem) {
+      return;
+    }
+    setCurrentField({
+      ...currentField,
+      property: {
+        ...currentField.property,
+        options: [...options, newItem],
+      },
+    });
+  }
+
+  const onSortEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    const oldIndex = result.source.index;
+    const newIndex = result.destination.index;
+    const _currentField = produce(currentField, draft => {
+      moveArrayElement(draft.property.options, oldIndex, newIndex);
+      return draft;
+    });
+    setCurrentField({
+      ..._currentField,
+    });
+  };
+  const selectColor = (optionIndex: number, color: number) => {
+    setCurrentField(pre => {
+      return produce(pre, draft => {
+        draft.property.options[optionIndex].color = color;
+        return draft;
+      });
+    });
+  };
+
+  // Here there is an unused parameter because of the generic property setting method defined in ColorPiker
+  const onOptionChange = (type: OptionSetting, id: string, value: number | string) => {
+    selectColor(
+      options.findIndex(item => item.id === id),
+      value as number,
+    );
+  };
+
+  const listStyle: React.CSSProperties = {};
+  const btnStyle: React.CSSProperties = {};
+  if (options.length === 0) {
+    listStyle.minHeight = 0;
+    listStyle.paddingTop = 0;
+    btnStyle.marginTop = -8;
+  }
+
+  return (
+    <>
+      {Boolean(isPreview && options.length) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
+      <div style={listStyle} className={classNames(styles.selection, styles.selectList)}>
+        <SortableContainer onSortEnd={onSortEnd}>
+          {options.map((item, index) => {
+            return (
+              <FormatSelectItem
+                key={item.id}
+                item={item}
+                index={index}
+                onOptionChange={onOptionChange}
+                currentField={currentField}
+                setCurrentField={setCurrentField}
+                addNewItem={addNewItem}
+              />
+            );
+          })}
+        </SortableContainer>
+      </div>
+      <div style={btnStyle} className={styles.addNewItem} onClick={addNewItem}>
+        <IconAdd width={15} height={15} fill={colors.thirdLevelText} />
+        {t(Strings.add_an_option)}
+      </div>
+      {options.length > 0 && (
+        <div className={styles.section}>
+          <Divider className={styles.divider} />
+          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant='body3'>
+            {t(Strings.default_value)}
+          </Typography>
+          <FilterGeneralSelect
+            popupClass={styles.selectDefault}
+            placeholder={t(Strings.placeholder_add_record_default_complete)}
+            searchPlaceholder={t(Strings.find)}
+            field={currentField}
+            isMulti={isMulti}
+            onChange={val => {
+              const property: ISelectFieldProperty = val
+                ? {
+                  ...currentField.property,
+                  defaultValue: val,
+                }
+                : omit(currentField.property, 'defaultValue');
+              setCurrentField({
+                ...currentField,
+                property,
+              });
+            }}
+            cellValue={defaultValue}
+            listData={options.filter(option => Boolean(option.name.trim()))}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export const FormatSelect: React.FC<IFormatSelect> = props => {
+  return (
+    <>
+      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+        <FormatSelectBase {...props} />
+      </ComponentDisplay>
+
+      <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+        <FormatSelectMobile {...props} />
+      </ComponentDisplay>
+    </>
+  );
+};

@@ -1,0 +1,103 @@
+import { Canvas } from '@storybook/addon-docs';
+import { Checkbox } from './index';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Checkbox" />
+
+# Checkbox
+
+Select one or more options from a set of options.
+
++ Checkbox is similar to Switch when it is used alone. But it is usually used for multiple options.
++ Radio is selected in a group of choices.
++ Checkbox is selected in a group of choices.
+
+## Usage
+
+```jsx
+import { Checkbox } from '@apitable/components';
+```
+
+
+## Shortcut support
+
+| Key   | Function                     |
+|-------|------------------------------|
+| Tab   | move focus to checkbox       |
+| Space | switch the state of checkbox |
+
+
+## Examples
+
+Check text or check box can change the state
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Checkbox>
+    Default option
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## Default checked
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Checkbox checked>
+      Default checked option
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## Disabled
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Checkbox disabled>
+    Disabled option
+  </Checkbox>
+  <Checkbox checked disabled>
+      Disabled checked option
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## Size
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Checkbox size={40}>
+    40px size option
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## Color
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Checkbox color="red">
+    Red option
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## Callback
+
+<Canvas>
+<ThemeToggle lang="en">
+<Checkbox onChange={val => alert(`status：${val ? 'checked': 'cancel'}`)}>
+  Listen option
+</Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name     | Type                     | Description     | Default |
+|----------|--------------------------|-----------------|---------|
+| checked  | boolean                  | checked status  | -       |
+| size     | number                   | checkbox size   | 16      |
+| color    | boolean                  | border color    | -       |
+| onChange | (value: boolean) => void | callback action | -       |
+| disabled | boolean                  | disabled status | -       |

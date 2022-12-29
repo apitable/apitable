@@ -1,0 +1,76 @@
+import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
+
+plugins {
+  id 'java'
+  id 'org.springframework.boot'
+}
+
+dependencies {
+  implementation project(':shared:core')
+  implementation project(':shared:starters:xxl')
+  implementation project(':shared:starters:oss')
+  implementation project(':shared:starters:vika')
+  annotationProcessor rootProject.ext.dependencies['configuration-processor']
+  implementation rootProject.ext.dependencies['spring-web-starter']
+  implementation('org.springframework.boot:spring-boot-starter-data-redis') {
+    exclude group: 'io.lettuce', module: 'lettuce-core'
+  }
+  implementation('org.apache.commons:commons-pool2')
+  implementation rootProject.ext.dependencies['jedis']
+  implementation(rootProject.ext.dependencies['aws'])
+  implementation rootProject.ext.dependencies['qiniu']
+  implementation rootProject.ext.dependencies['mybatis-plus-starter']
+  runtimeOnly rootProject.ext.dependencies['mysql']
+  implementation rootProject.ext.dependencies['hutool']
+  annotationProcessor rootProject.ext.dependencies['lombok']
+  compileOnly rootProject.ext.dependencies['lombok']
+  
+  testCompileOnly rootProject.ext.dependencies["lombok"]
+  testAnnotationProcessor rootProject.ext.dependencies["lombok"]
+  
+  testImplementation rootProject.ext.dependencies['spring-test-starter']
+  testImplementation rootProject.ext.dependencies['powermock-api-mockito2']
+  
+}
+
+// set the build environment variables to the files in the resource directory
+processResources {
+  filesMatching("**/*.yml") {
+    if (it.name != 'application.yml') {
+      it.exclude()
+    }
+  }
+}
+
+compileJava.dependsOn processResources
+bootJar.dependsOn processResources
+
+// Compile Java Setting
+tasks.withType(JavaCompile) {
+  options.encoding = StandardCharsets.UTF_8
+  options.warnings = false
+  options.compilerArgs += '-Xlint:-deprecation'
+}
+
+jar {
+  enabled = false
+}
+
+// Java Plugin On Gradle
+bootJar {
+  manifest {
+    attributes 'Start-Class': 'com.vikadata.scheduler.space.SchedulerSpaceApplication'
+    attributes 'Implementation-Version': archiveVersion
+    attributes 'Built-Gradle': gradle.gradleVersion
+    attributes 'Build-OS': System.getProperty("os.name")
+    attributes 'Built-By': System.getProperty("user.name")
+    attributes 'Build-Jdk': System.getProperty("java.version")
+    attributes 'Build-Timestamp': new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+  }
+}
+
+// SpringBoot Plugin On Gradle
+springBoot {
+  mainClass.set('com.vikadata.scheduler.space.SchedulerSpaceApplication')
+}

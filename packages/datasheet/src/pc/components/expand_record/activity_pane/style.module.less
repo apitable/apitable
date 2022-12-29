@@ -1,0 +1,126 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+:global(.ant-dropdown-trigger) {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+:global(.ant-dropdown-menu) {
+  :global(.active) {
+    background-color: var(--rowSelectedBg);
+    color: var(--primaryColor);
+  }
+}
+
+:global(.ant-dropdown-menu-item) {
+  &:hover {
+    background-color: var(--rowSelectedBg)!important;
+    border-radius: 4px;
+  }
+}
+
+.paneSelectItem {
+  button {
+    margin-right: 8px;
+  }
+}
+
+.activitySelect {
+  color: var(--secondLevelText);
+  .selectIcon {
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    svg {
+      transition: transform 0.3s;
+    }
+    &.open svg {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.activityPane {
+  width: 30%;
+  max-width: 30%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--lowestBg);
+  border-bottom-right-radius: 8px;
+  position: relative;
+
+  .paneHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--lineColor);
+
+    .paneTitle {
+      font-size: 14px;
+      color: var(--firstLevelText);
+      font-weight: bold;
+      line-height: 22px;
+      a {
+        display: inline-block;
+      }
+    }
+    :global(.optionLabel),
+    :global(.placeholder) {
+      font-size: 14px;
+      color: var(--secondLevelText);
+    }
+  }
+  .panelBottom {
+    position: relative;
+    width: 100%;
+  }
+}
+
+.dividerLine {
+  background: var(--lineColor);
+  height: 1px;
+  width: calc(100% - 48px);
+  margin: 0 24px 0;
+}
+
+@media screen and (min-width: @w-md) {
+  .paneHeader {
+    padding: 9px 16px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .dividerLine {
+    display: none;
+  }
+
+  .listContent {
+    background-color: var(--defaultBg)!important;
+    & > div > div {
+      border: 0;
+      line-height: 32px;
+      height: auto;
+    }
+  }
+
+  .activityPane {
+    border-radius: 0;
+    flex-shrink: 0;
+    max-width: 100%;
+    padding-top: 44px;
+    width: 100%;
+
+    .paneHeader {
+      line-height: 40px;
+      padding: 0 24px;
+    }
+
+    .paneTitle {
+      display: none;
+    }
+  }
+}

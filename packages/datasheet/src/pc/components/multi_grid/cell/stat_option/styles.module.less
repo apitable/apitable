@@ -1,0 +1,64 @@
+@import "~pc/styles/lib_mixins.less";
+
+.statList {
+  font-size: 13px;
+  color: var(--firstLevelText);
+  max-height: 300px;
+  width: 150px;
+  overflow-y: auto;
+  .light-scroll-bar();
+  box-shadow: 1px 1px 14px var(--shadowColor);
+  background: var(--defaultBg);
+  border-radius: 4px;
+
+  .statItem {
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--firstLevelText);
+    width: 150px;
+    cursor: pointer;
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+
+    .activeStat {
+      color: var(--primaryColor);
+    }
+  }
+}
+
+.statistics {
+  white-space: nowrap;
+  padding-right: 8px;
+  display: flex;
+  justify-content: flex-end;
+  padding-left: 10px;
+  font-size: 12px;
+  color: transparent;
+  height: 96%;
+  align-items: center;
+  cursor: pointer;
+  // width: 100%;
+  overflow: hidden;
+
+  &.gridBottom {
+    align-items: initial;
+    padding-top: 8px;
+    background-color: var(--defaultBg);
+  }
+
+  svg {
+    display: none;
+  }
+
+  &:hover {
+    color: var(--thirdLevelText);
+    background: var(--rowSelectedBg);
+
+    svg {
+      display: inline-block;
+    }
+  }
+}

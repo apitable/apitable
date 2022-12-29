@@ -1,0 +1,21 @@
+${MEMBER_NAME} modifies the record of the datasheet "${NODE_NAME}" of the space "${SPACE_NAME}
+
+--------------------------------------------------------------------------------
+
+From ${MEMBER_NAME}
+
+Record: ${RECORD_TITLE}
+
+Field Name：${FIELD_NAME}
+
+Original content："${OLD_DISPLAY_VALUE}"
+
+Latest content："${NEW_DISPLAY_VALUE}"
+
+View record
+${URL}
+
+
+copyright © 2019-${YEARS} vikadata. All rights reserved.
+
+Contact us (http://vika.cn/)

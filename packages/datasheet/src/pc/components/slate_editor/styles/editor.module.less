@@ -1,0 +1,30 @@
+@import "./var.less";
+
+.editor {
+  padding: 0 @spacing-lx;
+  &[data-has-operation="true"] {
+    padding: 0 @operation-size;
+  }
+
+  span[data-has-bg="true"] {
+    span[data-slate-string="true"] {
+      &::selection {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global {
+  .editor-tooltip {
+    .ant-tooltip-inner {
+      padding: @spacing-base @spacing-large;
+    }
+  }
+}

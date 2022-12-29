@@ -1,0 +1,47 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "../common.module.less";
+
+.superAdmin {
+  background: var(--defaultBg);
+  overflow: auto;
+  .light-scroll-bar();
+
+  h1 {
+    .commonTitle();
+  }
+
+  h2 {
+    .commonTitleDesc();
+  }
+
+  h1,
+  h2 {
+    padding-left: 32px;
+  }
+
+  .scrollWrapper {
+    min-width: 650px;
+    min-height: 300px;
+    width: 100%;
+    padding-top: 45px;
+  }
+
+  .adminInfo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-radius: 8px;
+  background: var(--lowestBg);
+  width: 400px;
+  height: 94px;
+  margin-top: 16px;
+}

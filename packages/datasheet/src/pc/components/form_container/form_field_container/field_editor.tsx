@@ -1,0 +1,276 @@
+import { forwardRef, useRef, useContext, useCallback } from 'react';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
+import {
+  IField,
+  FieldType,
+  ICellValue,
+  IDateTimeField,
+  ConfigConstant,
+  ILinkIds,
+  ILinkField,
+  t,
+  Strings,
+  IAttachmentValue,
+  Api,
+} from '@apitable/core';
+import styles from './style.module.less';
+import { Button } from '@apitable/components';
+import { ExpandLink, FetchForeignTimes } from 'pc/components/expand_record/expand_link';
+import { ExpandAttachment, ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
+import { TextEditor } from 'pc/components/editors/text_editor';
+import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
+import { DateTimeEditor } from 'pc/components/editors/date_time_editor';
+import { RatingEditor } from 'pc/components/editors/rating_editor';
+import { EnhanceTextEditor } from 'pc/components/editors/enhance_text_editor';
+import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
+import IconAdd from 'static/icon/common/common_icon_add_content.svg';
+import { FormContext } from '../form_context';
+import { useResponsive } from 'pc/hooks';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { difference } from 'lodash';
+import { ExpandLookUpBase } from 'pc/components/expand_record/expand_lookup';
+import { ExpandFormula } from 'pc/components/expand_record/expand_formula';
+import { ComputedFieldWrapper } from './computed_field_wrapper';
+import { ExpandSelect } from 'pc/components/expand_record/expand_select';
+import { ExpandNumber } from 'pc/components/expand_record/expand_number';
+export interface ICommonProps {
+  style: React.CSSProperties;
+  datasheetId: string;
+  editable: boolean;
+  field: IField;
+  recordId: string;
+  height: number;
+  width: number;
+  editing: boolean;
+}
+
+export interface IEditor {
+  focus(): void;
+  onEndEdit(cancel: boolean): void;
+  onStartEdit(cellValue?: ICellValue): void;
+  setValue(cellValue?: ICellValue): void;
+  saveValue(): void;
+}
+
+export interface IFormFieldProps {
+  commonProps: ICommonProps;
+  isFocus: boolean;
+  onClose?: (...args: any) => void;
+  cellValue: ICellValue;
+  onMouseDown(e: React.MouseEvent): void;
+}
+
+export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormFieldProps> = (props, ref) => {
+  const { commonProps: baseProps, isFocus, onClose, cellValue, onMouseDown } = props;
+  const { field, editable, recordId } = baseProps;
+  const { formProps, setFormData, setFormErrors, setFormToStorage } = useContext(FormContext);
+  const attachmentRef = useRef<IAttachmentValue[]>([]);
+  const shareId = useSelector(state => state.pageParams.shareId);
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+  const compactMode = formProps?.compactMode;
+
+  const onSave = useCallback(
+    value => {
+      let finalValue: ICellValue = null;
+
+      if (value == null) {
+        setFormData && setFormData(field.id, null);
+        return;
+      }
+      switch (field.type) {
+        case FieldType.Number:
+        case FieldType.Currency:
+        case FieldType.Percent:
+          finalValue = Number(value);
+          break;
+        case FieldType.URL:
+        case FieldType.Email:
+        case FieldType.Phone:
+        case FieldType.Text:
+        case FieldType.SingleText:
+        case FieldType.Checkbox:
+        case FieldType.Rating:
+        case FieldType.DateTime:
+        case FieldType.Link:
+          finalValue = value;
+          break;
+        case FieldType.SingleSelect:
+        case FieldType.MultiSelect:
+          if (!value.length) {
+            setFormData && setFormData(field.id, null);
+            return;
+          }
+          finalValue = value;
+          break;
+        case FieldType.Attachment:
+          attachmentRef.current = value;
+          finalValue = attachmentRef.current;
+          if (!value.length) {
+            setFormData && setFormData(field.id, null);
+            return;
+          }
+          break;
+        case FieldType.Member:
+          if (!shareId) {
+            const diff = difference(value, cellValue as string[]);
+            Api.commitRemind({
+              isNotify: false,
+              unitRecs: [
+                {
+                  unitIds: diff,
+                },
+              ],
+            });
+          }
+          finalValue = value;
+          break;
+        default:
+          finalValue = value;
+      }
+      setFormData && setFormData(field.id, finalValue);
+    },
+    [field.id, field.type, shareId, cellValue, setFormData],
+  );
+
+  const disabledStatusButton = (
+    <Button className={styles.addBtn} size="small">
+      <span className={styles.inner}>
+        {<IconAdd fill="currentColor" className={styles.addIcon} />}
+        {t(Strings.add)}
+      </span>
+    </Button>
+  );
+
+  const getCellValueFn = () => {
+    return attachmentRef.current as IAttachmentValue[];
+  };
+
+  const handleFieldChange = value => {
+    setFormErrors(field.id, '');
+    setFormToStorage && setFormToStorage(field.id, value);
+  };
+
+  const commonProps = { ...baseProps, onSave, onChange: handleFieldChange };
+
+  switch (field.type) {
+    case FieldType.Number:
+    case FieldType.Currency:
+    case FieldType.Percent:
+      return (
+        <ExpandNumber
+          ref={ref}
+          isFocus={isFocus}
+          cellValue={cellValue as number}
+          className={styles.formCellNumber}
+          onBlur={onClose}
+          {...commonProps}
+        />
+      );
+    case FieldType.SingleText:
+      return <TextEditor ref={ref} {...commonProps} onBlur={onClose} />;
+    case FieldType.Text:
+      return <TextEditor ref={ref} {...commonProps} onBlur={onClose} minRows={4} height={90} needEditorTip={false} />;
+    case FieldType.Checkbox: {
+      return (
+        <CheckboxEditor
+          ref={ref}
+          cellValue={cellValue as boolean}
+          {...commonProps}
+          style={{
+            padding: '0 16px',
+            height: isMobile ? 48 : 40,
+          }}
+        />
+      );
+    }
+    case FieldType.DateTime: {
+      return (
+        <DateTimeEditor
+          {...commonProps}
+          onClose={onClose}
+          ref={ele => (((ref as React.MutableRefObject<IEditor>).current as any) = ele as any)}
+          field={field as IDateTimeField}
+          style={{ height: isMobile ? 48 : 40, alignItems: 'center' }}
+        />
+      );
+    }
+    case FieldType.Rating: {
+      return (
+        <RatingEditor
+          ref={ref}
+          {...commonProps}
+          emojiSize={ConfigConstant.CELL_EMOJI_LARGE_SIZE}
+          style={{
+            paddingLeft: 0,
+          }}
+        />
+      );
+    }
+    case FieldType.URL:
+    case FieldType.Email:
+    case FieldType.Phone:
+      return <EnhanceTextEditor ref={ref} {...commonProps} />;
+    case FieldType.SingleSelect: 
+    case FieldType.MultiSelect:
+      return compactMode ? (
+        <ExpandSelect {...commonProps} unitMap={null} cellValue={cellValue} isFocus={isFocus} onClose={onClose} onChange={onSave} />
+      ) : (
+        <OptionFieldEditor ref={ref} {...commonProps} cellValue={cellValue} />
+      );
+    case FieldType.Attachment:
+      if (!(cellValue as IAttachmentValue[] | null)?.length) {
+        attachmentRef.current = [];
+      } else {
+        attachmentRef.current = cellValue as IAttachmentValue[];
+      }
+      return editable ? (
+        <ExpandAttachContext.Provider value={{ isFocus }}>
+          <ExpandAttachment
+            {...commonProps}
+            recordId={recordId}
+            cellValue={attachmentRef.current as IAttachmentValue[]}
+            getCellValueFn={getCellValueFn}
+            onClick={onMouseDown}
+          />
+        </ExpandAttachContext.Provider>
+      ) : (
+        disabledStatusButton
+      );
+    case FieldType.Member:
+      return <MemberFieldEditor {...commonProps} cellValue={cellValue} isFocus={isFocus} onClose={onClose} />;
+    case FieldType.Link:
+      return editable ? (
+        <ExpandLink
+          ref={ref}
+          {...commonProps}
+          recordId={recordId}
+          field={commonProps.field as ILinkField}
+          onClick={onMouseDown}
+          cellValue={cellValue as ILinkIds}
+          addBtnText={t(Strings.form_field_add_btn)}
+          rightLayout={false}
+          manualFetchForeignDatasheet={FetchForeignTimes.OnlyOnce}
+        />
+      ) : (
+        disabledStatusButton
+      );
+    case FieldType.LookUp:
+      return (
+        <ComputedFieldWrapper title={t(Strings.tooltip_edit_form_lookup_field)} className={styles.formLookup}>
+          {ExpandLookUpBase({ ...commonProps, field }) || <div className={styles.formLookUpFieldEmpty}>{t(Strings.form_link_field_empty)}</div>}
+        </ComputedFieldWrapper>
+      );
+    case FieldType.Formula:
+      return (
+        <ComputedFieldWrapper className={styles.formFormula} title={t(Strings.tooltip_edit_form_formula_field)}>
+          <ExpandFormula {...commonProps} recordId={recordId} />
+        </ComputedFieldWrapper>
+      );
+    default:
+      return <></>;
+  }
+};
+
+export const FieldEditor = React.memo(forwardRef(FieldEditorBase));

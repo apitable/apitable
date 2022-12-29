@@ -1,0 +1,16 @@
+syntax='proto3';
+
+package grpc.serving;
+
+import "common/Core.proto";
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+option java_outer_classname = "GrpcSocketServingService";
+
+// socket-server provided service
+// room->socket
+service SocketService {
+  // Server sends room Change event
+  rpc ServerRoomChange (grpc.common.ServerRoomChangeRo) returns (grpc.common.BasicResult);
+}

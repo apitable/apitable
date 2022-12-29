@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.social.service.dingtalk.mapper.SocialTenantMapper">
+    <select id="selectCountByTenantIdAndAppId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM vika_social_tenant
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </select>
+
+    <update id="updateTenantStatusByTenantIdAndAppId">
+        UPDATE vika_social_tenant
+        SET status = #{enabled}
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </update>
+
+    <select id="selectStatusByTenantIdAndAppId" resultType="java.lang.Integer">
+        SELECT status FROM vika_social_tenant
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </select>
+
+    <select id="selectByTenantIdAndAppId" resultType="com.vikadata.social.service.dingtalk.model.dto.SocialTenantDto">
+        SELECT status, auth_info -> '$.authInfo.agent[*].agentid' as agentId FROM vika_social_tenant
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </select>
+
+    <update id="updateIsDeletedByTenantIdAndAppId">
+        UPDATE vika_social_tenant
+        SET is_deleted = #{isDeleted}
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </update>
+
+    <update id="updateTenantAuthInfoByTenantIdAndAppId">
+        UPDATE vika_social_tenant
+        SET auth_info = #{authInfo}, contact_auth_scope = #{authScope}
+        WHERE tenant_id = #{tenantId}
+        AND app_id = #{appId}
+    </update>
+</mapper>

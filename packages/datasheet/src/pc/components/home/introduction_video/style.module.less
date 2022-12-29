@@ -1,0 +1,70 @@
+@import "~pc/styles/lib_var.less";
+
+.introductionVideo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 1px 2px rgba(38, 38, 38, 0.1), 0px 3px 6px rgba(38, 38, 38, 0.08);
+  border-radius: 0 0 6px 6px;
+
+  .titleBar {
+    flex-shrink: 0;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background: var(--primaryColor);
+  }
+
+  .dots {
+    padding-left: 17px;
+
+    .whiteDot,
+    .transparentDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+    }
+
+    .whiteDot {
+      background: var(--static-white);
+    }
+
+    .transparentDot {
+      background: rgba(var(--static-white-rgb), 60);
+    }
+  }
+
+  .videoWrapper {
+    flex: 1;
+    padding: 24px;
+    background: var(--static-white);
+    border-radius: 0 0 6px 6px;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    outline: 0;
+    border: 1px solid #e9e9f5;
+  }
+
+  .apiImg {
+    width: 50px;
+    height: 50px;
+    top: 8.4vh;
+    right: -40px;
+    position: absolute;
+  }
+
+  .formImg {
+    width: 40px;
+    height: 40px;
+    bottom: 3.5vh;
+    left: -30px;
+    position: absolute;
+  }
+}

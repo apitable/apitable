@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.scheduler.space.mapper.developer.ApiStatisticsMapper">
+    <select id="selectFirstApiUsageRecord" resultType="com.vikadata.scheduler.space.pojo.ApiUsage">
+        SELECT *
+        FROM vika_api_usage
+        ORDER BY id ASC LIMIT 1
+    </select>
+
+    <select id="selectNextDayFirstRecord"
+            resultType="com.vikadata.scheduler.space.pojo.ApiUsage">
+        SELECT *
+        FROM vika_api_usage
+        WHERE id &gt; #{id}
+          AND created_at &gt; #{createdAt} LIMIT 1
+    </select>
+
+    <select id="selectMaxIdDaily" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_api_usage
+        WHERE DATE_FORMAT(created_at, '%Y-%m-%d') &lt;= #{statisticsTime}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectMaxIdMonthly" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_api_usage
+        WHERE DATE_FORMAT(created_at, '%Y-%m') = #{statisticsTime}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <resultMap id="apiRecordDto" type="com.vikadata.scheduler.space.model.ApiRecordDto">
+        <result column="min_id" property="minId"/>
+        <result column="month_time" property="monthTime"/>
+    </resultMap>
+
+    <select id="selectFirstApiRecord" resultMap="apiRecordDto">
+        SELECT vau.id                               AS min_id,
+               DATE_FORMAT(vau.created_at, '%Y-%m') AS month_time
+        FROM vika_api_usage vau
+        ORDER BY id ASC
+        LIMIT 1
+    </select>
+
+    <select id="selectMinIdMonthly" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_api_usage
+        WHERE id &gt; #{id}
+          AND DATE_FORMAT(created_at, '%Y-%m') = #{monthTime}
+        LIMIT 1
+    </select>
+
+    <resultMap id="spaceApiUsageDto" type="com.vikadata.scheduler.space.model.SpaceApiUsageDto">
+        <result column="statistics_time" property="statisticsTime"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="success_count" property="successCount"/>
+    </resultMap>
+
+    <select id="selectSpaceApiUsageDaily" resultMap="spaceApiUsageDto">
+        SELECT DATE_FORMAT(vau.created_at, '%Y-%m-%d')                                 AS statistics_time,
+        vau.space_id,
+        COUNT(*)                                                                AS total_count,
+        IFNULL(SUM(JSON_EXTRACT(vau.res_detail, '$.code') = 200), 0)            AS success_count
+        FROM vika_api_usage vau
+        WHERE vau.id &gt;= #{beginId}
+        <choose>
+            <when test="endId != null and endId != ''">
+                AND vau.id &lt; #{endId}
+            </when>
+            <otherwise>
+                AND TO_DAYS(NOW()) - TO_DAYS(vau.created_at) &gt;= 1
+            </otherwise>
+        </choose>
+        GROUP BY statistics_time, vau.space_id
+    </select>
+
+    <select id="selectSpaceApiUsageMonthly" resultMap="spaceApiUsageDto">
+        SELECT DATE_FORMAT(vau.created_at, '%Y-%m')                                    AS statistics_time,
+        vau.space_id,
+        COUNT(*)                                                                AS total_count,
+        IFNULL(SUM(JSON_EXTRACT(vau.res_detail, '$.code') = 200), 0)            AS success_count
+        FROM vika_api_usage vau
+        WHERE vau.id &gt;= #{beginId}
+            AND vau.id &lt; #{endId}
+        GROUP BY vau.space_id, statistics_time
+        ORDER BY statistics_time
+    </select>
+
+    <select id="selectLastApiUsageDailyRecord" resultType="com.vikadata.scheduler.space.pojo.ApiStatisticsDaily">
+        SELECT *
+        FROM vika_api_statistics_daily
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectLastApiUsageMonthlyRecord" resultType="com.vikadata.scheduler.space.pojo.ApiStatisticsMonthly">
+        SELECT *
+        FROM vika_api_statistics_monthly
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <insert id="insertApiUsageDailyInfo">
+        INSERT INTO vika_api_statistics_daily(id, space_id, statistics_time, total_count, success_count, failure_count, created_at)
+        VALUE
+        <foreach item="item" index="index" collection="apiStatisticsDailyEntities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.statisticsTime},#{item.totalCount},#{item.successCount},#{item.failureCount},#{item.createdAt}
+            </trim>
+        </foreach>
+    </insert>
+
+    <insert id="insertApiUsageMonthlyInfo">
+        INSERT INTO vika_api_statistics_monthly(id, space_id, statistics_time, total_count, success_count, failure_count, created_at)
+        VALUE
+        <foreach item="item" index="index" collection="apiStatisticsMonthlyEntities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.statisticsTime},#{item.totalCount},#{item.successCount},#{item.failureCount},#{item.createdAt}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

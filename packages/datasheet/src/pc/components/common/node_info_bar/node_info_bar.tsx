@@ -1,0 +1,214 @@
+import { FC, useContext, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
+import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
+import styles from './style.module.less';
+import { Tag, TagColors } from '../tag';
+import { getPermission, KeyCode } from 'pc/utils';
+import { NodeFavoriteStatus } from '../node_favorite_status';
+import { useRequest } from 'pc/hooks';
+import { useCatalog } from 'pc/hooks/use_catalog';
+import { useCatalogTreeRequest } from 'pc/hooks';
+import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { ShareContext } from 'pc/components/share';
+import { Tooltip } from '../tooltip';
+import classNames from 'classnames';
+import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
+import { Typography } from '@apitable/components';
+import { isIframe } from 'pc/utils/env';
+import { useSelector } from 'react-redux';
+
+export const NODE_NAME_MIN_LEN = 1;
+export const NODE_NAME_MAX_LEN = 100;
+
+export interface INodeInfoBarProps {
+  data: {
+    nodeId: string;
+    name: string | undefined;
+    icon: string | undefined;
+    type: ConfigConstant.NodeType;
+    nameEditable?: boolean;
+    iconEditable?: boolean;
+    favoriteEnabled?: boolean;
+    role?: string;
+    iconSize?: number;
+  };
+  style?: React.CSSProperties;
+  hiddenModule?: { icon?: boolean, permission?: boolean, favorite?: boolean };
+}
+
+export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }) => {
+  const {
+    nodeId,
+    icon,
+    type,
+    name,
+    role = ConfigConstant.Role.Administrator,
+    favoriteEnabled = false,
+    nameEditable = false,
+    iconEditable = false,
+    iconSize,
+  } = data;
+  const [newName, setNewName] = useState(name);
+  const [editing, setEditing] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+  const nodeInfoBarRef = useRef<HTMLDivElement>(null);
+  const { shareInfo } = useContext(ShareContext);
+  const { checkRepeat } = useCatalog();
+  const { renameNodeReq } = useCatalogTreeRequest();
+  const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
+  const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
+  const embedId = useSelector(state => state.pageParams.embedId);
+
+  useEffect(() => {
+    setNewName(name);
+  }, [name]);
+
+  const rename = () => {
+    if (!newName) {
+      return;
+    }
+
+    const value = newName.trim();
+    if (value === name) {
+      setEditing(false);
+      return;
+    }
+    renameNode(nodeId, value);
+    setEditing(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setNewName(inputValue);
+    if (inputValue.length < NODE_NAME_MIN_LEN || inputValue.length > NODE_NAME_MAX_LEN) {
+      setErrMsg(t(Strings.name_length_err));
+      return;
+    }
+
+    if (checkRepeat(nodeId, inputValue, type)) {
+      setErrMsg(t(Strings.name_repeat));
+      return;
+    }
+    if (errMsg) {
+      setErrMsg('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.keyCode) {
+      case KeyCode.Enter:
+        if (errMsg) {
+          return;
+        }
+        rename();
+        setEditing(false);
+        break;
+      case KeyCode.Esc:
+        setNewName(name);
+        setEditing(false);
+        (e.target as HTMLInputElement).blur();
+    }
+  };
+
+  const handleBlur = () => {
+    if (!errMsg && name !== newName && newName) {
+      renameNode(nodeId, newName);
+      return;
+    }
+    setNewName(name);
+    setEditing(false);
+  };
+
+  const getPermissionTip = () => {
+    const permission = getPermission(role, { shareInfo: shareInfo });
+    switch (type) {
+      case ConfigConstant.NodeType.FOLDER:
+        return ConfigConstant.FolderPermissionTip[permission];
+      case ConfigConstant.NodeType.DATASHEET:
+        return ConfigConstant.DatasheetPermissionTip[permission];
+      case ConfigConstant.NodeType.FORM:
+        return ConfigConstant.FormPermissionTip[permission];
+      case ConfigConstant.NodeType.DASHBOARD:
+        return ConfigConstant.DashboardPermissionTip[permission];
+    }
+  };
+  // TODO: // Restructuring
+  return (
+    <div className={classNames(styles.nodeInfoBar, { [styles.multiLine]: isDatasheet })} ref={nodeInfoBarRef}>
+      <div className={classNames(styles.nameWrapper, { [styles.editing]: editing })}>
+        {!hiddenModule?.icon &&
+          <div className={classNames(styles.icon, { [styles.iconHover]: iconEditable })}>
+            <NodeIcon
+              nodeId={nodeId}
+              type={type}
+              icon={icon}
+              editable={iconEditable}
+              size={iconSize}
+              hasChildren
+            />
+          </div>
+        }
+        {
+          editing ? (
+            <Tooltip title={errMsg} visible={Boolean(errMsg)}>
+              <input
+                id={FOLDER_SHOWCASE_ID.TITLE_INPUT}
+                className={styles.nameInput}
+                value={newName}
+                onChange={handleChange}
+                disabled={!nameEditable}
+                onKeyDown={handleKeyDown}
+                style={style}
+                onBlur={handleBlur}
+                autoFocus
+                spellCheck='false'
+              />
+            </Tooltip>
+          ) : (
+            <div id={FOLDER_SHOWCASE_ID.TITLE} className={styles.nameBox} onClick={() => nameEditable && setEditing(true)}>
+              <Typography variant="h7" className={styles.name} style={style} component="span" ellipsis>{newName}</Typography>
+            </div>
+          )
+        }
+        {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) && !embedId &&
+          <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
+        }
+        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) && !isIframe() && !embedId &&
+          <Tooltip title={getPermissionTip()}>
+            <Tag
+              className={styles.tag}
+              color={TagColors[role]}
+            >
+              {ConfigConstant.permissionText[getPermission(role, { shareInfo: shareInfo })]}
+            </Tag>
+          </Tooltip>
+        }
+      </div>
+      <div className={styles.permissionWrapper}>
+        {/* {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) &&
+        <Tooltip title={getPermissionTip()}>
+          <div style={{ flexShrink: 0, display: 'flex' }}>
+            <Tag
+              className={styles.tag}
+              color={TagColors[role]}
+            >
+              {ConfigConstant.permissionText[getPermission(role, { shareInfo: shareInfo })]}
+            </Tag>
+          </div>
+        </Tooltip>
+        } */}
+        {/* {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) &&
+        <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
+        } */}
+        {isDatasheet &&
+          <DescriptionModal
+            activeNodeId={nodeId}
+            datasheetName={newName || ''}
+            showIntroduction
+            showIcon={false}
+          />
+        }
+      </div>
+    </div>
+  );
+};

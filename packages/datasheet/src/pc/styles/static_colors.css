@@ -1,0 +1,19 @@
+:root {
+  --static-white: #FFFFFF;
+  --static-white-rgb: 255, 255, 255;
+  --static-primary-color: #7B67EE;
+  --static-black: #262626;
+  --static-black-rgb:38, 38, 38;
+  --static-delete-bg: var(--red_200);
+  --static-delete-bg-rgb: 255, 180, 175;
+  --static-add-bg: var(--teal_200);
+  --static-add-bg-rgb: 139, 221, 190;
+}
+
+:root[data-theme="light"] {
+  --closeIconBg: rgba(38,38,38,0.5);
+}
+
+:root[data-theme="dark"] {
+  --closeIconBg: rgba(255,255,255,0.1);
+}

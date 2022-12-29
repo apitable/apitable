@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.8-20211025-001" author="HumphreyHu" labels="labs">
+        <comment>新增『实验性功能』内测申请表</comment>
+        <sqlFile path="db/changelog/0.8/20211025_changeset_001.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.8-20211025-002" author="HumphreyHu" labels="labs">
+        <comment>新增『实验性功能』记录表</comment>
+        <sqlFile path="db/changelog/0.8/20211025_changeset_002.sql"/>
+    </changeSet>
+</databaseChangeLog>

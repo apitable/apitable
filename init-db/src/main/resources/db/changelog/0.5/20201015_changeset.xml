@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20201015-001" author="Shawn" labels="node">
+        <comment>节点分享表增加分享设置参数props</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_share_setting`
+            ADD COLUMN `props` json DEFAULT NULL COMMENT '分享选项参数' AFTER `allow_edit`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20201015-002" author="Shawn" labels="node">
+        <comment>节点分享表增加created_by</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_share_setting`
+            ADD COLUMN `created_by` bigint(20) NULL DEFAULT NULL COMMENT '创建者' AFTER `props`
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20201015-003" author="Shawn" labels="node">
+        <comment>节点分享表增加updated_by</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_share_setting`
+            ADD COLUMN `updated_by` bigint(20) NULL DEFAULT NULL COMMENT '最后修改者' AFTER `created_by`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

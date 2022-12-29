@@ -1,0 +1,67 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210721-001" author="Pengap" labels="widget">
+        <comment>修改widget_package_release表secrect_key字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+            CHANGE COLUMN `secrect_key` `secret_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '源码加密密钥' AFTER `source_code_bundle`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210721-002" author="Pengap" labels="widget">
+        <comment>新建-工作台开发者资源表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_asset` (
+            `id` bigint UNSIGNED NOT NULL COMMENT '主键',
+            `type` tinyint unsigned NOT NULL COMMENT '类型 (0:小组件)',
+            `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名，本次上传的文件名',
+            `asset_id` bigint DEFAULT NULL COMMENT '资源ID(关联#vika_asset#id)',
+            `asset_checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '[冗余]md5摘要',
+            `file_size` int NOT NULL COMMENT '[冗余]文件大小(单位:byte)',
+            `height` int DEFAULT NULL COMMENT '图片高度',
+            `width` int DEFAULT NULL COMMENT '图片宽度',
+            `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = '工作台-开发者资源表';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210721-003" author="Zoe" labels="social">
+        <comment>vika_social_tenant_bind添加app_id字段兼容企业内部应用</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant_bind` ADD COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210721-004" author="Zoe" labels="social">
+        <comment>vika_social_tenant添加auth_info字段保存企业授权信息</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant` ADD COLUMN auth_info json null comment '企业授权信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210721-005" author="Zoe" labels="social">
+        <comment>调整vika_social_tenant_bind中app_id字段的位置</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant_bind` MODIFY COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识' AFTER `tenant_department_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210721-006" author="Zoe" labels="social">
+        <comment>调整vika_social_tenant中auth_info字段的位置</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_tenant` MODIFY COLUMN auth_info json null comment '企业授权信息' AFTER `contact_auth_scope`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

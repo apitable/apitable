@@ -1,0 +1,14 @@
+<configuration>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) - %red(T[%X{traceId}]) - %red(S[%X{spanId}]) - %red(T[%thread]) %highlight(%-5level) %green(%logger{35}) %magenta(Line:%L) - %blue(%msg%n)"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>「Log」>>> ${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="error">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

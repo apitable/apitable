@@ -1,0 +1,19 @@
+{
+  "validCases": [{
+    "args": ["option name"],
+    "expected":[{
+      "type": 1,
+      "text": "option name"
+    }]
+  }, {
+    "args": ["测试1234"],
+    "expected":[{
+      "type": 1,
+      "text": "测试1234"
+    }]
+  }],
+  "invalidCases": [{
+    "args": [""],
+    "expected": null
+  }]
+}

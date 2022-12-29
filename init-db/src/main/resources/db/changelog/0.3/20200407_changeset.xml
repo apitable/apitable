@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200407-001" author="ZoeZheng" labels="build">
+        <comment>客户端版本发布表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}client_release_version` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `version` varchar(50) NOT NULL  COMMENT '版本号',
+            `describe` varchar(255) NOT NULL  COMMENT '版本描述',
+            `html_content` MEDIUMTEXT NOT NULL comment '维格数表模版字符串',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_version` (`version`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='版本发布表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}client_release_version"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200407-002" author="ZoeZheng" labels="build">
+        <comment>维格数表版本发布表修改字段</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}client_release_version change  `describe`  `description`  varchar(255) not null comment '版本描述';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.3-20200407-003" author="ZoeZheng" labels="build">
+        <comment>维格数表版本发布表</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}client_release_version add COLUMN `publish_user` varchar(50)  NOT NULL  COMMENT '版本发布用户' AFTER `description`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.3-20200407-004" author="Shawn" labels="build">
+        <comment>修改用户表的mobile字段为可空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user` MODIFY COLUMN `mobile_phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '手机号码' AFTER `nick_name`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

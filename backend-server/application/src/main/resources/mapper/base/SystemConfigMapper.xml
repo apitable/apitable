@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.base.mapper.SystemConfigMapper">
+
+    <select id="selectIdByTypeAndLang" resultType="java.lang.Long">
+        select id
+        from ${tablePrefix}system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+            and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+
+    <select id="selectConfigMapByType" resultType="java.lang.String">
+        select config_map
+        from ${tablePrefix}system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+          and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+
+    <select id="selectConfigDtoByType"
+            resultType="com.vikadata.api.base.model.SystemConfigDTO">
+        SELECT id, i18n_name
+        FROM ${tablePrefix}system_config
+        WHERE `type` = #{type}
+          AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}system_config(id, type, i18n_name, config_map, created_by,
+                                       updated_by)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.type}, #{item.i18nName}, #{item.configMap},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="removeByIds">
+        UPDATE ${tablePrefix}system_config
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

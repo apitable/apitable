@@ -1,0 +1,304 @@
+package com.vikadata.api.shared.component.notification;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.player.dto.NotificationModelDTO;
+import com.vikadata.api.player.dto.PlayerBaseDTO;
+import com.vikadata.api.player.ro.NotificationCreateRo;
+import com.vikadata.api.player.vo.NotificationDetailVo;
+import com.vikadata.api.player.vo.PlayerBaseVo;
+import com.vikadata.api.shared.config.properties.ConstProperties;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
+import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
+import com.vikadata.api.workspace.mapper.NodeMapper;
+import com.vikadata.core.constants.RedisConstants;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import static com.vikadata.api.shared.constants.NotificationConstants.BODY_EXTRAS;
+import static com.vikadata.api.shared.constants.NotificationConstants.INVOLVE_MEMBER_DETAIL;
+
+@Component
+@Slf4j
+public class NotificationFactory implements INotificationFactory {
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private MemberMapper memberMapper;
+
+    @Resource
+    private NodeMapper nodeMapper;
+
+    @Resource
+    private SpaceMapper spaceMapper;
+
+    @Resource
+    private ObjectMapper objectMapper;
+
+    @Resource
+    private ConstProperties constProperties;
+
+    @Override
+    public NotificationTemplate getTemplateById(String templateId) {
+        return SystemConfigManager.getConfig().getNotifications().getTemplates().get(templateId);
+    }
+
+    @Override
+    public PlayerBaseVo formatFromUser(Long fromUserId, String spaceId, NotificationRenderMap renderMap) {
+        Long fromMemberId = renderMap.getFromUser().get(fromUserId.toString() + spaceId);
+        if (ObjectUtil.isNotNull(renderMap.getMembers())) {
+            return renderMap.getMembers().get(fromMemberId);
+        }
+        return null;
+    }
+
+    @Override
+    public NotificationDetailVo.Node formatNode(NodeBaseInfoDTO node) {
+        if (ObjectUtil.isNotNull(node)) {
+            return NotificationDetailVo.Node.builder().nodeName(node.getNodeName()).nodeId(node.getNodeId())
+                    .icon(node.getIcon()).build();
+        }
+        return null;
+    }
+
+    @Override
+    public NotificationDetailVo.Space formatSpace(BaseSpaceInfoDTO space) {
+        if (ObjectUtil.isNotNull(space)) {
+            return NotificationDetailVo.Space.builder().spaceId(space.getSpaceId()).spaceName(space.getName())
+                    .logo(space.getLogo()).build();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean delayLock(String key, Long notificationId) {
+        return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, notificationId,
+                constProperties.getMentionNotifyWaitTime(), TimeUnit.MILLISECONDS));
+    }
+
+    @Override
+    public String getDelayLockKey(String toUserId, NotificationCreateRo ro) {
+        String fromUserId = ro.getFromUserId();
+        String nodeId = ro.getNodeId();
+        String templateId = ro.getTemplateId();
+        if (StrUtil.isNotBlank(fromUserId) && StrUtil.isNotBlank(toUserId) && StrUtil.isNotBlank(nodeId)) {
+            Object extra = ro.getBody().getByPath(BODY_EXTRAS);
+            JSONArray recordIds = NotificationHelper.getRecordIdsFromExtras(JSONUtil.parseObj(extra));
+            if (recordIds != null && recordIds.size() == 1) {
+                return RedisConstants.getNotificationLockedKey(templateId,
+                        SecureUtil.md5(fromUserId + toUserId + nodeId + recordIds.get(0)));
+            }
+            return RedisConstants.getNotificationLockedKey(templateId, SecureUtil.md5(fromUserId + toUserId + nodeId));
+        }
+        return null;
+    }
+
+    @Override
+    public Long getNotificationIdFromRedis(String key) {
+        Object value = redisTemplate.opsForValue().get(key);
+        if (value != null) {
+            return Long.valueOf(value.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Long> getSpaceAllUserId(String spaceId) {
+        return memberMapper.selectUserIdBySpaceId(spaceId);
+    }
+
+    @Override
+    public List<Long> getMemberUserId(List<Long> memberIds, String spaceId) {
+        if (StrUtil.isNotBlank(spaceId) && ObjectUtil.isNotEmpty(memberIds)) {
+            return memberMapper.selectUserIdBySpaceIdAndIds(spaceId, memberIds);
+        }
+        return null;
+    }
+
+    @SneakyThrows
+    @Override
+    public JSONObject getJsonObject(Object object) {
+        if (ObjectUtil.isNotNull(object)) {
+            return JSONUtil.parseObj(objectMapper.writeValueAsString(object));
+        }
+        return null;
+    }
+
+    @Override
+    public JSONObject formatExtra(JSONObject extras, Map<Long, PlayerBaseVo> members) {
+        JSONArray memberIds = NotificationHelper.getMemberIdsFromExtras(extras);
+        if (ObjectUtil.isNotNull(memberIds) && !memberIds.isEmpty()) {
+            List<JSONObject> involvedMembers = new ArrayList<>();
+            memberIds.forEach(memberId -> involvedMembers.add(getJsonObject(members.get(Convert.toLong(memberId)))));
+            extras.putOnce(INVOLVE_MEMBER_DETAIL, involvedMembers);
+        }
+        return extras;
+    }
+
+    @Override
+    public NotificationRenderMap getRenderList(List<NotificationModelDTO> dtos) {
+        NotificationRenderMap list = new NotificationRenderMap();
+        List<String> nodeIds = new ArrayList<>();
+        List<String> spaceIds = new ArrayList<>();
+        List<Long> memberIds = new ArrayList<>();
+        List<Long> userIds = new ArrayList<>();
+        Map<String, Long> fromUser = MapUtil.newHashMap();
+        dtos.forEach(dto -> {
+            spaceIds.add(dto.getSpaceId());
+            nodeIds.add(dto.getNodeId());
+            if (dto.getFromUser() != 0) {
+                Long memberId =
+                        memberMapper.selectMemberIdByUserIdAndSpaceIdExcludeDelete(dto.getFromUser(), dto.getSpaceId());
+                if (ObjectUtil.isNotNull(memberId)) {
+                    memberIds.add(memberId);
+                    fromUser.put(dto.getFromUser().toString() + dto.getSpaceId(), memberId);
+                }
+                else {
+                    userIds.add(dto.getFromUser());
+                    fromUser.put(dto.getFromUser().toString() + dto.getSpaceId(), dto.getFromUser());
+                }
+            }
+            JSONArray memberIdArr = NotificationHelper
+                    .getMemberIdsFromExtras(NotificationHelper.getExtrasFromNotifyBody(dto.getNotifyBody()));
+            if (ObjectUtil.isNotNull(memberIdArr) && !memberIdArr.isEmpty()) {
+                memberIds.addAll(ListUtil.toList(Convert.toLongArray(memberIdArr)));
+            }
+        });
+        if (CollUtil.isNotEmpty(CollUtil.removeBlank(spaceIds))) {
+            list.setSpaces(spaceMapper.selectBaseSpaceInfo(CollUtil.removeBlank(CollUtil.distinct(spaceIds))).stream()
+                    .collect(Collectors.toMap(BaseSpaceInfoDTO::getSpaceId, a -> a, (k1, k2) -> k1)));
+        }
+        if (CollUtil.isNotEmpty(CollUtil.removeBlank(nodeIds))) {
+            list.setNodes(
+                    nodeMapper.selectBaseNodeInfoByNodeIdsIncludeDelete(CollUtil.removeBlank(CollUtil.distinct(nodeIds)))
+                            .stream().collect(Collectors.toMap(NodeBaseInfoDTO::getNodeId, a -> a, (k1, k2) -> k1)));
+        }
+        list.setMembers(getPlayerBaseInfo(CollUtil.distinct(memberIds), CollUtil.distinct(userIds)));
+        list.setFromUser(fromUser);
+        return list;
+    }
+
+    @Override
+    public List<Long> getMemberUserIdExcludeDeleted(List<Long> memberIds) {
+        return memberMapper.selectUserIdsByMemberIds(memberIds);
+    }
+
+    @Override
+    public Long getSpaceSuperAdmin(String spaceId) {
+        return spaceMapper.selectSpaceMainAdmin(spaceId);
+    }
+
+    @Override
+    public NotificationToTag getToUserTagByTemplateId(NotificationTemplateId templateId) {
+        String toUserTag = getTemplateById(templateId.getValue()).getToTag();
+        if (StrUtil.isNotBlank(toUserTag)) {
+            return NotificationToTag.getValue(toUserTag);
+        }
+        return NotificationToTag.MEMBERS;
+    }
+
+    @Override
+    public String getNodeParentId(String nodeId) {
+        return nodeMapper.selectParentIdByNodeId(nodeId);
+    }
+
+    @Override
+    public Map<Long, PlayerBaseVo> getPlayerBaseInfo(List<Long> memberIds, List<Long> userIds) {
+        Map<Long, PlayerBaseVo> players = MapUtil.newHashMap();
+        if (CollUtil.isNotEmpty(memberIds)) {
+            List<PlayerBaseDTO> members = memberMapper.selectMemberInfoByMemberIdsIncludeDelete(memberIds);
+            players.putAll(members.stream().collect(Collectors.toMap(PlayerBaseDTO::getMemberId, a -> PlayerBaseVo
+                    .builder()
+                    .playerType(a.getIsMemberDeleted() ? PlayerType.MEMBER_DELETED.getType() : PlayerType.MEMBER.getType())
+                    .userName(a.getUserName()).uuid(a.getUuid()).avatar(a.getAvatar()).email(a.getEmail())
+                    .memberId(a.getMemberId()).memberName(a.getMemberName()).team(a.getTeam())
+                    .isNickNameModified(a.getIsNickNameModified())
+                    .isMemberNameModified(a.getIsMemberNameModified())
+                    .isDeleted(a.getIsMemberDeleted()).build(), (k1, k2) -> k1)));
+        }
+        if (CollUtil.isNotEmpty(userIds)) {
+            List<UserEntity> users = userMapper.selectByIds(userIds);
+            if (CollUtil.isNotEmpty(users)) {
+                players.putAll(users.stream()
+                        .collect(Collectors.toMap(UserEntity::getId,
+                                a -> PlayerBaseVo.builder().playerType(PlayerType.VISITORS.getType()).userName(a.getNickName())
+                                        .isNickNameModified(Objects.isNull(a.getIsSocialNameModified()) || a.getIsSocialNameModified() != 0)
+                                        .uuid(a.getUuid()).avatar(a.getAvatar()).email(a.getEmail()).isDeleted(true).build(),
+                                (k1, k2) -> k1)));
+            }
+        }
+        return players;
+    }
+
+    @Override
+    public Boolean frequencyLimited(Long userId, NotificationTemplate template, String nonce) {
+        if (template.getFrequency() != null) {
+            String key = RedisConstants.getUserNotifyFrequencyKey(userId, template.getId(), nonce);
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+                Object frequency = redisTemplate.opsForValue().get(key);
+                if (frequency != null && Long.parseLong(frequency.toString()) <= template.getFrequency()) {
+                    return true;
+                }
+                else {
+                    addUserNotifyFrequency(userId, template, nonce);
+                }
+            }
+            else {
+                addUserNotifyFrequency(userId, template, nonce);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void addUserNotifyFrequency(Long userId, NotificationTemplate template, String nonce) {
+        String key = RedisConstants.getUserNotifyFrequencyKey(userId, template.getId(), nonce);
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+            redisTemplate.opsForValue().increment(key);
+        }
+        else {
+            LocalDateTime now = DateUtil.toLocalDateTime(new Date());
+            LocalDateTime endOfDay = LocalDateTimeUtil.endOfDay(now);
+            long between = LocalDateTimeUtil.between(now, endOfDay, ChronoUnit.SECONDS);
+            redisTemplate.opsForValue().set(key, Long.valueOf("1"), between, TimeUnit.SECONDS);
+        }
+    }
+}

@@ -1,0 +1,12 @@
+${USER_NAME} invited you to join the "${SPACE_NAME}" Space
+
+--------------------------------------------------------------------------------
+
+
+
+Click on the link to enter the Space: ${INVITE_URL}
+
+
+copyright © 2019-${YEARS} vikadata. All rights reserved.
+
+Contact us (http://vika.cn/)

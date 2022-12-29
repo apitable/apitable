@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220801-001" author="刘斌华" labels="企微服务商">
+        <comment>企微服务商接口许可延时任务处理信息</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}social_wecom_permit_delay`
+            (
+                `id`              bigint(20) NOT NULL COMMENT '主键 ID',
+                `suite_id`        varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
+                `auth_corp_id`    varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权的企业 ID',
+                `first_auth_time` datetime                               NOT NULL COMMENT '首次授权安装时间',
+                `process_status`  tinyint(1) NOT NULL COMMENT '处理状态。0：待处理；1：已下单；2：已支付；3：已完成',
+                `is_deleted`      tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记。0：否；1：是',
+                `created_at`      timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`      timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                KEY               `idx_auth_corp_id` (`auth_corp_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='企微服务商接口许可延时任务处理信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220801-002" author="刘斌华" labels="企微服务商">
+        <comment>企微服务商接口许可延时任务处理信息</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}social_wecom_permit_delay`
+                MODIFY COLUMN `process_status` tinyint(1) NOT NULL COMMENT '处理状态。0：待处理；1：已下单；2：已完成' AFTER `first_auth_time`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

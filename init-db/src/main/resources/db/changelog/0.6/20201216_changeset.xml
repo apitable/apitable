@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201216-001" author="Chambers" labels="workbench">
+        <comment>新增工作台-资源元数据表</comment>
+        <sqlFile path="db/changelog/0.6/20201216_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201216-002" author="Chambers" labels="workbench">
+        <comment>新增工作台-资源操作变更合集表</comment>
+        <sqlFile path="db/changelog/0.6/20201216_changeset_002.sql"/>
+    </changeSet>
+</databaseChangeLog>

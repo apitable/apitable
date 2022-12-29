@@ -1,0 +1,156 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+// @inputWidth: 592px;
+.inputEmail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  .inviteAlertWrapper {
+    margin-right: 24px;
+  }
+
+  .itemWrapper {
+    height: 328px;
+    display: flex;
+    flex-direction: column;
+    .add svg {
+      margin-right: 4px;
+    }
+    .itemContent {
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 24px 0 8px;
+      flex: 1;
+      .light-scroll-bar();
+    }
+  }
+  .inputItem {
+    display: flex;
+  }
+  .inputItemLeft {
+    flex: 1;
+  }
+  .err {
+    height: 20px;
+    min-height: 20px;
+    margin-top: 0;
+    font-size: 12px;
+    color: var(--errorColor);
+  }
+  .removeIcon {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+  .removeIcon svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--fourthLevelText);
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .inviteBtn {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 24px;
+    .tipText {
+      background: rgba(136, 106, 247, 0.05);
+      color: var(--primaryColor);
+      height: 32px;
+      border-radius: 4px;
+      flex: 1;
+      padding-left: 8px;
+      margin-right: 24px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  :global {
+    .ant-input {
+      margin-bottom: 0;
+    }
+  }
+
+  .invitedRes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    .successIcon {
+      overflow: hidden;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      margin-top: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    .successIcon {
+      color: var(--primaryColor);
+      border: 2px solid var(--primaryColor);
+      svg {
+        fill: var(--primaryColor) !important;
+      }
+    }
+    .text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 15px;
+      color: var(--firstLevelText);
+      text-align: center;
+      margin-bottom: 115px;
+      .gray {
+        color: var(--thirdLevelText);
+      }
+    }
+    .btnWrapper {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 24px;
+      button:nth-of-type(2) {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+@media screen and (min-width: @w-md){
+  .inputItem{
+    width: calc(100% - 24px);
+  }
+}
+@media screen and (max-width: @w-md){
+  .inviteBtn{
+    margin-right: 0 !important;
+    flex-direction: column-reverse;
+    button {
+      height: 48px;
+      font-size: 14px;
+    }
+  }
+  .tipText {
+    background: none !important;
+    color: var(--thirdLevelText) !important;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

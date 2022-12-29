@@ -1,0 +1,26 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "datasheetId",
+      "filter"
+    ],
+    "properties": {
+      "datasheetId": {
+        "type": "string",
+        "title": "选择维格表"
+      },
+      "filter": {
+        "type": "string",
+        "title": "选择匹配条件"
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {
+    "ui:order": [
+      "datasheetId",
+      "filter"
+    ]
+  }
+}

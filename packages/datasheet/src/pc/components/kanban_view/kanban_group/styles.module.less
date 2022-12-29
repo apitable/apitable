@@ -1,0 +1,147 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.colorLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--fourthLevelText);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.board {
+  background: var(--lowestBg);
+  position: relative;
+  border-radius: 4px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  width: 272px;
+  box-sizing: content-box !important;
+  padding-bottom: 16px;
+  max-height: calc(100% - 40px);
+
+  &.isDragging {
+    box-shadow: var(--shadowCommonDefault);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .board {
+    height: calc(100% - 96px);
+  }
+}
+
+.addButton {
+  border-radius: 4px !important;
+  border: 1px solid var(--lineColor) !important;
+  font-size: 13px !important;
+  color: var(--thirdLevelText) !important;
+  height: 32px !important;
+
+  &.isDragging {
+    background: var(--defaultBg) !important;
+  }
+
+  &:not(.isDragging):hover {
+    background: var(--fc11) !important;
+  }
+
+  &:active {
+    background: var(--fc4) !important;
+  }
+
+  //svg {
+  //  margin-right: 4px;
+  //}
+}
+
+.groupContent {
+  position: relative;
+}
+
+.autoSort {
+  height: calc(100% - 68px);
+  width: 240px;
+  left: calc((100% - 240px) / 2);
+  top: 52px;
+  border-radius: 4px;
+  position: absolute;
+  border: 1px dashed var(--primaryColor);
+  background: rgba(var(--defaultBg-rgb), 0.8);
+  backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .autoSortTitle {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+    margin-bottom: 4px;
+  }
+  .autoSortSubTitle {
+    font-size: 13px;
+    font-weight: normal;
+    color: var(--secondLevelText);
+  }
+}
+
+.placeHolder {
+  text-align: center;
+  font-size: 13px;
+  padding: 16px 0;
+  color: var(--thirdLevelText);
+}
+
+.cardWrapper {
+  outline: none;
+
+  & > div {
+    padding: 0 !important;
+    background: var(--defaultBg);
+    transition: border 0.3s ease;
+    margin: 0 !important;
+    border: 1px solid var(--lineColor);
+
+    @media (any-hover: hover) {
+      &:hover {
+        border-color: var(--primaryColor);
+      }
+    }
+  }
+
+  &.isDragging {
+    & > div {
+      box-shadow: var(--shadowCommonDefault);
+      border: 1px solid var(--primaryColor);
+    }
+  }
+}
+
+.kanbanCardBody {
+  padding: 8px;
+  & > div:first-child {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+.fixList {
+  margin-left: 16px;
+  transition: all 0.2s;
+}
+
+.count {
+  font-size: var(--thirdLevelText);
+  color: var(--thirdLevelText);
+  margin-right: 4px;
+}
+
+.hidePlaceholder {
+  transform: none !important;
+}

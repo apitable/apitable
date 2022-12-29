@@ -1,0 +1,55 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.myInviteCode {
+  height: 326px;
+  color: var(--fc1);
+  .rewardTip {
+    padding-top: 8px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .wayBox {
+    margin-top: 24px; 
+    .title {
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 18px;
+      &::before {
+        content: "\2022";
+        display: inline-block;
+        margin-right: 4px;
+        font-size: 22px;
+        color: var(--fc3);
+        transform: translateY(3px);
+      }
+    }
+    .tip {
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 18px;
+      color: var(--fc3);
+    }
+    .copyBox {
+      display: flex;
+      .input {
+        margin-right: 16px;
+        padding-left: 8px;
+        border: none;
+        border-radius: 4px;
+        width: 336px;
+        font-size: 13px;
+        background-color: var(--fc6);
+        &.inviteCode {
+          padding-left: 16px;
+          width: 138px;
+          font-size: 16px;
+          color: var(--fc0);
+          font-family: Rubik;
+          letter-spacing: 4px;
+        }
+      }
+    }
+  }
+}

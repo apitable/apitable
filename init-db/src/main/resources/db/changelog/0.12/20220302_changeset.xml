@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220302-001" author="Troy" labels="unit">
+        <comment>成员表修改字段status的注释</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}unit_member`
+            MODIFY COLUMN `status` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT '用户的空间状态(0:非活跃;1:活跃;2:预删除;3:注销冷静期预删除)' AFTER `open_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220302-002" author="Shawn" labels="appstore">
+        <comment>应用商店-应用实例修改created_by允许为空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}app_instance` MODIFY created_by bigint(20) unsigned null comment '创建用户';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

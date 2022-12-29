@@ -1,0 +1,157 @@
+.moveTo {
+  :global {
+    .ant-modal-header {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      width: 480px;
+      height: 376px;
+    }
+    .ant-modal-body {
+      display: flex;
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      padding: 0 !important;
+    }
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    .titleIcon {
+      min-width: 16px;
+      margin-left: 8px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+  }
+
+  .selectFolder {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    :global {
+      .focused {
+        border-bottom-color: var(--borderBrand) !important;
+      }
+    }
+    .searchInput {
+      width: initial;
+      margin: 0 16px;
+      border-bottom: 1px solid var(--borderCommon);
+    }
+    .wholeTips {
+      padding: 2px 16px;
+
+      :global {
+        .ant-breadcrumb {
+          white-space: nowrap;
+          line-height: 1;
+          
+          ol {
+            flex-wrap: nowrap;
+  
+            li {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+    .noWholeTips {
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .switchWholeBtn {
+        span {
+          font-size: 12px !important;
+        }
+      }
+    }
+    .folderList {
+      flex: 1;
+      overflow-y: auto;
+      .folderItem {
+        margin: 0 8px;
+        padding: 6px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background: var(--bgBglessHover);
+        }
+        &:active {
+          background: var(--bgBglessActive);
+        }
+        .folderItemContent {
+          display: flex;
+          align-items: center;
+        }
+        .folderName {
+          margin-left: 8px;
+        }
+      }
+      .scrollShadow {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 20px;
+        background: var(--bgGradientVertical);
+        pointer-events: none;
+      }
+    }
+    .folderListNoTips {
+      margin-top: 8px;
+    }
+  }
+}
+
+.moveToMobile {
+  :global {
+    .ant-drawer-title {
+      padding: 0 24px;
+      text-align: center;
+    }
+  }
+  .mobileFooter {
+    display: flex;
+    button {
+      flex: 1;
+      &+button {
+        margin-left: 16px;
+      }
+    }
+  }
+  .selectFolder {
+    height: 100%;
+    .folderList {
+      margin: 8px 0;
+      .folderItem {
+        padding: 12px 0;
+        &:hover {
+          background: transparent;
+        }
+        &:active {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+
+.mobileTitleBack {
+  position: absolute;
+  transform: translateX(-24px);
+}
+
+.permissionSetBtn {
+  cursor: pointer;
+  text-decoration: underline;
+}

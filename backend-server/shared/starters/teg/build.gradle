@@ -1,0 +1,11 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  implementation(rootProject.ext.dependencies['spring-web'])
+  implementation rootProject.ext.dependencies['slf4j']
+  implementation rootProject.ext.dependencies['servlet-api']
+  implementation rootProject.ext.dependencies['gson']
+}

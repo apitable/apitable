@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.workspace.mapper.NodeRelMapper">
+    <select id="selectMainNodeIdsByRelNodeIds" resultType="java.lang.String">
+        SELECT DISTINCT main_node_id
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByRelNodeId" resultType="com.vikadata.entity.NodeRelEntity">
+        SELECT *
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id = #{relNodeId}
+    </select>
+
+    <select id="selectByRelNodeIds" resultType="com.vikadata.entity.NodeRelEntity">
+        SELECT *
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectNodeRelDTO"
+            resultType="com.vikadata.api.workspace.dto.NodeRelDTO">
+        SELECT vn.type, vnr.rel_node_id, vnr.extra
+        FROM ${tablePrefix}node_rel vnr
+                     JOIN ${tablePrefix}node vn
+                ON vnr.rel_node_id = vn.node_id AND vn.is_rubbish = 0
+        WHERE main_node_id = #{mainNodeId}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}node_rel(id, main_node_id, rel_node_id, extra, created_by)
+        VALUE
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.mainNodeId}, #{item.relNodeId}, #{item.extra}, #{item.createdBy}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

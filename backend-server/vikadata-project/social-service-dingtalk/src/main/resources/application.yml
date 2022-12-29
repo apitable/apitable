@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: dingtalk-service
+  # database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:33060}/${MYSQL_DATABASE:vikadata-dingtalk}?characterEncoding=utf8&autoReconnect=true&useSSL=true
+    username: ${MYSQL_USERNAME:vika}
+    password: ${MYSQL_PASSWORD:password}
+  # redis
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    password: ${REDIS_PASSWORD:}
+    username: ${REDIS_USERNAME:}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:3}
+    timeout: 30000
+
+# custom component configuration
+vikadata-starter:
+  social:
+    dingtalk:
+      enabled: ${DINGTALK_ENABLED:true}
+      isv-corp-id: ${DINGTALK_ISV_CORP_ID:dingc7ad99cf1e0ad49a35c2f4657eb6378f}
+      corp-secret: ${DINGTALK_ISV_SECRET:mj3j3b15Gc3w6JPp46lvmM7lEXzavfZUEgUKsy72s3YZWRC7RkBTRTgKQ2mSfVWP}
+      isv-app-list:
+        - suite-id: ${DINGTALK_ISV_SUITE_ID:20303001}
+          app-id: ${DINGTALK_ISV_APP_ID:87098}
+          suite-key: ${DINGTALK_ISV_SUITE_KEY:suitewwganoedksh3qsil}
+          suite-secret: ${DINGTALK_ISV_SUITE_SECRET:OwKXwYcuHlpeyM9unHAT9J1lsf5Q5LkI832grMyZY5e6mXyzWkBwHGj09mvd1Ra8}
+          aes-key: ${DINGTALK_ISV_AES_KEY:s2jsfx3sxcgqv58kvztxoru8ac3w1glksvgg5aolmf7}
+          token: ${DINGTALK_ISV_TOKEN:6iyUG2vtOa45QjTKaGZCfhT3k1dW9DyF}
+          msg-tpl-id:
+            welcome: ${DINGTALK_ISV_MSG_WELCOME:3f7cec2386f74f5c8aec1a48395abeb0}
+            comment: ${DINGTALK_ISV_MSG_COMMENT:b4ac28623fd5493dbc5f995bb1cc17c7}
+            member: ${DINGTALK_ISV_MSG_MEMBER:5994e97c8766482bb971e6253ad7f6f1}
+  swagger:
+    enabled: ${SWAGGER_ENABLED:false}
+
+vikadata:
+  social:
+    const:
+      vika-api:
+        host: ${BACKEND_BASE_URL:https://integration.vika.ltd}
+        base-path: ${BACKEND_BASE_PATH:/api/v1}
+
+springfox:
+  documentation:
+    enabled: ${SPRINGFOX_ENABLED:false}
+
+grpc:
+  server:
+    port: ${DINGTALK_GRPC_PORT:9092}

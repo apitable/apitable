@@ -1,0 +1,27 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.desc {
+  line-height: 18px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--textCommonTertiary);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  p {
+    margin: 0;
+  }
+
+}
+
+
+.start {
+  flex-shrink: 1;
+  .ellipsis();
+}
+.suffix {
+  flex-shrink: 0;
+}

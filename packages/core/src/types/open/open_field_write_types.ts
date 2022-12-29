@@ -1,0 +1,223 @@
+import {
+  IOpenCheckboxFieldProperty, IOpenComputedFormat, IOpenCreatedTimeFieldProperty, IOpenCurrencyFieldProperty,
+  IOpenDateTimeFieldProperty,
+  IOpenField, IOpenNumberFieldProperty, IOpenPercentFieldProperty,
+  IOpenRatingFieldProperty, IOpenSingleTextFieldProperty
+} from './open_field_read_types';
+import { CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
+
+export enum Conversion {
+  /** delete the associated field of the associated table */
+  Delete = 'delete',
+  /** Keep the associated fields of the associated table and convert them to text type */
+  KeepText = 'keepText'
+}
+
+/**
+ * Side effects of updating fields
+ */
+export interface IEffectOption {
+  /**
+   * Whether to allow deletion of options
+   */
+  enableSelectOptionDelete?: boolean
+}
+ 
+export interface IAddOpenField extends Omit<IOpenField, 'isPrimary' | 'id' | 'property'> {
+  property: IAddOpenFieldProperty
+}
+
+export interface IUpdateOpenField extends Omit<IOpenField, 'isPrimary' | 'id' | 'property'> {
+  property: IUpdateOpenFieldProperty
+}
+
+export interface IWriteOpenSelectBaseFieldProperty {
+  defaultValue?: string | IMultiSelectedIds;
+  options: {
+    id?: string;
+    name: string;
+    /** color name */
+    color?: string;
+  }[]
+}
+
+export type IAddOpenTextFieldProperty = null;
+
+export type IAddOpenURLFieldProperty = null;
+
+export type IAddOpenEmailFieldProperty = null;
+
+export type IAddOpenPhoneFieldProperty = null;
+
+export type IAddOpenSingleTextFieldProperty = IOpenSingleTextFieldProperty;
+
+export type IAddOpenNumberFieldProperty = IOpenNumberFieldProperty;
+
+export type IAddOpenCheckboxFieldProperty = IOpenCheckboxFieldProperty;
+
+export type IAddOpenRatingFieldProperty = IOpenRatingFieldProperty;
+
+export type IAddOpenPercentFieldProperty = IOpenPercentFieldProperty;
+
+export type IAddOpenCurrencyFieldProperty = IOpenCurrencyFieldProperty;
+
+export type IAddOpenSingleSelectFieldProperty = IWriteOpenSelectBaseFieldProperty;
+
+export type IAddOpenMultiSelectFieldProperty = IWriteOpenSelectBaseFieldProperty;
+
+export interface IAddOpenMemberFieldProperty {
+  /* Whether to allow adding multiple members **/
+  isMulti?: boolean;
+  /** Whether to send notification */
+  shouldSendMsg?: boolean;
+}
+
+export type IAddOpenDateTimeFieldProperty = IOpenDateTimeFieldProperty;
+
+export type IAddOpenAttachmentFieldProperty = null;
+export interface IAddOpenMagicLinkFieldProperty {
+  /** Associate table ID, switch the associated table, the previous brotherField will be converted to a text field */
+  foreignDatasheetId: string;
+  /** Specify view ID to filter records */
+  limitToViewId?: string;
+  /** Whether to limit the selection to only a single record */
+  limitSingleRecord?: boolean;
+}
+export interface IAddOpenMagicLookUpFieldProperty {
+  /** The associated field ID of the current table referenced */
+  relatedLinkFieldId: string;
+  /** Field ID queried in the associated table */
+  targetFieldId: string;
+  /** Aggregate function */
+  rollupFunction?: RollUpFuncType;
+  /** Format, because the reference field is different, the format is different (number, percentage, date, currency) */
+  format?: IOpenComputedFormat;
+}
+export interface IAddOpenFormulaFieldProperty {
+  /** formula expression */
+  expression?: string;
+  /** When the related field that the formula depends on is deleted or the type is converted, the calculated value may not be obtained normally */
+  format?: IOpenComputedFormat;
+}
+
+export type IAddOpenAutoNumberFieldProperty = null;
+
+export type IAddOpenCreatedTimeFieldProperty = IOpenCreatedTimeFieldProperty;
+
+export interface IAddOpenLastModifiedTimeFieldProperty {
+  /** date format */
+  dateFormat: string;
+  /** Time format */
+  timeFormat?: string;
+  /** Whether to include time */
+  includeTime?: boolean;
+  /** Specify field type: 0 all editable, 1 specified field */
+  collectType?: CollectType;
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
+  fieldIdCollection?: string[];
+}
+
+export type IAddOpenCreatedByFieldProperty = null;
+
+export interface IAddOpenLastModifiedByFieldProperty {
+  /** Specify field type: 0 all editable, 1 specified field */
+  collectType?: CollectType;
+  /** Whether to specify a field, the array type can specify multiple fields, do not fill in all */
+  fieldIdCollection?: string[];
+}
+
+export type IAddOpenFieldProperty = IAddOpenTextFieldProperty
+  | IAddOpenURLFieldProperty
+  | IAddOpenEmailFieldProperty
+  | IAddOpenPhoneFieldProperty
+  | IAddOpenSingleTextFieldProperty
+  | IAddOpenNumberFieldProperty
+  | IAddOpenCheckboxFieldProperty
+  | IAddOpenRatingFieldProperty
+  | IAddOpenPercentFieldProperty
+  | IAddOpenCurrencyFieldProperty
+  | IAddOpenSingleSelectFieldProperty
+  | IAddOpenMultiSelectFieldProperty
+  | IAddOpenMemberFieldProperty
+  | IAddOpenDateTimeFieldProperty
+  | IAddOpenAttachmentFieldProperty
+  | IAddOpenMagicLinkFieldProperty
+  | IAddOpenMagicLookUpFieldProperty
+  | IAddOpenFormulaFieldProperty
+  | IAddOpenAutoNumberFieldProperty
+  | IAddOpenCreatedTimeFieldProperty
+  | IAddOpenLastModifiedTimeFieldProperty
+  | IAddOpenCreatedByFieldProperty
+  | IAddOpenLastModifiedByFieldProperty;
+
+export type IUpdateOpenTextFieldProperty = null;
+
+export type IUpdateOpenURLFieldProperty = null;
+  
+export type IUpdateOpenEmailFieldProperty = null;
+  
+export type IUpdateOpenPhoneFieldProperty = null;
+  
+export type IUpdateOpenSingleTextFieldProperty = IOpenSingleTextFieldProperty;
+  
+export type IUpdateOpenNumberFieldProperty = IOpenNumberFieldProperty;
+  
+export type IUpdateOpenCheckboxFieldProperty = IOpenCheckboxFieldProperty;
+  
+export type IUpdateOpenRatingFieldProperty = IOpenRatingFieldProperty;
+  
+export type IUpdateOpenPercentFieldProperty = IOpenPercentFieldProperty;
+  
+export type IUpdateOpenCurrencyFieldProperty = IOpenCurrencyFieldProperty;
+  
+export type IUpdateOpenSingleSelectFieldProperty = IWriteOpenSelectBaseFieldProperty;
+  
+export type IUpdateOpenMultiSelectFieldProperty = IWriteOpenSelectBaseFieldProperty;
+  
+export type IUpdateOpenMemberFieldProperty = IAddOpenMemberFieldProperty;
+  
+export type IUpdateOpenDateTimeFieldProperty = IOpenDateTimeFieldProperty;
+  
+export type IUpdateOpenAttachmentFieldProperty = null;
+export interface IUpdateOpenMagicLinkFieldProperty extends IAddOpenMagicLinkFieldProperty {
+  /** After modifying the associated table, for the operation options of the associated fields of the previous associated table, the default delete */
+  conversion?: Conversion
+}
+
+export type IUpdateOpenMagicLookUpFieldProperty = IAddOpenMagicLookUpFieldProperty;
+
+export type IUpdateOpenFormulaFieldProperty = IAddOpenFormulaFieldProperty;
+  
+export type IUpdateOpenAutoNumberFieldProperty = null;
+  
+export type IUpdateOpenCreatedTimeFieldProperty = IOpenCreatedTimeFieldProperty;
+  
+export type IUpdateOpenLastModifiedTimeFieldProperty = IAddOpenLastModifiedTimeFieldProperty;
+  
+export type IUpdateOpenCreatedByFieldProperty = null;
+  
+export type IUpdateOpenLastModifiedByFieldProperty = IAddOpenLastModifiedByFieldProperty;
+
+export type IUpdateOpenFieldProperty = IUpdateOpenTextFieldProperty
+  | IUpdateOpenURLFieldProperty
+  | IUpdateOpenEmailFieldProperty
+  | IUpdateOpenPhoneFieldProperty
+  | IUpdateOpenSingleTextFieldProperty
+  | IUpdateOpenNumberFieldProperty
+  | IUpdateOpenCheckboxFieldProperty
+  | IUpdateOpenRatingFieldProperty
+  | IUpdateOpenPercentFieldProperty
+  | IUpdateOpenCurrencyFieldProperty
+  | IUpdateOpenSingleSelectFieldProperty
+  | IUpdateOpenMultiSelectFieldProperty
+  | IUpdateOpenMemberFieldProperty
+  | IUpdateOpenDateTimeFieldProperty
+  | IUpdateOpenAttachmentFieldProperty
+  | IUpdateOpenMagicLinkFieldProperty
+  | IUpdateOpenMagicLookUpFieldProperty
+  | IUpdateOpenFormulaFieldProperty
+  | IUpdateOpenAutoNumberFieldProperty
+  | IUpdateOpenCreatedTimeFieldProperty
+  | IUpdateOpenLastModifiedTimeFieldProperty
+  | IUpdateOpenCreatedByFieldProperty
+  | IUpdateOpenLastModifiedByFieldProperty;

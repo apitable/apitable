@@ -1,0 +1,89 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220829-001" author="Zoe" labels="workbench">
+        <comment>workbench-create an invited link table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}invitation` (
+              `id` bigint(20) NOT NULL COMMENT 'primary key',
+              `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'space ID(linked#vika_space#space_id)',
+              `team_id` bigint NOT NULL COMMENT 'team ID(linked#vika_unit_team#id)',
+              `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'node ID(linked#vika_node#node_id)',
+              `creator` bigint NOT NULL COMMENT 'the creator member ID(linked#vika_unit_member#id)',
+              `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'invite token',
+              `invite_num` int(11) unsigned DEFAULT '0' COMMENT 'number of successful invitees',
+              `status` tinyint(2) unsigned DEFAULT '1' COMMENT 'link status(0:inactivated, 1:activation)',
+              `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'delete marker(0:false,1:true)',
+              `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation time',
+              `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `idx_invite_token` (`invite_token`) USING BTREE COMMENT 'unique token',
+              KEY `idx_creator` (`creator`) USING BTREE,
+              KEY `idx_space_node_id` (`space_id`, `node_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='workbench-invitation table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-002" author="吴奕涛" labels="unit">
+        <comment>创建组织架构-角色表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_role`(
+                `id`         bigint                                               NOT NULL COMMENT '主键',
+                `space_id`   varchar(50)                                          NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',
+                `role_name`  varchar(100)                                         NOT NULL COMMENT '角色名称',
+                `position`   int unsigned            DEFAULT '2000'               NOT NULL COMMENT '角色排序位置(默认从2000开始，新角色该值为空间最大position乘2)',
+                `is_deleted` tinyint(1) unsigned     DEFAULT '0'                  NOT NULL COMMENT '删除标记(0:否,1:是)',
+                `create_by`  bigint                                               NOT NULL COMMENT '创建人',
+                `update_by`  bigint                                               NULL COMMENT '更新人',
+                `create_at`  timestamp               DEFAULT CURRENT_TIMESTAMP    NOT NULL COMMENT '创建时间',
+                `update_at`  timestamp               DEFAULT CURRENT_TIMESTAMP    NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`) using BTREE,
+                KEY `k_space_id` (`space_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='组织单元-角色表';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-003" author="吴奕涛" labels="unit">
+        <comment>创建组织架构角色成员关联表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_role_member`(
+                `id`          bigint                                             NOT NULL COMMENT '主键',
+                `role_id`     bigint                                             NOT NULL COMMENT '角色ID(关联#vika_unit_role#id)',
+                `unit_ref_id` bigint                                             NOT NULL COMMENT '成员/部门ID(关联#vika_unit_team#id | #vika_unit_member#id)',
+                `unit_type`   tinyint(1) unsigned                                NOT NULL COMMENT '1: 部门；3: 成员',
+                `created_at`  timestamp             DEFAULT CURRENT_TIMESTAMP    NOT NULL COMMENT '创建时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY `k_role_id` (`role_id`) USING BTREE,
+                KEY `k_unit_ref_id` (`unit_ref_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='组织架构-角色成员关联表';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-004" author="吴奕涛" labels="unit">
+        <comment>新增空间角色管理资源数据</comment>
+        <sql>
+            BEGIN;
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862018, 'MANAGE_ROLE', 'CREATE_ROLE', '添加角色', NULL, '具有此资源的角色，可以在目录树添加角色', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862020, 'MANAGE_ROLE', 'READ_ROLE', '读取角色', NULL, '具有此资源的角色，可以在目录树读取角色的数据', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862023, 'MANAGE_ROLE', 'UPDATE_ROLE', '更新角色', NULL, '具有此资源的角色，可以对角色进行编辑操作，更新角色的名称', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862025, 'MANAGE_ROLE', 'DELETE_ROLE', '删除角色', NULL, '具有此资源的角色，可以删除角色', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862027, 'MANAGE_ROLE', 'ADD_ROLE_MEMBER', '添加角色成员', NULL, '具有此资源的角色，可以在角色添加成员或部门', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862030, 'MANAGE_ROLE', 'REMOVE_ROLE_MEMBER', '移除角色成员', NULL, '具有此资源的角色，可以在角色移除成员或部门', 1);
+
+
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
+            VALUES (1560560432907862035 , 'MANAGE_ROLE', '管理角色', '可进行新增、更新、删除角色等操作');
+            COMMIT;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

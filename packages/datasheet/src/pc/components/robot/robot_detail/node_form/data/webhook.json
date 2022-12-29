@@ -1,0 +1,257 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "url",
+      "method"
+    ],
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "$robot_action_send_web_request_config_2"
+      },
+      "method": {
+        "enum": [
+          "GET",
+          "POST",
+          "PATCH",
+          "DELETE"
+        ],
+        "type": "string",
+        "title": "$robot_action_send_web_request_config_1",
+        "default": "GET",
+        "description": "$robot_action_send_web_request_config_1_desc"
+      },
+      "headers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "key",
+            "value"
+          ],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "title": "$robot_action_send_web_request_config_3",
+        "description": "$robot_action_send_web_request_config_3_desc"
+      }
+    },
+    "dependencies": {
+      "method": {
+        "oneOf": [
+          {
+            "properties": {
+              "body": {
+                "type": "object",
+                "title": "$robot_action_send_web_request_config_4",
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "raw",
+                      "form-data"
+                    ],
+                    "type": "string",
+                    "default": "raw"
+                  }
+                },
+                "dependencies": {
+                  "type": {
+                    "oneOf": [
+                      {
+                        "properties": {
+                          "type": {
+                            "enum": [
+                              "form-data"
+                            ]
+                          },
+                          "formData": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "key",
+                                "value"
+                              ],
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "description": "$robot_action_send_web_request_body_formdata_desc"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "type": {
+                            "enum": [
+                              "raw"
+                            ]
+                          },
+                          "format": {
+                            "type": "string",
+                            "default": "json",
+                            "enum": [
+                              "json",
+                              "text"
+                            ]
+                          }
+                        },
+                        "dependencies": {
+                          "format": {
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "format": {
+                                    "enum": [
+                                      "json"
+                                    ]
+                                  },
+                                  "data": {
+                                    "type": "string",
+                                    "format": "json",
+                                    "description": "$robot_action_send_web_request_body_json_desc"
+                                  }
+                                }
+                              },
+                              {
+                                "properties": {
+                                  "format": {
+                                    "enum": [
+                                      "text"
+                                    ]
+                                  },
+                                  "data": {
+                                    "type": "string",
+                                    "description": "$robot_action_send_web_request_body_raw_desc"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "method": {
+                "enum": [
+                  "POST",
+                  "PATCH"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {
+    "body": {
+      "type": {
+        "ui:widget": "RadioGroupWidget",
+        "ui:options": {
+          "showTitle": false
+        }
+      },
+      "format": {
+        "ui:options": {
+          "showTitle": false
+        }
+      },
+      "data": {
+        "ui:options": {
+          "showTitle": false
+        }
+      },
+      "formData": {
+        "items": {
+          "key": {
+            "ui:options": {
+              "showTitle": false
+            }
+          },
+          "value": {
+            "ui:options": {
+              "showTitle": false
+            }
+          },
+          "ui:order": [
+            "key",
+            "value"
+          ],
+          "ui:options": {
+            "inline": true
+          }
+        },
+        "ui:options": {
+          "orderable": false,
+          "showTitle": false
+        }
+      },
+      "ui:order": [
+        "type",
+        "format",
+        "data",
+        "formData"
+      ]
+    },
+    "headers": {
+      "items": {
+        "key": {
+          "ui:options": {
+            "showTitle": false
+          }
+        },
+        "value": {
+          "ui:options": {
+            "showTitle": false
+          }
+        },
+        "ui:order": [
+          "key",
+          "value"
+        ],
+        "ui:options": {
+          "inline": true
+        }
+      },
+      "ui:options": {
+        "orderable": false
+      }
+    },
+    "ui:order": [
+      "method",
+      "url",
+      "headers",
+      "body"
+    ],
+    "ui:options": {
+      "layout": [
+        [
+          "method",
+          "url"
+        ],
+        [
+          "headers"
+        ],
+        [
+          "body"
+        ]
+      ]
+    }
+  }
+}

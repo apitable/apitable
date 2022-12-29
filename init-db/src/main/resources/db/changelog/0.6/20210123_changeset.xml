@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20210123-001" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，字段 resource_type 设置为非空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `resource_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '资源类型(0:数表;1:收集表;2:仪表盘;3:组件)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-002" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，字段 revision 设置为非空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `revision` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '版本号' AFTER `operations`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-003" author="Chambers" labels="workbench">
+        <comment>资源操作变更合集表，字段 source_type 设置为非空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `source_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据来源类型(0:默认)' AFTER `revision`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-004" author="Chambers" labels="workbench">
+        <comment>资源元数据表，字段 resource_id 设置为非空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_meta`
+            MODIFY COLUMN `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源ID(node_id/..)' AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-005" author="Chambers" labels="workbench">
+        <comment>资源元数据表，字段 resource_type 设置为非空</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_meta`
+            MODIFY COLUMN `resource_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '资源类型(0:数表;1:收集表;2:仪表盘;3:组件)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

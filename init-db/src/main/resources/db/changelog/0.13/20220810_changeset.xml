@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220810-001" author="Shawn" labels="user">
+        <comment>create user bind table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}user_bind`
+            (
+                `id`           bigint                                  NOT NULL COMMENT '主键',
+                `user_id`      bigint                                  NOT NULL COMMENT '用户ID',
+                `external_key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '外部ID',
+                `created_at`   timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`   timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY            `k_user_id` (`user_id`) USING BTREE,
+                KEY            `k_external_key` (`external_key`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户外部系统绑定表';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

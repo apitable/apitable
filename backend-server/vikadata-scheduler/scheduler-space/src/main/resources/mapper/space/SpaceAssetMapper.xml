@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.scheduler.space.mapper.space.SpaceAssetMapper">
+
+    <select id="selectDtoByNodeIds" resultType="com.vikadata.scheduler.space.model.SpaceAssetDto">
+        SELECT vsa.id, vsa.node_id, vsa.cite, va.file_url
+        FROM vika_space_asset vsa
+        JOIN vika_asset va ON vsa.asset_id = va.id
+        WHERE vsa.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateCiteByIds">
+        UPDATE vika_space_asset
+        SET cite = #{cite}
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="insertList">
+        INSERT INTO vika_space_asset(id, space_id, node_id, asset_id, asset_checksum, cite, type, file_size, source_name)
+        VALUES
+        <foreach collection="entities" item="element" index="index" separator=",">
+            (#{element.id}, #{element.spaceId}, #{element.nodeId}, #{element.assetId}, #{element.assetChecksum},
+            #{element.cite}, #{element.type}, #{element.fileSize}, '')
+        </foreach>
+    </insert>
+
+</mapper>

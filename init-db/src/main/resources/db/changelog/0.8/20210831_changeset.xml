@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210831-001" author="Mayne" labels="automation">
+        <comment>service 添加 slug 字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_service`
+                ADD COLUMN `slug` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '服务可读唯一标识' AFTER `service_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210831-002" author="Mayne" labels="automation">
+        <comment>service 添加 slug 字段唯一索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_service`
+                ADD UNIQUE INDEX `uk_service_slug` (`slug`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210831-003" author="Mayne" labels="automation">
+        <comment>trigger type 添加 endpoint 字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_trigger_type`
+                ADD COLUMN `endpoint` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器原型端点' AFTER `output_json_schema`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

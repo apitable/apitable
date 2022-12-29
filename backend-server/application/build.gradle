@@ -1,0 +1,171 @@
+import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+plugins {
+  id 'org.springframework.boot'
+  id 'testing.java-conventions'
+}
+
+dependencies {
+  implementation project(':shared:core')
+  implementation project(':db-model')
+  
+  implementation project(':shared:starters:afs')
+  implementation project(':shared:starters:sms')
+  implementation project(':shared:starters:mail')
+  implementation project(':shared:starters:amqp')
+  implementation project(':shared:starters:sensors')
+  implementation project(':shared:starters:oss')
+  implementation project(':shared:starters:socketio')
+  implementation project(':shared:starters:tencent')
+  implementation project(':shared:starters:beetl')
+  implementation project(':shared:starters:vika')
+  implementation project(':grpc-model')
+  implementation project(':shared:starters:social-feishu')
+  implementation project(':shared:starters:social-dingtalk')
+  implementation project(':shared:starters:social-wecom')
+  implementation project(':shared:starters:wx-miniapp')
+  implementation project(':shared:starters:wx-open')
+  implementation project(':shared:starters:wx-mp')
+  implementation project(':shared:starters:yozo')
+  implementation project(':shared:starters:aegis')
+  implementation project(':shared:starters:idaas')
+  implementation project(':shared:starters:auth0')
+  implementation project(':shared:starters:teg')
+  
+  annotationProcessor rootProject.ext.dependencies['configuration-processor']
+  
+  implementation rootProject.ext.dependencies['spring-web-starter']
+  implementation rootProject.ext.dependencies['spring-thymeleaf']
+  implementation rootProject.ext.dependencies['spring-mail-starter']
+  implementation rootProject.ext.dependencies['spring-actuator-starter']
+  implementation rootProject.ext.dependencies['spring-aop-starter']
+  implementation rootProject.ext.dependencies['spring-validation-starter']
+  implementation rootProject.ext.dependencies['spring-security-starter']
+  implementation rootProject.ext.dependencies['spring-cache-starter']
+  implementation rootProject.ext.dependencies['spring-integration-starter']
+  implementation rootProject.ext.dependencies['spring-integration-redis']
+  implementation rootProject.ext.dependencies['spring-thymeleaf-starter']
+  implementation(rootProject.ext.dependencies['spring-session-redis']) {
+    exclude group: 'io.lettuce', module: 'lettuce-core'
+  }
+  implementation('org.apache.commons:commons-pool2')
+  implementation rootProject.ext.dependencies['jedis']
+  implementation rootProject.ext.dependencies['spring-security-cas']
+  implementation rootProject.ext.dependencies['prometheus']
+  implementation rootProject.ext.dependencies['mybatis-plus-starter']
+  runtimeOnly rootProject.ext.dependencies['mysql']
+  implementation rootProject.ext.dependencies['easyexcel']
+  implementation rootProject.ext.dependencies['p6spy']
+  implementation rootProject.ext.dependencies['servlet-api']
+  implementation rootProject.ext.dependencies['hutool']
+  implementation rootProject.ext.dependencies['swagger2']
+  implementation rootProject.ext.dependencies['java-semver']
+  implementation rootProject.ext.dependencies['grpc-spring-boot']
+  implementation rootProject.ext.dependencies['grpc-server-spring-boot']
+  implementation rootProject.ext.dependencies['pdf']
+  implementation rootProject.ext.dependencies['sentry']
+  implementation rootProject.ext.dependencies['spring-cloud-starter-sleuth']
+  implementation rootProject.ext.dependencies['spring-cloud-sleuth-zipkin']
+  implementation rootProject.ext.dependencies['okhttp3']
+  implementation rootProject.ext.dependencies['jsoup']
+  
+  runtimeOnly rootProject.ext.dependencies['mysql']
+  
+  annotationProcessor rootProject.ext.dependencies['lombok']
+  compileOnly rootProject.ext.dependencies['lombok']
+  
+  testCompileOnly rootProject.ext.dependencies["lombok"]
+  testAnnotationProcessor rootProject.ext.dependencies["lombok"]
+  
+  testImplementation rootProject.ext.dependencies['spring-test-starter']
+  testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
+  testImplementation 'org.rnorth.visible-assertions:visible-assertions:2.1.2'
+  testImplementation("org.json:json:${json_java_version}")
+  
+  // for clock module
+  testImplementation rootProject.ext.dependencies['assertj']
+  testImplementation rootProject.ext.dependencies['awaitility']
+  
+  // for enterprise
+  implementation rootProject.ext.dependencies['spring-plugin-core']
+  implementation rootProject.ext.dependencies['spring-plugin-metadata']
+  implementation rootProject.ext.dependencies['pingpp']
+}
+
+jar {
+  enabled = false
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+processResources {
+  filesMatching("**/*.yml") {
+    if (it.name != 'application.yml') {
+      it.exclude()
+    }
+  }
+}
+
+compileJava.dependsOn processResources
+bootJar.dependsOn processResources
+
+// Compile Java Setting
+tasks.withType(JavaCompile).configureEach {
+  options.encoding = StandardCharsets.UTF_8
+  options.warnings = false
+  options.compilerArgs += '-Xlint:-deprecation'
+}
+
+bootJar {
+  mainClass.set('com.vikadata.api.Application')
+  manifest {
+    attributes 'Start-Class': 'com.vikadata.api.Application'
+    attributes 'Implementation-Version': archiveVersion
+    attributes 'Built-Gradle': gradle.gradleVersion
+    attributes 'Build-OS': System.getProperty("os.name")
+    attributes 'Built-By': System.getProperty("user.name")
+    attributes 'Build-Jdk': System.getProperty("java.version")
+    attributes 'Build-Timestamp': LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+  }
+}
+
+// SpringBoot Plugin On Gradle
+springBoot {
+  mainClass.set('com.vikadata.api.Application')
+  // build-info.properties in resources/main/META-INF directory
+  buildInfo {
+    properties {
+      artifact = 'Api Server'
+      version = rootProject.version
+      group = rootProject.group
+      name = 'Api Server'
+    }
+  }
+}
+
+test {
+  //  useJUnitPlatform()
+  
+  // listen to events in the test execution lifecycle
+  //  beforeTest { descriptor ->
+  //    logger.lifecycle("Running test: {}", descriptor)
+  //  }
+  
+  //  doFirst {
+  //    forkEvery = 5
+  //    minHeapSize = "256m"
+  //    maxHeapSize = "2048m"
+  //    jvmArgs "-XX:MetaspaceSize=64m", "-XX:MaxMetaspaceSize=256m"
+  //  }
+  
+  // Stops test execution after the first failed test.
+  failFast = true
+  
+  // listen to standard out and standard error of the test JVM(s)
+  //  onOutput { descriptor, event ->
+  //    if (event.destination == TestOutputEvent.Destination.StdErr) {
+  //      logger.error("Test: {}, error: {}", descriptor, event.message)
+  //    }
+  //  }
+}

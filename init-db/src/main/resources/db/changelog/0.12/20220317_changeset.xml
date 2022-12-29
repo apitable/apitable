@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220317-001" author="Zoe" labels="datasheet">
+        <comment>工作台-新建数表记录通知表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_record_alarm`
+            (
+                `id`           BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
+                `alarm_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '闹钟ID',
+                `space_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(关联#space#space_id)',
+                `dst_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#datasheet#dst_id)',
+                `record_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '记录ID(关联#datasheet_record#record_id)',
+                `field_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表列ID',
+                `alarm_at`     timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT '通知时间',
+                `alarm_status` tinyint   NOT NULL                                           DEFAULT '0' COMMENT '状态：0-默认、1-处理中、2-处理成功、3-处理失败',
+                `is_deleted`   tinyint unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+                `created_by`   bigint                                                       DEFAULT NULL COMMENT '创建用户',
+                `updated_by`   bigint                                                       DEFAULT NULL COMMENT '最后一次更新用户',
+                `created_at`   timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`   timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `uk_alarm_id` (`alarm_id`) USING BTREE,
+                KEY            `idx_space_id` (`space_id`) USING BTREE,
+                KEY            `idx_dst_rec_id` (`dst_id`, `record_id`) USING BTREE,
+                KEY            `idx_alarm_at` (`alarm_at`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表记录通知表';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

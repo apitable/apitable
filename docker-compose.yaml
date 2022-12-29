@@ -1,0 +1,424 @@
+services:
+  init-settings:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_INIT_SETTINGS}
+    volumes:
+      - ${DATA_PATH}/.data/settings/apitable:/tmp/apitable
+    command:
+      - /bin/sh
+      - -c 
+      - |
+        rm -rf /tmp/apitable/* && cp -afr /settings/* /tmp/apitable
+        echo "init-settings done"
+
+  web-server:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_WEB_SERVER}
+    restart: always
+    expose:
+      - 8080
+    env_file:
+      - "${ENV_FILE:-.env}"
+    networks:
+      - apitable
+    user: 0:0
+    volumes:
+      - ${DATA_PATH}/.data/settings/apitable:/tmp/apitable
+    security_opt:
+      - label:user:root
+      - label:role:root
+    command:
+      - /bin/sh
+      - -c
+      - |
+        [ -f /tmp/apitable/run.sh ] &&  sh /tmp/apitable/run.sh
+        node server.js
+    depends_on:
+      backend-server:
+        condition: service_healthy
+      init-settings:
+        condition: service_completed_successfully
+
+  imageproxy-server:
+    image: ${IMAGE_REGISTRY}/${IMAGE_IMAGEPROXY_SERVER}
+    restart: always
+    expose:
+      - "8080"
+    environment:
+      - TZ=${TIMEZONE}
+      - BASEURL=${MINIO_ENDPOINT}
+    networks:
+      - apitable
+
+  backend-server:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_BACKEND_SERVER}
+    ports:
+      - "8081:8081"
+    env_file:
+      - "${ENV_FILE:-.env}"
+    expose:
+      - "8081"
+    restart: always
+    environment:
+      - TZ=${TIMEZONE}
+      - OSS_TYPE=aws
+    networks:
+      - apitable
+    depends_on:
+      - mysql
+      - redis
+      - socket-server
+      - minio
+      - rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS 'http://localhost:8081' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  room-server:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_ROOM_SERVER}
+    restart: always
+    #ports:
+    #  - 3333:3333
+    #  - 3334:3334
+    expose:
+      - "3333"
+      - "3334"
+    env_file:
+      - "${ENV_FILE:-.env}"
+    environment:
+      - NODE_ENV=${ENV}
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
+      - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
+      - INSTANCE_MAX_MEMORY=4096M
+    networks:
+      - apitable
+    depends_on:
+      - redis
+      - mysql
+
+  scheduler-server:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_ROOM_SERVER}
+    restart: always
+    #ports:
+    #  - 3333:3333
+    #  - 3334:3334
+    expose:
+      - "3333"
+      - "3334"
+    env_file:
+      - "${ENV_FILE:-.env}"
+    environment:
+      - NODE_ENV=${ENV}
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
+      - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
+      - INSTANCE_MAX_MEMORY=4096M
+      - APPLICATION_NAME=SCHEDULE_SERVER
+      # 只有一个服务开启
+      - ENABLE_SCHED=true
+    networks:
+      - apitable
+    depends_on:
+      - redis
+      - mysql
+
+  socket-server:
+    image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_SOCKET_SERVER}
+    restart: always
+    #    ports:
+    #      - 3001:3001
+    #      - 3002:3002
+    #      - 3005:3005
+    expose:
+      - "3001"
+      - "3002"
+      - "3005"
+      - "3007"
+    environment:
+      - PORT=3001
+      - NOTIFICATION_PORT=3002
+      - SYS_MEMORY_RATIO=100
+      - NODE_MEMORY_RATIO=80
+      - NEST_GRPC_URL=room-server:3334
+    env_file:
+      - "${ENV_FILE:-.env}"
+    networks:
+      - apitable
+    depends_on:
+      - redis
+      - rabbitmq
+
+  ### Third Party Dockers
+  gateway:
+    image: ${IMAGE_GATEWAY}
+    restart: always
+    ports:
+      - ${NGINX_HTTP_PORT:-80}:80
+      - ${NGINX_HTTPS_PORT:-443}:443
+    volumes:
+      - ./gateway/conf.d:/etc/nginx/conf.d
+    environment:
+      - TZ=${TIMEZONE}
+    networks:
+      - apitable
+    depends_on:
+      - mysql
+      - minio
+      - backend-server
+      - room-server
+      - socket-server
+      - imageproxy-server
+      - web-server
+
+  minio:
+    image: ${IMAGE_MINIO}
+    user: "${UID}:${GID}"
+    restart: always
+    command: server /data
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    volumes:
+      - ${DATA_PATH}/.data/minio/data:/data
+      - ${DATA_PATH}/.data/minio/config:/root/.minio
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - TZ=${TIMEZONE}
+    networks:
+      - apitable
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS 'http://localhost:9000' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: ${IMAGE_REDIS}
+    restart: always
+    user: "${UID}:${GID}"
+    command:
+      [
+          "redis-server",
+          "--appendonly",
+          "yes",
+          "--requirepass",
+          "${REDIS_PASSWORD}",
+      ]
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    volumes:
+      - ${DATA_PATH}/.data/redis:/data
+    environment:
+      - TZ=${TIMEZONE}
+    networks:
+      - apitable
+
+  mysql:
+    image: ${IMAGE_MYSQL}
+    restart: always
+    user: "${UID}:${GID}"
+    volumes:
+      - ${DATA_PATH}/.data/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - TZ=${TIMEZONE}
+    command: --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION
+      --lower_case_table_names=2
+    healthcheck:
+      test: "mysql ${MYSQL_DATABASE} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} -e 'SELECT 1;'"
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    networks:
+      - apitable
+
+  rabbitmq:
+    image: ${IMAGE_RABBITMQ}
+    user: "${UID}:${GID}"
+    volumes:
+      - ${DATA_PATH}/.data/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "5671:5671"
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - "5671"
+      - "5672"
+      - "15672"
+    environment:
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    restart: always
+    networks:
+      - apitable
+
+  # mongo1:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo1:/data/db
+  #   ports:
+  #     - "27017:27017"
+  #   expose:
+  #     - 27017
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27017", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   healthcheck:
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27017/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
+
+  # mongo2:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo2:/data/db
+  #   ports:
+  #     - "27027:27027"
+  #   expose:
+  #     - 27027
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27027", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   healthcheck:
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27027/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
+  # mongo3:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo3:/data/db
+  #   ports:
+  #     - 27037:27037
+  #   expose:
+  #     - 27037
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27037", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   depends_on:
+  #     - mongo1
+  #     - mongo2
+  #   healthcheck:
+  #     # test: ["CMD","mongo","--host","mongo1","--port","27017",  "--eval", 'rs.initiate( { _id : "rs0",members: [{ _id: 0,     host: "mongo1:27017" },{ _id: 1, host: "mongo2:27027" },{   _id: 2, host: "mongo3:27037" }   ]})']
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27037/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
+
+  # init-mongo:
+  #   image: ${IMAGE_MONGODB}
+  #   networks:
+  #     - apitable
+  #   command: >
+  #     sh -c "mongo --host mongo1 --port 27017 --eval 'rs.initiate( { _id : \"rs0\",members: [{ _id: 0,     host: \"mongo1:27017\" },{ _id: 1, host: \"mongo2:27027\" },{   _id: 2, host: \"mongo3:27037\" }   ]})' && \
+  #     mongo mongodb://mongo1:27017,mongo2:27027,mongo3:27037/${MONGO_DATABASE}?replicaSet=rs0 --eval \"if(db.getUser('${MONGO_USERNAME}')==null) db.createUser({user: '${MONGO_USERNAME}', pwd: '${MONGO_PASSWORD}', roles: [ { role: 'readWrite', db: '${MONGO_DATABASE}' } ] })\" "
+  #   depends_on:
+  #     mongo3:
+  #       condition: service_healthy
+
+  # #### init data
+  init-db:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
+    environment:
+      - TZ=${TIMEZONE}
+      - DB_HOST=${MYSQL_HOST}
+      - DB_PORT=${MYSQL_PORT}
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USERNAME=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - ACTION=update
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  init-data-mysql:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MYSQL}
+    environment:
+      - TZ=${TIMEZONE}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    env_file:
+      - "${ENV_FILE:-.env}"
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+    command:
+      - /bin/bash
+      - -c
+      - |
+        # wait init-db
+        sleep 120
+        sh run.sh
+
+  init-data-minio:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MINIO}
+    environment:
+      - TZ=${TIMEZONE}
+    env_file:
+      - "${ENV_FILE:-.env}"
+    networks:
+      - apitable
+    depends_on:
+      minio:
+        condition: service_healthy
+
+  init-data-user:
+    image: ${IMAGE_INIT_DATA_USER}
+    #restart: always
+    environment:
+      - TZ=${TIMEZONE}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        sleep 30
+        curl -X POST http://backend-server:8081/api/v1/gm/new/users
+    networks:
+      - apitable
+    depends_on:
+      init-db:
+        condition: service_completed_successfully
+      backend-server:
+        condition: service_healthy
+
+networks:
+  apitable:
+    driver: bridge

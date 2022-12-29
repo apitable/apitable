@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210421-001" author="Shawn" labels="marketplace">
+        <comment>应用市场空间站关联表添加审计字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}marketplace_space_app_rel`
+            ADD COLUMN `created_by` bigint(20) DEFAULT NULL COMMENT '创建者' after status,
+            ADD COLUMN `updated_by` bigint(20) DEFAULT NULL COMMENT '最后修改者' after created_by,
+            ADD COLUMN `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' after `created_at`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210421-002" author="Shawn" labels="marketplace">
+        <comment>应用市场空间站关联表删除status字段</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}marketplace_space_app_rel DROP `status`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210421-003" author="Shawn" labels="marketplace">
+        <comment>应用市场空间站关联表删除created_by字段</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}marketplace_space_app_rel DROP `created_by`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210421-004" author="Shawn" labels="marketplace">
+        <comment>应用市场空间站关联表删除updated_by字段</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}marketplace_space_app_rel DROP `updated_by`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

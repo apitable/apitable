@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210820-001" author="Chambers" labels="space">
+        <comment>空间附件表新增唯一索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_asset`
+            ADD UNIQUE INDEX `uk_node_asset_id`(`node_id`, `asset_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210820-002" author="Chambers" labels="space">
+        <comment>空间附件表删除旧索引</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_asset`
+            DROP INDEX `uk_spc_dst_asset_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

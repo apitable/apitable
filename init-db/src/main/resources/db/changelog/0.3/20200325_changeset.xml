@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.3-20200325-001" author="Chambers" labels="base">
+        <comment>修改节点分享设置操作记录表字段share_id</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_share_operate` CHANGE COLUMN `share_id` `node_id` varchar(50) NOT NULL COMMENT '分享节点ID' AFTER `id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.3-20200325-002" author="ZoeZheng" labels="audit">
+        <comment>用户行为审计表spaceId类型更换</comment>
+        <sql>
+            ALTER TABLE ${table.prefix}audit_space MODIFY COLUMN space_id VARCHAR ( 50 ) NULL COMMENT '空间ID(关联#vika_space#space_id)';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

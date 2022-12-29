@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!-- define where the logs are stored -->
+    <springProperty scope="context" name="LOG_PATH" source="vikadata.log.path" defaultValue="logs"/>
+    <!-- The name of the log file cannot be changed, and the variable spring.application.name is used by default -->
+    <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name" defaultValue="DingTalk"/>
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) - %red(T[%X{traceId}]) - %red(S[%X{spanId}]) - %red([%thread]) %highlight(%-5level) %green(%logger{35}) %magenta(Line:%L) - %blue(%msg%n)"/>
+    <!--log format-->
+    <!-- Formatted output: %d: means date, %thread: means thread name, %-5 level: level is 5 characters wide from
+    left, %msg: log message, %n: is newline -->
+
+    <!--    <logger name="com.vikadata" level="debug"/>-->
+    <!--    <logger name="org.springframework.security" level="debug"/>-->
+
+    <!-- Logger, date rolling record -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- the path and filename of the log file being logged -->
+        <file>${LOG_PATH}/${LOG_FILE_NAME}_error.log</file>
+        <!-- rolling strategy for logger log by date by size -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- The path of the archived log file. For example, today is the 2013-12-21 log. The path of the currently written log file is specified by the file node. files in different directories. And the log file of 2013-12-21 is specified by fileNamePattern. %d{yyyy-MM-dd} specifies the date format, %i specifies the index -->
+            <fileNamePattern>${LOG_PATH}/backup/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- If you roll back and forth by day, the maximum storage time is 60 days, and everything before 60 days will be cleaned up. The value here is related to the rolling strategy mode -->
+            <maxHistory>60</maxHistory>
+            <!-- In addition to logging by log, it is also configured that the log file cannot exceed 2M. If it exceeds 2M, the log file will start with index 0 and name the log file, such as log-error-2013-12-21.0.log -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- Append logging -->
+        <append>true</append>
+        <!-- format of the log file -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>Log >>> %d{yyyy-MM-dd HH:mm:ss.SSS} T[%X{traceId}] - S[%X{spanId}] - [%thread] %-5level %logger
+                Line:%-3L - %msg%n
+            </pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- this log file only logs level level error -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- asynchronous output -->
+    <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- No logs are lost. By default, if the queue is 80% full, logs of TRACT, DEBUG, INFO levels will be discarded -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- Change the default queue depth, which affects performance. The default value is 256 -->
+        <queueSize>256</queueSize>
+        <!-- add additional appenders at most one can be added -->
+        <appender-ref ref="FILE_ERROR"/>
+    </appender>
+
+    <!-- Logger, full logging -->
+    <appender name="FILE_TOTAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- the path and filename of the log file being logged -->
+        <file>${LOG_PATH}/${LOG_FILE_NAME}_total.log</file>
+        <!-- rolling strategy for logger log by date by size -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- The path of the archived log file. For example, today is the 2013-12-21 log. The path of the currently written log file is specified by the file node. files in different directories. And the log file of 2013-12-21 is specified by fileNamePattern. %d{yyyy-MM-dd} specifies the date format, %i specifies the index -->
+            <fileNamePattern>${LOG_PATH}/backup/${LOG_FILE_NAME}-total-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- If you roll back and forth by day, the maximum storage time is 60 days, and everything before 60 days will be cleaned up. The value here is related to the rolling strategy mode -->
+            <maxHistory>60</maxHistory>
+            <!-- In addition to logging by log, it is also configured that the log file cannot exceed 5 M. If it exceeds 5 M, the log file will start with index 0 and name the log file, such as log-total-2013-12-21.0.log -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- append logging -->
+        <append>true</append>
+        <!-- format of the log file -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>Log >>> %d{yyyy-MM-dd HH:mm:ss.SSS} T[%X{traceId}] - S[%X{spanId}] - [%thread] %-5level %logger
+                Line:%-3L - %msg%n
+            </pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- asynchronous output -->
+    <appender name="ASYNC_FILE_TOTAL" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- No logs are lost. By default, if the queue is 80% full, logs of TRACT, DEBUG, INFO levels will be discarded -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- Change the default queue depth, which affects performance. The default value is 256 -->
+        <queueSize>256</queueSize>
+        <!--Add additional appenders, at most one can be added-->
+        <appender-ref ref="FILE_TOTAL"/>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--blue cyan green magenta red yellow-->
+            <pattern>「Log」>>> ${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="ASYNC_FILE_ERROR"/>
+        <appender-ref ref="ASYNC_FILE_TOTAL"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
+
+

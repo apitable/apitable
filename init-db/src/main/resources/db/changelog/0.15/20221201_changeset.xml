@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.15-20221201-001" author="Zoe" labels="Social">
+        <comment>create dingtalk application table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}social_dingtalk_app` (
+                `id` bigint unsigned NOT NULL COMMENT 'primary key',
+                `suite_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'suite id',
+                `suite_secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'suite secret',
+                `agent_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'app agent id',
+                `token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'token',
+                `aes_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'aes key',
+                `app_type` tinyint unsigned NOT NULL COMMENT 'application type (1: self, 2: isv)',
+                `auth_corp_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'self-agent app authorization corp id',
+                `suite_ticket` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'suite ticket for self-agent app',
+                `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'deleted (0:no,1:yes)',
+                `created_by` bigint DEFAULT NULL COMMENT 'creator',
+                `updated_by` bigint DEFAULT NULL COMMENT 'last modified by',
+                `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation time',
+                `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `uk_suite_id` (`suite_id`) USING BTREE,
+                KEY `idx_agent_id` (`agent_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Social- Dingtalk application Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

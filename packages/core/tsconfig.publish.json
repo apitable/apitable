@@ -1,0 +1,32 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "jest",
+      "node"
+    ],
+    // "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "allowJs": true,
+    "paths": {
+      "*": [
+        "*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "ESNext.Array",
+      "ES2020.String"
+    ]
+  },
+  "include": [
+    "src/index-publish.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/__tests__/*.ts"
+  ]
+}

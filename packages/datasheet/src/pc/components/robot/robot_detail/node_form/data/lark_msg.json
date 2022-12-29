@@ -1,0 +1,41 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "type",
+      "content",
+      "webhookUrl"
+    ],
+    "properties": {
+      "type": {
+        "enum": [
+          "text"
+        ],
+        "type": "string",
+        "title": "消息类型",
+        "default": "text",
+        "enumNames": [
+          "文本消息"
+        ]
+      },
+      "content": {
+        "type": "string",
+        "title": "消息内容",
+        "description": "输入要发送到飞书群聊的消息内容（输入英文斜杠「/」可插入变量）"
+      },
+      "webhookUrl": {
+        "type": "string",
+        "title": "飞书机器人 webhook 地址",
+        "description": "指定一个飞书机器人，向它所在的群聊发送消息 [如何获取 webhook](https://vika.cn/help/manual-vika-robot/#8-toc-title)"
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {
+    "ui:order": [
+      "webhookUrl",
+      "type",
+      "content"
+    ]
+  }
+}

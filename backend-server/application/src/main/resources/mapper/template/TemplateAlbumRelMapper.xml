@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vikadata.api.template.mapper.TemplateAlbumRelMapper">
+    <select id="selectAlbumIdByRelateIdAndType" resultType="java.lang.String">
+        SELECT album_id
+        FROM ${tablePrefix}template_album_rel
+        WHERE relate_id = #{relateId}
+          AND `type` = #{type}
+    </select>
+
+    <select id="selectRelateIdByAlbumIdAndType" resultType="java.lang.String">
+        SELECT relate_id
+        FROM ${tablePrefix}template_album_rel
+        WHERE album_id = #{albumId}
+          AND `type` = #{type}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}template_album_rel(id, album_id, type, relate_id)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.albumId}, #{item.type}, #{item.relateId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatch">
+        DELETE
+        FROM ${tablePrefix}template_album_rel
+    </delete>
+</mapper>

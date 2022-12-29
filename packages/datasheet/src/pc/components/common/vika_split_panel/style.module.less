@@ -1,0 +1,37 @@
+@import "~pc/styles/lib_var.less";
+
+.resizeBarStyle {
+  position: relative;
+
+  &:hover:not([class*='disabled']) {
+    .isDragging()
+  }
+
+}
+
+.isDragging {
+  &:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 5px;
+    height: 48px;
+    background: var(--primaryColor);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 4px;
+  }
+
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: var(--primaryColor);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

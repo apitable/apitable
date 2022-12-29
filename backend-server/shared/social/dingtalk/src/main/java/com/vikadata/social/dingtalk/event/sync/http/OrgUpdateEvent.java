@@ -1,0 +1,27 @@
+package com.vikadata.social.dingtalk.event.sync.http;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import com.vikadata.social.dingtalk.annotation.DingTalkEvent;
+import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
+import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
+
+@Setter
+@Getter
+@ToString
+@DingTalkEvent(value = DingTalkEventTag.SYNC_HTTP_PUSH_MEDIUM, action = DingTalkSyncAction.ORG_UPDATE)
+public class OrgUpdateEvent extends BaseBizDataEvent {
+    private String corpid;
+
+    private Integer authLevel;
+
+    private String industry;
+
+    private Boolean isAuthenticated;
+
+    private String corpName;
+
+    private String corpLogoUrl;
+}

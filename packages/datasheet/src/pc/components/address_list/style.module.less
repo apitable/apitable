@@ -1,0 +1,239 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.addressList {
+  flex: 1;
+  // display: flex;
+  // flex-direction: row;
+  position: relative;
+
+  .splitLeft {
+    box-sizing: border-box;
+    height: 100%;
+    position: relative;
+  }
+
+  .leftContent {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    button {
+      margin: 8px auto 16px;
+    }
+  }
+
+  .listWrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .filter {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .inviteBtn svg {
+    margin-right: 4px;
+  }
+
+  .menu {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .searchItem {
+    height: 40px;
+    padding: 0 20px;
+    font-size: 13px;
+    color: var(--secondLevelText);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+    .noSelect();
+
+    span {
+      display: inline-block;
+      height: 15px;
+    }
+
+    svg {
+      fill: var(--secondLevelText);
+      width: 15px;
+      height: 15px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .splitRight {
+    background: var(--lowestBg);
+    padding: 20px 20px 14px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rightWrapper {
+    background: var(--defaultBg);
+    height: 100%;
+    color: var(--firstLevelText);
+    display: flex;
+    flex-direction: column;
+
+    .teamTitle {
+      height: 45px;
+      font-size: 16px;
+      line-height: 45px;
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      cursor: default;
+
+      .title {
+        .ellipsis();
+        max-width: 282px;
+        height: 24px;
+        line-height: 24px;
+      }
+    }
+
+    .memberWrapper {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 37px;
+      margin-top: 8px;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .memberList {
+      width: 350px;
+      overflow: hidden;
+      .light-scroll-bar();
+
+      &:hover {
+        overflow: auto;
+      }
+
+      border-right: 1px solid var(--rowSelectedBg);
+    }
+
+    .memberInfo {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 400px;
+    }
+
+    // 800*640
+    .emptyImage {
+      display: block;
+      margin-top: 130px;
+      width: 400px;
+      height: 300px;
+      user-select: none;
+    }
+
+    @media screen and (max-width: @w-md) {
+      .memberWrapper {
+        height: 100%;
+        .emptyImage {
+          width: 240px;
+          height: 180px;
+        }
+      }
+      .memberList {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        border-right: none;
+        padding-bottom: 24px;
+        :global {
+          .ant-list-item {
+            padding-left: 24px;
+          }
+        }
+      }
+
+      .teamTitle {
+        padding-left: 24px;
+      }
+    }
+  }
+}
+
+.mobileBack {
+  cursor: pointer;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  height: 30px;
+  background: rgba(var(--lowestBg-rgb), 80%);
+  display: flex;
+  align-items: center;
+  border-radius: 24px;
+  z-index: var(--zIndex-12-mobileBackZIndex);
+  justify-content: center;
+  padding: 6px 16px;
+  box-shadow: 0px 2px 6px fade(#000, 10%);
+
+  svg {
+    width: 10px;
+    height: 10px;
+    vertical-align: -0.125em;
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--firstLevelText);
+  }
+}
+
+.mobileContainer {
+  padding: 0 8px 100px;
+  min-height: 100vh;
+  padding-top: 26px;
+  position: absolute;
+
+  & > div {
+    margin-bottom: 16px;
+  }
+}
+
+.memberInfoDrawer {
+  .mobileBack {
+    cursor: pointer;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    height: 30px;
+    background: rgba(var(--defaultBg-rgb), 80%);
+    display: flex;
+    align-items: center;
+    border-radius: 24px;
+    z-index: var(--zIndex-12-mobileBackZIndex);
+    justify-content: center;
+    padding: 6px 16px;
+    box-shadow: 0px 2px 6px fade(#000, 10%);
+
+    svg {
+      width: 10px;
+      height: 10px;
+      vertical-align: -0.125em;
+    }
+
+    span {
+      font-size: 14px;
+      color: var(--firstLevelText);
+    }
+  }
+}

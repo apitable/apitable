@@ -1,0 +1,234 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/z_index.less";
+
+.homeWrapper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  background: var(--staticWhite0);
+
+  .logo {
+    position: absolute;
+    margin: 40px 0 0 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+
+    .logoPng {
+      width: auto;
+      cursor: pointer;
+    }
+
+    .logoSlogan {
+      font-size: 14px;
+      color: var(--black_500);
+      padding-left: 8px;
+      white-space: nowrap;
+      letter-spacing: 1px;
+      cursor: default;
+    }
+  }
+
+  .title {
+    width: 100%;
+    font-size: 32px;
+    color: var(--black_1000);
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+
+  .backgroundLeft,
+  .backgroundRight {
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    width: 100%;
+
+    img {
+      min-width: inherit !important;
+      width: auto !important;
+    }
+  }
+
+  .backgroundLeft {
+    left: 0;
+    height: 100%;
+
+    img {
+      right: unset !important;
+    }
+  }
+
+  .backgroundRight {
+    right: 0;
+    height: 160px;
+
+    img {
+      left: unset !important;
+    }
+  }
+}
+
+.homeLeft {
+  position: relative;
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 800px;
+
+  .bannerIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+  }
+
+  .bottom {
+    margin-top: 16px;
+    position: relative;
+    left: 50%;
+    padding: 0 40px;
+    width: 100%;
+    max-width: 824px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    transform: translateX(-50%);
+
+    .consultImg {
+      height: auto;
+      width: 21.6vw;
+      max-width: 311px;
+      min-width: 210px;
+    }
+
+    .qrCodeGroup {
+      padding-left: 63px;
+
+
+      .qrCode {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &>span{
+          border-radius: 6px;
+          box-shadow: 4px 4px rgba(var(--primaryColor-rgb), 40);
+        }
+      }
+
+      .caption {
+        padding-top: 12px;
+        font-size: 12px;
+        color: var(--static-black);
+      }
+    }
+  }
+}
+
+.placeholder {
+  padding-top: 12vh;
+}
+
+.video {
+  max-width: 720px;
+  margin: 96px auto 0;
+}
+
+.homeRight {
+  flex: 4;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 800px;
+
+  .nav {
+    position: absolute;
+    top: 31px;
+    right: 16px;
+
+    :global {
+      .btn-group button:not(:first-child):before {
+        // FIXME:THEME
+        background: rgba(var(--primaryColor-rgb), 50%);
+        height: 8px;
+      }
+    }
+  }
+}
+
+.homeContent {
+  flex: 1;
+  width: 100%;
+  min-width: 448px;
+  // height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 21.3vh 7vw 40px;
+
+  .templateBtn {
+    display: flex;
+    align-items: center;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--rc02);
+    color: var(--rc02);
+    cursor: pointer;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--rc02);
+      margin-right: 4px;
+    }
+  }
+}
+
+.loginContainer {
+  background-color: var(--staticWhite0);
+  box-shadow: 0px 4px 24px var(--black_200);
+  padding: 24px 24px 54px;
+  margin-bottom: 24px;
+  width: 100%;
+  z-index: var(--zIndex-10);
+}
+
+.icp {
+  color: var(--black_500);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 8px !important;
+
+  .line {
+    height: 12px;
+    width: 1px;
+    background-color: var(--black_500);
+    margin: 0 8px;
+  }
+
+  .icpBtn {
+    span {
+      font-size: 12px !important;
+    }
+  }
+}
+
+.footer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  color: var(--fc1);
+  font-size: 16px;
+  font-weight: bold;
+}

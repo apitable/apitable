@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.organization.mapper.MemberMapper">
+
+    <select id="selectInactiveMemberByEmail" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        select id, space_id
+        from ${tablePrefix}unit_member
+        where email = #{email}
+          and is_deleted = 0
+          and is_active = 0
+          and user_id IS NULL
+          and mobile IS NULL
+    </select>
+
+    <select id="selectInactiveMemberByMobile" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        SELECT id, space_id
+        FROM ${tablePrefix}unit_member
+        WHERE mobile = #{mobile} AND is_active = 0 AND user_id IS NULL AND is_deleted = 0
+    </select>
+
+    <select id="selectCountBySpaceIdAndEmail" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+          AND email = #{email}
+          AND is_deleted = 0
+    </select>
+
+    <resultMap id="searchMemberDto" type="com.vikadata.api.organization.dto.SearchMemberDTO">
+        <result column="unit_id" property="unitId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="member_name" property="memberName"/>
+        <result column="avatar" property="avatar"/>
+        <result column="is_active" property="isActive"/>
+        <collection property="team" ofType="com.vikadata.api.organization.dto.MemberTeamDTO">
+            <result column="team_id" property="teamId"/>
+            <result column="team_name" property="teamName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByName" resultMap="searchMemberDto">
+        SELECT vou.id          as unit_id,
+               vom.id          as member_id,
+               vu.avatar,
+               vom.member_name as member_name,
+               vom.is_active,
+               vod.id          as team_id,
+               vod.team_name   as team_name,
+               IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+               IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+                 JOIN ${tablePrefix}unit vou on vom.id = vou.unit_ref_id
+                 LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+                 LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vom.id = vodmr.member_id
+                 LEFT JOIN ${tablePrefix}unit_team vod on vodmr.team_id = vod.id and vod.parent_id != 0 and vod.is_deleted = 0
+        where vom.space_id = #{spaceId}
+        and vom.is_deleted = 0
+        and vom.is_social_name_modified != 0
+        and vom.member_name like CONCAT('%', #{memberName}, '%')
+        order by vodmr.created_at
+    </select>
+
+    <select id="selectByNameAndOpenIds" resultMap="searchMemberDto">
+        SELECT vou.id          as unit_id,
+        vom.id          as member_id,
+        vu.avatar,
+        vom.member_name as member_name,
+        vom.is_active,
+        vod.id          as team_id,
+        vod.team_name   as team_name
+        FROM ${tablePrefix}unit_member vom
+        JOIN ${tablePrefix}unit vou on vom.id = vou.unit_ref_id
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vom.id = vodmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod on vodmr.team_id = vod.id and vod.parent_id != 0 and vod.is_deleted = 0
+        where vom.space_id = #{spaceId}
+        and vom.open_id in
+        <foreach collection="openIds" item="openId" open="(" separator="," close=")">
+            #{openId}
+        </foreach>
+        and vom.is_deleted = 0
+        and vom.is_social_name_modified = 0
+        order by vodmr.created_at
+    </select>
+
+    <select id="selectUserIdByTeamId" resultType="java.lang.Long">
+        SELECT vom.user_id
+        FROM ${tablePrefix}unit_team_member_rel vodmr
+        JOIN ${tablePrefix}unit_member vom ON vom.id = vodmr.member_id AND vom.is_deleted = 0
+        WHERE vodmr.team_id = #{teamId}
+    </select>
+
+    <select id="selectMemberIdsLikeName" resultType="java.lang.Long">
+        SELECT voum.id
+        FROM ${tablePrefix}unit_member voum
+        WHERE voum.space_id = #{spaceId}
+          and voum.is_deleted = 0
+          and voum.is_social_name_modified != 0
+          and voum.member_name like CONCAT('%', #{likeName}, '%')
+    </select>
+
+    <select id="selectMemberIdsLikeNameByOpenIds" resultType="java.lang.Long">
+        SELECT voum.id
+        FROM ${tablePrefix}unit_member voum
+        WHERE voum.space_id = #{spaceId}
+        and voum.open_id in
+        <foreach collection="openIds" item="openId" open="(" separator="," close=")">
+            #{openId}
+        </foreach>
+        and voum.is_deleted = 0
+        and voum.is_social_name_modified = 0
+    </select>
+
+    <select id="selectIdBySpaceIdAndNames" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND member_name IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <resultMap id="memberInfo" type="com.vikadata.api.organization.vo.MemberInfoVo">
+        <result column="member_id" property="memberId"/>
+        <result column="avatar" property="avatar"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="member_name" property="memberName"/>
+        <result column="job_number" property="jobNumber"/>
+        <result column="position" property="position"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="is_active" property="isActive"/>
+        <result column="is_admin" property="isMainAdmin"/>
+        <result column="is_sub_admin" property="isAdmin"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="is_nick_name_modified" property="isNickNameModified"/>
+        <result column="is_member_name_modified" property="isMemberNameModified"/>
+        <collection property="teams" ofType="com.vikadata.api.organization.vo.TeamVo">
+            <result column="team_id" property="teamId"/>
+            <result column="team_name" property="teamName"/>
+        </collection>
+        <collection property="tags" ofType="com.vikadata.api.organization.vo.TagVo">
+            <result column="tag_id" property="tagId"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectInfoById" resultMap="memberInfo">
+        SELECT vom.id as member_id,
+               vu.avatar,
+               vu.nick_name,
+               vom.member_name,
+               vom.job_number,
+               vom.mobile,
+               vom.email,
+               vom.position,
+               vod.id as team_id,
+               vod.team_name,
+               votmr.tag_id,
+               vot.tag_name,
+               vom.is_active,
+               IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
+               vom.is_admin,
+               vom.created_at,
+               vom.updated_at,
+               IFNULL(vu.is_social_name_modified, 2) > 0 AS is_nick_name_modified,
+               IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
+        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
+        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
+        LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
+        WHERE vom.id = #{memberId} AND vom.is_deleted = 0
+    </select>
+
+    <select id="selectMembersByRootTeamId" resultMap="memberInfo">
+        SELECT vom.id AS member_id,
+        vu.avatar,
+        vu.nick_name,
+        vom.member_name,
+        vom.job_number,
+        vom.mobile,
+        vom.email,
+        vom.position,
+        vod.id AS team_id,
+        vod.team_name,
+        votmr.tag_id,
+        vot.tag_name,
+        vom.is_active,
+        vom.is_admin,
+        IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
+        vom.created_at,
+        vom.updated_at,
+        IFNULL(vu.is_social_name_modified, 2) > 0 AS is_nick_name_modified,
+        IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
+        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
+        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
+        LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
+        WHERE vom.space_id = #{spaceId} AND vom.is_deleted = 0
+    </select>
+
+    <select id="selectMembersByTeamId" resultMap="memberInfo">
+        SELECT vom.id AS member_id,
+        vu.avatar,
+        vu.nick_name,
+        vom.member_name,
+        vom.job_number,
+        vom.mobile,
+        vom.email,
+        vom.position,
+        vod.id AS team_id,
+        vod.team_name,
+        votmr.tag_id,
+        vot.tag_name,
+        vom.is_active,
+        vom.is_admin,
+        IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
+        vom.created_at,
+        vom.updated_at,
+        IFNULL(vu.is_social_name_modified, 2) > 0 AS is_nick_name_modified,
+        IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
+        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
+        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
+        LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
+        WHERE vodmr.team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vom.is_deleted = 0
+    </select>
+
+    <select id="selectMemberNameById" resultType="java.lang.String">
+        select member_name
+        from ${tablePrefix}unit_member
+        where id = #{id}
+    </select>
+
+    <select id="selectDtoByUserIdAndSpaceId" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        SELECT id, member_name
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+          AND space_id = #{spaceId}
+          AND is_deleted = 0 LIMIT 0,1
+    </select>
+
+    <select id="selectDtoByMemberId" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        select m.id, m.user_id, m.space_id, m.member_name, u.avatar, m.is_social_name_modified
+        from ${tablePrefix}unit_member m,
+             ${tablePrefix}user u
+        where m.user_id = u.id
+          and u.is_deleted = 0
+          and m.id = #{memberId}
+    </select>
+
+    <select id="selectMemberDtoByUserIdAndSpaceId" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        select m.id, m.user_id, m.space_id, m.member_name, u.avatar, m.is_active, m.is_deleted
+        from ${tablePrefix}unit_member m,
+             ${tablePrefix}user u
+        where m.user_id = u.id
+          and m.user_id = #{userId}
+          and m.space_id = #{spaceId}
+        order by m.is_deleted
+        limit 1
+    </select>
+
+    <update id="updateMemberNameByUserId">
+        update ${tablePrefix}unit_member
+        set member_name = #{name}
+        where user_id = #{userId}
+        and name_modified = 0
+        and (is_deleted = 0 or `status` = 2)
+    </update>
+
+    <update id="updateSocialNameModifiedByUserId">
+        update ${tablePrefix}unit_member
+        set is_social_name_modified = 1
+        where user_id = #{userId}
+        and is_social_name_modified = 0
+        and (is_deleted = 0 or `status` = 2)
+    </update>
+
+    <update id="updateMobileByUserId">
+        UPDATE ${tablePrefix}unit_member
+        SET mobile = #{mobile}
+        WHERE user_id = #{userId} AND (is_deleted = 0 OR `status` = 2)
+    </update>
+
+    <update id="resetMobileByUserId">
+        UPDATE ${tablePrefix}unit_member
+        SET mobile = NULL
+        WHERE user_id = #{userId} AND (is_deleted = 0 OR `status` = 2)
+    </update>
+
+    <update id="updateEmailByUserId">
+        UPDATE ${tablePrefix}unit_member
+        SET email = #{email}
+        WHERE user_id = #{userId} AND (is_deleted = 0 OR `status` = 2)
+    </update>
+
+    <update id="resetEmailByUserId">
+        UPDATE ${tablePrefix}unit_member
+        SET email = NULL
+        WHERE user_id = #{userId} AND (is_deleted = 0 OR `status` = 2)
+    </update>
+
+    <update id="updateInactiveStatusByUserId">
+        update ${tablePrefix}unit_member
+        set status = 0
+        where user_id = #{userId}
+          and status = 1
+          and is_deleted = 0
+    </update>
+
+    <update id="updateActiveStatusByUserIdAndSpaceId">
+        update ${tablePrefix}unit_member
+        set status = 1, is_point = 0
+        where user_id = #{userId}
+        and space_id = #{spaceId}
+        and is_deleted = 0
+    </update>
+
+    <select id="selectActiveSpaceByUserId" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}unit_member
+        where user_id = #{userId}
+          and status = 1
+          and is_deleted = 0
+        limit 0,1
+    </select>
+
+    <select id="selectIdByUserIdAndSpaceId" resultType="java.lang.Long">
+        select id
+        from ${tablePrefix}unit_member
+        where user_id = #{userId} and space_id = #{spaceId} and is_deleted = 0 LIMIT 0,1
+    </select>
+
+    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.workspace.dto.MemberInfoDTO">
+        select id, is_deleted
+        from ${tablePrefix}unit_member
+        where user_id = #{userId} and space_id = #{spaceId}
+        ORDER BY id desc limit 1
+    </select>
+
+    <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">
+        select id
+        from ${tablePrefix}unit_member
+        where user_id = #{userId} and space_id = #{spaceId}
+        ORDER BY updated_at desc
+        LIMIT 0,1
+    </select>
+
+    <select id="selectBySpaceIdAndEmail"
+            resultType="com.vikadata.api.organization.entity.MemberEntity">
+        select *
+        from ${tablePrefix}unit_member vom
+        where vom.email = #{email}
+          and vom.space_id = #{spaceId}
+          and vom.is_deleted = 0
+        LIMIT 0,1
+    </select>
+
+    <select id="selectBySpaceIdAndEmailsIgnoreDeleted"
+            resultType="com.vikadata.api.organization.entity.MemberEntity">
+        select *
+        from ${tablePrefix}unit_member
+        where space_id = #{spaceId} AND email IN
+        <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAdminBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM `${tablePrefix}unit_member`
+        WHERE `space_id` = #{spaceId}
+        AND `is_admin` = 1
+        AND `is_deleted` = 0
+    </select>
+
+    <select id="selectAdminListBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM `${tablePrefix}unit_member`
+        WHERE `space_id` = #{spaceId}
+        AND `is_admin` = 1
+        AND `is_deleted` = 0
+    </select>
+
+    <select id="getFirstSpaceIdByUserId" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId} AND `status` = 0 AND is_deleted = 0
+        ORDER BY updated_at DESC LIMIT 0,1
+    </select>
+
+    <select id="selectUserIdBySpaceIds" resultType="java.lang.Long">
+        SELECT DISTINCT user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND user_id IS NOT NULL AND is_deleted = 0
+    </select>
+
+    <update id="delBySpaceIds">
+        UPDATE ${tablePrefix}unit_member
+        SET `status` = 2, is_deleted = 1
+        WHERE space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="filterUserId != null">
+            AND user_id != #{filterUserId}
+        </if>
+        AND is_deleted = 0
+    </update>
+
+    <update id="cancelPreDelBySpaceId">
+        update ${tablePrefix}unit_member
+        set `status` = 0, is_point = 1, is_deleted = 0
+        where space_id = #{spaceId} and `status` = 2
+    </update>
+
+    <update id="preDelByMemberIds">
+        UPDATE ${tablePrefix}unit_member
+        SET `status` = 3, is_deleted = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </update>
+
+    <update id="cancelPreDelByUserId">
+        update ${tablePrefix}unit_member
+        set `status` = 0, is_point = 1, is_deleted = 0
+        WHERE user_id = #{userId}
+        AND status = 3
+        AND is_deleted = 1
+    </update>
+
+    <update id="updateUserIdByMobile">
+        update ${tablePrefix}unit_member
+        set user_id = #{userId}, is_active = 1
+        where mobile = #{mobile}
+          and is_active = 0
+          and is_deleted = 0
+          and user_id is null
+    </update>
+
+    <select id="selectUserIdByMemberId" resultType="java.lang.Long">
+        select user_id
+        from ${tablePrefix}unit_member
+        where id = #{memberId} and is_deleted = 0
+    </select>
+
+    <select id="selectUserIdsByMemberIds" resultType="java.lang.Long">
+        select user_id
+        from ${tablePrefix}unit_member
+        where id in
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+    <update id="updateIsPointById">
+        update ${tablePrefix}unit_member
+        set is_point = 0
+        where id = #{memberId} and is_deleted = 0
+    </update>
+
+    <select id="selectMemberIdAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE id = #{memberId} and space_id = #{spaceId} and is_deleted = 0
+    </select>
+
+    <select id="selectLikeMemberName" resultType="com.vikadata.api.organization.vo.SearchMemberVo">
+        SELECT vom.id as                                                                          member_id,
+               vu.avatar,
+               vom.member_name,
+               GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') team,
+               vom.is_active,
+               vom.mobile,
+               IF(vsmrr.id IS NULL, 0, 1)                                                         is_manager,
+               IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+               IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+                 LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+                 LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vom.id = vodmr.member_id
+                 LEFT JOIN ${tablePrefix}unit_team vod on vodmr.team_id = vod.id and vod.is_deleted = 0
+                 LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr on vom.id = vsmrr.member_id
+        where vom.space_id = #{spaceId}
+        and vom.is_deleted = 0
+        and vom.is_social_name_modified != 0
+        and vom.member_name like CONCAT('%', #{keyword}, '%')
+          <if test="filter != null and filter">
+            AND vom.is_active = 1
+          </if>
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectLikeMemberNameByOpenIds" resultType="com.vikadata.api.organization.vo.SearchMemberVo">
+        SELECT vom.id as                     member_id,
+               vu.avatar,
+               vom.member_name,
+               GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC
+                            SEPARATOR ' | ') team,
+               vom.is_active,
+               vom.mobile,
+               IF(vsmrr.id IS NULL, 0, 1)    is_manager
+        FROM ${tablePrefix}unit_member vom
+                 LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+                 LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vom.id = vodmr.member_id
+                 LEFT JOIN ${tablePrefix}unit_team vod
+                           on vodmr.team_id = vod.id and vod.is_deleted = 0
+                 LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr on vom.id = vsmrr.member_id
+        where vom.space_id = #{spaceId}
+          and vom.open_id in
+        <foreach collection="openIds" item="openId" open="(" separator="," close=")">
+            #{openId}
+        </foreach>
+        and vom.is_deleted = 0
+        and vom.is_social_name_modified = 0
+        <if test="filter != null and filter">
+            AND vom.is_active = 1
+        </if>
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectAdminInfoBySpaceId" resultType="com.vikadata.api.space.vo.MainAdminInfoVo">
+        SELECT vom.member_name AS name,
+               vu.code AS areaCode,
+               vu.avatar,
+               vom.position,
+               vu.mobile_phone AS mobile,
+               vu.email,
+               IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+        JOIN ${tablePrefix}space vs ON vom.id = vs.owner AND vs.is_deleted = 0
+        JOIN ${tablePrefix}user vu ON vom.user_id = vu.id AND vu.is_deleted = 0
+        WHERE vom.space_id = #{spaceId} AND vom.is_deleted = 0
+    </select>
+
+    <select id="selectUnitMemberByMemberId" resultType="com.vikadata.api.organization.vo.UnitMemberVo">
+        SELECT
+            vou.id as unit_id,
+            vom.id as member_id,
+            vu.uuid,
+            vu.uuid as userId,
+            vom.member_name as member_name,
+            IF(vom.mobile != '' or vom.mobile is not null, CONCAT(LEFT(vom.mobile,3), '****' ,RIGHT(vom.mobile,4)), vom.mobile) as mobile,
+            vom.email,
+            vu.avatar,
+            vom.is_active,
+            GROUP_CONCAT(DISTINCT vout.team_name ORDER BY voutmr.created_at DESC SEPARATOR ' | ') as teams
+        FROM ${tablePrefix}unit_member vom
+        JOIN ${tablePrefix}unit vou on vom.id = vou.unit_ref_id and vou.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel voutmr on vom.id = voutmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vout on voutmr.team_id = vout.id and vout.parent_id != 0 and vout.is_deleted = 0
+        WHERE vom.id = #{memberId} AND vom.is_deleted = 0
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectUnitMemberByMemberIds" resultType="com.vikadata.api.organization.vo.UnitMemberVo">
+        SELECT
+        vou.id as unit_id,
+        vom.id as member_id,
+        vu.uuid,
+        vu.uuid as userId,
+        vom.member_name as member_name,
+        IF(vom.mobile != '' or vom.mobile is not null, CONCAT(LEFT(vom.mobile,3), '****' ,RIGHT(vom.mobile,4)), vom.mobile) as mobile,
+        vom.email,
+        vu.avatar,
+        vom.is_active,
+        GROUP_CONCAT(DISTINCT vout.team_name ORDER BY voutmr.created_at DESC SEPARATOR ' | ') as teams,
+        IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+        IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+        JOIN ${tablePrefix}unit vou on vom.id = vou.unit_ref_id and vou.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id AND vu.is_paused = 0 AND vu.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_team_member_rel voutmr on vom.id = voutmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vout on voutmr.team_id = vout.id and vout.parent_id != 0 and vout.is_deleted = 0
+        WHERE vom.id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vom.is_deleted = 0
+        GROUP BY vom.id
+        ORDER BY FIELD(vom.id,
+        <foreach item="item" index="index" collection="memberIds" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectUserIdBySpaceId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND user_id IS NOT NULL AND is_deleted = 0
+    </select>
+
+    <select id="selectMemberIdsBySpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
+    <select id="selectBindSocialListBySpaceIdWithOffset" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM `${tablePrefix}unit_member`
+        WHERE `space_id` = #{spaceId}
+        AND `open_id` IS NOT NULL
+        AND `is_deleted` = 0
+        ORDER BY `id`
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectSpaceIdByMemberId" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}unit_member
+        WHERE id = #{memberId}
+    </select>
+
+    <select id="selectActiveEmailBySpaceId" resultType="java.lang.String">
+        select vom.email
+        from ${tablePrefix}unit_member vom
+        where vom.space_id = #{spaceId}
+          AND vom.is_active = 1
+          and vom.is_deleted = 0
+    </select>
+    <select id="selectEmailByBatchMemberId" resultType="java.lang.String">
+        select vom.email
+        from ${tablePrefix}unit_member vom
+        where vom.id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vom.email IS NOT NULL
+    </select>
+    <select id="selectAdminUserIdBySpaceId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND is_admin = 1
+        AND is_deleted = 0
+    </select>
+    <select id="selectIdsByEmailsAndSpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND email IN
+        <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+    <select id="selectUserIdBySpaceIdAndIds" resultType="long">
+        SELECT user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND user_id is not null
+    </select>
+
+    <select id="selectCountByMemberIds" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_member
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberInfoByMemberIdsIncludeDelete" resultType="com.vikadata.api.player.dto.PlayerBaseDTO">
+        SELECT vom.id as member_id, vu.avatar, vom.member_name, vu.email, vom.is_deleted as is_member_deleted, vu.uuid,
+        vu.nick_name as user_name, GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') team,
+        IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+        IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vom.id = vodmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod on vodmr.team_id = vod.id
+        WHERE vom.id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY vom.id
+    </select>
+
+    <select id="selectDtoBySpaceIdAndUserIds" resultType="com.vikadata.api.organization.dto.MemberDTO">
+        SELECT max(id) AS id, user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND user_id IN
+        <foreach collection="userIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY user_id
+    </select>
+
+    <select id="selectByUserIdAndSpaceIdIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId} AND space_id = #{spaceId}
+        ORDER BY id DESC LIMIT 0,1
+    </select>
+
+    <select id="selectByMemberIdsIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="deleteBatchByIds">
+        UPDATE ${tablePrefix}unit_member
+        SET is_deleted = 1, name_modified = 0, `status` = 0, is_point = 0, is_active = 0, is_admin = 0
+        WHERE id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="restoreMember">
+        UPDATE ${tablePrefix}unit_member
+        SET user_id = #{entity.userId}, space_id = #{entity.spaceId}, member_name = #{entity.memberName}, job_number = #{entity.jobNumber},
+            position = #{entity.position}, mobile = #{entity.mobile}, email = #{entity.email}, is_point = #{entity.isPoint},
+            is_active = #{entity.isActive}, `status` = #{entity.status}, is_deleted = 0, name_modified = #{entity.nameModified}
+        WHERE id = #{entity.id}
+    </update>
+
+    <select id="selectNodeRoleMemberByIds" resultType="com.vikadata.api.workspace.vo.NodeRoleMemberVo">
+        SELECT
+            vom.id as member_id,
+            vom.member_name as member_name,
+            vu.uuid,
+            vu.avatar,
+            GROUP_CONCAT(DISTINCT vout.team_name ORDER BY voutmr.created_at DESC SEPARATOR ' | ') as teams,
+            IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+            IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel voutmr on vom.id = voutmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vout on voutmr.team_id = vout.id and vout.is_deleted = 0
+        WHERE vom.id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vom.is_deleted = 0
+        GROUP BY vom.id
+        ORDER BY FIELD(vom.id,
+        <foreach item="item" index="index" collection="memberIds" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectFieldRoleMemberByIds" resultType="com.vikadata.api.workspace.vo.FieldRoleMemberVo">
+        SELECT
+        vom.id as member_id,
+        vom.member_name as member_name,
+        vu.avatar,
+        GROUP_CONCAT(DISTINCT vout.team_name ORDER BY voutmr.created_at DESC SEPARATOR ' | ') as teams
+        FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}user vu on vom.user_id = vu.id
+        LEFT JOIN ${tablePrefix}unit_team_member_rel voutmr on vom.id = voutmr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vout on voutmr.team_id = vout.id and vout.parent_id != 0 and vout.is_deleted = 0
+        WHERE vom.id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vom.is_deleted = 0
+        GROUP BY vom.id
+        ORDER BY FIELD(vom.id,
+        <foreach item="item" index="index" collection="memberIds" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectOpenIdBySpaceId" resultType="java.lang.String">
+        SELECT open_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id IN
+        <foreach collection="spaceIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND open_id IS NOT NULL
+    </select>
+
+    <select id="selectOpenIdByMemberId" resultType="java.lang.String">
+        SELECT open_id
+        FROM ${tablePrefix}unit_member
+        WHERE id = #{memberId} AND is_deleted = 0
+    </select>
+
+    <select id="selectOpenIdByMemberIds" resultType="java.lang.String">
+        SELECT open_id
+        FROM ${tablePrefix}unit_member
+        WHERE id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectMemberIdBySpaceIdAndOpenId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND open_id = #{openId} AND is_deleted = 0 LIMIT 0,1
+    </select>
+
+    <select id="selectByOpenIdIgnoreDelete" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE open_id = #{openId} AND space_id = #{spaceId} LIMIT 0,1
+    </select>
+
+    <select id="selectByIdIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE id = #{memberId}
+    </select>
+
+    <select id="selectOpenIdById" resultType="java.lang.String">
+        SELECT open_id
+        FROM ${tablePrefix}unit_member
+        WHERE id = #{memberId}
+    </select>
+
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.dto.MemberBaseInfoDTO">
+        SELECT vum.id,
+               vum.member_name,
+               vu.avatar,
+               vu.uuid,
+               vu.email,
+               vum.is_active,
+               vum.is_deleted,
+               vu.is_paused,
+               IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+               IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}unit_member vum
+        LEFT JOIN ${tablePrefix}user vu ON vu.id = vum.user_id
+        WHERE vum.id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY FIELD(vum.id,
+        <foreach item="item" index="index" collection="memberIds" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="selectBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        <if test="!ignoreDeleted">
+            AND is_deleted = 0
+        </if>
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="selectBySpaceIdAndOpenId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND open_id = #{openId} AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdAndOpenIds" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+          AND open_id IN
+        <foreach collection="openIds" item="openId" open="(" separator="," close=")">
+            #{openId}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByUserIdAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId} AND space_id = #{spaceId} AND is_deleted = 0
+        ORDER BY id DESC LIMIT 0,1
+    </select>
+
+    <select id="selectByUserIdsAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE user_id IN <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
+        AND space_id = #{spaceId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCountBySpaceId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
+    <select id="selectActiveMemberCountBySpaceId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND is_deleted = 0
+        AND is_active = 1
+    </select>
+
+    <select id="selectMemberOpenIdBySpaceId" resultType="com.vikadata.api.organization.dto.TenantMemberDto">
+        SELECT id as member_id, open_id, member_name
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND open_id is not null AND is_deleted = 0
+    </select>
+
+    <update id="updateMemberById">
+        UPDATE ${tablePrefix}unit_member
+        SET member_name = #{entity.memberName}, position = #{entity.position},
+        open_id = #{entity.openId}, status = #{entity.status}, name_modified = #{entity.nameModified},
+        is_point = #{entity.isPoint}, is_active = #{entity.isActive}, is_admin = #{entity.isAdmin}, is_deleted = #{entity.isDeleted}
+        WHERE id = #{entity.id}
+    </update>
+
+    <select id="selectRandomMemberExclude" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND id != #{memberId} AND is_deleted = 0
+        ORDER BY id LIMIT 1
+    </select>
+
+    <select id="selectByUserId" resultType="com.vikadata.api.organization.entity.MemberEntity">
+         SELECT * FROM ${tablePrefix}unit_member WHERE user_id = #{userId} AND is_deleted = 0
+    </select>
+
+    <select id="selectMembersBySpaceIds" resultType="com.vikadata.api.organization.dto.SpaceMemberDTO">
+        SELECT
+            vum.user_id,
+            vum.space_id,
+            vum.member_name,
+            vum.is_admin
+        FROM ${tablePrefix}unit_member vum
+        WHERE
+<!--        vum.space_id = #{spaceId}-->
+        vum.space_id IN
+        <foreach collection="spaceIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vum.is_deleted = 0
+        AND vum.is_active = 1
+    </select>
+
+    <update id="clearMemberInfoByUserId">
+        UPDATE ${tablePrefix}unit_member vum
+        SET
+            vum.is_active = 0,
+            vum.mobile = null,
+            vum.is_deleted = 1,
+            vum.status = 0,
+            vum.email = null
+        WHERE vum.user_id = #{userId}
+    </update>
+
+    <update id="clearOpenIdById">
+        UPDATE ${tablePrefix}unit_member
+        SET open_id = NULL
+        where id = #{id}
+    </update>
+
+    <select id="selectOpenIdByUserIds" resultType="java.lang.String">
+        SELECT open_id
+        FROM ${tablePrefix}unit_member
+        WHERE user_id IN
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectMemberNameByUserIdAndSpaceId" resultType="java.lang.String">
+        SELECT member_name
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+        AND space_id = #{spaceId}
+        AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectCountByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </select>
+
+    <select id="selectNameModifiedCountByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId} AND name_modified = 1 AND is_deleted = 0
+    </select>
+
+    <insert id="batchUpdateNameAndIsDeletedByIds">
+        INSERT INTO ${tablePrefix}unit_member(id, space_id, member_name, is_deleted)
+        VALUES
+        <foreach item="item" index="index" collection="updateEntities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.spaceId}, #{item.memberName}, #{item.isDeleted}
+            </trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        space_id = VALUES(space_id),
+        member_name = VALUES(member_name),
+        is_deleted = VALUES(is_deleted)
+    </insert>
+
+    <update id="updateIsDeletedAndUserIdToDefaultByIds">
+        UPDATE ${tablePrefix}unit_member
+        SET is_deleted = 0, user_id = NULL
+        where id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectTeamIdsByMemberId" resultType="java.lang.Long">
+        SELECT team_id
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="selectMemberIdsByUserIdAndSpaceIds" resultType="com.vikadata.api.organization.dto.SpaceMemberIdDTO">
+        SELECT id, space_id
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+        AND space_id IN
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectIdsBySpaceIdAndEmailKeyword" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+        AND email like CONCAT('%', #{keyword}, '%')
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.organization.dto.MemberTeamInfoDTO">
+        SELECT member_id, team_id
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE member_id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

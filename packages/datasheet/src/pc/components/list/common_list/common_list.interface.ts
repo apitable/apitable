@@ -1,0 +1,127 @@
+import { HTMLAttributes, ReactElement, ReactNode } from 'react';
+
+export interface ICommonListProps {
+
+  /**
+   * @description Each option wrapped component, which is a static component bound to a CommonList component
+   * @type {ReactElement[]}
+   */
+  children: ReactElement[];
+
+  /**
+   * @description Click on the processing function for each option
+   * @param {(React.MouseEvent | null)} e
+   * @param {number} index
+   */
+  onClickItem(e: React.MouseEvent | null, index: number): void
+
+  /**
+   * @description input Callback function for pressing the Enter key
+   * @param {() => void} clearKeyword Handler function passed inside the component, where you can handle some internal component operations
+   * For example, clear the data in the input box
+   */
+  onInputEnter?(clearKeyword: () => void): void
+
+  /**
+   * @description A reference bound to the Input component to focus
+   * @type {React.RefObject<IInputRef>}
+   */
+  inputRef?: React.RefObject<HTMLInputElement>;
+
+  /**
+   * @description Tips for no data
+   */
+  noDataTip?: string | (() => ReactNode)
+
+  /**
+   * @description Tips for empty search results
+   */
+  noSearchResult?: string | (() => ReactNode);
+
+  /**
+   * @description Components in the bottom area of the component
+   */
+  footerComponent?: () => ReactNode;
+
+  /**
+   * @description Already selected values
+   * @type {string}
+   */
+  value?: (string | number)[] | null,
+
+  className?: string;
+  style?: React.CSSProperties
+
+  /**
+   * @description Prompt for input
+   * @type {string}
+   */
+  inputPlaceHolder?: string
+
+  /**
+   * @description Callback after inputting content
+   * @param {React.ChangeEvent} e
+   * @param {string} keyword
+   */
+  onSearchChange?(e: React.ChangeEvent | null, keyword: string): void
+
+  /**
+   * @description Whether to display the input component
+   * @type {boolean}
+   */
+  showInput?: boolean
+
+  /**
+   * @description Monitoring sources for re-rendering
+   * @type {string}
+   */
+  monitorId?: string
+
+  /**
+   * @description Originally, this parameter was controlled internally by the component, but in draft, you need to maintain the editor's own index, 
+   * so you need to pass it in like the component's internal
+   * @type {number}
+   */
+  activeIndex?: number
+
+  /**
+   * @description Customize the style of the input box
+   * @type {React.CSSProperties}
+   */
+  inputStyle?: React.CSSProperties;
+
+  getListContainer?: (children: React.ReactNode) => React.ReactNode;
+
+  onInputClear?: () => void;
+}
+
+export interface IOptionItemProps extends HTMLAttributes<HTMLDivElement> {
+
+  /**
+   * @description Subscript of current option
+   * @type {number}
+   */
+  currentIndex: number;
+
+  /**
+   * @description Unique feature of the current option, used to determine if it is selected
+   * @type {string}
+   */
+  id: string
+
+  /**
+   * @description Whether it is selected or not, this will be determined inside the component, and can be passed in externally, but will be overridden
+   * @type {boolean}
+   */
+  isChecked?: boolean
+
+  /**
+   * @description In the option sorting will need to wrap a layer of other components, but for internal bad handling, 
+   * so you can pass in a wrapped function through this property
+   * @param {*} children
+   * @returns {ReactNode}
+   */
+  wrapperComponent?(children): ReactNode
+
+  disabled?: boolean;
+}

@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [
+      "formId"
+    ],
+    "properties": {
+      "formId": {
+        "type": "string",
+        "title": "表单"
+      }
+    },
+    "additionalProperties": false
+  },
+  "uiSchema": {}
+}

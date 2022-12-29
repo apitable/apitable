@@ -1,0 +1,70 @@
+@import "~pc/styles/lib_var.less";
+
+.drawerPopup {
+  :global {
+    .ant-drawer-body {
+      height: 100%;
+    }
+
+    .ant-drawer-content-wrapper {
+      min-height: 20%;
+      max-height: 96%;
+    }
+
+    .ant-drawer-content-wrapper,
+    .ant-drawer-content {
+      border-radius: 16px 16px 0 0;
+    }
+
+    .ant-drawer-header {
+      border: none;
+      padding: 24px;
+    }
+
+    .ant-drawer-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .ant-drawer-body {
+      padding: 0 24px 24px 24px;
+    }
+
+    .ant-drawer-close {
+      padding: 0;
+      top: 24px;
+      right: 20px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      
+      svg {
+        background-color: var(--rowSelectedBg);
+        border-radius: 50%;
+      }
+    }
+
+    .ant-drawer-footer {
+      padding: 0 24px 24px;
+      border: none;
+      user-select: none;
+    }
+  }
+}
+
+.closeIconWrapper {
+  background-color: var(--rowSelectedBg);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 48px;
+    height: 48px;
+  }
+}

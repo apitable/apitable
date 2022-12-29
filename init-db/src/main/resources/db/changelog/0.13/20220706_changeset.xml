@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220706-001" author="刘斌华" labels="企微接口许可">
+        <comment>企微服务商接口许可下单信息</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}social_wecom_permit_order`
+            (
+                `id`                     bigint(20) unsigned NOT NULL COMMENT '主键 ID',
+                `suite_id`               varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
+                `auth_corp_id`           varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权的企业 ID',
+                `order_id`               varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '接口许可的订单号',
+                `order_type`             tinyint(1) unsigned NOT NULL COMMENT '订单类型。1：购买帐号；2：续期帐号；5：历史企业迁移订单',
+                `order_status`           tinyint(1) unsigned NOT NULL COMMENT '订单状态。0：待支付；1：已支付；2：未支付，订单已关闭；3：未支付，订单已过期；4：申请退款中；5：退款成功；6：退款被拒绝；7：订单已失效（将企业从服务商测试企业列表中移除时会将对应测试企业的所有测试订单置为已失效）',
+                `price`                  int(10) NOT NULL COMMENT '订单金额，单位分',
+                `base_account_count`     int(10) NOT NULL COMMENT '基础帐号个数',
+                `external_account_count` int(10) NOT NULL COMMENT '互通帐号个数',
+                `duration_months`        int(10) NOT NULL COMMENT '购买的月数，每个月按照31天计算',
+                `create_time`            datetime                                        DEFAULT NULL COMMENT '订单的创建时间',
+                `pay_time`               datetime                                        DEFAULT NULL COMMENT '订单的支付时间',
+                `buyer_user_id`          varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '下单人的企微用户 ID',
+                `is_deleted`             tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记。0：否；1：是',
+                `created_at`             timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`             timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_order_id` (`order_id`) USING BTREE,
+                KEY                      `idx_auth_corp_id` (`auth_corp_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='企微服务商接口许可下单信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220706-002" author="刘斌华" labels="企微接口许可">
+        <comment>企微服务商接口许可账号信息</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}social_wecom_permit_order_account`
+            (
+                `id`              bigint(20) unsigned NOT NULL COMMENT '主键 ID',
+                `suite_id`        varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
+                `auth_corp_id`    varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权的企业 ID',
+                `type`            tinyint(1) unsigned NOT NULL COMMENT '帐号类型。1：基础帐号；2：互通帐号',
+                `activate_status` tinyint(1) unsigned NOT NULL COMMENT '帐号状态。1：未绑定；2：已绑定且有效；3：已过期；4：待转移',
+                `active_code`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '账号激活码',
+                `cp_user_id`      varchar(32) COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '账号绑定激活的企微用户 ID',
+                `create_time`     datetime                                        DEFAULT NULL COMMENT '创建时间，订单支付成功后立即创建',
+                `active_time`     datetime                                        DEFAULT NULL COMMENT '首次激活绑定用户的时间',
+                `expire_time`     datetime                                        DEFAULT NULL COMMENT '过期时间。为首次激活绑定的时间加上购买时长',
+                `is_deleted`      tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记。0：否；1：是',
+                `created_at`      timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`      timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_auth_corp_id_active_code` (`auth_corp_id`,`active_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='企微服务商接口许可账号信息';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220706-003" author="刘斌华" labels="企微接口许可">
+        <comment>企微服务商接口许可账号绑定信息</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}social_wecom_permit_order_account_bind`
+            (
+                `id`           bigint(20) unsigned NOT NULL COMMENT '主键 ID',
+                `suite_id`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
+                `auth_corp_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权的企业 ID',
+                `order_id`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '接口许可的订单号',
+                `active_code`  varchar(32) COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '新购订单的激活码',
+                `cp_user_id`   varchar(32) COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT '续期订单的企微用户 ID',
+                `is_deleted`   tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记。0：否；1：是',
+                `created_at`   timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `updated_at`   timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                PRIMARY KEY (`id`),
+                KEY            `idx_auth_corp_id` (`auth_corp_id`) USING BTREE,
+                KEY            `idx_order_id` (`order_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='企微服务商接口许可账号绑定信息';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

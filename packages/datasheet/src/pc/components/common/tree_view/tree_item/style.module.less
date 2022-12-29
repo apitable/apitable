@@ -1,0 +1,190 @@
+@import "~pc/styles/lib_var.less";
+
+@node-over-bg: var(--treeSelectedBg);
+@node-focused-bg: transparent;
+@node-selected-bg: var(--primaryLight);
+@node-disabled-bg: transparent;
+@node-drag-bg: var(--defaultBg);
+@node-selected-children-bg: var(--fill0);
+@node-drag-line-color: var(--primaryColor);
+@node-drag-line-size: 2px;
+@node-drag-dot-size: 6px;
+
+
+.treeItemRoot {
+  &,
+  .group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .treeItem {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: @node-drag-line-size solid transparent;
+    cursor: pointer;
+
+    .iconContainer {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+
+      .icon {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+        border-radius: 2px;
+        @media (any-hover: hover) {
+          &:hover {
+            background: var(--shadowColor);
+          }
+        }
+
+        .spin {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--fourthLevelText);
+          transform: rotate(0deg);
+          transition: transform 500ms ease;
+        }
+      }
+    }
+
+    .label {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      height: 100%;
+    }
+
+    // Line when dragging
+    .label::before {
+      display: none;
+      content: "\0020";
+      position: absolute;
+      left: @node-drag-dot-size - 1;
+      right: 0;
+      border-top: @node-drag-line-size @node-drag-line-color solid;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    // Point when dragging and dropping
+    .label::after {
+      display: none;
+      content: "\0020";
+      position: absolute;
+      width: @node-drag-dot-size;
+      height: @node-drag-dot-size;
+      border-radius: @node-drag-dot-size / 2;
+      border: @node-drag-line-size solid @node-drag-line-color;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @media (any-hover: hover) {
+      // Node hover style
+      &:hover {
+        border-radius: 4px;
+        background: var(--fill0);
+      }
+    }
+
+    &:active {
+      background: var(--fill1);
+    }
+
+    // Style when nodes are expanded
+    &.expanded {
+      .iconContainer {
+        svg {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+   
+
+    // Style when node is selected
+    &.selected {
+      background: @node-selected-bg;
+
+      & + .group {
+        background: @node-selected-children-bg;
+        border-radius: 0 0 4px 4px;
+      }
+    }
+
+    &.selected.expanded {
+      border-radius: 4px 4px 0 0;
+    }
+
+    // Style when nodes are disabled
+    &.disabled {
+      background: @node-disabled-bg;
+    }
+
+    // Style when nodes are dragged and dropped
+    &.dragNodeHighlight {
+      background: @node-drag-bg;
+    }
+
+    &.parentHighlight {
+      border-color: @node-drag-line-color;
+    }
+
+    &.draggable {
+      .label {
+        cursor: pointer;
+      }
+    }
+
+    &.dragging {
+      .label {
+        cursor: grabbing;
+      }
+    }
+
+    &.dragOverGapTop .label::before {
+      display: block;
+      top: -@node-drag-line-size - 1px;
+    }
+
+    &.dragOverGapTop .label::after {
+      display: block;
+      top: -@node-drag-dot-size - 1px + @node-drag-line-size;
+    }
+
+    &.dragOverGapBottom .label::before {
+      display: block;
+      bottom: -@node-drag-line-size - 1px;
+    }
+
+    &.dragOverGapBottom .label::after {
+      display: block;
+      bottom: -@node-drag-dot-size - 1px + @node-drag-line-size;
+    }
+
+    &.dragOver {
+      border-color: var(--primaryColor);
+    }
+  }
+}
+

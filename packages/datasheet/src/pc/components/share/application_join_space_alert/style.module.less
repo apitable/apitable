@@ -1,0 +1,132 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.applicationJoinSpace {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    position: absolute;
+    bottom: 72px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 24px;
+    border-radius: 8px;
+    background: var(--defaultBg);
+    box-shadow: 0px 2px 14px 0px var(--shadowColor);
+    transition: all 1s ease;
+
+    .text {
+      padding-right: 16px;
+      flex-shrink: 0;
+      font-size: 14px;
+      color: var(--secondLevelText);
+    }
+
+    .applicationBtn {
+      flex-shrink: 0;
+    }
+
+    .closeBtn {
+      display: flex;
+      align-items: center;
+      margin-left: 16px;
+      width: 16px;
+      height: 16px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--secondLevelText);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.joinBtn {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0.5;
+    transform: translateX(80px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(-10px);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeoutAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(150px) scale(0.2);
+    // display: none;
+  }
+}
+
+.fadeout {
+  .container {
+    animation: fadeoutAnimation 0.3s ease-out forwards;
+  }
+}
+
+.fadeIn {
+  &.joinBtn {
+    visibility: visible;
+    animation: fadeInAnimation 0.5s ease-in-out 0.2s forwards;
+  }
+}
+
+.spaceName {
+  color: var(--primaryColor);
+  font-weight: bold;
+}
+
+@media screen and (max-width: @w-md) {
+  .applicationJoinSpace {
+    .container {
+      width: 100%;
+      padding: 0 19px;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      bottom: 40px;
+      border-radius: 0;
+      // FIXME:THEME
+      // .backgroundBlur (var(--rowSelectedBg), 80%, 10px);
+
+      .text {
+        padding-right: 16px;
+      }
+
+      .closeBtn {
+        margin-left: 16px;
+      }
+    }
+  }
+
+  .joinBtn {
+    opacity: 1;
+    visibility: visible;
+  }
+}

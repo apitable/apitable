@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220210-001" author="刘斌华" labels="WeCom">
+        <comment>第三方平台集成-企业微信租户用户表增加 OpenUserId</comment>
+        <sql>
+            alter table `${table.prefix}social_cp_tenant_user`
+            add column `cp_open_user_id` varchar(255) null comment '第三方平台全局 OpenUserId 平台唯一' after `cp_user_id`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

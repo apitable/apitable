@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-001" author="ShawnDeng" labels="base">
+        <comment>Create Table: Attachments Assets</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}asset` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '整个文件的Hash，MD5摘要',
+            `head_sum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '资源文件前32个字节的Base64',
+            `file_size` int(11) NOT NULL COMMENT '文件大小(单位:byte)',
+            `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '云端文件存放路径',
+            `extension_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件扩展名',
+            `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否是模版附件(0:否,1:是)',
+            `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            INDEX `idx_digest`(`checksum`) USING BTREE
+            ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '基础-资源文件表' ROW_FORMAT = Dynamic;
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}asset"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-002" author="ShawnDeng" labels="base">
+        <comment>创建通讯录文件上传解析记录表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}audit_upload_parse_record` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `space_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(vika_space#space_id)',
+            `file_save_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '文件保存相对路径',
+            `row_size` tinyint(3) DEFAULT NULL COMMENT '文件行数',
+            `success_count` int(11) DEFAULT NULL COMMENT '解析成功的行数',
+            `error_count` int(11) DEFAULT NULL COMMENT '解析失败的行数',
+            `error_msg` json DEFAULT NULL COMMENT '解析失败详细',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='审计模块-通讯录文件上传解析记录表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}audit_upload_parse_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

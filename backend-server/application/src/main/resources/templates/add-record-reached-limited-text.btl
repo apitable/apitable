@@ -1,0 +1,11 @@
+API 创建记录失败通知
+
+
+你通过 API 在 ${NODE_NAME} 创建记录失败
+
+
+原因：单个表格的行数上限是 ${COUNT} 条，请尽快清理数据或者更换其他表格，以免丢失数据。
+
+copyright © 2019-${YEARS} 深圳维格云科技有限公司.All rights reserved.
+
+联系我们

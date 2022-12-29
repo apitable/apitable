@@ -1,0 +1,28 @@
+
+.left {
+  max-width: calc(100% - 48px);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  .spaceName {
+    width: 100%;
+    padding-right: 16px;
+  }
+
+  .logo {
+    position: absolute;
+    top: 1px;
+    right: 0;
+  }
+}
+
+.popover {
+  :global {
+    .ant-popover-inner {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  }
+}

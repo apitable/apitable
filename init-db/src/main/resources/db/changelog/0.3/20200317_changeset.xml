@@ -1,0 +1,102 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!--2020年3月17号 变更需求任务序号001开始-->
+    <changeSet id="V0.3-20200317-001" author="ShawnDeng" labels="node">
+        <comment>创建工作台-节点分享设置表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_share_setting`  (
+            `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
+            `node_id` varchar(50) NOT NULL COMMENT '节点ID',
+            `share_id` varchar(64) NULL COMMENT '分享唯一ID',
+            `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '可分享状态(0:关闭,1:开启)',
+            `allow_save` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否允许他人转存(0:否,1:是)',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+            `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+            PRIMARY KEY (`id`),
+            UNIQUE INDEX `k_node_id`(`node_id`) COMMENT '节点ID唯一'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点分享设置表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_share_setting"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-002" author="ShawnDeng" labels="node">
+        <comment>创建工作台-节点分享设置操作记录表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_share_operate`  (
+            `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
+            `share_id` varchar(64) NOT NULL COMMENT '节点分享唯一编码',
+            `operate_event` tinyint(2) UNSIGNED NOT NULL COMMENT '操作事件类型(0:开启分享,1:关闭分享,2:开启转存,3:关闭转存,4:刷新链接)',
+            `operator` bigint(20) NOT NULL COMMENT '操作者',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+            PRIMARY KEY (`id`)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT = '工作台-节点分享设置操作记录表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_share_operate"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-003" author="Chambers" labels="node">
+        <comment>创建节点描述表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_desc` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义节点ID',
+            `description` text COLLATE utf8mb4_unicode_ci COMMENT '节点描述',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_node_id` (`node_id`) USING BTREE COMMENT '节点唯一编码'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点描述表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_desc"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-004" author="Chambers" labels="space">
+        <comment>创建空间公开邀请链接表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_invite_link` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',
+            `team_id` bigint(20) NOT NULL COMMENT '部门ID(关联#vika_unit_team#id)',
+            `creator` bigint(20) NOT NULL COMMENT '创建者成员ID(关联#vika_unit_member#id)',
+            `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '邀请令牌编码',
+            `invite_num` int(10) unsigned DEFAULT '0' COMMENT '成功受邀人数',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `invite_token` (`invite_token`) USING BTREE COMMENT '唯一性令牌'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-公开邀请链接';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_invite_link"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-005" author="Chambers" labels="audit">
+        <comment>创建审计-邀请记录</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}audit_invite_record` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[冗余]空间ID(关联#vika_space#space_id)',
+            `inviter` bigint(20) NOT NULL COMMENT '邀请者成员ID(关联#vika_unit_member#id)',
+            `accepter` bigint(20) NOT NULL COMMENT '受邀者成员ID(关联#vika_unit_member#id)',
+            `type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '受邀类型(0:邮箱邀请;1:文件导入;2:链接邀请)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='审计-邀请记录';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}audit_invite_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

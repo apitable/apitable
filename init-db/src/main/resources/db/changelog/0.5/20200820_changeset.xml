@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200820-001" author="Benson" labels="wechat">
+        <comment>关键词回复表新增content字段</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}wechat_keyword_reply`
+            ADD COLUMN `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '回复内容，对于文本类型，content是文本内容，对于图文、图片、语音、视频类型，content是mediaID' AFTER `keyword`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200820-002" author="Shawn" labels="datasheet">
+        <comment>record表修正field_updated_info字段描述</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}datasheet_record`
+            MODIFY COLUMN `field_updated_info` json NULL COMMENT '字段更新信息' AFTER `revision`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

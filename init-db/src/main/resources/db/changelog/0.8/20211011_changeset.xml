@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.8-20211011-001" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源分组表 新增『企业与安全』资源组</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group` (id,group_code,group_name,group_desc) VALUES
+                (1235489086546259979, 'MANAGE_SECURITY', '管理企业安全中心', '可对子管理员进行『企业安全中心』功能的开启和关闭');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-002" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源分组表 新增『第三方应用集成』资源组</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group` (id,group_code,group_name,group_desc) VALUES
+                (1235489086546259980, 'MANAGE_INTEGRATION', '管理第三方应用集成', '可对子管理员进行『第三方应用集成』的开启和关闭');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-003" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源表 新增『企业安全中心』下的『共享与邀请』配置资源</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259981, 'MANAGE_SECURITY', 'MANAGE_SHARE_SETTING', '管理分享与邀请设置', '具有此资源的角色，可以在『企业安全中心』中设置『分享与邀请』的开启与关闭');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-004" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源表 新增『企业安全中心』下的『文件权限』配置资源</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259982, 'MANAGE_SECURITY', 'MANAGE_FILE_SETTING', '管理文件权限', '具有此资源的角色，可以在『企业安全中心』中设置『文件权限』的开启与关闭');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-005" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源表 新增『企业安全中心』下的『高级功能』配置资源</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259983, 'MANAGE_SECURITY', 'MANAGE_ADVANCE_SETTING', '管理企业安全中心', '具有此资源的角色，可以在『企业安全中心』页面中设置『高级功能』的开启与关闭');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-006" author="HumphreyHu" labels="space">
+        <comment>工作台-权限资源表 新增『第三方应用集成』资源配置项</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259984, 'MANAGE_INTEGRATION', 'MANAGE_INTEGRATION_SETTING', '管理第三方应用集成', '具有此资源的角色，可以配置『第三方应用集成』页面');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-007" author="Pengap" labels="space">
+        <comment>工作台-权限资源分组表 增加管理组件中心相关数据</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
+            VALUES (1450294475803914241, 'MANAGE_WIDGET', '管理组件中心', '可以在组件中心下架自建小组件或转交自建小组件的发布权');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-008" author="Pengap" labels="space">
+        <comment>工作台-权限资源表 增加管理组件中心相关数据</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1450294475803914242, 'MANAGE_WIDGET', 'UNPUBLISH_WIDGET', '下架小组件', NULL, '具有此资源的角色，可以在组件中心下架自建小组件', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1450294475803914243, 'MANAGE_WIDGET', 'TRANSFER_WIDGET', '移交小组件', NULL, '具有此资源的角色，可以在组件中心转交自建小组件的发布权', 1);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,150 @@
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { StoryType } from '../../stories/constants';
+import { Space } from './index';
+
+<Meta title={`${StoryType.Design}/Space 间距/文档`} />
+
+<style>{`
+  .stack {
+    display: flex;
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+`}</style>
+
+# Space 间距
+
+一致的间距使界面布局一致、显示更清晰且易于浏览。
+
+## 使用方式
+
+```jsx
+import { Space } from '@apitable/components';
+```
+
+## 规范
+
+子元素之间的间隙推荐：
+
+| 命名      | 值（px）|使用场景说明 |
+|----------|--------|-----------|
+| xxxs     | 2      ||
+| xxs      | 4      ||	 
+| xs	     | 8      ||
+| s	       | 16     ||
+| l	       | 32	    ||
+| xl       | 40     ||
+| xxl      | 80     ||
+| xxxl     | 120    ||
+
+
+## 默认间距
+
+默认为行内布局，每个子元素之间的间距是 8px。
+
+<Canvas>
+ <Story id="设计指导-space-间距--default-size-8"/>
+</Canvas>
+
+## 自定义间距
+
+可自定义间距，比如 `size=16` 设置间距为 16px。
+
+<Canvas>
+ <Story id="设计指导-space-间距--set-size-32"/>
+</Canvas>
+
+## 列间距
+
+`vertical` 属性支持列布局。并设定列间距为 16px。
+
+<Canvas>
+ <Story id="设计指导-space-间距--vertical-size-16"/>
+</Canvas>
+
+## 分隔符
+
+<Canvas>
+ <Story id="设计指导-space-间距--split"/>
+</Canvas>
+
+## 支持换行
+
+子元素很多时，设置 `wrap=true` 支持换行
+
+定义 Card 组件：
+
+```tsx
+import { Box } from '@apitable/components';
+
+const Card = () => (
+  <Box
+    width="120px"
+    height="80px"
+    border="1px solid #ccc"
+    textAlign="center"
+    lineHeight="80px"
+  >
+    120px x 80px
+  </Box>
+);
+```
+
+<Canvas>
+ <Story id="设计指导-space-间距--wrap"/>
+</Canvas>
+
+## 设置左右、上下间距
+
+上下、左右可以设定不同的间距，比如设置 `size=[16, 32]` 表示设置左右间距为 16px，上下间距为 32px。
+
+<Canvas>
+ <Story id="设计指导-space-间距--set-row-column-space"/>
+</Canvas>
+
+## 设置子元素对齐方式
+
+支持通过 align 设置对齐方式。
+
+横向对齐方式，以下依次为：start、center、end、baseline
+
+<Canvas>
+  <div className="stack">
+    <Story id="设计指导-space-间距--align-start"/>
+  </div>
+  <div className="stack">
+    <Story id="设计指导-space-间距--align-center"/>
+  </div>
+  <div className="stack">
+    <Story id="设计指导-space-间距--align-end"/>
+  </div>
+  <div className="stack">
+    <Story id="设计指导-space-间距--align-baseline"/>
+  </div>
+</Canvas>
+
+纵向对齐方式，以下依次为：start、center、end。纵向布局 baseline 属性无意义。
+
+<Canvas>
+  <div className="stack">
+    <Story id="设计指导-space-间距--vertical-align-start"/>
+  </div>
+  <div className="stack">
+    <Story id="设计指导-space-间距--vertical-align-center"/>
+  </div>
+  <div className="stack">
+    <Story id="设计指导-space-间距--vertical-align-end"/>
+  </div>
+</Canvas>
+
+## 自定义组件标签
+
+可自定组件标签，比如设置为 `ul`、`li` HTML 标签
+
+<Canvas>
+ <Story id="设计指导-space-间距--set-component-ul-li"/>
+</Canvas>
+
+## API
+
+<ArgsTable of={Space} />

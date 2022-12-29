@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20221010-001" author="Chambers" labels="template">
+        <comment>modify template album content column type</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template_album`
+                MODIFY COLUMN `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Template Album Content' AFTER `description`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20221010-002" author="Chambers" labels="space">
+        <comment>add template mark column in space asset</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_asset`
+                ADD COLUMN `is_template` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '[Redundant] Whether it is a template attachment (0: No, 1: Yes)' AFTER `file_size`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

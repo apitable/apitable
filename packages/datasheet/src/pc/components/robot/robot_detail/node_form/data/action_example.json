@@ -1,0 +1,89 @@
+{
+  "name": "获取图书信息",
+  "inputJsonSchema": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "barCode": {
+          "type": "string",
+          "title": "条形码",
+          "description": "书籍条形码"
+        }
+      },
+      "required": ["barCode"]
+    },
+    "uiSchema": {
+      "barCode": {
+        "ui:options": {
+          "showTitle": true
+        }
+      }
+    }
+  },
+  "outputJsonSchema": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "title": "是否成功"
+        },
+        "book": {
+          "type": "object",
+          "title": "书籍详情",
+          "properties": {
+            "title": {
+              "type": "string",
+              "title": "书籍名称"
+            },
+            "author": {
+              "type": "string",
+              "title": "作者"
+            },
+            "publisher": {
+              "type": "string",
+              "title": "出版社"
+            },
+            "publishDate": {
+              "type": "string",
+              "title": "出版日期"
+            },
+            "cover": {
+              "type": "string",
+              "title": "封面图片 URL"
+            }
+          }
+        }
+      }
+    },
+    "uiSchema": {
+      "ui:order": [
+        "book",
+        "success"
+      ],
+      "book": {
+        "ui:options": {
+          "layout": [
+            {
+              "title": "书籍信息",
+              "items": [
+                "title",
+                "author",
+                "cover"
+              ]
+            },
+            {
+              "title": "出版信息",
+              "items": [
+                "publisher",
+                "publishDate"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "serviceId": "开发者自己注册的服务ID",
+  "endpoint": "getBookByBarCode"
+}

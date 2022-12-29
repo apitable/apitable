@@ -1,0 +1,43 @@
+import * as React from 'react';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { IField } from '@apitable/core';
+import EditorTitleContext from '../../editor_title_context';
+import styles from './style.module.less';
+import cls from 'classnames';
+import { stopPropagation } from 'pc/utils';
+
+export interface IChangesetItemHeader {
+  field?: IField;
+  old?: boolean
+  inline?: boolean;
+  block?: boolean;
+}
+
+const ChangesetItemHeader: React.FC<IChangesetItemHeader> = (props) => {
+  const { field, old, inline = true, block } = props;
+  const { updateFocusFieldId } = React.useContext(EditorTitleContext);
+  if (!field) return null;
+  return (
+    <div
+      className={cls(styles.changesetItemHeader, {
+        [styles.old]: old,
+        [styles.inline]: inline,
+      })}
+      onMouseDown={(e) => {
+        if (!old) {
+          updateFocusFieldId(field.id);
+          stopPropagation(e);
+        }
+      }}
+    >
+      <div className={styles.iconType}>
+        {getFieldTypeIcon(field.type, 'currentcolor')}
+      </div>
+      <div className={cls(styles.text, { [styles.block]: block })}>
+        {field.name}
+      </div>
+    </div>
+  );
+};
+
+export default ChangesetItemHeader;

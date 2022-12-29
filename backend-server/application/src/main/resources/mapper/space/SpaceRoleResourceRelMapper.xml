@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}space_role_resource_rel(id, role_code, resource_code)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.roleCode} , #{item.resourceCode}
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleCode">
+        DELETE FROM ${tablePrefix}space_role_resource_rel
+        WHERE role_code = #{roleCode}
+    </delete>
+
+    <delete id="deleteByRoleCodeAndResourceCodes">
+        DELETE FROM ${tablePrefix}space_role_resource_rel
+        WHERE role_code = #{roleCode} and resource_code in
+        <foreach item="item" index="index" collection="resourceCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="selectRoleCodeByResourceCodes" resultType="string">
+        SELECT role_code from ${tablePrefix}space_role_resource_rel
+        WHERE resource_code IN
+        <foreach item="item" index="index" collection="resourceCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY role_code
+    </select>
+
+    <delete id="batchDeleteByRoleCodes">
+        DELETE FROM ${tablePrefix}space_role_resource_rel
+        WHERE role_code IN
+        <foreach item="item" index="index" collection="roleCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectResourceCodesByRoleCode" resultType="string">
+        SELECT resource_code
+        FROM ${tablePrefix}space_role_resource_rel
+        WHERE role_code = #{roleCode}
+    </select>
+</mapper>

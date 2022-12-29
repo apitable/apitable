@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220506-001" author="刘斌华" labels="企微服务商">
+        <comment>企业微信订单信息</comment>
+        <sql>
+            create table ${table.prefix}social_order_wecom
+            (
+                id bigint(20) not null comment '主键 ID',
+                order_id varchar(32) not null comment '企业微信的订单号',
+                order_status tinyint(1) not null comment '订单状态。0：待支付；1：已支付；2：已取消；3：支付过期；4：申请退款中；5：退款成功；6：退款被拒绝',
+                order_type tinyint(1) not null comment '订单类型。0：新购应用；1：扩容应用人数；2：续期应用时间；3：变更版本',
+                paid_corp_id varchar(32) not null comment '下单的企业 ID',
+                operator_id varchar(32) null comment '下单操作人员 userid。如果是服务商代下单，没有该字段',
+                suite_id varchar(32) not null comment '应用套件 ID',
+                edition_id varchar(32) not null comment '购买的应用版本 ID',
+                price int(10) not null comment '应付价格。单位：分',
+                user_count bigint(20) not null comment '购买的人数',
+                order_period int(10) not null comment '购买的时长。单位：天',
+                order_time datetime null comment '下单时间',
+                paid_time datetime null comment '付款时间',
+                begin_time datetime null comment '购买生效期的开始时间',
+                end_time datetime null comment '购买生效期的结束时间',
+                order_from tinyint(1) not null comment '下单来源。0：企业下单；1：服务商代下单；2：代理商代下单',
+                operator_corp_id varchar(32) null comment '下单方的企业 ID',
+                service_share_amount int(10) null comment '服务商分成金额。单位：分',
+                platform_share_amount int(10) null comment '平台分成金额。单位：分',
+                dealer_share_amount int(10) null comment '代理商分成金额。单位：分',
+                dealer_corp_id varchar(32) null comment '代理商的企业 ID',
+                order_info json not null comment '订单原始数据',
+                is_deleted tinyint(1) default '0' not null comment '删除标记。0：否；1：是',
+                created_at timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
+                updated_at timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+                constraint ${table.prefix}social_order_wecom_pk
+                    primary key (id)
+            )
+                comment '企业微信订单信息';
+
+            create index idx_paid_corp_id
+                on ${table.prefix}social_order_wecom (paid_corp_id);
+
+            create unique index uk_order_id
+                on ${table.prefix}social_order_wecom (order_id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

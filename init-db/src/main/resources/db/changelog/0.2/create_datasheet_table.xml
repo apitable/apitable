@@ -1,0 +1,111 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-004" author="ShawnDeng" labels="datasheet">
+        <comment>创建数据表格表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '自定义ID',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表节点Id(关联#vika_node#node_id)',
+            `dst_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(关联#vika_space#space_id)',
+            `creator` bigint(20) DEFAULT NULL COMMENT '创建者',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT '版本号',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_dst_id` (`dst_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数据表格表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-005" author="ShawnDeng" labels="datasheet">
+        <comment>创建数表操作变更合集表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_changeset` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `message_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'changeset请求的唯一标识，用于保证changeset的唯一',
+            `dst_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID',
+            `member_id` bigint(20) DEFAULT NULL COMMENT '操作成员ID(关联#vika_organization_member#id)',
+            `operations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '操作action的合集',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT '版本号',
+            `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT '1 表示删除，0 表示未删除',
+            `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表操作变更合集表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_changeset"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-006" author="ShawnDeng" labels="datasheet">
+        <comment>创建数表元数据表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_meta` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表自定义ID(关联#vika_datasheet#dst_id)',
+            `meta_data` json DEFAULT NULL COMMENT '元数据',
+            `revision` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表元数据表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_meta"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-007" author="ShawnDeng" labels="datasheet">
+        <comment>创建数表操作表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_operation` (
+            `id` bigint(20) unsigned NOT NULL COMMENT '主键',
+            `op_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作ID',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
+            `action_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作名称',
+            `actions` json DEFAULT NULL COMMENT '操作的合集',
+            `type` tinyint(2) unsigned DEFAULT NULL COMMENT '类型(1:JOT,2:COT)',
+            `member_id` bigint(20) DEFAULT NULL COMMENT '操作成员ID(关联#vika_organization_member#id)',
+            `revision` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本号',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_op_id` (`op_id`) USING BTREE COMMENT '操作唯一编码'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表操作表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_operation"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-008" author="ShawnDeng" labels="datasheet">
+        <comment>创建数表记录表</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_record` (
+            `id` bigint(20) NOT NULL COMMENT '主键',
+            `record_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作ID',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
+            `data` json DEFAULT NULL COMMENT '一行记录的数据（对应每个字段）',
+            `revision_history` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '按排序的历史版本号，是原 Operation 的revision，数组下标是当前 record 的 revision',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT '版本号',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_dsId_recordId` (`dst_id`,`record_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表记录表';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
