@@ -9,7 +9,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { usePageParams, useRequest, useSideBarVisible, useSpaceRequest, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/storage';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import Openup from 'static/icon/workbench/openup.svg';
@@ -33,8 +33,37 @@ interface IShareProps {
   shareInfo: Required<IShareInfo> | undefined;
 }
 
-const Share: React.FC<IShareProps> = ({ shareInfo }) => {
+const ComponentWrapper = ({
+  isIframeShowSharemenu, shareId, sideBarVisible, judgeAllowEdit,
+  children, shareSpaceId, applicationJoinAlertVisible, shareSpace, shareSpaceName,
+}) => {
   const colors = useThemeColors();
+  return (
+    <div
+      className={classNames(styles.gridContainer, {
+        [styles.containerAfter]: !isIframe(),
+        [styles.iframeShareContainer]: isIframe(),
+      })}
+      style={{
+        height: '100%',
+        width: isIframeShowSharemenu ? '100%' : '',
+        padding: shareId && !isIframe() ? '16px 15px 0 0' : '',
+        paddingBottom: isIframe() ? '40px' : '16px',
+        background: shareId && !isIframe() ? colors.primaryColor : '',
+        borderLeft: shareId && !sideBarVisible && !isIframe() ? `16px solid ${colors.primaryColor}` : '',
+      }}
+    >
+      <div className={styles.wrapper} onDoubleClick={judgeAllowEdit}>
+        {children}
+      </div>
+      {applicationJoinAlertVisible && (
+        <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
+      )}
+    </div>
+  );
+};
+
+const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const shareLoginFailed = getStorage(StorageName.ShareLoginFailed);
   const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
@@ -50,7 +79,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const {
     data: spaceList = [],
     loading: spaceListLoading,
-    run: getSpaceList
+    run: getSpaceList,
   } = useRequest(getSpaceListReq, { manual: true });
   const dispatch = useAppDispatch();
 
@@ -126,13 +155,43 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     }
     setTimeout(() => {
       console.log('share navigationTo');
-      Router.push(Navigation.SHARE_SPACE,{
+      Router.push(Navigation.SHARE_SPACE, {
         params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeId },
       });
     }, 0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(shareInfo)]);
+
+  const component = useMemo(() => {
+    if (!nodeTree) {
+      return;
+    }
+    if (mirrorId) {
+      return <MirrorRoute />;
+    } else if (datasheetId) {
+      return <DataSheetPane />;
+    } else if (formId) {
+      return <FormPanel loading={loading} />;
+    } else if (dashboardId) {
+      return <DashboardPanel />;
+    } else if (folderId) {
+      const parentNode = findNode([nodeTree], folderId);
+      const childNodes = (parentNode && parentNode.children) ?? [];
+      return (
+        <FolderShowcase
+          nodeInfo={{
+            name: treeNodesMap[folderId]?.nodeName || '',
+            id: folderId,
+            icon: treeNodesMap[folderId]?.icon || '',
+          }}
+          childNodes={childNodes}
+          readOnly
+        />
+      );
+    }
+    return null;
+  }, [dashboardId, mirrorId, treeNodesMap, formId, folderId, nodeTree, datasheetId, loading]);
 
   if (shareClose) {
     return <ShareFail />;
@@ -163,36 +222,6 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     setSideBarVisible(!sideBarVisible);
   };
 
-  const getComponent = () => {
-    if (!nodeTree) {
-      return;
-    }
-    if (mirrorId) {
-      return <MirrorRoute />;
-    } else if (datasheetId) {
-      return <DataSheetPane />;
-    } else if (formId) {
-      return <FormPanel loading={loading} />;
-    } else if (dashboardId) {
-      return <DashboardPanel />;
-    } else if (folderId) {
-      const parentNode = findNode([nodeTree], folderId);
-      const childNodes = (parentNode && parentNode.children) ?? [];
-      return (
-        <FolderShowcase
-          nodeInfo={{
-            name: treeNodesMap[folderId]?.nodeName || '',
-            id: folderId,
-            icon: treeNodesMap[folderId]?.icon || '',
-          }}
-          childNodes={childNodes}
-          readOnly
-        />
-      );
-    }
-    return null;
-  };
-
   if (!shareSpace) {
     dispatch(StoreActions.setLoading(false));
     return <></>;
@@ -216,7 +245,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   const {
     spaceId: shareSpaceId,
     spaceName: shareSpaceName,
-    allowApply
+    allowApply,
   } = shareSpace;
   const realSpaceId = userInfo?.spaceId;
 
@@ -233,32 +262,6 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
 
   const isIframeShowSharemenu = nodeTree?.children?.length === 0 && isIframe();
 
-  const DataSheetComponent = () => {
-    return(
-      <div
-        className={classNames(styles.gridContainer, {
-          [styles.containerAfter]: !isIframe(),
-          [styles.iframeShareContainer]: isIframe(),
-        })}
-        style={{
-          height: '100%',
-          width: isIframeShowSharemenu ? '100%' : '',
-          padding: shareId && !isIframe() ? '16px 15px 0 0' : '',
-          paddingBottom: isIframe() ? '40px' : '16px',
-          background: shareId && !isIframe() ? colors.primaryColor : '',
-          borderLeft: shareId && !sideBarVisible && !isIframe() ? `16px solid ${colors.primaryColor}` : '',
-        }}
-      >
-        <div className={styles.wrapper} onDoubleClick={judgeAllowEdit}>
-          {getComponent()}
-        </div>
-        {applicationJoinAlertVisible && (
-          <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
-        )}
-      </div>
-    );
-  };
-
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
@@ -274,7 +277,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
           [styles.hiddenCatalog]: !sideBarVisible,
           [styles.formShare]: formId && nodeTree?.nodeId !== formId, // The form is shared through a folder
           [styles.iframeShare]: !isIframe(),
-          [styles.iframeShareContainer]: isIframe()
+          [styles.iframeShareContainer]: isIframe(),
         })}
       >
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -309,12 +312,34 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
                   </div>
                 </Tooltip>
               </div>
-              <DataSheetComponent />
+              <ComponentWrapper
+                isIframeShowSharemenu={isIframeShowSharemenu}
+                shareId={shareId}
+                sideBarVisible={sideBarVisible}
+                judgeAllowEdit={judgeAllowEdit}
+                shareSpaceId={shareSpaceId}
+                applicationJoinAlertVisible={applicationJoinAlertVisible}
+                shareSpace={shareSpace}
+                shareSpaceName={shareSpaceName}
+              >
+                {component}
+              </ComponentWrapper>
             </SplitPane>
-          ) : <DataSheetComponent />}
+          ) : <ComponentWrapper
+            isIframeShowSharemenu={isIframeShowSharemenu}
+            shareId={shareId}
+            sideBarVisible={sideBarVisible}
+            judgeAllowEdit={judgeAllowEdit}
+            shareSpaceId={shareSpaceId}
+            applicationJoinAlertVisible={applicationJoinAlertVisible}
+            shareSpace={shareSpace}
+            shareSpaceName={shareSpaceName}
+          >
+            {component}
+          </ComponentWrapper>}
         </ComponentDisplay>
-        {isIframe() && <div className={styles.brandContainer} >
-          <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt="vika_brand" />
+        {isIframe() && <div className={styles.brandContainer}>
+          <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt='vika_brand' />
         </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <ShareMobile
