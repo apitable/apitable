@@ -253,7 +253,7 @@ export const getMsgText = (data: INoticeDetail) => {
       return data.notifyBody?.extras?.toast?.msg || data.notifyBody?.extras?.toast?.content || 'data is null';
     }
     default: {
-      const formatString = templateConfig?.formatString;
+      const formatString = templateConfig?.format_string;
       const stringId = typeof formatString === 'string' ? formatString : formatString?.[0];
       return t(Strings[stringId]) !== ERROR_STR ? t(Strings[stringId]) : t(Strings.unresolved_message);
     }
