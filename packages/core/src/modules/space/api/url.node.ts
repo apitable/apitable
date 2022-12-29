@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // =============== Node related =======================
 // get the root node
 export const GET_ROOT_NODE = '/node/root';

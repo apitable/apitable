@@ -242,7 +242,7 @@ export class CountIf extends ArrayFunc {
     if (range == null) return 0;
     if (rangeNode.valueType === BasicValueType.Array) {
       // @ts-ignore
-      declare let range: any[]
+      declare let range: any[];
       const filterTypes = [BasicValueType.String, BasicValueType.Number]; // special convertible type
       switch (finalSymbol) {
         case SymbolType.Equal: {

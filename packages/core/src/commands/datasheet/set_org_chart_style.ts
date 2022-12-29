@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';

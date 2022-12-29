@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 type IOptions<T extends string> = {
   supportedLngs: T[],
   fallbackLng?: { [key: string]: T },

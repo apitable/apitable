@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<desc>Created with Sketch.</desc>
-<g id="Page-1">
-	<g id="common" transform="translate(-165.000000, -121.000000)">
-		<g id="icon_x2F_warning_x5F_triangle" transform="translate(165.000000, 121.000000)">
-			<g id="common_icon_warning_triangle" transform="translate(1.000000, 1.500000)">
-				<path id="Shape" fill-rule="evenodd" clip-rule="evenodd" fill="#FBB940" d="M7.5,1.1c0.1,0.1,0.3,0.2,0.3,0.3l5.2,8.6
-					c0.3,0.5,0.1,1.1-0.3,1.4c-0.2,0.1-0.3,0.1-0.5,0.1H1.8c-0.6,0-1-0.4-1-1c0-0.2,0.1-0.4,0.1-0.5l5.2-8.6C6.4,0.9,7,0.8,7.5,1.1z
-					 M7,8.3c-0.5,0-0.8,0.4-0.8,0.9S6.5,10,7,10s0.8-0.4,0.8-0.9S7.5,8.3,7,8.3z M7,3.6C6.6,3.6,6.3,4,6.3,4.4l0,0v2.4l0,0.1
-					c0,0.4,0.4,0.6,0.7,0.6c0.4,0,0.8-0.3,0.8-0.8l0,0V4.4l0-0.1C7.7,3.9,7.4,3.6,7,3.6z"/>
-			</g>
-		</g>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 16 16" version="1.1" viewBox="0 0 16 16" xml:space="preserve"><desc>Created with Sketch.</desc><g id="Page-1"><g id="common" transform="translate(-165.000000, -121.000000)"><g id="icon_x2F_warning_x5F_triangle" transform="translate(165.000000, 121.000000)"><g id="common_icon_warning_triangle" transform="translate(1.000000, 1.500000)"><path id="Shape" fill="#FBB940" fill-rule="evenodd" d="M7.5,1.1c0.1,0.1,0.3,0.2,0.3,0.3l5.2,8.6 c0.3,0.5,0.1,1.1-0.3,1.4c-0.2,0.1-0.3,0.1-0.5,0.1H1.8c-0.6,0-1-0.4-1-1c0-0.2,0.1-0.4,0.1-0.5l5.2-8.6C6.4,0.9,7,0.8,7.5,1.1z M7,8.3c-0.5,0-0.8,0.4-0.8,0.9S6.5,10,7,10s0.8-0.4,0.8-0.9S7.5,8.3,7,8.3z M7,3.6C6.6,3.6,6.3,4,6.3,4.4l0,0v2.4l0,0.1 c0,0.4,0.4,0.6,0.7,0.6c0.4,0,0.8-0.3,0.8-0.8l0,0V4.4l0-0.1C7.7,3.9,7.4,3.6,7,3.6z" clip-rule="evenodd"/></g></g></g></g></svg>

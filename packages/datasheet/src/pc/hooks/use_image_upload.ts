@@ -48,7 +48,7 @@ export const useImageUpload = () => {
         return Promise.reject(message);
       }
       const { bucket, token } = imgData;
-      const host =  getEnvVariables()[bucket];
+      const host = getEnvVariables()[bucket];
       return Promise.resolve({
         imgUrl: getImageThumbSrc(host + token, isSvgOrGif ? undefined : { format: 'jpg', quality: 100 })
       });

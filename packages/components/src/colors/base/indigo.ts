@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const indigo = {
   50: '#E0E9FF',
   100: '#C2D3FF',
