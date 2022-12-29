@@ -20,7 +20,7 @@ import { Api, IApiWrapper } from '@apitable/core';
 import { ApiInterface } from '@apitable/core';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
-import { IUploadCertificate, IUploadFileForSaaS, UploadType } from 'utils/upload_attach_to_S3/upload.interface';
+import { IUploadCertificate, IUploadFileForSaaS, UploadType } from './upload.interface';
 
 type IGetUploadCertificateResponse = ApiInterface.IGetUploadCertificateResponse;
 
