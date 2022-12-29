@@ -95,6 +95,10 @@ build-local:
 	make _build-java
 	make _build-core
 	make _build-room
+	make _build-web
+
+_build-web:
+	yarn build:dst:pre
 
 _build-java:
 	cd backend-server && ./gradlew build -x test
