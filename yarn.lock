@@ -267,7 +267,7 @@ __metadata:
     "@types/string.prototype.matchall": ^4.0.1
     apphook: 1.0.6
     attr-accept: ^2.1.0
-    axios: 0.19.0
+    axios: 0.21.2
     color: ^3.1.3
     dayjs: ^1.11.7
     fuse.js: ^6.4.1
@@ -374,7 +374,7 @@ __metadata:
     antd: 4.23.5
     antd-mobile: 5.24.0
     attr-accept: ^2.1.0
-    axios: 0.19.0
+    axios: 0.21.2
     babel-jest: ^26.6.0
     babel-loader: 8.1.0
     babel-plugin-import: 1.13.5
@@ -15069,22 +15069,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.19.0":
-  version: 0.19.0
-  resolution: "axios@npm:0.19.0"
-  dependencies:
-    follow-redirects: 1.5.10
-    is-buffer: ^2.0.2
-  checksum: c234bf1e209f2e089b6d973c9302daeb512bd061013e8f2817ce5d68b74d681f49e2b4049fda93628b1c1cefaf0eb617919742eb17565793f8324cb25d2b05a8
-  languageName: node
-  linkType: hard
-
 "axios@npm:0.21.1":
   version: 0.21.1
   resolution: "axios@npm:0.21.1"
   dependencies:
     follow-redirects: ^1.10.0
   checksum: c87915fa0b18c15c63350112b6b3563a3e2ae524d7707de0a73d2e065e0d30c5d3da8563037bc29d4cc1b7424b5a350cb7274fa52525c6c04a615fe561c6ab11
+  languageName: node
+  linkType: hard
+
+"axios@npm:0.21.2":
+  version: 0.21.2
+  resolution: "axios@npm:0.21.2"
+  dependencies:
+    follow-redirects: ^1.14.0
+  checksum: 41299c21f77323e7c56ea49d2d5ed25407d24bb145a4ce3441a8db17359ae56554f9495dca6e15d343a9530e106212a684c75a4db3bedfbe19f6414a8d94378e
   languageName: node
   linkType: hard
 
@@ -26019,7 +26018,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"is-buffer@npm:^2.0.0, is-buffer@npm:^2.0.2":
+"is-buffer@npm:^2.0.0":
   version: 2.0.4
   resolution: "is-buffer@npm:2.0.4"
   checksum: b1616ff40c1644e219d6038819044608e31edcc60eb287e5f214391222dea889a68c659f0654865ce34b6c4dcfa2c8cae0174343a0f6ae3f2150f7856326cb80
