@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 260 260" enable-background="new 0 0 260 260" xml:space="preserve">
-<title>资源 1</title>
-<g id="Layer_2_1_">
-	<g id="Layer_1-2">
-		<polygon opacity="0.5" fill="#FFFFFF" enable-background="new    " points="52,208 52,156 104,156 		"/>
-		<rect x="52" y="52" opacity="0.3" fill="#FFFFFF" enable-background="new    " width="52" height="52"/>
-		<rect x="52" y="104" opacity="0.4" fill="#FFFFFF" enable-background="new    " width="52" height="52"/>
-		<polygon opacity="0.2" fill="#FFFFFF" enable-background="new    " points="156,104 104,104 156,52 		"/>
-		<polygon opacity="0.3" fill="#FFFFFF" enable-background="new    " points="104,156 104,104 156,104 		"/>
-		<rect x="156" y="156" opacity="0.3" fill="#FFFFFF" enable-background="new    " width="52" height="52"/>
-		<polygon opacity="0.1" fill="#FFFFFF" enable-background="new    " points="156,104 156,52 208,52 		"/>
-		<path fill="#FFFFFF" d="M0,0v260h260V0H0z M208,208h-52v-52h52V208z M156,104l-52,52l-52,52V52h52v52l52-52h52L156,104z"/>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 260 260" version="1.1" viewBox="0 0 260 260" xml:space="preserve"><title>资源 1</title><g id="Layer_2_1_"><g id="Layer_1-2"><polygon fill="#FFF" points="52 208 52 156 104 156" enable-background="new" opacity=".5"/><rect width="52" height="52" x="52" y="52" fill="#FFF" enable-background="new" opacity=".3"/><rect width="52" height="52" x="52" y="104" fill="#FFF" enable-background="new" opacity=".4"/><polygon fill="#FFF" points="156 104 104 104 156 52" enable-background="new" opacity=".2"/><polygon fill="#FFF" points="104 156 104 104 156 104" enable-background="new" opacity=".3"/><rect width="52" height="52" x="156" y="156" fill="#FFF" enable-background="new" opacity=".3"/><polygon fill="#FFF" points="156 104 156 52 208 52" enable-background="new" opacity=".1"/><path fill="#FFF" d="M0,0v260h260V0H0z M208,208h-52v-52h52V208z M156,104l-52,52l-52,52V52h52v52l52-52h52L156,104z"/></g></g></svg>

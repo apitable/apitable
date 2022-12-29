@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IActionResponse} from "./action.response";
-import {IJsonSchema} from "@apitable/core";
+import { IActionResponse } from './action.response';
+import { IJsonSchema } from '@apitable/core';
 
 export type IUiSchema = {
   'ui:field'?: string;

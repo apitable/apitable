@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import React, { ElementType } from 'react';
 
 export interface ILinkButtonProps extends React.LinkHTMLAttributes<any> {

@@ -22,4 +22,4 @@ export const emojiUrl = (icon: string) => {
   const QNY1 = window.__initialization_data__?.envVars.QNY1;
   const token = EmojisConfig[icon]?.token;
   return token ? `${QNY1}${token}` : null;
-}
+};

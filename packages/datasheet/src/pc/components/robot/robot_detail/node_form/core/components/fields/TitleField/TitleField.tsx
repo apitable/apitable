@@ -39,7 +39,7 @@ export const TitleField = (props: Pick<IFieldProps, 'id' | 'title' | 'required'>
     [styles.h2]: titleLevel === 2,
     [styles.h3]: titleLevel === 3,
     [styles.hasCollapse]: hasCollapse,
-  })
+  });
   const [collapse, setCollapse] = useState<boolean>(defaultCollapse);
 
   const switchCollapse = () => {
