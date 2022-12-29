@@ -45660,9 +45660,9 @@ typescript@~3.2.1:
   linkType: hard
 
 "y18n@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "y18n@npm:3.2.1"
-  checksum: e359082da23498caf6ffa5f4f715338fa974027d7e9cf1938462b41e69cf62addac0f1970c169f15f97fd20fb1cf8d44d069b4d51942b3c255ee13d5b234b6b8
+  version: 3.2.2
+  resolution: "y18n@npm:3.2.2"
+  checksum: 6154fd7544f8bbf5b18cdf77692ed88d389be49c87238ecb4e0d6a5276446cd2a5c29cc4bdbdddfc7e4e498b08df9d7e38df4a1453cf75eecfead392246ea74a
   languageName: node
   linkType: hard
 
