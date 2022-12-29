@@ -50,17 +50,19 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     @Test
     void getSpaceListWithAll() {
         MockUserSpace userSpace = createSingleUserAndSpace();
-        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), null);
+        GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
+        condition.setManageable(false);
+        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
         assertThat(spaceVOList).isNotEmpty().hasSize(1);
     }
 
     @Test
-    void getSpaceListWithNotAdminRole() {
+    void getSpaceListWithAdmin() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
-        condition.setManageable(false);
+        condition.setManageable(true);
         List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
-        assertThat(spaceVOList).isEmpty();
+        assertThat(spaceVOList).isNotEmpty().hasSize(1);
     }
 
     @Test
