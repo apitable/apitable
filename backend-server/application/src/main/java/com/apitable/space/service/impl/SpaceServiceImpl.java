@@ -21,6 +21,7 @@ package com.apitable.space.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -388,9 +389,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
         }
-        if (condition != null && condition.getManageable() != null) {
+        if (condition != null && BooleanUtil.isTrue(condition.getManageable())) {
             spaceDTOList = spaceDTOList.stream()
-                    .filter(k -> k.getAdmin().equals(condition.getManageable()))
+                    .filter(SpaceDTO::getAdmin)
                     .collect(Collectors.toList());
         }
         if (CollUtil.isEmpty(spaceDTOList)) {
