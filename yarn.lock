@@ -43781,17 +43781,10 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.18":
-  version: 0.7.20
-  resolution: "ua-parser-js@npm:0.7.20"
-  checksum: f7f71c541f009243b84b23ab01a59628e6491ffe1a2555f560f1caef4475d4d854063609dda1b3e3449490354f202433e1f60f50ac62707f898b9c9e8f47dd87
-  languageName: node
-  linkType: hard
-
-"ua-parser-js@npm:^0.7.21":
-  version: 0.7.22
-  resolution: "ua-parser-js@npm:0.7.22"
-  checksum: 310ef67d63f1ed2defe5b4f720182710fa9fe187d9f73c5791a5c3629d975cb73fde83fa34e071632d98ece4f7396ed8d51fb0482bf1f56aaf814fb3f7ec512a
+"ua-parser-js@npm:^0.7.18, ua-parser-js@npm:^0.7.21":
+  version: 0.7.32
+  resolution: "ua-parser-js@npm:0.7.32"
+  checksum: 6b6b035dd78a0ab3369f166ab6f26225d823d83630788806d634f16259297a8f4ae6fe0be4e48f4353ac10dffded3971d7745c55d1432fdfc78a893ba58ef044
   languageName: node
   linkType: hard
 
