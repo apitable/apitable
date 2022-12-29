@@ -99,7 +99,7 @@ APITable consists of 4 processes:
 3. socket-server
 4. web-server
 
-For start the development environment, you can run these commands:
+To start the development environment locally, run these commands:
 
 ```bash
 # start databases in dockers
