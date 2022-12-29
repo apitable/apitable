@@ -110,15 +110,6 @@ export const Logo: React.FC<ILogoProps> = (props) => {
         height={logoSize.logoTextHeight}
       />
     );
-
-    return (
-      <img
-        alt="logoText"
-        className={styles.logoText}
-        height={logoSize.logoTextHeight}
-        src={isLightTheme ? '/logo_text_light.svg' : '/logo_text_dark.svg'}
-      />
-    );
   };
 
   return (

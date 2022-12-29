@@ -582,7 +582,7 @@ export class KonvaDrawer {
     const avatarBg = (
       avatarSrc ? 
         colors.defaultBg : 
-        (bgColor ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
+        (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
     );
     switch (type) {
       case AvatarType.Team: {
@@ -628,7 +628,7 @@ export class KonvaDrawer {
             textAlign: 'center',
             verticalAlign: 'middle',
             text: avatarName,
-            fillStyle: colors.defaultBg
+            fillStyle: colors.textStaticPrimary
           });
         }
         return this.image({

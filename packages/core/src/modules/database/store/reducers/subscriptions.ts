@@ -18,8 +18,8 @@
 
 // reducers for data subscribe(follow)
 import produce from 'immer';
+import { ISetSubscriptionsAction, ISubscriptions } from '../../../../exports/store/interfaces';
 import { SET_SUBSCRIPTIONS } from '../../../shared/store/action_constants';
-import { ISubscriptions, ISetSubscriptionsAction } from '../../../../exports/store/interfaces';
 
 export const subscriptions = produce((subscriptions: ISubscriptions = [], action: ISetSubscriptionsAction) => {
   switch (action.type) {
@@ -30,4 +30,4 @@ export const subscriptions = produce((subscriptions: ISubscriptions = [], action
       return subscriptions;
     }
   }
-});
+}, []);

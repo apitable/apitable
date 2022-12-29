@@ -18,35 +18,18 @@
 
 import { IRemoteChangeset } from 'engine/ot';
 import { FillDirection, ICell, ICellValue, IFieldRanges, IRange, IRecordRanges, StatType } from 'model';
-import {
-  CellType,
-  GalleryStyleKeyType,
-  IUnitValue,
-  IUserValue,
-  LayoutType,
-  RowHeightLevel,
-  ViewType,
-  WhyRecordMoveType,
-} from '../../../../../../exports/store';
-import {
-  CalendarColorType,
-  CalendarStyleKeyType,
-  GanttColorType,
-  GanttStyleKeyType,
-  OrgChartStyleKeyType,
-} from '../../../../../shared/store/constants';
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
+import {
+  CellType, GalleryStyleKeyType, IUnitValue, IUserValue, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType,
+} from '../../../../../../exports/store';
 import * as actions from '../../../../../shared/store/action_constants';
+import {
+  CalendarColorType, CalendarStyleKeyType, GanttColorType, GanttStyleKeyType, OrgChartStyleKeyType,
+} from '../../../../../shared/store/constants';
 import { IPermissions, Role } from '../../../../../space/store/interfaces/catalog_tree';
 import {
-  ICalendarViewStatus,
-  IGanttViewStatus,
-  IGridViewActiveFieldState,
-  IGridViewDragState,
-  IKanbanViewStatus,
-  IOrgChartViewStatus,
-  ISearchResult,
+  ICalendarViewStatus, IGanttViewStatus, IGridViewActiveFieldState, IGridViewDragState, IKanbanViewStatus, IOrgChartViewStatus, ISearchResult,
   IWidgetPanelStatus,
 } from './client';
 
@@ -351,7 +334,7 @@ export interface IDatasheetState extends INodeMeta {
 }
 
 export interface ILoadingRecord {
-  [recordId: string]: boolean;
+  [recordId: string]: boolean | 'error';
 }
 
 export interface IActiveUpdateRowInfo {
