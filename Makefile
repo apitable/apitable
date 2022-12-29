@@ -98,7 +98,7 @@ build-local:
 	make _build-web
 
 _build-web:
-	yarn build:dst:pre
+	yarn build:dst
 
 _build-java:
 	cd backend-server && ./gradlew build -x test
