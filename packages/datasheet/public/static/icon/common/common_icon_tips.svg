@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#52C41A;}
-</style>
-<title>common_icon_tips</title>
-<desc>Created with Sketch.</desc>
-<path class="st0" d="M35,0C15.7,0,0,15.7,0,35s15.7,35,35,35s35-15.7,35-35S54.3,0,35,0z M55.8,25.6L33.7,48.1
-	c-0.4,0.4-0.9,0.6-1.4,0.6c0,0,0,0,0,0c-0.5,0-1-0.2-1.4-0.6L19.6,36.9c-0.8-0.8-0.8-2,0-2.8c0.8-0.8,2-0.8,2.8,0l9.8,9.8L53,22.8
-	c0.8-0.8,2-0.8,2.8,0C56.6,23.6,56.6,24.8,55.8,25.6z"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#52c41a}</style><title>common_icon_tips</title><desc>Created with Sketch.</desc><path d="M35,0C15.7,0,0,15.7,0,35s15.7,35,35,35s35-15.7,35-35S54.3,0,35,0z M55.8,25.6L33.7,48.1	c-0.4,0.4-0.9,0.6-1.4,0.6c0,0,0,0,0,0c-0.5,0-1-0.2-1.4-0.6L19.6,36.9c-0.8-0.8-0.8-2,0-2.8c0.8-0.8,2-0.8,2.8,0l9.8,9.8L53,22.8	c0.8-0.8,2-0.8,2.8,0C56.6,23.6,56.6,24.8,55.8,25.6z" class="st0"/></svg>

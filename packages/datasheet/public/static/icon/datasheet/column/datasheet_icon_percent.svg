@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<g>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#666666" d="M12.9,3.1c-0.4-0.4-1-0.4-1.4,0l-8.5,8.5c-0.4,0.4-0.4,1,0,1.4
-		c0.4,0.4,1,0.4,1.4,0l8.5-8.5C13.3,4.1,13.3,3.4,12.9,3.1z"/>
-	<circle fill-rule="evenodd" clip-rule="evenodd" fill="#666666" cx="4.5" cy="4.5" r="2.5"/>
-	<circle fill-rule="evenodd" clip-rule="evenodd" fill="#666666" cx="11.5" cy="11.5" r="2.5"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 16 16" version="1.1" viewBox="0 0 16 16" xml:space="preserve"><g><path fill="#666" fill-rule="evenodd" d="M12.9,3.1c-0.4-0.4-1-0.4-1.4,0l-8.5,8.5c-0.4,0.4-0.4,1,0,1.4 c0.4,0.4,1,0.4,1.4,0l8.5-8.5C13.3,4.1,13.3,3.4,12.9,3.1z" clip-rule="evenodd"/><circle cx="4.5" cy="4.5" r="2.5" fill="#666" fill-rule="evenodd" clip-rule="evenodd"/><circle cx="11.5" cy="11.5" r="2.5" fill="#666" fill-rule="evenodd" clip-rule="evenodd"/></g></svg>

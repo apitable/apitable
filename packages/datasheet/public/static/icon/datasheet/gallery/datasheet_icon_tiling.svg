@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<g>
-	<path fill="#666666" d="M6,2H3C2.4,2,2,2.4,2,3v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1V3C7,2.4,6.6,2,6,2z"/>
-	<path fill="#666666" d="M6,9H3c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1v-3C7,9.4,6.6,9,6,9z"/>
-	<path fill="#666666" d="M13,2h-3C9.4,2,9,2.4,9,3v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1V3C14,2.4,13.6,2,13,2z"/>
-	<path fill="#666666" d="M13,9h-3c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1v-3C14,9.4,13.6,9,13,9z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 16 16" version="1.1" viewBox="0 0 16 16" xml:space="preserve"><g><path fill="#666" d="M6,2H3C2.4,2,2,2.4,2,3v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1V3C7,2.4,6.6,2,6,2z"/><path fill="#666" d="M6,9H3c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1v-3C7,9.4,6.6,9,6,9z"/><path fill="#666" d="M13,2h-3C9.4,2,9,2.4,9,3v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1V3C14,2.4,13.6,2,13,2z"/><path fill="#666" d="M13,9h-3c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1h3c0.6,0,1-0.4,1-1v-3C14,9.4,13.6,9,13,9z"/></g></svg>
