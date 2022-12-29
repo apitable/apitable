@@ -137,10 +137,10 @@
         "email_icon": {
             "value": "space/2022/12/05/0d3881bd9d3c4be59845739090d06051"
         },
-        "emoji_database_32": {
+        "emoji_apple_32": {
             "value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"
         },
-        "emoji_database_64": {
+        "emoji_apple_64": {
             "value": "space/2021/03/23/c88653f7b7424d10bef058c345f6df6d"
         },
         "experimental_features_unsynchronized_view_intro_img": {
@@ -200,7 +200,6 @@
         "help_video_tutorials_url": {
             "value": "https://edu.vika.cn"
         },
-        "icp1": {},
         "integration_apifox_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
         },
@@ -3583,7 +3582,6 @@
             }
         ],
         "events": {
-            "_": {},
             "address_shown": {
                 "module": "address",
                 "name": "shown"
