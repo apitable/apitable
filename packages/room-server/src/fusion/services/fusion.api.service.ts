@@ -20,7 +20,6 @@ import {
   ApiTipConstant,
   CacheManager,
   CellFormatEnum,
-  CollaCommandName,
   Conversion,
   databus,
   ExecuteResult,
@@ -84,6 +83,7 @@ import { RecordUpdateRo } from '../ros/record.update.ro';
 import { DatasheetCreateDto, FieldCreateDto } from '../vos/datasheet.create.vo';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
+import { IServerSaveOptions } from './databus/server.data.storage.provider';
 
 @Injectable()
 export class FusionApiService {
@@ -334,9 +334,12 @@ export class FusionApiService {
       },
       createStore: (dst: IServerDatasheetPack) => Promise.resolve(this.createStoreForBaseDstPacks(dst)),
     });
+    if (datasheet === null) {
+      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
+    }
 
     const commandData = fieldCreateRo.transferToCommandData();
-    const fieldId = await this.addDatasheetField(datasheet!, commandData, auth);
+    const fieldId = await this.addDatasheetField(datasheet, commandData, auth);
 
     return { id: fieldId, name: fieldCreateRo.name };
   }
@@ -350,15 +353,6 @@ export class FusionApiService {
 
   public async deleteField(datasheetId: string, fieldId: string, conversion?: Conversion) {
     const auth = { token: this.request.headers.authorization };
-    const command: ICollaCommandOptions = {
-      cmd: CollaCommandName.DeleteField,
-      data: [
-        {
-          deleteBrotherField: conversion === Conversion.Delete,
-          fieldId,
-        },
-      ],
-    };
     const datasheet = await this.databusService.getDatasheet(datasheetId, {
       auth,
       loadBasePacks: {
@@ -370,7 +364,15 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
 
-    const result = await this.databusService.doCommand(datasheet, command, { auth });
+    const result = await datasheet.deleteFields(
+      [
+        {
+          deleteBrotherField: conversion === Conversion.Delete,
+          fieldId,
+        },
+      ],
+      { auth } as IServerSaveOptions,
+    );
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_delete_error);
     }
@@ -417,7 +419,6 @@ export class FusionApiService {
     const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
 
     // Convert a field to get the modified column
-    const command: ICollaCommandOptions = this.transform.getUpdateRecordCommandOptions(dstId, body.records, meta);
     const linkDatasheet: ILinkedRecordMap = this.request[DATASHEET_LINKED];
     const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
     const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
@@ -440,11 +441,11 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
 
-    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);
-    const result = await this.databusService.doCommand(datasheet, command, {
+    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, auth);
+    const result = await datasheet.updateCells(this.transform.getUpdateCellOptions(body.records), {
       auth,
       prependOps: updateFieldOperations,
-    });
+    } as IServerSaveOptions);
 
     // No change required
     if (result.result === ExecuteResult.None) {
@@ -551,7 +552,6 @@ export class FusionApiService {
     const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
 
     // Convert written fields
-    const command: ICollaCommandOptions = this.transform.getAddRecordCommandOptions(dstId, body.records, meta);
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(dstId, {
       auth,
@@ -562,12 +562,17 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
 
-    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);
+    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, auth);
 
-    const result = await this.databusService.doCommand(datasheet, command, {
-      auth,
-      prependOps: updateFieldOperations,
-    });
+    const result = await datasheet.addRecords(
+      {
+        viewId: meta.views[0]!.id,
+        index: meta.views[0]!.rows.length,
+        recordValues: body.records.map(record => record.fields),
+        ignoreFieldPermission: true,
+      },
+      { auth, prependOps: updateFieldOperations },
+    );
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
@@ -610,7 +615,6 @@ export class FusionApiService {
   public async deleteRecord(dstId: string, recordIds: string[]): Promise<boolean> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
     await this.fusionApiRecordService.validateRecordExists(dstId, recordIds, ApiTipConstant.api_param_record_not_exists);
-    const command = this.transform.getDeleteRecordCommandOptions(recordIds);
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(dstId, {
       auth,
@@ -620,7 +624,7 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
 
-    const result = await this.databusService.doCommand(datasheet, command, { auth });
+    const result = await datasheet.deleteRecords(recordIds, { auth });
     // command execution failed
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_delete_error);
@@ -675,20 +679,15 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
 
-    const result = await this.databusService.doCommand(datasheet, commandBody, { auth, internalFix });
+    const result = await datasheet.doCommand(commandBody, { auth, internalFix });
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_update_error);
     }
     return result.saveResult as string;
   }
 
-  private async addDatasheetField(dst: databus.Datasheet, commandData: IAddFieldOptions, auth: IAuthHeader): Promise<string> {
-    const command: ICollaCommandOptions = {
-      cmd: CollaCommandName.AddFields,
-      data: [commandData],
-      datasheetId: dst.id,
-    };
-    const result = await this.databusService.doCommand(dst, command, { auth });
+  private async addDatasheetField(dst: databus.Datasheet, fieldOptions: IAddFieldOptions, auth: IAuthHeader): Promise<string> {
+    const result = await dst.addFields([fieldOptions], { auth });
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
@@ -696,28 +695,19 @@ export class FusionApiService {
   }
 
   private async deleteDefaultFields(dst: databus.Datasheet, defaultFields: IDeleteFieldData[], auth: IAuthHeader) {
-    const command: ICollaCommandOptions = {
-      cmd: CollaCommandName.DeleteField,
-      data: defaultFields,
-      datasheetId: dst.id,
-    };
-    const result = await this.databusService.doCommand(dst, command, { auth });
+    const result = await dst.deleteFields(defaultFields, { auth });
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
   }
 
-  private async getFieldUpdateOps(dst: databus.Datasheet, meta: IMeta, auth: IAuthHeader): Promise<IOperation[]> {
+  private async getFieldUpdateOps(dst: databus.Datasheet, auth: IAuthHeader): Promise<IOperation[]> {
     const updateFieldOperations: IOperation[] = [];
 
     const enrichedSelectFields = this.request[DATASHEET_ENRICH_SELECT_FIELD];
     for (const fieldId in enrichedSelectFields) {
       const field = enrichedSelectFields[fieldId];
-      const fieldUpdateCmd = this.transform.getUpdateFieldCommandOptions(dst.id, field, meta);
-      const result = await this.databusService.doCommand(dst, fieldUpdateCmd, {
-        auth,
-        applyChangesets: false,
-      });
+      const result = await dst.updateField(field, { auth, applyChangesets: false });
       if (result.result !== ExecuteResult.Success) {
         throw ApiException.tipError(ApiTipConstant.api_insert_error);
       }

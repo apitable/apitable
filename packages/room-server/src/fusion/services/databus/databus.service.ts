@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus, ICollaCommandOptions } from '@apitable/core';
+import { databus } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
@@ -26,8 +26,7 @@ import { OtService } from 'database/ot/services/ot.service';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { IServerDatasheetOptions } from './interfaces';
-import { ServerDataLoader } from './server.data.loader';
-import { IServerSaveOptions, ServerDataSaver } from './server.data.saver';
+import { ServerDataStorageProvider } from './server.data.storage.provider';
 
 @Injectable()
 export class DataBusService {
@@ -43,8 +42,18 @@ export class DataBusService {
     @InjectLogger() private readonly logger: Logger,
   ) {
     this.databus = databus.DataBus.create({
-      dataLoader: new ServerDataLoader(datasheetService, redisService, logger, { useCache: false }),
-      dataSaver: new ServerDataSaver(otService, changesetSourceService, logger),
+      dataStorageProvider: new ServerDataStorageProvider(
+        {
+          datasheetService,
+          redisService,
+          otService,
+          changesetSourceService,
+          loadOptions: {
+            useCache: false,
+          },
+        },
+        logger,
+      ),
       storeProvider: {
         createStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)),
       },
@@ -58,25 +67,17 @@ export class DataBusService {
       return null;
     }
     datasheet.addEventHandler({
-      type: databus.DatasheetEventType.CommandExecuted,
-      handle: (event: databus.IDatasheetCommandExecutedEvent) => {
+      type: databus.event.DatasheetEventType.CommandExecuted,
+      handle: (event: databus.event.IDatasheetCommandExecutedEvent) => {
         if ('error' in event) {
           this.logger.error('CommandExecuteError', { error: event.error });
-          return Promise.resolve();
+          return;
         }
 
-        return Promise.resolve();
+        return;
       },
     });
 
     return datasheet;
-  }
-
-  /**
-   * This method is a simple wrapper of the `Datasheet.doCommand` method, providing type safety for `saveOptions`.
-   *
-   */
-  doCommand<R>(dst: databus.Datasheet, command: ICollaCommandOptions, saveOptions: IServerSaveOptions): Promise<databus.ICommandExecutionResult<R>> {
-    return dst.doCommand(command, saveOptions);
   }
 }
