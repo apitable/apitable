@@ -40,4 +40,4 @@ export const templateCentre = produce((draftSidebar: ITemplateCentre = defaultTe
     default:
       return draftSidebar;
   }
-});
+}, defaultTemplateCentre);

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SET_RECORD_VISION_MODE } from '../../../shared/store/action_constants';
-import { IRecordVisionAction, RecordVision } from '../../../../exports/store/interfaces';
 import produce from 'immer';
+import { IRecordVisionAction, RecordVision } from '../../../../exports/store/interfaces';
+import { SET_RECORD_VISION_MODE } from '../../../shared/store/action_constants';
 
 export const recordVision = produce((recordVisionModeDraft: RecordVision = RecordVision.Center, action: IRecordVisionAction) => {
   if (action.type === SET_RECORD_VISION_MODE) {
@@ -26,4 +26,4 @@ export const recordVision = produce((recordVisionModeDraft: RecordVision = Recor
     return action.payload;
   }
   return recordVisionModeDraft;
-});
+}, RecordVision.Center);
