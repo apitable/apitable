@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<desc>Created with Sketch.</desc>
-<g>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#2B68FF" d="M3.8,5.5h16.5c0.4,0,0.8-0.3,0.8-0.8S20.7,4,20.2,4H3.8
-		C3.3,4,3,4.3,3,4.8S3.3,5.5,3.8,5.5z"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#2B68FF" d="M20.2,11H3.8C3.3,11,3,11.3,3,11.8s0.3,0.8,0.8,0.8h16.5
-		c0.4,0,0.8-0.3,0.8-0.8S20.7,11,20.2,11z"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#2B68FF" d="M20.2,18H3.8C3.3,18,3,18.3,3,18.8s0.3,0.8,0.8,0.8h16.5
-		c0.4,0,0.8-0.3,0.8-0.8S20.7,18,20.2,18z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 24 24" version="1.1" viewBox="0 0 24 24" xml:space="preserve"><desc>Created with Sketch.</desc><g><path fill="#2B68FF" fill-rule="evenodd" d="M3.8,5.5h16.5c0.4,0,0.8-0.3,0.8-0.8S20.7,4,20.2,4H3.8 C3.3,4,3,4.3,3,4.8S3.3,5.5,3.8,5.5z" clip-rule="evenodd"/><path fill="#2B68FF" fill-rule="evenodd" d="M20.2,11H3.8C3.3,11,3,11.3,3,11.8s0.3,0.8,0.8,0.8h16.5 c0.4,0,0.8-0.3,0.8-0.8S20.7,11,20.2,11z" clip-rule="evenodd"/><path fill="#2B68FF" fill-rule="evenodd" d="M20.2,18H3.8C3.3,18,3,18.3,3,18.8s0.3,0.8,0.8,0.8h16.5 c0.4,0,0.8-0.3,0.8-0.8S20.7,18,20.2,18z" clip-rule="evenodd"/></g></svg>

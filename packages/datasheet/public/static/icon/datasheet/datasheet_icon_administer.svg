@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 15 15" enable-background="new 0 0 15 15" xml:space="preserve">
-<title>datasheet_icon_administer</title>
-<desc>Created with Sketch.</desc>
-<g>
-	<path fill="#7D8299" d="M12,1.2H3C2,1.2,1.2,2,1.2,3v4c0,0.4,0.3,0.8,0.8,0.8h11c0.4,0,0.8-0.3,0.8-0.8V3C13.8,2,13,1.2,12,1.2z
-		 M12.2,6.2H2.8V3c0-0.1,0.1-0.2,0.2-0.2h9c0.1,0,0.2,0.1,0.2,0.2V6.2z"/>
-	<path fill="#7D8299" d="M6,9.2H2c-0.4,0-0.8,0.3-0.8,0.8v2c0,1,0.8,1.8,1.8,1.8h3c0.4,0,0.8-0.3,0.8-0.8v-3C6.8,9.6,6.4,9.2,6,9.2z
-		 M5.2,12.2H3c-0.1,0-0.2-0.1-0.2-0.2v-1.2h2.5V12.2z"/>
-	<path fill="#7D8299" d="M13,9.2H9c-0.4,0-0.8,0.3-0.8,0.8v3c0,0.4,0.3,0.8,0.8,0.8h3c1,0,1.8-0.8,1.8-1.8v-2
-		C13.8,9.6,13.4,9.2,13,9.2z M12.2,12c0,0.1-0.1,0.2-0.2,0.2H9.8v-1.5h2.5V12z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 15 15" version="1.1" viewBox="0 0 15 15" xml:space="preserve"><title>datasheet_icon_administer</title><desc>Created with Sketch.</desc><g><path fill="#7D8299" d="M12,1.2H3C2,1.2,1.2,2,1.2,3v4c0,0.4,0.3,0.8,0.8,0.8h11c0.4,0,0.8-0.3,0.8-0.8V3C13.8,2,13,1.2,12,1.2z M12.2,6.2H2.8V3c0-0.1,0.1-0.2,0.2-0.2h9c0.1,0,0.2,0.1,0.2,0.2V6.2z"/><path fill="#7D8299" d="M6,9.2H2c-0.4,0-0.8,0.3-0.8,0.8v2c0,1,0.8,1.8,1.8,1.8h3c0.4,0,0.8-0.3,0.8-0.8v-3C6.8,9.6,6.4,9.2,6,9.2z M5.2,12.2H3c-0.1,0-0.2-0.1-0.2-0.2v-1.2h2.5V12.2z"/><path fill="#7D8299" d="M13,9.2H9c-0.4,0-0.8,0.3-0.8,0.8v3c0,0.4,0.3,0.8,0.8,0.8h3c1,0,1.8-0.8,1.8-1.8v-2 C13.8,9.6,13.4,9.2,13,9.2z M12.2,12c0,0.1-0.1,0.2-0.2,0.2H9.8v-1.5h2.5V12z"/></g></svg>
