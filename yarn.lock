@@ -44313,9 +44313,9 @@ typescript@~3.2.1:
   linkType: hard
 
 "urijs@npm:^1.19.1":
-  version: 1.19.2
-  resolution: "urijs@npm:1.19.2"
-  checksum: 8c927f615897f837373a2647b2c490885006c24e0d1c328c2d7510d1ab7698fc51fe69676e7cc5214d7cd586bbcc0b29c96bde702723fa742cbd7b624385e93e
+  version: 1.19.11
+  resolution: "urijs@npm:1.19.11"
+  checksum: f9b95004560754d30fd7dbee44b47414d662dc9863f1cf5632a7c7983648df11d23c0be73b9b4f9554463b61d5b0a520b70df9e1ee963ebb4af02e6da2cc80f3
   languageName: node
   linkType: hard
 
