@@ -103,10 +103,6 @@ class MainWidgetMessageBase {
     if (widgetEventMap.has(type)) {
       widgetEventMap.set(type, callback);
     }
-    this.listenEvents[widgetId] = {
-      ...this.listenEvents[widgetId],
-      [type]: callback,
-    };
   }
 
   removeListenEvent(widgetId: string, type?: WidgetMessageType) {
