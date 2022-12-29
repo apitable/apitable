@@ -16,22 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { produce } from 'immer';
 import {
-  ISpaceMemberManage,
-  IUpdateTeamListInSpaceAction,
-  IUpdateMemberListInSpaceAction,
-  IUpdateSelectedTeamInfoInSpaceAction,
-  IUpdateMemberInfoInSpaceAction,
-  IUpdateSelectMemberListInSpaceAction,
-  IUpdateSubTeamListInSpaceAction,
-  IUpdateRightClickTeamInfoInSpaceAction,
-  IUpdateInviteStatusAction,
-  ISelectedTeamKeysAction,
-  ISelectedTeamRowsAction,
-  IUpdateSelectedRowsInSpaceAction,
+  ISelectedTeamKeysAction, ISelectedTeamRowsAction, ISpaceMemberManage, IUpdateInviteStatusAction, IUpdateMemberInfoInSpaceAction,
+  IUpdateMemberListInSpaceAction, IUpdateRightClickTeamInfoInSpaceAction, IUpdateSelectedRowsInSpaceAction, IUpdateSelectedTeamInfoInSpaceAction,
+  IUpdateSelectMemberListInSpaceAction, IUpdateSubTeamListInSpaceAction, IUpdateTeamListInSpaceAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { produce } from 'immer';
 
 const defaultState: ISpaceMemberManage = {
   // selected teams
@@ -115,4 +106,4 @@ export const spaceMemberManage = produce((
     default:
       return storeData;
   }
-});
+}, defaultState);

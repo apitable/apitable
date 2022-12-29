@@ -17,8 +17,8 @@
  */
 
 import produce from 'immer';
-import * as actions from '../../../shared/store/action_constants';
 import { ILabs, ILabsAction } from '../../../../exports/store/interfaces';
+import * as actions from '../../../shared/store/action_constants';
 
 const defaultLabs: ILabs = [];
 
@@ -31,4 +31,4 @@ export const labs = produce((labs: ILabs = defaultLabs, action: ILabsAction) => 
     default:
       return labs;
   }
-});
+}, defaultLabs);

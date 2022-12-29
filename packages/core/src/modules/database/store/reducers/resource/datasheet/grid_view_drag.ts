@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import produce from 'immer';
 import {
-  IGridViewDragState, IHoverRecordId, IDragTargetAction, ISetHoverGroupPath, ISetHoverRowOfAddRecord,
+  IDragTargetAction, IGridViewDragState, IHoverRecordId, ISetHoverGroupPath, ISetHoverRowOfAddRecord,
 } from '../../../../../../exports/store/interfaces';
 import {
-  SET_DRAG_TARGET, SET_HOVER_RECORD_ID, SET_HOVER_GROUP_PATH, SET_HOVER_ROW_OF_ADD_RECORD,
+  SET_DRAG_TARGET, SET_HOVER_GROUP_PATH, SET_HOVER_RECORD_ID, SET_HOVER_ROW_OF_ADD_RECORD,
 } from '../../../../../shared/store/action_constants';
-import produce from 'immer';
 
 export const gridViewDragStateDefault: IGridViewDragState = {
   dragTarget: {},
@@ -50,4 +50,4 @@ export const gridViewDragState = produce(
       default:
         return draft;
     }
-  });
+  }, gridViewDragStateDefault);
