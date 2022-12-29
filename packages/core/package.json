@@ -14,7 +14,7 @@
     "test:cov": "TZ=UTC-8 jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
-  "author": "APITable PTE. LTD.<support@apitable.com>",
+  "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
   "engines": {
     "node": ">=8.x"
