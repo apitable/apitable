@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-build:
+  build-test: ## build only local for test
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
@@ -30,7 +30,7 @@ jobs:
         run: |
           make build
 
-  test-unit:
+  unit-test: ## unit test with docker-compose.unit-test.yaml
     name: test
     runs-on: ubuntu-latest
     strategy:
@@ -45,7 +45,7 @@ jobs:
           make ${{ matrix.command }}
 
   buildpush:
-    needs: test
+    needs: unit-test
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
