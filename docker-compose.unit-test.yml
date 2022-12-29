@@ -59,7 +59,7 @@ services:
       start_period: 5s
 
   test-initdb:
-    container_name: test-initdb
+    container_name: ${INITDB_CONTAINER_NAME:-test-initdb}
     image: ${INITDB_IMAGE:-docker.io/apitable/init-db:latest}
     networks:
       - unit-test
