@@ -21,12 +21,40 @@ import { IJOTAction, IObjectInsertAction, IObjectReplaceAction, OTActionName, Vi
 import { findIndex, isEqual, omit, unionWith } from 'lodash';
 import { getMaxViewCountPerSheet } from 'model/utils';
 import {
-  IComments, IMirrorSnapshot, IRecordAlarm, IReduxState, ITemporaryView, IUserInfo, IViewLockInfo, RowHeightLevel, Selectors, ViewType
+  IComments,
+  IMirrorSnapshot,
+  IRecordAlarm,
+  IReduxState,
+  ITemporaryView,
+  IUserInfo,
+  IViewLockInfo,
+  RowHeightLevel,
+  Selectors,
+  ViewType,
 } from '../exports/store';
-import { IGridViewColumn, IGridViewProperty, IRecord, ISnapshot, IViewColumn, IViewProperty, IWidgetInPanel, IWidgetPanel } from '../exports/store/interfaces';
 import {
-  doFilter, getActiveViewGroupInfo, getCellValue, getFieldMap, getFilterInfo, getFilterInfoExceptInvalid, getGroupInfoWithPermission,
-  getResourceActiveWidgetPanel, getResourceWidgetPanels, getViewById, getViewIndex, sortRowsBySortInfo,
+  IGridViewColumn,
+  IGridViewProperty,
+  IRecord,
+  ISnapshot,
+  IViewColumn,
+  IViewProperty,
+  IWidgetInPanel,
+  IWidgetPanel,
+} from '../exports/store/interfaces';
+import {
+  doFilter,
+  getActiveViewGroupInfo,
+  getCellValue,
+  getFieldMap,
+  getFilterInfo,
+  getFilterInfoExceptInvalid,
+  getGroupInfoWithPermission,
+  getResourceActiveWidgetPanel,
+  getResourceWidgetPanels,
+  getViewById,
+  getViewIndex,
+  sortRowsBySortInfo,
 } from '../exports/store/selectors';
 import { FilterConjunction, IFilterCondition, IFilterInfo, IGroupInfo, ISortInfo, ResourceType } from 'types';
 import { FieldType, IField } from 'types/field_types';
@@ -52,10 +80,7 @@ function validateFilterInfo(filterInfo?: IFilterInfo) {
   return true;
 }
 
-function getDefaultNewRecordDataByGroup(
-  groupInfos: IGroupInfo,
-  groupCellValues?: ICellValue[],
-): { [fieldId: string]: ICellValue } {
+function getDefaultNewRecordDataByGroup(groupInfos: IGroupInfo, groupCellValues?: ICellValue[]): { [fieldId: string]: ICellValue } {
   const recordData: { [fieldId: string]: ICellValue } = {};
   if (groupInfos.length === 0 || !groupCellValues) {
     return recordData;
@@ -76,7 +101,7 @@ function getDefaultNewRecordDataByFilter(
   const { conditions } = filterInfo;
   const recordData: { [fieldId: string]: ICellValue } = {};
 
-  // Or combination, there are multiple filter conditions, no default data fill in, 
+  // Or combination, there are multiple filter conditions, no default data fill in,
   // and there is only one filter condition, then it is processed according to the `and` logic
   if (filterInfo.conjunction === FilterConjunction.Or && filterInfo.conditions.length !== 1) {
     return recordData;
@@ -172,10 +197,7 @@ export class DatasheetActions {
   /**
    * add `view` to table
    */
-  static addView2Action(
-    snapshot: ISnapshot,
-    payload: { view: IViewProperty, startIndex?: number },
-  ): IJOTAction | null {
+  static addView2Action(snapshot: ISnapshot, payload: { view: IViewProperty; startIndex?: number }): IJOTAction | null {
     const { view } = payload;
     let { startIndex } = payload;
     const views = snapshot.meta.views;
@@ -222,10 +244,7 @@ export class DatasheetActions {
    * move views
    * @param {string} viewId
    */
-  static moveView2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, target: number },
-  ): IJOTAction | null => {
+  static moveView2Action = (snapshot: ISnapshot, payload: { viewId: string; target: number }): IJOTAction | null => {
     const { viewId, target } = payload;
     const views = snapshot.meta.views;
     let index = -1;
@@ -248,14 +267,11 @@ export class DatasheetActions {
   };
 
   /**
-   * delete view based viewID, 
-   * 
+   * delete view based viewID,
+   *
    * @param {string} viewId
    */
-  static deleteView2Action(
-    snapshot: ISnapshot,
-    payload: { viewId: string },
-  ): IJOTAction | null {
+  static deleteView2Action(snapshot: ISnapshot, payload: { viewId: string }): IJOTAction | null {
     const views = snapshot.meta.views;
     const viewId = payload.viewId;
     // check whether current is activeView
@@ -272,12 +288,12 @@ export class DatasheetActions {
 
   /**
    * update view based viewID
-   * 
+   *
    * @param {string} viewId
    */
   static modifyView2Action(
     snapshot: ISnapshot,
-    payload: { viewId: string, key: 'name' | 'description' | 'columns', value: string | IViewColumn[] },
+    payload: { viewId: string; key: 'name' | 'description' | 'columns'; value: string | IViewColumn[] },
   ): IJOTAction[] | null {
     const views = snapshot.meta.views;
     const { viewId, key, value } = payload;
@@ -308,12 +324,14 @@ export class DatasheetActions {
       return rlt;
     }
 
-    return [{
-      n: OTActionName.ObjectReplace,
-      p: ['meta', 'views', viewIndex, key],
-      od: views[viewIndex]![key],
-      oi: value,
-    }];
+    return [
+      {
+        n: OTActionName.ObjectReplace,
+        p: ['meta', 'views', viewIndex, key],
+        od: views[viewIndex]![key],
+        oi: value,
+      },
+    ];
   }
 
   /**
@@ -321,7 +339,7 @@ export class DatasheetActions {
    */
   static addField2Action(
     snapshot: ISnapshot,
-    payload: { field: IField, viewId?: string, index?: number, fieldId?: string, offset?: number, hiddenColumn?: boolean },
+    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean },
   ): IJOTAction[] | null {
     const fieldMap = snapshot.meta.fieldMap;
     const views = snapshot.meta.views;
@@ -401,10 +419,7 @@ export class DatasheetActions {
   /**
    * delete field
    */
-  static deleteField2Action(
-    snapshot: ISnapshot,
-    payload: { fieldId: string, datasheetId: string, viewId?: string },
-  ): IJOTAction[] | null {
+  static deleteField2Action(snapshot: ISnapshot, payload: { fieldId: string; datasheetId: string; viewId?: string }): IJOTAction[] | null {
     const fieldMap = snapshot.meta.fieldMap;
     const views = snapshot.meta.views;
     const { fieldId, datasheetId, viewId } = payload;
@@ -491,12 +506,12 @@ export class DatasheetActions {
       };
       if (datasheetId !== snapshot.datasheetId || !(view.lockInfo && view.id !== viewId)) {
         // judgement here is for the permissions tips of lock view.
-        // for example, `view 2` set field A's filter condition, I delete field A in `view 1`, 
+        // for example, `view 2` set field A's filter condition, I delete field A in `view 1`,
         // because `view 2`'s view lock will make me operation failed,
         // from user's point of view, he may not delete one field before check all views, and close view lock
-        // so, judgement here is to delete field, and at the same time, doesn't delete the information in lock view, 
+        // so, judgement here is to delete field, and at the same time, doesn't delete the information in lock view,
         // just show exception tips only
-        // what's special, is the relation table operation, verifications of relation table in middle server(room-server) is not strict, 
+        // what's special, is the relation table operation, verifications of relation table in middle server(room-server) is not strict,
         // only require editable permission, therefor, relation table operation can go pass directly.
 
         // the dependencies in filter's field, also need to be deleted
@@ -568,10 +583,7 @@ export class DatasheetActions {
     return actions;
   }
 
-  static setColumnWidth2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, fieldId: string, width: number | null },
-  ): IJOTAction | null => {
+  static setColumnWidth2Action = (snapshot: ISnapshot, payload: { viewId: string; fieldId: string; width: number | null }): IJOTAction | null => {
     const { viewId, fieldId, width } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
     if (viewIndex < 0) {
@@ -593,10 +605,7 @@ export class DatasheetActions {
     };
   };
 
-  static moveColumns2Action = (
-    snapshot: ISnapshot,
-    payload: { fieldId: string, target: number, viewId: string },
-  ): IJOTAction | null => {
+  static moveColumns2Action = (snapshot: ISnapshot, payload: { fieldId: string; target: number; viewId: string }): IJOTAction | null => {
     const { fieldId, target, viewId } = payload;
 
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -622,7 +631,7 @@ export class DatasheetActions {
    */
   static setColumnStatType2Action = (
     snapshot: ISnapshot,
-    payload: { viewId: string, fieldId: string, statType?: StatType | null },
+    payload: { viewId: string; fieldId: string; statType?: StatType | null },
   ): IJOTAction | null => {
     const { fieldId, statType, viewId } = payload;
 
@@ -656,10 +665,7 @@ export class DatasheetActions {
   /**
    * set the row height of gridview View
    */
-  static setRowHeightLevel2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, level: RowHeightLevel },
-  ): IJOTAction | null => {
+  static setRowHeightLevel2Action = (snapshot: ISnapshot, payload: { viewId: string; level: RowHeightLevel }): IJOTAction | null => {
     const { level, viewId } = payload;
 
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -681,12 +687,9 @@ export class DatasheetActions {
   };
 
   /**
-   * set Grid/Gantt view's column whether auto word wrap 
+   * set Grid/Gantt view's column whether auto word wrap
    */
-  static setAutoHeadHeight2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, isAuto: boolean },
-  ): IJOTAction | null => {
+  static setAutoHeadHeight2Action = (snapshot: ISnapshot, payload: { viewId: string; isAuto: boolean }): IJOTAction | null => {
     const { isAuto, viewId } = payload;
 
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -707,10 +710,7 @@ export class DatasheetActions {
     };
   };
 
-  static setFrozenColumnCount2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, count: RowHeightLevel },
-  ): IJOTAction | null => {
+  static setFrozenColumnCount2Action = (snapshot: ISnapshot, payload: { viewId: string; count: RowHeightLevel }): IJOTAction | null => {
     const { count, viewId } = payload;
 
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -734,10 +734,7 @@ export class DatasheetActions {
   /**
    * add record to table
    */
-  static addRecord2Action(
-    snapshot: ISnapshot,
-    payload: { viewId: string, record: IRecord, index: number },
-  ): IJOTAction[] | null {
+  static addRecord2Action(snapshot: ISnapshot, payload: { viewId: string; record: IRecord; index: number }): IJOTAction[] | null {
     const recordMap = snapshot.recordMap;
     const views = snapshot.meta.views;
     const { record, index, viewId } = payload;
@@ -779,9 +776,9 @@ export class DatasheetActions {
   static setRecord2Action(
     snapshot: ISnapshot,
     payload: {
-      recordId: string,
-      fieldId: string,
-      value: ICellValue,
+      recordId: string;
+      fieldId: string;
+      value: ICellValue;
     },
   ): IJOTAction | null {
     const { recordId, fieldId, value } = payload;
@@ -810,7 +807,7 @@ export class DatasheetActions {
     }
 
     // when origin cellValue is empty, in fact it need insert one fieldId key
-    
+
     if (oldCellValue == null) {
       return {
         n: OTActionName.ObjectInsert,
@@ -833,9 +830,9 @@ export class DatasheetActions {
   static deleteRecords(
     snapshot: ISnapshot,
     payload: {
-      recordIds: string[],
-      getFieldByFieldId(fieldId: string): IField,
-      state: IReduxState
+      recordIds: string[];
+      getFieldByFieldId(fieldId: string): IField;
+      state: IReduxState;
     },
   ): IJOTAction[] {
     const recordMap = snapshot.recordMap;
@@ -848,16 +845,16 @@ export class DatasheetActions {
     let actions: IJOTAction[] = [];
 
     /**
-     * 
+     *
      * depends on records count to delete,  and the percent of delete count and total count to judge
      * delete one by one (ld) ,  or total replace(or)
-     * 
-     * when the number of records to delete larger than 500, 
+     *
+     * when the number of records to delete larger than 500,
      * or delete records / total records percent larger thant 50%,
      * and total records larger than 160,
      * then total replace
      * otherwise delete one by one
-     * 
+     *
      */
 
     // delete all rows in views
@@ -881,27 +878,28 @@ export class DatasheetActions {
     } else {
       // delete one by one
       actions = views.reduce<IJOTAction[]>((pre, cur, index) => {
-        const toDelete = cur.rows.reduce<{ recordId: string, index: number }[]>((pre, row, i) => {
-          if (waitDeleteRecordSet.has(row.recordId)) {
-            pre.push({
-              recordId: row.recordId,
-              index: i,
-            });
-          }
-          return pre;
-        }, []).map<IJOTAction>((item, i) => {
-          return {
-            n: OTActionName.ListDelete,
-            p: ['meta', 'views', index, 'rows', item.index - i],
-            ld: cur.rows[item.index],
-          };
-        });
+        const toDelete = cur.rows
+          .reduce<{ recordId: string; index: number }[]>((pre, row, i) => {
+            if (waitDeleteRecordSet.has(row.recordId)) {
+              pre.push({
+                recordId: row.recordId,
+                index: i,
+              });
+            }
+            return pre;
+          }, [])
+          .map<IJOTAction>((item, i) => {
+            return {
+              n: OTActionName.ListDelete,
+              p: ['meta', 'views', index, 'rows', item.index - i],
+              ld: cur.rows[item.index],
+            };
+          });
 
         pre.push(...toDelete);
 
         return pre;
       }, []);
-
     }
 
     recordIds.forEach(recordId => {
@@ -954,9 +952,9 @@ export class DatasheetActions {
   static setDateTimeCellAlarm(
     snapshot: ISnapshot,
     payload: {
-      recordId: string,
-      fieldId: string,
-      alarm: IRecordAlarm | null,
+      recordId: string;
+      fieldId: string;
+      alarm: IRecordAlarm | null;
     },
   ): IJOTAction[] | null {
     const { recordId, fieldId, alarm } = payload;
@@ -973,10 +971,11 @@ export class DatasheetActions {
           n: OTActionName.ObjectInsert,
           p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap'],
           oi: {
-            [fieldId]: {}
+            [fieldId]: {},
           },
         };
-      } else if (!fieldExtraMap[fieldId]) { // already have fieldExtraMap, but still have no fieldExtraMap[fieldId]
+      } else if (!fieldExtraMap[fieldId]) {
+        // already have fieldExtraMap, but still have no fieldExtraMap[fieldId]
         defaultAction = {
           n: OTActionName.ObjectInsert,
           p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId],
@@ -995,11 +994,13 @@ export class DatasheetActions {
     }
     // delete alarm
     if (!alarm) {
-      return [{
-        n: OTActionName.ObjectDelete,
-        p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId, 'alarm'],
-        od: oldAlarm,
-      }];
+      return [
+        {
+          n: OTActionName.ObjectDelete,
+          p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId, 'alarm'],
+          od: oldAlarm,
+        },
+      ];
     }
 
     /**
@@ -1011,19 +1012,17 @@ export class DatasheetActions {
     }
 
     // edit alarm
-    return [{
-      n: OTActionName.ObjectReplace,
-      p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId, 'alarm'],
-      od: oldAlarm,
-      oi: alarm
-    }];
-
+    return [
+      {
+        n: OTActionName.ObjectReplace,
+        p: ['recordMap', recordId, 'recordMeta', 'fieldExtraMap', fieldId, 'alarm'],
+        od: oldAlarm,
+        oi: alarm,
+      },
+    ];
   }
 
-  static moveRow2Action = (
-    snapshot: ISnapshot,
-    payload: { recordId: string, target: number, viewId: string },
-  ): IJOTAction | null => {
+  static moveRow2Action = (snapshot: ISnapshot, payload: { recordId: string; target: number; viewId: string }): IJOTAction | null => {
     const { recordId, target, viewId } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
     if (viewIndex < 0) {
@@ -1046,7 +1045,7 @@ export class DatasheetActions {
   static setViewSort2Action(
     state: IReduxState,
     snapshot: ISnapshot,
-    payload: { viewId: string, sortInfo?: ISortInfo, applySort?: boolean },
+    payload: { viewId: string; sortInfo?: ISortInfo; applySort?: boolean },
   ): IJOTAction[] | null {
     const { viewId, sortInfo, applySort } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -1058,45 +1057,49 @@ export class DatasheetActions {
 
     // when clear sorts, delete sort field directly
     if (!sortInfo) {
-      return [{
-        n: OTActionName.ObjectDelete,
-        p: ['meta', 'views', viewIndex, 'sortInfo'],
-        od: view.sortInfo,
-      }];
+      return [
+        {
+          n: OTActionName.ObjectDelete,
+          p: ['meta', 'views', viewIndex, 'sortInfo'],
+          od: view.sortInfo,
+        },
+      ];
     }
 
     if (applySort) {
       // sort method will mutate the array, so here duplicate the array first
       const rows = sortRowsBySortInfo(state, view.rows, sortInfo.rules, snapshot);
 
-      return [{
+      return [
+        {
+          n: OTActionName.ObjectReplace,
+          p: ['meta', 'views', viewIndex, 'sortInfo'],
+          oi: sortInfo,
+          od: view.sortInfo,
+        },
+        {
+          n: OTActionName.ObjectReplace,
+          p: ['meta', 'views', viewIndex, 'rows'],
+          oi: rows,
+          od: view.rows,
+        },
+      ];
+    }
+
+    return [
+      {
         n: OTActionName.ObjectReplace,
         p: ['meta', 'views', viewIndex, 'sortInfo'],
         oi: sortInfo,
         od: view.sortInfo,
-      }, {
-        n: OTActionName.ObjectReplace,
-        p: ['meta', 'views', viewIndex, 'rows'],
-        oi: rows,
-        od: view.rows,
-      }];
-    }
-
-    return [{
-      n: OTActionName.ObjectReplace,
-      p: ['meta', 'views', viewIndex, 'sortInfo'],
-      oi: sortInfo,
-      od: view.sortInfo,
-    }];
+      },
+    ];
   }
 
   /**
    * update Field, replace field directly
    */
-  static setFieldAttr2Action = (
-    snapshot: ISnapshot,
-    payload: { field: IField },
-  ): IJOTAction | null => {
+  static setFieldAttr2Action = (snapshot: ISnapshot, payload: { field: IField }): IJOTAction | null => {
     const fieldMap = snapshot.meta.fieldMap;
     const field = payload.field;
     if (!fieldMap[field.id] || isEqual(field, fieldMap[field.id])) {
@@ -1114,10 +1117,7 @@ export class DatasheetActions {
   /**
    * set view filter  filterInfo
    */
-  static setFilterInfo2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, filterInfo?: IFilterInfo },
-  ): IJOTAction | null => {
+  static setFilterInfo2Action = (snapshot: ISnapshot, payload: { viewId: string; filterInfo?: IFilterInfo }): IJOTAction | null => {
     const viewId = payload.viewId;
     let filterInfo = payload.filterInfo;
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -1154,10 +1154,7 @@ export class DatasheetActions {
     };
   };
 
-  static setViewLockInfo2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, viewLockInfo: IViewLockInfo | null },
-  ): IJOTAction | null => {
+  static setViewLockInfo2Action = (snapshot: ISnapshot, payload: { viewId: string; viewLockInfo: IViewLockInfo | null }): IJOTAction | null => {
     const viewId = payload.viewId;
     const viewLock = payload.viewLockInfo;
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -1177,14 +1174,11 @@ export class DatasheetActions {
     return {
       n: OTActionName.ObjectInsert,
       p: ['meta', 'views', viewIndex, 'lockInfo'],
-      oi: viewLock
+      oi: viewLock,
     };
   };
 
-  static setGroupInfoField2Action = (
-    snapshot: ISnapshot,
-    payload: { viewId: string, groupInfo?: IGroupInfo },
-  ): IJOTAction | null => {
+  static setGroupInfoField2Action = (snapshot: ISnapshot, payload: { viewId: string; groupInfo?: IGroupInfo }): IJOTAction | null => {
     const { viewId, groupInfo } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
 
@@ -1224,7 +1218,10 @@ export class DatasheetActions {
    * @returns {string}
    */
   static getNewViewId(views: IViewProperty[]): string {
-    return getNewId(IDPrefix.View, views.map(view => view.id));
+    return getNewId(
+      IDPrefix.View,
+      views.map(view => view.id),
+    );
   }
 
   /**
@@ -1307,7 +1304,7 @@ export class DatasheetActions {
     if (filterInfo && curFilterInfo) {
       filterInfo = {
         conjunction: curFilterInfo.conjunction,
-        conditions: curFilterInfo.conditions.concat(filterInfo.conditions)
+        conditions: curFilterInfo.conditions.concat(filterInfo.conditions),
       };
     } else if (curFilterInfo) {
       filterInfo = curFilterInfo;
@@ -1330,7 +1327,7 @@ export class DatasheetActions {
 
   /**
    * return new generated view name
-   * 
+   *
    * @param {ViewType} type
    * @returns {string}
    */
@@ -1366,17 +1363,16 @@ export class DatasheetActions {
         assertNever(type);
         prefix = NamePrefix.View;
     }
-    return getUniqName(prefix, views.map(view => view.name));
+    return getUniqName(
+      prefix,
+      views.map(view => view.name),
+    );
   }
 
   /**
    * get default view property with stable row and column order
    */
-  static deriveDefaultViewProperty(
-    snapshot: ISnapshot,
-    viewType: ViewType,
-    activeViewId: string | null | undefined,
-  ): IViewProperty {
+  static deriveDefaultViewProperty(snapshot: ISnapshot, viewType: ViewType, activeViewId: string | null | undefined): IViewProperty {
     const defaultProperty = getViewClass(viewType).generateDefaultProperty(snapshot, activeViewId);
     if (!defaultProperty) {
       throw Error(`Unexpected view type ${viewType}!`);
@@ -1424,7 +1420,7 @@ export class DatasheetActions {
     options: {
       datasheetId: string;
       recordId: string;
-      insertComments?: Omit<IComments, 'revision'>[],
+      insertComments?: Omit<IComments, 'revision'>[];
     },
   ): IJOTAction[] | null {
     const { recordId, datasheetId, insertComments } = options;
@@ -1450,48 +1446,36 @@ export class DatasheetActions {
     return null;
   }
 
-  static updateComment2Action(
-    options: {
-      datasheetId: string;
-      recordId: string;
-      updateComments: IComments[];
-      emojiAction?: boolean;
-    },
-  ): IJOTAction[] | null {
+  static updateComment2Action(options: {
+    datasheetId: string;
+    recordId: string;
+    updateComments: IComments[];
+    emojiAction?: boolean;
+  }): IJOTAction[] | null {
     const { recordId, updateComments, emojiAction } = options;
     const actions: IJOTAction[] = [];
 
     if (emojiAction) {
-      // new 
-      actions.push(
-        {
-          n: OTActionName.ListInsert,
-          // p, only verify update comment's emoji, no use in other place
-          p: ['recordMap', recordId, 'comments', 'emojis'],
-          li: updateComments[0],
-        }
-      );
+      // new
+      actions.push({
+        n: OTActionName.ListInsert,
+        // p, only verify update comment's emoji, no use in other place
+        p: ['recordMap', recordId, 'comments', 'emojis'],
+        li: updateComments[0],
+      });
     } else {
       // cancel
-      actions.push(
-        {
-          n: OTActionName.ListDelete,
-          // p, only verify update comment's emoji, no use in other place
-          p: ['recordMap', recordId, 'comments', 'emojis'],
-          ld: updateComments[0],
-        }
-      );
+      actions.push({
+        n: OTActionName.ListDelete,
+        // p, only verify update comment's emoji, no use in other place
+        p: ['recordMap', recordId, 'comments', 'emojis'],
+        ld: updateComments[0],
+      });
     }
     return actions;
   }
 
-  static deleteComment2Action(
-    options: {
-      datasheetId: string;
-      recordId: string;
-      comments: IComments[];
-    },
-  ) {
+  static deleteComment2Action(options: { datasheetId: string; recordId: string; comments: IComments[] }) {
     const { recordId, comments } = options;
 
     const actions: IJOTAction[] = [];
@@ -1515,7 +1499,7 @@ export class DatasheetActions {
     _state: IReduxState,
     panelId: string,
     widgetPanels: IWidgetPanel[],
-    resourceType: ResourceType.Mirror | ResourceType.Datasheet
+    resourceType: ResourceType.Mirror | ResourceType.Datasheet,
   ): IJOTAction[] | null {
     if (!widgetPanels) {
       return null;
@@ -1571,45 +1555,51 @@ export class DatasheetActions {
     const widgetPanels = snapshot.meta.widgetPanels;
 
     if (!Array.isArray(widgetPanels)) {
-      return [{
-        n: OTActionName.ObjectInsert,
-        p: ['meta', 'widgetPanels'],
-        oi: [panel],
-      }];
+      return [
+        {
+          n: OTActionName.ObjectInsert,
+          p: ['meta', 'widgetPanels'],
+          oi: [panel],
+        },
+      ];
     }
 
-    return [{
-      n: OTActionName.ListInsert,
-      p: ['meta', 'widgetPanels', widgetPanels.length + 1],
-      li: panel,
-    }];
-
+    return [
+      {
+        n: OTActionName.ListInsert,
+        p: ['meta', 'widgetPanels', widgetPanels.length + 1],
+        li: panel,
+      },
+    ];
   }
 
   static addWidgetPanelWithMirror2Action(snapshot: IMirrorSnapshot, panel: IWidgetPanel): IJOTAction[] | null {
     const widgetPanels = snapshot.widgetPanels;
 
     if (!Array.isArray(widgetPanels)) {
-      return [{
-        n: OTActionName.ObjectInsert,
-        p: ['widgetPanels'],
-        oi: [panel],
-      }];
+      return [
+        {
+          n: OTActionName.ObjectInsert,
+          p: ['widgetPanels'],
+          oi: [panel],
+        },
+      ];
     }
 
-    return [{
-      n: OTActionName.ListInsert,
-      p: ['widgetPanels', widgetPanels.length + 1],
-      li: panel,
-    }];
-
+    return [
+      {
+        n: OTActionName.ListInsert,
+        p: ['widgetPanels', widgetPanels.length + 1],
+        li: panel,
+      },
+    ];
   }
 
   static modifyPanelName2Acton(
     _state: IReduxState,
     newPanel: IWidgetPanel,
     widgetPanels: IWidgetPanel[],
-    resourceType: ResourceType.Mirror | ResourceType.Datasheet
+    resourceType: ResourceType.Mirror | ResourceType.Datasheet,
   ): IJOTAction[] | null {
     if (!widgetPanels) {
       return null;
@@ -1646,9 +1636,8 @@ export class DatasheetActions {
 
   static addWidgetToPanel2Action(
     _state: IReduxState,
-    { installationIndex, panelIndex, widgetId }: { installationIndex: number, panelIndex: number, widgetId: string }
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string },
   ): IJOTAction[] | null {
-
     const newWidget = {
       id: widgetId,
       height: 6.2,
@@ -1666,9 +1655,8 @@ export class DatasheetActions {
 
   static addWidgetToPanelWithMirror2Action(
     _state: IReduxState,
-    { installationIndex, panelIndex, widgetId }: { installationIndex: number, panelIndex: number, widgetId: string }
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string },
   ): IJOTAction[] | null {
-
     const newWidget = {
       id: widgetId,
       height: 6.2,
@@ -1687,48 +1675,61 @@ export class DatasheetActions {
   static deleteWidget2Action(
     _state: IReduxState,
     options: {
-      widgetPanelIndex: number,
-      widget: IWidgetInPanel,
-      widgetIndex: number
+      widgetPanelIndex: number;
+      widget: IWidgetInPanel;
+      widgetIndex: number;
     },
   ): IJOTAction[] {
     const { widgetPanelIndex, widgetIndex, widget } = options;
-    return [{
-      n: OTActionName.ListDelete,
-      p: ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex],
-      ld: widget,
-    }];
+    return [
+      {
+        n: OTActionName.ListDelete,
+        p: ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex],
+        ld: widget,
+      },
+    ];
   }
 
   static deleteMirrorWidget2Action(
     _state: IReduxState,
     options: {
-      widgetPanelIndex: number,
-      widget: IWidgetInPanel,
-      widgetIndex: number
+      widgetPanelIndex: number;
+      widget: IWidgetInPanel;
+      widgetIndex: number;
     },
   ): IJOTAction[] {
     const { widgetPanelIndex, widgetIndex, widget } = options;
-    return [{
-      n: OTActionName.ListDelete,
-      p: ['widgetPanels', widgetPanelIndex, 'widgets', widgetIndex],
-      ld: widget,
-    }];
+    return [
+      {
+        n: OTActionName.ListDelete,
+        p: ['widgetPanels', widgetPanelIndex, 'widgets', widgetIndex],
+        ld: widget,
+      },
+    ];
   }
 
   static changeWidgetHeight2Action(
     state: IReduxState,
     {
-      widgetPanelIndex, widgetIndex, widgetHeight, resourceId, resourceType
+      widgetPanelIndex,
+      widgetIndex,
+      widgetHeight,
+      resourceId,
+      resourceType,
     }: {
-      widgetPanelIndex: number, widgetIndex: number, widgetHeight: number, resourceId: string, resourceType: ResourceType
-    }
+      widgetPanelIndex: number;
+      widgetIndex: number;
+      widgetHeight: number;
+      resourceId: string;
+      resourceType: ResourceType;
+    },
   ): IJOTAction[] | null {
     const activeWidgetPanel = getResourceActiveWidgetPanel(state, resourceId, resourceType)!;
     const widget = activeWidgetPanel.widgets[widgetIndex]!;
-    const path = resourceType === ResourceType.Datasheet ?
-      ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'] :
-      ['widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'];
+    const path =
+      resourceType === ResourceType.Datasheet
+        ? ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height']
+        : ['widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'];
     return [
       {
         n: OTActionName.ObjectReplace,
@@ -1741,7 +1742,12 @@ export class DatasheetActions {
 
   static moveWidget2Action(
     state: IReduxState,
-    { widgetPanelIndex, layout, resourceType, resourceId }: { widgetPanelIndex: number, layout: any[], resourceType: ResourceType, resourceId: string }
+    {
+      widgetPanelIndex,
+      layout,
+      resourceType,
+      resourceId,
+    }: { widgetPanelIndex: number; layout: any[]; resourceType: ResourceType; resourceId: string },
   ): IJOTAction[] | null {
     const widgetPanel = getResourceWidgetPanels(state, resourceId, resourceType);
     const oldLayout = widgetPanel?.[widgetPanelIndex]?.widgets;
@@ -1773,7 +1779,7 @@ export class DatasheetActions {
           const insertAction: IObjectInsertAction = {
             n: OTActionName.ObjectInsert,
             p: getPath(widgetPanelIndex, index, k),
-            oi: newValue
+            oi: newValue,
           };
           actions.push(isFirstSetY ? insertAction : replaceAction);
         }
@@ -1889,17 +1895,17 @@ export class DatasheetActions {
       n: OTActionName.ObjectReplace,
       p: ['meta', 'views', viewIndex, 'autoSave'],
       oi: autoSave,
-      od: view['autoSave']
+      od: view['autoSave'],
     };
   }
 
   /**
    * edit single relation dstID
-   * 
+   *
    * @param snapshot
    * @param payload
    */
-  static changeOneWayLinkDstId2Action(snapshot: ISnapshot, payload: { fieldId: string, newField: IField }): IJOTAction | null {
+  static changeOneWayLinkDstId2Action(snapshot: ISnapshot, payload: { fieldId: string; newField: IField }): IJOTAction | null {
     const fieldMap = snapshot.meta.fieldMap;
     const { fieldId, newField } = payload;
     if (!fieldMap[fieldId]) {
@@ -1912,5 +1918,4 @@ export class DatasheetActions {
       oi: newField,
     };
   }
-
 }

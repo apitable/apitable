@@ -18,7 +18,7 @@
 
 import type { databus } from '@apitable/core';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
-import { IServerLoadDatasheetPackOptions } from './server.data.loader';
+import { IServerLoadDatasheetPackOptions } from './server.data.storage.provider';
 
 export interface IServerDatasheetOptions extends databus.IDatasheetOptions, IFetchDataOptions, IServerLoadDatasheetPackOptions {
   auth: IAuthHeader

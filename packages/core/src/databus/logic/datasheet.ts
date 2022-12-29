@@ -18,9 +18,9 @@
 
 import { DatasheetEventType, IDatasheetEventHandler, IDatasheetEvent } from '../common/event';
 import { Field } from '.';
-import { ILoadDatasheetPackOptions } from '../providers';
+import { ILoadDatasheetPackOptions, ISaveOpsOptions } from '../providers';
 import { Store } from 'redux';
-import { IViewOptions, View } from './view';
+import { IAddRecordsOptions, IViewOptions, View } from './view';
 import { IResource } from './resource.interface';
 import {
   CollaCommandManager,
@@ -30,10 +30,9 @@ import {
   ICollaCommandExecuteSuccessResult,
   IResourceOpsCollect,
 } from 'command_manager';
-import { ResourceType } from 'types';
+import { IField, ResourceType } from 'types';
 import { IBaseDatasheetPack, IReduxState, ISnapshot, Selectors } from 'exports/store';
-import { ICollaCommandOptions } from 'commands';
-import { ISaveOpsOptions } from '../providers';
+import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, ISetRecordOptions } from 'commands';
 import { IDataSaver } from '../providers/data.saver.interface';
 
 export class Datasheet implements IResource {
@@ -115,6 +114,80 @@ export class Datasheet implements IResource {
       result['saveResult'] = saveResult;
     }
     return result as ICommandExecutionResult<R>;
+  }
+
+  public async addRecords(
+    recordOptions: IAddRecordsOptions & { viewId: string },
+    saveOptions: ISaveOptions,
+  ): Promise<ICommandExecutionResult<string[]>> {
+    return await this.doCommand<string[]>(
+      {
+        cmd: CollaCommandName.AddRecords,
+        viewId: recordOptions.viewId,
+        index: recordOptions.index,
+        count: 'count' in recordOptions ? recordOptions.count : recordOptions.recordValues.length,
+        cellValues: 'count' in recordOptions ? undefined : recordOptions.recordValues,
+        groupCellValues: recordOptions.groupCellValues,
+        ignoreFieldPermission: recordOptions.ignoreFieldPermission,
+        datasheetId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  public async deleteRecords(recordIds: string[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return await this.doCommand<void>(
+      {
+        cmd: CollaCommandName.DeleteRecords,
+        data: recordIds,
+      },
+      saveOptions,
+    );
+  }
+
+  public async addFields(fieldOptions: IAddFieldOptions[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<string>> {
+    return await this.doCommand<string>(
+      {
+        cmd: CollaCommandName.AddFields,
+        data: fieldOptions,
+        datasheetId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  public async deleteFields(fields: IDeleteFieldData[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return await this.doCommand<void>(
+      {
+        cmd: CollaCommandName.DeleteField,
+        data: fields,
+        datasheetId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  public async updateField(field: IField, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return await this.doCommand<void>(
+      {
+        cmd: CollaCommandName.SetFieldAttr,
+        fieldId: field.id,
+        data: field,
+        datasheetId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  public async updateCells(cells: ISetRecordOptions[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return await this.doCommand<void>(
+      {
+        cmd: CollaCommandName.SetRecords,
+        data: cells,
+        datasheetId: this.id,
+      },
+      saveOptions,
+    );
   }
 
   /**

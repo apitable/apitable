@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName } from 'commands';
 import { ICollaCommandExecuteResult } from 'command_manager';
 import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewRow, Selectors, ViewType } from 'exports/store';
 import { keyBy } from 'lodash';
+import { ICellValue } from 'model';
 import { Store } from 'redux';
 import { Datasheet, ISaveOptions } from './datasheet';
 import { Field } from './field';
@@ -36,7 +36,7 @@ export class View {
 
   /**
    * Create a `View` instance from `IViewInfo`.
-   * 
+   *
    * @internal This constructor is not intended for public use.
    */
   constructor(private readonly datasheet: Datasheet, private readonly store: Store<IReduxState>, info: IViewInfo) {
@@ -120,21 +120,16 @@ export class View {
 
   /**
    * Add records to the datasheet via this view.
-   * 
+   *
    * @param options options for adding records
    * @param saveOptions options for the data saver.
    * @return If the command succeeded, the `data` field of the return value is an array of record IDs.
    */
-  public addRecords(options: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICollaCommandExecuteResult<string[]>> {
-    return this.datasheet.doCommand<string[]>(
+  public addRecords(recordOptions: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICollaCommandExecuteResult<string[]>> {
+    return this.datasheet.addRecords(
       {
-        cmd: CollaCommandName.AddRecords,
-        datasheetId: this.datasheet.id,
+        ...recordOptions,
         viewId: this.id,
-        index: options.index,
-        count: 'count' in options ? options.count : options.recordValues.length,
-        cellValues: 'count' in options ? undefined : options.recordValues,
-        ignoreFieldPermission: true,
       },
       saveOptions,
     );
@@ -195,6 +190,10 @@ export type IAddRecordsOptions =
        * default values are set for corresponding fields.
        */
       count: number;
+
+      groupCellValues?: ICellValue[];
+
+      ignoreFieldPermission?: boolean;
     }
   | {
       /**
@@ -206,6 +205,10 @@ export type IAddRecordsOptions =
        * New record values.
        */
       recordValues: IRecordCellValue[];
+
+      groupCellValues?: ICellValue[];
+
+      ignoreFieldPermission?: boolean;
     };
 
 /**
