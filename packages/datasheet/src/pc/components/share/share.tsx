@@ -44,6 +44,8 @@ import { INodeTree, IShareSpaceInfo } from './interface';
 import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
+// @ts-ignore
+import { isEnterprise } from 'enterprise';
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
 
@@ -159,7 +161,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
       return;
     }
     dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId: shareNodeId, nodeName: shareNodeName, icon: shareNodeIcon }])));
-    dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
+    isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
     dispatch(
       StoreActions.setShareInfo({
         spaceId: shareSpaceInfo.spaceId,
