@@ -108,7 +108,7 @@ describe('FusionController (e2e) | create datasheet', () => {
   it('space not exist/ no space permission, should return 403', (done) => {
     return request(app.getHttpServer())
       .post('/fusion/v1/spaces/111/datasheets')
-      .set(getDefaultHeader(app))
+      .set(getDefaultHeader())
       .end((_err, res) => {
         expect(res.status).toEqual(403);
         expect(res.body).toEqual({ code: 403, message: 'Forbidden', success: false });
@@ -121,7 +121,7 @@ describe('FusionController (e2e) | create datasheet', () => {
     it('missing required params(name), should return 400 code', (done) => {
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .end((_err, res) => {
           expect(res.status).toEqual(200);
           expect(res.body).toEqual({ code: 400, message: '[datasheet] should contains name', success: false });
@@ -136,7 +136,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       }
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send({ name })
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -152,7 +152,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -168,7 +168,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -184,7 +184,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -200,7 +200,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -217,7 +217,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -239,7 +239,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -261,7 +261,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -281,7 +281,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -302,7 +302,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
@@ -323,7 +323,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       };
       return request(app.getHttpServer())
         .post(`/fusion/v1/spaces/${spaceId}/datasheets`)
-        .set(getDefaultHeader(app))
+        .set(getDefaultHeader())
         .send(ro)
         .end((_err, res) => {
           expect(res.status).toEqual(200);
