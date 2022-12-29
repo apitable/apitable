@@ -439,7 +439,7 @@ __metadata:
     lodash: 4.17.21
     lottie-web: ^5.6.10
     lru-cache: ^6.0.0
-    markdown-it: ^11.0.1
+    markdown-it: ^12.3.2
     md5js: ^1.0.7
     mime-types: ^2.1.29
     naming-style: ^1.0.1
@@ -20848,10 +20848,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:~2.0.0":
-  version: 2.0.3
-  resolution: "entities@npm:2.0.3"
-  checksum: 5a7899fcc622e0d76afdeafe4c58a6b40ae3a8ee4772e5825a648c11a2ca324a9a02515386f512e466baac4aeb551f3d3b79eaece5cd98369b9f8601be336b1a
+"entities@npm:~2.1.0":
+  version: 2.1.0
+  resolution: "entities@npm:2.1.0"
+  checksum: a10a877e489586a3f6a691fe49bf3fc4e58f06c8e80522f08214a5150ba457e7017b447d4913a3fa041bda06ee4c92517baa4d8d75373eaa79369e9639225ffd
   languageName: node
   linkType: hard
 
@@ -31269,18 +31269,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"markdown-it@npm:^11.0.1":
-  version: 11.0.1
-  resolution: "markdown-it@npm:11.0.1"
+"markdown-it@npm:^12.3.2":
+  version: 12.3.2
+  resolution: "markdown-it@npm:12.3.2"
   dependencies:
-    argparse: ^1.0.7
-    entities: ~2.0.0
+    argparse: ^2.0.1
+    entities: ~2.1.0
     linkify-it: ^3.0.1
     mdurl: ^1.0.1
     uc.micro: ^1.0.5
   bin:
     markdown-it: bin/markdown-it.js
-  checksum: 05e953045479fb0e47ef45fbae1ba544e9539cd26bc4cd56a9662ac08dd716a61f78a1fa64aea618c20eb80805aef8214b02e5aa7280e47cd6c3517d31591dad
+  checksum: 890555711c1c00fa03b936ca2b213001a3b9b37dea140d8445ae4130ce16628392aad24b12e2a0a9935336ca5951f2957a38f4e5309a2e38eab44e25ff32a41e
   languageName: node
   linkType: hard
 
