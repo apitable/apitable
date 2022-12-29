@@ -20,24 +20,19 @@ import produce from 'immer';
 import { combineReducers } from 'redux';
 import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from '../../../../../../exports/store/actions';
 import {
-  CHANGE_WIDGET_PANEL_WIDTH, SET_ACTIVE_ROW_INFO, SET_EDIT_STATUS, SET_GANTT_DATE_UNIT_TYPE, SET_GANTT_GRID_WIDTH, SET_GANTT_SETTING_PANEL_WIDTH,
-  SET_GRID_VIEW_HOVER_FIELD_ID, SET_GROUPING_COLLAPSE, SET_KANBAN_GROUPING_EXPAND, SET_LOADING_RECORD,
-  SET_NEW_RECORD_EXPECT_INDEX, SET_SEARCH_KEYWORD,
-  SET_CALENDAR_SETTING_PANEL_WIDTH, TOGGLE_CALENDAR_SETTING_PANEL,
-  SET_SEARCH_RESULT_CURSOR_INDEX, SWITCH_ACTIVE_PANEL, SET_CALENDAR_GRID_WIDTH, TOGGLE_CALENDAR_GUIDE_STATUS,
-  TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_WIDGET_PANEL, TOGGLE_CALENDAR_GRID, SET_WIDGET_PANEL_LOADING, SET_HIGHLIGHT_FIELD_ID,
-  CLEAR_ACTIVE_ROW_INFO,
-  SET_CLOSE_SYNC_VIEW_ID, SET_ROBOT_PANEL_STATUS, SET_ORG_CHART_GRID_WIDTH, SET_ORG_CHART_SETTING_PANEL_WIDTH, TOGGLE_ORG_CHART_GRID,
-  TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, ACTIVE_OPERATE_VIEW_ID, RESET_OPERATE_VIEW_ID,
-  ACTIVE_EXPORT_VIEW_ID, RESET_EXPORT_VIEW_ID,
-  TOGGLE_TIME_MACHINE_PANEL,
-  TOGGLE_KANBAN_GROUP_SETTING_VISIBLE
-} from '../../../../../shared/store/action_constants';
-import { DateUnitType, WhyRecordMoveType } from '../../../../../shared/store/constants';
-import {
-  IActiveRowInfo, ICalendarViewStatus, IDatasheetClientState, IGanttViewStatus, IKanbanViewStatus, ILoadingRecord, ILoadingRecordAction, 
+  IActiveRowInfo, ICalendarViewStatus, IDatasheetClientState, IGanttViewStatus, IKanbanViewStatus, ILoadingRecord, ILoadingRecordAction,
   IOrgChartViewStatus, IWidgetPanelStatus
 } from '../../../../../../exports/store/interfaces';
+import {
+  ACTIVE_EXPORT_VIEW_ID, ACTIVE_OPERATE_VIEW_ID, CHANGE_WIDGET_PANEL_WIDTH, CLEAR_ACTIVE_ROW_INFO, RESET_EXPORT_VIEW_ID, RESET_OPERATE_VIEW_ID,
+  SET_ACTIVE_ROW_INFO, SET_CALENDAR_GRID_WIDTH, SET_CALENDAR_SETTING_PANEL_WIDTH, SET_CLOSE_SYNC_VIEW_ID, SET_EDIT_STATUS, SET_GANTT_DATE_UNIT_TYPE,
+  SET_GANTT_GRID_WIDTH, SET_GANTT_SETTING_PANEL_WIDTH, SET_GRID_VIEW_HOVER_FIELD_ID, SET_GROUPING_COLLAPSE, SET_HIGHLIGHT_FIELD_ID,
+  SET_KANBAN_GROUPING_EXPAND, SET_LOADING_RECORD, SET_NEW_RECORD_EXPECT_INDEX, SET_ORG_CHART_GRID_WIDTH, SET_ORG_CHART_SETTING_PANEL_WIDTH,
+  SET_ROBOT_PANEL_STATUS, SET_SEARCH_KEYWORD, SET_SEARCH_RESULT_CURSOR_INDEX, SET_WIDGET_PANEL_LOADING, SWITCH_ACTIVE_PANEL, TOGGLE_CALENDAR_GRID,
+  TOGGLE_CALENDAR_GUIDE_STATUS, TOGGLE_CALENDAR_SETTING_PANEL, TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
+  TOGGLE_ORG_CHART_GRID, TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL, TOGGLE_WIDGET_PANEL
+} from '../../../../../shared/store/action_constants';
+import { DateUnitType, WhyRecordMoveType } from '../../../../../shared/store/constants';
 import { collaborators } from './collaborators';
 import { gridViewActiveFieldState } from './grid_view_active_field';
 import { gridViewDragState } from './grid_view_drag';
@@ -142,7 +137,7 @@ export const client = combineReducers<IDatasheetClientState>({
     }
     return state;
   },
-  loadingRecord: produce((state = {}, action: ILoadingRecordAction): ILoadingRecord => {
+  loadingRecord: produce((state: ILoadingRecord = {}, action: ILoadingRecordAction): ILoadingRecord => {
     if (action.type === SET_LOADING_RECORD) {
       const { recordIds, loading } = action.payload;
       recordIds.forEach(recordId => {
@@ -150,7 +145,7 @@ export const client = combineReducers<IDatasheetClientState>({
       });
     }
     return state;
-  }),
+  }, {}),
   widgetPanelStatus: (state: IWidgetPanelStatus = defaultWidgetPanelStatus, action): IWidgetPanelStatus => {
     switch (action.type) {
       case TOGGLE_WIDGET_PANEL: {

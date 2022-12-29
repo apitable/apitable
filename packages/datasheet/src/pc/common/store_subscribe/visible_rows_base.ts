@@ -19,8 +19,7 @@
 import { store } from 'pc/store';
 import { Selectors, visibleRowsBaseCacheManage } from '@apitable/core';
 import { mainWidgetMessage } from '@apitable/widget-sdk';
-// @ts-ignore
-import { getDependenceDstIds } from 'enterprise';
+import { getDependenceDstIds } from 'pc/utils/dependence_dst';
 
 store.subscribe(function visibleRowsBase() {
   const state = store.getState();
@@ -33,7 +32,7 @@ store.subscribe(function visibleRowsBase() {
     return;
   }
   if (datasheetId && !viewIds?.length) {
-    const dstIds = Array.from(new Set([...(getDependenceDstIds ? getDependenceDstIds(state, datasheetId) : []), datasheetId]));
+    const dstIds = Array.from(new Set([...getDependenceDstIds(state, datasheetId), datasheetId]));
     dstIds.forEach(datasheetId => updateCache(datasheetId));
     return;
   }

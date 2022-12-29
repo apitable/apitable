@@ -16,20 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { produce } from 'immer';
 import {
-  ISpacePermissionManage,
-  IUpdateSubAdminListDataAction,
-  IUpdateMainAdminInfoAction,
-  IUpdateSpaceResourceAction,
+  ISpacePermissionManage, IUpdateMainAdminInfoAction, IUpdateSpaceResourceAction, IUpdateSubAdminListDataAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { produce } from 'immer';
+
 const defaultState: ISpacePermissionManage = {
   subAdminListData: null,
   mainAdminInfo: null,
   spaceResource: null,
 };
-type ISpacePermissionManageActions = IUpdateSubAdminListDataAction 
+type ISpacePermissionManageActions = IUpdateSubAdminListDataAction
   | IUpdateMainAdminInfoAction | IUpdateSpaceResourceAction;
 
 export const spacePermissionManage = produce((
@@ -52,4 +50,4 @@ export const spacePermissionManage = produce((
     default:
       return data;
   }
-});
+}, defaultState);

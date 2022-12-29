@@ -83,13 +83,11 @@ public class UserEntity implements Serializable {
      */
     private String password;
 
-    @TableField(updateStrategy = FieldStrategy.IGNORED)
     /**
      * Avatar
      */
     private String avatar;
 
-    @TableField(updateStrategy = FieldStrategy.IGNORED)
     /**
      * default avatar color number
      */
