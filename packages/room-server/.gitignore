@@ -39,4 +39,3 @@ yarn-error.log*
 # ENV configuration
 /env/*
 !/env/.env.defaults
-!/env/.env.development.local
