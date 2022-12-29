@@ -86,7 +86,7 @@
     "intersection-observer": "^0.12.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
-    "jszip": "^3.6.0",
+    "jszip": "^3.7.0",
     "konva": "^8.3.13",
     "less-loader": "11.0.0",
     "loader-utils": "^3.2.1",

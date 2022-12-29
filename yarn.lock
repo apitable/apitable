@@ -419,7 +419,7 @@ __metadata:
     is-hotkey: ^0.1.6
     is-url: ^1.2.4
     is-wsl: 1.1.0
-    jszip: ^3.6.0
+    jszip: ^3.7.0
     konva: ^8.3.13
     less: 4.1.3
     less-loader: 11.0.0
@@ -29777,15 +29777,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jszip@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "jszip@npm:3.6.0"
+"jszip@npm:^3.7.0":
+  version: 3.10.1
+  resolution: "jszip@npm:3.10.1"
   dependencies:
     lie: ~3.3.0
     pako: ~1.0.2
     readable-stream: ~2.3.6
-    set-immediate-shim: ~1.0.1
-  checksum: dd82d93fa5c6a22e83d3393c86442a58f9e7effad1a3171abcf504901f3d9d6d618fb9a5ac7b0ceeee2abc15a167298101b5ada1e153ab8301bcfd80b3605f07
+    setimmediate: ^1.0.5
+  checksum: abc77bfbe33e691d4d1ac9c74c8851b5761fba6a6986630864f98d876f3fcc2d36817dfc183779f32c00157b5d53a016796677298272a714ae096dfe6b1c8b60
   languageName: node
   linkType: hard
 
