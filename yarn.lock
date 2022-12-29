@@ -34944,9 +34944,9 @@ fsevents@^1.2.7:
   linkType: hard
 
 "pathval@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "pathval@npm:1.1.0"
-  checksum: a6919cf5b14ba9458e51005daeb476095fbc1392c66388151058aba664c27987438152eba258852eee1812e3c20435ddf096b99a7c871543635657837595c50e
+  version: 1.1.1
+  resolution: "pathval@npm:1.1.1"
+  checksum: 090e3147716647fb7fb5b4b8c8e5b55e5d0a6086d085b6cd23f3d3c01fcf0ff56fd3cc22f2f4a033bd2e46ed55d61ed8379e123b42afe7d531a2a5fc8bb556d6
   languageName: node
   linkType: hard
 
