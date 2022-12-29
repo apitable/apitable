@@ -48,9 +48,10 @@ services:
       - rabbitmq
     healthcheck:
       test: ["CMD-SHELL", "curl -sS 'http://localhost:8081' || exit 1"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
-      retries: 10
+      start_period: 30s
+      retries: 30
 
   room-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_ROOM_SERVER}
@@ -170,9 +171,9 @@ services:
       - apitable
     healthcheck:
       test: ["CMD-SHELL", "curl -sS 'http://localhost:9000' || exit 1"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 15
 
   redis:
     image: ${IMAGE_REDIS}
@@ -214,9 +215,10 @@ services:
       --lower_case_table_names=2
     healthcheck:
       test: "mysql ${MYSQL_DATABASE} -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD} -e 'SELECT 1;'"
-      interval: 30s
+      interval: 10s
       timeout: 10s
-      retries: 10
+      start_period: 30s
+      retries: 30
     networks:
       - apitable
 

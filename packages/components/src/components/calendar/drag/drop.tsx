@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import { TYPE } from '../constants';

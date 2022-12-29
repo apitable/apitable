@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // Message Center
 export const NOTIFICATION_PAGE = '/player/notification/page';
 export const NOTIFICATION_LIST = '/player/notification/list';

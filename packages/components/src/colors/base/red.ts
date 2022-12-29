@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const red = {
   50: '#FBECEB',
   100: '#FFD1C8',

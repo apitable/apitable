@@ -44,7 +44,7 @@ export class RedisService {
   async saveUserSocketId(userId: string, socketId: string): Promise<[Error | null, any][]> {
     const key: string = USER_ROOM.PREFIX + userId;
     // `sadd` adds set collection elements, returns true, repeatedly returns false
-    return this.redis
+    return await this.redis
       .multi()
       .sadd(key, socketId)
       .expire(key, USER_ROOM.EXPIRE)
@@ -108,7 +108,7 @@ export class RedisService {
    * @param value socket connection user id
    */
   async saveSocket(prefix: string, key: string, value: string) {
-    return this.redis.hset(SOCKET_CACHE.PREFIX + prefix, key, value);
+    return await this.redis.hset(SOCKET_CACHE.PREFIX + prefix, key, value);
   }
 
   /**
@@ -117,7 +117,7 @@ export class RedisService {
    * @param prefix
    */
   async getSockets(prefix: string): Promise<Record<string, string>> {
-    return this.redis.hgetall(SOCKET_CACHE.PREFIX + prefix);
+    return await this.redis.hgetall(SOCKET_CACHE.PREFIX + prefix);
   }
 
   /**
@@ -127,7 +127,7 @@ export class RedisService {
    * @param key
    */
   async removeSocket(prefix: string, key: string) {
-    return this.redis.hdel(SOCKET_CACHE.PREFIX + prefix, key);
+    return await this.redis.hdel(SOCKET_CACHE.PREFIX + prefix, key);
   }
 
 }

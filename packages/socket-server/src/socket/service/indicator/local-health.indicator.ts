@@ -32,7 +32,7 @@ export class LocalHealthIndicator extends HealthIndicator {
   async isRedisHealthy(): Promise<HealthIndicatorResult> {
     const redisStatus = this.redisService.getStatus();
     const isHealthy = redisStatus !== 'end';
-    const result = this.getStatus('redis', isHealthy, { redisStatus });
+    const result = await this.getStatus('redis', isHealthy, { redisStatus });
     if (isHealthy) {
       return result;
     }
@@ -48,7 +48,7 @@ export class LocalHealthIndicator extends HealthIndicator {
     const heapUsedRatio = Number((heapUsed / heapTotal).toFixed(2));
     const isRssHealthy = rssRatio * 100 < HealthConstants.RSS_MEMORY_RATIO;
     const isHeapHealthy = heapUsedRatio * 100 < HealthConstants.HEAP_MEMORY_RATIO;
-    const result = this.getStatus('memory', isRssHealthy && isHeapHealthy, {
+    const result = await this.getStatus('memory', isRssHealthy && isHeapHealthy, {
       rss: { rssRatio, rss, sysTotal, status: isRssHealthy ? 'up' : 'down' },
       heap: {
         heapUsedRatio,
@@ -64,7 +64,7 @@ export class LocalHealthIndicator extends HealthIndicator {
   }
 
   async serverInfo(): Promise<HealthIndicatorResult> {
-    return this.getStatus('server', true, {
+    return await this.getStatus('server', true, {
       name: `socket-server/${ipAddress()}`,
     });
   }
