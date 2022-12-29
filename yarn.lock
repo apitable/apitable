@@ -225,7 +225,7 @@ __metadata:
     date-fns: ^2.22.1
     jest: 26.6.0
     jest-environment-jsdom: 26.6.0
-    lodash: 4.17.20
+    lodash: 4.17.21
     rc-trigger: ^5.3.3
     rc-util: ^5.24.4
     react-color: ^2.19.3
@@ -276,7 +276,7 @@ __metadata:
     jest-environment-jsdom: ^29.2.2
     joi: ^17.4.2
     json-schema: ^0.4.0
-    lodash: 4.17.20
+    lodash: 4.17.21
     lru-cache: ^5.1.1
     mockjs: 1.1.0
     ot-fuzzer: ^1.3.0
@@ -424,7 +424,7 @@ __metadata:
     less: 4.1.3
     less-loader: 11.0.0
     loader-utils: ^3.2.1
-    lodash: 4.17.20
+    lodash: 4.17.21
     lottie-web: ^5.6.10
     lru-cache: ^6.0.0
     markdown-it: ^11.0.1
@@ -661,7 +661,7 @@ __metadata:
     jest: 28.1.1
     jest-environment-jsdom: ^28.1.1
     js-yaml: ^4.1.0
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     logform: ^2.2.0
     minio: ^7.0.26
     moment-timezone: ^0.5.31
@@ -777,7 +777,7 @@ __metadata:
     jest: 28.1.0
     loadjs: ^4.2.0
     localforage: ^1.10.0
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     lodash.without: ^4.4.0
     mime-types: ^2.1.29
     re-reselect: ^4.0.0
@@ -30967,13 +30967,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.20, lodash@npm:^4.17.20":
-  version: 4.17.20
-  resolution: "lodash@npm:4.17.20"
-  checksum: b31afa09739b7292a88ec49ffdb2fcaeb41f690def010f7a067eeedffece32da6b6847bfe4d38a77e6f41778b9b2bca75eeab91209936518173271f0b69376ea
-  languageName: node
-  linkType: hard
-
 "lodash@npm:4.17.21, lodash@npm:^4.0.1, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
@@ -30985,6 +30978,13 @@ fsevents@^1.2.7:
   version: 4.17.19
   resolution: "lodash@npm:4.17.19"
   checksum: a5cc77099fae9f0052003e8242b06d7572be7c88cbe5152ddf5a3d97bc795cfaf73f10befeb6e23efac84fae94e2255d398cb371349cb3f878c9792a0213cacd
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.20":
+  version: 4.17.20
+  resolution: "lodash@npm:4.17.20"
+  checksum: b31afa09739b7292a88ec49ffdb2fcaeb41f690def010f7a067eeedffece32da6b6847bfe4d38a77e6f41778b9b2bca75eeab91209936518173271f0b69376ea
   languageName: node
   linkType: hard
 
@@ -39606,7 +39606,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-vika: 0.0.1
     husky: 8.0.1
     lint-staged: 13.0.3
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     pretty-quick: ^3.1.3
     quicktype: ^15.0.212
     svgo: ^2.3.0
