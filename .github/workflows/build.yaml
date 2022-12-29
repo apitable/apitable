@@ -28,6 +28,7 @@ jobs:
           cache: "gradle"
       - name: Test
         run: |
+          npm install --global typescript
           make install
           make build
 
