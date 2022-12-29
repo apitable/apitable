@@ -281,7 +281,11 @@ export const UserMenu: FC<IUserMenuProps> = props => {
               avatarColor={avatarColor}
               src={avatar} 
               title={nickName} 
-              size={AvatarSize.Size64} />
+              size={AvatarSize.Size64}
+              style={{
+                border: `1px solid ${colors.textStaticPrimary}`,
+              }}
+            />
           </Spin>
           <div className={styles.svgWrap}>
             <EditIcon fill={colors.black[50]} />
