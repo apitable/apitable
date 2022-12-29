@@ -37,6 +37,6 @@ yarn-error.log*
 !.vscode/extensions.json
 
 # ENV configuration
-**/env
-!**/env/.env.defaults
-!**/env/.env.development.local
+/env/*
+!/env/.env.defaults
+!/env/.env.development.local
