@@ -25,7 +25,9 @@ ext {
     'spring-test-starter'         : 'org.springframework.boot:spring-boot-starter-test',
     // Spring Cloud Dependencies
     'spring-cloud-starter-sleuth' : "org.springframework.cloud:spring-cloud-starter-sleuth",
-    'spring-cloud-sleuth-zipkin'  : "org.springframework.cloud:spring-cloud-sleuth-zipkin",
+    // Spring Cloud Sleuth OpenTelemetry
+    'spring-cloud-sleuth-otel'    : "org.springframework.cloud:spring-cloud-sleuth-otel-autoconfigure",
+    'opentelemetry-exporter-jaeger'    : "io.opentelemetry:opentelemetry-exporter-jaeger",
     // Spring Session Dependencies
     'spring-session-redis'        : 'org.springframework.session:spring-session-data-redis',
     // Spring Data Dependencies

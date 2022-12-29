@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import * as React from 'react';
 import { KONVA_DATASHEET_ID, t, Strings } from '@apitable/core';
 import { ContextMenu, useContextMenu, useThemeColors } from '@apitable/components';

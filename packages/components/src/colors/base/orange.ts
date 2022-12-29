@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const orange = {
   50: '#FFF6E5',
   100: '#FFE5B7',

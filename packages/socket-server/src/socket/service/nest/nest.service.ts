@@ -49,7 +49,7 @@ export class NestService {
   }
 
   async handleHttpNotify(socketRo: SocketRo) {
-    return this.notify(socketRo.event, socketRo.message);
+    return await this.notify(socketRo.event, socketRo.message);
   }
 
   /**
@@ -112,7 +112,7 @@ export class NestService {
 
   private async notify(event: string, message: any): Promise<any | null> {
     this.logger.debug({ event, message });
-    return new Promise(resolve => {
+    return await new Promise(resolve => {
       const socketId = this.getSocketId();
       if (!isNil(socketId)) {
         this.socketMap.get(socketId).emit(event, message, function(answer) {

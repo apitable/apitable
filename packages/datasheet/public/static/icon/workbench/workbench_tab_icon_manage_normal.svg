@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-<desc>Created with Sketch.</desc>
-<g>
-	<path fill="#575E7B" d="M22.8,11.5l-5-8.7c-0.2-0.3-0.5-0.4-0.8-0.4H7c-0.3,0-0.6,0.2-0.8,0.4l-5,8.7c-0.2,0.3-0.2,0.6,0,0.9l5,8.7
-		c0.2,0.3,0.5,0.5,0.8,0.5h10c0.3,0,0.6-0.2,0.8-0.5l5-8.7C22.9,12.2,22.9,11.8,22.8,11.5z M16.5,19.8h-9L3,12l4.5-7.8h9L21,12
-		L16.5,19.8z"/>
-	<path fill="#575E7B" d="M12,8.1c-2.2,0-3.9,1.7-3.9,3.9s1.7,3.9,3.9,3.9s3.9-1.8,3.9-3.9S14.2,8.1,12,8.1z M12,14.1
-		c-1.2,0-2.1-0.9-2.1-2.1c0-1.2,0.9-2.1,2.1-2.1c1.2,0,2.1,0.9,2.1,2.1C14.1,13.2,13.2,14.1,12,14.1z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0" y="0" enable-background="new 0 0 24 24" version="1.1" viewBox="0 0 24 24" xml:space="preserve"><desc>Created with Sketch.</desc><g><path fill="#575E7B" d="M22.8,11.5l-5-8.7c-0.2-0.3-0.5-0.4-0.8-0.4H7c-0.3,0-0.6,0.2-0.8,0.4l-5,8.7c-0.2,0.3-0.2,0.6,0,0.9l5,8.7 c0.2,0.3,0.5,0.5,0.8,0.5h10c0.3,0,0.6-0.2,0.8-0.5l5-8.7C22.9,12.2,22.9,11.8,22.8,11.5z M16.5,19.8h-9L3,12l4.5-7.8h9L21,12 L16.5,19.8z"/><path fill="#575E7B" d="M12,8.1c-2.2,0-3.9,1.7-3.9,3.9s1.7,3.9,3.9,3.9s3.9-1.8,3.9-3.9S14.2,8.1,12,8.1z M12,14.1 c-1.2,0-2.1-0.9-2.1-2.1c0-1.2,0.9-2.1,2.1-2.1c1.2,0,2.1,0.9,2.1,2.1C14.1,13.2,13.2,14.1,12,14.1z"/></g></svg>

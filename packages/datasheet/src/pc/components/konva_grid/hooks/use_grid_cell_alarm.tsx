@@ -23,7 +23,7 @@ import { Icon } from 'pc/components/konva_components';
 import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { ReactNode, useContext, useMemo } from 'react';
 // @ts-ignore
 import { AlarmIcon } from 'enterprise';

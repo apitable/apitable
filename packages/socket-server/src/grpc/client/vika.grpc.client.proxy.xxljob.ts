@@ -138,9 +138,9 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
 
   getHealthServerEndpoint(): string {
     if (!this.clientIps.size || isDev()) {
-                                           this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.ROOM_GRPC_URL}`);
-                                           return GatewayConstants.ROOM_GRPC_URL;
-                                         }
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.ROOM_GRPC_URL}`);
+      return GatewayConstants.ROOM_GRPC_URL;
+    }
     const ips = Array.from(this.clientIps);
     const index = randomNum(0, ips.length - 1);
     const ip = ips[index];

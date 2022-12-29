@@ -23,7 +23,7 @@ import { Mirror } from 'pc/components/mirror/mirror';
 import styles from 'pc/components/mirror/style.module.less';
 import { NoPermission } from 'pc/components/no_permission';
 import { Router } from 'pc/components/route_manager/router';
-import { useUpdateEffect } from 'ahooks';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
@@ -45,25 +45,25 @@ export const MirrorRoute = () => {
     return Selectors.getDatasheet(state, mirror.sourceInfo.datasheetId);
   });
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (!mirrorSourceInfo) {
       return;
     }
     // The mirror route is special compared to other nodes, in order to maintain the mapping relationship,
     // an additional datasheetId will be displayed on the route, so here for the mirror jump will do special treatment
     if (shareId) {
-      Router.push(Navigation.SHARE_SPACE,{
+      Router.push(Navigation.SHARE_SPACE, {
         params: { shareId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
       });
       return;
     }
     if (templateId) {
-      Router.push(Navigation.TEMPLATE,{
+      Router.push(Navigation.TEMPLATE, {
         params: { categoryId, templateId, nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
       });
       return;
     }
-    Router.push(Navigation.WORKBENCH,{
+    Router.push(Navigation.WORKBENCH, {
       params: { nodeId: mirrorId, datasheetId: mirrorSourceInfo?.datasheetId, viewId: mirrorSourceInfo?.viewId, recordId },
     });
   }, [mirrorSourceInfo, mirrorId, categoryId, shareId, templateId, recordId, datasheetId]);
@@ -90,8 +90,8 @@ export const MirrorRoute = () => {
     return <AutoSizer style={{ width: '100%', height: '100%' }}>
       {({ width, height }) => {
         return <div className={styles.skeletonWrapper} style={{ width, height }}>
-          <Skeleton height="24px" />
-          <Skeleton count={2} style={{ marginTop: '24px' }} height="80px" />
+          <Skeleton height='24px' />
+          <Skeleton count={2} style={{ marginTop: '24px' }} height='80px' />
         </div>;
       }}
     </AutoSizer>;

@@ -32,7 +32,7 @@ import { useSelector } from 'react-redux';
 import { useWxTitleMap } from '../konva_grid';
 import { IntercomProvider } from 'react-use-intercom';
 // @ts-ignore
-import { IntercomWrapper, WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage } from 'enterprise';
+import { IntercomWrapper, WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
 
 export const SideWrapper = props => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -57,7 +57,7 @@ export const SideWrapper = props => {
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
     if (!spaceId) return;
-    dispatch(StoreActions.fetchMarketplaceApps(spaceId));
+    isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
     dispatch(StoreActions.getSpaceInfo(spaceId));
     dispatch(StoreActions.getSpaceFeatures());
   }, [dispatch, spaceId]);

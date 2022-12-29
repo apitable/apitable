@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const teal = {
   50: '#E2F6EF',
   100: '#BDECDA',

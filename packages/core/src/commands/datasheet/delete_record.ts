@@ -90,7 +90,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
         return;
       }
       linkField.forEach((field: ILinkField) => {
-        let oldValue: string[] | undefined
+        let oldValue: string[] | undefined;
         // two tables are associated
         if (field.property.brotherFieldId) {
           oldValue = record.data[field.id] as string[] | undefined;

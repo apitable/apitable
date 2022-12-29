@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const purple = {
   50: '#F4E9FE',
   100: '#E4C5FB',

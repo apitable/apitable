@@ -18,51 +18,26 @@
 
 package com.apitable.space.service.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowsPerSheet;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.Seat;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.SheetNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.*;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.AuditQueryDays;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.RemainRecordActivityDays;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.RemainTimeMachineDays;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.RemainTrashDays;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowApplyJoin;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowCopyData;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowDownload;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowExport;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowShare;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ContactIsolation;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ForbidCreateOnCatalog;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.RainbowLabel;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ShowMobileNumber;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.SocialConnect;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.Watermark;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.*;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
+import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -71,6 +46,24 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
 
     @MockBean
     private EntitlementServiceFacade entitlementServiceFacade;
+
+    @Test
+    void getSpaceListWithAll() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
+        condition.setManageable(false);
+        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
+        assertThat(spaceVOList).isNotEmpty().hasSize(1);
+    }
+
+    @Test
+    void getSpaceListWithAdmin() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
+        condition.setManageable(true);
+        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
+        assertThat(spaceVOList).isNotEmpty().hasSize(1);
+    }
 
     @Test
     void givenExitMemberWhenCheckUserInSpaceWhenSuccess() {

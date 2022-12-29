@@ -27,7 +27,7 @@ import { CommonStatusMsg } from 'socket/common/constants';
  */
 @Injectable()
 export class HttpResponseInterceptor implements NestInterceptor {
-  intercept (context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data: any) => {
         if (data?.code) {

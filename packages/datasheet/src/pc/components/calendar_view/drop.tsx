@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { memo, useContext, useState } from 'react';
 import * as React from 'react';
 import { useDrop } from 'react-dnd';

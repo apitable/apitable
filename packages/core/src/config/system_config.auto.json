@@ -802,9 +802,7 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -817,9 +815,7 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -831,9 +827,7 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -846,9 +840,7 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -861,9 +853,7 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -876,9 +866,7 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -891,9 +879,7 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -906,9 +892,7 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -921,9 +905,7 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -936,9 +918,7 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -951,9 +931,7 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -966,9 +944,7 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -981,9 +957,7 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -996,9 +970,7 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1011,9 +983,7 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1026,9 +996,7 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1041,9 +1009,7 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1056,9 +1022,7 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1071,9 +1035,7 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1086,9 +1048,7 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1101,9 +1061,7 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1116,9 +1074,7 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1131,9 +1087,7 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1146,9 +1100,7 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1161,9 +1113,7 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1176,9 +1126,7 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1191,9 +1139,7 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1206,9 +1152,7 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1221,9 +1165,7 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1236,9 +1178,7 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1251,9 +1191,7 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1266,9 +1204,7 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1281,9 +1217,7 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1296,9 +1230,7 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1311,9 +1243,7 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1326,9 +1256,7 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1341,9 +1269,7 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1356,9 +1282,7 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1483,9 +1407,7 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [
-                "new_datasheet"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1543,9 +1465,7 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [
-                "permission_setting"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -6467,9 +6387,7 @@
             "activity_integral_income_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "activity_integral_income_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "activity_integral_income_notify",
                 "is_component": true
@@ -6477,9 +6395,7 @@
             "activity_integral_income_toadmin": {
                 "to_tag": "space_main_admin",
                 "notifications_type": "system",
-                "formatString": [
-                    "activity_integral_income_toadmin"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "activity_integral_income_toadmin",
                 "is_component": true
@@ -6518,9 +6434,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_add_sub_admin"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6531,9 +6445,7 @@
             "admin_transfer_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "admin_transfer_space_widget_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6543,9 +6455,7 @@
             "admin_unpublish_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "admin_unpublish_space_widget_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6556,9 +6466,7 @@
                 "can_jump": true,
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [
-                    "apply_space_beta_feature_success_notify_all"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "apply_space_beta_feature_success_notify_all"
             },
@@ -6566,9 +6474,7 @@
                 "can_jump": true,
                 "to_tag": "myself",
                 "notifications_type": "space",
-                "formatString": [
-                    "apply_space_beta_feature_success_notify_me"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "apply_space_beta_feature_success_notify_me"
             },
@@ -6604,9 +6510,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "capacity_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6634,9 +6538,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "comment_mentioned"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6669,9 +6571,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "datasheet_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6686,9 +6586,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "datasheet_record_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6702,9 +6600,7 @@
             "integral_income_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "integral_income_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "integral_income_notify",
                 "is_component": true
@@ -6753,9 +6649,7 @@
             "member_applied_to_close_account": {
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [
-                    "member_applied_to_close_account"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "member_applied_to_close_account",
@@ -6764,9 +6658,7 @@
             "new_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "new_space_widget_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "new_space_widget_notify",
@@ -6776,9 +6668,7 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "new_user_welcom_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "new_user_welcom_notify",
                 "url": "https://u.vika.cn/vhw8y",
@@ -6881,9 +6771,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "single_record_comment_mentioned"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6896,9 +6784,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "single_record_member_mention"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6936,9 +6822,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_admin_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6953,9 +6837,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_api_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6970,9 +6852,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_calendar_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6987,9 +6867,7 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_certification_fail_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_certification_fail_notify",
@@ -7000,9 +6878,7 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_certification_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_certification_notify",
@@ -7024,9 +6900,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_dingtalk_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7039,9 +6913,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_field_permission_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7056,9 +6928,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_file_permission_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7073,9 +6943,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_form_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7090,9 +6958,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_gantt_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7140,9 +7006,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_lark_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7155,9 +7019,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_members_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7169,9 +7031,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_mirror_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7198,9 +7058,7 @@
             "space_paid_notify": {
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_paid_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "format_string": "space_paid_notify",
                 "is_component": true
@@ -7209,9 +7067,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_rainbow_label_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7226,9 +7082,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_record_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7255,9 +7109,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_seats_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7282,9 +7134,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_subscription_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_subscription_notify",
@@ -7295,9 +7145,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_time_machine_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7312,9 +7160,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_trash_limit"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7329,9 +7175,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_trial"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7351,9 +7195,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_watermark_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7365,9 +7207,7 @@
             "space_wecom_api_trial_end": {
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_wecom_api_trial_end"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_wecom_api_trial_end"
@@ -7376,9 +7216,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_wecom_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7391,9 +7229,7 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_yozooffice_notify"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7406,9 +7242,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "subscribed_record_cell_updated"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7432,9 +7266,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "subscribed_record_commented"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7458,9 +7290,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "space",
-                "formatString": [
-                    "task_reminder"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7485,9 +7315,7 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [
-                    "field_set_you_by_user"
-                ],
+                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7513,9 +7341,7 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "be_invited_to_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7524,9 +7350,7 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "complete_bind_email"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7534,26 +7358,20 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_email"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_phone"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [
-                    "fission_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7561,9 +7379,7 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7580,9 +7396,7 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "official_invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7591,27 +7405,21 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "redemption_code"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [
-                    "wallet_activity_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7619,491 +7427,10 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_video_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"
-            }
-        }
-    },
-    "billing": {
-        "products": {
-            "Bronze": {
-                "free": true,
-                "ch_name": "青铜级",
-                "plans": [],
-                "id": "Bronze",
-                "category": "BASE",
-                "en_name": "Bronze",
-                "i18nName": "bronze_grade",
-                "channel": "vika",
-                "related_features": []
-            },
-            "Silver": {
-                "ch_name": "白银级",
-                "prices": [],
-                "plans": [],
-                "id": "Silver",
-                "category": "BASE",
-                "en_name": "Silver",
-                "i18nName": "silver_grade",
-                "channel": "vika",
-                "related_features": []
-            },
-            "Gold": {
-                "ch_name": "黄金级",
-                "prices": [],
-                "plans": [],
-                "id": "Gold",
-                "category": "BASE",
-                "en_name": "Gold",
-                "i18nName": "golden_grade",
-                "channel": "vika",
-                "related_features": []
-            },
-            "Enterprise": {
-                "ch_name": "企业级",
-                "plans": [],
-                "id": "Enterprise",
-                "category": "BASE",
-                "en_name": "Enterprise",
-                "i18nName": "enterprise",
-                "channel": "vika",
-                "related_features": []
-            },
-            "ApiUsage": {
-                "ch_name": "API 用量",
-                "plans": [],
-                "id": "ApiUsage",
-                "category": "ADD_ON",
-                "en_name": "API usage",
-                "i18nName": "api_usage",
-                "channel": "vika",
-                "related_features": []
-            },
-            "Capacity": {
-                "ch_name": "附件容量",
-                "plans": [],
-                "id": "Capacity",
-                "category": "ADD_ON",
-                "en_name": "Attachments storage",
-                "i18nName": "space_capacity",
-                "channel": "vika",
-                "related_features": []
-            },
-            "Dingtalk_Base": {
-                "free": true,
-                "ch_name": "钉钉基础版",
-                "plans": [],
-                "id": "Dingtalk_Base",
-                "category": "BASE",
-                "en_name": "Basic Plan with DingTalk",
-                "i18nName": "dingtalk_base",
-                "channel": "dingtalk",
-                "related_features": []
-            },
-            "Dingtalk_Standard": {
-                "ch_name": "钉钉标准版",
-                "prices": [],
-                "plans": [],
-                "id": "Dingtalk_Standard",
-                "category": "BASE",
-                "en_name": "Standard Plan with DingTalk",
-                "i18nName": "dingtalk_standard",
-                "channel": "dingtalk",
-                "related_features": []
-            },
-            "Dingtalk_Profession": {
-                "ch_name": "钉钉专业版",
-                "prices": [],
-                "plans": [],
-                "id": "Dingtalk_Profession",
-                "category": "BASE",
-                "en_name": "Pro Plan with DingTalk",
-                "i18nName": "dingtalk_profession",
-                "channel": "dingtalk",
-                "related_features": []
-            },
-            "Dingtalk_Enterprise": {
-                "ch_name": "钉钉旗舰版",
-                "prices": [],
-                "plans": [],
-                "id": "Dingtalk_Enterprise",
-                "category": "BASE",
-                "en_name": "Ultimate Plan with DingTalk",
-                "i18nName": "dingtalk_enterprise",
-                "channel": "dingtalk",
-                "related_features": []
-            },
-            "Feishu_Base": {
-                "free": true,
-                "ch_name": "飞书基础版",
-                "plans": [],
-                "id": "Feishu_Base",
-                "category": "BASE",
-                "en_name": "Basic Plan with Lark",
-                "i18nName": "feishu_base",
-                "channel": "lark",
-                "related_features": []
-            },
-            "Feishu_Standard": {
-                "ch_name": "飞书标准版",
-                "prices": [],
-                "plans": [],
-                "id": "Feishu_Standard",
-                "category": "BASE",
-                "en_name": "Standard Plan with Lark",
-                "i18nName": "feishu_standard",
-                "channel": "lark",
-                "related_features": []
-            },
-            "Feishu_Profession": {
-                "ch_name": "飞书专业版",
-                "prices": [],
-                "plans": [],
-                "id": "Feishu_Profession",
-                "category": "BASE",
-                "en_name": "Pro Plan with Lark",
-                "i18nName": "feishu_profession",
-                "channel": "lark",
-                "related_features": []
-            },
-            "Feishu_Enterprise": {
-                "ch_name": "飞书旗舰版",
-                "prices": [],
-                "plans": [],
-                "id": "Feishu_Enterprise",
-                "category": "BASE",
-                "en_name": "Ultimate Plan with Lark",
-                "i18nName": "feishu_enterprise",
-                "channel": "lark",
-                "related_features": []
-            },
-            "Private_Cloud": {
-                "free": true,
-                "ch_name": "专有云旗舰版",
-                "plans": [],
-                "id": "Private_Cloud",
-                "category": "BASE",
-                "en_name": "Private Cloud",
-                "i18nName": "private_cloud",
-                "channel": "private",
-                "related_features": []
-            },
-            "Wecom_Base": {
-                "free": true,
-                "ch_name": "企业微信基础版",
-                "plans": [],
-                "id": "Wecom_Base",
-                "category": "BASE",
-                "en_name": "Basic Plan with WeCom",
-                "i18nName": "wecom_base",
-                "channel": "wecom",
-                "related_features": []
-            },
-            "Wecom_Standard": {
-                "ch_name": "企业微信标准版",
-                "prices": [],
-                "plans": [],
-                "id": "Wecom_Standard",
-                "category": "BASE",
-                "en_name": "Standard Plan with WeCom",
-                "i18nName": "wecom_standard",
-                "channel": "wecom",
-                "related_features": []
-            },
-            "Wecom_Profession": {
-                "ch_name": "企业微信专业版",
-                "prices": [],
-                "plans": [],
-                "id": "Wecom_Profession",
-                "category": "BASE",
-                "en_name": "Pro Plan with WeCom",
-                "i18nName": "wecom_profession",
-                "channel": "wecom",
-                "related_features": []
-            },
-            "Wecom_Enterprise": {
-                "ch_name": "企业微信旗舰版",
-                "prices": [],
-                "plans": [],
-                "id": "Wecom_Enterprise",
-                "category": "BASE",
-                "en_name": "Ultimate Plan with WeCom",
-                "i18nName": "wecom_enterprise",
-                "channel": "wecom",
-                "related_features": []
-            },
-            "Atlas": {
-                "free": true,
-                "ch_name": "云版本",
-                "plans": [],
-                "id": "Atlas",
-                "category": "BASE",
-                "en_name": "Atlas",
-                "i18nName": "atlas",
-                "channel": "aliyun",
-                "related_features": []
-            },
-            "Community_Edtion": {
-                "free": true,
-                "ch_name": "开源社区版",
-                "id": "Community_Edtion",
-                "category": "BASE",
-                "en_name": "Community",
-                "i18nName": "community_edition",
-                "channel": "community"
-            }
-        },
-        "notify": {
-            "max_rows_per_sheet": {
-                "id": "max_rows_per_sheet",
-                "link_string_id": [
-                    "max_rows_per_sheet"
-                ],
-                "引用名称": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-                "模板名称": "单个维格表行数已达上限",
-                "link_notification_id": [
-                    "datasheet_record_limit"
-                ]
-            },
-            "max_sheet_nums": {
-                "id": "max_sheet_nums",
-                "link_string_id": [
-                    "max_sheet_nums"
-                ],
-                "引用名称": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "文件数量已达上限",
-                "link_notification_id": [
-                    "datasheet_limit"
-                ]
-            },
-            "max_seats": {
-                "id": "max_seats",
-                "link_string_id": [
-                    "max_seats"
-                ],
-                "引用名称": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "付费席位数量上限",
-                "link_notification_id": [
-                    "space_seats_limit"
-                ]
-            },
-            "max_gallery_views_in_space": {
-                "id": "max_gallery_views_in_space",
-                "link_string_id": [
-                    "max_gallery_views_in_space"
-                ],
-                "引用名称": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "相册视图已达上限通知"
-            },
-            "max_rows_in_space": {
-                "id": "max_rows_in_space",
-                "link_string_id": [
-                    "max_rows_in_space"
-                ],
-                "引用名称": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-                "模板名称": "空间站记录总数",
-                "link_notification_id": [
-                    "space_record_limit"
-                ]
-            },
-            "max_capacity_size_in_bytes": {
-                "id": "max_capacity_size_in_bytes",
-                "link_string_id": [
-                    "max_capacity_size_in_bytes"
-                ],
-                "引用名称": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
-                "模板名称": "空间站容量包已达上限",
-                "link_notification_id": [
-                    "capacity_limit"
-                ]
-            },
-            "max_kanban_views_in_space": {
-                "id": "max_kanban_views_in_space",
-                "link_string_id": [
-                    "max_kanban_views_in_space"
-                ],
-                "引用名称": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "看板视图已达上限通知"
-            },
-            "max_gantt_views_in_space": {
-                "id": "max_gantt_views_in_space",
-                "link_string_id": [
-                    "max_gantt_views_in_space"
-                ],
-                "引用名称": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "甘特视图已达上限通知",
-                "link_notification_id": [
-                    "space_gantt_limit"
-                ]
-            },
-            "max_calendar_views_in_space": {
-                "id": "max_calendar_views_in_space",
-                "link_string_id": [
-                    "max_calendar_views_in_space"
-                ],
-                "引用名称": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "日历视图已达上限通知",
-                "link_notification_id": [
-                    "space_calendar_limit"
-                ]
-            },
-            "max_form_views_in_space": {
-                "id": "max_form_views_in_space",
-                "link_string_id": [
-                    "max_form_views_in_space"
-                ],
-                "引用名称": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "神奇表单已达上限通知",
-                "link_notification_id": [
-                    "space_form_limit"
-                ]
-            },
-            "max_admin_nums": {
-                "id": "max_admin_nums",
-                "link_string_id": [
-                    "max_admin_nums"
-                ],
-                "引用名称": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "管理员已达上限通知",
-                "link_notification_id": [
-                    "space_admin_limit"
-                ]
-            },
-            "max_remain_trash_days": {
-                "id": "max_remain_trash_days",
-                "link_string_id": [
-                    "max_remain_trash_days"
-                ],
-                "引用名称": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
-                "模板名称": "历史文件超限使用通知",
-                "link_notification_id": [
-                    "space_trash_limit"
-                ]
-            },
-            "max_remain_timemachine_days": {
-                "id": "max_remain_timemachine_days",
-                "link_string_id": [
-                    "max_remain_timemachine_days"
-                ],
-                "引用名称": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
-                "模板名称": "历史记录超限使用通知",
-                "link_notification_id": [
-                    "space_time_machine_limit"
-                ]
-            },
-            "max_api_call": {
-                "id": "max_api_call",
-                "link_string_id": [
-                    "max_api_call"
-                ],
-                "引用名称": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
-                "模板名称": "API用量已达上限通知",
-                "link_notification_id": [
-                    "space_api_limit"
-                ]
-            },
-            "rainbow_label": {
-                "id": "rainbow_label",
-                "link_string_id": [
-                    "rainbow_label"
-                ],
-                "引用名称": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
-                "模板名称": "彩虹标签彩色色系使用通知",
-                "link_notification_id": [
-                    "space_rainbow_label_limit"
-                ]
-            },
-            "field_permission_nums": {
-                "id": "field_permission_nums",
-                "link_string_id": [
-                    "field_permission_nums"
-                ],
-                "引用名称": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "列权限已达上限通知",
-                "link_notification_id": [
-                    "space_field_permission_limit"
-                ]
-            },
-            "integration_dingtalk": {
-                "id": "integration_dingtalk",
-                "link_string_id": [
-                    "integration_dingtalk"
-                ],
-                "引用名称": "你正在体验高级功能：钉钉集成，升级可解锁该功能。",
-                "模板名称": "钉钉集成使用通知",
-                "link_notification_id": [
-                    "space_dingtalk_notify"
-                ]
-            },
-            "integration_feishu": {
-                "id": "integration_feishu",
-                "link_string_id": [
-                    "integration_feishu"
-                ],
-                "引用名称": "你正在体验高级功能：飞书集成，升级可解锁该功能。",
-                "模板名称": "飞书集成使用通知",
-                "link_notification_id": [
-                    "space_lark_notify"
-                ]
-            },
-            "integration_we_com": {
-                "id": "integration_we_com",
-                "link_string_id": [
-                    "integration_we_com"
-                ],
-                "引用名称": "你正在体验高级功能：企业微信集成，升级可解锁该功能。",
-                "模板名称": "企业微信集成使用通知",
-                "link_notification_id": [
-                    "space_wecom_notify"
-                ]
-            },
-            "integration_yozo_office": {
-                "id": "integration_yozo_office",
-                "link_string_id": [
-                    "integration_yozo_office"
-                ],
-                "引用名称": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
-                "模板名称": "永中 Office使用通知",
-                "link_notification_id": [
-                    "space_yozooffice_notify"
-                ]
-            },
-            "watermark": {
-                "id": "watermark",
-                "link_string_id": [
-                    "watermark"
-                ],
-                "引用名称": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
-                "模板名称": "全局水印使用通知",
-                "link_notification_id": [
-                    "space_watermark_notify"
-                ]
-            },
-            "max_mirror_nums": {
-                "id": "max_mirror_nums",
-                "link_string_id": [
-                    "max_mirror_nums"
-                ],
-                "引用名称": "空间站的镜像数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "最大镜像数",
-                "link_notification_id": [
-                    "space_mirror_limit"
-                ]
-            },
-            "node_permission_nums": {
-                "id": "node_permission_nums",
-                "link_string_id": [
-                    "node_permission_nums"
-                ],
-                "引用名称": "空间站的文件权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
-                "模板名称": "文件权限已达上限通知",
-                "link_notification_id": [
-                    "space_file_permission_limit"
-                ]
             }
         }
     }

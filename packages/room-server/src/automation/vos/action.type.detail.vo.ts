@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {IJsonSchema} from "@apitable/core";
-import {IUiSchema} from "../actions/interface/base.action";
+import { IJsonSchema } from '@apitable/core';
+import { IUiSchema } from '../actions/interface/base.action';
 
 export interface ActionTypeDetailVo {
   actionTypeId: string,

@@ -37,20 +37,11 @@
         </foreach>
     </insert>
 
-    <select id="selectTemplateIdsByPropertyId" resultType="java.lang.String">
+    <select id="selectTemplateIdsByPropertyCode" resultType="java.lang.String">
         SELECT template_id
         from ${tablePrefix}template_property_rel
-        where property_id = #{propertyId}
+        where property_code = #{propertyCode}
     </select>
-
-    <delete id="deleteBatchIn">
-        DELETE
-        from ${tablePrefix}template_property_rel where property_id in
-        <foreach item="item" index="index" collection="propertyIds" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-    </delete>
 
     <select id="selectTemplateIdsByPropertyIds" resultType="com.apitable.template.model.TemplatePropertyRelDto">
         SELECT property_code, template_id

@@ -22,7 +22,7 @@ import { NodeRepository } from 'database/repositories/node.repository';
 import fetch from 'node-fetch';
 import { InjectLogger } from 'shared/common';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
-import { UnreachableCaseError } from "shared/errors";
+import { UnreachableCaseError } from 'shared/errors';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { IUserBaseInfo } from 'shared/interfaces';
@@ -37,7 +37,7 @@ import { AutomationServiceCreateRo } from '../ros/service.create.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
 import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import {getTypeByItem} from "../util";
+import { getTypeByItem } from '../util';
 
 /**
  * handle robot execution scheduling

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { Box } from '@apitable/components';
 import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { useState, useRef } from 'react';

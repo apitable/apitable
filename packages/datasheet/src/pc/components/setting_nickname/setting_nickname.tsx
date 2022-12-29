@@ -20,7 +20,7 @@ import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';
-import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, Wrapper } from 'pc/components/common';
+import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, IUploadType, Wrapper } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { isLocalSite } from 'pc/utils';
@@ -240,6 +240,9 @@ const SettingNickname: FC = () => {
         </Form>
         <div className={styles.tip}>{t(Strings.change_nickname_tips)}</div>
         <ImageCropUpload
+          type={IUploadType.Avatar}
+          avatarName={user?.nickName}
+          avatarColor={user?.avatarColor}
           title={t(Strings.upload_avatar)}
           confirm={data => uploadImgConfirm(data)}
           visible={avatarSelectModalVisible}
