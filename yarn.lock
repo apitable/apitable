@@ -20676,6 +20676,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"encoding-negotiator@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "encoding-negotiator@npm:2.0.1"
+  checksum: 3a9226dc47a327796c7c01d06eff0bf9a614ef9b8cbe3a7539d0c506ae92e603582c4fc5b5a61d093ff14a5d71b1b332d28a7dad73eda798a08ed73c08531c41
+  languageName: node
+  linkType: hard
+
 "encoding@npm:^0.1.11":
   version: 0.1.12
   resolution: "encoding@npm:0.1.12"
@@ -22700,16 +22707,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-static@npm:^4.0.0":
-  version: 4.0.1
-  resolution: "fastify-static@npm:4.0.1"
+"fastify-static-deprecated@npm:fastify-static@4.6.1":
+  version: 4.6.1
+  resolution: "fastify-static@npm:4.6.1"
   dependencies:
     content-disposition: ^0.5.3
+    encoding-negotiator: ^2.0.1
     fastify-plugin: ^3.0.0
     glob: ^7.1.4
+    p-limit: ^3.1.0
     readable-stream: ^3.4.0
     send: ^0.17.1
-  checksum: 64315d7b86a70db0f4c28b065a010bd1b7d53dd360baa01287d55f20ffc4978bcfec37a7c23fa2db04d6500400d373a03d0d82a0170af5c2cc25c03594f78c94
+  checksum: f2276167bac8176cd943a67b5a4f4dbd683c27e06313d8d53ed48f405cbfae3a1bb5b95bc3a7cf0ce1f553e5ea0a434f292be4edc9779f4380cf5bd7477eef42
+  languageName: node
+  linkType: hard
+
+"fastify-static@npm:^4.0.0":
+  version: 4.7.0
+  resolution: "fastify-static@npm:4.7.0"
+  dependencies:
+    fastify-static-deprecated: "npm:fastify-static@4.6.1"
+    process-warning: ^1.0.0
+  checksum: 68e06472ab8e11bffa50697d1ecede4f368f8593e0d72b367ba0faff1b009c56db60c382b683307c4bbc016d1092d70c2c3a62c35ebc2f49d83757b52422bc98
   languageName: node
   linkType: hard
 
@@ -35637,6 +35656,13 @@ fsevents@^1.2.7:
   dependencies:
     fromentries: ^1.2.0
   checksum: 597769e3db6a8e2cb1cd64a952bbc150220588debac31c7cf1a9f620ce981e25583d8d70848d8a14953577608512984a8808c3be77e09af8ebdcdc14ec23a295
+  languageName: node
+  linkType: hard
+
+"process-warning@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "process-warning@npm:1.0.0"
+  checksum: c708a03241deec3cabaeee39c4f9ee8c4d71f1c5ef9b746c8252cdb952a6059068cfcdaf348399775244cbc441b6ae5e26a9c87ed371f88335d84f26d19180f9
   languageName: node
   linkType: hard
 
