@@ -1,0 +1,60 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210730-001" author="Pengap" labels="widget">
+        <comment>Compatible with widget authorization history data</comment>
+        <sql>
+            INSERT INTO `${table.prefix}widget_package_auth_space` (`id`, `package_id`, `space_id`, `created_by`) VALUES (1414470381007380481, 'wpkCKtqGTjzM7', '', 1250042558817435650);
+            INSERT INTO `${table.prefix}widget_package_auth_space` (`id`, `package_id`, `space_id`, `created_by`) VALUES (1414475166011990018, 'wpkY6DKgb3iVk', '', 1250042558817435650);
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210730-002" author="Pengap" labels="widget">
+        <comment>Compatible with the historical data of widget version release</comment>
+        <sql>
+            INSERT INTO `${table.prefix}widget_package_release` (`id`, `release_sha`, `version`, `package_id`, `release_user_id`, `release_code_bundle`, `source_code_bundle`, `secret_key`, `status`, `release_note`, `created_by`) VALUES (1414495717623459841, '0929ad13308eec94c68bb4c01adb9eb5d356fe9b', '1.0.0', 'wpkCKtqGTjzM7', 1250042558817435650, '', NULL, NULL, 1, NULL, 1250042558817435650);
+            INSERT INTO `${table.prefix}widget_package_release` (`id`, `release_sha`, `version`, `package_id`, `release_user_id`, `release_code_bundle`, `source_code_bundle`, `secret_key`, `status`, `release_note`, `created_by`) VALUES (1414496066941874178, 'fed531cc7451b6dbbbd999eda71d3074cf1cec01', '1.0.0', 'wpkY6DKgb3iVk', 1250042558817435650, '', NULL, NULL, 1, NULL, 1250042558817435650);
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210730-003" author="Pengap" labels="widget">
+        <comment>Update widget associated version data</comment>
+        <sql>
+            UPDATE ${table.prefix}widget_package
+            SET release_id   = 1414495717623459841,
+                package_type = 1,
+                release_type = 1,
+                created_at   = updated_at
+            WHERE package_id = 'wpkCKtqGTjzM7';
+            UPDATE ${table.prefix}widget_package
+            SET release_id   = 1414496066941874178,
+                package_type = 1,
+                release_type = 1,
+                created_at   = updated_at
+            WHERE package_id = 'wpkY6DKgb3iVk';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
