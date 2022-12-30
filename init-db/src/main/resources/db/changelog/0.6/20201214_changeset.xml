@@ -18,13 +18,16 @@
 -->
 
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-
-    <include file="db/changelog/0.10/20211231_changeset.xml"/>
-    <include file="db/changelog/0.10/20220117_changeset.xml"/>
-    <include file="db/changelog/0.10/20220121_changeset.xml"/>
-    <include file="db/changelog/0.10/20220215_changeset.xml"/>
-    <include file="db/changelog/0.10/20220217_changeset.xml"/>
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201214-001" author="Chambers" labels="widget">
+        <comment>Create Workbench - Widget Package Table</comment>
+        <sqlFile path="db/changelog/0.6/20201214_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201214-002" author="Chambers" labels="widget">
+        <comment>Create Workbench - Widget Table</comment>
+        <sqlFile path="db/changelog/0.6/20201214_changeset_002.sql"/>
+    </changeSet>
 </databaseChangeLog>

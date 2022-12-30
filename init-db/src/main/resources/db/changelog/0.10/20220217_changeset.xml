@@ -20,11 +20,13 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-
-    <include file="db/changelog/0.10/20211231_changeset.xml"/>
-    <include file="db/changelog/0.10/20220117_changeset.xml"/>
-    <include file="db/changelog/0.10/20220121_changeset.xml"/>
-    <include file="db/changelog/0.10/20220215_changeset.xml"/>
-    <include file="db/changelog/0.10/20220217_changeset.xml"/>
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220217-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add sandbox field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `sandbox` tinyint(1) NULL COMMENT 'Whether the sandbox runs (0: No, 1: Yes)' AFTER `widget_body`;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
