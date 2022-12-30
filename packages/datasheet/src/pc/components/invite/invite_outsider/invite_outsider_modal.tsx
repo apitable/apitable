@@ -77,7 +77,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
 
   return (
     <Tabs defaultActiveKey='inviteViaLink'
-          className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
+      className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
       <TabPane tab={t(Strings.link_invite)} key='inviteViaLink'>
         <LinkInvite shareId={shareId} />
       </TabPane>

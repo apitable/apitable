@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { Player, SystemConfig } from '@apitable/core';
 import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';

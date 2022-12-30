@@ -18,7 +18,7 @@
 
 import { Alert } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import styles from './style.module.less';
 

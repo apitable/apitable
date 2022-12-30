@@ -13,24 +13,21 @@ on:
 
 jobs:
   test:
+    name: test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        command: [ test-ut-backend-docker, test-ut-room-docker, _test-ut-core ]
     steps:
-      - name: Fetch Sources
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.15.0'
-      - name: Set up JDK 8
-        uses: actions/setup-java@v3
-        with:
-          java-version: "8"
-          distribution: "corretto"
-          cache: "gradle"
-      - name: Test
+      - uses: actions/checkout@v3
+      - name: Running Test
+        shell: bash
         run: |
-          make build
+          make ${{ matrix.command }}
 
   buildpush:
+    needs: test
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
@@ -38,6 +35,8 @@ jobs:
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v2
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
       - name: Build APITable and Push
         run: |
           make buildpush-docker

@@ -80,7 +80,7 @@ export enum WidgetMessageType {
 }
 
 export interface IMessage {
-  type: string;
+  type: WidgetMessageType;
   response: IResponse;
   targetId?: string;
 }

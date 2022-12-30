@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const blackBlue = {
   50: '#FDFDFF',
   100: '#F9F9FF',

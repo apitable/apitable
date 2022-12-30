@@ -41,14 +41,6 @@ spring:
     username: ${MAIL_USERNAME:support@apitable.com}
     password: ${MAIL_PASSWORD:apitable}
     protocol: smtp
-  zipkin:
-    enabled: ${ZIPKIN_ENABLED:false}
-    base-url: ${ZIPKIN_BASE_URL}
-    discovery-client-enabled: ${ZIPKIN_DISCOVERY_CLIENT_ENABLED:false}
-    service:
-      name: ${ZIPKIN_SERVICE_NAME:}
-    sender:
-      type: ${ZIPKIN_SENDER_TYPE:web}
 
 cookie:
   domain-name: ${DOMAIN_NAME:}
@@ -86,9 +78,6 @@ socket:
 
 email:
   personal: ${EMAIL_PERSONAL:APITable}
-permission-control:
-  infoflow:
-    enabled: ${INFOFLOW_PERMISSIONS_ENABLED:false}
 
 starter:
   socketio:
@@ -135,10 +124,10 @@ starter:
         apikey: ${SMS_YUNPIAN_APIKEY:}
   mail:
     enabled: ${MAIL_ENABLED:false}
-    type: ${MAIL_TYPE:tencent}
-    region: ${MAIL_REGION:ap-hongkong}
-    from: ${MAIL_FROM:noreply@notify.apitable.com}
-    reply: ${MAIL_REPLY:support@apitable.com}
+    type: ${MAIL_TYPE:}
+    region: ${MAIL_REGION:}
+    from: ${MAIL_FROM:}
+    reply: ${MAIL_REPLY:}
     tencent:
       secret-id: ${MAIL_TENCENT_SECRET_ID:}
       secret-key: ${MAIL_TENCENT_SECRET_KEY:}

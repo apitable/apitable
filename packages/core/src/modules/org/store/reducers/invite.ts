@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IInvite, IUpdateInviteEmailInfoAction, IUpdateTeamTreeInviteAction,
-  IUpdateSubTeamTreeInviteAction, ITeamTreeNode, IUpdateLinkListAction, IUpdateInviteLinkInfoAction,
-  IUpdateLinkTokenAction, IUpdateMailTokenAction, IUpdateErrCodeAction,
+import { produce } from 'immer';
+import {
+  IInvite, ITeamTreeNode, IUpdateErrCodeAction, IUpdateInviteEmailInfoAction, IUpdateInviteLinkInfoAction, IUpdateLinkListAction,
+  IUpdateLinkTokenAction, IUpdateMailTokenAction, IUpdateSubTeamTreeInviteAction, IUpdateTeamTreeInviteAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { produce } from 'immer';
+
 const defaultState: IInvite = {
   inviteEmailInfo: null,
   teamTreeInvite: [],
@@ -33,8 +34,8 @@ const defaultState: IInvite = {
 };
 
 type IInviteActions = IUpdateInviteEmailInfoAction | IUpdateTeamTreeInviteAction |
-IUpdateSubTeamTreeInviteAction | IUpdateLinkListAction | IUpdateInviteLinkInfoAction | IUpdateLinkTokenAction |
-IUpdateMailTokenAction | IUpdateErrCodeAction;
+  IUpdateSubTeamTreeInviteAction | IUpdateLinkListAction | IUpdateInviteLinkInfoAction | IUpdateLinkTokenAction |
+  IUpdateMailTokenAction | IUpdateErrCodeAction;
 
 const findParent = (data: ITeamTreeNode[], id: string): null | ITeamTreeNode => {
   return data.reduce<ITeamTreeNode | null>((preValue, item) => {
@@ -96,4 +97,4 @@ export const invite = produce((data: IInvite = defaultState, action: IInviteActi
     default:
       return data;
   }
-});
+}, defaultState);

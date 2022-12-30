@@ -16,16 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  IUser, ISetUserMeActions, ISetIsLoginActions,
-  ISetLoginErrAction, ISetRegisterAction, ISetLoadingAction, ISetUserAvatarColorAction,
-  ISignOutAction, ISetUserAvatarAction, ISetReqStatusAction, ISetHttpErrInfoAction,
-  ISetNicknameAction, IUpdateUserInfoAction, IUpdateUserInfoErrAction,
-  IAddWizardNumberAction, ISetActiveRecordId, ISetUsedInviteReward
-} from '../../../../exports/store/interfaces';
+import axios from 'axios';
 import { produce } from 'immer';
 import { ActionConstants } from '../../../../exports/store';
-import axios from 'axios';
+import {
+  IAddWizardNumberAction, ISetActiveRecordId, ISetHttpErrInfoAction, ISetIsLoginActions, ISetLoadingAction, ISetLoginErrAction, ISetNicknameAction,
+  ISetRegisterAction, ISetReqStatusAction, ISetUsedInviteReward, ISetUserAvatarAction, ISetUserAvatarColorAction, ISetUserMeActions, ISignOutAction,
+  IUpdateUserInfoAction, IUpdateUserInfoErrAction, IUser
+} from '../../../../exports/store/interfaces';
 
 type UserActions = ISetUserMeActions | ISetIsLoginActions | ISetLoginErrAction |
   ISetRegisterAction | ISetLoadingAction | ISetUserAvatarColorAction |
@@ -148,4 +146,4 @@ export const user = produce((userDraft: IUser = defaultValue, action: UserAction
     default:
       return userDraft;
   }
-});
+}, defaultValue);

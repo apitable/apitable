@@ -31,7 +31,7 @@ import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { FolderShowcase } from 'pc/components/folder_showcase';
 import { FormPanel } from 'pc/components/form_panel';
 // @ts-ignore
-import { isDingtalkSkuPage } from 'enterprise';
+import { isDingtalkSkuPage, isEnterprise } from 'enterprise';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
@@ -81,7 +81,7 @@ export const TemplateDetail: FC = () => {
     const isPrivate = categoryId === 'tpcprivate';
     getTemplateDirectory(templateId, isPrivate, categoryId);
     // Use the spaceId of the official template space in the configuration table under the official template to query
-    if (templateId && categoryId !== 'tpcprivate') {
+    if (templateId && categoryId !== 'tpcprivate' && isEnterprise) {
       dispatch(StoreActions.fetchMarketplaceApps(getEnvVariables().TEMPLATE_SPACE_ID!));
     }
   }, [templateId, getTemplateDirectory, categoryId, dispatch, spaceId]);

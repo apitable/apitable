@@ -186,6 +186,15 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     int resetUserById(@Param("userId") Long userId);
 
     /**
+     * update user avatar information
+     *
+     * @param userId User ID
+     * @param avatar User avatar
+     * @param color User default avatar color number
+     */
+    int updateUserAvatarInfo(@Param("userId") Long userId, @Param("avatar") String avatar, @Param("color") Integer color);
+
+    /**
      * Batch query member email
      *
      * @param userIds User ID Collection
