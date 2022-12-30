@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210819-001" author="Pengap" labels="widget">
+        <comment>Modify the official widget description (icon component)</comment>
+        <sql>
+            UPDATE ${table.prefix}widget_package
+            SET i18n_description = '{
+            "en-US": "Display data as a bar chart, bar chart, pie chart, line chart or scatter chart to help you get an overview of the data and facilitate decision-making and meeting reports",
+            "zh-CN": "将数据展示为柱状图、条形图、饼状图、折线图或散点图，帮助你概览数据的全貌，方便决策和会议汇报"
+            }'
+            WHERE package_id = 'wpkCKtqGTjzM7';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210819-002" author="Pengap" labels="widget">
+        <comment>Modify the official widget description (statistics and indicator components)</comment>
+        <sql>
+            UPDATE ${table.prefix}widget_package
+            SET i18n_description = '{
+            "en-US": "Highlight the statistical value and target value of the specified Grid column as key indicators, such as sales, number of orders, number of registered users, number of bugs, etc.",
+            "zh-CN": "突出展示指定维格列的统计值和目标值，作为关键指标，比如销售额、订单数、注册用户数、Bug 数等"
+            }'
+            WHERE package_id = 'wpkY6DKgb3iVk';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
