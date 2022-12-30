@@ -26,14 +26,13 @@ import { IContentWindow, IInitResponse, IResponse, MouseListenerType, WidgetMess
 import { isSafeOrigin } from './utils';
 
 interface IMessage {
-  type: string;
+  type: WidgetMessageType;
   response: IResponse;
   targetId?: string;
 }
 
-type IWidgetListenEvents = {
-  [key in WidgetMessageType]: (res: IResponse) => void;
-};
+type IWidgetListenEvents = Map<WidgetMessageType, (res: IResponse) => void>;
+
 interface IListenEvents {
   [key: string]: IWidgetListenEvents
 }
@@ -63,7 +62,12 @@ class MainWidgetMessageBase {
           return;
         }
         const { type, targetId } = data;
-        targetId && this.listenEvents?.[targetId]?.[type]?.(data.response);
+        const widgetEventMap = targetId ? this.listenEvents[targetId] : undefined;
+        if (!widgetEventMap) {
+          return;
+        }
+        const func = widgetEventMap.get(type);
+        typeof func === 'function' && func(data.response);
       }, false);
     }
   }
@@ -95,17 +99,18 @@ class MainWidgetMessageBase {
 
   on(props: { widgetId: string, type: WidgetMessageType, callback: (data: IResponse) => void }) {
     const { widgetId, type, callback } = props;
-    this.listenEvents[widgetId] = {
-      ...this.listenEvents[widgetId],
-      [type]: callback,
-    };
+    const widgetEventMap = this.listenEvents[widgetId];
+    if (widgetEventMap.has(type)) {
+      widgetEventMap.set(type, callback);
+    }
   }
 
   removeListenEvent(widgetId: string, type?: WidgetMessageType) {
     if (widgetId && !type) {
       this.listenEvents[widgetId] && delete this.listenEvents[widgetId];
     } else if (widgetId && type) {
-      this.listenEvents?.[widgetId]?.[type] && delete this.listenEvents[widgetId][type];
+      const widgetEventMap = this.listenEvents[widgetId];
+      widgetEventMap && widgetEventMap.delete(type);
     } else {
       console.warn('removeListenEvent have no params');
     }
