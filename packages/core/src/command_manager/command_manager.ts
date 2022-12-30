@@ -176,7 +176,7 @@ export class CollaCommandManager {
     }
 
     if (ret.result === ExecuteResult.Fail) {
-      console.error(`Execute "${name}" Error`, { error: ret, options });
+      console.error('Execute "%s" Error', name, { error: ret, options });
       return ret;
     }
 

@@ -24,7 +24,7 @@ import { asNumber } from '../../utils';
 // digits followed by any number of 0 characters up until the end of the line.
 // Ensuring that there is at least one prefixed character is important so that
 // you don't incorrectly match against "0".
-const trailingCharMatcherWithPrefix = /\.([0-9]*0)*$/;
+const trailingCharMatcherWithPrefix = /\.\d*?0*$/;
 
 // This is used for trimming the trailing 0 and . characters without affecting
 // the rest of the string. Its possible to use one RegEx with groups for this
