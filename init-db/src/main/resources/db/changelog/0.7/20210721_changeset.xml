@@ -23,6 +23,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <changeSet id="V0.7-20210721-001" author="Pengap" labels="widget">
+        <comment>modify widget_package_release table secrect_key field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+            CHANGE COLUMN `secrect_key` `secret_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Source code encryption key' AFTER `source_code_bundle`;
+        </sql>
+    </changeSet>
     <changeSet id="V0.7-20210721-002" author="Pengap" labels="widget">
         <comment>Create Workbench - Develop Asset Table</comment>
         <sql>
