@@ -244,7 +244,7 @@ export function expressionTransform(
         return field.id;
       }
 
-      const name = field.name.replace(/(\{|\})/g, '\\$1');
+      const name = field.name.replace(/[{}\\]/g, '\\$&');
       // When name contains illegal parameters, {} wrapping is required
       if (/[/+\-|=*/><()（）!&%'"“”‘’^`~,，\s]/.test(name)) {
         return `{${name}}`;
@@ -264,9 +264,9 @@ export function expressionTransform(
         return `{${t(Strings.crypto_field)}}`;
       }
 
-      // Convert the variable name according to the to parameter
+      // Convert the variable name according to the 'to' parameter
       if (field) {
-        return to === 'id' ? `{${field.id}}` : `{${field.name.replace(/(\{|\})/g, '\\$1')}}`;
+        return to === 'id' ? `{${field.id}}` : `{${field.name.replace(/[{}\\]/g, '\\$&')}}`;
       }
 
       console.log(t(Strings.not_found_field_the_name_as, {
