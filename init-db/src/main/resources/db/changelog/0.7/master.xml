@@ -34,9 +34,13 @@
     <include file="db/changelog/0.7/20210429_changeset.xml"/>
     <include file="db/changelog/0.7/20210510_changeset.xml"/>
     <include file="db/changelog/0.7/20210526_changeset.xml"/>
+    <include file="db/changelog/0.7/20210707_changeset.xml"/>
+    <include file="db/changelog/0.7/20210712_changeset.xml"/>
     <include file="db/changelog/0.7/20210721_changeset.xml"/>
     <include file="db/changelog/0.7/20210722_changeset.xml"/>
+    <include file="db/changelog/0.7/20210730_changeset.xml"/>
     <include file="db/changelog/0.7/20210731_changeset.xml"/>
     <include file="db/changelog/0.7/20210803_changeset.xml"/>
+    <include file="db/changelog/0.7/20210819_changeset.xml"/>
     <include file="db/changelog/0.7/20210820_changeset.xml"/>
 </databaseChangeLog>
