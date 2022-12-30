@@ -99,8 +99,8 @@ export function fetchShareForeignDatasheetPack(shareId: string, resourceId: stri
   return axios.get(urlcat(Url.READ_SHARE_FOREIGN_DATASHEET_PACK, { shareId, resourceId, foreignDatasheetId }), { baseURL });
 }
 
-export function fetchEmbedForeignDatasheetPack(embedId: string, foreignDatasheetId: string) {
-  return axios.get(urlcat(Url.READ_EMBED_FOREIGN_DATASHEET_PACK, { embedId, foreignDatasheetId }), { baseURL });
+export function fetchEmbedForeignDatasheetPack(embedId: string, resourceId: string, foreignDatasheetId: string) {
+  return axios.get(urlcat(Url.READ_EMBED_FOREIGN_DATASHEET_PACK, { embedId, resourceId, foreignDatasheetId }), { baseURL });
 }
 
 /**
