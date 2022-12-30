@@ -23,29 +23,29 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="V0.8-20211027-001" author="Chambers" labels="node">
-        <comment>Node Table add space id index</comment>
+    <changeSet id="V0.8-20210926-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add is_template、is_enabled、owner field</comment>
         <sql>
-            ALTER TABLE `${table.prefix}node`
-            ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Is template (0: Yes, 1: No)' AFTER `release_id`,
+            ADD COLUMN `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT 'Enable or not, only for global widgets (0: off, 1: on)' AFTER `is_template`,
+            ADD COLUMN `owner` bigint NULL DEFAULT NULL COMMENT 'Owner Id(link#xxxx_user#id)' AFTER `is_deleted`;
         </sql>
     </changeSet>
 
-    <changeSet id="V0.8-20211027-002" author="penglongfeng" labels="automation">
-        <comment>Robot Table add x_service_token、seq_id and uk_seq_resource_id</comment>
+    <changeSet id="V0.8-20210926-002" author="Pengap" labels="widget">
+        <comment>Widget Package Auth Table add sequence field</comment>
         <sql>
-            ALTER TABLE `${table.prefix}automation_robot`
-            ADD COLUMN `seq_id` varchar(64) NULL COMMENT 'Request source request number' AFTER `updated_at`,
-            ADD COLUMN `x_service_token` varchar(128) NULL COMMENT 'Service Provider Certification Token' AFTER `seq_id`,
-            ADD UNIQUE INDEX `uk_seq_resource_id`(`seq_id`, `resource_id`) USING BTREE COMMENT 'Unique number of single table robot creation request';
+            ALTER TABLE `${table.prefix}widget_package_auth_space`
+            ADD COLUMN `widget_sort` int UNSIGNED NULL DEFAULT 10000 COMMENT 'Sequence number, space station components start from 10000' AFTER `type`;
         </sql>
     </changeSet>
 
-    <changeSet id="V0.8-20211027-003" author="penglongfeng" labels="automation">
-        <comment>Automation Action Table add robot id index</comment>
+    <changeSet id="V0.8-20210926-003" author="Pengap" labels="widget">
+        <comment>Initialize migration widget package owner field value</comment>
         <sql>
-            ALTER TABLE `${table.prefix}automation_action`
-            ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE COMMENT 'Robot ID Index';
+            UPDATE `${table.prefix}widget_package` SET `owner` = created_by;
         </sql>
     </changeSet>
+
 </databaseChangeLog>

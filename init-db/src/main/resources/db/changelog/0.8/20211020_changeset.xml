@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211020-001" author="Mayne" labels="automation">
+        <comment>Create Automation Robot Run History Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_run_history`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `task_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Run Task ID',
+                `robot_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Robot ID',
+                `space_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[Redundancy]ID of the space to which the current task robot belongs',
+                `status`      tinyint(2) unsigned DEFAULT '0' COMMENT 'Running status (0: Running, 1: Success, 2: Failure)',
+                `data`        json DEFAULT NULL COMMENT 'Run Context Details',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_task_id` (`task_id`) USING BTREE COMMENT 'Unique code of running task',
+                INDEX `idx_space_id` (`space_id`) COMMENT 'Space ID'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Robot Run History Table';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,169 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210823-001" author="Mayne" labels="automation">
+        <comment>Create Automation Robot Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_robot`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource ID(link#xxxx_node#node_id)',
+                `robot_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Robot ID',
+                `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Name',
+                `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Description',
+                `version`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT 'Version',
+                `is_active`   tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Is it active',
+                `is_deleted`  tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`  bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`  bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`  timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_robot_id` (`robot_id`) USING BTREE COMMENT 'Robot unique code',
+                INDEX `idx_resource_id` (`resource_id`) COMMENT 'Resource ID Index'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Robot Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-002" author="Mayne" labels="automation">
+        <comment>Create Automation Trigger Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_trigger`
+            (
+                `id`              bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `robot_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Robot ID (link#xxxx_automation_robot#robot_id)',
+                `trigger_type_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Trigger Type ID (link#xxxx_automation_trigger_type#trigger_type_id)',
+                `trigger_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Trigger ID',
+                `input`           json                                                                  DEFAULT NULL COMMENT 'Trigger Input data of the instance',
+                `is_deleted`      tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`      bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`      bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`      timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`      timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_trigger_id` (`trigger_id`) USING BTREE COMMENT 'Trigger unique code'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Trigger Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-003" author="Mayne" labels="automation">
+        <comment>Create Automation Action Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_action`
+            (
+                `id`             bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `robot_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Robot ID (link#xxxx_automation_robot#robot_id)',
+                `action_type_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Action Type ID (link#xxxx_automation_action_type#action_type_id)',
+                `action_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Action ID',
+                `prev_action_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT 'Previous Action ID',
+                `input`          json                                                                  DEFAULT NULL COMMENT 'Action Input data of the instance',
+                `is_deleted`     tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`     bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`     bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`     timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`     timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_action_id` (`action_id`) USING BTREE COMMENT 'Action unique code'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Action Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-004" author="Mayne" labels="automation">
+        <comment>Create Automation Service Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_service`
+            (
+                `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `service_id`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Service ID',
+                `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'service name',
+                `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Description',
+                `logo`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Logo Address',
+                `base_url`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Base URL Address',
+                `is_deleted`  tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`  bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`  bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`  timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`  timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_service_id` (`service_id`) USING BTREE COMMENT 'Service unique code'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Service Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-005" author="Mayne" labels="automation">
+        <comment>Create Automation Trigger Type Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_trigger_type`
+            (
+                `id`                 bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `service_id`         varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Service ID (link#xxxx_automation_service#service_id)',
+                `trigger_type_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Trigger Prototype ID',
+                `name`               varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Name',
+                `description`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Description',
+                `input_json_schema`  json                                                                  DEFAULT NULL COMMENT 'Input JSON normal form',
+                `output_json_schema` json                                                                  DEFAULT NULL COMMENT 'Output JSON normal form',
+                `is_deleted`         tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`         bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`         bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`         timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`         timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_trigger_type_id` (`trigger_type_id`) USING BTREE COMMENT 'Unique code of trigger prototype'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Trigger Type Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.8-20210823-006" author="Mayne" labels="automation">
+        <comment>Create Automation Action Type Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}automation_action_type`
+            (
+                `id`                 bigint(20) UNSIGNED                                          NOT NULL COMMENT 'Primary Key',
+                `service_id`         varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Service ID (link#xxxx_automation_service#service_id)',
+                `action_type_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom action prototype ID',
+                `name`               varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Name',
+                `description`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Description',
+                `input_json_schema`  json                                                                  DEFAULT NULL COMMENT 'Input JSON normal form',
+                `output_json_schema` json                                                                  DEFAULT NULL COMMENT 'Output JSON normal form',
+                `endpoint`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         DEFAULT NULL COMMENT 'Call interface',
+                `is_deleted`         tinyint(1) unsigned                                          NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`         bigint(20)                                                            DEFAULT NULL COMMENT 'Creator',
+                `updated_by`         bigint(20)                                                            DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`         timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`         timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `uk_action_type_id` (`action_type_id`) USING BTREE COMMENT 'Unique code of action prototype'
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE = utf8mb4_unicode_ci COMMENT = 'Automation - Action Type Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

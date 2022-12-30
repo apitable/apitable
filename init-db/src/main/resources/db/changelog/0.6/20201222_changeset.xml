@@ -22,20 +22,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="V0.6-20210109-001" author="Shawn" labels="widget">
-        <comment>Create Datasheet Widget Table</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_001.sql"/>
+    <changeSet id="V0.6-20201222-001" author="Chambers" labels="widget">
+        <comment>Widget Package Table, add cover field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Cover draw TOKEN' AFTER `icon`;
+        </sql>
     </changeSet>
-    <changeSet id="V0.6-20210109-002" author="Shawn" labels="widget">
-        <comment>Delete Widget Table index</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_002.sql"/>
-    </changeSet>
-    <changeSet id="V0.6-20210109-003" author="Shawn" labels="widget">
-        <comment>Widget Table add Space ID</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_003.sql"/>
-    </changeSet>
-    <changeSet id="V0.6-20210109-004" author="Shawn" labels="widget">
-        <comment>Widget Table add ndoe id records component ownership</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_004.sql"/>
+    <changeSet id="V0.6-20201222-002" author="Chambers" labels="widget">
+        <comment>Widget Table,revision field is set to non null</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget`
+            MODIFY COLUMN `revision` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Version' AFTER `storage`;
+        </sql>
     </changeSet>
 </databaseChangeLog>

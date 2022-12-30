@@ -1,0 +1,149 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210707-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add i18n_name file</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `i18n_name` json NULL COMMENT 'Internationalized widget name' AFTER `package_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-002" author="Pengap" labels="widget">
+        <comment>Widget Package Table add i18n_description field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `i18n_description` json NULL COMMENT 'Internationalization Widget Description' AFTER `i18n_name`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-003" author="Pengap" labels="widget">
+        <comment>Widget Package Table add author_name field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `author_name` varchar(50) NULL COMMENT 'Author Name' AFTER `cover`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-004" author="Pengap" labels="widget">
+        <comment>Widget Package Table add author_email field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `author_email` varchar(100) NULL COMMENT 'Author email' AFTER `author_name`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-005" author="Pengap" labels="widget">
+        <comment>Widget Package Table add author_link field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `author_link` varchar(255) NULL COMMENT 'Author website address' AFTER `author_email`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-006" author="Pengap" labels="widget">
+        <comment>Widget Package Table add package_type field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `package_type` tinyint(2) NOT NULL COMMENT 'Widget package type (0: third party, 1: official)' AFTER `author_link`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-007" author="Pengap" labels="widget">
+        <comment>Widget Package Table add release_type field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `release_type` tinyint(2) NOT NULL COMMENT '0: Publish to the component store in the space station, 1: Publish to the global application store (only allowed if the package_type is 0)' AFTER `package_type`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-008" author="Pengap" labels="widget">
+        <comment>Widget Package Table add release_id field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `release_id` bigint NULL COMMENT 'The release version ID, the currently active version, can be empty. When it is empty, it is only displayed to Creator in the build store' AFTER `status`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-009" author="Pengap" labels="widget">
+        <comment>Widget Package Table modify notes</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            MODIFY COLUMN `status` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Status (0: under development, 1: banned, 2: to be published, 3: published, 4: off the shelf - global temporarily closed) 3, 4' AFTER `cover`,
+            MODIFY COLUMN `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Cover draw TOKEN' AFTER `icon`,
+            MODIFY COLUMN `installed_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Number of installations' AFTER `status`,
+            MODIFY COLUMN `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Name - 【Discard Delete】' AFTER `installed_num`,
+            MODIFY COLUMN `name_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'English name - 【Discard Delete】' AFTER `name`,
+            MODIFY COLUMN `version` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Version - 【Discard Delete】' AFTER `name_en`,
+            MODIFY COLUMN `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'Description - 【Discard Delete】' AFTER `version`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-010" author="Pengap" labels="widget">
+        <comment>Create Widget Package Release Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}widget_package_release` (
+            `id` bigint UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `release_sha` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Version Summary Unique ID(id+package_id+version generate)',
+            `version` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Version number, unique under package id',
+            `package_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Widget Package ID',
+            `release_user_id` bigint NULL COMMENT 'User ID(link#xxxx_user#id)',
+            `release_code_bundle` varchar(255) NOT NULL COMMENT 'Release Code Bundle',
+            `source_code_bundle` varchar(255) NULL COMMENT 'Source Code Bundle',
+            `secrect_key` varchar(64) NULL COMMENT 'Source Code Secret Key',
+            `status` tinyint(2) NULL COMMENT 'Status (0: to be approved, 1: approved, 2: rejected)',
+            `release_note` varchar(255) NULL COMMENT 'Release Version Description',
+            `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete Tag(0: No, 1: Yes)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Update By',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = 'Workbench-Widget Package Release Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210707-011" author="Pengap" labels="widget">
+        <comment>Create Widget Package Auth Space Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}widget_package_auth_space` (
+            `id` bigint UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `package_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Package ID',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Widget package authorization type (0: binding space - cannot be deleted, the same widget package can be jointly managed by the "development permission" administrator of the space; global widgets can also be used for upgrading and other needs; 1: authorized space - only space station widgets can be used for authorizing other spaces)',
+            `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete Tag(0: No, 1: Yes)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Update By',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = 'Workbench - Widget Package Auth Space Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
