@@ -57,7 +57,7 @@ $ yarn start
 $ yarn start:dev
 
 # debug/watch mode
-$ yarn start:dev
+$ yarn start:debug
 
 # production mode, remember to execute `yarn build` before running
 $ yarn start:prod
