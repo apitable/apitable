@@ -1,0 +1,62 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210712-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add author_icon field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `author_icon` varchar(255) NULL COMMENT 'Author icon TOKEN' AFTER `author_email`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210712-002" author="Pengap" labels="widget">
+        <comment>Widget Package Table modify notes</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            MODIFY COLUMN `status` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Status (0: under development, 1: banned, 2: to be published, 3: published, 4: off the shelf - global temporarily closed) 3, 4' AFTER `cover`,
+            MODIFY COLUMN `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Cover draw TOKEN' AFTER `icon`,
+            MODIFY COLUMN `installed_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Number of installations' AFTER `status`,
+            MODIFY COLUMN `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Name - 【Discard Delete】' AFTER `installed_num`,
+            MODIFY COLUMN `name_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'English name - 【Discard Delete】' AFTER `name`,
+            MODIFY COLUMN `version` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Version - 【Discard Delete】' AFTER `name_en`,
+            MODIFY COLUMN `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'Description - 【Discard Delete】' AFTER `version`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.7-20210712-003" author="Pengap" labels="widget">
+        <comment>Add widget package internationalization field compatible data</comment>
+        <sql>
+            UPDATE `${table.prefix}widget_package` t1,
+                  (SELECT id,
+                    JSON_SET( IFNULL( i18n_name, '{}' ), '$."zh-CN"', `name`, '$."en-US"', name_en ) AS i18n_name,
+                    JSON_SET( IFNULL( i18n_description, '{}' ), '$."zh-CN"', `description` ) AS i18n_description
+                   FROM `${table.prefix}widget_package`
+                  ) t2
+            SET t1.i18n_name = t2.i18n_name, t1.i18n_description = t2.i18n_description
+            WHERE t1.id = t2.id
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
