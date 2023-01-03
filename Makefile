@@ -197,18 +197,18 @@ test-ut-backend-docker:
 	make _test_clean
 
 test-ut-backend:
-	export DATABASE_TABLE_PREFIX=apitable_ ;\
-	export MYSQL_HOST=127.0.0.1 ;\
-	export MYSQL_PORT=3306 ;\
-	export MYSQL_USERNAME=apitable ;\
-	export MYSQL_PASSWORD=password ;\
-	export MYSQL_DATABASE=apitable_test ;\
-	export REDIS_HOST=127.0.0.1 ;\
-	export REDIS_PORT=6379 ;\
-	export RABBITMQ_HOST=127.0.0.1 ;\
-	export RABBITMQ_PORT=5672 ;\
-	export RABBITMQ_USERNAME=apitable ;\
-	export RABBITMQ_PASSWORD=password ;\
+	DATABASE_TABLE_PREFIX=apitable_  \
+	MYSQL_HOST=127.0.0.1  \
+	MYSQL_PORT=3306 \
+	MYSQL_USERNAME=apitable \
+	MYSQL_PASSWORD=password \
+	MYSQL_DATABASE=apitable_test \
+	REDIS_HOST=127.0.0.1 \
+	REDIS_PORT=6379 \
+	RABBITMQ_HOST=127.0.0.1 \
+	RABBITMQ_PORT=5672 \
+	RABBITMQ_USERNAME=apitable \
+	RABBITMQ_PASSWORD=password \
 	cd backend-server && ./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
