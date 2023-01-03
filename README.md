@@ -287,7 +287,7 @@ APITable use these common conventions:
 
 ### Documentations
 
-- Help Center (coming soon...)
+- [Help Center](https://help.apitable.com/)
 - [👩‍💻 Developer Center](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - Widget SDK (Coming soon...)
