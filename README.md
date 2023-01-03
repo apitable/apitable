@@ -60,7 +60,7 @@ If you just want to try out APITable[^info], click here for [⚡️Gitpod Online
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
-If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
+If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
 ## 🔥 Features
 
@@ -244,7 +244,7 @@ curl https://apitable.github.io/install.sh | bash
 
 Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
-If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
+If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
 
 ## 🧑‍💻 Contributing
