@@ -194,10 +194,11 @@ test-ut-backend-docker:
 	docker compose -f docker-compose.ut-backend.yml up -d
 	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
-	make _test_clean
+	#make _test_clean
 
 test-ut-backend:
-	DATABASE_TABLE_PREFIX=apitable_  \
+	cd backend-server ;\
+	DATABASE_TABLE_PREFIX=apitable_ \
 	MYSQL_HOST=127.0.0.1  \
 	MYSQL_PORT=3306 \
 	MYSQL_USERNAME=apitable \
@@ -209,7 +210,7 @@ test-ut-backend:
 	RABBITMQ_PORT=5672 \
 	RABBITMQ_USERNAME=apitable \
 	RABBITMQ_PASSWORD=password \
-	cd backend-server && ./gradlew testCodeCoverageReport --stacktrace
+	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
 
