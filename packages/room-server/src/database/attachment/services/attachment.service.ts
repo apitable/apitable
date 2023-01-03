@@ -35,7 +35,7 @@ import { IAuthHeader } from 'shared/interfaces';
 import { IFileInterface } from 'shared/interfaces/file.interface';
 import { JavaService } from 'shared/services/java/java.service';
 import { Logger } from 'winston';
-import { AttachmentDto } from '../../dtos/attachment.dto';
+import { AttachmentDto } from '../dtos/attachment.dto';
 
 @Injectable()
 export class AttachmentService {

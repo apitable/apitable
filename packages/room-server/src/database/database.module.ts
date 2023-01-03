@@ -22,7 +22,6 @@ import { AutomationTriggerRepository } from 'automation/repositories/automation.
 import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
 import { RobotModule } from 'automation/robot.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { AttachmentController } from './controllers/attachment.controller';
 import { DatasheetController } from './controllers/datasheet.controller';
 import { ResourceDataInterceptor } from './middleware/resource.data.interceptor';
 import { AssetRepository } from './repositories/asset.repository';
@@ -47,7 +46,7 @@ import { UnitTeamRepository } from './repositories/unit.team.repository';
 import { UserRepository } from './repositories/user.repository';
 import { WidgetRepository } from './repositories/widget.repository';
 import { AlarmDynamicModule } from './services/alarm/alarm.dynamic.module';
-import { AttachmentService } from './services/attachment/attachment.service';
+import { AttachmentService } from './attachment/services/attachment.service';
 import { CommandOptionsService } from './services/command/command.options.service';
 import { CommandService } from './services/command/command.service';
 import { DashboardService } from './services/dashboard/dashboard.service';
@@ -93,6 +92,17 @@ import { MirrorController } from './controllers/mirror.controller';
 import { ResourceController } from './controllers/resource.controller';
 import { FormController } from './controllers/form.controller';
 import { DashboardController } from './controllers/dashboard.controller';
+import { AttachmentModule } from './attachment/attachment.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { DatasheetModule } from './datasheet/datasheet.module';
+import { FormModule } from './form/form.module';
+import { MirrorModule } from './mirror/mirror.module';
+import { ResourceModule } from './resource/resource.module';
+import { WidgetModule } from './widget/widget.module';
+import { NodeModule } from './node/node.module';
+import { UserModule } from './user/user.module';
+import { AlarmModule } from './alarm/alarm.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -128,6 +138,17 @@ import { DashboardController } from './controllers/dashboard.controller';
       AutomationTriggerRepository,
       AutomationTriggerTypeRepository,
     ]),
+    AttachmentModule,
+    DashboardModule,
+    DatasheetModule,
+    FormModule,
+    MirrorModule,
+    ResourceModule,
+    WidgetModule,
+    NodeModule,
+    UserModule,
+    AlarmModule,
+    SubscriptionModule,
   ],
   providers: [
     AttachmentService,
@@ -172,11 +193,11 @@ import { DashboardController } from './controllers/dashboard.controller';
     FusionApiTransformer,
     IsNodeExistConstraint,
   ],
-  controllers: [DatasheetController, AttachmentController, DashboardController, FormController, MirrorController, ResourceController],
+  controllers: [DatasheetController, DashboardController, FormController, MirrorController, ResourceController],
   exports: [
+    AttachmentModule,
     AlarmDynamicModule.forRoot(), 
     SubscriptionDynamicModule.forRoot(), 
-    AttachmentService,
     CommandService,
     CommandOptionsService,
     DashboardService,

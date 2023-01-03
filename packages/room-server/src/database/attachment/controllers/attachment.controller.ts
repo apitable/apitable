@@ -18,7 +18,7 @@
 
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { ResourceDataInterceptor } from 'database/middleware/resource.data.interceptor';
-import { AttachmentService } from 'database/services/attachment/attachment.service';
+import { AttachmentService } from 'database/attachment/services/attachment.service';
 
 @Controller('nest/v1')
 
