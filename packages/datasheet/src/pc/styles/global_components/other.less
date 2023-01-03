@@ -25,6 +25,10 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--fc1) !important;
 }
 
+.adm-popup-body,
+.adm-picker-view,
+.adm-picker-view-mask-top,
+.adm-picker-view-mask-bottom,
 .am-modal-content,
 .ant-drawer-content,
 .ant-drawer-footer,
@@ -115,11 +119,17 @@ circle.ant-progress-circle-trail {
   background: linear-gradient(90deg, var(--fc11) 25%, var(--fc11) 37%, var(--fc11) 63%);
 }
 
+.adm-picker-header,
 .ant-tabs-top > .ant-tabs-nav::before,
 .ant-tabs-bottom > .ant-tabs-nav::before,
 .ant-tabs-top > div > .ant-tabs-nav::before,
 .ant-tabs-bottom > div > .ant-tabs-nav::before {
   border-bottom: 1px solid var(--lineColor);
+}
+
+.adm-picker-view-mask-middle {
+  border-bottom: 1px solid var(--lineColor);
+  border-top: 1px solid var(--lineColor);
 }
 
 .ant-dropdown-menu-item-divider {
