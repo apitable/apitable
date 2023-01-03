@@ -32,6 +32,10 @@ public class PlayerBaseDTO {
 
     private String avatar;
 
+    private Integer color;
+
+    private String nickName;
+
     private String team;
 
     private Boolean isNickNameModified;
