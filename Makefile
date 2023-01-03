@@ -27,7 +27,7 @@ DEVENV_PROJECT_NAME := apitable-devenv
 export DEVENV_PROJECT_NAME
 endif
 
-_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yaml -f docker-compose.dataenv.yaml
+_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yml -f docker-compose.dataenv.yaml
 _DEVENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.devenv.yaml
 
 OS_NAME := $(shell uname -s | tr A-Z a-z)
@@ -166,9 +166,9 @@ ifeq ($(SIKP_INITDB),false)
 	make _test_init_db RUN_TEST_ROOM_MODE=local
 endif
 	make _build-room
-	MYSQL_HOST=127.0.0.1 MYSQL_PORT=23306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
-	REDIS_HOST=127.0.0.1 REDIS_PORT=26379 REDIS_DB=4 REDIS_PASSWORD= \
-	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=25672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
+	MYSQL_HOST=127.0.0.1 MYSQL_PORT=3306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
+	REDIS_HOST=127.0.0.1 REDIS_PORT=6379 REDIS_DB=4 REDIS_PASSWORD= \
+	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=5672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
 	INSTANCE_COUNT=1 APPLICATION_NAME=NEST_REST_SERVER \
 	yarn test:ut:room
 	make _test_clean
