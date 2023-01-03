@@ -16,7 +16,6 @@ services:
       - ./backend-server:/devenv
     environment:
       - HOME=/tmp
-      - OSS_TYPE=aws
     networks:
       - apitable
     command: sh -c "./gradlew build -x test && java -jar application/build/libs/application.jar"

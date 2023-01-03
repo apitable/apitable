@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   web-server:
@@ -37,7 +37,6 @@ services:
       - "8081"
     environment:
       - TZ=${TIMEZONE}
-      - OSS_TYPE=aws
     networks:
       - apitable
     depends_on:
@@ -184,8 +183,6 @@ services:
           "redis-server",
           "--appendonly",
           "yes",
-          "--requirepass",
-          "${REDIS_PASSWORD}",
       ]
     expose:
       - "6379"
@@ -233,10 +230,8 @@ services:
       - "5672"
       - "15672"
     environment:
-      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     networks:
       - apitable
 
@@ -246,7 +241,7 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     environment:
       - TZ=${TIMEZONE}
-      - DB_HOST=${MYSQL_HOST}
+      - DB_HOST=mysql
       - DB_PORT=${MYSQL_PORT}
       - DB_NAME=${MYSQL_DATABASE}
       - DB_USERNAME=${MYSQL_USERNAME}
@@ -264,7 +259,7 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     environment:
       - TZ=${TIMEZONE}
-      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_HOST=mysql
       - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_USERNAME=${MYSQL_USERNAME}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
