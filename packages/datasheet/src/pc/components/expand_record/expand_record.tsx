@@ -116,8 +116,14 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   const focusHolderRef = React.createRef<HTMLInputElement>();
   expandRecordManager.pushFocusHolderRef(focusHolderRef);
-  const container = document.createElement('div');
-  container.classList.add(EXPAND_RECORD);
+  let container = document.querySelector(`.${EXPAND_RECORD}`);
+  if (!container) {
+    container = document.createElement('div');
+    container.classList.add(EXPAND_RECORD);
+  } else {
+    // createRoot should only create one time;
+    return;
+  }
   document.body.appendChild(container);
   const root = createRoot(container);
 
@@ -125,7 +131,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
-    container.parentElement?.removeChild(container);
+    container?.parentElement?.removeChild(container);
     onClose && onClose();
     const previousFocusHolderRef = expandRecordManager.getPreviousFocusHolderRef();
 
