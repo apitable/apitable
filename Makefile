@@ -199,13 +199,27 @@ _test_backend_unit_test: ## backend server unit test
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
-	make _test_clean
-	make _test_dockers
+	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
+	docker compose -f docker-compose.local.yml up -d
 	sleep 20
-	make _test_init_db
-	make _test_backend_unit_test
+	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
-	make _test_clean
+	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
+
+test-ut-backend:
+	export DATABASE_TABLE_PREFIX=apitable_ ;\
+	export MYSQL_HOST=127.0.0.1 ;\
+	export MYSQL_PORT=3306 ;\
+	export MYSQL_USERNAME=apitable ;\
+	export MYSQL_PASSWORD=password ;\
+	export MYSQL_DATABASE=apitable_test ;\
+	export REDIS_HOST=127.0.0.1 ;\
+	export REDIS_PORT=6379 ;\
+	export RABBITMQ_HOST=127.0.0.1 ;\
+	export RABBITMQ_PORT=5672 ;\
+	export RABBITMQ_USERNAME=apitable ;\
+	export RABBITMQ_PASSWORD=password ;\
+	cd backend-server && ./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
 
