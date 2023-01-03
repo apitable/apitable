@@ -7,10 +7,10 @@
   ],
   "scripts": {
     "sc": "yarn start:core",
-    "sd": "yarn start:datasheet dev",
+    "sd": "yarn start:datasheet",
     "sd:private": "REACT_APP_DEPLOYMENT_MODELS=PRIVATE yarn dev:datasheet",
     "sr": "yarn start:room-server",
-    "sss": "yarn workspace @apitable/components dev",
+    "sss": "yarn start:components",
     "start:core": "yarn workspace @apitable/core start",
     "start:i18n": "yarn workspace @apitable/i18n-lang start",
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
