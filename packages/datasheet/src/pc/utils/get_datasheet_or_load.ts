@@ -1,10 +1,10 @@
-import { Selectors, IReduxState, StoreActions } from '@apitable/core';
+import { IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 
 export const getDatasheetOrLoad = (
-  state: IReduxState, foreignDatasheetId: string, dstId?: string, assignDstId?: boolean, forceFetch?: boolean, sourceMirrorId?: string
+  state: IReduxState, foreignDatasheetId: string, dstId?: string, assignDstId?: boolean, forceFetch?: boolean, ignoreMirror?: boolean
 ) => {
-  const { formId, mirrorId = sourceMirrorId } = state.pageParams;
+  const { formId, mirrorId } = state.pageParams;
   const datasheetId = dstId || state.pageParams.datasheetId;
   const datasheet = Selectors.getDatasheet(state, foreignDatasheetId);
   const datasheetLoading = Selectors.getDatasheetLoading(state, foreignDatasheetId);
@@ -19,7 +19,7 @@ export const getDatasheetOrLoad = (
       store.dispatch(StoreActions.fetchForeignDatasheet(formId, foreignDatasheetId, forceFetch));
       return null;
     }
-    if (mirrorId) {
+    if (mirrorId && !ignoreMirror) {
       store.dispatch(StoreActions.fetchForeignDatasheet(mirrorId, foreignDatasheetId, forceFetch));
       return null;
     }
