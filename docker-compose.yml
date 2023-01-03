@@ -149,9 +149,7 @@ services:
         condition: service_started
       web-server:
         condition: service_started
-      init-data-mysql:
-        condition: service_completed_successfully
-      init-data-minio:
+      init-appdata:
         condition: service_completed_successfully
 
   minio:
@@ -258,16 +256,12 @@ services:
       mysql:
         condition: service_healthy
 
-  init-data-mysql:
-    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MYSQL}
+  #init-appdata
+  init-appdata:
+    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_APPDATA}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     environment:
-      - TZ=${TIMEZONE}
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_USERNAME=${MYSQL_USERNAME}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - OSS_BUCKET_NAME=${MINIO_BUCKET}
     env_file:
       - "${ENV_FILE:-.env}"
     networks:
@@ -277,24 +271,6 @@ services:
         condition: service_healthy
       init-db:
         condition: service_completed_successfully
-    command:
-      - /bin/bash
-      - -c
-      - |
-        sh run.sh
-
-  init-data-minio:
-    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MINIO}
-    pull_policy: ${IMAGE_PULL_POLICY:-missing}
-    environment:
-      - TZ=${TIMEZONE}
-    env_file:
-      - "${ENV_FILE:-.env}"
-    networks:
-      - apitable
-    depends_on:
-      minio:
-        condition: service_healthy
 
 networks:
   apitable:
