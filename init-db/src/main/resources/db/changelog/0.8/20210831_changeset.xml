@@ -23,29 +23,28 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="V0.8-20211027-001" author="Chambers" labels="node">
-        <comment>Node Table add space id index</comment>
+    <changeSet id="V0.8-20210831-001" author="Mayne" labels="automation">
+        <comment>service add slug field</comment>
         <sql>
-            ALTER TABLE `${table.prefix}node`
-            ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+            ALTER TABLE `${table.prefix}automation_service`
+                ADD COLUMN `slug` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Service readable unique identifier' AFTER `service_id`;
         </sql>
     </changeSet>
 
-    <changeSet id="V0.8-20211027-002" author="penglongfeng" labels="automation">
-        <comment>Robot Table add x_service_token、seq_id and uk_seq_resource_id</comment>
+    <changeSet id="V0.8-20210831-002" author="Mayne" labels="automation">
+        <comment>service add slug field unique index</comment>
         <sql>
-            ALTER TABLE `${table.prefix}automation_robot`
-            ADD COLUMN `seq_id` varchar(64) NULL COMMENT 'Request source request number' AFTER `updated_at`,
-            ADD COLUMN `x_service_token` varchar(128) NULL COMMENT 'Service Provider Certification Token' AFTER `seq_id`,
-            ADD UNIQUE INDEX `uk_seq_resource_id`(`seq_id`, `resource_id`) USING BTREE COMMENT 'Unique number of single table robot creation request';
+            ALTER TABLE `${table.prefix}automation_service`
+                ADD UNIQUE INDEX `uk_service_slug` (`slug`) USING BTREE;
         </sql>
     </changeSet>
 
-    <changeSet id="V0.8-20211027-003" author="penglongfeng" labels="automation">
-        <comment>Automation Action Table add robot id index</comment>
+    <changeSet id="V0.8-20210831-003" author="Mayne" labels="automation">
+        <comment>trigger type add endpoint field</comment>
         <sql>
-            ALTER TABLE `${table.prefix}automation_action`
-            ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE COMMENT 'Robot ID Index';
+            ALTER TABLE `${table.prefix}automation_trigger_type`
+                ADD COLUMN `endpoint` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Trigger prototype endpoint' AFTER `output_json_schema`;
         </sql>
     </changeSet>
+
 </databaseChangeLog>

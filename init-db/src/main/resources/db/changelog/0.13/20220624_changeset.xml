@@ -1,0 +1,57 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220624-001" author="liuzijing" labels="widget">
+        <comment>Workbench - Widget Package Table add install_env_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+                ADD COLUMN `install_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Installation environment code' AFTER `updated_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-002" author="liuzijing" labels="widget">
+        <comment>Workbench - Widget Package Table add runtime_env_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+                ADD COLUMN `runtime_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Operate environment code' AFTER `install_env_code`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-003" author="liuzijing" labels="widget">
+        <comment>Workbench - Widget Package Release Table add install_env_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+                ADD COLUMN `install_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Installation environment code' AFTER `updated_at`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220624-004" author="liuzijing" labels="widget">
+        <comment>Workbench - Widget Package Release Table add runtime_env_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_release`
+                ADD COLUMN `runtime_env_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Operate environment code' AFTER `install_env_code`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

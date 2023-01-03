@@ -22,20 +22,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="V0.6-20210109-001" author="Shawn" labels="widget">
-        <comment>Create Datasheet Widget Table</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_001.sql"/>
-    </changeSet>
-    <changeSet id="V0.6-20210109-002" author="Shawn" labels="widget">
-        <comment>Delete Widget Table index</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_002.sql"/>
-    </changeSet>
-    <changeSet id="V0.6-20210109-003" author="Shawn" labels="widget">
-        <comment>Widget Table add Space ID</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_003.sql"/>
-    </changeSet>
-    <changeSet id="V0.6-20210109-004" author="Shawn" labels="widget">
-        <comment>Widget Table add ndoe id records component ownership</comment>
-        <sqlFile path="db/changelog/0.6/20210109_changeset_004.sql"/>
+
+    <changeSet id="V0.8-20211104-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add widget_body field,modify field description</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `widget_body` json NULL COMMENT 'Widget package extension information' AFTER `release_type`,
+            MODIFY COLUMN `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Is template (0: No, 1: Yes)' AFTER `release_id`,
+            MODIFY COLUMN `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT 'Enable or not, only for global widgets (0: not enabled, 1: enabled)' AFTER `is_template`;
+        </sql>
     </changeSet>
 </databaseChangeLog>
