@@ -14,21 +14,21 @@ spring:
       namespace: ${SESSION_NAMESPACE:apitable:session}
     timeout: ${SESSION_TIMEOUT:30d}
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable_dev}?characterEncoding=utf8&autoReconnect=true
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true
     username: ${MYSQL_USERNAME:apitable}
-    password: ${MYSQL_PASSWORD:password}
+    password: ${MYSQL_PASSWORD:apitable@com}
   # Redis
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     username: ${REDIS_USERNAME:}
     password: ${REDIS_PASSWORD:}
     port: ${REDIS_PORT:6379}
-    database: ${REDIS_DB:3}
+    database: ${REDIS_DB:0}
     timeout: 30000
   rabbitmq:
     addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:apitable}
-    password: ${RABBITMQ_PASSWORD:password}
+    password: ${RABBITMQ_PASSWORD:apitable@com}
     publisher-returns: true
     publisher-confirm-type: correlated
     listener:
@@ -89,7 +89,7 @@ starter:
       timeout: ${SOCKET_TIMEOUT:1000}
   oss:
     enabled: ${OSS_ENABLED:true}
-    type: ${OSS_TYPE:aws}
+    type: ${OSS_CLIENT_TYPE:aws}
     aws:
       access-key-id: ${AWS_ACCESS_KEY:}
       access-key-secret: ${AWS_ACCESS_SECRET:}
