@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 
 services:
   web-server:
@@ -45,6 +45,8 @@ services:
       - socket-server
       - minio
       - rabbitmq
+      - init-data-mysql
+      - init-db 
     healthcheck:
       test: ["CMD-SHELL", "curl -sS 'http://localhost:8081' || exit 1"]
       interval: 10s
@@ -183,6 +185,8 @@ services:
           "redis-server",
           "--appendonly",
           "yes",
+          "--requirepass",
+          "${REDIS_PASSWORD}",
       ]
     expose:
       - "6379"
