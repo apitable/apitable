@@ -63,6 +63,8 @@ export interface WatchRoomVo_Collaborator {
   shareId?: string | undefined;
   createTime?: number | undefined;
   activeCell?: WatchRoomVo_ActiveCell | undefined;
+  nickName?: string | undefined;
+  avatarColor?: number | undefined;
 }
 
 export interface WatchRoomVo_Data {
@@ -95,6 +97,8 @@ export interface GetActiveCollaboratorsVo_Collaborator {
   shareId?: string | undefined;
   createTime?: number | undefined;
   activeCell?: GetActiveCollaboratorsVo_ActiveCell | undefined;
+  nickName?: string | undefined;
+  avatarColor?: number | undefined;
 }
 
 export interface GetActiveCollaboratorsVo_Data {
@@ -474,6 +478,8 @@ function createBaseWatchRoomVo_Collaborator(): WatchRoomVo_Collaborator {
     shareId: undefined,
     createTime: undefined,
     activeCell: undefined,
+    nickName: undefined,
+    avatarColor: undefined,
   };
 }
 
@@ -505,6 +511,12 @@ export const WatchRoomVo_Collaborator = {
     }
     if (message.activeCell !== undefined) {
       WatchRoomVo_ActiveCell.encode(message.activeCell, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.nickName !== undefined) {
+      writer.uint32(82).string(message.nickName);
+    }
+    if (message.avatarColor !== undefined) {
+      writer.uint32(88).int32(message.avatarColor);
     }
     return writer;
   },
@@ -543,6 +555,12 @@ export const WatchRoomVo_Collaborator = {
         case 9:
           message.activeCell = WatchRoomVo_ActiveCell.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.nickName = reader.string();
+          break;
+        case 11:
+          message.avatarColor = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -562,6 +580,8 @@ export const WatchRoomVo_Collaborator = {
       shareId: isSet(object.shareId) ? String(object.shareId) : undefined,
       createTime: isSet(object.createTime) ? Number(object.createTime) : undefined,
       activeCell: isSet(object.activeCell) ? WatchRoomVo_ActiveCell.fromJSON(object.activeCell) : undefined,
+      nickName: isSet(object.nickName) ? String(object.nickName) : undefined,
+      avatarColor: isSet(object.avatarColor) ? Number(object.avatarColor) : undefined,
     };
   },
 
@@ -577,6 +597,8 @@ export const WatchRoomVo_Collaborator = {
     message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.activeCell !== undefined &&
       (obj.activeCell = message.activeCell ? WatchRoomVo_ActiveCell.toJSON(message.activeCell) : undefined);
+    message.nickName !== undefined && (obj.nickName = message.nickName);
+    message.avatarColor !== undefined && (obj.avatarColor = Math.round(message.avatarColor));
     return obj;
   },
 
@@ -593,6 +615,8 @@ export const WatchRoomVo_Collaborator = {
     message.activeCell = (object.activeCell !== undefined && object.activeCell !== null)
       ? WatchRoomVo_ActiveCell.fromPartial(object.activeCell)
       : undefined;
+    message.nickName = object.nickName ?? undefined;
+    message.avatarColor = object.avatarColor ?? undefined;
     return message;
   },
 };
@@ -853,6 +877,8 @@ function createBaseGetActiveCollaboratorsVo_Collaborator(): GetActiveCollaborato
     shareId: undefined,
     createTime: undefined,
     activeCell: undefined,
+    nickName: undefined,
+    avatarColor: undefined,
   };
 }
 
@@ -884,6 +910,12 @@ export const GetActiveCollaboratorsVo_Collaborator = {
     }
     if (message.activeCell !== undefined) {
       GetActiveCollaboratorsVo_ActiveCell.encode(message.activeCell, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.nickName !== undefined) {
+      writer.uint32(82).string(message.nickName);
+    }
+    if (message.avatarColor !== undefined) {
+      writer.uint32(88).int32(message.avatarColor);
     }
     return writer;
   },
@@ -924,6 +956,12 @@ export const GetActiveCollaboratorsVo_Collaborator = {
         case 9:
           message.activeCell = GetActiveCollaboratorsVo_ActiveCell.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.nickName = reader.string();
+          break;
+        case 11:
+          message.avatarColor = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -945,6 +983,8 @@ export const GetActiveCollaboratorsVo_Collaborator = {
       activeCell: isSet(object.activeCell)
         ? GetActiveCollaboratorsVo_ActiveCell.fromJSON(object.activeCell)
         : undefined,
+      nickName: isSet(object.nickName) ? String(object.nickName) : undefined,
+      avatarColor: isSet(object.avatarColor) ? Number(object.avatarColor) : undefined,
     };
   },
 
@@ -962,6 +1002,8 @@ export const GetActiveCollaboratorsVo_Collaborator = {
       (obj.activeCell = message.activeCell
         ? GetActiveCollaboratorsVo_ActiveCell.toJSON(message.activeCell)
         : undefined);
+    message.nickName !== undefined && (obj.nickName = message.nickName);
+    message.avatarColor !== undefined && (obj.avatarColor = Math.round(message.avatarColor));
     return obj;
   },
 
@@ -982,6 +1024,8 @@ export const GetActiveCollaboratorsVo_Collaborator = {
     message.activeCell = (object.activeCell !== undefined && object.activeCell !== null)
       ? GetActiveCollaboratorsVo_ActiveCell.fromPartial(object.activeCell)
       : undefined;
+    message.nickName = object.nickName ?? undefined;
+    message.avatarColor = object.avatarColor ?? undefined;
     return message;
   },
 };

@@ -42,7 +42,6 @@ service RoomServingService {
   rpc CopyNodeEffectOt (NodeCopyRo) returns (grpc.common.BasicResult);
   // delete datasheet effect ot
   rpc DeleteNodeEffectOt (NodeDeleteRo) returns (grpc.common.BasicResult);
-
 }
 
 message WatchRoomRo {
@@ -75,6 +74,8 @@ message WatchRoomVo {
     optional string share_id = 7;
     optional uint32 create_time = 8;
     optional ActiveCell active_cell = 9;
+    optional string nick_name = 10;
+    optional int32 avatarColor = 11;
   }
   message Data {
     repeated ResourceRevision resource_revisions = 1;
@@ -104,6 +105,8 @@ message GetActiveCollaboratorsVo {
     optional string share_id = 7;
     optional uint32 create_time = 8;
     optional ActiveCell active_cell = 9;
+    optional string nick_name = 10;
+    optional int32 avatarColor = 11;
   }
   message Data {
     repeated Collaborator collaborators = 1;
