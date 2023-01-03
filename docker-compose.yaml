@@ -262,7 +262,7 @@ services:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_APPDATA}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     environment:
-      - VK_ASSETS_LTD_BUCKET=${MINIO_BUCKET}
+      - OSS_BUCKET_NAME=${MINIO_BUCKET}
     env_file:
       - "${ENV_FILE:-.env}"
     networks:
