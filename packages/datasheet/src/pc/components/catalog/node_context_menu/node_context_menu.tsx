@@ -244,7 +244,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
               addTreeNode(targetId);
             }),
             contextItemMap.get(ContextItemKey.AddForm)(() => {
-              const result = triggerUsageAlert('maxFormViewsInSpace',
+              const result = triggerUsageAlert?.('maxFormViewsInSpace',
                 { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
               if (result) {
                 return;
@@ -265,7 +265,9 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
           ],
           [
             contextItemMap.get(ContextItemKey.Import)(() => {
-              const result1 = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+              const result1 = triggerUsageAlert?.('maxSheetNums', {
+                usage: spaceInfo!.sheetNums + 1, alwaysAlert: true
+              }, SubscribeUsageTipType.Alert);
               if (result1) {
                 return;
               }
