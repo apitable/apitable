@@ -60,6 +60,8 @@ If you just want to try out APITable[^info], click here for [⚡️Gitpod Online
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
+If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
+
 ## 🔥 Features
 
 <table>
