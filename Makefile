@@ -133,22 +133,21 @@ _test-ut-core-cov:
 
 ###### 【room server unit test】 ######
 SIKP_INITDB=false
-RUN_TEST_ROOM_MODE=docker
 
 _test_init_db:
 	@echo "${YELLOW}init-db initializing..${RESET}"
 	docker compose -f docker-compose.unit-test.yml run --rm \
-    	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+    	-e DB_HOST=test-mysql \
     	test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
-	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
 _test_dockers: ## run depends container in test step
-	docker compose -f docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	docker compose -f docker-compose.unit-test.yml run -d --name test-mysql test-mysql ;\
+	docker compose -f docker-compose.unit-test.yml run -d --name test-redis test-redis ;\
+	docker compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq test-rabbitmq
 
 test-ut-room-local:
 	make _test_clean
@@ -171,12 +170,12 @@ test-ut-room-docker:
 	make _test_clean
 	make _test_dockers
 	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=docker
+	make _test_init_db
 	docker compose -f docker-compose.unit-test.yml build unit-test-room
 	docker compose -f docker-compose.unit-test.yml run --rm \
-		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
-		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		-e MYSQL_HOST=test-mysql \
+		-e REDIS_HOST=test-redis \
+		-e RABBITMQ_HOST=test-rabbitmq \
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	if [ -d "./packages/room-server/coverage" ]; then \
@@ -191,11 +190,11 @@ _clean_room_jest_coverage:
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
-	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
+	make _test_clean
 	docker compose -f docker-compose.ut-backend.yml up -d
 	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
-	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
+	make _test_clean
 
 test-ut-backend:
 	export DATABASE_TABLE_PREFIX=apitable_ ;\
