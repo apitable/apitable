@@ -42,7 +42,6 @@ import { GridViewContainer } from '../multi_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
-import { get } from 'lodash';
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC = () => {
@@ -107,23 +106,8 @@ export const View: React.FC = () => {
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-  const isLogin = useSelector(state => state.user.isLogin);
 
-  const isShowEmbedToolBar = useMemo(() => {
- 
-    if(!embedId) {
-      return true;
-    } 
-    return (isLogin && (
-      get(embedInfo, 'viewControl.toolBar.basicTools', false) ||
-      get(embedInfo, 'viewControl.toolBar.shareBtn', false) ||
-      get(embedInfo, 'viewControl.toolBar.apiBtn', false) ||
-      get(embedInfo, 'viewControl.toolBar.formBtn', false) ||
-      get(embedInfo, 'viewControl.toolBar.historyBtn', false) ||
-      get(embedInfo, 'viewControl.toolBar.robotBtn', false)
-    )) || get(embedInfo, 'viewControl.toolBar.widgetBtn', false);
-
-  }, [embedInfo, embedId, isLogin]);
+  const { isShowEmbedToolBar } = embedInfo;
 
   return (
     <div
@@ -136,12 +120,13 @@ export const View: React.FC = () => {
         padding: isMobile ? '0' : '',
         height: '100%',
         background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
+        paddingLeft: !isShowEmbedToolBar && !embedInfo.viewControl?.tabBar ? '0' : '32px'
       }}
     >
       { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
       </ComponentDisplay> }
-      <div style={{ flex: '1 1 auto', height: '100%' }}>
+      <div style={{ flex: '1 1 auto', height: '100%', paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : '' }}>
         <AutoSizer className={classNames(styles.viewContainer, 'viewContainer')} style={{ width: '100%', height: '100%' }}>
           {({ height, width }) => {
             switch (currentView.type) {
