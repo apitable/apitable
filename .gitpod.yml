@@ -1,4 +1,4 @@
-# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+# List the start-up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 image:
   file: packaging/.gitpod.Dockerfile
 
