@@ -25,7 +25,7 @@ import { IdWorker } from 'shared/helpers';
 import { NodePermission } from 'shared/interfaces/axios.interfaces';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
-import { ResourceChangesetEntity } from '../../entities/resource.changeset.entity';
+import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 
 @Injectable()

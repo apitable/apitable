@@ -20,8 +20,8 @@ import { IUserValue, MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'lodash';
 import { PermissionException, ServerException } from 'shared/exception';
-import { UnitMemberRepository } from '../../repositories/unit.member.repository';
-import { UserService } from '../user/user.service';
+import { UnitMemberRepository } from '../repositories/unit.member.repository';
+import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class UnitMemberService {

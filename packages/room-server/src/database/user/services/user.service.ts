@@ -23,7 +23,7 @@ import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { getConnection } from 'typeorm';
 import { UnitInfo } from '../../interfaces';
-import { UserRepository } from '../../repositories/user.repository';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {

@@ -23,7 +23,7 @@ import { DatasheetRecordSubscriptionBaseService } from 'database/services/subscr
 import { MirrorService } from 'database/services/mirror/mirror.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
-import { UserService } from 'database/services/user/user.service';
+import { UserService } from 'database/user/services/user.service';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 
 /**

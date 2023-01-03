@@ -24,7 +24,7 @@ import * as Sentry from '@sentry/node';
 import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
 import { OtService } from 'database/services/ot/ot.service';
 import { ResourceService } from 'database/services/resource/resource.service';
-import { UserService } from 'database/services/user/user.service';
+import { UserService } from 'database/user/services/user.service';
 import { ApiResponse } from 'fusion/vos/api.response';
 import { getIPAddress } from 'shared/helpers/system.helper';
 import { ClientStorage } from 'shared/services/socket/client.storage';

@@ -23,7 +23,7 @@ import { DatasheetRecordService } from 'database/services/datasheet/datasheet.re
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
-import { UserService } from 'database/services/user/user.service';
+import { UserService } from 'database/user/services/user.service';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/middleware/resource.data.interceptor';
 import { CommentReplyDto } from '../dtos/comment.reply.dto';

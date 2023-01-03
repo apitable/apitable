@@ -20,8 +20,8 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { IdWorker } from 'shared/helpers';
-import { DeveloperRepository } from '../../repositories/developer.repository';
-import { UserRepository } from '../../repositories/user.repository';
+import { DeveloperRepository } from '../repositories/developer.repository';
+import { UserRepository } from '../../user/repositories/user.repository';
 import { DeveloperService } from './developer.service';
 
 describe('developer service', () => {

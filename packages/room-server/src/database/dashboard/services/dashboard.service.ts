@@ -19,10 +19,10 @@
 import { IDashboardLayout, IResourceMeta } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { NodeService } from 'database/node/services/node.service';
+import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { ResourceException, ServerException } from 'shared/exception';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardDataPack, NodeDetailInfo, WidgetMap } from '../../interfaces';
-import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 
 @Injectable()
 export class DashboardService {

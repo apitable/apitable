@@ -43,11 +43,11 @@ import { DatasheetEntity } from '../../entities/datasheet.entity';
 import { DatasheetMetaEntity } from '../../entities/datasheet.meta.entity';
 import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';
 import { RecordCommentEntity } from '../../entities/record.comment.entity';
-import { WidgetEntity } from '../../entities/widget.entity';
+import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
 import { DatasheetRecordService } from '../datasheet/datasheet.record.service';
-import { WidgetService } from '../widget/widget.service';
+import { WidgetService } from '../../widget/services/widget.service';
 
 @Injectable()
 export class DatasheetOtService {

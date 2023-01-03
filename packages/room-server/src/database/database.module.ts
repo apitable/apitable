@@ -31,15 +31,7 @@ import { DatasheetRecordRepository } from './repositories/datasheet.record.repos
 import { DatasheetRecordSourceRepository } from './repositories/datasheet.record.source.repository';
 import { DatasheetRepository } from './repositories/datasheet.repository';
 import { DatasheetWidgetRepository } from './repositories/datasheet.widget.repository';
-import { DeveloperRepository } from './repositories/developer.repository';
 import { RecordCommentRepository } from './repositories/record.comment.repository';
-import { ResourceMetaRepository } from './repositories/resource.meta.repository';
-import { UnitMemberRepository } from './repositories/unit.member.repository';
-import { UnitRepository } from './repositories/unit.repository';
-import { UnitTagRepository } from './repositories/unit.tag.repository';
-import { UnitTeamRepository } from './repositories/unit.team.repository';
-import { UserRepository } from './repositories/user.repository';
-import { WidgetRepository } from './repositories/widget.repository';
 import { AlarmDynamicModule } from './services/alarm/alarm.dynamic.module';
 import { AttachmentService } from './attachment/services/attachment.service';
 import { CommandOptionsService } from './services/command/command.options.service';
@@ -54,7 +46,6 @@ import { DatasheetRecordService } from './services/datasheet/datasheet.record.se
 import { DatasheetRecordSourceService } from './services/datasheet/datasheet.record.source.service';
 import { DatasheetService } from './services/datasheet/datasheet.service';
 import { RecordCommentService } from './services/datasheet/record.comment.service';
-import { DeveloperService } from './services/developer/developer.service';
 import { EventService } from './services/event/event.service';
 import { FormService } from './services/form/form.service';
 import { MirrorService } from './services/mirror/mirror.service';
@@ -65,22 +56,10 @@ import { MirrorOtService } from './services/ot/mirror.ot.service';
 import { OtService } from './services/ot/ot.service';
 import { ResourceChangeHandler } from './services/ot/resource.change.handler';
 import { WidgetOtService } from './services/ot/widget.ot.service';
-import { ChangesetService } from './services/resource/changeset.service';
-import { MetaService } from './services/resource/meta.service';
-import { ResourceService } from './services/resource/resource.service';
-import { RoomResourceRelService } from './services/resource/room.resource.rel.service';
 import { SubscriptionDynamicModule } from './services/subscription/subscription.dynamic.module';
-import { UnitMemberService } from './services/unit/unit.member.service';
-import { UnitService } from './services/unit/unit.service';
-import { UnitTagService } from './services/unit/unit.tag.service';
-import { UnitTeamService } from './services/unit/unit.team.service';
-import { UserService } from './services/user/user.service';
-import { WidgetService } from './services/widget/widget.service';
 import { GrpcModule } from 'grpc/grpc.module';
-import { ResourceChangesetRepository } from './repositories/resource.changeset.repository';
 import { IsNodeExistConstraint } from './validations/validation.constraint';
 import { MirrorController } from './controllers/mirror.controller';
-import { ResourceController } from './controllers/resource.controller';
 import { FormController } from './controllers/form.controller';
 import { AttachmentModule } from './attachment/attachment.module';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -95,7 +74,7 @@ import { AlarmModule } from './alarm/alarm.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { AssetModule } from './asset/asset.module';
 import { UnitModule } from './unit/unit.module';
-import { ChangesetModule } from './changeset/changeset.module';
+import { DeveloperModule } from './developer/developer.module';
 
 @Module({
   imports: [
@@ -113,15 +92,6 @@ import { ChangesetModule } from './changeset/changeset.module';
       DatasheetRepository,
       DatasheetWidgetRepository,
       RecordCommentRepository,
-      ResourceMetaRepository,
-      WidgetRepository,
-      UserRepository,
-      UnitRepository,
-      UnitMemberRepository, 
-      UnitTagRepository, 
-      UnitTeamRepository,
-      DeveloperRepository,
-      ResourceChangesetRepository,
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
       AutomationTriggerRepository,
       AutomationTriggerTypeRepository,
@@ -139,7 +109,7 @@ import { ChangesetModule } from './changeset/changeset.module';
     SubscriptionModule,
     AssetModule,
     UnitModule,
-    ChangesetModule,
+    DeveloperModule,
   ],
   providers: [
     AttachmentService,
@@ -155,7 +125,6 @@ import { ChangesetModule } from './changeset/changeset.module';
     RecordCommentService,
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
-    DeveloperService,
     EventService,
     FormService,
     MirrorService,
@@ -166,26 +135,19 @@ import { ChangesetModule } from './changeset/changeset.module';
     FormOtService,
     WidgetOtService,
     ResourceChangeHandler,
-    UserService,
-    ResourceService,
-    MetaService,
-    ChangesetService,
-    UnitService, 
-    UnitMemberService, 
-    UnitTagService, 
-    UnitTeamService,
-    WidgetService,
     ResourceDataInterceptor,
-    RoomResourceRelService,
     FusionApiTransformer,
     IsNodeExistConstraint,
   ],
-  controllers: [DatasheetController, FormController, MirrorController, ResourceController],
+  controllers: [DatasheetController, FormController, MirrorController],
   exports: [
+    AssetModule,
     AttachmentModule,
     AlarmDynamicModule.forRoot(), 
     SubscriptionDynamicModule.forRoot(), 
     NodeModule,
+    ResourceModule,
+    DashboardModule,
     CommandService,
     CommandOptionsService,
     DashboardService,
@@ -198,7 +160,6 @@ import { ChangesetModule } from './changeset/changeset.module';
     RecordCommentService,
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
-    DeveloperService,
     EventService,
     FormService,
     MirrorService,
@@ -209,17 +170,7 @@ import { ChangesetModule } from './changeset/changeset.module';
     FormOtService,
     WidgetOtService,
     ResourceChangeHandler,
-    UserService,
-    ResourceService,
-    MetaService,
-    ChangesetService,
-    UnitService, 
-    UnitMemberService, 
-    UnitTagService, 
-    UnitTeamService,
-    WidgetService,
     ResourceDataInterceptor,
-    RoomResourceRelService,
     IsNodeExistConstraint
   ]
 })

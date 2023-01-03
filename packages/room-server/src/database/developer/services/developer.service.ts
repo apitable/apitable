@@ -17,10 +17,10 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from '../../entities/user.entity';
-import { DeveloperRepository } from '../../repositories/developer.repository';
-import { UnitMemberRepository } from '../../repositories/unit.member.repository';
-import { UserRepository } from '../../repositories/user.repository';
+import { UserEntity } from '../../user/entities/user.entity';
+import { DeveloperRepository } from '../../developer/repositories/developer.repository';
+import { UnitMemberRepository } from '../../unit/repositories/unit.member.repository';
+import { UserRepository } from '../../user/repositories/user.repository';
 
 @Injectable()
 export class DeveloperService {

@@ -32,7 +32,7 @@ import { RecordMap } from '../../interfaces';
 import { DatasheetRepository } from '../../repositories/datasheet.repository';
 import { NodeService } from '../node/node.service';
 import { UnitService } from '../unit/unit.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../user/services/user.service';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';

@@ -19,15 +19,15 @@
 import { IDashboardSnapshot, IOperation, IRemoteChangeset, jot } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { EffectConstantName, ICommonData } from 'database/services/ot/ot.interface';
-import { WidgetService } from 'database/services/widget/widget.service';
+import { WidgetService } from 'database/widget/services/widget.service';
 import { InjectLogger } from 'shared/common';
 import { OtException, PermissionException, ServerException } from 'shared/exception';
 import { IdWorker } from 'shared/helpers';
 import { NodePermission } from 'shared/interfaces';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
-import { ResourceChangesetEntity } from '../../entities/resource.changeset.entity';
-import { WidgetEntity } from '../../entities/widget.entity';
+import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
+import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 
 @Injectable()

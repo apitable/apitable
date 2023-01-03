@@ -19,7 +19,7 @@
 import { Injectable } from '@nestjs/common';
 import { ServerException } from '../../../shared/exception';
 import { ResourceException } from '../../../shared/exception/resource.exception';
-import { WidgetRepository } from '../../repositories/widget.repository';
+import { WidgetRepository } from '../repositories/widget.repository';
 
 @Injectable()
 export class WidgetService {

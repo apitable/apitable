@@ -18,7 +18,7 @@
 
 import { EntityRepository, In, Not, Repository } from 'typeorm';
 import { UnitTypeEnum } from '../../shared/enums';
-import { UnitEntity } from '../entities/unit.entity';
+import { UnitEntity } from '../unit/entities/unit.entity';
 
 /**
  * Operations on table `unit`
