@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "build": "rm -rf ./dist && yarn tsc",
-    "build:publish": "rm -rf ./dist && yarn tsc -b tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
-    "start": "yarn tsc -w"
+    "build:publish": "rm -rf ./dist && tsc -b tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
+    "start": "tsc -w"
   },
   "devDependencies": {
     "typescript": "^4.8.2"
