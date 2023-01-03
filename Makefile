@@ -189,20 +189,10 @@ _clean_room_jest_coverage:
 
 ###### 【backend server unit test】 ######
 
-_test_backend_unit_test: ## backend server unit test
-	docker compose -f docker-compose.unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
-		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
-		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
-		-e BACKEND_GRPC_PORT=0 \
-		unit-test-backend
-
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
-	docker compose -f docker-compose.local.yml up -d
-	sleep 20
-	make test-ut-backend
+	docker compose -f docker-compose.ut-backend.yml up -d
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
