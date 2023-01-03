@@ -269,6 +269,7 @@ run-local: ## run services with local programming language envinroment
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	cd backend-server ;\
+	./gradlew build -x test ;\
 	java -jar application/build/libs/application.jar
 
 _run-local-room-server:
