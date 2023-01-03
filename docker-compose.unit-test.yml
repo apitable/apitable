@@ -74,6 +74,7 @@ services:
       - DB_NAME=apitable_test
       - DB_USERNAME=apitable
       - DB_PASSWORD=password
+      - DATABASE_TABLE_PREFIX=apitable_
     entrypoint: ./gradlew update
 
   unit-test-room:

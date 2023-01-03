@@ -145,9 +145,9 @@ _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
 _test_dockers: ## run depends container in test step
-	docker compose -f docker-compose.unit-test.yml run -d --name test-mysql test-mysql ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-redis test-redis ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq test-rabbitmq
+	docker compose -f docker-compose.unit-test.yml up -d test-mysql ;\
+	docker compose -f docker-compose.unit-test.yml up -d test-redis ;\
+	docker compose -f docker-compose.unit-test.yml up -d test-rabbitmq
 
 test-ut-room-local:
 	make _test_clean
