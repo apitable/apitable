@@ -32,6 +32,7 @@
     <include file="db/changelog/0.12/20220409_changeset.xml"/>
     <include file="db/changelog/0.12/20220411_changeset.xml"/>
     <include file="db/changelog/0.12/20220424_changeset.xml"/>
+    <include file="db/changelog/0.12/20220520_changeset.xml"/>
     <include file="db/changelog/0.12/20220531_changeset.xml"/>
     <include file="db/changelog/0.12/20220607_changeset.xml"/>
 </databaseChangeLog>

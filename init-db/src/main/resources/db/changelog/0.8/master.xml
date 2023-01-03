@@ -22,8 +22,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <include file="db/changelog/0.8/20210823_changeset.xml"/>
+    <include file="db/changelog/0.8/20210831_changeset.xml"/>
     <include file="db/changelog/0.8/20210907_changeset.xml"/>
+    <include file="db/changelog/0.8/20210926_changeset.xml"/>
     <include file="db/changelog/0.8/20211011_changeset.xml"/>
+    <include file="db/changelog/0.8/20211020_changeset.xml"/>
     <include file="db/changelog/0.8/20211021_changeset.xml"/>
     <include file="db/changelog/0.8/20211025_changeset.xml"/>
     <include file="db/changelog/0.8/20211026_changeset.xml"/>
@@ -31,4 +35,5 @@
     <include file="db/changelog/0.8/20211028_changeset.xml"/>
     <include file="db/changelog/0.8/20211029_changeset.xml"/>
     <include file="db/changelog/0.8/20211101_changeset.xml"/>
+    <include file="db/changelog/0.8/20211104_changeset.xml"/>
 </databaseChangeLog>
