@@ -80,7 +80,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
       datasheetId,
       !needIgnoreFetch,
       forceFetch && !needIgnoreFetch,
-      mirrorId,
+      !Boolean(mirrorId),
     );
     return {
       foreignSnapshot: datasheet && datasheet.snapshot,
