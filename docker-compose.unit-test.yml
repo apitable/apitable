@@ -99,6 +99,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - INSTANCE_COUNT=1
       - APPLICATION_NAME=NEST_REST_SERVER
+      - DATABASE_TABLE_PREFIX=apitable_
     # remove default command，use run unit-test-room (yarn test:ut:room:cov | yarn test:ut:room)
 
   unit-test-backend:

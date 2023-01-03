@@ -290,11 +290,14 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async deleteRecord(@Param() param: RecordParamRo, @Query() query: RecordDeleteRo): Promise<RecordDeleteVo> {
+  public async deleteRecord(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
+    if (!query.recordIds) {
+      throw ApiException.tipError(ApiTipConstant.api_params_empty_error, { property: 'recordIds' });
+    }
     if (query.recordIds.length > API_MAX_MODIFY_RECORD_COUNTS) {
       throw ApiException.tipError(ApiTipConstant.api_params_records_max_count_error, { count: API_MAX_MODIFY_RECORD_COUNTS });
     }
-    const result = await this.fusionApiService.deleteRecord(param.datasheetId, query.recordIds);
+    const result = await this.fusionApiService.deleteRecord(param.datasheetId, Array.from(new Set(query.recordIds)));
     if (result) {
       return ApiResponse.success(undefined);
     }
