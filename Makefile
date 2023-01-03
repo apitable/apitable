@@ -136,18 +136,10 @@ SIKP_INITDB=false
 RUN_TEST_ROOM_MODE=docker
 
 _test_init_db:
-	@echo "${GREEN} Run Test Room Mode:$(RUN_TEST_ROOM_MODE) ${RESET}"
-	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
-	docker compose -f docker-compose.unit-test.yml pull test-initdb
-ifeq ($(RUN_TEST_ROOM_MODE),docker)
+	@echo "${YELLOW}init-db initializing..${RESET}"
 	docker compose -f docker-compose.unit-test.yml run --rm \
-	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-	test-initdb
-else ifeq ($(RUN_TEST_ROOM_MODE),local)
-	docker compose -f docker-compose.unit-test.yml run --rm \
-	-e DB_HOST=test-mysql \
-	test-initdb
-endif
+    	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+    	test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
@@ -163,7 +155,7 @@ test-ut-room-local:
 	docker compose -f docker-compose.unit-test.yml up -d test-redis test-mysql test-rabbitmq
 ifeq ($(SIKP_INITDB),false)
 	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=local
+	make _test_init_db
 endif
 	make _build-room
 	MYSQL_HOST=127.0.0.1 MYSQL_PORT=3306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
@@ -210,7 +202,7 @@ test-ut-backend-docker:
 	make _test_clean
 	make _test_dockers
 	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=docker
+	make _test_init_db
 	make _test_backend_unit_test
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	make _test_clean

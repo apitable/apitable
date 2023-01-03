@@ -63,8 +63,7 @@ services:
     image: gradle:jdk8
     networks:
       - unit-test
-    depends_on:
-      - test-mysql
+    working_dir: /data
     volumes:
       - ./init-db:/data
     environment:
@@ -75,12 +74,7 @@ services:
       - DB_NAME=apitable_test
       - DB_USERNAME=apitable
       - DB_PASSWORD=password
-    command:
-      - /bin/sh
-      - -c
-      - |
-        cd /data
-        gradle update
+    entrypoint: ./gradlew update
 
   unit-test-room:
     container_name: unit-test-room
