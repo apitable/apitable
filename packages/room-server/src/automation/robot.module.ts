@@ -18,7 +18,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NodeRepository } from 'database/repositories/node.repository';
+import { NodeRepository } from 'database/node/repositories/node.repository';
 import { UserRepository } from 'database/repositories/user.repository';
 import { UserService } from 'database/services/user/user.service';
 import { RobotActionController } from './controller/action.controller';

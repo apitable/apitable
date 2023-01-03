@@ -17,12 +17,12 @@
  */
 
 import { Controller, Get, Headers, Param, UseInterceptors } from '@nestjs/common';
-import { DashboardService } from 'database/services/dashboard/dashboard.service';
-import { NodeService } from 'database/services/node/node.service';
-import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { DashboardService } from 'database/dashboard/services/dashboard.service';
 import { UserService } from 'database/services/user/user.service';
 import { PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/middleware/resource.data.interceptor';
+import { NodeService } from 'database/node/services/node.service';
+import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
 
 /**
  * Dashboard Controller

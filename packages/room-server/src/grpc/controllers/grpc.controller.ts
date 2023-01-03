@@ -19,7 +19,6 @@
 import { ResourceIdPrefix } from '@apitable/core';
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { NodeService } from 'database/services/node/node.service';
 import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
 import { OtService } from 'database/services/ot/ot.service';
 import { ApiResponse } from 'fusion/vos/api.response';
@@ -35,6 +34,7 @@ import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.in
 import { GrpcSocketService } from 'grpc/services/grpc.socket.service';
 import { Logger } from 'winston';
 import { ILeaveRoomRo, INodeCopyRo, INodeDeleteRo } from '../../database/interfaces/grpc.interface';
+import { NodeService } from 'database/node/services/node.service';
 
 /**
  * grpc works for internal service

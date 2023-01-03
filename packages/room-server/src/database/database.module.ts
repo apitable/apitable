@@ -24,7 +24,6 @@ import { RobotModule } from 'automation/robot.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { DatasheetController } from './controllers/datasheet.controller';
 import { ResourceDataInterceptor } from './middleware/resource.data.interceptor';
-import { AssetRepository } from './repositories/asset.repository';
 import { DatasheetChangesetRepository } from './repositories/datasheet.changeset.repository';
 import { DatasheetChangesetSourceRepository } from './repositories/datasheet.changeset.source.repository';
 import { DatasheetMetaRepository } from './repositories/datasheet.meta.repository';
@@ -33,10 +32,6 @@ import { DatasheetRecordSourceRepository } from './repositories/datasheet.record
 import { DatasheetRepository } from './repositories/datasheet.repository';
 import { DatasheetWidgetRepository } from './repositories/datasheet.widget.repository';
 import { DeveloperRepository } from './repositories/developer.repository';
-import { NodeDescRepository } from './repositories/node.desc.repository';
-import { NodeRelRepository } from './repositories/node.rel.repository';
-import { NodeRepository } from './repositories/node.repository';
-import { NodeShareSettingRepository } from './repositories/node.share.setting.repository';
 import { RecordCommentRepository } from './repositories/record.comment.repository';
 import { ResourceMetaRepository } from './repositories/resource.meta.repository';
 import { UnitMemberRepository } from './repositories/unit.member.repository';
@@ -49,7 +44,7 @@ import { AlarmDynamicModule } from './services/alarm/alarm.dynamic.module';
 import { AttachmentService } from './attachment/services/attachment.service';
 import { CommandOptionsService } from './services/command/command.options.service';
 import { CommandService } from './services/command/command.service';
-import { DashboardService } from './services/dashboard/dashboard.service';
+import { DashboardService } from './dashboard/services/dashboard.service';
 import { ComputeFieldReferenceManager } from './services/datasheet/compute.field.reference.manager';
 import { DatasheetChangesetService } from './services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from './services/datasheet/datasheet.changeset.source.service';
@@ -63,10 +58,6 @@ import { DeveloperService } from './services/developer/developer.service';
 import { EventService } from './services/event/event.service';
 import { FormService } from './services/form/form.service';
 import { MirrorService } from './services/mirror/mirror.service';
-import { NodeDescriptionService } from './services/node/node.description.service';
-import { NodePermissionService } from './services/node/node.permission.service';
-import { NodeService } from './services/node/node.service';
-import { NodeShareSettingService } from './services/node/node.share.setting.service';
 import { DashboardOtService } from './services/ot/dashboard.ot.service';
 import { DatasheetOtService } from './services/ot/datasheet.ot.service';
 import { FormOtService } from './services/ot/form.ot.service';
@@ -91,7 +82,6 @@ import { IsNodeExistConstraint } from './validations/validation.constraint';
 import { MirrorController } from './controllers/mirror.controller';
 import { ResourceController } from './controllers/resource.controller';
 import { FormController } from './controllers/form.controller';
-import { DashboardController } from './controllers/dashboard.controller';
 import { AttachmentModule } from './attachment/attachment.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DatasheetModule } from './datasheet/datasheet.module';
@@ -103,6 +93,9 @@ import { NodeModule } from './node/node.module';
 import { UserModule } from './user/user.module';
 import { AlarmModule } from './alarm/alarm.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { AssetModule } from './asset/asset.module';
+import { UnitModule } from './unit/unit.module';
+import { ChangesetModule } from './changeset/changeset.module';
 
 @Module({
   imports: [
@@ -112,7 +105,6 @@ import { SubscriptionModule } from './subscription/subscription.module';
     SubscriptionDynamicModule.forRoot(),
     // DatasheetServiceModule,
     TypeOrmModule.forFeature([
-      AssetRepository,
       DatasheetChangesetRepository,
       DatasheetChangesetSourceRepository,
       DatasheetMetaRepository,
@@ -124,10 +116,6 @@ import { SubscriptionModule } from './subscription/subscription.module';
       ResourceMetaRepository,
       WidgetRepository,
       UserRepository,
-      NodeRepository,
-      NodeRelRepository,
-      NodeDescRepository,
-      NodeShareSettingRepository,
       UnitRepository,
       UnitMemberRepository, 
       UnitTagRepository, 
@@ -149,6 +137,9 @@ import { SubscriptionModule } from './subscription/subscription.module';
     UserModule,
     AlarmModule,
     SubscriptionModule,
+    AssetModule,
+    UnitModule,
+    ChangesetModule,
   ],
   providers: [
     AttachmentService,
@@ -179,10 +170,6 @@ import { SubscriptionModule } from './subscription/subscription.module';
     ResourceService,
     MetaService,
     ChangesetService,
-    NodeService, 
-    NodePermissionService, 
-    NodeShareSettingService, 
-    NodeDescriptionService, 
     UnitService, 
     UnitMemberService, 
     UnitTagService, 
@@ -193,11 +180,12 @@ import { SubscriptionModule } from './subscription/subscription.module';
     FusionApiTransformer,
     IsNodeExistConstraint,
   ],
-  controllers: [DatasheetController, DashboardController, FormController, MirrorController, ResourceController],
+  controllers: [DatasheetController, FormController, MirrorController, ResourceController],
   exports: [
     AttachmentModule,
     AlarmDynamicModule.forRoot(), 
     SubscriptionDynamicModule.forRoot(), 
+    NodeModule,
     CommandService,
     CommandOptionsService,
     DashboardService,
@@ -225,10 +213,6 @@ import { SubscriptionModule } from './subscription/subscription.module';
     ResourceService,
     MetaService,
     ChangesetService,
-    NodeService, 
-    NodePermissionService, 
-    NodeShareSettingService, 
-    NodeDescriptionService, 
     UnitService, 
     UnitMemberService, 
     UnitTagService, 

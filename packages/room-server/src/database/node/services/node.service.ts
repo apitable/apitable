@@ -18,7 +18,7 @@
 
 import { IFormProps, IPermissions, Role } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { NodeDescriptionService } from 'database/services/node/node.description.service';
+import { NodeDescriptionService } from 'database/node/services/node.description.service';
 import { get, omit } from 'lodash';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
@@ -26,8 +26,8 @@ import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
 import { NodeDetailInfo, NodeRelInfo } from '../../interfaces';
 import { DatasheetRepository } from '../../repositories/datasheet.repository';
-import { NodeRelRepository } from '../../repositories/node.rel.repository';
-import { NodeRepository } from '../../repositories/node.repository';
+import { NodeRelRepository } from '../../node/repositories/node.rel.repository';
+import { NodeRepository } from '../../node/repositories/node.repository';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 import { UnitMemberService } from '../unit/unit.member.service';
 import { NodePermissionService } from './node.permission.service';

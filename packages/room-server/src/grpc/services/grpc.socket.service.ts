@@ -21,8 +21,6 @@ import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
-import { NodeService } from 'database/services/node/node.service';
-import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
 import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
 import { OtService } from 'database/services/ot/ot.service';
 import { ResourceService } from 'database/services/resource/resource.service';
@@ -36,6 +34,8 @@ import { Logger } from 'winston';
 import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../shared/common';
 import { PermissionException, ServerException } from '../../shared/exception';
 import { IAuthHeader } from '../../shared/interfaces';
+import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
+import { NodeService } from 'database/node/services/node.service';
 
 /**
  *

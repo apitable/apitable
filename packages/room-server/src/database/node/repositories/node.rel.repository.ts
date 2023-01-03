@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeRelEntity } from '../entities/node.rel.entity';
-import { NodeRelInfo } from '../interfaces/internal';
+import { NodeRelEntity } from '../../entities/node.rel.entity';
+import { NodeRelInfo } from '../../interfaces/internal';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(NodeRelEntity)

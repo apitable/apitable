@@ -18,7 +18,7 @@
 
 import { IDashboardLayout, IResourceMeta } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { NodeService } from 'database/services/node/node.service';
+import { NodeService } from 'database/node/services/node.service';
 import { ResourceException, ServerException } from 'shared/exception';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardDataPack, NodeDetailInfo, WidgetMap } from '../../interfaces';

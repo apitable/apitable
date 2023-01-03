@@ -26,7 +26,7 @@ import { DatasheetChangesetRepository } from '../../repositories/datasheet.chang
 import { ResourceChangesetRepository } from '../../repositories/resource.changeset.repository';
 import { ResourceService } from 'database/services/resource/resource.service';
 import { Logger } from 'winston';
-import { NodeService } from '../node/node.service';
+import { NodeService } from 'database/node/services/node.service';
 
 /**
  * Changeset service for all resources (including datasheets, widgets, etc)

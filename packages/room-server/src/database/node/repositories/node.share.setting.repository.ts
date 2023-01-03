@@ -16,16 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from '@nestjs/common';
-import { NodeDescRepository } from '../../repositories/node.desc.repository';
+import { NodeShareSettingEntity } from '../../entities/node.share.setting.entity';
+import { EntityRepository, Repository } from 'typeorm';
 
-@Injectable()
-export class NodeDescriptionService {
-  constructor(private readonly repository: NodeDescRepository) {}
+@EntityRepository(NodeShareSettingEntity)
+export class NodeShareSettingRepository extends Repository<NodeShareSettingEntity> {
 
-  async getDescription(nodeId: string): Promise<string | null> {
-    const rawData = await this.repository.selectDescriptionByNodeId(nodeId);
-    if (rawData) return rawData.description;
-    return null;
+  /**
+   * Obtain the sharing setting with a sharing ID
+   */
+  selectByShareId(shareId: string): Promise<NodeShareSettingEntity | undefined> {
+    return this.findOne({ where: [{ shareId }] });
+  }
+
+  /**
+   * Obtain the sharing setting with a node ID
+   */
+  selectByNodeId(nodeId: string): Promise<NodeShareSettingEntity | undefined> {
+    return this.findOne({ where: [{ nodeId }] });
   }
 }
