@@ -193,6 +193,7 @@ test-ut-backend-docker:
 	@echo "$$(docker compose version)"
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 	docker compose -f docker-compose.ut-backend.yml up -d
+	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
