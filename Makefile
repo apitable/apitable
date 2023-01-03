@@ -98,6 +98,7 @@ build-local:
 	make _build-web
 
 _build-web:
+	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk root
 	yarn build:dst
 
 _build-java:
