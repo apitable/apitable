@@ -189,7 +189,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
   };
 
   const onItemClick = (key: string, type: 'field' | 'func') => {
-    key = type === 'field' ? key.replace(/(\{|\})/g, '\\$0') : key;
+    key = type === 'field' ? key.replace(/[{}\\]/g, '\\$&') : key;
     if (activeToken) {
       const activeTokenLength = activeToken.value.length;
       const start = activeNodeIndex > 0 ? cursorOffset - activeTokenLength : activeToken.index;

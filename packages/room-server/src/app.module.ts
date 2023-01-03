@@ -43,7 +43,7 @@ import { GrpcModule } from 'grpc/grpc.module';
     SharedModule,
     // environment configuration
     ConfigModule.forRoot({
-      envFilePath: resolve(process.cwd(), 'dist/env/.env.defaults'),
+      envFilePath: [resolve(__dirname, '../env/.env.development.local'), resolve(__dirname, '../env/.env.defaults')],
       encoding: 'utf-8',
       isGlobal: true,
       expandVariables: true,

@@ -68,7 +68,7 @@
     "lodash": "^4.17.21",
     "logform": "^2.2.0",
     "minio": "^7.0.26",
-    "moment-timezone": "^0.5.31",
+    "moment-timezone": "^0.5.35",
     "mysql2": "^2.3.2",
     "nest-winston": "^1.8.0",
     "nestjs-i18n": "^8.3.2",
