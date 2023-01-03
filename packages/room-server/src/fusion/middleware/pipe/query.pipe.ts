@@ -21,9 +21,9 @@ import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { SortRo } from 'database/ros/sort.ro';
 import { keyBy } from 'lodash';
-import qs from 'qs';
 import { ApiException } from 'shared/exception';
 import { DATASHEET_META_HTTP_DECORATE } from 'shared/common';
+import { OrderEnum } from 'shared/enums';
 
 /**
  * transform json into object
@@ -34,8 +34,7 @@ import { DATASHEET_META_HTTP_DECORATE } from 'shared/common';
 export class QueryPipe implements PipeTransform {
   constructor(@Inject(REQUEST) private readonly request: any) {}
 
-  transform(value: any): any {
-    value = qs.parse(value);
+  transform(value: any) {
     // transform, validate and sort the parameters
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     let fieldMap = meta.fieldMap;
@@ -44,28 +43,27 @@ export class QueryPipe implements PipeTransform {
     }
     if (value && value.sort) {
       // validate and transform it into field id
-      value.sort = this.validateSort(value.sort, fieldMap);
+      value.sort = QueryPipe.validateSort(value.sort, fieldMap);
     }
     // validate view id
     if (value && value.viewId) {
-      this.validateViewId(value.viewId, meta);
+      QueryPipe.validateViewId(value.viewId, meta);
     }
     // validate fields
     if (value && value.fields) {
-      this.validateFields(value.fields, fieldMap);
+      QueryPipe.validateFields(value.fields, fieldMap);
     }
     return value;
   }
 
-  validateSort(sort: SortRo[], fieldMap: IFieldMap): SortRo[] {
-    return sort.reduce<SortRo[]>((pre, cur) => {
-      if (!fieldMap[cur.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
-      pre.push(<SortRo>{ field: fieldMap[cur.field]!.id, order: cur.order.toLowerCase() });
-      return pre;
-    }, []);
+  static validateSort(sorts: SortRo[], fieldMap: IFieldMap): SortRo[] {
+    return sorts.map(sort => {
+      if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
+      return { field: fieldMap[sort.field]!.id, order: sort.order.toLowerCase() as OrderEnum };
+    });
   }
 
-  validateViewId(viewId: string, meta: IMeta) {
+  static validateViewId(viewId: string, meta: IMeta) {
     const views = meta.views;
     let exist = false;
     views.forEach(view => {
@@ -74,7 +72,7 @@ export class QueryPipe implements PipeTransform {
     if (!exist) throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
   }
 
-  validateFields(fields: string[], fieldMap: IFieldMap) {
+  static validateFields(fields: string[], fieldMap: IFieldMap) {
     const notExists = fields.filter(field => {
       return !fieldMap[field];
     });

@@ -20,9 +20,8 @@ import { ApiTipConstant } from '@apitable/core';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
-import * as qs from 'qs';
+import qs from 'qs';
 import { ApiException, ApiTipId } from 'shared/exception';
-import { IValidationPipeOptions } from 'shared/interfaces';
 
 /**
  * Global parameter validation pipe
@@ -31,9 +30,6 @@ import { IValidationPipeOptions } from 'shared/interfaces';
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform {
-  // private readonly options;
-  constructor(_options?: IValidationPipeOptions) {
-  }
 
   /**
    *
