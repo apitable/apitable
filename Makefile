@@ -270,6 +270,7 @@ run-local: ## run services with local programming language envinroment
 
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh .env.devenv;\
 	cd backend-server ;\
 	./gradlew build -x test ;\
 	MYSQL_HOST=127.0.0.1 \
@@ -279,14 +280,17 @@ _run-local-backend-server:
 
 _run-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh .env.devenv;\
 	yarn start:room-server
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh .env.devenv;\
 	yarn sd
 
 _run-local-socket-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh .env.devenv;\
 	cd packages/socket-server ;\
 	yarn run start:dev
 
