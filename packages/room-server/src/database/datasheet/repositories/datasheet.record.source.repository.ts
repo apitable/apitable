@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetRecordSourceEntity } from '../../entities/datasheet.record.source.entity';
+import { DatasheetRecordSourceEntity } from '../entities/datasheet.record.source.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(DatasheetRecordSourceEntity)

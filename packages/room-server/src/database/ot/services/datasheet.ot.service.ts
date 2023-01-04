@@ -24,9 +24,7 @@ import {
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
-import { EffectConstantName, ICommonData, IFieldData, IRestoreRecordInfo } from 'database/services/ot/ot.interface';
+import { EffectConstantName, ICommonData, IFieldData, IRestoreRecordInfo } from 'database/ot/interfaces/ot.interface';
 import produce from 'immer';
 import { chunk, intersection, isEmpty, pick, update } from 'lodash';
 import { InjectLogger } from 'shared/common';
@@ -39,15 +37,17 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
-import { DatasheetEntity } from '../../entities/datasheet.entity';
-import { DatasheetMetaEntity } from '../../entities/datasheet.meta.entity';
-import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';
-import { RecordCommentEntity } from '../../entities/record.comment.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { RecordMap } from '../../interfaces';
-import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
-import { DatasheetRecordService } from '../datasheet/datasheet.record.service';
 import { WidgetService } from '../../widget/services/widget.service';
+import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
+import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
+import { DatasheetRecordEntity } from 'database/datasheet/entities/datasheet.record.entity';
+import { RecordCommentEntity } from 'database/datasheet/entities/record.comment.entity';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { RecordCommentService } from 'database/datasheet/services/record.comment.service';
 
 @Injectable()
 export class DatasheetOtService {

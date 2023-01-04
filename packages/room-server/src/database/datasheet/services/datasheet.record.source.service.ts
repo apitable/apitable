@@ -19,7 +19,7 @@
 import { Injectable } from '@nestjs/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { IdWorker } from 'shared/helpers';
-import { DatasheetRecordSourceEntity } from '../../entities/datasheet.record.source.entity';
+import { DatasheetRecordSourceEntity } from '../entities/datasheet.record.source.entity';
 import { DatasheetRecordSourceRepository } from '../../datasheet/repositories/datasheet.record.source.repository';
 
 @Injectable()

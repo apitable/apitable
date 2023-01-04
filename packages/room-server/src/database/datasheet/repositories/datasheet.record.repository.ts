@@ -17,7 +17,7 @@
  */
 
 import { EntityRepository, In, Repository } from 'typeorm';
-import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 
 @EntityRepository(DatasheetRecordEntity)
 export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity> {

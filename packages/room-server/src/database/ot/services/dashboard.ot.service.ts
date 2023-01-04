@@ -18,7 +18,7 @@
 
 import { IDashboardSnapshot, IOperation, IRemoteChangeset, jot } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { EffectConstantName, ICommonData } from 'database/services/ot/ot.interface';
+import { EffectConstantName, ICommonData } from 'database/ot/interfaces/ot.interface';
 import { WidgetService } from 'database/widget/services/widget.service';
 import { InjectLogger } from 'shared/common';
 import { OtException, PermissionException, ServerException } from 'shared/exception';
@@ -26,9 +26,9 @@ import { IdWorker } from 'shared/helpers';
 import { NodePermission } from 'shared/interfaces';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
-import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
-import { WidgetEntity } from '../../widget/entities/widget.entity';
-import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
+import { ResourceChangesetEntity } from 'database/resource/entities/resource.changeset.entity';
+import { WidgetEntity } from 'database/widget/entities/widget.entity';
+import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 
 @Injectable()
 export class DashboardOtService {

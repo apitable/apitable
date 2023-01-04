@@ -18,7 +18,7 @@
 
 import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
+import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
@@ -27,10 +27,10 @@ import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
 import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
-import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
-import { RecordHistoryQueryRo } from '../../ros/record.history.query.ro';
+import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
 
 @Injectable()

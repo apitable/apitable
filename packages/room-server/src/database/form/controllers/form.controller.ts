@@ -18,8 +18,8 @@
 
 import { IFormProps, IRecordCellValue } from '@apitable/core';
 import { Body, Controller, Get, Headers, Param, Post, UseInterceptors } from '@nestjs/common';
-import { NodeService } from 'database/services/node/node.service';
-import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { NodeService } from 'database/node/services/node.service';
+import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
 import { UserService } from 'database/user/services/user.service';
 import { PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';

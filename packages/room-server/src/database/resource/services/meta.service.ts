@@ -18,7 +18,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { ResourceType } from '@apitable/core';
-import { WidgetService } from '../widget/widget.service';
+import { WidgetService } from 'database/widget/services/widget.service';
 import { IResourceInfo } from '../interfaces/resource.interface';
 import { NodeService } from 'database/node/services/node.service';
 

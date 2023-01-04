@@ -17,7 +17,7 @@
  */
 
 import { IFieldMap } from '@apitable/core';
-import { DatasheetMetaEntity } from 'database/entities/datasheet.meta.entity';
+import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 @EntityRepository(DatasheetMetaEntity)

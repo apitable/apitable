@@ -18,7 +18,7 @@
 
 import { EntityRepository, In, Repository } from 'typeorm';
 import { DatasheetChangesetEntity } from '../entities/datasheet.changeset.entity';
-import { DatasheetChangesetSourceEntity } from '../../entities/datasheet.changeset.source.entity';
+import { DatasheetChangesetSourceEntity } from '../entities/datasheet.changeset.source.entity';
 
 @EntityRepository(DatasheetChangesetEntity)
 export class DatasheetChangesetRepository extends Repository<DatasheetChangesetEntity> {

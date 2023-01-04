@@ -18,7 +18,7 @@
 
 import { ICommentMsg } from '@apitable/core';
 import { EntityRepository, Repository } from 'typeorm';
-import { RecordCommentEntity } from '../../entities/record.comment.entity';
+import { RecordCommentEntity } from '../entities/record.comment.entity';
 
 @EntityRepository(RecordCommentEntity)
 export class RecordCommentRepository extends Repository<RecordCommentEntity> {

@@ -25,9 +25,9 @@ import { Logger } from 'winston';
 import { difference, intersection, isEmpty } from 'lodash';
 import { IClientRoomChangeResult } from '../../../shared/services/socket/socket.interface';
 import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
-import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
+import { ResourceMetaRepository } from '../repositories/resource.meta.repository';
 import { WidgetRepository } from '../../widget/repositories/widget.repository';
-import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { ComputeFieldReferenceManager } from 'database/datasheet/services/compute.field.reference.manager';
 
 /**

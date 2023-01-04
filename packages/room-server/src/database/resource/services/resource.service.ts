@@ -21,10 +21,10 @@ import { Injectable } from '@nestjs/common';
 import { AutomationService } from 'automation/services/automation.service';
 import { PermissionException, ServerException } from 'shared/exception';
 import { IAuthHeader } from 'shared/interfaces';
-import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
-import { DatasheetService } from '../datasheet/datasheet.service';
-import { NodeService } from '../node/node.service';
-import { WidgetService } from '../widget/widget.service';
+import { DatasheetMetaService } from '../../datasheet/services/datasheet.meta.service';
+import { DatasheetService } from '../../datasheet/services/datasheet.service';
+import { NodeService } from '../../node/services/node.service';
+import { WidgetService } from '../../widget/services/widget.service';
 
 @Injectable()
 export class ResourceService {

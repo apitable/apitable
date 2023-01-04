@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeShareSettingEntity } from '../../entities/node.share.setting.entity';
+import { NodeShareSettingEntity } from '../entities/node.share.setting.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(NodeShareSettingEntity)

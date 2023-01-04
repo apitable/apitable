@@ -28,8 +28,8 @@ import { NodeDetailInfo, NodeRelInfo } from '../../interfaces';
 import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
 import { NodeRelRepository } from '../../node/repositories/node.rel.repository';
 import { NodeRepository } from '../../node/repositories/node.repository';
-import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
-import { UnitMemberService } from '../unit/unit.member.service';
+import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { UnitMemberService } from 'database/unit/services/unit.member.service';
 import { NodePermissionService } from './node.permission.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 

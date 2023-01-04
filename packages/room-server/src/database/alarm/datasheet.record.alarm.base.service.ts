@@ -18,9 +18,9 @@
 
 import { Injectable } from '@nestjs/common';
 import { RecordAlarmStatus } from 'shared/enums/record.alarm.enum';
-import { DatasheetRecordAlarmEntity } from 'database/entities/datasheet.record.alarm.entity';
+import { DatasheetRecordAlarmEntity } from './entities/datasheet.record.alarm.entity';
 import { EntityManager } from 'typeorm';
-import { ICommonData } from '../ot/ot.interface';
+import { ICommonData } from '../ot/interfaces/ot.interface';
 
 @Injectable()
 export abstract class DatasheetRecordAlarmBaseService {

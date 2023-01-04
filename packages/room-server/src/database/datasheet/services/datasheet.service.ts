@@ -20,8 +20,8 @@ import {
   FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState,
 } from '@apitable/core';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { DatasheetEntity } from 'database/entities/datasheet.entity';
-import { CommandService } from 'database/services/command/command.service';
+import { DatasheetEntity } from '../entities/datasheet.entity';
+import { CommandService } from 'database/command/services/command.service';
 import { isEmpty } from 'lodash';
 import { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
@@ -30,7 +30,7 @@ import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordM
 import { Logger } from 'winston';
 import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
-import { NodeService } from '../node/node.service';
+import { NodeService } from 'database/node/services/node.service';
 import { UserService } from '../../user/services/user.service';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';

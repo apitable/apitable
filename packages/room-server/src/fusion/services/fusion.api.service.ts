@@ -24,9 +24,9 @@ import {
 import { IInternalFix } from '@apitable/core/dist/commands/common/field';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { CommandService } from 'database/services/command/command.service';
-import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
-import { DatasheetRecordSourceService } from 'database/services/datasheet/datasheet.record.source.service';
+import { CommandService } from 'database/command/services/command.service';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
 import { UserService } from 'database/user/services/user.service';
 import { FastifyRequest } from 'fastify';
 import { ApiRecordDto } from 'fusion/dtos/api.record.dto';

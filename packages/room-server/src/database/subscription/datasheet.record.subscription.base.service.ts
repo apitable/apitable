@@ -19,7 +19,7 @@
 import { Injectable } from '@nestjs/common';
 import { IRemoteChangeset } from '@apitable/core';
 import { isEmpty } from 'lodash';
-import { DatasheetRecordSubscriptionEntity } from 'database/entities/datasheet.record.subscription.entity';
+import { DatasheetRecordSubscriptionEntity } from './entities/datasheet.record.subscription.entity';
 
 @Injectable()
 export class DatasheetRecordSubscriptionBaseService {

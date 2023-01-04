@@ -23,7 +23,7 @@ import {
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
-import { OtService } from 'database/services/ot/ot.service';
+import { OtService } from 'database/ot/services/ot.service';
 import { IRoomChannelMessage } from '../interfaces/ot.interface';
 
 describe('OtService', () => {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from 'database/user/repositories/user.repository';
+import { UserModule } from 'database/user/user.module';
 import { UnitMemberRepository } from './repositories/unit.member.repository';
 import { UnitRepository } from './repositories/unit.repository';
 import { UnitTagRepository } from './repositories/unit.tag.repository';
@@ -12,6 +13,7 @@ import { UnitTeamService } from './services/unit.team.service';
 
 @Module({
   imports: [
+    UserModule,
     TypeOrmModule.forFeature([
       UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository,
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module

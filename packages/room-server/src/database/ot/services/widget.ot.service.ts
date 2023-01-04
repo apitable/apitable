@@ -19,7 +19,6 @@
 import { Injectable } from '@nestjs/common';
 import { IOperation, IRemoteChangeset, jot } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
-import { DatasheetWidgetEntity } from '../../entities/datasheet.widget.entity';
 import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { OtException } from '../../../shared/exception/ot.exception';
@@ -27,11 +26,12 @@ import { PermissionException } from '../../../shared/exception/permission.except
 import { ServerException } from '../../../shared/exception/server.exception';
 import { IdWorker } from '../../../shared/helpers';
 import { NodePermission } from 'shared/interfaces/axios.interfaces';
-import { EffectConstantName, ICommonData } from 'database/services/ot/ot.interface';
-import { ResourceService } from 'database/services/resource/resource.service';
+import { EffectConstantName, ICommonData } from 'database/ot/interfaces/ot.interface';
+import { ResourceService } from 'database/resource/services/resource.service';
 import { WidgetService } from 'database/widget/services/widget.service';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
+import { DatasheetWidgetEntity } from 'database/datasheet/entities/datasheet.widget.entity';
 
 @Injectable()
 export class WidgetOtService {

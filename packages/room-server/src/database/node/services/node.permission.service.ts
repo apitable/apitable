@@ -28,7 +28,7 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { getConnection } from 'typeorm';
 import { Logger } from 'winston';
 import { NodeRepository } from '../../node/repositories/node.repository';
-import { UserService } from '../user/user.service';
+import { UserService } from 'database/user/services/user.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 
 @Injectable()

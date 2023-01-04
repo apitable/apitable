@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetWidgetEntity } from '../../entities/datasheet.widget.entity';
+import { DatasheetWidgetEntity } from '../entities/datasheet.widget.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 @EntityRepository(DatasheetWidgetEntity)

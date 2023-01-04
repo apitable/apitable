@@ -28,9 +28,9 @@ import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { DatasheetChangesetRepository } from '../../datasheet/repositories/datasheet.changeset.repository';
-import { CommandOptionsService } from '../command/command.options.service';
-import { CommandService } from '../command/command.service';
-import { UnitService } from '../unit/unit.service';
+import { CommandOptionsService } from 'database/command/services/command.options.service';
+import { CommandService } from 'database/command/services/command.service';
+import { UnitService } from 'database/unit/services/unit.service';
 
 @Injectable()
 export class DatasheetChangesetService {

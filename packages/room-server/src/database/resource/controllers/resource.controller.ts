@@ -23,7 +23,7 @@ import { DatasheetRecordService } from 'database/datasheet/services/datasheet.re
 import { NodePermissionService } from 'database/node/services/node.permission.service';
 import { NodeService } from 'database/node/services/node.service';
 import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
-import { OtService } from 'database/services/ot/ot.service';
+import { OtService } from 'database/ot/services/ot.service';
 import { ChangesetService } from 'database/resource/services/changeset.service';
 import { ResourceService } from 'database/resource/services/resource.service';
 import { UserService } from 'database/user/services/user.service';
@@ -32,7 +32,7 @@ import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
 import { PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
 import { ChangesetView, DatasheetPack } from '../../interfaces';
-import { RecordHistoryQueryRo } from '../../ros/record.history.query.ro';
+import { RecordHistoryQueryRo } from '../../datasheet/ros/record.history.query.ro';
 import { RecordHistoryVo } from '../vos/record.history.vo';
 
 @Controller('nest/v1')

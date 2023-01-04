@@ -18,7 +18,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { IRemoteChangeset } from '@apitable/core';
-import { DatasheetChangesetSourceEntity } from '../../entities/datasheet.changeset.source.entity';
+import { DatasheetChangesetSourceEntity } from '../entities/datasheet.changeset.source.entity';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { IdWorker } from '../../../shared/helpers';
 import { DatasheetChangesetSourceRepository } from '../../datasheet/repositories/datasheet.changeset.source.repository';

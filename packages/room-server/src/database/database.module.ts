@@ -17,11 +17,8 @@
  */
 
 import { Module } from '@nestjs/common';
-import { RobotModule } from 'automation/robot.module';
 import { AlarmDynamicModule } from './alarm/alarm.dynamic.module';
 import { SubscriptionDynamicModule } from './subscription/subscription.dynamic.module';
-import { GrpcModule } from 'grpc/grpc.module';
-import { IsNodeExistConstraint } from './validations/validation.constraint';
 import { AttachmentModule } from './attachment/attachment.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DatasheetModule } from './datasheet/datasheet.module';
@@ -40,8 +37,6 @@ import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
-    RobotModule,
-    GrpcModule,
     AssetModule,
     AttachmentModule,
     AlarmDynamicModule.forRoot(),
@@ -60,9 +55,7 @@ import { EventModule } from './event/event.module';
     CommandModule,
     EventModule,
   ],
-  providers: [
-    IsNodeExistConstraint,
-  ],
+  providers: [],
   exports: [
     AssetModule,
     AttachmentModule,
@@ -81,7 +74,6 @@ import { EventModule } from './event/event.module';
     OtModule,
     CommandModule,
     EventModule,
-    IsNodeExistConstraint,
   ]
 })
 export class DatabaseModule {}

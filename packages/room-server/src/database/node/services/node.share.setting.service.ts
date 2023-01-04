@@ -20,7 +20,7 @@ import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'lodash';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { INodeShareProps } from 'shared/interfaces';
-import { NodeShareSettingEntity } from '../../entities/node.share.setting.entity';
+import { NodeShareSettingEntity } from '../entities/node.share.setting.entity';
 import { NodeRepository } from '../../node/repositories/node.repository';
 import { NodeShareSettingRepository } from '../../node/repositories/node.share.setting.repository';
 

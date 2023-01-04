@@ -1,6 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommandModule } from 'database/command/command.module';
 import { NodeModule } from 'database/node/node.module';
+import { ResourceModule } from 'database/resource/resource.module';
+import { SubscriptionDynamicModule } from 'database/subscription/subscription.dynamic.module';
+import { UnitModule } from 'database/unit/unit.module';
+import { UserModule } from 'database/user/user.module';
 import { DatasheetController } from './controllers/datasheet.controller';
 import { DatasheetChangesetRepository } from './repositories/datasheet.changeset.repository';
 import { DatasheetChangesetSourceRepository } from './repositories/datasheet.changeset.source.repository';
@@ -22,7 +27,12 @@ import { RecordCommentService } from './services/record.comment.service';
 
 @Module({
   imports: [
+    forwardRef(()=>ResourceModule),
     NodeModule,
+    UnitModule,
+    UserModule,
+    CommandModule,
+    SubscriptionDynamicModule.forRoot(),
     TypeOrmModule.forFeature([
       DatasheetChangesetRepository,
       DatasheetChangesetSourceRepository,
