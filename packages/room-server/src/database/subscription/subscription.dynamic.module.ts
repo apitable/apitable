@@ -17,7 +17,7 @@
  */
 
 import { DynamicModule, Module } from '@nestjs/common';
-import { DatasheetRecordSubscriptionBaseService } from 'database/services/subscription/datasheet.record.subscription.base.service';
+import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import path from 'path';
 import * as fs from 'fs';
 

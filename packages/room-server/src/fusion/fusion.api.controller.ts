@@ -23,7 +23,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
-import { AttachmentUploadRo } from 'database/ros/attachment.upload.ro';
+import { AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
 import { AttachmentService } from 'database/attachment/services/attachment.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';

@@ -17,7 +17,7 @@
  */
 
 import { DynamicModule, Module } from '@nestjs/common';
-import { DatasheetRecordAlarmBaseService } from 'database/services/alarm/datasheet.record.alarm.base.service';
+import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
 import path from 'path';
 import * as fs from 'fs';
 

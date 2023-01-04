@@ -17,27 +17,9 @@
  */
 
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
-import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
 import { RobotModule } from 'automation/robot.module';
-import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { ResourceDataInterceptor } from './middleware/resource.data.interceptor';
-import { AlarmDynamicModule } from './services/alarm/alarm.dynamic.module';
-import { CommandOptionsService } from './services/command/command.options.service';
-import { CommandService } from './services/command/command.service';
-import { ComputeFieldReferenceManager } from './datasheet/services/compute.field.reference.manager';
-import { EventService } from './services/event/event.service';
-import { FormService } from './form/services/form.service';
-import { MirrorService } from './mirror/services/mirror.service';
-import { DashboardOtService } from './services/ot/dashboard.ot.service';
-import { DatasheetOtService } from './services/ot/datasheet.ot.service';
-import { FormOtService } from './services/ot/form.ot.service';
-import { MirrorOtService } from './services/ot/mirror.ot.service';
-import { OtService } from './services/ot/ot.service';
-import { ResourceChangeHandler } from './services/ot/resource.change.handler';
-import { WidgetOtService } from './services/ot/widget.ot.service';
-import { SubscriptionDynamicModule } from './services/subscription/subscription.dynamic.module';
+import { AlarmDynamicModule } from './alarm/alarm.dynamic.module';
+import { SubscriptionDynamicModule } from './subscription/subscription.dynamic.module';
 import { GrpcModule } from 'grpc/grpc.module';
 import { IsNodeExistConstraint } from './validations/validation.constraint';
 import { AttachmentModule } from './attachment/attachment.module';
@@ -49,25 +31,21 @@ import { ResourceModule } from './resource/resource.module';
 import { WidgetModule } from './widget/widget.module';
 import { NodeModule } from './node/node.module';
 import { UserModule } from './user/user.module';
-import { AlarmModule } from './alarm/alarm.module';
-import { SubscriptionModule } from './subscription/subscription.module';
 import { AssetModule } from './asset/asset.module';
 import { UnitModule } from './unit/unit.module';
 import { DeveloperModule } from './developer/developer.module';
+import { OtModule } from './ot/ot.module';
+import { CommandModule } from './command/command.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
     RobotModule,
     GrpcModule,
+    AssetModule,
+    AttachmentModule,
     AlarmDynamicModule.forRoot(),
     SubscriptionDynamicModule.forRoot(),
-    // DatasheetServiceModule,
-    TypeOrmModule.forFeature([
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      AutomationTriggerRepository,
-      AutomationTriggerTypeRepository,
-    ]),
-    AttachmentModule,
     DashboardModule,
     DatasheetModule,
     FormModule,
@@ -76,28 +54,13 @@ import { DeveloperModule } from './developer/developer.module';
     WidgetModule,
     NodeModule,
     UserModule,
-    AlarmModule,
-    SubscriptionModule,
-    AssetModule,
     UnitModule,
     DeveloperModule,
+    OtModule,
+    CommandModule,
+    EventModule,
   ],
   providers: [
-    CommandService,
-    CommandOptionsService,
-    ComputeFieldReferenceManager,
-    EventService,
-    FormService,
-    MirrorService,
-    OtService,
-    DatasheetOtService,
-    DashboardOtService,
-    MirrorOtService,
-    FormOtService,
-    WidgetOtService,
-    ResourceChangeHandler,
-    ResourceDataInterceptor,
-    FusionApiTransformer,
     IsNodeExistConstraint,
   ],
   exports: [
@@ -105,21 +68,20 @@ import { DeveloperModule } from './developer/developer.module';
     AttachmentModule,
     AlarmDynamicModule.forRoot(), 
     SubscriptionDynamicModule.forRoot(), 
-    NodeModule,
-    ResourceModule,
     DashboardModule,
-    CommandService,
-    CommandOptionsService,
-    EventService,
-    OtService,
-    DatasheetOtService,
-    DashboardOtService,
-    MirrorOtService,
-    FormOtService,
-    WidgetOtService,
-    ResourceChangeHandler,
-    ResourceDataInterceptor,
-    IsNodeExistConstraint
+    DatasheetModule,
+    FormModule,
+    MirrorModule,
+    ResourceModule,
+    WidgetModule,
+    NodeModule,
+    UserModule,
+    UnitModule,
+    DeveloperModule,
+    OtModule,
+    CommandModule,
+    EventModule,
+    IsNodeExistConstraint,
   ]
 })
 export class DatabaseModule {}

@@ -17,7 +17,7 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { UnitTagRepository } from '../../datasheet/repositories/unit.tag.repository';
+import { UnitTagRepository } from '../repositories/unit.tag.repository';
 
 /**
  * unitTag related operations

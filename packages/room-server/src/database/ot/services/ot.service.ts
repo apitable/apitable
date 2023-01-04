@@ -32,14 +32,14 @@ import { Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
-import { DatasheetRecordSubscriptionBaseService } from 'database/services/subscription/datasheet.record.subscription.base.service';
+import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { EventService } from 'database/services/event/event.service';
+import { EventService } from 'database/event/services/event.service';
 import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodePermissionService } from 'database/services/node/node.permission.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
-import { DashboardOtService } from 'database/services/ot/dashboard.ot.service';
+import { DashboardOtService } from 'database/ot/services/dashboard.ot.service';
 import { DatasheetOtService } from 'database/services/ot/datasheet.ot.service';
 import { MirrorOtService } from 'database/services/ot/mirror.ot.service';
 import { WidgetOtService } from 'database/services/ot/widget.ot.service';
@@ -65,7 +65,7 @@ import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
 import { MetaService } from '../resource/meta.service';
 import { FormOtService } from './form.ot.service';
-import { EffectConstantName, IChangesetParseResult, ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from './ot.interface';
+import { EffectConstantName, IChangesetParseResult, ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from '../interfaces/ot.interface';
 import { ResourceChangeHandler } from './resource.change.handler';
 
 /**

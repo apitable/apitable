@@ -24,7 +24,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { OtService } from 'database/services/ot/ot.service';
-import { IRoomChannelMessage } from './ot.interface';
+import { IRoomChannelMessage } from '../interfaces/ot.interface';
 
 describe('OtService', () => {
   let app: NestFastifyApplication;

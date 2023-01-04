@@ -21,11 +21,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
 import { DatasheetWidgetRepository } from '../../datasheet/repositories/datasheet.widget.repository';
 import { Logger } from 'winston';
-import { RoomResourceRelService } from 'database/services/resource/room.resource.rel.service';
-import { EffectConstantName } from './ot.interface';
+import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';
-import { DatasheetFieldHandler } from 'database/services/datasheet/datasheet.field.handler';
-import { NodeService } from 'database/services/node/node.service';
+import { DatasheetFieldHandler } from 'database/datasheet/services/datasheet.field.handler';
+import { NodeService } from 'database/node/services/node.service';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 
 /**
  * @author Chambers

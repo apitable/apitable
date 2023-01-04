@@ -41,7 +41,7 @@ import { DatasheetChangesetSourceService } from '../datasheet/datasheet.changese
 import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
 import { DatasheetRecordSourceService } from '../datasheet/datasheet.record.source.service';
 import { DatasheetService } from '../datasheet/datasheet.service';
-import { EventService } from '../../services/event/event.service';
+import { EventService } from '../../event/services/event.service';
 import { NodeService } from '../node/node.service';
 
 @Injectable()

@@ -26,7 +26,7 @@ import { getConnection } from 'typeorm';
 import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitEntity } from '../../unit/entities/unit.entity';
 import { UnitInfo } from '../../interfaces';
-import { UnitRepository } from '../../datasheet/repositories/unit.repository';
+import { UnitRepository } from '../repositories/unit.repository';
 import { UserRepository } from '../../user/repositories/user.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTagService } from './unit.tag.service';

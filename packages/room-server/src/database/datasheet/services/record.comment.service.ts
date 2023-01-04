@@ -26,7 +26,7 @@ import { IAuthHeader } from 'shared/interfaces';
 import { JavaService } from 'shared/services/java/java.service';
 import { CommentDto } from '../dtos/comment.dto';
 import { RecordCommentRepository } from '../../datasheet/repositories/record.comment.repository';
-import { CommentListVo } from '../../vos/comment.list.vo';
+import { CommentListVo } from '../vos/comment.list.vo';
 
 @Injectable()
 export class RecordCommentService {

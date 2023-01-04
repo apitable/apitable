@@ -17,13 +17,19 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { ApiResponse } from 'fusion/vos/api.response';
-import { RecordHistoryDto } from '../datasheet/dtos/record.history.dto';
+import { CommentDto } from '../dtos/comment.dto';
+import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
 
-export class RecordHistoryVo extends ApiResponse<RecordHistoryDto | null> {
+export class CommentListVo {
   @ApiProperty({
-    type: RecordHistoryDto,
-    description: 'record history list',
+    type: [CommentDto],
+    description: 'record comment list',
   })
-  override data!: RecordHistoryDto;
+    comments!: CommentDto[];
+
+  @ApiProperty({
+    type: [CommentDto],
+    description: 'list of units involved in record comments',
+  })
+    units!: UnitBaseInfoDto[];
 }

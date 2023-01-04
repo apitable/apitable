@@ -28,7 +28,7 @@ import { AutomationService } from 'automation/services/automation.service';
 import { InjectLogger } from 'shared/common';
 import { getRecordUrl } from 'shared/helpers/env';
 import { Logger } from 'winston';
-import { CommandService } from '../command/command.service';
+import { CommandService } from '../../services/command/command.service';
 import { DatasheetService } from '../datasheet/datasheet.service';
 
 const VIKA_SERVICE_SLUG = 'vika';

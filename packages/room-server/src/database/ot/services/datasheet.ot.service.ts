@@ -23,7 +23,7 @@ import {
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { DatasheetRecordAlarmBaseService } from 'database/services/alarm/datasheet.record.alarm.base.service';
+import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
 import { EffectConstantName, ICommonData, IFieldData, IRestoreRecordInfo } from 'database/services/ot/ot.interface';

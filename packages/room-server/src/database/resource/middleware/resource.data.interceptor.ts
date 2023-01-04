@@ -18,8 +18,8 @@
 
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
 import { ResourceType, ResourceIdPrefix, IWidget } from '@apitable/core';
-import { InjectLogger } from '../../shared/common';
-import { ApiResponse } from '../../fusion/vos/api.response';
+import { InjectLogger } from '../../../shared/common';
+import { ApiResponse } from '../../../fusion/vos/api.response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
