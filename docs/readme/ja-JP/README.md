@@ -3,7 +3,7 @@
 
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="適用可能なカバー画像" />
     </a>
 </p>
 
@@ -12,12 +12,12 @@
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod開発環境" />
     </a>
     <!-- NodeJS -->
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java言語、Spring Framework" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -45,28 +45,28 @@
     </a>
 </p>
 
-## ✨ Quick Start
+## ✨ クイックスタート
 
-> APITable is currently a `Work In Progress`. 
+> APITableは現在 `作業中`です。 
 > 
-> We will publish the first release in late January 2023.
+> 最初のリリースは2023年1月下旬に公開されます。
 > 
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+> [Discord](https://discord.gg/TwNb9nfdBU) や [Twitter](https://twitter.com/apitable_com) に参加して連絡を取り合いましょう。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->APITable[^info]を試してみたい場合は、 [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable) をクリックしてください。
 
-If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
+ローカルまたはクラウドコンピューティング環境にAPITableをインストールしたい場合は、 [💾 インストール](#installation) を参照してください。
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
-## 🔥 Features
+## 🔥 機能
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">リアルタイムでのコラボレーション</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">自動フォーム</a>
     </th>
     
   </tr> 
@@ -86,10 +86,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">API第1パネル</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">無制限のクロステーブルリンク</a>
     </th>
 </tr>   
     
@@ -108,10 +108,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
    
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">強力な行/列の権限</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">埋め込み</a>
     </th>
   </tr>   
 
@@ -131,246 +131,246 @@ If you want to set up your local development environment, read our [🧑‍💻 
    
 </table>
 
-APITable provides a range of amazing features, from the personal to the enterprise.
+APITableは、個人から企業まで、さまざまな素晴らしい機能を提供します。
 
-- Advanced technology stack and open-source
-    - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
-    - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in  `<canvas> Rendering Engine`.
-    - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
-    - **100k+** data rows with real-time collaboration.
-    - Full-stack API access, from `Data` to `Metadata`.
-    - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-    - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- Beautiful and Rich Database-Spreadsheet UI
-    - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
-    - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-    - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
-    - `Dark mode` and theme customization available.
-    - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
-    - One-click API Panel
-- Batteries included
-    - Built-in 10+ official templates.
-    - Robot Automation and customization available.
-    - BI dashboard
-    - One-click auto-generated form
-    - Shareable and embeddable page.
-    - Multi-language support.
-    - Integration with n8n.io / Zapier / Appsmith... and more.
-- Excellent extensibility
-    - Extensible `Widget System` with over 20 officials open-source widgets.
-    - Customizable Graph & Chart & Dashboard
-    - Customizable Data Column Types
-    - Customizable Formulas
-    - Customizable Automation Robot Actions.
-- Enterprise-grade permissions
-    - `Mirror`, turn a View into a mirror to implement Row Permission.
-    - Activate `Column Permission` through a very simple operation.
-    - Folders / Sub-Folders / Files Permission.
-    - Tree structure folders and customizable node (file);
-    - Team Management & Organization Structure.
-- Enterprise features:
+- 高度なテクノロジースタックとオープンソース
+    - `リアルタイムコラボレーション` では、複数のユーザーがリアルタイムで、または `運用変換(OT)` アルゴリズムと同時に編集することができます。
+    - `<canvas> レンダリングエンジン` で、非常にスムーズで使いやすく、超高速なデータベース表計算インターフェイス。
+    - データベースネイティブアーキテクチャ:Changeset / Operation / Action / Snapshotなど。
+    - **リアルタイムのコラボレーションによる100k+** データ行。
+    - `データ` から `メタデータ` まで、フルスタック API アクセス。
+    - 一方向/双方向テーブルリンクと `無限クロスリンク`
+    - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
+- 美しくリッチなデータベース表計算用UI
+    - `CRUD`: 作成、読み込み、更新、テーブル、列、行の削除
+    - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
+    - `Space based`: アプリ/ベース構造の代わりに、分離されたワークスペースを使用し、テーブルを無制限にリンクできるようにします。
+    - `ダークモード` とテーマのカスタマイズが可能です。
+    - `7 種類のビュータイプ`: グリッドビュー (データシート) / ギャラリービュー / マインドマップビュー / カンバンビュー / フル機能 ガントビュー / カレンダー ビュー
+    - ワンクリックAPIパネル
+- バッテリーが付属しています
+    - 10以上の公式テンプレートを内蔵しています。
+    - ロボットの自動化と利用可能なカスタマイズ。
+    - BI ダッシュボード
+    - ワンクリック自動生成フォーム
+    - 共有可能で埋め込み可能なページ
+    - 多言語対応。
+    - n8n.io / Zapier / Appsmith...などとの統合。
+- 優れた拡張
+    - 20名以上の職員のオープンソースウィジェットを備えた拡張可能な `ウィジェット システム`。
+    - カスタマイズ可能なグラフ & チャート & ダッシュボード
+    - カスタマイズ可能なデータ列のタイプ
+    - カスタマイズ可能な数式
+    - カスタマイズ可能な自動化ロボットアクション。
+- エンタープライズグレードの権限
+    - `ミラー`, ビューをミラーにして、Row Permissionを実装する。
+    - 非常に簡単な操作で `列権限` を有効にします。
+    - フォルダ/サブフォルダー / ファイルのパーミッション。
+    - ツリー構造フォルダとカスタマイズ可能なノード (ファイル);
+    - チーム管理 & 組織構造
+- エンタープライズ機能：
     - SAML
-    - Single-Sign-On (SSO)
+    - シングルサインオン(SSO)
     - Audit
-    - Database Auto Backup
-    - Data Exporter
-    - Watermark
+    - データベースの自動バックアップ
+    - データエクスポート
+    - ウォーターマーク
 - ....
 
-With extensible widgets and plugins, you can add more features.
+拡張可能なウィジェットとプラグインを使用すると、さらに機能を追加できます。
 
-## 💥 Use Cases
+## 💥 ユース・ケース
 
-Why you must know APITable for your next software?
+次のソフトウェアでAPITableを知る必要があるのはなぜですか?
 
-- As super management software
-    - Flexible Project Management & Tasks / Issues Management.
-    - Marketing Lead Management.
-    - Most flexible and connectable CRM.
-    - Flexible Business Intelligence (BI).
-    - People-Friendly Forms and Surveys
-    - Flexible ERP.
-    - Low-code and no-code platform.
-    - ...and more, APITable puts 1000 softwares in your pocket.
-- As a visual database infrastructure
-    - **Embed** APITable into your own software UIs.
-    - Visual Database with REST API.
-    - Admin dashboard.
-    - Central configuration management.
-    - All-in-one enterprise database that **connect all** your software.
-    - ...and more, APITable connects everything.
-- Also, it is open source and extensible
+- スーパーマネージメントソフトウェアとして
+    - 柔軟なプロジェクト管理 & タスク/課題管理
+    - マーケティングリード管理
+    - 最も柔軟で接続可能なCRM。
+    - 柔軟なビジネスインテリジェンス(BI)。
+    - 人気のフォームと調査
+    - 柔軟なERP。
+    - ローコードとノーコードプラットフォーム。
+    - ...その他、APITable はあなたのポケットに 1000 ソフトウェアを入れています。
+- 視覚データベースのインフラストラクチャとして
+    - **ご自身のソフトウェアUIに** APITableを埋め込む。
+    - REST API を使用したビジュアルデータベース。
+    - 管理ダッシュボード
+    - 中央の構成管理
+    - すべてのソフトウェアを **** 接続するオールインワンエンタープライズデータベース
+    - ...その他、APITableはすべてを接続します。
+- また、オープンソースで拡張可能
 
-## 💞 API-oriented
+## 💞 API 指定
 
 #### API UI Panel
 
-Clicking the `API` button in the right corner will show the API Panel
+右隅にある `API` ボタンをクリックすると、API パネル が表示されます。
 
 #### SQL-like query
 
-APITable will provides a Datasheet Query Language (DQL) to query your database-spreadsheet contents.
+APITableは、データベースのスプレッドシートの内容を照会するためのDatasheet Query Language(DQL)を提供します。
 
-## 💝 Embed-friendly
+## 💝 フレンドリーな
 
-#### Share and Embed
-Share your datasheet table or folder. Embed them by copying and pasting HTML scripts.
+#### 共有して埋め込み
+データシートのテーブルまたはフォルダを共有します。 HTMLスクリプトをコピーして貼り付けることで埋め込みます。
 
-#### Enterprise-ready Embedding
+#### エンタープライズ対応の埋め込み
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
-
-
+[APITable.com](https://apitable.com) は、より多くのエンタープライズ対応の組み込み機能をセキュリティに提供します。
 
 
 
-## Installation
 
-Make sure you have `docker` & `curl` installed locally.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+## インストール
+
+ローカルに `docker` & `curl` がインストールされていることを確認してください。
+
+Docker Machineがインストールされている場合は、ターミナルを開いて以下を実行してください。
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+ブラウザで [https://localhost:80](https://localhost:80) を開きます。 (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
 
-## 🧑‍💻 Contributing
+## 🧑<unk> 💻 コントリビュート
 
-Welcome, and thank you for your interest in contributing to APITable!
+APITableに貢献していただき、ありがとうございます！
 
-There are many ways in which you can contribute, beyond writing code.
+コードを書く以外にも、貢献できる方法はたくさんあります。
 
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
+このリポジトリの [コントリビューションガイドライン](./CONTRIBUTING.md) を読んで、コントリビューションの方法を学ぶことができます。
 
-Here's a quick guide to help you contribute to APITable.
+APITableに貢献するためのクイックガイドはこちらです。
 
-### Development environment
+### 開発環境
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+ローカル環境の設定方法については、 [開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
-### Git workflow basic
+### Git ワークフロー 基本
 
-Here's a general APITable git workflow:
+一般的な APITable git ワークフローは次のとおりです。
 
-1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
+1. 課題を作成し、必要な機能を記述してください -> [APITableの問題](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some features'`)
-5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
+3. フィーチャーブランチを作成する (`git checkout -b my-new-feature`)
+4. 変更をコミットする (`git commit -am '機能を追加'`)
+5. ブランチを公開する (`git push origin my-new-feature`)
+6. 新しいプルリクエストを作成する -> [フォーク間でプルリクエストを作成します](https://github.com/apitable/apitable/compare)
 
 
-### Work conventions
+### 作業条件
 
-APITable use these common conventions:
+これらの一般的な規約を使用できます。
 
-- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
-- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
-- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
-- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- Gitのブランチモデルは何ですか？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- フォークプロジェクトでコラボレーションする方法は? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- 良いコミットメッセージを書く方法は? [従来のコミット](https://www.conventionalcommits.org/)
+- 更新履歴のフォーマットは何ですか? [変更履歴を保持](https://keepachangelog.com/en/1.0.0/)
+- バージョン管理とタグ付け方法は? [セマンティックバージョン](https://semver.org/)
+- Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
-### Documentations
+### 文書
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
-  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
-  - Scripting (Coming soon...)
+- [ヘルプセンター](https://help.apitable.com/)
+- [👩‍💻 開発者センター](https://developers.apitable.com/)
+  - [<unk> REST API ドキュメント](https://developers.apitable.com/api/introduction/)
+  - ウィジェット SDK (近日公開予定...)
+  - スクリプト (近日公開...)
 
 
 ## 🛣 Roadmap
 
-### Future Features
-- Heavy-code Interface Builder
-- Embbedable  3rd party documentation components
-- SQL-like Domain-Specific Languages
-- As an IdP
-- Web 3 features
+### 今後の機能
+- ヘビーコードインターフェースビルダー
+- 埋め込み可能なサードパーティ製ドキュメントコンポーネント
+- SQLのようなドメイン固有の言語
+- IdPとして
+- Web 3の機能
 - ...
 
 
-### Hosted and Enterprise versions offer advanced features
+### Hosted and Enterpriseのバージョンは高度な機能を提供します
 
-- As an IdP;
+- IDPとして;
 - SAML
-- Single-Sign-On
+- シングルサインオン
 - Audit
-- Database Backup
-- Watermark
+- データベースバックアップ
+- ウォーターマーク
 
-For more information, please contact us at <support@apitable.com>.
+詳細については、 <support@apitable.com> までご連絡ください。
 
-## 👫 Get Involved
+## 👫 参加する
 
-### 🌏 Why we create APITable and open-source?
+### 🌏 なぜAPITableでオープンソースを作るのですか?
 
-- We believe that `Database is the cornerstone` of all the software.
+- 我々は、 `データベースがすべてのソフトウェアの礎石` であると信じています。
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+- 私たちは、オープンソーシング `APITable` が `Push Human Beings Forward`を行うことができると信じています。
 
-### We are hiring remotely!
+### 私たちはリモートで雇用しています!
 
-We always search for good talents for APITable:
+私たちは常にAPITableのために良い才能を探しています:
 
-- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
+- **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 
 Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
 
 
-## 📺 Screenshot
+## 📺 スクリーンショット
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
 </p>
 
-## 🥰 License
+## 🥰 ライセンス
 
-> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> このリポジトリには、AGPL に基づいてリリースされた APITable の Open Source エディションのソースコードが含まれています。
 > 
-> If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+> あなた自身のAPITableのコピーを実行したい場合、または開発に貢献したい場合は、これはあなたのための場所です。
 > 
-> See [LICENSING](./LICENSING.md) for details.
+> 詳細は [ライセンス](./LICENSING.md) を参照してください。
 > 
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
 
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: AGPL-3.0 でライセンスされます。 [APITable Ltd](https://apitable.com).
