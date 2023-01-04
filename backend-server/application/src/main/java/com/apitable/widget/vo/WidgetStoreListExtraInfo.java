@@ -16,17 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget.facade;
+package com.apitable.widget.vo;
 
-import java.util.List;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-import com.apitable.interfaces.widget.model.WidgetCopyOption;
+/**
+ * <p>
+ * Widget Store List Extended Information View
+ * </p>
+ */
+@Data
+@ApiModel("Widget Store List Extended Information View")
+public class WidgetStoreListExtraInfo {
 
-public interface WidgetServiceFacade {
+    @ApiModelProperty(value = "Widget official website address", position = 1)
+    private String website;
 
-    String getSpaceIdByWidgetId(String widgetId);
-
-    void checkWidgetReference(List<String> childrenNodeIds, List<String> widgetIds);
-
-    void copyWidget(WidgetCopyOption copyOption);
 }

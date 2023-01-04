@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget;
+package com.apitable.widget.dto;
 
-import com.apitable.interfaces.widget.facade.DefaultWidgetServiceAuditFacadeImpl;
-import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
+import lombok.Data;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+@Data
+public class WidgetBaseInfo {
 
-@Configuration(proxyBeanMethods = false)
-public class WidgetContextConfig {
+    private String nodeId;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public WidgetServiceAuditFacade defaultWidgetServiceFacade() {
-        return new DefaultWidgetServiceAuditFacadeImpl();
-    }
+    private String widgetPackageId;
+
+    private String widgetId;
+
+    private String name;
+
+    private String storage;
+
+    private Long revision;
 }

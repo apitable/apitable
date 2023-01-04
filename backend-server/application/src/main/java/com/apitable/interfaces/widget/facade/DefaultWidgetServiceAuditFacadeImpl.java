@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget;
+package com.apitable.interfaces.widget.facade;
 
-import com.apitable.interfaces.widget.facade.DefaultWidgetServiceAuditFacadeImpl;
-import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.apitable.widget.ro.WidgetStoreListRo;
+import com.apitable.widget.vo.WidgetStoreListInfo;
 
-@Configuration(proxyBeanMethods = false)
-public class WidgetContextConfig {
+public class DefaultWidgetServiceAuditFacadeImpl implements WidgetServiceAuditFacade {
 
-    @Bean
-    @ConditionalOnMissingBean
-    public WidgetServiceAuditFacade defaultWidgetServiceFacade() {
-        return new DefaultWidgetServiceAuditFacadeImpl();
+    @Override
+    public List<WidgetStoreListInfo> getWaitReviewWidgetList(WidgetStoreListRo body) {
+        return new ArrayList<>();
     }
 }

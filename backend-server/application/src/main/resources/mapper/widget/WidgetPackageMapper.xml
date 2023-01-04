@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.widget.mapper.WidgetPackageMapper">
+
+    <select id="selectByPackageIdsIncludeDelete" resultType="com.apitable.widget.dto.WidgetPackageDTO">
+        SELECT vwp.id, vwp.package_id,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"',
+        vwp.i18n_name ->> '$."en-US"') AS name,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${language}"'), vwp.i18n_description ->>
+        '$."${language}"', vwp.i18n_description ->> '$."en-US"') AS description,
+        vwp.icon, vwp.cover, vwp.status,
+        vwp.installed_num,
+        vwp.status,
+        vwp.author_name,
+        vwp.author_email,
+        vwp.author_icon,
+        vwp.author_link,
+        vwp.package_type,
+        vwp.release_type,
+        vwpr.version,
+        vwpr.release_code_bundle,
+        vwp.sandbox,
+        vwp.widget_body ->> '$.fatherWidgetId' as fatherWidgetId,
+        vwpr.install_env_code,
+        vwpr.runtime_env_code
+        FROM ${tablePrefix}widget_package vwp
+        LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id
+        WHERE vwp.package_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectStatusByPackageId" resultType="java.lang.Integer">
+        SELECT status
+        FROM ${tablePrefix}widget_package
+        WHERE package_id = #{widgetPackageId}
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}widget_package(id, package_id, name, name_en, icon, cover, description, version,
+        status, created_by)
+        VALUE
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.packageId}, #{item.name}, #{item.nameEn}, #{item.icon}, #{item.cover},
+                #{item.description}, #{item.version}, #{item.status}, #{item.createdBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateInstalledNumByPackageId">
+        UPDATE ${tablePrefix}widget_package
+        SET installed_num = installed_num + #{times}
+        WHERE package_id = #{widgetPackageId}
+    </update>
+
+    <select id="countNumByPackageId" resultType="boolean">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}widget_package vwp
+        WHERE vwp.package_id = #{packageId}
+        LIMIT 1
+    </select>
+
+    <select id="selectWidgetByPackageId" resultType="com.apitable.widget.entity.WidgetPackageEntity">
+        SELECT *
+        FROM ${tablePrefix}widget_package vwp
+        WHERE vwp.package_id = #{packageId}
+        AND vwp.is_deleted = 0
+    </select>
+
+    <update id="updateStatusAndReleaseIdByPackageId">
+        UPDATE ${tablePrefix}widget_package
+        <set>
+            status = #{status}
+            <if test="releaseId != null or (status == 1 and releaseId == null)">
+                ,release_id = #{releaseId}
+            </if>
+            ,updated_by = #{userId}
+        </set>
+        WHERE package_id = #{packageId}
+        AND is_deleted = 0
+    </update>
+
+    <select id="selectWidgetPackageInfoByPackageIdOrSpaceId"
+            resultType="com.apitable.widget.vo.WidgetPackageInfoVo">
+        SELECT vwp.package_id,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"',
+        vwp.i18n_name ->> '$."en-US"') AS name,
+        vwp.icon,
+        vwp.cover,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${language}"'), vwp.i18n_description ->>
+        '$."${language}"', vwp.i18n_description ->> '$."en-US"') AS description,
+        vwp.status,
+        vwpr.version,
+        vwp.author_name,
+        vwp.author_email,
+        vwp.author_icon,
+        vwp.author_link,
+        vwp.package_type,
+        vwp.release_type
+        FROM ${tablePrefix}widget_package vwp
+        LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id
+        LEFT JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.type = 0
+        WHERE vwp.is_deleted = 0
+        <choose>
+            <when test="spaceId != null and spaceId != ''">
+                AND vwpas.space_id = #{spaceId}
+            </when>
+            <otherwise>
+                AND vwp.package_id = #{packageId}
+            </otherwise>
+        </choose>
+    </select>
+
+    <resultMap id="widgetTemplatePackageInfoResultMap"
+               type="com.apitable.widget.vo.WidgetTemplatePackageInfo">
+        <result column="widgetPackageId" property="widgetPackageId"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="cover" property="cover"/>
+        <result column="description" property="description"/>
+        <result column="version" property="version"/>
+        <result column="release_code_bundle" property="releaseCodeBundle"/>
+        <result column="source_code_bundle" property="sourceCodeBundle"/>
+        <result column="widgetOpenSource" property="extras.widgetOpenSource"/>
+        <result column="templateCover" property="extras.templateCover"/>
+    </resultMap>
+
+    <select id="selectWidgetTemplatePackageList" resultMap="widgetTemplatePackageInfoResultMap">
+        SELECT vwp.package_id AS widgetPackageId,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"',
+        vwp.i18n_name ->> '$."en-US"') AS name,
+        vwp.icon,
+        vwp.cover,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${language}"'), vwp.i18n_description ->>
+        '$."${language}"', vwp.i18n_description ->> '$."en-US"') AS description,
+        vwpr.version,
+        vwpr.release_code_bundle,
+        vwpr.source_code_bundle,
+        vwp.widget_body ->> '$.widgetOpenSource' as widgetOpenSource,
+        vwp.widget_body ->> '$.templateCover' as templateCover
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        INNER JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        WHERE vwp.release_type = 1
+        AND vwp.is_template = 1
+        AND vwpr.STATUS = 1
+        AND vwp.STATUS = 3
+        AND vwp.is_deleted = 0
+        AND vwpas.type = 0
+        ORDER BY vwpas.widget_sort
+    </select>
+
+    <resultMap id="selectWidgetStoreListResultMap" type="com.apitable.widget.vo.WidgetStoreListInfo">
+        <result column="widgetPackageId" property="widgetPackageId"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="cover" property="cover"/>
+        <result column="description" property="description"/>
+        <result column="version" property="version"/>
+        <result column="author_name" property="authorName"/>
+        <result column="author_icon" property="authorIcon"/>
+        <result column="author_email" property="authorEmail"/>
+        <result column="author_link" property="authorLink"/>
+        <result column="package_type" property="packageType"/>
+        <result column="release_type" property="releaseType"/>
+        <result column="status" property="status"/>
+        <result column="isEmpower" property="isEmpower"/>
+        <result column="website" property="extras.website"/>
+        <result column="install_env_code" property="installEnvCode"/>
+        <result column="runtime_env_code" property="runtimeEnvCode"/>
+    </resultMap>
+
+    <select id="selectWidgetStoreList" resultMap="selectWidgetStoreListResultMap">
+        SELECT vwp.package_id AS widgetPackageId,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${storeListRo.language}"'), vwp.i18n_name ->>
+        '$."${storeListRo.language}"', vwp.i18n_name ->> '$."en-US"') AS name,
+        vwp.icon,
+        vwp.cover,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${storeListRo.language}"'), vwp.i18n_description ->>
+        '$."${storeListRo.language}"', vwp.i18n_description ->> '$."en-US"') AS description,
+        vwpr.version,
+        vwp.status,
+        vwp.author_name,
+        vwp.author_email,
+        vwp.author_link,
+        vwp.author_icon,
+        vwp.package_type,
+        vwp.release_type,
+        IF(vwpas.type = 1, TRUE, FALSE) AS isEmpower,
+        vwp.widget_body ->> '$.website' AS website,
+        vwpas.widget_sort,
+        vwpr.install_env_code,
+        vwpr.runtime_env_code
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+        AND vwp.is_template = 0
+        <choose>
+            <when test="storeListRo.type != null and storeListRo.type == 0">
+                AND
+                (
+                ( vwp.release_type = 0 AND vwpas.type = 0 AND vwp.STATUS = 3 AND ( (vwp.owner = #{userId} AND
+                vwpas.space_id = #{spaceId}) OR vwpas.space_id = #{spaceId}) )
+                <if test="storeListRo.filter == null or !storeListRo.filter">
+                    OR
+                    ( vwp.release_type = 0 AND vwpas.type = 0 AND vwp.STATUS = 0 AND vwp.owner = #{userId} AND
+                    vwpas.space_id = #{spaceId} )
+                    OR
+                    ( vwp.release_type = 0 AND vwpas.type = 0 AND vwpr.STATUS IN (0, 2) AND vwp.owner = #{userId} AND
+                    vwpas.space_id = #{spaceId} )
+                </if>
+                OR
+                ( vwp.release_type = 0 AND vwpas.type = 1 AND vwpas.space_id = #{spaceId} )
+                )
+            </when>
+            <otherwise>
+                AND vwp.release_type = 1 AND vwpr.STATUS = 1 AND vwp.STATUS = 3 AND vwp.is_enabled = 1
+            </otherwise>
+        </choose>
+        ORDER BY vwpas.widget_sort
+    </select>
+
+    <select id="selectWidgetSpaceBy" resultType="com.apitable.widget.dto.WidgetSpaceByDTO">
+        SELECT vwpas.space_id,
+        vum.member_name AS authorName,
+        vu.avatar AS authorIcon,
+        vu.uuid AS ownerUuid,
+        vwp.owner,
+        vum.id AS ownerMemberId
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu ON vwp.owner = vu.id AND vu.is_deleted = 0
+        INNER JOIN ${tablePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = vwpas.space_id AND
+        vum.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+        AND vwp.release_type = 0
+        AND vwpas.type = 0
+        AND vwp.package_id = #{packageId}
+        UNION ALL
+        SELECT vwpas.space_id,
+        vwp.author_name AS authorName,
+        vwp.author_icon AS authorIcon,
+        NULL AS ownerUuid,
+        NULL AS owner,
+        NULL AS ownerMemberId
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+        AND vwp.release_type = 1
+        AND vwpas.type = 0
+        AND vwp.package_id = #{packageId}
+    </select>
+
+    <select id="selectMaxWidgetSort" resultType="int">
+        SELECT IF(vwp.release_type = 1, IFNULL(MAX(vwpas.widget_sort), 1), IFNULL(MAX(vwpas.widget_sort), 10000)) AS
+        max_sort
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+        <choose>
+            <when test="releaseType != null or releaseType == 1">
+                AND vwp.release_type = 1
+            </when>
+            <otherwise>
+                AND vwp.release_type = 0
+                AND vwpas.space_id = #{spaceId}
+            </otherwise>
+        </choose>
+    </select>
+
+    <update id="singleUpdateGlobalAndTemplateConfig">
+        UPDATE ${tablePrefix}widget_package vwp ,${tablePrefix}widget_package_auth_space vwpas
+        <set>
+            <if test="globalWidgetInfo.isTemplate != null">
+                vwp.is_template = #{globalWidgetInfo.isTemplate},
+            </if>
+            <if test="globalWidgetInfo.isEnabled != null">
+                vwp.is_enabled = #{globalWidgetInfo.isEnabled},
+            </if>
+            <if test="globalWidgetInfo.openSourceAddres != null and globalWidgetInfo.openSourceAddres != ''">
+                vwp.widget_body = JSON_SET(IFNULL(widget_body, '{}'), '$.widgetOpenSource',
+                #{globalWidgetInfo.openSourceAddres}),
+            </if>
+            <if test="globalWidgetInfo.templateCover != null and globalWidgetInfo.templateCover != ''">
+                vwp.widget_body = JSON_SET(IFNULL(widget_body, '{}'), '$.templateCover',
+                #{globalWidgetInfo.templateCover}),
+            </if>
+            <if test="globalWidgetInfo.website != null and globalWidgetInfo.website != ''">
+                vwp.widget_body = JSON_SET(IFNULL(widget_body, '{}'), '$.website', #{globalWidgetInfo.website}),
+            </if>
+            <if test="globalWidgetInfo.widgetSort != null">
+                vwpas.widget_sort = #{globalWidgetInfo.widgetSort},
+            </if>
+        </set>
+        WHERE vwp.package_id = vwpas.package_id
+        AND vwp.release_type = 1
+        AND vwpas.type = 0
+        AND vwp.status = 3
+        AND vwp.package_id = #{globalWidgetInfo.packageId}
+    </update>
+
+    <select id="selectGlobalWidgetSort" resultType="java.lang.Integer">
+        SELECT vwpas.widget_sort
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        WHERE vwp.is_deleted = 0 AND vwp.release_type = 1 AND vwp.status = 3 AND vwpas.type = 0 AND vwp.package_id =
+        #{packageId}
+    </select>
+
+    <select id="countByIssuedIdArchive" resultType="int">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}widget_package vwp
+        WHERE vwp.widget_body -> '$.issuedIdArchive.dstId' = #{dstId}
+        AND vwp.widget_body -> '$.issuedIdArchive.recordId' = #{recordId}
+    </select>
+
+    <select id="countByAuditSubmitResultArchive" resultType="int">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}widget_package vwp
+        WHERE vwp.widget_body -> '$.auditSubmitResultArchive.dstId' = #{dstId}
+        AND vwp.widget_body -> '$.auditSubmitResultArchive.recordId' = #{recotdId}
+    </select>
+
+    <select id="selectByFatherWidgetIdAndVersion"
+            resultType="com.apitable.widget.entity.WidgetPackageEntity">
+        SELECT vwp.*
+        FROM ${tablePrefix}widget_package vwp,
+        ${tablePrefix}widget_package_release vwpr
+        WHERE vwp.package_id = vwpr.package_id
+        AND vwp.widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
+        AND vwpr.version = #{version}
+        AND vwp.is_deleted = 0
+        AND vwp.release_type = 10
+    </select>
+
+    <update id="updateWidgetBodyById">
+        UPDATE ${tablePrefix}widget_package
+        SET widget_body = #{widgetBody}
+        WHERE id = #{id}
+    </update>
+</mapper>

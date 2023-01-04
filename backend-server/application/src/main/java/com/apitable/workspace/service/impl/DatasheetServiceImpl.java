@@ -50,6 +50,7 @@ import cn.hutool.http.HtmlUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.apitable.widget.service.IWidgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +62,6 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
-import com.apitable.interfaces.widget.model.WidgetCopyOption;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
@@ -186,7 +185,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private SocialServiceFacade socialServiceFacade;
 
     @Resource
-    private WidgetServiceFacade widgetServiceFacade;
+    private IWidgetService iWidgetService;
 
     @Override
     public void batchSave(List<DatasheetEntity> entities) {
@@ -563,7 +562,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
         metaMapRo.setWidgetPanels(newWidgetPanels);
         // batch generation of new components
-        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap));
+        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
     }
 
     @Override

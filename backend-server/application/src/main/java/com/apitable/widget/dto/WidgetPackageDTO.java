@@ -16,21 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget;
+package com.apitable.widget.dto;
 
-import com.apitable.interfaces.widget.facade.DefaultWidgetServiceAuditFacadeImpl;
-import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
+import lombok.Data;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+@Data
+public class WidgetPackageDTO {
 
-@Configuration(proxyBeanMethods = false)
-public class WidgetContextConfig {
+    private Long id;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public WidgetServiceAuditFacade defaultWidgetServiceFacade() {
-        return new DefaultWidgetServiceAuditFacadeImpl();
-    }
+    private String packageId;
+
+    private String name;
+
+    private String description;
+
+    private String icon;
+
+    private String cover;
+
+    private Integer status;
+
+    private Integer installedNum;
+
+    private String authorName;
+
+    private String authorIcon;
+
+    private String authorEmail;
+
+    private String authorLink;
+
+    private Integer packageType;
+
+    private Integer releaseType;
+
+    private String version;
+
+    private String releaseCodeBundle;
+
+    private Boolean sandbox;
+
+    private String fatherWidgetId;
+
+    private String installEnvCode;
+
+    private String runtimeEnvCode;
 }
