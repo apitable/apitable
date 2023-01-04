@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.widget.mapper.WidgetMapper">
+    <select id="selectCountBySpaceIdAndWidgetIds" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM ${tablePrefix}widget
+        WHERE space_id = #{spaceId}
+        AND widget_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectWidgetBaseInfoByWidgetIds"
+            resultType="com.apitable.widget.dto.WidgetBaseInfo">
+        SELECT node_id, widget_id, package_id AS widgetPackageId, name, storage, revision
+        FROM ${tablePrefix}widget
+        WHERE widget_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectInfoBySpaceIdAndNodeType"
+            resultType="com.apitable.widget.vo.WidgetInfo">
+        SELECT vw.widget_id,
+               vw.name      AS widgetName,
+               vwp.cover    AS widgetPackageCover,
+               vwp.icon     AS widgetPackageIcon,
+               vdw.dst_id   AS datasheetId,
+               vn.node_name AS datasheetName
+        FROM ${tablePrefix}widget vw
+                     JOIN ${tablePrefix}widget_package vwp
+                ON vw.package_id = vwp.package_id
+                     JOIN ${tablePrefix}datasheet_widget vdw
+                ON vw.widget_id = vdw.widget_id
+                     JOIN ${tablePrefix}node vn
+                ON vw.node_id = vn.node_id AND vn.type = #{nodeType}
+                        AND vn.is_rubbish = 0 AND vn.is_template = 0
+        WHERE vw.space_id = #{spaceId}
+          AND vw.is_deleted = 0
+          AND vwp.status = 3
+        ORDER BY vw.created_at DESC
+    </select>
+
+    <select id="selectInfoByNodeId" resultType="com.apitable.widget.vo.WidgetInfo">
+        SELECT vw.widget_id,
+               vw.name     AS widgetName,
+               vwp.cover   AS widgetPackageCover,
+               vwp.icon    AS widgetPackageIcon,
+               vdw.dst_id  AS datasheetId,
+               vd.dst_name AS datasheetName
+        FROM ${tablePrefix}widget vw
+                     JOIN ${tablePrefix}widget_package vwp
+                ON vw.package_id = vwp.package_id
+                     JOIN ${tablePrefix}datasheet_widget vdw
+                ON vw.widget_id = vdw.widget_id
+                     JOIN ${tablePrefix}datasheet vd
+                ON vdw.dst_id = vd.dst_id AND vd.is_deleted = 0
+        WHERE vw.node_id = #{nodeId}
+          AND vw.is_deleted = 0
+          AND vwp.status = 3
+        ORDER BY vw.created_at DESC
+    </select>
+
+    <select id="selectNodeWidgetDtoByNodeIds"
+            resultType="com.apitable.widget.dto.NodeWidgetDto">
+        SELECT vw.name AS widgetName,
+        vdw.dst_id AS dstId,
+        vw.node_id AS nodeId
+        FROM ${tablePrefix}widget vw
+        JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+        WHERE vw.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vw.is_deleted = 0
+        ORDER BY vw.created_at DESC
+    </select>
+
+    <select id="selectWidgetDtoByWidgetIds"
+            resultType="com.apitable.widget.dto.WidgetDTO">
+        SELECT vw.widget_id, vw.node_id, vdw.dst_id, vdw.source_id
+        FROM ${tablePrefix}widget vw
+        JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+        JOIN ${tablePrefix}node vn ON vw.node_id = vn.node_id
+        AND vn.is_rubbish = 0 AND vn.is_template = 0
+        WHERE vw.widget_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vw.is_deleted = 0
+    </select>
+
+    <select id="selectSpaceIdByWidgetIds" resultType="java.lang.String">
+        SELECT DISTINCT space_id
+        FROM ${tablePrefix}widget
+        WHERE widget_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectWidgetIdsByNodeId" resultType="java.lang.String">
+        SELECT widget_id
+        FROM ${tablePrefix}widget
+        WHERE node_id = #{nodeId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectDataSourceDstIdsByNodeIds" resultType="java.lang.String">
+        SELECT DISTINCT vdw.dst_id
+        FROM ${tablePrefix}widget vw
+        JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+        JOIN ${tablePrefix}node vn ON vn.node_id = vdw.dst_id AND vn.is_rubbish = 0
+        WHERE vw.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}widget(id, space_id, node_id, package_id, widget_id,
+        name, storage, created_by, updated_by)
+        VALUES
+        <foreach item="entity" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{entity.id}, #{entity.spaceId}, #{entity.nodeId}, #{entity.packageId},
+                #{entity.widgetId},
+                #{entity.name}, #{entity.storage}, #{entity.createdBy},
+                #{entity.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectSpaceIdByWidgetIdIncludeDeleted" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}widget
+        WHERE widget_id = #{widgetId}
+    </select>
+</mapper>

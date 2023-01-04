@@ -42,7 +42,6 @@ service RoomServingService {
   rpc CopyNodeEffectOt (NodeCopyRo) returns (grpc.common.BasicResult);
   // delete datasheet effect ot
   rpc DeleteNodeEffectOt (NodeDeleteRo) returns (grpc.common.BasicResult);
-
 }
 
 message WatchRoomRo {
