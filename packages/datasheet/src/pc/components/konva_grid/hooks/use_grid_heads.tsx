@@ -71,7 +71,8 @@ export const useHeads = (props: IUseHeadsProps) => {
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
 
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-  const isEmbedShow = !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar;
+  const { embedId } = useSelector(state => state.pageParams);
+  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
   const getFieldHeadStatus = useCallback((fieldId: string, columnIndex: number) => {
     const iconVisible = (pointAreaType === AreaType.Grid || [
       KONVA_DATASHEET_ID.GRID_FIELD_HEAD_DESC,
