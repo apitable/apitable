@@ -37,13 +37,13 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.widget.service.IWidgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.cache.bean.RecommendConfig;
 import com.apitable.shared.cache.bean.RecommendConfig.AlbumGroup;
@@ -142,7 +142,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     private INodeRelService iNodeRelService;
 
     @Resource
-    private WidgetServiceFacade widgetServiceFacade;
+    private IWidgetService iWidgetService;
 
     @Override
     public String getSpaceId(String templateId) {
@@ -200,7 +200,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.FORM.getNodeType(), TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
         // If there is a dashboard, verify whether the data source of the component references an external data table
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DASHBOARD.getNodeType())) {
-            widgetServiceFacade.checkWidgetReference(subNodeIds, nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()));
+            iWidgetService.checkWidgetReference(subNodeIds, nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()));
         }
         // If there is a mirror, check whether the external data table is mapped
         this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.MIRROR.getNodeType(), TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);

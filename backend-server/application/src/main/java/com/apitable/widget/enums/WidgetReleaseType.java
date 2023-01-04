@@ -16,21 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget;
+package com.apitable.widget.enums;
 
-import com.apitable.interfaces.widget.facade.DefaultWidgetServiceAuditFacadeImpl;
-import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.serializer.IBaseEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+@Getter
+@AllArgsConstructor
+public enum WidgetReleaseType implements IBaseEnum {
 
-@Configuration(proxyBeanMethods = false)
-public class WidgetContextConfig {
+    SPACE(0),
 
-    @Bean
-    @ConditionalOnMissingBean
-    public WidgetServiceAuditFacade defaultWidgetServiceFacade() {
-        return new DefaultWidgetServiceAuditFacadeImpl();
+    GLOBAL(1),
+
+    WAIT_REVIEW(10),
+
+    ;
+
+    private final Integer value;
+
+    public static WidgetReleaseType toEnum(Integer type) {
+        if (null != type) {
+            for (WidgetReleaseType e : WidgetReleaseType.values()) {
+                if (e.getValue().equals(type)) {
+                    return e;
+                }
+            }
+        }
+        throw new BusinessException("Applet Publishing Type Error");
     }
+
 }
