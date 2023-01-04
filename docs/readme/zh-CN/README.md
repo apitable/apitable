@@ -3,7 +3,7 @@
 
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="APITable封面图像" />
     </a>
 </p>
 
@@ -12,12 +12,12 @@
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod 开发环境" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript 语言，NestJS 框架" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java 语言，Spring 框架" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -45,28 +45,28 @@
     </a>
 </p>
 
-## ✨ Quick Start
+## ✨ 快速启动
 
-> APITable is currently a `Work In Progress`. 
+> APITable 目前是 `正在进行中的工作`。 
 > 
-> We will publish the first release in late January 2023.
+> 我们将在2023年1月下旬公布第一份版本。
 > 
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
-## 🔥 Features
+## 🔥 功能特性
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">实时协同</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">神奇表单</a>
     </th>
     
   </tr> 
@@ -89,7 +89,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
       <a href="#">API-first Panel</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">无限跨表关联</a>
     </th>
 </tr>   
     
@@ -111,7 +111,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
       <a href="#">Powerful Rows/Columns Permissions</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">内嵌</a>
     </th>
   </tr>   
 
@@ -131,9 +131,9 @@ If you want to set up your local development environment, read our [🧑‍💻 
    
 </table>
 
-APITable provides a range of amazing features, from the personal to the enterprise.
+APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
-- Advanced technology stack and open-source
+- 先进技术栈
     - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
     - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in  `<canvas> Rendering Engine`.
     - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
@@ -141,22 +141,22 @@ APITable provides a range of amazing features, from the personal to the enterpri
     - Full-stack API access, from `Data` to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links`
     - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- Beautiful and Rich Database-Spreadsheet UI
+- 美观和齐全的多维表格UI界面
     - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
     - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
     - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
     - `Dark mode` and theme customization available.
     - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
     - One-click API Panel
-- Batteries included
-    - Built-in 10+ official templates.
+- 装备齐全
+    - 内置的 10 + 官方模板。
     - Robot Automation and customization available.
-    - BI dashboard
+    - BI 仪表板
     - One-click auto-generated form
     - Shareable and embeddable page.
-    - Multi-language support.
+    - 多语言支持
     - Integration with n8n.io / Zapier / Appsmith... and more.
-- Excellent extensibility
+- 卓越的扩展性
     - Extensible `Widget System` with over 20 officials open-source widgets.
     - Customizable Graph & Chart & Dashboard
     - Customizable Data Column Types
@@ -168,9 +168,9 @@ APITable provides a range of amazing features, from the personal to the enterpri
     - Folders / Sub-Folders / Files Permission.
     - Tree structure folders and customizable node (file);
     - Team Management & Organization Structure.
-- Enterprise features:
+- 企业级应用功能
     - SAML
-    - Single-Sign-On (SSO)
+    - 单点登录（SSO）
     - Audit
     - Database Auto Backup
     - Data Exporter
@@ -187,7 +187,7 @@ Why you must know APITable for your next software?
     - Flexible Project Management & Tasks / Issues Management.
     - Marketing Lead Management.
     - Most flexible and connectable CRM.
-    - Flexible Business Intelligence (BI).
+    - 灵活的BI图表系统
     - People-Friendly Forms and Surveys
     - Flexible ERP.
     - Low-code and no-code platform.
@@ -203,13 +203,13 @@ Why you must know APITable for your next software?
 
 ## 💞 API-oriented
 
-#### API UI Panel
+#### API 面板
 
-Clicking the `API` button in the right corner will show the API Panel
+点击右角的 `API` 按钮将显示 API 面板
 
-#### SQL-like query
+#### SQL式查询
 
-APITable will provides a Datasheet Query Language (DQL) to query your database-spreadsheet contents.
+APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
 ## 💝 Embed-friendly
 
