@@ -1,23 +1,19 @@
 import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CheckOutlined, ColumnUrlOutlined, InformationSmallOutlined, ShareQrcodeOutlined } from '@apitable/icons';
+import { CheckOutlined, ColumnUrlOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
-import { Popover, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { Message, MobileSelect, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { useCatalogTreeRequest } from 'pc/hooks';
-import { useInviteRequest } from 'pc/hooks/use_invite_request';
-import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from "pc/utils/env";
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
-import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
-import { DownloadQrCode } from './download_qr_code';
-
+import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import styles from './style.module.less';
 
 export interface IPublicShareLinkProps {
@@ -29,7 +25,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
   const dispatch = useDispatch();
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
-  const { generateLinkReq } = useInviteRequest();
   const { run: getShareSettings, data: shareSettings } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
   const { userInfo, treeNodesMap, spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
@@ -143,33 +138,8 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     handleCloseShare();
   };
 
-  const getLink = async () => {
-    const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
-    if (token) {
-      const _link = generateInviteLink(userInfo, token, nodeId);
-      setLink(_link);
-    }
-  };
-
   const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled(spaceInfo);
 
-  const [link, setLink] = useState<string>();
-
-  useEffect(() => {
-    if (invitable) {
-      getLink();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invitable]);
-
-  /**
-   * Copy invitation link
-   */
-  const handleCopyInviteLink = () => {
-    if (link) {
-      copy2clipBoard(link);
-    }
-  };
 
   /**
    * open share's auth-dropdown
@@ -204,26 +174,6 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       canBeEdited ? 'canBeEdited' :
         'canBeStored';
   }
-
-  const renderPopover = () => {
-    return (
-      <div className={styles.qrCodePopoverContent} id='downloadInviteContainer'>
-        <DownloadQrCode isMobile={isMobile} nodeId={nodeId} width={188} />
-      </div>
-    );
-  };
-
-  const renderInviteByQrCode = () => {
-    return (
-      <LinkButton
-        className={styles.inviteMoreMethod}
-        underline={false}
-        prefixIcon={<ShareQrcodeOutlined currentColor />}
-      >
-        {t(Strings.invite_by_qr_code)}
-      </LinkButton>
-    );
-  };
 
   return (
     <>
@@ -293,27 +243,14 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       {invitable && (
         <div className={styles.inviteMore}>
           <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-          <Tooltip title={t(Strings.default_link_join_tip)} placement='top' overlayStyle={{ width: 190 }}>
-            <LinkButton
-              className={styles.inviteMoreMethod}
-              underline={false}
-              onClick={handleCopyInviteLink}
-              prefixIcon={<ColumnUrlOutlined currentColor />}
-            >
-              {t(Strings.invite_via_link)}
-            </LinkButton>
-          </Tooltip>
-          {!isMobile && (
-            <Popover
-              overlayClassName={styles.qrCodePopover}
-              placement='rightBottom'
-              title={null}
-              content={renderPopover()}
-              trigger='click'
-            >
-              {renderInviteByQrCode()}
-            </Popover>
-          )}
+          <LinkButton
+            className={styles.inviteMoreMethod}
+            underline={false}
+            onClick={() => expandInviteModal()}
+            prefixIcon={<ColumnUrlOutlined currentColor />}
+          >
+            {t(Strings.invite_via_link)}
+          </LinkButton>
         </div>
       )}
     </>
