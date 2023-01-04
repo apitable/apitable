@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { stringToArray } from 'shared/helpers/fusion.helper';
 
 export class RecordDeleteRo {
   @ApiProperty({
@@ -24,5 +26,6 @@ export class RecordDeleteRo {
     description: 'The set of recordId to be deleted',
     example: 'recwZ6yV3Srv3',
   })
+  @Transform(value => stringToArray(value), { toClassOnly: true })
   recordIds!: string[];
 }
