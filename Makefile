@@ -27,7 +27,7 @@ DEVENV_PROJECT_NAME := apitable-devenv
 export DEVENV_PROJECT_NAME
 endif
 
-_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yaml -f docker-compose.dataenv.yaml
+_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yml -f docker-compose.dataenv.yaml
 _DEVENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.devenv.yaml
 
 OS_NAME := $(shell uname -s | tr A-Z a-z)
@@ -95,6 +95,11 @@ build-local:
 	make _build-java
 	make _build-core
 	make _build-room
+	make _build-web
+
+_build-web:
+	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
+	yarn build:dst
 
 _build-java:
 	cd backend-server && ./gradlew build -x test
@@ -133,42 +138,33 @@ _test-ut-core-cov:
 
 ###### 【room server unit test】 ######
 SIKP_INITDB=false
-RUN_TEST_ROOM_MODE=docker
 
 _test_init_db:
-	@echo "${GREEN} Run Test Room Mode:$(RUN_TEST_ROOM_MODE) ${RESET}"
-	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
-	docker compose -f docker-compose.unit-test.yml pull test-initdb
-ifeq ($(RUN_TEST_ROOM_MODE),docker)
+	@echo "${YELLOW}init-db initializing..${RESET}"
 	docker compose -f docker-compose.unit-test.yml run --rm \
-	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-	test-initdb
-else ifeq ($(RUN_TEST_ROOM_MODE),local)
-	docker compose -f docker-compose.unit-test.yml run --rm \
-	-e DB_HOST=test-mysql \
-	test-initdb
-endif
+    	-e DB_HOST=test-mysql \
+    	test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
-	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
+	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
 _test_dockers: ## run depends container in test step
-	docker compose -f docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis ;\
-	docker compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	docker compose -f docker-compose.unit-test.yml up -d test-mysql ;\
+	docker compose -f docker-compose.unit-test.yml up -d test-redis ;\
+	docker compose -f docker-compose.unit-test.yml up -d test-rabbitmq
 
 test-ut-room-local:
 	make _test_clean
 	docker compose -f docker-compose.unit-test.yml up -d test-redis test-mysql test-rabbitmq
 ifeq ($(SIKP_INITDB),false)
 	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=local
+	make _test_init_db
 endif
 	make _build-room
-	MYSQL_HOST=127.0.0.1 MYSQL_PORT=23306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
-	REDIS_HOST=127.0.0.1 REDIS_PORT=26379 REDIS_DB=4 REDIS_PASSWORD= \
-	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=25672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
+	MYSQL_HOST=127.0.0.1 MYSQL_PORT=3306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
+	REDIS_HOST=127.0.0.1 REDIS_PORT=6379 REDIS_DB=4 REDIS_PASSWORD= \
+	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=5672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
 	INSTANCE_COUNT=1 APPLICATION_NAME=NEST_REST_SERVER \
 	yarn test:ut:room
 	make _test_clean
@@ -179,12 +175,12 @@ test-ut-room-docker:
 	make _test_clean
 	make _test_dockers
 	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=docker
+	make _test_init_db
 	docker compose -f docker-compose.unit-test.yml build unit-test-room
 	docker compose -f docker-compose.unit-test.yml run --rm \
-		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
-		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		-e MYSQL_HOST=test-mysql \
+		-e REDIS_HOST=test-redis \
+		-e RABBITMQ_HOST=test-rabbitmq \
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	if [ -d "./packages/room-server/coverage" ]; then \
@@ -197,23 +193,29 @@ _clean_room_jest_coverage:
 
 ###### 【backend server unit test】 ######
 
-_test_backend_unit_test: ## backend server unit test
-	docker compose -f docker-compose.unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
-		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
-		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
-		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
-		-e BACKEND_GRPC_PORT=0 \
-		unit-test-backend
-
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
 	make _test_clean
-	make _test_dockers
-	sleep 20
-	make _test_init_db RUN_TEST_ROOM_MODE=docker
-	make _test_backend_unit_test
+	docker compose -f docker-compose.ut-backend.yml up -d
+	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	make _test_clean
+
+test-ut-backend:
+	cd backend-server ;\
+	DATABASE_TABLE_PREFIX=apitable_ \
+	MYSQL_HOST=127.0.0.1  \
+	MYSQL_PORT=3306 \
+	MYSQL_USERNAME=apitable \
+	MYSQL_PASSWORD=password \
+	MYSQL_DATABASE=apitable_test \
+	REDIS_HOST=127.0.0.1 \
+	REDIS_PORT=6379 \
+	RABBITMQ_HOST=127.0.0.1 \
+	RABBITMQ_PORT=5672 \
+	RABBITMQ_USERNAME=apitable \
+	RABBITMQ_PASSWORD=password \
+	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
 
@@ -269,6 +271,10 @@ run-local: ## run services with local programming language envinroment
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	cd backend-server ;\
+	./gradlew build -x test ;\
+	MYSQL_HOST=127.0.0.1 \
+	REDIS_HOST=127.0.0.1 \
+	RABBITMQ_HOST=127.0.0.1 \
 	java -jar application/build/libs/application.jar
 
 _run-local-room-server:
