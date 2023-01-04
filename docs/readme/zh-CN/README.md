@@ -51,11 +51,11 @@
 > 
 > 我们将在2023年1月下旬公布第一份版本。
 > 
-> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
+如果您想要在本地或云端计算环境中安装 APITable ，请参阅 [💾 安装](#installation)
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
 ## 🔥 功能特性
 
@@ -86,7 +86,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">API-第一面板</a>
     </th>
     <th>
       <a href="#">无限跨表关联</a>
@@ -108,7 +108,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
    
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">强大的行/列权限</a>
     </th>
     <th>
       <a href="#">内嵌</a>
@@ -134,74 +134,74 @@ If you want to set up your local development environment, read our [🧑‍💻 
 APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 - 先进技术栈
-    - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
-    - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in  `<canvas> Rendering Engine`.
-    - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
-    - **100k+** data rows with real-time collaboration.
-    - Full-stack API access, from `Data` to `Metadata`.
-    - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-    - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
+    - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑。
+    - 在  `中极其顺畅、方便用户、超快的数据库电子表格接口<canvas> 渲染引擎`
+    - 数据库本地架构：变更集/操作/动作/快照等等。
+    - **100k+** 数据行与实时合作。
+    - 全堆栈访问 API ，从 `数据` 到 `元数据`。
+    - 单向/双向表链接和 `无限交叉链接`
+    - 社区友好的编程语言和框架，TypeScript ([下一步JS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring 启动](https://spring.io/projects/spring-boot))
 - 美观和齐全的多维表格UI界面
-    - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
-    - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-    - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
-    - `Dark mode` and theme customization available.
-    - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View /  Kanban View / Full-Feature Gantt View / Calendar View
-    - One-click API Panel
+    - `CRUD`: 创建、阅读、更新、删除表、列和行
+    - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
+    - `基于`的空格：使用分开的工作区取代基于App/Base-的结构，使无限制的表格链接成为可能。
+    - `可用的暗色模式` 和主题定制.
+    - `7 种视图类型`: 网格视图(Dataseet) / 图库视图/ Mindmap 视图/ Kanban 视图/全功能网格视图/日历视图
+    - 单击API面板
 - 装备齐全
     - 内置的 10 + 官方模板。
-    - Robot Automation and customization available.
+    - 机器人自动化和自定义可用.
     - BI 仪表板
-    - One-click auto-generated form
-    - Shareable and embeddable page.
+    - 单击自动生成的表单
+    - 可共享和嵌入的页面。
     - 多语言支持
-    - Integration with n8n.io / Zapier / Appsmith... and more.
+    - 与 n8n.io / Zapier / Appsmith... 及更多。
 - 卓越的扩展性
-    - Extensible `Widget System` with over 20 officials open-source widgets.
-    - Customizable Graph & Chart & Dashboard
-    - Customizable Data Column Types
-    - Customizable Formulas
-    - Customizable Automation Robot Actions.
-- Enterprise-grade permissions
-    - `Mirror`, turn a View into a mirror to implement Row Permission.
-    - Activate `Column Permission` through a very simple operation.
-    - Folders / Sub-Folders / Files Permission.
-    - Tree structure folders and customizable node (file);
-    - Team Management & Organization Structure.
+    - 可扩展的 `部件系统` 有超过 20 个官员开源部件。
+    - 自定义图表 & 图表 & 仪表板
+    - 可自定义数据列类型
+    - 可自定义公式：
+    - 可自定义自动机器人操作。
+- 企业级权限
+    - `镜像`, 将视图变成镜像以实现行权限。
+    - 通过非常简单的操作激活 `列权限`。
+    - 文件夹/子文件夹/文件权限
+    - 树结构文件夹和可自定义的节点(文件)；
+    - 团队管理 & 组织结构
 - 企业级应用功能
     - SAML
     - 单点登录（SSO）
-    - Audit
-    - Database Auto Backup
-    - Data Exporter
-    - Watermark
+    - 审计
+    - 数据库自动备份
+    - 数据导出器
+    - 水标
 - ....
 
-With extensible widgets and plugins, you can add more features.
+使用可扩展的部件和插件，您可以添加更多功能。
 
-## 💥 Use Cases
+## 💥 应用场景
 
-Why you must know APITable for your next software?
+为什么你必须知道APITable并作为你的下一个软件？
 
-- As super management software
-    - Flexible Project Management & Tasks / Issues Management.
-    - Marketing Lead Management.
-    - Most flexible and connectable CRM.
+- 作为超级管理软件
+    - 灵活的项目管理 & 任务/问题管理
+    - 营销潜在客户管理。
+    - 最灵活和可连接的CRM。
     - 灵活的BI图表系统
-    - People-Friendly Forms and Surveys
-    - Flexible ERP.
-    - Low-code and no-code platform.
-    - ...and more, APITable puts 1000 softwares in your pocket.
-- As a visual database infrastructure
-    - **Embed** APITable into your own software UIs.
-    - Visual Database with REST API.
-    - Admin dashboard.
-    - Central configuration management.
-    - All-in-one enterprise database that **connect all** your software.
-    - ...and more, APITable connects everything.
-- Also, it is open source and extensible
+    - 有利于人民的形式和调查
+    - 弹性企业资源规划系统。
+    - 低代码和无代码平台。
+    - ...及更多, APITable 将 1000 个软件放入您的口袋中。
+- 作为一个可视化数据库基础设施
+    - **嵌入** 个应用到您自己的软件界面。
+    - 带有REST API的视觉数据库。
+    - 管理仪表板
+    - 中央配置管理。
+    - **连接您所有的** 个软件的全部企业数据库。
+    - ...及更多, APITable 连接到一切。
+- 此外，它是开源和可扩展的
 
-## 💞 API-oriented
+## :argriving_hearts: API-oried
 
 #### API 面板
 
@@ -211,166 +211,166 @@ Why you must know APITable for your next software?
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-## 💝 Embed-friendly
+## :hear_with_ribbon: Embed-friendly
 
-#### Share and Embed
-Share your datasheet table or folder. Embed them by copying and pasting HTML scripts.
+#### 分享和嵌入
+分享您的数据表或文件夹。 通过复制和粘贴HTML脚本嵌入它们。
 
-#### Enterprise-ready Embedding
+#### 企业准备嵌入
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
-
-
+[APITable.com](https://apitable.com) 为证券提供更多准备好企业嵌入功能。
 
 
 
-## Installation
 
-Make sure you have `docker` & `curl` installed locally.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+## 安装
+
+请确保您已在本地安装 `docker` & `curl` 。
+
+如果您的计算机安装了 Docker ，打开您的终端并这样运行：
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
-
-
-## 🧑‍💻 Contributing
-
-Welcome, and thank you for your interest in contributing to APITable!
-
-There are many ways in which you can contribute, beyond writing code.
-
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
-
-Here's a quick guide to help you contribute to APITable.
-
-### Development environment
-
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
-
-### Git workflow basic
-
-Here's a general APITable git workflow:
-
-1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
-2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some features'`)
-5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
+如果你想要设置你的本地开发环境，请阅读我们的 [🧑stiptop_compute: 开发者指南](./docs/contribute/developer-guide.md)
 
 
-### Work conventions
+## 🧑digh:laptop_compute: contribution
 
-APITable use these common conventions:
+欢迎并感谢您有兴趣为APITable作出贡献！
 
-- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
-- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
-- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
-- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+除了编写代码，您还有许多方法可以做出贡献。
 
-### Documentations
+你可以阅读这个仓库的 [贡献指南](./CONTRIBUTING.md) 来学习如何贡献.
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
-  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
-  - Scripting (Coming soon...)
+这是一个快速指南来帮助您为API做出贡献。
+
+### 发展环境
+
+在我们的 [开发者指南](./docs/contribute/developer-guide.md) 中学习如何设置您的本地环境。
+
+### Git 工作流基础
+
+下面是一般的 APITit 工作流：
+
+1. 创建一个问题并描述您想要的功能 -> [APITable 问题](https://github.com/apitable/apitable/issues)
+2. 派生此项目 -> [Fork APIable 项目](https://github.com/apitable/apitable/fork)
+3. 创建您的功能分支(`git 结帐-b 我-新功能`)
+4. 提交您的更改(`git commit-am '添加一些功能'`)
+5. 发布分支 (`git 推送源自我的新功能`)
+6. 创建新的拉取请求 -> [跨叉创建拉取请求](https://github.com/apitable/apitable/compare)
 
 
-## 🛣 Roadmap
+### 工作公约
 
-### Future Features
-- Heavy-code Interface Builder
-- Embbedable  3rd party documentation components
-- SQL-like Domain-Specific Languages
-- As an IdP
-- Web 3 features
+2. 可适用这些共同公约：
+
+- 我们的 Git 分支模型是什么？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- 如何在派生项目上进行合作？ [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- 如何写入好的提交消息？ [常规承诺](https://www.conventionalcommits.org/)
+- 我们的更新日志格式是什么？ [保留更新日志](https://keepachangelog.com/en/1.0.0/)
+- 如何进行版本控制和标记？ [语义版](https://semver.org/)
+- Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- 什么是 TypeScript 编码准则？ -> [TypeScript 样式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+
+### 文件
+
+- [帮助中心](https://help.apitable.com/)
+- [👩‍💻 开发者中心](https://developers.apitable.com/)
+  - [SST API 文档](https://developers.apitable.com/api/introduction/)
+  - 小部件 SDK (即将到来...)
+  - 脚本(即将到来...)
+
+
+## :mobway: Roadmap
+
+### 未来的功能
+- 重代码接口构建器
+- 可嵌入第三方文件部分
+- SQL类域特定语言
+- IdP
+- Web 3 功能
 - ...
 
 
-### Hosted and Enterprise versions offer advanced features
+### 托管版本和企业版本提供高级功能
 
-- As an IdP;
+- IdP；
 - SAML
-- Single-Sign-On
-- Audit
-- Database Backup
-- Watermark
+- 单点登录
+- 审计
+- 数据库备份
+- 水标
 
-For more information, please contact us at <support@apitable.com>.
+欲了解更多信息，请通过 <support@apitable.com> 联系我们。
 
-## 👫 Get Involved
+## 👫 获得参与
 
-### 🌏 Why we create APITable and open-source?
+### :glube_showing_Asia-Australia：我们为什么要创建 APITable 和 open-source？
 
-- We believe that `Database is the cornerstone` of all the software.
+- 我们认为 `数据库是所有软件` 的基石。
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+- 我们认为开放源码 `APITable` 工作可以 `将人类推向前进`
 
-### We are hiring remotely!
+### 我们正在远程雇用！
 
-We always search for good talents for APITable:
+我们总是为APITable寻找优秀人才：
 
-- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **全堆栈开发者**: 你有React, NestJS, TypeScript, Spring Boot, Java, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
+无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到 [talent@apitable。 om](mailto:talent@apitable.com)。
 
 
-## 📺 Screenshot
+## 📺 截图
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="可用屏幕截图图像" />
 </p>
 
-## 🥰 License
+## 🥰 许可协议
 
-> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> 此仓库包含在 AGPL 下发布的 Open Source 版本的 APITable源代码。
 > 
-> If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+> 如果你想运行你自己的 APITable 副本或对发展作出贡献，那就是你的地方。
 > 
-> See [LICENSING](./LICENSING.md) for details.
+> 详情请参阅 [LICENSING](./LICENSING.md)
 > 
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+> 如果您想要在线使用 APITable ，那么您不需要运行此代码。 我们在 [APITable 上提供一个托管的应用版本。 om](https://apitable.com) 适合全局加速器。
 
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: 使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
