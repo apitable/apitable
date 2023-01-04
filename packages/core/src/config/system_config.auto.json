@@ -359,12 +359,6 @@
         "official_avatar": {
             "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
         },
-        "onboarding_customer_service_background_img_url": {
-            "value": "https://s1.vika.cn/space/2022/02/28/20566ca6516d477c913f5ca79e554c68"
-        },
-        "onboarding_customer_service_qrcode_avatar_img_url": {
-            "value": "https://s1.vika.cn/space/2022/02/25/1730b0599510406fb7ce1b7c9ed78393"
-        },
         "page_apply_logout": {
             "value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
         },
@@ -415,9 +409,6 @@
         },
         "system_configuration_default_theme": {
             "value": "light"
-        },
-        "system_configuration_error_msg_qrcode": {
-            "value": "{   \"website\": \"/space/2022/04/26/51352131c1d74332b8ab8a57483b0f3f?attname=66_8c5b355964c515a9d2ce55bc423e5a18.png\",   \"wecom\": \"/space/2022/04/26/2c706fa40e3442d8b643a30ee22f5572?attname=66_8d7dce3b6ff28bc245a2db34bf4ab55a.png\",   \"dingtalk\": \"/space/2022/05/17/9bb75b8710e040be9fb99d7b28a6ad0e?attname=125_f2112b2006e4b42cc4b0e7a320f87da7.png\",   \"feishu\": \"https://u.vika.cn/z9ygm\" }"
         },
         "system_configuration_logo_with_name_white_font": {
             "value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
@@ -3582,6 +3573,7 @@
             }
         ],
         "events": {
+            "_": {},
             "address_shown": {
                 "module": "address",
                 "name": "shown"

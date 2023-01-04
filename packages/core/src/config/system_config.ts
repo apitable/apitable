@@ -24,7 +24,7 @@ import { SystemConfigInterfaceNotifications, SystemConfigInterface, Templates, T
 /**
   * config class, directly get the entire class of SystemConfig
   */
-const SystemConfig: SystemConfigInterface = systemConfigJson as SystemConfigInterface; 
+const SystemConfig: SystemConfigInterface = systemConfigJson as any;
 
 /**
  * api tip config class
