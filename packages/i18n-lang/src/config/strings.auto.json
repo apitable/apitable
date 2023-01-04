@@ -1393,6 +1393,11 @@
             "en_US": "(After uploading, write the data to the attachment cells as soon as possible, otherwise the link of the attachment might get invalid)",
             "zh_HK": "（上傳完畢後，請盡快寫入 data 中的數據到附件單元格里，否則附件鏈接可能失效）"
         },
+        "api_usage": {
+            "zh_CN": "API 用量",
+            "en_US": "API usage",
+            "zh_HK": "API 用量"
+        },
         "api_your_token": {
             "zh_CN": "_替换成你的API_Token_",
             "en_US": "_Paste_Your_API_Token_",
@@ -3860,6 +3865,11 @@
             "en_US": "Click \"+\" to generate the token ",
             "zh_HK": "請點擊“+”手動生成 Token"
         },
+        "dingtalk_isv_production_single_record_comment_mentioned": {
+            "zh_CN": "8f41773b6eb54d6bba9d82392956dea1",
+            "en_US": "8f41773b6eb54d6bba9d82392956dea1",
+            "zh_HK": "8f41773b6eb54d6bba9d82392956dea1"
+        },
         "direction_above": {
             "zh_CN": "上方",
             "en_US": "above",
@@ -5132,6 +5142,11 @@
             "zh_CN": "列名配置",
             "en_US": "Field name setting",
             "zh_HK": "列名配置"
+        },
+        "field_permission": {
+            "zh_CN": "列权限",
+            "en_US": "Field permissions",
+            "zh_HK": "列權限"
         },
         "field_range": {
             "zh_CN": "指定范围",
@@ -8208,6 +8223,12 @@
             "en_US": "Laos",
             "zh_HK": "老撾"
         },
+        "lark_single_record_comment_mentioned": {
+            "zh_CN": "**维格表: **{nodeName}\n**记录: **{recordTitle}\n\n\"{commentContent}\"\n"
+        },
+        "lark_single_record_comment_mentioned_title": {
+            "zh_CN": "**有人在评论中提及你**"
+        },
         "last_step": {
             "zh_CN": "上一步",
             "en_US": "Back",
@@ -9859,6 +9880,11 @@
             "zh_CN": "你所在的空间站超出了 1000 个文件数量上限，本次新建操作无效",
             "en_US": "Your action failed because the Space has reached the maximum number of files",
             "zh_HK": "你所在的空間站超出了 1000 個文件數量上限，本次新建操作無效"
+        },
+        "node_permission": {
+            "zh_CN": "文件权限",
+            "en_US": "File permissions",
+            "zh_HK": "文件權限"
         },
         "nodes_per_space": {
             "zh_CN": "文件数量",
@@ -12096,6 +12122,11 @@
             "zh_CN": "没有更多了",
             "en_US": "The end",
             "zh_HK": "沒有更多了"
+        },
+        "robot_run_history_desc": {
+            "zh_CN": "公测期间，你可以看到该机器人所有的运行历史 <a href='https://help.vika.cn/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">如何排查问题</a>",
+            "en_US": "You have access to all run history during the public beta <a href='https://help.vika.cn/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">Trouble shooting</a>",
+            "zh_HK": "公測期間，你可以看到該機器人所有的運行歷史 <a href='https://help.vika.cn/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">如何排查問題</a>"
         },
         "robot_run_history_error": {
             "zh_CN": "错误",
@@ -15726,6 +15757,15 @@
             "zh_CN": "点击这里更新",
             "en_US": "Please click to refresh",
             "zh_HK": "點擊這裡更新"
+        },
+        "wecom_single_record_comment_mentioned": {
+            "zh_CN": "维格表：{nodeName}\n记录：{recordTitle}\n\n\"{commentContent}\"",
+            "en_US": "Datasheet：{nodeName}\nRecord：{recordTitle}\n\n\"{commentContent}\"\n",
+            "zh_HK": "維格表：{nodeName}\n記錄：{recordTitle}\n\n\"{commentContent}\""
+        },
+        "wecom_single_record_comment_mentioned_title": {
+            "zh_CN": "有人在评论中提及你",
+            "en_US": " You're mentioned in a record comment"
         },
         "WEEKS": {
             "zh_CN": "周",
