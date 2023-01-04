@@ -323,7 +323,8 @@ export const useGrid = (props: IUseGridProps) => {
    * Add column button
    */
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-  const isEmbedShow = !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar;
+  const { embedId } = useSelector(state => state.pageParams);
+  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
     const { fieldId } = visibleColumns[columnStopIndex];

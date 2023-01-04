@@ -106,9 +106,8 @@ export const View: React.FC = () => {
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-
-  const { isShowEmbedToolBar } = embedInfo;
-
+  const { isShowEmbedToolBar = true } = embedInfo;
+  
   return (
     <div
       id={DATASHEET_VIEW_CONTAINER_ID}
