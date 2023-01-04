@@ -26,4 +26,4 @@ export const theme = produce((themeDraft: ThemeName = ThemeName.Light, action: I
     return action.payload;
   }
   return themeDraft;
-}, ThemeName.Light);
+}, ThemeName.Light as ThemeName);
