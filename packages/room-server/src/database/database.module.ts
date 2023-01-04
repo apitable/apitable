@@ -22,33 +22,14 @@ import { AutomationTriggerRepository } from 'automation/repositories/automation.
 import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
 import { RobotModule } from 'automation/robot.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { DatasheetController } from './controllers/datasheet.controller';
 import { ResourceDataInterceptor } from './middleware/resource.data.interceptor';
-import { DatasheetChangesetRepository } from './repositories/datasheet.changeset.repository';
-import { DatasheetChangesetSourceRepository } from './repositories/datasheet.changeset.source.repository';
-import { DatasheetMetaRepository } from './repositories/datasheet.meta.repository';
-import { DatasheetRecordRepository } from './repositories/datasheet.record.repository';
-import { DatasheetRecordSourceRepository } from './repositories/datasheet.record.source.repository';
-import { DatasheetRepository } from './repositories/datasheet.repository';
-import { DatasheetWidgetRepository } from './repositories/datasheet.widget.repository';
-import { RecordCommentRepository } from './repositories/record.comment.repository';
 import { AlarmDynamicModule } from './services/alarm/alarm.dynamic.module';
-import { AttachmentService } from './attachment/services/attachment.service';
 import { CommandOptionsService } from './services/command/command.options.service';
 import { CommandService } from './services/command/command.service';
-import { DashboardService } from './dashboard/services/dashboard.service';
-import { ComputeFieldReferenceManager } from './services/datasheet/compute.field.reference.manager';
-import { DatasheetChangesetService } from './services/datasheet/datasheet.changeset.service';
-import { DatasheetChangesetSourceService } from './services/datasheet/datasheet.changeset.source.service';
-import { DatasheetFieldHandler } from './services/datasheet/datasheet.field.handler';
-import { DatasheetMetaService } from './services/datasheet/datasheet.meta.service';
-import { DatasheetRecordService } from './services/datasheet/datasheet.record.service';
-import { DatasheetRecordSourceService } from './services/datasheet/datasheet.record.source.service';
-import { DatasheetService } from './services/datasheet/datasheet.service';
-import { RecordCommentService } from './services/datasheet/record.comment.service';
+import { ComputeFieldReferenceManager } from './datasheet/services/compute.field.reference.manager';
 import { EventService } from './services/event/event.service';
-import { FormService } from './services/form/form.service';
-import { MirrorService } from './services/mirror/mirror.service';
+import { FormService } from './form/services/form.service';
+import { MirrorService } from './mirror/services/mirror.service';
 import { DashboardOtService } from './services/ot/dashboard.ot.service';
 import { DatasheetOtService } from './services/ot/datasheet.ot.service';
 import { FormOtService } from './services/ot/form.ot.service';
@@ -59,8 +40,6 @@ import { WidgetOtService } from './services/ot/widget.ot.service';
 import { SubscriptionDynamicModule } from './services/subscription/subscription.dynamic.module';
 import { GrpcModule } from 'grpc/grpc.module';
 import { IsNodeExistConstraint } from './validations/validation.constraint';
-import { MirrorController } from './controllers/mirror.controller';
-import { FormController } from './controllers/form.controller';
 import { AttachmentModule } from './attachment/attachment.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DatasheetModule } from './datasheet/datasheet.module';
@@ -84,14 +63,6 @@ import { DeveloperModule } from './developer/developer.module';
     SubscriptionDynamicModule.forRoot(),
     // DatasheetServiceModule,
     TypeOrmModule.forFeature([
-      DatasheetChangesetRepository,
-      DatasheetChangesetSourceRepository,
-      DatasheetMetaRepository,
-      DatasheetRecordRepository,
-      DatasheetRecordSourceRepository,
-      DatasheetRepository,
-      DatasheetWidgetRepository,
-      RecordCommentRepository,
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
       AutomationTriggerRepository,
       AutomationTriggerTypeRepository,
@@ -112,18 +83,8 @@ import { DeveloperModule } from './developer/developer.module';
     DeveloperModule,
   ],
   providers: [
-    AttachmentService,
     CommandService,
     CommandOptionsService,
-    DashboardService,
-    DatasheetService,
-    DatasheetMetaService,
-    DatasheetRecordService,
-    DatasheetRecordSourceService,
-    DatasheetChangesetService,
-    DatasheetChangesetSourceService,
-    RecordCommentService,
-    DatasheetFieldHandler,
     ComputeFieldReferenceManager,
     EventService,
     FormService,
@@ -139,7 +100,6 @@ import { DeveloperModule } from './developer/developer.module';
     FusionApiTransformer,
     IsNodeExistConstraint,
   ],
-  controllers: [DatasheetController, FormController, MirrorController],
   exports: [
     AssetModule,
     AttachmentModule,
@@ -150,19 +110,7 @@ import { DeveloperModule } from './developer/developer.module';
     DashboardModule,
     CommandService,
     CommandOptionsService,
-    DashboardService,
-    DatasheetService,
-    DatasheetMetaService,
-    DatasheetRecordService,
-    DatasheetRecordSourceService,
-    DatasheetChangesetService,
-    DatasheetChangesetSourceService,
-    RecordCommentService,
-    DatasheetFieldHandler,
-    ComputeFieldReferenceManager,
     EventService,
-    FormService,
-    MirrorService,
     OtService,
     DatasheetOtService,
     DashboardOtService,

@@ -17,19 +17,35 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { CommentDto } from '../datasheet/dtos/comment.dto';
-import { UnitBaseInfoDto } from '../unit/dtos/unit.base.info.dto';
+import { ChangesetBaseDto } from 'database/datasheet/dtos/changeset.base.dto';
+import { CommentDto } from 'database/datasheet/dtos/comment.dto';
+import { CommentReplyDto } from 'database/datasheet/dtos/comment.reply.dto';
+import { CommentEmojiDto } from './comment.emoji.dto';
+import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
 
-export class CommentListVo {
+export class RecordHistoryDto {
+  @ApiProperty({
+    type: [ChangesetBaseDto],
+    description: 'changeset list',
+  })
+  changesets!: ChangesetBaseDto[];
+
   @ApiProperty({
     type: [CommentDto],
-    description: 'record comment list',
+    description: 'comment involved units\'s list',
   })
-    comments!: CommentDto[];
+  units!: UnitBaseInfoDto[];
 
   @ApiProperty({
-    type: [CommentDto],
-    description: 'list of units involved in record comments',
+    type: [CommentEmojiDto],
+    description: 'comment\'s emojis',
   })
-    units!: UnitBaseInfoDto[];
+  emojis!: CommentEmojiDto;
+
+  @ApiProperty({
+    type: [CommentReplyDto],
+    description: 'comment\'s quote information',
+  })
+  commentReplyMap!: CommentReplyDto;
 }
+

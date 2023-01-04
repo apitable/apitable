@@ -18,7 +18,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ApiResponse } from 'fusion/vos/api.response';
-import { RecordHistoryDto } from '../dtos/record.history.dto';
+import { RecordHistoryDto } from '../datasheet/dtos/record.history.dto';
 
 export class RecordHistoryVo extends ApiResponse<RecordHistoryDto | null> {
   @ApiProperty({

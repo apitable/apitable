@@ -20,11 +20,11 @@ import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } fr
 import { ResourceType, ResourceIdPrefix, IWidget } from '@apitable/core';
 import { InjectLogger } from '../../shared/common';
 import { ApiResponse } from '../../fusion/vos/api.response';
-import { NodeService } from 'database/services/node/node.service';
-import { RoomResourceRelService } from 'database/services/resource/room.resource.rel.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
+import { NodeService } from 'database/node/services/node.service';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 
 /**
  * Resource data interceptor

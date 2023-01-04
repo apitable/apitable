@@ -38,7 +38,7 @@ import { IAuthHeader, IOpAttach, NodePermission } from 'shared/interfaces';
 import { RestService } from 'shared/services/rest/rest.service';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
-import { DatasheetChangesetEntity } from '../../entities/datasheet.changeset.entity';
+import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { DatasheetEntity } from '../../entities/datasheet.entity';
 import { DatasheetMetaEntity } from '../../entities/datasheet.meta.entity';
 import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';

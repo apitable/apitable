@@ -28,7 +28,7 @@ import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
 import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
-import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
+import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
 
 @Injectable()
 export class DashboardOtService {

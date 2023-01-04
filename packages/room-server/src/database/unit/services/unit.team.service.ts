@@ -18,7 +18,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { IUserValue, MemberType } from '@apitable/core';
-import { UnitTeamRepository } from '../../repositories/unit.team.repository';
+import { UnitTeamRepository } from '../../datasheet/repositories/unit.team.repository';
 
 /**
  * unitTeam related operations

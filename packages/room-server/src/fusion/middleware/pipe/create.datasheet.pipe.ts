@@ -22,7 +22,7 @@ import {
 } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { genDatasheetDescriptionDto } from 'database/dtos/datasheet.description.dto';
+import { genDatasheetDescriptionDto } from 'fusion/dtos/datasheet.description.dto';
 import { NodeEntity } from 'database/node/entities/node.entity';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';

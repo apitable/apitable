@@ -35,7 +35,7 @@ import { DatasheetChangesetSourceService } from 'database/services/datasheet/dat
 import { DatasheetRecordSubscriptionBaseService } from 'database/services/subscription/datasheet.record.subscription.base.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { EventService } from 'database/services/event/event.service';
-import { MirrorService } from 'database/services/mirror/mirror.service';
+import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodePermissionService } from 'database/services/node/node.permission.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
@@ -62,7 +62,7 @@ import { EntityManager, getManager } from 'typeorm';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
-import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
+import { ResourceMetaRepository } from '../../datasheet/repositories/resource.meta.repository';
 import { MetaService } from '../resource/meta.service';
 import { FormOtService } from './form.ot.service';
 import { EffectConstantName, IChangesetParseResult, ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from './ot.interface';

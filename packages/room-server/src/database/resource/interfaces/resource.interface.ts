@@ -16,20 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiProperty } from '@nestjs/swagger';
-import { CommentDto } from '../datasheet/dtos/comment.dto';
-import { UnitBaseInfoDto } from '../unit/dtos/unit.base.info.dto';
-
-export class CommentListVo {
-  @ApiProperty({
-    type: [CommentDto],
-    description: 'record comment list',
-  })
-    comments!: CommentDto[];
-
-  @ApiProperty({
-    type: [CommentDto],
-    description: 'list of units involved in record comments',
-  })
-    units!: UnitBaseInfoDto[];
+export interface IResourceInfo { 
+  nodeId?: string,
+  resourceRevision?: number, 
 }

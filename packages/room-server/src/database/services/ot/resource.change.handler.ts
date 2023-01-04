@@ -19,7 +19,7 @@
 import { ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
-import { DatasheetWidgetRepository } from '../../repositories/datasheet.widget.repository';
+import { DatasheetWidgetRepository } from '../../datasheet/repositories/datasheet.widget.repository';
 import { Logger } from 'winston';
 import { RoomResourceRelService } from 'database/services/resource/room.resource.rel.service';
 import { EffectConstantName } from './ot.interface';

@@ -37,7 +37,7 @@ import { QueryPipe } from './middleware/pipe/query.pipe';
 import { FieldPipe } from './middleware/pipe/field.pipe';
 import { ApiAuthGuard } from './middleware/guard/api.auth.guard';
 import { FusionApiTransformer } from './transformer/fusion.api.transformer';
-import { DatasheetRecordRepository } from 'database/repositories/datasheet.record.repository';
+import { DatasheetRecordRepository } from 'database/datasheet/repositories/datasheet.record.repository';
 import { FusionApiFilter } from './filter/fusion.api.filter';
 import { UnitMemberRepository } from 'database/unit/repositories/unit.member.repository';
 
