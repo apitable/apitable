@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEventHandler, IDatasheetEvent } from '../common/event';
+import { DatasheetEventType, CommandExecutionResultType, IEventEmitter } from '../common/event';
 import { Field } from '.';
 import { ILoadDatasheetPackOptions, ISaveOpsOptions } from '../providers';
 import { Store } from 'redux';
@@ -36,7 +36,7 @@ import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldD
 import { IDataSaver } from '../providers/data.saver.interface';
 
 export class Datasheet implements IResource {
-  private commandManager: CollaCommandManager;
+  private readonly commandManager: CollaCommandManager;
 
   public readonly id: string;
   public readonly name: string;
@@ -47,21 +47,29 @@ export class Datasheet implements IResource {
    *
    * @deprecated This constructor is not intended for public use.
    */
-  public constructor(datasheetPack: IBaseDatasheetPack, private readonly store: Store<IReduxState>, private readonly saver: IDataSaver) {
+  public constructor(
+    datasheetPack: IBaseDatasheetPack,
+    private readonly store: Store<IReduxState>,
+    private readonly saver: IDataSaver,
+    eventEmitter: IEventEmitter,
+  ) {
     this.id = datasheetPack.datasheet.id;
     this.name = datasheetPack.datasheet.name;
     this.commandManager = new CollaCommandManager(
       {
         handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
-          this.fireEvent({
+          eventEmitter.fireEvent({
             type: DatasheetEventType.CommandExecuted,
+            execResult: CommandExecutionResultType.Success,
             resourceOpCollections,
           });
         },
-        handleCommandExecuteError: (error, _type) => {
-          this.fireEvent({
+        handleCommandExecuteError: (error, errorType) => {
+          eventEmitter.fireEvent({
             type: DatasheetEventType.CommandExecuted,
+            execResult: CommandExecutionResultType.Error,
             error,
+            errorType,
           });
         },
       },
@@ -203,60 +211,6 @@ export class Datasheet implements IResource {
     }
 
     return Promise.resolve(new View(this, this.store, info));
-  }
-
-  private _eventHandlers: Map<DatasheetEventType, Set<IDatasheetEventHandler>> = new Map();
-
-  /**
-   * Add an event handler to the datasheet.
-   *
-   * @returns `true` if the event handler was successfully added. `false` if the same handler was previously added.
-   */
-  public addEventHandler(handler: IDatasheetEventHandler): boolean {
-    let handlers = this._eventHandlers.get(handler.type);
-    if (handlers === undefined) {
-      handlers = new Set();
-      this._eventHandlers.set(handler.type, handlers);
-    }
-    if (handlers.has(handler)) {
-      return false;
-    }
-    handlers.add(handler);
-    return true;
-  }
-
-  /**
-   * Remove an event handler from the datasheet.
-   *
-   * @returns `true` if the event handler was successfully removed. `false` if the handler did not exist in the datasheet.
-   */
-  public removeEventHandler(handler: IDatasheetEventHandler & { type: DatasheetEventType }): boolean {
-    let handlers = this._eventHandlers.get(handler.type);
-    if (handlers === undefined) {
-      handlers = new Set();
-      this._eventHandlers.set(handler.type, handlers);
-    }
-    return handlers.delete(handler);
-  }
-
-  /**
-   * Remove all event handles of a specific type from the datasheet.
-   */
-  public removeEventHandlers(type: DatasheetEventType): void {
-    this._eventHandlers.delete(type);
-  }
-
-  /**
-   * Fire an event in the datasheet, invoking corresponding event handlers. The data saver will be invoked
-   * if the event is a CommandExecuted event. The data save is always invoked before all event handlers.
-   */
-  public async fireEvent(event: IDatasheetEvent): Promise<void> {
-    const handlers = this._eventHandlers.get(event.type);
-    if (handlers) {
-      for (const handler of handlers) {
-        await handler.handle(event as any);
-      }
-    }
   }
 }
 

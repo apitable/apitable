@@ -17,8 +17,7 @@
  */
 
 import { Database } from './logic';
-import { IDataStorageProvider } from './providers';
-import { IStoreProvider } from './providers';
+import { IDataStorageProvider, IStoreProvider } from './providers';
 
 /**
  * The entry point of the DataBus mechanism.

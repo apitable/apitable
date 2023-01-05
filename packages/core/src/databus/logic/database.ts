@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler, IEventEmitter } from 'databus/common/event';
 import { IBaseDatasheetPack } from 'exports/store';
 import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Datasheet, IDatasheetOptions } from './datasheet';
@@ -25,9 +26,9 @@ import { Datasheet, IDatasheetOptions } from './datasheet';
  *
  * Conceptually, one database corresponds to one space in APITable.
  */
-export class Database {
+export class Database implements IEventEmitter {
   private storageProvider!: IDataStorageProvider;
-  private stores: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
+  private datasheets: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
   private storeProvider!: IStoreProvider;
 
   /**
@@ -56,12 +57,66 @@ export class Database {
     if (datasheetPack === null) {
       return null;
     }
-    if (this.stores.has(datasheetPack)) {
-      return this.stores.get(datasheetPack)!;
+    if (this.datasheets.has(datasheetPack)) {
+      return this.datasheets.get(datasheetPack)!;
     }
     const store = options.createStore ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack);
-    const datasheet = new Datasheet(datasheetPack, store, this.storageProvider);
-    this.stores.set(datasheetPack, datasheet);
+    const datasheet = new Datasheet(datasheetPack, store, this.storageProvider, this);
+    this.datasheets.set(datasheetPack, datasheet);
     return datasheet;
+  }
+
+  private _eventHandlers: Map<DatasheetEventType, Set<IDatasheetEventHandler>> = new Map();
+
+  /**
+   * Add an event handler to the datasheet.
+   *
+   * @returns `true` if the event handler was successfully added. `false` if the same handler was previously added.
+   */
+  public addEventHandler(handler: IDatasheetEventHandler): boolean {
+    let handlers = this._eventHandlers.get(handler.type);
+    if (handlers === undefined) {
+      handlers = new Set();
+      this._eventHandlers.set(handler.type, handlers);
+    }
+    if (handlers.has(handler)) {
+      return false;
+    }
+    handlers.add(handler);
+    return true;
+  }
+
+  /**
+   * Remove an event handler from the datasheet.
+   *
+   * @returns `true` if the event handler was successfully removed. `false` if the handler did not exist in the datasheet.
+   */
+  public removeEventHandler(handler: IDatasheetEventHandler & { type: DatasheetEventType }): boolean {
+    let handlers = this._eventHandlers.get(handler.type);
+    if (handlers === undefined) {
+      handlers = new Set();
+      this._eventHandlers.set(handler.type, handlers);
+    }
+    return handlers.delete(handler);
+  }
+
+  /**
+   * Remove all event handles of a specific type from the datasheet.
+   */
+  public removeEventHandlers(type: DatasheetEventType): void {
+    this._eventHandlers.delete(type);
+  }
+
+  /**
+   * Fire an event in the datasheet, invoking corresponding event handlers. The data saver will be invoked
+   * if the event is a CommandExecuted event. The data save is always invoked before all event handlers.
+   */
+  public async fireEvent(event: IDatasheetEvent): Promise<void> {
+    const handlers = this._eventHandlers.get(event.type);
+    if (handlers) {
+      for (const handler of handlers) {
+        await handler.handle(event as any);
+      }
+    }
   }
 }
