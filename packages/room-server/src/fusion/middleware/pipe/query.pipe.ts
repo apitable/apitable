@@ -20,7 +20,7 @@ import { ApiTipConstant, FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { SortRo } from 'database/ros/sort.ro';
-import { keyBy } from 'lodash';
+import { isString, keyBy } from 'lodash';
 import qs from 'qs';
 import { ApiException } from 'shared/exception';
 import { DATASHEET_META_HTTP_DECORATE } from 'shared/common';
@@ -34,7 +34,7 @@ export class QueryPipe implements PipeTransform {
   constructor(@Inject(REQUEST) private readonly request: any) {}
 
   transform(value: any) {
-    value = qs.parse(value, { comma: true });
+    value = qs.parse(value);
     // transform, validate and sort the parameters
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     let fieldMap = meta.fieldMap;
@@ -58,6 +58,9 @@ export class QueryPipe implements PipeTransform {
 
   static validateSort(sorts: SortRo[], fieldMap: IFieldMap): SortRo[] {
     return sorts.map(sort => {
+      if (sort && isString(sort)) {
+        sort = JSON.parse(sort);
+      }
       if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
       return { field: fieldMap[sort.field]!.id, order: sort.order.toLowerCase() as OrderEnum };
     });
