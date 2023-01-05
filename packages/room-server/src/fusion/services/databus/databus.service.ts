@@ -59,17 +59,10 @@ export class DataBusService {
       },
     });
     this.database = this.databus.getDatabase();
-  }
-
-  async getDatasheet(dstId: string, options: IServerDatasheetOptions): Promise<databus.Datasheet | null> {
-    const datasheet = await this.database.getDatasheet(dstId, options);
-    if (datasheet === null) {
-      return null;
-    }
-    datasheet.addEventHandler({
+    this.database.addEventHandler({
       type: databus.event.DatasheetEventType.CommandExecuted,
       handle: (event: databus.event.IDatasheetCommandExecutedEvent) => {
-        if ('error' in event) {
+        if (event.execResult === databus.event.CommandExecutionResultType.Error) {
           this.logger.error('CommandExecuteError', { error: event.error });
           return;
         }
@@ -77,6 +70,13 @@ export class DataBusService {
         return;
       },
     });
+  }
+
+  async getDatasheet(dstId: string, options: IServerDatasheetOptions): Promise<databus.Datasheet | null> {
+    const datasheet = await this.database.getDatasheet(dstId, options);
+    if (datasheet === null) {
+      return null;
+    }
 
     return datasheet;
   }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from '../common/event';
+import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from '../common/event';
 import { mockDatasheetMap, mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
 import { mockGetViewInfo } from './mock.view';
 import { MockDataBus, resetDataLoader } from './mock.databus';
@@ -134,11 +134,8 @@ describe('doCommand', () => {
 describe('event handlers', () => {
   beforeEach(resetDataLoader);
 
-  test('add an event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
-    const result = dst1!.addEventHandler({
+  test('add an event listener', () => {
+    const result = db.addEventHandler({
       type: DatasheetEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     });
@@ -146,74 +143,60 @@ describe('event handlers', () => {
     expect(result).toBeTruthy();
   });
 
-  test('add the same event listener twice', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
+  test('add the same event listener twice', () => {
     const listener = {
       type: DatasheetEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
-    dst1!.addEventHandler(listener);
-    const result = dst1!.addEventHandler(listener);
+    db.addEventHandler(listener);
+    const result = db.addEventHandler(listener);
 
     expect(result).toBeFalsy();
   });
 
-  test('remove an event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
+  test('remove an event listener', () => {
     const listener = {
       type: DatasheetEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
-    dst1!.addEventHandler(listener);
+    db.addEventHandler(listener);
 
-    const result = dst1!.removeEventHandler(listener);
+    const result = db.removeEventHandler(listener);
 
     expect(result).toBeTruthy();
   });
 
-  test('remove the same event listener twice', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
+  test('remove the same event listener twice', () => {
     const listener = {
       type: DatasheetEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
-    dst1!.addEventHandler(listener);
+    db.addEventHandler(listener);
 
-    dst1!.removeEventHandler(listener);
-    const result = dst1!.removeEventHandler(listener);
+    db.removeEventHandler(listener);
+    const result = db.removeEventHandler(listener);
 
     expect(result).toBeFalsy();
   });
 
-  test('remove a non-existent event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
+  test('remove a non-existent event listener', () => {
     const listener = {
       type: DatasheetEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
-    const result = dst1!.removeEventHandler(listener);
+    const result = db.removeEventHandler(listener);
 
     expect(result).toBeFalsy();
   });
 
   describe('fire event', () => {
     test('fire an event with one event listeners', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
       let result: any;
-      dst1!.addEventHandler({
+      db.addEventHandler({
         type: DatasheetEventType.CommandExecuted,
         handle(event) {
           result = event;
@@ -223,27 +206,26 @@ describe('event handlers', () => {
 
       const event: IDatasheetEvent = {
         type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
 
-      await dst1!.fireEvent(event);
+      await db.fireEvent(event);
 
       expect(result).toStrictEqual(event);
     });
 
     test('fire an event with two event listeners', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
       let result1: any;
       let result2: any;
-      dst1!.addEventHandler({
+      db.addEventHandler({
         type: DatasheetEventType.CommandExecuted,
         handle(event) {
           result1 = event;
           return Promise.resolve();
         },
       });
-      dst1!.addEventHandler({
+      db.addEventHandler({
         type: DatasheetEventType.CommandExecuted,
         handle(event) {
           result2 = event;
@@ -253,18 +235,17 @@ describe('event handlers', () => {
 
       const event: IDatasheetEvent = {
         type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
 
-      await dst1!.fireEvent(event);
+      await db.fireEvent(event);
 
       expect(result1).toStrictEqual(event);
       expect(result2).toStrictEqual(event);
     });
 
     it('should not be invoked after being removed', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
       let result: any = undefined;
       const handler: IDatasheetEventHandler & { type: DatasheetEventType } = {
         type: DatasheetEventType.CommandExecuted,
@@ -273,25 +254,24 @@ describe('event handlers', () => {
           return Promise.resolve();
         },
       };
-      dst1!.addEventHandler(handler);
+      db.addEventHandler(handler);
 
-      dst1!.removeEventHandler(handler);
+      db.removeEventHandler(handler);
 
       const event: IDatasheetEvent = {
         type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
 
-      await dst1!.fireEvent(event);
+      await db.fireEvent(event);
 
       expect(result).toBeUndefined();
     });
 
     it('should not be invoked after the kind of handlers is removed', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
       let result: any = undefined;
-      dst1!.addEventHandler({
+      db.addEventHandler({
         type: DatasheetEventType.CommandExecuted,
         handle(event) {
           result = event;
@@ -299,14 +279,15 @@ describe('event handlers', () => {
         },
       });
 
-      dst1!.removeEventHandlers(DatasheetEventType.CommandExecuted);
+      db.removeEventHandlers(DatasheetEventType.CommandExecuted);
 
       const event: IDatasheetEvent = {
         type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
 
-      await dst1!.fireEvent(event);
+      await db.fireEvent(event);
 
       expect(result).toBeUndefined();
     });
@@ -316,7 +297,7 @@ describe('event handlers', () => {
     const dst1 = await db.getDatasheet('dst1', {});
     expect(dst1).toBeTruthy();
     let event: any = undefined;
-    dst1!.addEventHandler({
+    db.addEventHandler({
       type: DatasheetEventType.CommandExecuted,
       handle(e) {
         event = e;
@@ -350,7 +331,7 @@ describe('event handlers', () => {
     const dst1 = await db.getDatasheet('dst1', {});
     expect(dst1).toBeTruthy();
     let event: any = undefined;
-    dst1!.addEventHandler({
+    db.addEventHandler({
       type: DatasheetEventType.CommandExecuted,
       handle(e) {
         event = e;
