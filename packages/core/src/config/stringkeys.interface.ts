@@ -285,6 +285,7 @@ export type StringKeysMapType = {
   'api_upload_invalid_file': 'api_upload_invalid_file',
   'api_upload_invalid_file_name': 'api_upload_invalid_file_name',
   'api_upload_tip': 'api_upload_tip',
+  'api_usage': 'api_usage',
   'api_your_token': 'api_your_token',
   'app_closed': 'app_closed',
   'app_load_failed': 'app_load_failed',
@@ -782,6 +783,7 @@ export type StringKeysMapType = {
   'developer_configuration': 'developer_configuration',
   'developer_token': 'developer_token',
   'developer_token_placeholder': 'developer_token_placeholder',
+  'dingtalk_isv_production_single_record_comment_mentioned': 'dingtalk_isv_production_single_record_comment_mentioned',
   'direction_above': 'direction_above',
   'direction_below': 'direction_below',
   'direction_left': 'direction_left',
@@ -1037,6 +1039,7 @@ export type StringKeysMapType = {
   'field_member_property_notify': 'field_member_property_notify',
   'field_name_formula': 'field_name_formula',
   'field_name_setting': 'field_name_setting',
+  'field_permission': 'field_permission',
   'field_range': 'field_range',
   'field_required': 'field_required',
   'field_title_attachment': 'field_title_attachment',
@@ -1654,6 +1657,8 @@ export type StringKeysMapType = {
   'language_setting': 'language_setting',
   'language_setting_tip': 'language_setting_tip',
   'laos': 'laos',
+  'lark_single_record_comment_mentioned': 'lark_single_record_comment_mentioned',
+  'lark_single_record_comment_mentioned_title': 'lark_single_record_comment_mentioned_title',
   'last_step': 'last_step',
   'last_update_time': 'last_update_time',
   'latvia': 'latvia',
@@ -1989,6 +1994,7 @@ export type StringKeysMapType = {
   'node_not_exist_content': 'node_not_exist_content',
   'node_not_exist_title': 'node_not_exist_title',
   'node_number_err_content': 'node_number_err_content',
+  'node_permission': 'node_permission',
   'nodes_per_space': 'nodes_per_space',
   'nonprofit': 'nonprofit',
   'nonprofits_and_volunteering': 'nonprofits_and_volunteering',
@@ -2438,6 +2444,7 @@ export type StringKeysMapType = {
   'robot_required_error': 'robot_required_error',
   'robot_return': 'robot_return',
   'robot_run_history_bottom_tip': 'robot_run_history_bottom_tip',
+  'robot_run_history_desc': 'robot_run_history_desc',
   'robot_run_history_error': 'robot_run_history_error',
   'robot_run_history_fail': 'robot_run_history_fail',
   'robot_run_history_fail_tooltip': 'robot_run_history_fail_tooltip',
@@ -3172,6 +3179,8 @@ export type StringKeysMapType = {
   'way_to_create_dashboard': 'way_to_create_dashboard',
   'web_publish': 'web_publish',
   'web_publish_refresh': 'web_publish_refresh',
+  'wecom_single_record_comment_mentioned': 'wecom_single_record_comment_mentioned',
+  'wecom_single_record_comment_mentioned_title': 'wecom_single_record_comment_mentioned_title',
   'WEEKS': 'WEEKS',
   'welcome_interface': 'welcome_interface',
   'welcome_module4': 'welcome_module4',
@@ -3590,7 +3599,8 @@ export type StringKeysMapType = {
   'og_keywords_content': 'og_keywords_content',
   'auth_server_extensions_login_description_content': 'auth_server_extensions_login_description_content',
   'initialization_failed_message': 'initialization_failed_message',
-  'welcome_module5': 'welcome_module5'
+  'welcome_module5': 'welcome_module5',
+  'player_contact_us': 'player_contact_us'
 };
 
 export type StringKeysType = keyof StringKeysMapType;

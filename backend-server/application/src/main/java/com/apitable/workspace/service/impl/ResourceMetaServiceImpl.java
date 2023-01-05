@@ -34,26 +34,24 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
-import com.apitable.interfaces.widget.model.WidgetCopyOption;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.shared.constants.NodeDescConstants;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.DashboardMeta;
 import com.apitable.workspace.dto.DatasheetWidgetDTO;
 import com.apitable.workspace.dto.NodeDescParseDTO;
+import com.apitable.workspace.entity.ResourceMetaEntity;
 import com.apitable.workspace.enums.ResourceType;
 import com.apitable.workspace.mapper.DatasheetWidgetMapper;
 import com.apitable.workspace.mapper.ResourceMetaMapper;
 import com.apitable.workspace.service.IDatasheetService;
 import com.apitable.workspace.service.IResourceMetaService;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.workspace.entity.ResourceMetaEntity;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,7 +75,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     private DatasheetWidgetMapper datasheetWidgetMapper;
 
     @Resource
-    private WidgetServiceFacade widgetServiceFacade;
+    private IWidgetService iWidgetService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -140,7 +138,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         // batch generation of new components
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(originRscId, destRscId);
-        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap));
+        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap);
     }
 
     @Override
@@ -183,7 +181,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                 }));
 
         // batch generation of new components
-        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap));
+        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
     }
 
     @Override

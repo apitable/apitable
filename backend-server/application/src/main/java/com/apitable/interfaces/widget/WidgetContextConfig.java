@@ -18,8 +18,8 @@
 
 package com.apitable.interfaces.widget;
 
-import com.apitable.interfaces.widget.facade.DefaultWidgetServiceFacadeImpl;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
+import com.apitable.interfaces.widget.facade.DefaultWidgetServiceAuditFacadeImpl;
+import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ public class WidgetContextConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public WidgetServiceFacade defaultWidgetServiceFacade() {
-        return new DefaultWidgetServiceFacadeImpl();
+    public WidgetServiceAuditFacade defaultWidgetServiceFacade() {
+        return new DefaultWidgetServiceAuditFacadeImpl();
     }
 }

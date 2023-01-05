@@ -389,7 +389,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
         {
           ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
             <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!)} className='script-loading-vika-img' alt='vika'/>
+            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
           </div>
         }
       </div>

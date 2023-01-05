@@ -72,6 +72,10 @@ export const stringToArray = (value: string) => {
   return valueArray.filter(v => !isNull(v));
 };
 
+export const formulaToString = (value: string | string[]) => {
+  return Array.isArray(value) ? value.join(',') : value;
+};
+
 export const objStringToArray = (value: string) => {
   if (isNull(value)) return null;
   const valueArray = Array.isArray(value) ? (value as any[]) : value.replace(/},/g, '}|').split('|');

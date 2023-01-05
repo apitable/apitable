@@ -26,7 +26,7 @@ import { GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridCo
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 import { FieldHead } from '../components';
-
+import { useSelector } from 'react-redux';
 interface IUseHeadsProps {
   instance: GridCoordinate;
   columnStartIndex: number;
@@ -70,6 +70,9 @@ export const useHeads = (props: IUseHeadsProps) => {
   const { editable } = permissions;
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
 
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { embedId } = useSelector(state => state.pageParams);
+  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
   const getFieldHeadStatus = useCallback((fieldId: string, columnIndex: number) => {
     const iconVisible = (pointAreaType === AreaType.Grid || [
       KONVA_DATASHEET_ID.GRID_FIELD_HEAD_DESC,
@@ -172,7 +175,7 @@ export const useHeads = (props: IUseHeadsProps) => {
           stroke={colors.sheetLineColor}
           strokeWidth={1}
           fill={'transparent'}
-          cornerRadius={[8, 0, 0, 0]}
+          cornerRadius={[isEmbedShow ? 0 : 8, 0, 0, 0]}
           listening={false}
         />
         {
