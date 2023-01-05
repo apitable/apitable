@@ -15,11 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { stringToArray } from 'shared/helpers/fusion.helper';
 
 export class RecordDeleteRo {
@@ -30,7 +27,5 @@ export class RecordDeleteRo {
     example: 'recwZ6yV3Srv3',
   })
   @Transform(value => stringToArray(value), { toClassOnly: true })
-  @ArrayNotEmpty({ message: ApiTipConstant.api_params_empty_error })
-  @ArrayUnique({ message: ApiTipConstant.api_params_must_unique })
   recordIds!: string[];
 }

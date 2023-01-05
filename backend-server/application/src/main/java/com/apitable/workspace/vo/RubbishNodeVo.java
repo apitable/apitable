@@ -86,6 +86,12 @@ public class RubbishNodeVo extends BaseNodeInfo {
     @ApiModelProperty(value = "Retention days", hidden = true)
     private Integer retainDay;
 
+    @ApiModelProperty(value = "default avatar color number", example = "1")
+    private Integer avatarColor;
+
+    @ApiModelProperty(value = "Nick Name", example = "Zhang San")
+    private String nickName;
+
     public Integer getRemainDay() {
         return retainDay - (int) (LocalDate.now(ZoneId.of("+8")).toEpochDay() - deletedAt.toLocalDate().toEpochDay());
     }

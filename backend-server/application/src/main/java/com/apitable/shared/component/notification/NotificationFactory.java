@@ -264,7 +264,7 @@ public class NotificationFactory implements INotificationFactory {
                     .builder()
                     .playerType(a.getIsMemberDeleted() ? PlayerType.MEMBER_DELETED.getType() : PlayerType.MEMBER.getType())
                     .userName(a.getUserName()).uuid(a.getUuid()).avatar(a.getAvatar()).email(a.getEmail())
-                    .memberId(a.getMemberId()).memberName(a.getMemberName()).team(a.getTeam())
+                    .memberId(a.getMemberId()).memberName(a.getMemberName()).team(a.getTeam()).avatarColor(a.getColor()).nickName(a.getNickName())
                     .isNickNameModified(a.getIsNickNameModified())
                     .isMemberNameModified(a.getIsMemberNameModified())
                     .isDeleted(a.getIsMemberDeleted()).build(), (k1, k2) -> k1)));

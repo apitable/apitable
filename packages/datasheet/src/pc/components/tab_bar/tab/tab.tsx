@@ -27,7 +27,7 @@ import { TemplateUseButton } from 'pc/components/template_centre/template_use_bu
 // import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { changeView, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
-import { FC, memo, useState, useEffect } from 'react';
+import { FC, memo, useState, useEffect, useMemo } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 // import IconOption from 'static/icon/datasheet/viewtoolbar/datasheet_icon_viewlist.svg';
@@ -123,30 +123,39 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     changeView(id);
   };
 
+  const embedOnlyViewName = useMemo(() => {
+    if(!views || !get(embedInfo, 'viewControl.viewId', false) || !embedId) return '';
+    const view = views.filter(view => view.id === embedInfo.viewControl?.viewId);
+    return view[0].name;
+  }, [views, embedInfo, embedId]);
+
   return (
     <div
       className={styles.nav}
     >
-      { !isOnlyView && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
-        {
-          datasheetName && (
-            <NodeInfoBar
-              data={{
-                nodeId: datasheetId!,
-                type: ConfigConstant.NodeType.DATASHEET,
-                icon: datasheetIcon,
-                name: datasheetName,
-                role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
-                favoriteEnabled: nodeFavorite,
-                nameEditable: renamable,
-                iconEditable: iconEditable,
-              }}
-              hiddenModule={{ favorite: Boolean(shareId || templateId) }}
-            />
-          )
-        }
-      </div>}
-      { isShowViewbar && <ViewBar
+      { isOnlyView ? 
+        <div className={styles.embedTitle}>
+          <p>{ embedOnlyViewName }</p>
+        </div> : <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
+          {
+            datasheetName && (
+              <NodeInfoBar
+                data={{
+                  nodeId: datasheetId!,
+                  type: ConfigConstant.NodeType.DATASHEET,
+                  icon: datasheetIcon,
+                  name: datasheetName,
+                  role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
+                  favoriteEnabled: nodeFavorite,
+                  nameEditable: renamable,
+                  iconEditable: iconEditable,
+                }}
+                hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+              />
+            )
+          }
+        </div>}
+      { isShowViewbar && !isOnlyView && <ViewBar
         editIndex={editIndex}
         setEditIndex={setEditIndex}
         views={views || []}

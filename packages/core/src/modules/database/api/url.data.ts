@@ -92,7 +92,7 @@ export const READ_FOREIGN_DATASHEET_PACK = '/resource/:resourceId/foreignDatashe
 export const READ_SHARE_FOREIGN_DATASHEET_PACK = '/share/:shareId/resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack';
 // Get comments and history for a single record
 export const GET_RECORD_ACTIVITY_LIST = '/resources/:resourceId/records/:recId/activity';
-export const READ_EMBED_FOREIGN_DATASHEET_PACK = 'embedlinks/:embedId/foreignDatasheets/:foreignDatasheetId/dataPack';
+export const READ_EMBED_FOREIGN_DATASHEET_PACK = 'embedlinks/:embedId/resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack';
 
 // =============== datasheet related =======================
 // load table data package

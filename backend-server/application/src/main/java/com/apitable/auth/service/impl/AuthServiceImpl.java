@@ -203,7 +203,7 @@ public class AuthServiceImpl implements IAuthService {
         }
         else {
             // Email automatic registration users do not provide third-party scan code login binding
-            userId = registerUserUsingEmail(email, loginRo.getSpaceId());
+            userId = registerUserUsingEmail(email);
             if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
                 // Cache, used to invite users to give away attachment capacity
                 this.handleCache(userId, loginRo.getSpaceId());
@@ -225,15 +225,11 @@ public class AuthServiceImpl implements IAuthService {
         return user.getId();
     }
 
-    public Long registerUserUsingEmail(String email, String spaceId) {
+    public Long registerUserUsingEmail(String email) {
         // Create a new user based on the mailbox and activate the corresponding member
         UserEntity user = iUserService.createUserByEmail(email);
         // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
-        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
-        if (spaceId != null) {
-            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
-        }
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }

@@ -725,8 +725,8 @@
     </select>
 
     <select id="selectMemberInfoByMemberIdsIncludeDelete" resultType="com.apitable.player.dto.PlayerBaseDTO">
-        SELECT vom.id as member_id, vu.avatar, vom.member_name, vu.email, vom.is_deleted as is_member_deleted, vu.uuid,
-        vu.nick_name as user_name, GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') team,
+        SELECT vom.id as member_id, vu.avatar, vu.color, vu.nick_name as nickName, vom.member_name, vu.email, vom.is_deleted as is_member_deleted,
+        vu.uuid, vu.nick_name as user_name, GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') team,
         IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
         IFNULL(vom.is_social_name_modified, 2) > 0 AS isMemberNameModified
         FROM ${tablePrefix}unit_member vom
