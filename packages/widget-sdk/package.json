@@ -1,6 +1,6 @@
 {
   "name": "@apitable/widget-sdk",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "vika widget sdk",
   "engines": {
     "node": ">=8.x"
