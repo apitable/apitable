@@ -35,7 +35,6 @@ jobs:
       with:
         languages: java
     - run: |
-        echo "Run, Build Java Application"
         make _build-java
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
@@ -57,8 +56,51 @@ jobs:
       with:
         languages: javascript
     - run: |
-        echo "Run, Build JavaScript Core Application"
         make _build-core
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:javascript"
+
+  analyze-js-room:
+    name: Analyze (javascript-room)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+    - run: |
+        make _build-room
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:javascript"
+
+  analyze-js-web:
+    name: Analyze (javascript-web)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+    - run: |
+        make _build-web
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
