@@ -53,6 +53,7 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.apitable.widget.service.IWidgetService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -70,7 +71,6 @@ import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
@@ -257,7 +257,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private IMemberService iMemberService;
 
     @Resource
-    private WidgetServiceFacade widgetServiceFacade;
+    private IWidgetService iWidgetService;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -1779,7 +1779,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         else if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.WIDGET.getIdRulePrefixEnum())) {
             // widget id
-            result.setSpaceId(widgetServiceFacade.getSpaceIdByWidgetId(nodeId));
+            result.setSpaceId(iWidgetService.getSpaceIdByWidgetId(nodeId));
         }
         else {
             // all other condition query node id

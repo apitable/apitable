@@ -16,33 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Select, TextButton, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType,
-  ConfigConstant,
-  DateTimeField,
-  Field,
-  FieldType,
-  Functions,
-  IField,
-  ILookUpField,
-  ILookUpProperty,
-  IViewColumn,
-  LookUpField,
-  NOT_FORMAT_FUNC_SET,
-  RollUpFuncType,
-  Selectors,
-  Strings,
-  t,
+  BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
+  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t,
 } from '@apitable/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
-import { Message, Modal, Tooltip } from 'pc/components/common';
+import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
+import { FilterModal } from 'pc/components/common/modal/filter_modal/filter_modal';
 import { TComponent } from 'pc/components/common/t_component';
+import { FieldPermissionLock } from 'pc/components/field_permission';
+import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
+import { LookupFieldPanel } from 'pc/components/multi_grid/format/format_lookup/look_field_panel';
 import { store } from 'pc/store';
-import { useThemeColors } from '@apitable/components';
-import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import * as React from 'react';
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import WarnIcon from 'static/icon/common/common_icon_warning.svg';
 import WarnTriangleIcon from 'static/icon/common/common_icon_warning_triangle.svg';
@@ -55,14 +46,6 @@ import { MyTrigger } from '../trigger';
 import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import lookupStyles from './styles.module.less';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
-import { LookupFieldPanel } from 'pc/components/multi_grid/format/format_lookup/look_field_panel';
-import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
-import { Select, TextButton } from '@apitable/components';
-import { FieldPermissionLock } from 'pc/components/field_permission';
-import { StringKeysType } from '@apitable/core';
-import { FilterModal } from 'pc/components/common/modal/filter_modal/filter_modal';
 
 const Option = Select.Option;
 
@@ -190,7 +173,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
   const getRollUpFunctions = () => {
     return Object.values(RollUpFuncType)
       .filter(item => !isNumber(item))
-      .map(func => {
+      .map((func: RollUpFuncType) => {
         if (func === RollUpFuncType.VALUES) {
           const funcName = RollUpFuncNameMap[func];
           return {
@@ -465,7 +448,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                       title={
                         <div>
                           <div className={lookupStyles.funcLabelName}>
-                            {t(func.name)} ({func.value})
+                            {t(func.name as any)} ({func.value})
                           </div>
                           <div className={lookupStyles.funcLabel}>{func.label}</div>
                           <div className={lookupStyles.funcLabel}>{func.example}</div>
@@ -474,7 +457,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                       arrowPointAtCenter
                     >
                       <div>
-                        {t(func.name)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
+                        {t(func.name as any)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
                       </div>
                     </Tooltip>
                   </Option>
@@ -490,7 +473,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                 return {
                   label: (
                     <>
-                      {t(func.name)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
+                      {t(func.name as any)} <span className={lookupStyles.funcOptLabel}>({func.value})</span>
                     </>
                   ),
                   value: func.value,
