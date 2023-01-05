@@ -6,7 +6,7 @@
 graph TD;
         Database-->Application;
         Actuator-->Application;
-        automation-->Application;
+        Automation-->Application;
         Fusion-->Application;
         Grpc-->Application;
         Socket-->Application;
@@ -18,6 +18,7 @@ graph TD;
         Shared-->Socket;
 ```
 TODO(Troy): split `Database module` into multiple submodules.
+
 `shared module` is a shared and global module that other modules depend on in default.
 ## Description
 
@@ -49,51 +50,64 @@ yarn install
 ## Running the app
 
 ```bash
+# basic mode
+$ yarn start
 
 # watch mode
-$ yarn start:room-server
+$ yarn start:dev
 
-# production mode
+# debug/watch mode
+$ yarn start:debug
+
+# production mode, remember to execute `yarn build` before running
 $ yarn start:prod
 ```
 
 ## Test
 
 ```bash
+# you can use `yarn` or `npx`, the examples below use `yarn`.
 # unit tests
-$ npm run test
+$ yarn run test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn run test:cov
 ```
 ## Environment variables
+See [env/.env.defaults](./env/.env.defaults) for more details
 
-Deployment environment:
+### Define local variables for local development
+You can create a `.env.development.local` file in the `env` folder to define environment variables for local development. This file is typically ignored by  `Git`, so you can use it to store sensitive or environment-specific information that you don't want to commit to your repository.
+
+If a variable is defined in both the `.env.development.local` file and the `.env.defaults` file, the value in the `.env.development.local` file will take precedence. This allows you to override the default values for certain variables when developing locally, while still maintaining a set of default values that can be used in other environments.
+
+### Deployment environment:
 `process.env.NODE_ENV`
 enum: 'development' | 'production'
 
-## JAVA service api address
+### backend-server(JAVA) service api address
+`process.env.BACKEND_BASE_URL`
+default: <http://localhost:8081/api/v1/>
 
-`process.env.HTTP_SERVER_HOST`
-default: <http://integration.apitable.com/>
-
-## redis configuration
+### redis configuration
+redis host
+`process.env.REDIS_HOST`
 
 redis port
 `process.env.REDIS_PORT`
 
 redis password
-`process.env.REDIS_PASS`
+`process.env.REDIS_PASSWORD`
 
 redis db
 `process.env.REDIS_DB`
 
-## Service exposed port
+### Service exposed port
 
-`process.env.ROOM_PORT`
+`process.env.PORT`
 default: 3333
 
 ## Logging Framework
