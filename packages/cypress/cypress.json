@@ -1,5 +1,5 @@
 {
-    "baseUrl": "https://integration.vika.ltd/",
+    "baseUrl": "http://localhost:3000",
     "viewportWidth": 1920,
     "viewportHeight": 920,
     "projectId": "efk8au",
