@@ -27,8 +27,8 @@ import { IAuthHeader, NodePermission } from 'shared/interfaces/axios.interfaces'
 import { RestService } from 'shared/services/rest/rest.service';
 import { getConnection } from 'typeorm';
 import { Logger } from 'winston';
-import { NodeRepository } from '../../node/repositories/node.repository';
-import { UserService } from 'database/user/services/user.service';
+import { NodeRepository } from '../repositories/node.repository';
+import { UserService } from 'user/services/user.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 
 @Injectable()

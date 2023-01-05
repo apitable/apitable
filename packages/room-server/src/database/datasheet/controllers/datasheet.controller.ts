@@ -18,15 +18,15 @@
 
 import { IMeta } from '@apitable/core';
 import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
-import { UserService } from 'database/user/services/user.service';
+import { UserService } from 'user/services/user.service';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
 import { CommentReplyDto } from '../dtos/comment.reply.dto';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
-import { NodeService } from 'database/node/services/node.service';
-import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
+import { NodeService } from 'node/services/node.service';
+import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';

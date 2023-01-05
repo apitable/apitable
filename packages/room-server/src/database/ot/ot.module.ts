@@ -25,10 +25,10 @@ import { DatasheetWidgetRepository } from 'database/datasheet/repositories/datas
 import { EventModule } from 'database/event/event.module';
 import { FormModule } from 'database/form/form.module';
 import { MirrorModule } from 'database/mirror/mirror.module';
-import { NodeModule } from 'database/node/node.module';
+import { NodeModule } from 'node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
 import { SubscriptionDynamicModule } from 'database/subscription/subscription.dynamic.module';
-import { UserModule } from 'database/user/user.module';
+import { UserModule } from 'user/user.module';
 import { WidgetModule } from 'database/widget/widget.module';
 import { GrpcModule } from 'grpc/grpc.module';
 import { DashboardOtService } from './services/dashboard.ot.service';

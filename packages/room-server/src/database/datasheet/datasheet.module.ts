@@ -19,11 +19,11 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandModule } from 'database/command/command.module';
-import { NodeModule } from 'database/node/node.module';
+import { NodeModule } from 'node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
 import { SubscriptionDynamicModule } from 'database/subscription/subscription.dynamic.module';
-import { UnitModule } from 'database/unit/unit.module';
-import { UserModule } from 'database/user/user.module';
+import { UnitModule } from 'unit/unit.module';
+import { UserModule } from 'user/user.module';
 import { DatasheetController } from './controllers/datasheet.controller';
 import { DatasheetChangesetRepository } from './repositories/datasheet.changeset.repository';
 import { DatasheetChangesetSourceRepository } from './repositories/datasheet.changeset.source.repository';

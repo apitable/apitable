@@ -22,7 +22,7 @@ import { IAuthHeader, INamedUser, IOssConfig, IUserBaseInfo } from 'shared/inter
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { getConnection } from 'typeorm';
-import { UnitInfo } from '../../interfaces';
+import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()

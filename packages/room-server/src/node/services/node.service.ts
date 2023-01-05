@@ -18,18 +18,18 @@
 
 import { IFormProps, IPermissions, Role } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { NodeDescriptionService } from 'database/node/services/node.description.service';
+import { NodeDescriptionService } from 'node/services/node.description.service';
 import { get, omit } from 'lodash';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
-import { NodeDetailInfo, NodeRelInfo } from '../../interfaces';
-import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
-import { NodeRelRepository } from '../../node/repositories/node.rel.repository';
-import { NodeRepository } from '../../node/repositories/node.repository';
+import { NodeDetailInfo, NodeRelInfo } from '../../database/interfaces';
+import { DatasheetRepository } from '../../database/datasheet/repositories/datasheet.repository';
+import { NodeRelRepository } from '../repositories/node.rel.repository';
+import { NodeRepository } from '../repositories/node.repository';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
-import { UnitMemberService } from 'database/unit/services/unit.member.service';
+import { UnitMemberService } from 'unit/services/unit.member.service';
 import { NodePermissionService } from './node.permission.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 

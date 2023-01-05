@@ -20,13 +20,13 @@ import { ILocalChangeset, OtErrorCode, readonlyFields, ResourceIdPrefix, Resourc
 import { Body, Controller, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
-import { NodePermissionService } from 'database/node/services/node.permission.service';
-import { NodeService } from 'database/node/services/node.service';
-import { NodeShareSettingService } from 'database/node/services/node.share.setting.service';
+import { NodePermissionService } from 'node/services/node.permission.service';
+import { NodeService } from 'node/services/node.service';
+import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { OtService } from 'database/ot/services/ot.service';
 import { ChangesetService } from 'database/resource/services/changeset.service';
 import { ResourceService } from 'database/resource/services/resource.service';
-import { UserService } from 'database/user/services/user.service';
+import { UserService } from 'user/services/user.service';
 import { ApiResponse } from 'fusion/vos/api.response';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
 import { PermissionException, ServerException } from 'shared/exception';

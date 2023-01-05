@@ -18,7 +18,7 @@
 
 import { ICommentContent, ICommentMsg, IListInsertAction } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { UnitService } from 'database/unit/services/unit.service';
+import { UnitService } from 'unit/services/unit.service';
 import { isEmpty, pickBy } from 'lodash';
 import { JavaApiPath } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';

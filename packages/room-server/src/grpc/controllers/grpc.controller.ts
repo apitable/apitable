@@ -34,7 +34,7 @@ import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.in
 import { GrpcSocketService } from 'grpc/services/grpc.socket.service';
 import { Logger } from 'winston';
 import { ILeaveRoomRo, INodeCopyRo, INodeDeleteRo } from '../../database/interfaces/grpc.interface';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 
 /**
  * grpc works for internal service

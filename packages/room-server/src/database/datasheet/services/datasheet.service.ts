@@ -30,8 +30,8 @@ import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordM
 import { Logger } from 'winston';
 import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
-import { NodeService } from 'database/node/services/node.service';
-import { UserService } from '../../user/services/user.service';
+import { NodeService } from 'node/services/node.service';
+import { UserService } from '../../../user/services/user.service';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';

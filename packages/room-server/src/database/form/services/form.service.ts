@@ -29,7 +29,7 @@ import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta
 import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { EventService } from 'database/event/services/event.service';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';

@@ -23,7 +23,7 @@ import { ApiResponse } from '../../../fusion/vos/api.response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 
 /**

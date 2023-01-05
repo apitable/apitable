@@ -26,11 +26,7 @@ import { FormModule } from './form/form.module';
 import { MirrorModule } from './mirror/mirror.module';
 import { ResourceModule } from './resource/resource.module';
 import { WidgetModule } from './widget/widget.module';
-import { NodeModule } from './node/node.module';
-import { UserModule } from './user/user.module';
 import { AssetModule } from './asset/asset.module';
-import { UnitModule } from './unit/unit.module';
-import { DeveloperModule } from './developer/developer.module';
 import { OtModule } from './ot/ot.module';
 import { CommandModule } from './command/command.module';
 import { EventModule } from './event/event.module';
@@ -47,10 +43,6 @@ import { EventModule } from './event/event.module';
     MirrorModule,
     ResourceModule,
     WidgetModule,
-    NodeModule,
-    UserModule,
-    UnitModule,
-    DeveloperModule,
     OtModule,
     CommandModule,
     EventModule,
@@ -67,10 +59,6 @@ import { EventModule } from './event/event.module';
     MirrorModule,
     ResourceModule,
     WidgetModule,
-    NodeModule,
-    UserModule,
-    UnitModule,
-    DeveloperModule,
     OtModule,
     CommandModule,
     EventModule,

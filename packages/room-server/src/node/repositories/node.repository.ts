@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeEntity } from 'database/node/entities/node.entity';
+import { NodeEntity } from 'node/entities/node.entity';
 import { NodeBaseInfo } from 'database/interfaces';
 import { INodeExtra } from 'shared/interfaces';
 import { EntityRepository, Repository } from 'typeorm';

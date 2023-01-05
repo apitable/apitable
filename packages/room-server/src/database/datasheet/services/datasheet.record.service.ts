@@ -26,7 +26,7 @@ import { In, SelectQueryBuilder } from 'typeorm';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
+import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
 import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';

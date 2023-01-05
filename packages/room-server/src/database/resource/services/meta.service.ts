@@ -20,7 +20,7 @@ import { Injectable } from '@nestjs/common';
 import { ResourceType } from '@apitable/core';
 import { WidgetService } from 'database/widget/services/widget.service';
 import { IResourceInfo } from '../interfaces/resource.interface';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 
 /**
  * Meta service for all resources (including datasheets, widgets, etc)

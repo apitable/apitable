@@ -18,7 +18,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../../user/entities/user.entity';
-import { DeveloperRepository } from '../../developer/repositories/developer.repository';
+import { DeveloperRepository } from '../repositories/developer.repository';
 import { UnitMemberRepository } from '../../unit/repositories/unit.member.repository';
 import { UserRepository } from '../../user/repositories/user.repository';
 

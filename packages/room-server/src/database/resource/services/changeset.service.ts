@@ -25,7 +25,7 @@ import { ChangesetView } from '../../interfaces';
 import { DatasheetChangesetRepository } from '../../datasheet/repositories/datasheet.changeset.repository';
 import { ResourceChangesetRepository } from '../repositories/resource.changeset.repository';
 import { Logger } from 'winston';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 import { ResourceService } from './resource.service';
 
 /**

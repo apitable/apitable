@@ -24,13 +24,13 @@ import { Injectable } from '@nestjs/common';
 import { Store } from 'redux';
 import { CommonException, OtException, ServerException } from '../../../shared/exception';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
-import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
+import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { DatasheetChangesetRepository } from '../../datasheet/repositories/datasheet.changeset.repository';
 import { CommandOptionsService } from 'database/command/services/command.options.service';
 import { CommandService } from 'database/command/services/command.service';
-import { UnitService } from 'database/unit/services/unit.service';
+import { UnitService } from 'unit/services/unit.service';
 
 @Injectable()
 export class DatasheetChangesetService {

@@ -21,7 +21,7 @@ import { ChangesetBaseDto } from 'database/datasheet/dtos/changeset.base.dto';
 import { CommentDto } from 'database/datasheet/dtos/comment.dto';
 import { CommentReplyDto } from 'database/datasheet/dtos/comment.reply.dto';
 import { CommentEmojiDto } from './comment.emoji.dto';
-import { UnitBaseInfoDto } from '../../unit/dtos/unit.base.info.dto';
+import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
 
 export class RecordHistoryDto {
   @ApiProperty({

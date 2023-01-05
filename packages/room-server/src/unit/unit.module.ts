@@ -18,24 +18,27 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UnitMemberRepository } from 'database/unit/repositories/unit.member.repository';
-import { UserRepository } from 'database/user/repositories/user.repository';
-import { UserModule } from 'database/user/user.module';
-import { DeveloperRepository } from './repositories/developer.repository';
-import { DeveloperService } from './services/developer.service';
+import { UserRepository } from 'user/repositories/user.repository';
+import { UserModule } from 'user/user.module';
+import { UnitMemberRepository } from './repositories/unit.member.repository';
+import { UnitRepository } from './repositories/unit.repository';
+import { UnitTagRepository } from './repositories/unit.tag.repository';
+import { UnitTeamRepository } from './repositories/unit.team.repository';
+import { UnitMemberService } from './services/unit.member.service';
+import { UnitService } from './services/unit.service';
+import { UnitTagService } from './services/unit.tag.service';
+import { UnitTeamService } from './services/unit.team.service';
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forFeature([
-      DeveloperRepository,
+      UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository,
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      UserRepository,
-      UnitMemberRepository,
+      UserRepository
     ]),
   ],
-  providers: [DeveloperService],
-  controllers: [],
-  exports: [DeveloperService],
+  providers: [UnitService, UnitTagService, UnitTeamService, UnitMemberService],
+  exports: [UnitService, UnitTagService, UnitTeamService, UnitMemberService],
 })
-export class DeveloperModule {}
+export class UnitModule {}

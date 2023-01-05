@@ -30,9 +30,9 @@ import { RoomResourceRelService } from 'database/resource/services/room.resource
 import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
-import { NodeService } from 'database/node/services/node.service';
-import { UnitService } from 'database/unit/services/unit.service';
-import { UserService } from 'database/user/services/user.service';
+import { NodeService } from 'node/services/node.service';
+import { UnitService } from 'unit/services/unit.service';
+import { UserService } from 'user/services/user.service';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';

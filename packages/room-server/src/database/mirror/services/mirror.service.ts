@@ -27,7 +27,7 @@ import { Logger } from 'winston';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 
 @Injectable()

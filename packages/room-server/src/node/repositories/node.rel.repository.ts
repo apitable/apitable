@@ -17,7 +17,7 @@
  */
 
 import { NodeRelEntity } from '../entities/node.rel.entity';
-import { NodeRelInfo } from '../../interfaces/internal';
+import { NodeRelInfo } from '../../database/interfaces/internal';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(NodeRelEntity)

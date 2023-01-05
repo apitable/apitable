@@ -23,7 +23,7 @@ import { PermissionException, ServerException } from 'shared/exception';
 import { IAuthHeader } from 'shared/interfaces';
 import { DatasheetMetaService } from '../../datasheet/services/datasheet.meta.service';
 import { DatasheetService } from '../../datasheet/services/datasheet.service';
-import { NodeService } from '../../node/services/node.service';
+import { NodeService } from '../../../node/services/node.service';
 import { WidgetService } from '../../widget/services/widget.service';
 
 @Injectable()

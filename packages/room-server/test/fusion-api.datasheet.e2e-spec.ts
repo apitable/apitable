@@ -17,9 +17,9 @@
  */
 
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { UserEntity } from 'database/user/entities/user.entity';
-import { NodeRepository } from 'database/node/repositories/node.repository';
-import { UnitMemberRepository } from 'database/unit/repositories/unit.member.repository';
+import { UserEntity } from 'user/entities/user.entity';
+import { NodeRepository } from 'node/repositories/node.repository';
+import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
 import { DeveloperService } from 'database/services/developer/developer.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import request from 'supertest';

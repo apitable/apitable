@@ -24,7 +24,7 @@ import { Logger } from 'winston';
 import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';
 import { DatasheetFieldHandler } from 'database/datasheet/services/datasheet.field.handler';
-import { NodeService } from 'database/node/services/node.service';
+import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 
 /**

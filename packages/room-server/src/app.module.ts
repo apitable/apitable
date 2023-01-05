@@ -37,6 +37,10 @@ import { FusionApiDynamicModule } from 'fusion/fusion-api.dynamic.module';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { GrpcModule } from 'grpc/grpc.module';
+import { NodeModule } from 'node/node.module';
+import { DeveloperModule } from 'developer/developer.module';
+import { UnitModule } from 'unit/unit.module';
+import { UserModule } from 'user/user.module';
 
 @Module({
   imports: [
@@ -75,6 +79,10 @@ import { GrpcModule } from 'grpc/grpc.module';
     ActuatorModule,
     FusionApiModule,
     DatabaseModule,
+    NodeModule,
+    UserModule,
+    UnitModule,
+    DeveloperModule,
     GrpcModule,
     RobotModule,
   ],

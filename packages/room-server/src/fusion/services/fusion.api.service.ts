@@ -27,7 +27,7 @@ import { REQUEST } from '@nestjs/core';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
-import { UserService } from 'database/user/services/user.service';
+import { UserService } from 'user/services/user.service';
 import { FastifyRequest } from 'fastify';
 import { ApiRecordDto } from 'fusion/dtos/api.record.dto';
 import { DataBusService } from 'fusion/services/databus/databus.service';
