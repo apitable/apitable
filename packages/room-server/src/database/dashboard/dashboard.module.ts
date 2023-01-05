@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NodeModule } from 'database/node/node.module';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { ResourceModule } from 'database/resource/resource.module';
 import { UserModule } from 'database/user/user.module';
 import { DashboardController } from './controllers/dashboard.controller';
 import { DashboardService } from './services/dashboard.service';
@@ -28,6 +29,7 @@ import { DashboardService } from './services/dashboard.service';
   imports: [
     NodeModule, 
     UserModule,
+    forwardRef(()=>ResourceModule),
     TypeOrmModule.forFeature([
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
       ResourceMetaRepository,

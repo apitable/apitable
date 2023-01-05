@@ -41,15 +41,15 @@ import { WidgetOtService } from './services/widget.ot.service';
 
 @Module({
   imports: [
-    GrpcModule,
+    forwardRef(()=>GrpcModule),
     NodeModule, 
     DatasheetModule, 
-    ResourceModule, 
+    forwardRef(()=>ResourceModule), 
     WidgetModule, 
     forwardRef(()=>FormModule), 
     MirrorModule, 
     EventModule,
-    DashboardModule, 
+    forwardRef(()=>DashboardModule), 
     UserModule,
     AlarmDynamicModule.forRoot(),
     SubscriptionDynamicModule.forRoot(),

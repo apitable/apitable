@@ -16,18 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { NodeModule } from 'database/node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
 import { SubscriptionDynamicModule } from 'database/subscription/subscription.dynamic.module';
+import { UserModule } from 'database/user/user.module';
 import { MirrorController } from './controllers/mirror.controller';
 import { MirrorService } from './services/mirror.service';
 
 @Module({
   imports: [
-    ResourceModule, 
+    forwardRef(()=>ResourceModule),
     NodeModule, 
+    UserModule,
     DatasheetModule,
     SubscriptionDynamicModule.forRoot(),
   ],

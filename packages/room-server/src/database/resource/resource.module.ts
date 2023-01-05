@@ -23,6 +23,8 @@ import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { DatasheetChangesetRepository } from 'database/datasheet/repositories/datasheet.changeset.repository';
 import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
 import { NodeModule } from 'database/node/node.module';
+import { OtModule } from 'database/ot/ot.module';
+import { UserModule } from 'database/user/user.module';
 import { WidgetRepository } from 'database/widget/repositories/widget.repository';
 import { WidgetModule } from 'database/widget/widget.module';
 import { ResourceController } from './controllers/resource.controller';
@@ -37,7 +39,9 @@ import { RoomResourceRelService } from './services/room.resource.rel.service';
 @Module({
   imports: [
     forwardRef(()=>NodeModule),
+    forwardRef(()=>UserModule),
     forwardRef(()=>DatasheetModule),
+    forwardRef(()=>OtModule),
     forwardRef(()=>WidgetModule),
     forwardRef(()=>RobotModule),
     TypeOrmModule.forFeature([

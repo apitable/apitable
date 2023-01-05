@@ -23,13 +23,21 @@ import { EventModule } from 'database/event/event.module';
 import { NodeModule } from 'database/node/node.module';
 import { OtModule } from 'database/ot/ot.module';
 import { ResourceModule } from 'database/resource/resource.module';
+import { UserModule } from 'database/user/user.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { FormController } from './controllers/form.controller';
 import { FormService } from './services/form.service';
 
 @Module({
-  imports: [ResourceModule, CommandModule, NodeModule, EventModule, DatasheetModule, 
-    forwardRef(()=>OtModule)],
+  imports: [
+    forwardRef(()=>ResourceModule),
+    CommandModule,
+    NodeModule,
+    UserModule,
+    EventModule,
+    DatasheetModule,
+    forwardRef(()=>OtModule),
+  ],
   controllers: [FormController],
   providers: [FormService, FusionApiTransformer],
 })
