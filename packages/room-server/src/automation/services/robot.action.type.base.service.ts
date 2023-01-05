@@ -21,7 +21,7 @@ import { IUserBaseInfo } from '../../shared/interfaces';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { customActionTypeMetas } from '../actions/decorators/automation.action.decorator';
 import { ActionTypeUpdateRo } from '../ros/action.type.update.ro';
-import { getTypeByItem } from '../util';
+import { getTypeByItem } from '../utils';
 import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationServiceEntity } from '../entities/automation.service.entity';

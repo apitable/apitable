@@ -16,30 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationServiceEntity } from '../entities/automation.service.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { AutomationTriggerEntity } from "../entities/automation.trigger.entity";
 
-@EntityRepository(AutomationServiceEntity)
-export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
-
-  private OFFICIAL_SERVICE_SLUG = 'vika';
-
-  public async countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: this.OFFICIAL_SERVICE_SLUG,
-      }
-    });
-  }
-
-  public async countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: slug,
-      }
-    });
-  }
-
+export interface ResourceTriggerGroupVo {
+  [resourceId: string]: AutomationTriggerEntity[]
 }

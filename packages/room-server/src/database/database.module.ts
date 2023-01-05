@@ -61,7 +61,6 @@ import { DatasheetRecordSourceService } from './services/datasheet/datasheet.rec
 import { DatasheetService } from './services/datasheet/datasheet.service';
 import { RecordCommentService } from './services/datasheet/record.comment.service';
 import { DeveloperService } from './services/developer/developer.service';
-import { EventService } from './services/event/event.service';
 import { FormService } from './services/form/form.service';
 import { MirrorService } from './services/mirror/mirror.service';
 import { NodeDescriptionService } from './services/node/node.description.service';
@@ -93,9 +92,12 @@ import { MirrorController } from './controllers/mirror.controller';
 import { ResourceController } from './controllers/resource.controller';
 import { FormController } from './controllers/form.controller';
 import { DashboardController } from './controllers/dashboard.controller';
+import { RobotEventService } from "./services/robot/robot.event.service";
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     RobotModule,
     GrpcModule,
     AlarmDynamicModule.forRoot(),
@@ -144,7 +146,6 @@ import { DashboardController } from './controllers/dashboard.controller';
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
     DeveloperService,
-    EventService,
     FormService,
     MirrorService,
     OtService,
@@ -171,6 +172,7 @@ import { DashboardController } from './controllers/dashboard.controller';
     RoomResourceRelService,
     FusionApiTransformer,
     IsNodeExistConstraint,
+    RobotEventService,
   ],
   controllers: [DatasheetController, AttachmentController, DashboardController, FormController, MirrorController, ResourceController],
   exports: [
@@ -190,7 +192,6 @@ import { DashboardController } from './controllers/dashboard.controller';
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
     DeveloperService,
-    EventService,
     FormService,
     MirrorService,
     OtService,
