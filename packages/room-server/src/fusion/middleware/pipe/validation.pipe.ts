@@ -30,7 +30,6 @@ import { ApiException, ApiTipId } from 'shared/exception';
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform {
-
   /**
    *
    * get parameters that need to be validated
