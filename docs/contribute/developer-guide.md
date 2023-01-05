@@ -14,7 +14,7 @@ Make sure you have the following dependencies and programming languages installe
 - [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
 
 
-## Programming Language
+### Programming Language
 
 If you are using macOS or Linux.
 We recommend install programming language with SDK manager `sdkman` and `nvm`.
@@ -30,7 +30,7 @@ nvm install 16.15.0 && nvm use 16.15.0
 sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 ```
 
-## macOS
+### macOS
 
 We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
 
@@ -41,7 +41,7 @@ brew install --cask docker
 brew install make
 ```
 
-## Linux
+### Linux
 
 On CentOS / RHEL or other Linux distribution with `yum`
 
@@ -61,7 +61,7 @@ sudo apt install docker
 ```
 
 
-## Windows
+### Windows
 
 If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal),
 You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
@@ -87,6 +87,44 @@ make
 ```
 
 ![make command screenshot](../static/make.png)
+
+
+
+## Start Development Environment
+
+APITable consists of 4 processes:
+
+1. backend-server
+2. room-server
+3. socket-server
+4. web-server
+
+To start the development environment locally, run these commands:
+
+```bash
+# start databases in dockers
+make dataenv 
+
+# install dependencies
+make install 
+
+#start backend-server
+make run # enter 1  
+
+# and then switch to a new terminal
+# start room-server
+make run # enter 2
+
+# and then switch to a new terminal
+# start socket-server
+make run # enter 3  
+
+# and then switch to a new terminal
+# start web-server
+make run # enter 4
+
+```
+
 
 
 

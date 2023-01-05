@@ -222,12 +222,12 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
     return <>Error: no widgetId</>;
   }
   if (!connected) {
-    console.log(widgetId, ' waiting connect...');
+    console.log('%s waiting connect...', widgetId);
     return <Loading/>;
   }
 
   if (!init) {
-    console.log(widgetId, ' waiting init data...');
+    console.log('%s waiting init data...', widgetId);
     return <Loading/>;
   }
 

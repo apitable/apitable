@@ -163,7 +163,7 @@ export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveIte
           disabled
         />
         <ButtonGroup withSeparate>
-          {env.REGENERATE_API_TOKEN_VISIBLE && <Tooltip
+          {(env.REGENERATE_API_TOKEN_VISIBLE || !user!.apiKey) && <Tooltip
             title={!user!.apiKey ? t(Strings.generating_token_value) : t(Strings.rebuild_token_value)}
             placement="top"
           >

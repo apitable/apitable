@@ -3,7 +3,7 @@
   "version": "0.16.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "author": "APITable PTE. LTD.<support@apitable.com>",
+  "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -19,7 +19,7 @@
     "classnames": "2.2.6",
     "color": "^3.1.3",
     "date-fns": "^2.22.1",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "rc-trigger": "^5.3.3",
     "rc-util": "^5.24.4",
     "react-color": "^2.19.3",
@@ -66,6 +66,7 @@
     "concurrently": "^7.2.2",
     "jest": "26.6.0",
     "jest-environment-jsdom": "26.6.0",
+    "react-dom": "18.2.0",
     "storybook-addon-designs": "^6.1.0",
     "styled-components": "5.3.6",
     "ts-jest": "26.4.4",
@@ -75,19 +76,17 @@
   },
   "peerDependencies": {
     "react": "18.2.0",
-    "react-dom": "18.2.0",
     "styled-components": "5.3.6"
   },
   "scripts": {
-    "build": "rm -rf ./dist && yarn tsc && tsc-alias",
+    "build": "rm -rf ./dist && tsc && tsc-alias",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "test": "jest",
     "test:cov": "jest --coverage",
     "storybook": "start-storybook -p 6006",
     "storybook-docs": "start-storybook --docs --no-manager-cache",
     "build-storybook": "build-storybook",
-    "test-dev": "npx majestic",
-    "chromatic": "npx chromatic --project-token=0852f335f2ca vika/components"
+    "test-dev": "npx majestic"
   },
   "browserslist": {
     "production": [
