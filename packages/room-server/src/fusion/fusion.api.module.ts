@@ -40,6 +40,7 @@ import { FusionApiTransformer } from './transformer/fusion.api.transformer';
 import { DatasheetRecordRepository } from 'database/repositories/datasheet.record.repository';
 import { FusionApiFilter } from './filter/fusion.api.filter';
 import { UnitMemberRepository } from 'database/repositories/unit.member.repository';
+import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { UnitMemberRepository } from 'database/repositories/unit.member.reposito
     FusionApiRecordService,
     FusionApiService,
     DataBusService,
+    ValidationPipe,
     QueryPipe,
     FieldPipe,
     ApiAuthGuard,

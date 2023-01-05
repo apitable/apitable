@@ -748,6 +748,8 @@ export interface ICollaborator extends ICollaboratorParams {
     recordId: string;
     time: number;
   };
+  avatarColor?: number;
+  nickName?: string;
 }
 
 export interface IResourceRevision {

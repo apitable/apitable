@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { uploadAttachToS3, UploadType } from './upload_attach_to_S3';
+import { uploadAttachToS3, UploadType } from './private/upload_attach_to_S3';
 import { cellValueToImageSrc } from 'core';
 import { IAttachmentValue, IUploadProgress } from 'interface';
 import { identity, pickBy } from 'lodash';

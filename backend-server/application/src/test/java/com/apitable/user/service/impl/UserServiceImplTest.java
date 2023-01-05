@@ -18,9 +18,60 @@
 
 package com.apitable.user.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.user.entity.UserEntity;
+import com.apitable.user.mapper.UserMapper;
+import com.apitable.user.ro.UserOpRo;
+import org.junit.jupiter.api.Test;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserServiceImplTest extends AbstractIntegrationTest {
 
+    @Resource
+    private UserMapper userMapper;
 
+    @Test
+    public void testEditUserAvatar(){
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        UserOpRo param = new UserOpRo();
+        param.setAvatar("public/2023/01/04/11c74fbfc96541b3a2ffd3ee8217dcc0");
+        param.setAvatarColor(null);
+
+        iUserService.edit(userSpace.getUserId(), param);
+        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        assertThat(users.get(0).getAvatar()).isEqualTo("public/2023/01/04/11c74fbfc96541b3a2ffd3ee8217dcc0");
+    }
+
+    @Test
+    public void testEditUserAvtarColor(){
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        UserOpRo param = new UserOpRo();
+        param.setAvatar(null);
+        param.setAvatarColor(5);
+
+        iUserService.edit(userSpace.getUserId(), param);
+        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        assertThat(users.get(0).getAvatar()).isNull();
+    }
+
+    @Test
+    public void testEditUserNickName(){
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        UserOpRo param = new UserOpRo();
+        param.setInit(false);
+        param.setNickName("testName");
+
+        iUserService.edit(userSpace.getUserId(), param);
+        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        assertThat(users.get(0).getNickName()).isEqualTo("testName");
+    }
 }

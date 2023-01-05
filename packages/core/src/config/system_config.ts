@@ -19,12 +19,12 @@
 import { APITipConfigInterface, Tips } from 'config/api_tip_config.interface';
 import apiTipConfigJson from './api_tip_config.auto.json';
 import systemConfigJson from './system_config.auto.json';
-import { SystemConfigInterfaceNotifications, SystemConfigInterface, Templates, Types } from './system_config.interface';
+import { SystemConfigInterface, SystemConfigInterfaceNotifications, Templates, Types } from './system_config.interface';
 
 /**
-  * config class, directly get the entire class of SystemConfig
-  */
-const SystemConfig: SystemConfigInterface = systemConfigJson as SystemConfigInterface; 
+ * config class, directly get the entire class of SystemConfig
+ */
+const SystemConfig: SystemConfigInterface = systemConfigJson as unknown as SystemConfigInterface;
 
 /**
  * api tip config class
@@ -32,9 +32,9 @@ const SystemConfig: SystemConfigInterface = systemConfigJson as SystemConfigInte
 const ApiTipConfig = apiTipConfigJson as APITipConfigInterface;
 
 /**
-  * Settings object, quickly get system_config.system table, system constant configuration
-  *
-  * pass in key
+ * Settings object, quickly get system_config.system table, system constant configuration
+ *
+ * pass in key
  * @example Conf.api_rate...
  */
 const Settings = SystemConfig.settings;

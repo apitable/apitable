@@ -23,13 +23,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { ApiException } from 'shared/exception';
 import { QueryPipe } from 'fusion/middleware/pipe/query.pipe';
-import supertest from 'supertest';
 import { OrderEnum } from 'shared/enums';
 
 describe('QueryPipe', () => {
   let app: NestFastifyApplication;
-  let pipe: QueryPipe;
-  let request;
   beforeAll(async() => {
     jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
@@ -37,29 +34,30 @@ describe('QueryPipe', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    request = supertest(app.getHttpServer());
-    pipe = new QueryPipe(request);
   });
 
   afterAll(async() => {
     await app.close();
   });
 
-  describe('validateExpression', () => {
-    it('should true', function() {
-      expect(true);
-    });
-    it('sort.field error--zh-CN', () => {
+  describe('validateSort', () => {
+    test('sort.field error--zh-CN', () => {
       const error = ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
       expect(() => {
-        pipe.validateSort([{ order: OrderEnum.DESC, field: 'aa' }], {
+        QueryPipe.validateSort([{ order: OrderEnum.DESC, field: 'aa' }], {
           Number: {
-            id: 'aa', name: 'number', type: FieldType.Number, property: { precision: 0, defaultValue: undefined }
+            id: 'aa',
+            name: 'number',
+            type: FieldType.Number,
+            property: { precision: 0, defaultValue: undefined },
           },
         });
       }).toThrow(error);
     });
-    it('viewId not exists error--zh-CN', () => {
+  });
+
+  describe('validateViewId', () => {
+    test('viewId not exists error--zh-CN', () => {
       const error = ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists);
       const meta: IMeta = {
         fieldMap: {
@@ -137,8 +135,9 @@ describe('QueryPipe', () => {
         widgetPanels: [{ id: 'wplAcHJtZO9f8', name: 'widget pannel', widgets: [{ id: 'wdtiJjVmNFcFmNtQFA', height: 224, y: 0 }] }],
       };
       expect(() => {
-        pipe.validateViewId('aa', meta);
+        QueryPipe.validateViewId('aa', meta);
       }).toThrow(error);
     });
   });
+
 });

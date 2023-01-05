@@ -1398,6 +1398,16 @@
             "zh_HK": "房地產客戶關係管理",
             "en_US": "Real Estate CRM",
             "zh_CN": "房地产客户关系管理"
+        },
+        "player_contact_us": {
+            "zh_HK": "聯繫我們",
+            "en_US": "Contact us",
+            "zh_CN": "联系我们"
+        },
+        "robot_run_history_desc": {
+            "zh_HK": "你可以看到該機器人所有的運行歷史 <a href='https://help.apitable.com/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">如何排查問題</a>",
+            "en_US": "You have access to all run history during the public beta <a href='https://help.apitable.com/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">Trouble shooting</a>",
+            "zh_CN": "你可以看到该机器人所有的运行历史 <a href='https://help.apitable.com/docs/guide/manual-automation-robot#how-to-check-the-question' target=\\\"_blank\\\">如何排查问题</a>"
         }
     }
 }

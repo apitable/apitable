@@ -18,19 +18,16 @@
 
 package com.apitable.base.service.impl;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.entity.SystemConfigEntity;
 import com.apitable.base.enums.SystemConfigType;
 import com.apitable.base.mapper.SystemConfigMapper;
 import com.apitable.base.service.ISystemConfigService;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -57,12 +54,8 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
         if (cacheVal != null) {
             return cacheVal;
         }
-        // Query the database, if it exists, set it as a cache
-        String dbVal = findConfig(SystemConfigType.WIZARD_CONFIG, lang);
-        if (dbVal != null) {
-            redisTemplate.opsForValue().set(key, dbVal, 7, TimeUnit.DAYS);
-        }
-        return dbVal;
+        // Query the database
+        return findConfig(SystemConfigType.WIZARD_CONFIG, lang);
     }
 
     @Override
