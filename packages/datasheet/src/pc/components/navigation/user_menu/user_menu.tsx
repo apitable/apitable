@@ -403,7 +403,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
         </div>
-        {!isWecomSpace && (
+        {!isWecomSpace && isEnterprise && (
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>
