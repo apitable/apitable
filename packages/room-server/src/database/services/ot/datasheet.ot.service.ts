@@ -276,7 +276,7 @@ export class DatasheetOtService {
       const afterCreateCountInDst = Number(currentRecordCountInDst) + Number(resultSet.toCreateRecord.size);
       const afterCreateCountInSpace = Number(spaceUsages.recordNums) + Number(resultSet.toCreateRecord.size);
 
-      if (afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
+      if (subscribeInfo.maxRowsPerSheet >= 0 && afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
         const datasheetEntity = await this.datasheetService.getDatasheet(datasheetId);
         this.restService.createNotification(resultSet.auth, [
           {
@@ -294,7 +294,7 @@ export class DatasheetOtService {
         throw new ServerException(DatasheetException.getRECORD_ADD_LIMIT_PER_DATASHEETMsg(subscribeInfo.maxRowsPerSheet, afterCreateCountInDst));
       }
 
-      if (afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
+      if (subscribeInfo.maxRowsInSpace >= 0 && afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
         this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
