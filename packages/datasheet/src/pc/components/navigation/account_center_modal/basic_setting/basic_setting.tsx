@@ -116,7 +116,7 @@ export const BasicSetting: FC = () => {
   const uploadConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile, color } = data;
     if (color != null) {
-      updateAvatarColor(color, nickName);
+      updateAvatarColor(color);
       return;
     }
     if (officialToken) {

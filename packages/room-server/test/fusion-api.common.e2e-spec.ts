@@ -65,7 +65,7 @@ export async function initNestTestApp() {
   // Global Interceptor Handler(return standard response body if success)
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   // Global Validator, return custom parameter validation error
-  app.useGlobalPipes(new ValidationPipe({ enableErrorDetail: true }));
+  app.useGlobalPipes(new ValidationPipe());
   await app.init();
   await app
     .getHttpAdapter()

@@ -17,7 +17,7 @@
  */
 
 import { colorVars, Loading, Skeleton, TextButton } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { integrateCdnHost, Strings, t, SystemConfig } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -39,7 +39,8 @@ const EmojiPicker = dynamic(() => import('emoji-mart/dist/components/picker/pick
 });
 
 const getEmojiSource = (set = 'apple', size = 32) => {
-  return integrateCdnHost(`emoji-${set}-${size}.png`);
+  const emojiPath = SystemConfig.settings[`emoji_${set}_${size}`]?.value;
+  return integrateCdnHost(emojiPath);
 };
 
 const i18n = {

@@ -33,6 +33,7 @@ import { useSelector } from 'react-redux';
 import { Find } from './find';
 import { ScreenSize } from '../common/component_display';
 import { WidgetTool } from './widget_tool/widget_tool';
+import classNames from 'classnames';
 
 export interface IToolBarWrapperProps {
   hideToolBar?: boolean;
@@ -41,7 +42,7 @@ export interface IToolBarWrapperProps {
 export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) => {
   const { setSideBarVisible } = useSideBarVisible();
   const [viewMenuVisible, setViewMenuVisible] = useState(false);
-  const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
+  const { datasheetId, mirrorId, embedId } = useSelector(state => state.pageParams);
   const networkParams: [boolean, string, ResourceType] = mirrorId
     ? [true, mirrorId!, ResourceType.Mirror]
     : [true, datasheetId!, ResourceType.Datasheet];
@@ -54,10 +55,12 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
   const isMobile = screenIsAtMost(ScreenSize.md);
   return (
     <>
-      <div className={styles.mobileToolBar}>
-        <div onClick={() => setSideBarVisible(true)} className={styles.side}>
+      <div className={classNames(styles.mobileToolBar, {
+        [styles.embedPadding]: !!embedId
+      })}>
+        {!embedId && <div onClick={() => setSideBarVisible(true)} className={styles.side}>
           <IconSide width={20} height={20} fill={colors.black[50]} />
-        </div>
+        </div>}
         {!hideToolBar && <Toolbar />}
         <div className={styles.toolRight}>
           {!(isCalendarView && isMobile) && <Find datasheetId={datasheetId!} />}
