@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210926-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add is_template、is_enabled、owner field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Is template (0: Yes, 1: No)' AFTER `release_id`,
+            ADD COLUMN `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT 'Enable or not, only for global widgets (0: off, 1: on)' AFTER `is_template`,
+            ADD COLUMN `owner` bigint NULL DEFAULT NULL COMMENT 'Owner Id(link#xxxx_user#id)' AFTER `is_deleted`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210926-002" author="Pengap" labels="widget">
+        <comment>Widget Package Auth Table add sequence field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package_auth_space`
+            ADD COLUMN `widget_sort` int UNSIGNED NULL DEFAULT 10000 COMMENT 'Sequence number, space station components start from 10000' AFTER `type`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210926-003" author="Pengap" labels="widget">
+        <comment>Initialize migration widget package owner field value</comment>
+        <sql>
+            UPDATE `${table.prefix}widget_package` SET `owner` = created_by;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

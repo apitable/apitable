@@ -1,3 +1,4 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <!--
  APITable <https://github.com/apitable/apitable>
  Copyright (C) 2022 APITable Ltd. <https://apitable.com>
@@ -16,17 +17,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<configuration>
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) - %red(T[%X{traceId}]) - %red(S[%X{spanId}]) - %red(T[%thread]) %highlight(%-5level) %green(%logger{35}) %magenta(Line:%L) - %blue(%msg%n)"/>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>「Log」>>> ${CONSOLE_LOG_PATTERN}</pattern>
-            <charset>utf-8</charset>
-        </encoder>
-    </appender>
-
-    <root level="error">
-        <appender-ref ref="CONSOLE"/>
-    </root>
-</configuration>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220217-001" author="Pengap" labels="widget">
+        <comment>Widget Package Table add sandbox field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}widget_package`
+            ADD COLUMN `sandbox` tinyint(1) NULL COMMENT 'Whether the sandbox runs (0: No, 1: Yes)' AFTER `widget_body`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

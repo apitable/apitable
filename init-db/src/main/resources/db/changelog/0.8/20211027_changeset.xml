@@ -30,4 +30,22 @@
             ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
         </sql>
     </changeSet>
+
+    <changeSet id="V0.8-20211027-002" author="penglongfeng" labels="automation">
+        <comment>Robot Table add x_service_token、seq_id and uk_seq_resource_id</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_robot`
+            ADD COLUMN `seq_id` varchar(64) NULL COMMENT 'Request source request number' AFTER `updated_at`,
+            ADD COLUMN `x_service_token` varchar(128) NULL COMMENT 'Service Provider Certification Token' AFTER `seq_id`,
+            ADD UNIQUE INDEX `uk_seq_resource_id`(`seq_id`, `resource_id`) USING BTREE COMMENT 'Unique number of single table robot creation request';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211027-003" author="penglongfeng" labels="automation">
+        <comment>Automation Action Table add robot id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_action`
+            ADD INDEX `idx_robot_id`(`robot_id`) USING BTREE COMMENT 'Robot ID Index';
+        </sql>
+    </changeSet>
 </databaseChangeLog>

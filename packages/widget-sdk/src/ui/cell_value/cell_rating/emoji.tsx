@@ -19,12 +19,9 @@
 import { Loading } from '@apitable/components';
 import { integrateCdnHost } from '@apitable/core';
 import React from 'react';
-import dynamic from 'next/dynamic';
 
-const EmojiEmoji = dynamic<any>(() => import('emoji-mart/dist/components/emoji/emoji'), {
-  ssr: false,
-  loading: () => <Loading />
-});
+const EmojiEmoji = React.lazy(() => import('emoji-mart/dist/components/emoji/emoji'));
+
 const getEmojiSource = (set = 'apple', size = 32) => {
   return integrateCdnHost(`emoji-${set}-${size}.png`);
 };
@@ -37,9 +34,11 @@ interface IEmoji {
 
 export const Emoji = (props: IEmoji) => {
   return (
-    <EmojiEmoji
-      backgroundImageFn={() => getEmojiSource(props.set, 64)}
-      {...props}
-    />
+    <React.Suspense fallback={<Loading />}>
+      <EmojiEmoji
+        backgroundImageFn={() => getEmojiSource(props.set, 64)}
+        {...props}
+      />
+    </React.Suspense>
   );
 };

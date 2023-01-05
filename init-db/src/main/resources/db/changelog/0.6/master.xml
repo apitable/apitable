@@ -30,10 +30,14 @@
     <include file="db/changelog/0.6/20201120_changeset.xml"/>
     <include file="db/changelog/0.6/20201208_changeset.xml"/>
     <include file="db/changelog/0.6/20201209_changeset.xml"/>
+    <include file="db/changelog/0.6/20201214_changeset.xml"/>
     <include file="db/changelog/0.6/20201216_changeset.xml"/>
     <include file="db/changelog/0.6/20201219_changeset.xml"/>
+    <include file="db/changelog/0.6/20201222_changeset.xml"/>
+    <include file="db/changelog/0.6/20201225_changeset.xml"/>
     <include file="db/changelog/0.6/20201229_changeset.xml"/>
     <include file="db/changelog/0.6/20210109_changeset.xml"/>
+    <include file="db/changelog/0.6/20210111_changeset.xml"/>
     <include file="db/changelog/0.6/20210118_changeset.xml"/>
     <include file="db/changelog/0.6/20210121_changeset.xml"/>
     <include file="db/changelog/0.6/20210123_changeset.xml"/>

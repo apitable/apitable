@@ -12,7 +12,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  build-test: ## build only local for test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: "8"
+          distribution: "corretto"
+          cache: "gradle"
+      - name: Test
+        run: |
+          make install
+          make build
+
+  unit-test: ## unit test with docker-compose.unit-test.yaml
     name: test
     runs-on: ubuntu-latest
     strategy:
@@ -26,8 +45,8 @@ jobs:
         run: |
           make ${{ matrix.command }}
 
-  buildpush:
-    needs: test
+  build-push: ## build and push to docker registry
+    needs: unit-test
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
