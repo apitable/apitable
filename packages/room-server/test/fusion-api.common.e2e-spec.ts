@@ -43,9 +43,9 @@ export function createSuccessExpect(response: any, result: any) {
   expect(result.success).to.be.eql(true);
 }
 
-export function getDefaultHeader(app) {
+export function getDefaultHeader() {
   return {
-    Authorization: 'Bearer usk8qo1Dk9PbecBlaqFIvbb',
+    Authorization: process.env.BEARER_TOKEN,
   };
 }
 

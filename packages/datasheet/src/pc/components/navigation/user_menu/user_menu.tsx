@@ -176,7 +176,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
   const uploadConfirm = (data: ISelectInfo) => {
     const { officialToken, customFile, color } = data;
     if (color != null) {
-      updateAvatarColor(color, nickName);
+      updateAvatarColor(color);
       return;
     }
     if (officialToken) {
@@ -402,7 +402,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
         </div>
-        {!isWecomSpace && (
+        {!isWecomSpace && isEnterprise && (
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>

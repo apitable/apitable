@@ -369,11 +369,10 @@ export const useUserRequest = () => {
     });
   };
 
-  const updateAvatarColor = (avatarColor: number, nickName: string) => {
+  const updateAvatarColor = (avatarColor: number) => {
     return Api.updateUser({ 
       avatarColor, 
       init: false,
-      nickName,
       avatar: null as any,
     }).then((res) => {
       const { success } = res.data;
