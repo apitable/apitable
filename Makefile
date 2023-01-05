@@ -464,6 +464,16 @@ db-apply-ee: ## init-db enterprise  database structure (use .env)
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
 	docker run --rm --network apitable_apitable --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
 
+changelog: ## make changelog with github api
+	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\
+	read -p "FROM[default:latest-tag]: " GIT_FROM ;\
+	read -p "TO[default:HEAD]: " GIT_TO ;\
+	if [ "$$GIT_FROM" = "" ]; then GIT_FROM=$(shell git describe --tags $$(git rev-list --tags --max-count=1)) ; fi ;\
+	if [ "$$GIT_TO" = "" ]; then GIT_TO=HEAD ; fi ;\
+	echo "" ;\
+	echo "FROM: $$GIT_FROM" ;\
+	echo "TO: $$GIT_TO" ;\
+	npx github-changelog-builder --token $$GITHUB_TOKEN -o apitable -r apitable -f $$GIT_FROM -t $$GIT_TO -a CHANGELOG.md
 
 ### help
 .PHONY: search
