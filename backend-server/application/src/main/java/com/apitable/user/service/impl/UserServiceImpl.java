@@ -600,6 +600,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 userServiceFacade.onUserChangeNicknameAction(userId, param.getNickName());
             }
         }
+        else {
+            user.setNickName(userEntity.getNickName());
+        }
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // Delete Cache

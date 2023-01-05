@@ -112,4 +112,4 @@ services:
 
 networks:
   unit-test:
-    driver: bridge
+    name: apitable-unit-test

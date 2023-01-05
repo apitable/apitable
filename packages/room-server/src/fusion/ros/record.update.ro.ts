@@ -60,9 +60,6 @@ export class RecordUpdateRo {
 
   @Expose()
   getRecordIds() {
-    return this.records.reduce<string[]>((pre, cur) => {
-      pre.push(cur.recordId);
-      return pre;
-    }, []);
+    return this.records.map(record => record.recordId);
   }
 }

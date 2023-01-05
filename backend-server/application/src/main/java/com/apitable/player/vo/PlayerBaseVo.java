@@ -80,4 +80,10 @@ public class PlayerBaseVo {
 
     @ApiModelProperty(value = "User player type 1: members in the space have not been removed, 2 members outside the space have been removed, and 3 visitors (non space registered users)", example = "1")
     private Integer playerType;
+
+    @ApiModelProperty(value = "default avatar color number", example = "1")
+    private Integer avatarColor;
+
+    @ApiModelProperty(value = "Nick Name", example = "Zhang San")
+    private String nickName;
 }
