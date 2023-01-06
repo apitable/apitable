@@ -19,7 +19,7 @@
 import { ApiTipConstant } from '@apitable/core';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { NodePermissionService } from 'database/services/node/node.permission.service';
+import { NodePermissionService } from 'node/services/node.permission.service';
 import { NODE_PERMISSION_REFLECTOR_KEY } from 'shared/common';
 import { ApiException } from 'shared/exception';
 import { NodePermission } from 'shared/interfaces';
