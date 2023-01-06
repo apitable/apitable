@@ -48,7 +48,7 @@ export const Avatar: FC<IAvatarProps> = ({
   } else if (icon) {
     const finalIcon = React.isValidElement(icon)
       ? React.cloneElement<any>(icon, {
-        size: AvatarSizeConfig[size].size * 0.6,
+        size: AvatarSizeConfig[size]!.size * 0.6,
         color: (style && style.color) || '#fff',
         className: 'avatar-icon'
       })
@@ -70,7 +70,7 @@ export const Avatar: FC<IAvatarProps> = ({
       if (typeof src === 'string' || icon) return 1;
       if (!avatarChildrenRef.current || !avatarNodeRef.current) return 1;
       const childrenWidth = avatarChildrenRef.current?.offsetWidth;
-      const gap = AvatarSizeConfig[size].gap;
+      const gap = AvatarSizeConfig[size]!.gap;
       const nodeWidth = avatarNodeRef.current?.offsetWidth - gap;
       return nodeWidth < childrenWidth ? nodeWidth / childrenWidth : 1;
     };

@@ -59,7 +59,7 @@ export const Select: FC<ISelectProps> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
-  const inputOnChange = (e: React.ChangeEvent, keyword: string) => {
+  const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
     setKeyword(keyword);
   };
 
@@ -141,7 +141,7 @@ export const Select: FC<ISelectProps> & {
       >
         {
           dropdownRender || <ListDeprecate
-            onClick={(e, index) => {
+            onClick={(_e, index) => {
               setVisible(false);
               onSelected && onSelected(afterFilterOptions[index]!, index);
             }}
@@ -167,7 +167,7 @@ export const Select: FC<ISelectProps> & {
     );
   };
 
-  const triggerClick = (e: React.MouseEvent) => {
+  const triggerClick = (_e: React.MouseEvent) => {
     if (disabled) {
       return;
     }

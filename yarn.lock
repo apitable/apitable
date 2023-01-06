@@ -258,7 +258,7 @@ __metadata:
     "@types/node": ^12.0.0
     "@types/react": ^17.0.2
     "@types/react-color": ^3.0.4
-    "@types/react-dom": 17.0.11
+    "@types/react-dom": ^18.0.10
     "@types/react-highlight-words": ^0.16.1
     "@types/react-is": ^17.0.0
     "@types/react-window": 1.8.1
@@ -12802,6 +12802,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 9ad1220297bede365e0d2aae4bc4a2deee3247da9da62d45bcd770812d246d46c219b3f58755b08423a4339c3c654fddd6c2b16b27151d09213b527a7cde8910
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^18.0.10":
+  version: 18.0.10
+  resolution: "@types/react-dom@npm:18.0.10"
+  dependencies:
+    "@types/react": "*"
+  checksum: ff8282d5005a0b1cd95fb65bf79d3d8485e4cfe2aaf052129033a178684b940014a3f4536bc20d573f8a01cf4c6f4770c74988cef7c2b5cac3041d9f172647e3
   languageName: node
   linkType: hard
 

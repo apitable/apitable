@@ -65,6 +65,6 @@ export const contextMenuHideAll = () => {
   manager.emit(EVENT_TYPE.HIDE_ALL);
 };
 
-export const contextMenuShow = (e: MouseEvent<HTMLElement>, id, extraInfo?: any) => {
+export const contextMenuShow = (e: MouseEvent<HTMLElement>, id: string, extraInfo?: any) => {
   manager.emit(id, { e, extraInfo });
 };

@@ -81,13 +81,13 @@ export const getActionColor = (color: string) => {
     const currentLevel = shadeLevel.findIndex(shade => shade === currentShade);
     if (currentLevel > 7) {
       return {
-        hover: allColors[hue][shadeLevel[currentLevel - 2]],
-        active: allColors[hue][shadeLevel[currentLevel - 4]],
+        hover: allColors[hue]![shadeLevel[currentLevel - 2]!],
+        active: allColors[hue]![shadeLevel[currentLevel - 4]!],
       };
     }
     return {
-      hover: allColors[hue][shadeLevel[currentLevel + 1]],
-      active: allColors[hue][shadeLevel[currentLevel + 2]],
+      hover: allColors[hue]![shadeLevel[currentLevel + 1]!],
+      active: allColors[hue]![shadeLevel[currentLevel + 2]!],
     };
   }
   return {
@@ -101,14 +101,14 @@ export const getActionColor = (color: string) => {
  * @param color Any Hex color in the color palette, such as red[500]
  * @param gap shade gap
  */
-export const getNextShadeColor = (color: string, gap: number) => {
+export const getNextShadeColor = (color: string, gap: number): string => {
   const hueShade = colorHexHueShadeMap[color.toUpperCase()];
   if (hueShade) {
     const [hue, currentShade] = hueShade;
     const currentLevel = shadeLevel.findIndex(shade => shade === currentShade);
     const nextLevel = currentLevel + gap;
     const nextShade = shadeLevel[nextLevel];
-    if (nextShade) return allColors[hue][nextShade];
+    if (nextShade) return allColors[hue]![nextShade]!;
     return color;
   }
   // The original value of the color not in the color palette is returned.
@@ -154,9 +154,9 @@ export function convertHexToRGB(color: string, opacity?: number) {
   color = color.substr(1);
 
   const re = new RegExp(`.{1,${color.length / 3}}`, 'g');
-  let colors = color.match(re);
+  let colors = color.match(re) as string[];
 
-  if (colors && colors[0].length === 1) {
+  if (colors && colors[0]!.length === 1) {
     colors = colors.map(n => n + n);
   }
 
@@ -177,13 +177,13 @@ export function getLuminance(color: string) {
       return val <= 0.03928 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4;
     });
     // Yellow requires special calculation
-    const isYellow = rgb[0] > 0.4 && rgb[1] > 0.25 && rgb[2] < 0.05;
+    const isYellow = rgb[0]! > 0.4 && rgb[1]! > 0.25 && rgb[2]! < 0.05;
     // Truncate at 3 digits
-    return (isYellow ? 0.5 : 1) * Number((0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]).toFixed(3));
+    return (isYellow ? 0.5 : 1) * Number((0.2126 * rgb[0]! + 0.7152 * rgb[1]! + 0.0722 * rgb[2]!).toFixed(3));
   }
 
   // else if (decomposedColor.type.indexOf('hsl') !== -1)
-  return decomposedColor.values[2] / 100;
+  return decomposedColor.values[2]! / 100;
 }
 
 /**

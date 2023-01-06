@@ -85,7 +85,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         {({ key, className: motionClassName }) =>
           <MessageUI
             motionClassName={motionClassName}
-            {...uiPropsMap[key]}
+            {...uiPropsMap[key]!}
           />
         }
       </CSSMotionList>
