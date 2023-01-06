@@ -125,8 +125,8 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
       const { top: triggerTop, height: triggerSizeHeight, bottom: triggerBottom } = triggerSize;
       offset = triggerOffset;
       adjust = triggerAdjust;
-      actualTop = triggerTop + offset[1];
-      actualBottom = triggerBottom + offset[1];
+      actualTop = triggerTop + offset[1]!;
+      actualBottom = triggerBottom + offset[1]!;
       triggerHeight = triggerSizeHeight;
     }
     const restTopSpaceHeight = window.innerHeight - actualTop - triggerHeight;

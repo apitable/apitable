@@ -30,9 +30,9 @@ export const Radio = React.forwardRef(({
   readOnly,
   value,
   ...restProps
-}: IRadio, ref: React.Ref<HTMLLabelElement>) => {
+}: IRadio, _ref: React.Ref<HTMLLabelElement>) => {
   const context = React.useContext(RadioGroupContext);
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<Element>) => {
     onChange?.(e);
     context?.onChange?.(e);
   };

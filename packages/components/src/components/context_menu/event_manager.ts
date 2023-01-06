@@ -18,17 +18,19 @@
 
 import { MouseEvent } from 'react';
 
+type EventHandler = (configs?: { e: MouseEvent<HTMLElement>, extraInfo?: any }) => void;
+
 function eventManager() {
-  const map = new Map();
+  const map = new Map<string, EventHandler>();
 
   return {
-    off: (id) => {
+    off: (id: string) => {
       map.delete(id);
     },
-    on: (id, handler) => {
+    on: (id: string, handler: EventHandler) => {
       map.set(id, handler);
     },
-    emit: (id, configs?: { e: MouseEvent<HTMLElement>, extraInfo?: any }) => {
+    emit: (id: string, configs?: { e: MouseEvent<HTMLElement>, extraInfo?: any }) => {
       const handler = map.get(id);
       if (handler) {
         handler(configs);

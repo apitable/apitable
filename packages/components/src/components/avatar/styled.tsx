@@ -76,7 +76,7 @@ export const AvatarWrapper = styled.span<IAvatarProps>`
     }
     ${(props) => {
     const sizeKey = props.size || 'm';
-    const { size, borderRadius , fontSize } = AvatarSizeConfig[sizeKey];
+    const { size, borderRadius , fontSize } = AvatarSizeConfig[sizeKey]!;
     return `
         width: ${size}px;
         height: ${size}px;
