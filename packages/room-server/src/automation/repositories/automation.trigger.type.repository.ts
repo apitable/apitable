@@ -18,12 +18,12 @@
 
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { TriggerTypeServiceRelDto } from "../dtos/trigger.type.service.rel.dto";
+import { ITriggerTypeServiceRelDto } from '../dtos/trigger.type.service.rel.dto';
 
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
 
-  async getTriggerTypeServiceRelByEndPoints(endpoints: string[]): Promise<TriggerTypeServiceRelDto[]>{
+  getTriggerTypeServiceRelByEndPoints(endpoints: string[]): Promise<ITriggerTypeServiceRelDto[]>{
     return this.find({
       select: [
         'serviceId', 'triggerTypeId', 'endpoint'
@@ -32,10 +32,10 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: In(endpoints),
         isDeleted: 0,
       }
-    })
+    });
   }
 
-  async getTriggerTypeServiceRelByEndPoint(endpoint: string): Promise<TriggerTypeServiceRelDto[]>{
+  getTriggerTypeServiceRelByEndPoint(endpoint: string): Promise<ITriggerTypeServiceRelDto[]>{
     return this.find({
       select: [
         'serviceId', 'triggerTypeId'
@@ -44,6 +44,6 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: endpoint,
         isDeleted: 0,
       }
-    })
+    });
   }
 }

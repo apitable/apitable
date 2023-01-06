@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from "@nestjs/common";
-import { AutomationTriggerTypeRepository } from "../repositories/automation.trigger.type.repository";
-import { AutomationTriggerRepository } from "../repositories/automation.trigger.repository";
-import { AutomationServiceRepository } from "../repositories/automation.service.repository";
-import { AutomationRobotRepository } from "../repositories/automation.robot.repository";
-import { ResourceRobotTriggerDto } from "../dtos/resource.robot.trigger.dto";
-import { ResourceTriggerGroupVo } from "../vos/resource.trigger.group.vo";
+import { Injectable } from '@nestjs/common';
+import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
+import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 
 @Injectable()
 export class RobotTriggerService {
@@ -37,7 +37,7 @@ export class RobotTriggerService {
   public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]>{
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
-      let officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
+      const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
       if(officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
@@ -46,19 +46,19 @@ export class RobotTriggerService {
     return [];
   }
 
-  public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<ResourceTriggerGroupVo> {
+  public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
     const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
     const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
       robotIdToResourceId[item.robotId] = item.resourceId;
       return robotIdToResourceId;
     }, {} as {[key: string]: string});
-    let triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
+    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
     return triggers.reduce((resourceIdToTriggers, item) => {
       const resourceId = robotIdToResourceId[item.robotId]!;
       resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
       resourceIdToTriggers[resourceId]!.push(item);
       return resourceIdToTriggers;
-    }, {} as ResourceTriggerGroupVo);
+    }, {} as IResourceTriggerGroupVo);
   }
 
   private async _getResourceConditionalRobotTriggers(resourceId: string, triggerTypeId: string) {
@@ -67,7 +67,7 @@ export class RobotTriggerService {
     const datasheetRobots = await this.automationRobotRepository.getRobotIdByResourceId(resourceId);
     for (const robot of datasheetRobots) {
       // get the special trigger type's robot's triggers.
-      let triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robot.robotId, triggerTypeId);
+      const triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robot.robotId, triggerTypeId);
       resourceRobotTriggers.push(...triggers);
     }
     return resourceRobotTriggers;

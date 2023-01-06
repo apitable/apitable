@@ -104,6 +104,14 @@ module.exports = withPlugins(plugins, _withSentryConfig({
       protocol: 'https',
       hostname: '**',
       pathname: '/vk-assets-ltd/**',
+    },{
+      protocol: 'http',
+      hostname: '**',
+      pathname: '/assets/**',
+    }, {
+      protocol: 'https',
+      hostname: '**',
+      pathname: '/assets/**',
     }]
   },
   poweredByHeader: false,

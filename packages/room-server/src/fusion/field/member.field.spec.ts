@@ -21,8 +21,8 @@ import '@apitable/i18n-lang';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
-import { UnitMemberService } from 'database/services/unit/unit.member.service';
-import { UnitService } from 'database/services/unit/unit.service';
+import { UnitMemberService } from 'unit/services/unit.member.service';
+import { UnitService } from 'unit/services/unit.service';
 import { MemberField } from 'fusion/field/member.field';
 
 describe('MemberField', () => {

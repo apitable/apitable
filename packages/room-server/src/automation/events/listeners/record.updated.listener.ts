@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { defaultEventListenerOptions, IEventListenerOptions, OPEventNameEnums } from "@apitable/core";
-import { Injectable } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
+import { defaultEventListenerOptions, IEventListenerOptions, OPEventNameEnums } from '@apitable/core';
+import { Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import {
   RecordUpdatedEvent,
-} from "../domains/record.updated.event";
-import { isHandleEvent } from "../helpers/listener.helper";
-import { TriggerEventHelper } from "../helpers/trigger.event.helper";
+} from '../domains/record.updated.event';
+import { isHandleEvent } from '../helpers/listener.helper';
+import { TriggerEventHelper } from '../helpers/trigger.event.helper';
 
 @Injectable()
 export class RecordUpdatedListener {
@@ -37,7 +37,7 @@ export class RecordUpdatedListener {
   }
 
   @OnEvent(OPEventNameEnums.RecordUpdated)
-  public async handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
+  public handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
 
     if(!isHandleEvent(event, event.beforeApply, this.options)) {
       return;

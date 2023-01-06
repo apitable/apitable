@@ -18,7 +18,7 @@
 
 import { databus, IBaseDatasheetPack, IServerDatasheetPack } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { CacheKeys, DATASHEET_PACK_CACHE_EXPIRE_TIME } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOptions, ILoadBasePackOptions } from 'shared/interfaces';

@@ -17,7 +17,7 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { DatasheetRecordRepository } from 'database/repositories/datasheet.record.repository';
+import { DatasheetRecordRepository } from 'database/datasheet/repositories/datasheet.record.repository';
 import { difference } from 'lodash';
 import { ApiException, ApiTipId } from 'shared/exception';
 
