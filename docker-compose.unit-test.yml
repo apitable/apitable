@@ -110,6 +110,31 @@ services:
       - OSS_HOST=https://s1.vika.cn
       - OSS_BUCKET=QNY1
 
+  unit-test-backend:
+    container_name: unit-test-backend
+    image: amazoncorretto:8
+    working_dir: /app
+    networks:
+      - unit-test
+    volumes:
+      - ./backend-server:/app
+    environment:
+      - JVM_OPTS="-Xms3200m -Xmx3200m"
+      - MYSQL_HOST=test-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=apitable
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=apitable_test
+      - REDIS_HOST=test-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=3
+      - REDIS_PASSWORD=
+      - RABBITMQ_HOST=test-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=apitable
+      - RABBITMQ_PASSWORD=password
+    entrypoint: ./gradlew testCodeCoverageReport --stacktrace
+
 networks:
   unit-test:
     name: apitable-unit-test
