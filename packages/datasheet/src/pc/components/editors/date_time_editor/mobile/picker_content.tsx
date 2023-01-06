@@ -130,11 +130,16 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
         onClose={() => {
           setVisible(false);
         }}
+        confirmText={t(Strings.confirm)}
+        cancelText={t(Strings.cancel)}
         title={(
           <>
             {onBackToNow && <div
               className={style.backToNow}
-              onClick={onBackToNow}
+              onClick={() => {
+                onBackToNow();
+                setVisible(false);
+              }}
             >
               <span>{t(Strings.today)}</span>
             </div>}
