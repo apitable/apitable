@@ -77,6 +77,8 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
   const view = useSelector(state => Selectors.getCurrentView(state))!;
   const isCalendar = view.type === ViewType.Calendar;
+  const isGallery = view.type === ViewType.Gallery;
+  const isKanban = view.type === ViewType.Kanban;
   const commandManager = resourceService.instance!.commandManager;
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
@@ -392,7 +394,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <CopyOutlined color={colors.thirdLevelText} />,
         text: t(Strings.copy_from_cell),
         shortcutKey: getShortcutKeyString(ShortcutActionName.Copy),
-        hidden: isCalendar,
+        hidden: isCalendar || isGallery || isKanban,
         onClick: onCopy,
       },
       // TODO: paste because of browser security restrictions,
