@@ -25,7 +25,7 @@ const App = () => {
 };
 
 export const getServerSideProps = async(context: NextPageContext) => {
-  const host = process.env.API_PROXY;
+  const host = process.env.API_PROXY || 'http://localhost:3000';
   axios.defaults.baseURL = host + Url.BASE_URL;
 
   if (!context.req?.url) {
