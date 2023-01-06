@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, Url } from '@apitable/core';
+import { Api } from '@apitable/core';
 import axios from 'axios';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { getRequestHeaders } from '../../utils/utils';
+import { getBaseUrl } from '../../utils/get_base_url';
 
 const TemplateCentre = dynamic(() => import('pc/components/template_centre/template_centre'), { ssr: true });
 const TemplatePreview = dynamic(() => import('pc/components/template_centre/template_preview'), { ssr: true });
@@ -38,8 +39,7 @@ const App = (props) => {
 };
 
 export const getServerSideProps = async(context: NextPageContext) => {
-  const host = process.env.API_PROXY;
-  axios.defaults.baseURL = host + Url.BASE_URL;
+  axios.defaults.baseURL = getBaseUrl(context);
   const headers = getRequestHeaders(context);
 
   const userMeRes = await Api.getUserMe({}, false, headers);
