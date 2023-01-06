@@ -29,10 +29,11 @@ import { WidgetModule } from './widget/widget.module';
 import { AssetModule } from './asset/asset.module';
 import { OtModule } from './ot/ot.module';
 import { CommandModule } from './command/command.module';
-import { EventModule } from './event/event.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     AssetModule,
     AttachmentModule,
     AlarmDynamicModule.forRoot(),
@@ -45,7 +46,6 @@ import { EventModule } from './event/event.module';
     WidgetModule,
     OtModule,
     CommandModule,
-    EventModule,
   ],
   providers: [],
   exports: [
@@ -61,7 +61,6 @@ import { EventModule } from './event/event.module';
     WidgetModule,
     OtModule,
     CommandModule,
-    EventModule,
   ]
 })
 export class DatabaseModule {}

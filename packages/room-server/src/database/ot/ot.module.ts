@@ -37,7 +37,7 @@ import { MirrorOtService } from './services/mirror.ot.service';
 import { OtService } from './services/ot.service';
 import { ResourceChangeHandler } from './services/resource.change.handler';
 import { WidgetOtService } from './services/widget.ot.service';
-import { RobotModule } from 'automation/robot.module';
+import { RobotEventModule } from 'database/robot/robot.event.module';
 
 @Module({
   imports: [
@@ -48,7 +48,7 @@ import { RobotModule } from 'automation/robot.module';
     WidgetModule, 
     forwardRef(()=>FormModule), 
     MirrorModule, 
-    RobotModule,
+    RobotEventModule,
     forwardRef(()=>DashboardModule), 
     UserModule,
     AlarmDynamicModule.forRoot(),

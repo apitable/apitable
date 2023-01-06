@@ -33,8 +33,6 @@ graph TD;
         Shared-->Mirror;
         Shared-->Resource;
 ```
-TODO(Troy): split `Database module` into multiple submodules.
-
 `shared module` is a shared and global module that other modules depend on in default.
 ## Description
 

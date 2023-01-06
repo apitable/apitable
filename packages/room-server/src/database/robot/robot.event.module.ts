@@ -23,7 +23,7 @@ import { AutomationTriggerTypeRepository } from 'automation/repositories/automat
 import { RobotModule } from 'automation/robot.module';
 import { CommandModule } from 'database/command/command.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { EventService } from './services/event.service';
+import { RobotEventService } from './services/robot.event.service';
 
 @Module({
   imports: [
@@ -36,7 +36,7 @@ import { EventService } from './services/event.service';
       AutomationTriggerTypeRepository,
     ]),
   ],
-  providers: [EventService],
-  exports: [EventService]
+  providers: [RobotEventService],
+  exports: [RobotEventService]
 })
-export class EventModule {}
+export class RobotEventModule {}
