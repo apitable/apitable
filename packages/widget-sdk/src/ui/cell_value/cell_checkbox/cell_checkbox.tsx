@@ -34,7 +34,7 @@ interface ICellCheckbox {
 
 export const CellCheckbox = (props: ICellCheckbox) => {
   const { field, checked, className, style, cellClassName, cellStyle } = props;
-  const renderCheckbox = (status: boolean, idx?: number) => (
+  const renderCheckbox = (status: boolean, _idx?: number) => (
     <CheckboxStyled checked={status} className={cellClassName} style={cellStyle}>
       <Emoji emoji={field.icon} size={16} />
     </CheckboxStyled>
