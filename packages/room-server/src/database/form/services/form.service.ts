@@ -28,10 +28,10 @@ import { DatasheetChangesetSourceService } from 'database/datasheet/services/dat
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { EventService } from 'database/event/services/event.service';
 import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { omit } from 'lodash';
 import { InjectLogger } from 'shared/common';
@@ -58,7 +58,7 @@ export class FormService {
     private resourceMetaRepository: ResourceMetaRepository,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly redisService: RedisService,
-    private readonly eventService: EventService,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
@@ -198,14 +198,15 @@ export class FormService {
         eventContext,
         eventFields
       );
-      this.eventService.opEventManager.dispatchEvent({
+      this.eventEmitter.emit(OPEventNameEnums.FormSubmitted, {
         eventName: OPEventNameEnums.FormSubmitted,
         scope: ResourceType.Form,
         realType: EventRealTypeEnums.REAL,
         atomType: EventAtomTypeEnums.ATOM,
         sourceType: EventSourceTypeEnums.ALL,
-        context: eventContext
-      }, false);
+        context: eventContext,
+        beforeApply: false,
+      });
     } catch (error) {
       this.logger.debug(error);
     }

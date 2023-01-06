@@ -34,7 +34,6 @@ import { DatasheetChangesetService } from 'database/datasheet/services/datasheet
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { EventService } from 'database/event/services/event.service';
 import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodePermissionService } from 'node/services/node.permission.service';
 import { NodeService } from 'node/services/node.service';
@@ -68,6 +67,7 @@ import { FormOtService } from './form.ot.service';
 import { EffectConstantName, IChangesetParseResult, 
   ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from '../interfaces/ot.interface';
 import { ResourceChangeHandler } from './resource.change.handler';
+import { RobotEventService } from 'database/robot/services/robot.event.service';
 
 /**
  * OT management service
@@ -99,7 +99,7 @@ export class OtService {
     private readonly resourceChangeHandler: ResourceChangeHandler,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
-    private readonly eventService: EventService,
+    private readonly eventService: RobotEventService,
     private readonly nodeService: NodeService,
   ) {}
 

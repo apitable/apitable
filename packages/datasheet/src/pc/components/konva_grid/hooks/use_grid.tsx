@@ -32,6 +32,7 @@ import * as React from 'react';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
+import { useSelector } from 'react-redux';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const ORIGIN_HEIGHT_SET = new Set([
@@ -321,6 +322,9 @@ export const useGrid = (props: IUseGridProps) => {
   /**
    * Add column button
    */
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { embedId } = useSelector(state => state.pageParams);
+  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
     const { fieldId } = visibleColumns[columnStopIndex];
@@ -354,7 +358,7 @@ export const useGrid = (props: IUseGridProps) => {
           y={0.5}
           width={btnWidth}
           height={rowInitSize}
-          cornerRadius={[0, 8, 0, 0]}
+          cornerRadius={[0, isEmbedShow ? 0 : 8, 0, 0]}
           stroke={colors.sheetLineColor}
           strokeWidth={1}
           listening={creatable}

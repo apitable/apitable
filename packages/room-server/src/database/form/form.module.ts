@@ -19,7 +19,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { CommandModule } from 'database/command/command.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { EventModule } from 'database/event/event.module';
 import { NodeModule } from 'node/node.module';
 import { OtModule } from 'database/ot/ot.module';
 import { ResourceModule } from 'database/resource/resource.module';
@@ -34,7 +33,6 @@ import { FormService } from './services/form.service';
     CommandModule,
     NodeModule,
     UserModule,
-    EventModule,
     DatasheetModule,
     forwardRef(()=>OtModule),
   ],

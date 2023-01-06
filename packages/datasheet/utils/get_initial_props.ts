@@ -48,14 +48,6 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
     envVars: JSON.stringify(envVars),
   };
 
-  const host = process.env.API_PROXY;
-
-  if (!host) {
-    return {
-      clientInfo: baseResponse
-    };
-  }
-
   const language = context.ctx.req?.headers['accept-language'];
   const headers: Record<string, string> = { ...filterHeaders };
 

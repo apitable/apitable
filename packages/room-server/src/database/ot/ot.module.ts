@@ -22,7 +22,6 @@ import { AlarmDynamicModule } from 'database/alarm/alarm.dynamic.module';
 import { DashboardModule } from 'database/dashboard/dashboard.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { DatasheetWidgetRepository } from 'database/datasheet/repositories/datasheet.widget.repository';
-import { EventModule } from 'database/event/event.module';
 import { FormModule } from 'database/form/form.module';
 import { MirrorModule } from 'database/mirror/mirror.module';
 import { NodeModule } from 'node/node.module';
@@ -38,6 +37,7 @@ import { MirrorOtService } from './services/mirror.ot.service';
 import { OtService } from './services/ot.service';
 import { ResourceChangeHandler } from './services/resource.change.handler';
 import { WidgetOtService } from './services/widget.ot.service';
+import { RobotModule } from 'automation/robot.module';
 
 @Module({
   imports: [
@@ -48,7 +48,7 @@ import { WidgetOtService } from './services/widget.ot.service';
     WidgetModule, 
     forwardRef(()=>FormModule), 
     MirrorModule, 
-    EventModule,
+    RobotModule,
     forwardRef(()=>DashboardModule), 
     UserModule,
     AlarmDynamicModule.forRoot(),

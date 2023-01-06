@@ -249,6 +249,8 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
           collaborator.userName = user.name;
           // Only members in space has unitId. name means member nickname, empty name for members not in space
           collaborator.memberName = 'unitId' in user ? user!.name : '';
+          collaborator.avatarColor = user.avatarColor;
+          collaborator.nickName = user.nickName;
         });
     }
     return { collaborators };

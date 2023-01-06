@@ -34,7 +34,8 @@ export interface IEmbedInfo {
   primarySideBar?: boolean, 
   bannerLogo?: boolean,
   spaceId?: string
-  permissionType?: PermissionType
+  permissionType?: PermissionType,
+  isShowEmbedToolBar?: boolean
 }
 
 export enum PermissionType {

@@ -312,7 +312,7 @@ public class UserController {
     @PostResource(name = "Edit user information", path = "/update", requiredPermission = false)
     @ApiOperation(value = "Edit user information", notes = "Request parameters cannot be all empty", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<String> update(@RequestBody @Valid UserOpRo param) {
-        ExceptionUtil.isTrue(StrUtil.isNotBlank(param.getAvatar()) || StrUtil.isNotBlank(param.getNickName())
+        ExceptionUtil.isTrue(StrUtil.isNotBlank(param.getAvatar()) || StrUtil.isNotBlank(param.getNickName()) || ObjectUtil.isNotNull(param.getAvatarColor())
                 || StrUtil.isNotBlank(param.getLocale()), ParameterException.NO_ARG);
         Long userId = SessionContext.getUserId();
         iUserService.edit(userId, param);

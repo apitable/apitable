@@ -72,6 +72,7 @@ import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
 import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
 import { FieldPipe } from './middleware/pipe/field.pipe';
 import { QueryPipe } from './middleware/pipe/query.pipe';
+import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 /**
  * TODO: cache response data, send notification while member changed, should maintain the data in the same server and cache them
@@ -101,7 +102,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
+  public async findAll(@Param() param: RecordParamRo, @Query(ValidationPipe, QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
     return ApiResponse.success(pageVo);
   }
@@ -298,11 +299,14 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async deleteRecord(@Param() param: RecordParamRo, @Query() query: RecordDeleteRo): Promise<RecordDeleteVo> {
+  public async deleteRecord(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
+    if (!query.recordIds) {
+      throw ApiException.tipError(ApiTipConstant.api_params_empty_error, { property: 'recordIds' });
+    }
     if (query.recordIds.length > API_MAX_MODIFY_RECORD_COUNTS) {
       throw ApiException.tipError(ApiTipConstant.api_params_records_max_count_error, { count: API_MAX_MODIFY_RECORD_COUNTS });
     }
-    const result = await this.fusionApiService.deleteRecord(param.datasheetId, query.recordIds);
+    const result = await this.fusionApiService.deleteRecord(param.datasheetId, Array.from(new Set(query.recordIds)));
     if (result) {
       return ApiResponse.success(undefined);
     }

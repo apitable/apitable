@@ -547,7 +547,6 @@ export interface ActionGuide {
 }
 
 export interface Events {
-    _:                                             Icp1;
     address_shown:                                 AddressShown;
     app_error_logger:                              AddressShown;
     app_modal_confirm:                             AddressShown;
@@ -603,9 +602,6 @@ export interface Events {
     workbench_no_emit:                             AddressShown;
     workbench_shown:                               AddressShown;
     workbench_space_list_shown:                    AddressShown;
-}
-
-export interface Icp1 {
 }
 
 export interface AddressShown {
@@ -699,8 +695,8 @@ export interface Settings {
     dingtalk_login_appid_prod:                           BuildBranch;
     education_url:                                       BuildBranch;
     email_icon:                                          BuildBranch;
-    emoji_database_32:                                   BuildBranch;
-    emoji_database_64:                                   BuildBranch;
+    emoji_apple_32:                                      BuildBranch;
+    emoji_apple_64:                                      BuildBranch;
     experimental_features_unsynchronized_view_intro_img: BuildBranch;
     feishu_login_appid:                                  BuildBranch;
     field_cascade:                                       BuildBranch;
@@ -720,7 +716,6 @@ export interface Settings {
     help_user_community_url_prod:                        BuildBranch;
     help_user_feedback_url:                              BuildBranch;
     help_video_tutorials_url:                            BuildBranch;
-    icp1:                                                Icp1;
     integration_apifox_url:                              BuildBranch;
     integration_dingtalk_da:                             BuildBranch;
     integration_dingtalk_help_url:                       IntegrationHelpURL;

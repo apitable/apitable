@@ -21,4 +21,25 @@ import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
+
+  private OFFICIAL_SERVICE_SLUG = 'vika';
+
+  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
+    return this.count({
+      where: {
+        serviceId: serviceId,
+        slug: this.OFFICIAL_SERVICE_SLUG,
+      }
+    });
+  }
+
+  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
+    return this.count({
+      where: {
+        serviceId: serviceId,
+        slug: slug,
+      }
+    });
+  }
+
 }

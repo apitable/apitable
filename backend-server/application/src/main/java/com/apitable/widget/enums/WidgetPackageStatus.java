@@ -16,25 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.widget.facade;
+package com.apitable.widget.enums;
 
-import java.util.List;
+import com.apitable.core.support.serializer.IBaseEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import com.apitable.interfaces.widget.model.WidgetCopyOption;
+@Getter
+@AllArgsConstructor
+public enum WidgetPackageStatus implements IBaseEnum {
 
-public class DefaultWidgetServiceFacadeImpl implements WidgetServiceFacade {
+    DEVELOP(0),
+
+    BANNED(1),
+
+    UNPUBLISHED(2),
+
+    ONLINE(3),
+
+    UNPUBLISH(4),
+
+    ;
+
+    private final int value;
+
     @Override
-    public String getSpaceIdByWidgetId(String widgetId) {
-        return null;
-    }
-
-    @Override
-    public void checkWidgetReference(List<String> childrenNodeIds, List<String> widgetIds) {
-
-    }
-
-    @Override
-    public void copyWidget(WidgetCopyOption copyOption) {
-
+    public Integer getValue() {
+        return this.value;
     }
 }
