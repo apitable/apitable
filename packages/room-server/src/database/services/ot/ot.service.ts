@@ -34,7 +34,7 @@ import { DatasheetChangesetService } from 'database/services/datasheet/datasheet
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
 import { DatasheetRecordSubscriptionBaseService } from 'database/services/subscription/datasheet.record.subscription.base.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { EventService } from 'database/services/event/event.service';
+import { RobotEventService } from '../robot/robot.event.service';
 import { MirrorService } from 'database/services/mirror/mirror.service';
 import { NodePermissionService } from 'database/services/node/node.permission.service';
 import { NodeService } from 'database/services/node/node.service';
@@ -98,7 +98,7 @@ export class OtService {
     private readonly resourceChangeHandler: ResourceChangeHandler,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
-    private readonly eventService: EventService,
+    private readonly eventService: RobotEventService,
     private readonly nodeService: NodeService,
   ) {}
 
