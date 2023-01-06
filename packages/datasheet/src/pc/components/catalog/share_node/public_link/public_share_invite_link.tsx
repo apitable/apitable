@@ -157,7 +157,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     handleCloseShare();
   };
 
-  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled(spaceInfo);
+  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
 
   /**
    * open share's auth-dropdown
