@@ -18,7 +18,7 @@
 
 import { AutomationRobotRunner, ConfigConstant, generateRandomString, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
 import { Injectable, Logger } from '@nestjs/common';
-import { NodeRepository } from 'database/repositories/node.repository';
+import { NodeRepository } from 'node/repositories/node.repository';
 import fetch from 'node-fetch';
 import { InjectLogger } from 'shared/common';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';

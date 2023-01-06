@@ -22,8 +22,8 @@ import {
 } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { genDatasheetDescriptionDto } from 'database/dtos/datasheet.description.dto';
-import { NodeEntity } from 'database/entities/node.entity';
+import { genDatasheetDescriptionDto } from 'fusion/dtos/datasheet.description.dto';
+import { NodeEntity } from 'node/entities/node.entity';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';
 import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from 'shared/common';

@@ -19,10 +19,10 @@
 import { databus, ICollaCommandOptions } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
-import { CommandService } from 'database/services/command/command.service';
-import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { OtService } from 'database/services/ot/ot.service';
+import { CommandService } from 'database/command/services/command.service';
+import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { OtService } from 'database/ot/services/ot.service';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { IServerDatasheetOptions } from './interfaces';

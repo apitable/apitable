@@ -21,10 +21,10 @@ import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { enableSwagger } from 'app.environment';
 import { DatabaseModule } from 'database/database.module';
-import { NodeRepository } from 'database/repositories/node.repository';
-import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { DeveloperService } from 'database/services/developer/developer.service';
+import { NodeRepository } from 'node/repositories/node.repository';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { DeveloperService } from 'developer/services/developer.service';
 import { FastifyInstance } from 'fastify';
 import {
   CheckboxFieldPropertyDto, CurrencyFieldPropertyDto, DateTimeFieldPropertyDto, FormulaFieldPropertyDto, LinkFieldPropertyDto, LookupFieldPropertyDto,
