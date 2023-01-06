@@ -9,17 +9,10 @@ graph TD;
         Automation-->Application;
         Fusion-->Application;
         Grpc-->Application;
-        User-->Application;;
-        Unit-->Application;;
-        Developer-->Application;;
-        Shared-->Database;
-        Shared-->Actuator;
-        Shared-->Automation;
-        Shared-->Fusion;
-        Shared-->Grpc;
-        Shared-->User;
-        Shared-->Unit;
-        Shared-->Developer;
+        Node-->Application;
+        User-->Application;
+        Unit-->Application;
+        Developer-->Application;
         Attachment-->Database;
         Dashboard-->Database;
         Datasheet-->Database;
@@ -32,6 +25,15 @@ graph TD;
         Shared-->Form;
         Shared-->Mirror;
         Shared-->Resource;
+        Shared-->Database;
+        Shared-->Actuator;
+        Shared-->Automation;
+        Shared-->Fusion;
+        Shared-->Grpc;
+        Shared-->Node;
+        Shared-->User;
+        Shared-->Unit;
+        Shared-->Developer;
 ```
 `shared module` is a shared and global module that other modules depend on in default.
 ## Description
