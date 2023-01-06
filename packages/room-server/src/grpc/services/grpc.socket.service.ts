@@ -21,21 +21,21 @@ import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
-import { NodeService } from 'database/services/node/node.service';
-import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
-import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
-import { OtService } from 'database/services/ot/ot.service';
-import { ResourceService } from 'database/services/resource/resource.service';
-import { UserService } from 'database/services/user/user.service';
+import { IRoomChannelMessage } from 'database/ot/interfaces/ot.interface';
+import { OtService } from 'database/ot/services/ot.service';
+import { ResourceService } from 'database/resource/services/resource.service';
+import { UserService } from 'user/services/user.service';
 import { ApiResponse } from 'fusion/vos/api.response';
 import { getIPAddress } from 'shared/helpers/system.helper';
 import { ClientStorage } from 'shared/services/socket/client.storage';
-import { RoomResourceRelService } from 'database/services/resource/room.resource.rel.service';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { IClientRoomChangeResult, IWatchRoomMessage } from 'shared/services/socket/socket.interface';
 import { Logger } from 'winston';
 import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../shared/common';
 import { PermissionException, ServerException } from '../../shared/exception';
 import { IAuthHeader } from '../../shared/interfaces';
+import { NodeShareSettingService } from 'node/services/node.share.setting.service';
+import { NodeService } from 'node/services/node.service';
 
 /**
  *
