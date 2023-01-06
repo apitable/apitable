@@ -16,30 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationServiceEntity } from '../entities/automation.service.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EventRealTypeEnums, EventSourceTypeEnums, IEventInstance, IEventListenerOptions, IOPEvent } from "@apitable/core";
 
-@EntityRepository(AutomationServiceEntity)
-export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
-
-  private OFFICIAL_SERVICE_SLUG = 'vika';
-
-  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: this.OFFICIAL_SERVICE_SLUG,
-      }
-    });
+/**
+ * whether the robot event should to handle
+ * @param event         robot trigger event
+ * @param beforeApply
+ * @param options
+ */
+export function isHandleEvent(event: IEventInstance<IOPEvent>, beforeApply: boolean, options: IEventListenerOptions): boolean {
+  if (options?.realType !== EventRealTypeEnums.ALL && options?.realType !== event.realType) {
+    return false;
   }
-
-  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: slug,
-      }
-    });
+  if (options?.sourceType !== EventSourceTypeEnums.ALL && options?.sourceType !== event.sourceType) {
+    return false;
   }
-
+  return Boolean(options.beforeApply) === beforeApply;
 }
