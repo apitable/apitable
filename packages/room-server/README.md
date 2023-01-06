@@ -9,13 +9,29 @@ graph TD;
         Automation-->Application;
         Fusion-->Application;
         Grpc-->Application;
-        Socket-->Application;
+        User-->Application;;
+        Unit-->Application;;
+        Developer-->Application;;
         Shared-->Database;
         Shared-->Actuator;
-        Shared-->automation;
+        Shared-->Automation;
         Shared-->Fusion;
         Shared-->Grpc;
-        Shared-->Socket;
+        Shared-->User;
+        Shared-->Unit;
+        Shared-->Developer;
+        Attachment-->Database;
+        Dashboard-->Database;
+        Datasheet-->Database;
+        Form-->Database;
+        Mirror-->Database;
+        Resource-->Database;
+        Shared-->Attachment;
+        Shared-->Dashboard;
+        Shared-->Datasheet;
+        Shared-->Form;
+        Shared-->Mirror;
+        Shared-->Resource;
 ```
 TODO(Troy): split `Database module` into multiple submodules.
 
