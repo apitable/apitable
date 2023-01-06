@@ -16,30 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationServiceEntity } from '../entities/automation.service.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { IEventInstance, IOPEvent } from "@apitable/core";
+import { AutomationTriggerEntity } from "../../entities/automation.trigger.entity";
 
-@EntityRepository(AutomationServiceEntity)
-export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
+export type CommonEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
+  context: CommonEventContext,
+  beforeApply: boolean,
+  metaContext: CommonEventMetaContext,
+}
 
-  private OFFICIAL_SERVICE_SLUG = 'vika';
 
-  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: this.OFFICIAL_SERVICE_SLUG,
-      }
-    });
-  }
+export type CommonEventMetaContext = {
+  dstIdTriggersMap: { [datasheetId: string]: AutomationTriggerEntity[] },
+  triggerSlugTypeIdMap: { [serviceSlug: string]: string},
+  msgIds: string[]
+};
 
-  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: slug,
-      }
-    });
-  }
-
+export type CommonEventContext = {
+  datasheetId: string,
+  datasheetName: string,
+  recordId: string,
+  [key: string]: any,
 }

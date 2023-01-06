@@ -16,30 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationServiceEntity } from '../entities/automation.service.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { CommonEvent, CommonEventContext, CommonEventMetaContext } from "./common.event";
 
-@EntityRepository(AutomationServiceEntity)
-export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
+export type RecordUpdatedEvent = CommonEvent;
 
-  private OFFICIAL_SERVICE_SLUG = 'vika';
+export type RecordUpdatedEventMetaContext = CommonEventMetaContext;
 
-  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: this.OFFICIAL_SERVICE_SLUG,
-      }
-    });
-  }
-
-  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
-    return this.count({
-      where: {
-        serviceId: serviceId,
-        slug: slug,
-      }
-    });
-  }
-
-}
+export type RecordUpdatedEventContext = CommonEventContext;

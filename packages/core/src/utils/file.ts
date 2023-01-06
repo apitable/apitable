@@ -127,16 +127,16 @@ export const getHostOfAttachment = (bucket: string) => {
 
   if (bucket.toUpperCase() === 'QNY1') {
     const QNY1 = window.__initialization_data__?.envVars.QNY1;
-    return QNY1.includes('https') ? QNY1 : urlcat(origin, QNY1 + '');
+    return QNY1.includes('http') ? QNY1 : urlcat(origin, QNY1 + '');
   }
 
   if (bucket.toUpperCase() === 'QNY2') {
     const QNY2 = window.__initialization_data__?.envVars.QNY2;
-    return QNY2.includes('https') ? QNY2 : urlcat(origin, QNY2 + '');
+    return QNY2.includes('http') ? QNY2 : urlcat(origin, QNY2 + '');
   }
 
   const QNY3 = window.__initialization_data__?.envVars.QNY3;
-  return QNY3.includes('https') ? QNY3 : urlcat(origin, QNY3 + '');
+  return QNY3.includes('http') ? QNY3 : urlcat(origin, QNY3 + '');
 };
 
 export function cellValueToImageSrc(
