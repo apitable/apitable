@@ -37,7 +37,7 @@ export class RecordCreatedListener {
   }
 
   @OnEvent(OPEventNameEnums.RecordCreated)
-  public async handleRecordCreatedEvent(event: RecordCreatedEvent) {
+  public handleRecordCreatedEvent(event: RecordCreatedEvent) {
     if(!isHandleEvent(event, event.beforeApply, this.options)) {
       return;
     }

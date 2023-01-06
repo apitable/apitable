@@ -75,7 +75,7 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     return this.update({ triggerId }, { triggerTypeId, input: undefined, updatedBy: userId });
   }
 
-  public async getTriggerByRobotIdAndTriggerTypeId(robotId: string, triggerTypeId: string): Promise<ResourceRobotTriggerDto[]> {
+  public getTriggerByRobotIdAndTriggerTypeId(robotId: string, triggerTypeId: string): Promise<ResourceRobotTriggerDto[]> {
     return this.find({
       select: ['triggerId', 'triggerTypeId', 'input', 'robotId'],
       where: {

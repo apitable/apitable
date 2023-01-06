@@ -37,7 +37,7 @@ export class RecordUpdatedListener {
   }
 
   @OnEvent(OPEventNameEnums.RecordUpdated)
-  public async handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
+  public handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
 
     if(!isHandleEvent(event, event.beforeApply, this.options)) {
       return;

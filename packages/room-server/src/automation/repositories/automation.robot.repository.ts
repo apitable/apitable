@@ -346,7 +346,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
     return this.update({ robotId }, { ...robot, updatedBy: userId });
   }
 
-  public async getRobotIdByResourceId(resourceId: string): Promise<Pick<AutomationRobotEntity, 'robotId'>[]> {
+  public getRobotIdByResourceId(resourceId: string): Promise<Pick<AutomationRobotEntity, 'robotId'>[]> {
     return this.find({
       select: ['robotId'],
       where: {

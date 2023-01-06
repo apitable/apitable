@@ -24,7 +24,7 @@ export class AutomationServiceRepository extends Repository<AutomationServiceEnt
 
   private OFFICIAL_SERVICE_SLUG = 'vika';
 
-  public async countOfficialServiceByServiceId(serviceId: string): Promise<number> {
+  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
     return this.count({
       where: {
         serviceId: serviceId,
@@ -33,7 +33,7 @@ export class AutomationServiceRepository extends Repository<AutomationServiceEnt
     });
   }
 
-  public async countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
+  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
     return this.count({
       where: {
         serviceId: serviceId,
