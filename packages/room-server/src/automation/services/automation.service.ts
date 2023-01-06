@@ -37,7 +37,7 @@ import { AutomationServiceCreateRo } from '../ros/service.create.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
 import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { getTypeByItem } from '../util';
+import { getTypeByItem } from '../utils';
 
 /**
  * handle robot execution scheduling

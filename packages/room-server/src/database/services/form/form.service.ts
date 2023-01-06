@@ -23,6 +23,7 @@ import {
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CommandService } from 'database/services/command/command.service';
 import { OtService } from 'database/services/ot/ot.service';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
@@ -41,7 +42,6 @@ import { DatasheetChangesetSourceService } from '../datasheet/datasheet.changese
 import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
 import { DatasheetRecordSourceService } from '../datasheet/datasheet.record.source.service';
 import { DatasheetService } from '../datasheet/datasheet.service';
-import { EventService } from '../event/event.service';
 import { NodeService } from '../node/node.service';
 
 @Injectable()
@@ -58,7 +58,7 @@ export class FormService {
     private resourceMetaRepository: ResourceMetaRepository,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly redisService: RedisService,
-    private readonly eventService: EventService,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
@@ -198,14 +198,15 @@ export class FormService {
         eventContext,
         eventFields
       );
-      this.eventService.opEventManager.dispatchEvent({
-        eventName: OPEventNameEnums.FormSubmitted,
-        scope: ResourceType.Form,
-        realType: EventRealTypeEnums.REAL,
-        atomType: EventAtomTypeEnums.ATOM,
-        sourceType: EventSourceTypeEnums.ALL,
-        context: eventContext
-      }, false);
+      this.eventEmitter.emit(OPEventNameEnums.FormSubmitted, {
+          eventName: OPEventNameEnums.FormSubmitted,
+          scope: ResourceType.Form,
+          realType: EventRealTypeEnums.REAL,
+          atomType: EventAtomTypeEnums.ATOM,
+          sourceType: EventSourceTypeEnums.ALL,
+          context: eventContext,
+          beforeApply: false,
+        });
     } catch (error) {
       this.logger.debug(error);
     }

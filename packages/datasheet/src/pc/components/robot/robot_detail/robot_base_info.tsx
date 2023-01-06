@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { t, Strings } from '@apitable/core';
 import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@apitable/components';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
 import Image from 'next/image';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { updateRobotDescription, updateRobotName } from '../api';
 import { useDefaultRobotDesc, useRobot, useToggleRobotActive } from '../hooks';
-import robotAvatar from 'static/icon/robot/robot_avatar.png';
 
 export const RobotBaseInfo = () => {
   const {
@@ -76,7 +76,7 @@ export const RobotBaseInfo = () => {
           alignItems="center"
         >
           <Avatar
-            icon={<Image src={robotAvatar}/>}
+            icon={<Image src={integrateCdnHost(getEnvVariables().ROBOT_DEFAULT_AVATAR!)} width={24} height={24} />}
             size="xs"
             style={{
               minWidth: '24px',

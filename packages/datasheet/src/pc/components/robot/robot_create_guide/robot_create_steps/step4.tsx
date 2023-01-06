@@ -17,11 +17,11 @@
  */
 
 import { Avatar, Box, Button, Typography } from '@apitable/components';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
 import Image from 'next/image';
+import { getEnvVariables } from 'pc/utils/env';
 import { useRobot, useRobotContext } from '../../hooks';
 import { IStepProps } from '../interface';
-import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@apitable/core';
 
 export const RobotCreateGuideStep4 = (props: IStepProps) => {
   const { setCurrentRobotId } = useRobot();
@@ -46,7 +46,10 @@ export const RobotCreateGuideStep4 = (props: IStepProps) => {
         justifyContent='space-between'
         margin='0px 0px 24px 0px'
       >
-        <Avatar icon={<Image src={robotGuideAvatar} />} />
+        <Avatar
+          icon={<Image src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} />}
+          size='l'
+        />
         <Typography >
           {t(Strings.robot_create_wizard_step_4_desc)}
         </Typography>
