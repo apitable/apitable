@@ -8,7 +8,7 @@ Make sure you have the following dependencies and programming languages installe
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
-- `docker-compose v2`
+- [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 - [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
 - [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
@@ -25,7 +25,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 # quick install sdkman
 curl -s "https://get.sdkman.io" | bash
 # install nodejs 
-nvm install 16.15.0 && nvm use 16.15.0
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # install java development kit
 sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 ```
@@ -48,7 +48,6 @@ On CentOS / RHEL or other Linux distribution with `yum`
 ```bash
 sudo yum install git
 sudo yum install make
-sudo yum install docker
 ```
 
 On Ubuntu / Debian or other Linux distribution with `apt`
@@ -57,7 +56,6 @@ On Ubuntu / Debian or other Linux distribution with `apt`
 sudo apt update
 sudo apt install git
 sudo apt install make
-sudo apt install docker
 ```
 
 
@@ -72,7 +70,6 @@ Install missing dependencies on Ubuntu using `apt`:
 sudo apt update
 sudo apt install git
 sudo apt install make
-sudo apt install docker
 ```
 
 
