@@ -18,7 +18,7 @@
 
 import { Injectable } from "@nestjs/common";
 import { AutomationTriggerTypeRepository } from "../repositories/automation.trigger.type.repository";
-import { ServiceSlugTriggerTypeVo } from "../vos/service.slug.trigger.type.vo";
+import { IServiceSlugTriggerTypeVo } from "../vos/service.slug.trigger.type.vo";
 import { AutomationServiceRepository } from "../repositories/automation.service.repository";
 
 @Injectable()
@@ -30,7 +30,7 @@ export class RobotTriggerTypeService {
   ) {
   }
 
-  public async getServiceSlugToTriggerTypeId(endpoints: string[], serviceSlug: string): Promise<ServiceSlugTriggerTypeVo> {
+  public async getServiceSlugToTriggerTypeId(endpoints: string[], serviceSlug: string): Promise<IServiceSlugTriggerTypeVo> {
     let triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoints(endpoints);
     const triggerTypes: {
       triggerTypeId: string,
@@ -51,7 +51,7 @@ export class RobotTriggerTypeService {
       const triggerSlug = `${item.endpoint}@${item.serviceSlug}`;
       serviceSlugToTriggerTypeId[triggerSlug] = item.triggerTypeId;
       return serviceSlugToTriggerTypeId;
-    }, {} as ServiceSlugTriggerTypeVo);
+    }, {} as IServiceSlugTriggerTypeVo);
   }
 
 }

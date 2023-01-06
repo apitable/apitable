@@ -18,6 +18,6 @@
 
 import { AutomationTriggerEntity } from "../entities/automation.trigger.entity";
 
-export interface ResourceTriggerGroupVo {
+export interface IResourceTriggerGroupVo {
   [resourceId: string]: AutomationTriggerEntity[]
 }

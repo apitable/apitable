@@ -22,7 +22,7 @@ import { AutomationTriggerRepository } from "../repositories/automation.trigger.
 import { AutomationServiceRepository } from "../repositories/automation.service.repository";
 import { AutomationRobotRepository } from "../repositories/automation.robot.repository";
 import { ResourceRobotTriggerDto } from "../dtos/resource.robot.trigger.dto";
-import { ResourceTriggerGroupVo } from "../vos/resource.trigger.group.vo";
+import { IResourceTriggerGroupVo } from "../vos/resource.trigger.group.vo";
 
 @Injectable()
 export class RobotTriggerService {
@@ -46,7 +46,7 @@ export class RobotTriggerService {
     return [];
   }
 
-  public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<ResourceTriggerGroupVo> {
+  public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
     const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
     const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
       robotIdToResourceId[item.robotId] = item.resourceId;
@@ -58,7 +58,7 @@ export class RobotTriggerService {
       resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
       resourceIdToTriggers[resourceId]!.push(item);
       return resourceIdToTriggers;
-    }, {} as ResourceTriggerGroupVo);
+    }, {} as IResourceTriggerGroupVo);
   }
 
   private async _getResourceConditionalRobotTriggers(resourceId: string, triggerTypeId: string) {
