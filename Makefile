@@ -254,6 +254,12 @@ Which service do you want to start run?
 endef
 export RUN_LOCAL_TXT
 
+define RUN_PERF_TXT
+Which service do you want to start run?
+  1) room-server / production mode / Clinic.js flamegraph
+endef
+export RUN_PERF_TXT
+
 _check_env: ## check if .env files exists
 	@FILE=$$ENV_FILE ;\
 	if [ ! -f "$$FILE" ]; then \
@@ -273,6 +279,12 @@ run-local: ## run services with local programming language envinroment
  	if [ "$$SERVICE" = "3" ]; then make _run-local-socket-server ;fi ;\
  	if [ "$$SERVICE" = "4" ]; then make _run-local-web-server; fi
 
+.PHONY: run-perf
+run-perf: ## run services with local programming language envinroment for performance profiling
+	@echo "$$RUN_PERF_TXT"
+	@read -p "ENTER THE NUMBER: " SERVICE ;\
+ 	if [ "$$SERVICE" = "1" ]; then make _run-perf-flame-local-room-server; fi
+
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
@@ -287,6 +299,11 @@ _run-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	yarn start:room-server
+
+_run-perf-flame-local-room-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
+	yarn start:room-server:perf:flame
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
