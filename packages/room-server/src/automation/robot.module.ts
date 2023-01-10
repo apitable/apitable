@@ -38,11 +38,11 @@ import { RobotTriggerController } from './controller/trigger.controller';
 import { RobotTriggerTypeController } from './controller/trigger.type.controller';
 import { RobotServiceDynamicModule } from './services/robot.service.dynamic.module';
 import { RobotTriggerService } from './services/robot.trigger.service';
-import { RobotTriggerTypeService } from "./services/robot.trigger.type.service";
-import { FormSubmittedListener } from "./events/listeners/form.submitted.listener";
-import { TriggerEventHelper } from "./events/helpers/trigger.event.helper";
-import { RecordCreatedListener } from "./events/listeners/record.created.listener";
-import { RecordUpdatedListener } from "./events/listeners/record.updated.listener";
+import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
+import { FormSubmittedListener } from './events/listeners/form.submitted.listener';
+import { TriggerEventHelper } from './events/helpers/trigger.event.helper';
+import { RecordCreatedListener } from './events/listeners/record.created.listener';
+import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
 
 @Module({
   imports: [

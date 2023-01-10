@@ -24,10 +24,10 @@ import { AutomationService } from '../../services/automation.service';
 import { RobotTriggerService } from '../../services/robot.trigger.service';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { EventTypeEnums } from "../domains/event.type.enums";
+import { EventTypeEnums } from '../domains/event.type.enums';
 import { IShouldFireRobot, TriggerEventHelper } from '../helpers/trigger.event.helper';
-import { isHandleEvent } from "../helpers/listener.helper";
-import { FormSubmittedEvent, FormSubmittedEventContext } from "../domains/form.submitted.event";
+import { isHandleEvent } from '../helpers/listener.helper';
+import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.submitted.event';
 
 @Injectable()
 export class FormSubmittedListener {

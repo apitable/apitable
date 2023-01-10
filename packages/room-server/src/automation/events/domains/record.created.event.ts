@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CommonEvent, CommonEventContext, CommonEventMetaContext } from "./common.event";
+import { CommonEvent, CommonEventContext, CommonEventMetaContext } from './common.event';
 
 export type RecordCreatedEvent = CommonEvent;
 
