@@ -19,15 +19,15 @@
 import {
   IExpression,
   IExpressionOperand, InputParser, MagicVariableParser, OperandTypeEnums, OperatorEnums,
-  TRIGGER_INPUT_FILTER_FUNCTIONS, TRIGGER_INPUT_PARSER_FUNCTIONS } from "@apitable/core";
-import { Injectable } from "@nestjs/common";
-import { getRecordUrl } from "shared/helpers/env";
-import { AutomationTriggerEntity } from "../../entities/automation.trigger.entity";
-import { EventTypeEnums } from "../domains/event.type.enums";
-import { AutomationService } from "../../services/automation.service";
-import { Logger } from "winston";
-import { InjectLogger } from "shared/common";
-import { CommonEventContext, CommonEventMetaContext } from "../domains/common.event";
+  TRIGGER_INPUT_FILTER_FUNCTIONS, TRIGGER_INPUT_PARSER_FUNCTIONS } from '@apitable/core';
+import { Injectable } from '@nestjs/common';
+import { getRecordUrl } from 'shared/helpers/env';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
+import { EventTypeEnums } from '../domains/event.type.enums';
+import { AutomationService } from '../../services/automation.service';
+import { Logger } from 'winston';
+import { InjectLogger } from 'shared/common';
+import { CommonEventContext, CommonEventMetaContext } from '../domains/common.event';
 
 export const OFFICIAL_SERVICE_SLUG = 'vika';
 
@@ -67,7 +67,7 @@ export class TriggerEventHelper {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
     const { datasheetId, datasheetName, recordId } = eventContext;
     const triggerSlug = `${EventTypeEnums.RecordCreated}@${OFFICIAL_SERVICE_SLUG}`;
-    let conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
+    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
     if (conditionalTriggers.length === 0) return;
 
     // resource bound to robot and form id in trigger input is identical
@@ -102,7 +102,7 @@ export class TriggerEventHelper {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
     const { datasheetId, datasheetName, recordId } = eventContext;
     const triggerSlug = `${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`;
-    let conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
+    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
     if (conditionalTriggers.length === 0) return;
 
     const shouldFireRobots: IShouldFireRobot[] = conditionalTriggers

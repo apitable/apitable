@@ -18,7 +18,7 @@
 
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { ITriggerTypeServiceRelDto } from "../dtos/trigger.type.service.rel.dto";
+import { ITriggerTypeServiceRelDto } from '../dtos/trigger.type.service.rel.dto';
 
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
