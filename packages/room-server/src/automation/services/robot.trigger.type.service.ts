@@ -31,14 +31,14 @@ export class RobotTriggerTypeService {
   }
 
   public async getServiceSlugToTriggerTypeId(endpoints: string[], serviceSlug: string): Promise<IServiceSlugTriggerTypeVo> {
-    let triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoints(endpoints);
+    const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoints(endpoints);
     const triggerTypes: {
       triggerTypeId: string,
       endpoint: string,
       serviceSlug: string,
     }[] = [];
     for (const triggerTypeServiceRelDto of triggerTypeServiceRelDtos) {
-      let number = await this.automationServiceRepository.countServiceByServiceIdAndSlug(triggerTypeServiceRelDto.serviceId, serviceSlug);
+      const number = await this.automationServiceRepository.countServiceByServiceIdAndSlug(triggerTypeServiceRelDto.serviceId, serviceSlug);
       if (number > 0) {
         triggerTypes.push({
           triggerTypeId: triggerTypeServiceRelDto.triggerTypeId,
