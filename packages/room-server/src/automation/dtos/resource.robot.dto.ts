@@ -16,6 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotEntity } from "../entities/automation.robot.entity";
+import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 
 export type ResourceRobotDto = Pick<AutomationRobotEntity, 'robotId' | 'resourceId'>
