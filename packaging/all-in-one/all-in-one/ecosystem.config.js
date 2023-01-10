@@ -1,14 +1,14 @@
 module.exports = {
   apps : [{
     name: 'minio',
-    script: 'minio server /data/minio',
+    script: 'minio server /data',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
     restart_delay: 1000
   }, {
     name: 'mysql',
-    script: 'gosu mysql mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION --lower_case_table_names=2',
+    script: 'gosu "${GOSU_USER}" mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION --lower_case_table_names=2',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
@@ -22,15 +22,15 @@ module.exports = {
     restart_delay: 1000
   }, {
     name: 'rabbitmq',
-    script: 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu rabbitmq rabbitmq-server',
+    script: 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu "${GOSU_USER}" rabbitmq-server',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
     restart_delay: 1000
   }, {
     name: 'redis',
-    cwd: '/data/redis',
-    script: 'gosu redis redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"',
+    cwd: '/var/lib/redis',
+    script: 'gosu "${GOSU_USER}" redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
@@ -46,6 +46,23 @@ module.exports = {
   }, {
     name: 'room-server',
     cwd: '/app/room-server/packages/room-server',
+    env: {
+      PORT: "3333"
+    },
+    script: './dist/main.js',
+    out_file: '/dev/null',
+    error_file: '/dev/null',
+    max_restarts: 2147483647,
+    restart_delay: 1000
+  }, {
+    name: 'scheduler-server',
+    cwd: '/app/room-server/packages/room-server',
+    env: {
+      PORT: "3443",
+      GRPC_URL: "0.0.0.0:3444",
+      APPLICATION_NAME: "SCHEDULE_SERVER",
+      ENABLE_SCHED: "true"
+    },
     script: './dist/main.js',
     out_file: '/dev/null',
     error_file: '/dev/null',
@@ -54,6 +71,9 @@ module.exports = {
   }, {
     name: 'socket-server',
     cwd: '/app/socket-server/packages/socket-server',
+    env: {
+      PORT: "3001"
+    },
     script: './dist/main.js',
     out_file: '/dev/null',
     error_file: '/dev/null',

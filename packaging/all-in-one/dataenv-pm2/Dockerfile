@@ -5,6 +5,8 @@ COPY conf/rpm-gpg/* /etc/pki/rpm-gpg/
 
 ARG GOSU_VERSION=1.14
 
+ENV GOSU_USER=rabbitmq
+
 RUN set -eux; \
   arch="$(uname -m)"; \
   case "${arch}" in \
@@ -14,7 +16,12 @@ RUN set -eux; \
   esac; \
   \
   microdnf -y update; \
-  rpm -Uvh "https://dl.min.io/server/minio/release/linux-${pkgArch}/archive/minio-20221202191922.0.0.${arch}.rpm"; \
+  microdnf -y install shadow-utils; \
+  groupadd --system --gid 999 "${GOSU_USER}"; \
+  useradd --system --uid 999 --gid 999 --create-home "${GOSU_USER}"; \
+  rpm -Uvh "https://dl.min.io/server/minio/release/linux-${pkgArch}/archive/minio-20230106181118.0.0.${arch}.rpm"; \
+  curl -s -q "https://dl.min.io/client/mc/release/linux-${pkgArch}/mc" -o /usr/local/bin/mc; \
+  chmod +x /usr/local/bin/mc; \
   microdnf -y module enable redis:6; \
   microdnf -y install \
   mysql-community-server-minimal \
@@ -24,9 +31,10 @@ RUN set -eux; \
   microdnf -y install tar; \
   microdnf clean all; \
   \
-  mkdir -p /data/{minio,redis}; \
-  chown redis:redis /data/redis; \
+  mkdir -p /data; \
   mkdir -p /etc/mysql/conf.d; \
+  chown -R "${GOSU_USER}:${GOSU_USER}" /var/lib/mysql /var/run/mysqld /var/log/mysqld.log; \
+  chown -R "${GOSU_USER}:${GOSU_USER}" /var/lib/redis /var/log/redis; \
   mkdir -p /var/run/openresty; \
   \
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash; \
@@ -47,6 +55,8 @@ COPY conf/rabbitmq.conf /etc/rabbitmq/
 ENV PATH=$PATH:/root/.nvm/versions/node/v16.15.0/bin:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin
 
 EXPOSE 80 3306 5672 6379 9000
+
+VOLUME /data /var/lib/mysql /var/lib/rabbitmq /var/lib/redis
 
 COPY script/ /usr/local/bin/
 COPY ecosystem.config.js /

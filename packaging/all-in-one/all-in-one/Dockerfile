@@ -39,6 +39,8 @@ COPY ecosystem.config.js /
 CMD ["bash", "-c", "init-mysql.sh && add-host.sh && pm2-runtime start ecosystem.config.js"]
 
 ENV \
+    NODE_ENV=production \
+    \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \
     SOCKET_GRPC_URL=socket-server:3007 \
     NEST_GRPC_URL=room-server:3334 \

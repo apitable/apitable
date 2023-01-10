@@ -6,9 +6,9 @@ if [[ -n "$(ls -A /var/lib/mysql)" ]]; then
     exit
 fi
 
-gosu mysql mysqld --initialize
+gosu "${GOSU_USER}" mysqld --initialize
 
-gosu mysql mysqld --daemonize --skip-grant-tables --skip-networking
+gosu "${GOSU_USER}" mysqld --daemonize --skip-grant-tables --skip-networking
 
 if [[ -n "${MYSQL_ROOT_PASSWORD}" ]]; then
     mysql -u root -h localhost -e "FLUSH PRIVILEGES; ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION; CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"

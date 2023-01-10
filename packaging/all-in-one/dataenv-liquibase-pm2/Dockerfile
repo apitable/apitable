@@ -13,8 +13,6 @@ RUN set -eux; \
   source "/root/.sdkman/bin/sdkman-init.sh"; \
   sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn; \
   set -u; \
-  groupadd --gid 1001 liquibase; \
-  adduser --uid 1001 --gid liquibase liquibase; \
   mkdir -p /liquibase/bin; \
   cd /liquibase; \
   curl -LO "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz"; \
