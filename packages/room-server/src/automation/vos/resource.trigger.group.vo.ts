@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationTriggerEntity } from "../entities/automation.trigger.entity";
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 
 export interface IResourceTriggerGroupVo {
   [resourceId: string]: AutomationTriggerEntity[]
