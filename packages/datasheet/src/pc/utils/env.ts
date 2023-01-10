@@ -38,7 +38,7 @@ export function getEnvVariables() {
 }
 
 export function isHiddenIntercom() {
-  return getEnvVars().INTERCOM_VISIBLE;
+  return getEnvVariables().INTERCOM_VISIBLE;
 }
 
 export function isMobileApp() {
