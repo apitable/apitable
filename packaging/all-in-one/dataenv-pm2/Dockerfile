@@ -1,7 +1,6 @@
 FROM almalinux/8-minimal:8.7-20221110
 
 COPY conf/yum.repos.d/*.repo /etc/yum.repos.d/
-COPY conf/rpm-gpg/* /etc/pki/rpm-gpg/
 
 ARG GOSU_VERSION=1.14
 
@@ -15,6 +14,11 @@ RUN set -eux; \
   *) echo >&2 "error: unsupported architecture: '${arch}'"; exit 1 ;; \
   esac; \
   \
+  key='859BE8D7C586F538430B19C2467B942D3A79BD29'; \
+  export GNUPGHOME="$(mktemp -d)"; \
+  gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
+  gpg --batch --export --armor "$key" > /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql; \
+  rm -rf "$GNUPGHOME"; \
   microdnf -y update; \
   microdnf -y install shadow-utils; \
   groupadd --system --gid 999 "${GOSU_USER}"; \
