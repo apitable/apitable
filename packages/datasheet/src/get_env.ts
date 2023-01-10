@@ -160,6 +160,7 @@ export const getEnvVars = () => {
     LOGO_TEXT_DARK: process.env.LOGO_TEXT_DARK,
     ERROR_PAGE_CUSTOMER_SERVICE_QRCODE_VISIBLE: process.env.ERROR_PAGE_CUSTOMER_SERVICE_QRCODE_VISIBLE === 'true',
     LOGIN_LOGO: process.env.LOGIN_LOGO,
+    INTERCOM_VISIBLE: process.env.INTERCOM_VISIBLE === 'true',
 
     // private config
     LOGIN_OFFICIAL_WEBSITE_URL: process.env.LOGIN_OFFICIAL_WEBSITE_URL,
