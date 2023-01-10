@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from "@nestjs/common";
-import { AutomationTriggerTypeRepository } from "../repositories/automation.trigger.type.repository";
-import { AutomationTriggerRepository } from "../repositories/automation.trigger.repository";
-import { AutomationServiceRepository } from "../repositories/automation.service.repository";
-import { AutomationRobotRepository } from "../repositories/automation.robot.repository";
-import { ResourceRobotTriggerDto } from "../dtos/resource.robot.trigger.dto";
-import { IResourceTriggerGroupVo } from "../vos/resource.trigger.group.vo";
+import { Injectable } from '@nestjs/common';
+import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
+import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 
 @Injectable()
 export class RobotTriggerService {
