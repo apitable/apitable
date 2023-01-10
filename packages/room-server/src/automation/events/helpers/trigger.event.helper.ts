@@ -67,7 +67,7 @@ export class TriggerEventHelper {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
     const { datasheetId, datasheetName, recordId } = eventContext;
     const triggerSlug = `${EventTypeEnums.RecordCreated}@${OFFICIAL_SERVICE_SLUG}`;
-    let conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
+    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
     if (conditionalTriggers.length === 0) return;
 
     // resource bound to robot and form id in trigger input is identical
@@ -102,7 +102,7 @@ export class TriggerEventHelper {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
     const { datasheetId, datasheetName, recordId } = eventContext;
     const triggerSlug = `${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`;
-    let conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
+    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
     if (conditionalTriggers.length === 0) return;
 
     const shouldFireRobots: IShouldFireRobot[] = conditionalTriggers
