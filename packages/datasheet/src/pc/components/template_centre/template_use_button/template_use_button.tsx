@@ -91,7 +91,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
       Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId, spaceId: userInfo!.spaceId }});
       return;
     }
-    const result = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + nodeNumber, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('maxSheetNums', { usage: spaceInfo!.sheetNums + nodeNumber, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return;
     }
