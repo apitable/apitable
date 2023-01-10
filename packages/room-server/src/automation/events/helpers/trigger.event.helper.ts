@@ -19,15 +19,15 @@
 import {
   IExpression,
   IExpressionOperand, InputParser, MagicVariableParser, OperandTypeEnums, OperatorEnums,
-  TRIGGER_INPUT_FILTER_FUNCTIONS, TRIGGER_INPUT_PARSER_FUNCTIONS } from "@apitable/core";
-import { Injectable } from "@nestjs/common";
-import { getRecordUrl } from "shared/helpers/env";
-import { AutomationTriggerEntity } from "../../entities/automation.trigger.entity";
-import { EventTypeEnums } from "../domains/event.type.enums";
-import { AutomationService } from "../../services/automation.service";
-import { Logger } from "winston";
-import { InjectLogger } from "shared/common";
-import { CommonEventContext, CommonEventMetaContext } from "../domains/common.event";
+  TRIGGER_INPUT_FILTER_FUNCTIONS, TRIGGER_INPUT_PARSER_FUNCTIONS } from '@apitable/core';
+import { Injectable } from '@nestjs/common';
+import { getRecordUrl } from 'shared/helpers/env';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
+import { EventTypeEnums } from '../domains/event.type.enums';
+import { AutomationService } from '../../services/automation.service';
+import { Logger } from 'winston';
+import { InjectLogger } from 'shared/common';
+import { CommonEventContext, CommonEventMetaContext } from '../domains/common.event';
 
 export const OFFICIAL_SERVICE_SLUG = 'vika';
 
