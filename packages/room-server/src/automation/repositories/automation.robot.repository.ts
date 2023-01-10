@@ -22,7 +22,7 @@ import { EntityRepository, In, Repository } from 'typeorm';
 import { customActionNamePrefix, customActionTypeMap } from '../actions/decorators/automation.action.decorator';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { RobotCreateRo } from '../ros/robot.create.ro';
-import { ResourceRobotDto } from "../dtos/resource.robot.dto";
+import { ResourceRobotDto } from '../dtos/resource.robot.dto';
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
