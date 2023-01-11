@@ -75,7 +75,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     blur: () => { blur(); },
     onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
     onStartEdit: (value?: number | null) => { onStartEdit(value); },
-    setValue: (value?: number | null) => { 
+    setValue: (value?: number | null) => {
       setEditorValue( isNumber(value) ? value : null, true);
     },
     saveValue: () => { saveValue(); },
@@ -139,7 +139,8 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
       tempVal = str2NumericStr(tempVal);
       tempVal = tempVal == null ? '' : tempVal;
       if (fieldType === FieldType.Percent) {
-        tempVal = tempVal == null ? '' : String(divide(Number(tempVal), 100));
+        // After the user edits, it should be judged that the value is empty
+        tempVal = (tempVal == null || tempVal.trim().length === 0) ? '' : String(divide(Number(tempVal), 100));
       }
       commandFn && commandFn(tempVal);
       onChange && onChange(tempVal);
@@ -148,7 +149,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const printable = printableKey(event.nativeEvent);
-    // Currently checking, safari, Chrome in Windows, etc. 
+    // Currently checking, safari, Chrome in Windows, etc.
     // when calling the system's Chinese input method (e.g., mac's Chinese and Microsoft's own Chinese)
     // If the KeyCode is listened to via the KeyUp event, the correct value is returned. However, there are two problems with KeyUp.
     // 1. Frequent triggers can be missed
