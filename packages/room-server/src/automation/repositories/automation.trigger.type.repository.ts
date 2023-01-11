@@ -32,7 +32,7 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: In(endpoints),
         isDeleted: 0,
       }
-    })
+    });
   }
 
   getTriggerTypeServiceRelByEndPoint(endpoint: string): Promise<ITriggerTypeServiceRelDto[]>{
@@ -44,6 +44,6 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: endpoint,
         isDeleted: 0,
       }
-    })
+    });
   }
 }

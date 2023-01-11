@@ -94,7 +94,8 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
       setDefaultTimezone(timezone);
       defaultTimezone = timezone;
     };
-  };};
+  };
+};
 
 // plugin before import, prevent circular import
 dayjs.extend(utc);
