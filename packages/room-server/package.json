@@ -59,7 +59,7 @@
     "dayjs": "^1.11.7",
     "debug": "^4.3.1",
     "fast-safe-stringify": "^2.0.7",
-    "fastify": "3.22.0",
+    "fastify": "3.29.4",
     "fastify-helmet": "^5.0.0",
     "fastify-multipart": "^4.0.0",
     "fastify-swagger": "^4.3.3",
