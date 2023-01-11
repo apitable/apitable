@@ -564,7 +564,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             waitDeleteOldAvatar = userEntity.getAvatar();
             userMapper.updateUserAvatarInfo(userId, param.getAvatar(), null);
         }
-        else {
+        if (ObjectUtil.isNotNull(param.getAvatarColor())) {
             userMapper.updateUserAvatarInfo(userId, null, param.getAvatarColor());
         }
         if (StrUtil.isNotBlank(param.getLocale())) {
