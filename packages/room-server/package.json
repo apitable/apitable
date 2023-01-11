@@ -56,6 +56,7 @@
     "class-validator": "^0.12.2",
     "cli-color": "^2.0.0",
     "cls-hooked": "^4.2.2",
+    "dayjs": "^1.11.7",
     "debug": "^4.3.1",
     "fast-safe-stringify": "^2.0.7",
     "fastify": "3.22.0",

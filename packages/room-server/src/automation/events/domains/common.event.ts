@@ -23,8 +23,7 @@ export type CommonEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
   context: CommonEventContext,
   beforeApply: boolean,
   metaContext: CommonEventMetaContext,
-}
-
+};
 
 export type CommonEventMetaContext = {
   dstIdTriggersMap: { [datasheetId: string]: AutomationTriggerEntity[] },
@@ -37,4 +36,4 @@ export type CommonEventContext = {
   datasheetName: string,
   recordId: string,
   [key: string]: any,
-}
+};
