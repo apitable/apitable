@@ -216,6 +216,13 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        public static class AllowEmbed extends AbstractBooleanPlanFeature {
+
+            public AllowEmbed(boolean value) {
+                super(value);
+            }
+        }
     }
 
     public static class SolidFeatures {
