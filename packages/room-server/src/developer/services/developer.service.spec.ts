@@ -43,6 +43,10 @@ describe('developer service', () => {
     await app.init();
   });
 
+  afterAll(async() => {
+    await app.close();
+  });
+
   beforeEach(() => {
     developerService = module.get<DeveloperService>(DeveloperService);
     developerRepo = module.get<DeveloperRepository>(DeveloperRepository); 
@@ -51,7 +55,7 @@ describe('developer service', () => {
       if (apiKey === knownAPIKey) {
         return await Promise.resolve({ userId: BigInt(knownUserId) });
       } else if (apiKey === knownExpiredAPIKey) {
-        return await Promise.resolve({ userId: BigInt(Math.random()) });
+        return await Promise.resolve({ userId: BigInt(Math.floor(Math.random()*10000)) });
       }
       return await Promise.resolve(undefined);
     });
@@ -66,15 +70,11 @@ describe('developer service', () => {
     });
   });
 
-  afterAll(async() => {
-    await app.close();
-  });
-
   describe('test getUserInfoByApiKey', () => {
 
-    it('should return undefined with an unknown API key', async() => {
-      const result = await developerService.getUserInfoByApiKey(Math.random().toString());
-      expect(result).toBeUndefined();
+    it('should return null with an unknown API key', async() => {
+      const result = await developerService.getUserInfoByApiKey(Math.floor(Math.random()*10000).toString());
+      expect(result).toBeNull();
     });
 
     it('should return user entity with a known API key', async() => {
