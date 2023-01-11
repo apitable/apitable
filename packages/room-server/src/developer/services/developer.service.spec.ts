@@ -16,17 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+// import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
-import { IdWorker } from 'shared/helpers';
 import { DeveloperRepository } from '../repositories/developer.repository';
 import { UserRepository } from '../../user/repositories/user.repository';
 import { DeveloperService } from './developer.service';
+import { UserEntity } from 'user/entities/user.entity';
+import { AppModule } from 'app.module';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 describe('developer service', () => {
   let app: NestFastifyApplication;
   let module: TestingModule;
+  let developerService: DeveloperService;
+  let developerRepo: DeveloperRepository;
+  let userRepository: UserRepository;
+  const knownAPIKey = 'key1';
+  const knownExpiredAPIKey= 'key2';
+  const knownUserId = 12345;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -36,61 +43,51 @@ describe('developer service', () => {
     await app.init();
   });
 
+  beforeEach(() => {
+    developerService = module.get<DeveloperService>(DeveloperService);
+    developerRepo = module.get<DeveloperRepository>(DeveloperRepository); 
+    userRepository = module.get<UserRepository>(UserRepository);
+    jest.spyOn(developerRepo, 'selectUserIdByApiKey').mockImplementation(async(apiKey) => {
+      if (apiKey === knownAPIKey) {
+        return await Promise.resolve({ userId: BigInt(knownUserId) });
+      } else if (apiKey === knownExpiredAPIKey) {
+        return await Promise.resolve({ userId: BigInt(Math.random()) });
+      }
+      return await Promise.resolve(undefined);
+    });
+    jest.spyOn(userRepository, 'selectUserBaseInfoById').mockImplementation(async(userId) => {
+      if (userId === knownUserId.toString()) {
+        const nikeName = 'xiaoming';
+        const userEntity = new UserEntity();
+        userEntity.nikeName = nikeName;
+        return Promise.resolve(userEntity);
+      }
+      return await Promise.resolve(undefined);
+    });
+  });
+
   afterAll(async() => {
     await app.close();
   });
 
-  let developerService: DeveloperService;
-  let developerRepo: DeveloperRepository;
+  describe('test getUserInfoByApiKey', () => {
 
-  beforeEach(() => {
-    developerService = module.get(DeveloperService);
-    developerRepo = module.get(DeveloperRepository);
-
-    // TODO: mock a database service instead of connecting to a live database. added by troy
-  });
-
-  describe('developerRepo', () => {
-    it('save then find', async() => {
-      const apiKey = 'key';
-
-      const userId = IdWorker.nextId();
-      const entity = developerRepo.create({
-        userId,
-        apiKey,
-      });
-      await developerRepo.insert(entity);
-
-      const entities = await developerRepo.find();
-      expect(entities.length).toEqual(1);
-      expect(entities[0]!.apiKey).toEqual(apiKey);
-      expect(entities[0]!.userId).toEqual(userId.toString());
-      await developerRepo.delete(entity.id);
-    });
-  });
-
-  describe('getUserInfoByApiKey', () => {
-    const apiKey = 'key1';
-
-    it('returns null when no entities', async() => {
-      const result = await developerService.getUserInfoByApiKey(apiKey);
-      expect(result).toBeNull();
+    it('should return undefined with an unknown API key', async() => {
+      const result = await developerService.getUserInfoByApiKey(Math.random().toString());
+      expect(result).toBeUndefined();
     });
 
-    it('returns user entity with given api key', async() => {
-      const userRepo = module.get(UserRepository);
+    it('should return user entity with a known API key', async() => {
       const nikeName = 'xiaoming';
-      const userEntity = userRepo.create({ nikeName });
-      await userRepo.insert(userEntity);
-
-      const developerEntity = developerRepo.create({ userId: BigInt(userEntity.id), apiKey });
-      await developerRepo.insert(developerEntity);
-
-      const result = (await developerService.getUserInfoByApiKey(apiKey))!;
+      const result = (await developerService.getUserInfoByApiKey(knownAPIKey))!;
       expect(result.nikeName).toEqual(nikeName);
-      await userRepo.delete(userEntity.id);
-      await developerRepo.delete(developerEntity.id);
     });
+
+    it('should return undefined with an expired API key', async() => {
+      const result = (await developerService.getUserInfoByApiKey(knownExpiredAPIKey))!;
+      expect(result).toBeUndefined();
+    });
+
   });
 
 });
