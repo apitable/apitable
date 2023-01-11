@@ -1,10 +1,10 @@
 ---
 name: Question?
-about: Submit any question about APITable you curious.
+about: Submit any questions about APITable.
 title: 'question: Q&A...'
 labels: 'question'
 assignees: ''
 
 ---
 
-## Any question?
+## Any questions?
