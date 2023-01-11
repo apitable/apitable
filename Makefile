@@ -146,7 +146,7 @@ SIKP_INITDB=false
 
 _test_init_db:
 	@echo "${YELLOW}init-db initializing..${RESET}"
-	docker compose -f docker-compose.unit-test.yaml run --rm \
+	docker compose -f docker-compose.unit-test.yaml run -u $(shell id -u):$(shell id -g) --rm \
     	-e DB_HOST=test-mysql \
     	test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"

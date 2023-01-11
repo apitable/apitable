@@ -126,7 +126,8 @@ export const Tab: FC<ITabStateProps> = memo(props => {
   const embedOnlyViewName = useMemo(() => {
     if(!views || !get(embedInfo, 'viewControl.viewId', false) || !embedId) return '';
     const view = views.filter(view => view.id === embedInfo.viewControl?.viewId);
-    return view[0].name;
+    
+    return view.length > 0 ? view[0].name : '';
   }, [views, embedInfo, embedId]);
 
   return (

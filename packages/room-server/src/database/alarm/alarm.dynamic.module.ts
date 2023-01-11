@@ -37,7 +37,7 @@ import * as fs from 'fs';
 })
 export class AlarmDynamicModule { 
   static forRoot(): DynamicModule {
-    const alarmEnterpriseModulePath = path.join(__dirname, '../../../enterprise/database/alarm');
+    const alarmEnterpriseModulePath = path.join(__dirname, '../../enterprise/database/alarm');
     const isEnterpriseLevel: boolean = fs.existsSync(alarmEnterpriseModulePath);
     if (isEnterpriseLevel) {
       const { AlarmEnterpriseModule } = require(`${alarmEnterpriseModulePath}/alarm.enterprise.module`);

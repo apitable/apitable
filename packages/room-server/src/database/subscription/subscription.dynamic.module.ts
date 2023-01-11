@@ -37,7 +37,7 @@ import * as fs from 'fs';
 })
 export class SubscriptionDynamicModule { 
   static forRoot(): DynamicModule {
-    const subscriptionEnterpriseModulePath = path.join(__dirname, '../../../enterprise/database/subscription');
+    const subscriptionEnterpriseModulePath = path.join(__dirname, '../../enterprise/database/subscription');
     const isEnterpriseLevel: boolean = fs.existsSync(subscriptionEnterpriseModulePath);
     if (isEnterpriseLevel) {
       const { SubscriptionEnterpriseModule } = require(`${subscriptionEnterpriseModulePath}/subscription.enterprise.module`);
