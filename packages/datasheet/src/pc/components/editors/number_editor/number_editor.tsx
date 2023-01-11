@@ -137,9 +137,10 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
 
       setValue(tempVal);
       tempVal = str2NumericStr(tempVal);
-      tempVal = tempVal == null ? '' : tempVal;
       if (fieldType === FieldType.Percent) {
         tempVal = tempVal == null ? '' : String(divide(Number(tempVal), 100));
+      } else {
+        tempVal = tempVal == null ? '' : tempVal;
       }
       commandFn && commandFn(tempVal);
       onChange && onChange(tempVal);
