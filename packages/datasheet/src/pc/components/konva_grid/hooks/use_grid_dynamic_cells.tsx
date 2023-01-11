@@ -313,7 +313,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     };
     const { min: fieldMinIndex, max: fieldMaxIndex } = fillHandleCellIndex?.field  || {
       min: null, max: null
-    };;
+    };
     if (
       recordMaxIndex != null && !isNaN(recordMaxIndex) &&
       fieldMaxIndex != null && !isNaN(fieldMaxIndex)
