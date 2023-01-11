@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeveloperRepository } from '../repositories/developer.repository';
 import { UserRepository } from '../../user/repositories/user.repository';
