@@ -18,4 +18,4 @@
 
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 
-export type ResourceRobotTriggerDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'input' | 'robotId'>
+export type ResourceRobotTriggerDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'input' | 'robotId'>;

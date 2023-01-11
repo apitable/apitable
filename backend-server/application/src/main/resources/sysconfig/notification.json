@@ -1,5 +1,15 @@
 {
     "types": {
+        "system": {
+            "format_string": "notify_type_system",
+            "id": "system",
+            "tag": "system"
+        },
+        "space": {
+            "format_string": "notify_type_space",
+            "id": "space",
+            "tag": "space"
+        },
         "member": {
             "format_string": "notify_type_member",
             "id": "member",
@@ -9,16 +19,6 @@
             "format_string": "notify_type_datasheet",
             "id": "record",
             "tag": "record"
-        },
-        "space": {
-            "format_string": "notify_type_space",
-            "id": "space",
-            "tag": "space"
-        },
-        "system": {
-            "format_string": "notify_type_system",
-            "id": "system",
-            "tag": "system"
         }
     },
     "templates": {
@@ -26,9 +26,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "space_add_sub_admin"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -41,9 +38,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "space_assigned_to_group"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -56,9 +50,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "space_assigned_to_role"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -67,13 +58,25 @@
             "url": "/management",
             "is_component": true
         },
+        "capacity_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.capacity.limit",
+            "billing_notify": "max_capacity_size_in_bytes",
+            "format_string": "capacity_limit",
+            "id": "capacity_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
         "changed_ordinary_user": {
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "space_changed_ordinary_user"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -81,13 +84,46 @@
             "id": "changed_ordinary_user",
             "is_component": true
         },
+        "comment_mentioned": {
+            "can_jump": true,
+            "to_tag": "members",
+            "notifications_type": "record",
+            "is_notification": true,
+            "is_mobile": true,
+            "is_mail": true,
+            "is_browser": true,
+            "format_string": "comment_mentioned",
+            "id": "comment_mentioned",
+            "url": "/workbench",
+            "is_component": true
+        },
+        "datasheet_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.datasheet.limit",
+            "billing_notify": "max_sheet_nums",
+            "format_string": "datasheet_limit",
+            "id": "datasheet_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "integral_income_notify": {
+            "to_tag": "users",
+            "notifications_type": "system",
+            "is_notification": true,
+            "format_string": "integral_income_notify",
+            "id": "integral_income_notify",
+            "is_component": true
+        },
         "invite_member_toadmin": {
             "can_jump": true,
             "to_tag": "space_member_admins",
             "notifications_type": "member",
-            "formatString": [
-                "invite_member_toadmin"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -100,9 +136,6 @@
             "can_jump": true,
             "to_tag": "myself",
             "notifications_type": "member",
-            "formatString": [
-                "invite_member_tomyself"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -114,9 +147,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "invite_member_touser"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -125,25 +155,10 @@
             "url": "/workbench",
             "is_component": true
         },
-        "member_applied_to_close_account": {
-            "to_tag": "space_member_admins",
-            "notifications_type": "member",
-            "formatString": [
-                "member_applied_to_close_account"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "member_applied_to_close_account",
-            "id": "member_applied_to_close_account",
-            "is_component": true
-        },
         "quit_space": {
             "can_jump": true,
             "to_tag": "space_member_admins",
             "notifications_type": "member",
-            "formatString": [
-                "member_quit_space"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -156,9 +171,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "remove_from_group"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -171,9 +183,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "remove_from_role"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -186,9 +195,6 @@
             "can_jump": true,
             "to_tag": "space_member_admins",
             "notifications_type": "member",
-            "formatString": [
-                "user_removed_by_space_toadmin"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -199,9 +205,6 @@
         "removed_from_space_touser": {
             "to_tag": "members",
             "notifications_type": "member",
-            "formatString": [
-                "user_removed_by_space_touser"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -214,9 +217,6 @@
             "can_jump": true,
             "to_tag": "myself",
             "notifications_type": "member",
-            "formatString": [
-                "removed_member_tomyself"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
@@ -224,79 +224,20 @@
             "id": "removed_member_tomyself",
             "is_component": true
         },
-        "space_add_primary_admin": {
-            "can_jump": true,
-            "to_tag": "members",
-            "notifications_type": "member",
-            "formatString": [
-                "space_add_primary_admin"
-            ],
+        "server_pre_publish": {
+            "to_tag": "all_users",
+            "notifications_type": "system",
             "is_notification": true,
             "is_mobile": true,
             "is_browser": true,
-            "format_string": "space_add_primary_admin",
-            "id": "space_add_primary_admin",
-            "is_component": true
-        },
-        "space_join_apply": {
-            "to_tag": "space_member_admins",
-            "notifications_type": "member",
-            "formatString": [
-                "space_join_apply"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "format_string": "space_join_apply",
-            "id": "space_join_apply",
-            "is_component": true
-        },
-        "space_join_apply_approved": {
-            "can_jump": true,
-            "to_tag": "users",
-            "notifications_type": "member",
-            "formatString": [
-                "space_join_apply_approved"
-            ],
-            "is_notification": true,
-            "format_string": "space_join_apply_approved",
-            "id": "space_join_apply_approved",
-            "url": "/workbench",
-            "is_component": true
-        },
-        "space_join_apply_refused": {
-            "to_tag": "users",
-            "notifications_type": "member",
-            "formatString": [
-                "space_join_apply_refused"
-            ],
-            "is_notification": true,
-            "format_string": "space_join_apply_refused",
-            "id": "space_join_apply_refused",
-            "is_component": true
-        },
-        "comment_mentioned": {
-            "can_jump": true,
-            "to_tag": "members",
-            "notifications_type": "record",
-            "formatString": [
-                "comment_mentioned"
-            ],
-            "is_notification": true,
-            "is_mobile": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "comment_mentioned",
-            "id": "comment_mentioned",
-            "url": "/workbench",
+            "format_string": "server_pre_publish",
+            "id": "server_pre_publish",
             "is_component": true
         },
         "single_record_comment_mentioned": {
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "record",
-            "formatString": [
-                "single_record_comment_mentioned"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_mail": true,
@@ -310,9 +251,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "record",
-            "formatString": [
-                "single_record_member_mention"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_mail": true,
@@ -323,13 +261,112 @@
             "url": "/workbench",
             "is_component": true
         },
+        "space_add_primary_admin": {
+            "can_jump": true,
+            "to_tag": "members",
+            "notifications_type": "member",
+            "is_notification": true,
+            "is_mobile": true,
+            "is_browser": true,
+            "format_string": "space_add_primary_admin",
+            "id": "space_add_primary_admin",
+            "is_component": true
+        },
+        "space_deleted": {
+            "to_tag": "all_members",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_has_been_deleted",
+            "id": "space_deleted",
+            "is_component": true
+        },
+        "space_join_apply": {
+            "to_tag": "space_member_admins",
+            "notifications_type": "member",
+            "is_notification": true,
+            "is_mail": true,
+            "format_string": "space_join_apply",
+            "id": "space_join_apply",
+            "is_component": true
+        },
+        "space_join_apply_approved": {
+            "can_jump": true,
+            "to_tag": "users",
+            "notifications_type": "member",
+            "is_notification": true,
+            "format_string": "space_join_apply_approved",
+            "id": "space_join_apply_approved",
+            "url": "/workbench",
+            "is_component": true
+        },
+        "space_join_apply_refused": {
+            "to_tag": "users",
+            "notifications_type": "member",
+            "is_notification": true,
+            "format_string": "space_join_apply_refused",
+            "id": "space_join_apply_refused",
+            "is_component": true
+        },
+        "member_applied_to_close_account": {
+            "to_tag": "space_member_admins",
+            "notifications_type": "member",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "member_applied_to_close_account",
+            "id": "member_applied_to_close_account",
+            "is_component": true
+        },
+        "space_name_change": {
+            "can_jump": true,
+            "to_tag": "all_members",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "notification_space_name_changed",
+            "id": "space_name_change",
+            "url": "/workbench",
+            "is_component": true
+        },
+        "space_recover": {
+            "can_jump": true,
+            "to_tag": "all_members",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_has_been_recover",
+            "id": "space_recover",
+            "is_component": true
+        },
+        "space_members_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "format_string": "space_members_limit",
+            "id": "space_members_limit",
+            "url": "/management",
+            "is_component": true
+        },
+        "user_field": {
+            "can_jump": true,
+            "to_tag": "members",
+            "notifications_type": "record",
+            "is_notification": true,
+            "is_mobile": true,
+            "is_mail": true,
+            "is_browser": true,
+            "format_string": "field_set_you_by_user",
+            "id": "user_field",
+            "url": "/workbench",
+            "is_component": true
+        },
         "subscribed_record_cell_updated": {
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "record",
-            "formatString": [
-                "subscribed_record_cell_updated"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_mail": true,
@@ -343,9 +380,6 @@
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "record",
-            "formatString": [
-                "subscribed_record_commented"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_mail": true,
@@ -355,569 +389,10 @@
             "id": "subscribed_record_commented",
             "url": "/workbench"
         },
-        "user_field": {
-            "can_jump": true,
-            "to_tag": "members",
-            "notifications_type": "record",
-            "formatString": [
-                "field_set_you_by_user"
-            ],
-            "is_notification": true,
-            "is_mobile": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "field_set_you_by_user",
-            "id": "user_field",
-            "url": "/workbench",
-            "is_component": true
-        },
-        "apply_space_beta_feature_success_notify_all": {
-            "can_jump": true,
-            "to_tag": "all_members",
-            "notifications_type": "space",
-            "formatString": [
-                "apply_space_beta_feature_success_notify_all"
-            ],
-            "is_notification": true,
-            "format_string": "apply_space_beta_feature_success_notify_all",
-            "id": "apply_space_beta_feature_success_notify_all"
-        },
-        "apply_space_beta_feature_success_notify_me": {
-            "can_jump": true,
-            "to_tag": "myself",
-            "notifications_type": "space",
-            "formatString": [
-                "apply_space_beta_feature_success_notify_me"
-            ],
-            "is_notification": true,
-            "format_string": "apply_space_beta_feature_success_notify_me",
-            "id": "apply_space_beta_feature_success_notify_me"
-        },
-        "capacity_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "capacity_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.capacity.limit",
-            "billing_notify": [],
-            "format_string": "capacity_limit",
-            "id": "capacity_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "datasheet_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "datasheet_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.datasheet.limit",
-            "billing_notify": [],
-            "format_string": "datasheet_limit",
-            "id": "datasheet_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "datasheet_record_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "datasheet_record_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.datasheet.record.limit",
-            "billing_notify": [],
-            "format_string": "datasheet_record_limit",
-            "id": "datasheet_record_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_admin_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_admin_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.admin.limit",
-            "billing_notify": [],
-            "format_string": "space_admin_limit",
-            "id": "space_admin_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_api_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_api_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.api.limit",
-            "billing_notify": [],
-            "format_string": "space_api_limit",
-            "id": "space_api_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_calendar_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_calendar_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.calendar.limit",
-            "billing_notify": [],
-            "format_string": "space_calendar_limit",
-            "id": "space_calendar_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_certification_fail_notify": {
-            "can_jump": true,
-            "to_tag": "users",
-            "notifications_type": "space",
-            "formatString": [
-                "space_certification_fail_notify"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "space_certification_fail_notify",
-            "id": "space_certification_fail_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_certification_notify": {
-            "can_jump": true,
-            "to_tag": "users",
-            "notifications_type": "space",
-            "formatString": [
-                "space_certification_notify"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "space_certification_notify",
-            "id": "space_certification_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_deleted": {
-            "times": 1,
-            "to_tag": "all_members",
-            "notifications_type": "space",
-            "formatString": [
-                "space_has_been_deleted"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "space_has_been_deleted",
-            "id": "space_deleted",
-            "is_component": true
-        },
-        "space_dingtalk_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_dingtalk_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_dingtalk_notify",
-            "id": "space_dingtalk_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_field_permission_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_field_permission_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.field.permission.limit",
-            "billing_notify": [],
-            "format_string": "space_field_permission_limit",
-            "id": "space_field_permission_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_file_permission_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_file_permission_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.file.permission.limit",
-            "billing_notify": [],
-            "format_string": "space_file_permission_limit",
-            "id": "space_file_permission_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_form_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_form_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.form.limit",
-            "billing_notify": [],
-            "format_string": "space_form_limit",
-            "id": "space_form_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_gantt_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_gantt_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.gannt.limit",
-            "billing_notify": [],
-            "format_string": "space_gantt_limit",
-            "id": "space_gantt_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_lark_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_lark_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_lark_notify",
-            "id": "space_lark_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_members_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_members_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_members_limit",
-            "id": "space_members_limit",
-            "url": "/management",
-            "systemControl": true,
-            "is_component": true
-        },
-        "space_mirror_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_mirror_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.mirror.limit",
-            "billing_notify": [],
-            "format_string": "space_mirror_limit",
-            "id": "space_mirror_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_name_change": {
-            "can_jump": true,
-            "to_tag": "all_members",
-            "notifications_type": "space",
-            "formatString": [
-                "notification_space_name_changed"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "notification_space_name_changed",
-            "id": "space_name_change",
-            "url": "/workbench",
-            "is_component": true
-        },
-        "space_paid_notify": {
-            "to_tag": "users",
-            "notifications_type": "space",
-            "formatString": [
-                "space_paid_notify"
-            ],
-            "is_notification": true,
-            "format_string": "space_paid_notify",
-            "id": "space_paid_notify",
-            "is_component": true
-        },
-        "space_rainbow_label_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_rainbow_label_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.rainbow.label.limit",
-            "billing_notify": [],
-            "format_string": "space_rainbow_label_limit",
-            "id": "space_rainbow_label_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_record_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_record_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.record.limit",
-            "billing_notify": [],
-            "format_string": "space_record_limit",
-            "id": "space_record_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_recover": {
-            "can_jump": true,
-            "to_tag": "all_members",
-            "notifications_type": "space",
-            "formatString": [
-                "space_has_been_recover"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "space_has_been_recover",
-            "id": "space_recover",
-            "is_component": true
-        },
-        "space_seats_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_seats_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.seats.limit",
-            "billing_notify": [],
-            "format_string": "space_seats_limit",
-            "id": "space_seats_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_subscription_end_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "id": "space_subscription_end_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_subscription_notify": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_subscription_notify"
-            ],
-            "is_notification": true,
-            "is_browser": true,
-            "format_string": "space_subscription_notify",
-            "id": "space_subscription_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_time_machine_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_time_machine_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.time.machine.limit",
-            "billing_notify": [],
-            "format_string": "space_time_machine_limit",
-            "id": "space_time_machine_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_trash_limit": {
-            "can_jump": true,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_trash_limit"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "mail_template_subject": "subject.subscribed.trash.limit",
-            "billing_notify": [],
-            "format_string": "space_trash_limit",
-            "id": "space_trash_limit",
-            "url": "/management",
-            "frequency": 1,
-            "is_component": true
-        },
-        "space_trial": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_trial"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_trial",
-            "id": "space_trial",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_vika_paid_notify": {
-            "can_jump": true,
-            "to_tag": "users",
-            "notifications_type": "space",
-            "formatString": [
-                "space_vika_paid_notify"
-            ],
-            "is_notification": true,
-            "format_string": "space_vika_paid_notify",
-            "id": "space_vika_paid_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_watermark_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_watermark_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_watermark_notify",
-            "id": "space_watermark_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_wecom_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_wecom_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_wecom_notify",
-            "id": "space_wecom_notify",
-            "url": "/management",
-            "is_component": true
-        },
-        "space_yozooffice_notify": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "space_admins",
-            "notifications_type": "space",
-            "formatString": [
-                "space_yozooffice_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "space_yozooffice_notify",
-            "id": "space_yozooffice_notify",
-            "url": "/management",
-            "is_component": true
-        },
         "task_reminder": {
             "can_jump": true,
             "to_tag": "members",
             "notifications_type": "space",
-            "formatString": [
-                "task_reminder"
-            ],
             "is_notification": true,
             "is_mobile": true,
             "is_mail": true,
@@ -928,12 +403,296 @@
             "url": "/workbench",
             "is_component": true
         },
+        "web_publish": {
+            "to_tag": "all_users",
+            "notifications_type": "system",
+            "is_mobile": true,
+            "format_string": "web_publish",
+            "id": "web_publish",
+            "is_component": true
+        },
+        "datasheet_record_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.datasheet.record.limit",
+            "billing_notify": "max_rows_per_sheet",
+            "format_string": "datasheet_record_limit",
+            "id": "datasheet_record_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_subscription_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_subscription_notify",
+            "id": "space_subscription_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_subscription_end_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "id": "space_subscription_end_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_seats_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.seats.limit",
+            "billing_notify": "max_seats",
+            "format_string": "space_seats_limit",
+            "id": "space_seats_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_record_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.record.limit",
+            "billing_notify": "max_rows_in_space",
+            "format_string": "space_record_limit",
+            "id": "space_record_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_api_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.api.limit",
+            "billing_notify": "max_api_call",
+            "format_string": "space_api_limit",
+            "id": "space_api_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_calendar_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.calendar.limit",
+            "billing_notify": "max_calendar_views_in_space",
+            "format_string": "space_calendar_limit",
+            "id": "space_calendar_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_form_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.form.limit",
+            "billing_notify": "max_form_views_in_space",
+            "format_string": "space_form_limit",
+            "id": "space_form_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_gantt_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.gannt.limit",
+            "billing_notify": "max_gantt_views_in_space",
+            "format_string": "space_gantt_limit",
+            "id": "space_gantt_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_field_permission_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.field.permission.limit",
+            "billing_notify": "field_permission_nums",
+            "format_string": "space_field_permission_limit",
+            "id": "space_field_permission_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_admin_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.admin.limit",
+            "billing_notify": "max_admin_nums",
+            "format_string": "space_admin_limit",
+            "id": "space_admin_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_rainbow_label_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.rainbow.label.limit",
+            "billing_notify": "rainbow_label",
+            "format_string": "space_rainbow_label_limit",
+            "id": "space_rainbow_label_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_time_machine_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.time.machine.limit",
+            "billing_notify": "max_remain_timemachine_days",
+            "format_string": "space_time_machine_limit",
+            "id": "space_time_machine_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_trash_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.trash.limit",
+            "billing_notify": "max_remain_trash_days",
+            "format_string": "space_trash_limit",
+            "id": "space_trash_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_watermark_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "billing_notify": "watermark",
+            "format_string": "space_watermark_notify",
+            "id": "space_watermark_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_yozooffice_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "billing_notify": "integration_yozo_office",
+            "format_string": "space_yozooffice_notify",
+            "id": "space_yozooffice_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_lark_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "billing_notify": "integration_feishu",
+            "format_string": "space_lark_notify",
+            "id": "space_lark_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_dingtalk_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "billing_notify": "integration_dingtalk",
+            "format_string": "space_dingtalk_notify",
+            "id": "space_dingtalk_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_wecom_notify": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "billing_notify": "integration_we_com",
+            "format_string": "space_wecom_notify",
+            "id": "space_wecom_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_trial": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "format_string": "space_trial",
+            "id": "space_trial",
+            "url": "/management",
+            "is_component": true
+        },
         "activity_integral_income_notify": {
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "activity_integral_income_notify"
-            ],
             "is_notification": true,
             "format_string": "activity_integral_income_notify",
             "id": "activity_integral_income_notify",
@@ -942,67 +701,14 @@
         "activity_integral_income_toadmin": {
             "to_tag": "space_main_admin",
             "notifications_type": "system",
-            "formatString": [
-                "activity_integral_income_toadmin"
-            ],
             "is_notification": true,
             "format_string": "activity_integral_income_toadmin",
             "id": "activity_integral_income_toadmin",
             "is_component": true
         },
-        "add_record_out_of_limit": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "users",
-            "notifications_type": "system",
-            "formatString": [
-                "add_record_out_of_limit_by_api_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "mail_template_subject": "subject.add.record.limited",
-            "format_string": "add_record_out_of_limit_by_api_notify",
-            "id": "add_record_out_of_limit",
-            "url": "/workbench",
-            "frequency": 1,
-            "is_component": true
-        },
-        "add_record_soon_to_be_limit": {
-            "can_jump": true,
-            "times": 1,
-            "to_tag": "users",
-            "notifications_type": "system",
-            "formatString": [
-                "add_record_soon_to_be_limit_by_api_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "mail_template_subject": "subject.add.record.soon.limited",
-            "format_string": "add_record_soon_to_be_limit_by_api_notify",
-            "id": "add_record_soon_to_be_limit",
-            "url": "/workbench",
-            "frequency": 1,
-            "is_component": true
-        },
-        "admin_transfer_space_widget_notify": {
-            "to_tag": "users",
-            "notifications_type": "system",
-            "formatString": [
-                "admin_transfer_space_widget_notify"
-            ],
-            "is_notification": true,
-            "is_mail": true,
-            "is_browser": true,
-            "format_string": "admin_transfer_space_widget_notify",
-            "id": "admin_transfer_space_widget_notify",
-            "is_component": true
-        },
         "admin_unpublish_space_widget_notify": {
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "admin_unpublish_space_widget_notify"
-            ],
             "is_notification": true,
             "is_mail": true,
             "is_browser": true,
@@ -1010,12 +716,28 @@
             "id": "admin_unpublish_space_widget_notify",
             "is_component": true
         },
+        "admin_transfer_space_widget_notify": {
+            "to_tag": "users",
+            "notifications_type": "system",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "format_string": "admin_transfer_space_widget_notify",
+            "id": "admin_transfer_space_widget_notify",
+            "is_component": true
+        },
+        "new_space_widget_notify": {
+            "to_tag": "users",
+            "notifications_type": "system",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "new_space_widget_notify",
+            "id": "new_space_widget_notify",
+            "is_component": true
+        },
         "common_system_notify": {
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "common_system_notify"
-            ],
             "is_notification": true,
             "is_browser": true,
             "format_string": "common_system_notify",
@@ -1025,71 +747,137 @@
         "common_system_notify_web": {
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "common_system_notify_web"
-            ],
             "format_string": "common_system_notify_web",
             "id": "common_system_notify_web",
             "is_component": true
         },
-        "integral_income_notify": {
+        "add_record_soon_to_be_limit": {
+            "can_jump": true,
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "integral_income_notify"
-            ],
             "is_notification": true,
-            "format_string": "integral_income_notify",
-            "id": "integral_income_notify",
+            "is_mail": true,
+            "mail_template_subject": "subject.add.record.soon.limited",
+            "format_string": "add_record_soon_to_be_limit_by_api_notify",
+            "id": "add_record_soon_to_be_limit",
+            "url": "/workbench",
+            "frequency": 1,
             "is_component": true
         },
-        "new_space_widget_notify": {
+        "add_record_out_of_limit": {
+            "can_jump": true,
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "new_space_widget_notify"
-            ],
             "is_notification": true,
-            "is_browser": true,
-            "format_string": "new_space_widget_notify",
-            "id": "new_space_widget_notify",
+            "is_mail": true,
+            "mail_template_subject": "subject.add.record.limited",
+            "format_string": "add_record_out_of_limit_by_api_notify",
+            "id": "add_record_out_of_limit",
+            "url": "/workbench",
+            "frequency": 1,
             "is_component": true
         },
         "new_user_welcome_notify": {
             "can_jump": true,
             "to_tag": "users",
             "notifications_type": "system",
-            "formatString": [
-                "new_user_welcome_notify"
-            ],
             "is_notification": true,
-            "format_string": "new_user_welcome_notify",
+            "format_string": "new_user_welcom_notify",
             "id": "new_user_welcome_notify",
             "url": "https://u.vika.cn/vhw8y",
             "is_component": true
         },
-        "server_pre_publish": {
-            "to_tag": "all_users",
-            "notifications_type": "system",
-            "formatString": [
-                "server_pre_publish"
-            ],
+        "apply_space_beta_feature_success_notify_all": {
+            "can_jump": true,
+            "to_tag": "all_members",
+            "notifications_type": "space",
             "is_notification": true,
-            "is_mobile": true,
-            "is_browser": true,
-            "format_string": "server_pre_publish",
-            "id": "server_pre_publish",
+            "format_string": "apply_space_beta_feature_success_notify_all",
+            "id": "apply_space_beta_feature_success_notify_all"
+        },
+        "apply_space_beta_feature_success_notify_me": {
+            "can_jump": true,
+            "to_tag": "myself",
+            "notifications_type": "space",
+            "is_notification": true,
+            "format_string": "apply_space_beta_feature_success_notify_me",
+            "id": "apply_space_beta_feature_success_notify_me"
+        },
+        "space_paid_notify": {
+            "to_tag": "users",
+            "notifications_type": "space",
+            "is_notification": true,
+            "format_string": "space_paid_notify",
+            "id": "space_paid_notify",
             "is_component": true
         },
-        "web_publish": {
-            "to_tag": "all_users",
-            "notifications_type": "system",
-            "formatString": [
-                "web_publish"
-            ],
-            "is_mobile": true,
-            "format_string": "web_publish",
-            "id": "web_publish",
+        "space_vika_paid_notify": {
+            "can_jump": true,
+            "to_tag": "users",
+            "notifications_type": "space",
+            "is_notification": true,
+            "id": "space_vika_paid_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_certification_notify": {
+            "can_jump": true,
+            "to_tag": "users",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_certification_notify",
+            "id": "space_certification_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_certification_fail_notify": {
+            "can_jump": true,
+            "to_tag": "users",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_certification_fail_notify",
+            "id": "space_certification_fail_notify",
+            "url": "/management",
+            "is_component": true
+        },
+        "space_wecom_api_trial_end": {
+            "to_tag": "all_members",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "space_wecom_api_trial_end",
+            "id": "space_wecom_api_trial_end"
+        },
+        "space_file_permission_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.file.permission.limit",
+            "billing_notify": "file_permission_nums",
+            "format_string": "space_file_permission_limit",
+            "id": "space_file_permission_limit",
+            "url": "/management",
+            "frequency": 1,
+            "is_component": true
+        },
+        "space_mirror_limit": {
+            "can_jump": true,
+            "to_tag": "space_admins",
+            "notifications_type": "space",
+            "is_notification": true,
+            "is_mail": true,
+            "is_browser": true,
+            "mail_template_subject": "subject.subscribed.mirror.limit",
+            "billing_notify": "max_mirror_views_in_space",
+            "format_string": "space_mirror_limit",
+            "id": "space_mirror_limit",
+            "url": "/management",
+            "frequency": 1,
             "is_component": true
         }
     },
@@ -1103,24 +891,6 @@
             "id": "wecom_single_record_member_mention",
             "template_string": "social_wecom_single_record_member_mention"
         },
-        "wecom_subscribed_record_cell_updated": {
-            "notification_template_id": "subscribed_record_cell_updated",
-            "message_type": "textcard",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "wecom",
-            "title": "wecom_subscribed_record_cell_updated_title",
-            "id": "wecom_subscribed_record_cell_updated",
-            "template_string": "social_wecom_subscribed_record_cell_updated"
-        },
-        "wecom_subscribed_record_commented": {
-            "notification_template_id": "subscribed_record_commented",
-            "message_type": "textcard",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "wecom",
-            "title": "wecom_subscribed_record_commented_title",
-            "id": "wecom_subscribed_record_commented",
-            "template_string": "social_wecom_subscribed_record_commented"
-        },
         "wecom_task_reminder": {
             "notification_template_id": "task_reminder",
             "message_type": "textcard",
@@ -1129,6 +899,105 @@
             "title": "social_task_reminder_title",
             "id": "wecom_task_reminder",
             "template_string": "social_wecom_task_reminder"
+        },
+        "wecom_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
+            "message_type": "textcard",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "wecom",
+            "title": "wecom_single_record_comment_mentioned_title",
+            "id": "wecom_single_record_comment_mentioned",
+            "template_string": "wecom_single_record_comment_mentioned"
+        },
+        "lark_single_record_member_mention": {
+            "notification_template_id": "single_record_member_mention",
+            "url_title": "social_notification_url_title",
+            "message_type": "textcard",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "lark",
+            "title": "lark_single_record_member_mention_title",
+            "id": "lark_single_record_member_mention",
+            "template_string": "lark_single_record_member_mention"
+        },
+        "dingtalk_isv_test_single_record_member_mention": {
+            "notification_template_id": "single_record_member_mention",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}?notifyId={notifyId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19716004",
+            "id": "dingtalk_isv_test_single_record_member_mention",
+            "template_string": "dingtalk_isv_test_single_record_member_mention"
+        },
+        "dingtalk_isv_integration_single_record_member_mention": {
+            "notification_template_id": "single_record_member_mention",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}?notifyId={notifyId}",
+            "platform": "dingtalk_isv",
+            "app_id": "20303001",
+            "id": "dingtalk_isv_integration_single_record_member_mention",
+            "template_string": "dingtalk_isv_integration_single_record_member_mention"
+        },
+        "dingtalk_isv_test_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19716004",
+            "id": "dingtalk_isv_test_task_reminder",
+            "template_string": "dingtalk_isv_test_social_task_reminder"
+        },
+        "dingtalk_isv_integration_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "20303001",
+            "id": "dingtalk_isv_integration_task_reminder",
+            "template_string": "dingtalk_isv_integration_social_task_reminder"
+        },
+        "dingtalk_isv_staging_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19758003",
+            "id": "dingtalk_isv_staging_task_reminder",
+            "template_string": "dingtalk_isv_staging_task_reminder"
+        },
+        "dingtalk_isv_production_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19704002",
+            "id": "dingtalk_isv_production_task_reminder",
+            "template_string": "dingtalk_isv_production_task_reminder"
+        },
+        "dingtalk_isv_production_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}?notifyId={notifyId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19704002",
+            "id": "dingtalk_isv_production_single_record_comment_mentioned",
+            "template_string": "dingtalk_isv_production_single_record_comment_mentioned"
+        },
+        "dingtalk_isv_staging_single_record_member_mention": {
+            "notification_template_id": "single_record_member_mention",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19758003",
+            "id": "dingtalk_isv_staging_single_record_member_mention",
+            "template_string": "dingtalk_isv_staging_single_record_member_mention"
+        },
+        "dingtalk_isv_production_single_record_member_mention": {
+            "notification_template_id": "single_record_member_mention",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19704002",
+            "id": "dingtalk_isv_production_single_record_member_mention",
+            "template_string": "dingtalk_isv_production_single_record_member_mention"
         },
         "dingtalk_single_record_member_mention": {
             "notification_template_id": "single_record_member_mention",
@@ -1139,6 +1008,107 @@
             "title": "dingtalk_single_record_member_mention_title",
             "id": "dingtalk_single_record_member_mention",
             "template_string": "social_dingtalk_single_record_member_mention"
+        },
+        "dingtalk_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "url_title": "social_notification_url_title",
+            "message_type": "action_card",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk",
+            "title": "social_task_reminder_title",
+            "id": "dingtalk_task_reminder",
+            "template_string": "social_dingtalk_task_reminder"
+        },
+        "lark_task_reminder": {
+            "notification_template_id": "task_reminder",
+            "url_title": "social_notification_url_title",
+            "message_type": "card",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "lark",
+            "title": "social_lark_task_reminder_title",
+            "id": "lark_task_reminder",
+            "template_string": "social_lark_task_reminder"
+        },
+        "lark_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
+            "url_title": "social_notification_url_title",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "lark",
+            "title": "lark_single_record_comment_mentioned_title",
+            "id": "lark_single_record_comment_mentioned",
+            "template_string": "lark_single_record_comment_mentioned"
+        },
+        "dingtalk_isv_test_subscribed_record_cell_updated": {
+            "notification_template_id": "subscribed_record_cell_updated",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19716004",
+            "id": "dingtalk_isv_test_subscribed_record_cell_updated",
+            "template_string": "dingtalk_isv_test_subscribed_record_cell_updated"
+        },
+        "dingtalk_isv_integration_subscribed_record_cell_updated": {
+            "notification_template_id": "subscribed_record_cell_updated",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "20303001",
+            "id": "dingtalk_isv_integration_subscribed_record_cell_updated",
+            "template_string": "dingtalk_isv_integration_subscribed_record_cell_updated"
+        },
+        "dingtalk_isv_production_subscribed_record_cell_updated": {
+            "notification_template_id": "subscribed_record_cell_updated",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19704002",
+            "id": "dingtalk_isv_production_subscribed_record_cell_updated",
+            "template_string": "dingtalk_isv_production_subscribed_record_cell_updated"
+        },
+        "dingtalk_isv_staging_subscribed_record_cell_updated": {
+            "notification_template_id": "subscribed_record_cell_updated",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19758003",
+            "id": "dingtalk_isv_staging_subscribed_record_cell_updated",
+            "template_string": "dingtalk_isv_staging_subscribed_record_cell_updated"
+        },
+        "dingtalk_isv_staging_subscribed_record_commented": {
+            "notification_template_id": "subscribed_record_commented",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19758003",
+            "id": "dingtalk_isv_staging_subscribed_record_commented",
+            "template_string": "dingtalk_isv_staging_subscribed_record_commented"
+        },
+        "dingtalk_isv_integration_subscribed_record_commented": {
+            "notification_template_id": "subscribed_record_commented",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "20303001",
+            "id": "dingtalk_isv_integration_subscribed_record_commented",
+            "template_string": "dingtalk_isv_integration_subscribed_record_commented"
+        },
+        "dingtalk_isv_test_subscribed_record_commented": {
+            "notification_template_id": "subscribed_record_commented",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19716004",
+            "id": "dingtalk_isv_test_subscribed_record_commented",
+            "template_string": "dingtalk_isv_test_subscribed_record_commented"
+        },
+        "dingtalk_isv_production_subscribed_record_commented": {
+            "notification_template_id": "subscribed_record_commented",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19704002",
+            "id": "dingtalk_isv_production_subscribed_record_commented",
+            "template_string": "dingtalk_isv_production_subscribed_record_commented"
         },
         "dingtalk_subscribed_record_cell_updated": {
             "notification_template_id": "subscribed_record_cell_updated",
@@ -1160,26 +1130,6 @@
             "id": "dingtalk_subscribed_record_commented",
             "template_string": "social_dingtalk_subscribed_record_commented"
         },
-        "dingtalk_task_reminder": {
-            "notification_template_id": "task_reminder",
-            "url_title": "social_notification_url_title",
-            "message_type": "action_card",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk",
-            "title": "social_task_reminder_title",
-            "id": "dingtalk_task_reminder",
-            "template_string": "social_dingtalk_task_reminder"
-        },
-        "lark_single_record_member_mention": {
-            "notification_template_id": "single_record_member_mention",
-            "url_title": "social_notification_url_title",
-            "message_type": "textcard",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "lark",
-            "title": "lark_single_record_member_mention_title",
-            "id": "lark_single_record_member_mention",
-            "template_string": "lark_single_record_member_mention"
-        },
         "lark_subscribed_record_cell_updated": {
             "notification_template_id": "subscribed_record_cell_updated",
             "url_title": "social_notification_url_title",
@@ -1200,143 +1150,51 @@
             "id": "lark_subscribed_record_commented",
             "template_string": "lark_subscribed_record_commented"
         },
-        "lark_task_reminder": {
-            "notification_template_id": "task_reminder",
+        "wecom_subscribed_record_cell_updated": {
+            "notification_template_id": "subscribed_record_cell_updated",
+            "message_type": "textcard",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "wecom",
+            "title": "wecom_subscribed_record_cell_updated_title",
+            "id": "wecom_subscribed_record_cell_updated",
+            "template_string": "social_wecom_subscribed_record_cell_updated"
+        },
+        "wecom_subscribed_record_commented": {
+            "notification_template_id": "subscribed_record_commented",
+            "message_type": "textcard",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "wecom",
+            "title": "wecom_subscribed_record_commented_title",
+            "id": "wecom_subscribed_record_commented",
+            "template_string": "social_wecom_subscribed_record_commented"
+        },
+        "dingtalk_isv_integration_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "20303001",
+            "id": "dingtalk_isv_integration_single_record_comment_mentioned",
+            "template_string": "dingtalk_isv_integration_single_record_comment_mentioned"
+        },
+        "dingtalk_isv_staging_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
+            "message_type": "oa",
+            "url": "workbench/{nodeId}/{viewId}/{recordId}",
+            "platform": "dingtalk_isv",
+            "app_id": "19758003",
+            "id": "dingtalk_isv_staging_single_record_comment_mentioned",
+            "template_string": "dingtalk_isv_staging_single_record_comment_mentioned"
+        },
+        "dingtalk_single_record_comment_mentioned": {
+            "notification_template_id": "single_record_comment_mentioned",
             "url_title": "social_notification_url_title",
-            "message_type": "card",
+            "message_type": "action_card",
             "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "lark",
-            "title": "social_lark_task_reminder_title",
-            "id": "lark_task_reminder",
-            "template_string": "social_lark_task_reminder"
-        },
-        "dingtalk_isv_test_single_record_member_mention": {
-            "notification_template_id": "single_record_member_mention",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}?notifyId={notifyId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_test_single_record_member_mention",
-            "template_string": "dingtalk_isv_test_single_record_member_mention"
-        },
-        "dingtalk_isv_integration_single_record_member_mention": {
-            "notification_template_id": "single_record_member_mention",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}?notifyId={notifyId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_integration_single_record_member_mention",
-            "template_string": "dingtalk_isv_integration_single_record_member_mention"
-        },
-        "dingtalk_isv_staging_single_record_member_mention": {
-            "notification_template_id": "single_record_member_mention",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_staging_single_record_member_mention",
-            "template_string": "dingtalk_isv_staging_single_record_member_mention"
-        },
-        "dingtalk_isv_production_single_record_member_mention": {
-            "notification_template_id": "single_record_member_mention",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_production_single_record_member_mention",
-            "template_string": "dingtalk_isv_production_single_record_member_mention"
-        },
-        "dingtalk_isv_test_subscribed_record_cell_updated": {
-            "notification_template_id": "subscribed_record_cell_updated",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_test_subscribed_record_cell_updated",
-            "template_string": "dingtalk_isv_test_subscribed_record_cell_updated"
-        },
-        "dingtalk_isv_integration_subscribed_record_cell_updated": {
-            "notification_template_id": "subscribed_record_cell_updated",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_integration_subscribed_record_cell_updated",
-            "template_string": "dingtalk_isv_integration_subscribed_record_cell_updated"
-        },
-        "dingtalk_isv_production_subscribed_record_cell_updated": {
-            "notification_template_id": "subscribed_record_cell_updated",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_production_subscribed_record_cell_updated",
-            "template_string": "dingtalk_isv_production_subscribed_record_cell_updated"
-        },
-        "dingtalk_isv_staging_subscribed_record_cell_updated": {
-            "notification_template_id": "subscribed_record_cell_updated",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_staging_subscribed_record_cell_updated",
-            "template_string": "dingtalk_isv_staging_subscribed_record_cell_updated"
-        },
-        "dingtalk_isv_staging_subscribed_record_commented": {
-            "notification_template_id": "subscribed_record_commented",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_staging_subscribed_record_commented",
-            "template_string": "dingtalk_isv_staging_subscribed_record_commented"
-        },
-        "dingtalk_isv_integration_subscribed_record_commented": {
-            "notification_template_id": "subscribed_record_commented",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_integration_subscribed_record_commented",
-            "template_string": "dingtalk_isv_integration_subscribed_record_commented"
-        },
-        "dingtalk_isv_test_subscribed_record_commented": {
-            "notification_template_id": "subscribed_record_commented",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_test_subscribed_record_commented",
-            "template_string": "dingtalk_isv_test_subscribed_record_commented"
-        },
-        "dingtalk_isv_production_subscribed_record_commented": {
-            "notification_template_id": "subscribed_record_commented",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_production_subscribed_record_commented",
-            "template_string": "dingtalk_isv_production_subscribed_record_commented"
-        },
-        "dingtalk_isv_test_task_reminder": {
-            "notification_template_id": "task_reminder",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_test_task_reminder",
-            "template_string": "dingtalk_isv_test_social_task_reminder"
-        },
-        "dingtalk_isv_integration_task_reminder": {
-            "notification_template_id": "task_reminder",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_integration_task_reminder",
-            "template_string": "dingtalk_isv_integration_social_task_reminder"
-        },
-        "dingtalk_isv_staging_task_reminder": {
-            "notification_template_id": "task_reminder",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_staging_task_reminder",
-            "template_string": "dingtalk_isv_staging_task_reminder"
-        },
-        "dingtalk_isv_production_task_reminder": {
-            "notification_template_id": "task_reminder",
-            "message_type": "oa",
-            "url": "workbench/{nodeId}/{viewId}/{recordId}",
-            "platform": "dingtalk_isv",
-            "id": "dingtalk_isv_production_task_reminder",
-            "template_string": "dingtalk_isv_production_task_reminder"
+            "platform": "dingtalk",
+            "title": "dingtalk_single_record_member_comment_title",
+            "id": "dingtalk_single_record_comment_mentioned",
+            "template_string": "social_dingtalk_single_record_comment_mention"
         }
     }
 }
