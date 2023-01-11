@@ -308,6 +308,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         }
 
         @Override
+        public AllowEmbed getAllowEmbed() {
+            return null;
+        }
+
+        @Override
         public ShowMobileNumber getShowMobileNumber() {
             return null;
         }

@@ -57,7 +57,7 @@ public class InternalSpaceSubscriptionVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxCalendarViewsInSpace;
 
-    @ApiModelProperty(value = "Is it possible to call enterprise-level APIs", example = "true", position = 7)
+    @ApiModelProperty(value = "allow use embed", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean canCallEnterpriseApi;
+    private Boolean allowEmbed;
 }
