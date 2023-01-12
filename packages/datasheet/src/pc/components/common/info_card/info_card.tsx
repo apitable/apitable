@@ -111,7 +111,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
                   <div className={classNames(styles.title, 'title')}>
                     {title}
                     {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}
-                    {getEnvVariables().CUSTOM_SYNC_CONTACTS_LINKID && <span className={styles.unitDesc}>{`（${email}）`}</span>}
+                    {getEnvVariables().CUSTOM_SYNC_CONTACTS_LINKID && email && <span className={styles.unitDesc}>{`（${email}）`}</span>}
                   </div>
                 </Tooltip>
                 <div className={styles.token}>
