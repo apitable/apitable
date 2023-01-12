@@ -18,41 +18,38 @@
 
 package com.apitable.space.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrSpliter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.control.infrastructure.ControlIdBuilder;
 import com.apitable.control.infrastructure.ControlType;
 import com.apitable.control.mapper.ControlMapper;
 import com.apitable.control.model.ControlTypeDTO;
-import com.apitable.space.mapper.StaticsMapper;
+import com.apitable.core.util.SqlTool;
+import com.apitable.shared.util.DateHelper;
 import com.apitable.space.dto.ControlStaticsDTO;
 import com.apitable.space.dto.DatasheetStaticsDTO;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.space.mapper.StaticsMapper;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.workspace.mapper.NodeMapper;
-import com.apitable.shared.util.DateHelper;
-import com.apitable.core.util.SqlTool;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.apitable.shared.constants.DateFormatConstants.YEARS_MONTH_PATTERN;
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 import static com.apitable.core.constants.RedisConstants.GENERAL_STATICS;
+import static com.apitable.shared.constants.DateFormatConstants.YEARS_MONTH_PATTERN;
 
 /**
  * <p>
@@ -113,7 +110,7 @@ public class StaticsServiceImpl implements IStaticsService {
     @Override
     public Long getCurrentMonthApiUsageUntilYesterday(String spaceId) {
         // If it is the first day of this month, 0 will be returned directly
-        if (ObjectUtil.equals(DateUtil.date(new Date()).getDate(), 1)) {
+        if (ObjectUtil.equals(LocalDateTime.now().getDayOfMonth(), 1)) {
             return 0L;
         } else {
             // Get the API usage cache of this month before today

@@ -18,36 +18,20 @@
 
 package com.apitable.user.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.PageUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.*;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.asset.service.IAssetService;
 import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
+import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialUserBind;
@@ -80,7 +64,6 @@ import com.apitable.shared.constants.NotificationConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
-import com.apitable.shared.util.RandomExtendUtil;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.ro.SpaceUpdateOpRo;
@@ -100,11 +83,10 @@ import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserInfoVo;
 import com.apitable.user.vo.UserLinkVo;
 import com.apitable.workspace.service.INodeShareService;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-import com.apitable.core.util.SqlTool;
-
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -112,21 +94,22 @@ import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
 import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
 import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
 import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.apitable.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
-import static com.apitable.user.enums.UserException.LINK_EMAIL_ERROR;
-import static com.apitable.user.enums.UserException.MODIFY_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.MUST_BIND_EAMIL;
-import static com.apitable.user.enums.UserException.MUST_BIND_MOBILE;
-import static com.apitable.user.enums.UserException.REGISTER_FAIL;
-import static com.apitable.user.enums.UserException.SIGN_IN_ERROR;
-import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.USER_LANGUAGE_SET_UN_SUPPORTED;
-import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
+import static com.apitable.user.enums.UserException.*;
 import static com.apitable.user.enums.UserOperationType.COMPLETE_CLOSING;
 
 /**
@@ -306,8 +289,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             // If the mail has been invited and has not been bound to other accounts, activate the space members of the invited mail
             List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberByEmails(email);
             inactiveMemberProcess(user.getId(), inactiveMembers);
-        }
-        else {
+        } else {
             String spaceName = user.getNickName();
             if (LocaleContextHolder.getLocale().equals(LanguageManager.me().getDefaultLanguage())) {
                 spaceName += SPACE_NAME_DEFAULT_SUFFIX;
@@ -356,7 +338,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .mobilePhone(mobile)
                 .nickName(nullToDefaultNickName(nickName, mobile != null ? mobile : StringUtils.substringBefore(email, "@")))
                 .avatar(nullToDefaultAvatar(avatar))
-                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1,11))
+                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1, 11))
                 .email(email)
                 .lastLoginTime(LocalDateTime.now())
                 .build();
@@ -378,8 +360,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             String newSpaceName;
             if (StrUtil.isNotBlank(spaceName)) {
                 newSpaceName = spaceName;
-            }
-            else {
+            } else {
                 newSpaceName = entity.getNickName();
                 if (LocaleContextHolder.getLocale().equals(LanguageManager.me().getDefaultLanguage())) {
                     newSpaceName += SPACE_NAME_DEFAULT_SUFFIX;
@@ -403,7 +384,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .mobilePhone(mobile)
                 .nickName(nullToDefaultNickName(nickName, mobile))
                 .avatar(nullToDefaultAvatar(avatar))
-                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1,11))
+                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1, 11))
                 .lastLoginTime(LocalDateTime.now())
                 .build();
         boolean flag = saveUser(entity);
@@ -599,8 +580,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             if (BooleanUtil.isTrue(param.getInit())) {
                 userServiceFacade.onUserChangeNicknameAction(userId, param.getNickName());
             }
-        }
-        else {
+        } else {
             user.setNickName(userEntity.getNickName());
         }
         boolean flag = updateById(user);
@@ -649,8 +629,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 userLinkVos.add(linkVo);
             }
             userInfo.transferDataFromDto(userLinkInfo, userLinkVos);
-        }
-        else {
+        } else {
             userInfo.setApiKey(iDeveloperService.getApiKeyByUserId(userId));
         }
         if (userInfo.getIsPaused()) { // Cancel the account during the calm period, and calculate the official cancellation time
@@ -670,16 +649,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             if (ObjectUtil.isNull(memberId)) {
                 return userInfo;
             }
-        }
-        else if (noSpace) {
+        } else if (noSpace) {
             // When the space ID is not transferred, obtain the space ID of the user's recent work
             String activeSpaceId = userActiveSpaceCacheService.getLastActiveSpace(userId);
             if (StrUtil.isBlank(activeSpaceId)) {
                 return userInfo;
             }
             spaceId = activeSpaceId;
-        }
-        else {
+        } else {
             // Prevent access to not join spaces
             userSpaceCacheService.getMemberId(userId, spaceId);
         }
@@ -771,7 +748,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     /**
      * Encapsulate Notification to notify the master administrator that the member has applied for logoff
      *
-     * @param user User
+     * @param user   User
      * @param spaces Space List
      * @return NotificationCreateRo List
      */
@@ -862,8 +839,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             if (spaceIds.contains(member.getSpaceId())) {
                 // An inactive member already exists in the user space. Delete the inactive member
                 delMember.add(member.getId());
-            }
-            else {
+            } else {
                 activateMember.add(member.getId());
             }
         });
@@ -975,15 +951,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             UserEntity user = this.getByEmail(username);
             ExceptionUtil.isNotNull(user, USERNAME_OR_PASSWORD_ERROR);
             return user;
-        }
-        else if (StrUtil.isNotBlank(areaCode)) {
+        } else if (StrUtil.isNotBlank(areaCode)) {
             ExceptionUtil.isTrue(Validator.isNumber(username), USERNAME_OR_PASSWORD_ERROR);
             // Judge whether it exists
             UserEntity user = this.getByCodeAndMobilePhone(areaCode, username);
             ExceptionUtil.isNotNull(user, USERNAME_OR_PASSWORD_ERROR);
             return user;
-        }
-        else {
+        } else {
             // User name format error
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
