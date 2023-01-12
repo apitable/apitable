@@ -17,7 +17,7 @@
  */
 
 import { UserEntity } from '../entities/user.entity';
-import { EntityRepository, In, Repository } from 'typeorm';
+import { EntityRepository, getConnection, In, Repository } from 'typeorm';
 
 /**
  * Operations on table `developer`
@@ -38,6 +38,33 @@ export class UserRepository extends Repository<UserEntity> {
       select: ['id', 'uuid', 'nikeName', 'avatar', 'locale'],
       where: [{ id: userId, isDeleted: false }],
     });
+  }
+
+  /**
+   * TODO(Troy): stop using multiple joins query and break it in several small queries instead(refactor: multiple joins query is prohibited #2848)
+   * @deprecated
+   * @param spaceId 
+   * @param uuids 
+   * @returns 
+   */
+  async selectUserInfoBySpaceIdAndUuids(spaceId: string, uuids: string[]): Promise<any[]> {
+    const queryRunner = getConnection().createQueryRunner();
+    const tableNamePrefix = this.manager.connection.options.entityPrefix;
+    const users: any[] = await queryRunner.query(`
+          SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
+                 vui.is_deleted isDeleted, vui.unit_type type,
+          IFNULL(vum.member_name,vu.nick_name) name, vu.avatar avatar, vum.is_active isActive,
+          IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
+          FROM ${tableNamePrefix}user vu
+          LEFT JOIN ${tableNamePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = ?
+          LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id
+          WHERE uuid IN (?)
+        `,
+    [spaceId, uuids],
+    );
+    await queryRunner.release();
+    return users;
   }
 
   /**
