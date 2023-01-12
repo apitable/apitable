@@ -5709,6 +5709,7 @@
         },
         "dingtalk_isv_integration_single_record_member_mention": {
             "zh_CN": "5994e97c8766482bb971e6253ad7f6f1",
+            "en_US": "5994e97c8766482bb971e6253ad7f6f1",
             "zh_HK": "5994e97c8766482bb971e6253ad7f6f1"
         },
         "dingtalk_isv_integration_social_task_reminder": {
@@ -5718,10 +5719,12 @@
         },
         "dingtalk_isv_integration_subscribed_record_cell_updated": {
             "zh_CN": "f33cf06b321a4348ba5063355b125184",
+            "en_US": "f33cf06b321a4348ba5063355b125184",
             "zh_HK": "f33cf06b321a4348ba5063355b125184"
         },
         "dingtalk_isv_integration_subscribed_record_commented": {
-            "zh_CN": "b4ac28623fd5493dbc5f995bb1cc17c7",
+            "zh_CN": "596ad27391d74630b7df029f940bb887",
+            "en_US": "596ad27391d74630b7df029f940bb887",
             "zh_HK": "596ad27391d74630b7df029f940bb887"
         },
         "dingtalk_isv_production_single_record_comment_mentioned": {
