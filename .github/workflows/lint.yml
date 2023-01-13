@@ -7,14 +7,15 @@
 # More details at https://github.com/eslint/eslint
 # and https://eslint.org
 
-name: ESLint
+---
+name: Lint
 
 on:
   push:
-    branches: [ "develop", release/v* ]
+    branches: ["develop", "release/v*"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "develop" ]
+    branches: ["develop"]
 
 jobs:
   eslint:
@@ -23,7 +24,9 @@ jobs:
     permissions:
       contents: read
       security-events: write
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      # only required for a private repository by github/codeql-action/upload-sarif 
+      # to get the Action run status
+      actions: read 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -51,3 +54,33 @@ jobs:
         with:
           sarif_file: eslint-results.sarif
           wait-for-processing: true
+
+  # super-linter:
+  #   # Name the Job
+  #   name: Lint Code 
+  #   # Set the agent to run on
+  #   runs-on: ubuntu-latest
+
+  #   ##################
+  #   # Load all steps #
+  #   ##################
+  #   steps:
+  #     ##########################
+  #     # Checkout the code base #
+  #     ##########################
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         # Full git history is needed to get a proper
+  #         # list of changed files within `super-linter`
+  #         fetch-depth: 0
+
+  #     ################################
+  #     # Run Linter against code base #
+  #     ################################
+  #     - name: Lint Code 
+  #       uses: github/super-linter@v4
+  #       env:
+  #         VALIDATE_ALL_CODEBASE: false
+  #         DEFAULT_BRANCH: develop
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
