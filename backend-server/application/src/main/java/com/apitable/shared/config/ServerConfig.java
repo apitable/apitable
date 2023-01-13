@@ -1,6 +1,5 @@
 package com.apitable.shared.config;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +16,6 @@ import java.util.TimeZone;
  *
  * @author Shawn Deng
  */
-@Data
 @Component
 @Slf4j
 public class ServerConfig implements InitializingBean {
