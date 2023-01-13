@@ -294,7 +294,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setNickName(StrUtil.isNotBlank(nickName) ? nickName : StringUtils.substringBefore(email, "@"));
         user.setAvatar(StrUtil.isNotBlank(avatar) ? avatar : null);
-        user.setColor(StrUtil.isNotBlank(avatar) ? null : RandomUtil.randomInt(1, 11));
+        user.setColor(StrUtil.isNotBlank(avatar) ? null : RandomUtil.randomInt(0, 10));
         user.setEmail(email);
         user.setLastLoginTime(LocalDateTime.now());
         user.setRemark(remark);
@@ -356,7 +356,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .mobilePhone(mobile)
                 .nickName(nullToDefaultNickName(nickName, mobile != null ? mobile : StringUtils.substringBefore(email, "@")))
                 .avatar(nullToDefaultAvatar(avatar))
-                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1,11))
+                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(0, 10))
                 .email(email)
                 .lastLoginTime(LocalDateTime.now())
                 .build();
@@ -403,7 +403,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .mobilePhone(mobile)
                 .nickName(nullToDefaultNickName(nickName, mobile))
                 .avatar(nullToDefaultAvatar(avatar))
-                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(1,11))
+                .color(nullToDefaultAvatar(avatar) != null ? null : RandomUtil.randomInt(0, 10))
                 .lastLoginTime(LocalDateTime.now())
                 .build();
         boolean flag = saveUser(entity);
@@ -422,7 +422,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .uuid(IdUtil.fastSimpleUUID())
                 .email(email)
                 .nickName(StringUtils.substringBefore(email, "@"))
-                .color(RandomUtil.randomInt(1, 11))
+                .color(RandomUtil.randomInt(0, 10))
                 .lastLoginTime(LocalDateTime.now())
                 .build();
         boolean flag = saveUser(entity);
@@ -564,7 +564,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             waitDeleteOldAvatar = userEntity.getAvatar();
             userMapper.updateUserAvatarInfo(userId, param.getAvatar(), null);
         }
-        else {
+        if (ObjectUtil.isNotNull(param.getAvatarColor())) {
             userMapper.updateUserAvatarInfo(userId, null, param.getAvatarColor());
         }
         if (StrUtil.isNotBlank(param.getLocale())) {

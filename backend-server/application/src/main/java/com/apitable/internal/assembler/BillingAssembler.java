@@ -18,17 +18,12 @@
 
 package com.apitable.internal.assembler;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 
 public class BillingAssembler {
-    protected static final List<String> ENTERPRISE_MARK = Arrays.asList("Dingtalk_Enterprise", "Enterprise",
-            "Feishu_Enterprise", "Wecom_Enterprise", "Private_Cloud");
 
     public InternalSpaceSubscriptionVo toVo(SubscriptionInfo subscriptionInfo) {
         SubscriptionFeature billingPlanFeature = subscriptionInfo.getFeature();
@@ -39,9 +34,7 @@ public class BillingAssembler {
         subscriptionVo.setMaxKanbanViewsInSpace(billingPlanFeature.getKanbanViews().getValue());
         subscriptionVo.setMaxRowsInSpace(billingPlanFeature.getRowNums().getValue());
         subscriptionVo.setMaxRowsPerSheet(billingPlanFeature.getRowsPerSheet().getValue());
-        if (ENTERPRISE_MARK.contains(subscriptionInfo.getProduct())) {
-            subscriptionVo.setCanCallEnterpriseApi(true);
-        }
+        subscriptionVo.setAllowEmbed(billingPlanFeature.getAllowEmbed().getValue());
         return subscriptionVo;
     }
 

@@ -435,6 +435,7 @@ __metadata:
     classnames: 2.2.6
     comlink: ^4.3.1
     cookies-next: ^2.1.1
+    current-device: ^0.10.2
     customize-cra: ^1.0.0
     dayjs: ^1.11.7
     dingtalk-design-libs: ^0.0.20
@@ -700,6 +701,7 @@ __metadata:
     cli-color: ^2.0.0
     clinic: ^12.0.0
     cls-hooked: ^4.2.2
+    dayjs: ^1.11.7
     debug: ^4.3.1
     fast-safe-stringify: ^2.0.7
     fastify: 3.22.0
@@ -19714,6 +19716,13 @@ __metadata:
   version: 3.0.4
   resolution: "csstype@npm:3.0.4"
   checksum: ad3f54b3c6fc8c8c173786af81229d6c3170f8f57fd2ad801067fe388a26f60935edc488a4cbecd2f2bd5ff88581cb8cd9a393837a2de1c865f0d81f73f3b85a
+  languageName: node
+  linkType: hard
+
+"current-device@npm:^0.10.2":
+  version: 0.10.2
+  resolution: "current-device@npm:0.10.2"
+  checksum: 50f24c551f41a2d868e4394ca2c9ee905fc14e9aeacee1247592d7585bd7f65507b6ded136151cad2daa4a94c6871b08d7601fd992d707a79e3cecb5575f8bc3
   languageName: node
   linkType: hard
 

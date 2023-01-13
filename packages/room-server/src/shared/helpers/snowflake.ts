@@ -78,7 +78,7 @@ class SnowFlake {
     this.machineBits = machineId << MACHINE_ID_LEFT_SHIFT;
     this.sequence = 0n;
 
-    console.log(`Initialized snowflake: machine ID: ${machineId}`);
+    console.log(`Initialized snowflake: machine ID: 0x${machineId.toString(16).padStart(3, '0')}`);
 
     // The last time the ID was generated (this is in memory? what would happen after the system clock returns or the reboot?)
     this.lastTimestamp = -1n;

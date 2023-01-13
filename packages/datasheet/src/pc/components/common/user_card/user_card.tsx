@@ -87,13 +87,17 @@ export const UserCard: FC<IUserCard> = ({
   // Get the member's role by memberId
   async function getMemberRoleReq(memberId?: string) {
     if (memberId) {
-      const data = await getNodeRoleListReq(activeNodeId!);
-      if (data) {
-        const members: IRoleMember[] = data.members;
-        const member = members.filter(item => item.memberId === memberId);
-        if (member[0]?.role) {
-          return member[0].role;
+      try {
+        const data = await getNodeRoleListReq(activeNodeId!);
+        if (data) {
+          const members: IRoleMember[] = data.members;
+          const member = members.filter(item => item.memberId === memberId);
+          if (member[0]?.role) {
+            return member[0].role;
+          }
         }
+      } catch(e) {
+        console.log('Get member role error', e);
       }
     }
 
@@ -140,7 +144,7 @@ export const UserCard: FC<IUserCard> = ({
     isModified: memberInfo?.isMemberNameModified,
     spaceInfo
   }) || memberInfo?.memberName;
- 
+
   return (
     <>
       <div className={styles.userCard} onClick={e => e.stopPropagation()}>
