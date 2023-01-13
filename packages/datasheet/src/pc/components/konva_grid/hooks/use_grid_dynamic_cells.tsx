@@ -307,9 +307,13 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
   let frozenFillHandler: React.ReactNode = null;
   if (!isEditing && selectRanges.length) {
     const selectionRange = selectRanges[0];
-    const fillHandleCellIndex = Range.bindModel(selectionRange).getUIIndexRange(state)!;
-    const { min: recordMinIndex, max: recordMaxIndex } = fillHandleCellIndex.record;
-    const { min: fieldMinIndex, max: fieldMaxIndex } = fillHandleCellIndex.field;
+    const fillHandleCellIndex = Range.bindModel(selectionRange).getUIIndexRange(state);
+    const { min: recordMinIndex, max: recordMaxIndex } = fillHandleCellIndex?.record || {
+      min: null, max: null
+    };
+    const { min: fieldMinIndex, max: fieldMaxIndex } = fillHandleCellIndex?.field || {
+      min: null, max: null
+    };
     if (
       recordMaxIndex != null && !isNaN(recordMaxIndex) &&
       fieldMaxIndex != null && !isNaN(fieldMaxIndex)

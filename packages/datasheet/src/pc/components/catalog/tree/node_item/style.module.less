@@ -20,14 +20,17 @@
       }
     }
   }
-
-  &.touchDevice {
+  &.nodeMobile {
     .state {
       display: none;
     }
-
     .operation {
       display: flex;
+    }
+  }
+  &.nodeMobileActive {
+    .state {
+      display: inherit;
     }
   }
 

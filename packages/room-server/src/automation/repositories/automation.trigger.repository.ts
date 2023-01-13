@@ -20,6 +20,7 @@ import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
+import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {
@@ -72,5 +73,16 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
   changeTriggerTypeId(triggerId: string, triggerTypeId: string, userId: string) {
     // Clear input when switching trigger prototype
     return this.update({ triggerId }, { triggerTypeId, input: undefined, updatedBy: userId });
+  }
+
+  public getTriggerByRobotIdAndTriggerTypeId(robotId: string, triggerTypeId: string): Promise<ResourceRobotTriggerDto[]> {
+    return this.find({
+      select: ['triggerId', 'triggerTypeId', 'input', 'robotId'],
+      where: {
+        robotId: robotId,
+        triggerTypeId: triggerTypeId,
+        isDeleted: 0,
+      }
+    });
   }
 }

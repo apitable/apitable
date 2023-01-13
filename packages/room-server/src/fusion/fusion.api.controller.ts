@@ -19,12 +19,26 @@
 import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import {
-  Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
+  Body,
+  CacheTTL,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
-import { AttachmentUploadRo } from 'database/ros/attachment.upload.ro';
-import { AttachmentService } from 'database/services/attachment/attachment.service';
+import { AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
+import { AttachmentService } from 'database/attachment/services/attachment.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
@@ -72,7 +86,6 @@ import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
 import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
 import { FieldPipe } from './middleware/pipe/field.pipe';
 import { QueryPipe } from './middleware/pipe/query.pipe';
-import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 /**
  * TODO: cache response data, send notification while member changed, should maintain the data in the same server and cache them
@@ -102,7 +115,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  public async findAll(@Param() param: RecordParamRo, @Query(ValidationPipe, QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
+  public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
     return ApiResponse.success(pageVo);
   }
@@ -185,11 +198,7 @@ export class FusionApiController {
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
   // TODO: Waiting for nestjs official inheritance multi and fastify
-  public async addAttachment(
-    @Param() param: RecordParamRo,
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply
-  ): Promise<AttachmentVo> {
+  public async addAttachment(@Param() param: RecordParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     // check space capacity
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
@@ -514,11 +523,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async executeCommand(
-    @Body() body: ICollaCommandOptions,
-    @Param('datasheetId') datasheetId: string,
-    @Req() request: FastifyRequest
-  ) {
+  public async executeCommand(@Body() body: ICollaCommandOptions, @Param('datasheetId') datasheetId: string, @Req() request: FastifyRequest) {
     const commandBody = body;
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });

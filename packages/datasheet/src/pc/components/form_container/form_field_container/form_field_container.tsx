@@ -68,6 +68,15 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
     };
   }, []);
 
+  const onMouseDown = (type: FieldType, fieldId: string) => { 
+    clickWithinField.current = true; 
+
+    // Compatible with scenarios where clicking on a blank space in the date editor fails to focus
+    if (type === FieldType.DateTime) {
+      setFocusId(fieldId);
+    }
+  };
+
   return (
     <div className={styles.formFieldContainer} >
       <TransitionGroup>
@@ -118,14 +127,8 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
                     ].includes(type)}
                   >
                     <div
-                      onMouseDown={() => { 
-                        clickWithinField.current = true; 
-
-                        // Compatible with scenarios where clicking on a blank space in the date editor fails to focus
-                        if (type === FieldType.DateTime) {
-                          setFocusId(fieldId);
-                        }
-                      }}
+                      onMouseDown={() => onMouseDown(type, fieldId)}
+                      onTouchStart={() => onMouseDown(type, fieldId)}
                       onFocus={() => setFocusId(fieldId)}
                     >
                       <FormField

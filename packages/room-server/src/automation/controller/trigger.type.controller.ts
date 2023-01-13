@@ -18,7 +18,7 @@
 
 import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 import { isProdMode } from 'app.environment';
-import { UserService } from 'database/services/user/user.service';
+import { UserService } from 'user/services/user.service';
 import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
 import { AutomationService } from '../services/automation.service';

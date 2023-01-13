@@ -18,9 +18,9 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NodeRepository } from 'database/repositories/node.repository';
-import { UserRepository } from 'database/repositories/user.repository';
-import { UserService } from 'database/services/user/user.service';
+import { NodeRepository } from 'node/repositories/node.repository';
+import { UserRepository } from 'user/repositories/user.repository';
+import { UserService } from 'user/services/user.service';
 import { RobotActionController } from './controller/action.controller';
 import { RobotActionTypeController } from './controller/action.type.controller';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
@@ -37,6 +37,12 @@ import { AutomationService } from './services/automation.service';
 import { RobotTriggerController } from './controller/trigger.controller';
 import { RobotTriggerTypeController } from './controller/trigger.type.controller';
 import { RobotServiceDynamicModule } from './services/robot.service.dynamic.module';
+import { RobotTriggerService } from './services/robot.trigger.service';
+import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
+import { FormSubmittedListener } from './events/listeners/form.submitted.listener';
+import { TriggerEventHelper } from './events/helpers/trigger.event.helper';
+import { RecordCreatedListener } from './events/listeners/record.created.listener';
+import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
 
 @Module({
   imports: [
@@ -65,9 +71,19 @@ import { RobotServiceDynamicModule } from './services/robot.service.dynamic.modu
   ],
   providers: [
     AutomationService,
+    RobotTriggerService,
+    RobotTriggerTypeService,
     UserService,
+    FormSubmittedListener,
+    TriggerEventHelper,
+    RecordCreatedListener,
+    RecordUpdatedListener,
   ],
-  exports: [AutomationService],
+  exports: [
+    AutomationService,
+    RobotTriggerService,
+    RobotTriggerTypeService,
+  ],
 })
 export class RobotModule {
 }
