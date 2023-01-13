@@ -101,17 +101,16 @@ public class ConstProperties {
      */
     private String dingTalkOrderDatasheet;
 
-    /**
-     * Do DingTalk self-built apps need to restore the directory tree?
-     */
-    private Boolean dingTalkContactWithTree = false;
-
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_ASSETS_LTD, new OssBucketInfo());
     }
 
     public OssBucketInfo getOssBucketByPublicAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_PUBLIC_ASSETS_LTD, new OssBucketInfo());
+    }
+
+    public String defaultServerDomain() {
+        return ReUtil.replaceAll(serverDomain, "http://|https://", StrUtil.EMPTY);
     }
 
     public enum BucketKey {
@@ -131,10 +130,5 @@ public class ConstProperties {
         private String bucketName;
 
         private String type;
-    }
-
-
-    public String defaultServerDomain() {
-        return ReUtil.replaceAll(serverDomain, "http://|https://", StrUtil.EMPTY);
     }
 }
