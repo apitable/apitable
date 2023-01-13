@@ -21,7 +21,6 @@ import { EnvConfigKey } from 'shared/common';
 import { IAuthHeader, INamedUser, IOssConfig, IUserBaseInfo } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
-import { getConnection } from 'typeorm';
 import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 
@@ -37,6 +36,9 @@ export class UserService {
    * Get user info by UUIDs
    */
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
+    if (uuids.length === 0) {
+      return await Promise.resolve([]);
+    }
     const users: any[] = await this.userRepo.selectUserInfoBySpaceIdAndUuids(spaceId, uuids);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     return users.reduce<UnitInfo[]>((pre, cur) => {
