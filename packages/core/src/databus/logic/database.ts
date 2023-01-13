@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler, IEventEmitter } from 'databus/common/event';
-import { IBaseDatasheetPack } from 'exports/store';
+import { CollaCommandManager, IResourceOpsCollect } from 'command_manager';
+import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler, IEventEmitter } from 'databus/common/event';
+import { IBaseDatasheetPack, IReduxState } from 'exports/store';
+import { Store } from 'redux';
 import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Datasheet, IDatasheetOptions } from './datasheet';
 
@@ -29,6 +31,7 @@ import { Datasheet, IDatasheetOptions } from './datasheet';
 export class Database implements IEventEmitter {
   private storageProvider!: IDataStorageProvider;
   private datasheets: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
+  private commandManagers: WeakMap<Store<IReduxState>, CollaCommandManager> = new WeakMap();
   private storeProvider!: IStoreProvider;
 
   /**
@@ -61,7 +64,36 @@ export class Database implements IEventEmitter {
       return this.datasheets.get(datasheetPack)!;
     }
     const store = options.createStore ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack);
-    const datasheet = new Datasheet(datasheetPack, store, this.storageProvider, this);
+    let commandManager: CollaCommandManager;
+    if (this.commandManagers.has(store)) {
+      commandManager = this.commandManagers.get(store)!;
+    } else {
+      commandManager = new CollaCommandManager(
+        {
+          handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
+            this.fireEvent({
+              type: DatasheetEventType.CommandExecuted,
+              execResult: CommandExecutionResultType.Success,
+              resourceOpCollections,
+            });
+          },
+          handleCommandExecuteError: (error, errorType) => {
+            this.fireEvent({
+              type: DatasheetEventType.CommandExecuted,
+              execResult: CommandExecutionResultType.Error,
+              error,
+              errorType,
+            });
+          },
+        },
+        store,
+      );
+    }
+    const datasheet = new Datasheet(datasheetPack.datasheet.id, {
+      store,
+      saver: this.storageProvider,
+      commandManager,
+    });
     this.datasheets.set(datasheetPack, datasheet);
     return datasheet;
   }

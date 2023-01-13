@@ -29,9 +29,9 @@ import {
   IServerDatasheetPack,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
-import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { OtService } from 'database/services/ot/ot.service';
+import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { OtService } from 'database/ot/services/ot.service';
 import { pick } from 'lodash';
 import { CacheKeys, DATASHEET_PACK_CACHE_EXPIRE_TIME } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';

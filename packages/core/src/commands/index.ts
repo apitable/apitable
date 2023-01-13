@@ -91,7 +91,7 @@ export enum CollaCommandName {
   ChangeWidgetInPanelHeight = 'ChangeWidgetInPanelHeight',
   MoveWidget = 'MoveWidget',
 
-  // resource
+  // Widget
   SetGlobalStorage = 'SetGlobalStorage',
   SetWidgetName = 'SetWidgetName',
 

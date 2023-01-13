@@ -18,11 +18,13 @@
 
 import { ResourceServiceEnhanced } from './service';
 import { onError } from 'pc/resource_service/error';
+import { Store } from 'redux';
+import { IReduxState } from '@apitable/core';
 
 export * from './context';
 export const resourceService: { instance: null | ResourceServiceEnhanced } = { instance: null };
 
-export const initResourceService = (store) => {
+export const initResourceService = (store: Store<IReduxState>) => {
   resourceService.instance = new ResourceServiceEnhanced(store, onError);
   (window as any).VkResourceService = resourceService.instance;
   return resourceService.instance;

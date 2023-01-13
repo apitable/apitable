@@ -47,7 +47,6 @@ export type IResourceOpsCollect = {
 
 export interface ICollaCommandManagerListener {
   handleCommandExecuted?(resourceOpsCollects: IResourceOpsCollect[]): void;
-  getRoomId?(): string;
   handleCommandExecuteError?(error: IError, type?: 'message' | 'modal' | 'subscribeUsage'): void;
 }
 
