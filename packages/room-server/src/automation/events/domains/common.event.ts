@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IEventInstance, IOPEvent } from "@apitable/core";
-import { AutomationTriggerEntity } from "../../entities/automation.trigger.entity";
+import { IEventInstance, IOPEvent } from '@apitable/core';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 
 export type CommonEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
   context: CommonEventContext,
   beforeApply: boolean,
   metaContext: CommonEventMetaContext,
-}
-
+};
 
 export type CommonEventMetaContext = {
   dstIdTriggersMap: { [datasheetId: string]: AutomationTriggerEntity[] },
@@ -37,4 +36,4 @@ export type CommonEventContext = {
   datasheetName: string,
   recordId: string,
   [key: string]: any,
-}
+};

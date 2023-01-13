@@ -18,7 +18,7 @@
 
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { ITriggerTypeServiceRelDto } from "../dtos/trigger.type.service.rel.dto";
+import { ITriggerTypeServiceRelDto } from '../dtos/trigger.type.service.rel.dto';
 
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
@@ -32,7 +32,7 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: In(endpoints),
         isDeleted: 0,
       }
-    })
+    });
   }
 
   getTriggerTypeServiceRelByEndPoint(endpoint: string): Promise<ITriggerTypeServiceRelDto[]>{
@@ -44,6 +44,6 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
         endpoint: endpoint,
         isDeleted: 0,
       }
-    })
+    });
   }
 }
