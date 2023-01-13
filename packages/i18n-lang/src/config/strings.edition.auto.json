@@ -185,9 +185,9 @@
             "zh_CN": "复制下方专属链接~ <br/>邀请好友使用 APITable <br/>与朋友一起“友”福同享"
         },
         "help_user_community": {
-            "zh_HK": "APITable 社區",
-            "en_US": "APITable Community",
-            "zh_CN": "APITable 社区"
+            "zh_HK": "加入社區",
+            "en_US": "Join Community",
+            "zh_CN": "加入社区"
         },
         "intro_dashboard": {
             "zh_HK": "https://help.apitable.com/docs/guide/intro-dashboard",
