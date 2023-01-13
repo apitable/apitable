@@ -290,29 +290,32 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             <EditIcon fill={colors.black[50]} />
           </div>
         </div>
-        <ImageCropUpload
-          type={IUploadType.Avatar}
-          avatarName={nickName}
-          avatarColor={avatarColor}
-          title={t(Strings.upload_avatar)}
-          confirm={data => uploadConfirm(data)}
-          visible={uploadModal}
-          officialImgs={defaultAvatars}
-          initPreview={
-            <Avatar
-              id={memberId}
-              src={avatar}
-              title={memberName}
-              style={{ height: '100%', width: '100%' }}
-              isGzip={false}
-              size={AvatarSize.Size120}
-            />
-          }
-          fileLimit={2}
-          cancel={cancelChangeAvatar}
-          customTips={customTips}
-          previewShape={IPreviewShape.Circle}
-        />
+        {
+          uploadModal && 
+          <ImageCropUpload
+            type={IUploadType.Avatar}
+            avatarName={nickName}
+            avatarColor={avatarColor}
+            title={t(Strings.upload_avatar)}
+            confirm={data => uploadConfirm(data)}
+            visible={uploadModal}
+            officialImgs={defaultAvatars}
+            initPreview={
+              <Avatar
+                id={memberId}
+                src={avatar}
+                title={memberName}
+                style={{ height: '100%', width: '100%' }}
+                isGzip={false}
+                size={AvatarSize.Size120}
+              />
+            }
+            fileLimit={2}
+            cancel={cancelChangeAvatar}
+            customTips={customTips}
+            previewShape={IPreviewShape.Circle}
+          />
+        }
         <div className={styles.topRight}>
           <div className={styles.name} onClick={editNameClick}>
             <Tooltip

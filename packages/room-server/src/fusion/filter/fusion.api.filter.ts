@@ -63,7 +63,7 @@ const getRowFilterOffLoadComplexityThreshold = () => {
  *
  * Currently the complexity of a visible row filtering job is simply measured by (number of formula AST nodes * number of rows),
  * or (number of rows) if no formula is specified.
- * 
+ *
  * If the ROW_FILTER_OFFLOAD_COMPLEXITY_THRESHOLD environment variable is not specified, the default threshold is 5000;
  * if ROW_FILTER_OFFLOAD_COMPLEXITY_THRESHOLD is not a number, the threshold is Infinity, that is, the row filtering job will
  * never be offloaded onto a worker.
@@ -87,14 +87,18 @@ const MAX_WORKERS = process.env[MAX_WORKERS_ENV] ? parseInt(process.env[MAX_WORK
 @Injectable()
 export class FusionApiFilter {
   private static readonly FIELD_NAME = 'Virtual';
-  private piscina: Piscina;
+  private piscina: Piscina | undefined;
 
   constructor(@InjectLogger() private readonly logger: Logger) {
-    this.piscina = new Piscina({
-      // FIXME hard code source file path is a bad practice.
-      filename: path.resolve(__dirname.replace('/src/', '/dist/'), 'fusion.api.filter.worker.js'),
-      maxThreads: MAX_WORKERS,
-    });
+    if ((typeof MAX_WORKERS === 'number' && MAX_WORKERS <= 0) || !Number.isFinite(ROW_FILTER_OFFLOAD_COMPLEXITY_THRESHOLD)) {
+      this.piscina = undefined;
+    } else {
+      this.piscina = new Piscina({
+        // FIXME hard code source file path is a bad practice.
+        filename: path.resolve(__dirname.replace('/src/', '/dist/'), 'fusion.api.filter.worker.js'),
+        maxThreads: MAX_WORKERS,
+      });
+    }
   }
 
   /**
@@ -132,7 +136,7 @@ export class FusionApiFilter {
     const snapshot = Selectors.getSnapshot(state)!;
     let rows: IViewRow[];
     const { expr, ast }: { expr?: string; ast?: AstNode } = filterByFormula ? this.validateExpression(filterByFormula, state) : {};
-    if (measureVisibleRowFilteringComplexity(view.rows, ast) > ROW_FILTER_OFFLOAD_COMPLEXITY_THRESHOLD) {
+    if (this.piscina && measureVisibleRowFilteringComplexity(view.rows, ast) > ROW_FILTER_OFFLOAD_COMPLEXITY_THRESHOLD) {
       rows = await this.piscina.run({
         type: WorkerJobType.GetVisibleRows,
         data: {
