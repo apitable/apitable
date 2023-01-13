@@ -1,4 +1,4 @@
-${USER_NAME} is applying to join the "${SPACE_NAME}" Space
+{{USER_NAME}} is applying to join the "{{SPACE_NAME}}" Space
 
 --------------------------------------------------------------------------------
 
@@ -8,6 +8,6 @@ Click the button below to view the application
 
 View application
 
-copyright © 2022-${YEARS} apitable. All rights reserved.
+copyright © 2022-{{YEARS}} apitable. All rights reserved.
 
 Contact us (https://apitable.com/)
