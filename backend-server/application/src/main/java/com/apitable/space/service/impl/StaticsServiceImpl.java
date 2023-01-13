@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
 
 import static com.apitable.core.constants.RedisConstants.GENERAL_STATICS;
 import static com.apitable.shared.constants.DateFormatConstants.YEARS_MONTH_PATTERN;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 
 /**
  * <p>
@@ -149,7 +150,8 @@ public class StaticsServiceImpl implements IStaticsService {
             id = staticsMapper.selectMaxId();
         }
         else {
-            id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, DateHelper.getStartTimeOfMonth());
+            LocalDateTime startDayOfMonth = now.with(firstDayOfMonth());
+            id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, startDayOfMonth);
         }
         // Keep the cache of the month
         redisTemplate.opsForValue().set(key, id, 33, TimeUnit.DAYS);
