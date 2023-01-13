@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, CommandExecutionResultType, IEventEmitter } from '../common/event';
 import { Field } from '.';
-import { ILoadDatasheetPackOptions, ISaveOpsOptions } from '../providers';
+import { ILoadDatasheetPackOptions, ISaveOpsOptions, IDataSaver } from '../providers';
 import { Store } from 'redux';
 import { IAddRecordsOptions, IViewOptions, View } from './view';
 import { IResource } from './resource.interface';
@@ -28,18 +27,22 @@ import {
   ICollaCommandExecuteFailResult,
   ICollaCommandExecuteNoneResult,
   ICollaCommandExecuteSuccessResult,
-  IResourceOpsCollect,
 } from 'command_manager';
 import { IField, ResourceType } from 'types';
 import { IBaseDatasheetPack, IReduxState, ISnapshot, Selectors } from 'exports/store';
 import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, ISetRecordOptions } from 'commands';
-import { IDataSaver } from '../providers/data.saver.interface';
+
+interface IDatasheetCtorOptions {
+  store: Store<IReduxState>;
+  saver: IDataSaver;
+  commandManager: CollaCommandManager;
+}
 
 export class Datasheet implements IResource {
   private readonly commandManager: CollaCommandManager;
+  private readonly store: Store<IReduxState>;
+  private readonly saver: IDataSaver;
 
-  public readonly id: string;
-  public readonly name: string;
   public readonly type: ResourceType = ResourceType.Datasheet;
 
   /**
@@ -47,34 +50,15 @@ export class Datasheet implements IResource {
    *
    * @deprecated This constructor is not intended for public use.
    */
-  public constructor(
-    datasheetPack: IBaseDatasheetPack,
-    private readonly store: Store<IReduxState>,
-    private readonly saver: IDataSaver,
-    eventEmitter: IEventEmitter,
-  ) {
-    this.id = datasheetPack.datasheet.id;
-    this.name = datasheetPack.datasheet.name;
-    this.commandManager = new CollaCommandManager(
-      {
-        handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
-          eventEmitter.fireEvent({
-            type: DatasheetEventType.CommandExecuted,
-            execResult: CommandExecutionResultType.Success,
-            resourceOpCollections,
-          });
-        },
-        handleCommandExecuteError: (error, errorType) => {
-          eventEmitter.fireEvent({
-            type: DatasheetEventType.CommandExecuted,
-            execResult: CommandExecutionResultType.Error,
-            error,
-            errorType,
-          });
-        },
-      },
-      store,
-    );
+  public constructor(public readonly id: string, options: IDatasheetCtorOptions) {
+    const { store, saver, commandManager } = options;
+    this.store = store;
+    this.saver = saver;
+    this.commandManager = commandManager;
+  }
+
+  public get name(): string {
+    return Selectors.getDatasheet(this.store.getState(), this.id)!.name;
   }
 
   /**

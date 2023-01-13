@@ -81,7 +81,7 @@ const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
-  const resourceService = initResourceService(comlinkStore.store);
+  const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
 

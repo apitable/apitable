@@ -332,11 +332,10 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   public async datasheetFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
     const fields = await this.fusionApiService.getFieldList(param.datasheetId, query);
-    return ApiResponse.success({
-      fields: fields.map(field =>
-        field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
-      ),
-    });
+    const fieldDtos = fields.map(field =>
+      field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
+    );
+    return ApiResponse.success({ fields: fieldDtos });
   }
 
   @Get('/datasheets/:datasheetId/views')

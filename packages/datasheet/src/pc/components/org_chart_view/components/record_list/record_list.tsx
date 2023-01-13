@@ -23,7 +23,7 @@ import { DragItem } from './drag_item';
 import { DropWrapper } from '../drop_wrapper';
 import styles from './styles.module.less';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { CollaCommandName, ExecuteResult, t, Strings, ISetRecordOptions, DATASHEET_ID } from '@apitable/core';
+import { CollaCommandName, ExecuteResult, t, Strings, ISetRecordOptions, DATASHEET_ID, databus } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { FlowContext } from '../../context/flow_context';
 import { DragNodeType } from '../../constants';
@@ -37,14 +37,14 @@ interface IRecordList {
   onClose(): void;
 }
 
-export const addRecord = (viewId: string, index: number, autoOpen = true) => {
+export const addRecord = async(viewId: string, index: number, autoOpen = true) => {
   const collaCommandManager = resourceService.instance!.commandManager;
-  const result = collaCommandManager.execute({
-    cmd: CollaCommandName.AddRecords,
-    count: 1,
+  let datasheet: databus.Datasheet;
+  const result = await datasheet.addRecords({
     viewId,
+    count: 1,
     index,
-  });
+  }, {});
   if (result.result === ExecuteResult.Success) {
     const newRecordId = result.data && result.data[0];
     autoOpen && expandRecordIdNavigate(newRecordId);
