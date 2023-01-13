@@ -43,10 +43,12 @@ spring:
     port: ${MAIL_PORT:465}
     protocol: smtp
     properties:
-      mail:
-        smtp:
-          ssl:
-            enable: ${MAIL_SSL_ENABLE:true}
+      mail.debug: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
 
 cookie:
   domain-name: ${DOMAIN_NAME:}
