@@ -42,7 +42,7 @@ export class UserRepository extends Repository<UserEntity> {
 
   /**
    * TODO(Troy): stop using multiple joins query and break it in several small queries instead(refactor: multiple joins query is prohibited #2848)
-   * @deprecated
+   * TODO(Troy): use DTO instead of any
    * @param spaceId 
    * @param uuids 
    * @returns 
