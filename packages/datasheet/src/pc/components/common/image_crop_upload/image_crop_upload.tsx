@@ -355,7 +355,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
                       id={avatarName || ''}
                       title={avatarName || ''}
                       avatarColor={avatarColor}
-                      size={AvatarSize.Size120}
+                      size={isMobile ? AvatarSize.Size80 : AvatarSize.Size120}
                     /> :
                     (upImg || officialImgToken ? (
                       <span className={styles.previewImgWrapper}>
