@@ -18,22 +18,19 @@
 
 package com.apitable.shared.clock.spring;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.shared.clock.Clock;
 import com.apitable.shared.clock.DefaultClock;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.component.SystemEnvironmentVariable;
-
+import com.apitable.shared.config.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import static com.apitable.shared.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -41,9 +38,12 @@ public class ClockManager implements InitializingBean {
 
     private Clock clock;
 
+    private final ServerConfig serverConfig;
+
     private final SystemEnvironmentVariable environmentVariable;
 
-    public ClockManager(SystemEnvironmentVariable environmentVariable) {
+    public ClockManager(ServerConfig serverConfig, SystemEnvironmentVariable environmentVariable) {
+        this.serverConfig = serverConfig;
         this.environmentVariable = environmentVariable;
     }
 
@@ -72,21 +72,20 @@ public class ClockManager implements InitializingBean {
     public LocalDate getLocalDateNow() {
         OffsetDateTime utcNow = getUTCNow();
         log.info("utc now: {}", utcNow);
-        return utcNow.withOffsetSameInstant(DEFAULT_TIME_ZONE).toLocalDate();
+        return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDate();
     }
 
     public LocalDateTime getLocalDateTimeNow() {
         OffsetDateTime utcNow = getUTCNow();
         log.info("utc now: {}", utcNow);
-        return utcNow.withOffsetSameInstant(DEFAULT_TIME_ZONE).toLocalDateTime();
+        return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDateTime();
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (environmentVariable.isTestEnabled()) {
             clock = new MockClock();
-        }
-        else {
+        } else {
             clock = new DefaultClock();
         }
     }

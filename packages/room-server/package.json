@@ -53,7 +53,7 @@
     "@sentry/types": "^7.18.0",
     "cache-manager": "^3.6.0",
     "class-transformer": "^0.3.1",
-    "class-validator": "^0.12.2",
+    "class-validator": "^0.14.0",
     "cli-color": "^2.0.0",
     "cls-hooked": "^4.2.2",
     "dayjs": "^1.11.7",
