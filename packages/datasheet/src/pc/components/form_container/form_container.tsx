@@ -712,7 +712,7 @@ export const FormContainer: React.FC = () => {
               >
                 {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')} />}
                 {animationLoading && !loading && t(Strings.form_submit_success)}
-                {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.form_fill_anonymous) : t(Strings.form_submit))}
+                {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.button_submit_anonymous) : t(Strings.form_submit))}
                 {animationLoading && loading && t(Strings.form_submit_loading)}
               </Button>
             </div>

@@ -23,7 +23,7 @@ export class InternalSpaceSubscriptionView {
   maxKanbanViewsInSpace!: number; // The maximum number of kanban views allowed in the space
   maxGanttViewsInSpace!: number; // The maximum quantity of the allowable Gantt view in the space
   maxCalendarViewsInSpace!: number; // The maximum number of calendar views allowed in the space
-  canCallEnterpriseApi!: boolean; // Is it possible to call enterprise-level APIs
+  allowEmbed!: boolean; // Is it possible to call enterprise-level APIs
 }
 
 export class InternalSpaceUsageView {

@@ -19,7 +19,7 @@
 import { ApiTipConstant, FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { SortRo } from 'database/ros/sort.ro';
+import { SortRo } from 'fusion/ros/sort.ro';
 import { isString, keyBy } from 'lodash';
 import qs from 'qs';
 import { ApiException } from 'shared/exception';

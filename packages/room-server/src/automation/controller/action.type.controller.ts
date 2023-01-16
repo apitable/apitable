@@ -20,7 +20,7 @@ import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nest
 import { isProdMode } from 'app.environment';
 import { ActionTypeCreateRo } from '../ros/action.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { UserService } from 'database/services/user/user.service';
+import { UserService } from 'user/services/user.service';
 import { RobotActionTypeBaseService } from '../services/robot.action.type.base.service';
 
 @Controller('nest/v1/robots/action-types')

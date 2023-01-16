@@ -18,43 +18,41 @@
 
 package com.apitable.internal.controller;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-
-import com.google.common.collect.Lists;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+import com.apitable.core.support.ResponseData;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
+import com.apitable.internal.ro.PausedUserHistoryRo;
 import com.apitable.shared.cache.bean.LoginUserDto;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.SessionAttrConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.user.dto.PausedUserHistoryDto;
+import com.apitable.user.dto.UserInPausedDto;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.enums.UserClosingException;
 import com.apitable.user.enums.UserException;
 import com.apitable.user.enums.UserOperationType;
-import com.apitable.user.dto.PausedUserHistoryDto;
-import com.apitable.internal.ro.PausedUserHistoryRo;
-import com.apitable.user.dto.UserInPausedDto;
 import com.apitable.user.service.IUserHistoryService;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserBaseInfoVo;
-import com.apitable.core.support.ResponseData;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-
+import com.google.common.collect.Lists;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Internal Service - User Interface
@@ -100,7 +98,7 @@ public class InternalUserController {
     @PostResource(name = "get the cooling-off period user operation record", path = "/getUserHistories", requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "get the cooling-off period user operation record", notes = "get the cooling-off period user operation record", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<List<PausedUserHistoryDto>> getUserHistoryDtos(@RequestBody PausedUserHistoryRo userHistoryRo) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = ClockManager.me().getLocalDateTimeNow();
         LocalDateTime createdBefore = now.minusDays(30 + userHistoryRo.getLimitDays());
         // LocalDateTime createdAfter = now.minusDays(lastDays);
         // After obtaining the specified cooling-off period, there has been an operation to cancel the application within 30 days before.

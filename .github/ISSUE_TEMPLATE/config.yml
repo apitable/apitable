@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discord Community
+    url: https://discord.gg/TwNb9nfdBU
+    about: Discuss ideas
+  - name: Help Center
+    url: https://help.apitable.com
+    about: Help Center of APITable, includes tutorial, manual, FAQ.

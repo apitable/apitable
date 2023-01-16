@@ -16,6 +16,7 @@
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
+    "start:room-server:perf:flame": "yarn workspace @apitable/room-server start:perf:flame",
     "start:components": "yarn workspace @apitable/components start",
     "build:core": "yarn workspace @apitable/core build",
     "build:i18n": "yarn workspace @apitable/i18n-lang build",
@@ -43,10 +44,11 @@
     "link:widget": "yarn workspace @apitable/core link && yarn workspace @apitable/widget-sdk link && yarn workspace @apitable/components link && yarn workspace @apitable/icons",
     "postinstall": "cd .. && husky install apitable/.husky",
     "stylelint:datasheet": "yarn workspace @apitable/datasheet stylelint",
-    "lint": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
+    "lint": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
-    "check": "eslint --print-config packages/*/src/**/*.{js,ts,tsx}"
+    "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx}",
+    "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
     "packages/datasheet/src/**/*.{css,less,scss}": "yarn stylelint:datasheet",
