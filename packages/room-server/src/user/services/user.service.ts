@@ -30,7 +30,7 @@ export class UserService {
     private readonly envConfigService: EnvConfigService,
     private readonly restService: RestService,
     private readonly userRepo: UserRepository,
-  ) { }
+  ) {}
 
   /**
    * Get user info by UUIDs
@@ -66,7 +66,7 @@ export class UserService {
           uuid: user.uuid || '',
           avatar: user.avatar || '',
           nikeName: user.nikeName || '',
-          isSocialNameModified: user.isSocialNameModified!
+          isSocialNameModified: user.isSocialNameModified!,
         });
       });
     }
@@ -79,6 +79,15 @@ export class UserService {
 
   async getUserInfoBySpaceId(headers: IAuthHeader, spaceId: string) {
     return await this.restService.getUserInfoBySpaceId(headers, spaceId);
+  }
+
+  async getUserIdBySpaceId(headers: IAuthHeader, spaceId: string): Promise<string | undefined> {
+    try {
+      const userInfo = await this.getUserInfoBySpaceId(headers, spaceId);
+      return userInfo.userId;
+    } catch (e) {
+      return undefined;
+    }
   }
 
   /**
