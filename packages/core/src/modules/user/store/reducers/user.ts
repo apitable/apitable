@@ -55,7 +55,7 @@ if (userInfo) {
   axios.defaults.headers.common['X-Space-Id'] = userInfo.spaceId;
 }
 const defaultValue: IUser = {
-  info: { ...userInfo, avatarColor: null },
+  info: userInfo,
   isLogin: Boolean(userInfo),
   isRegister: false,
   isCreateSpace: false,
