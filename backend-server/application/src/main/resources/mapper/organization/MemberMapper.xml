@@ -377,7 +377,7 @@
         select id, is_deleted
         from ${tablePrefix}unit_member
         where user_id = #{userId} and space_id = #{spaceId}
-        ORDER BY id desc limit 1
+        ORDER BY is_deleted asc, id desc limit 1
     </select>
 
     <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">
