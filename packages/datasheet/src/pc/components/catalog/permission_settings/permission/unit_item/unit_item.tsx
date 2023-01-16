@@ -98,7 +98,8 @@ export const UnitItem: FC<IUnitItemProps> = (props) => {
           avatarProps={{
             id: unit.id,
             src: unit.avatar,
-            title: unit.name,
+            avatarColor: unit.avatarColor,
+            title: unit.nickName || unit.name,
             type: unit.isTeam ? AvatarType.Team : AvatarType.Member,
           }}
         />
