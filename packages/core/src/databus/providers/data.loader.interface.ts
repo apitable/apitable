@@ -6,7 +6,7 @@ export interface IDataLoader {
    *
    * The implemention may customize fields in `options`.
    */
-  loadDatasheetPack(dstId: string, options: ILoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> | IServerDatasheetPack | null;
+  loadDatasheetPack(dstId: string, options: ILoadDatasheetPackOptions): Promise<ILoadDatasheetPackResult> | ILoadDatasheetPackResult;
 }
 
 /**
@@ -14,3 +14,7 @@ export interface IDataLoader {
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ILoadDatasheetPackOptions {}
+
+export interface ILoadDatasheetPackResult {
+  datasheetPack: IServerDatasheetPack | null;
+}

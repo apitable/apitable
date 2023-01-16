@@ -136,7 +136,7 @@ export class ResourceService implements IResourceService {
    */
   get commandManager(): CollaCommandManager {}
 
-  static getResourceFetchAction(resourceType: ResourceType): any {
+  private static getResourceFetchAction(resourceType: ResourceType): any {
     switch (resourceType) {
       case ResourceType.Datasheet: {
         return StoreActions.fetchDatasheet;
@@ -171,27 +171,40 @@ export class ResourceService implements IResourceService {
     this.firstRoomInit = false;
   }
 
-  async fetchResource(to: string, resourceType: ResourceType, overWrite = false, extra?: { [key: string]: any }): Promise<void> {
+  fetchResource(to: string, resourceType: ResourceType, overWrite = false, extra?: { [key: string]: any }): Promise<void> {
     switch (resourceType) {
       case ResourceType.Datasheet:
-        this.currentResource = (await this.database.getDatasheet(to, {}))!;
-        break;
+        return new Promise<void>((resolve, reject) => {
+          StoreActions.databus.loadDatasheet(
+            this.database,
+            to,
+            datasheet => {
+              this.currentResource = datasheet;
+              resolve();
+            },
+            overWrite,
+            extra as { recordIds: string[] },
+            () => reject(),
+          );
+        });
       // TODO dashboard, form, mirror
+      default:
+        return new Promise<void>((resolve, reject) => {
+          const fetchAction = ResourceService.getResourceFetchAction(resourceType);
+          this.store.dispatch(
+            fetchAction(
+              to,
+              () => {
+                this.currentResource = undefined;
+                resolve();
+              },
+              overWrite,
+              extra,
+              () => reject(),
+            ) as any,
+          );
+        });
     }
-    return new Promise<void>((resolve, reject) => {
-      const fetchAction = ResourceService.getResourceFetchAction(resourceType);
-      this.store.dispatch(
-        fetchAction(
-          to,
-          () => {
-            resolve();
-          },
-          overWrite,
-          extra,
-          () => reject(),
-        ) as any,
-      );
-    });
   }
 
   applyOperations(store: Store<IReduxState>, resourceOpsCollects: IResourceOpsCollect[]) {

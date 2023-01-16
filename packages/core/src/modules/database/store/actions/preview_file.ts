@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as actions from '../../../shared/store/action_constants';
+import * as actions from 'modules/shared/store/action_constants';
 import { IAttachmentValue } from 'types';
-import { IPreviewFile } from '../../../../exports/store/interfaces';
+import { IPreviewFile } from 'exports/store/interfaces';
 
 export const setPreviewFile = (data: IPreviewFile) => {
   return (dispatch: any) => {
