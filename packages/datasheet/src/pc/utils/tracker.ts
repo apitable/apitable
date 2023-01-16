@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TrackEvents, isPrivateDeployment } from '@apitable/core';
+import { TrackEvents } from '@apitable/core';
+import { getEnvVariables } from "pc/utils/env";
 
 declare const sensors: {
   login(userId: string, cb?: () => void);
@@ -28,23 +29,23 @@ declare const sensors: {
 
 export const tracker = {
   login(userId: string, cb?: () => void) {
-    if (isPrivateDeployment()) return;
+    if (getEnvVariables().DISABLED_SENSORS) return;
     return sensors.login(userId, cb);
   },
   track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void) {
-    if (isPrivateDeployment()) return;
+    if (getEnvVariables().DISABLED_SENSORS) return;
     return sensors.track(eventName, props, cb);
   },
   setProfile(props: { [key: string]: any }, cb?: () => void) {
-    if (isPrivateDeployment()) return;
+    if (getEnvVariables().DISABLED_SENSORS) return;
     return sensors.setProfile(props, cb);
   },
   setOnceProfile(props: { [key: string]: any }, cb?: () => void) {
-    if (isPrivateDeployment()) return;
+    if (getEnvVariables().DISABLED_SENSORS) return;
     return sensors.setOnceProfile(props, cb);
   },
   quick(key: string, target: Element, props?: { [key: string]: any }, cb?: () => void) {
-    if (isPrivateDeployment()) return;
+    if (getEnvVariables().DISABLED_SENSORS) return;
     return sensors.quick(key, target, props, cb);
   },
 };

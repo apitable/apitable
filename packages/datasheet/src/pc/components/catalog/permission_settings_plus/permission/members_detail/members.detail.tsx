@@ -38,7 +38,7 @@ export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
     return (
       <div className={styles.scrollWrapper}>
         <div className={styles.memberList}>
-          {data.members.map(({ memberId, avatar, memberName, teams, role }) => {
+          {data.members.map(({ memberId, avatar, avatarColor, nickName, memberName, teams, role }) => {
             const isAdmin = Boolean(data.admins.find(item => item.memberId === memberId));
             const isPermissionOpener = data.owner?.memberId === memberId;
             return (
@@ -46,7 +46,9 @@ export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
                 key={memberId}
                 unit={{
                   id: memberId,
-                  avatar: avatar,
+                  avatar,
+                  avatarColor,
+                  nickName,
                   name: memberName,
                   info: teams,
                   isTeam: false,
