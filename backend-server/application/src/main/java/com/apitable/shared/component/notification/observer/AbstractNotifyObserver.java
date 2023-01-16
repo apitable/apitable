@@ -18,6 +18,19 @@
 
 package com.apitable.shared.component.notification.observer;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.apitable.organization.service.IMemberService;
+import com.apitable.player.ro.NotificationCreateRo;
+import com.apitable.shared.component.notification.NotificationHelper;
+import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.workspace.service.INodeService;
+
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,25 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.annotation.Resource;
-
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-
-import com.apitable.shared.component.notification.NotificationHelper;
-import com.apitable.player.ro.NotificationCreateRo;
-import com.apitable.organization.service.IMemberService;
-import com.apitable.space.service.ISpaceService;
-import com.apitable.workspace.service.INodeService;
-import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-
 import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_ID;
-import static com.apitable.shared.constants.NotificationConstants.INVOLVE_RECORD_IDS;
+import static com.apitable.shared.constants.NotificationConstants.*;
 
 /**
  * <p>
