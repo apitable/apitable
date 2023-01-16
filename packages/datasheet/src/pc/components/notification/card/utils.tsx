@@ -269,7 +269,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
     return 'this message is not config';
   }
   const template = getMsgText(data);
-  const nodeName = data.notifyBody.extras?.nodeName;
+  const nodeName = data.notifyBody.extras?.nodeName || data.notifyBody.node?.nodeName;
   const times = data.notifyBody.extras?.times || 0;
   const teamName = data.notifyBody.extras && data.notifyBody.extras.teamName;
   const oldSpaceName = data.notifyBody.extras && data.notifyBody.extras.oldSpaceName;
