@@ -114,6 +114,26 @@
             "en_US": "New dashboard",
             "zh_HK": "新建儀錶盤"
         },
+        "add_datasheet_editor": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
+        "add_datasheet_manager": {
+            "zh_CN": "拥有该表格的所有操作权限",
+            "en_US": "Can perform all actions on the file",
+            "zh_HK": "擁有該表格的所有操作權限"
+        },
+        "add_datasheet_reader": {
+            "zh_CN": "可查看该表格内容或进行评论",
+            "en_US": "Can read data or comment on the datasheet",
+            "zh_HK": "可查看該表格內容或進行評論"
+        },
+        "add_datasheet_updater": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
+        },
         "add_favorite_success": {
             "zh_CN": "星标成功，可以前往星标栏查看",
             "en_US": "Pinned to top successfully",
@@ -133,6 +153,26 @@
             "zh_CN": "请选择一列进行筛选",
             "en_US": "Pick another field to Filter",
             "zh_HK": "請選擇一列進行篩選"
+        },
+        "add_folder_editor": {
+            "zh_CN": "在「只可更新」基础上，还可以编辑和分享文件",
+            "en_US": "In addition to \"Update-only\", can also edit and share files",
+            "zh_HK": "在「只可更新」基礎上，還可以編輯和分享文件"
+        },
+        "add_folder_manager": {
+            "zh_CN": "拥有该文件的所有操作权限",
+            "en_US": "Can perform all actions to the file",
+            "zh_HK": "擁有該文件的所有操作權限"
+        },
+        "add_folder_reader": {
+            "zh_CN": "只可查看该文件夹下的内容",
+            "en_US": "Can read files in the folder",
+            "zh_HK": "只可查看該文件夾下的內容"
+        },
+        "add_folder_updater": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "add_form": {
             "zh_CN": "新建神奇表单",
@@ -1897,6 +1937,11 @@
             "en_US": "Submit",
             "zh_HK": "提交"
         },
+        "button_submit_anonymous": {
+            "zh_CN": "提交",
+            "en_US": "Submit",
+            "zh_HK": "提交"
+        },
         "by_field_id": {
             "zh_CN": "使用 Field ID",
             "en_US": "Use field ID",
@@ -2047,10 +2092,20 @@
             "en_US": "Cameroon",
             "zh_HK": "喀麥隆"
         },
+        "can_control": {
+            "zh_CN": "可以管理",
+            "en_US": "Manager",
+            "zh_HK": "可以管理"
+        },
         "can_duplicate": {
             "zh_CN": "可另存为副本",
             "en_US": "can save as copy",
             "zh_HK": "可另存為副本"
+        },
+        "can_edit": {
+            "zh_CN": "可以编辑",
+            "en_US": "can edit",
+            "zh_HK": "可以編輯"
         },
         "can_manage": {
             "zh_CN": "可管理",
@@ -2061,6 +2116,16 @@
             "zh_CN": "无法解绑",
             "en_US": "Can't unbind",
             "zh_HK": "無法解綁"
+        },
+        "can_read": {
+            "zh_CN": "只可阅读",
+            "en_US": "Read only",
+            "zh_HK": "只可閱讀"
+        },
+        "can_updater": {
+            "zh_CN": "只可更新",
+            "en_US": "Update-only",
+            "zh_HK": "只可更新"
         },
         "can_view": {
             "zh_CN": "可查看",
@@ -3427,6 +3492,26 @@
             "en_US": "Dashboard",
             "zh_HK": "儀錶盤"
         },
+        "dashboard_editor_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以编辑小程序和分享仪表盘",
+            "en_US": "In addition to \"Read-only\", can also edit widget and share dashboard",
+            "zh_HK": "在「只可閱讀」基礎上，還可以編輯小程序和分享儀錶盤"
+        },
+        "dashboard_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除和配置仪表盘",
+            "en_US": "In addition to \"Editor\",  can also  add or delete dashboard",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置儀錶盤"
+        },
+        "dashboard_reader_label": {
+            "zh_CN": "只可查看该仪表盘内容",
+            "en_US": "Can read widget in the dashboard",
+            "zh_HK": "只可查看該儀錶盤內容"
+        },
+        "dashboard_updater_label": {
+            "zh_CN": "与「只可阅读」一致",
+            "en_US": "Same as \"Read-only\"",
+            "zh_HK": "與「只可閱讀」一致"
+        },
         "data_calculating": {
             "zh_CN": "数据计算中...",
             "en_US": "Computing...",
@@ -3447,6 +3532,11 @@
             "en_US": "Total Files",
             "zh_HK": "文件節點數量"
         },
+        "datasheet_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
         "datasheet_exist_widget": {
             "zh_CN": "此表包含的小程序：",
             "en_US": "The datasheet has installed these widgets:",
@@ -3456,6 +3546,16 @@
             "zh_CN": "当前处于模板体验中，需要使用模板才能正常写入数据",
             "en_US": "Use the template first, then you can modify or write data",
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
+        },
+        "datasheet_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以配置字段和表格",
+            "en_US": "In addition to \"Editor\",  can also configure datasheet and fields",
+            "zh_HK": "在「可以編輯」基礎上，還可以配置字段和表格"
+        },
+        "datasheet_reader_label": {
+            "zh_CN": "你仅可查看此表格的内容",
+            "en_US": " You can only view the datasheet but cannot edit it.\n",
+            "zh_HK": "你僅可查看此表格的內容"
         },
         "date_after_or_equal": {
             "zh_CN": "晚于等于",
@@ -3865,10 +3965,23 @@
             "en_US": "Click \"+\" to generate the token ",
             "zh_HK": "請點擊“+”手動生成 Token"
         },
+        "dingtalk_isv_integration_single_record_comment_mentioned": {
+            "zh_CN": "b4ac28623fd5493dbc5f995bb1cc17c7",
+            "en_US": "b4ac28623fd5493dbc5f995bb1cc17c7",
+            "zh_HK": "b4ac28623fd5493dbc5f995bb1cc17c7"
+        },
         "dingtalk_isv_production_single_record_comment_mentioned": {
             "zh_CN": "8f41773b6eb54d6bba9d82392956dea1",
             "en_US": "8f41773b6eb54d6bba9d82392956dea1",
             "zh_HK": "8f41773b6eb54d6bba9d82392956dea1"
+        },
+        "dingtalk_isv_staging_single_record_comment_mentioned": {
+            "zh_CN": "d81ea943488b41ebb42fdeacfb42d0ef",
+            "en_US": "d81ea943488b41ebb42fdeacfb42d0ef",
+            "zh_HK": "d81ea943488b41ebb42fdeacfb42d0ef"
+        },
+        "dingtalk_single_record_member_comment_title": {
+            "zh_CN": "评论通知"
         },
         "direction_above": {
             "zh_CN": "上方",
@@ -5493,6 +5606,11 @@
             "en_US": "Enter a description",
             "zh_HK": "請輸入描述"
         },
+        "form_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以设置和分享神奇表单",
+            "en_US": "In addition to \"Update-only\", can also configure or share form",
+            "zh_HK": "在「只可更新」基礎上，還可以設置和分享神奇表單"
+        },
         "form_empty_tip": {
             "zh_CN": "你还未填写内容，请填写后再提交",
             "en_US": "Please fill in the form first",
@@ -5568,6 +5686,11 @@
             "en_US": "Show logo",
             "zh_HK": "顯示 Logo"
         },
+        "form_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除神奇表单",
+            "en_US": "In addition to \"Editor\", can also configure form",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除神奇表單"
+        },
         "form_network_error_tip": {
             "zh_CN": "当前网络存在异常，请稍后再试",
             "en_US": "Network disconnected. Please try again later.",
@@ -5582,6 +5705,11 @@
             "zh_CN": "当前文件夹没有被设置为允许编辑，所以该表单无法填写",
             "en_US": "The form can't be filled because its folder is not editable",
             "zh_HK": "當前文件夾沒有被設置為允許編輯，所以該表單無法填寫"
+        },
+        "form_reader_label": {
+            "zh_CN": "只可查看该神奇表单，不允许提交",
+            "en_US": "Can read the form,not submit it",
+            "zh_HK": "只可查看該神奇表單，不允許提交"
         },
         "form_setting": {
             "zh_CN": "神奇表单设置",
@@ -5697,6 +5825,11 @@
             "zh_CN": "使用教程",
             "en_US": "User guide",
             "zh_HK": "使用教程"
+        },
+        "form_updater_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以提交神奇表单",
+            "en_US": "Can read, can also submit form",
+            "zh_HK": "在「只可閱讀」基礎上，還可以提交神奇表單"
         },
         "form_view": {
             "zh_CN": "神奇表单",
@@ -9296,10 +9429,25 @@
             "en_US": "Mirror",
             "zh_HK": "鏡像"
         },
+        "mirror_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
         "mirror_from": {
             "zh_CN": "镜像来自：",
             "en_US": "Mirror from: ",
             "zh_HK": "鏡像來自："
+        },
+        "mirror_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除和配置镜像",
+            "en_US": "In addition to \"Editor\", can also configure mirror",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置鏡像"
+        },
+        "mirror_reader_label": {
+            "zh_CN": "只可查看该镜像内容或进行评论",
+            "en_US": "Can read data or comment on the mirror",
+            "zh_HK": "只可查看該鏡像內容或進行評論"
         },
         "mirror_resource_dst_been_deleted": {
             "zh_CN": "生成当前镜像的原表已被删除，无法继续访问",
@@ -9310,6 +9458,11 @@
             "zh_CN": "生成该镜像的视图已被删除，无法访问镜像",
             "en_US": "Failed to access this mirror because the original view was deleted",
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
+        },
+        "mirror_uploader_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "mobile_space_list_tip": {
             "zh_CN": "更多「空间站管理」的功能请前往电脑网页端操作",
@@ -13466,6 +13619,16 @@
             "en_US": "Share via QR code",
             "zh_HK": "通過二維碼分享"
         },
+        "share_reader": {
+            "zh_CN": "只可阅读",
+            "en_US": "read-only",
+            "zh_HK": "只可閱讀"
+        },
+        "share_reader_label": {
+            "zh_CN": "该分享内容仅可查看",
+            "en_US": "This shared content can be viewed only",
+            "zh_HK": "該分享內容僅可查看"
+        },
         "share_save": {
             "zh_CN": "可另存副本",
             "en_US": "Save as copy",
@@ -13633,6 +13796,9 @@
             "zh_CN": "斯洛文尼亚",
             "en_US": "Slovenia",
             "zh_HK": "斯洛文尼亞"
+        },
+        "social_dingtalk_single_record_comment_mention": {
+            "zh_CN": "### 🔔有人在评论中提及你\n\n**所在表:** {nodeName}\n\n**记录:** {recordTitle}\n\n“${commentContent}”"
         },
         "social_media": {
             "zh_CN": "新媒体运营",

@@ -18,8 +18,8 @@
 
 import { ApiTipConstant, databus, ILocalChangeset, IOperation, IResourceOpsCollect, resourceOpsToChangesets, StoreActions } from '@apitable/core';
 import { IInternalFix } from '@apitable/core/dist/commands/common/field';
-import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
-import { OtService } from 'database/services/ot/ot.service';
+import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
+import { OtService } from 'database/ot/services/ot.service';
 import { pick } from 'lodash';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException } from 'shared/exception';

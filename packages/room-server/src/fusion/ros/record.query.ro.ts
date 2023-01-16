@@ -20,7 +20,7 @@ import { ApiTipConstant, CellFormatEnum, FieldKeyEnum } from '@apitable/core';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsOptional } from 'class-validator';
-import { PageRo } from 'database/ros/page.ro';
+import { PageRo } from './page.ro';
 import { stringToArray } from 'shared/helpers/fusion.helper';
 
 export class RecordQueryRo extends PageRo {

@@ -22,11 +22,12 @@ import { EntityRepository, In, Repository } from 'typeorm';
 import { customActionNamePrefix, customActionTypeMap } from '../actions/decorators/automation.action.decorator';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { RobotCreateRo } from '../ros/robot.create.ro';
+import { ResourceRobotDto } from '../dtos/resource.robot.dto';
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
 
-  async getActiveRobotsByResourceIds(resourceIds: string[]) {
+  async getActiveRobotsByResourceIds(resourceIds: string[]): Promise<ResourceRobotDto[]> {
     return await this.find({
       where: {
         resourceId: In(resourceIds),
@@ -343,5 +344,16 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
 
   updateRobot(robotId: string, robot: { name?: string, description?: string }, userId: string) {
     return this.update({ robotId }, { ...robot, updatedBy: userId });
+  }
+
+  public getRobotIdByResourceId(resourceId: string): Promise<Pick<AutomationRobotEntity, 'robotId'>[]> {
+    return this.find({
+      select: ['robotId'],
+      where: {
+        isActive: 1,
+        isDeleted: 0,
+        resourceId: resourceId,
+      }
+    });
   }
 }

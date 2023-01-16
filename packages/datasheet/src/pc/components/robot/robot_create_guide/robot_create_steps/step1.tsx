@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Image from 'next/image';
 import { Avatar, Box, Button, TextInput, Typography } from '@apitable/components';
-import { Selectors } from '@apitable/core';
+import { integrateCdnHost, Selectors, Strings, t } from '@apitable/core';
+import Image from 'next/image';
+import { getEnvVariables } from 'pc/utils/env';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
-import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@apitable/core';
 
 export const RobotCreateGuideStep1 = (props: IStepProps) => {
   const [name, setName] = useState('');
@@ -53,8 +52,8 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
   };
   return (
     <Box
-      width="336px"
-      margin="24px 0px 118px 0px"
+      width='336px'
+      margin='24px 0px 118px 0px'
     >
       <Box
         display='flex'
@@ -65,19 +64,19 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
         margin='0px 0px 24px 0px'
       >
         <Avatar
-          icon={<Image src={robotGuideAvatar} />}
-          size="l"
+          icon={<Image src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} />}
+          size='l'
         />
-        <Typography >
+        <Typography>
           {t(Strings.robot_create_wizard_step_1_desc)}
         </Typography>
       </Box>
       <Box
-        height="120px"
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
+        height='120px'
+        width='100%'
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
       >
         <TextInput
           placeholder={t(Strings.robot_create_name_placeholder)}
@@ -90,7 +89,7 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
           block
           disabled={loading || name.trim().length === 0}
           loading={loading}
-          color="primary"
+          color='primary'
           onClick={handleClick}
         >
           {t(Strings.robot_create_wizard_next)}

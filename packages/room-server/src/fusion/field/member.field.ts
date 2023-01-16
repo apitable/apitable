@@ -19,7 +19,7 @@
 import { APIMetaMemberType, ApiTipConstant, ICellValue, IField, MemberType } from '@apitable/core';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { isString } from 'class-validator';
-import { UnitService } from 'database/services/unit/unit.service';
+import { UnitService } from 'unit/services/unit.service';
 import { BaseField } from 'fusion/field/base.field';
 import { IFieldRoTransformOptions, IFieldValue } from 'shared/interfaces';
 import { FieldManager } from '../field.manager';

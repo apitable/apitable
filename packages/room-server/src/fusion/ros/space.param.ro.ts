@@ -18,7 +18,7 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class SpaceParamRo {
   @ApiProperty({
@@ -28,5 +28,6 @@ export class SpaceParamRo {
     description: 'space Id',
   })
   @IsNotEmpty({ message: ApiTipConstant.api_params_instance_space_id_error })
+  @IsString()
   spaceId!: string;
 }

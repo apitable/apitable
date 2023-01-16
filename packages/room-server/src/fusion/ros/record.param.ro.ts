@@ -17,6 +17,7 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class RecordParamRo {
   @ApiProperty({
@@ -25,5 +26,6 @@ export class RecordParamRo {
     example: 'dst0Yj5aNeoHldqvf6',
     description: 'datasheet Id',
   })
+  @IsString()
   datasheetId!: string;
 }

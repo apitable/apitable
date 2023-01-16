@@ -90,6 +90,8 @@ export interface IRoleOption {
 export interface IUnitInfo {
   id: string;
   avatar: string;
+  avatarColor?: number | null;
+  nickName?: string;
   name: string;
   info: string;
   isTeam: boolean;
