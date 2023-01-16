@@ -67,7 +67,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
     return <img
       alt='logo'
       height={logoSize.logoSize}
-      src={integrateCdnHost(getEnvVariables().LOGO!)}
+      src={envVars.USE_CUSTOM_PUBLIC_FILES ? integrateCdnHost(getEnvVariables().LOGO!) : '/logo.svg'}
       style={{ display: 'block' }}
       width={logoSize.logoSize}
     />;

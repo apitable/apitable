@@ -34,6 +34,20 @@ export class UnitBaseInfoDto implements IUserValue {
   })
   name!: string;
 
+  @ApiProperty({
+    type: String,
+    example: 0,
+    description: 'user nickName',
+  })
+  nickName!: string;
+
+  @ApiProperty({
+    type: Number,
+    example: '1: read, 2: blue, 3: yellow',
+    description: 'default avatar color number',
+  })
+  avatarColor!: number;
+
   /**
    * @deprecated
    */
