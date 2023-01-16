@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { } from 'react';
+import React, { useState } from 'react';
 import styles from './style.module.less';
 import { NodeIcon } from '../node_icon';
 import classnames from 'classnames';
@@ -27,8 +27,8 @@ import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
 import { EditingNode } from './editing_node';
 import { Tooltip } from 'pc/components/common';
-import { isTouchDevice } from 'pc/utils';
 import { INodesMapItem } from '@apitable/core';
+import { useMount } from 'ahooks';
 
 export interface IItemRender {
   id: string;
@@ -70,6 +70,21 @@ export const ItemRender: React.FC<IItemRender> = (props) => {
     actived,
   };
 
+  const [isMobileDevice, setIsMobileDevice] = useState<boolean>();
+
+  useMount(async() => {
+    const isDesktop = await browserIsDesktop();
+    setIsMobileDevice(!isDesktop);
+  });
+
+  const browserIsDesktop = async() => {
+    if (process.env.SSR) {
+      return false;
+    }
+    const device = await import('current-device');
+    return device.default.desktop();
+  };
+
   return (
     <div
       id={id}
@@ -77,7 +92,8 @@ export const ItemRender: React.FC<IItemRender> = (props) => {
       className={classnames(styles.nodeItemWrapper, {
         [styles.actived]: actived,
         [styles.nodeItemHover]: !isMobile,
-        [styles.touchDevice]: isTouchDevice(),
+        [styles.nodeMobile]: isMobileDevice,
+        [styles.nodeMobileActive]: actived && isMobileDevice,
       })}
     >
       <div

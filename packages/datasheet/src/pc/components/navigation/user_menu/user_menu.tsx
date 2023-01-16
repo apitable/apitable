@@ -18,24 +18,23 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import {
-  ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, NAV_ID, Player, Selectors,
-  Strings, t,
+  ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, NAV_ID, Player, Selectors, Strings, t,
 } from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
 import dd from 'dingtalk-jsapi';
+import {
+  clearWizardsData, getDingtalkConfig, getSocialWecomUnitName, inSocialApp, isEnterprise, isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled,
+  isSocialWecom, isWecomFunc
+  // @ts-ignore
+} from 'enterprise';
 import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
 import { Avatar, AvatarSize, ImageCropUpload, Message, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo, IUploadType } from 'pc/components/common/image_crop_upload';
-import { 
-  getSocialWecomUnitName, inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, 
-  isSocialWecom, isWecomFunc, isEnterprise, clearWizardsData, getDingtalkConfig
-  // @ts-ignore
-} from 'enterprise';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { NotificationStore } from 'pc/notification_store';
@@ -225,12 +224,12 @@ export const UserMenu: FC<IUserMenuProps> = props => {
     {
       label: t(Strings.privacy_policy_pure_string),
       onClick: () => window.open(linkToPrivacyPolicy),
-      visible: true,
+      visible: getEnvVariables().MOBILE_USER_SETTING_PRIVACY_POLICY_VISIBLE,
     },
     {
       label: t(Strings.terms_of_service_pure_string),
       onClick: () => window.open(linkToTermsOfService),
-      visible: true,
+      visible: getEnvVariables().MOBILE_USER_SETTING_SERVICE_AGREEMENT_VISIBLE,
     },
     {
       label: t(Strings.user_center),
@@ -276,11 +275,11 @@ export const UserMenu: FC<IUserMenuProps> = props => {
           className={styles.avatarWrap}
         >
           <Spin spinning={avatarLoading || avatarColorLoading}>
-            <Avatar 
-              id={memberId} 
+            <Avatar
+              id={memberId}
               avatarColor={avatarColor}
-              src={avatar} 
-              title={nickName} 
+              src={avatar}
+              title={nickName}
               size={AvatarSize.Size64}
               style={{
                 border: `1px solid ${colors.textStaticPrimary}`,
@@ -291,29 +290,32 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             <EditIcon fill={colors.black[50]} />
           </div>
         </div>
-        <ImageCropUpload
-          type={IUploadType.Avatar}
-          avatarName={nickName}
-          avatarColor={avatarColor}
-          title={t(Strings.upload_avatar)}
-          confirm={data => uploadConfirm(data)}
-          visible={uploadModal}
-          officialImgs={defaultAvatars}
-          initPreview={
-            <Avatar
-              id={memberId}
-              src={avatar}
-              title={memberName}
-              style={{ height: '100%', width: '100%' }}
-              isGzip={false}
-              size={AvatarSize.Size120}
-            />
-          }
-          fileLimit={2}
-          cancel={cancelChangeAvatar}
-          customTips={customTips}
-          previewShape={IPreviewShape.Circle}
-        />
+        {
+          uploadModal && 
+          <ImageCropUpload
+            type={IUploadType.Avatar}
+            avatarName={nickName}
+            avatarColor={avatarColor}
+            title={t(Strings.upload_avatar)}
+            confirm={data => uploadConfirm(data)}
+            visible={uploadModal}
+            officialImgs={defaultAvatars}
+            initPreview={
+              <Avatar
+                id={memberId}
+                src={avatar}
+                title={memberName}
+                style={{ height: '100%', width: '100%' }}
+                isGzip={false}
+                size={AvatarSize.Size120}
+              />
+            }
+            fileLimit={2}
+            cancel={cancelChangeAvatar}
+            customTips={customTips}
+            previewShape={IPreviewShape.Circle}
+          />
+        }
         <div className={styles.topRight}>
           <div className={styles.name} onClick={editNameClick}>
             <Tooltip

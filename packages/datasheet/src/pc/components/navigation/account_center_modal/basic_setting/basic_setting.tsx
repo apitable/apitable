@@ -50,10 +50,9 @@ const customTips = {
 };
 
 export const BasicSetting: FC = () => {
-  const { user, reqStatus, spaceInfo } = useSelector(
+  const { user, spaceInfo } = useSelector(
     (state: IReduxState) => ({
       user: state.user.info,
-      reqStatus: state.user.reqStatus,
       spaceInfo: state.space.curSpaceInfo,
     }),
     shallowEqual,
@@ -85,13 +84,6 @@ export const BasicSetting: FC = () => {
     dispatch(StoreActions.setHomeErr(null));
   }, [nameModal, emailModal, mobileModal, dispatch]);
 
-  useEffect(() => {
-    if (reqStatus) {
-      Message.success({ content: t(Strings.avatar_modified_successfully) });
-      dispatch(StoreActions.setReqStatus(false));
-    }
-  }, [reqStatus, dispatch]);
-
   const mobileContent = () => {
     if (user!.mobile === undefined || user!.mobile === null) {
       return t(Strings.unbound);
@@ -117,10 +109,6 @@ export const BasicSetting: FC = () => {
     const { officialToken, customFile, color } = data;
     if (color != null) {
       updateAvatarColor(color);
-      return;
-    }
-    if (officialToken) {
-      updateAvatar({ token: officialToken });
       return;
     }
     if (officialToken) {
@@ -251,22 +239,25 @@ export const BasicSetting: FC = () => {
               <LinkButton component="button" underline={false} className={styles.modifyBtn} onClick={() => setUploadModal(true)}>
                 {t(Strings.change_avatar)}
               </LinkButton>
-              <ImageCropUpload
-                type={IUploadType.Avatar}
-                avatarName={nickName}
-                avatarColor={avatarColor}
-                title={t(Strings.upload_avatar)}
-                confirm={data => uploadConfirm(data)}
-                visible={uploadModal}
-                officialImgs={defaultAvatars}
-                initPreview={renderAvatar({ width: '100%', height: '100%' })}
-                fileLimit={2}
-                cancel={() => {
-                  setUploadModal(false);
-                }}
-                customTips={customTips}
-                previewShape={IPreviewShape.Circle}
-              />
+              {
+                uploadModal && 
+                <ImageCropUpload
+                  type={IUploadType.Avatar}
+                  avatarName={nickName}
+                  avatarColor={avatarColor}
+                  title={t(Strings.upload_avatar)}
+                  confirm={data => uploadConfirm(data)}
+                  visible={uploadModal}
+                  officialImgs={defaultAvatars}
+                  initPreview={renderAvatar({ width: '100%', height: '100%' })}
+                  fileLimit={2}
+                  cancel={() => {
+                    setUploadModal(false);
+                  }}
+                  customTips={customTips}
+                  previewShape={IPreviewShape.Circle}
+                />
+              }
             </div>
             <div className={styles.item}>
               <div className={styles.label}>{t(Strings.personal_nickname)}:</div>

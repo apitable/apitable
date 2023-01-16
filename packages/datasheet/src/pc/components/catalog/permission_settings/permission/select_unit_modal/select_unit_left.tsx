@@ -268,8 +268,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
         spaceInfo,
       }) || _item.originName || _item.memberName)
       : '';
-    const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName } = _item;
-
+    const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName,email } = _item;
     return (
       <div className={classnames(styles.item, inSearch && styles.searchItem)} key={_item.unitId}>
         <div className={styles.checkWrapper}>
@@ -277,6 +276,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
             <div className={styles.itemContent}>
               <InfoCard
                 title={title || t(Strings.unnamed)}
+                email={email}
                 originTitle={memberName || t(Strings.unnamed)}
                 description={teamData ? teamData[0]?.fullHierarchyTeamName : ''}
                 style={{ backgroundColor: 'transparent' }}
@@ -513,7 +513,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       {!isRole && (
         <div className={styles.breadcrumb}>
           <HorizontalScroll>
-            <Breadcrumb separator="/">
+            <Breadcrumb separator='/'>
               {breadCrumbData.map(breadItem => (
                 <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
                   {breadItem.name}

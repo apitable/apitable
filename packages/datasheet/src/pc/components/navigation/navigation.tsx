@@ -401,6 +401,7 @@ export const Navigation: FC = () => {
           height={'90%'}
           className={classNames(styles.drawer, styles.notificationDrawer)}
           style={{ backgroundColor: colors.defaultBg }}
+          destroyOnClose
         >
           <Notification />
         </Popup>

@@ -99,10 +99,11 @@ class MainWidgetMessageBase {
 
   on(props: { widgetId: string, type: WidgetMessageType, callback: (data: IResponse) => void }) {
     const { widgetId, type, callback } = props;
-    const widgetEventMap = this.listenEvents[widgetId];
-    if (widgetEventMap.has(type)) {
-      widgetEventMap.set(type, callback);
+    if (!this.listenEvents[widgetId]) {
+      this.listenEvents[widgetId] = new Map();
     }
+    const widgetEventMap = this.listenEvents[widgetId];
+    widgetEventMap.set(type, callback);
   }
 
   removeListenEvent(widgetId: string, type?: WidgetMessageType) {

@@ -109,7 +109,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <GuideOutlined />,
         text: t(Strings.function_guidance),
         onClick: startGuideClick,
-        hidden: isMobile,
+        hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,
       },
       {
         icon: <CourseOutlined />,
