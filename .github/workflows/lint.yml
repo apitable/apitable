@@ -1,0 +1,86 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# ESLint is a tool for identifying and reporting on patterns
+# found in ECMAScript/JavaScript code.
+# More details at https://github.com/eslint/eslint
+# and https://eslint.org
+
+---
+name: Lint
+
+on:
+  push:
+    branches: ["develop", "release/v*"]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: ["develop"]
+
+jobs:
+  eslint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      # only required for a private repository by github/codeql-action/upload-sarif 
+      # to get the Action run status
+      actions: read 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+      - name: Install ESLint
+        run: |
+          yarn
+        # yarn add eslint
+        # yarn add @microsoft/eslint-formatter-sarif
+
+      - name: Run ESLint
+        run: |
+          yarn lint
+        # run: npx eslint .
+        #   --config .eslintrc
+        #   --ext .js,.jsx,.ts,.tsx
+        #   --format @microsoft/eslint-formatter-sarif
+        #   --output-file eslint-results.sarif
+        continue-on-error: true
+
+      - name: Upload analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true
+
+  super-linter:
+    # Name the Job
+    name: Lint Code 
+    # Set the agent to run on
+    runs-on: ubuntu-latest
+
+    ##################
+    # Load all steps #
+    ##################
+    steps:
+      ##########################
+      # Checkout the code base #
+      ##########################
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          # Full git history is needed to get a proper
+          # list of changed files within `super-linter`
+          fetch-depth: 0
+
+      ################################
+      # Run Linter against code base #
+      ################################
+      - name: Lint Code 
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: develop
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

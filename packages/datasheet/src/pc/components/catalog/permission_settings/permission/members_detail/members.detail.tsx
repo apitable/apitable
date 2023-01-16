@@ -47,8 +47,10 @@ export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
                 key={member.memberId}
                 unit={{
                   id: member.memberId,
+                  avatarColor: member.avatarColor,
                   avatar: member.avatar,
                   name: member.memberName,
+                  nickName: member.nickName,
                   info: member.teams,
                   isTeam: false,
                 }}

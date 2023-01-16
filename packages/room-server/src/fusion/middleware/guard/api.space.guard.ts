@@ -19,7 +19,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../../../shared/common';
 import { ApiException } from '../../../shared/exception';
-import { UnitMemberRepository } from '../../../database/repositories/unit.member.repository';
+import { UnitMemberRepository } from '../../../unit/repositories/unit.member.repository';
 import { ApiTipConstant } from '@apitable/core';
 
 /**

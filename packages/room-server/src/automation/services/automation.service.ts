@@ -18,7 +18,7 @@
 
 import { AutomationRobotRunner, ConfigConstant, generateRandomString, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
 import { Injectable, Logger } from '@nestjs/common';
-import { NodeRepository } from 'database/repositories/node.repository';
+import { NodeRepository } from 'node/repositories/node.repository';
 import fetch from 'node-fetch';
 import { InjectLogger } from 'shared/common';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
@@ -37,7 +37,7 @@ import { AutomationServiceCreateRo } from '../ros/service.create.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
 import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { getTypeByItem } from '../util';
+import { getTypeByItem } from '../utils';
 
 /**
  * handle robot execution scheduling

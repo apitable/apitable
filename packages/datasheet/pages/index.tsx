@@ -16,22 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Url } from '@apitable/core';
 import axios from 'axios';
 import { NextPageContext } from 'next';
+import { getBaseUrl } from '../utils/get_base_url';
 
 const App = () => {
   return null;
 };
 
 export const getServerSideProps = async(context: NextPageContext) => {
-  const host = process.env.API_PROXY;
-  axios.defaults.baseURL = host + Url.BASE_URL;
+  axios.defaults.baseURL = getBaseUrl(context);
 
   if (!context.req?.url) {
     return { props: {}};
   }
-
   const cookie = context.req?.headers.cookie;
   const headers: Record<string, string> = {};
 

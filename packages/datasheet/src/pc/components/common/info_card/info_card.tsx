@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -35,11 +36,11 @@ interface ITriggerBase {
 
 interface IInfoCardProps {
   title: string | JSX.Element;
-  token?: React.ReactNode; 
+  token?: React.ReactNode;
   description?: string;
-  onClick?: () => void; 
-  originTitle?: string; 
-  inSearch?: boolean; 
+  onClick?: () => void;
+  originTitle?: string;
+  inSearch?: boolean;
   className?: string;
   style?: React.CSSProperties;
   avatarProps: IAvatarProps;
@@ -52,30 +53,31 @@ interface IInfoCardProps {
   isActive?: boolean;
   desc?: string;
   isMemberOptionList?: boolean;
+  email?: string;
 }
+
 // const searchTag = '<span class="highLight">';
 
 export const InfoCard: FC<IInfoCardProps> = props => {
-  const { 
+  const {
     title, originTitle = '', description, onClick, extra, triggerBase,
-    inSearch = false, className, avatarProps, token, userId, memberId,
-    isDeleted = false, memberType = 3, isActive = true, desc, isMemberOptionList = false, ...rest 
+    inSearch = false, className, avatarProps, token, userId, memberId, email,
+    isDeleted = false, memberType = 3, isActive = true, desc, isMemberOptionList = false, ...rest
   } = props;
-
   const isMember = memberType === MemberType.Member;
   const isSelf = userId === 'Self';
   const colors = getThemeColors();
   return (
-   
+
     <div
       className={classNames(styles.infoCard, className)}
       onClick={onClick}
       style={{ cursor: onClick || isMemberOptionList ? 'pointer' : 'default' }}
       {...rest}
     >
-      
-      <div className={classNames(styles.defaultContent, { [styles.isLeave] : (isDeleted || !isActive) && isMember })}>
-        {(triggerBase && !isSelf && isMember) ? 
+
+      <div className={classNames(styles.defaultContent, { [styles.isLeave]: (isDeleted || !isActive) && isMember })}>
+        {(triggerBase && !isSelf && isMember) ?
           <UserCardTrigger
             {...triggerBase}
             userId={userId}
@@ -106,6 +108,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
                   <div className={classNames(styles.title, 'title')}>
                     {title}
                     {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}
+                    {getEnvVariables().CUSTOM_SYNC_CONTACTS_LINKID && email && <span className={styles.unitDesc}>{`（${email}）`}</span>}
                   </div>
                 </Tooltip>
                 <div className={styles.token}>
@@ -114,7 +117,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
               </div>
           }
           {description &&
-           <OmittedMiddleText suffixCount={5}>{description}</OmittedMiddleText>
+            <OmittedMiddleText suffixCount={5}>{description}</OmittedMiddleText>
           }
           {
             extra && <div className={styles.description}>{extra || ''}</div>
@@ -122,7 +125,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
         </div>
       </div>
       {props.children}
-      
+
     </div>
   );
 };

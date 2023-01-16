@@ -74,7 +74,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { formId } = useSelector(state => state.pageParams);
+  const { formId, embedId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
 
   const refreshMemberList = useCallback(() => {
@@ -103,7 +103,12 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     if (!keyword?.length) {
       return initList;
     }
-    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    let res;
+    if(embedId) {
+      res = await Api.loadOrSearchEmbed(embedId, { filterIds: '', keyword, linkId, searchEmail });
+    } else {
+      res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    }
     const data: IUnitValue[] = res.data.data;
     if (uniqId === 'userId') {
       return data.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
