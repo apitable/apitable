@@ -251,22 +251,25 @@ export const BasicSetting: FC = () => {
               <LinkButton component="button" underline={false} className={styles.modifyBtn} onClick={() => setUploadModal(true)}>
                 {t(Strings.change_avatar)}
               </LinkButton>
-              <ImageCropUpload
-                type={IUploadType.Avatar}
-                avatarName={nickName}
-                avatarColor={avatarColor}
-                title={t(Strings.upload_avatar)}
-                confirm={data => uploadConfirm(data)}
-                visible={uploadModal}
-                officialImgs={defaultAvatars}
-                initPreview={renderAvatar({ width: '100%', height: '100%' })}
-                fileLimit={2}
-                cancel={() => {
-                  setUploadModal(false);
-                }}
-                customTips={customTips}
-                previewShape={IPreviewShape.Circle}
-              />
+              {
+                uploadModal && 
+                <ImageCropUpload
+                  type={IUploadType.Avatar}
+                  avatarName={nickName}
+                  avatarColor={avatarColor}
+                  title={t(Strings.upload_avatar)}
+                  confirm={data => uploadConfirm(data)}
+                  visible={uploadModal}
+                  officialImgs={defaultAvatars}
+                  initPreview={renderAvatar({ width: '100%', height: '100%' })}
+                  fileLimit={2}
+                  cancel={() => {
+                    setUploadModal(false);
+                  }}
+                  customTips={customTips}
+                  previewShape={IPreviewShape.Circle}
+                />
+              }
             </div>
             <div className={styles.item}>
               <div className={styles.label}>{t(Strings.personal_nickname)}:</div>

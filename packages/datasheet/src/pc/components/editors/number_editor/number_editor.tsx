@@ -179,7 +179,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     // Data filtering is required when saving, e.g. if a Chinese character is entered several times, tempVal will always be null.
     // ChangeSet will not be sent at this point and will need to be filtered within the component
     if (tempVal == null) {
-      setValue(tempVal || '');
+      setValue('');
     }
 
     // Consider the other fields "populated" and "copied" to the percentage if handled in set_records

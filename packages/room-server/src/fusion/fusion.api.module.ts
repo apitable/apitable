@@ -43,7 +43,6 @@ import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
 import { UserModule } from 'user/user.module';
 import { NodeModule } from 'node/node.module';
 import { UnitModule } from 'unit/unit.module';
-import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 @Module({
   imports: [
@@ -66,7 +65,6 @@ import { ValidationPipe } from './middleware/pipe/validation.pipe';
     FusionApiRecordService,
     FusionApiService,
     DataBusService,
-    ValidationPipe,
     QueryPipe,
     FieldPipe,
     ApiAuthGuard,

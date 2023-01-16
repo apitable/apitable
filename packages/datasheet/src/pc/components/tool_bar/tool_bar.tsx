@@ -187,7 +187,6 @@ const ToolbarBase = () => {
   );
   const showIconBarLabel = Boolean(size && size.width && size.width > HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH - offsetWidth);
   const showViewLockModal = useShowViewLockModal();
-  const isLogin = useSelector(state => state.user.isLogin);
 
   const hiddenKanbanGroupCount = useMemo(() => {
     return Object.keys(hiddenGroupMap || {})
@@ -389,16 +388,16 @@ const ToolbarBase = () => {
       return defaultValue;
     }
     return {
-      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false) && isLogin,
-      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false) && isLogin,
+      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false),
+      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false),
       widgetBtn: get(embedInfo, 'viewControl.toolBar.widgetBtn', false),
-      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false) && isLogin,
-      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false) && isLogin,
-      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false) && isLogin,
-      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false) && isLogin
+      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false),
+      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false),
+      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false),
+      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false)
     };
 
-  }, [embedInfo, embedId, isLogin]);
+  }, [embedInfo, embedId]);
 
   // The configuration array traversal for rendering, you need to manually specify a non-repeating key for the component,
   // usually the component name can be, repeatedly rendered components are followed by a number.
@@ -439,6 +438,7 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isApiPanelOpen })}
           showLabel={showIconBarLabel}
           id={DATASHEET_ID.API_BTN}
+          disabled={!permissions.editable}
         />
       ),
       key: 'api',
@@ -470,6 +470,7 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isRobotPanelOpen })}
           id={DATASHEET_ID.ROBOT_BTN}
           showLabel={showIconBarLabel}
+          disabled={!permissions.editable}
         />
       ),
       key: 'robot',
@@ -485,10 +486,11 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isTimeMachinePanelOpen })}
           id={DATASHEET_ID.TIME_MACHINE_BTN}
           showLabel={showIconBarLabel}
+          disabled={!permissions.editable}
         />
       ),
       key: 'timeMachine',
-      show: !mirrorId && !shareId && !templateId && permissions.editable && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
+      show: !mirrorId && !shareId && !templateId && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
     },
   ];
 
