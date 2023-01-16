@@ -113,7 +113,7 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
         <div className={styles.gapBg}>
           <img src={GapBgPng.src} alt="gap background" />
         </div>
-        <div id="footer" className={styles.footer} style={{ backgroundImage: `url(${FooterBgPng})` }}>
+        <div id="footer" className={styles.footer} style={{ backgroundImage: `url(${FooterBgPng.src})` }}>
           <div id="downloadBtn" className={styles.downloadBtn}>
             <Button
               color="primary"
