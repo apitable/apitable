@@ -19,7 +19,7 @@
 import { Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IAddFieldOptions, IDPrefix, IField, IReduxState } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { DatasheetFieldCreateRo } from './datasheet.field.create.ro';
 
 export class DatasheetCreateRo {
@@ -29,6 +29,7 @@ export class DatasheetCreateRo {
     description: 'datasheet name',
     example: 'New dataSheet',
   })
+  @IsString()
   name: string;
 
   @ApiPropertyOptional({
@@ -37,6 +38,7 @@ export class DatasheetCreateRo {
     example: 'viwG9l1VPD6nH',
     description: 'datasheet description, plain text only',
   })
+  @IsString()
   @IsOptional()
   description: string;
 
@@ -46,6 +48,8 @@ export class DatasheetCreateRo {
     example: 'fodn173Q0e8nC',
     description: 'folder Id, if not filled in, it is under the working directory',
   })
+  @IsString()
+  @IsOptional()
   folderId?: string;
 
   @ApiPropertyOptional({
@@ -54,6 +58,8 @@ export class DatasheetCreateRo {
     example: '',
     description: 'Previous node Id, or first if not filled in',
   })
+  @IsString()
+  @IsOptional()
   preNodeId?: string;
 
   @ApiPropertyOptional({
