@@ -17,7 +17,7 @@
  */
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class RecordViewQueryRo {
   @ApiPropertyOptional({
@@ -28,5 +28,6 @@ export class RecordViewQueryRo {
       '\nNote: You can filter the data of unwanted fields with the fields parameter',
   })
   @IsOptional()
+  @IsString()
   viewId?: string;
 }
