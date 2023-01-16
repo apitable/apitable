@@ -56,7 +56,7 @@ export class Database implements IEventEmitter {
    * Load a datasheet in the database.
    */
   async getDatasheet(dstId: string, options: IDatasheetOptions): Promise<Datasheet | null> {
-    const datasheetPack = await this.storageProvider.loadDatasheetPack(dstId, options);
+    const { datasheetPack } = await this.storageProvider.loadDatasheetPack(dstId, options);
     if (datasheetPack === null) {
       return null;
     }
