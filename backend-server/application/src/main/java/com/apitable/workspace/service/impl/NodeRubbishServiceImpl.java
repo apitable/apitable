@@ -18,22 +18,8 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
@@ -41,6 +27,7 @@ import com.apitable.control.infrastructure.ControlType;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlService;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.shared.clock.spring.ClockManager;
@@ -57,10 +44,20 @@ import com.apitable.workspace.service.INodeRubbishService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.RubbishNodeVo;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.apitable.workspace.enums.NodeException.RUBBISH_NODE_NOT_EXIST;
 
@@ -106,7 +103,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         long subscriptionRemainDays = subscriptionInfo.getFeature().getRemainTrashDays().getValue();
         long retainDay = allowOverLimit ? limitProperties.getRubbishMaxRetainDay() : subscriptionRemainDays;
         // Push back start time (not included)
-        LocalDateTime beginTime = LocalDateTime.of(LocalDate.now().minusDays(retainDay), LocalTime.MAX);
+        LocalDateTime beginTime = retainDay != -1 ? LocalDateTime.of(LocalDate.now().minusDays(retainDay), LocalTime.MAX) : null;
         LocalDateTime endTime = null;
 
         // If it is not loaded for the first time, determine whether the ID of the last node in the loaded list exceeds the number of days to save the subscription plan.
@@ -115,7 +112,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             // If the last node is not in the rubbish (recovered or completely deleted), the location fails and an abnormal service status code is returned. The client can request the last node again.
             ExceptionUtil.isNotNull(rubbishUpdatedAt, RUBBISH_NODE_NOT_EXIST);
             // It cannot be loaded for more than the number of days saved in the reading plan.
-            if (rubbishUpdatedAt.compareTo(beginTime) <= 0) {
+            if (beginTime != null && rubbishUpdatedAt.compareTo(beginTime) <= 0) {
                 return new ArrayList<>();
             }
             endTime = rubbishUpdatedAt;
