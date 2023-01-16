@@ -26,9 +26,9 @@ export class ParseObjectPipe implements PipeTransform<string, Object> {
   transform(value: string, metadata: ArgumentMetadata): Object {
     try {
       if (!isString(value)) {
-        return plainToClass(metadata.metatype as ClassType<any>, value, { excludeExtraneousValues: true });
+        return value;
       }
-      return plainToClass<any, Object>(metadata.metatype as ClassType<any>, JSON.parse(value), { excludeExtraneousValues: true });
+      return plainToClass<any, Object>(metadata.metatype as ClassType<any>, JSON.parse(value));
     } catch (e) {
       throw new BadRequestException('Bad Request');
     }
