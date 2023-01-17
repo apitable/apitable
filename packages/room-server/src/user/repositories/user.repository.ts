@@ -40,6 +40,13 @@ export class UserRepository extends Repository<UserEntity> {
     });
   }
 
+  selectUserIdByUuid(uuid: string): Promise<string | undefined> {
+    return this.findOne({
+      select: ['id'],
+      where: [{ uuid, isDeleted: false }],
+    }).then(result => result?.id);
+  }
+
   /**
    * Query user info by user ID array
    * 

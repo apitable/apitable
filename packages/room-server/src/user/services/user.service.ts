@@ -98,7 +98,7 @@ export class UserService {
   async getUserIdBySpaceId(headers: IAuthHeader, spaceId: string): Promise<string | undefined> {
     try {
       const userInfo = await this.getUserInfoBySpaceId(headers, spaceId);
-      return userInfo.userId;
+      return this.userRepo.selectUserIdByUuid(userInfo.uuid);
     } catch (e) {
       return undefined;
     }
