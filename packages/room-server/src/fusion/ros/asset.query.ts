@@ -17,6 +17,7 @@
  */
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsInt, Max, Min } from 'class-validator';
 
 export class AssetUploadQueryRo {
   @ApiPropertyOptional({
@@ -26,5 +27,8 @@ export class AssetUploadQueryRo {
     example: '1',
     description: 'Number of pre-signed URLs created (default is 1, maximum is 20)',
   })
+  @IsInt()
+  @Min(1)
+  @Max(20)
   count!: number;
 }
