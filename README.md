@@ -71,9 +71,9 @@ If you want to set up your local development environment, read our [🧑‍💻 
     <th>
       <a href="#">Automatic Form</a>
     </th>
-    
-  </tr> 
-    
+
+  </tr>
+
    <tr>
     <td width="50%">
       <a href="#">
@@ -94,8 +94,8 @@ If you want to set up your local development environment, read our [🧑‍💻 
     <th>
       <a href="#">Unlimited cross-table links</a>
     </th>
-</tr>   
-    
+</tr>
+
  <tr>
     <td width="50%">
         <a href="#">
@@ -108,7 +108,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
       </a>
     </td>
  </tr>
-   
+
  <tr>
     <th>
       <a href="#">Powerful Rows/Columns Permissions</a>
@@ -130,8 +130,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
         </a>
     </td>
   </tr>
- 
-   
+
 </table>
 
 APITable provides a range of amazing features, from the personal to the enterprise.
