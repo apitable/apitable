@@ -338,8 +338,19 @@ export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, 
   });
 }
 
-export function loadOrSearchEmbed(embedId: string) {
-  return axios.get(urlcat(Url.LOAD_OR_SEARCH_EMBED, { embedId }), { baseURL: nestBaseURL });
+export function loadOrSearchEmbed(embedId: string, { filterIds, keyword, names, unitIds, linkId, all, searchEmail }: ILoadOrSearchArg) {
+  return axios.get(urlcat(Url.LOAD_OR_SEARCH_EMBED, { embedId }), {
+    baseURL: nestBaseURL,
+    params: {
+      filterIds,
+      keyword,
+      names,
+      unitIds,
+      linkId,
+      all,
+      searchEmail,
+    },
+  });
 }
 
 /**

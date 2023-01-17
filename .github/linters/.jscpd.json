@@ -1,0 +1,11 @@
+{
+  "threshold": 0,
+  "reporters": [
+    "consoleFull"
+  ],
+  "ignore": [
+    "**/__tests__/**",
+    "**/test/**"
+  ],
+  "absolute": true
+}

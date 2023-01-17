@@ -1,6 +1,5 @@
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 plugins {
   id 'org.springframework.boot'
@@ -11,16 +10,16 @@ plugins {
 
 dependencies {
   implementation project(':shared:core')
-  
+
   implementation project(':shared:starters:sms')
   implementation project(':shared:starters:mail')
   implementation project(':shared:starters:amqp')
   implementation project(':shared:starters:oss')
   implementation project(':shared:starters:socketio')
   implementation project(':shared:starters:beetl')
-  
+
   annotationProcessor rootProject.ext.dependencies['configuration-processor']
-  
+
   implementation rootProject.ext.dependencies['spring-web-starter']
   implementation rootProject.ext.dependencies['spring-thymeleaf']
   implementation rootProject.ext.dependencies['spring-mail-starter']
@@ -60,28 +59,28 @@ dependencies {
   implementation rootProject.ext.dependencies['jsoup']
   implementation rootProject.ext.dependencies['protobuf-java']
   implementation rootProject.ext.dependencies['io-grpc']
-  
+
   runtimeOnly rootProject.ext.dependencies['mysql']
-  
+
   annotationProcessor rootProject.ext.dependencies['lombok']
   compileOnly rootProject.ext.dependencies['lombok']
-  
+
   testCompileOnly rootProject.ext.dependencies["lombok"]
   testAnnotationProcessor rootProject.ext.dependencies["lombok"]
-  
+
   testImplementation rootProject.ext.dependencies['spring-test-starter']
   testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
   testImplementation 'org.rnorth.visible-assertions:visible-assertions:2.1.2'
   testImplementation("org.json:json:${json_java_version}")
-  
+
   // for clock module
   testImplementation rootProject.ext.dependencies['assertj']
   testImplementation rootProject.ext.dependencies['awaitility']
-  
+
   // for enterprise
   implementation rootProject.ext.dependencies['spring-plugin-core']
   implementation rootProject.ext.dependencies['spring-plugin-metadata']
-  
+
   // for v-ee
   implementation(rootProject.ext.dependencies['social-dingtalk'])
   implementation(rootProject.ext.dependencies['social-feishu'])
@@ -97,7 +96,7 @@ dependencies {
   implementation(rootProject.ext.dependencies['wx-open'])
   implementation(rootProject.ext.dependencies['v-client'])
   implementation(rootProject.ext.dependencies['sensors'])
-  
+
   // for apitable-ee
   implementation(rootProject.ext.dependencies['auth0'])
 }
@@ -126,7 +125,7 @@ bootJar {
     attributes 'Build-OS': System.getProperty("os.name")
     attributes 'Built-By': System.getProperty("user.name")
     attributes 'Build-Jdk': System.getProperty("java.version")
-    attributes 'Build-Timestamp': LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+    attributes 'Build-Timestamp': LocalDateTime.now().toString()
   }
 }
 
@@ -146,22 +145,22 @@ springBoot {
 
 test {
   //  useJUnitPlatform()
-  
+
   // listen to events in the test execution lifecycle
   //  beforeTest { descriptor ->
   //    logger.lifecycle("Running test: {}", descriptor)
   //  }
-  
+
   //  doFirst {
   //    forkEvery = 5
   //    minHeapSize = "256m"
   //    maxHeapSize = "2048m"
   //    jvmArgs "-XX:MetaspaceSize=64m", "-XX:MaxMetaspaceSize=256m"
   //  }
-  
+
   // Stops test execution after the first failed test.
   failFast = true
-  
+
   // listen to standard out and standard error of the test JVM(s)
   //  onOutput { descriptor, event ->
   //    if (event.destination == TestOutputEvent.Destination.StdErr) {
@@ -183,7 +182,7 @@ protobuf {
       artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}"
     }
   }
-  
+
   generateProtoTasks {
     all()*.plugins {
       grpc {}
