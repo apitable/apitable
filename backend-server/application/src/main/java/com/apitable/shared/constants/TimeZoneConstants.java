@@ -23,8 +23,10 @@ import java.time.ZoneOffset;
 /**
  * time zone constants
  * @author Shawn Deng
+ * @deprecated since 0.17.1
  */
+@Deprecated
 public class TimeZoneConstants {
 
-    public static final ZoneOffset DEFAULT_TIME_ZONE = ZoneOffset.ofHours(8);
+    public static final ZoneOffset DEFAULT_TIME_ZONE = ZoneOffset.UTC;
 }

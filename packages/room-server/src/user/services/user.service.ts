@@ -22,7 +22,7 @@ import { IAuthHeader, INamedUser, IOssConfig, IUserBaseInfo } from 'shared/inter
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { getConnection } from 'typeorm';
-import { UnitInfo } from '../../database/interfaces';
+import { UnitInfo } from 'database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class UserService {
     private readonly envConfigService: EnvConfigService,
     private readonly restService: RestService,
     private readonly userRepo: UserRepository,
-  ) { }
+  ) {}
 
   /**
    * Get user info by UUIDs
@@ -39,7 +39,8 @@ export class UserService {
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
     const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
-    const users: any[] = await queryRunner.query(`
+    const users: any[] = await queryRunner.query(
+      `
           SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
                  vui.is_deleted isDeleted, vui.unit_type type,
           IFNULL(vum.member_name,vu.nick_name) name, vu.avatar avatar, vum.is_active isActive,
@@ -50,7 +51,7 @@ export class UserService {
           LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id
           WHERE uuid IN (?)
         `,
-    [spaceId, uuids],
+      [spaceId, uuids],
     );
     await queryRunner.release();
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
@@ -79,7 +80,7 @@ export class UserService {
           uuid: user.uuid || '',
           avatar: user.avatar || '',
           nikeName: user.nikeName || '',
-          isSocialNameModified: user.isSocialNameModified!
+          isSocialNameModified: user.isSocialNameModified!,
         });
       });
     }
@@ -92,6 +93,15 @@ export class UserService {
 
   async getUserInfoBySpaceId(headers: IAuthHeader, spaceId: string) {
     return await this.restService.getUserInfoBySpaceId(headers, spaceId);
+  }
+
+  async getUserIdBySpaceId(headers: IAuthHeader, spaceId: string): Promise<string | undefined> {
+    try {
+      const userInfo = await this.getUserInfoBySpaceId(headers, spaceId);
+      return userInfo.userId;
+    } catch (e) {
+      return undefined;
+    }
   }
 
   /**
