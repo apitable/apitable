@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -64,9 +64,6 @@ export const InfoCard: FC<IInfoCardProps> = props => {
     inSearch = false, className, avatarProps, token, userId, memberId, email,
     isDeleted = false, memberType = 3, isActive = true, desc, isMemberOptionList = false, ...rest
   } = props;
-  console.log({
-    props
-  });
   const isMember = memberType === MemberType.Member;
   const isSelf = userId === 'Self';
   const colors = getThemeColors();
@@ -111,7 +108,7 @@ export const InfoCard: FC<IInfoCardProps> = props => {
                   <div className={classNames(styles.title, 'title')}>
                     {title}
                     {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}
-                    {getEnvVariables().CUSTOM_SYNC_CONTACTS_LINKID && <span className={styles.unitDesc}>{`（${email}）`}</span>}
+                    {getEnvVariables().CUSTOM_SYNC_CONTACTS_LINKID && email && <span className={styles.unitDesc}>{`（${email}）`}</span>}
                   </div>
                 </Tooltip>
                 <div className={styles.token}>
