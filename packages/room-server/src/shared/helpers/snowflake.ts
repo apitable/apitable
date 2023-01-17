@@ -59,7 +59,6 @@ const SEQUENCE_NUM_BITS = 5n;
 const MACHINE_ID_MASK = (1n << (DATA_CENTER_ID_NUM_BITS + WORKER_ID_NUM_BITS)) - 1n;
 const SEQUENCE_MASK = (1n << SEQUENCE_NUM_BITS) - 1n;
 export const TIMESTAMP_LEFT_SHIFT = MACHINE_ID_NUM_BITS + SEQUENCE_NUM_BITS;
-const MACHINE_ID_LEFT_SHIFT = (1n << SEQUENCE_NUM_BITS) - 1n;
 
 // Starting time (2018-02-01), you can set the time when you start using the system, and you can use it for 69 years
 const START_EPOCH = 1548988646430n;
@@ -75,7 +74,7 @@ class SnowFlake {
    */
   constructor() {
     const machineId = this.getMachineId();
-    this.machineBits = machineId << MACHINE_ID_LEFT_SHIFT;
+    this.machineBits = machineId << SEQUENCE_NUM_BITS;
     this.sequence = 0n;
 
     console.log(`Initialized snowflake: machine ID: 0x${machineId.toString(16).padStart(3, '0')}`);

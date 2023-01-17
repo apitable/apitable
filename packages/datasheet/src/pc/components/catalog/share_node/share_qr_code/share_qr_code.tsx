@@ -20,7 +20,7 @@ import { Button, IconButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
-import { Logo, Message } from 'pc/components/common';
+import { Message } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
 import QRCode from 'qrcode';
 import { FC } from 'react';
@@ -97,9 +97,6 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
         }
         <div className={styles.mainContainer} style={{ position:'relative', backgroundImage: `url(${MainBgPng.src})` }}>
           <IconButton id="closeBtn" icon={() => <CloseIcon />} className={styles.closeBtn} onClick={onClose} />
-          <div className={styles.logo}>
-            <Logo />
-          </div>
           <div className={styles.user}>{t(Strings.who_shares, { userName: user })}</div>
           <div className={styles.nodeName}>《{nodeName}》</div>
           <div className={styles.qrcode}>
