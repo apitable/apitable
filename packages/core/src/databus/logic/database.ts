@@ -30,8 +30,8 @@ import { Datasheet, IDatasheetOptions } from './datasheet';
  */
 export class Database implements IEventEmitter {
   private storageProvider!: IDataStorageProvider;
-  private datasheets: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
-  private commandManagers: WeakMap<Store<IReduxState>, CollaCommandManager> = new WeakMap();
+  private readonly datasheets: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
+  private readonly commandManagers: WeakMap<Store<IReduxState>, CollaCommandManager> = new WeakMap();
   private storeProvider!: IStoreProvider;
 
   /**
@@ -56,14 +56,16 @@ export class Database implements IEventEmitter {
    * Load a datasheet in the database.
    */
   async getDatasheet(dstId: string, options: IDatasheetOptions): Promise<Datasheet | null> {
-    const { datasheetPack } = await this.storageProvider.loadDatasheetPack(dstId, options);
+    const { loadOptions } = options;
+    const { datasheetPack } = await this.storageProvider.loadDatasheetPack(dstId, loadOptions);
     if (datasheetPack === null) {
       return null;
     }
     if (this.datasheets.has(datasheetPack)) {
       return this.datasheets.get(datasheetPack)!;
     }
-    const store = options.createStore ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack);
+    const store =
+      'createStore' in options ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack, options.storeOptions);
     let commandManager: CollaCommandManager;
     if (this.commandManagers.has(store)) {
       commandManager = this.commandManagers.get(store)!;

@@ -1,4 +1,5 @@
 import { databus, IResourceOpsCollect } from '@apitable/core';
+import { ClientDataLoader } from './client.data.loader';
 
 export interface IDataStorageProvider {
   /**
@@ -11,16 +12,15 @@ export interface IDataStorageProvider {
   operationExecuted(resourceOpsCollects: IResourceOpsCollect[]): void;
 }
 
-export class DataStorageProvider implements databus.IDataStorageProvider {
-  private readonly operationExecuted: IDataStorageProvider['operationExecuted'];
+export class ClientDataStorageProvider extends ClientDataLoader implements databus.IDataStorageProvider {
+  private readonly operationExecuted: (resourceOpsCollects: IResourceOpsCollect[]) => void;
 
   constructor(options: IDataStorageProvider) {
+    super();
     this.operationExecuted = options.operationExecuted;
   }
 
-  loadDatasheetPack(dstId: string, options: databus.ILoadDatasheetPackOptions): Promise<IBaseDatasheetPack | null> | IBaseDatasheetPack | null {}
-
-  saveOps(ops: IResourceOpsCollect[], options: databus.ISaveOpsOptions): Promise<any> | any {
+  saveOps(ops: IResourceOpsCollect[]): Promise<any> | any {
     this.operationExecuted(ops);
   }
 }

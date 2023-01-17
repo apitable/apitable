@@ -218,7 +218,7 @@ export const recordNodeDesc = (datasheetId: string, desc: string) => {
   };
 };
 
-const fetchDatasheetApi = (datasheetId: string, shareId?: string, templateId?: string, embedId?: string, recordIds?: string | string[]) => {
+export const fetchDatasheetApi = (datasheetId: string, shareId?: string, templateId?: string, embedId?: string, recordIds?: string | string[]) => {
   let requestMethod = fetchDatasheetPack;
   if (shareId) {
     requestMethod = () => fetchShareDatasheetPack(shareId, datasheetId);
@@ -328,8 +328,8 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
     const dataPack = responseBody.data;
     const dispatchActions: AnyAction[] = [];
     if (dataPack.foreignDatasheetMap) {
-      Object.keys(dataPack.foreignDatasheetMap).forEach(datasheetPack => {
-        const foreignDatasheetPack = dataPack.foreignDatasheetMap![datasheetPack]!;
+      Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
+        const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
         dispatchActions.push(receiveDataPack(foreignDatasheetPack, true));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));

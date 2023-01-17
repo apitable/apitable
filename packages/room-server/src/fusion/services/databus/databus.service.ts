@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus } from '@apitable/core';
+import { databus, IReduxState, IServerDatasheetPack } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { OtService } from 'database/ot/services/ot.service';
+import { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { IServerDatasheetOptions } from './interfaces';
-import { ServerDataStorageProvider } from './server.data.storage.provider';
+import { IServerLoadDatasheetPackOptions, ServerDataStorageProvider } from './server.data.storage.provider';
 
 @Injectable()
 export class DataBusService {
@@ -73,11 +73,23 @@ export class DataBusService {
   }
 
   async getDatasheet(dstId: string, options: IServerDatasheetOptions): Promise<databus.Datasheet | null> {
-    const datasheet = await this.database.getDatasheet(dstId, options);
+    const datasheet = await this.database.getDatasheet(
+      dstId,
+      options.createStore ? (options as Required<IServerDatasheetOptions>) : { storeOptions: {}, ...options },
+    );
     if (datasheet === null) {
       return null;
     }
 
     return datasheet;
   }
+}
+
+export interface IServerDatasheetOptions {
+  /**
+   * Creates the internal redux store of the datasheet, overriding the store provider.
+   */
+  createStore?: (dst: IServerDatasheetPack) => Promise<Store<IReduxState>>;
+
+  loadOptions: IServerLoadDatasheetPackOptions;
 }

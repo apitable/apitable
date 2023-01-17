@@ -30,7 +30,10 @@ beforeAll(resetDataLoader);
 
 describe('datasheet info', () => {
   test('basic datasheet info', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     expect(dst1!.id).toStrictEqual('dst1');
@@ -43,7 +46,10 @@ describe('datasheet info', () => {
 
 describe('get view', () => {
   it('should return View for existing view', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -55,7 +61,10 @@ describe('get view', () => {
   });
 
   it('should return null if view does not exist', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -70,7 +79,10 @@ describe('doCommand', () => {
   beforeEach(resetDataLoader);
 
   it('should return success if command execution succeeded', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -87,7 +99,10 @@ describe('doCommand', () => {
   });
 
   it('should fail if count != cellValues.length when adding records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -110,7 +125,10 @@ describe('doCommand', () => {
   });
 
   it('should return none when adding zero records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -294,7 +312,10 @@ describe('event handlers', () => {
   });
 
   it('should receive success event if doCommand succeeded', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
     let event: any = undefined;
     db.addEventHandler({
@@ -328,7 +349,10 @@ describe('event handlers', () => {
   });
 
   it('should not receive event if doCommand returns none', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
     let event: any = undefined;
     db.addEventHandler({

@@ -91,19 +91,19 @@ export const NodeContextMenu: FC = () => {
           {
             icon: <ArrowUpOutlined />,
             text: t(Strings.org_chart_insert_into_parent),
-            onClick: ({ props: { node }}) => {
+            onClick: async({ props: { node }}) => {
               const parent = node?.data?.parents?.[0] as INode;
               if (parent) {
                 const { id: preId } = parent;
-                const newRecordId = addRecord(viewId, rowsCount);
+                const newRecordId = await addRecord(viewId, rowsCount);
                 onChange([
                   {
                     recordId: preId,
                     fieldId: linkFieldId,
-                    value: parent.data.linkIds.filter(id => id !== node.id).concat(newRecordId),
+                    value: parent.data.linkIds.filter(id => id !== node.id).concat(newRecordId!),
                   },
                   {
-                    recordId: newRecordId,
+                    recordId: newRecordId!,
                     fieldId: linkFieldId,
                     value: [node.id],
                   }

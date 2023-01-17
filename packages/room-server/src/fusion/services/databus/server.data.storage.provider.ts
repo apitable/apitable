@@ -56,7 +56,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     this.loadOptions = loadOptions;
   }
 
-  async loadDatasheetPack(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {
+  async loadDatasheetPack(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<databus.ILoadDatasheetPackResult> {
     const { auth, loadBasePacks } = options;
     if (loadBasePacks) {
       const { foreignDstIds, options } = loadBasePacks;
@@ -74,16 +74,23 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       // NOTE the first data pack of `packs` is always the datasheet specified by `dstId`.
       delete foreignDatasheetMap[packs[0]!.datasheet.id];
       return {
-        ...packs[0]!,
-        foreignDatasheetMap,
+        datasheetPack: {
+          ...packs[0]!,
+          foreignDatasheetMap,
+        },
       };
     }
 
+    let datasheetPack: IServerDatasheetPack | null;
     if (this.loadOptions.useCache) {
-      return this.loadDstPackWithCache(dstId, options);
+      datasheetPack = await this.loadDstPackWithCache(dstId, options);
+    } else {
+      datasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, options);
     }
 
-    return this.datasheetService.fetchDataPack(dstId, auth, options);
+    return {
+      datasheetPack,
+    };
   }
 
   private async loadDstPackWithCache(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {

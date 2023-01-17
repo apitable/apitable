@@ -22,7 +22,7 @@ import { Store } from 'redux';
 import { IReduxState } from '@apitable/core';
 
 export * from './context';
-export const resourceService: { instance: null | ResourceServiceEnhanced } = { instance: null };
+export const resourceService: { instance: ResourceServiceEnhanced } = { instance: null as any };
 
 export const initResourceService = (store: Store<IReduxState>) => {
   resourceService.instance = new ResourceServiceEnhanced(store, onError);

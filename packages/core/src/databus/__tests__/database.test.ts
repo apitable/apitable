@@ -31,6 +31,7 @@ describe('store provider', () => {
         store.dispatch(StoreActions.updateRevision(12408, 'dst1', ResourceType.Datasheet));
         return Promise.resolve(store);
       },
+      loadOptions: {},
     });
 
     expect(dst).toBeTruthy();
@@ -40,7 +41,7 @@ describe('store provider', () => {
 
 describe('getDatasheet', () => {
   it('should return null if datasheet does not exist', async() => {
-    const dst = await db.getDatasheet('dst7', {});
+    const dst = await db.getDatasheet('dst7', { loadOptions: {}, storeOptions: {}});
     expect(dst).toBeNull();
   });
 });
