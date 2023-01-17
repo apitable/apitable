@@ -8,5 +8,6 @@
     "noEmit": true,
     "jsx": "react"
   },
+  "include": ["packages/**/*.ts"],
   "exclude": ["**/node_modules", "../enterprise"]
 }
