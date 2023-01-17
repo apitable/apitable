@@ -272,9 +272,9 @@ export interface IMetaType {
   releaseType?: WidgetReleaseType;
   /** The running code url of the widget release  */
   releaseCodeBundle?: string;
-  /** Widget associated vika datasheet ID */
+  /** Widget associated datasheet ID */
   datasheetId?: string;
-  /** Widget associated vika datasheet name */
+  /** Widget associated datasheet name */
   datasheetName?: string;
   /** Current status of the widget */
   status?: WidgetPackageStatus;

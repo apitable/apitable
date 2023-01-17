@@ -30,7 +30,10 @@ describe('view info', () => {
   beforeAll(resetDataLoader);
 
   test('basic view info', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -48,7 +51,10 @@ describe('view info', () => {
 
 describe('getFields', () => {
   it('should not include hidden fields by default', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -66,7 +72,10 @@ describe('getFields', () => {
   });
 
   it('should include hidden fields if includeHidden is true', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -88,7 +97,10 @@ describe('getFields', () => {
 
 describe('getRecords', () => {
   it('should return records in order of rows in the view', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -104,7 +116,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords limit number of records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -122,7 +137,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords > total number of records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -141,7 +159,10 @@ describe('getRecords', () => {
 
   describe('pagination', () => {
     test('pageNum = 1, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -162,7 +183,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 1, pageSize = 0', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -183,7 +207,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 1, pageSize = 0', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -204,7 +231,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 2, pageSize = 2', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -225,7 +255,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 2, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -246,7 +279,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 3, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -268,7 +304,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords = 4 and pagnation: pageNum = 2, pageSize = 3', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -294,7 +333,10 @@ describe('addRecords', () => {
   beforeEach(resetDataLoader);
 
   test('add two records with count', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({

@@ -146,8 +146,10 @@ export class FusionApiService {
   public async getFieldList(dstId: string, query: FieldQueryRo): Promise<databus.Field[]> {
     const profiler = this.logger.startTimer();
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth: { token: this.request.headers.authorization },
-      recordIds: [],
+      loadOptions: {
+        auth: { token: this.request.headers.authorization },
+        recordIds: [],
+      },
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -214,8 +216,10 @@ export class FusionApiService {
     const getRecordsProfiler = this.logger.startTimer();
 
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds: query.recordIds,
+      loadOptions: {
+        auth,
+        recordIds: query.recordIds,
+      },
       createStore: async dst => {
         const userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
         return this.commandService.fullFillStore(dst, userInfo);
@@ -328,9 +332,11 @@ export class FusionApiService {
     const auth: IAuthHeader = { token: this.request.headers.authorization };
     const foreignDatasheetId = fieldCreateRo.foreignDatasheetId();
     const datasheet = await this.databusService.getDatasheet(datasheetId, {
-      auth,
-      loadBasePacks: {
-        foreignDstIds: foreignDatasheetId ? [foreignDatasheetId] : [],
+      loadOptions: {
+        auth,
+        loadBasePacks: {
+          foreignDstIds: foreignDatasheetId ? [foreignDatasheetId] : [],
+        },
       },
       createStore: (dst: IServerDatasheetPack) => Promise.resolve(this.createStoreForBaseDstPacks(dst)),
     });
@@ -354,9 +360,11 @@ export class FusionApiService {
   public async deleteField(datasheetId: string, fieldId: string, conversion?: Conversion) {
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(datasheetId, {
-      auth,
-      loadBasePacks: {
-        foreignDstIds: [],
+      loadOptions: {
+        auth,
+        loadBasePacks: {
+          foreignDstIds: [],
+        },
       },
       createStore: (dst: IServerDatasheetPack) => Promise.resolve(this.createStoreForBaseDstPacks(dst)),
     });
@@ -382,9 +390,11 @@ export class FusionApiService {
     const auth = { token: this.request.headers.authorization };
     const foreignDatasheetIds = datasheetCreateRo.foreignDatasheetIds();
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      loadBasePacks: {
-        foreignDstIds: foreignDatasheetIds,
+      loadOptions: {
+        auth,
+        loadBasePacks: {
+          foreignDstIds: foreignDatasheetIds,
+        },
       },
       createStore: (dst: IServerDatasheetPack) => Promise.resolve(this.createStoreForBaseDstPacks(dst)),
     });
@@ -433,9 +443,11 @@ export class FusionApiService {
     const auth = { token: this.request.headers.authorization };
 
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds,
-      linkedRecordMap,
+      loadOptions: {
+        auth,
+        recordIds,
+        linkedRecordMap,
+      },
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -478,9 +490,11 @@ export class FusionApiService {
     }
 
     const newDatasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds,
-      linkedRecordMap,
+      loadOptions: {
+        auth,
+        recordIds,
+        linkedRecordMap,
+      },
     });
     if (newDatasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -554,9 +568,11 @@ export class FusionApiService {
     // Convert written fields
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds: [],
-      linkedRecordMap: this.request[DATASHEET_LINKED],
+      loadOptions: {
+        auth,
+        recordIds: [],
+        linkedRecordMap: this.request[DATASHEET_LINKED],
+      },
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -587,9 +603,11 @@ export class FusionApiService {
     });
 
     const newDatasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds,
-      linkedRecordMap: this.request[DATASHEET_LINKED],
+      loadOptions: {
+        auth,
+        recordIds,
+        linkedRecordMap: this.request[DATASHEET_LINKED],
+      },
     });
     if (newDatasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -617,8 +635,10 @@ export class FusionApiService {
     await this.fusionApiRecordService.validateRecordExists(dstId, recordIds, ApiTipConstant.api_param_record_not_exists);
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(dstId, {
-      auth,
-      recordIds,
+      loadOptions: {
+        auth,
+        recordIds,
+      },
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
@@ -666,11 +686,13 @@ export class FusionApiService {
     const includeLink = commandBody['includeLink'];
     const internalFix = commandBody['internalFix'] as IInternalFix | undefined;
     const datasheet = await this.databusService.getDatasheet(datasheetId, {
-      auth,
-      loadBasePacks: {
-        foreignDstIds: [],
-        options: {
-          includeLink,
+      loadOptions: {
+        auth,
+        loadBasePacks: {
+          foreignDstIds: [],
+          options: {
+            includeLink,
+          },
         },
       },
       createStore: (dst: IServerDatasheetPack) => Promise.resolve(this.createStoreForBaseDstPacks(dst)),

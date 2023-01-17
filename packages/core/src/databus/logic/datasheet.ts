@@ -17,7 +17,7 @@
  */
 
 import { Field } from '.';
-import { ILoadDatasheetPackOptions, ISaveOpsOptions, IDataSaver } from '../providers';
+import { ILoadDatasheetPackOptions, ISaveOpsOptions, IDataSaver, IStoreOptions } from '../providers';
 import { Store } from 'redux';
 import { IAddRecordsOptions, IViewOptions, View } from './view';
 import { IResource } from './resource.interface';
@@ -29,7 +29,7 @@ import {
   ICollaCommandExecuteSuccessResult,
 } from 'command_manager';
 import { IField, ResourceType } from 'types';
-import { IBaseDatasheetPack, IReduxState, ISnapshot, Selectors } from 'exports/store';
+import { IReduxState, IServerDatasheetPack, ISnapshot, Selectors } from 'exports/store';
 import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, ISetRecordOptions } from 'commands';
 
 interface IDatasheetCtorOptions {
@@ -39,7 +39,7 @@ interface IDatasheetCtorOptions {
 }
 
 export class Datasheet implements IResource {
-  private readonly commandManager: CollaCommandManager;
+  private readonly _commandManager: CollaCommandManager;
   private readonly store: Store<IReduxState>;
   private readonly saver: IDataSaver;
 
@@ -54,7 +54,7 @@ export class Datasheet implements IResource {
     const { store, saver, commandManager } = options;
     this.store = store;
     this.saver = saver;
-    this.commandManager = commandManager;
+    this._commandManager = commandManager;
   }
 
   public get name(): string {
@@ -88,6 +88,13 @@ export class Datasheet implements IResource {
   }
 
   /**
+   * TODO This is a temporary getter needed by front-end. All dependencies of CommandManager in the front-end will be removed in the future.
+   */
+  get commandManager(): CollaCommandManager {
+    return this._commandManager;
+  }
+
+  /**
    * Perform a command on this datasheet.
    *
    * @param command The command that will be executed.
@@ -96,7 +103,7 @@ export class Datasheet implements IResource {
    * @deprecated This method is not intended for public use.
    */
   public async doCommand<R>(command: ICollaCommandOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<R>> {
-    const result = this.commandManager.execute<R>(command);
+    const result = this._commandManager.execute<R>(command);
     if (result.result === ExecuteResult.Success) {
       const saveResult = await this.saver.saveOps(result.resourceOpsCollects, {
         ...saveOptions,
@@ -122,6 +129,17 @@ export class Datasheet implements IResource {
         groupCellValues: recordOptions.groupCellValues,
         ignoreFieldPermission: recordOptions.ignoreFieldPermission,
         datasheetId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  public async setRecords(recordOptions: ISetRecordOptions[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<string[]>> {
+    return await this.doCommand<string[]>(
+      {
+        cmd: CollaCommandName.SetRecords,
+        datasheetId: this.id,
+        data: recordOptions,
       },
       saveOptions,
     );
@@ -201,11 +219,20 @@ export class Datasheet implements IResource {
 /**
  * The options for creating a `Database` instance. The implementor may extend this interface, adding necessary fields.
  */
-export interface IDatasheetOptions extends ILoadDatasheetPackOptions {
+export type IDatasheetOptions = IDatasheetDefaultOptions | IDatasheetOptionsWithCustomStore;
+
+export interface IDatasheetDefaultOptions {
+  storeOptions: IStoreOptions;
+  loadOptions: ILoadDatasheetPackOptions;
+}
+
+export interface IDatasheetOptionsWithCustomStore {
   /**
    * Creates the internal redux store of the datasheet, overriding the store provider.
    */
-  createStore?: (dst: IBaseDatasheetPack) => Promise<Store<IReduxState>>;
+  createStore: (dst: IServerDatasheetPack) => Promise<Store<IReduxState>>;
+
+  loadOptions: ILoadDatasheetPackOptions;
 }
 
 export type ICommandExecutionResult<R> = ICommandExecutionSuccessResult<R> | ICollaCommandExecuteNoneResult | ICollaCommandExecuteFailResult;

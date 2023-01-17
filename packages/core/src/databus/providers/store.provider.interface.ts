@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IBaseDatasheetPack, IReduxState } from 'exports/store';
+import { IReduxState, IServerDatasheetPack } from 'exports/store';
 import { Store } from 'redux';
 
 /**
@@ -26,5 +26,8 @@ export interface IStoreProvider {
   /**
    * Creates a redux store from the datasheet pack.
    */
-  createStore(datasheetPack: IBaseDatasheetPack): Promise<Store<IReduxState>> | Store<IReduxState>;
+  createStore(datasheetPack: IServerDatasheetPack, options: IStoreOptions): Promise<Store<IReduxState>> | Store<IReduxState>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IStoreOptions {}
