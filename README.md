@@ -22,6 +22,10 @@
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
+    <!-- Github Release Latest -->
+    <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
+        <img src="https://img.shields.io/github/v/release/apitable/apitable" />
+    </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/render-deploy-5364e9" />
