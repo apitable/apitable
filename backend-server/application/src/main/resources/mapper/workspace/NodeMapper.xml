@@ -694,8 +694,10 @@
     <select id="selectRubbishNodeIds" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
-        WHERE space_id = #{spaceId} AND parent_id = '-1'
-        AND updated_at > #{beginTime} AND is_rubbish = 1 AND is_deleted = 0
+        WHERE space_id = #{spaceId} AND parent_id = '-1' AND is_rubbish = 1 AND is_deleted = 0
+        <if test="beginTime != null">
+            AND updated_at > #{beginTime}
+        </if>
         <if test="endTime != null">
             AND updated_at &lt; #{endTime}
         </if>
