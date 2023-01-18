@@ -1,13 +1,8 @@
-
-
-
 <p align="center">
     <a href="https://apitable.com" target="_blank">
         <img src="docs/static/cover.png" alt="適用可能なカバー画像" />
     </a>
 </p>
-
-
 
 <p align="center">
     <!-- Gitpod -->
@@ -21,6 +16,10 @@
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
+    </a>
+    <!-- Github Release Latest -->
+    <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
+        <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
@@ -47,7 +46,7 @@
 
 ## ✨ クイックスタート
 
-> APITableは現在 `作業中`です。 
+> APITableは現在 `作業中`です。
 > 
 > 最初のリリースは2023年1月下旬に公開されます。
 > 
@@ -68,9 +67,9 @@
     <th>
       <a href="#">自動フォーム</a>
     </th>
-    
-  </tr> 
-    
+
+  </tr>
+
    <tr>
     <td width="50%">
       <a href="#">
@@ -91,8 +90,8 @@
     <th>
       <a href="#">無制限のクロステーブルリンク</a>
     </th>
-</tr>   
-    
+</tr>
+
  <tr>
     <td width="50%">
         <a href="#">
@@ -105,7 +104,7 @@
       </a>
     </td>
  </tr>
-   
+
  <tr>
     <th>
       <a href="#">強力な行/列の権限</a>
@@ -113,7 +112,7 @@
     <th>
       <a href="#">埋め込み</a>
     </th>
-  </tr>   
+  </tr>
 
  <tr>
     <td width="50%">
@@ -127,54 +126,53 @@
         </a>
     </td>
   </tr>
- 
-   
+
 </table>
 
 APITableは、個人から企業まで、さまざまな素晴らしい機能を提供します。
 
 - 高度なテクノロジースタックとオープンソース
-    - `リアルタイムコラボレーション` では、複数のユーザーがリアルタイムで、または `運用変換(OT)` アルゴリズムと同時に編集することができます。
-    - `<canvas> レンダリングエンジン` で、非常にスムーズで使いやすく、超高速なデータベース表計算インターフェイス。
-    - データベースネイティブアーキテクチャ:Changeset / Operation / Action / Snapshotなど。
-    - **リアルタイムのコラボレーションによる100k+** データ行。
-    - `データ` から `メタデータ` まで、フルスタック API アクセス。
-    - 一方向/双方向テーブルリンクと `無限クロスリンク`
-    - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - `リアルタイムコラボレーション` では、複数のユーザーがリアルタイムで、または `運用変換(OT)` アルゴリズムと同時に編集することができます。
+  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
+  - データベースネイティブアーキテクチャ:Changeset / Operation / Action / Snapshotなど。
+  - **リアルタイムのコラボレーションによる100k+** データ行。
+  - `データ` から `メタデータ` まで、フルスタック API アクセス。
+  - 一方向/双方向テーブルリンクと `無限クロスリンク`
+  - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - 美しくリッチなデータベース表計算用UI
-    - `CRUD`: 作成、読み込み、更新、テーブル、列、行の削除
-    - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
-    - `Space based`: アプリ/ベース構造の代わりに、分離されたワークスペースを使用し、テーブルを無制限にリンクできるようにします。
-    - `ダークモード` とテーマのカスタマイズが可能です。
-    - `7 種類のビュータイプ`: グリッドビュー (データシート) / ギャラリービュー / マインドマップビュー / カンバンビュー / フル機能 ガントビュー / カレンダー ビュー
-    - ワンクリックAPIパネル
+  - `CRUD`: 作成、読み込み、更新、テーブル、列、行の削除
+  - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
+  - `Space based`: アプリ/ベース構造の代わりに、分離されたワークスペースを使用し、テーブルを無制限にリンクできるようにします。
+  - `ダークモード` とテーマのカスタマイズが可能です。
+  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
+  - ワンクリックAPIパネル
 - バッテリーが付属しています
-    - 10以上の公式テンプレートを内蔵しています。
-    - ロボットの自動化と利用可能なカスタマイズ。
-    - BI ダッシュボード
-    - ワンクリック自動生成フォーム
-    - 共有可能で埋め込み可能なページ
-    - 多言語対応。
-    - n8n.io / Zapier / Appsmith...などとの統合。
+  - 10以上の公式テンプレートを内蔵しています。
+  - ロボットの自動化と利用可能なカスタマイズ。
+  - BI ダッシュボード
+  - ワンクリック自動生成フォーム
+  - 共有可能で埋め込み可能なページ
+  - 多言語対応。
+  - n8n.io / Zapier / Appsmith...などとの統合。
 - 優れた拡張
-    - 20名以上の職員のオープンソースウィジェットを備えた拡張可能な `ウィジェット システム`。
-    - カスタマイズ可能なグラフ & チャート & ダッシュボード
-    - カスタマイズ可能なデータ列のタイプ
-    - カスタマイズ可能な数式
-    - カスタマイズ可能な自動化ロボットアクション。
+  - 20名以上の職員のオープンソースウィジェットを備えた拡張可能な `ウィジェット システム`。
+  - カスタマイズ可能なグラフ & チャート & ダッシュボード
+  - カスタマイズ可能なデータ列のタイプ
+  - カスタマイズ可能な数式
+  - カスタマイズ可能な自動化ロボットアクション。
 - エンタープライズグレードの権限
-    - `ミラー`, ビューをミラーにして、Row Permissionを実装する。
-    - 非常に簡単な操作で `列権限` を有効にします。
-    - フォルダ/サブフォルダー / ファイルのパーミッション。
-    - ツリー構造フォルダとカスタマイズ可能なノード (ファイル);
-    - チーム管理 & 組織構造
+  - `ミラー`, ビューをミラーにして、Row Permissionを実装する。
+  - 非常に簡単な操作で `列権限` を有効にします。
+  - フォルダ/サブフォルダー / ファイルのパーミッション。
+  - ツリー構造フォルダとカスタマイズ可能なノード (ファイル);
+  - チーム管理 & 組織構造
 - エンタープライズ機能：
-    - SAML
-    - シングルサインオン(SSO)
-    - Audit
-    - データベースの自動バックアップ
-    - データエクスポート
-    - ウォーターマーク
+  - SAML
+  - シングルサインオン(SSO)
+  - Audit
+  - データベースの自動バックアップ
+  - データエクスポート
+  - ウォーターマーク
 - ....
 
 拡張可能なウィジェットとプラグインを使用すると、さらに機能を追加できます。
@@ -184,21 +182,21 @@ APITableは、個人から企業まで、さまざまな素晴らしい機能を
 次のソフトウェアでAPITableを知る必要があるのはなぜですか?
 
 - スーパーマネージメントソフトウェアとして
-    - 柔軟なプロジェクト管理 & タスク/課題管理
-    - マーケティングリード管理
-    - 最も柔軟で接続可能なCRM。
-    - 柔軟なビジネスインテリジェンス(BI)。
-    - 人気のフォームと調査
-    - 柔軟なERP。
-    - ローコードとノーコードプラットフォーム。
-    - ...その他、APITable はあなたのポケットに 1000 ソフトウェアを入れています。
+  - 柔軟なプロジェクト管理 & タスク/課題管理
+  - マーケティングリード管理
+  - 最も柔軟で接続可能なCRM。
+  - 柔軟なビジネスインテリジェンス(BI)。
+  - 人気のフォームと調査
+  - 柔軟なERP。
+  - ローコードとノーコードプラットフォーム。
+  - ...その他、APITable はあなたのポケットに 1000 ソフトウェアを入れています。
 - 視覚データベースのインフラストラクチャとして
-    - **ご自身のソフトウェアUIに** APITableを埋め込む。
-    - REST API を使用したビジュアルデータベース。
-    - 管理ダッシュボード
-    - 中央の構成管理
-    - すべてのソフトウェアを **** 接続するオールインワンエンタープライズデータベース
-    - ...その他、APITableはすべてを接続します。
+  - **ご自身のソフトウェアUIに** APITableを埋め込む。
+  - REST API を使用したビジュアルデータベース。
+  - 管理ダッシュボード
+  - 中央の構成管理
+  - すべてのソフトウェアを **** 接続するオールインワンエンタープライズデータベース
+  - ...その他、APITableはすべてを接続します。
 - また、オープンソースで拡張可能
 
 ## 💞 API 指定
@@ -214,15 +212,12 @@ APITableは、データベースのスプレッドシートの内容を照会す
 ## 💝 フレンドリーな
 
 #### 共有して埋め込み
+
 データシートのテーブルまたはフォルダを共有します。 HTMLスクリプトをコピーして貼り付けることで埋め込みます。
 
 #### エンタープライズ対応の埋め込み
 
 [APITable.com](https://apitable.com) は、より多くのエンタープライズ対応の組み込み機能をセキュリティに提供します。
-
-
-
-
 
 ## インストール
 
@@ -237,7 +232,6 @@ curl https://apitable.github.io/install.sh | bash
 ブラウザで [https://localhost:80](https://localhost:80) を開きます。 (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
 
 ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
-
 
 ## 🧑<unk> 💻 コントリビュート
 
@@ -264,7 +258,6 @@ APITableに貢献するためのクイックガイドはこちらです。
 5. ブランチを公開する (`git push origin my-new-feature`)
 6. 新しいプルリクエストを作成する -> [フォーク間でプルリクエストを作成します](https://github.com/apitable/apitable/compare)
 
-
 ### 作業条件
 
 これらの一般的な規約を使用できます。
@@ -285,17 +278,16 @@ APITableに貢献するためのクイックガイドはこちらです。
   - ウィジェット SDK (近日公開予定...)
   - スクリプト (近日公開...)
 
-
 ## 🛣 Roadmap
 
 ### 今後の機能
+
 - ヘビーコードインターフェースビルダー
-- 埋め込み可能なサードパーティ製ドキュメントコンポーネント
+- Embbedable 3rd party documentation components
 - SQLのようなドメイン固有の言語
 - IdPとして
 - Web 3の機能
 - ...
-
 
 ### Hosted and Enterpriseのバージョンは高度な機能を提供します
 
@@ -322,10 +314,9 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 And you like to write high quality code with clear documentation and unit tests.
 
 Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
-
 
 ## 📺 スクリーンショット
 
@@ -357,7 +348,7 @@ Regardless of time and conditions, if you want to get involved to the team of AP
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 ライセンス
@@ -369,7 +360,6 @@ Regardless of time and conditions, if you want to get involved to the team of AP
 > 詳細は [ライセンス](./LICENSING.md) を参照してください。
 > 
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
-
 
 <br/>
 
