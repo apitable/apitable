@@ -26,7 +26,7 @@ import { Tree } from 'antd';
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
 // import AdjustLevel from 'static/icon/space/space_icon_adjustlevel.svg';
 // @ts-ignore
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom, socialPlatPreOperate } from 'enterprise';
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -45,6 +45,7 @@ import { CreateTeamModal, RenameTeamModal } from '../modal';
 // @ts-ignore
 import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg } from 'enterprise';
 import styles from './style.module.less';
+import { socialPlatPreOperateCheck } from '../utils';
 
 interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;
@@ -196,21 +197,22 @@ export const TeamTree: FC<IModalProps> = props => {
       dispatch(StoreActions.updateRightClickTeamInfoInSpace(info));
     }
   };
+
   const handleAddDeptClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setCreateDeptModalVisible(true);
-    });
+    }, spaceInfo);
   };
 
   const handleRenameClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setRenameDeptModalVisible(true);
-    });
+    }, spaceInfo);
   };
   const handleDeleteClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       if (data) {
         Api.readTeam(data.teamId).then(res => {
@@ -224,8 +226,7 @@ export const TeamTree: FC<IModalProps> = props => {
           }
         });
       }
-    });
-
+    }, spaceInfo);
   };
   const rejectDeleteTeam = () => {
     Modal.warning({
@@ -297,45 +298,43 @@ export const TeamTree: FC<IModalProps> = props => {
   };
 
   const operateButtonCom = React.useMemo(() => {
-    if(isIdassPrivateDeployment()) {
+    const getButton = (props) => {
+      const { onClick } = props;
       return (
         <Button
           color="primary"
           prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && freshIdaasOrg?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
+          onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
         >
           {t(Strings.fresh_dingtalk_org)}
         </Button>
       );
+    };
+    if(isIdassPrivateDeployment()) {
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && freshIdaasOrg?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (isBindDingtalk || isBindWecom) {
       const refreshMethods = {
         [ConfigConstant.SocialType.DINGTALK]: freshDingtalkOrg,
         [ConfigConstant.SocialType.WECOM]: freshWecomOrg
       };
-      return (
-        <Button
-          color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
-          className={styles.inviteOutsiderBtn}
-          disabled={refreshBtnLoading}
-        >
-          {t(Strings.fresh_dingtalk_org)}
-        </Button>
-      );
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER)) {
       return (
@@ -402,7 +401,7 @@ export const TeamTree: FC<IModalProps> = props => {
         />
       }
       {
-        teamOperate && socialPlatPreOperate && <>
+        teamOperate && <>
           <ContextMenu id={TEAM_OPERATE}>
             <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
             <MenuItem onClick={handleRenameClick}><RenameIcon />{t(Strings.rename_team)}</MenuItem>
