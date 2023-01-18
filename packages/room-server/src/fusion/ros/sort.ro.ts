@@ -18,7 +18,7 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsEnum } from 'class-validator';
+import { IsDefined, IsEnum, IsString } from 'class-validator';
 import { OrderEnum } from 'shared/enums';
 import { ISortRo } from 'shared/interfaces';
 
@@ -30,6 +30,7 @@ export class SortRo implements ISortRo {
     description: 'Specify the field to sort',
   })
   @IsDefined({ message: ApiTipConstant.api_param_sort_field_not_exists })
+  @IsString()
   field!: string;
 
   @ApiProperty({

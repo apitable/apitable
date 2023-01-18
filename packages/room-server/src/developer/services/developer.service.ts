@@ -19,7 +19,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../../user/entities/user.entity';
 import { DeveloperRepository } from '../repositories/developer.repository';
-import { UnitMemberRepository } from '../../unit/repositories/unit.member.repository';
 import { UserRepository } from '../../user/repositories/user.repository';
 
 @Injectable()
@@ -27,7 +26,6 @@ export class DeveloperService {
   constructor(
     private readonly developerRepo: DeveloperRepository,
     private readonly userRepo: UserRepository,
-    private readonly memberRepo: UnitMemberRepository,
   ) {}
 
   /**
@@ -46,15 +44,4 @@ export class DeveloperService {
     return null;
   }
 
-  /**
-   * Get space ID list of a user
-   *
-   * @param userId user ID
-   * @return  Promise<string[]>
-   * @author Zoe Zheng
-   * @date 2020/9/14 5:35 PM
-   */
-  public async getUserSpaceIds(userId: string): Promise<string[]> {
-    return await this.memberRepo.selectSpaceIdsByUserId(userId);
-  }
 }

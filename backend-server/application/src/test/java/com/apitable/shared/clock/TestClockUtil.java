@@ -18,12 +18,12 @@
 
 package com.apitable.shared.clock;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import org.junit.jupiter.api.Test;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;

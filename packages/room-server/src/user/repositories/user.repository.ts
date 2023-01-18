@@ -40,6 +40,13 @@ export class UserRepository extends Repository<UserEntity> {
     });
   }
 
+  selectUserIdByUuid(uuid: string): Promise<string | undefined> {
+    return this.findOne({
+      select: ['id'],
+      where: [{ uuid, isDeleted: false }],
+    }).then(result => result?.id);
+  }
+
   /**
    * TODO(Troy): stop using multiple joins query and break it in several small queries instead(refactor: multiple joins query is prohibited #2848)
    * TODO(Troy): use DTO instead of any

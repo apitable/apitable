@@ -18,11 +18,7 @@
 
 package com.apitable.auth.service.impl;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import cn.hutool.core.util.IdUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.auth.enums.LoginType;
 import com.apitable.auth.ro.LoginRo;
@@ -36,12 +32,12 @@ import com.apitable.shared.captcha.sms.SmsValidateCodeProcessor;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.vo.UserInfoVo;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 public class AuthServiceImplTest extends AbstractIntegrationTest {
@@ -59,7 +55,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         // The mobile phone number does not exist, try to log in, do not automatically register
         LoginRo loginRo = new LoginRo();
         loginRo.setAreaCode("+86");
-        loginRo.setUsername("13631619061");
+        loginRo.setUsername("13633333333");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
         assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
@@ -70,7 +66,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         // The phone number but the password is wrong, try to log in, not automatically registered
         LoginRo loginRo = new LoginRo();
         loginRo.setAreaCode("+86");
-        loginRo.setUsername("13631619061");
+        loginRo.setUsername("13633333333");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
         assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
@@ -133,7 +129,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testLoginUsingSmsCodeWithMobilePhoneNotExistAutoRegister() {
         String areaCode = "+86";
-        String mobile = "13631619061";
+        String mobile = "13633333333";
         // Prepare verification code
         String validCode = sendLoginSmsCode(areaCode, mobile);
 
@@ -156,11 +152,11 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setCode("+86");
-        user.setMobilePhone("13631619061");
+        user.setMobilePhone("13633333333");
         iUserService.save(user);
 
         String areaCode = "+86";
-        String mobile = "13631619061";
+        String mobile = "13633333333";
         // Prepare verification code
         String validCode = sendLoginSmsCode(areaCode, mobile);
 
