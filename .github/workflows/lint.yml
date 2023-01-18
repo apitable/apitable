@@ -85,3 +85,4 @@ jobs:
           DEFAULT_BRANCH: develop
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TYPESCRIPT_STANDARD_TSCONFIG_FILE: ../../tsconfig.json
+          TYPESCRIPT_ES_CONFIG_FILE: ../../eslintrc.json
