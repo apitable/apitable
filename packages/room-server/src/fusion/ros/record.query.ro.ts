@@ -19,7 +19,7 @@
 import { ApiTipConstant, CellFormatEnum, FieldKeyEnum } from '@apitable/core';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PageRo } from './page.ro';
 import { stringToArray } from 'shared/helpers/fusion.helper';
 
@@ -42,6 +42,7 @@ export class RecordQueryRo extends PageRo {
       '\nNote: You can filter the data of unwanted fields with the fields parameter',
   })
   @IsOptional()
+  @IsString()
   viewId?: string;
 
   @ApiPropertyOptional({
@@ -63,6 +64,7 @@ export class RecordQueryRo extends PageRo {
       'only the ensemble of records in the specified view that satisfy this equation will be returned',
   })
   @IsOptional()
+  @IsString()
   filterByFormula?: string;
 
   @ApiPropertyOptional({

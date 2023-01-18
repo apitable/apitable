@@ -426,7 +426,7 @@ export class FusionApiController {
     if (fields[0]!.id === fieldId) {
       throw ApiException.tipError(ApiTipConstant.api_params_primary_field_not_allowed_to_delete, { property: 'name' });
     }
-    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion!);
+    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion);
     return ApiResponse.success({});
   }
 

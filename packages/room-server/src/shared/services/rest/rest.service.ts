@@ -240,7 +240,7 @@ export class RestService {
     return response!.data.currentBundleCapacity - response!.data.usedCapacity < 0;
   }
 
-  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number): Promise<AssetVo[]> {
+  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number | undefined): Promise<AssetVo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
         headers: HttpHelper.createAuthHeaders(headers),
