@@ -25,7 +25,7 @@ import { ISortRo } from 'shared/interfaces';
 export class SortRo implements ISortRo {
   @ApiProperty({
     type: String,
-    required: false,
+    required: true,
     example: 'fldAj8ZBpzj1X',
     description: 'Specify the field to sort',
   })
@@ -35,7 +35,7 @@ export class SortRo implements ISortRo {
 
   @ApiProperty({
     enum: OrderEnum,
-    required: false,
+    required: true,
     example: 'fldAj8ZBpzj1X',
     description: 'Specify the order type(asc/desc)',
   })

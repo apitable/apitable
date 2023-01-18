@@ -67,6 +67,7 @@ export class UserService {
           avatar: user.avatar || '',
           nikeName: user.nikeName || '',
           isSocialNameModified: user.isSocialNameModified!,
+          avatarColor: Number(user.color),
         });
       });
     }

@@ -19,7 +19,7 @@
 import { ApiTipConstant, FieldKeyEnum } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
+import { ArrayNotEmpty, IsEnum, IsOptional, ValidateNested } from 'class-validator';
 import { FieldCreateRo } from './record.field.create.ro';
 
 export class RecordCreateRo {
@@ -59,5 +59,6 @@ export class RecordCreateRo {
     default: FieldKeyEnum.NAME,
   })
   @IsEnum(FieldKeyEnum, { message: ApiTipConstant.api_params_invalid_field_key })
+  @IsOptional()
   fieldKey: FieldKeyEnum = FieldKeyEnum.NAME;
 }

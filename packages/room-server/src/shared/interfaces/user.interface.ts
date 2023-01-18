@@ -27,6 +27,7 @@ export interface INamedUser {
   avatar: string;
   nikeName: string;
   isSocialNameModified: number;
+  avatarColor: number;
 }
 
 /**
