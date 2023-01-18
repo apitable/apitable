@@ -108,13 +108,6 @@ describe('user service', () => {
       throw new ServerException(CommonException.UNAUTHORIZED);
     });
 
-    jest.spyOn(restService, 'hasLogin').mockImplementation(async(cookie: string) => {
-      if (cookie && cookie.includes(loggedSession)) {
-        return await Promise.resolve(true);
-      }
-      return await Promise.resolve(false);
-    });
-
   });
 
   describe('test getUserInfo', () => {
