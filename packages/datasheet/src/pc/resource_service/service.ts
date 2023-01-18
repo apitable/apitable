@@ -42,8 +42,8 @@ export class ResourceServiceEnhanced extends ResourceService {
     super.init();
     this.simpleEmitter = new SimpleEmitter();
     this.keybindingService = new KeybindingService();
-    this.uploadManager = new UploadManager(5, this.commandManager);
-    this.clipboard = new Clipboard(this.commandManager, this.uploadManager);
+    this.uploadManager = new UploadManager(5, () => this.commandManager);
+    this.clipboard = new Clipboard(() => this.commandManager, this.uploadManager);
     console.log('resource service initialized successfully');
   }
 

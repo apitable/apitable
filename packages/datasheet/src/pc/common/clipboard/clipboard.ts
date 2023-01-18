@@ -179,8 +179,8 @@ function toastCopyCut({ type, unit, select, count }: {
 
 export class Clipboard {
   constructor(
-    private commandManager: CollaCommandManager,
-    private uploadManager: UploadManager,
+    private readonly getCommandManager: () => CollaCommandManager,
+    private readonly uploadManager: UploadManager,
   ) { }
 
   cuttingRangeData?: {
@@ -292,7 +292,7 @@ export class Clipboard {
     const recordValue = snapshot.recordMap[rows[row].recordId].data;
     const cellValues = groupFields.map(f => recordValue ? recordValue[f] : null);
     let isPasteIncompatibleField = false;
-    let commandResult = this.commandManager.execute({
+    let commandResult = this.getCommandManager().execute({
       cmd: CollaCommandName.PasteSetFields,
       viewId,
       column,
@@ -311,7 +311,7 @@ export class Clipboard {
         }
       }
 
-      commandResult = this.commandManager.execute({
+      commandResult = this.getCommandManager().execute({
         cmd: CollaCommandName.PasteSetRecords,
         row,
         column,
