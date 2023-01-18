@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace } from '@apitable/core';
+import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace, ISpaceInfo, ISpaceBasicInfo } from '@apitable/core';
+// @ts-ignore
+import { socialPlatPreOperate } from 'enterprise';
 
 export const verifyTeamName = async(spaceId: string, teamId: string, inputContent: string) => {
   let questRes = false;
@@ -45,4 +47,12 @@ export const getContent = (arr: ITagsInSpace[] | ISubTeamListInSpaceBase[], name
 };
 export const isPrimaryOrOwnFunc = (info: IMemberInfoInSpace, userMemberId: string) => {
   return info.isPrimary || (info.memberId === userMemberId);
+};
+
+export const socialPlatPreOperateCheck = (fn: () => void, spaceInfo: ISpaceInfo | ISpaceBasicInfo | null) => {
+  if (!socialPlatPreOperate) {
+    fn();
+    return;
+  }
+  socialPlatPreOperate(spaceInfo, fn);
 };
