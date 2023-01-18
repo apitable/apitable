@@ -17,7 +17,8 @@
  */
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, Max, Min } from 'class-validator';
 
 export class AssetUploadQueryRo {
   @ApiPropertyOptional({
@@ -30,5 +31,7 @@ export class AssetUploadQueryRo {
   @IsInt()
   @Min(1)
   @Max(20)
-  count!: number;
+  @IsOptional()
+  @Type(() => Number)
+  count?: number;
 }
