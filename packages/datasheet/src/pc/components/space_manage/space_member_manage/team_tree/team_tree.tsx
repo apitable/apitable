@@ -298,45 +298,43 @@ export const TeamTree: FC<IModalProps> = props => {
   };
 
   const operateButtonCom = React.useMemo(() => {
-    if(isIdassPrivateDeployment()) {
+    const getButton = (props) => {
+      const { onClick } = props;
       return (
         <Button
           color="primary"
           prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && freshIdaasOrg?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
+          onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
         >
           {t(Strings.fresh_dingtalk_org)}
         </Button>
       );
+    };
+    if(isIdassPrivateDeployment()) {
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && freshIdaasOrg?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (isBindDingtalk || isBindWecom) {
       const refreshMethods = {
         [ConfigConstant.SocialType.DINGTALK]: freshDingtalkOrg,
         [ConfigConstant.SocialType.WECOM]: freshWecomOrg
       };
-      return (
-        <Button
-          color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
-          className={styles.inviteOutsiderBtn}
-          disabled={refreshBtnLoading}
-        >
-          {t(Strings.fresh_dingtalk_org)}
-        </Button>
-      );
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER)) {
       return (
