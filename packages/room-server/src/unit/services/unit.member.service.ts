@@ -51,6 +51,8 @@ export class UnitMemberService {
           name: cur.memberName,
           type: MemberType.Member,
           avatar: user?.avatar,
+          nickName: user?.nickName,
+          avatarColor: user?.color,
           isActive: cur.isActive,
           isDeleted: cur.isDeleted,
           isNickNameModified: user?.isSocialNameModified !== 0,

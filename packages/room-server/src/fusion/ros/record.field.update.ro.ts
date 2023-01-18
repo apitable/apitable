@@ -33,6 +33,7 @@ export class FieldUpdateRo {
       'Review Date': '2019-10-30T00:00:00.000Z',
     },
   })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_fields_error })
   fields!: ICellValueMap;
 
   @ApiProperty({
