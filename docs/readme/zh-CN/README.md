@@ -133,7 +133,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 - 先进技术栈
   - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑。
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
+  - 在 `中极其顺畅、方便用户、超快的数据库电子表格接口<canvas> 渲染引擎`
   - 数据库本地架构：变更集/操作/动作/快照等等。
   - **100k+** 数据行与实时合作。
   - 全堆栈访问 API ，从 `数据` 到 `元数据`。
@@ -144,7 +144,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
   - `基于`的空格：使用分开的工作区取代基于App/Base-的结构，使无限制的表格链接成为可能。
   - `可用的暗色模式` 和主题定制.
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
+  - `7 种视图类型`: 网格视图(Dataseet) / 图库视图/ Mindmap 视图/ Kanban 视图/全功能网格视图/日历视图
   - 单击API面板
 - 装备齐全
   - 内置的 10 + 官方模板。
@@ -283,7 +283,7 @@ curl https://apitable.github.io/install.sh | bash
 ### 未来的功能
 
 - 重代码接口构建器
-- Embbedable 3rd party documentation components
+- 可嵌入第三方文件部分
 - SQL类域特定语言
 - IdP
 - Web 3 功能
@@ -314,7 +314,7 @@ curl https://apitable.github.io/install.sh | bash
 
 - **全堆栈开发者**: 你有React, NestJS, TypeScript, Spring Boot, Java, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
 - **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
-- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 And you like to write high quality code with clear documentation and unit tests.
+- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
 无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到 [talent@apitable。 om](mailto:talent@apitable.com)。
 
@@ -348,7 +348,7 @@ curl https://apitable.github.io/install.sh | bash
     <img src="docs/static/screenshot-it.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="可用屏幕截图图像" />
 </p>
 
 ## 🥰 许可协议
