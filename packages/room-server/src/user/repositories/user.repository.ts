@@ -81,10 +81,10 @@ export class UserRepository extends Repository<UserEntity> {
    * @date 2020/7/24 6:10 PM
    */
   selectUserBaseInfoByIds(userIds: number[]): Promise<UserEntity[]> {
-    return this.find({ select: ['id', 'uuid', 'avatar', 'nikeName', 'isSocialNameModified'], where: [{ id: In(userIds), isDeleted: false }] });
+    return this.find({ select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'], where: [{ id: In(userIds), isDeleted: false }] });
   }
 
   selectUserBaseInfoByIdsWithDeleted(userIds: string[]): Promise<UserEntity[]> {
-    return this.find({ select: ['id', 'uuid', 'avatar', 'nikeName', 'isSocialNameModified'], where: [{ id: In(userIds) }] });
+    return this.find({ select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'], where: [{ id: In(userIds) }] });
   }
 }

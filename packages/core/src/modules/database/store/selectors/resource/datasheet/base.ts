@@ -277,7 +277,9 @@ export const getLinkId = (state: IReduxState) => {
 export const allowShowCommentPane = (state: IReduxState) => {
   const spaceId = state.space.activeId;
   const linkId = getLinkId(state);
-  return Boolean(spaceId && !linkId);
+  const embedId = state.pageParams.embedId;
+  
+  return Boolean(spaceId && !linkId) || Boolean(spaceId && embedId);
 };
 
 export const getDatasheetParentId = (state: IReduxState, id?: string) => {

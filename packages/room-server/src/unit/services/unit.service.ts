@@ -111,6 +111,8 @@ export class UnitService {
           isDeleted: tmp?.isDeleted!,
           isNickNameModified: tmp?.isNickNameModified!,
           isMemberNameModified: tmp?.isMemberNameModified!,
+          nickName: tmp.nickName!,
+          avatarColor: tmp.avatarColor!,
           name: tmp.name,
           type: cur.unitType,
           unitId: cur.id,
@@ -202,6 +204,8 @@ export class UnitService {
         isNickNameModified: user.isSocialNameModified !== 0,
         isMemberNameModified: member?.isMemberNameModified!,
         name: member ? member.memberName : user.nikeName!,
+        nickName: user.nikeName!,
+        avatarColor: user.color!,
         type: UnitTypeEnum.MEMBER,
         // NOTE here userId is uuid
         userId: user.uuid!,
