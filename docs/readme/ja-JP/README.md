@@ -133,7 +133,7 @@ APITableは、個人から企業まで、さまざまな素晴らしい機能を
 
 - 高度なテクノロジースタックとオープンソース
   - `リアルタイムコラボレーション` では、複数のユーザーがリアルタイムで、または `運用変換(OT)` アルゴリズムと同時に編集することができます。
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
+  - `<canvas> レンダリングエンジン` で、非常にスムーズで使いやすく、超高速なデータベース表計算インターフェイス。
   - データベースネイティブアーキテクチャ:Changeset / Operation / Action / Snapshotなど。
   - **リアルタイムのコラボレーションによる100k+** データ行。
   - `データ` から `メタデータ` まで、フルスタック API アクセス。
@@ -144,7 +144,7 @@ APITableは、個人から企業まで、さまざまな素晴らしい機能を
   - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
   - `Space based`: アプリ/ベース構造の代わりに、分離されたワークスペースを使用し、テーブルを無制限にリンクできるようにします。
   - `ダークモード` とテーマのカスタマイズが可能です。
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
+  - `7 種類のビュータイプ`: グリッドビュー (データシート) / ギャラリービュー / マインドマップビュー / カンバンビュー / フル機能 ガントビュー / カレンダー ビュー
   - ワンクリックAPIパネル
 - バッテリーが付属しています
   - 10以上の公式テンプレートを内蔵しています。
@@ -283,7 +283,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 ### 今後の機能
 
 - ヘビーコードインターフェースビルダー
-- Embbedable 3rd party documentation components
+- 埋め込み可能なサードパーティ製ドキュメントコンポーネント
 - SQLのようなドメイン固有の言語
 - IdPとして
 - Web 3の機能
@@ -314,7 +314,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 And you like to write high quality code with clear documentation and unit tests.
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 
 Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
 
@@ -348,7 +348,7 @@ Regardless of time and conditions, if you want to get involved to the team of AP
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
 </p>
 
 ## 🥰 ライセンス
