@@ -18,7 +18,7 @@
 
 import { IAddOpenFieldProperty } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class DatasheetFieldCreateRo {
   @ApiProperty({
@@ -27,6 +27,7 @@ export class DatasheetFieldCreateRo {
     description: 'Field Name',
     example: 'field name',
   })
+  @IsString()
   name!: string;
 
   @ApiProperty({
@@ -35,6 +36,7 @@ export class DatasheetFieldCreateRo {
     description: 'Field type',
     example: '',
   })
+  @IsString()
   type!: string;
 
   @ApiPropertyOptional({

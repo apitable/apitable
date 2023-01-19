@@ -4,11 +4,11 @@ New Account Email Verification
 
 Welcome! Your verification code is as follows:
 
-${VERIFICATION_CODE}
+{{VERIFICATION_CODE}}
  
 The code will become invalid after 15 minutes.
 If you didn't recently attempt to verify your email address, you can ignore this email.
 
-copyright © 2022-${YEARS} apitable. All rights reserved.
+copyright © 2022-{{YEARS}} apitable. All rights reserved.
 
 Contact us (https://apitable.com/)

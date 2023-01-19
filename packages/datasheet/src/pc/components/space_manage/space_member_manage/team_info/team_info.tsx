@@ -34,9 +34,9 @@ import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
 import { MemberTable } from '../member_table';
-import { isPrimaryOrOwnFunc } from '../utils';
+import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
 // @ts-ignore
-import { socialPlatPreOperate, isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise';
+import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise';
 interface ITeamInfo {
   searchMemberRes: IMemberInfoInSpace[]
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>
@@ -104,13 +104,13 @@ export const TeamInfo: FC<ITeamInfo> = (props) => {
     });
   };
   const batchDelMemberBtn = () => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       if (isRootTeam && isPrimaryOrOwnSelected(selectedRows)) {
         removeReject();
         return;
       }
       removeBaseFunc(selectedRows);
-    });
+    }, spaceInfo);
   };
 
   const updateSelectArr = (arr: string[]) => {
@@ -124,14 +124,14 @@ export const TeamInfo: FC<ITeamInfo> = (props) => {
   };
 
   const addMemberClick = () => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       setAddMemberModalVisible(true);
-    });
+    }, spaceInfo);
   };
   const changeMemberTeamClick = () => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+    socialPlatPreOperateCheck(() => {
       setChangeMemberTeamModalVisible(true);
-    });
+    }, spaceInfo);
   };
   const isRootTeamSelected = selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === firstTeamId;
   return (
@@ -176,7 +176,7 @@ export const TeamInfo: FC<ITeamInfo> = (props) => {
                 }
 
                 {
-                  isRootTeamSelected && !isBindSocial && socialPlatPreOperate &&
+                  isRootTeamSelected && !isBindSocial &&
                   (
                     <Button
                       onClick={changeMemberTeamClick}
