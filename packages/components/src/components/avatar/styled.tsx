@@ -20,7 +20,7 @@ import { IAvatarProps } from './interface';
 import styled from 'styled-components';
 import { get } from 'lodash';
 
-export const AvatarSizeConfig:{[key: string]:{ size: number, borderRadius: number, borderWidth: number, fontSize:number, gap:number }} = {
+export const AvatarSizeConfig = {
   xxs: {
     size: 20,
     borderRadius: 2,
@@ -76,7 +76,7 @@ export const AvatarWrapper = styled.span<IAvatarProps>`
     }
     ${(props) => {
     const sizeKey = props.size || 'm';
-    const { size, borderRadius , fontSize } = AvatarSizeConfig[sizeKey]!;
+    const { size, borderRadius , fontSize } = AvatarSizeConfig[sizeKey];
     return `
         width: ${size}px;
         height: ${size}px;

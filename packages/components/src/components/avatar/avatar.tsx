@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useRef, useLayoutEffect, useState } from 'react';
+import React, { FC, useLayoutEffect, useRef, useState } from 'react';
 import { IAvatarProps } from './interface';
 import { Box } from 'components';
-import { AvatarWrapper, AvatarChildWrapper, AvatarSizeConfig } from './styled';
+import { AvatarChildWrapper, AvatarSizeConfig, AvatarWrapper } from './styled';
 
 export const Avatar: FC<IAvatarProps> = ({
   size = 'm',
@@ -46,14 +46,13 @@ export const Avatar: FC<IAvatarProps> = ({
       />
     );
   } else if (icon) {
-    const finalIcon = React.isValidElement(icon)
+    childrenToRender = React.isValidElement(icon)
       ? React.cloneElement<any>(icon, {
-        size: AvatarSizeConfig[size]!.size * 0.6,
+        size: AvatarSizeConfig[size].size * 0.6,
         color: (style && style.color) || '#fff',
         className: 'avatar-icon'
       })
       : icon;
-    childrenToRender = finalIcon;
   } else {
     childrenToRender = (
       <AvatarChildWrapper
@@ -70,7 +69,7 @@ export const Avatar: FC<IAvatarProps> = ({
       if (typeof src === 'string' || icon) return 1;
       if (!avatarChildrenRef.current || !avatarNodeRef.current) return 1;
       const childrenWidth = avatarChildrenRef.current?.offsetWidth;
-      const gap = AvatarSizeConfig[size]!.gap;
+      const gap = AvatarSizeConfig[size].gap;
       const nodeWidth = avatarNodeRef.current?.offsetWidth - gap;
       return nodeWidth < childrenWidth ? nodeWidth / childrenWidth : 1;
     };

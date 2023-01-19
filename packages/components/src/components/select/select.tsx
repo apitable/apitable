@@ -167,7 +167,7 @@ export const Select: FC<ISelectProps> & {
     );
   };
 
-  const triggerClick = (_e: React.MouseEvent) => {
+  const triggerClick = () => {
     if (disabled) {
       return;
     }

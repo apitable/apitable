@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.Component<Props, { hasError: boolean }>
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_error: any) {
+  static getDerivedStateFromError() {
     // update state so that the next rendering shows the degraded UI
     return { hasError: true };
   }
