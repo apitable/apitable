@@ -133,7 +133,7 @@ APITable offre une gamme de fonctionnalités étonnantes, du personnel à l'entr
 
 - Pile de technologie avancée et open-source
   - `La collaboration en temps réel` permet à plusieurs utilisateurs d'éditer ensemble en temps réel, ou simultanément avec l'Algorithme `Transformation Opérationnelle (OT)`.
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
+  - Interface de feuille de calcul de base de données extrêmement lisse, conviviale et super rapide dans `<canvas> Moteur de rendu`.
   - Architecture native de la base de données: Changeset / Opération / Action / Snapshot et ainsi de suite.
   - **100k+** lignes de données avec collaboration en temps réel.
   - Accès à l'API Full-stack, de `Data` à `Métadonnées`.
@@ -144,7 +144,7 @@ APITable offre une gamme de fonctionnalités étonnantes, du personnel à l'entr
   - `Opérations de champs`: tri, filtre, regroupement, masquer/démasquer, réglage de hauteur.
   - `Basé sur l'espace`: Utilisez des espaces de travail séparés à la place de la structure basée sur l'application/Base, rendant possible la liaison illimitée de tableaux.
   - `Mode sombre` et la personnalisation du thème disponible.
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
+  - `7 Types de vues`: Vue en grille (Datasheet) / Galerie Vue / Vue Mindmap / Vue Kanban / Vue en pleine fonctionnalité Gantt Vue / Vue calendrier
   - Panneau API en un clic
 - Batteries incluses
   - Modèles officiels intégrés à plus de 10 modèles.
@@ -283,7 +283,7 @@ Utilisez ces conventions communes APITables :
 ### Fonctionnalités futures
 
 - Constructeur d'interface de code lourd
-- Embbedable 3rd party documentation components
+- Composants de documentation de tiers incorporables
 - Langues spécifiques au domaine de type SQL
 - En tant qu'IdP
 - Fonctionnalités Web 3
@@ -314,7 +314,7 @@ Nous recherchons toujours de bons talents pour APITables :
 
 - **Développeur Full-stack**: Vous avez de l'expérience avec React, NestJS, TypeScript, Spring Boot, Java, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
 - **Développeur Back-end**: Vous avez de l'expérience avec NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
-- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
 
 Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l'équipe d'APITable, n'hésitez pas et envoyez votre CV à [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -348,7 +348,7 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
     <img src="docs/static/screenshot-it.png" alt="Image de capture d'écran APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Image de capture d'écran APITable" />
 </p>
 
 ## 🥰 Licence
