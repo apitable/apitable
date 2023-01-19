@@ -96,7 +96,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       return;
     }
 
-    const result = triggerUsageAlert(
+    const result = triggerUsageAlert?.(
       'nodePermissionNums',
       { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
     );

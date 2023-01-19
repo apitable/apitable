@@ -44,7 +44,7 @@ export const DisabledFieldPermission: React.FC<IDisabledPermission> = (props) =>
       });
       return;
     }
-    triggerUsageAlert('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1 });
+    triggerUsageAlert?.('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1 });
     setPermissionStatus(true);
   };
 
