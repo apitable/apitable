@@ -22,8 +22,7 @@ import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
 // @ts-ignore
-// @ts-ignore
-import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert, isEnterprise } from 'enterprise';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
@@ -48,28 +47,34 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
   const colors = useThemeColors();
 
   const renderMenu = (title: string, colorGroup: number[], showTag?: boolean, isBase?: boolean) => (
-    <div className={cls(styles.menu, { [styles.bg]: showTag })}>
-      <div
-        className={cls(styles.menuTitle, {
-          [styles.base]: isBase,
-        })}
-      >
+    <div className={cls(styles.menu, { 
+      [styles.bg]: isEnterprise && showTag,
+      [styles.common]: !isEnterprise
+    })}>
+      {
+        isEnterprise &&
         <div
-          style={{
-            fontWeight: showTag ? 'bold' : 'normal',
-            color: colorVars.firstLevelText,
-          }}
+          className={cls(styles.menuTitle, {
+            [styles.base]: isBase,
+          })}
         >
-          {title}
+          <div
+            style={{
+              fontWeight: showTag ? 'bold' : 'normal',
+              color: colorVars.firstLevelText,
+            }}
+          >
+            {title}
+          </div>
+          {showTag && <SubscribeLabel grade={SubscribeGrade.Silver} />}
         </div>
-        {showTag && <SubscribeLabel grade={SubscribeGrade.Silver} />}
-      </div>
+      }
       <ColorGroup
         colorGroup={colorGroup}
         option={option}
         onChange={(type: OptionSetting, id: string, value: string | number) => {
           if (title === t(Strings.option_configuration_advance_palette)) {
-            const result = triggerUsageAlert('rainbowLabel', { alwaysAlert: true }, SubscribeUsageTipType.Alert);
+            const result = triggerUsageAlert?.('rainbowLabel', { alwaysAlert: true }, SubscribeUsageTipType.Alert);
             if (result) return;
           }
           onChange?.(type, id, value);
