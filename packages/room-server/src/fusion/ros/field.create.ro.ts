@@ -29,6 +29,7 @@ import {
   IReduxState,
 } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class FieldCreateRo {
   @ApiProperty({
@@ -37,6 +38,7 @@ export class FieldCreateRo {
     description: 'Field name',
     example: 'field name',
   })
+  @IsString()
   name: string;
 
   @ApiProperty({
@@ -45,6 +47,7 @@ export class FieldCreateRo {
     description: 'Field type',
     example: '',
   })
+  @IsString()
   type: string;
 
   @ApiPropertyOptional({
@@ -53,6 +56,7 @@ export class FieldCreateRo {
     example: '',
     description: 'Field property',
   })
+  @IsOptional()
   property?: IAddOpenFieldProperty | null;
 
   constructor(name: string, type: string) {
