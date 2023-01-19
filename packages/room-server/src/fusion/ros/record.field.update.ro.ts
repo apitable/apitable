@@ -18,7 +18,7 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsString } from 'class-validator';
 import { ICellValueMap } from 'shared/interfaces';
 
 export class FieldUpdateRo {
@@ -33,6 +33,7 @@ export class FieldUpdateRo {
       'Review Date': '2019-10-30T00:00:00.000Z',
     },
   })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_fields_error })
   fields!: ICellValueMap;
 
   @ApiProperty({
@@ -42,5 +43,6 @@ export class FieldUpdateRo {
     example: 'recV3ElniQavTNyJG',
   })
   @IsDefined({ message: ApiTipConstant.api_params_instance_recordid_error })
+  @IsString()
   recordId!: string;
 }

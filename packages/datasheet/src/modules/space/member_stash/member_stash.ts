@@ -41,7 +41,12 @@ class MemberStash {
     }
     if(this.isEmbedId(cacheId)) {
       const res = await Api.loadOrSearchEmbed(
-        cacheId
+        cacheId,
+        {
+          filterIds: '',
+          keyword: '',
+          linkId: cacheId,
+        }
       );
 
       const { data } = res.data;

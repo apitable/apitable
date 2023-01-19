@@ -23,12 +23,12 @@ import { isString } from 'class-validator';
 
 @Injectable()
 export class ParseObjectPipe implements PipeTransform<string, Object> {
-  transform(value: string, metadata: ArgumentMetadata): number {
-    if (!isString(value)) {
-      return value;
-    }
+  transform(value: string, metadata: ArgumentMetadata): Object {
     try {
-      return plainToClass<any, number>(metadata.metatype as ClassType<any>, JSON.parse(value) as number);
+      if (!isString(value)) {
+        return value;
+      }
+      return plainToClass<any, Object>(metadata.metatype as ClassType<any>, JSON.parse(value));
     } catch (e) {
       throw new BadRequestException('Bad Request');
     }

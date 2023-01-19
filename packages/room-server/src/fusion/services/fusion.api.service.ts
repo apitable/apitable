@@ -323,7 +323,7 @@ export class FusionApiService {
     return this.commandService.setPageParam({ datasheetId: dst.datasheet.id }, store);
   }
 
-  public async deleteField(datasheetId: string, fieldId: string, conversion: Conversion) {
+  public async deleteField(datasheetId: string, fieldId: string, conversion?: Conversion) {
     const auth = { token: this.request.headers.authorization };
     const command: ICollaCommandOptions = {
       cmd: CollaCommandName.DeleteField,
