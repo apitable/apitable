@@ -17,7 +17,7 @@
  */
 
 /**
- * WCAG 2.0 divides the color contrast into three grades, Grade A, Grade AA and Grade AAA. 
+ * WCAG 2.0 divides the color contrast into three grades, Grade A, Grade AA and Grade AAA.
  * The higher the grade, the higher the color contrast and the greater the visual pressure:
  * https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast
  * Grade A (3:1 contrast is adopted, which is the lowest contrast acceptable to ordinary observers)
@@ -25,16 +25,18 @@
  * AAA (7:1 contrast is adopted, which is the lowest acceptable contrast for people with severe visual loss)
  * REF: https://github.com/mui-org/material-ui/blob/ec37e2bb3c904d9552fa819425ee1eef72914996/packages/material-ui/src/styles/createPalette.js#L104
  */
-import { light, dark } from '../theme';
+import { dark, light } from '../theme';
 import Color from 'color';
 import * as Colors from '../colors';
 
-type IHueShade = [string, number];
+type IHex = keyof typeof allColors;
+
+type IHueShade = [IHex, number];
 type IHexHueShadeMap = {
   [hex: string]: IHueShade
 };
 
-const allColors: { [hue: string]: Colors.IColor } = {
+const allColors = {
   black: Colors.black,
   blackBlue: Colors.blackBlue,
   blue: Colors.blue,
@@ -57,7 +59,7 @@ const getColorHexHueShadeMap = () => {
     const [hue, colorObj] = item;
     colorObj && Object.entries(colorObj).forEach(colorItem => {
       const [shade, value] = colorItem;
-      colorHexHueShadeMap[value.toUpperCase()] = [hue, parseInt(shade, 10)];
+      colorHexHueShadeMap[value.toUpperCase()] = [(hue as IHex), parseInt(shade, 10)];
     });
   });
   return colorHexHueShadeMap;
@@ -81,13 +83,13 @@ export const getActionColor = (color: string) => {
     const currentLevel = shadeLevel.findIndex(shade => shade === currentShade);
     if (currentLevel > 7) {
       return {
-        hover: allColors[hue]![shadeLevel[currentLevel - 2]!],
-        active: allColors[hue]![shadeLevel[currentLevel - 4]!],
+        hover: allColors[hue][shadeLevel[currentLevel - 2]!],
+        active: allColors[hue][shadeLevel[currentLevel - 4]!],
       };
     }
     return {
-      hover: allColors[hue]![shadeLevel[currentLevel + 1]!],
-      active: allColors[hue]![shadeLevel[currentLevel + 2]!],
+      hover: allColors[hue][shadeLevel[currentLevel + 1]!],
+      active: allColors[hue][shadeLevel[currentLevel + 2]!],
     };
   }
   return {
@@ -108,7 +110,7 @@ export const getNextShadeColor = (color: string, gap: number): string => {
     const currentLevel = shadeLevel.findIndex(shade => shade === currentShade);
     const nextLevel = currentLevel + gap;
     const nextShade = shadeLevel[nextLevel];
-    if (nextShade) return allColors[hue]![nextShade]!;
+    if (nextShade) return allColors[hue][nextShade]!;
     return color;
   }
   // The original value of the color not in the color palette is returned.
@@ -126,12 +128,9 @@ export function getContrastText(
   background: string, 
   contrastThreshold: number,
 ) {
-  const contrastText =
-    getContrastRatio(background, dark.palette.text.primary) >= contrastThreshold
-      ? dark.palette.text.primary
-      : light.palette.text.primary;
-
-  return contrastText;
+  return getContrastRatio(background, dark.palette.text.primary) >= contrastThreshold
+    ? dark.palette.text.primary
+    : light.palette.text.primary;
 }
 
 export function decomposeColor(color: string): { type: string, values: number[] } {
@@ -208,6 +207,7 @@ export const rgba2hex = (foregroundColor: string, backgroundColor = '#FFFFFF') =
 /**
  * Adjust the transparency of rgba colors
  * @param rgbaColor Rgba color
+ * @param opacity
  */
 export const editRgbaOpacity = (rgbaColor: string, opacity: number) => {
   const rgb = rgbaColor.match(/(\d(\.\d+)?)+/g);

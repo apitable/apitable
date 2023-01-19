@@ -95,7 +95,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
 
 export const createUseMessage = () => {
   let domWrapper: HTMLDivElement | null = null;
-  const useMessage = (props: IMessageUIProps) => {
+  return (props: IMessageUIProps) => {
     if (!domWrapper) {
       const rootDom = document.createElement('div');
       document.body.appendChild(rootDom);
@@ -105,7 +105,5 @@ export const createUseMessage = () => {
     root.render(
       <MessageUiContainer {...props} messageKey={props.messageKey} />);
   };
-
-  return useMessage;
 };
 

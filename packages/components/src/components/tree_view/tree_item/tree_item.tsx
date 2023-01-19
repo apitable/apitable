@@ -168,11 +168,9 @@ const TreeItemBase: FC<ITreeItemProps> = ({
   nodeId,
   selectable = true,
   isLeaf = false,
-  data: _data = null,
   pos,
   parentNode,
   children,
-  className: _className,
   draggable = true,
 }) => {
   const {

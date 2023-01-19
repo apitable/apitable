@@ -22,6 +22,7 @@ import { StyledMenuContainer, StyledSubMenu, StyledMenuItem, StyledMenuItemConte
   StyledMenuShadow, StyledMenuItemExtra } from './styled';
 import { ICacheOverlay, IContextMenuClickState, IContextMenuItemProps, IContextMenuProps } from './interface';
 import { manager } from './event_manager';
+import { IMenuConfig } from './interface';
 import { EVENT_TYPE } from './consts';
 import { Tooltip } from 'antd';
 import { omit } from 'lodash';
@@ -152,11 +153,11 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // mouse enter event
-  const handleMouseEnter = (item: IContextMenuProps, index: number) => {
+  const handleMouseEnter = (item: IContextMenuItemProps, index: number) => {
     const menu = menuRef.current;
     if (!menu) return;
     setPaths((source) => {
-      source[index] = (item as any).key;
+      source[index] = item.key;
       return source.slice(0, index + 1);
     });
   };
@@ -226,7 +227,8 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // Compatible with the usage of menuId and show
-  const handler = React.useCallback((configs: { e: React.MouseEvent<HTMLElement>, extraInfo?: any }) => {
+  const handler = React.useCallback((configs?: IMenuConfig) => {
+    if (!configs) return;
     const { e, extraInfo } = configs;
     setContextMenuState({
       offset: [e.clientX, e.clientY],
@@ -385,7 +387,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   useEffect(() => {
     manager.on(EVENT_TYPE.HIDE_ALL, cancelContextMenu);
     if (menuId) {
-      manager.on(menuId, handler as any);
+      manager.on(menuId, handler);
     }
     return () => {
       manager.off(EVENT_TYPE.HIDE_ALL);
