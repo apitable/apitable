@@ -73,8 +73,8 @@ const CellValueBase: React.FC<ICellValueComponent> = props => {
     });
   }
 
-  function toggleEdit() {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
+  async function toggleEdit() {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }
 
   const cellProps = {

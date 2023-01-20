@@ -127,7 +127,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   document.body.appendChild(container);
   const root = createRoot(container);
 
-  const modalClose = () => {
+  const modalClose = async() => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
@@ -140,7 +140,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     if (recordType === RecordType.Datasheet) {
       expandRecordIdNavigate(undefined, true);
-      ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      await ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }
 
     const idx = recordModalCloseFns.indexOf(modalClose);
@@ -482,8 +482,8 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
 
   useEffect(() => {
     if (isSideRecordOpen && pageParamsRecordId) {
-      setTimeout(() => {
-        ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      setTimeout(async() => {
+        await ShortcutActionManager.trigger(ShortcutActionName.Focus);
       }, 50);
     }
   }, [isSideRecordOpen, pageParamsRecordId, activeId]);
