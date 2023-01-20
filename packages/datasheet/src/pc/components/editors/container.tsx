@@ -384,8 +384,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     cellMove(CellDirection.Left);
   };
 
-  const appendNewRow = () => {
-    appendRow();
+  const appendNewRow = async() => {
+    await appendRow();
     const state = store.getState();
     setTimeout(() => {
       const activeCellUIIndex = Selectors.getCellUIIndex(state, activeCell!);

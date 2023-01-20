@@ -379,7 +379,7 @@ export class ResourceService implements IResourceService {
     this.applyOperations(this.store, resourceOpsCollects);
   };
 
-  operationExecuted(resourceOpsCollects: IResourceOpsCollect[]) {
+  operationExecuted = (resourceOpsCollects: IResourceOpsCollect[]) => {
     this.localOperationDispatch(resourceOpsCollects);
     // Collaboration of operations to remote.
     this.roomService.syncOperations(resourceOpsCollects);
@@ -388,7 +388,7 @@ export class ResourceService implements IResourceService {
     // this.opEventManager.handleOperations(resourceOpsCollects
     //   .filter(v => v.resourceType === ResourceType.Datasheet) // Only the datasheet related op needs
     //   .map(v => ({ resourceId: v.resourceId, resourceType: v.resourceType, operations: [v.operation] })), this.store);
-  }
+  };
 
   private createDataBus(): databus.DataBus {
     return databus.DataBus.create({

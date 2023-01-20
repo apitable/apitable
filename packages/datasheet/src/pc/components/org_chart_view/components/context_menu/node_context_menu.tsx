@@ -184,8 +184,8 @@ export const NodeContextMenu: FC = () => {
           {
             icon: <CopyOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_create_a_node_copy),
-            onClick: ({ props: { node }}) => {
-              const result = copyRecord(node.id);
+            onClick: async({ props: { node }}) => {
+              const result = await copyRecord(node.id);
               if (result.result === ExecuteResult.Success) {
                 const newRecordId = result.data && result.data[0];
                 const parent = node?.data.parents?.[0];

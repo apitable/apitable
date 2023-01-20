@@ -366,7 +366,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     };
   })();
 
-  clickFieldHead = (target: HTMLElement, type?: string | null) => {
+  clickFieldHead = (target: HTMLElement, type?: string | null): void => {
     const { datasheetId, permissions } = this.props;
     const headerEle = getParentNodeByClass(target, FIELD_HEAD_CLASS);
     if (!headerEle) {
@@ -404,7 +404,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     );
   };
 
-  onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  onClick = async(e: React.MouseEvent<HTMLDivElement>): Promise<void> => {
     const { permissions } = this.props;
     const target = e.target as HTMLElement;
     const element = getParentNodeByClass(target, OPERATE_BUTTON_CLASS);
@@ -416,7 +416,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
     if (operateType === ButtonOperateType.AddRecord && permissions.rowCreatable) {
       const recordId = getElementDataset(element, 'recordId');
-      appendRow({ recordId: recordId || '' });
+      await appendRow({ recordId: recordId || '' });
       return;
     }
     return this.clickFieldHead(element.parentNode as HTMLElement, operateType);
