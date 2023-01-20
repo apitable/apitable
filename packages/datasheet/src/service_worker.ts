@@ -1,3 +1,5 @@
+import { getEnvVars } from './get_env';
+
 /**
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
@@ -58,7 +60,8 @@ export function register(config?: Config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.NEXT_PUBLIC_PUBLIC_URL}/service-worker.js`;
+      const envVars = getEnvVars();
+      const swUrl = `${envVars.NEXT_PUBLIC_PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
