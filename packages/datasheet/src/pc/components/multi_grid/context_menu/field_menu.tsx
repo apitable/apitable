@@ -80,7 +80,6 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   const isGanttView = view.type === ViewType.Gantt;
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
 
-  const commandManager = resourceService.instance!.commandManager;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     permissions,
@@ -130,7 +129,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   }, [canGroup, field]);
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {

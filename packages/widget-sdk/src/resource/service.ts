@@ -46,7 +46,7 @@ import localForage from 'localforage';
 import { Store } from 'redux';
 import SocketIO from 'socket.io-client';
 import lsStore from 'store2';
-import { loadDatasheet } from './databus';
+import { ClientStoreProvider, loadDatasheet } from './databus';
 import { ClientDataStorageProvider } from './databus/data.storage.provider';
 import { IResourceService, IServiceError } from './interface';
 
@@ -178,16 +178,18 @@ export class ResourceService implements IResourceService {
     switch (resourceType) {
       case ResourceType.Datasheet:
         return new Promise<void>((resolve, reject) => {
-          loadDatasheet(
-            this.database,
-            to,
-            datasheet => {
-              this.currentResource = datasheet;
-              resolve();
-            },
-            overWrite,
-            extra as { recordIds: string[] },
-            () => reject(),
+          this.store.dispatch(
+            loadDatasheet(
+              this.database,
+              to,
+              datasheet => {
+                this.currentResource = datasheet;
+                resolve();
+              },
+              overWrite,
+              extra as { recordIds: string[] },
+              () => reject(),
+            ) as any,
           );
         });
       // TODO dashboard, form, mirror
@@ -393,9 +395,7 @@ export class ResourceService implements IResourceService {
       dataStorageProvider: new ClientDataStorageProvider({
         operationExecuted: (resourceOpsCollects: IResourceOpsCollect[]) => this.operationExecuted(resourceOpsCollects),
       }),
-      storeProvider: {
-        createStore: () => this.store,
-      },
+      storeProvider: new ClientStoreProvider(this.store),
     });
   }
 

@@ -79,7 +79,6 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
   const isKanban = view.type === ViewType.Kanban;
-  const commandManager = resourceService.instance!.commandManager;
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -127,7 +126,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       data.push(recordId);
     }
     // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
-    const { result } = commandManager.execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
     });

@@ -22,7 +22,7 @@ export function loadDatasheet(
     }
 
     if (!datasheet || datasheet.isPartOfData || overWrite) {
-      database
+      return database
         .getDatasheet(datasheetId, {
           loadOptions: {
             shareId,
