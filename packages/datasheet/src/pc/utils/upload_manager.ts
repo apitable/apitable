@@ -82,7 +82,7 @@ export class UploadManager {
    */
   constructor(
     private readonly limit: number,
-    private readonly getCommandManager: () => CollaCommandManager,
+    private readonly commandManager: CollaCommandManager,
   ) {
     window.onbeforeunload = this.checkBeforePageUnMount;
   }
@@ -513,7 +513,7 @@ export class UploadManager {
     recordId: string,
     cellValue: IAttachmentValue[],
   ) {
-    return this.getCommandManager().execute({
+    return this.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [
