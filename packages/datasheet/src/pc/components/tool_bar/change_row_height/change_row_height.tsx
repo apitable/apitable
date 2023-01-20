@@ -148,7 +148,7 @@ export const ChangeRowHeight = (props) => {
 
   function changeCommand(level: RowHeightLevel) {
     executeCommandWithMirror(()=>{
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRowHeight,
         viewId: view.id,
         level,
@@ -160,7 +160,7 @@ export const ChangeRowHeight = (props) => {
 
   const changeAutoHeadHeightCommand = (value: boolean) => {
     executeCommandWithMirror(()=>{
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetAutoHeadHeight,
         viewId: view.id,
         isAuto: value,

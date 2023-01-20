@@ -126,7 +126,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       data.push(recordId);
     }
     // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
-    const { result } = resourceService.instance!.commandManagerGetter().execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
     });

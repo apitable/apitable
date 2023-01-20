@@ -100,7 +100,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       alarm: convertAlarmStructure?.(curAlarm as IRecordAlarmClient),
@@ -119,7 +119,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
       const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
 
       const callback = (meta: IURLMeta) => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetRecords,
           datasheetId,
           data: [
@@ -152,7 +152,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
         endTime: value as number | null,
       };
       const commandDataArr = autoTaskScheduling(visibleRows, activeView.style, sourceRecordData);
-      resourceService.instance?.commandManagerGetter().execute({
+      resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: commandDataArr,
       });

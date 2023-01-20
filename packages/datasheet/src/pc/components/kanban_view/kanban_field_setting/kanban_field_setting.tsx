@@ -121,7 +121,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
       },
       newField.type === FieldType.Member,
       );
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetGroup,
         viewId,
         data: [{ fieldId: newField.id, desc: false }],
@@ -135,7 +135,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
       styleKey: KanbanStyleKey.KanbanFieldId,
       styleValue: value,
     });
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetGroup,
       viewId,
       data: [{ fieldId: value, desc: false }],

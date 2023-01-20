@@ -68,7 +68,7 @@ export const CreateFieldModal = memo((props) => {
       return;
     }
     const [startFieldId, endFieldId] = getNewIds(IDPrefix.Field, 2);
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: generateField(endFieldId, t(Strings.gantt_end_field_name)),
@@ -88,7 +88,7 @@ export const CreateFieldModal = memo((props) => {
       });
 
       executeCommandWithMirror(() => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetGanttStyle,
           viewId: viewId!,
           data: [{

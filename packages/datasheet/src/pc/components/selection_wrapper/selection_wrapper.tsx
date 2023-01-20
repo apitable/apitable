@@ -124,7 +124,7 @@ export const attachSelection = WrappedComponent => {
         await this.preFetchUnitMapIfNeed(
           selectRanges, fillHandleStatus.fillRange, fillHandleStatus.direction,
         );
-        const { result } = resourceService.instance!.commandManagerGetter().execute({
+        const { result } = resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.FillDataToCells,
           selectionRange: this.props.selection,
           fillRange: fillHandleStatus.fillRange,

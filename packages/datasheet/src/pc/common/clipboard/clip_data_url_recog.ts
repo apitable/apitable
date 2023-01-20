@@ -100,7 +100,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
             }));
           }
 
-          resourceService.instance!.commandManagerGetter().execute({
+          resourceService.instance!.commandManager.execute({
             cmd: CollaCommandName.SetRecords,
             datasheetId,
             data: [{
@@ -189,7 +189,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
         value: generateOpValue(target.data),
       }));
 
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data: opData,

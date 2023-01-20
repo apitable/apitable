@@ -217,7 +217,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   });
 
   const addRecord = (index: number, cellValue?: { [fieldId: string]: ICellValue }) => {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId,
@@ -301,7 +301,6 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       return;
     }
     const { dragRecordId, dropRecordId, direction } = commitRef.current;
-    const commandManager = resourceService.instance!.commandManagerGetter;
     const data = [
       {
         recordId: dragRecordId,
@@ -309,7 +308,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         direction,
       },
     ];
-    commandManager().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       viewId,
       data,

@@ -72,7 +72,7 @@ export const changeViewAutoSave = async(autoSave: boolean, datasheetId: string, 
     autoSave: _autoSave,
   };
   const serverViewDate = _autoSave ? await requestServerView(datasheetId!, viewId, shareId) : undefined;
-  const { result } = resourceService.instance!.commandManagerGetter().execute((_autoSave ? { ...baseOption, viewProperty: serverViewDate } : baseOption) as any);
+  const { result } = resourceService.instance!.commandManager.execute((_autoSave ? { ...baseOption, viewProperty: serverViewDate } : baseOption) as any);
 
   if (ExecuteResult.Success === result) {
     Message.success({
@@ -115,7 +115,7 @@ export const PopupContent: React.FC<IPopupContentProps> = (props) => {
       return;
     }
     const serverViewDate = await requestServerView(datasheetId!, viewId, shareId);
-    const { result } = resourceService.instance!.commandManagerGetter().execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.ManualSaveView,
       viewId: viewId!,
       viewProperty: serverViewDate as ITemporaryView

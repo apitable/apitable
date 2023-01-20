@@ -59,7 +59,7 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
       const onClick = () => {
         const finalWidth = Math.floor(maxWidth * 0.8);
         executeCommandWithMirror(() => {
-          resourceService.instance!.commandManagerGetter().execute({
+          resourceService.instance!.commandManager.execute({
             cmd: CollaCommandName.SetColumnsProperty,
             viewId: view.id,
             fieldId: firstFieldId,

@@ -87,7 +87,7 @@ export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IField
   }
 
   function onBlur() {
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       fieldId,
       data: {

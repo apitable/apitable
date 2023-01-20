@@ -58,7 +58,7 @@ export const CustomCycleEdge: FC<EdgeProps> = ({
   const handleDelete = () => {
     const sourceNode = nodes.find(item => item.id === source);
     const { data: { linkIds }, id } = sourceNode!;
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{

@@ -56,7 +56,7 @@ export const EdgeContextMenu: FC = props => {
               const sourceNode = nodes.find(item => item.id === source);
               if (sourceNode) {
                 const { data, id } = sourceNode as INode;
-                resourceService.instance!.commandManagerGetter().execute({
+                resourceService.instance!.commandManager.execute({
                   cmd: CollaCommandName.SetRecords,
                   datasheetId,
                   data: [{

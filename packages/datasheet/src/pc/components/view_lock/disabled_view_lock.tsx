@@ -34,7 +34,7 @@ export const DisabledViewLock: React.FC<Omit<IViewLockProps, 'unlockHandle'>> = 
 
   const openViewLock = () => {
     const value = areaRef.current!['resizableTextArea']['textArea']['value'];
-    const { result } = resourceService.instance!.commandManagerGetter().execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetViewLockInfo,
       data: value ? { description: value, unitId: unitId } : { unitId: unitId },
       viewId,

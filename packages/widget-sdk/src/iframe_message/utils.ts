@@ -51,5 +51,5 @@ export const cmdExecute = async(
   if (isIframe()) {
     return (await widgetMessage.syncCmd(cmdOptions));
   }
-  return resourceService.commandManagerGetter().execute(cmdOptions);
+  return resourceService.commandManager.execute(cmdOptions);
 };

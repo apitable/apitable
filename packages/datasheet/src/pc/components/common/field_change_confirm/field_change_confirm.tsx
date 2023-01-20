@@ -59,7 +59,7 @@ export function fieldChangeConfirm(props: {
     cancelText: t(Strings.cancel),
     okText: t(Strings.confirm),
     onOk: () => {
-      const { result } = resourceService.instance!.commandManagerGetter().execute({
+      const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.DeleteField,
         data: fieldRanges ? fieldIds.map(fieldId => ({ fieldId })) : [{ fieldId }],
         datasheetId

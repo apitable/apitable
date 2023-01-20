@@ -54,7 +54,7 @@ export const SetGalleryLayout = (props) => {
 
   const setGalleryStyle = (opt: Omit<ISetGalleryStyle, 'viewId' | 'cmd'>) => {
     executeCommandWithMirror(() => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetGalleryStyle,
         viewId: activeView.id,
         styleKey: opt.styleKey as any,

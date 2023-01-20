@@ -73,7 +73,7 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
     if (errTip || value === widget?.snapshot.widgetName) {
       return;
     }
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetWidgetName,
       resourceId: widgetId,
       resourceType: ResourceType.Widget,

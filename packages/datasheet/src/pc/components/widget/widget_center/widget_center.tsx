@@ -80,7 +80,7 @@ export const installWidget = (widgetPackageId: string, nodeId: string, name?: st
 
 export const installToPanel = (data: IWidget, resourceId: string, resourceType: ResourceType.Mirror | ResourceType.Datasheet) => {
   return new Promise<void>((resolve, reject) => {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddWidgetToPanel,
       resourceId: resourceId!,
       resourceType: resourceType,
@@ -96,7 +96,7 @@ export const installToPanel = (data: IWidget, resourceId: string, resourceType: 
 
 export const installToDashboard = (data: IWidget, dashboardId: string) => {
   return new Promise<void>((resolve, reject) => {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddWidgetToDashboard,
       dashboardId,
       widgetIds: [data.id],

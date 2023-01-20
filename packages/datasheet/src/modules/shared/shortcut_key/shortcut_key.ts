@@ -301,7 +301,7 @@ export function clear() {
       },
     });
 
-  resourceService.instance!.commandManagerGetter().execute({
+  resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.SetRecords,
     data,
   });

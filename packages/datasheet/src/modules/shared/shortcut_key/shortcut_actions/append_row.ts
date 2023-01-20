@@ -77,7 +77,7 @@ export function appendRow(option: IAppendRowsOption = {}) {
   const expectIndex = direction === Direction.Up ? baseRecordIndex : baseRecordIndex + 1;
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, expectIndex));
 
-  const result = resourceService.instance!.commandManagerGetter().execute({
+  const result = resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.AddRecords,
     count,
     viewId: view.id,

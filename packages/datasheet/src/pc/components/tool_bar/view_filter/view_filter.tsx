@@ -88,7 +88,7 @@ const ViewFilterBase = props => {
     (data: IFilterInfo | null) => {
       executeCommandWithMirror(
         () => {
-          resourceService.instance!.commandManagerGetter().execute({
+          resourceService.instance!.commandManager.execute({
             cmd: CollaCommandName.SetViewFilter,
             viewId: view.id,
             data: data || undefined,

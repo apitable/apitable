@@ -94,7 +94,7 @@ export const WidgetList = () => {
   }, [setDragging]);
 
   const recordWidgetHeight = (widgetId: string, widgetHeight: number) => {
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.ChangeWidgetInPanelHeight,
       widgetHeight: widgetHeight,
       resourceId: resourceId!,
@@ -115,7 +115,7 @@ export const WidgetList = () => {
       title: t(Strings.delete_widget_title),
       content: t(Strings.delete_widget_content),
       onOk: () => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.DeleteWidget,
           resourceId: resourceId!,
           resourceType: resourceType,
@@ -138,7 +138,7 @@ export const WidgetList = () => {
         height: widgetPosition.h,
       };
     });
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveWidget,
       resourceId: resourceId!,
       resourceType,

@@ -43,7 +43,7 @@ const FieldDescEditor = ({ field, onClose, readOnly }) => {
     if (textLenHasExceeded) {
       reject(t(Strings.field_desc_length_exceeded));
     }
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       fieldId: field.id,
       data: {

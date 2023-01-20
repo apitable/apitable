@@ -38,7 +38,7 @@ export const useCommand = () => {
   const snapshot = useSelector(Selectors.getSnapshot);
 
   const addRecords = (index: number, count: number, cellValues?: { [fieldId: string]: ICellValue }[]) => {
-    return resourceService.instance!.commandManagerGetter().execute({
+    return resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       viewId: viewId!,
       index,
@@ -48,7 +48,7 @@ export const useCommand = () => {
   };
 
   const setFieldAttr = (fieldId: string, field: IField, dstId?: string) => {
-    return resourceService.instance!.commandManagerGetter().execute({
+    return resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       datasheetId: dstId || datasheetId,
       fieldId,
@@ -57,7 +57,7 @@ export const useCommand = () => {
   };
 
   const setRecords = (data: ISetRecordData[]) => {
-    return resourceService.instance!.commandManagerGetter().execute({
+    return resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data,
@@ -65,7 +65,7 @@ export const useCommand = () => {
   };
 
   const addField = (field: IField, index: number) => {
-    return resourceService.instance!.commandManagerGetter().execute({
+    return resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -85,7 +85,7 @@ export const useCommand = () => {
     const activeView = Selectors.getCurrentViewBase(snapshot, viewId, datasheetId, undefined, mirror) as IKanbanViewProperty;
 
     executeCommandWithMirror(() => {
-      return resourceService.instance!.commandManagerGetter().execute({
+      return resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetKanbanStyle,
         viewId: viewId!,
         addRecord,  
@@ -99,7 +99,7 @@ export const useCommand = () => {
     }, () => {
       if (addRecord) {
         const unitId = state.user.info!.unitId;
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.AddRecords,
           viewId: viewId!,
           index: activeView.rows.length,

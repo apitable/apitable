@@ -129,7 +129,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   }, [canGroup, field]);
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -158,7 +158,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
     if (columnIndex === -1) return;
 
     executeCommandWithMirror(() => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetViewFrozenColumnCount,
         viewId: view.id,
         count: columnIndex + 1,

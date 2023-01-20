@@ -293,7 +293,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
       },
     };
 
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [
         {
@@ -311,7 +311,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
       });
 
       executeCommandWithMirror(() => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetOrgChartStyle,
           viewId,
           styleKey: OrgChartStyleKeyType.LinkFieldId,
@@ -347,11 +347,13 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewId]);
 
-  const handleChange = async(data: ISetRecordOptions[]) => {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>? set records:0');
+  const handleChange = (data: ISetRecordOptions[]) => {
     if (data.length) {
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set records', data);
-      await resourceService.instance.currentResource!.setRecords(data, {});
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        data,
+      });
     }
   };
 

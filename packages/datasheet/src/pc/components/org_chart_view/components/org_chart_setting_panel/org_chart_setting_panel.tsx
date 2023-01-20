@@ -94,7 +94,7 @@ export const OrgChartSettingPanel: React.FC<IOrgChartSettingPanelProps> = props 
 
   const handleChange = (key, value) => {
     executeCommandWithMirror(() => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetOrgChartStyle,
         viewId: activeView.id!,
         styleKey: key,
