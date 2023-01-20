@@ -203,7 +203,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       return;
     }
     mainWidgetMessage.onSyncCmdOptions(widgetId, res => {
-      mainWidgetMessage.syncCmdOptionsResult(widgetId, resourceService.instance!.commandManager.execute(res));
+      mainWidgetMessage.syncCmdOptionsResult(widgetId, resourceService.instance!.commandManagerGetter().execute(res));
     });
     mainWidgetMessage.onLoadOtherDatasheetInit(widgetId, datasheetId => {
       const state = store.getState();

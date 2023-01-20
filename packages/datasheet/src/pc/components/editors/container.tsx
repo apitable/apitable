@@ -629,7 +629,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       if (!record || !field) {
         return;
       }
-      resourceService.instance!.commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data: [
@@ -647,7 +647,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
 
         const callback = (meta: IURLMeta) => {
-          resourceService.instance!.commandManager.execute({
+          resourceService.instance!.commandManagerGetter().execute({
             cmd: CollaCommandName.SetRecords,
             datasheetId,
             data: [
@@ -691,7 +691,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       !isEqual(alarm, formatCurAlarm) &&
       convertAlarmStructure
     ) {
-      resourceService.instance!.commandManager!.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetDateTimeCellAlarm,
         recordId: record.id,
         fieldId: field.id,
@@ -699,7 +699,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       });
  
     } else {
-      resourceService.instance!.commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
@@ -719,7 +719,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         endTime: value as number | null,
       };
       const commandDataArr = autoTaskScheduling(visibleRows, activeView.style, sourceRecordData);
-      resourceService.instance?.commandManager.execute({
+      resourceService.instance?.commandManagerGetter().execute({
         cmd: CollaCommandName.SetRecords,
         data: commandDataArr,
       });

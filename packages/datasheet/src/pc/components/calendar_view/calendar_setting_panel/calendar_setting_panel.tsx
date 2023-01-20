@@ -137,7 +137,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     }
     const newFieldId = getNewId(IDPrefix.Field);
     const newFieldName = styleKey === CalendarStyleKeyType.StartFieldId ? t(Strings.calendar_start_field_name) : t(Strings.calendar_end_field_name);
-    const result = resourceService.instance!.commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -161,7 +161,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
 
   const handleStyleChange = (styleKey, styleValue) => {
     executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetCalendarStyle,
         viewId: viewId!,
         isClear: styleValue === UNUSED_END_DATE,

@@ -151,7 +151,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
             clearTooltipInfo();
             toggleEditing();
             const user = state.user.info;
-            resourceService.instance!.commandManager!.execute({
+            resourceService.instance!.commandManagerGetter().execute({
               cmd: CollaCommandName.SetDateTimeCellAlarm,
               recordId: pointRecordId,
               fieldId: pointFieldId,

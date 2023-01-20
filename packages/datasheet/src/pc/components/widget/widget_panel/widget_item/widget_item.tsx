@@ -147,7 +147,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
     if (mirrorId) {
       datasheetId = Selectors.getMirrorSourceInfo(store.getState(), mirrorId)!.datasheetId;
     }
-    const result = resourceService.instance!.commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetWidgetDepDstId,
       resourceId: widgetId,
       resourceType: ResourceType.Widget,
@@ -392,7 +392,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
     if (errTip || value === widget?.snapshot.widgetName) {
       return;
     }
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetWidgetName,
       resourceId: widgetId,
       resourceType: ResourceType.Widget,

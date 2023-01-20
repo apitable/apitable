@@ -125,7 +125,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       newCellValue = [{ type: SegmentType.Text, text: searchValue }];
     }
 
-    const ret = resourceService.instance!.commandManager.execute({
+    const ret = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddRecords,
       datasheetId: foreignDatasheet.id,
       viewId: hasLimitToView ? foreignView.id : '',

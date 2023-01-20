@@ -191,7 +191,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     const view = viewList[tabIndex] as IViewProperty;
     const snapshot = Selectors.getSnapshot(store.getState());
     const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
-    const { result } = resourceService.instance!.commandManager.execute({
+    const { result } = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddViews,
       data: [{
         startIndex: tabIndex + 1,

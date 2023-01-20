@@ -70,7 +70,7 @@ const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
   const { mobile } = usePlatform();
 
   const onChange = (value: IAttachmentValue[]) => {
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       data: [{
         recordId: recordId,

@@ -148,7 +148,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
     const { commentMsg, commentId } = comment;
     const emojiUsers = get(emojis, `${commentId}.${emojiKey}`, []) as string[];
 
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.UpdateComment,
       datasheetId: datasheetId,
       recordId: expandRecordId,
@@ -248,7 +248,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
                                 cancelText: t(Strings.cancel),
                                 type: 'danger',
                                 onOk: () => {
-                                  resourceService.instance!.commandManager.execute({
+                                  resourceService.instance!.commandManagerGetter().execute({
                                     cmd: CollaCommandName.DeleteComment,
                                     datasheetId: datasheetId,
                                     recordId: expandRecordId,

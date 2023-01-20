@@ -369,7 +369,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
       return;
     }
     loadWidgetCheck(devUrl, widgetPackageId).then(() => {
-      const result = resourceService.instance!.commandManager.execute({
+      const result = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetGlobalStorage,
         key: `widget_loader_code_url_${widgetPackageId}`,
         value: devUrl,

@@ -69,7 +69,6 @@ export function appendRow(option: IAppendRowsOption = {}) {
     executeData['cellValues'] = prevCellValues == null ? [recordData] : [{ ...prevCellValues[0], ...recordData }];
   }
 
-  const collaCommandManager = resourceService.instance!.commandManager;
   let index = findRowsIndexById(recordId);
   if (direction === Direction.Down) {
     index++;
@@ -78,7 +77,7 @@ export function appendRow(option: IAppendRowsOption = {}) {
   const expectIndex = direction === Direction.Up ? baseRecordIndex : baseRecordIndex + 1;
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, expectIndex));
 
-  const result = collaCommandManager.execute({
+  const result = resourceService.instance!.commandManagerGetter().execute({
     cmd: CollaCommandName.AddRecords,
     count,
     viewId: view.id,

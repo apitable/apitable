@@ -55,7 +55,7 @@ export const ToolBar: React.FC<IToolBarProps> = props => {
   }, shallowEqual);
 
   const updateProps = (partProps: Partial<IFormProps>) => {
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.UpdateFormProps,
       formId,
       partialProps: partProps,

@@ -3,7 +3,14 @@ import { StatusCode, databus, IApiWrapper, IReduxState, IServerDatasheetPack, St
 
 export class ClientDataLoader implements databus.IDataLoader {
   async loadDatasheetPack(datasheetId: string, options: IClientLoadDatasheetPackOptions): Promise<databus.ILoadDatasheetPackResult> {
-    const { shareId, templateId, embedId, recordIds, dispatch, getState } = options;
+    const { shareId, templateId, embedId, recordIds, dispatch, getState, fakePack } = options;
+
+    if (fakePack) {
+      return {
+        datasheetPack: {} as any,
+      };
+    }
+
     const state = getState();
 
     dispatch(StoreActions.requestDatasheetPack(datasheetId));
@@ -34,4 +41,5 @@ export interface IClientLoadDatasheetPackOptions extends databus.ILoadDatasheetP
   recordIds?: string | string[];
   dispatch: any;
   getState: () => IReduxState;
+  fakePack: boolean;
 }

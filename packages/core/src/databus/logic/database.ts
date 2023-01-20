@@ -18,7 +18,7 @@
 
 import { CollaCommandManager, IResourceOpsCollect } from 'command_manager';
 import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler, IEventEmitter } from 'databus/common/event';
-import { IBaseDatasheetPack, IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store';
 import { Store } from 'redux';
 import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Datasheet, IDatasheetOptions } from './datasheet';
@@ -30,7 +30,6 @@ import { Datasheet, IDatasheetOptions } from './datasheet';
  */
 export class Database implements IEventEmitter {
   private storageProvider!: IDataStorageProvider;
-  private readonly datasheets: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
   private readonly commandManagers: WeakMap<Store<IReduxState>, CollaCommandManager> = new WeakMap();
   private storeProvider!: IStoreProvider;
 
@@ -61,9 +60,6 @@ export class Database implements IEventEmitter {
     if (datasheetPack === null) {
       return null;
     }
-    if (this.datasheets.has(datasheetPack)) {
-      return this.datasheets.get(datasheetPack)!;
-    }
     const store =
       'createStore' in options ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack, options.storeOptions);
     let commandManager: CollaCommandManager;
@@ -91,12 +87,11 @@ export class Database implements IEventEmitter {
         store,
       );
     }
-    const datasheet = new Datasheet(datasheetPack.datasheet.id, {
+    const datasheet = new Datasheet(dstId, {
       store,
       saver: this.storageProvider,
       commandManager,
     });
-    this.datasheets.set(datasheetPack, datasheet);
     return datasheet;
   }
 

@@ -10,9 +10,9 @@ export function loadDatasheet(
   extra?: { recordIds: string[] },
   failCb?: () => void,
 ) {
-  return (dispatch: any, getState: () => IReduxState) => {
+  return async(dispatch: any, getState: () => IReduxState) => {
     const state = getState();
-    const datasheet = Selectors.getDatasheet(state, datasheetId);
+    const datasheetState = Selectors.getDatasheet(state, datasheetId);
     const { shareId, templateId, embedId } = state.pageParams;
     const { recordIds } = extra || {};
     const datasheetLoading = Selectors.getDatasheetLoading(state, datasheetId);
@@ -21,27 +21,27 @@ export function loadDatasheet(
       return;
     }
 
-    if (!datasheet || datasheet.isPartOfData || overWrite) {
-      return database
-        .getDatasheet(datasheetId, {
-          loadOptions: {
-            shareId,
-            templateId,
-            embedId,
-            recordIds,
-            dispatch,
-            getState,
-          } as IClientLoadDatasheetPackOptions,
-          storeOptions: {
-            // recordIds exits means that only part of recordsIds data is needed @boris
-            isPartOfData: Boolean(recordIds),
-          } as IClientStoreOptions,
-        })
-        .then(datasheet => {
-          datasheet ? successCb && successCb(datasheet) : failCb && failCb();
-        });
+    const needLoad = !datasheetState || datasheetState.isPartOfData || overWrite;
+    const datasheet = await database.getDatasheet(datasheetId, {
+      loadOptions: {
+        shareId,
+        templateId,
+        embedId,
+        recordIds,
+        dispatch,
+        getState,
+        fakePack: !needLoad,
+      } as IClientLoadDatasheetPackOptions,
+      storeOptions: {
+        // recordIds exits means that only part of recordsIds data is needed @boris
+        isPartOfData: Boolean(recordIds),
+        fakePack: !needLoad,
+      } as IClientStoreOptions,
+    });
+    if (datasheet) {
+      successCb?.(datasheet);
+    } else {
+      failCb?.();
     }
-    successCb && successCb();
-    return;
   };
 }

@@ -130,7 +130,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
 
   const executeRollback = useCallback((operations) => {
     try {
-      resourceService.instance!.commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.Rollback,
         datasheetId,
         data: {

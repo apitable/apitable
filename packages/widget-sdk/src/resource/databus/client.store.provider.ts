@@ -6,7 +6,11 @@ export class ClientStoreProvider implements databus.IStoreProvider {
   constructor(private readonly store: Store<IReduxState>) {}
 
   createStore(dataPack: IServerDatasheetPack, options: IClientStoreOptions): Store<IReduxState> {
-    const { isPartOfData } = options;
+    const { isPartOfData, fakePack } = options;
+    if (fakePack) {
+      return this.store;
+    }
+
     const dispatchActions: AnyAction[] = [];
 
     if (dataPack.foreignDatasheetMap) {
@@ -33,6 +37,7 @@ export class ClientStoreProvider implements databus.IStoreProvider {
         this.store.dispatch(StoreActions.updateUserMap(userMap));
       }
     }
+
     if (dataPack.fieldPermissionMap) {
       this.store.dispatch(StoreActions.loadFieldPermissionMap(dataPack.fieldPermissionMap, dataPack.datasheet.id));
     }
@@ -44,4 +49,5 @@ export class ClientStoreProvider implements databus.IStoreProvider {
 
 export interface IClientStoreOptions extends databus.IStoreOptions {
   isPartOfData: boolean;
+  fakePack: boolean;
 }

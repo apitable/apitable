@@ -114,7 +114,7 @@ export const RecordList: FC<IRecordList> = props => {
         ...s,
         ...changedNodeState,
       }));
-      resourceService.instance!.commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId: item.data.datasheetId,
         data,

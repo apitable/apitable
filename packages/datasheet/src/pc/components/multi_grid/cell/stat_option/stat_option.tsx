@@ -175,12 +175,11 @@ const StatOptionBase: React.FC<IStatOption> = props => {
   }, [statType, getStatRecordIds, field]);
 
   function commandForStat(e: React.MouseEvent, newStatType: StatType) {
-    const commandManager = resourceService.instance!.commandManager;
     if (!statType && newStatType === StatType.None) {
       return triggerRef.current!.close(e);
     }
     executeCommandWithMirror(() => {
-      commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetColumnsProperty,
         viewId,
         fieldId: field.id,

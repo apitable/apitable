@@ -197,7 +197,7 @@ export const Dashboard = () => {
       title: t(Strings.delete_widget_title),
       content: t(Strings.delete_widget_content),
       onOk: () => {
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.DeleteDashboardWidget,
           dashboardId: dashboardId!,
           widgetId,
@@ -319,7 +319,7 @@ export const Dashboard = () => {
       };
     });
 
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.ChangeDashboardLayout,
       dashboardId: dashboardId!,
       layout: _layout,

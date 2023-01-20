@@ -66,7 +66,7 @@ export const NodeContextMenu: FC = () => {
 
   const handleDelete = (recordId: string) => {
     const data: string[] = [recordId];
-    const { result } = resourceService.instance!.commandManager.execute({
+    const { result } = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
     });

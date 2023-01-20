@@ -95,7 +95,7 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
   ]);
 
   const deleteRecord = () => {
-    const { result } = resourceService.instance!.commandManager.execute({
+    const { result } = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.DeleteRecords,
       data: [expandRecordId],
       datasheetId: datasheetId,

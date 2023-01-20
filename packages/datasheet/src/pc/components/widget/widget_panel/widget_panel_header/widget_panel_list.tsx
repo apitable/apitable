@@ -58,7 +58,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
   })!;
 
   const modifyWidgetName = (id: string, name: string) => {
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.ModifyWidgetPanelName,
       panelId: id,
       panelName: name,
@@ -95,7 +95,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
     }
 
     const movingPanelId: string = widgetPanels[source.index]['id'];
-    resourceService.instance!.commandManager.execute<{ panelId: string }>({
+    resourceService.instance!.commandManagerGetter().execute<{ panelId: string }>({
       cmd: CollaCommandName.MoveWidgetPanel,
       panelId: movingPanelId,
       targetIndex: destination.index,
@@ -109,7 +109,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
       return;
     }
 
-    const result = resourceService.instance!.commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddWidgetPanel,
       resourceId: resourceId!,
       resourceType: resourceType,
@@ -121,7 +121,7 @@ export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }>
   };
 
   const deletePanel = (id: string) => {
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.DeleteWidgetPanel,
       deletePanelId: id,
       resourceId: resourceId!,

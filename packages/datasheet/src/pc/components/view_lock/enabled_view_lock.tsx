@@ -51,7 +51,7 @@ export const EnabledViewLock: React.FC<IEnabledViewLockProps> = props => {
   });
 
   const closeViewLock = () => {
-    const { result } = resourceService.instance!.commandManager.execute({
+    const { result } = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetViewLockInfo,
       data: null,
       viewId: view.id,
