@@ -288,7 +288,7 @@ export const useGanttMouseEvent = ({
       const finalColumnWidth = Math.max(lastColumnWidth + diffWidth, 80);
       if (finalColumnWidth === lastColumnWidth) return;
       executeCommandWithMirror(() => {
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.SetColumnsProperty,
           viewId: view.id,
           fieldId: lastFieldId,
@@ -345,7 +345,7 @@ export const useGanttMouseEvent = ({
       return recordsData;
     }, []);
     
-    resourceService.instance!.commandManager!.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
     });
@@ -407,7 +407,7 @@ export const useGanttMouseEvent = ({
           fieldPermissionMap
         });
         if (recordData == null) return setDragTaskId(null);
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.MoveRow,
           data: data.filter(item => item.overTargetId !== item.recordId),
           viewId: view.id,

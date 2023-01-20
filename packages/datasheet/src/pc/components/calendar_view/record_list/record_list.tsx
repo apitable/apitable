@@ -42,8 +42,7 @@ export const RecordList: FC<IRecordList> = props => {
   const { keyword, setKeyword, view, onCloseGrid } = useContext(CalendarContext);
 
   const appendRecord = () => {
-    const collaCommandManager = resourceService.instance!.commandManager;
-    const result = collaCommandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,

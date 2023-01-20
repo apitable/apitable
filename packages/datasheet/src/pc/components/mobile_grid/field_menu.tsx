@@ -85,7 +85,6 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const handleFilterField = useFilterField();
   const activeFieldSettings = useActiveFieldSetting();
   const deleteField = useDeleteField(field.id, datasheetId);
-  const commandManager = resourceService.instance!.commandManager;
   const embedId = useSelector(state => state.pageParams.embedId);
   /**
    * Give a warning when a field is deleted during collaboration.
@@ -119,7 +118,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const linkedFieldError = field.type === FieldType.Link && fieldError;
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -139,7 +138,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   }
 
   function copyField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddFields,
       copyCell: true,
       fieldId: field.id,

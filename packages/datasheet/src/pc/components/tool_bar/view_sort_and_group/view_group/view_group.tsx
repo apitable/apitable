@@ -59,7 +59,7 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
     (data: IGroupInfo | null) => {
       executeCommandWithMirror(
         () => {
-          resourceService.instance!.commandManager.execute({
+          resourceService.instance!.commandManagerGetter().execute({
             cmd: CollaCommandName.SetGroup,
             viewId: activityViewId,
             data: data || undefined,

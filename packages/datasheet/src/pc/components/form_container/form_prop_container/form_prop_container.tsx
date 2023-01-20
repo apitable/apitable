@@ -45,7 +45,7 @@ export const FormPropContainer: React.FC<IFormPropContainerProps> = props => {
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
 
   const updateProps = (partProps: Partial<IFormProps>) => {
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.UpdateFormProps,
       formId,
       partialProps: partProps,

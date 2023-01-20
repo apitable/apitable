@@ -96,7 +96,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
   const setCurrentField = (getNewField: (newField: IFieldProperty) => IFieldProperty): ICollaCommandExecuteResult<{}> => {
     const newField = getNewField(field);
 
-    return resourceService.instance!.commandManager.execute({
+    return resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetFieldAttr,
       datasheetId,
       fieldId: field.id,
@@ -125,7 +125,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
     cb();
     const fieldMethod = Field.bindModel(field) as SelectField;
     const newItem = fieldMethod.createNewOption(keyword);
-    const { result } = resourceService.instance!.commandManager.execute({
+    const { result } = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetFieldAttr,
       datasheetId,
       fieldId: field.id,

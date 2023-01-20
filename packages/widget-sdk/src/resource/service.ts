@@ -135,8 +135,8 @@ export class ResourceService implements IResourceService {
   /**
    * TODO This is a temporary member. All dependencies of CommandManager in the front-end will be removed in the future.
    */
-  get commandManager(): CollaCommandManager {
-    return this.currentResource!.commandManager;
+  get commandManagerGetter(): () => CollaCommandManager {
+    return () => this.currentResource!.commandManager;
   }
 
   private static getResourceFetchAction(resourceType: ResourceType): any {
@@ -221,9 +221,7 @@ export class ResourceService implements IResourceService {
       if (resourceType === ResourceType.Datasheet || resourceType === ResourceType.Widget) {
         mainWidgetMessage?.enable && mainWidgetMessage.syncOperations(operations, resourceType, resourceId);
       }
-      // console.log('================= apply jot start ================');
       store.dispatch(StoreActions.applyJOTOperations(operations, resourceType, resourceId));
-      // console.log('================= apply jot end ================');
     });
     // To widget synchronization operations.
     this.opEventManager.handleEvents(events, false);
@@ -273,16 +271,16 @@ export class ResourceService implements IResourceService {
   }
 
   /**
-   * @description undoManger is bound to the main resource that created the room,
+   * @description undoManager is bound to the main resource that created the room,
    * and when switching the resource, it is necessary to instantiate undoManager,
-   * and bind undoManger to commandManager.
+   * and bind undoManager to commandManager.
    * @param {string} resourceId
    */
   createUndoManager(resourceId: string) {
     const undoManager = this.resourceStashManager.getUndoManager(resourceId);
     this.undoManager = undoManager;
-    undoManager.setCommandManger(this.commandManager);
-    this.commandManager.addUndoStack = (cmd, result, executeType) => {
+    undoManager.setCommandManager(this.commandManagerGetter());
+    this.commandManagerGetter().addUndoStack = (cmd, result, executeType) => {
       const collaEngine = this.getCollaEngine(result.resourceId);
       if (!collaEngine) {
         throw new Error(t(Strings.error_not_initialized_datasheet_instance));

@@ -36,7 +36,7 @@ export class UndoManager {
 
   constructor(public resourceId: string) { }
 
-  setCommandManger(commandManager: CollaCommandManager) {
+  setCommandManager(commandManager: CollaCommandManager) {
     this._commandManager = commandManager;
   }
 

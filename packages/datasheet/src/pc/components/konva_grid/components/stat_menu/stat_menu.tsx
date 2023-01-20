@@ -63,10 +63,9 @@ export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
   const fieldStatTypeList = field && getStatTypeList(field, state);
 
   function commandForStat(newStatType: StatType) {
-    const commandManager = resourceService.instance!.commandManager;
     if (!statType && newStatType === StatType.None) return;
     executeCommandWithMirror(()=>{
-      commandManager.execute({
+      resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetColumnsProperty,
         viewId: view.id,
         fieldId: field.id,

@@ -70,7 +70,7 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
     setButtonLoading(false);
     const { success, message, data } = copyData.data;
     if (success) {
-      const result = resourceService.instance!.commandManager.execute({
+      const result = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.AddWidgetToDashboard,
         dashboardId: selectedId!,
         widgetIds: data.map(item => item.id),

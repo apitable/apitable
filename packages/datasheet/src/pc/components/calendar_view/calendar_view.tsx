@@ -329,7 +329,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
         value: endTime ? dayjs(endTime).valueOf() : null,
       });
     }
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data,

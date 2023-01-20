@@ -319,7 +319,7 @@ export const Drag: React.FC<IDragProps> = props => {
 
     executeCommandWithMirror(
       () => {
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.SetColumnsProperty,
           viewId: view.id,
           fieldId: getGlobalRef().changeWidthFieldId,
@@ -375,7 +375,7 @@ export const Drag: React.FC<IDragProps> = props => {
 
     executeCommandWithMirror(
       () => {
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.MoveColumn,
           viewId: view.id,
           data: prepareForMoveColumns,
@@ -421,7 +421,7 @@ export const Drag: React.FC<IDragProps> = props => {
       return recordsData;
     }, []);
 
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
     });
@@ -496,7 +496,7 @@ export const Drag: React.FC<IDragProps> = props => {
     }
 
     const recordData = dependsGroup2ChangeData(data, overTargetId, { groupLevel, snapshot, view, fieldPermissionMap });
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.MoveRow,
       data: data.filter(item => item.overTargetId !== item.recordId),
       viewId: view.id,

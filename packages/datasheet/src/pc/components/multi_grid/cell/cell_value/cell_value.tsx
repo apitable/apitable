@@ -57,13 +57,12 @@ export interface ICellValueComponent {
  */
 const CellValueBase: React.FC<ICellValueComponent> = props => {
   const { field, recordId, cellValue, className, isActive, datasheetId, readonly, rowHeightLevel, cellTextClassName, showAlarm } = props;
-  const commandManager = resourceService.instance!.commandManager;
   const cellEditable = useSelector(state => {
     return Selectors.getPermissions(state, datasheetId, field.id).cellEditable;
   });
 
   function onChange(value: ICellValue) {
-    !readonly && commandManager.execute({
+    !readonly && resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{

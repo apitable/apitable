@@ -40,7 +40,6 @@ export const EdgeContextMenu: FC = props => {
     datasheetId,
   } = useContext(FlowContext);
 
-  const commandManager = resourceService.instance!.commandManager;
   const nodes = useStoreState(state => state.nodes);
 
   const linkFieldId = linkField.id;
@@ -57,7 +56,7 @@ export const EdgeContextMenu: FC = props => {
               const sourceNode = nodes.find(item => item.id === source);
               if (sourceNode) {
                 const { data, id } = sourceNode as INode;
-                commandManager.execute({
+                resourceService.instance!.commandManagerGetter().execute({
                   cmd: CollaCommandName.SetRecords,
                   datasheetId,
                   data: [{

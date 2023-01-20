@@ -108,7 +108,7 @@ export const Menu: React.FC = () => {
   if (!recordId) return null;
 
   const addRecord = (index: number) => {
-    const result = onAddRecord ? onAddRecord(index) : resourceService.instance!.commandManager.execute({
+    const result = onAddRecord ? onAddRecord(index) : resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -139,7 +139,7 @@ export const Menu: React.FC = () => {
       total[cur.fieldId] = value;
       return total;
     }, {} as { [fieldId: string]: ICellValue });
-    resourceService.instance!.commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -153,7 +153,7 @@ export const Menu: React.FC = () => {
   };
 
   const deleteRecord = () => {
-    const result = resourceService.instance!.commandManager.execute({
+    const result = resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.DeleteRecords,
       data: [recordId],
     });

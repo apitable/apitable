@@ -70,7 +70,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
     const _applySort = applySort && editable;
     executeCommandWithMirror(
       () => {
-        resourceService.instance!.commandManager.execute({
+        resourceService.instance!.commandManagerGetter().execute({
           cmd: CollaCommandName.SetSortInfo,
           viewId: activityViewId,
           data: sortInfo,
@@ -82,7 +82,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
       },
       () => {
         if (_applySort) {
-          resourceService.instance!.commandManager.execute({
+          resourceService.instance!.commandManagerGetter().execute({
             cmd: CollaCommandName.SetSortInfo,
             viewId: activityViewId,
             data: sortInfo,

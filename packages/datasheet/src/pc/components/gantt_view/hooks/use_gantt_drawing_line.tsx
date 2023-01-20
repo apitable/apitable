@@ -223,7 +223,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         return;
       }
       if(cellValue.includes(sourceRecordId)) return;
-      const result = resourceService.instance!.commandManager.execute({
+      const result = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetRecords,
         data: [
           {
@@ -247,7 +247,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         };
       
         const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, sourceRecordData);
-          resourceService.instance!.commandManager.execute({
+          resourceService.instance!.commandManagerGetter().execute({
             cmd: CollaCommandName.SetRecords,
             data: commandData,
           });

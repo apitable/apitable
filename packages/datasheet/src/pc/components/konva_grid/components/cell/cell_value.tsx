@@ -83,11 +83,9 @@ export const CellValue: FC<ICellValueProps> = memo((props) => {
     cellValue,
     disabledDownload
   } = props;
-  const commandManager = resourceService.instance!.commandManager;
-
   const onChange = (value: ICellValue) => {
     editable &&
-    commandManager.execute({
+    resourceService.instance!.commandManagerGetter().execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{

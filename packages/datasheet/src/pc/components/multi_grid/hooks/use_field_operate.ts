@@ -111,7 +111,7 @@ export const useHideField = (currentView: IViewProperty | undefined, hiddenProp 
       }
     }
     return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
+      const { result } = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.ModifyViews,
         data: [
           {
@@ -171,7 +171,7 @@ export const useFilterField = () => {
     };
 
     return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
+      const { result } = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetViewFilter,
         viewId: currentView.id,
         data: newFilterInfo
@@ -201,7 +201,7 @@ export const useGroupField = () => {
     }];
 
     return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
+      const { result } = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetGroup,
         viewId: currentView.id,
         data: groupInfo,
@@ -249,7 +249,7 @@ export const useSortField = () => {
       newSortInfo.rules = [{ desc, fieldId }];
     }
     return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
+      const { result } = resourceService.instance!.commandManagerGetter().execute({
         cmd: CollaCommandName.SetSortInfo,
         viewId: currentView.id,
         data: newSortInfo || undefined,

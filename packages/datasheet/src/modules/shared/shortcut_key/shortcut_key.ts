@@ -261,7 +261,6 @@ const getUndoManager = () => {
 export function clear() {
   const state = store.getState();
   const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!);
-  const commandManager = resourceService.instance!.commandManager;
   const uploadManager = resourceService.instance!.uploadManager;
   const data: ISetRecordOptions[] = [];
   const cellMatrixFromRange = Selectors.getCellMatrixFromSelection(state);
@@ -302,7 +301,7 @@ export function clear() {
       },
     });
 
-  commandManager.execute({
+  resourceService.instance!.commandManagerGetter().execute({
     cmd: CollaCommandName.SetRecords,
     data,
   });
