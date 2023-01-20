@@ -179,7 +179,7 @@ const StatOptionBase: React.FC<IStatOption> = props => {
       return triggerRef.current!.close(e);
     }
     executeCommandWithMirror(() => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetColumnsProperty,
         viewId,
         fieldId: field.id,

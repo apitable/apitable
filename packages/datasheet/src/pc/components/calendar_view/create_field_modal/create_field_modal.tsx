@@ -69,7 +69,7 @@ export const CreateFieldModal = memo(() => {
       return;
     }
     const startFieldId = getNewId(IDPrefix.Field);
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [
         {
@@ -86,7 +86,7 @@ export const CreateFieldModal = memo(() => {
         key: NotifyKey.AddField,
       });
 
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetCalendarStyle,
         viewId: viewId!,
         data: [

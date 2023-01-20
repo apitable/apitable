@@ -94,7 +94,7 @@ const getDeepColor = (color: number) => {
 };
 
 const moveRow = (viewId: string, dragTaskId: string, dropRecordId: string, direction: DropDirectionType) => {
-  resourceService.instance!.commandManagerGetter().execute({
+  resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.MoveRow,
     viewId,
     data: [{

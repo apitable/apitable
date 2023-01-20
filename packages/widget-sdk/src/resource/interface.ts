@@ -26,7 +26,10 @@ export interface IResourceService {
   init (): void;
   createCollaEngine (resourceId: string, resourceType: ResourceType): boolean;
   readonly socket: SocketIOClient.Socket;
-  readonly commandManagerGetter: () => CollaCommandManager;
+  /**
+   * @deprecated This is a temporary member. All dependencies of CommandManager in the front-end will be removed in the future.
+   */
+  readonly commandManager: CollaCommandManager;
   readonly currentResource: databus.Datasheet | undefined;
   readonly opEventManager: OPEventManager;
   readonly computeRefManager: ComputeRefManager;

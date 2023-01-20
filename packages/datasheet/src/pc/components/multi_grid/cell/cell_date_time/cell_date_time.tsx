@@ -94,7 +94,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
         >
           <span className={classNames(styles.quickAlarm)} onMouseDown={() => {
             toggleEdit && toggleEdit();
-            resourceService.instance!.commandManagerGetter().execute({
+            resourceService.instance!.commandManager.execute({
               cmd: CollaCommandName.SetDateTimeCellAlarm,
               recordId: recordId!,
               fieldId: field.id,

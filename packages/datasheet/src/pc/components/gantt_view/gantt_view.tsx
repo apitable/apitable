@@ -620,7 +620,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         autoSingleTask({ recordId: endData.recordId, endTime: endData.value });
       }
     }
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data,
@@ -932,7 +932,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     }
     const commandData: ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, endData);
 
-    resourceService.instance?.commandManagerGetter().execute({
+    resourceService.instance?.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: commandData,
     });

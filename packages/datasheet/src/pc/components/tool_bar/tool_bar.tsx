@@ -203,7 +203,7 @@ const ToolbarBase = () => {
   const appendRecord = () => {
     const state = store.getState();
     const view = Selectors.getCurrentView(state)!;
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,

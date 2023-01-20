@@ -651,7 +651,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
     executeCommandWithMirror(
       () => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetViewFrozenColumnCount,
           viewId: view.id,
           count: columnIndex + 1,

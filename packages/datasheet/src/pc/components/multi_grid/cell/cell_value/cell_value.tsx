@@ -62,7 +62,7 @@ const CellValueBase: React.FC<ICellValueComponent> = props => {
   });
 
   function onChange(value: ICellValue) {
-    !readonly && resourceService.instance!.commandManagerGetter().execute({
+    !readonly && resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{

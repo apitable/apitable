@@ -189,7 +189,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
   };
 
   const moveView = (viewId, newIndex) => {
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveViews,
       data: [
         {
@@ -204,7 +204,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     if (isEditingValue === viewList.filter(item => item.id === isEditingId)[0].name) {
       return;
     }
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.ModifyViews,
       data: [
         {

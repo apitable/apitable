@@ -37,15 +37,13 @@ interface IRecordList {
   onClose(): void;
 }
 
-export const addRecord = async(viewId: string, index: number, autoOpen = true) => {
-  const result = await resourceService.instance.currentResource!.addRecords(
-    {
-      viewId,
-      count: 1,
-      index,
-    },
-    {},
-  );
+export const addRecord = (viewId: string, index: number, autoOpen = true) => {
+  const result = resourceService.instance!.commandManager.execute({
+    cmd: CollaCommandName.AddRecords,
+    count: 1,
+    viewId,
+    index,
+  });
   if (result.result === ExecuteResult.Success) {
     const newRecordId = result.data && result.data[0];
     autoOpen && expandRecordIdNavigate(newRecordId);
@@ -114,7 +112,7 @@ export const RecordList: FC<IRecordList> = props => {
         ...s,
         ...changedNodeState,
       }));
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId: item.data.datasheetId,
         data,

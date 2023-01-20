@@ -185,7 +185,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
       direction,
     };
 
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       data: [moveData],
       viewId: viewId!,

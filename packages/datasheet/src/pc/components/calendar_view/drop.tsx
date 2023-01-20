@@ -97,7 +97,7 @@ const DropBase = ({ children, date, update, disabled }: IDrop) => {
     if (isEndDateTimeField) {
       cellValue[endFieldId] = dateValue;
     }
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,

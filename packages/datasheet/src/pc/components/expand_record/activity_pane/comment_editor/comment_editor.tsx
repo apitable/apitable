@@ -129,7 +129,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
       return;
     }
     const _content = transformNodes2Link(content as ITextNode[]);
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.InsertComment,
       datasheetId: datasheetId,
       recordId: expandRecordId,

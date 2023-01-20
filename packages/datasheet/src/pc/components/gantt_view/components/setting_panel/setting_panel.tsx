@@ -223,7 +223,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
   const onGanttStyleChange = (styleKey, styleValue) => {
     executeCommandWithMirror(
       () => {
-        resourceService.instance!.commandManagerGetter().execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetGanttStyle,
           viewId: viewId!,
           data: [
@@ -255,7 +255,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
         : styleKey === GanttStyleKeyType.StartFieldId
           ? t(Strings.gantt_start_field_name)
           : t(Strings.gantt_end_field_name);
-      const result = resourceService.instance!.commandManagerGetter().execute({
+      const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddFields,
         data: [
           {
@@ -338,7 +338,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
 
       const commandDataArr: ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle);
 
-      resourceService.instance?.commandManagerGetter().execute({
+      resourceService.instance?.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: commandDataArr,
       });

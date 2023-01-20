@@ -83,6 +83,11 @@ export class ResourceService implements IResourceService {
   private databus: databus.DataBus;
   currentResource: databus.Datasheet | undefined;
 
+  /**
+   * @deprecated This is a temporary member. All dependencies of CommandManager in the front-end will be removed in the future.
+   */
+  readonly commandManager: CollaCommandManager;
+
   constructor(public store: Store<IReduxState>, public onError: IServiceError) {
     this.opEventManager = new OPEventManager({
       options: {
@@ -97,6 +102,7 @@ export class ResourceService implements IResourceService {
     });
     this.computeRefManager = new ComputeRefManager();
     this.databus = this.createDataBus();
+    this.commandManager = this.createCommandManager();
   }
 
   init() {
@@ -130,13 +136,6 @@ export class ResourceService implements IResourceService {
     this.unBindBeforeUnload();
     this.store.dispatch(StoreActions.setConnected(false));
     this.resourceStashManager.destroy();
-  }
-
-  /**
-   * TODO This is a temporary member. All dependencies of CommandManager in the front-end will be removed in the future.
-   */
-  get commandManagerGetter(): () => CollaCommandManager {
-    return () => this.currentResource!.commandManager;
   }
 
   private static getResourceFetchAction(resourceType: ResourceType): any {
@@ -279,14 +278,17 @@ export class ResourceService implements IResourceService {
   createUndoManager(resourceId: string) {
     const undoManager = this.resourceStashManager.getUndoManager(resourceId);
     this.undoManager = undoManager;
-    undoManager.setCommandManager(this.commandManagerGetter());
-    this.commandManagerGetter().addUndoStack = (cmd, result, executeType) => {
+    undoManager.setCommandManager(this.commandManager);
+    this.commandManager.addUndoStack = (cmd, result, executeType) => {
       const collaEngine = this.getCollaEngine(result.resourceId);
       if (!collaEngine) {
         throw new Error(t(Strings.error_not_initialized_datasheet_instance));
       }
       undoManager.addUndoStack({ cmd, result }, executeType);
     };
+    if (this.currentResource) {
+      this.currentResource.commandManager.addUndoStack = this.commandManager.addUndoStack;
+    }
   }
 
   /**
@@ -409,6 +411,18 @@ export class ResourceService implements IResourceService {
       },
     });
     return database;
+  }
+
+  private createCommandManager() {
+    return new CollaCommandManager(
+      {
+        handleCommandExecuted: this.operationExecuted,
+        handleCommandExecuteError: (error: IError, type?: 'message' | 'modal' | 'subscribeUsage') => {
+          this.onError?.(error, type || 'message');
+        },
+      },
+      this.store,
+    );
   }
 
   private beforeUnload = (event: BeforeUnloadEvent): string | void => {

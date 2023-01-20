@@ -129,7 +129,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
       return;
     }
     editable &&
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data: [

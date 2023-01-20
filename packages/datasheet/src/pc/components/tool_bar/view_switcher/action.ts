@@ -45,7 +45,7 @@ export const useViewAction = () => {
 
   return {
     modifyView: (viewId: string, value: string) => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.ModifyViews,
         data: [
           {
@@ -58,7 +58,7 @@ export const useViewAction = () => {
     },
 
     deleteView: (viewId: string) => {
-      const { result } = resourceService.instance!.commandManagerGetter().execute({
+      const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.DeleteViews,
         data: [{
           viewId,
@@ -73,7 +73,7 @@ export const useViewAction = () => {
     },
 
     addView: (view: IViewProperty, index?: number) => {
-      const { result } = resourceService.instance!.commandManagerGetter().execute({
+      const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddViews,
         data: [{
           view,
@@ -92,7 +92,7 @@ export const useViewAction = () => {
       const view = views[index];
       const snapshot = Selectors.getSnapshot(store.getState());
       const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
-      const { result } = resourceService.instance!.commandManagerGetter().execute({
+      const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddViews,
         data: [{
           startIndex: index + 1,
@@ -112,7 +112,7 @@ export const useViewAction = () => {
     },
 
     moveView: (viewId: string, index: number) => {
-      resourceService.instance!.commandManagerGetter().execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.MoveViews,
         data: [
           {

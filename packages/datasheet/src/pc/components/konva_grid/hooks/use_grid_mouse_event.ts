@@ -406,7 +406,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     // Filling
     if (activeCell && fillHandleStatus && fillHandleStatus.isActive && fillHandleStatus.fillRange) {
       // TODO: Cross-sectional detection
-      const { result } = resourceService.instance!.commandManagerGetter().execute({
+      const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.FillDataToCells,
         selectionRange: selectRanges,
         fillRange: fillHandleStatus.fillRange,

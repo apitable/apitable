@@ -86,7 +86,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
       const { success, data, message } = res.data;
       if (success) {
         const importWidgetIds = data.map(item => item.id);
-        const result = resourceService.instance!.commandManagerGetter().execute({
+        const result = resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.AddWidgetToDashboard,
           dashboardId: dashboardId!,
           widgetIds: importWidgetIds,

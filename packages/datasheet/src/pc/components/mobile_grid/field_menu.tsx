@@ -118,7 +118,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const linkedFieldError = field.type === FieldType.Link && fieldError;
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -138,7 +138,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   }
 
   function copyField(index: number, fieldId: string, offset: number) {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       copyCell: true,
       fieldId: field.id,

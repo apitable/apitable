@@ -48,7 +48,7 @@ const DeleteLinkField: React.FC<{ fieldId: string, datasheetId?: string, onClose
   const shouldDelForeign = foreignDatasheetEditable ? _shouldDelForeign : false;
 
   function onConfirm() {
-    resourceService.instance!.commandManagerGetter().execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteField,
       data: [{
         deleteBrotherField: shouldDelForeign,

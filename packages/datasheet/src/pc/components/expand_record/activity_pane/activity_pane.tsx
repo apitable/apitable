@@ -201,7 +201,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
                       content: t(Strings.delete_comment_tip_content),
                       okText: t(Strings.delete),
                       onOk: () => {
-                        resourceService.instance!.commandManagerGetter().execute({
+                        resourceService.instance!.commandManager.execute({
                           cmd: CollaCommandName.DeleteComment,
                           datasheetId: datasheetId,
                           recordId: expandRecordId,

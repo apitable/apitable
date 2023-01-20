@@ -302,7 +302,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   };
 
   const modifyFieldType = (newField: IField) => {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       fieldId: currentField.id,
       data: {
@@ -328,7 +328,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   };
 
   function addField(newField: IField, colIndex?: number) {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [
         {

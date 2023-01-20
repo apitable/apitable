@@ -78,7 +78,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
 
   const addView = (view: IViewProperty, startIndex: number, viewType: ViewType) => {
-    const { result } = resourceService.instance!.commandManagerGetter().execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddViews,
       data: [{
         view,

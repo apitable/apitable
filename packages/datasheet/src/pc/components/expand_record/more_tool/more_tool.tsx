@@ -86,7 +86,7 @@ export const MoreTool: React.FC<IMoreToolProps> = props => {
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
 
   const deleteRecord = (e: React.MouseEvent) => {
-    const result = resourceService.instance!.commandManagerGetter().execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data: [recordId],
     });
