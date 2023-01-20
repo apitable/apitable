@@ -85,8 +85,8 @@ export const WidgetPanel = () => {
   const { opening: isPanelOpening } = useSelector(state => {
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
-  const onClosePanel = () => {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
+  const onClosePanel = async() => {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
   };
 
   useManageWidgetMap();

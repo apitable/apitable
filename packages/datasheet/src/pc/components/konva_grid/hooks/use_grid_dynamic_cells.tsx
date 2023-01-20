@@ -365,7 +365,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     }
   }
 
-  const toggleEditing = useCallback(() => {
+  const toggleEditing: () => Promise<boolean | void> = useCallback((): Promise<boolean | void> => {
     return ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }, []);
 

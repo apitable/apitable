@@ -46,9 +46,9 @@ export class KeybindingService {
     window.removeEventListener('keydown', this.keyEventHandle);
   }
 
-  private keyEventHandle = (e: KeyboardEvent) => {
+  private keyEventHandle = async(e: KeyboardEvent) => {
     const keyEvent = new StandardKeyboardEvent(e);
-    const shouldPreventDefault = this.dispatch(keyEvent) === false ? false : true;
+    const shouldPreventDefault = await this.dispatch(keyEvent) === false ? false : true;
     if (shouldPreventDefault) {
       keyEvent.preventDefault();
     }
@@ -102,13 +102,13 @@ export class KeybindingService {
     });
   }
 
-  private dispatch(e: StandardKeyboardEvent): boolean | void {
+  private dispatch(e: StandardKeyboardEvent): Promise<boolean | void> {
     const keybinding = e.asRuntimeKeybinding;
     const resolveResult = this.getResolvedResult(keybinding);
     if (resolveResult) {
       return ShortcutActionManager.trigger(resolveResult.command);
     }
 
-    return false;
+    return Promise.resolve(false);
   }
 }
