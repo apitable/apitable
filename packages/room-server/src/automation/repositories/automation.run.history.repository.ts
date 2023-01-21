@@ -44,13 +44,4 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
     });
   }
 
-  getRobotRunTimesBySpaceId(spaceId: string) {
-    return this.count(
-      {
-        where: {
-          spaceId,
-        },
-      },
-    );
-  }
 }

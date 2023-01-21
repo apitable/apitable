@@ -7,6 +7,7 @@ export type FormSubmittedEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
 };
 
 export type FormSubmittedEventContext = {
+  datasheetId: string,
   formId: string,
   recordId: string,
   [key: string]: any,
