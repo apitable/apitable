@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { generateRandomString } from '@apitable/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationServiceRepository } from './automation.service.repository';
@@ -29,7 +28,7 @@ import { ConfigModule } from '@nestjs/config';
 describe('AutomationServiceRepository', () => {
   let module: TestingModule;
   let automationServiceRepository: AutomationServiceRepository;
-  const theServiceId = generateRandomString(16);
+  const theServiceId = 'theServiceId';
   let entity: AutomationServiceEntity;
 
   beforeAll(async () => {
