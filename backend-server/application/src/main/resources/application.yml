@@ -49,6 +49,13 @@ spring:
       mail.smtp.starttls.required: true
       mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+  sleuth:
+    otel:
+      exporter:
+        jaeger:
+          enabled: false
+      config:
+        trace-id-ratio-based: 0.1
 
 cookie:
   domain-name: ${DOMAIN_NAME:}
