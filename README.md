@@ -64,7 +64,7 @@
 
 > APITable is currently a `Work In Progress`.
 >
-> We will publish the first release in late January 2023.
+> We will publish the first release in late February 2023.
 >
 > Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
 
