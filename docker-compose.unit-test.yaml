@@ -1,0 +1,140 @@
+version: '3.4'
+
+services:
+  test-mysql:
+    container_name: test-mysql
+    image: mysql:8.0.28-oracle
+    ports:
+      - '3306:3306'
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Singapore
+      - MYSQL_DATABASE=apitable_test
+      - MYSQL_USER=apitable
+      - MYSQL_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    command: ['mysqld', '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  test-redis:
+    container_name: test-redis
+    image: redis:5.0.7-alpine
+    ports:
+      - '6379:6379'
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Singapore
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  test-rabbitmq:
+    container_name: test-rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+    networks:
+      - unit-test
+    environment:
+      - TZ=Asia/Singapore
+      - RABBITMQ_USERNAME=apitable
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_DEFAULT_USER=apitable
+      - RABBITMQ_DEFAULT_PASS=password
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  test-initdb:
+    container_name: test-initdb
+    image: gradle:jdk8
+    networks:
+      - unit-test
+    working_dir: /data
+    volumes:
+      - ./init-db:/data
+    environment:
+      - TZ=Asia/Singapore
+      - ACTION=update
+      - DB_HOST=test-mysql
+      - DB_PORT=3306
+      - DB_NAME=apitable_test
+      - DB_USERNAME=apitable
+      - DB_PASSWORD=password
+      - DATABASE_TABLE_PREFIX=apitable_
+    entrypoint: ./gradlew update
+
+  unit-test-room:
+    container_name: unit-test-room
+    networks:
+      - unit-test
+    build:
+      context: .
+      dockerfile: packaging/Dockerfile.room-server
+      target: builder
+    volumes:
+      - ./packages/room-server/coverage:/app/packages/room-server/coverage
+    environment:
+      - TZ=Asia/Singapore
+      - MYSQL_HOST=test-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=apitable
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=apitable_test
+      - MYSQL_USE_SSL=false
+      - DATABASE_TABLE_PREFIX=apitable_
+      - REDIS_HOST=test-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=4
+      - REDIS_PASSWORD=
+      - RABBITMQ_HOST=test-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=apitable
+      - RABBITMQ_PASSWORD=password
+      - INSTANCE_COUNT=1
+      - APPLICATION_NAME=NEST_REST_SERVER
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - OSS_HOST=https://s1.vika.cn
+      - OSS_BUCKET=QNY1
+
+  unit-test-backend:
+    container_name: unit-test-backend
+    image: amazoncorretto:8
+    working_dir: /app
+    networks:
+      - unit-test
+    volumes:
+      - ./backend-server:/app
+    environment:
+      - JVM_OPTS="-Xms3200m -Xmx3200m"
+      - MYSQL_HOST=test-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=apitable
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=apitable_test
+      - REDIS_HOST=test-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=3
+      - REDIS_PASSWORD=
+      - RABBITMQ_HOST=test-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=apitable
+      - RABBITMQ_PASSWORD=password
+    entrypoint: ./gradlew testCodeCoverageReport --stacktrace
+
+networks:
+  unit-test:
+    name: apitable-unit-test

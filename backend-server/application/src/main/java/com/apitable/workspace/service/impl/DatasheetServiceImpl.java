@@ -50,19 +50,15 @@ import cn.hutool.http.HtmlUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.social.event.NotificationEvent;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
-import com.apitable.interfaces.widget.facade.WidgetServiceFacade;
-import com.apitable.interfaces.widget.model.WidgetCopyOption;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
@@ -78,7 +74,9 @@ import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.user.mapper.UserMapper;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.DataSheetRecordDTO;
 import com.apitable.workspace.dto.DatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetWidgetDTO;
@@ -97,7 +95,6 @@ import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.DatasheetMetaMapper;
 import com.apitable.workspace.mapper.DatasheetRecordMapper;
 import com.apitable.workspace.mapper.NodeMapper;
-import com.apitable.workspace.observer.DatasheetObserver;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
 import com.apitable.workspace.observer.RemindMemberOpSubject;
 import com.apitable.workspace.observer.remind.MailRemind;
@@ -117,8 +114,9 @@ import com.apitable.workspace.service.IDatasheetRecordService;
 import com.apitable.workspace.service.IDatasheetService;
 import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.apitable.workspace.vo.DatasheetRecordVo;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -186,7 +184,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private SocialServiceFacade socialServiceFacade;
 
     @Resource
-    private WidgetServiceFacade widgetServiceFacade;
+    private IWidgetService iWidgetService;
 
     @Override
     public void batchSave(List<DatasheetEntity> entities) {
@@ -563,7 +561,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
         metaMapRo.setWidgetPanels(newWidgetPanels);
         // batch generation of new components
-        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap));
+        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
     }
 
     @Override
@@ -889,8 +887,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
                     if (connectInfo != null && connectInfo.isEnabled() && StrUtil.isNotBlank(connectInfo.getAppId())) {
                         // transform social connect app type, register remind observer
-                        DatasheetObserver observer = datasheetRemindObservers.get(connectInfo.getRemindObserver());
-                        remindMemberOpSubject.registerObserver(observer);
+                        socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
                     }
                     // message pushed to observer
                     remindMemberOpSubject.sendNotify(meta);

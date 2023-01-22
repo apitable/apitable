@@ -24,10 +24,9 @@ import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 import { initHttpHook } from 'shared/adapters/adapters.init';
 import { GlobalExceptionFilter } from '../src/shared/filters';
 import { HttpResponseInterceptor } from '../src/shared/interceptor';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService, ValidationPipe } from '@nestjs/common';
 import fastifyMultipart from 'fastify-multipart';
 import { I18nService } from 'nestjs-i18n';
-import { ValidationPipe } from 'fusion/middleware/pipe/validation.pipe';
 
 export function successExpect(response: any, result: any) {
   expect(response.statusCode).to.be.eql(200);
@@ -65,7 +64,7 @@ export async function initNestTestApp() {
   // Global Interceptor Handler(return standard response body if success)
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   // Global Validator, return custom parameter validation error
-  app.useGlobalPipes(new ValidationPipe({ enableErrorDetail: true }));
+  app.useGlobalPipes(new ValidationPipe());
   await app.init();
   await app
     .getHttpAdapter()

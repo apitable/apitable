@@ -17,17 +17,16 @@
  */
 
 import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
-import { Selectors } from '@apitable/core';
+import { integrateCdnHost, Selectors, Strings, t } from '@apitable/core';
 import Image from 'next/image';
-import { useState, useCallback } from 'react';
+import { getEnvVariables } from 'pc/utils/env';
+import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { mutate } from 'swr';
 import { createAction, getRobotBaseInfo, refreshRobotList } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions } from '../../helper';
 import { useActionTypes, useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
-import robotGuideAvatar from 'static/icon/robot/robot_guide_avatar.png';
-import { t, Strings } from '@apitable/core';
 // Create action
 export const RobotCreateGuideStep3 = (props: IStepProps) => {
   const { robotId, isActive } = props;
@@ -112,7 +111,10 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
           placement="right-center"
         >
           <span>
-            <Avatar icon={<Image src={robotGuideAvatar} />} />
+            <Avatar
+              icon={<Image src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} />}
+              size='l'
+            />
           </span>
         </Tooltip>
       </Box>

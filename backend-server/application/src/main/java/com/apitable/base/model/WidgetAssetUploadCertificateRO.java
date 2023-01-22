@@ -50,4 +50,7 @@ public class WidgetAssetUploadCertificateRO {
     @ApiModelProperty(value = "the package's version. when fileType package, it need", position = 4)
     private String version;
 
+    @ApiModelProperty(value = "the file extend name. when fileType package, it optional, such as: .js", position = 5)
+    private List<String> fileExtName;
+
 }

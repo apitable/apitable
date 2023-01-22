@@ -1,13 +1,8 @@
-
-
-
 <p align="center">
     <a href="https://apitable.com" target="_blank">
         <img src="docs/static/cover.png" alt="Imagen de portada APITable" />
     </a>
 </p>
-
-
 
 <p align="center">
     <!-- Gitpod -->
@@ -21,6 +16,10 @@
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
+    </a>
+    <!-- Github Release Latest -->
+    <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
+        <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
@@ -47,7 +46,7 @@
 
 ## ✨ Inicio rápido
 
-> APITable es actualmente un `Trabajo en progreso`. 
+> APITable es actualmente un `Trabajo en progreso`.
 > 
 > Publicaremos la primera versión a finales de enero de 2023.
 > 
@@ -68,9 +67,9 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
     <th>
       <a href="#">Formulario automático</a>
     </th>
-    
-  </tr> 
-    
+
+  </tr>
+
    <tr>
     <td width="50%">
       <a href="#">
@@ -91,8 +90,8 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
     <th>
       <a href="#">Enlaces ilimitados de tabla cruzada</a>
     </th>
-</tr>   
-    
+</tr>
+
  <tr>
     <td width="50%">
         <a href="#">
@@ -105,7 +104,6 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
       </a>
     </td>
  </tr>
-   
  <tr>
     <th>
       <a href="#">Permisos de poderosas filas/columnas</a>
@@ -113,7 +111,7 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
     <th>
       <a href="#">Incrustar</a>
     </th>
-  </tr>   
+  </tr>
 
  <tr>
     <td width="50%">
@@ -127,54 +125,52 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
         </a>
     </td>
   </tr>
- 
-   
 </table>
 
 APITable ofrece una gama de características asombrosas, desde lo personal hasta lo personal.
 
 - Pila de tecnología avanzada y código abierto
-    - `La colaboración en tiempo real` permite a varios usuarios editar juntos en tiempo real, o simultáneamente con el algoritmo `Transformación operacional (OT)`.
-    - Interfaz de hoja de cálculo de base de datos extremadamente suave y fácil de usar en  `<canvas> Motor de renderizado`.
-    - Arquitectura nativa de base de datos: Cambios / Operación / Acción / Instantánea y así sucesivamente.
-    - **100k+** filas de datos con colaboración en tiempo real.
-    - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
-    - Vínculo de tabla de una dirección / Bi-dirección y `Enlaces cruzados infinitos`
-    - Idiomas de programación y marco amigables con la comunidad, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - `La colaboración en tiempo real` permite a varios usuarios editar juntos en tiempo real, o simultáneamente con el algoritmo `Transformación operacional (OT)`.
+  - Interfaz de hoja de cálculo de base de datos extremadamente suave y fácil de usar en `<canvas> Motor de renderizado`.
+  - Arquitectura nativa de base de datos: Cambios / Operación / Acción / Instantánea y así sucesivamente.
+  - **100k+** filas de datos con colaboración en tiempo real.
+  - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
+  - Vínculo de tabla de una dirección / Bi-dirección y `Enlaces cruzados infinitos`
+  - Idiomas de programación y marco amigables con la comunidad, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - Bonito y rico Database-Hoja de cálculo UI
-    - `CRUD`: Crear, leer, actualizar, eliminar las tablas, columnas y filas
-    - `Operaciones de campos`: ordenar, filtro, agrupar, ocultar/desocultar, ajuste de altura.
-    - `Espacio basado en`: Utilice espacios de trabajo separados en lugar de la estructura basada en la aplicación/Base, haga posible el enlace de tablas ilimitadas.
-    - `Modo oscuro` y personalización del tema disponible.
-    - `7 tipos de vista`: vista en cuadrícula (hoja de datos) / Vista de galería / Mapa mental / vista Kanban / Vista completa de Gantt / Vista de calendario
-    - Panel de API en un clic
+  - `CRUD`: Crear, leer, actualizar, eliminar las tablas, columnas y filas
+  - `Operaciones de campos`: ordenar, filtro, agrupar, ocultar/desocultar, ajuste de altura.
+  - `Espacio basado en`: Utilice espacios de trabajo separados en lugar de la estructura basada en la aplicación/Base, haga posible el enlace de tablas ilimitadas.
+  - `Modo oscuro` y personalización del tema disponible.
+  - `7 tipos de vista`: vista en cuadrícula (hoja de datos) / Vista de galería / Mapa mental / vista Kanban / Vista completa de Gantt / Vista de calendario
+  - Panel de API en un clic
 - Baterías incluidas
-    - Plantillas oficiales incorporadas en 10 o más.
-    - Automatización de robot y personalización disponibles.
-    - Panel de BI
-    - Formulario generado por un solo clic
-    - Página compartible e incrustable.
-    - Soporte múltiple.
-    - Integración con n8n.io / Zapier / Appsmith... y más.
+  - Plantillas oficiales incorporadas en 10 o más.
+  - Automatización de robot y personalización disponibles.
+  - Panel de BI
+  - Formulario generado por un solo clic
+  - Página compartible e incrustable.
+  - Soporte múltiple.
+  - Integración con n8n.io / Zapier / Appsmith... y más.
 - Excelente extensibilidad
-    - Extensible `Widget System` con más de 20 oficiales widgets de código abierto.
-    - Gráfico personalizable & Gráfico & Panel de control
-    - Tipos de columnas de datos personalizables
-    - Fórmulas personalizables
-    - Acciones de Robot de Automatización personalizables.
+  - Extensible `Widget System` con más de 20 oficiales widgets de código abierto.
+  - Gráfico personalizable & Gráfico & Panel de control
+  - Tipos de columnas de datos personalizables
+  - Fórmulas personalizables
+  - Acciones de Robot de Automatización personalizables.
 - Permisos de grado empresarial
-    - `Mirror`, convierte una vista en una réplica para implementar el permiso de fila.
-    - Activa `Permiso de Columna` a través de una operación muy simple.
-    - Carpetas / Subcarpetas / Permiso de archivos.
-    - Carpetas de estructura de árbol y nodo personalizable (archivo);
-    - Gestión de equipos & Estructura de la organización.
+  - `Mirror`, convierte una vista en una réplica para implementar el permiso de fila.
+  - Activa `Permiso de Columna` a través de una operación muy simple.
+  - Carpetas / Subcarpetas / Permiso de archivos.
+  - Carpetas de estructura de árbol y nodo personalizable (archivo);
+  - Gestión de equipos & Estructura de la organización.
 - Características de la empresa:
-    - SAML
-    - Inicio de sesión único (SST)
-    - Auditoría
-    - Copia de seguridad automática de la base de datos
-    - Exportador de datos
-    - Marca de agua
+  - SAML
+  - Inicio de sesión único (SST)
+  - Auditoría
+  - Copia de seguridad automática de la base de datos
+  - Exportador de datos
+  - Marca de agua
 - ....
 
 Con widgets y plugins extensibles, puedes añadir más características.
@@ -184,21 +180,21 @@ Con widgets y plugins extensibles, puedes añadir más características.
 ¿Por qué debe conocer APITable para su próximo software?
 
 - Como software de supergestión
-    - Gestión de proyectos flexible & Tareas / Gestión de incidencias.
-    - Gestión de Líder de Mercadeo.
-    - CRM más flexible y conectable.
-    - Inteligencia de Negocio Flexible (BI).
-    - Formularios y encuestas amigables con las personas
-    - ERP flexible.
-    - Plataforma de código bajo y sin código.
-    - ...y más, APITable pone 1000 programas en su bolsillo.
+  - Gestión de proyectos flexible & Tareas / Gestión de incidencias.
+  - Gestión de Líder de Mercadeo.
+  - CRM más flexible y conectable.
+  - Inteligencia de Negocio Flexible (BI).
+  - Formularios y encuestas amigables con las personas
+  - ERP flexible.
+  - Plataforma de código bajo y sin código.
+  - ...y más, APITable pone 1000 programas en su bolsillo.
 - Como infraestructura de base de datos visual
-    - **Inserte** APITable en sus propias interfaces de software.
-    - Base de datos visual con REST API.
-    - Panel de administración.
-    - Gestión central de la configuración.
-    - Base de datos todo en uno que **conecte todo** su software.
-    - ...y más, APITable conecta todo.
+  - **Inserte** APITable en sus propias interfaces de software.
+  - Base de datos visual con REST API.
+  - Panel de administración.
+  - Gestión central de la configuración.
+  - Base de datos todo en uno que **conecte todo** su software.
+  - ...y más, APITable conecta todo.
 - También, es de código abierto y extensible
 
 ## :✫ ving_hearts: orientado a API
@@ -220,10 +216,6 @@ Comparte tu tabla o carpeta de la hoja de datos. Los inserte copiando y pegando 
 
 [APITable.com](https://apitable.com) proporciona más características de Incrustación listas para empresas para valores.
 
-
-
-
-
 ## Instalación
 
 Asegúrate de que tienes `docker` & `curl` instalado localmente.
@@ -237,7 +229,6 @@ curl https://apitable.github.io/install.sh | bash
 Luego abre [https://localhost:80](https://localhost:80) en tu navegador para visitarlo. (nombre de usuario predeterminado `admin@apitable.com` y contraseña `Apitable2022`)
 
 Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 Developer Guide](./docs/contribute/developer-guide.md)
-
 
 ## 🧑 💻 Contribuyendo
 
@@ -264,7 +255,6 @@ Aquí hay un flujo de trabajo general APITable git:
 5. Publica la rama (`git push origin my-new-feature`)
 6. Crear una nueva Pull Request -> [Crear pull request a través de bifurcaciones](https://github.com/apitable/apitable/compare)
 
-
 ### Convenciones de trabajo
 
 Utilizar estas convenciones comunes:
@@ -285,17 +275,16 @@ Utilizar estas convenciones comunes:
   - SDK Widget (Próximamente...)
   - Scripting (Próximamente...)
 
-
 ## :autovía: Hoja de ruta
 
 ### Características futuras
+
 - Constructor de Interfaz de código pesado
 - Componentes de documentación de terceros incrustables
 - Idiomas específicos del dominio de SQL
 - Como IdP
 - Características Web 3
 - ...
-
 
 ### Las versiones Hosted y Enterprise ofrecen características avanzadas
 
@@ -325,7 +314,6 @@ Siempre buscamos buenos talentos para APITable:
 - **Desarrollador front-end**: Tiene experiencia con React, NextJS, TypeScript, WebPack. Y le gusta escribir código de alta calidad con documentación clara y pruebas unitarias.
 
 Independientemente del tiempo y condiciones, si desea involucrarse en el equipo de APITable, no dudes en enviar tu CV a [talent@apitable. om](mailto:talent@apitable.com).
-
 
 ## 📺 Captura de pantalla
 
@@ -369,7 +357,6 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
 > Vea [LICENSACIÓN](./LICENSING.md) para más detalles.
 > 
 > Si quieres usar APITable en línea, entonces no necesitas ejecutar este código, ofrecemos una versión alojada de la aplicación en [APITable. om](https://apitable.com) que optimizó para el acelerador global.
-
 
 <br/>
 

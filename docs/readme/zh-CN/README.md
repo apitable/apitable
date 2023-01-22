@@ -1,13 +1,8 @@
-
-
-
 <p align="center">
     <a href="https://apitable.com" target="_blank">
         <img src="docs/static/cover.png" alt="APITable封面图像" />
     </a>
 </p>
-
-
 
 <p align="center">
     <!-- Gitpod -->
@@ -21,6 +16,10 @@
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
+    </a>
+    <!-- Github Release Latest -->
+    <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
+        <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
@@ -47,7 +46,7 @@
 
 ## ✨ 快速启动
 
-> APITable 目前是 `正在进行中的工作`。 
+> APITable 目前是 `正在进行中的工作`。
 > 
 > 我们将在2023年1月下旬公布第一份版本。
 > 
@@ -68,9 +67,9 @@
     <th>
       <a href="#">神奇表单</a>
     </th>
-    
-  </tr> 
-    
+
+  </tr>
+
    <tr>
     <td width="50%">
       <a href="#">
@@ -91,8 +90,8 @@
     <th>
       <a href="#">无限跨表关联</a>
     </th>
-</tr>   
-    
+</tr>
+
  <tr>
     <td width="50%">
         <a href="#">
@@ -105,7 +104,6 @@
       </a>
     </td>
  </tr>
-   
  <tr>
     <th>
       <a href="#">强大的行/列权限</a>
@@ -113,7 +111,7 @@
     <th>
       <a href="#">内嵌</a>
     </th>
-  </tr>   
+  </tr>
 
  <tr>
     <td width="50%">
@@ -127,54 +125,52 @@
         </a>
     </td>
   </tr>
- 
-   
 </table>
 
 APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 - 先进技术栈
-    - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑。
-    - 在  `中极其顺畅、方便用户、超快的数据库电子表格接口<canvas> 渲染引擎`
-    - 数据库本地架构：变更集/操作/动作/快照等等。
-    - **100k+** 数据行与实时合作。
-    - 全堆栈访问 API ，从 `数据` 到 `元数据`。
-    - 单向/双向表链接和 `无限交叉链接`
-    - 社区友好的编程语言和框架，TypeScript ([下一步JS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring 启动](https://spring.io/projects/spring-boot))
+  - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑。
+  - 在 `中极其顺畅、方便用户、超快的数据库电子表格接口<canvas> 渲染引擎`
+  - 数据库本地架构：变更集/操作/动作/快照等等。
+  - **100k+** 数据行与实时合作。
+  - 全堆栈访问 API ，从 `数据` 到 `元数据`。
+  - 单向/双向表链接和 `无限交叉链接`
+  - 社区友好的编程语言和框架，TypeScript ([下一步JS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring 启动](https://spring.io/projects/spring-boot))
 - 美观和齐全的多维表格UI界面
-    - `CRUD`: 创建、阅读、更新、删除表、列和行
-    - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
-    - `基于`的空格：使用分开的工作区取代基于App/Base-的结构，使无限制的表格链接成为可能。
-    - `可用的暗色模式` 和主题定制.
-    - `7 种视图类型`: 网格视图(Dataseet) / 图库视图/ Mindmap 视图/ Kanban 视图/全功能网格视图/日历视图
-    - 单击API面板
+  - `CRUD`: 创建、阅读、更新、删除表、列和行
+  - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
+  - `基于`的空格：使用分开的工作区取代基于App/Base-的结构，使无限制的表格链接成为可能。
+  - `可用的暗色模式` 和主题定制.
+  - `7 种视图类型`: 网格视图(Dataseet) / 图库视图/ Mindmap 视图/ Kanban 视图/全功能网格视图/日历视图
+  - 单击API面板
 - 装备齐全
-    - 内置的 10 + 官方模板。
-    - 机器人自动化和自定义可用.
-    - BI 仪表板
-    - 单击自动生成的表单
-    - 可共享和嵌入的页面。
-    - 多语言支持
-    - 与 n8n.io / Zapier / Appsmith... 及更多。
+  - 内置的 10 + 官方模板。
+  - 机器人自动化和自定义可用.
+  - BI 仪表板
+  - 单击自动生成的表单
+  - 可共享和嵌入的页面。
+  - 多语言支持
+  - 与 n8n.io / Zapier / Appsmith... 及更多。
 - 卓越的扩展性
-    - 可扩展的 `部件系统` 有超过 20 个官员开源部件。
-    - 自定义图表 & 图表 & 仪表板
-    - 可自定义数据列类型
-    - 可自定义公式：
-    - 可自定义自动机器人操作。
+  - 可扩展的 `部件系统` 有超过 20 个官员开源部件。
+  - 自定义图表 & 图表 & 仪表板
+  - 可自定义数据列类型
+  - 可自定义公式：
+  - 可自定义自动机器人操作。
 - 企业级权限
-    - `镜像`, 将视图变成镜像以实现行权限。
-    - 通过非常简单的操作激活 `列权限`。
-    - 文件夹/子文件夹/文件权限
-    - 树结构文件夹和可自定义的节点(文件)；
-    - 团队管理 & 组织结构
+  - `镜像`, 将视图变成镜像以实现行权限。
+  - 通过非常简单的操作激活 `列权限`。
+  - 文件夹/子文件夹/文件权限
+  - 树结构文件夹和可自定义的节点(文件)；
+  - 团队管理 & 组织结构
 - 企业级应用功能
-    - SAML
-    - 单点登录（SSO）
-    - 审计
-    - 数据库自动备份
-    - 数据导出器
-    - 水标
+  - SAML
+  - 单点登录（SSO）
+  - 审计
+  - 数据库自动备份
+  - 数据导出器
+  - 水标
 - ....
 
 使用可扩展的部件和插件，您可以添加更多功能。
@@ -184,21 +180,21 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 为什么你必须知道APITable并作为你的下一个软件？
 
 - 作为超级管理软件
-    - 灵活的项目管理 & 任务/问题管理
-    - 营销潜在客户管理。
-    - 最灵活和可连接的CRM。
-    - 灵活的BI图表系统
-    - 有利于人民的形式和调查
-    - 弹性企业资源规划系统。
-    - 低代码和无代码平台。
-    - ...及更多, APITable 将 1000 个软件放入您的口袋中。
+  - 灵活的项目管理 & 任务/问题管理
+  - 营销潜在客户管理。
+  - 最灵活和可连接的CRM。
+  - 灵活的BI图表系统
+  - 有利于人民的形式和调查
+  - 弹性企业资源规划系统。
+  - 低代码和无代码平台。
+  - ...及更多, APITable 将 1000 个软件放入您的口袋中。
 - 作为一个可视化数据库基础设施
-    - **嵌入** 个应用到您自己的软件界面。
-    - 带有REST API的视觉数据库。
-    - 管理仪表板
-    - 中央配置管理。
-    - **连接您所有的** 个软件的全部企业数据库。
-    - ...及更多, APITable 连接到一切。
+  - **嵌入** 个应用到您自己的软件界面。
+  - 带有REST API的视觉数据库。
+  - 管理仪表板
+  - 中央配置管理。
+  - **连接您所有的** 个软件的全部企业数据库。
+  - ...及更多, APITable 连接到一切。
 - 此外，它是开源和可扩展的
 
 ## :argriving_hearts: API-oried
@@ -220,10 +216,6 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 
 [APITable.com](https://apitable.com) 为证券提供更多准备好企业嵌入功能。
 
-
-
-
-
 ## 安装
 
 请确保您已在本地安装 `docker` & `curl` 。
@@ -237,7 +229,6 @@ curl https://apitable.github.io/install.sh | bash
 然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑stiptop_compute: 开发者指南](./docs/contribute/developer-guide.md)
-
 
 ## 🧑digh:laptop_compute: contribution
 
@@ -264,7 +255,6 @@ curl https://apitable.github.io/install.sh | bash
 5. 发布分支 (`git 推送源自我的新功能`)
 6. 创建新的拉取请求 -> [跨叉创建拉取请求](https://github.com/apitable/apitable/compare)
 
-
 ### 工作公约
 
 2. 可适用这些共同公约：
@@ -285,17 +275,16 @@ curl https://apitable.github.io/install.sh | bash
   - 小部件 SDK (即将到来...)
   - 脚本(即将到来...)
 
-
 ## :mobway: Roadmap
 
 ### 未来的功能
+
 - 重代码接口构建器
 - 可嵌入第三方文件部分
 - SQL类域特定语言
 - IdP
 - Web 3 功能
 - ...
-
 
 ### 托管版本和企业版本提供高级功能
 
@@ -325,7 +314,6 @@ curl https://apitable.github.io/install.sh | bash
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
 无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到 [talent@apitable。 om](mailto:talent@apitable.com)。
-
 
 ## 📺 截图
 
@@ -369,7 +357,6 @@ curl https://apitable.github.io/install.sh | bash
 > 详情请参阅 [LICENSING](./LICENSING.md)
 > 
 > 如果您想要在线使用 APITable ，那么您不需要运行此代码。 我们在 [APITable 上提供一个托管的应用版本。 om](https://apitable.com) 适合全局加速器。
-
 
 <br/>
 

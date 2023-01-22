@@ -361,6 +361,9 @@ export const useUserRequest = () => {
     return Api.updateUser({ avatar: token, init, avatarColor: null }).then((res) => {
       const { success, data } = res.data;
       if (success) {
+        Message.success({
+          content: t(Strings.avatar_modified_successfully),
+        });
         dispatch(StoreActions.setUserAvatarColor(null));
         dispatch(StoreActions.setUserAvatar(data));
         dispatch(StoreActions.setReqStatus(true));
@@ -369,15 +372,17 @@ export const useUserRequest = () => {
     });
   };
 
-  const updateAvatarColor = (avatarColor: number, nickName: string) => {
+  const updateAvatarColor = (avatarColor: number) => {
     return Api.updateUser({ 
       avatarColor, 
       init: false,
-      nickName,
       avatar: null as any,
     }).then((res) => {
       const { success } = res.data;
       if (success) {
+        Message.success({
+          content: t(Strings.avatar_modified_successfully),
+        });
         dispatch(StoreActions.setUserAvatarColor(avatarColor));
         dispatch(StoreActions.setUserAvatar(''));
         dispatch(StoreActions.setReqStatus(true));

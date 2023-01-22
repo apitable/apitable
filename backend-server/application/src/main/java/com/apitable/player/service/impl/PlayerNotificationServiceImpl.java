@@ -18,22 +18,6 @@
 
 package com.apitable.player.service.impl;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
@@ -45,20 +29,14 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.net.url.UrlPath;
 import cn.hutool.core.net.url.UrlQuery;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.*;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.cursor.Cursor;
-
+import com.apitable.core.constants.RedisConstants;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.player.dto.NotificationModelDTO;
@@ -76,12 +54,7 @@ import com.apitable.player.vo.PlayerBaseVo;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.component.ClientEntryTemplateConfig;
 import com.apitable.shared.component.TaskManager;
-import com.apitable.shared.component.notification.INotificationFactory;
-import com.apitable.shared.component.notification.NotificationHelper;
-import com.apitable.shared.component.notification.NotificationRenderMap;
-import com.apitable.shared.component.notification.NotificationTemplateId;
-import com.apitable.shared.component.notification.NotificationToTag;
-import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.shared.component.notification.*;
 import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.NotificationConstants;
@@ -96,29 +69,28 @@ import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.service.INodeService;
-import com.apitable.core.constants.RedisConstants;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SpringContextHolder;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.cursor.Cursor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_CONTACT_URL;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_CREATED_AT;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_DATASHEET_URL;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_NODE_NAME;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_ID;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_URL;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_SPACE_NAME;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_URL;
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_VIEW_ID;
-import static com.apitable.shared.constants.NotificationConstants.EXPIRE_AT;
-import static com.apitable.shared.constants.NotificationConstants.INVOLVE_RECORD_IDS;
+import static com.apitable.shared.constants.NotificationConstants.*;
 
 /**
  * <p>

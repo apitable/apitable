@@ -19,12 +19,26 @@
 import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import {
-  Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
+  Body,
+  CacheTTL,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
-import { AttachmentUploadRo } from 'database/ros/attachment.upload.ro';
-import { AttachmentService } from 'database/services/attachment/attachment.service';
+import { AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
+import { AttachmentService } from 'database/attachment/services/attachment.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
@@ -184,11 +198,7 @@ export class FusionApiController {
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
   // TODO: Waiting for nestjs official inheritance multi and fastify
-  public async addAttachment(
-    @Param() param: RecordParamRo,
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply
-  ): Promise<AttachmentVo> {
+  public async addAttachment(@Param() param: RecordParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     // check space capacity
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
@@ -298,11 +308,14 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async deleteRecord(@Param() param: RecordParamRo, @Query() query: RecordDeleteRo): Promise<RecordDeleteVo> {
+  public async deleteRecord(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
+    if (!query.recordIds) {
+      throw ApiException.tipError(ApiTipConstant.api_params_empty_error, { property: 'recordIds' });
+    }
     if (query.recordIds.length > API_MAX_MODIFY_RECORD_COUNTS) {
       throw ApiException.tipError(ApiTipConstant.api_params_records_max_count_error, { count: API_MAX_MODIFY_RECORD_COUNTS });
     }
-    const result = await this.fusionApiService.deleteRecord(param.datasheetId, query.recordIds);
+    const result = await this.fusionApiService.deleteRecord(param.datasheetId, Array.from(new Set(query.recordIds)));
     if (result) {
       return ApiResponse.success(undefined);
     }
@@ -413,7 +426,7 @@ export class FusionApiController {
     if (fields[0]!.id === fieldId) {
       throw ApiException.tipError(ApiTipConstant.api_params_primary_field_not_allowed_to_delete, { property: 'name' });
     }
-    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion!);
+    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion);
     return ApiResponse.success({});
   }
 
@@ -510,11 +523,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async executeCommand(
-    @Body() body: ICollaCommandOptions,
-    @Param('datasheetId') datasheetId: string,
-    @Req() request: FastifyRequest
-  ) {
+  public async executeCommand(@Body() body: ICollaCommandOptions, @Param('datasheetId') datasheetId: string, @Req() request: FastifyRequest) {
     const commandBody = body;
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });

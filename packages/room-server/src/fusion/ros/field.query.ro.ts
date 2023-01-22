@@ -17,6 +17,7 @@
  */
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class FieldQueryRo {
   @ApiPropertyOptional({
@@ -26,5 +27,7 @@ export class FieldQueryRo {
     description:
       'The view Id, specifying the view, returns the fields in the same order as the view, hidden fields are not returned',
   })
-  viewId!: string;
+  @IsString()
+  @IsOptional()
+  viewId?: string;
 }

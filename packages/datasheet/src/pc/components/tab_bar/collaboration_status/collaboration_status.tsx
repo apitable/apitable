@@ -126,6 +126,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
                     src={getCollaboratorAvatar(collaborator)}
                     size={AvatarSize.Size24}
                     title={backCorrectAvatarName(collaborator)}
+                    avatarColor={collaborator.avatarColor}
                     style={{
                       marginLeft: -8,
                       cursor: 'pointer',
@@ -158,6 +159,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
                   <div className={styles.avatarListItem}>
                     <Avatar
                       src={getCollaboratorAvatar(c)}
+                      avatarColor={c.avatarColor}
                       size={AvatarSize.Size24}
                       title={backCorrectAvatarName(c)}
                       id={c.userId || c.socketId}

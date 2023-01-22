@@ -17,6 +17,11 @@ ENV_FILE := .env
 export ENV_FILE
 endif
 
+ifndef DEVENV_FILE
+DEVENV_FILE := .env.devenv
+export DEVENV_FILE
+endif
+
 ifndef DATA_PATH
 DATA_PATH := ./
 export DATA_PATH
@@ -27,7 +32,7 @@ DEVENV_PROJECT_NAME := apitable-devenv
 export DEVENV_PROJECT_NAME
 endif
 
-_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yml -f docker-compose.dataenv.yaml
+_DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yaml -f docker-compose.dataenv.yaml
 _DEVENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.devenv.yaml
 
 OS_NAME := $(shell uname -s | tr A-Z a-z)
@@ -141,7 +146,7 @@ SIKP_INITDB=false
 
 _test_init_db:
 	@echo "${YELLOW}init-db initializing..${RESET}"
-	docker compose -f docker-compose.unit-test.yml run --rm \
+	docker compose -f docker-compose.unit-test.yaml run -u $(shell id -u):$(shell id -g) --rm \
     	-e DB_HOST=test-mysql \
     	test-initdb
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
@@ -150,13 +155,13 @@ _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
 _test_dockers: ## run depends container in test step
-	docker compose -f docker-compose.unit-test.yml up -d test-mysql ;\
-	docker compose -f docker-compose.unit-test.yml up -d test-redis ;\
-	docker compose -f docker-compose.unit-test.yml up -d test-rabbitmq
+	docker compose -f docker-compose.unit-test.yaml up -d test-mysql ;\
+	docker compose -f docker-compose.unit-test.yaml up -d test-redis ;\
+	docker compose -f docker-compose.unit-test.yaml up -d test-rabbitmq
 
 test-ut-room-local:
 	make _test_clean
-	docker compose -f docker-compose.unit-test.yml up -d test-redis test-mysql test-rabbitmq
+	docker compose -f docker-compose.unit-test.yaml up -d test-redis test-mysql test-rabbitmq
 ifeq ($(SIKP_INITDB),false)
 	sleep 20
 	make _test_init_db
@@ -176,8 +181,8 @@ test-ut-room-docker:
 	make _test_dockers
 	sleep 20
 	make _test_init_db
-	docker compose -f docker-compose.unit-test.yml build unit-test-room
-	docker compose -f docker-compose.unit-test.yml run --rm \
+	docker compose -f docker-compose.unit-test.yaml build unit-test-room
+	docker compose -f docker-compose.unit-test.yaml run --rm \
 		-e MYSQL_HOST=test-mysql \
 		-e REDIS_HOST=test-redis \
 		-e RABBITMQ_HOST=test-rabbitmq \
@@ -196,7 +201,7 @@ _clean_room_jest_coverage:
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
 	make _test_clean
-	docker compose -f docker-compose.ut-backend.yml up -d
+	docker compose -f docker-compose.ut-backend.yaml up -d
 	make test-ut-backend
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	make _test_clean
@@ -249,6 +254,12 @@ Which service do you want to start run?
 endef
 export RUN_LOCAL_TXT
 
+define RUN_PERF_TXT
+Which service do you want to start run?
+  1) room-server / production mode / Clinic.js flamegraph
+endef
+export RUN_PERF_TXT
+
 _check_env: ## check if .env files exists
 	@FILE=$$ENV_FILE ;\
 	if [ ! -f "$$FILE" ]; then \
@@ -268,8 +279,15 @@ run-local: ## run services with local programming language envinroment
  	if [ "$$SERVICE" = "3" ]; then make _run-local-socket-server ;fi ;\
  	if [ "$$SERVICE" = "4" ]; then make _run-local-web-server; fi
 
+.PHONY: run-perf
+run-perf: ## run services with local programming language envinroment for performance profiling
+	@echo "$$RUN_PERF_TXT"
+	@read -p "ENTER THE NUMBER: " SERVICE ;\
+ 	if [ "$$SERVICE" = "1" ]; then make _run-perf-flame-local-room-server; fi
+
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
 	cd backend-server ;\
 	./gradlew build -x test ;\
 	MYSQL_HOST=127.0.0.1 \
@@ -279,14 +297,24 @@ _run-local-backend-server:
 
 _run-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
 	yarn start:room-server
+
+_run-perf-flame-local-room-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
+	yarn start:room-server:perf:flame
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
+	rm -rf packages/datasheet/web_build;\
+	yarn build:dst:pre;\
 	yarn sd
 
 _run-local-socket-server:
 	source scripts/export-env.sh $$ENV_FILE;\
+	source scripts/export-env.sh $$DEVENV_FILE;\
 	cd packages/socket-server ;\
 	yarn run start:dev
 
@@ -400,7 +428,7 @@ major: # bump version number patch
 dataenv:
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-data-mysql init-data-minio
+DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes
@@ -464,6 +492,16 @@ db-apply-ee: ## init-db enterprise  database structure (use .env)
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
 	docker run --rm --network apitable_apitable --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
 
+changelog: ## make changelog with github api
+	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\
+	read -p "FROM[default:latest-tag]: " GIT_FROM ;\
+	read -p "TO[default:HEAD]: " GIT_TO ;\
+	if [ "$$GIT_FROM" = "" ]; then GIT_FROM=$(shell git describe --tags $$(git rev-list --tags --max-count=1)) ; fi ;\
+	if [ "$$GIT_TO" = "" ]; then GIT_TO=HEAD ; fi ;\
+	echo "" ;\
+	echo "FROM: $$GIT_FROM" ;\
+	echo "TO: $$GIT_TO" ;\
+	npx github-changelog-builder --token $$GITHUB_TOKEN -o apitable -r apitable -f $$GIT_FROM -t $$GIT_TO -a CHANGELOG.md
 
 ### help
 .PHONY: search

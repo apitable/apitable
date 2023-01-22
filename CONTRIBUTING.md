@@ -64,6 +64,10 @@ You can write tweets or blogs that share APITable to your friends.
 See [Developer Guide](./docs/contribute/developer-guide.md) to set up your development environment.
 
 
+## Localization & Translation 
+
+Get into our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) to help us translate.
+
 
 ## Thank You!
 

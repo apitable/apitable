@@ -254,7 +254,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
     }
 
     if(embedId) {
-      requestMethod = () => fetchEmbedForeignDatasheetPack(embedId, foreignDstId);
+      requestMethod = () => fetchEmbedForeignDatasheetPack(embedId, resourceId, foreignDstId);
     }
 
     if (forceFetch || !foreignDatasheet || foreignDatasheet.isPartOfData) {
