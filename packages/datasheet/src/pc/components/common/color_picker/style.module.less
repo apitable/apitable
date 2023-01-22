@@ -118,6 +118,7 @@
     background-size: cover;
     user-select: none;
     border-radius: 4px;
+
     &.bg {
       background-color: var(--fill0);
     }
@@ -125,6 +126,15 @@
     &:nth-child(2) {
       padding: 16px 10px 6px 10px;
       margin-bottom: 16px;
+    }
+
+    &.common {
+      margin-bottom: 0;
+      
+      &:nth-child(2) {
+        padding: 0 10px;
+        margin-bottom: 10px;
+      }
     }
 
     .menuTitle {
