@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { generateRandomString } from '@apitable/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationTriggerRepository } from './automation.trigger.repository';
@@ -28,9 +27,9 @@ import { ConfigModule } from '@nestjs/config';
 describe('AutomationTriggerRepository', () => {
   let module: TestingModule;
   let repository: AutomationTriggerRepository;
-  const theTriggerId = generateRandomString(16);
-  const theTriggerTypeId = generateRandomString(16);
-  const theRobotId = generateRandomString(16);
+  const theTriggerId = 'theTriggerId';
+  const theTriggerTypeId = 'theTriggerTypeId';
+  const theRobotId = 'theRobotId';
   let entity: AutomationTriggerEntity;
 
   beforeAll(async () => {

@@ -160,7 +160,7 @@ describe('TriggerEventHelper', () => {
   });
 
   const getDatasheetInfoInputMetaContext = (eventType: string) => {
-    let key =
+    const key =
       eventType == EventTypeEnums.RecordMatchesConditions
         ? `${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`
         : `${EventTypeEnums.RecordCreated}@${OFFICIAL_SERVICE_SLUG}`;
