@@ -44,11 +44,27 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ 快速启动
 
 > APITable 目前是 `正在进行中的工作`。
 > 
-> 我们将在2023年1月下旬公布第一份版本。
+> We will publish the first release in late February 2023.
 > 
 > 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
