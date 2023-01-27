@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotRunner, ConfigConstant, generateRandomString, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
+import { AutomationRobotRunner, ConfigConstant, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
 import { Injectable, Logger } from '@nestjs/common';
-import { NodeRepository } from 'node/repositories/node.repository';
 import fetch from 'node-fetch';
+import { NodeService } from 'node/services/node.service';
 import { InjectLogger } from 'shared/common';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
 import { UnreachableCaseError } from 'shared/errors';
@@ -31,13 +31,6 @@ import { customActionMap } from '../actions/decorators/automation.action.decorat
 import { IActionResponse } from '../actions/interface/action.response';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
-import { AutomationServiceRepository } from '../repositories/automation.service.repository';
-import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
-import { AutomationServiceCreateRo } from '../ros/service.create.ro';
-import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
-import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
-import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { getTypeByItem } from '../utils';
 
 /**
  * handle robot execution scheduling
@@ -53,9 +46,7 @@ export class AutomationService {
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,
-    private readonly automationServiceRepository: AutomationServiceRepository,
-    private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
-    private readonly nodeRepository: NodeRepository,
+    private readonly nodeService: NodeService,
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
@@ -70,17 +61,6 @@ export class AutomationService {
     if (robotCount > ConfigConstant.MAX_ROBOT_COUNT_PER_DST) {
       throw new ServerException(CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT);
     }
-  }
-
-  async getTriggerType(lang = 'zh') {
-    const triggerTypes = await this.automationRobotRepository.getRobotTriggerTypes();
-    return triggerTypes.map(triggerType => {
-      return getTypeByItem(triggerType, lang, 'trigger');
-    });
-  }
-
-  getActiveRobotsByResourceIds(resourceIds: string[]) {
-    return this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
   }
 
   getRobotById(robotId: string) {
@@ -167,22 +147,18 @@ export class AutomationService {
 
   private async getSpaceIdByRobotId(robotId: string) {
     const resourceId = await this.automationRobotRepository.getResourceIdByRobotId(robotId);
-    const rawResult = await this.nodeRepository.selectSpaceIdByNodeId(resourceId!);
+    const rawResult = await this.nodeService.selectSpaceIdByNodeId(resourceId!);
     if (!rawResult?.spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     return rawResult.spaceId;
   }
 
-  async getRobotRunTimesBySpaceId(spaceId: string) {
-    return await this.automationRunHistoryRepository.getRobotRunTimesBySpaceId(spaceId);
-  }
-
   async handleTask(robotId: string, trigger: { input: any; output: any }) {
     const spaceId = await this.getSpaceIdByRobotId(robotId);
-    // FIXME: there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
+    // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
+    // there limit by billing plan
     // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
-    // // TODO: limit by billing plan
     // if (spaceRobotRunTimes >= 100000) {
     //   return;
     // }
@@ -218,6 +194,7 @@ export class AutomationService {
         const { hasError, errors, validationError } = validateMagicForm((triggerInputSchema as any).schema, triggerInput);
         if (hasError) {
           isTriggerValid = false;
+          this.logger.debug(`trigger is valid: ${isTriggerValid}`);
           errorsByNodeId[trigger.triggerId] = validationError ? [...errors, ...validationError] : errors;
           return {
             ok: false,
@@ -233,8 +210,7 @@ export class AutomationService {
         if (hasError) {
           errorsByNodeId[node.id] = validationError ? [...errors, ...validationError] : errors;
         }
-        const noError = !hasError;
-        return noError;
+        return !hasError;
       });
       this.logger.debug(`no errors: ${noErrors},${actions}`);
       if (isTriggerValid && noErrors) {
@@ -253,51 +229,7 @@ export class AutomationService {
     };
   }
 
-  async createService(props: AutomationServiceCreateRo, user: IUserBaseInfo) {
-    const { slug, name, logo, baseUrl } = props;
-    const service = this.automationServiceRepository.create({
-      serviceId: `asv${generateRandomString(15)}`,
-      slug: slug,
-      name,
-      logo,
-      baseUrl,
-      createdBy: user.userId,
-      updatedBy: user.userId,
-    });
-    return await this.automationServiceRepository.save(service);
-  }
-
-  async createTriggerType(props: TriggerTypeCreateRo, user: IUserBaseInfo) {
-    const { name, description, serviceId, inputJSONSchema, outputJSONSchema, endpoint } = props;
-    const triggerType = this.automationTriggerTypeRepository.create({
-      triggerTypeId: `att${generateRandomString(15)}`,
-      name,
-      description,
-      serviceId,
-      inputJSONSchema,
-      outputJSONSchema,
-      endpoint,
-      createdBy: user.userId,
-      updatedBy: user.userId,
-    });
-    return await this.automationTriggerTypeRepository.save(triggerType);
-  }
-
   async isResourcesHasRobots(resourceIds: string[]) {
     return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
-  }
-
-  async updateTriggerType(triggerTypeId: string, data: TriggerTypeUpdateRo, user: IUserBaseInfo) {
-    return await this.automationTriggerTypeRepository.update({ triggerTypeId }, {
-      ...data,
-      updatedBy: user.userId,
-    });
-  }
-
-  async updateService(serviceId: string, data: AutomationServiceUpdateRo, user: IUserBaseInfo) {
-    return await this.automationServiceRepository.update({ serviceId }, {
-      ...data,
-      updatedBy: user.userId,
-    });
   }
 }

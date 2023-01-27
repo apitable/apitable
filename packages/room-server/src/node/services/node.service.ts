@@ -188,4 +188,8 @@ export class NodeService {
     }
     return showRecordHistory;
   }
+
+  async selectSpaceIdByNodeId(nodeId: string): Promise<{ spaceId: string } | undefined> {
+    return await this.nodeRepository.selectSpaceIdByNodeId(nodeId);
+  }
 }
