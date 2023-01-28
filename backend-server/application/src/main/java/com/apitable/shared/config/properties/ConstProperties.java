@@ -62,13 +62,6 @@ public class ConstProperties {
     private Map<BucketKey, OssBucketInfo> ossBuckets;
 
     /**
-     * Official default avatar list
-     * @deprecated open-source
-     */
-    @Deprecated
-    private String defaultAvatarList;
-
-    /**
      * Template space, the templates created in this space will become official templates,
      * and there is no upper limit for the number of templates
      */

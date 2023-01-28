@@ -868,18 +868,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return true;
     }
 
-    private String getRandomAvatar() {
-        String defaultAvatarList = constProperties.getDefaultAvatarList();
-        if (StrUtil.isBlank(defaultAvatarList)) {
-            return null;
-        }
-        String[] splits = defaultAvatarList.split(",");
-        if (splits.length == 0) {
-            return null;
-        }
-        return splits[RandomUtil.randomInt(0, splits.length)];
-    }
-
     @Override
     public List<UserLangDTO> getLangByEmails(String expectedLang, List<String> emails) {
         // Maybe have performance problems, the segmented query is used.
