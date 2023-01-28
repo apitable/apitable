@@ -25,16 +25,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.shared.component.ResourceDefinition;
+import com.apitable.shared.component.SystemEnvironmentVariable;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.component.ResourceDefinition;
-import com.apitable.shared.util.IgnorePathHelper;
 import com.apitable.shared.util.AopTargetUtils;
+import com.apitable.shared.util.IgnorePathHelper;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -66,6 +69,9 @@ public class ApiResourceScanner implements BeanPostProcessor, Ordered, Applicati
 
     private ApiResourceFactory apiResourceFactory;
 
+    @Resource
+    private SystemEnvironmentVariable systemEnvironmentVariable;
+
     public ApiResourceFactory getApiResourceFactory() {
         if (apiResourceFactory == null) {
             apiResourceFactory = applicationContext.getBean(ApiResourceFactory.class);
@@ -80,6 +86,9 @@ public class ApiResourceScanner implements BeanPostProcessor, Ordered, Applicati
 
     @Override
     public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
+        if (systemEnvironmentVariable.isTestEnabled()) {
+            return bean;
+        }
         Object aopTarget = AopTargetUtils.getTarget(bean);
 
         if (aopTarget == null) {
@@ -223,7 +232,8 @@ public class ApiResourceScanner implements BeanPostProcessor, Ordered, Applicati
             final Method method = annotationType.getMethod(methodName);
             return (T) method.invoke(apiResource);
         }
-        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        catch (NoSuchMethodException | IllegalAccessException |
+               InvocationTargetException e) {
             log.error("fail to scan api resources!", e);
             throw new RuntimeException("fail to scan api resources!", e);
         }
