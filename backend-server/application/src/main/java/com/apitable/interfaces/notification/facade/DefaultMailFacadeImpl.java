@@ -16,17 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.shared.constants;
+package com.apitable.interfaces.notification.facade;
 
-import java.time.ZoneOffset;
+public class DefaultMailFacadeImpl implements MailFacade {
 
-/**
- * time zone constants
- * @author Shawn Deng
- * @deprecated since 0.17.1
- */
-@Deprecated
-public class TimeZoneConstants {
-
-    public static final ZoneOffset DEFAULT_TIME_ZONE = ZoneOffset.UTC;
+    @Override
+    public Long getCloudMailTemplateId(String lang, String subject) {
+        return DefaultMailTemplateLoader.getTemplateId(subject);
+    }
 }
