@@ -37,20 +37,19 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.interfaces.notification.facade.MailFacade;
+import com.apitable.shared.config.properties.EmailSendProperties;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.starter.mail.autoconfigure.EmailMessage;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.mail.core.CloudEmailMessage;
 import com.apitable.starter.mail.core.CloudMailSender;
-import com.apitable.shared.captcha.email.TencentMailTemplate;
-import com.apitable.shared.config.properties.EmailSendProperties;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.SpringContextHolder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -110,6 +109,9 @@ public class NotifyMailFactory {
 
     @Resource
     private EmailSendProperties emailSendProperties;
+
+    @Resource
+    private MailFacade mailFacade;
 
     @Autowired(required = false)
     private CloudMailSender cloudMailSender;
@@ -222,11 +224,11 @@ public class NotifyMailFactory {
             message.setTo(to);
             JSONObject obj = JSONUtil.createObj();
             if (subjectType != null) {
-                message.setTemplateId(TencentMailTemplate.getTemplateId(null, subjectType));
+                message.setTemplateId(mailFacade.getCloudMailTemplateId(null, subjectType));
                 obj.putAll(dict);
             }
             else {
-                message.setTemplateId(TencentMailTemplate.getTemplateId(null, SUBJECT_WARN_NOTIFY));
+                message.setTemplateId(mailFacade.getCloudMailTemplateId(null, SUBJECT_WARN_NOTIFY));
                 obj.putOpt("content", textBtl);
             }
             message.setTemplateData(obj.toString());
@@ -255,7 +257,7 @@ public class NotifyMailFactory {
         message.setSubject(subject);
         message.setPersonal(emailSendProperties.getPersonal());
         message.setTo(to);
-        message.setTemplateId(TencentMailTemplate.getTemplateId(lang, subjectType));
+        message.setTemplateId(mailFacade.getCloudMailTemplateId(lang, subjectType));
         JSONObject obj = JSONUtil.createObj();
         obj.putAll(dict);
         message.setTemplateData(obj.toString());
