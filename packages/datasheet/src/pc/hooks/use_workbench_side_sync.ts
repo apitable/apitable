@@ -70,7 +70,7 @@ export const useWorkbenchSideSync = () => {
     if (socketData && socketData.socketId !== NotificationStore.socket.id && socketData.spaceId === spaceId) {
       socketData && realTimeSyncTree(socketData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [socketData]);
 
   // Determines if the specified node exists and has been expanded

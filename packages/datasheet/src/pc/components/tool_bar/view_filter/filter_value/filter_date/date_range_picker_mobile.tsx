@@ -55,7 +55,7 @@ export const DateRangePickerMobile: React.FC<IFilterDateProps & {
       return;
     }
     rangePickerChange([dayjs(startDate), dayjs(endDate)]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [endDate, startDate]);
 
   const startDateChange = (date) => {

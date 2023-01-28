@@ -813,6 +813,7 @@ __metadata:
     "@types/jest": ^27.5.1
     "@types/loadjs": ^4
     "@types/localforage": ^0.0.34
+    "@types/mime-types": ^2.1.1
     "@types/react": ^17.0.2
     "@types/react-dom": 17.0.11
     "@types/react-redux": ^7.1.9
@@ -12443,6 +12444,13 @@ __metadata:
   dependencies:
     "@types/braces": "*"
   checksum: 6c678e9c625d5b422c6d2c1001da1c502ecc4457248343bbd324b79fd798a6563e336a4d79630d80e8202312013dd7cf8b4440afa644d04477abd26fde6fba24
+  languageName: node
+  linkType: hard
+
+"@types/mime-types@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@types/mime-types@npm:2.1.1"
+  checksum: 106b5d556add46446a579ad25ff15d6b421851790d887edcad558c90c1e64b1defc72bfbaf4b08f208916e21d9cc45cdb951d77be51268b18221544cfe054a3c
   languageName: node
   linkType: hard
 

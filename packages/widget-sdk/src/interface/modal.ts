@@ -143,11 +143,11 @@ export interface IWidgetConfig {
 
   datasheetId?: string;
 
-  toggleSettings(state?: boolean);
+  toggleSettings(state?: boolean): void;
 
-  toggleFullscreen(state?: boolean);
+  toggleFullscreen(state?: boolean): void;
 
-  expandRecord(props: IExpandRecordProps);
+  expandRecord(props: IExpandRecordProps): void;
 }
 
 /**

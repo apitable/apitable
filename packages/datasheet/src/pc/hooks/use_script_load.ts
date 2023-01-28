@@ -82,7 +82,7 @@ export const useScript = ({
   useEffect(() => {
     if (!isBrowser || !src || error) return;
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     status = scripts[src];
     if (!status && checkForExisting) {
       status = checkExisting(src);

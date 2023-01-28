@@ -39,7 +39,7 @@ export const Memory: React.FC<IMemory> = props => {
       setUsedMemory(usedCapacity);
       setTotalMemory(currentBundleCapacity === -1 ? Number.POSITIVE_INFINITY : currentBundleCapacity);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue]);
 
   const usePercent = Math.ceil((usedMemory / totalMemory) * 100);

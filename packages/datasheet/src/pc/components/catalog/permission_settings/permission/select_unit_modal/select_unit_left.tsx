@@ -130,7 +130,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     search(keyword, linkId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [keyword, linkId, isRole]);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     setUnits(unitsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [unitsData, source]);
 
   const isDisabled = useCallback(

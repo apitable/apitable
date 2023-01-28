@@ -145,7 +145,7 @@ export const MoreTool: React.FC = () => {
         });
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [datasheetId]);
 
   return (

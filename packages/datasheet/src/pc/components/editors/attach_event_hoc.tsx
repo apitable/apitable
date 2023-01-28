@@ -135,7 +135,7 @@ export const attachEventHoc = WrapperComponent => {
       }
       const expandRecordUICell = Selectors.getCellUIIndex(state, { recordId, fieldId })!;
       expandRecordUICell && scrollToItem(expandRecordUICell);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     }, [recordId, datasheetId]);
 
     useEffect(() => {

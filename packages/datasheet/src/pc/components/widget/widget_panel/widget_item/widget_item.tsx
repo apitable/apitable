@@ -140,7 +140,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
     if ((isSettingOpened && !isExpandWidget) || (!isSettingOpened && isExpandWidget)) {
       toggleSetting();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isExpandWidget]);
 
   const setDepDatasheetId = ({ datasheetId, mirrorId }) => {

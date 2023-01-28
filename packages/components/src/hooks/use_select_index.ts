@@ -79,10 +79,10 @@ export const useSelectIndex = (props: IUseSelectProps) => {
     updateIndex(e, +1);
   });
 
-  useKeyPress('RightArrow', e => {
+  useKeyPress('RightArrow', () => {
     onArrowRightPress && onArrowRightPress(index);
   });
-  useKeyPress('LeftArrow', e => {
+  useKeyPress('LeftArrow', () => {
     onArrowLeftPress && onArrowLeftPress(index);
   });
 

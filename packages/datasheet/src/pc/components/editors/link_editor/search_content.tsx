@@ -283,7 +283,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
     });
 
     // If the records of the associated table are not added or subtracted, the query results are only updated when the searchValue changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [entityForeignRows, searchValue, onlyShowSelected, filteredRecordIdMap]);
 
   useImperativeHandle(ref, () => ({

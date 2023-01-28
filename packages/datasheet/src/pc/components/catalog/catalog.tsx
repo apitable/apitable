@@ -86,7 +86,7 @@ export const CatalogBase: React.FC = () => {
     }
     setOptType(null);
     setIsLoaded(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isLoaded, optType]);
 
   const openCatalogPanel = cb => {
