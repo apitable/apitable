@@ -248,7 +248,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
     setUploadList(state => {
       return state.filter(item => !cvIds.includes(item.fileId));
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue]);
 
   function deleteUploadItem(fileId: string) {

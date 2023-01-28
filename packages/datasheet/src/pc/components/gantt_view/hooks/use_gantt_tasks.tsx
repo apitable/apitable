@@ -133,7 +133,7 @@ export const useTask = (props: IUseTaskProps) => {
       result[generateKeyName(endFieldId, dragTaskId)] = Selectors.getCellValueByGanttDateTimeFieldId(state, snapshot, dragTaskId, endFieldId);
     }
     return result;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [endFieldId, linearRows, renderEnable, rowStartIndex, rowStopIndex, snapshot, startFieldId, dragTaskId]);
 
   // Draw the area where the task will be added in the Gantt Hover state

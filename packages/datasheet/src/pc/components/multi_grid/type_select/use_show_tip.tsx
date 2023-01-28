@@ -44,7 +44,7 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
     return {
       left: containerRight,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [container]);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
         ),
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [info, left]);
 
   return {

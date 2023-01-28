@@ -72,7 +72,7 @@ export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
     if (roleMap && !isAppointMode !== roleMap.extend) {
       setIsAppointMode(!roleMap.extend);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [roleMap]);
 
   /**

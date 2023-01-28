@@ -132,7 +132,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
       containerRef.current!.focus();
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue, activeIndex]);
 
   // activeIndex prevents out-of-range

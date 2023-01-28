@@ -257,7 +257,7 @@ export class ResourceService implements IResourceService {
           spaceId,
         },
       });
-    socket.on('disconnect', (reason) => {
+    socket.on('disconnect', (reason: any) => {
       console.warn('! ' + 'socket disconnect from server');
       // Player.doTrigger(Events.app_error_logger, { error: new Error('socket disconnect reason: ' + reason) });
 
@@ -287,7 +287,7 @@ export class ResourceService implements IResourceService {
       this.store.dispatch(StoreActions.setConnected(true));
     });
 
-    socket.on('connect_error', (error) => {
+    socket.on('connect_error', () => {
       if (!this.reportSocketError) {
         return;
       }

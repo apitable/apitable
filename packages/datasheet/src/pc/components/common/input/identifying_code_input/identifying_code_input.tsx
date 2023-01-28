@@ -91,7 +91,7 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
     if (nvcSuccessData) {
       getIdentifyingCode(nvcSuccessData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [nvcSuccessData]);
 
   useInterval(

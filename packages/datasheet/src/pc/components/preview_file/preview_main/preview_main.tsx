@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IAttachmentValue, isImage, IUserInfo } from '@apitable/core';
+import { Api, IAttachmentValue, isImage, IUserInfo, IReduxState } from '@apitable/core';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -72,7 +72,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   } = props;
   const colors = useThemeColors();
   const { screenIsAtMost, clientWidth: _clientWidth } = useResponsive();
-  const rightPaneWidth = useSelector(state => state.rightPane.width);
+  const rightPaneWidth = useSelector((state: IReduxState) => state.rightPane.width);
   const isMobile = screenIsAtMost(ScreenSize.md);
   const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 
@@ -83,7 +83,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
 
   const [transformInfo, setTransformInfo] = useFrameSetState<ITransFormInfo>(initTransformInfo);
 
-  const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name));
+  const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name) as string);
   const isPdf = mime.lookup(activeFile.name) === 'application/pdf';
 
   const fetchPreviewUrl = async() => {
@@ -101,7 +101,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   useEffect(() => {
     setOfficePreviewUrl(null);
     fetchPreviewUrl();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeIndex]);
 
   const handlePrev = useCallback(

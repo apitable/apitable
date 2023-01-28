@@ -47,7 +47,7 @@ export const usePermission = () => {
   const globalState = context.globalStore.getState();
   const datasheetId = useSelector(state => state.widget?.snapshot.datasheetId)!;
   const { sourceId } = useMeta();
-  const dstPermission = useSelector(state => {
+  const dstPermission = useSelector(() => {
     return Selectors.getPermissions(
       globalState,
       datasheetId,

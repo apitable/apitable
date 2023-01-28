@@ -329,7 +329,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     setRealRecordIds(curRecordIds);
     setRealActiveRecordId(curActiveRecordId);
     errorHandle(datasheetErrorCode, curRecordIds, curActiveRecordId || 'not recordId');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [snapshot?.recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId, isPathWithRecordId, activeRecordId]);
 
   const switchRecord = useCallback(

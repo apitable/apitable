@@ -168,7 +168,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
         StoreActions.setCalendarSettingPanelWidth(defaultCalendarViewStatus.settingPanelWidth, datasheetId),
       ]),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [view?.id]);
 
   const onGlobalMouseDown = e => {

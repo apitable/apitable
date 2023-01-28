@@ -151,7 +151,7 @@ export const HoverLine: React.FC<IHoverLine> = props => {
   const containerRect = useMemo(() => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
     return containerDom!.getBoundingClientRect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [width]);
 
   if ((!Object.keys(dragTarget).length && !isChangeColumnsWidth) || !position) {

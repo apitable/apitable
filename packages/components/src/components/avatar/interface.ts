@@ -16,11 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { AvatarSizeConfig } from './styled';
+
+export type IAvatarSizeConfigKey = keyof typeof AvatarSizeConfig;
+
 export interface IAvatarProps {
   /** avatar shape */
   shape?: 'circle' | 'square';
   /** avatar size xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
+  size?: IAvatarSizeConfigKey;
   /** avatar link */
   src?: React.ReactNode;
   /** avatar icon */
@@ -31,5 +35,4 @@ export interface IAvatarProps {
   className?: string;
   /** avatar image alt attribute */
   alt?: string;
-
 }

@@ -100,7 +100,7 @@ export const View: React.FC = () => {
 
   const useKonva = useMemo(() => {
     return !getTestFunctionAvailable(SystemConfig.test_function.render_normal.feature_key);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentView.id]);
 
   const isOrgChart = currentView.type === ViewType.OrgChart;

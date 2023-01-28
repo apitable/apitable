@@ -66,7 +66,7 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     if (!editing && onClose) {
       onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editing]);
 
   useLayoutEffect(() => {
@@ -90,7 +90,7 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     if (!isFocus) {
       setEditing(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isFocus]);
 
   useImperativeHandle(

@@ -23,7 +23,7 @@ interface IConfigLang {
 
 const pattern = /\{.+?\}/g;
 
-export const t = (obj: IConfigLang, lang, values?: any[]) => {
+export const t = (obj: IConfigLang, lang: string, values?: any[]) => {
   const str = obj[lang || 'zh'] as string;
   if (!values) {
     return str;
@@ -35,7 +35,7 @@ export const t = (obj: IConfigLang, lang, values?: any[]) => {
   }
   let res = str;
   for (let i = 0; i < matches.length; i++) {
-    res = res.replace(matches[i], values[i]);
+    res = res.replace(matches[i]!, values[i]);
   }
   return res;
 };

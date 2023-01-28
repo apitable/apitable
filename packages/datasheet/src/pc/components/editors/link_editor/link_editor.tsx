@@ -156,7 +156,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
       }
       
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [field, datasheetId, recordId, editing],
   );
  
@@ -169,7 +169,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     if (!editing) {
       return setSearchValue('');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editing, datasheetId]);
 
   useEffect(() => {
