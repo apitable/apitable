@@ -73,7 +73,7 @@ const:
       resource-url: ${VK_PUBLIC_ASSETS_LTD_URL:https://s1-applets.vika.cn}
       bucket-name: ${VK_PUBLIC_ASSETS_LTD_BUCKET:vk-public-assets-ltd}
       type: ${VK_PUBLIC_ASSETS_LTD_TYPE:QNY3}
-  template-space: ${TEMPLATE_SPACE:spcNA5eN3Sj6Q}
+  template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
