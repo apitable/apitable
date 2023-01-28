@@ -62,11 +62,6 @@ public class ConstProperties {
     private Map<BucketKey, OssBucketInfo> ossBuckets;
 
     /**
-     * api document avoid validate token
-     */
-    private String loginToken = "BornForFuture";
-
-    /**
      * Official default avatar list
      * @deprecated open-source
      */
