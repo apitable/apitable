@@ -17,15 +17,15 @@
  */
 
 /** @type {import('next').NextConfig} */
-/*eslint no-undef: 0*/
-const withLess = require('next-with-less');
-const path = require('path');
-const loaderUtils = require('loader-utils');
-const withPlugins = require('next-compose-plugins');
-const withTM = require('next-transpile-modules');
-const withBundleAnalyzer = require('@next/bundle-analyzer');
-const isProd = process.env.NODE_ENV === 'production';
-const {withSentryConfig} = require("@sentry/nextjs");
+/* eslint no-undef: 0 */
+const withLess = require('next-with-less')
+const path = require('path')
+const loaderUtils = require('loader-utils')
+const withPlugins = require('next-compose-plugins')
+const withTM = require('next-transpile-modules')
+const withBundleAnalyzer = require('@next/bundle-analyzer')
+const isProd = process.env.NODE_ENV === 'production'
+const { withSentryConfig } = require('@sentry/nextjs')
 
 const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
@@ -40,8 +40,8 @@ const regexEqual = (x, y) => {
     x.global === y.global &&
     x.ignoreCase === y.ignoreCase &&
     x.multiline === y.multiline
-  );
-};
+  )
+}
 
 /**
  * Generate context-aware class names when developing locally
@@ -60,199 +60,213 @@ const localIdent = (loaderContext, localIdentName, localName, options) => {
       // "they cannot start with a digit, two hyphens, or a hyphen followed by a digit [sic]"
       // https://www.w3.org/TR/CSS21/syndata.html#characters
       .replace(/^(\d|--|-\d)/, '__$1')
-  );
-};
+  )
+}
 
 // Overrides for css-loader plugin
-function cssLoaderOptions(modules) {
-  const {getLocalIdent, ...others} = modules;
+function cssLoaderOptions (modules) {
+  const { getLocalIdent, ...others } = modules
   return {
     ...others,
     getLocalIdent: getLocalIdent || localIdent,
     exportLocalsConvention: 'camelCaseOnly',
-    mode: 'local',
-  };
+    mode: 'local'
+  }
 }
 
 const plugins = [
-  [withLess, {lessLoaderOptions: {lessOptions: {paths: [path.resolve(__dirname, './src')]}}}],
-  [withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
-  [withBundleAnalyzer({enabled: process.env.ANALYZE === 'true',})],
-];
+  [
+    withLess, {
+      lessLoaderOptions: {
+        lessOptions: {
+          paths: [path.resolve(__dirname, './src')]
+        }
+      }
+    }
+  ],
+  [
+    withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])
+  ],
+  [
+    withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
+  ]
+]
 
 // use local public folder for editions, e.g. apitable
 const getStaticFolder = () => {
-  if (process.env.USE_CUSTOM_PUBLIC_FILES === 'true') return '';
+  if (process.env.USE_CUSTOM_PUBLIC_FILES === 'true') return ''
 
-  return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
-};
-
-const _withSentryConfig = isProd && !isIntranetEnv ? withSentryConfig : (nextConfig, sentryConfig) => {
-  return nextConfig
+  return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
 }
+
+const _withSentryConfig = isProd && !isIntranetEnv
+  ? withSentryConfig
+  : (nextConfig, sentryConfig) => {
+      return nextConfig
+    }
 
 module.exports = withPlugins(plugins, _withSentryConfig({
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
-    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost'],
+    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 'legacy-s1.apitable.com'],
     remotePatterns: [{
       protocol: 'http',
       hostname: '**',
-      pathname: '/vk-assets-ltd/**',
+      pathname: '/vk-assets-ltd/**'
     }, {
       protocol: 'https',
       hostname: '**',
-      pathname: '/vk-assets-ltd/**',
-    },{
+      pathname: '/vk-assets-ltd/**'
+    }, {
       protocol: 'http',
       hostname: '**',
-      pathname: '/assets/**',
+      pathname: '/assets/**'
     }, {
       protocol: 'https',
       hostname: '**',
-      pathname: '/assets/**',
+      pathname: '/assets/**'
     }]
   },
   poweredByHeader: false,
   publicRuntimeConfig: {
-    staticFolder: getStaticFolder(),
+    staticFolder: getStaticFolder()
   },
-  webpack(config, options) {
+  webpack (config, options) {
     config.resolve.symlinks = false
-    const originalEntry = config.entry;
+    const originalEntry = config.entry
 
     config.entry = async () => {
       /**
        * In ie11, there will be a shadow error. According to the discussion in the issue, the following polyfill can be used to solve it
        */
-      const entries = await originalEntry();
+      const entries = await originalEntry()
 
-      const mainJs = entries['main.js'];
+      const mainJs = entries['main.js']
       if (mainJs && !mainJs.includes('./utils/polyfills.js')) {
-        mainJs.unshift('./utils/polyfills.js');
+        mainJs.unshift('./utils/polyfills.js')
       }
 
-      return entries;
-    };
+      return entries
+    }
 
-    config.resolve.alias['react'] = path.resolve(__dirname, '../../', 'node_modules', 'react');
-    config.resolve.alias['react-dom'] = path.resolve(__dirname, '../../', 'node_modules', 'react-dom');
+    config.resolve.alias.react = path.resolve(__dirname, '../../', 'node_modules', 'react')
+    config.resolve.alias['react-dom'] = path.resolve(__dirname, '../../', 'node_modules', 'react-dom')
     config.resolve.alias = {
       ...config.resolve.alias,
       pc: path.resolve(__dirname, './src/pc'),
       static: path.resolve(__dirname, './public/static'),
       enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : path.resolve(__dirname, './src/noop')
-    };
-    const oneOf = config.module.rules.find((rule) => typeof rule.oneOf === 'object');
+    }
+    const oneOf = config.module.rules.find((rule) => typeof rule.oneOf === 'object')
     if (oneOf) {
       // Find the module which targets *.scss|*.sass files
       const moduleSassRule = oneOf.oneOf.find((rule) => {
-        return regexEqual(rule.test, /\.module\.less$/);
-      });
+        return regexEqual(rule.test, /\.module\.less$/)
+      })
       if (moduleSassRule) {
         // Get the config object for css-loader plugin
-        const cssLoader = moduleSassRule.use.find(({loader}) => loader.includes('css-loader'));
-        const lessLoader = moduleSassRule.use.find(({loader}) => loader.includes('less-loader'));
+        const cssLoader = moduleSassRule.use.find(({ loader }) => loader.includes('css-loader'))
+        const lessLoader = moduleSassRule.use.find(({ loader }) => loader.includes('less-loader'))
         if (cssLoader) {
           cssLoader.options = {
             ...cssLoader.options,
-            modules: cssLoaderOptions(cssLoader.options.modules),
-          };
+            modules: cssLoaderOptions(cssLoader.options.modules)
+          }
         }
         if (lessLoader) {
           lessLoader.options = {
-            ...lessLoader.options,
+            ...lessLoader.options
             // paths: [path.resolve(__dirname, './src/pc')],
-          };
+          }
         }
       }
     }
 
-    // patchWebpackConfig(config, options);
+    // patchWebpackConfig(config, options)
 
-    const fallback = config.resolve.fallback || {};
+    const fallback = config.resolve.fallback || {}
     Object.assign(fallback, {
       path: require.resolve('https-browserify'),
       zlib: require.resolve('browserify-zlib'),
       http: require.resolve('stream-http'),
       stream: require.resolve('stream-browserify'),
       url: require.resolve('url/'),
-      util: require.resolve('util/'),
-    });
-    config.resolve.fallback = fallback;
+      util: require.resolve('util/')
+    })
+    config.resolve.fallback = fallback
     //
 
     if (options.isServer) {
       // config.externals = webpackNodeExternals({
       // Uses list to add this modules for server bundle and process.
       // allowlist: [/design-system/],
-      // });
+      // })
     }
 
-    const {webpack} = options;
+    const { webpack } = options
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /canvas|jsdom/,
         contextRegExp: /konva/
       }),
       new webpack.NormalModuleReplacementPlugin(/node:/, (resource) => {
-        const mod = resource.request.replace(/^node:/, '');
+        const mod = resource.request.replace(/^node:/, '')
 
         switch (mod) {
           case 'path':
-            resource.request = 'path-browserify';
-            break;
+            resource.request = 'path-browserify'
+            break
           default:
-            throw new Error(`Not found ${mod}`);
+            throw new Error(`Not found ${mod}`)
         }
-      }));
+      }))
     config.module.rules.push({
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       use: [
         {
-          loader: 'babel-loader',
+          loader: 'babel-loader'
         },
         {
           loader: '@svgr/webpack',
           options: {
             babel: false,
-            icon: true,
-          },
+            icon: true
+          }
         },
         {
           loader: 'svgo-loader',
           options: {
             plugins: [
-              {name: 'removeNonInheritableGroupAttrs'},
-              {name: 'removeXMLNS'},
-              {name: 'collapseGroups'},
-              {name: 'removeStyleElement'},
-              {name: 'removeAttrs', params: {attrs: '(stroke|fill)'}},
-            ],
+              { name: 'removeNonInheritableGroupAttrs' },
+              { name: 'removeXMLNS' },
+              { name: 'collapseGroups' },
+              { name: 'removeStyleElement' },
+              { name: 'removeAttrs', params: { attrs: '(stroke|fill)' } }
+            ]
           }
-        },
-      ],
-    });
+        }
+      ]
+    })
 
     if (!isProd) {
-      const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+      const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
       config.plugins.push(new ForkTsCheckerWebpackPlugin({
         typescript: {
           memoryLimit: 5000,
           mode: 'write-references'
         }
-      }));
+      }))
     }
 
-    return config;
+    return config
   },
   distDir: 'web_build',
   output: 'standalone',
   experimental: {
     esmExternals: true,
     // this includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: path.join(__dirname, '../../')
   },
   sentry: {
     disableServerWebpackPlugin: true,
@@ -265,4 +279,4 @@ module.exports = withPlugins(plugins, _withSentryConfig({
   dsn: process.env.SENTRY_CONFIG_DSN,
   org: 'sentry',
   release: process.env.BUILD_VERSION
-}));
+}))
