@@ -63,7 +63,7 @@ export const TitleEditor: React.FC<IBasePropEditorProps> = props => {
     if (value !== title) {
       setValue(title);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [title, setValue]);
 
   return (

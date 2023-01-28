@@ -101,7 +101,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   useEffect(() => {
     setOfficePreviewUrl(null);
     fetchPreviewUrl();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeIndex]);
 
   const handlePrev = useCallback(

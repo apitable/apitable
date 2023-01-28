@@ -159,7 +159,7 @@ export const useEmailInviteInModal = (
 
   useEffect(() => {
     secondVerify && invite.length && request(secondVerify);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [secondVerify]);
 
   useEffect(() => {

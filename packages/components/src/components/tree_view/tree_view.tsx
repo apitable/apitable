@@ -122,7 +122,7 @@ export const TreeView: FC<ITreeViewProps> = React.memo(
       }
       setExpandedIds(expandedKeys);
       setCacheExpandedId(expandedKeys);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     }, [expandedKeys]);
 
     useEffect(() => {

@@ -78,7 +78,7 @@ export const MirrorList: FC<IForeignFormProps> = props => {
 
   useEffect(() => {
     fetchMirrorList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [viewId]);
 
   return (

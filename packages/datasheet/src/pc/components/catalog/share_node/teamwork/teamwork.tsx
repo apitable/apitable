@@ -74,14 +74,14 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
 
   useEffect(() => {
     secondVerify && inviteEmail && sendInviteEmail(secondVerify);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [secondVerify]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
       getNodeRoleList();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [socketData]);
 
   const inviteEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

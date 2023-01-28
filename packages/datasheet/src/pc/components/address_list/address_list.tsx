@@ -66,7 +66,7 @@ export const AddressList: React.FC = () => {
   // Get permission
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [spaceId, dispatch, user!.isAdmin, user!.isMainAdmin]);
 
   const MainComponent = () => (

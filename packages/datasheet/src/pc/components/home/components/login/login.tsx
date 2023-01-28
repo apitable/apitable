@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
     if (noTraceVerification) {
       signIn(noTraceVerification);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [noTraceVerification]);
 
   useEffect(() => {
