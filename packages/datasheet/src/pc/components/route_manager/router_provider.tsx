@@ -94,7 +94,7 @@ const RouterProvider = ({ children }) => {
       comlinkStore.proxy?.[releaseProxy]();
       comlinkStore.worker?.terminate();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   // Links for the http protocol are automatically redirected to https

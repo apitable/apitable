@@ -25,10 +25,10 @@ export const useResize = ({ height = [], width, update, setResizeDay, tasks } : 
   const resizeRef = useRef<IResizeRef>();
   const onMouseMove = (event: MouseEvent) => {
     const isRight = resizeRef.current?.direction === Direction.Right;
-    const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
-    const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
-    const diffY = clientY - (resizeRef.current?.clientY || 0);
-    const diffX = clientX - (resizeRef.current?.clientX || 0);
+    const clientX = isTouchEvent(event) ? event.touches[0]?.clientX : event.clientX;
+    const clientY = isTouchEvent(event) ? event.touches[0]?.clientY : event.clientY;
+    const diffY = (clientY || 0) - (resizeRef.current?.clientY || 0);
+    const diffX = (clientX || 0) - (resizeRef.current?.clientX || 0);
     const topF = (resizeRef.current?.top || 0) % height[0]!;
     let week = 0;
     let day = 0;
@@ -63,8 +63,8 @@ export const useResize = ({ height = [], width, update, setResizeDay, tasks } : 
       clientX = event.nativeEvent.clientX;
       clientY = event.nativeEvent.clientY;
     } else if (event.nativeEvent && isTouchEvent(event.nativeEvent)) {
-      clientX = (event.nativeEvent as TouchEvent).touches[0].clientX;
-      clientY = (event.nativeEvent as TouchEvent).touches[0].clientY;
+      clientX = (event.nativeEvent as TouchEvent).touches[0]?.clientX || 0;
+      clientY = (event.nativeEvent as TouchEvent).touches[0]?.clientY || 0;
     }
     resizeRef.current = { id, clientX, clientY, direction, top: parseInt(parentNode.style.top), day: 0 };
     window.addEventListener('mousemove', onMouseMove);
@@ -74,7 +74,7 @@ export const useResize = ({ height = [], width, update, setResizeDay, tasks } : 
     const direction = resizeRef.current?.direction!;
     const day = resizeRef.current?.day;
     if (day && update) {
-      const task = tasks.filter(t => resizeRef.current?.id === t.id)[0];
+      const task = tasks.filter(t => resizeRef.current?.id === t.id)[0]!;
       const { startDate, endDate } = task;
       const formatData = resizeFormat({ startDate, endDate, day, direction });
       update(task.id, formatData.startDate, formatData.endDate);

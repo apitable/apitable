@@ -90,12 +90,12 @@ export async function uploadAttachToS3(optional: IUploadFileForSaaS): Promise<an
   }
 
   await uploadDirectOSS(
-    uploadCertificates[0],
+    uploadCertificates[0]!,
     file,
     {
       ...axiosConfig,
       headers: { 'Content-Type': _fileType },
     }
   );
-  return notify(uploadCertificates[0], fileType);
+  return notify(uploadCertificates[0]!, fileType);
 }

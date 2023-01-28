@@ -100,7 +100,7 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
     });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   const save = useCallback(debounce(async(next: IEditorData) => {
     const html = Serializer.html(next.document);
     if (editorHtml.current === html) return;
@@ -244,7 +244,7 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
         setVisible(true);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeNodeId]);
 
   return (

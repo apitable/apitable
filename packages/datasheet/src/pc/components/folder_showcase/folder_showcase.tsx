@@ -144,7 +144,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         Player.doTrigger(Events.workbench_folder_from_template_showcase_shown);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [folderId, showcaseData]);
 
   const formatData = (description: string) => {
@@ -189,14 +189,14 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
       nodeName: nodeName,
       nodeDesc: description && sanitized(polyfillHtmlString(description)),
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [showcaseData]);
 
   useEffect(() => {
     setShowcaseData(undefined);
     getNodeShowcase(folderId!, shareId);
     setBanners(Settings.workbench_folder_default_cover_list.value.split(','));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [folderId]);
 
   useEffect(() => {
@@ -210,7 +210,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
       }
     };
     fetchNodeList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [folderId, hasChildren]);
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     if ('nodeName' in socketData.data) {
       setShowcaseData({ ...showcaseData!, nodeName: socketData.data.nodeName });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [socketData]);
 
   useEffect(() => {

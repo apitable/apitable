@@ -75,7 +75,7 @@ export const SpaceList: FC = () => {
     } else {
       setActiveKey(TabPaneKeys.MANAGABLE);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [intrantList, managableList]);
 
   const refreshList = useCallback(() => {

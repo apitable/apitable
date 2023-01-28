@@ -27,7 +27,7 @@ export const ListSearch = (props: any) => {
     onSearchChange && onSearchChange(e, e.target!.value);
   };
 
-  const onPressEnter = (e: KeyboardEvent) => {
+  const onPressEnter = () => {
     onInputEnter && onInputEnter(() => {
       setKeyword('');
     });

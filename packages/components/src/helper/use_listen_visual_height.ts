@@ -125,8 +125,8 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
       const { top: triggerTop, height: triggerSizeHeight, bottom: triggerBottom } = triggerSize;
       offset = triggerOffset;
       adjust = triggerAdjust;
-      actualTop = triggerTop + offset[1];
-      actualBottom = triggerBottom + offset[1];
+      actualTop = triggerTop + offset[1]!;
+      actualBottom = triggerBottom + offset[1]!;
       triggerHeight = triggerSizeHeight;
     }
     const restTopSpaceHeight = window.innerHeight - actualTop - triggerHeight;
@@ -199,13 +199,13 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
         scrollELe.removeEventListener('scroll', () => toggleScorllColor(scrollELe));
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [listenNode, childNode, run, cancel]);
 
   useLayoutEffect(() => {
     if (isMobile) return;
     onListenResize();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, []);
 
   const style: React.CSSProperties = {};

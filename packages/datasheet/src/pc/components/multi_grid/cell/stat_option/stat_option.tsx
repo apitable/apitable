@@ -149,7 +149,7 @@ const StatOptionBase: React.FC<IStatOption> = props => {
       return selectRecordIds;
     }
     return res;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [groupInfo, row, shouldUseSelectRecordAggregate, selectRecordIds, recordIds, groupBreakpoint]);
 
   const statText = useMemo(() => {

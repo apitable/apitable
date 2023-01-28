@@ -224,7 +224,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
       return;
     }
     // reRenderHeight();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentField.type, currentField.property]);
 
   // useEffect(() => {
@@ -245,7 +245,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     setCurrentField(fieldInfoForState);
     setOptionErrMsg('');
     setBaseErrMsg('');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeFieldState.fieldId]);
 
   useEffect(() => {

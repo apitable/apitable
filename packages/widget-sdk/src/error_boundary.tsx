@@ -19,19 +19,21 @@
 import React from 'react';
 import { Player, Events } from 'core';
 
+type Props = { id: string, datasheetId?: string, logError: boolean };
+
 // TODO: Access to sentry
-export class ErrorBoundary extends React.Component<{ id: string, datasheetId?: string, logError: boolean }, { hasError: boolean }> {
-  constructor(props) {
+export class ErrorBoundary extends React.Component<Props, { hasError: boolean }> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     // update state so that the next rendering shows the degraded UI
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  override componentDidCatch(error: any, errorInfo: any) {
     if (!this.props.logError) {
       return;
     }
@@ -46,7 +48,7 @@ export class ErrorBoundary extends React.Component<{ id: string, datasheetId?: s
     });
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       // TODO: widget i18n solution, should not introduce strings in the apitable/core
       return <h1>An unknown error has occurred, please refresh and retry</h1>; //Something went wrong.

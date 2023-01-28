@@ -22,11 +22,7 @@ import { ButtonGroupBase } from './styled';
 
 export const ButtonGroup = React.forwardRef(({
   children,
-  withSeparate,
-  withBorder,
-  className,
-  ...restProps
-}:IButtonGroupProps, ref: React.Ref<HTMLButtonElement>) => {
+}:IButtonGroupProps, _ref: React.Ref<HTMLButtonElement>) => {
   return (
     <ButtonGroupBase >
       {children}

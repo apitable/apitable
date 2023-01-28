@@ -281,7 +281,7 @@ export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, open
       }
     }
     return data;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [rightClickInfo]);
 
   const getTitle = () => {

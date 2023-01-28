@@ -105,7 +105,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
     }
 
     datasheetIdSet = new Set(Object.keys(datasheetMap).filter(id => {
-      return Boolean(datasheetMap![id].datasheet) && !datasheetMap![id]!.datasheet?.preview;
+      return Boolean(datasheetMap![id]!.datasheet) && !datasheetMap![id]!.datasheet?.preview;
     }));
     if (eqSet(previousDatasheetIdSet, datasheetIdSet)) {
       return;
@@ -125,7 +125,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
     ExpCache.clearAll();
     diff.forEach(id => {
       linkLookUpField(id);
-      const fieldMap = datasheetMap[id].datasheet!.snapshot.meta.fieldMap;
+      const fieldMap = datasheetMap[id]!.datasheet!.snapshot.meta.fieldMap;
       datasheetService.instance!.computeRefManager.computeRefMap(fieldMap, id, state);
       // console.log('refMap', computeRefManager.refMap);
     });

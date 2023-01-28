@@ -77,7 +77,7 @@ const SettingNickname: FC = () => {
     if (!loading && !user) {
       Router.push(Navigation.HOME);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useMount(() => {

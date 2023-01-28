@@ -33,18 +33,10 @@ const deselectValue = (value: any, selected: any) => {
 };
 
 export const CheckboxesWidget = ({
-  schema,
-  label,
   id,
-  disabled,
   options,
   value,
-  autofocus,
-  readonly,
-  required,
   onChange,
-  onBlur,
-  onFocus,
 }: WidgetProps) => {
   const { enumOptions, enumDisabled } = options;
 
