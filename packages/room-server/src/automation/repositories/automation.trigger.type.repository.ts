@@ -46,4 +46,24 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
       }
     });
   }
+
+  async getRobotTriggerTypes(): Promise<any[]> {
+    return await this.query(`
+    SELECT tt.trigger_type_id triggerTypeId,
+        tt.name,
+        tt.description,
+        tt.endpoint,
+        tt.i18n,
+        tt.input_json_schema inputJsonSchema,
+        tt.output_json_schema outputJsonSchema,
+        s.service_id serviceId,
+        s.name As serviceName,
+        s.logo as serviceLogo,
+        s.slug AS serviceSlug,
+        s.i18n as serviceI18n
+    FROM ${this.manager.connection.options.entityPrefix}automation_trigger_type tt
+          JOIN ${this.manager.connection.options.entityPrefix}automation_service s ON s.service_id = tt.service_id
+    WHERE tt.is_deleted = 0
+    `);
+  }
 }
