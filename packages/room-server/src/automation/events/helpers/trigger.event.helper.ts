@@ -18,8 +18,14 @@
 
 import {
   IExpression,
-  IExpressionOperand, InputParser, MagicVariableParser, OperandTypeEnums, OperatorEnums,
-  TRIGGER_INPUT_FILTER_FUNCTIONS, TRIGGER_INPUT_PARSER_FUNCTIONS } from '@apitable/core';
+  IExpressionOperand,
+  InputParser,
+  MagicVariableParser,
+  OperandTypeEnums,
+  OperatorEnums,
+  TRIGGER_INPUT_FILTER_FUNCTIONS,
+  TRIGGER_INPUT_PARSER_FUNCTIONS
+} from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { getRecordUrl } from 'shared/helpers/env';
 import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
@@ -29,7 +35,7 @@ import { Logger } from 'winston';
 import { InjectLogger } from 'shared/common';
 import { CommonEventContext, CommonEventMetaContext } from '../domains/common.event';
 
-export const OFFICIAL_SERVICE_SLUG = 'vika';
+export const OFFICIAL_SERVICE_SLUG = process.env.ROBOT_OFFICIAL_SERVICE_SLUG ? process.env.ROBOT_OFFICIAL_SERVICE_SLUG : 'apitable';
 
 export type IShouldFireRobot = {
   robotId: string;
@@ -64,68 +70,28 @@ export class TriggerEventHelper {
   }
 
   public recordCreatedTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
-    const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
-    const { datasheetId, datasheetName, recordId } = eventContext;
-    const triggerSlug = `${EventTypeEnums.RecordCreated}@${OFFICIAL_SERVICE_SLUG}`;
-    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
-    if (conditionalTriggers.length === 0) return;
-
-    // resource bound to robot and form id in trigger input is identical
-    const shouldFireRobots: IShouldFireRobot[] = conditionalTriggers
-      .filter(item => Boolean(item.input))
-      .reduce((prev, item) => {
-        const triggerInput = this.renderInput(item.input!);
-        if (triggerInput.datasheetId === datasheetId) {
-          const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
-          prev.push({
-            robotId: item.robotId,
-            trigger: {
-              input: triggerInput,
-              output: triggerOutput,
-            }
-          });
-        }
-        return prev;
-      }, [] as IShouldFireRobot[]);
-
-    this.logger.info('recordCreatedTriggerHandler', {
-      msgIds,
-      shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
-    });
-
-    shouldFireRobots.forEach(robot => {
-      this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {});
-    });
+   this._recordTriggerHandler(EventTypeEnums.RecordCreated, eventContext, metaContext);
   }
 
   public recordMatchConditionsTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
+    this._recordTriggerHandler(EventTypeEnums.RecordMatchesConditions, eventContext, metaContext);
+  }
+
+  private _recordTriggerHandler(eventType: string, eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
-    const { datasheetId, datasheetName, recordId } = eventContext;
-    const triggerSlug = `${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`;
-    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[datasheetId], triggerSlugTypeIdMap[triggerSlug]);
+
+    const triggerSlug = `${eventType}@${OFFICIAL_SERVICE_SLUG}`;
+    const conditionalTriggers = this._getConditionalTriggers(dstIdTriggersMap[eventContext.datasheetId], triggerSlugTypeIdMap[triggerSlug]);
     if (conditionalTriggers.length === 0) return;
 
-    const shouldFireRobots: IShouldFireRobot[] = conditionalTriggers
-      .filter(item => Boolean(item.input))
-      .reduce((prev, item) => {
-        const triggerInput = this.renderInput(item.input!);
-        const isSameResource = triggerInput.datasheetId === datasheetId;
-        // TODO: Filter condition matching, robot is only triggered when condition is matched.
-        const isMatchFilterConditions = this._filterExec(triggerInput.filter, eventContext);
-        if (isSameResource && isMatchFilterConditions) {
-          const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
-          prev.push({
-            robotId: item.robotId,
-            trigger: {
-              input: triggerInput,
-              output: triggerOutput
-            }
-          });
-        }
-        return prev;
-      }, [] as IShouldFireRobot[]);
+    let shouldFireRobots;
+    if(eventType === EventTypeEnums.RecordCreated) {
+      shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordCreated, conditionalTriggers, eventContext);
+    } else {
+      shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordMatchesConditions, conditionalTriggers, eventContext);
+    }
 
-    this.logger.info('recordMatchConditionsTriggerHandler', {
+    this.logger.info(`${eventType} handler`, {
       msgIds,
       shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
     });
@@ -135,7 +101,49 @@ export class TriggerEventHelper {
     });
   }
 
-  private getTriggerOutput(datasheetId: string, datasheetName: string, recordId: string, eventContext: CommonEventContext) {
+  public getRenderTriggers(eventType: string, conditionalTriggers: AutomationTriggerEntity[], eventContext: CommonEventContext) {
+    const {datasheetId, datasheetName, recordId} = eventContext;
+    if(eventType == EventTypeEnums.RecordMatchesConditions) {
+      return conditionalTriggers
+        .filter(item => Boolean(item.input))
+        .reduce((prev, item) => {
+          const triggerInput = this.renderInput(item.input!);
+          const isSameResource = triggerInput.datasheetId === datasheetId;
+          // TODO: Filter condition matching, robot is only triggered when condition is matched.
+          const isMatchFilterConditions = this._filterExec(triggerInput.filter, eventContext);
+          if (isSameResource && isMatchFilterConditions) {
+            const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
+            prev.push({
+              robotId: item.robotId,
+              trigger: {
+                input: triggerInput,
+                output: triggerOutput
+              }
+            });
+          }
+          return prev;
+        }, [] as IShouldFireRobot[]);
+    } else {
+      return conditionalTriggers
+        .filter(item => Boolean(item.input))
+        .reduce((prev, item) => {
+          const triggerInput = this.renderInput(item.input!);
+          if (triggerInput.datasheetId === datasheetId) {
+            const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
+            prev.push({
+              robotId: item.robotId,
+              trigger: {
+                input: triggerInput,
+                output: triggerOutput,
+              }
+            });
+          }
+          return prev;
+        }, [] as IShouldFireRobot[]);
+    }
+  }
+
+  public getTriggerOutput(datasheetId: string, datasheetName: string, recordId: string, eventContext: CommonEventContext) {
     return {
       // the old structure: left for Qianfan, should delete later
       datasheet: {

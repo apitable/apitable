@@ -109,7 +109,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     if (!view) {
       switchView(null, views![0].id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [views]);
 
   const switchView = (e: React.MouseEvent | null, id: string) => {

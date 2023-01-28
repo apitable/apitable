@@ -296,7 +296,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
       frozenActivedCell,
       frozenActiveCellBorder
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeCell, activeCellHeight, checkIsVisible, totalColumnCount, currentSearchCell,
     datasheetId, fieldMap, instance, linearRows, rowHeight, rowHeightLevel, snapshot, colors.defaultBg]);
 
@@ -465,7 +465,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     }
 
     return tempCells;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [
     activeCell, activeCellHeight, columnCount, fieldMap, instance, linearRows, rowInitSize,
     onDblClick, onMouseDown, rowCount, rowHeight, rowStartIndex, rowStopIndex, visibleColumns

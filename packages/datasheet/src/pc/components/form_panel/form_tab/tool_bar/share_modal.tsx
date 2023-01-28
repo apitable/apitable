@@ -168,7 +168,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     if (visible) {
       getShareSettings();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [visible]);
 
   const showCloseModel = () => {

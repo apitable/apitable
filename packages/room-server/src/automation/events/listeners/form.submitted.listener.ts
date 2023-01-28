@@ -56,7 +56,7 @@ export class FormSubmittedListener {
     if (triggers.length === 0) {
       return;
     }
-    const shouldFireRobots = this._getRenderTriggers(triggers, eventContext);
+    const shouldFireRobots = this.getRenderTriggers(triggers, eventContext);
     this.logger.info('formSubmittedListener', {
       formId: eventContext.formId,
       recordId: eventContext.recordId,
@@ -67,7 +67,7 @@ export class FormSubmittedListener {
     });
   }
 
-  private _getRenderTriggers(triggers: ResourceRobotTriggerDto[], eventContext: FormSubmittedEventContext): IShouldFireRobot[] {
+  public getRenderTriggers(triggers: ResourceRobotTriggerDto[], eventContext: FormSubmittedEventContext): IShouldFireRobot[] {
     return triggers.filter(item => Boolean(item.input))
       .reduce((prev, item) => {
         const triggerInput = this.triggerEventHelper.renderInput(item.input!);

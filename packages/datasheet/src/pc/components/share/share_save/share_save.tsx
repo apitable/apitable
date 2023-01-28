@@ -74,7 +74,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
         type: 'warning',
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [modalType]);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
       }
     };
     request();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [shareSpace.hasLogin]);
 
   const saveToSpace = async(spaceId?: string) => {

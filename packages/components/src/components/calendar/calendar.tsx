@@ -47,7 +47,7 @@ export const Calendar:FC<ICalendar> = props => {
       const currStep = differenceInMonths(date2Month(defaultDate), date2Month(new Date()));
       setStep(currStep);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [defaultDate2Month]);
   const { year, month } = useMemo(() =>
     getPanelData(step),

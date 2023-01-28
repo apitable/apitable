@@ -60,7 +60,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
       setTreeData(transformData([NodeTreeData]));
       setNodeId(NodeTreeData.nodeId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [NodeTreeData]);
 
   const transformData = (data: INode[]) => {
