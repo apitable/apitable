@@ -197,7 +197,7 @@ export const Workspace: React.FC = () => {
       getTreeData();
       getFavoriteNodeList();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [userSpaceId, dispatch]);
 
   const changeSplitPane = (size: number) => {

@@ -496,7 +496,7 @@ const Task: FC<ITaskProps> = (props) => {
     if (!isTransform && !isOperating) {
       setTaskPosition({ x, y, width: taskWidth });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isTransform]);
 
   const getTaskStroke = () => {

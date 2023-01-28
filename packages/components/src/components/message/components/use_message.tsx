@@ -76,7 +76,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         onDestroy: () => remove(key),
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [props]);
 
   return (

@@ -85,7 +85,7 @@ export const Display: React.FC<IDisplay> = props => {
       return setAction([]);
     }
     setAction(['click']);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editable]);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const Display: React.FC<IDisplay> = props => {
         return;
       }
       ref.current && ref.current.close(e);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     },
     [ref],
   );

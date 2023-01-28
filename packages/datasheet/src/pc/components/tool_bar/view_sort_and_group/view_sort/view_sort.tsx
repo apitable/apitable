@@ -119,7 +119,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
         })!,
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [sortInfo],
   );
 

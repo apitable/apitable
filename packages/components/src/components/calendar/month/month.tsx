@@ -77,7 +77,7 @@ const MonthBase:FC<IMonth> = props => {
     return () => {
       window.removeEventListener('resize', handleResize, false);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, []);
   useEffect(() => {
     setWidth(calendarWidth / 7);

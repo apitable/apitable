@@ -168,7 +168,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useEffect(() => {

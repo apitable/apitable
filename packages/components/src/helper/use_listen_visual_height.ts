@@ -199,13 +199,13 @@ export function useListenVisualHeight(props: IUseListenVisualHeightProps) {
         scrollELe.removeEventListener('scroll', () => toggleScorllColor(scrollELe));
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [listenNode, childNode, run, cancel]);
 
   useLayoutEffect(() => {
     if (isMobile) return;
     onListenResize();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, []);
 
   const style: React.CSSProperties = {};

@@ -178,7 +178,7 @@ export const FormContainer: React.FC = () => {
 
       return !hidden && formSheetAccessible && (!Field.bindModel(field).isComputed || shownComputedTypes.includes(field.type));
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentView, fieldMap, fieldPermissionMap]);
 
   const realContentType = useMemo(() => {
@@ -443,7 +443,7 @@ export const FormContainer: React.FC = () => {
 
     formContainer?.addEventListener('mousedown', onMouseDown);
     return () => formContainer?.removeEventListener('mousedown', onMouseDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [fillDisabled]);
 
   // TODO(kailang)
@@ -624,7 +624,7 @@ export const FormContainer: React.FC = () => {
       Message.info({ content: t(Strings.view_form_field_changed_tip) });
       prevFieldMap.current = fieldMap;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [fieldMap]);
 
   const _setFormData = useCallback(

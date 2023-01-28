@@ -70,7 +70,7 @@ export const Select: FC<ISelectProps> & {
       return;
     }
     setVisible(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [value, toggleVisible, defaultVisible, isInit]);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const Select: FC<ISelectProps> & {
       const size = (triggerRef.current.getRootDomNode() as HTMLElement).getBoundingClientRect();
       setTriggerInfo({ triggerSize: size, triggerOffset: OFFSET, adjust: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [triggerRef]);
 
   useClickAway(() => {

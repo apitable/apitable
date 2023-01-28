@@ -107,7 +107,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
       return;
     }
     file && confirmImport(secondVerify);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [secondVerify]);
 
   const kidNode = (type: IKidType) => {
