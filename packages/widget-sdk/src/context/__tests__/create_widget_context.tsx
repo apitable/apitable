@@ -36,7 +36,7 @@ export function createWidgetContextWrapper(config: IWidgetConfig, widgetState: I
 
   const widgetStore = createWidgetStore(widgetState);
 
-  return ({ children }) => (
+  return ({ children }: { children: any }) => (
     <Provider store={gtx.globalStore}>
       <GlobalContext.Provider value={gtx}>
         <Provider store={widgetStore}>

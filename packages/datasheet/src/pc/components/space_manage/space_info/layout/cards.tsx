@@ -218,6 +218,6 @@ export const useCards = (props: ILayoutProps) => {
         />
       ),
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [handleDelSpace, level, spaceInfo, subscription, onUpgrade]);
 };

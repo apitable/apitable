@@ -78,7 +78,7 @@ export const TemplateCategorySide: FC = () => {
         ...templateCategory,
       ]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [templateCategory]);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export const TemplateCategorySide: FC = () => {
     } else {
       mutate({ templates: [], albums: [] });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [keywords]);
 
   const { setSideBarVisible } = useSideBarVisible();

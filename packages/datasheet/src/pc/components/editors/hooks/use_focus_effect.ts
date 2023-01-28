@@ -27,6 +27,6 @@ export const useFocusEffect = (focusFn: EffectCallback, deps?: DependencyList) =
       return;
     }
     focusFn();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, deps);
 };

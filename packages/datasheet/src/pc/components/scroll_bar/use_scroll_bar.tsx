@@ -38,7 +38,7 @@ export const useScrollBar = (props: IUseScrollBar) => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isDown]);
 
   const handleMouseDown = (e: React.MouseEvent) => {

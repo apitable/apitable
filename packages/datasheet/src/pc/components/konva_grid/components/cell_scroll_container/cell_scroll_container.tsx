@@ -63,7 +63,7 @@ export const CellScrollContainer: FC<ICellScrollContainerProps> = (props) => {
       totalHeight
     });
     resetCellScroll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [setActiveCellBound, height, setCellScrollState, fieldId, recordId, isOverflow, totalHeight]);
 
   const ratio = (height - 2 * SCROLL_BAR_PADDING) / totalHeight;

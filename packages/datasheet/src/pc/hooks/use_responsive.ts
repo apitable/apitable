@@ -81,7 +81,7 @@ export const useResponsive = <T extends { [name: string]: number }>(): IScreen<T
 
   useEffect(() => {
     setScreen(getScreen(bodySize?.width!, bodySize?.height!));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [bodySize, setScreen]);
 
   return screen;

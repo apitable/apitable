@@ -60,7 +60,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       setSearchValue('');
       // searchRef.current?.focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [schemaExpressionList]);
 
   const goPrev = useCallback((_deepIndex?: number) => {

@@ -119,7 +119,7 @@ export const MessageUI: React.FC<IMessageUIProps> = ({
         onDestroy && onDestroy();
       }, duration * 1000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [duration]);
 
   useEffect(()=>{

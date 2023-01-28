@@ -86,7 +86,7 @@ export const ForeignForm: FC<IForeignFormProps> = (props) => {
 
   useEffect(() => {
     fetchForeignFormList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [uniqueId]);
 
   return (

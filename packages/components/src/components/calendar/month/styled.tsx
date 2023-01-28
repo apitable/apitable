@@ -117,7 +117,7 @@ export const DaySpan = styled.span`
   font-size: 13px;
   font-weight: 500;
 
-  ${props => css`
+  ${() => css`
     color: #C9C9C9;
   `}
 `;

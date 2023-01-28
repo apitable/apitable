@@ -103,7 +103,7 @@ export const Stat: FC<IStatProps> = memo((props) => {
       res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map(row => row.recordId);
     }
     return res;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [visibleRecordIds, isGroupStat, groupInfo, groupBreakpoint, row]);
 
   /**

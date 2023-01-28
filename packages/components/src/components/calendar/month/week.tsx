@@ -101,7 +101,7 @@ export const WeekBase = (props: IWeek) => {
         if (m <= MAX_LEVEL) {
           return null;
         }
-        const curDay = week[mIndex];
+        const curDay = week[mIndex]!;
         return (
           <MoreTask
             key={mIndex}

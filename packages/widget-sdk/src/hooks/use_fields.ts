@@ -109,7 +109,7 @@ export function useFields(param1: Datasheet | string | undefined, param2?: IFiel
 
     return _columns.map(({ fieldId }) => {
       const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
-      return new Field(datasheetId, context, fieldRole === ConfigConstant.Role.None ? createDeniedField() : fieldMap[fieldId]);
+      return new Field(datasheetId, context, fieldRole === ConfigConstant.Role.None ? createDeniedField() : fieldMap[fieldId]!);
     });
     
   }, [viewId, datasheetId, fieldMap, columns, query, fieldPermissionMap, context]);

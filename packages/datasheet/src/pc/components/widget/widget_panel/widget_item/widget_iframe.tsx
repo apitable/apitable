@@ -127,7 +127,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       addWidgetTask(widgetId, () => setCanRun(true));
     }
     return () => removeWidgetTask(widgetId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [widgetId, setCanRun]);
 
   useEffect(() => {
@@ -183,7 +183,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       };
     });
     return () => mainWidgetMessage.removeListenEvent(widgetId, WidgetMessageType.INIT_WIDGET);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [connected, nodeConnected]);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       isShowingSettings: isSettingOpened,
       isDevMode
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isExpandWidget, isSettingOpened, isDevMode, connected]);
 
   useEffect(() => {
