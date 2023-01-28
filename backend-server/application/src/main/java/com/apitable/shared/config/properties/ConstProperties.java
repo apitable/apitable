@@ -85,13 +85,6 @@ public class ConstProperties {
     private String quoteEnTemplateId = "tpll8mltwrZMT";
 
     /**
-     * wechat-mp reply template id
-     * @deprecated open-source
-     */
-    @Deprecated
-    private String qrCodeReplyId;
-
-    /**
      * dingtalk subscription information table id
      */
     private String dingTalkOrderDatasheet;
