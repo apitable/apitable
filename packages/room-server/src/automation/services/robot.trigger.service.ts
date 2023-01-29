@@ -25,6 +25,7 @@ import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
+import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 
 @Injectable()
 export class RobotTriggerService {
@@ -41,7 +42,7 @@ export class RobotTriggerService {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
-      this.logger.info(`get officialServiceCount: ${ officialServiceCount }`)
+      this.logger.info(`get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`)
       if(officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
@@ -74,7 +75,6 @@ export class RobotTriggerService {
       const triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robot.robotId, triggerTypeId);
       resourceRobotTriggers.push(...triggers);
     }
-    this.logger.info(`get trigger: ${ resourceRobotTriggers }, resourceId: ${ resourceId },triggerTypeId: ${ triggerTypeId }`)
     return resourceRobotTriggers;
   }
 }
