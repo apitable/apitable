@@ -21,19 +21,19 @@ import { isProdMode } from 'app.environment';
 import { UserService } from 'user/services/user.service';
 import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { AutomationService } from '../services/automation.service';
+import { RobotTriggerTypeService } from '../services/robot.trigger.type.service';
 
 @Controller('nest/v1/robots/trigger-types')
 export class RobotTriggerTypeController {
   constructor(
-    private readonly automationService: AutomationService,
+    private readonly robotTriggerTypeService: RobotTriggerTypeService,
     private readonly userService: UserService,
   ) { }
 
   @Get(['/'])
-  getTriggerTypes(@Query('lang') lang: string) {
+  getTriggerTypes(@Query('lang') lang: string | string[]) {
     const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.automationService.getTriggerType(language);
+    return this.robotTriggerTypeService.getTriggerType(language);
   }
 
   @Post('/')
@@ -42,7 +42,7 @@ export class RobotTriggerTypeController {
       throw new Error('cant create trigger type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
-    return this.automationService.createTriggerType(triggerType, user);
+    return this.robotTriggerTypeService.createTriggerType(triggerType, user);
   }
 
   @Patch('/:triggerTypeId')
@@ -55,7 +55,7 @@ export class RobotTriggerTypeController {
       throw new Error('cant update trigger type in production mode');
     }
     const user = await this.userService.getMe({ cookie });
-    return this.automationService.updateTriggerType(triggerTypeId, data, user);
+    return this.robotTriggerTypeService.updateTriggerType(triggerTypeId, data, user);
   }
 
 }

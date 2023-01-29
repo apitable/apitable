@@ -122,7 +122,7 @@ export class Datasheet {
           throw new Error(`FieldId: ${fieldId} is not exist in datasheet`);
         }
 
-        const coreField = CoreField.bindModel(fieldDataMap[fieldId], state);
+        const coreField = CoreField.bindModel(fieldDataMap[fieldId]!, state);
         if (!coreField.recordEditable(this.datasheetId)) {
           throw new Error(`FieldId: ${fieldId} is not editable`);
         }
@@ -140,7 +140,7 @@ export class Datasheet {
     return records.map(valuesMap => {
       const coreFieldMap: Record<string, any> = {};
       Object.entries(valuesMap).forEach(([fieldId, cellValue]) => {
-        const coreField = CoreField.bindModel(fieldDataMap[fieldId], state);
+        const coreField = CoreField.bindModel(fieldDataMap[fieldId]!, state);
         // Compatible with the case where cellValue is undefined
         coreFieldMap[fieldId] = cellValue === undefined ? null : coreField.openWriteValueToCellValue(cellValue);
       });
@@ -255,7 +255,7 @@ export class Datasheet {
     const state = this.wCtx.globalStore.getState();
     const fieldDataMap = Selectors.getFieldMap(state, this.datasheetId)!;
     const hasTheSameName = Object.keys(fieldDataMap).some(fieldId => {
-      const item = fieldDataMap[fieldId];
+      const item = fieldDataMap[fieldId]!;
       return item.name === name;
     });
     if (hasTheSameName) {
@@ -267,7 +267,7 @@ export class Datasheet {
   private checkPrimaryField(fieldId: string) {
     const state = this.wCtx.globalStore.getState();
     const snapshot = Selectors.getSnapshot(state, this.datasheetId);
-    return Boolean(snapshot?.meta.views[0].columns[0].fieldId === fieldId);
+    return Boolean(snapshot?.meta.views[0]!.columns[0]!.fieldId === fieldId);
   }
 
   /**

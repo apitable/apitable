@@ -17,6 +17,7 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class NodeListParamRo {
   @ApiProperty({
@@ -25,6 +26,7 @@ export class NodeListParamRo {
     example: 'spczdmQDfBAn5',
     description: 'space Id',
   })
+  @IsString()
   spaceId!: string;
 }
 
@@ -35,6 +37,7 @@ export class OldNodeDetailParamRo {
     example: 'spczdmQDfBAn5',
     description: 'space Id',
   })
+  @IsString()
   spaceId!: string;
 
   @ApiProperty({
@@ -43,6 +46,7 @@ export class OldNodeDetailParamRo {
     example: 'dstS94qPZFXjC1LKns',
     description: 'node Id',
   })
+  @IsString()
   nodeId!: string;
 }
 
@@ -53,5 +57,6 @@ export class NodeDetailParamRo {
     example: 'dstS94qPZFXjC1LKns',
     description: 'node Id',
   })
+  @IsString()
   nodeId!: string;
 }

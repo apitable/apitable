@@ -3,6 +3,18 @@
   "compilerOptions": {
     "allowJs": true,
     "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedParameters": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "rootDir": "src",
     "baseUrl": "src",
     "target": "es2015",
@@ -13,7 +25,6 @@
     ],
     "module": "es2015",
     "jsx": "react",
-    "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
     "paths": {
       "*": [

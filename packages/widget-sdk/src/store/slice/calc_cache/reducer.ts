@@ -59,9 +59,9 @@ export function calcCacheReducer(
       }
       const calcCache = {};
       Object.keys(state).forEach(datasheetId => {
-        Object.keys(state[datasheetId]).forEach(viewId => {
-          if (!action.payload?.[datasheetId] || !action.payload[datasheetId].includes(viewId)) {
-            calcCache[datasheetId] = { [viewId]: state[datasheetId][viewId] };
+        Object.keys(state[datasheetId]!).forEach(viewId => {
+          if (!action.payload?.[datasheetId] || !action.payload[datasheetId]!.includes(viewId)) {
+            calcCache[datasheetId] = { [viewId]: state[datasheetId]![viewId] };
           }
         });
       });

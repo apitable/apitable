@@ -154,7 +154,7 @@ const SlateEditor = (props, ref) => {
         });
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [datasheetId, JSON.stringify(emojis), unitMap]);
 
   const [index, setIndex] = useState(0);
@@ -222,7 +222,7 @@ const SlateEditor = (props, ref) => {
         clearContent();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [replyUnitId]);
 
   useImperativeHandle(ref, () => ({

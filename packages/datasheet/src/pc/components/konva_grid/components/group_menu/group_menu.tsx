@@ -116,7 +116,7 @@ export const GroupMenu: React.FC<IStatMenuProps> = (props) => {
     if (!groupInfo) return [];
     const allGroupTabIds = Array.from(groupSketch.getAllGroupTabIdsByRecomputed(state).keys());
     return allGroupTabIds;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [groupSketch]);
 
   const childGroupTabKey = useMemo(() => {

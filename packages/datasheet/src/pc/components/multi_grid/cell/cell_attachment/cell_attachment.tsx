@@ -214,7 +214,7 @@ export const CellAttachment: React.FC<ICellAttachmentProps> = props => {
     setUploadList(state => {
       return state.filter(item => !cvIds.includes(item.fileId));
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [fileList]);
 
   function onUpload(list: IUploadZoneItem[]) {

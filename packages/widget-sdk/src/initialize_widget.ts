@@ -87,8 +87,8 @@ export function initializeWidget(Component: React.FC, widgetPackageId: string | 
  * distinguish whether the browser restriction is not lifted when the widget loads with an error
  * @param bundleUrl
  */
-export function checkCretInvalid(bundleUrl) {
-  return new Promise((resolve, reject) => {
+export function checkCretInvalid(bundleUrl: string) {
+  return new Promise((resolve) => {
     const img = document.createElement('img');
     img.src = `${getDevWidgetHttpOrigin(bundleUrl)}/ping.png?v=${Date.now()}`;
     document.body.appendChild(img);
@@ -111,7 +111,7 @@ interface IWidgetConfig {
  * get sandbox configuration in widget development mode
  * @param bundleUrl bundleUrl path
  */
-export function getWidgetConfig(bundleUrl) {
+export function getWidgetConfig(bundleUrl: string) {
   const url = new URL(bundleUrl);
   return new Promise<IWidgetConfig>((resolve, reject) => {
     axios.get(`${url.origin}/widgetConfig?v=${Date.now()}`)
@@ -133,7 +133,7 @@ export function getWidgetConfig(bundleUrl) {
  * @param bundleUrl path of the widget bundleUrl
  * @param widgetPackageId
  */
-export function loadWidgetCheck(bundleUrl, widgetPackageId) {
+export function loadWidgetCheck(bundleUrl: string, widgetPackageId: string) {
   return new Promise<IWidgetConfig>((resolve, reject) => {
     checkCliVersion(bundleUrl).then(() => {
       getWidgetConfig(bundleUrl).then(res => {
@@ -159,7 +159,7 @@ interface ICliInfo {
  * @param a
  * @param b
  */
-function checkVersion(a, b) {
+function checkVersion(a: string, b: string) {
   const x = a.split('.').map(e => parseInt(e, 10));
   const y = b.split('.').map(e => parseInt(e, 10));
 
@@ -167,7 +167,7 @@ function checkVersion(a, b) {
     y[i] = y[i] || 0;
     if (x[i] === y[i]) {
       continue;
-    } else if (x[i] > y[i]) {
+    } else if (x[i]! > y[i]!) {
       return 1;
     } else {
       return -1;
@@ -179,7 +179,7 @@ function checkVersion(a, b) {
 /**
  * cli version check
  */
-export function checkCliVersion(bundleUrl) {
+export function checkCliVersion(bundleUrl: string) {
   return new Promise<ICliInfo>((resolve, reject) => {
     axios.get<ICliInfo>(`${getDevWidgetHttpOrigin(bundleUrl)}/widget-cli/info?v=${Date.now()}`)
       .then(res => {

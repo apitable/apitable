@@ -1,12 +1,12 @@
-${USER_NAME} invited you to join the "${SPACE_NAME}" Space
+{{USER_NAME}} invited you to join the "{{SPACE_NAME}}" Space
 
 --------------------------------------------------------------------------------
 
 
 
-Click on the link to enter the Space: ${INVITE_URL}
+Click on the link to enter the Space: {{INVITE_URL}}
 
 
-copyright © 2022-${YEARS} apitable. All rights reserved.
+copyright © 2022-{{YEARS}} apitable. All rights reserved.
 
 Contact us (https://apitable.com/)

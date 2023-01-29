@@ -33,7 +33,7 @@ export class DeveloperRepository extends Repository<DeveloperEntity> {
    * @author Zoe Zheng
    * @date 2020/7/24 3:18 PM
    */
-  selectUserIdByApiKey(apiKey: string): Promise<{ userId: bigint } | undefined> {
-    return this.findOne({ where: [{ apiKey }], select: ['userId'] });
+  async selectUserIdByApiKey(apiKey: string): Promise<{ userId: bigint } | undefined> {
+    return await this.findOne({ where: [{ apiKey }], select: ['userId'] });
   }
 }
