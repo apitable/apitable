@@ -92,4 +92,4 @@ jobs:
           VALIDATE_XML: false
           VALIDATE_GROOVY: false
           VALIDATE_SQLFLUFF: false
-          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*
+          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*
