@@ -91,3 +91,4 @@ jobs:
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_XML: false
           VALIDATE_GROOVY: false
+          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*
