@@ -53,7 +53,6 @@ export class FormSubmittedListener {
     const resourceId = eventContext.datasheetId;
     if (!resourceId) return;
     const triggers = await this.robotTriggerService.getTriggersByResourceAndEventType(resourceId, EventTypeEnums.FormSubmitted);
-    this.logger.info('formSubmittedListener triggers', triggers)
     if (triggers.length === 0) {
       return;
     }
