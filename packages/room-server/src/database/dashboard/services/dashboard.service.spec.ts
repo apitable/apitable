@@ -19,7 +19,6 @@
 import { IPermissions, IResourceMeta, Role } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { NodeInfo } from 'database/interfaces';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { NodeService } from 'node/services/node.service';
@@ -35,7 +34,7 @@ describe('DashboardService', () => {
   let resourceMetaRepository: ResourceMetaRepository;
   const knownDashboardId = 'dstNnnfdsffsbadaOd23';
   const permissions: IPermissions = Object.assign({ allowEditConfigurable: false });
-  const nodeInfo: NodeInfo = Object.assign({ id: '', name: '', role: Role.Editor, nodeFavorite: false, permissions });
+  const nodeInfo: NodeInfo = Object.assign({ id: knownDashboardId, name: 'Test Dashboard', role: Role.Editor, nodeFavorite: false, permissions });
   const meta: IResourceMeta = {
     views: [
       {
@@ -68,11 +67,33 @@ describe('DashboardService', () => {
       },
     }
   };
+  const token = 'token';
+  const cookie = '';
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [],
+      providers: [
+        DashboardService,
+        { 
+          provide: NodeService, 
+          useValue: { 
+            getNodeDetailInfo: jest.fn() 
+          }
+        }, 
+        { 
+          provide: RestService, 
+          useValue: { 
+            hasLogin: jest.fn(), 
+            fetchMe: jest.fn() 
+          }
+        }, 
+        ResourceMetaRepository
+      ],
     }).compile();
+    // module = await Test.createTestingModule({
+    //   imports: [AppModule],
+    // }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
   });
@@ -112,17 +133,19 @@ describe('DashboardService', () => {
   describe('test fetchDashboardPack', () => {
 
     it('should return empty widgetInstallations with an unknown/deleted dashboard ID', async() => {
-      const result = await service.fetchDashboardPack(Math.floor(Math.random()*10000).toString(), { token: '', cookie: '' });
+      const result = await service.fetchDashboardPack(Math.floor(Math.random()*10000).toString(), { token, cookie });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual({});
     });
 
     it('should return widgetInstallations with an known dashboard ID', async() => {
-      const result = await service.fetchDashboardPack(knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchDashboardPack(knownDashboardId, { token, cookie });
+      console.log(`test log: ${result.dashboard}`);
       expect(result.dashboard.snapshot.widgetInstallations).toEqual(meta);
     });
 
     it('should return empty widgetMap without layout', async() => {
-      const result = await service.fetchDashboardPack(knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchDashboardPack(knownDashboardId, { token, cookie });
+      expect(result.dashboard.snapshot.widgetInstallations.layout).toBeUndefined();
       expect(result.widgetMap).toEqual({});
     });
 
@@ -133,17 +156,18 @@ describe('DashboardService', () => {
     const templateId = 'templateId';
 
     it('should return empty widgetInstallations with an unknown/deleted dashboard ID', async() => {
-      const result = await service.fetchTemplateDashboardPack(templateId, Math.floor(Math.random()*10000).toString(), { token: '', cookie: '' });
+      const result = await service.fetchTemplateDashboardPack(templateId, Math.floor(Math.random()*10000).toString(), { token, cookie });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual({});
     });
 
     it('should return widgetInstallations with an known dashboard ID', async() => {
-      const result = await service.fetchTemplateDashboardPack(templateId, knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchTemplateDashboardPack(templateId, knownDashboardId, { token, cookie });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual(meta);
     });
 
     it('should return empty widgetMap without layout', async() => {
-      const result = await service.fetchTemplateDashboardPack(templateId, knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchTemplateDashboardPack(templateId, knownDashboardId, { token, cookie });
+      expect(result.dashboard.snapshot.widgetInstallations.layout).toBeUndefined();
       expect(result.widgetMap).toEqual({});
     });
 
@@ -154,17 +178,18 @@ describe('DashboardService', () => {
     const sharedId = 'shareId';
 
     it('should return empty widgetInstallations with an unknown/deleted dashboard ID', async() => {
-      const result = await service.fetchShareDashboardPack(sharedId, Math.floor(Math.random()*10000).toString(), { token: '', cookie: '' });
+      const result = await service.fetchShareDashboardPack(sharedId, Math.floor(Math.random()*10000).toString(), { token, cookie });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual({});
     });
 
     it('should return widgetInstallations with an known dashboard ID', async() => {
-      const result = await service.fetchShareDashboardPack(sharedId, knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchShareDashboardPack(sharedId, knownDashboardId, { token, cookie });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual(meta);
     });
 
     it('should return empty widgetMap without layout', async() => {
-      const result = await service.fetchShareDashboardPack(sharedId, knownDashboardId, { token: '', cookie: '' });
+      const result = await service.fetchShareDashboardPack(sharedId, knownDashboardId, { token, cookie });
+      expect(result.dashboard.snapshot.widgetInstallations.layout).toBeUndefined();
       expect(result.widgetMap).toEqual({});
     });
 
@@ -173,17 +198,18 @@ describe('DashboardService', () => {
   describe('test fetchPack', () => {
 
     it('should return empty widgetInstallations with an unknown/deleted dashboard ID', async() => {
-      const result = await service.fetchPack(Math.floor(Math.random()*10000).toString(), { token: '', cookie: '' }, { node: nodeInfo });
+      const result = await service.fetchPack(Math.floor(Math.random()*10000).toString(), { token, cookie }, { node: nodeInfo });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual({});
     });
 
     it('should return widgetInstallations with an known dashboard ID', async() => {
-      const result = await service.fetchPack(knownDashboardId, { token: '', cookie: '' }, { node: nodeInfo });
+      const result = await service.fetchPack(knownDashboardId, { token, cookie }, { node: nodeInfo });
       expect(result.dashboard.snapshot.widgetInstallations).toEqual(meta);
     });
 
     it('should return empty widgetMap without layout', async() => {
-      const result = await service.fetchPack(knownDashboardId, { token: '', cookie: '' }, { node: nodeInfo });
+      const result = await service.fetchPack(knownDashboardId, { token, cookie }, { node: nodeInfo });
+      expect(result.dashboard.snapshot.widgetInstallations.layout).toBeUndefined();
       expect(result.widgetMap).toEqual({});
     });
 
