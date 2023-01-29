@@ -283,7 +283,7 @@ curl https://apitable.github.io/install.sh | bash
 - 如何写入好的提交消息？ [常规承诺](https://www.conventionalcommits.org/)
 - 我们的更新日志格式是什么？ [保留更新日志](https://keepachangelog.com/en/1.0.0/)
 - 如何进行版本控制和标记？ [语义版](https://semver.org/)
-- Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- Java 编码准则是什么？ [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - 什么是 TypeScript 编码准则？ -> [TypeScript 样式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### 文件
