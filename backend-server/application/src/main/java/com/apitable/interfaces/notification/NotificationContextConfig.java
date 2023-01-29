@@ -16,17 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.shared.constants;
+package com.apitable.interfaces.notification;
 
-import java.time.ZoneOffset;
+import com.apitable.interfaces.notification.facade.DefaultMailFacadeImpl;
+import com.apitable.interfaces.notification.facade.MailFacade;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * time zone constants
- * @author Shawn Deng
- * @deprecated since 0.17.1
+ * Notification Context Config.
+ *
+ * @author Chambers
  */
-@Deprecated
-public class TimeZoneConstants {
+@Configuration(proxyBeanMethods = false)
+public class NotificationContextConfig {
 
-    public static final ZoneOffset DEFAULT_TIME_ZONE = ZoneOffset.UTC;
+  /**
+   * Inject Default Mail Facade.
+   *
+   * @return MailFacade
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  public MailFacade defaultMailFacadeImpl() {
+    return new DefaultMailFacadeImpl();
+  }
 }
