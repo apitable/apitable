@@ -16,31 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.interfaces.notification;
+<<<<<<< HEAD:apitable/backend-server/application/src/main/java/com/apitable/interfaces/notification/facade/DefaultMailFacadeImpl.java
+package com.apitable.interfaces.notification.facade;
 
-import com.apitable.interfaces.notification.facade.DefaultMailFacadeImpl;
-import com.apitable.interfaces.notification.facade.MailFacade;
+public class DefaultMailFacadeImpl implements MailFacade {
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
+    @Override
+    public Long getCloudMailTemplateId(String lang, String subject) {
+        return DefaultMailTemplateLoader.getTemplateId(subject);
+    }
+}
+=======
 /**
- * Notification Context Config.
  *
  * @author Chambers
  */
-@Configuration(proxyBeanMethods = false)
-public class NotificationContextConfig {
-
-  /**
-   * Inject Default Mail Facade.
-   *
-   * @return MailFacade
-   */
-  @Bean
-  @ConditionalOnMissingBean
-  public MailFacade defaultMailFacadeImpl() {
-    return new DefaultMailFacadeImpl();
-  }
-}
+package com.apitable.interfaces.notification.facade;
+>>>>>>> 6895a8bbee110350652686c5b2867b33850cca08:apitable/backend-server/application/src/main/java/com/apitable/interfaces/notification/facade/package-info.java
