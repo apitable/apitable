@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -15,19 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
-import { stringToArray } from 'shared/helpers/fusion.helper';
 
-export class RecordDeleteRo {
-  @ApiProperty({
-    type: [String],
-    required: true,
-    description: 'The set of recordId to be deleted',
-    example: 'recwZ6yV3Srv3',
-  })
-  @Transform(value => stringToArray(value), { toClassOnly: true })
-  @IsOptional()
-  recordIds!: string[];
-}
+/**
+ *
+ * @author Chambers
+ */
+package com.apitable.shared.component.scanner;
