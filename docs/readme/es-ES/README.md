@@ -283,7 +283,7 @@ Utilizar estas convenciones comunes:
 - ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
 - ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
 - ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/)
-- ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- ¿Qué es la guía de código de Java? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Documentaciones
