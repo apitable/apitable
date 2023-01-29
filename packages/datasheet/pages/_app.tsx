@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import elementClosest from 'element-closest';
 import 'enterprise/style.less';
 import ErrorPage from 'error_page';
+import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -258,7 +259,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
+      window.__initialization_data__.wizards = defaultsDeep({
+        guide: SystemConfig.guide,
+        player: SystemConfig.player, 
+      }, JSON.parse(res.data.wizards));
 
     };
     getUser().then(() => {
