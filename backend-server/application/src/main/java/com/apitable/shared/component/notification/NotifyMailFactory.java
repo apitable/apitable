@@ -119,7 +119,9 @@ public class NotifyMailFactory {
   @Autowired(required = false)
   private MailTemplate mailTemplate;
 
-  /** */
+  /**
+   * @return NotifyMailFactory
+   */
   public static NotifyMailFactory me() {
     return SpringContextHolder.getBean(NotifyMailFactory.class);
   }
@@ -162,7 +164,11 @@ public class NotifyMailFactory {
    * @param to to
    */
   public void sendMail(
-      final String lang, final String subjectType, final Dict dict, final List<String> to) {
+      final String lang,
+      final String subjectType,
+      final Dict dict,
+      final List<String> to
+  ) {
     this.sendMail(lang, subjectType, null, dict, to);
   }
 
@@ -253,7 +259,8 @@ public class NotifyMailFactory {
   }
 
   /**
-   * *
+   * @param subject subject
+   * @param textBtl textBtl
    */
   public void notify(final String subject, final String textBtl) {
     this.notify(
