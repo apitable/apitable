@@ -16,24 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { forwardRef, Module } from '@nestjs/common';
-import { NodeModule } from 'node/node.module';
-import { ResourceModule } from 'database/resource/resource.module';
-import { AttachmentController } from './controllers/attachment.controller';
-import { AttachmentService } from './services/attachment.service';
-import { HttpModule } from '@nestjs/axios';
-import { HttpConfigService } from 'shared/services/config/http.config.service';
+import { Injectable } from "@nestjs/common";
+import { DatasheetWidgetRepository } from '../repositories/datasheet.widget.repository';
 
-@Module({
-  imports: [
-    HttpModule.registerAsync({
-      useClass: HttpConfigService,
-    }),
-    ResourceModule,
-    forwardRef(()=>NodeModule),
-  ],
-  controllers: [AttachmentController],
-  providers: [AttachmentService],
-  exports: [AttachmentService],
-})
-export class AttachmentModule {}
+@Injectable()
+export class DatasheetWidgetService {
+  constructor(
+    private readonly datasheetWidgetRepository: DatasheetWidgetRepository,
+  ) {}
+
+  async selectDstIdsByWidgetIds(widgetIds: string[]): Promise<string[] | null> {
+    return await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(widgetIds);
+  }
+
+  async selectDstIdsByNodeId(nodeId: string): Promise<string[] | null> {
+    return await this.datasheetWidgetRepository.selectDstIdsByNodeId(nodeId);
+  }
+}
