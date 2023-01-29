@@ -70,7 +70,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
       node.children = subTeams;
     });
     setTeamTree(nextTeamTree);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [subTeams]);
 
   const findNode = (data: ITeamTreeNode[], teamId: string): ITeamTreeNode | null => {

@@ -257,7 +257,7 @@ const PaginationBase: FC<IPaginationProps> = (props) => {
    * @param start Page number drop down start position
    * @param end Page number drop down end position
    */
-  const renderEllipse = (key, start, end) => {
+  const renderEllipse = (key: number, start: number, end: number) => {
     const options: IOption[] = [];
     for (let i = start; i <= end; i++) {
       options.push({ value: i, label: i.toString() });

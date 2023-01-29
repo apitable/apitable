@@ -52,7 +52,8 @@ public class UserHistoryMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/user-history-data.sql")
     void testSelectUserHistoryDtos() {
-        List<PausedUserHistoryDto> entities = userHistoryMapper.selectUserHistoryDtos(LocalDateTime.of(2020, 1, 1, 0, 0), LocalDateTime.now(), 1);
+        List<PausedUserHistoryDto> entities = userHistoryMapper.selectUserHistoryDtos(LocalDateTime.of(2020, 10, 1, 0, 0),
+                LocalDateTime.of(2022, 10, 30, 23, 59), 1);
         assertThat(entities).isNotEmpty();
     }
 

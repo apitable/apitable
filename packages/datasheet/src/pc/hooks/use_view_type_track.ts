@@ -40,7 +40,7 @@ export const useViewTypeTrack = () => {
         viewName: viewMap[currentView.type]
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [mirrorId, datasheetId, currentView?.id]);
 
   useEffect(() => {

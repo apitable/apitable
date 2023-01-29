@@ -165,6 +165,6 @@ export const useElements = (props: {
     });
 
     return renderData;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [rows, fieldVisible, nodeStateMap, snapshot, linkFieldId, primaryFieldId, fieldMap, datasheetId, horizontal]);
 };

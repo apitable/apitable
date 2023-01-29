@@ -603,6 +603,10 @@
             "en_US": "API overused",
             "zh_HK": "API 用量超量使用"
         },
+        "api_fieldid_empty_error": {
+            "zh_CN": "fieldId 的值不能为空",
+            "en_US": "fieldId should not be empty"
+        },
         "api_fields": {
             "zh_CN": "Fields 字段",
             "en_US": "Fields",
@@ -1121,6 +1125,10 @@
             "zh_CN": "参数 viewId 只接受 string 类型的值",
             "en_US": "the parameter toolBar must be a string type"
         },
+        "api_param_viewids_empty_error": {
+            "zh_CN": "viewIds 不能为空数组",
+            "en_US": "viewIds should not be empty"
+        },
         "api_param_widget_btn_type_error": {
             "zh_CN": "参数 widgetBtn 只接受 boolean 类型的值",
             "en_US": "the parameter widgetBtn must be a boolean type"
@@ -1348,6 +1356,9 @@
             "en_US": "Last Edited By field can't be edited",
             "zh_HK": "修改人列的值由系統自動生成，不允許編輯"
         },
+        "api_params_views_max_count_error": {
+            "zh_CN": "单次请求删除的视图不能超过 {count} 条"
+        },
         "api_query_params_invalid_fields": {
             "zh_CN": "传入的 fields 不存在：{fields}",
             "en_US": "Invalid fields",
@@ -1438,10 +1449,74 @@
             "en_US": "API usage",
             "zh_HK": "API 用量"
         },
+        "api_view_fieldid_not_exist": {
+            "zh_CN": "conditions fieldId对应的字段不存在",
+            "en_US": "the field corresponding to fieldId does not exist"
+        },
+        "api_view_filter_conditions_empty_error": {
+            "zh_CN": "conditions 不能为空数组",
+            "en_US": "conditions should not be empty"
+        },
+        "api_view_filter_operator_not_support": {
+            "zh_CN": "operator 的值和字段不匹配",
+            "en_US": "the value of operator does not match the field"
+        },
+        "api_view_filter_operator_value_error": {
+            "zh_CN": "operator 的值必须是以下值之一: is, isNot, contains, doesNotContain, isEmpty, isNotEmpty, isGreater, isGreaterEqual, isLess, isLessEqual, isRepeat",
+            "en_US": "operator must be one of the following values: is, isNot, contains, doesNotContain, isEmpty, isNotEmpty, isGreater, isGreaterEqual, isLess, isLessEqual, isRepeat"
+        },
+        "api_view_rules_empty_error": {
+            "zh_CN": "rules 的值不能为空数组",
+            "en_US": "rules should not be empty"
+        },
+        "api_view_type_error": {
+            "zh_CN": "type 必须是以下值之一: Grid, Gallery, Kanban, Gantt, Calendar, Architecture",
+            "en_US": "type must be one of the following values: Grid, Gallery, Gantt, Kanban, Calendar, Architecture"
+        },
         "api_your_token": {
             "zh_CN": "_替换成你的API_Token_",
             "en_US": "_Paste_Your_API_Token_",
             "zh_HK": "_替換成你的API_Token_"
+        },
+        "apitable_choose_basic": {
+            "zh_CN": "Start Now",
+            "en_US": "Start Now"
+        },
+        "apitable_choose_community": {
+            "zh_CN": "Download",
+            "en_US": "Download"
+        },
+        "apitable_choose_custom": {
+            "zh_CN": "Request Trial",
+            "en_US": "Request Trial"
+        },
+        "apitable_choose_enterprise": {
+            "zh_CN": "Contact Us",
+            "en_US": "Contact Us"
+        },
+        "apitable_choose_plus": {
+            "zh_CN": "Choose Plus",
+            "en_US": "Choose Plus"
+        },
+        "apitable_choose_pro": {
+            "zh_CN": "Choose Pro",
+            "en_US": "Choose Pro"
+        },
+        "apitable_origin_price_by_month": {
+            "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
+            "en_US": "{\n    \"plus\": \"$18\",\n    \"pro\": \"$30\"\n}"
+        },
+        "apitable_origin_price_by_year": {
+            "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
+            "en_US": "{\n    \"plus\": \"$11\",\n    \"pro\": \"$20\"\n}"
+        },
+        "apitable_privatized_deployment_desc": {
+            "zh_CN": "Manage it yourself",
+            "en_US": "Manage it yourself"
+        },
+        "apitable_public_cloud_desc": {
+            "zh_CN": "APITable as a service",
+            "en_US": "APITable as a service"
         },
         "app_closed": {
             "zh_CN": "未开启的应用",
@@ -1870,6 +1945,7 @@
         },
         "bronze_btn_text": {
             "zh_CN": "立即体验",
+            "en_US": "Start now",
             "zh_HK": "立即體驗"
         },
         "bronze_img": {
@@ -2451,6 +2527,10 @@
             "en_US": "Assign",
             "zh_HK": "確認移交"
         },
+        "claim_special_offer": {
+            "zh_CN": "获取特殊优惠",
+            "en_US": "Claim This Special Offer!"
+        },
         "clear": {
             "zh_CN": "清除",
             "en_US": "Clear",
@@ -2502,7 +2582,8 @@
             "zh_HK": "點擊同意"
         },
         "click_to_compare_with_detail": {
-            "zh_CN": "点击查看详细对比"
+            "zh_CN": "点击查看详细对比",
+            "en_US": "Detail"
         },
         "click_to_view": {
             "zh_CN": "点击查看",
@@ -4097,6 +4178,10 @@
             "zh_CN": "向下移动一个单元格",
             "en_US": "Move to the cell below",
             "zh_HK": "向下移動一個單元格"
+        },
+        "downgrade": {
+            "zh_CN": "Downgrade",
+            "en_US": "Downgrade"
         },
         "download": {
             "zh_CN": "下载",
@@ -7592,7 +7677,7 @@
         },
         "history_view_tip": {
             "zh_CN": "可查看 ${day} 天的修改历史，",
-            "en_US": "You can view record activity in ${day} days, ",
+            "en_US": "You can view record activity in ${day} days. ",
             "zh_HK": "可查看 ${day} 天的修改歷史，"
         },
         "honduras": {
@@ -7832,6 +7917,10 @@
             "zh_CN": "安装",
             "en_US": "Install",
             "zh_HK": "安裝"
+        },
+        "installation": {
+            "zh_CN": "安装",
+            "en_US": "installation"
         },
         "integer": {
             "zh_CN": "整数（2）",
@@ -8945,7 +9034,8 @@
             "zh_HK": "主管理員名稱"
         },
         "main_contain": {
-            "zh_CN": "主要包含内容"
+            "zh_CN": "主要包含内容",
+            "en_US": "Main contents"
         },
         "malawi": {
             "zh_CN": "马拉维",
@@ -9132,7 +9222,9 @@
             "zh_HK": "毛里求斯"
         },
         "max_record_num_per_dst": {
-            "zh_CN": "当前支持的单表上限为 5w 行"
+            "zh_CN": "当前支持的单表上限为 5w 行",
+            "en_US": "The current limit for a single datasheet is 5w rows",
+            "zh_HK": "當前支持的單表上限為 5w 行"
         },
         "max_records": {
             "zh_CN": "记录数上限：${count}条",
@@ -9148,6 +9240,10 @@
             "zh_CN": "空间站每秒最大并发量",
             "en_US": "Maximum concurrent volume",
             "zh_HK": "空間站每秒最大並發量"
+        },
+        "maybe_later": {
+            "zh_CN": "跳过",
+            "en_US": "Maybe Later"
         },
         "mayotte": {
             "zh_CN": "马约特",
@@ -11058,6 +11154,14 @@
             "en_US": "Done",
             "zh_HK": "已完成添加"
         },
+        "player_step_ui_config_166": {
+            "zh_CN": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
+        },
+        "player_step_ui_config_167": {
+            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
+        },
         "please": {
             "zh_CN": "请",
             "en_US": "Please",
@@ -11097,6 +11201,11 @@
             "zh_CN": "请选择小组",
             "en_US": "Select a team",
             "zh_HK": "請選擇小組"
+        },
+        "plus_edition": {
+            "zh_CN": "Plus",
+            "en_US": "Plus",
+            "zh_HK": "Plus"
         },
         "png": {
             "zh_CN": "PNG 图片",
@@ -11258,6 +11367,11 @@
             "en_US": "Admin's account name",
             "zh_HK": "主管理員暱稱"
         },
+        "pro_edition": {
+            "zh_CN": "Pro",
+            "en_US": "Pro",
+            "zh_HK": "Pro"
+        },
         "process": {
             "zh_CN": "处理",
             "en_US": "Process",
@@ -11309,7 +11423,8 @@
             "zh_HK": "公測期"
         },
         "public_cloud": {
-            "zh_CN": "公有云"
+            "zh_CN": "公有云",
+            "en_US": "CLOUD"
         },
         "public_link": {
             "zh_CN": "公开链接",
@@ -14739,7 +14854,7 @@
         },
         "template": {
             "zh_CN": "模板",
-            "en_US": "template"
+            "en_US": "Template"
         },
         "template_advise_tip": {
             "zh_CN": "没有想要的模板？欢迎向我们提出建议和吐槽！",

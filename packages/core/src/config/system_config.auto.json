@@ -50,9 +50,6 @@
         "api_apifox_upload_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/api-13867674-run?path[datasheetId]=${datasheetId}&environment[token]=${token}"
         },
-        "api_panel_help_url": {
-            "value": "/developers/api/introduction/"
-        },
         "api_times_per_day": {
             "value": "1000000"
         },
@@ -125,12 +122,6 @@
         "delete_account_step2_mobile_icon": {
             "value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
         },
-        "dingtalk_login_appid_dev": {
-            "value": "dingoaumy4mh7oesecamid"
-        },
-        "dingtalk_login_appid_prod": {
-            "value": "dingoam9aailglcervwmzh"
-        },
         "education_url": {
             "value": "https://edu.vika.cn"
         },
@@ -145,9 +136,6 @@
         },
         "experimental_features_unsynchronized_view_intro_img": {
             "value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
-        },
-        "feishu_login_appid": {
-            "value": "cli_9f3930dd7d7ad00c"
         },
         "field_cascade": {
             "value": "true"
@@ -212,15 +200,6 @@
                 "integration": "ina9134969049653777"
             }
         },
-        "integration_dingtalk_login_appid_dev": {
-            "value": "dingoaumy4mh7oesecamid"
-        },
-        "integration_dingtalk_login_appid_prod": {
-            "value": "dingoam9aailglcervwmzh"
-        },
-        "integration_dingtalk_login_appid_staging": {
-            "value": "dingoa5koclicxm2mdx5yx"
-        },
         "integration_dingtalk_upgrade_url": {
             "value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
         },
@@ -232,18 +211,6 @@
             "marketplace": {
                 "integration": "cli_9f3930dd7d7ad00c, cli_a08120b120fad00e, cli_9f614b454434500e"
             }
-        },
-        "integration_feishu_login_appid": {
-            "value": "cli_9f3930dd7d7ad00c"
-        },
-        "integration_feishu_login_appid_dev": {
-            "value": "cli_9f3930dd7d7ad00c"
-        },
-        "integration_feishu_login_appid_prod": {
-            "value": "cli_9f614b454434500e"
-        },
-        "integration_feishu_login_appid_staging": {
-            "value": "cli_a08120b120fad00e"
         },
         "integration_feishu_manage_open_url": {
             "value": "https://applink.feishu.cn/client/bot/open"
@@ -344,17 +311,11 @@
         "login_privacy_policy": {
             "value": "维格隐私政策"
         },
-        "login_privacy_policy_url": {
-            "value": "/privacy-policy"
-        },
         "login_private_deployment_form_url": {
             "value": "https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL"
         },
         "login_service_agreement": {
             "value": "维格服务协议"
-        },
-        "login_service_agreement_url": {
-            "value": "/service-agreement"
         },
         "official_avatar": {
             "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
@@ -376,9 +337,6 @@
         },
         "share_iframe_brand_dark": {
             "value": "space/2022/11/28/94e87bd1fd25472e99556c9b5f72c62e?attname=logo-reverse.svg"
-        },
-        "space_enterprise_certification_form": {
-            "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
         },
         "space_setting_integrations_dingtalk": {
             "value": "true"
@@ -404,35 +362,17 @@
         "space_setting_upgrade": {
             "value": "true"
         },
-        "system_configuration_default_language": {
-            "value": "zh_CN"
-        },
-        "system_configuration_default_theme": {
-            "value": "light"
-        },
         "system_configuration_logo_with_name_white_font": {
             "value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
         },
         "system_configuration_minmum_version_require": {
             "value": "0.5.0"
         },
-        "system_configuration_official_avatar": {
-            "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
-        },
-        "system_configuration_official_logo": {
-            "value": "/space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
-        },
         "system_configuration_server_error_bg_img": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
         "system_configuration_version": {
             "value": "0.5.0"
-        },
-        "template_feedback_form_url": {
-            "value": "https://u.vika.cn/vb9h5"
-        },
-        "template_space_id": {
-            "value": "spcNA5eN3Sj6Q"
         },
         "twitter_icon": {
             "value": "space/2022/12/05/09cc01ee1f894fb2923bd08b715226b6"
@@ -482,26 +422,8 @@
         "user_setting_account_bind_qq": {
             "value": "true"
         },
-        "user_setting_account_bind_qq_web_appid_dev": {
-            "value": "101907145"
-        },
-        "user_setting_account_bind_qq_web_appid_prod": {
-            "value": "101911260"
-        },
-        "user_setting_account_bind_qq_web_appid_staging": {
-            "value": "101907413"
-        },
         "user_setting_account_bind_wechat": {
             "value": "true"
-        },
-        "user_setting_account_bind_wechat_appid_dev": {
-            "value": "wx3ccd2f6264309a7c"
-        },
-        "user_setting_account_bind_wechat_appid_prod": {
-            "value": "wx1c297da2ee48065b"
-        },
-        "user_setting_account_bind_wechat_appid_staging": {
-            "value": "wxd964fb3aa5278241"
         },
         "user_setting_default_avatar": {
             "value": "space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e"
@@ -530,9 +452,6 @@
         "view_gallery_guide_video": {
             "value": "space/2020/09/15/4383ec2f8eb041599396df0f18d99f5a"
         },
-        "view_gantt_config_color_help_url": {
-            "value": "https://bbs.vika.cn/article/134"
-        },
         "view_gantt_guide_video": {
             "value": "space/2021/06/02/8bd6c5263ba444aabc138ed051b83c8c"
         },
@@ -557,38 +476,14 @@
         "widget_cli_miumum_version": {
             "value": "0.0.12"
         },
-        "widget_create_widget_help_url": {
-            "value": "/developers/widget/introduction"
-        },
         "widget_custom_widget_empty_img": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
         },
         "widget_default_cover_img": {
             "value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
         },
-        "widget_default_template_url": {
-            "value": "/develop/widget/wpk2jJ7qZS0VG/0.0.11/61433a73e4b0ed4bd1e2e8e1.zip"
-        },
-        "widget_develop_init_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_develop_install_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_develop_preview_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_develop_start_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_how_to_close_browser_restriction_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
         "widget_panel_empty_img": {
             "value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
-        },
-        "widget_release_help_url": {
-            "value": "/developers/widget/quick-start#"
         },
         "workbench_folder_default_cover_list": {
             "value": "space/2021/12/29/7306be86fc6d4cac9d8de9b4a787b1fa,space/2021/12/29/58073bbfe0f64dc7bd2f5f44a123c172,space/2021/12/29/e36e93966aa049e1ba7fd53907c2265f,space/2021/12/29/ebd570b6ee3b429f8c2e51e1b1df6657,space/2021/12/29/7eb38331f61240dcb74b1fce3a90c6bc,space/2021/12/29/a8c5df5eba2e4c07a78bdca6b9613579"
@@ -792,7 +687,9 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -805,7 +702,9 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -817,7 +716,9 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -830,7 +731,9 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -843,7 +746,9 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -856,7 +761,9 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -869,7 +776,9 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -882,7 +791,9 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -895,7 +806,9 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -908,7 +821,9 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -921,7 +836,9 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -934,7 +851,9 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -947,7 +866,9 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -960,7 +881,9 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -973,7 +896,9 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -986,7 +911,9 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -999,7 +926,9 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1012,7 +941,9 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1025,7 +956,9 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1038,7 +971,9 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1051,7 +986,9 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1064,7 +1001,9 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1077,7 +1016,9 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1090,7 +1031,9 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1103,7 +1046,9 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1116,7 +1061,9 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1129,7 +1076,9 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1142,7 +1091,9 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1155,7 +1106,9 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1168,7 +1121,9 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1181,7 +1136,9 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1194,7 +1151,9 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1207,7 +1166,9 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1220,7 +1181,9 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1233,7 +1196,9 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1246,7 +1211,9 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1259,7 +1226,9 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1272,7 +1241,9 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": []
+            "type": [
+                "gird_view_shortcuts"
+            ]
         },
         {
             "show": true,
@@ -1397,7 +1368,9 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [],
+            "name": [
+                "new_datasheet"
+            ],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1455,7 +1428,9 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [],
+            "name": [
+                "permission_setting"
+            ],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -3238,9 +3213,10 @@
                 "rules": [
                     "device_IS_pc",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(35)]",
+                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizard(35)]",
                 "event": [
                     "datasheet_add_new_view"
                 ],
@@ -3253,9 +3229,10 @@
                 "rules": [
                     "device_IS_pc",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(38)]",
+                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizard(38)]",
                 "event": [
                     "datasheet_add_new_view"
                 ],
@@ -3268,9 +3245,10 @@
                 "rules": [
                     "device_IS_pc",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(55)]",
+                "id": "datasheet_add_new_view,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizard(55)]",
                 "event": [
                     "datasheet_add_new_view"
                 ],
@@ -3513,15 +3491,32 @@
             },
             {
                 "actions": [
+                    "open_guide_wizards([105, 104, 18])"
+                ],
+                "rules": [
+                    "device_IS_pc",
+                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "url_EXCLUDES_templateId",
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_apitable"
+                ],
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104, 18])]",
+                "event": [
+                    "workbench_shown"
+                ]
+            },
+            {
+                "actions": [
                     "open_guide_wizards([1, 24])"
                 ],
                 "rules": [
                     "device_IS_pc",
                     "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([1, 24])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3840,6 +3835,18 @@
                 "conditionArgs": "pc"
             },
             {
+                "operator": "IS",
+                "condition": "edition",
+                "id": "edition_IS_apitable",
+                "conditionArgs": "apitable"
+            },
+            {
+                "operator": "IS",
+                "condition": "edition",
+                "id": "edition_IS_vika",
+                "conditionArgs": "vika"
+            },
+            {
                 "operator": "ALL_OF_FALSE",
                 "condition": "identity",
                 "id": "identity_ALL_OF_FALSE_['sub_admin', 'main_admin', 'member']",
@@ -4144,6 +4151,11 @@
                 "commandArgs": "[1, 24]"
             },
             {
+                "id": "open_guide_wizards([105, 104, 18])",
+                "command": "open_guide_wizards",
+                "commandArgs": "[105, 104, 18]"
+            },
+            {
                 "id": "open_guide_wizards([19])",
                 "command": "open_guide_wizards",
                 "commandArgs": "[19]"
@@ -4342,7 +4354,8 @@
                 "integral_action": "wizard_reward",
                 "player": {
                     "action": [
-                        "recMKNK2u3tkA"
+                        "recMKNK2u3tkA",
+                        "recRyoECYFqBv"
                     ]
                 }
             },
@@ -4827,6 +4840,25 @@
                     "action": [
                         "recEIcl9v4jzr",
                         "recBtbbzXDolQ"
+                    ]
+                }
+            },
+            "104": {
+                "repeat": true,
+                "completeIndex": -1,
+                "steps": "[[166]]",
+                "player": {
+                    "action": [
+                        "recRyoECYFqBv"
+                    ]
+                }
+            },
+            "105": {
+                "completeIndex": -1,
+                "steps": "[[167]]",
+                "player": {
+                    "action": [
+                        "recRyoECYFqBv"
                     ]
                 }
             }
@@ -6351,6 +6383,35 @@
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
+            },
+            "166": {
+                "skipId": "maybe_later",
+                "uiConfigId": "player_step_ui_config_166",
+                "uiType": "billingStrip",
+                "backdrop": "around_mask",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "获取特殊优惠",
+                "nextId": "claim_special_offer",
+                "uiConfig": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+                "onClose": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
+            },
+            "167": {
+                "uiConfigId": "player_step_ui_config_167",
+                "uiType": "questionnaire",
+                "backdrop": "around_mask",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "确定",
+                "nextId": "confirm",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}",
+                "onClose": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
             }
         }
     },
@@ -6377,7 +6438,6 @@
             "activity_integral_income_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "activity_integral_income_notify",
                 "is_component": true
@@ -6385,7 +6445,6 @@
             "activity_integral_income_toadmin": {
                 "to_tag": "space_main_admin",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "activity_integral_income_toadmin",
                 "is_component": true
@@ -6394,9 +6453,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "add_record_out_of_limit_by_api_notify"
-                ],
                 "is_notification": true,
                 "is_mail": true,
                 "mail_template_subject": "subject.add.record.limited",
@@ -6409,9 +6465,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "add_record_soon_to_be_limit_by_api_notify"
-                ],
                 "is_notification": true,
                 "is_mail": true,
                 "mail_template_subject": "subject.add.record.soon.limited",
@@ -6424,7 +6477,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6435,7 +6487,6 @@
             "admin_transfer_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6445,7 +6496,6 @@
             "admin_unpublish_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6456,7 +6506,6 @@
                 "can_jump": true,
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "apply_space_beta_feature_success_notify_all"
             },
@@ -6464,7 +6513,6 @@
                 "can_jump": true,
                 "to_tag": "myself",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "apply_space_beta_feature_success_notify_me"
             },
@@ -6472,9 +6520,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_assigned_to_group"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6486,9 +6531,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_assigned_to_role"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6500,7 +6542,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6515,9 +6556,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_changed_ordinary_user"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6528,7 +6566,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6540,9 +6577,6 @@
             "common_system_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "common_system_notify"
-                ],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "common_system_notify",
@@ -6551,9 +6585,6 @@
             "common_system_notify_web": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [
-                    "common_system_notify_web"
-                ],
                 "format_string": "common_system_notify_web",
                 "is_component": true
             },
@@ -6561,7 +6592,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6576,7 +6606,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6590,7 +6619,6 @@
             "integral_income_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "integral_income_notify",
                 "is_component": true
@@ -6599,9 +6627,6 @@
                 "can_jump": true,
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [
-                    "invite_member_toadmin"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6613,9 +6638,6 @@
                 "can_jump": true,
                 "to_tag": "myself",
                 "notifications_type": "member",
-                "formatString": [
-                    "invite_member_tomyself"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6626,9 +6648,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "invite_member_touser"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6639,7 +6658,6 @@
             "member_applied_to_close_account": {
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "member_applied_to_close_account",
@@ -6648,7 +6666,6 @@
             "new_space_widget_notify": {
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "new_space_widget_notify",
@@ -6658,7 +6675,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "system",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "new_user_welcom_notify",
                 "url": "https://u.vika.cn/vhw8y",
@@ -6668,9 +6684,6 @@
                 "can_jump": true,
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [
-                    "member_quit_space"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6682,9 +6695,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "remove_from_group"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6696,9 +6706,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "remove_from_role"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6710,9 +6717,6 @@
                 "can_jump": true,
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [
-                    "user_removed_by_space_toadmin"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6722,9 +6726,6 @@
             "removed_from_space_touser": {
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "user_removed_by_space_touser"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6736,9 +6737,6 @@
                 "can_jump": true,
                 "to_tag": "myself",
                 "notifications_type": "member",
-                "formatString": [
-                    "removed_member_tomyself"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6748,9 +6746,6 @@
             "server_pre_publish": {
                 "to_tag": "all_users",
                 "notifications_type": "system",
-                "formatString": [
-                    "server_pre_publish"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6761,7 +6756,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6774,7 +6768,6 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -6782,26 +6775,12 @@
                 "mail_template_subject": "subject.datasheet.remind",
                 "format_string": "single_record_member_mention",
                 "url": "/workbench",
-                "is_component": true,
-                "notifications": {
-                    "social_templates copy": [
-                        "rec7BsX1C9YyT",
-                        "rec8zOy6kD7Xr",
-                        "rec9aOlARGasl",
-                        "recRQl03ExRP7",
-                        "reclCmiiTe9LI",
-                        "recruWGnffygS",
-                        "recy1zceaxmVN"
-                    ]
-                }
+                "is_component": true
             },
             "space_add_primary_admin": {
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_add_primary_admin"
-                ],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_browser": true,
@@ -6812,7 +6791,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6827,7 +6805,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6842,7 +6819,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6857,7 +6833,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_certification_fail_notify",
@@ -6868,7 +6843,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_certification_notify",
@@ -6878,9 +6852,6 @@
             "space_deleted": {
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_has_been_deleted"
-                ],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_has_been_deleted",
@@ -6890,7 +6861,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6903,7 +6873,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6918,7 +6887,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6933,7 +6901,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6948,7 +6915,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -6962,9 +6928,6 @@
             "space_join_apply": {
                 "to_tag": "space_member_admins",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_join_apply"
-                ],
                 "is_notification": true,
                 "is_mail": true,
                 "format_string": "space_join_apply",
@@ -6974,9 +6937,6 @@
                 "can_jump": true,
                 "to_tag": "users",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_join_apply_approved"
-                ],
                 "is_notification": true,
                 "format_string": "space_join_apply_approved",
                 "url": "/workbench",
@@ -6985,9 +6945,6 @@
             "space_join_apply_refused": {
                 "to_tag": "users",
                 "notifications_type": "member",
-                "formatString": [
-                    "space_join_apply_refused"
-                ],
                 "is_notification": true,
                 "format_string": "space_join_apply_refused",
                 "is_component": true
@@ -6996,7 +6953,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7009,7 +6965,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7021,7 +6976,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7036,9 +6990,6 @@
                 "can_jump": true,
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [
-                    "notification_space_name_changed"
-                ],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "notification_space_name_changed",
@@ -7048,7 +6999,6 @@
             "space_paid_notify": {
                 "to_tag": "users",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "format_string": "space_paid_notify",
                 "is_component": true
@@ -7057,7 +7007,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7072,7 +7021,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7087,9 +7035,6 @@
                 "can_jump": true,
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [
-                    "space_has_been_recover"
-                ],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_has_been_recover",
@@ -7099,7 +7044,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7124,7 +7068,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_subscription_notify",
@@ -7135,7 +7078,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7150,7 +7092,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7165,7 +7106,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7185,7 +7125,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7197,7 +7136,6 @@
             "space_wecom_api_trial_end": {
                 "to_tag": "all_members",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_browser": true,
                 "format_string": "space_wecom_api_trial_end"
@@ -7206,7 +7144,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7219,7 +7156,6 @@
                 "can_jump": true,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
@@ -7232,55 +7168,30 @@
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
                 "is_browser": true,
                 "mail_template_subject": "subject.subscribed.record.cell.updated",
                 "format_string": "subscribed_record_cell_updated",
-                "url": "/workbench",
-                "notifications": {
-                    "social_templates copy": [
-                        "rec0rLNvy35rK",
-                        "rec4qNvlMI0HE",
-                        "rec5qcIuCsYkz",
-                        "recCKC6JLnadH",
-                        "recPg3T3IameG",
-                        "recSLnaXHbcIr",
-                        "recYzOFsNdmni"
-                    ]
-                }
+                "url": "/workbench"
             },
             "subscribed_record_commented": {
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
                 "is_browser": true,
                 "mail_template_subject": "subject.subscribed.record.commented",
                 "format_string": "subscribed_record_commented",
-                "url": "/workbench",
-                "notifications": {
-                    "social_templates copy": [
-                        "rec53gHqCIqG2",
-                        "recMdXxGr1JIE",
-                        "recXcVE3L8Bc6",
-                        "recbhTobcvgFG",
-                        "recbyiZRFPtxg",
-                        "recsBh6KyNAoL",
-                        "recvTOkeCYFKO"
-                    ]
-                }
+                "url": "/workbench"
             },
             "task_reminder": {
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": "space",
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7288,24 +7199,12 @@
                 "mail_template_subject": "subject.task.reminder",
                 "format_string": "task_reminder",
                 "url": "/workbench",
-                "is_component": true,
-                "notifications": {
-                    "social_templates copy": [
-                        "recKllw3g3HZi",
-                        "recRkZamjppbd",
-                        "recXCgjNkgWc7",
-                        "reca07LzGUJ39",
-                        "recfqEcenGLjU",
-                        "recwyPz9I1OVg",
-                        "reczGXSYPC6y1"
-                    ]
-                }
+                "is_component": true
             },
             "user_field": {
                 "can_jump": true,
                 "to_tag": "members",
                 "notifications_type": [],
-                "formatString": [],
                 "is_notification": true,
                 "is_mobile": true,
                 "is_mail": true,
@@ -7317,9 +7216,6 @@
             "web_publish": {
                 "to_tag": "all_users",
                 "notifications_type": "system",
-                "formatString": [
-                    "web_publish"
-                ],
                 "is_mobile": true,
                 "format_string": "web_publish",
                 "is_component": true
@@ -7331,7 +7227,9 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "be_invited_to_reward"
+                ],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7340,7 +7238,9 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "complete_bind_email"
+                ],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7348,20 +7248,26 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "first_bind_email"
+                ],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "first_bind_phone"
+                ],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [],
+                "display_name": [
+                    "fission_reward"
+                ],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7369,7 +7275,9 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "invitation_reward"
+                ],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7386,7 +7294,9 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "official_invitation_reward"
+                ],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7395,21 +7305,27 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "redemption_code"
+                ],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [],
+                "display_name": [
+                    "wallet_activity_reward"
+                ],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "wizard_reward"
+                ],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7417,7 +7333,9 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [],
+                "display_name": [
+                    "wizard_video_reward"
+                ],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"

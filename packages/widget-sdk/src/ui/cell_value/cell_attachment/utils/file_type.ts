@@ -127,10 +127,10 @@ export function isWhatFileType(file: IFileLikeProps) {
   if (isPdf(file)) {
     return FileType.Pdf;
   }
-  if (accept(file, DOC_MIME_TYPE) || DOC_MIME_TYPE.includes(inferredType)) {
+  if (accept(file, DOC_MIME_TYPE) || inferredType && DOC_MIME_TYPE.includes(inferredType)) {
     return FileType.Doc;
   }
-  if (accept(file, MEDIA_TYPE) && !INVALID_MEDIA_TYPE.includes(inferredType)) {
+  if (accept(file, MEDIA_TYPE) && inferredType && !INVALID_MEDIA_TYPE.includes(inferredType)) {
     return FileType.Media;
   }
   if (accept(file, ZIPPED_TYPE)) {
@@ -144,13 +144,13 @@ export function isWhatFileType(file: IFileLikeProps) {
 
 export function isDocType(file: IFileLikeProps) {
   const inferredType = mime.lookup(file.name);
-  if (accept(file, WORD_MIME_TYPE) || WORD_MIME_TYPE.includes(inferredType)) {
+  if (accept(file, WORD_MIME_TYPE) || inferredType && WORD_MIME_TYPE.includes(inferredType)) {
     return DocType.Word;
   }
-  if (accept(file, PPT_MIME_TYPE) || PPT_MIME_TYPE.includes(inferredType)) {
+  if (accept(file, PPT_MIME_TYPE) || inferredType && PPT_MIME_TYPE.includes(inferredType)) {
     return DocType.PPT;
   }
-  if (accept(file, EXCEL_MIME_TYPE) || EXCEL_MIME_TYPE.includes(inferredType)) {
+  if (accept(file, EXCEL_MIME_TYPE) || inferredType && EXCEL_MIME_TYPE.includes(inferredType)) {
     return DocType.Excel;
   }
   return '';
@@ -231,10 +231,10 @@ export const getCellValueThumbSrc = (
   if (showOriginImageThumbnail(file)) {
     const transformWebpIfNeeded =
       (isWebp({ name: file.name, type: file.mimeType }) &&
-        browser.satisfies({
+        browser?.satisfies({
           safari: '<14',
         })) ||
-      browser.is('iOS');
+      browser?.is('iOS');
 
     imgSrc = cellValueToImageSrc(file, {
       ...option,

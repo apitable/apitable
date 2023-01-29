@@ -48,7 +48,7 @@ export function useExpandRecord(): ((expandRecordParams: IExpandRecord) => void)
     expandRecord({
       viewId,
       recordIds,
-      activeRecordId: recordIds[0],
+      activeRecordId: recordIds[0]!,
       datasheetId: datasheetId ?? metaDatasheetId,
     });
   }, [metaDatasheetId, expandRecord]);

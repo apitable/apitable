@@ -68,7 +68,7 @@ export function useCloudStorage<S>(key: string, initValue?: S | (() => S)): [S, 
 
   return useMemo(() => {
     const storage = new CloudStorage(cloudStorageData, datasheetService, id);
-    const setValue = v => storage.set(key, v);
+    const setValue = (v?: any) => storage.set(key, v);
     return [storage.has(key) ? value : _initValue, setValue, editable];
   }, [cloudStorageData, datasheetService, id, value, _initValue, editable, key]);
 }

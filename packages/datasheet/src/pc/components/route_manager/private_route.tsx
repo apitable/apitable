@@ -58,7 +58,7 @@ export const PrivateRoute: FC = ({ children, ...rest }) => {
       });
       return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [user.info, user.userInfoErr]);
 
   if ((user.userInfoErr && user.userInfoErr.code === StatusCode.MOVE_FORM_SPACE)) {

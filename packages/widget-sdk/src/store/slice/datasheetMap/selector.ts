@@ -53,13 +53,13 @@ export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string)
       permissions,
       snapshot,
       fieldPermissionMap: datasheetPack.fieldPermissionMap,
-      activeView
+      activeView,
     },
     client: {
       collaborators,
       selection,
-      activeRowInfo
-    }
+      activeRowInfo,
+    },
   };
 };
 
@@ -87,12 +87,12 @@ export const iframeWidgetDatasheetSelector = (datasheetPack: IDatasheetPack): IW
       snapshot,
       fieldPermissionMap: datasheetPack.fieldPermissionMap,
       activeView,
-      isPartOfData
+      isPartOfData,
     },
     client: {
       collaborators,
       selection,
-    }
+    },
   };
 };
 
@@ -102,7 +102,7 @@ export const iframeWidgetDashboardSelector = (dashboardPack?: IDashboardPack | n
   }
   return {
     permissions: dashboardPack.dashboard.permissions,
-    collaborators: dashboardPack.client.collaborators
+    collaborators: dashboardPack.client.collaborators,
   };
 };
 
@@ -134,27 +134,30 @@ export const getFieldPermissionMap = (state: IWidgetState, datasheetId?: string)
 };
 
 export const getView = createCachedSelector(
-  [(state, viewId, datasheetId) => getViews(state, datasheetId), getFieldPermissionMap, (state, viewId) => viewId],
+  [
+    (state: IWidgetState, _viewId: string, datasheetId: string) => getViews(state, datasheetId),
+    getFieldPermissionMap,
+    (_state: IWidgetState, viewId: string) => viewId,
+  ],
   (views, fieldPermissionMap, viewId) => {
     if (!views) {
       return;
     }
-    const view = views.find(view => view.id == viewId) || views[0];
+    const view = views.find(view => view.id == viewId) || views[0]!;
 
     return {
       ...view,
       columns: view.columns.filter(column => {
         const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
         return fieldRole !== ConfigConstant.Role.None;
-      })
+      }),
     };
-  }
-)((state, viewId?: string, datasheetId?: string) => viewId || getViews(state, datasheetId)?.[0].id);
+  },
+)((state, viewId?: string, datasheetId?: string) => viewId || getViews(state, datasheetId)?.[0]!.id);
 
 export const getFieldMap = createSelector(
   [(state: IWidgetState, useDatasheetId: string | undefined) => getSnapshot(state, useDatasheetId)?.meta, getFieldPermissionMap],
   (meta, fieldPermissionMap) => {
-
     const _fieldMap: IFieldMap = {};
     const fieldMap = meta?.fieldMap;
     if (!fieldMap) {
@@ -163,11 +166,11 @@ export const getFieldMap = createSelector(
     for (const fieldId in fieldMap) {
       const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
       if (!fieldRole || fieldRole !== ConfigConstant.Role.None) {
-        _fieldMap[fieldId] = fieldMap[fieldId];
+        _fieldMap[fieldId] = fieldMap[fieldId]!;
       }
     }
     return _fieldMap;
-  }
+  },
 );
 
 export const getWidgetDatasheet = (state: IWidgetState, id?: string) => {
@@ -178,7 +181,7 @@ export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | 
   if (!fieldPermissionMap || !fieldPermissionMap[fieldId]) {
     return null;
   }
-  const role = fieldPermissionMap[fieldId].role;
+  const role = fieldPermissionMap[fieldId]!.role;
   return role || Role.None;
 };
 
@@ -192,7 +195,7 @@ export const getActiveView = (state: IWidgetState, id?: string) => {
   if (viewList.findIndex(item => item.id === datasheet.activeView) !== -1) {
     return datasheet.activeView;
   }
-  return viewList[0].id;
+  return viewList[0]!.id;
 };
 
 export const getWidgetDatasheetPack = (state: IWidgetState, id?: string) => {
@@ -215,11 +218,13 @@ export const getVisibleRowsCalcCache = (state: IWidgetState, datasheetId: string
   const { cache, expire } = state.calcCache?.[datasheetId]?.[viewId] || {};
   if (!cache && getViewById(state, datasheetId, viewId)) {
     // Prevent repeated initialization.
-    widgetStore.dispatch(refreshCalcCache({
-      datasheetId,
-      viewId,
-      cache: []
-    }));
+    widgetStore.dispatch(
+      refreshCalcCache({
+        datasheetId,
+        viewId,
+        cache: [],
+      }),
+    );
     widgetMessage.initCache(datasheetId, viewId);
     return null;
   }
@@ -243,7 +248,7 @@ export const getViewById = (state: IWidgetState, datasheetId: string, viewId: st
   return Selectors.getTemporaryView(snapshot, viewId, datasheetId);
 };
 
-export const getVisibleColumns= (state: IWidgetState, datasheetId: string, viewId: string) => {
+export const getVisibleColumns = (state: IWidgetState, datasheetId: string, viewId: string) => {
   const columns = getViewById(state, datasheetId, viewId)?.columns;
   if (!columns) {
     return [];

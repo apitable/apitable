@@ -101,7 +101,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       return;
     }
     dateEditorRef.current?.setValue(dataValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   function commandDateFn(date: ITimestamp | null) {
