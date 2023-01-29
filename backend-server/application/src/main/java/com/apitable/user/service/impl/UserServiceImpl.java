@@ -379,12 +379,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         log.info("Create Account");
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
-        String name = StrUtil.isNotBlank(nickName) ? nickName :
-            StringUtils.substringBefore(email, "@");
+        String name = StrUtil.isNotBlank(nickName) ? nickName
+            : StringUtils.substringBefore(email, "@");
         user.setNickName(name);
         user.setAvatar(StrUtil.isNotBlank(avatar) ? avatar : null);
-        Integer color = StrUtil.isNotBlank(avatar) ? null :
-            RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
+        Integer color = StrUtil.isNotBlank(avatar) ? null
+            : RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
         user.setColor(color);
         user.setEmail(email);
         user.setLastLoginTime(LocalDateTime.now());
@@ -429,8 +429,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         TaskManager.me().execute(() -> {
             // jump to third site
             NotificationTemplate template =
-                    notificationFactory.getTemplateById(
-                        NotificationTemplateId.NEW_USER_WELCOME_NOTIFY.getValue());
+                    notificationFactory.getTemplateById(NotificationTemplateId
+                        .NEW_USER_WELCOME_NOTIFY.getValue());
             Dict extras = Dict.create();
             if (StrUtil.isNotBlank(template.getUrl())
                 && template.getUrl().startsWith("http")) {
@@ -473,8 +473,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     ) {
         Integer color = nullToDefaultAvatar(avatar) != null ? null
             : RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
-        String name = nullToDefaultNickName(nickName, mobile != null ?
-            mobile : StringUtils.substringBefore(email, "@"));
+        String name = nullToDefaultNickName(nickName, mobile != null
+            ? mobile : StringUtils.substringBefore(email, "@"));
         // Create user with mobile number
         UserEntity entity = UserEntity.builder()
                 .uuid(IdUtil.fastSimpleUUID())
@@ -541,8 +541,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         final String nickName,
         final String avatar
     ) {
-        Integer color = nullToDefaultAvatar(avatar) != null ? null :
-            RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
+        Integer color = nullToDefaultAvatar(avatar) != null ? null
+            : RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .code(areaCode)
@@ -804,13 +804,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             }
             // Synchronize personal nickname to
             // member name that has not been modifie
-            iMemberService.updateMemberNameByUserId(userId, param.getNickName());
+            iMemberService.updateMemberNameByUserId(userId,
+                param.getNickName());
             // Synchronously modify member 'Social Name Modified' field status
             memberMapper.updateSocialNameModifiedByUserId(userId);
             // Delete the space cache with modified member names
             TaskManager.me().execute(() -> {
                 List<String> spaceIds =
-                    iMemberService.getSpaceIdWithoutNameModifiedByUserId(userId);
+                    iMemberService.getSpaceIdWithoutNameModifiedByUserId(
+                        userId);
                 for (String spcId : spaceIds) {
                     userSpaceCacheService.delete(userId, spcId);
                 }
@@ -1068,8 +1070,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 .putOnce(NotificationConstants.BODY_EXTRAS, extras)
                 .set("nickName", user.getNickName());
             notifyRo.setBody(data);
-            notifyRo.setTemplateId(
-                NotificationTemplateId.MEMBER_APPLIED_TO_CLOSE_ACCOUNT.getValue());
+            notifyRo.setTemplateId(NotificationTemplateId
+                .MEMBER_APPLIED_TO_CLOSE_ACCOUNT.getValue());
             ros.add(notifyRo);
         });
         return ros;
@@ -1242,7 +1244,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     public String getLangByEmail(
         final String expectedLang, final String email) {
         UserLangDTO userLangDTO =
-            userMapper.selectLocaleByEmailWithDefaultLocale(expectedLang, email);
+            userMapper.selectLocaleByEmailWithDefaultLocale(expectedLang,
+                email);
         if (ObjectUtil.isNotNull(userLangDTO)) {
             return userLangDTO.getLocale();
         }
