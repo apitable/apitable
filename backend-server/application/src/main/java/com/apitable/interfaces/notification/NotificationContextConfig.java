@@ -25,12 +25,18 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Notification Context Config
+ *
+ * @author Chambers
+ */
 @Configuration(proxyBeanMethods = false)
 public class NotificationContextConfig {
 
-    @Bean
-    @ConditionalOnMissingBean
-    public MailFacade defaultMailFacadeImpl() {
-        return new DefaultMailFacadeImpl();
-    }
+  /** * Inject Default Mail Facade */
+  @Bean
+  @ConditionalOnMissingBean
+  public MailFacade defaultMailFacadeImpl() {
+    return new DefaultMailFacadeImpl();
+  }
 }

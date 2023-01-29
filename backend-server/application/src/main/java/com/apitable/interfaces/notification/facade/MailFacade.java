@@ -18,7 +18,19 @@
 
 package com.apitable.interfaces.notification.facade;
 
+/**
+ * MailFacade
+ *
+ * @author Chambers
+ */
 public interface MailFacade {
 
-    Long getCloudMailTemplateId(String lang, String subject);
+  /**
+   * * Get Cloud Mail Template Id
+   *
+   * @param lang language
+   * @param subject mail subject
+   * @return template id about cloud mail
+   */
+  Long getCloudMailTemplateId(String lang, String subject);
 }

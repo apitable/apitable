@@ -17,23 +17,3 @@
  */
 
 package com.apitable.interfaces.notification.facade;
-
-/**
- * Default Mail Facade Implement Class
- *
- * @author Chambers
- */
-public class DefaultMailFacadeImpl implements MailFacade {
-
-  /**
-   * * Get Cloud Mail Template Id
-   *
-   * @param lang language
-   * @param subject mail subject
-   * @return template id about cloud mail
-   */
-  @Override
-  public Long getCloudMailTemplateId(final String lang, final String subject) {
-    return DefaultMailTemplateLoader.getTemplateId(subject);
-  }
-}
