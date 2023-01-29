@@ -283,7 +283,7 @@ APITable يوفر مجموعة من الميزات المذهلة، من الش�
 - كيفية كتابة رسالة الالتزام الجيدة؟ [القوات التقليدية](https://www.conventionalcommits.org/)
 - ما هو تنسيق سجل التغيير؟ [احتفظ بالتغييرات](https://keepachangelog.com/en/1.0.0/)
 - كيفية الإصدار و الوسم؟ [الإصدار السامي](https://semver.org/)
-- ما هو دليل برمجة جافا؟ [Java Coding Guidelin](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) <unk> [Inllij IDEA plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- ما هو دليل برمجة جافا؟ [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - ما هو دليل برمجة TypeScript Ccolining؟ -> [دليل نمط النص النصي](https://google.github.io/styleguide/tsguide.html) <unk> [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### الوثائق
