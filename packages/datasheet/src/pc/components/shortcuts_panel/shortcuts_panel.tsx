@@ -63,7 +63,7 @@ export const ShortcutsPanel: FC = () => {
     generateData().forEach((value, groupName) => {
       list.push(
         <div className={styles.group}>
-          <div className={styles.groupName}>{t(Strings[groupName])}</div>
+          <div className={styles.groupName}>{ groupName ? t(Strings[groupName]) : ''}</div>
           <Space className={styles.groupContent} direction="vertical" size={18}>
             {value.map(shortcutKey => (
               <div key={shortcutKey.name} className={styles.shortcutKeyItem}>
@@ -79,7 +79,7 @@ export const ShortcutsPanel: FC = () => {
                     </>
                   ))}
                 </Space>
-                <div className={styles.desc}>{t(Strings[shortcutKey.descKey])}</div>
+                <div className={styles.desc}>{shortcutKey.descKey ? t(Strings[shortcutKey.descKey]) : ''}</div>
               </div>
             ))}
           </Space>
