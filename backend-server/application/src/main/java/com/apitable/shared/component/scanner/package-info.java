@@ -16,4 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ *
+ * @author Chambers
+ */
 package com.apitable.shared.component.scanner;

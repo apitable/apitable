@@ -26,14 +26,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Notification Context Config
+ * Notification Context Config.
  *
  * @author Chambers
  */
 @Configuration(proxyBeanMethods = false)
 public class NotificationContextConfig {
 
-  /** * Inject Default Mail Facade */
+  /**
+   * Inject Default Mail Facade.
+   *
+   * @return MailFacade
+   */
   @Bean
   @ConditionalOnMissingBean
   public MailFacade defaultMailFacadeImpl() {

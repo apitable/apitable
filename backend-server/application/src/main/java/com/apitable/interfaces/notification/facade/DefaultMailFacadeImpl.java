@@ -19,14 +19,14 @@
 package com.apitable.interfaces.notification.facade;
 
 /**
- * Default Mail Facade Implement Class
+ * Default Mail Facade Implement Class.
  *
  * @author Chambers
  */
 public class DefaultMailFacadeImpl implements MailFacade {
 
   /**
-   * * Get Cloud Mail Template Id
+   * * Get Cloud Mail Template Id.
    *
    * @param lang language
    * @param subject mail subject

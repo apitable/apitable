@@ -94,7 +94,7 @@ import static com.apitable.shared.constants.MailPropConstants.SUBJECT_WIDGET_UNP
 import static java.util.stream.Collectors.toList;
 
 /**
- * Notification Mail Factory
+ * Notification Mail Factory.
  *
  * @author Shawn Deng
  */
@@ -119,12 +119,16 @@ public class NotifyMailFactory {
   @Autowired(required = false)
   private MailTemplate mailTemplate;
 
+  /** */
   public static NotifyMailFactory me() {
     return SpringContextHolder.getBean(NotifyMailFactory.class);
   }
 
   /**
-   * *
+   * @param subjectType subjectType
+   * @param subjectDict subjectDict
+   * @param dict dict
+   * @param tos tos
    */
   public void sendMail(
       final String subjectType,
@@ -144,14 +148,18 @@ public class NotifyMailFactory {
       tosGroupByLang.forEach(
           (lang, mailWithLanguages) -> {
             final List<String> emails =
-                mailWithLanguages.stream().map(MailWithLang::getTo).collect(Collectors.toList());
+                mailWithLanguages.stream()
+                    .map(MailWithLang::getTo).collect(Collectors.toList());
             sendMail(lang, subjectType, subjectDict, dict, emails);
           });
     }
   }
 
   /**
-   * *
+   * @param lang lang
+   * @param subjectType subjectType
+   * @param dict dict
+   * @param to to
    */
   public void sendMail(
       final String lang, final String subjectType, final Dict dict, final List<String> to) {
@@ -159,7 +167,11 @@ public class NotifyMailFactory {
   }
 
   /**
-   * *
+   * @param language language
+   * @param subjectType subjectType
+   * @param subjectDict subjectDict
+   * @param dict dict
+   * @param to to
    */
   public void sendMail(
       final String language,
@@ -171,13 +183,16 @@ public class NotifyMailFactory {
 
     String htmlTemplateName = mailText.getHtmlTemplateName();
     String textTemplateName = mailText.getTextTemplateName();
-    String lang = StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
+    String lang =
+        StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
     // load subject.properties
     Properties properties = loadSubjectProperties(lang);
-    String subject = StrUtil.format(properties.getProperty(subjectType), subjectDict);
+    String subject =
+        StrUtil.format(properties.getProperty(subjectType), subjectDict);
 
     if (StrUtil.hasBlank(htmlTemplateName, textTemplateName, subject)) {
-      log.warn("Lost parameters，please check param（htmlBtl, textBtl, subject）.");
+      log.warn("Lost parameters，"
+          + "please check param(htmlBtl, textBtl, subject).");
       return;
     }
     if (cloudMailSender != null) {
@@ -199,7 +214,8 @@ public class NotifyMailFactory {
 
   private Properties loadSubjectProperties(final String locale) {
     final Properties properties = new Properties();
-    String path = StrUtil.format("templates/notification/enterprise/{}/subject.properties", locale);
+    String path = StrUtil.format(
+        "templates/notification/enterprise/{}/subject.properties", locale);
     ClassPathResource resource = new ClassPathResource(path);
     if (resource.exists()) {
       try (InputStream in = resource.getInputStream()) {
@@ -221,13 +237,16 @@ public class NotifyMailFactory {
     return properties;
   }
 
-  private String loadTemplateResourcePath(final String locale, final String templateName) {
+  private String loadTemplateResourcePath(
+      final String locale, final String templateName) {
     String templatePath =
-        StrUtil.format("templates/notification/enterprise/{}/{}", locale, templateName);
+        StrUtil.format("templates/notification/enterprise/{}/{}",
+            locale, templateName);
     ClassPathResource resource = new ClassPathResource(templatePath);
     if (resource.exists()) {
       // load locale priority
-      return StrUtil.format("notification/enterprise/{}/{}", locale, templateName);
+      return StrUtil.format("notification/enterprise/{}/{}",
+          locale, templateName);
     } else {
       return StrUtil.format("notification/{}", templateName);
     }
@@ -248,6 +267,13 @@ public class NotifyMailFactory {
 
   /**
    * *
+   *
+   * @param personal personal
+   * @param subject subject
+   * @param subjectType subjectType
+   * @param dict dict
+   * @param textBtl textBtl
+   * @param to to
    */
   public void notify(
       final String personal,
@@ -263,10 +289,12 @@ public class NotifyMailFactory {
       message.setTo(to);
       JSONObject obj = JSONUtil.createObj();
       if (subjectType != null) {
-        message.setTemplateId(mailFacade.getCloudMailTemplateId(null, subjectType));
+        message.setTemplateId(
+            mailFacade.getCloudMailTemplateId(null, subjectType));
         obj.putAll(dict);
       } else {
-        message.setTemplateId(mailFacade.getCloudMailTemplateId(null, SUBJECT_WARN_NOTIFY));
+        message.setTemplateId(
+            mailFacade.getCloudMailTemplateId(null, SUBJECT_WARN_NOTIFY));
         obj.putOpt("content", textBtl);
       }
       message.setTemplateData(obj.toString());
@@ -308,7 +336,11 @@ public class NotifyMailFactory {
   }
 
   private void primevalMailSend(
-      final String subject, final String htmlBody, final String plainText, final List<String> to) {
+      final String subject,
+      final String htmlBody,
+      final String plainText,
+      final List<String> to
+  ) {
     EmailMessage[] messages = new EmailMessage[to.size()];
     for (int i = 0; i < to.size(); i++) {
       EmailMessage emailMessage = new EmailMessage();
@@ -331,7 +363,11 @@ public class NotifyMailFactory {
     /** * */
     private String to;
 
-    /** * */
+    /**
+     *
+     * @param targetLocale targetLocale
+     * @param email email
+     */
     public MailWithLang(final String targetLocale, final String email) {
       this.locale = targetLocale;
       this.to = email;
@@ -342,10 +378,13 @@ public class NotifyMailFactory {
      *
      * @param data data
      * @param mapper mapper
+     * @param <T> T
      * @return List<MailWithLang>
      */
     public static <T> List<MailWithLang> convert(
-        final List<T> data, final Function<? super T, ? extends MailWithLang> mapper) {
+        final List<T> data,
+        final Function<? super T, ? extends MailWithLang> mapper
+    ) {
       return Optional.ofNullable(data).orElseGet(ArrayList::new).stream()
           .map(mapper)
           .collect(toList());

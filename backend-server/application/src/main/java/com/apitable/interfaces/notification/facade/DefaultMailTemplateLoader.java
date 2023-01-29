@@ -31,29 +31,30 @@ import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPL
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_VERIFY_CODE;
 
 /**
- * Default Mail Template Loader
+ * Default Mail Template Loader.
  *
  * @author Chambers
  */
-public class DefaultMailTemplateLoader {
+public final class DefaultMailTemplateLoader {
 
-  private DefaultMailTemplateLoader() {}
+  private DefaultMailTemplateLoader() {
+  }
 
   /**
-   * * Get Template ID
+   * * Get Template ID.
    *
    * @param subject mail subject
    * @return template id
    */
-  public static Long getTemplateId(String subject) {
+  public static Long getTemplateId(final String subject) {
     return Singleton.INSTANCE.getTemplateId(subject);
   }
 
   private enum Singleton {
-    /** instance */
+    /** instance. */
     INSTANCE;
 
-    /** subject to template id map */
+    /** subject to template id map. */
     private final Map<String, Long> singleton = new HashMap<>();
 
     Singleton() {
