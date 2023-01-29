@@ -112,12 +112,12 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
  * Expand the card to actually call it
  */
 export const expandRecordInner = (props: IExpandRecordInnerProp) => {
-  const { recordType, onClose, datasheetId } = props;
+  const { recordType, onClose, datasheetId, preventOpenNewModal } = props;
 
   const focusHolderRef = React.createRef<HTMLInputElement>();
   expandRecordManager.pushFocusHolderRef(focusHolderRef);
   let container = document.querySelector(`.${EXPAND_RECORD}`);
-  if (!container) {
+  if (!container || !preventOpenNewModal) {
     container = document.createElement('div');
     container.classList.add(EXPAND_RECORD);
   } else {

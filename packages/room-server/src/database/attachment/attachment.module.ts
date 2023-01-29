@@ -21,9 +21,17 @@ import { NodeModule } from 'node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
 import { AttachmentController } from './controllers/attachment.controller';
 import { AttachmentService } from './services/attachment.service';
+import { HttpModule } from '@nestjs/axios';
+import { HttpConfigService } from 'shared/services/config/http.config.service';
 
 @Module({
-  imports: [ResourceModule, NodeModule],
+  imports: [
+    HttpModule.registerAsync({
+      useClass: HttpConfigService,
+    }),
+    ResourceModule,
+    NodeModule
+  ],
   controllers: [AttachmentController],
   providers: [AttachmentService],
   exports: [AttachmentService],

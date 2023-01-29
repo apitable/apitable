@@ -17,9 +17,28 @@
  */
 
 import {
-  ApiTipConstant, CacheManager, CellFormatEnum, CollaCommandName, Conversion, databus, ExecuteResult, FieldKeyEnum, getViewTypeString,
-  IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, IFieldMap, ILocalChangeset, IMeta, IOperation, IReduxState, IServerDatasheetPack,
-  ISortedField, IViewRow, NoticeTemplatesConstant, Selectors,
+  ApiTipConstant,
+  CacheManager,
+  CellFormatEnum,
+  CollaCommandName,
+  Conversion,
+  databus,
+  ExecuteResult,
+  FieldKeyEnum,
+  getViewTypeString,
+  IAddFieldOptions,
+  ICollaCommandOptions,
+  IDeleteFieldData,
+  IFieldMap,
+  ILocalChangeset,
+  IMeta,
+  IOperation,
+  IReduxState,
+  IServerDatasheetPack,
+  ISortedField,
+  IViewRow,
+  NoticeTemplatesConstant,
+  Selectors,
 } from '@apitable/core';
 import { IInternalFix } from '@apitable/core/dist/commands/common/field';
 import { Inject, Injectable } from '@nestjs/common';
@@ -36,7 +55,13 @@ import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer'
 import { keyBy } from 'lodash';
 import { Store } from 'redux';
 import {
-  CommonStatusCode, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_LINKED, DATASHEET_META_HTTP_DECORATE, EnvConfigKey, InjectLogger, SPACE_ID_HTTP_DECORATE,
+  CommonStatusCode,
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_LINKED,
+  DATASHEET_META_HTTP_DECORATE,
+  EnvConfigKey,
+  InjectLogger,
+  SPACE_ID_HTTP_DECORATE,
   USER_HTTP_DECORATE,
 } from 'shared/common';
 import { OrderEnum } from 'shared/enums';
@@ -397,9 +422,9 @@ export class FusionApiService {
     const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
     const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
     linkedRecordMap &&
-    linkedRecordMap[dstId]?.forEach(recordId => {
-      recordIdSet.add(recordId);
-    });
+      linkedRecordMap[dstId]?.forEach(recordId => {
+        recordIdSet.add(recordId);
+      });
     const recordIds = Array.from(recordIdSet);
     const rows: IViewRow[] = recordIds.map(recordId => {
       return { recordId };
@@ -413,6 +438,10 @@ export class FusionApiService {
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
+    }
+
+    if (viewId) {
+      await this.checkViewExists(datasheet, viewId);
     }
 
     const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);
@@ -475,6 +504,9 @@ export class FusionApiService {
       newView = await newDatasheet.getView({
         getViewInfo: state => {
           const view = Selectors.getViewById(Selectors.getSnapshot(state, newDatasheet.id)!, viewId)!;
+          if (!view) {
+            return null;
+          }
           return {
             viewId,
             name: view.name,
@@ -501,8 +533,7 @@ export class FusionApiService {
       });
     }
     if (newView === null) {
-      // TODO throw exception
-      return { records: [] };
+      throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
     }
 
     const records = await newView.getRecords({});
@@ -510,6 +541,29 @@ export class FusionApiService {
     return {
       records: this.getRecordViewObjects(records),
     };
+  }
+
+  private async checkViewExists(datasheet: databus.Datasheet, viewId: string): Promise<void> {
+    // test if viewId exists
+    const view = await datasheet.getView({
+      getViewInfo: state => {
+        const view = Selectors.getViewById(Selectors.getSnapshot(state, datasheet.id)!, viewId)!;
+        if (!view) {
+          return null;
+        }
+        return {
+          viewId,
+          name: view.name,
+          type: view.type,
+          rows: [],
+          fieldMap: {},
+          columns: [],
+        };
+      },
+    });
+    if (view === null) {
+      throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
+    }
   }
 
   /**
@@ -535,6 +589,10 @@ export class FusionApiService {
     });
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
+    }
+
+    if (viewId) {
+      await this.checkViewExists(datasheet, viewId);
     }
 
     const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);

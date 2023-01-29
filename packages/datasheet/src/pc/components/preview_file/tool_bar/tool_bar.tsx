@@ -90,6 +90,10 @@ export async function download(fileInfo: IAttachmentValue) {
     });
     const resp = await DatasheetApi.getContentDisposition(href);
     const contentDisposition = resp.data.data;
+    if (resp.data.code === 500) {
+      Message.error({ content: 'SERVER_ERROR' });
+      return;
+    }
     // If the image contentDisposition type is inline, force the download using a binary stream
     if (contentDisposition.includes('inline')) {
       mode = 'stream';
