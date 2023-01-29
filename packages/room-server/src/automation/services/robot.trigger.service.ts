@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
-import { InjectLogger } from '../../shared/common';
-import { Logger } from 'winston';
+import { InjectLogger } from 'shared/common';
 import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 
 @Injectable()
@@ -40,10 +39,10 @@ export class RobotTriggerService {
 
   public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]>{
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
-    this.logger.info('getTriggersByResourceAndEventType triggerTypeServiceRelDtos', triggerTypeServiceRelDtos)
+    this.logger.log('getTriggersByResourceAndEventType triggerTypeServiceRelDtos', triggerTypeServiceRelDtos)
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
-      this.logger.info('getTriggersByResourceAndEventType officialServiceCount', officialServiceCount, OFFICIAL_SERVICE_SLUG)
+      this.logger.log('getTriggersByResourceAndEventType officialServiceCount', officialServiceCount, OFFICIAL_SERVICE_SLUG)
       if(officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
