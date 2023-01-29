@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IResourceRevision } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { ServerException } from '../../../shared/exception';
 import { ResourceException } from '../../../shared/exception/resource.exception';
@@ -51,10 +50,6 @@ export class WidgetService {
   async getDelWidgetIdsByNodeId(nodeId: string): Promise<string[]> {
     const raws = await this.widgetRepository.selectWidgetIdsByNodeIdAndIsDeleted(nodeId, true);
     return raws.map(item => item.widgetId);
-  }
-
-  async getRevisionByWdtIds(widgetIds: string[]): Promise<IResourceRevision[]> {
-    return await this.widgetRepository.getRevisionByWdtIds(widgetIds);
   }
 }
 

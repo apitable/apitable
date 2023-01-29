@@ -18,18 +18,18 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeveloperRepository } from '../repositories/developer.repository';
+import { UserRepository } from '../../user/repositories/user.repository';
 import { DeveloperService } from './developer.service';
 import { UserEntity } from 'user/entities/user.entity';
 import { AppModule } from 'app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { UserService } from 'user/services/user.service';
 
 describe('developer service', () => {
   let app: NestFastifyApplication;
   let module: TestingModule;
   let developerService: DeveloperService;
   let developerRepo: DeveloperRepository;
-  let userService: UserService;
+  let userRepository: UserRepository;
   const knownAPIKey = 'key1';
   const knownExpiredAPIKey= 'key2';
   const knownUserId = 12345;
@@ -48,8 +48,8 @@ describe('developer service', () => {
 
   beforeEach(() => {
     developerService = module.get<DeveloperService>(DeveloperService);
-    developerRepo = module.get<DeveloperRepository>(DeveloperRepository);
-    userService = module.get<UserService>(UserService);
+    developerRepo = module.get<DeveloperRepository>(DeveloperRepository); 
+    userRepository = module.get<UserRepository>(UserRepository);
     jest.spyOn(developerRepo, 'selectUserIdByApiKey').mockImplementation(async(apiKey) => {
       if (apiKey === knownAPIKey) {
         return await Promise.resolve({ userId: BigInt(knownUserId) });
@@ -58,7 +58,7 @@ describe('developer service', () => {
       }
       return await Promise.resolve(undefined);
     });
-    jest.spyOn(userService, 'selectUserBaseInfoById').mockImplementation(async(userId) => {
+    jest.spyOn(userRepository, 'selectUserBaseInfoById').mockImplementation(async(userId) => {
       if (userId === knownUserId.toString()) {
         const nikeName = 'xiaoming';
         const userEntity = new UserEntity();

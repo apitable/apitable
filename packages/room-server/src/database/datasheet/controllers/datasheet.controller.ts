@@ -30,7 +30,6 @@ import { NodeShareSettingService } from 'node/services/node.share.setting.servic
 import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
-import { MetaService } from 'database/resource/services/meta.service';
 
 /**
  * Datasheet APIs
@@ -45,7 +44,6 @@ export class DatasheetController {
     private readonly datasheetMetaService: DatasheetMetaService,
     private readonly datasheetRecordService: DatasheetRecordService,
     private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
-    private readonly resourceMetaService: MetaService,
   ) {}
 
   @Get(['datasheets/:dstId/dataPack', 'datasheet/:dstId/dataPack'])
@@ -92,7 +90,7 @@ export class DatasheetController {
   // TODO: use HTTP Get method instead, the number of recordIds should be limited
   @Post(['datasheets/:dstId/records', 'datasheet/:dstId/records'])
   async getRecords(@Param('dstId') dstId: string, @Body() recordIds: string[]): Promise<RecordsMapView> {
-    const revision = await this.resourceMetaService.getRevisionByDstId(dstId);
+    const revision = await this.nodeService.getRevisionByDstId(dstId);
     // revision not found error
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);

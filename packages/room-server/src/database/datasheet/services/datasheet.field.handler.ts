@@ -20,7 +20,7 @@ import {
   FieldType, ICreatedByProperty, IDatasheetUnits, IFieldMap, IForeignDatasheetMap, IFormulaField, ILinkFieldProperty, ILookUpProperty,
   IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty
 } from '@apitable/core';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
 import { InjectLogger } from 'shared/common';
@@ -29,7 +29,7 @@ import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/i
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
-import { DatasheetRepository } from '../repositories/datasheet.repository';
+import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
 import { NodeService } from 'node/services/node.service';
 import { UnitService } from 'unit/services/unit.service';
 import { UserService } from 'user/services/user.service';
@@ -50,7 +50,6 @@ export class DatasheetFieldHandler {
     @InjectLogger() private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly unitService: UnitService,
-    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly datasheetMetaService: DatasheetMetaService,
     private readonly datasheetRecordService: DatasheetRecordService,

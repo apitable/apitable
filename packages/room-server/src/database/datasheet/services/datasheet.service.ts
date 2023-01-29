@@ -17,8 +17,7 @@
  */
 
 import {
-  FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap,
-  IFieldPermissionMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState, IResourceRevision,
+  FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState,
 } from '@apitable/core';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DatasheetEntity } from '../entities/datasheet.entity';
@@ -29,14 +28,13 @@ import { InjectLogger } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordMap, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
-import { DatasheetPack, NodeInfo, RecordMap, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
-import { DatasheetRepository } from '../repositories/datasheet.repository';
+import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
+import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
 import { NodeService } from 'node/services/node.service';
 import { UserService } from '../../../user/services/user.service';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
-import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class DatasheetService {
@@ -50,8 +48,6 @@ export class DatasheetService {
     @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly commandService: CommandService,
-    @Inject(forwardRef(() => MetaService))
-    private readonly resourceMetaService: MetaService,
   ) {}
 
   /**
@@ -78,7 +74,7 @@ export class DatasheetService {
     if (!view) {
       throw new ServerException(DatasheetException.VIEW_NOT_EXIST);
     }
-    const revision = await this.resourceMetaService.getRevisionByDstId(dstId);
+    const revision = await this.nodeService.getRevisionByDstId(dstId);
     return { view, revision: revision! };
   }
 
@@ -113,7 +109,13 @@ export class DatasheetService {
     const getProcessFieldProfiler = this.logger.startTimer();
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     getProcessFieldProfiler.done({ message: `getProcessFieldProfiler ${dstId} done` });
-    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
+    return {
+      snapshot: { meta, recordMap, datasheetId: node.id },
+      datasheet: node,
+      foreignDatasheetMap: combine.foreignDatasheetMap,
+      units: combine.units as (UserInfo | UnitInfo)[],
+      fieldPermissionMap,
+    };
   }
 
   /**
@@ -140,7 +142,13 @@ export class DatasheetService {
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
     this.logger.info(`Finished loading share data, duration [${dstId}]: ${endTime - beginTime}ms`);
-    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
+    return {
+      snapshot: { meta, recordMap, datasheetId: node.id },
+      datasheet: node,
+      foreignDatasheetMap: combine.foreignDatasheetMap,
+      units: combine.units as (UserInfo | UnitInfo)[],
+      fieldPermissionMap,
+    };
   }
 
   /**
@@ -195,10 +203,6 @@ export class DatasheetService {
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
     this.logger.info(`Finished loading form linked datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
-    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
-  }
-
-  public getFormDataPack(meta: IMeta, recordMap: RecordMap, node: NodeInfo, combine: IForeignDatasheetMap & IDatasheetUnits, fieldPermissionMap: IFieldPermissionMap | undefined) {
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -483,13 +487,5 @@ export class DatasheetService {
       linkedRecordMap[key] = [...new Set(linkedRecordMap[key])];
     }
     return linkedRecordMap;
-  }
-
-  async selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
-    return await this.datasheetRepository.selectRevisionByDstIds(dstIds);
-  }
-
-  async selectRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
-    return await this.datasheetRepository.selectRevisionByDstId(dstId);
   }
 }

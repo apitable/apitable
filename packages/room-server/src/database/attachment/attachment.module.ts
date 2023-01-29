@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { NodeModule } from 'node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
 import { AttachmentController } from './controllers/attachment.controller';
@@ -30,7 +30,7 @@ import { HttpConfigService } from 'shared/services/config/http.config.service';
       useClass: HttpConfigService,
     }),
     ResourceModule,
-    forwardRef(()=>NodeModule),
+    NodeModule
   ],
   controllers: [AttachmentController],
   providers: [AttachmentService],

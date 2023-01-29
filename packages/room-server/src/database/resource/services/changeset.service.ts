@@ -22,12 +22,11 @@ import { InjectLogger } from '../../../shared/common';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { ResourceChangesetEntity } from '../entities/resource.changeset.entity';
 import { ChangesetView } from '../../interfaces';
+import { DatasheetChangesetRepository } from '../../datasheet/repositories/datasheet.changeset.repository';
 import { ResourceChangesetRepository } from '../repositories/resource.changeset.repository';
 import { Logger } from 'winston';
 import { NodeService } from 'node/services/node.service';
 import { ResourceService } from './resource.service';
-import { DatasheetChangesetService } from 'database/datasheet/services/datasheet.changeset.service';
-import { MetaService } from './meta.service';
 
 /**
  * Changeset service for all resources (including datasheets, widgets, etc)
@@ -38,8 +37,7 @@ export class ChangesetService {
     @InjectLogger() private readonly logger: Logger,
     private readonly nodeService: NodeService,
     private readonly resourceService: ResourceService,
-    private readonly resourceMetaService: MetaService,
-    private readonly datasheetChangesetService: DatasheetChangesetService,
+    private readonly datasheetChangesetRepository: DatasheetChangesetRepository,
     private readonly resourceChangesetRepository: ResourceChangesetRepository,
   ) {}
 
@@ -48,7 +46,7 @@ export class ChangesetService {
    */
   async getMaxRevision(resourceId: string, resourceType: ResourceType): Promise<number | null | undefined> {
     if (resourceType === ResourceType.Datasheet) {
-      return await this.resourceMetaService.getRevisionByDstId(resourceId);
+      return await this.nodeService.getRevisionByDstId(resourceId);
     }
     // non-datasheet resource
     return await this.nodeService.getReversionByResourceId(resourceId);
@@ -63,7 +61,7 @@ export class ChangesetService {
     revisions: number[],
   ): Promise<(DatasheetChangesetEntity | ResourceChangesetEntity)[]> {
     if (resourceType === ResourceType.Datasheet) {
-      return await this.datasheetChangesetService.selectByDstIdAndRevisions(resourceId, revisions);
+      return await this.datasheetChangesetRepository.selectByDstIdAndRevisions(resourceId, revisions);
     }
     return await this.resourceChangesetRepository.getByResourceIdAndRevisions(resourceId, revisions);
   }
@@ -74,7 +72,7 @@ export class ChangesetService {
   async countByResourceIdAndMessageId(resourceId: string, resourceType: ResourceType, messageId: string): Promise<boolean> {
     let count;
     if (resourceType === ResourceType.Datasheet) {
-      count = await this.datasheetChangesetService.countByDstIdAndMessageId(resourceId, messageId);
+      count = await this.datasheetChangesetRepository.countByDstIdAndMessageId(resourceId, messageId);
     } else {
       count = await this.resourceChangesetRepository.countByResourceIdAndMessageId(resourceId, messageId);
     }
@@ -109,7 +107,7 @@ export class ChangesetService {
   private async getChangesetOrderList(resourceId: string, resourceType: ResourceType, startRevision: number, endRevision: number): Promise<any[]> {
     this.logger.info(`revision list: ${startRevision} to ${endRevision}`);
     if (resourceType === ResourceType.Datasheet) {
-      return await this.datasheetChangesetService.getChangesetOrderList(resourceId, startRevision, endRevision);
+      return await this.datasheetChangesetRepository.getChangesetOrderList(resourceId, startRevision, endRevision);
     }
     return await this.resourceChangesetRepository.getChangesetOrderList(resourceId, startRevision, endRevision);
   }

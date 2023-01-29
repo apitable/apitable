@@ -28,14 +28,14 @@ import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
 import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
-import { MetaService } from 'database/resource/services/meta.service';
+import { ResourceMetaRepository } from '../../resource/repositories/resource.meta.repository';
 
 @Injectable()
 export class MirrorOtService {
   constructor(
     @InjectLogger() private readonly logger: Logger,
     private readonly widgetService: WidgetService,
-    private readonly resourceMetaService: MetaService,
+    private readonly repository: ResourceMetaRepository,
   ) { }
 
   createResultSet() {
@@ -167,7 +167,7 @@ export class MirrorOtService {
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${commonData.resourceId}] Update metadata`);
     }
-    const metaData = await this.resourceMetaService.selectMetaByResourceId(commonData.resourceId);
+    const metaData = await this.repository.selectMetaByResourceId(commonData.resourceId);
     const _metaData = { widgetPanels: [], ...metaData };
     try {
       jot.apply(_metaData, resultSet.metaActions);
@@ -179,7 +179,7 @@ export class MirrorOtService {
   }
 
   async updateMetaDataAndRevision(meta: IMirrorSnapshot, commonData: ICommonData) {
-    await this.resourceMetaService.updateMetaAndRevision(commonData.resourceId, commonData.userId!, meta, commonData.revision);
+    await this.repository.updateMetaAndRevision(commonData.resourceId, commonData.userId!, meta, commonData.revision);
   }
 
   /**

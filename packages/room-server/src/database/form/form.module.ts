@@ -31,7 +31,7 @@ import { FormService } from './services/form.service';
   imports: [
     forwardRef(()=>ResourceModule),
     CommandModule,
-    forwardRef(()=>NodeModule),
+    NodeModule,
     UserModule,
     DatasheetModule,
     forwardRef(()=>OtModule),

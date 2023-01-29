@@ -61,6 +61,7 @@ import { EntityManager, getManager } from 'typeorm';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
+import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { MetaService } from 'database/resource/services/meta.service';
 import { FormOtService } from './form.ot.service';
 import { EffectConstantName, IChangesetParseResult, 
@@ -85,12 +86,13 @@ export class OtService {
     private readonly relService: RoomResourceRelService,
     private readonly grpcSocketClient: GrpcSocketClient,
     private readonly changesetService: ChangesetService,
-    private readonly resourceMetaService: MetaService,
+    private readonly metaService: MetaService,
     private readonly mirrorService: MirrorService,
     private readonly redisService: RedisService,
     private readonly datasheetOtService: DatasheetOtService,
     private readonly widgetOtService: WidgetOtService,
     private readonly resourceService: ResourceService,
+    private readonly resourceMetaRepository: ResourceMetaRepository,
     private readonly dashboardOtService: DashboardOtService,
     private readonly mirrorOtService: MirrorOtService,
     private readonly formOtService: FormOtService,
@@ -120,7 +122,7 @@ export class OtService {
         // Datasheet resource OP resulted from form submitting, use permission of form
         const fieldPermissionMap = await this.restService.getFieldPermission(auth, roomId!, shareId);
         const defaultPermission = { fieldPermissionMap, hasRole: true, role: ConfigConstant.permission.editor, ...DEFAULT_EDITOR_PERMISSION };
-        const { fillAnonymous } = await this.resourceMetaService.selectMetaByResourceId(roomId!);
+        const { fillAnonymous } = await this.resourceMetaRepository.selectMetaByResourceId(roomId!);
         // If anonymous filling is allowed in sharing mode, return default permission
         if (shareId && Boolean(fillAnonymous)) {
           return defaultPermission;
@@ -327,7 +329,7 @@ export class OtService {
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${resourceId}] Obtain revision from database`);
     }
-    const { resourceRevision, nodeId } = await this.resourceMetaService.getResourceInfo(resourceId, resourceType);
+    const { resourceRevision, nodeId } = await this.metaService.getResourceInfo(resourceId, resourceType);
     if (resourceRevision === undefined || !nodeId) {
       this.logger.info(`REVISION_ERROR : ${resourceRevision}  --- ${nodeId} --- ${resourceId}`);
       throw new ServerException(OtException.REVISION_ERROR);
