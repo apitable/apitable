@@ -376,7 +376,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             <span className={styles.label}>{t(Strings.email)}</span>
             {email || t(Strings.unbound)}
           </div>
-          {isEnterprise && !isWecomSpace && !isPrivateDeployment() && (
+          {isEnterprise && !isWecomSpace && !isPrivateDeployment() && inviteCode && (
             <div className={classNames(styles.centerItem, styles.inviteItem)}>
               <span className={styles.label}>{t(Strings.personal_invite_code_usercenter)}</span>
               <div className={styles.valueWrapper}>
