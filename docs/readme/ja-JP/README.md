@@ -283,7 +283,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 - 良いコミットメッセージを書く方法は? [従来のコミット](https://www.conventionalcommits.org/)
 - 更新履歴のフォーマットは何ですか? [変更履歴を保持](https://keepachangelog.com/en/1.0.0/)
 - バージョン管理とタグ付け方法は? [セマンティックバージョン](https://semver.org/)
-- Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### 文書
