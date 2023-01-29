@@ -16,20 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<< HEAD:apitable/backend-server/application/src/main/java/com/apitable/interfaces/notification/facade/DefaultMailFacadeImpl.java
-package com.apitable.interfaces.notification.facade;
-
-public class DefaultMailFacadeImpl implements MailFacade {
-
-    @Override
-    public Long getCloudMailTemplateId(String lang, String subject) {
-        return DefaultMailTemplateLoader.getTemplateId(subject);
-    }
-}
-=======
 /**
  *
  * @author Chambers
  */
 package com.apitable.interfaces.notification.facade;
->>>>>>> 6895a8bbee110350652686c5b2867b33850cca08:apitable/backend-server/application/src/main/java/com/apitable/interfaces/notification/facade/package-info.java
