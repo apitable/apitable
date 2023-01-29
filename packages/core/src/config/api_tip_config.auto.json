@@ -954,7 +954,24 @@
                 "id": "api_param_viewid_empty_error",
                 "isRecordTimes": true,
                 "message": "api_param_viewid_empty_error",
-                "statusCode": 200
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_view_rules_empty_error": {
+                "code": 400,
+                "id": "api_view_rules_empty_error",
+                "isRecordTimes": true,
+                "message": "api_view_rules_empty_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_fieldid_empty_error": {
+                "code": 400,
+                "id": "api_fieldid_empty_error",
+                "isRecordTimes": true,
+                "message": "api_fieldid_empty_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
             },
             "api_param_basic_tools_type_error": {
                 "code": 400,
@@ -1046,6 +1063,54 @@
                 "isRecordTimes": true,
                 "message": "api_param_embed_permission_type_error",
                 "statusCode": 200
+            },
+            "api_view_type_error": {
+                "code": 400,
+                "id": "api_view_type_error",
+                "isRecordTimes": true,
+                "message": "api_view_type_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_view_filter_conditions_empty_error": {
+                "code": 400,
+                "id": "api_view_filter_conditions_empty_error",
+                "isRecordTimes": true,
+                "message": "api_view_filter_conditions_empty_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_view_filter_operator_value_error": {
+                "code": 400,
+                "id": "api_view_filter_operator_value_error",
+                "isRecordTimes": true,
+                "message": "api_view_filter_operator_value_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_view_filter_operator_not_support": {
+                "code": 400,
+                "id": "api_view_filter_operator_not_support",
+                "isRecordTimes": true,
+                "message": "api_view_filter_operator_not_support",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_view_fieldid_not_exist": {
+                "code": 400,
+                "id": "api_view_fieldid_not_exist",
+                "isRecordTimes": true,
+                "message": "api_view_fieldid_not_exist",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_param_viewids_empty_error": {
+                "code": 400,
+                "id": "api_param_viewids_empty_error",
+                "isRecordTimes": true,
+                "message": "api_param_viewids_empty_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
             }
         }
     }
