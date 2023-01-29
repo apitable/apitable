@@ -89,3 +89,7 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_TYPESCRIPT_STANDARD: false
           VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_XML: false
+          VALIDATE_GROOVY: false
+          VALIDATE_SQLFLUFF: false
+          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*

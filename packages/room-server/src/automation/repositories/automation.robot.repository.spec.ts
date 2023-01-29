@@ -19,7 +19,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationRobotRepository } from './automation.robot.repository';
-import { generateRandomString } from '@apitable/core';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { DeepPartial } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -28,9 +27,9 @@ import { DatabaseConfigService } from 'shared/services/config/database.config.se
 describe('AutomationRobotRepository', () => {
   let automationRobotRepository: AutomationRobotRepository;
 
-  const theRobotResourceId = generateRandomString(16);
-  const theRobotId = generateRandomString(16);
-  const theUserId = generateRandomString(16);
+  const theRobotResourceId = 'theRobotResourceId';
+  const theRobotId = 'theRobotId';
+  const theUserId = 'theUserId';
   let module: TestingModule;
   let entity: AutomationRobotEntity;
 

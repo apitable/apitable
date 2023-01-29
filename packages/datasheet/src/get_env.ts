@@ -192,5 +192,7 @@ export const getEnvVars = () => {
     LOGIN_WECHAT_GROUP_QR_CODE: process.env.LOGIN_WECHAT_GROUP_QR_CODE,
     LOGIN_VIKA_QR_CODE: process.env.LOGIN_VIKA_QR_CODE,
     NEXT_PUBLIC_PUBLIC_URL: process.env.NEXT_PUBLIC_PUBLIC_URL,
+    COOKIEBOT_ID: process.env.COOKIEBOT_ID,
+    GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
   };
 };

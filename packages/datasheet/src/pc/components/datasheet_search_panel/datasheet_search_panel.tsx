@@ -211,7 +211,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
       }
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [datasheet, props, folderLoaded, showSubColumnWithView, currentMeta, currentDatasheetId, currentMirrorId, mirror]);
 
   useMount(() => {
@@ -227,7 +227,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
       return;
     }
     (previousCurrentFolderId === currentFolderId || props.folderId === currentFolderId) && search(spaceId, searchValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [search, spaceId, searchValue, currentFolderId, props.folderId]);
 
   useEffect(() => {

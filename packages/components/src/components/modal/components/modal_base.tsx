@@ -95,7 +95,7 @@ export const ModalBase: React.FC<IModalProps> = (props) => {
     if (displayNone && !visible) {
       setBodyStyle(initialBodyStyle.width, initialBodyStyle.overflow);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [displayNone, visible]);
 
   useUnmount(() => {

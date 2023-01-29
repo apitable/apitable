@@ -80,7 +80,7 @@ export const UploadItem: React.FC<IUploadFileItemProps> = props => {
     return () => {
       uploadManager.unBindFileStatus(cellId, fileId);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export const UploadItem: React.FC<IUploadFileItemProps> = props => {
     return () => {
       uploadManager.unBindFileStatus(cellId, fileId);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   function renderIcon() {

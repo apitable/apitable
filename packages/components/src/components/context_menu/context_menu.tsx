@@ -22,6 +22,7 @@ import { StyledMenuContainer, StyledSubMenu, StyledMenuItem, StyledMenuItemConte
   StyledMenuShadow, StyledMenuItemExtra } from './styled';
 import { ICacheOverlay, IContextMenuClickState, IContextMenuItemProps, IContextMenuProps } from './interface';
 import { manager } from './event_manager';
+import { IMenuConfig } from './interface';
 import { EVENT_TYPE } from './consts';
 import { Tooltip } from 'antd';
 import { omit } from 'lodash';
@@ -52,7 +53,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   const { offset, extraInfo } = contextMenuState;
 
   // Compatible with the old context menu parameter callback method
-  const getExtraInfo = (info) => {
+  const getExtraInfo = (info: any) => {
     return info;
   };
 
@@ -75,7 +76,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     const calcCacheLevel = (list: IContextMenuItemProps[], level = 0) => {
       let sub = 0;
       for (let i = 0; i < list.length; i++) {
-        const item = list[i];
+        const item = list[i]!;
         if (getHidden(item.hidden)) {
           sub += 1;
           continue;
@@ -132,7 +133,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   }, [menuRef, cancelContextMenu]);
 
   // menu Item click event
-  const handleClick = (item: IContextMenuItemProps, keyPath, e: MouseEvent<HTMLElement>) => {
+  const handleClick = (item: IContextMenuItemProps, keyPath: string[], e: MouseEvent<HTMLElement>) => {
     if (
       (typeof item.disabled === 'function' && item.disabled(getExtraInfo(extraInfo))) ||
       (typeof item.disabled === 'boolean' && item.disabled)
@@ -152,7 +153,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // mouse enter event
-  const handleMouseEnter = (item, index) => {
+  const handleMouseEnter = (item: IContextMenuItemProps, index: number) => {
     const menu = menuRef.current;
     if (!menu) return;
     setPaths((source) => {
@@ -167,13 +168,13 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // recursion
-  const dfs = (source: IContextMenuItemProps[], results, index = 0) => {
+  const dfs = (source: IContextMenuItemProps[], results: { key: string, label: JSX.Element }[][], index = 0) => {
     if (!results[index]) {
       results[index] = [];
     }
     const filterHiddenSource = source.filter((v) => !getHidden(v.hidden));
     for (let i = 0; i < filterHiddenSource.length; i++) {
-      const item = filterHiddenSource[i];
+      const item = filterHiddenSource[i]!;
       // filter hidden key
       const newItem = omit(item, 'hidden');
       const { key, id, disabled = false, icon, label, arrow, children, groupId, extraElement, disabledTip, ...rest } = newItem;
@@ -215,7 +216,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
         );
       }
 
-      results[index].push({
+      results[index]!.push({
         key,
         label: labelElement,
       });
@@ -226,7 +227,8 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // Compatible with the usage of menuId and show
-  const handler = React.useCallback((configs: { e: React.MouseEvent<HTMLElement>, extraInfo?: any }) => {
+  const handler = React.useCallback((configs?: IMenuConfig) => {
+    if (!configs) return;
     const { e, extraInfo } = configs;
     setContextMenuState({
       offset: [e.clientX, e.clientY],
@@ -275,7 +277,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     const { innerHeight } = window;
 
     // Calculate the top value when the screen height is exceeded
-    const getTop = (top, height) => {
+    const getTop = (top: number, height: number) => {
       const total = top + height;
       if (height > innerHeight) {
         return 0;
@@ -307,26 +309,26 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
       const lastElement = child.lastElementChild as HTMLElement;
 
       if (!parentKey) {
-        let total = offset[1] + scrollHeight;
-        const curTop = getTop(offset[1], scrollHeight);
+        let total = offset[1]! + scrollHeight;
+        const curTop = getTop(offset[1]!, scrollHeight);
         total = curTop + scrollHeight;
         const isOver = total > innerHeight;
         let cssText = isOver ? `height: ${innerHeight - menuSubSpaceHeight}px; overflow: auto;` : '';
 
         // Calculate whether there is free space. If not, calculate the difference
-        const endX = offset[0] + menuOffset[0] + width;
+        const endX = offset[0]! + menuOffset[0]! + width;
         const subX = endX > innerWidth ? endX - innerWidth : 0;
 
         cssText += `
-          left: ${offset[0] + menuOffset[0] - subX}px;
-          top: ${curTop + menuOffset[1]}px;
+          left: ${offset[0]! + menuOffset[0]! - subX}px;
+          top: ${curTop + menuOffset[1]!}px;
           opacity: 1;
           width: ${width}px;
         `;
         child.style.cssText = cssText;
         lastElement.style.cssText = isOver ? `
-          left: ${offset[0] + menuOffset[0] - subX}px;
-          top: ${curTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]}px;
+          left: ${offset[0]! + menuOffset[0]! - subX}px;
+          top: ${curTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]!}px;
           width: ${width}px;
         ` : '';
         calcScroll(child);
@@ -336,7 +338,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
       // Find the parent menu sub item of the sub menu, and get the top of the sub menu according to the top of the parent menu sub item
       const parentContainer = childList[i - 1] as HTMLElement;
       const parentList = parentContainer.childNodes;
-      const { index } = cacheOverlay[parentKey];
+      const { index } = cacheOverlay[parentKey]!;
       const parentElement = parentList[index] as HTMLElement;
       const { top: parentTop } = parentElement.getBoundingClientRect();
       const parentTopWithoutPadding = parentTop - 4;
@@ -348,14 +350,14 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
       const isOverChild = childTotal > innerHeight;
 
       const preParentWidthSum = Array.from(childList)
-        .filter((item, k) => k < i)
+        .filter((_item, k) => k < i)
         .reduce((pre) => {
           pre += width;
           return pre;
         }, 0);
 
       // Calculate the left and right offsets. When the remaining space is not enough for placement, take the parent as a reference
-      let childStartX = (childList[0] as HTMLElement).offsetLeft + preParentWidthSum + menuOffset[0];
+      let childStartX = (childList[0] as HTMLElement).offsetLeft + preParentWidthSum + menuOffset[0]!;
       if (childStartX + width > innerWidth) {
         childStartX -= (preParentWidthSum + width * i);
       }
@@ -363,13 +365,13 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
       let childCssText = `opacity: 1; width: ${width}px;`;
       childCssText += `
         left: ${childStartX}px;
-        top: ${childTop + menuOffset[1]}px;
+        top: ${childTop + menuOffset[1]!}px;
       `;
       childCssText += isOverChild ? `height: ${innerHeight - menuSubSpaceHeight}px; overflow: auto;` : '';
       child.style.cssText = childCssText;
       lastElement.style.cssText = isOverChild ? `
         left: ${childStartX}px;
-        top: ${childTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]}px;
+        top: ${childTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]!}px;
         width: ${width}px;
       ` : '';
       calcScroll(child);
@@ -398,8 +400,8 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   const style: React.CSSProperties = {};
   if (Boolean(children)) {
     if (offset) {
-      style.left = offset[0] + menuOffset[0];
-      style.top = offset[1] + menuOffset[1];
+      style.left = offset[0]! + menuOffset[0]!;
+      style.top = offset[1]! + menuOffset[1]!;
     } else {
       style.opacity = 0;
       style.transform = 'scale(0)';

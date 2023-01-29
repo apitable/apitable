@@ -44,11 +44,27 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ Quick Start
 
 > APITable is currently a `Work In Progress`.
 >
-> We will publish the first release in late January 2023.
+> We will publish the first release in late February 2023.
 >
 > Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
 
@@ -272,7 +288,7 @@ APITable use these common conventions:
 - How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
 - What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Documentations

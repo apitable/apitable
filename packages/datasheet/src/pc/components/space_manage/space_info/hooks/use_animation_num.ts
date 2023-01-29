@@ -70,7 +70,7 @@ export const useAnimationNum = ({ value = 0, duration = 1000, easing = 'linear',
       unit.current = null;
     }
     play();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [value]);
 
   let curNum: number | string = isFloat ? normalDecimal(numValue.current * progress) : Math.floor(numValue.current * progress);

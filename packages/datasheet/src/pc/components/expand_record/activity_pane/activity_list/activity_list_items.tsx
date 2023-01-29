@@ -248,7 +248,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       opEventManager.removeEventListener(OPEventNameEnums.RecordCommentUpdated, recordCommentUpdatedCallBack);
     };
     // currUserId Adding will cause comment probability flashing issues
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [expandRecordId, recordList, selectType, unitMap, emojis]);
 
   const clearRecordList = () => {
@@ -385,7 +385,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         observerRef.current?.unobserve(topTarget);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [expandRecordId, datasheetId, selectType, maxRemainRecordActivityDays]);
 
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {

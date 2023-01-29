@@ -85,6 +85,6 @@ export function useDatasheet(datasheetId?: string | undefined) {
   return useMemo(() => {
     if (!_datasheetId) return undefined;
     return new Datasheet(_datasheetId, context);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [_datasheetId, context, datasheet]);
 }

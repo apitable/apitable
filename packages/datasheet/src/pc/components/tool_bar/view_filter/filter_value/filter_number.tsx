@@ -36,7 +36,7 @@ export const FilterNumber: React.FC<Omit<IFilterNumberProps, 'execute'>> = props
 
   useEffect(() => {
     numberRef.current && numberRef.current.onStartEdit(defaultValue ? defaultValue[0] : null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const debounceCommandNumberFn = debounce((value: string) => {

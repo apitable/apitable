@@ -105,8 +105,8 @@ export const TitleField = (props: Pick<FieldProps, 'id' | 'title' | 'required'> 
   onChange?: (collapse: boolean) => void;
 }) => {
   const { title, id, help, hasCollapse, defaultCollapse = false, onChange } = props;
-  const [, level] = (id || '').split('-');
-  const TitleComponent = titleLevel[Math.min(parseInt(level, 10) || 0, 2)];
+  const [, level] = (id || '').split('-') as [string, string];
+  const TitleComponent = titleLevel[Math.min(parseInt(level, 10) || 0, 2)]!;
   const [collapse, setCollapse] = useState<boolean>(defaultCollapse);
 
   const switchCollapse = () => {

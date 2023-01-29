@@ -178,7 +178,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
             onClick: () => onZoom(scale * MULTIPLE),
           },
           {
-            component: <RotateOutlined size={16} color={colors.black[50]} />,
+            icon: RotateOutlined,
             tip: t(Strings.rotate),
             onClick: onRotate,
           },
@@ -187,13 +187,13 @@ export const ToolBar: React.FC<IToolBar> = props => {
       },
       {
         visible: (isDocType || isPdf({ name: fileInfo.name, type: fileInfo.mimeType })) && previewEnable,
-        component: <NewtabOutlined color={colors.black[50]} size={15} />,
+        icon: NewtabOutlined,
         tip: t(Strings.open_in_new_tab),
         onClick: () => officePreviewUrl && navigationToUrl(officePreviewUrl),
       },
       {
         visible: !disabledDownload,
-        component: <ColumnUrlOutlined size={16} color={colors.black[50]} />,
+        icon: ColumnUrlOutlined,
         tip: t(Strings.preview_copy_attach_url),
         onClick: () => {
           let addr = getDownloadSrc(fileInfo);
@@ -205,7 +205,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
       },
       {
         visible: !disabledDownload,
-        component: <DownloadOutlined size={16} color={colors.black[50]} />,
+        icon: DownloadOutlined,
         tip: t(Strings.download),
         onClick: () => {
           download(fileInfo);
@@ -214,7 +214,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
       {
         visible: !readonly,
         tip: t(Strings.delete),
-        component: <DeleteOutlined size={16} color={colors.black[50]} />,
+        icon: DeleteOutlined,
         onClick: onDelete,
         style: { marginRight: 0 },
       },
@@ -222,15 +222,14 @@ export const ToolBar: React.FC<IToolBar> = props => {
     title: fileInfo.name,
     toolRight: [
       {
-        component: () =>
-          isFullScreen ? <UnfullscreenOutlined size={16} color={colors.black[50]} /> : <FullscreenOutlined size={16} color={colors.black[50]} />,
+        icon: isFullScreen ? UnfullscreenOutlined : FullscreenOutlined,
         tip: () => t(isFullScreen ? Strings.attachment_preview_exit_fullscreen : Strings.attachment_preview_fullscreen),
         onClick: () => toggleIsFullScreen(),
         className: styles.rightIcon,
         visible: !isRecordFullScreen && isSideRecordOpen && !document.querySelector('.centerExpandRecord'),
       },
       {
-        component: <CloseLargeOutlined size={16} color={colors.black[50]} />,
+        icon: CloseLargeOutlined,
         tip: t(Strings.close),
         onClick: onClose,
         className: classNames(styles.rightIcon, styles.iconClose),
@@ -239,7 +238,8 @@ export const ToolBar: React.FC<IToolBar> = props => {
   };
 
   const renderToolItem = (toolItemProps: IPreviewToolItem, index) => {
-    return <PreviewToolItem key={index} {...toolItemProps} />;
+    const component = toolItemProps.icon ? <toolItemProps.icon size={16} color={colors.black[50]} /> : toolItemProps.component;
+    return <PreviewToolItem key={index} {...toolItemProps} component={component} />;
   };
 
   return (

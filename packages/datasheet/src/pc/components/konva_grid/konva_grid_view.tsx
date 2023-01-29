@@ -385,7 +385,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
   const gridBound = useMemo(() => {
     const rect = containerRef.current?.getBoundingClientRect();
     return rect ? { x: rect.left, y: rect.top } : DEFAULT_COORD;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [containerRef.current, containerWidth, containerHeight]);
 
   const { onDrop, onDragOver, draggingOutlineInfo, setDraggingOutlineInfo } = useAttachmentEvent({
@@ -453,7 +453,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     if (needUpdate) {
       scrollTo(next);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [viewId]);
 
   // Scroll to a cell
@@ -565,7 +565,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     instance.frozenColumnCount = frozenColumnCount;
     instance.columnIndicesMap = columnIndicesMap;
     forceRender();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [instance, visibleColumns.length, JSON.stringify(columnIndicesMap), forceRender, frozenColumnCount]);
 
   // resize

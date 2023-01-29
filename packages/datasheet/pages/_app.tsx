@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import elementClosest from 'element-closest';
 import 'enterprise/style.less';
 import ErrorPage from 'error_page';
+import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -99,7 +100,7 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp(props: AppProps) {
+function MyApp(props: AppProps & { envVars: string }) {
   const router = useRouter();
   const isWidget = router.asPath.includes('widget-stage');
   if (isWidget) {
@@ -108,8 +109,9 @@ function MyApp(props: AppProps) {
   return MyAppMain(props);
 }
 
-function MyAppMain({ Component, pageProps }: AppProps) {
+function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: string }) {
   const router = useRouter();
+  const env = JSON.parse(envVars);
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
       return LoadingStatus.Complete;
@@ -168,7 +170,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useEffect(() => {
@@ -257,7 +259,10 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
+      window.__initialization_data__.wizards = defaultsDeep({
+        guide: SystemConfig.guide,
+        player: SystemConfig.player, 
+      }, JSON.parse(res.data.wizards));
 
     };
     getUser().then(() => {
@@ -394,7 +399,20 @@ function MyAppMain({ Component, pageProps }: AppProps) {
         }
       </div>
     </Sentry.ErrorBoundary>}
-
+    {
+      env.GOOGLE_ANALYTICS_ID &&
+      <>
+        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${env.GOOGLE_ANALYTICS_ID}`} />
+        <Script id={'googleTag'}>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', ${env.GOOGLE_ANALYTICS_ID});
+          `}
+        </Script>
+      </>
+    }
   </>;
 }
 

@@ -23,11 +23,15 @@ import { AutomationServiceRepository } from '../repositories/automation.service.
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
+import { InjectLogger } from 'shared/common';
+import { Logger } from 'winston';
+import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 
 @Injectable()
 export class RobotTriggerService {
 
   constructor(
+    @InjectLogger() private readonly logger: Logger,
     private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly automationServiceRepository: AutomationServiceRepository,
@@ -38,6 +42,7 @@ export class RobotTriggerService {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
+      this.logger.info(`get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`)
       if(officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
