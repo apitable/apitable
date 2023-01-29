@@ -193,8 +193,8 @@ export class FormService {
         recordUrl: getRecordUrl(dstId, recordId),
         ...eventFields
       };
-      this.logger.debug(
-        'eventContext',
+      this.logger.info(
+        'dispatchFormSubmittedEvent eventContext',
         eventContext,
         eventFields
       );
@@ -208,7 +208,7 @@ export class FormService {
         beforeApply: false,
       });
     } catch (error) {
-      this.logger.debug(error);
+      this.logger.info('dispatchFormSubmittedEvent error', error);
     }
   }
 
