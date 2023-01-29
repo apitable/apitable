@@ -47,6 +47,7 @@ export class WidgetRepository extends Repository<WidgetEntity> {
    * Query revisions corresponding to multiple widgets
    */
   getRevisionByWdtIds(widgetIds: string[]): Promise<IResourceRevision[]> {
+    // todo(itou): replace dynamic sql
     return this.query(
       `
           SELECT widget_id resourceId, revision

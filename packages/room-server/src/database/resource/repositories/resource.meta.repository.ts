@@ -70,6 +70,7 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
    */
   async getRevisionByRscIds(resourceIds: string[]): Promise<IResourceRevision[]> {
     const queryRunner = getConnection().createQueryRunner();
+    // todo(itou): replace dynamic sql
     const revisionInfo = await queryRunner.query(
       `
           SELECT resource_id resourceId, revision

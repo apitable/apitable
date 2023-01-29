@@ -57,6 +57,7 @@ export class UserRepository extends Repository<UserEntity> {
   async selectUserInfoBySpaceIdAndUuids(spaceId: string, uuids: string[]): Promise<any[]> {
     const queryRunner = getConnection().createQueryRunner();
     const tableNamePrefix = this.manager.connection.options.entityPrefix;
+    // todo(itou): replace dynamic sql
     const users: any[] = await queryRunner.query(`
           SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
                  vui.is_deleted isDeleted, vui.unit_type type,

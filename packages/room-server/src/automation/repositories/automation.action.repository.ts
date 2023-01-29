@@ -38,6 +38,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   }
 
   async deleteRobotActionByActionId(actionId: string, userId: string) {
+    // todo(itou): replace dynamic sql
     // Finds the previous and the next node of the current node, then
     // currentNode.nextNode.prevNode <- currentNode.prevNode
     const thisAction = await this.query(

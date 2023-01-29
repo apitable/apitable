@@ -35,25 +35,6 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     });
   }
 
-  getTriggersByResourceAndTriggerTypeId(datasheetId: string, triggerTypeId: string): Promise<any[]> {
-    return this.query(
-      `
-    SELECT
-      trigger_id triggerId,
-      trigger_type_id triggerTypeId,
-      input,
-      vat.robot_id robotId
-    FROM
-      ${this.manager.connection.options.entityPrefix}automation_trigger vat
-      JOIN ${this.manager.connection.options.entityPrefix}automation_robot rbt ON rbt.resource_id = ?
-        AND rbt.robot_id = vat.robot_id AND rbt.is_active = 1 AND rbt.is_deleted = 0
-    WHERE
-      vat.is_deleted = 0 AND vat.trigger_type_id = ?
-        `,
-      [datasheetId, triggerTypeId],
-    );
-  }
-
   createTrigger(trigger: TriggerCreateRo, userId: string): Promise<AutomationTriggerEntity> {
     const newTrigger = this.create({
       triggerId: `atr${generateRandomString(15)}`,

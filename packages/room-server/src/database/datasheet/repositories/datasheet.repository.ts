@@ -49,6 +49,7 @@ export class DatasheetRepository extends Repository<DatasheetEntity> {
    * @param dstIds datasheet ID array
    */
   selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
+    // todo(itou): replace dynamic sql
     return this.query(
       `
           SELECT dst_id resourceId, revision

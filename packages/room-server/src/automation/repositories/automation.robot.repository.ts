@@ -55,6 +55,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   getRobotTriggerBaseInfoByIds(robotIds: string[]): Promise<any[]> {
+    // todo(itou): replace dynamic sql
     return this.query(`
     SELECT 
       trigger_id triggerId,
@@ -68,6 +69,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   getRobotTriggerTypeById(triggerTypeId: string): Promise<any> {
+    // todo(itou): replace dynamic sql
     return this.query(`
     SELECT 
       input_json_schema inputJsonSchema,
@@ -80,6 +82,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   getRobotTriggerById(robotId: string): Promise<any> {
+    // todo(itou): replace dynamic sql
     return this.query(`
     SELECT 
       trigger_id triggerId,
@@ -93,6 +96,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   getRobotActionsById(robotId: string) {
+    // todo(itou): replace dynamic sql
     return this.query(`
     SELECT
       action_id id,
@@ -115,8 +119,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
     };
 
     if (trigger?.triggerTypeId) {
-      const triggerType = await this.getRobotTriggerTypeById(trigger.triggerTypeId);
-      res.triggerType = triggerType;
+      res.triggerType = await this.getRobotTriggerTypeById(trigger.triggerTypeId);
     }
     return res;
   }
@@ -150,7 +153,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
         triggerTypeId: trigger.triggerTypeId,
       });
     });
-
+    // todo(itou): replace dynamic sql
     const actionBaseInfoList = await this.query(
       `
     SELECT
@@ -224,6 +227,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
     const trigger = await this.getRobotTriggerById(robotId);
     const triggerId = trigger?.triggerId;
     const triggerTypeId = trigger?.triggerTypeId;
+    // todo(itou): replace dynamic sql
     const actions: any[] = await this.query(
       `
     SELECT
@@ -251,7 +255,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
         actionsById[action.prevActionId].nextActionId = action.id;
       }
     });
-
+    // todo(itou): replace dynamic sql
     const actionTypes: any[] = await this.query(`
     SELECT
       action_type_id id,

@@ -57,6 +57,7 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
    * @param endRevision
    */
   getChangesetOrderList(dstId: string, startRevision: number, endRevision: number): Promise<any[]> {
+    // todo(itou): replace dynamic sql
     return this.query(
       `
         SELECT vdc.message_id messageId, vu.uuid userId, vdc.revision, 

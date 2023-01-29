@@ -48,6 +48,7 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
   }
 
   async getRobotTriggerTypes(): Promise<any[]> {
+    // todo(itou): replace dynamic sql
     return await this.query(`
     SELECT tt.trigger_type_id triggerTypeId,
         tt.name,
