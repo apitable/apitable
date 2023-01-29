@@ -283,7 +283,7 @@ APITable use these common convention:
 - Wie kann ich eine gute Commit-Nachricht schreiben? [Herkömmliche Commits](https://www.conventionalcommits.org/)
 - Was ist unser Changelog-Format? [Changelog beibehalten](https://keepachangelog.com/en/1.0.0/)
 - Wie kann ich versionieren und taggingen? [Semantische Versionierung](https://semver.org/)
-- Was ist die Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- Was ist die Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Was ist die TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Dokumentationen
