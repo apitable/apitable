@@ -283,7 +283,7 @@ Utilisez ces conventions communes APITables :
 - Comment écrire un bon message de commit ? [Commits conventionnels](https://www.conventionalcommits.org/)
 - Quel est notre format de changelog ? [Garder le changelog](https://keepachangelog.com/en/1.0.0/)
 - Comment versionner et étiqueter ? [Versioning sémantique](https://semver.org/)
-- Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- Qu'est-ce que la directive de codage Java ? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Documentations
