@@ -21,7 +21,6 @@ import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, Ro
 import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { uniqBy } from 'lodash';
-import Image from 'next/image';
 import { ButtonPlus } from 'pc/components/common';
 import { expandPreviewModal } from 'pc/components/preview_file';
 import { MouseDownType } from 'pc/components/selection_wrapper';
@@ -139,11 +138,10 @@ export const CellAttachment: React.FC<ICellAttachmentProps> = props => {
           position: 'relative'
         }}
       >
-        <Image
+        <img
           src={imgUrl}
           alt={file.name}
           key={keyPrefix ? `${keyPrefix}-${index}` : file.id + index}
-          layout={'fill'}
           className={styles.img}
           onError={e => {
             const ImgEle = (e.target as HTMLElement);

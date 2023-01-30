@@ -18,7 +18,6 @@
 
 import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import Image from 'next/image';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { updateRobotDescription, updateRobotName } from '../api';
@@ -76,7 +75,7 @@ export const RobotBaseInfo = () => {
           alignItems="center"
         >
           <Avatar
-            icon={<Image src={integrateCdnHost(getEnvVariables().ROBOT_DEFAULT_AVATAR!)} width={24} height={24} />}
+            icon={<img src={integrateCdnHost(getEnvVariables().ROBOT_DEFAULT_AVATAR!)} width={24} height={24} alt="robot" />}
             size="xs"
             style={{
               minWidth: '24px',
