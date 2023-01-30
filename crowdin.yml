@@ -1,3 +1,5 @@
 files:
   - source: /README.md
     translation: /docs/readme/%locale%/%original_file_name%
+  - source: /docs/contribute/*
+    translation: /docs/readme/%locale%/docs/contribute/%original_file_name%
