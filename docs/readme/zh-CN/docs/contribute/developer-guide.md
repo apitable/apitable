@@ -11,7 +11,7 @@
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 - [sdkman](https://sdkman.io/): 用于安装 `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): 用于安装 `节点`, NodeJS v16.15.0
+- [nvm](https://github.com/nvm-sh/nvm): 用于安装 `node`, NodeJS v16.15.0
 
 
 ### 编程语言
@@ -20,13 +20,13 @@
 
 ```bash
 # 快速安装 nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install。 h | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 # 快速安装sdkman
-curl - s "https://get.sdkman.io" | bash
+curl -s "https://get.sdkman.io" | bash
 # install nodejs 
-nvm install 16. 5.0 && nvm 使用16.15。 && corepack 启用
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # 安装 java 开发包
-sdk install java 8。 .342-amzn && sdk 使用 java 8.0.342-amzn
+sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 ```
 
 ### macOS
@@ -58,7 +58,7 @@ sudo apt install make
 ```
 
 
-### 窗口
+### Windows
 
 如果您正在Windows 10/11上运行 APITable ，我们建议在Windows</a>上安装
 
@@ -140,9 +140,9 @@ make run # 输入4
 
 
 
-## IDE
+## 集成开发环境（IDE）
 
-我们建议您使用 `Visual Studio 代码` 或 `Intellij IDEA` 为您的 IDE。
+我们建议您使用 `Visual Studio Code` 或 `Intellij IDEA` 为您的 IDE。
 
 APITable 已准备好这两个IDE调试配置。
 
