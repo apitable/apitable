@@ -115,7 +115,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
         };
       });
       setVisible(false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     },
     [currentField.type],
   );

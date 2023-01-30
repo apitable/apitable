@@ -35,7 +35,7 @@ import { Logger } from 'winston';
 import { InjectLogger } from 'shared/common';
 import { CommonEventContext, CommonEventMetaContext } from '../domains/common.event';
 
-export const OFFICIAL_SERVICE_SLUG = 'vika';
+export const OFFICIAL_SERVICE_SLUG = process.env.ROBOT_OFFICIAL_SERVICE_SLUG ? process.env.ROBOT_OFFICIAL_SERVICE_SLUG : 'apitable';
 
 export type IShouldFireRobot = {
   robotId: string;

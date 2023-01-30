@@ -18,17 +18,16 @@
 
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { EntityRepository, Repository } from 'typeorm';
+import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
-
-  private OFFICIAL_SERVICE_SLUG = 'vika';
 
   public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
     return this.count({
       where: {
         serviceId: serviceId,
-        slug: this.OFFICIAL_SERVICE_SLUG,
+        slug: OFFICIAL_SERVICE_SLUG,
       }
     });
   }

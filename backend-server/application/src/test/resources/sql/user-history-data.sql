@@ -15,5 +15,5 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 INSERT INTO `user_history` (`id`, `user_id`, `uuid`, `nick_name`, `user_status`,
-                                 `created_by`, `updated_by`)
-VALUES (41, 41, 'uuid-41', 'apitable body', 1, 41, 41);
+                                 `created_by`, `updated_by`, `created_at`, `updated_at`)
+VALUES (41, 41, 'uuid-41', 'apitable body', 1, 41, 41, '2022-10-01', '2022-10-30');

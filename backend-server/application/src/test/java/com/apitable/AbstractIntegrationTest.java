@@ -18,14 +18,29 @@
 
 package com.apitable;
 
+import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.apitable.auth.service.IAuthService;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.internal.service.IFieldService;
 import com.apitable.mock.bean.MockInvitation;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.organization.ro.RoleMemberUnitRo;
-import com.apitable.organization.service.*;
+import com.apitable.organization.service.IMemberService;
+import com.apitable.organization.service.IRoleMemberService;
+import com.apitable.organization.service.IRoleService;
+import com.apitable.organization.service.ITeamMemberRelService;
+import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.config.ServerConfig;
@@ -40,11 +55,7 @@ import com.apitable.user.service.IUserService;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.service.INodeService;
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,11 +66,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
-import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 @SpringBootTest(classes = { Application.class })
 @ContextConfiguration(initializers = EnterpriseEnvironmentInitializers.class)
 @AutoConfigureMockMvc
@@ -68,12 +74,6 @@ import java.util.Objects;
         "classpath:test.properties",
 }, properties = { "TEST_ENABLED=true" })
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
-
-    /**
-     * using east 8 timezone for testing
-     */
-    @Deprecated
-    protected static final ZoneOffset testTimeZone = ZoneOffset.ofHours(8);
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
@@ -168,6 +168,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     protected MockClock getClock() {
         return ClockManager.me().getMockClock();
+    }
+
+    protected ZoneOffset getTestTimeZone() {
+        return serverConfig.getTimeZone();
     }
 
     protected UserEntity createUserRandom() {

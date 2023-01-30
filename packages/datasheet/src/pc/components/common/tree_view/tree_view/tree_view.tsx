@@ -93,7 +93,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   useEffect(() => {
     const difference = xor(expandedKeys, expandedIdsRef.current);
     difference.forEach(nodeId => toggleExpansion(nodeId, true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [expandedKeys]);
 
   useEffect(() => {

@@ -87,12 +87,12 @@ export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOption
     setKeyword('');
     setActiveIndex(-1);
     onSearchChange && onSearchChange(null, '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [setKeyword, setActiveIndex]);
 
   useEffect(() => {
     clearStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [monitorId, setActiveIndex]);
 
   useEffect(() => {

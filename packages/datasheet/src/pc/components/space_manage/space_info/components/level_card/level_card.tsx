@@ -146,7 +146,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
         </React.Fragment>
       </ButtonGroup>
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [appType, space.activeId, type]);
 
   return (

@@ -63,7 +63,7 @@ export function useRecordsAll(datasheet?: Datasheet) {
   const datasheetId = datasheet ? datasheet.datasheetId : metaDatasheetId;
   const rows = useSelector(state => {
     const datasheetItem = getWidgetDatasheet(state, datasheetId);
-    return datasheetItem?.snapshot.meta.views[0].rows;
+    return datasheetItem?.snapshot.meta.views[0]!.rows;
   });
 
   return useMemo(() => {

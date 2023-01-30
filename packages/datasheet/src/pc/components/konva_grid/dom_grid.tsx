@@ -160,7 +160,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   const gridBound = useMemo(() => {
     const rect = wrapperRef.current?.getBoundingClientRect();
     return rect ? { x: rect.left, y: rect.top } : DEFAULT_COORD;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [wrapperRef.current, containerWidth, containerHeight]);
 
   const { x: containerOffsetX, y: containerOffsetY } = gridBound;

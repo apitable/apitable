@@ -57,7 +57,7 @@ export function usePrimaryField(datasheet?: Datasheet) {
   const datasheetId = datasheet ? datasheet.datasheetId : metaDatasheetId;
   const context = useContext<IWidgetContext>(WidgetContext);
   const primaryFieldId = useSelector(state => {
-    return getWidgetDatasheet(state, datasheetId)?.snapshot.meta.views[0].columns[0].fieldId;
+    return getWidgetDatasheet(state, datasheetId)?.snapshot.meta.views[0]!.columns[0]!.fieldId;
   });
   
   const fieldMap = useSelector(state => {
@@ -74,6 +74,6 @@ export function usePrimaryField(datasheet?: Datasheet) {
     }
 
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, primaryFieldId);
-    return new Field(datasheetId, context, fieldRole === ConfigConstant.Role.None ? createDeniedField() : fieldMap[primaryFieldId]);
+    return new Field(datasheetId, context, fieldRole === ConfigConstant.Role.None ? createDeniedField() : fieldMap[primaryFieldId]!);
   }, [datasheetId, fieldMap, primaryFieldId, fieldPermissionMap, context]);
 }

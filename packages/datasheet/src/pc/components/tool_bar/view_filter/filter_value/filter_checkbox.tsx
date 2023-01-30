@@ -33,7 +33,7 @@ export const FilterCheckbox: React.FC<Omit<IFilterCheckboxProps, 'execute'>> = p
 
   useEffect(() => {
     checkboxRef.current!.onStartEdit(condition.value != null ? condition.value : null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const debounceCommandNumberFn = debounce((value: boolean) => {

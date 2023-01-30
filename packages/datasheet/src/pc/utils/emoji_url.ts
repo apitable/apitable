@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EmojisConfig } from '@apitable/core';
+import { EmojisConfig, integrateCdnHost } from '@apitable/core';
 
 export const emojiUrl = (icon: string) => {
-  const QNY1 = window.__initialization_data__?.envVars.QNY1;
   const token = EmojisConfig[icon]?.token;
-  return token ? `${QNY1}${token}` : null;
+  return token ? integrateCdnHost(token) : null;
 };

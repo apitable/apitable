@@ -66,19 +66,12 @@ const:
   oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
   ossBuckets:
     vk_assets_ltd:
-      resource-url: ${VK_ASSETS_LTD_URL:https://s1.vika.cn}
-      bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
+      resource-url: ${VK_ASSETS_LTD_URL:}
+      bucket-name: ${VK_ASSETS_LTD_BUCKET:}
       type: ${VK_ASSETS_LTD_TYPE:QNY1}
-    vk_public_assets_ltd:
-      resource-url: ${VK_PUBLIC_ASSETS_LTD_URL:https://s1-applets.vika.cn}
-      bucket-name: ${VK_PUBLIC_ASSETS_LTD_BUCKET:vk-public-assets-ltd}
-      type: ${VK_PUBLIC_ASSETS_LTD_TYPE:QNY3}
-  login-token: ${LOGIN_TOKEN:FutureIsComing,TheyAreTheFuture}
-  default-avatar-list: ${DEFAULT_AVATARS:space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e}
-  template-space: ${TEMPLATE_SPACE:spcNA5eN3Sj6Q}
+  template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
-  qr-code-reply-id: ${QRCODE_REPLY_ID:HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
 limit:
   space-max-count: ${SPACE_MAX_COUNT:10}

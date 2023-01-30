@@ -44,6 +44,22 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ クイックスタート
 
 > APITableは現在 `作業中`です。

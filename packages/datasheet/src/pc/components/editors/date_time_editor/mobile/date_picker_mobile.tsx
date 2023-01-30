@@ -72,7 +72,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     if (!visible && onClose) {
       onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [visible]);
 
   const onChange = useCallback((val: Date, option: OptionType = OptionType.ONCHANGE) => {
