@@ -80,14 +80,14 @@ sudo apt install make
 
 ## 构建工具
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+我们使用 `make` 作为我们的中心构建工具，来驱动其他构建工具，如 `gradle` / `npm` / `yarn`
 
-所以您可以只输入 `来创建` 命令并看到所有构建命令：
+所以您可以只输入 `make` 命令并看到所有构建命令：
 
 
 
 ```bash
-制造业：
+make
 ```
 
 
@@ -99,7 +99,7 @@ We use `make` as our centric build tool entry that drives other build tool like 
 
 ## 开始开发环境
 
-杀伤人员地雷及销毁此种地雷的公约》
+APITable由4个进程组成：
 
 1. 后端服务器
 2. 房间服务器
@@ -115,22 +115,22 @@ We use `make` as our centric build tool entry that drives other build tool like 
 make dataenv 
 
 # 安装依赖关系
-做安装 
+make install
 
 #start backend服务器
-做运行 # 输入1  
+make run # 输入1  
 
 # 然后切换到新的终端
 # 启动房间服务器
-做运行 # 输入2
+make run # 输入2
 
 # 然后切换到新的终端
 # 启动套接服务器
-做运行 # 输入3  
+make run # 输入3  
 
 # 然后切换到新的终端
 # 启动web-server
-做运行 # 输入4
+make run # 输入4
 
 ```
 
