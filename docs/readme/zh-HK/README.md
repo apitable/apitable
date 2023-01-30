@@ -44,17 +44,33 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ 快速啟動
 
 > APITable 目前是 `正在進行中的工作`。
 > 
-> 我們將在2023年1月下旬公佈第一份版本。
+> We will publish the first release in late February 2023.
 > 
 > 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持聯繫。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想嘗試APITable[^info], 點擊這裡 [⚡️Gitpod 在線 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 如果您想要在本地或雲端計算環境中安裝 APITable ，請參閱 [💾 安裝](#installation)
 
-如果你想要設置你的本地開發環境，請閱讀我們的 [🧑‍💻 開發者指南 ](./docs/contribute/developer-guide.md)
+如果你想要設置你的本地開發環境，請閱讀我們的 [🧑stiptop_compute: 開發者指南](./docs/contribute/developer-guide.md)
 
 ## 🔥 功能特性
 
@@ -65,7 +81,7 @@
       <a href="#">實時協同</a>
     </th>
     <th>
-      <a href="#">神奇表單</a>
+      <a href="#">Automatic Form</a>
     </th>
 
   </tr>
@@ -110,7 +126,7 @@
       <a href="#">強大的行/列權限</a>
     </th>
     <th>
-      <a href="#">內嵌</a>
+      <a href="#">Embed</a>
     </th>
   </tr>
 
@@ -131,12 +147,12 @@
 
 APITable 提供了一系列令人驚奇的功能，從個人到企業。
 
-- 先進技術棧
+- Advanced technology stack and open-source
   - `實時合作` 允許多個用戶實時或與 `操作轉換(OT)` 算法同時進行編輯。
   - 在 `中極其順暢、方便用戶、超快的數據庫電子表格接口<canvas> 渲染引擎`
-  - 數據庫本地架構：變更集/操作/動作/快照等等。
+  - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
   - **100k+** 數據行與實時合作。
-  - 全堆棧訪問 API ，從 `數據` 到 `元數據`。
+  - Full-stack API access, from `Data` to `Metadata`.
   - 單向/雙向錶鏈接和 `無限交叉鏈接`
   - 社區友好的編程語言和框架，TypeScript ([下一步JS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring 啟動](https://spring.io/projects/spring-boot))
 - 美觀和齊全的多維表格UI界面
@@ -146,19 +162,19 @@ APITable 提供了一系列令人驚奇的功能，從個人到企業。
   - `可用的暗色模式` 和主題定製.
   - `7 種視圖類型`: 網格視圖(Dataseet) / 圖庫視圖/ Mindmap 視圖/ Kanban 視圖/全功能網格視圖/日曆視圖
   - 單擊API面板
-- 裝備齊全
+- Batteries included
   - 內置的 10 + 官方模板。
   - 機器人自動化和自定義可用.
   - BI 儀表板
-  - 單擊自動生成的表單
+  - One-click auto-generated form
   - 可共享和嵌入的頁面。
   - 多語言支持
   - 與 n8n.io / Zapier / Appsmith... 及更多。
 - 卓越的擴展性
   - 可擴展的 `部件系統` 有超過 20 個官員開源部件。
-  - 自定義圖表 & 圖表 & 儀表板
+  - Customizable Graph & Chart & Dashboard
   - 可自定義數據列類型
-  - 可自定義公式：
+  - Customizable Formulas
   - 可自定義自動機器人操作。
 - 企業級權限
   - `鏡像`, 將視圖變成鏡像以實現行權限。
@@ -166,40 +182,40 @@ APITable 提供了一系列令人驚奇的功能，從個人到企業。
   - 文件夾/子文件夾/文件權限
   - 樹結構文件夾和可自定義的節點(文件)；
   - 團隊管理 & 組織結構
-- 企業級應用功能
+- Enterprise features:
   - SAML
   - 單點登錄（SSO）
   - 審計
   - 數據庫自動備份
-  - 數據導出器
+  - Data Exporter
   - 水標
 - ....
 
 使用可擴展的部件和插件，您可以添加更多功能。
 
-## 💥 應用場景
+## 💥 Use Cases
 
 為什麼你必須知道APITable並作為你的下一個軟件？
 
 - 作為超級管理軟件
-  - 靈活的項目管理 & 任務/問題管理
-  - 營銷潛在客戶管理。
+  - Flexible Project Management & Tasks / Issues Management.
+  - Marketing Lead Management.
   - 最靈活和可連接的CRM。
-  - 靈活的BI圖表系統
+  - Flexible Business Intelligence (BI).
   - 有利於人民的形式和調查
-  - 彈性企業資源規劃系統。
-  - 低代碼和無代碼平臺。
+  - Flexible ERP.
+  - Low-code and no-code platform.
   - ...及更多, APITable 將 1000 個軟件放入您的口袋中。
-- 作為一個可視化數據庫基礎設施
+- As a visual database infrastructure
   - **嵌入** 個應用到您自己的軟件界面。
-  - 帶有REST API的視覺數據庫。
+  - Visual Database with REST API.
   - 管理儀表板
   - 中央配置管理。
   - **連接您所有的** 個軟件的全部企業數據庫。
   - ...及更多, APITable 連接到一切。
 - 此外，它是開源和可擴展的
 
-## :argriving_hearts: API-oried
+## 💞 API-oriented
 
 #### API 面板
 
@@ -209,7 +225,7 @@ APITable 提供了一系列令人驚奇的功能，從個人到企業。
 
 APITable 將提供一個數據表查詢語言(DQL)來查詢您的數據庫電子表格內容。
 
-## :hear_with_ribbon: Embed-friendly
+## 💝 Embed-friendly
 
 #### 分享和嵌入
 
@@ -231,9 +247,9 @@ curl https://apitable.github.io/install.sh | bash
 
 然後在您的瀏覽器中打開 [https://localhost:80](https://localhost:80) 訪問它。 (默認用戶名 `admin@apitable.com` 和密碼 `Apitable2022`)
 
-如果你想要設置你的本地開發環境，請閱讀我們的 [🧑stiptop_compute: 開發者指南](./docs/contribute/developer-guide.md)
+如果你想要設置你的本地開發環境，請閱讀我們的 [🧑‍💻 開發者指南 ](./docs/contribute/developer-guide.md)
 
-## 🧑digh:laptop_compute: contribution
+## 🧑‍💻 Contributing
 
 歡迎並感謝您有興趣為APITable作出貢獻！
 
@@ -249,7 +265,7 @@ curl https://apitable.github.io/install.sh | bash
 
 ### Git 工作流基礎
 
-下面是一般的 APITit 工作流：
+Here's a general APITable git workflow:
 
 1. 創建一個問題並描述您想要的功能 -> [APITable 問題](https://github.com/apitable/apitable/issues)
 2. 派生此項目 -> [Fork APIable 項目](https://github.com/apitable/apitable/fork)
@@ -260,7 +276,7 @@ curl https://apitable.github.io/install.sh | bash
 
 ### 工作公約
 
-2. 可適用這些共同公約：
+APITable use these common conventions:
 
 - 我們的 Git 分支模型是什麼？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - 如何在派生項目上進行合作？ [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
@@ -274,11 +290,11 @@ curl https://apitable.github.io/install.sh | bash
 
 - [幫助中心](https://help.apitable.com/)
 - [👩‍💻 開發者中心](https://developers.apitable.com/)
-  - [SST API 文檔](https://developers.apitable.com/api/introduction/)
+  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - 小部件 SDK (即將到來...)
-  - 腳本(即將到來...)
+  - Scripting (Coming soon...)
 
-## :mobway: Roadmap
+## 🛣 Roadmap
 
 ### 未來的功能
 
@@ -293,7 +309,7 @@ curl https://apitable.github.io/install.sh | bash
 
 - IdP；
 - SAML
-- 單點登錄
+- Single-Sign-On
 - 審計
 - 數據庫備份
 - 水標
@@ -312,43 +328,43 @@ curl https://apitable.github.io/install.sh | bash
 
 我們總是為APITable尋找優秀人才：
 
-- **全堆棧開發者**: 你有React, NestJS, TypeScript, Spring Boot, Java, Terraform. 你想要寫高質量的代碼，帶有清晰的文檔和單元測試。
-- **後端開發者**: 你有經驗使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要寫高質量的代碼，帶有清晰的文檔和單元測試。
 - **前端開發者**: 你有React, NextJS, TypeScript, WebPack的體驗。 你想要寫高質量的代碼，帶有清晰的文檔和單元測試。
+- **後端開發者**: 你有經驗使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要寫高質量的代碼，帶有清晰的文檔和單元測試。 And you like to write high quality code with clear documentation and unit tests.
+- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 無論時間和條件如何，如果你想要加入APITable團隊， 請毫不猶豫地將您的 CV 發送到 [talent@apitable。 om](mailto:talent@apitable.com)。
 
 ## 📺 截圖
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="可用屏幕截圖圖像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 許可協議

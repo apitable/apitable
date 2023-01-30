@@ -97,15 +97,6 @@ public class ConstProperties {
 
     /**
      * *
-     * @return OssBucketInfo
-     */
-    public OssBucketInfo getOssBucketByPublicAsset() {
-        return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)
-            .getOrDefault(BucketKey.VK_PUBLIC_ASSETS_LTD, new OssBucketInfo());
-    }
-
-    /**
-     * *
      * @return String
      */
     public String defaultServerDomain() {
@@ -116,8 +107,6 @@ public class ConstProperties {
     public enum BucketKey {
         /** */
         VK_ASSETS_LTD,
-        /** */
-        VK_PUBLIC_ASSETS_LTD,
     }
 
     @Data
