@@ -1,55 +1,55 @@
-# Developer Guide
+# 开发者指南
 
-This guide helps you get started developing APITable.
+本指南帮助您开始开发 APIT 。
 
-## Dependencies
+## 依赖关系
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+请确保您在设置开发者环境之前安装了以下依赖关系和编程语言：
 
 - `git`
-- [docker](https://docs.docker.com/engine/install/)
+- [停靠栏](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+- `制造业：`
+- [sdkman](https://sdkman.io/): 用于安装 `java`, Java SDK 8
+- [nvm](https://github.com/nvm-sh/nvm): 用于安装 `节点`, NodeJS v16.15.0
 
 
-### Programming Language
+### 编程语言
 
-If you are using macOS or Linux. We recommend install programming language with SDK manager `sdkman` and `nvm`.
+如果您使用 macOS 或 Linux。 我们建议使用 SDK 管理器 `sdkman` 和 `nvm` 安装编程语言。
 
 ```bash
-# quick install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
-curl -s "https://get.sdkman.io" | bash
+# 快速安装 nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install。 h | bash
+# 快速安装sdkman
+curl - s "https://get.sdkman.io" | bash
 # install nodejs 
-nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
-sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
+nvm install 16. 5.0 && nvm 使用16.15。 && corepack 启用
+# 安装 java 开发包
+sdk install java 8。 .342-amzn && sdk 使用 java 8.0.342-amzn
 ```
 
 ### macOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+我们建议使用 [自制程序](https://brew.sh/) 来安装任何缺失的依赖：
 
 ```bash
-## necessary required
-brew install git
-brew install --cask docker
-brew install make
+## 必要需要
+酿造安装 git
+酿造安装 --cask docker
+酿造安装
 ```
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+在 CentOS / RHEL或其他 Linux 发行版使用 `yum`
 
 ```bash
 sudo yum install git
 sudo yum install make
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+在 Ubuntu / Debian 或其他 Linux 发行版使用 `apt`
 
 ```bash
 sudo apt update
@@ -58,11 +58,15 @@ sudo apt install make
 ```
 
 
-### Windows
+### 窗口
 
-If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+如果您正在Windows 10/11上运行 APITable ，我们建议在Windows</a>上安装
 
-Install missing dependencies on Ubuntu using `apt`:
+停靠桌面， [WSL 的 Ubuntu](https://ubuntu.com/wsl) 和 [Windows 终端](https://aka.ms/terminal), 您可以在 [官方网站](https://learn.microsoft.com/en-us/windows/wsl) 了解更多关于 Windows 子系统 的Linux (WSL) 的信息。</p> 
+
+使用 `apt` 在 Ubuntu 上安装缺少的依赖：
+
+
 
 ```bash
 sudo apt update
@@ -71,62 +75,75 @@ sudo apt install make
 ```
 
 
-## Build Tool
+
+
+
+## 构建工具
 
 We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
 
-So you can just input `make` command and see all build commands:
+所以您可以只输入 `来创建` 命令并看到所有构建命令：
+
+
 
 ```bash
-make
+制造业：
 ```
 
-![make command screenshot](../static/make.png)
+
+![命令截图](../static/make.png)
 
 
 
-## Start Development Environment
 
-APITable consists of 4 processes:
 
-1. backend-server
-2. room-server
-3. socket-server
-4. web-server
+## 开始开发环境
 
-To start the development environment locally, run these commands:
+杀伤人员地雷及销毁此种地雷的公约》
+
+1. 后端服务器
+2. 房间服务器
+3. 套接字服务器
+4. Web 服务器
+
+要启动本地开发环境，请运行这些命令：
+
+
 
 ```bash
-# start databases in dockers
+# 在码头启动数据库
 make dataenv 
 
-# install dependencies
-make install 
+# 安装依赖关系
+做安装 
 
-#start backend-server
-make run # enter 1  
+#start backend服务器
+做运行 # 输入1  
 
-# and then switch to a new terminal
-# start room-server
-make run # enter 2
+# 然后切换到新的终端
+# 启动房间服务器
+做运行 # 输入2
 
-# and then switch to a new terminal
-# start socket-server
-make run # enter 3  
+# 然后切换到新的终端
+# 启动套接服务器
+做运行 # 输入3  
 
-# and then switch to a new terminal
-# start web-server
-make run # enter 4
+# 然后切换到新的终端
+# 启动web-server
+做运行 # 输入4
 
 ```
+
+
+
 
 
 
 
 ## IDE
 
-We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
+我们建议您使用 `Visual Studio 代码` 或 `Intellij IDEA` 为您的 IDE。
 
-APITable have prepared these two IDE's debug configs.
+APITable 已准备好这两个IDE调试配置。
 
-Just open APITable's root directory with IDE.
+只需打开 IDE 的 APITable 根目录。
