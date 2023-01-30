@@ -44,6 +44,22 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ Inicio rápido
 
 > APITable es actualmente un `Trabajo en progreso`.
@@ -262,13 +278,13 @@ Aquí hay un flujo de trabajo general APITable git:
 
 Utilizar estas convenciones comunes:
 
-- ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
-- ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
-- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/)
-- ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
-- ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- ¿Cuál es nuestro modelo de sucursal Git? ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- ¿Cómo colaborar en sus proyectos de bifurcación? ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- ¿Cómo escribir un buen mensaje de confirmación? ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
+- ¿Cuál es nuestro formato de registro de cambios? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
+- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
+- ¿Qué es la guía de código de Java? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Documentaciones
 
@@ -302,7 +318,7 @@ Para más información, por favor contáctenos en <support@apitable.com>.
 
 ## 👫 Participar
 
-### :globe_showing_Asia, alia: ¿Por qué creamos APITable y open source?
+### ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 
 - Creemos que `la base de datos es la piedra angular` de todo el software.
 - Creemos que crear una base de datos visual `con una interfaz de usuario rica y fácil para todos` puede reducir la dificultad de la industria de software e incrementar la adopción de digitalización en el mundo.
