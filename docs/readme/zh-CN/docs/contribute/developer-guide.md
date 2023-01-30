@@ -1,15 +1,15 @@
 # 开发者指南
 
-本指南帮助您开始开发 APIT 。
+本指南帮助您开始开发 APITable 。
 
-## 依赖关系
+## 依赖包
 
 请确保您在设置开发者环境之前安装了以下依赖关系和编程语言：
 
 - `git`
-- [停靠栏](https://docs.docker.com/engine/install/)
+- [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `制造业：`
+- `make`
 - [sdkman](https://sdkman.io/): 用于安装 `java`, Java SDK 8
 - [nvm](https://github.com/nvm-sh/nvm): 用于安装 `节点`, NodeJS v16.15.0
 
@@ -31,7 +31,7 @@ sdk install java 8。 .342-amzn && sdk 使用 java 8.0.342-amzn
 
 ### macOS
 
-我们建议使用 [自制程序](https://brew.sh/) 来安装任何缺失的依赖：
+我们建议使用 [Homebrew](https://brew.sh/) 来安装任何缺失的依赖包：
 
 ```bash
 ## 必要需要
