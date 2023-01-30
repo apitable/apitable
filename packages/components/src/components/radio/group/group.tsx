@@ -29,9 +29,9 @@ export const RadioGroup = React.forwardRef(({
   onChange,
   options,
   ...restProps
-}: IRadioGroup, ref: React.Ref<HTMLLabelElement>) => {
+}: IRadioGroup) => {
   const [value, setValue] = React.useState(() => restProps.value);
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<any>) => {
     const targetValue = event.target.value;
     setValue(targetValue);
     if (onChange) {

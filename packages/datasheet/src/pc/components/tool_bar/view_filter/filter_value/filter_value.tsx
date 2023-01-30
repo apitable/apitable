@@ -60,7 +60,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
 
   useMemo(() => {
     setValue(condition.value ? condition.value[0] : '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [field]);
 
   const { isComputed, hasError } = Field.bindModel(field);

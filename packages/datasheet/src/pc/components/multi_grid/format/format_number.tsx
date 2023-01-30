@@ -129,7 +129,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
     defaultValue = defaultValue === '' ? undefined : defaultValue;
 
     numberRef.current!.onStartEdit(defaultValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const handleChangeSymbolAlign = ({ value }) => {

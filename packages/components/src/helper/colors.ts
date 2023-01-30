@@ -31,7 +31,7 @@ export const getThemeName = (): ThemeName => {
 };
 
 const colorHandler = {
-  get: function(obj: any, prop: keyof any) {
+  get: function(_obj: any, prop: keyof any) {
     const theme = getThemeName();
     const color = theme.includes(ThemeName.Light) ? lightColors : darkColors;
     return color[prop];

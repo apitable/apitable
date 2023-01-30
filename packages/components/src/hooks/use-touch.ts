@@ -44,7 +44,7 @@ export const useTouch = () => {
 
   // Listening start to scroll
   const start = (e: React.TouchEvent) => {
-    const { clientX, clientY } = e.touches[0];
+    const { clientX, clientY } = e.touches[0]!;
     touchRef.current = {
       startX: clientX,
       startY: clientY,
@@ -54,7 +54,7 @@ export const useTouch = () => {
 
   // Listening scroll
   const move = (e: React.TouchEvent) => {
-    const { clientX, clientY } = e.touches[0];
+    const { clientX, clientY } = e.touches[0]!;
     let direction: Direction | undefined;
     const { startX, startY } = touchRef.current;
     const deltaX = clientX - startX;

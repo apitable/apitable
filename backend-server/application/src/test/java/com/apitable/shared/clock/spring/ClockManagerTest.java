@@ -18,17 +18,21 @@
 
 package com.apitable.shared.clock.spring;
 
-import com.apitable.AbstractIntegrationTest;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import org.junit.jupiter.api.Test;
+
+import com.apitable.AbstractIntegrationTest;
+
+import org.springframework.test.context.TestPropertySource;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
+@TestPropertySource(properties = { "DEFAULT_TIME_ZONE=UTC" })
 public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
@@ -48,21 +52,29 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocalDateNow() {
-        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, serverConfig.getTimeZone());
+        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, getTestTimeZone());
         getClock().setTime(initialCreateDate);
 
         LocalDate date = ClockManager.me().getLocalDateNow();
 
-        assertThat(date).isAfterOrEqualTo(LocalDate.of(2022, 2, 1));
+        LocalDate expectTime = LocalDate.of(2022, 2, 1);
+
+        assertThat(date).isAfterOrEqualTo(expectTime);
     }
 
     @Test
     public void testGetLocalDateTimeNow() {
-        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, serverConfig.getTimeZone());
+        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, getTestTimeZone());
         getClock().setTime(initialCreateDate);
 
         LocalDateTime dateTime = ClockManager.me().getLocalDateTimeNow();
 
-        assertThat(dateTime).isEqualToIgnoringSeconds(LocalDateTime.of(2022, 2, 1, 19, 10, 30));
+        System.out.println(dateTime);
+
+        LocalDateTime expectTime = LocalDateTime.of(2022, 2, 1, 19, 10, 30, 0);
+
+        System.out.println(expectTime);
+
+        assertThat(dateTime).isEqualToIgnoringSeconds(expectTime);
     }
 }

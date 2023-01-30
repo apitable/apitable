@@ -36,7 +36,7 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
   };
   const paddingTop = (() => {
     if (showTitle()) return 16;
-    const [, level] = (id || '').split('-');
+    const [, level] = (id || '').split('-') as [string, string];
     // The secondary title is hidden
     if (parseInt(level, 10) === 1 && !showTitle()) {
       return 0;

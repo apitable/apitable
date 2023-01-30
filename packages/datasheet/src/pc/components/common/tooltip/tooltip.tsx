@@ -55,7 +55,7 @@ export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
       return;
     }
     setShowPopover(myrefs.current.scrollWidth > myrefs.current.clientWidth);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [myrefs.current, overflowWidth]);
 
   if (

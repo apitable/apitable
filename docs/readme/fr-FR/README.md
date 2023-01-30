@@ -44,6 +44,22 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ Démarrage rapide
 
 > APITable est actuellement un `travail en cours`.
@@ -233,7 +249,7 @@ Puis ouvrez [https://localhost:80](https://localhost:80) dans votre navigateur p
 
 Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
 
-## 🧑<unk> 💻 Contribution
+## 💻 Contribution
 
 Bienvenue, et merci de votre intérêt à contribuer à APITable!
 

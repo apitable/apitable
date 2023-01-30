@@ -17,6 +17,7 @@
  */
 
 import { Tooltip } from 'antd';
+import { IIconProps } from '@apitable/icons';
 import classNames from 'classnames';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -24,6 +25,7 @@ import styles from './style.module.less';
 export interface IPreviewToolItem {
   visible?: boolean;
   component?: React.ReactNode | (() => React.ReactNode);
+  icon?: React.FC<IIconProps>;
   onClick?: () => void;
   tip?: string | (() => string);
   group?: IPreviewToolItem[];

@@ -44,6 +44,22 @@
     </a>
 </p>
 
+<p align="center">
+  English
+  | 
+  <a href="docs/readme/fr-FR/README.md">Français</a>
+  | 
+  <a href="docs/readme/es-ES/README.md">Español</a>
+  | 
+  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  | 
+  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  | 
+  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  | 
+  <a href="docs/readme/ja-JP/README.md">日本語</a>
+</p>
+
 ## ✨ 快速启动
 
 > APITable 目前是 `正在进行中的工作`。
@@ -231,7 +247,7 @@ curl https://apitable.github.io/install.sh | bash
 
 然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
-如果你想要设置你的本地开发环境，请阅读我们的 [🧑stiptop_compute: 开发者指南](./docs/contribute/developer-guide.md)
+如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
 ## 🧑digh:laptop_compute: contribution
 
@@ -312,11 +328,15 @@ curl https://apitable.github.io/install.sh | bash
 
 我们总是为APITable寻找优秀人才：
 
-- **全堆栈开发者**: 你有React, NestJS, TypeScript, Spring Boot, Java, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
-- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。 你想要写高质量的代码，带有清晰的文档和单元测试。
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
-无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到 [talent@apitable。 om](mailto:talent@apitable.com)。
+无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到
+
+talent@apitable。</p> 
+
+
 
 ## 📺 截图
 
@@ -353,6 +373,8 @@ curl https://apitable.github.io/install.sh | bash
 
 ## 🥰 许可协议
 
+
+
 > 此仓库包含在 AGPL 下发布的 Open Source 版本的 APITable源代码。
 > 
 > 如果你想运行你自己的 APITable 副本或对发展作出贡献，那就是你的地方。
@@ -363,4 +385,7 @@ curl https://apitable.github.io/install.sh | bash
 
 <br/>
 
-[^info]: 使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
+
+
+[^info]:    
+    使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。

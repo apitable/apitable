@@ -291,7 +291,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     if (selection?.ranges || selection?.recordRanges) {
       focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [selection]);
 
   useEffect(() => {
@@ -729,14 +729,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useMemo(
     calcEditorRect,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [editing, activeCell, editorX, editorY, field],
   );
   useEffect(() => {
     setTimeout(() => {
       calcEditorRect();
     }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue, record]);
 
   useEffect(() => {

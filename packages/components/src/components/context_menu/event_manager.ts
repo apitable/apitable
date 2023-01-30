@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MouseEvent } from 'react';
+import { IMenuConfig, IMenuEventHandler } from './interface';
 
 function eventManager() {
-  const map = new Map();
+  const map = new Map<string, IMenuEventHandler>();
 
   return {
-    off: (id) => {
+    off: (id: string) => {
       map.delete(id);
     },
-    on: (id, handler) => {
+    on: (id: string, handler: IMenuEventHandler) => {
       map.set(id, handler);
     },
-    emit: (id, configs?: { e: MouseEvent<HTMLElement>, extraInfo?: any }) => {
+    emit: (id: string, configs?: IMenuConfig) => {
       const handler = map.get(id);
       if (handler) {
         handler(configs);
