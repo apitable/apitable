@@ -64,7 +64,7 @@
 
 > APITable 目前是 `正在进行中的工作`。
 > 
-> We will publish the first release in late February 2023.
+> 我们将在2023年1月下旬公布第一份版本。
 > 
 > 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
@@ -247,7 +247,7 @@ curl https://apitable.github.io/install.sh | bash
 
 然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
-如果你想要设置你的本地开发环境，请阅读我们的 [🧑stiptop_compute: 开发者指南](./docs/contribute/developer-guide.md)
+如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
 ## 🧑digh:laptop_compute: contribution
 
@@ -283,7 +283,7 @@ curl https://apitable.github.io/install.sh | bash
 - 如何写入好的提交消息？ [常规承诺](https://www.conventionalcommits.org/)
 - 我们的更新日志格式是什么？ [保留更新日志](https://keepachangelog.com/en/1.0.0/)
 - 如何进行版本控制和标记？ [语义版](https://semver.org/)
-- Java 编码准则是什么？ [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 什么是 TypeScript 编码准则？ -> [TypeScript 样式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### 文件
@@ -328,11 +328,15 @@ curl https://apitable.github.io/install.sh | bash
 
 我们总是为APITable寻找优秀人才：
 
-- **全堆栈开发者**: 你有React, NestJS, TypeScript, Spring Boot, Java, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
-- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。 你想要写高质量的代码，带有清晰的文档和单元测试。
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
-无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到 [talent@apitable。 om](mailto:talent@apitable.com)。
+无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到
+
+talent@apitable。</p> 
+
+
 
 ## 📺 截图
 
@@ -369,6 +373,8 @@ curl https://apitable.github.io/install.sh | bash
 
 ## 🥰 许可协议
 
+
+
 > 此仓库包含在 AGPL 下发布的 Open Source 版本的 APITable源代码。
 > 
 > 如果你想运行你自己的 APITable 副本或对发展作出贡献，那就是你的地方。
@@ -379,4 +385,7 @@ curl https://apitable.github.io/install.sh | bash
 
 <br/>
 
-[^info]: 使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
+
+
+[^info]:    
+    使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
