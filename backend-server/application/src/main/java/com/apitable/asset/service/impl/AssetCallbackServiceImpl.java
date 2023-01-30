@@ -349,7 +349,8 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                     try (InputStreamCache pdfImgStreamCache =
                              new InputStreamCache(imageIn,
                                  imageIn.available())) {
-                        pdfImgUploadPath.set(StringUtil.buildPath(SPACE_PREFIX));
+                        pdfImgUploadPath.set(
+                            StringUtil.buildPath(SPACE_PREFIX));
                         String pdfImgChecksum =
                             DigestUtil.md5Hex(
                                 pdfImgStreamCache.getInputStream());
