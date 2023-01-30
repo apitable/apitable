@@ -16,35 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.asset.service;
-
-import java.util.List;
-
-import com.apitable.asset.enums.AssetType;
-import com.apitable.asset.vo.AssetUploadResult;
-
 /**
- * Asset Upload Callback Service.
  *
- * @author Pengap
+ * @author Chambers
  */
-public interface IAssetCallbackService {
-
-    /**
-     * asset callback notify after complete upload.
-     *
-     * @param assetType     assert type
-     * @param resourceKeys  resource key list
-     * @return AssetUploadResults
-     * @author Chambers
-     */
-    List<AssetUploadResult> loadAssetUploadResult(AssetType assetType,
-        List<String> resourceKeys);
-
-    /**
-     * widget upload callback.
-     *
-     * @param resourceKeys   file urls
-     */
-    void widgetCallback(List<String> resourceKeys);
-}
+package com.apitable.asset.ro;
