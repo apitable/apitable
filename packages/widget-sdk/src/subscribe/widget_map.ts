@@ -31,7 +31,7 @@ export const subscribeWidgetMap = (store: Store<IReduxState>, datasheetService: 
       return;
     }
     const previousWidgetIds = widgetIds;
-    widgetIds = new Set(Object.keys(widgetMap).filter(item => Boolean(widgetMap[item].widget)));
+    widgetIds = new Set(Object.keys(widgetMap).filter(item => Boolean(widgetMap[item]!.widget)));
     if (eqSet(widgetIds, previousWidgetIds)) {
       return;
     }

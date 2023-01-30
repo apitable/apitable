@@ -27,7 +27,7 @@ export const ToggleButtonWidget = (props: WidgetProps) => {
         isBtn
         block
         options={props.options.enumOptions as any}
-        onChange={(e, value) => props.onChange(value)}
+        onChange={(_e, value) => props.onChange(value)}
         value={props.value || props.defaultValue}
       />
     </>

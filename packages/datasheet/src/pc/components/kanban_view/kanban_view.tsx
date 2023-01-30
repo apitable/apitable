@@ -101,12 +101,12 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   useEffect(() => {
     const collapse = getStorage(StorageName.KanbanCollapse);
     setCollapse(collapse && collapse[storageId] ? collapse[storageId] : []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [storageId]);
 
   useEffect(() => {
     setStorage(StorageName.KanbanCollapse, { [storageId]: collapse });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [collapse]);
 
   const ref = useRef<HTMLDivElement>(null);

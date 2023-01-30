@@ -105,7 +105,7 @@ interface IFileLikeProps {
 }
 
 export function isWhatFileType(file: IFileLikeProps) {
-  const inferredType = mime.lookup(file.name);
+  const inferredType = mime.lookup(file.name) as string;
   if (isImage(file)) {
     return FileType.Image;
   }
@@ -128,7 +128,7 @@ export function isWhatFileType(file: IFileLikeProps) {
 }
 
 export function isDocType(file: IFileLikeProps) {
-  const inferredType = mime.lookup(file.name);
+  const inferredType = mime.lookup(file.name) as string;
   if (accept(file, WORD_MIME_TYPE) || WORD_MIME_TYPE.includes(inferredType)) {
     return DocType.Word;
   }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 export interface IContextMenuClickState {
   /**
@@ -207,3 +207,10 @@ export interface IContextMenuStyleProps {
    */
   isGroup?: boolean;
 }
+
+export interface IMenuConfig {
+  e: MouseEvent<HTMLElement>;
+  extraInfo?: any;
+}
+
+export type IMenuEventHandler = (configs?: IMenuConfig) => void;

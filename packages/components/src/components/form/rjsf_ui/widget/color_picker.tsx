@@ -73,7 +73,7 @@ export const ColorWidget = ({ value, onChange }: WidgetProps) => {
     setDisplayColorPicker(!displayColorPicker);
   };
 
-  const handleChange = (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (color: ColorResult) => {
     setColor(color.rgb);
     const { r, g, b, a = 1 } = color.rgb;
     const newColor = Color({ r, g, b }).alpha(a).rgb().string();

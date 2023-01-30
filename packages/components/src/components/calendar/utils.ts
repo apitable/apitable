@@ -153,8 +153,8 @@ export const isTouchEvent = (event: MouseEvent | TouchEvent): event is TouchEven
 };
 
 export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
-  const start = week[0];
-  const end = week[week.length - 1];
+  const start = week[0]!;
+  const end = week[week.length - 1]!;
   const startDate = new Date(year, start.month - 1, start.day);
   const endDate = new Date(year, end.month - 1, end.day);
   let updateTasks = tasks;
@@ -202,9 +202,9 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
   const levels: ILevelResult[][] = [];
   let j: number;
   for (let i = 0; i < rowTasks.length; i++) {
-    const task = rowTasks[i];
+    const task = rowTasks[i]!;
     for (j = 0; j < levels.length; j++) {
-      const isOver = levels[j].some(seg =>
+      const isOver = levels[j]!.some(seg =>
         seg.left <= task.right && seg.right >= task.left
       );
       if (!isOver) {
@@ -216,6 +216,6 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
   return levels;
 };
 
-export const formatDayValue = (month, day, lang: 'en' | 'zh',) => {
+export const formatDayValue = (month: number, day: number, lang: 'en' | 'zh',) => {
   return lang === 'zh' ? `${month}月${day}日` : `${MONTHS[month - 1]} ${day}`;
 };

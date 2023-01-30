@@ -3,7 +3,36 @@
 
 
 
-## [v0.17.0-beta](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-01-16)
+## [v0.17.0-rc](https://github.com/apitable/apitable/releases/tag/v0.17.0-rc) (2023-01-23)
+
+
+### Bug fixes
+
+* fix: make minor semver conflict @mr-kelly 
+* fix: replace wrong email logo @xukecheng 
+* fix: wrong variable @xukecheng 
+* fix: replace wrong email templates ([#190](https://github.com/apitable/apitable/pull/190)) @xukecheng 
+* fix: unable to operate members and teams ([#214](https://github.com/apitable/apitable/pull/214)) @MrWangQAQ 
+* fix: the default value of the percent field cannot be reset ([#215](https://github.com/apitable/apitable/pull/215)) @alolonghun 
+* fix: fusion api param validation decorators & qr code download failed & unable to operate members and teams ([#217](https://github.com/apitable/apitable/pull/217)) @mr-kelly 
+* fix: the page crashes when the option field configures the color ([#219](https://github.com/apitable/apitable/pull/219)) @alolonghun 
+* fix: expand record comment emoji reply ([#218](https://github.com/apitable/apitable/pull/218)) @MrWangQAQ 
+* fix: color match ([#220](https://github.com/apitable/apitable/pull/220)) @alolonghun 
+* fix: sync hosted version & fusion api param validation error  & login page QR code cannot be displayed  & wrong email folder name ([#223](https://github.com/apitable/apitable/pull/223)) @mr-kelly 
+
+### What's more
+
+* Merge branch 'develop' into release/0.17.0 @mr-kelly 
+* chore: init changelog.md @mr-kelly 
+* Chore/merge new feature ([#203](https://github.com/apitable/apitable/pull/203)) @laboonly 
+* docs: change log @laboonly 
+* docs: change log ([#204](https://github.com/apitable/apitable/pull/204)) @laboonly 
+* Merge branch 'develop' into fix/wrong-email-logo @xukecheng 
+* chore: disable eslint validate of super linter ([#211](https://github.com/apitable/apitable/pull/211)) @yort-feng 
+* test: user module unit test ([#191](https://github.com/apitable/apitable/pull/191)) @yort-feng 
+* chore: README show latest release tag ([#209](https://github.com/apitable/apitable/pull/209)) @mr-kelly 
+* l10n: translation init ([#137](https://github.com/apitable/apitable/pull/137)) @mr-kelly 
+## [v0.17.0-beta](https://github.com/apitable/apitable/releases/tag/v0.17.0-beta) (2023-01-16)
 
 
 ### Features and enhancements

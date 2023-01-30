@@ -16,32 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.asset.vo;
+package com.apitable.interfaces.notification;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import com.apitable.interfaces.notification.facade.DefaultMailFacadeImpl;
+import com.apitable.interfaces.notification.facade.MailFacade;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>
- * Resource Direct Transfer Token Result View
- * </p>
+ * Notification Context Config.
+ *
+ * @author Chambers
  */
-@Data
-@ApiModel("Resource Direct Transfer Token Result View")
-public class AssetUploadTokenVo {
+@Configuration(proxyBeanMethods = false)
+public class NotificationContextConfig {
 
-    @ApiModelProperty(value = "Upload voucher", position = 1)
-    private String uploadToken;
-
-    @ApiModelProperty(value = "Resource name", position = 2)
-    private String resourceKey;
-
-    @ApiModelProperty(value = "Upload type (QINIU: Qiniu Cloud)", position = 3)
-    private String uploadType;
-
-    @ApiModelProperty(value = "Endpoint", position = 4)
-    private String endpoint;
-
+  /**
+   * Inject Default Mail Facade.
+   *
+   * @return MailFacade
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  public MailFacade defaultMailFacadeImpl() {
+    return new DefaultMailFacadeImpl();
+  }
 }

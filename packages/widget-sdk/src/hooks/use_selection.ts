@@ -54,8 +54,8 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
     return;
   }
 
-  const { fieldId: startFieldId, recordId: startRecordId } = ranges[0].start;
-  const { fieldId: endFieldId, recordId: endRecordId } = ranges[0].end;
+  const { fieldId: startFieldId, recordId: startRecordId } = ranges[0]!.start;
+  const { fieldId: endFieldId, recordId: endRecordId } = ranges[0]!.end;
 
   // handle pre-order
   const activeRowInfo = Selectors.getActiveRowInfo(state as any as IReduxState, currentDatasheetId);

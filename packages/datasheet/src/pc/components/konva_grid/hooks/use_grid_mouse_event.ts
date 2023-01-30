@@ -183,7 +183,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (expandRecordUICell && (expandRecordUICell.rowIndex < rowStartIndex || expandRecordUICell.rowIndex > rowStopIndex)) {
       scrollToItem(expandRecordUICell);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [routeRecordId, datasheetId]);
 
   // The current user is editing, but the "column" or "row" where the edited cell is located is hidden or deleted
