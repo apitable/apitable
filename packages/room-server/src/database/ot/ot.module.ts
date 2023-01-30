@@ -17,11 +17,9 @@
  */
 
 import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlarmDynamicModule } from 'database/alarm/alarm.dynamic.module';
 import { DashboardModule } from 'database/dashboard/dashboard.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { DatasheetWidgetRepository } from 'database/datasheet/repositories/datasheet.widget.repository';
 import { FormModule } from 'database/form/form.module';
 import { MirrorModule } from 'database/mirror/mirror.module';
 import { NodeModule } from 'node/node.module';
@@ -42,7 +40,7 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
 @Module({
   imports: [
     forwardRef(()=>GrpcModule),
-    NodeModule, 
+    forwardRef(()=>NodeModule),
     DatasheetModule, 
     forwardRef(()=>ResourceModule), 
     WidgetModule, 
@@ -53,10 +51,6 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
     UserModule,
     AlarmDynamicModule.forRoot(),
     SubscriptionDynamicModule.forRoot(),
-    TypeOrmModule.forFeature([
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      DatasheetWidgetRepository,
-    ]),
   ],
   providers: [
     OtService,

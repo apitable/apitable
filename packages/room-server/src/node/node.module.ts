@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { DatabaseModule } from 'database/database.module';
 import { UnitModule } from 'unit/unit.module';
 import { UserModule } from 'user/user.module';
 import { NodeDescRepository } from './repositories/node.desc.repository';
@@ -36,19 +35,17 @@ import { IsNodeExistConstraint } from './validations/validation.constraint';
   imports: [
     UserModule,
     UnitModule,
+    forwardRef(() => DatabaseModule),
     TypeOrmModule.forFeature([
       NodeRepository,
       NodeRelRepository,
       NodeDescRepository,
       NodeShareSettingRepository,
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      DatasheetRepository,
-      ResourceMetaRepository,
     ]),
   ],
   controllers: [],
   providers: [
-    NodeService, 
+    NodeService,
     NodePermissionService, 
     NodeShareSettingService, 
     NodeDescriptionService, 

@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from '@nestjs/common';
-import { ResourceType } from '@apitable/core';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { IResourceMeta, ResourceType } from '@apitable/core';
 import { WidgetService } from 'database/widget/services/widget.service';
 import { IResourceInfo } from '../interfaces/resource.interface';
 import { NodeService } from 'node/services/node.service';
+import { ResourceMetaRepository } from '../repositories/resource.meta.repository';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 
 /**
  * Meta service for all resources (including datasheets, widgets, etc)
@@ -28,14 +30,17 @@ import { NodeService } from 'node/services/node.service';
 @Injectable()
 export class MetaService {
   constructor(
+    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
+    private readonly datasheetService: DatasheetService,
     private readonly widgetService: WidgetService,
+    private readonly resourceMetaRepository: ResourceMetaRepository,
   ) { }
 
   async getResourceInfo(resourceId: string, resourceType: ResourceType): Promise<IResourceInfo> {
     switch (resourceType) {
       case ResourceType.Datasheet:
-        const revision = await this.nodeService.getRevisionByDstId(resourceId);
+        const revision = await this.getRevisionByDstId(resourceId);
         return { resourceRevision: revision, nodeId: resourceId };
       case ResourceType.Form:
       case ResourceType.Dashboard:
@@ -49,5 +54,26 @@ export class MetaService {
         break;
     }
     return {};
+  }
+
+  public async selectMetaByResourceId(resourceId: string): Promise<IResourceMeta> {
+    return await this.resourceMetaRepository.selectMetaByResourceId(resourceId);
+  }
+
+  public async updateMetaDataByResourceId(resourceId: string, userId: string, metaData: IResourceMeta) {
+    return await this.resourceMetaRepository.updateMetaDataByResourceId(resourceId, userId, metaData);
+  }
+
+  public async updateMetaAndRevision(resourceId: string, userId: string, metaData: IResourceMeta, revision: number) {
+    return await this.resourceMetaRepository.updateMetaAndRevision(resourceId, userId, metaData, revision);
+  }
+
+  public async selectReversionByResourceId(resourceId: string): Promise<{ revision: number } | undefined> {
+    return await this.resourceMetaRepository.selectReversionByResourceId(resourceId);
+  }
+
+  public async getRevisionByDstId(dstId: string): Promise<number | undefined> {
+    const rawData = await this.datasheetService.selectRevisionByDstId(dstId);
+    return rawData && Number(rawData.revision);
   }
 }

@@ -19,8 +19,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { DATASHEET_HTTP_DECORATE, USER_HTTP_DECORATE } from '../../../shared/common';
 import { ApiException } from '../../../shared/exception';
-import { UnitMemberRepository } from '../../../unit/repositories/unit.member.repository';
 import { ApiTipConstant } from '@apitable/core';
+import { UnitMemberService } from 'unit/services/unit.member.service';
 
 /**
  * Guards are executed after each middleware, but before any interceptor or pipe.
@@ -30,7 +30,7 @@ import { ApiTipConstant } from '@apitable/core';
 @Injectable()
 export class ApiFieldGuard implements CanActivate {
 
-  constructor( private readonly memberRepository: UnitMemberRepository) {
+  constructor( private readonly memberService: UnitMemberService) {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -49,7 +49,7 @@ export class ApiFieldGuard implements CanActivate {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
     const user = request[USER_HTTP_DECORATE];
-    const spaceIds = await this.memberRepository.selectSpaceIdsByUserId(user.id);
+    const spaceIds = await this.memberService.selectSpaceIdsByUserId(user.id);
     // no permission of the space
     if (!spaceIds.includes(spaceId)) {
       throw ApiException.tipError(ApiTipConstant.api_forbidden_because_of_not_in_space);

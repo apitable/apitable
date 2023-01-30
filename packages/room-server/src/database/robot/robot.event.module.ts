@@ -16,10 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
-import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
+import { forwardRef, Module } from '@nestjs/common';
 import { RobotModule } from 'automation/robot.module';
 import { CommandModule } from 'database/command/command.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
@@ -29,12 +26,7 @@ import { RobotEventService } from './services/robot.event.service';
   imports: [
     CommandModule,
     DatasheetModule,
-    RobotModule,
-    TypeOrmModule.forFeature([
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      AutomationTriggerRepository,
-      AutomationTriggerTypeRepository,
-    ]),
+    forwardRef(()=>RobotModule),
   ],
   providers: [RobotEventService],
   exports: [RobotEventService]

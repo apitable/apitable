@@ -19,10 +19,10 @@
 import { IDashboardLayout, IResourceMeta } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { NodeService } from 'node/services/node.service';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { ResourceException, ServerException } from 'shared/exception';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardDataPack, NodeDetailInfo, WidgetMap } from '../../interfaces';
+import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class DashboardService {
@@ -30,7 +30,7 @@ export class DashboardService {
   constructor(
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
-    private readonly resourceMetaRepository: ResourceMetaRepository,
+    private readonly resourceMetaService: MetaService,
   ) { }
 
   async fetchDashboardPack(
@@ -77,7 +77,7 @@ export class DashboardService {
     baseNodeInfo: NodeDetailInfo,
     linkId?: string,
   ): Promise<DashboardDataPack> {
-    const meta = await this.resourceMetaRepository.selectMetaByResourceId(dashboardId);
+    const meta = await this.resourceMetaService.selectMetaByResourceId(dashboardId);
     const dashboard = {
       ...baseNodeInfo.node,
       snapshot: {
