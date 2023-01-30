@@ -46,26 +46,37 @@ import org.springframework.web.bind.annotation.RestController;
 @ApiResource(path = "/asset")
 public class AssetCallbackController {
 
+    /**  */
     @Resource
     private IAssetCallbackService iAssetCallbackService;
 
+    /**
+     * *
+     * @param body AssetUploadNotifyRO
+     * @return ResponseData<List<AssetUploadResult>>
+     */
     @PostResource(name = "Resource upload completion notification callback",
         path = "/upload/callback", requiredLogin = false)
     @ApiOperation(value = "Resource upload completion notification callback",
         notes = "After S3 completes the client upload, "
             + "it actively reaches the notification server")
     public ResponseData<List<AssetUploadResult>> notifyCallback(
-        @RequestBody AssetUploadNotifyRO body) {
+        @RequestBody final AssetUploadNotifyRO body) {
         return ResponseData.success(
             iAssetCallbackService.loadAssetUploadResult(
                 AssetType.of(body.getType()), body.getResourceKeys()));
     }
 
+    /**
+     * *
+     * @param body WidgetUploadNotifyRO
+     * @return ResponseData<Void>
+     */
     @PostResource(name = "widget upload callback",
         path = "/widget/uploadCallback", requiredLogin = false)
     @ApiOperation(value = "widget upload callback")
     public ResponseData<Void> widgetCallback(
-        @RequestBody WidgetUploadNotifyRO body) {
+        @RequestBody final WidgetUploadNotifyRO body) {
         iAssetCallbackService.widgetCallback(body.getResourceKeys());
         return ResponseData.success();
     }
