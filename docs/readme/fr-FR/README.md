@@ -64,7 +64,7 @@
 
 > APITable est actuellement un `travail en cours`.
 > 
-> We will publish the first release in late February 2023.
+> Nous publierons la première version fin janvier 2023.
 > 
 > Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.com/apitable_com) pour rester en contact.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->Si vous voulez juste essayer APITable[^info], cliquez ici pour [⚡Gitpod démo en ligne](https://gitpod.io/#https://github.com/apitable/apitable).
 
@@ -249,7 +249,7 @@ Puis ouvrez [https://localhost:80](https://localhost:80) dans votre navigateur p
 
 Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
 
-## 🧑<unk> 💻 Contribution
+## 💻 Contribution
 
 Bienvenue, et merci de votre intérêt à contribuer à APITable!
 
@@ -283,7 +283,7 @@ Utilisez ces conventions communes APITables :
 - Comment écrire un bon message de commit ? [Commits conventionnels](https://www.conventionalcommits.org/)
 - Quel est notre format de changelog ? [Garder le changelog](https://keepachangelog.com/en/1.0.0/)
 - Comment versionner et étiqueter ? [Versioning sémantique](https://semver.org/)
-- Qu'est-ce que la directive de codage Java ? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### Documentations
