@@ -1,22 +1,22 @@
-# Developer Guide
+# 開発者ガイド
 
-This guide helps you get started developing APITable.
+このガイドは、APITableの開発を開始するのに役立ちます。
 
-## Dependencies
+## 依存関係
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+開発者環境を設定する前に、以下の依存関係とプログラミング言語がインストールされていることを確認してください。
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+- `作る`
+- [sdkman](https://sdkman.io/): `java`, Java SDK 8 をインストールする
+- [nvm](https://github.com/nvm-sh/nvm): インストール用 `ノード`, NodeJS v16.15.0
 
 
-### Programming Language
+### プログラミング言語
 
-If you are using macOS or Linux. We recommend install programming language with SDK manager `sdkman` and `nvm`.
+macOS または Linux を使用している場合。 SDKマネージャー `sdkman` と `nvm` を使用してプログラミング言語をインストールすることをお勧めします。
 
 ```bash
 # quick install nvm
@@ -31,7 +31,7 @@ sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 
 ### macOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+不足している依存関係をインストールするには、 [Homebrew](https://brew.sh/) を使用することをお勧めします：
 
 ```bash
 ## necessary required
@@ -42,14 +42,14 @@ brew install make
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+CentOS / RHEL または `yum` を含む Linux ディストリビューションでは
 
 ```bash
 sudo yum install git
 sudo yum install make
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+Ubuntu / Debian または他の Linux ディストリビューションで `apt`
 
 ```bash
 sudo apt update
@@ -62,7 +62,7 @@ sudo apt install make
 
 If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
 
-Install missing dependencies on Ubuntu using `apt`:
+`apt` を使用してUbuntuに不足している依存関係をインストールする :
 
 ```bash
 sudo apt update
@@ -71,30 +71,30 @@ sudo apt install make
 ```
 
 
-## Build Tool
+## ビルドツール
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+`make` を中心としたビルドツールエントリとして `gradle` / `npm` / `yarn` のような他のビルドツールを駆動します。
 
-So you can just input `make` command and see all build commands:
+ですから、 `make` コマンドを入力するだけで、すべてのビルドコマンドを確認できます。
 
 ```bash
-make
+作る
 ```
 
-![make command screenshot](../static/make.png)
+![コマンドのスクリーンショット作成](../static/make.png)
 
 
 
-## Start Development Environment
+## 開発環境を開始
 
-APITable consists of 4 processes:
+APITableは以下の4つのプロセスで構成されています。
 
-1. backend-server
+1. バックエンドサーバー
 2. room-server
-3. socket-server
+3. ソケットサーバー
 4. web-server
 
-To start the development environment locally, run these commands:
+開発環境をローカルで起動するには、以下のコマンドを実行します。
 
 ```bash
 # start databases in dockers
@@ -125,8 +125,8 @@ make run # enter 4
 
 ## IDE
 
-We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
+ご使用の IDE に `Visual Studio Code` または `Intellij IDEA` を使用することをお勧めします。
 
-APITable have prepared these two IDE's debug configs.
+APITableは、これらの2つのIDEのデバッグ設定を用意しています。
 
-Just open APITable's root directory with IDE.
+IDEでAPITableのルートディレクトリを開くだけです。
