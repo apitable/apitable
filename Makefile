@@ -346,7 +346,7 @@ devenv-up:
 
 .PHONY: devenv-down
 devenv-down: ## debug all devenv services with docker compose up -d
-	$(_DEVENV) down -v
+	$(_DEVENV) down -v --remove-orphans
 
 devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
@@ -442,7 +442,7 @@ _dataenv-volumes: ## create data folder with current user permissions
 		$$DATA_PATH/.data/rabbitmq \
 
 dataenv-down:
-	$(_DATAENV) down -v
+	$(_DATAENV) down -v --remove-orphans
 
 dataenv-ps:
 	$(_DATAENV) ps
@@ -459,7 +459,7 @@ up: _dataenv-volumes ## startup the application
 
 .PHONY: down
 down: ## shutdown the application
-	docker compose down -v
+	docker compose down -v --remove-orphans
 
 .PHONY:ps
 ps: ## docker compose ps
