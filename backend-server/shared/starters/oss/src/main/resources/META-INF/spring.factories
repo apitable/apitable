@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.oss.autoconfigure.OssAutoConfiguration,\
-com.apitable.starter.oss.autoconfigure.QiniuTemporaryAutoConfiguration
+com.apitable.starter.oss.autoconfigure.OssAutoConfiguration
