@@ -53,7 +53,8 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
    * Obtain changeset list with the given revision numbers, in their order.
    *
    * @param dstId datasheet ID
-   * @param revisions revision number list
+   * @param startRevision
+   * @param endRevision
    */
   getChangesetOrderList(dstId: string, startRevision: number, endRevision: number): Promise<any[]> {
     return this.query(

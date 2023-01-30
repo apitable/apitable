@@ -17,9 +17,7 @@
  */
 
 import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { NodeModule } from 'node/node.module';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { ResourceModule } from 'database/resource/resource.module';
 import { UserModule } from 'user/user.module';
 import { DashboardController } from './controllers/dashboard.controller';
@@ -27,13 +25,9 @@ import { DashboardService } from './services/dashboard.service';
 
 @Module({
   imports: [
-    NodeModule, 
+    forwardRef(()=>NodeModule),
     UserModule,
-    forwardRef(()=>ResourceModule),
-    TypeOrmModule.forFeature([
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      ResourceMetaRepository,
-    ]),
+    forwardRef(()=>ResourceModule)
   ],
   controllers: [DashboardController],
   providers: [DashboardService],

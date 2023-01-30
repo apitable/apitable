@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
 import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@apitable/core';
 import * as util from 'util';
@@ -24,11 +24,11 @@ import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from '../../../share
 import { Logger } from 'winston';
 import { difference, intersection, isEmpty } from 'lodash';
 import { IClientRoomChangeResult } from '../../../shared/services/socket/socket.interface';
-import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
 import { ResourceMetaRepository } from '../repositories/resource.meta.repository';
-import { WidgetRepository } from '../../widget/repositories/widget.repository';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { ComputeFieldReferenceManager } from 'database/datasheet/services/compute.field.reference.manager';
+import { WidgetService } from 'database/widget/services/widget.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 
 /**
  * Room - Resource two-way association maintenance
@@ -41,9 +41,10 @@ export class RoomResourceRelService {
     private readonly redisService: RedisService,
     private readonly datasheetMetaService: DatasheetMetaService,
     private readonly computeFieldReferenceManager: ComputeFieldReferenceManager,
-    private readonly datasheetRepository: DatasheetRepository,
+    @Inject(forwardRef(() => DatasheetService))
+    private readonly datasheetService: DatasheetService,
     private readonly resourceMetaRepository: ResourceMetaRepository,
-    private readonly widgetRepository: WidgetRepository,
+    private readonly widgetService: WidgetService,
   ) { }
 
   async hasResource(roomId: string): Promise<boolean> {
@@ -119,7 +120,7 @@ export class RoomResourceRelService {
       }
     });
     if (dstIds.length > 0) {
-      const datasheetRevisions = await this.datasheetRepository.selectRevisionByDstIds(dstIds);
+      const datasheetRevisions = await this.datasheetService.selectRevisionByDstIds(dstIds);
       resourceRevisions.push(...datasheetRevisions);
     }
     if (rscIds.length > 0) {
@@ -127,7 +128,7 @@ export class RoomResourceRelService {
       resourceRevisions.push(...rscRevisions);
     }
     if (wdtIds.length > 0) {
-      const wdtRevisions = await this.widgetRepository.getRevisionByWdtIds(wdtIds);
+      const wdtRevisions = await this.widgetService.getRevisionByWdtIds(wdtIds);
       resourceRevisions.push(...wdtRevisions);
     }
     const revisions = resourceRevisions.map(rscRevision => {
@@ -181,10 +182,10 @@ export class RoomResourceRelService {
     const client = this.redisService.getClient();
     // Maintain room - resource two-way association
     const roomKey = util.format(CacheKeys.ROOM_RELATE, roomId);
-    const exist = await client.exists(roomKey);
-    if (exist) {
-      this.logger.info(`ROOM ${roomId} exist Room - Resource map`);
-      // Room - Resource two-way association exists
+    const isExist = await client.exists(roomKey);
+    if (isExist) {
+      this.logger.info(`The room ${roomId} exist - Resource map`);
+      // Room - Resource association exists
       const members = await client.smembers(roomKey);
       // Get intersection, delete Resource that left the Room
       const inter = intersection<string>(resourceIds, members);
@@ -193,11 +194,11 @@ export class RoomResourceRelService {
       }
     }
 
-    // Maintain resource - room two-way association
+    // Maintain resource - room association
     for (let i = 0; i < resourceIds.length; i++) {
       const resourceKey = util.format(CacheKeys.RESOURCE_RELATE, resourceIds[i]);
       const result = await client.sismember(resourceKey, roomId);
-      // Check if room exists in Resource - Room two-way association
+      // Check whether room exists in resource - room association
       if (result) {
         this.logger.info(`Room ${roomId} exist in ${resourceIds[i]} Resource - Room map`);
         const count = await client.scard(resourceKey);

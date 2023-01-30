@@ -1,4 +1,4 @@
-/*
+/**
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,32 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.asset.vo;
+import { Injectable } from "@nestjs/common";
+import { DatasheetWidgetRepository } from '../repositories/datasheet.widget.repository';
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+@Injectable()
+export class DatasheetWidgetService {
+  constructor(
+    private readonly datasheetWidgetRepository: DatasheetWidgetRepository,
+  ) {}
 
+  async selectDstIdsByWidgetIds(widgetIds: string[]): Promise<string[] | null> {
+    return await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(widgetIds);
+  }
 
-/**
- * <p>
- * Resource Direct Transfer Token Result View
- * </p>
- */
-@Data
-@ApiModel("Resource Direct Transfer Token Result View")
-public class AssetUploadTokenVo {
-
-    @ApiModelProperty(value = "Upload voucher", position = 1)
-    private String uploadToken;
-
-    @ApiModelProperty(value = "Resource name", position = 2)
-    private String resourceKey;
-
-    @ApiModelProperty(value = "Upload type (QINIU: Qiniu Cloud)", position = 3)
-    private String uploadType;
-
-    @ApiModelProperty(value = "Endpoint", position = 4)
-    private String endpoint;
-
+  async selectDstIdsByNodeId(nodeId: string): Promise<string[] | null> {
+    return await this.datasheetWidgetRepository.selectDstIdsByNodeId(nodeId);
+  }
 }
