@@ -64,7 +64,7 @@
 
 > APITableは現在 `作業中`です。
 > 
-> We will publish the first release in late February 2023.
+> 最初のリリースは2023年1月下旬に公開されます。
 > 
 > [Discord](https://discord.gg/TwNb9nfdBU) や [Twitter](https://twitter.com/apitable_com) に参加して連絡を取り合いましょう。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->APITable[^info]を試してみたい場合は、 [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable) をクリックしてください。
 
@@ -283,7 +283,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 - 良いコミットメッセージを書く方法は? [従来のコミット](https://www.conventionalcommits.org/)
 - 更新履歴のフォーマットは何ですか? [変更履歴を保持](https://keepachangelog.com/en/1.0.0/)
 - バージョン管理とタグ付け方法は? [セマンティックバージョン](https://semver.org/)
-- Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ### 文書
