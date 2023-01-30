@@ -1,55 +1,55 @@
-# Developer Guide
+# Guide du développeur
 
-This guide helps you get started developing APITable.
+Ce guide vous aide à commencer à développer APITable.
 
-## Dependencies
+## Dépendances
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+Assurez-vous d'avoir les dépendances suivantes et les langages de programmation installés avant de configurer votre environnement de développeur:
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+- `faire`
+- [sdkman](https://sdkman.io/): pour installer `java`, Java SDK 8
+- [nvm](https://github.com/nvm-sh/nvm): pour installer `noeud`, NodeJS v16.15.0
 
 
-### Programming Language
+### Langue de programmation
 
-If you are using macOS or Linux. We recommend install programming language with SDK manager `sdkman` and `nvm`.
+Si vous utilisez macOS ou Linux. Nous recommandons d'installer le langage de programmation avec le gestionnaire SDK `sdkman` et `nvm`.
 
 ```bash
 # quick install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install. h | bash
+# installation rapide sdkman
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
-nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
-sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
+# installer nodejs 
+nvm install 16. 5.0 && nvm utilise 16.15. && corepack active
+# installer le kit de développement java
+sdk install java 8. .342-amzn && sdk utilise java 8.0.342-amzn
 ```
 
 ### macOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+Nous recommandons d'utiliser [Homebrew](https://brew.sh/) pour installer les dépendances manquantes :
 
 ```bash
-## necessary required
+## nécessaire
 brew install git
 brew install --cask docker
-brew install make
+brew install make make
 ```
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+Sur CentOS / RHEL ou toute autre distribution Linux avec `yum`
 
 ```bash
 sudo yum install git
-sudo yum install make
+sudo yum install make make
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+Sur Ubuntu / Debian ou toute autre distribution Linux avec `apt`
 
 ```bash
 sudo apt update
@@ -58,11 +58,11 @@ sudo apt install make
 ```
 
 
-### Windows
+### Fenêtres
 
-If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+Si vous exécutez APITable sous Windows 10/11, nous vous recommandons d'installer [Docker Desktop sous Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu sur WSL](https://ubuntu.com/wsl) et [Terminal Windows](https://aka.ms/terminal), Vous pouvez en savoir plus sur Windows Subsystem pour Linux (WSL) dans [le site officiel](https://learn.microsoft.com/en-us/windows/wsl).
 
-Install missing dependencies on Ubuntu using `apt`:
+Installer les dépendances manquantes sur Ubuntu en utilisant `apt`:
 
 ```bash
 sudo apt update
@@ -71,33 +71,33 @@ sudo apt install make
 ```
 
 
-## Build Tool
+## Outil de construction
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+Nous utilisons `make` comme entrée d'outil de construction centrée qui conduit d'autres outils de construction comme `gradle` / `npm` / `yarn`.
 
-So you can just input `make` command and see all build commands:
+Donc vous pouvez simplement entrer la commande `make` et voir toutes les commandes de build :
 
 ```bash
-make
+faire
 ```
 
-![make command screenshot](../static/make.png)
+![faire une capture d'écran de commande](../static/make.png)
 
 
 
-## Start Development Environment
+## Démarrer l'environnement de développement
 
-APITable consists of 4 processes:
+APITable se compose de 4 processus :
 
-1. backend-server
+1. serveur backend
 2. room-server
 3. socket-server
-4. web-server
+4. serveur web
 
-To start the development environment locally, run these commands:
+Pour démarrer l'environnement de développement localement, exécutez ces commandes :
 
 ```bash
-# start databases in dockers
+# démarrer les bases de données dans dockers
 make dataenv 
 
 # install dependencies
@@ -106,7 +106,7 @@ make install
 #start backend-server
 make run # enter 1  
 
-# and then switch to a new terminal
+# puis basculer vers un nouveau terminal
 # start room-server
 make run # enter 2
 
@@ -125,8 +125,8 @@ make run # enter 4
 
 ## IDE
 
-We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
+Nous vous recommandons d'utiliser `Visual Studio Code` ou `Intellij IDEA` pour votre IDE.
 
-APITable have prepared these two IDE's debug configs.
+APITable a préparé ces deux configurations de débogage d'IDE.
 
-Just open APITable's root directory with IDE.
+Ouvrez simplement le répertoire racine d'APITable avec IDE.
