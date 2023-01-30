@@ -1,55 +1,55 @@
-# Developer Guide
+# دليل المطور
 
-This guide helps you get started developing APITable.
+هذا الدليل يساعدك على البدء في تطوير APITable.
 
-## Dependencies
+## التبعيات
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+تأكد من أن لديك التبعيات التالية ولغات البرمجة مثبتة قبل إعداد بيئة المطور الخاص بك:
 
 - `git`
-- [docker](https://docs.docker.com/engine/install/)
-- [docker-compose v2](https://docs.docker.com/engine/install/)
-- `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+- [مخزن](https://docs.docker.com/engine/install/)
+- [المرفأ - تكوين v2](https://docs.docker.com/engine/install/)
+- `اصنع`
+- [sdkman](https://sdkman.io/): لتثبيت `جافا`، جافا SDK 8
+- [nvm](https://github.com/nvm-sh/nvm): لتثبيت `عقدة`, NodeJS v16.15.0
 
 
-### Programming Language
+### لغة البرمجة
 
-If you are using macOS or Linux. We recommend install programming language with SDK manager `sdkman` and `nvm`.
+إذا كنت تستخدم macOS أو Linux. نوصي بتثبيت لغة البرمجة مع مدير SDK `sdkman` و `nvm`.
 
 ```bash
-# quick install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
-curl -s "https://get.sdkman.io" | bash
-# install nodejs 
-nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
-sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
+# تثبيت سريع nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install. (ح) <unk> bash
+# تثبيت سريع sdkman
+curl -s "https://get.sdkman.io" <unk> bash
+# تثبيت nodejs 
+nvm تثبيت 16. 5.0 && nvm يستخدم 16.15. && تمكين الحزمة
+# تثبيت مجموعة تطوير جافا
+sdk تثبيت جافا 8. .342-amzn && sdk استخدم java 8.0.342-amzn
 ```
 
 ### macOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+نوصي باستخدام [Homebrew](https://brew.sh/) لتثبيت أي تبعيات مفقودة:
 
 ```bash
-## necessary required
-brew install git
-brew install --cask docker
-brew install make
+## ضروري مطلوب
+التثبيت git
+التثبيت --كاسك دكر
+التثبيت
 ```
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+في CentOS / RHEL أو أي توزيع آخر لـ Linux مع `yum`
 
 ```bash
-sudo yum install git
-sudo yum install make
+sudo yum تثبيت git
+sudo yum التثبيت
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+على Ubuntu / Debian أو أي توزيع آخر لـ Linux مع `Apt`
 
 ```bash
 sudo apt update
@@ -58,11 +58,11 @@ sudo apt install make
 ```
 
 
-### Windows
+### ويندوز
 
-If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+إذا كنت تقوم بتشغيل APITable على Windows 10/11، نوصي بتثبيت [Docker سطح المكتب على Windows](https://docs.docker.com/desktop/install/windows-install/)، [أوبونتو على WSL](https://ubuntu.com/wsl) و [محطة ويندوز الطرفية](https://aka.ms/terminal)، يمكنك معرفة المزيد عن نظام Windows الفرعي لـ Linux (WSL) في [الموقع الرسمي](https://learn.microsoft.com/en-us/windows/wsl).
 
-Install missing dependencies on Ubuntu using `apt`:
+تثبيت الإعتمادات المفقودة على أوبونتو باستخدام `apt`:
 
 ```bash
 sudo apt update
@@ -71,52 +71,52 @@ sudo apt install make
 ```
 
 
-## Build Tool
+## أداة البناء
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+نحن نستخدم `صنع` كإدخال لأداة البناء المركزي لدينا التي تقود أداة بناء أخرى مثل `صف` / `npm` / `yarn`.
 
-So you can just input `make` command and see all build commands:
+لذا يمكنك فقط إدخال `صنع أمر` ومشاهدة جميع أوامر الإنشاء:
 
 ```bash
-make
+اصنع
 ```
 
-![make command screenshot](../static/make.png)
+![اصنع لقطة للأوامر](../static/make.png)
 
 
 
-## Start Development Environment
+## بدء بيئة التطوير
 
-APITable consists of 4 processes:
+APITable يتألف من 4 عمليات:
 
-1. backend-server
-2. room-server
-3. socket-server
-4. web-server
+1. الخادم الخلفي
+2. الغرفة-الخادم
+3. مقطعة-خادم
+4. خادم ويب
 
-To start the development environment locally, run these commands:
+لبدء بيئة التطوير محلياً، قم بتشغيل هذه الأوامر:
 
 ```bash
-# start databases in dockers
-make dataenv 
+# بدء قواعد البيانات في قاعدة البيانات
+جعل البياناتينيف 
 
-# install dependencies
-make install 
+# تثبيت الإعتمادات
+جعل التثبيت 
 
-#start backend-server
-make run # enter 1  
+#start backend server
+جعل تشغيل # ادخل 1  
 
-# and then switch to a new terminal
-# start room-server
-make run # enter 2
+# ثم قم بالتبديل الى محطة طرفية جديدة
+# بدء غرفة الخادم
+جعل تشغيل # ادخل 2
 
-# and then switch to a new terminal
-# start socket-server
-make run # enter 3  
+# ثم قم بالتبديل الى محطة طرفية جديدة
+# ابدأ Socket-server
+جعل تشغيل # ادخل 3  
 
-# and then switch to a new terminal
-# start web-server
-make run # enter 4
+# ثم قم بالتبديل الى محطة طرفية جديدة
+# ابدأ web-server
+جعل التشغيل # ادخل 4
 
 ```
 
@@ -125,8 +125,8 @@ make run # enter 4
 
 ## IDE
 
-We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
+ننصحك باستخدام `Visual Studio Code` أو `Intellij IDEA` من أجل IDE الخاص بك.
 
-APITable have prepared these two IDE's debug configs.
+لقد قام APITable بإعداد تكوينين لتصحيح أخطاء الـ IDE.
 
-Just open APITable's root directory with IDE.
+فقط قم بفتح دليل APITabL الجذري باستخدام IDE.
