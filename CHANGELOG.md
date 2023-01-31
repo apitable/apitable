@@ -3,6 +3,47 @@
 
 
 
+## [v0.17.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.17.0-rc.2) (2023-01-31)
+
+
+### Breaking Change
+
+The minio docker image upgrade contains compatibility issue with old one:
+```text
+apitable-minio-1  | ERROR Unable to use the drive /data: Drive /data: found backend type fs, expected xl or xl-single - to migrate to a supported backend visit https://min.io/docs/minio/linux/operations/install-deploy-manage/migrate-fs-gateway.html: Invalid arguments specified
+```
+Use the following commands to fix that issue if you are not interested in historical attachments:
+```bash
+docker compose down -v --remove-orphans
+rm -fr .data/minio
+docker compose up -d
+```
+
+### Features and enhancements
+
+* feat(backend-server): init-db-apitable initializer & multiple edition cloud mail template & update-api-deletescript & questionnaire and billing ([#237](https://github.com/apitable/apitable/pull/237)) @mr-kelly 
+
+### Bug fixes
+
+* fix: robot trigger official service slug ([#235](https://github.com/apitable/apitable/pull/235)) @wuyitaoBoomboommm
+
+### What's more
+
+* chore: readme l10n init ([#225](https://github.com/apitable/apitable/pull/225)) @mr-kelly
+* chore(deps): bump cookiejar from 2.1.2 to 2.1.4 ([#227](https://github.com/apitable/apitable/pull/227)) @dependabot[bot] 
+* refactor: enable strict type check ([#161](https://github.com/apitable/apitable/pull/161)) @arucil 
+* chore(deps): bump ua-parser-js from 0.7.32 to 0.7.33 ([#232](https://github.com/apitable/apitable/pull/232)) @dependabot[bot] 
+* Create FUNDING.yml ([#240](https://github.com/apitable/apitable/pull/240)) @mr-kelly 
+* chore: remove some deprecated  property and class ([#236](https://github.com/apitable/apitable/pull/236)) @ChambersChan 
+* test: dashboard module unit test ([#241](https://github.com/apitable/apitable/pull/241)) @yort-feng 
+* Update Crowdin configuration file @mr-kelly 
+* l10n: New Crowdin updates ([#228](https://github.com/apitable/apitable/pull/228)) @mr-kelly 
+* l10n: New Crowdin updates ([#251](https://github.com/apitable/apitable/pull/251)) @mr-kelly 
+* chore: remove oss temporary auto configuration class and deprecated api ([#250](https://github.com/apitable/apitable/pull/250)) @ChambersChan 
+* New Crowdin updates ([#252](https://github.com/apitable/apitable/pull/252)) @mr-kelly 
+* chore: bump dependent images ([#254](https://github.com/apitable/apitable/pull/254)) @networkhermit 
+
+
 ## [v0.17.0-rc](https://github.com/apitable/apitable/releases/tag/v0.17.0-rc) (2023-01-23)
 
 
