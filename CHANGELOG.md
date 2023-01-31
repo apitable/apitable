@@ -29,8 +29,7 @@ docker compose up -d
 
 ### What's more
 
-* chore: readme l10n init ([#225](https://github.com/apitable/apitable/pull/225)) @mr-kelly 
-* release: v0.17.0-rc changelog ([#229](https://github.com/apitable/apitable/pull/229)) @mr-kelly 
+* chore: readme l10n init ([#225](https://github.com/apitable/apitable/pull/225)) @mr-kelly
 * chore(deps): bump cookiejar from 2.1.2 to 2.1.4 ([#227](https://github.com/apitable/apitable/pull/227)) @dependabot[bot] 
 * refactor: enable strict type check ([#161](https://github.com/apitable/apitable/pull/161)) @arucil 
 * chore(deps): bump ua-parser-js from 0.7.32 to 0.7.33 ([#232](https://github.com/apitable/apitable/pull/232)) @dependabot[bot] 
