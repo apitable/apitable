@@ -329,7 +329,7 @@ curl https://apitable.github.io/install.sh | bash
 我们总是为APITable寻找优秀人才：
 
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
-- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。 
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
 无论时间和条件如何，如果你想要加入APITable团队， 请毫不犹豫地将您的 CV 发送到
