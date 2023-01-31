@@ -18,47 +18,43 @@
 
 package com.apitable.space.controller;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-import com.apitable.shared.component.scanner.annotation.ApiResource;
-import com.apitable.shared.component.notification.annotation.Notification;
-import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.core.support.ResponseData;
+import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotificationRenderField;
 import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
+import com.apitable.shared.component.notification.annotation.Notification;
+import com.apitable.shared.component.scanner.annotation.ApiResource;
+import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.NotificationConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.space.enums.SpaceApplyStatus;
-import com.apitable.shared.component.notification.NotifyMailFactory;
-import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
+import com.apitable.space.enums.SpaceApplyStatus;
+import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.ro.SpaceJoinApplyRo;
 import com.apitable.space.ro.SpaceJoinProcessRo;
-import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.service.ISpaceApplyService;
 import com.apitable.space.service.ISpaceMemberRoleRelService;
 import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.service.IUserService;
-import com.apitable.core.support.ResponseData;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
 import static com.apitable.shared.constants.NotificationConstants.APPLY_ID;
