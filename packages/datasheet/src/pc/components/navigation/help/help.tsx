@@ -80,129 +80,120 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     navigationToUrl(env.HELP_MENU_USER_COMMUNITY_URL!);
   };
   const menuData = [
-    [
-      {
-        icon: <SolutionOutlined color={colors.thirdLevelText} size={16} />,
-        text: t(Strings.solution),
-        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
-        hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
+    {
+      icon: <SolutionOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.solution),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
+      hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
+    },
+    {
+      icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.help_video_tutorials),
+      onClick: () => navigationToUrl(env.HELP_MENU_VIDEO_TUTORIALS_URL!),
+      hidden: isMobile || !env.HELP_MENU_VIDEO_TUTORIALS_URL,
+    },
+    {
+      icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.product_roadmap),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
+      hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
+    },
+    {
+      icon: <JoinOutlined />,
+      text: t(Strings.join_the_community),
+      onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL),
+      hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
+    },
+    {
+      icon: <GuideOutlined />,
+      text: t(Strings.function_guidance),
+      onClick: startGuideClick,
+      hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,
+    },
+    {
+      icon: <CourseOutlined />,
+      text: t(Strings.quick_tour),
+      onClick: () => navigationToUrl(t(Strings.help_quick_start_url)),
+    },
+    {
+      icon: <AdviseOutlined />,
+      text: t(Strings.vomit_a_slot),
+      onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
+      hidden: isPrivateDeployment(),
+    },
+    {
+      icon: <DemoOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.subscribe_demonstrate),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
+      hidden: isMobile || !getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL,
+    },
+    {
+      icon: <VikabyOutlined color={colors.thirdLevelText} />,
+      text: t(Strings.assistant),
+      id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
+      onClick: vikabyHelperClick,
+      hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
+    },
+    {
+      icon: <CommunityOutlined />,
+      text: t(Strings.help_user_community),
+      onClick: linkToCommunity,
+      hidden: !env.HELP_MENU_USER_COMMUNITY_URL
+    },
+    {
+      icon: <InformationSmallOutlined />,
+      text: t(Strings.help_center),
+      onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
+    },
+    {
+      icon: <BookOutlined />,
+      text: t(Strings.handbook),
+      onClick: () => navigationToUrl(t(Strings.help_product_manual_url)),
+    },
+    {
+      icon: <EditDescribeOutlined />,
+      text: t(Strings.faq),
+      onClick: () => navigationToUrl(t(Strings.help_questions_url)),
+    },
+    {
+      icon: <WebsiteOutlined />,
+      text: t(Strings.official_website_without_abbr),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
+      hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL
+    },
+    {
+      icon: <CodeFilled />,
+      text: t(Strings.api_sdk),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
+      hidden: !getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL
+    },
+    {
+      icon: <DownloadOutlined />,
+      text: t(Strings.download_client),
+      onClick: () => navigationToUrl(`${window.location.origin}/download/`),
+      hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
+    },
+    {
+      icon: <KeyboardShortcutsOutlined />,
+      text: t(Strings.keybinding_show_keyboard_shortcuts_panel),
+      id: NAV_ID.HELP_MENU_SHORTCUT_PANEL,
+      onClick: openShortcutKeyPanel,
+      hidden: isMobile,
+    },
+    {
+      icon: <ViewContactOutlined />,
+      text: t(Strings.player_contact_us),
+      onClick: () => {
+        contactUs();
       },
-      {
-        icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
-        text: t(Strings.help_video_tutorials),
-        onClick: () => navigationToUrl(env.HELP_MENU_VIDEO_TUTORIALS_URL!),
-        hidden: isMobile || !env.HELP_MENU_VIDEO_TUTORIALS_URL,
-      },
-      {
-        icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
-        text: t(Strings.product_roadmap),
-        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
-        hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
-      },
-      {
-        icon: <JoinOutlined />,
-        text: t(Strings.join_the_community),
-        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL),
-        hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
-      },
-      {
-        icon: <GuideOutlined />,
-        text: t(Strings.function_guidance),
-        onClick: startGuideClick,
-        hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,
-      },
-      {
-        icon: <CourseOutlined />,
-        text: t(Strings.quick_tour),
-        onClick: () => navigationToUrl(t(Strings.help_quick_start_url)),
-      },
-      {
-        icon: <AdviseOutlined />,
-        text: t(Strings.vomit_a_slot),
-        onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
-        hidden: isPrivateDeployment(),
-      },
-      {
-        icon: <DemoOutlined color={colors.thirdLevelText} size={16} />,
-        text: t(Strings.subscribe_demonstrate),
-        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
-        hidden: isMobile || !getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL,
-      },
-      {
-        icon: <VikabyOutlined color={colors.thirdLevelText} />,
-        text: t(Strings.assistant),
-        id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
-        onClick: vikabyHelperClick,
-        hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
-      },
-    ],
-    [
-      {
-        icon: <CommunityOutlined />,
-        text: t(Strings.help_user_community),
-        onClick: linkToCommunity,
-        hidden: !env.HELP_MENU_USER_COMMUNITY_URL
-      },
-      {
-        icon: <InformationSmallOutlined />,
-        text: t(Strings.help_center),
-        onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
-      },
-      {
-        icon: <BookOutlined />,
-        text: t(Strings.handbook),
-        onClick: () => navigationToUrl(t(Strings.help_product_manual_url)),
-      },
-      {
-        icon: <EditDescribeOutlined />,
-        text: t(Strings.faq),
-        onClick: () => navigationToUrl(t(Strings.help_questions_url)),
-      },
-      {
-        icon: <WebsiteOutlined />,
-        text: t(Strings.official_website_without_abbr),
-        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
-        hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL
-      },
-      {
-        icon: <CodeFilled />,
-        text: t(Strings.api_sdk),
-        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
-        hidden: !getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL
-      },
-      {
-        icon: <DownloadOutlined />,
-        text: t(Strings.download_client),
-        onClick: () => navigationToUrl(`${window.location.origin}/download/`),
-        hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
-      },
-      {
-        icon: <KeyboardShortcutsOutlined />,
-        text: t(Strings.keybinding_show_keyboard_shortcuts_panel),
-        id: NAV_ID.HELP_MENU_SHORTCUT_PANEL,
-        onClick: openShortcutKeyPanel,
-        hidden: isMobile,
-      },
-      {
-        icon: <ViewContactOutlined />,
-        text: t(Strings.player_contact_us),
-        onClick: () => {
-          contactUs();
-        },
-        hidden: isMobile || isPrivateDeployment(),
-      },
-    ],
+      hidden: isMobile || isPrivateDeployment(),
+    },
   ];
 
   // Return menu data for mobile
   const getMobileMenuData = () => {
     return [
-      (menuData[0] as any)
-        .reduce((prev, value, index) => {
-          prev.push(value, menuData[1][index]);
-          return prev;
-        }, [] as any[])
-        .filter(v => v),
+      menuData.filter(v => v),
     ];
   };
 
@@ -240,6 +231,14 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     );
   };
 
+  const visibleIndexList = menuData.reduce((prev, cur, index) => {
+    if (!cur.hidden) {
+      prev.push(index);
+    }
+    return prev;
+  }, [] as number[]);
+  const middleIndex = visibleIndexList[Math.ceil(visibleIndexList.length / 2) - 1];
+
   const HelpMenu = () => {
     return (
       <div className={styles.helpMenu}>
@@ -248,13 +247,13 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         </Typography>
         <div className={styles.wrapper}>
           <div className={styles.left}>
-            <ContextmenuList menuItems={menuData[0]} />
+            <ContextmenuList menuItems={menuData.slice(0, middleIndex + 1)} />
           </div>
           <div className={styles.dividerWrapper}>
             <div className={styles.divider} />
           </div>
           <div className={styles.right}>
-            <ContextmenuList menuItems={menuData[1]} />
+            <ContextmenuList menuItems={menuData.slice(middleIndex + 1)} />
           </div>
         </div>
       </div>
