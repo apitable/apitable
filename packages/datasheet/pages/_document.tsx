@@ -45,9 +45,9 @@ class MyDocument extends Document<IClientInfo> {
     return (
       <Html>
         <Head>
-          <link rel='apple-touch-icon' href='/logo.png' />
+          <link rel='apple-touch-icon' href='/file/logo.png' />
           <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
-          <link rel='manifest' href={'/manifest.json'} />
+          <link rel='manifest' href={'/file/manifest.json'} />
           <script src={'/file/js/browser_check.2.js'} async />
           {/* injection of custom configs of editions, e.g. APITable */}
           <script src='/custom/custom_config.js' defer />
