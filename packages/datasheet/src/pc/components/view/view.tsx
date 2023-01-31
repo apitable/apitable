@@ -119,7 +119,7 @@ export const View: React.FC = () => {
         padding: isMobile ? '0' : '',
         height: '100%',
         background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
-        paddingLeft: !isShowEmbedToolBar && !embedInfo.viewControl?.tabBar ? '0' : embedInfo.viewControl?.tabBar ? '24px' : '32px'
+        paddingLeft: isMobile || (!isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) ? 0 : embedInfo.viewControl?.tabBar ? '24px' : '32px'
       }}
     >
       { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
