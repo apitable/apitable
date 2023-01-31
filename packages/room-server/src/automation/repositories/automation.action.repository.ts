@@ -17,9 +17,10 @@
  */
 
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { EntityRepository, getManager, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { generateRandomString } from '@apitable/core';
 import { ActionCreateRo } from '../ros/action.create.ro';
+import { RobotRelDto } from '../dtos/robot.rel.dto';
 
 @EntityRepository(AutomationActionEntity)
 export class AutomationActionRepository extends Repository<AutomationActionEntity> {
@@ -37,46 +38,37 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
     return this.save(newAction);
   }
 
-  async deleteRobotActionByActionId(actionId: string, userId: string) {
-    // todo(itou): replace dynamic sql
-    // Finds the previous and the next node of the current node, then
-    // currentNode.nextNode.prevNode <- currentNode.prevNode
-    const thisAction = await this.query(
-      `
-    SELECT
-      robot_id, prev_action_id
-    FROM
-      ${this.manager.connection.options.entityPrefix}automation_action
-    WHERE
-      is_deleted = 0 AND action_id = ?
-    `, [actionId]);
-    const robotId = thisAction[0].robot_id;
-    const prevActionId = thisAction[0].prev_action_id;
-
-    // update together
-    await getManager().transaction(async transactionalEntityManager => {
-      // update `prev_action_id` of the next node to `prev_action_id` of the current node
-      await transactionalEntityManager.query(
-        `
-      UPDATE
-        ${this.manager.connection.options.entityPrefix}automation_action
-      SET
-        prev_action_id = ?,
-        updated_by = ?
-      WHERE
-        robot_id = ? AND prev_action_id = ? AND is_deleted = 0
-      `, [prevActionId, userId, robotId, actionId]);
-
-      await transactionalEntityManager.query(`
-    UPDATE
-      ${this.manager.connection.options.entityPrefix}automation_action
-    SET
-      is_deleted = 1,
-      updated_by = ?
-    WHERE action_id = ?
-    `, [userId, actionId]);
+  async selectRobotRelByActionId(actionId: string): Promise<RobotRelDto> {
+    return await this.findOneOrFail({
+      select: [
+        'robotId',
+        'prevActionId',
+      ],
+      where: {
+        actionId,
+        isDeleted: 0,
+      }
     });
-    return true;
+  }
+
+  async updateRobotPrevActionIdByOldPrevActionId(userId: string, robotId: string, prevActionId: string | undefined, oldPrevActionId: string) {
+    return await this.update({
+      robotId,
+      prevActionId: oldPrevActionId,
+      isDeleted: false,
+    }, {
+      prevActionId,
+      updatedBy: userId,
+    });
+  }
+
+  async deleteActionByActionId(userId: string, actionId: string) {
+    return await this.update( {
+      actionId,
+    }, {
+      updatedBy: userId,
+      isDeleted: true,
+    });
   }
 
   updateActionInput(actionId: string, input: object, userId: string) {

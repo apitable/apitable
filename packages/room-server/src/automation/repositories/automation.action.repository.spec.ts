@@ -1,0 +1,110 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import { ConfigModule } from "@nestjs/config";
+import { Test, TestingModule } from "@nestjs/testing";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { DeepPartial } from "typeorm";
+import { AutomationActionRepository } from "./automation.action.repository";
+import { AutomationActionEntity } from '../entities/automation.action.entity';
+import { DatabaseConfigService } from "shared/services/config/database.config.service";
+
+describe('AutomationActionRepository', () => {
+  let module: TestingModule;
+  let repository: AutomationActionRepository;
+  const theActionId = 'actionId';
+  const theRobotId = 'robotId';
+  const theActionTypeId = 'actionTypeId';
+  const theUserId = '123456';
+  let entity: AutomationActionEntity;
+
+  beforeAll(async() => {
+    module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        TypeOrmModule.forRootAsync({
+          useClass: DatabaseConfigService,
+        }),
+        TypeOrmModule.forFeature([AutomationActionRepository]),
+      ],
+      providers: [AutomationActionRepository],
+    }).compile();
+
+    repository = module.get<AutomationActionRepository>(AutomationActionRepository);
+  });
+
+  afterAll(async() => {
+    await repository.manager.connection.close();
+  });
+
+  beforeEach(async() => {
+    const action: DeepPartial<AutomationActionEntity> = {
+      actionId: theActionId,
+      robotId: theRobotId,
+      actionTypeId: theActionTypeId,
+      createdBy: theUserId
+    };
+    const record = repository.create(action);
+    entity = await repository.save(record);
+  });
+
+  afterEach(async() => {
+    await repository.delete(entity.id);
+  });
+
+  it('should be defined', () => {
+    expect(repository).toBeDefined();
+  });
+
+  it('should be return robotId and preActionId', async() => {
+    const robotRel = await repository.selectRobotRelByActionId(theActionId);
+    expect(robotRel).toBeDefined();
+    expect(robotRel.robotId).toEqual(theRobotId);
+    expect(robotRel.prevActionId).toEqual(null);
+  });
+
+  it('should be update the action\'s pre action id', async() => {
+    const newAction: DeepPartial<AutomationActionEntity> = {
+      actionId: 'newActionId',
+      robotId: theRobotId,
+      actionTypeId: theActionTypeId,
+      prevActionId: entity.actionId,
+      createdBy: theUserId,
+    };
+    const record = repository.create(newAction);
+    const theNewAction = await repository.save(record);
+    const theUpdatedResult = await repository.updateRobotPrevActionIdByOldPrevActionId(theUserId, theRobotId, entity.prevActionId, entity.actionId);
+    expect(theUpdatedResult).toBeDefined();
+    expect(theUpdatedResult.affected).toEqual(1);
+    await repository.delete(theNewAction.id);
+  });
+
+  it('should be update delete flag', async() => {
+    const theUpdateResult = await repository.deleteActionByActionId(theUserId, theActionId);
+    expect(theUpdateResult).toBeDefined();
+    expect(theUpdateResult.affected).toEqual(1);
+    const theDeletedEntity = await repository.findOneOrFail({
+      where: {
+        actionId: theActionId,
+      }
+    });
+    expect(theDeletedEntity).toBeDefined();
+    expect(theDeletedEntity.isDeleted).toBeTruthy();
+  });
+
+});
