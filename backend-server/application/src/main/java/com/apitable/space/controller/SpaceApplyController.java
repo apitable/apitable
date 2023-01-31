@@ -105,7 +105,7 @@ public class SpaceApplyController {
             Dict dict = Dict.create();
             dict.set("USER_NAME", LoginContext.me().getLoginUser().getNickName());
             dict.set("SPACE_NAME", spaceMapper.selectSpaceNameBySpaceId(ro.getSpaceId()));
-            dict.set("URL", StrUtil.format(constProperties.getServerDomain() + "/space/{}/notification", ro.getSpaceId()));
+            dict.set("URL", constProperties.getServerDomain() + "/notify");
             dict.set("YEARS", LocalDate.now().getYear());
             final String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
             List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, emails);
