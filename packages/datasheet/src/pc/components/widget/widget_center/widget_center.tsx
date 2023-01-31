@@ -239,7 +239,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={ColumnUrlOutlined} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'}/>} variant='background' />
           </a>
         </Tooltip>}
       </div>

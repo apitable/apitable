@@ -221,7 +221,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
           {widget &&
             (doNotBindDatasheet ? (
               <div className={styles.mask}>
-                <Image src={PngLinkdatasheet} alt='' />
+                <Image src={PngLinkdatasheet} alt='' objectFit='contain'/>
                 {!linkId && (
                   <span
                     onClick={() => {
