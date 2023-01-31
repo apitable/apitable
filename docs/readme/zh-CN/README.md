@@ -62,11 +62,11 @@
 
 ## ✨ 快速启动
 
-> APITable 目前是 `正在进行中的工作`。
+> APITable 目前是 `积极开发中`
 > 
-> 我们将在2023年1月下旬公布第一份版本。
+> 我们将在2023年1月下旬公布第一份版本
 > 
-> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 如果您想要在本地或云端计算环境中安装 APITable ，请参阅 [💾 安装](#installation)
 
@@ -75,7 +75,7 @@
 ## 🔥 功能特性
 
 <table>
-  
+
   <tr>
     <th>
       <a href="#">实时协同</a>
@@ -145,40 +145,40 @@
 
 </table>
 
-APITable 提供了一系列令人惊奇的功能，从个人到企业。
+APITable 提供了一系列令人惊奇的功能，从个人到企业
 
 - 先进技术栈
-  - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑。
-  - 在 `中极其顺畅、方便用户、超快的数据库电子表格接口<canvas> 渲染引擎`
-  - 数据库本地架构：变更集/操作/动作/快照等等。
-  - **100k+** 数据行与实时合作。
-  - 全堆栈访问 API ，从 `数据` 到 `元数据`。
+  - `实时合作` 允许多个用户实时或与 `操作转换(OT)` 算法同时进行编辑
+  - 基于`<canvas> 渲染引擎`提供非常流畅，用户友好，超快的数据库-电子表格界面
+  - 数据库本地架构：变更集/操作/动作/快照等等
+  - 实时协作**100k+** 数据行
+  - 从 `数据` 到 `元数据`一站式API访问
   - 单向/双向表链接和 `无限交叉链接`
-  - 社区友好的编程语言和框架，TypeScript ([下一步JS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring 启动](https://spring.io/projects/spring-boot))
+  - 社区友好的编程语言和框架，TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - 美观和齐全的多维表格UI界面
   - `CRUD`: 创建、阅读、更新、删除表、列和行
-  - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
-  - `基于`的空格：使用分开的工作区取代基于App/Base-的结构，使无限制的表格链接成为可能。
+  - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置
+  - `基于`的空格：使用分开的工作区取代基于App/Base 的结构，使无限制的表格链接成为可能
   - `可用的暗色模式` 和主题定制.
-  - `7 种视图类型`: 网格视图(Dataseet) / 图库视图/ Mindmap 视图/ Kanban 视图/全功能网格视图/日历视图
-  - 单击API面板
-- 装备齐全
-  - 内置的 10 + 官方模板。
+  - `7 种视图类型`: 网格视图/ 图库视图/思维导图/看板视图/全功能甘特图/日历视图
+  - 一键式 API 面板
+- 开箱即用
+  - 内置的 10 + 官方模板
   - 机器人自动化和自定义可用.
   - BI 仪表板
   - 单击自动生成的表单
-  - 可共享和嵌入的页面。
+  - 可共享和嵌入的页面
   - 多语言支持
-  - 与 n8n.io / Zapier / Appsmith... 及更多。
+  - 与 n8n.io / Zapier / Appsmith... 及更多
 - 卓越的扩展性
-  - 可扩展的 `部件系统` 有超过 20 个官员开源部件。
+  - 可扩展的 `部件系统` 有超过 20 个官方开源部件
   - 自定义图表 & 图表 & 仪表板
   - 可自定义数据列类型
   - 可自定义公式：
-  - 可自定义自动机器人操作。
+  - 可自定义自动机器人操作
 - 企业级权限
-  - `镜像`, 将视图变成镜像以实现行权限。
-  - 通过非常简单的操作激活 `列权限`。
+  - `镜像`, 将视图变成镜像以实现行权限
+  - 通过非常简单的操作激活 `列权限`
   - 文件夹/子文件夹/文件权限
   - 树结构文件夹和可自定义的节点(文件)；
   - 团队管理 & 组织结构
@@ -188,10 +188,10 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 审计
   - 数据库自动备份
   - 数据导出器
-  - 水标
+  - 水印
 - ....
 
-使用可扩展的部件和插件，您可以添加更多功能。
+使用可扩展的部件和插件，您可以添加更多功能
 
 ## 💥 应用场景
 
@@ -199,20 +199,20 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 - 作为超级管理软件
   - 灵活的项目管理 & 任务/问题管理
-  - 营销潜在客户管理。
-  - 最灵活和可连接的CRM。
+  - 营销潜在客户管理
+  - 最灵活和可连接的CRM
   - 灵活的BI图表系统
   - 有利于人民的形式和调查
-  - 弹性企业资源规划系统。
-  - 低代码和无代码平台。
-  - ...及更多, APITable 将 1000 个软件放入您的口袋中。
+  - 弹性企业资源规划系统
+  - 低代码和无代码平台
+  - ...及更多, APITable 将 1000 个软件放入您的口袋中
 - 作为一个可视化数据库基础设施
-  - **嵌入** 个应用到您自己的软件界面。
-  - 带有REST API的视觉数据库。
+  - **嵌入** 个应用到您自己的软件界面
+  - 带有REST API的视觉数据库
   - 管理仪表板
-  - 中央配置管理。
-  - **连接您所有的** 个软件的全部企业数据库。
-  - ...及更多, APITable 连接到一切。
+  - 中央配置管理
+  - **连接您所有的** 个软件的全部企业数据库
+  - ...及更多, APITable 连接到一切
 - 此外，它是开源和可扩展的
 
 ## :argriving_hearts: API-oried
@@ -223,9 +223,9 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 #### SQL式查询
 
-APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
+APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容
 
-## :hear_with_ribbon: Embed-friendly
+## 💝 Embed-friendly
 
 #### 分享和嵌入
 
@@ -249,7 +249,7 @@ curl https://apitable.github.io/install.sh | bash
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
-## 🧑digh:laptop_compute: contribution
+## 🧑‍💻
 
 欢迎并感谢您有兴趣为APITable作出贡献！
 
@@ -294,7 +294,7 @@ curl https://apitable.github.io/install.sh | bash
   - 小部件 SDK (即将到来...)
   - 脚本(即将到来...)
 
-## :mobway: Roadmap
+## 🛣 路线图
 
 ### 未来的功能
 
@@ -318,7 +318,7 @@ curl https://apitable.github.io/install.sh | bash
 
 ## 👫 获得参与
 
-### :glube_showing_Asia-Australia：我们为什么要创建 APITable 和 open-source？
+### 🌏 我们为什么要创建 APITable 和 open-source？
 
 - 我们认为 `数据库是所有软件` 的基石。
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
@@ -328,7 +328,7 @@ curl https://apitable.github.io/install.sh | bash
 
 我们总是为APITable寻找优秀人才：
 
-- **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
+- **全栈开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 - **后端开发者**: 你有经验使用 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. 你想要写高质量的代码，带有清晰的文档和单元测试。 你想要写高质量的代码，带有清晰的文档和单元测试。
 - **前端开发者**: 你有React, NextJS, TypeScript, WebPack的体验。 你想要写高质量的代码，带有清晰的文档和单元测试。
 
@@ -381,7 +381,7 @@ talent@apitable。</p>
 > 
 > 详情请参阅 [LICENSING](./LICENSING.md)
 > 
-> 如果您想要在线使用 APITable ，那么您不需要运行此代码。 我们在 [APITable 上提供一个托管的应用版本。 om](https://apitable.com) 适合全局加速器。
+> 如果您想要在线使用 APITable ，那么您不需要运行此代码。 我们在 [APITable 上提供一个托管的应用版本](https://apitable.com) 并针对了全球网络优化
 
 <br/>
 
