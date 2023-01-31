@@ -20,6 +20,7 @@ import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Spin } from 'antd';
+import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
@@ -81,7 +82,10 @@ export const ChangeLogo = () => {
     );
   };
   return (
-    <div className={styles.logoWrap} style={{ backgroundImage: `url(${AvatarBgImg})` }}>
+    <div className={styles.logoWrap}>
+      <div className={styles.bgWrap}>
+        <Image src={AvatarBgImg} alt='' layout={'fill'} objectFit={'contain'}/>
+      </div>
       <div className={styles.logoContainer}>
         <div className={styles.logo}>
           <Spin
