@@ -72,16 +72,16 @@ If you want to install APITable in your local or cloud computing environment, se
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
-## 🔥 Features
+## 🔥Funkcjonalności
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">Współpraca w czasie rzeczywistym</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">Formularze automatyczne</a>
     </th>
 
   </tr>
@@ -101,10 +101,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">Panel zaprojektowany z naciskiem na API</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">Nieograniczone połączenia między tabelami</a>
     </th>
 </tr>
 
