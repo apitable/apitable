@@ -2,9 +2,9 @@
 
 本指南帮助您开始开发 APITable 。
 
-## 依赖
+## 依赖包
 
-在设置你的开发者环境之前，请确保你已经安装了以下依赖和编程语言：
+请确保您在设置开发者环境之前安装了以下依赖关系和编程语言：
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
@@ -21,9 +21,9 @@
 ```bash
 # 快速安装 nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# 快速安装 sdkman
+# 快速安装sdkman
 curl -s "https://get.sdkman.io" | bash
-# 安装 Node.js 
+# install nodejs 
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # 安装 java 开发包
 sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
@@ -34,10 +34,10 @@ sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 我们建议使用 [Homebrew](https://brew.sh/) 来安装任何缺失的依赖包：
 
 ```bash
-## 必要
-brew install git
-brew install --cask docker
-brew install make
+## 必要需要
+酿造安装 git
+酿造安装 --cask docker
+酿造安装
 ```
 
 ### Linux
@@ -60,9 +60,12 @@ sudo apt install make
 
 ### Windows
 
-如果您在 Windows 10/11 上运行 APITable，我们建议在 Windows 上安装 [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/)，[Ubuntu on WSL](https://ubuntu.com/wsl) 和 [Windows Terminal](https://aka.ms/terminal), 您可以在 [官方网站](https://learn.microsoft.com/en-us/windows/wsl) 了解更多关于 Windows WSL 的信息。</p>
+如果您正在Windows 10/11上运行 APITable ，我们建议在Windows</a>上安装
 
-然后就可以在 WSL 中使用 `apt` 在 Ubuntu 上安装缺少的依赖：
+停靠桌面， [WSL 的 Ubuntu](https://ubuntu.com/wsl) 和 [Windows 终端](https://aka.ms/terminal), 您可以在 [官方网站](https://learn.microsoft.com/en-us/windows/wsl) 了解更多关于 Windows 子系统 的Linux (WSL) 的信息。</p> 
+
+使用 `apt` 在 Ubuntu 上安装缺少的依赖：
+
 
 
 ```bash
@@ -71,56 +74,76 @@ sudo apt install git
 sudo apt install make
 ```
 
+
+
+
+
 ## 构建工具
 
-我们使用 `make` 作为我们的中央构建工具，来驱动其他构建工具，如 `gradle` / `npm` / `yarn`
+我们使用 `make` 作为我们的中心构建工具，来驱动其他构建工具，如 `gradle` / `npm` / `yarn`
 
 所以您可以只输入 `make` 命令并看到所有构建命令：
+
+
 
 ```bash
 make
 ```
 
+
 ![命令截图](../static/make.png)
 
-## 启动开发环境
 
-APITable 由 4 个进程组成：
 
-1. backend-server
-2. room-server
-3. socket-server
-4. web-server
+
+
+## 开始开发环境
+
+APITable由4个进程组成：
+
+1. 后端服务器
+2. 房间服务器
+3. 套接字服务器
+4. Web 服务器
 
 要启动本地开发环境，请运行这些命令：
 
+
+
 ```bash
-# 在 Docker 中启动数据库
+# 在码头启动数据库
 make dataenv 
 
 # 安装依赖关系
 make install
 
-# 启动 backend-server 
+#start backend服务器
 make run # 输入1  
 
 # 然后切换到新的终端
-# 启动 room-server
+# 启动房间服务器
 make run # 输入2
 
 # 然后切换到新的终端
-# 启动 socket-server
+# 启动套接服务器
 make run # 输入3  
 
 # 然后切换到新的终端
-# 启动 web-server
+# 启动web-server
 make run # 输入4
+
 ```
+
+
+
+
+
+
 
 ## 集成开发环境（IDE）
 
-我们建议您使用 `Visual Studio Code` 或 `Intellij IDEA` 作为您的 IDE。
+我们建议您使用 `Visual Studio Code` 或 `Intellij IDEA` 为您的 IDE。
 
-APITable 已准备好这两个 IDE 的调试配置。
+APITable 已准备好这两个IDE调试配置。
 
-只需在 IDE 中打开 APITable 的根目录即可。
+只需打开 IDE 的 APITable 根目录。
