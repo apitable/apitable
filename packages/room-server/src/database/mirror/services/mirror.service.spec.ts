@@ -26,6 +26,7 @@ import { DatasheetService } from 'database/datasheet/services/datasheet.service'
 import { NodeInfo } from 'database/interfaces';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { WinstonModule } from 'nest-winston';
+import { NodeRepository } from 'node/repositories/node.repository';
 import { NodeService } from 'node/services/node.service';
 import { ServerException, DatasheetException } from 'shared/exception';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
@@ -41,10 +42,11 @@ describe('MirrorService', () => {
   let datasheetRecordService: DatasheetRecordService;
   let resourceMetaRepository: ResourceMetaRepository;
   let datasheetMetaRepository: DatasheetMetaRepository;
+  let nodeRepository: NodeRepository;
   const knownMirrorId = 'mirqyLwKo4ecDxrM7e';
   const knownRecordId = 'recqedLfdfsad2KDda';
   const relatedDatasheetId = 'dstlljhDwewfds32Dfds';
-  const permissions: IPermissions = Object.assign({ allowEditConfigurable: false });
+  const permissions: IPermissions = Object.assign({ allowEditConfigurable: false, editable: true, viewCreatable: true });
   const nodeInfo: NodeInfo = Object.assign({ id: knownMirrorId, name: 'Test Mirror', role: Role.Editor, nodeFavorite: false, permissions });
   const unknownMirrorId = `mir${Math.floor(Math.random()*10000).toString()}`;
   const token = process.env.BEARER_TOKEN||'';
@@ -97,7 +99,9 @@ describe('MirrorService', () => {
           provide: NodeService, 
           useValue: { 
             getNodeDetailInfo: jest.fn(),
-            getMainNodeId: jest.fn() 
+            getMainNodeId: jest.fn(),
+            getNodeRelInfo: jest.fn(), 
+            checkNodeIfExist: jest.fn(),
           }
         }, 
         { 
@@ -122,6 +126,7 @@ describe('MirrorService', () => {
             getRecordsByDstIdAndRecordIds: jest.fn() 
           }
         }, 
+        NodeRepository,
         ResourceMetaRepository,
         DatasheetMetaRepository
       ],
@@ -139,6 +144,7 @@ describe('MirrorService', () => {
     nodeService = module.get<NodeService>(NodeService);
     datasheetMetaService = module.get<DatasheetMetaService>(DatasheetMetaService);
     datasheetRecordService = module.get<DatasheetRecordService>(DatasheetRecordService);
+    nodeRepository = module.get<NodeRepository>(NodeRepository);
     resourceMetaRepository = module.get<ResourceMetaRepository>(ResourceMetaRepository);
     datasheetMetaRepository = module.get<DatasheetMetaRepository>(DatasheetMetaRepository);
     jest.spyOn(resourceMetaRepository, 'selectMetaByResourceId').mockImplementation(async(mirrorId) => {
@@ -152,6 +158,18 @@ describe('MirrorService', () => {
         return await Promise.resolve(Object.assign({ metaData: meta, revision: 1000 }));
       }
       return await Promise.resolve(undefined);
+    });
+    jest.spyOn(nodeService, 'getNodeRelInfo').mockImplementation(async(nodeId: string) => {
+      if (nodeId !== knownMirrorId) {
+        throw new ServerException(DatasheetException.DATASHEET_NOT_EXIST);
+      }
+      return await Promise.resolve(Object.assign({ datasheetId: relatedDatasheetId }));
+    });
+    jest.spyOn(nodeService, 'checkNodeIfExist').mockImplementation(async(nodeId: string) => {
+      if (nodeId !== knownMirrorId && nodeId !== relatedDatasheetId) {
+        await Promise.resolve(0);
+        throw new ServerException(DatasheetException.DATASHEET_NOT_EXIST);
+      }
     });
     
     jest.spyOn(nodeService, 'getNodeDetailInfo').mockImplementation(async() => {
@@ -185,7 +203,25 @@ describe('MirrorService', () => {
       expect(nodeService).toBeDefined();
       expect(datasheetMetaService).toBeDefined();
       expect(datasheetRecordService).toBeDefined();
+      expect(nodeRepository).toBeDefined();
       expect(resourceMetaRepository).toBeDefined();
+    });
+
+  });
+  
+  describe('test getMirrorInfo', () => {
+
+    it('should throw error with an unknown mirror ID', async() => {
+      try {
+        await service.getMirrorInfo(unknownMirrorId, auth, { internal: true });
+      } catch (error) {
+        expect((error as any).message).toEqual(DatasheetException.DATASHEET_NOT_EXIST.getMessage());
+      }
+    });
+
+    it('should return meta with a known mirror ID', async() => {
+      const res = await service.getMirrorInfo(knownMirrorId, auth, { internal: false });
+      expect(res.snapshot).toEqual(meta);
     });
 
   });
@@ -215,11 +251,42 @@ describe('MirrorService', () => {
       expect(res.snapshot.meta).toEqual(meta);
     });
 
-    it('should return meta with known record ID', async() => {
+    it('should return meta with a known record ID', async() => {
       const res = await service.fetchDataPack(knownMirrorId, auth, { internal: false, recordIds: [knownRecordId] });
       expect(res.snapshot.meta).toEqual(meta);
     });
 
   });
   
+  describe('test rewriteMirrorPermission', () => {
+
+    const shouldBeFalseFieldNames = ['viewCreatable', 'viewRemovable', 'viewMovable', 'viewRenamable', 
+      'columnHideable', 'viewFilterable', 'fieldGroupable', 'columnSortable', 'rowHighEditable', 'viewLayoutEditable', 
+      'viewStyleEditable', 'viewKeyFieldEditable', 'viewColorOptionEditable', 'fieldCreatable', 'fieldRenamable', 
+      'fieldPropertyEditable', 'fieldRemovable', 'fieldSortable', 'columnWidthEditable', 'descriptionEditable', 'fieldPermissionManageable'];
+
+    it('should turn columnCountEditable to true with editable permissions', () => {
+      service.rewriteMirrorPermission(permissions);
+      expect(permissions.columnCountEditable).toBeTruthy();
+    });
+
+    it('should turn all permissions to false except columnCountEditable with editable permissions', () => {
+      service.rewriteMirrorPermission(permissions);
+      for (const fieldName of shouldBeFalseFieldNames) {
+        expect(permissions[fieldName]).toBeFalsy();
+      }
+    });
+
+    it('should not turn all permissions to false without editable permissions', () => {
+      for (const fieldName of shouldBeFalseFieldNames) {
+        permissions[fieldName] = true;
+      }
+      permissions.editable = false;
+      service.rewriteMirrorPermission(permissions);
+      for (const fieldName of shouldBeFalseFieldNames) {
+        expect(permissions[fieldName]).toBeTruthy();
+      }
+    });
+
+  });
 });
