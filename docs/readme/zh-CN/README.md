@@ -155,7 +155,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 从 `数据(Data)` 到 `元数据(MetaData)` 的全栈式API访问。
   - 单向/双向表链接和 `无限交叉链接`
   - 社区友好的编程语言和框架，TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- 美观和功能齐全的多维表格UI界面
+- 美观和齐全的多维表格UI界面
   - `CRUD`: 创建、浏览、更新、删除表、列和行
   - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
   - `基于空间(Space)`：使用分离的工作空间来代替基于 App/Base 的结构，使无限的表格连接成为可能。
@@ -165,7 +165,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 - 装备齐全
   - 内置的 10+ 个官方模板
   - 机器人自动化和自定义配置
-  - 商业化智能(BI)仪表板
+  - BI 仪表板
   - 一键式自动生成表单
   - 可共享和嵌入的页面
   - 多语言支持
@@ -201,7 +201,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 灵活的项目管理 & 任务/问题管理
   - 营销潜在客户管理。
   - 最灵活和可连接的 CRM
-  - 灵活的 BI 图表系统
+  - 商业化智能(BI)仪表板
   - 便于人们使用的表格和调查表
   - 灵活的 ERP
   - 低代码和无代码平台。
@@ -225,11 +225,11 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-## 💝 嵌入友好
+## :hear_with_ribbon: Embed-friendly
 
 #### 分享和嵌入
 
-分享您的数据表或文件夹。通过复制和粘贴 HTML 脚本嵌入它们。
+分享您的数据表或文件夹。 通过复制和粘贴 HTML 脚本嵌入它们。
 
 #### 企业可用的嵌入
 
@@ -245,7 +245,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。(默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
+然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
@@ -280,8 +280,8 @@ APITable 可适用这些通用的约定：
 
 - 我们的 Git 分支模型是什么？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - 如何在派生项目上进行合作？ [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- 如何写入好的提交消息？ [Conventional Commits](https://www.conventionalcommits.org/)
-- 我们的更新日志格式是什么？ [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
+- 如何写入好的提交消息？ [常规承诺](https://www.conventionalcommits.org/)
+- 我们的更新日志格式是什么？ [保留更新日志](https://keepachangelog.com/en/1.0.0/)
 - 如何进行版本控制和标记？ [语义化版本控制](https://semver.org/)
 - Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript 编码准则是什么？ -> [TypeScript 风格指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
@@ -300,7 +300,7 @@ APITable 可适用这些通用的约定：
 
 - 重代码界面生成器
 - 可嵌入的第三方文档组件
-- 类似 SQL 的 DSL
+- SQL类域特定语言
 - 作为一个 IdP
 - Web 3 功能
 - ...
@@ -328,9 +328,9 @@ APITable 可适用这些通用的约定：
 
 我们一直在为 APITable 寻找优秀人才：
 
-- **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
 
 无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 talent@apitable
 
@@ -369,8 +369,6 @@ APITable 可适用这些通用的约定：
 
 ## 🥰 许可协议
 
-
-
 > 此仓库包含在 AGPL 下发布的 Open Source 版本的 APITable源代码。
 > 
 > 如果你想运行你自己的 APITable 副本或对发展作出贡献，那这里就是你的地方。
@@ -381,7 +379,4 @@ APITable 可适用这些通用的约定：
 
 <br/>
 
-
-
-[^info]:    
-    使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
+[^info]: 使用AGPL-3.0授权。 由 [APITable Ltd](https://apitable.com)设计。
