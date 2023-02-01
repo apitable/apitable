@@ -194,5 +194,6 @@ export const getEnvVars = () => {
     NEXT_PUBLIC_PUBLIC_URL: process.env.NEXT_PUBLIC_PUBLIC_URL,
     COOKIEBOT_ID: process.env.COOKIEBOT_ID,
     GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
+    USER_EDIT_EMAIL_VISIBLE: process.env.USER_EDIT_EMAIL_VISIBLE === 'true',
   };
 };
