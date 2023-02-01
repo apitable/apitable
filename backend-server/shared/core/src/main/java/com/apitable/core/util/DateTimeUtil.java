@@ -18,12 +18,15 @@
 
 package com.apitable.core.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -139,6 +142,24 @@ public class DateTimeUtil {
      */
     public static long between(TemporalAccessor startTime, TemporalAccessor endTime, ChronoField field) {
         return endTime.getLong(field) - startTime.getLong(field);
+    }
+
+    /**
+     * String format time conversion to timestamp
+     *
+     * @param time String format time
+     * @return timestamp
+     */
+    public static String dateToStamp(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long timestamp = 0;
+        try {
+            Date date = simpleDateFormat.parse(time);
+            timestamp = date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  String.valueOf(timestamp);
     }
 
 }

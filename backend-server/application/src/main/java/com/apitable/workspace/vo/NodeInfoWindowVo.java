@@ -95,7 +95,7 @@ public class NodeInfoWindowVo {
         /**
          * Time stamp
          * */
-        private LocalDateTime time;
+        private String time;
 
         /**
          * Whether the member is activated
