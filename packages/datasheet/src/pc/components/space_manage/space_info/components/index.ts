@@ -17,7 +17,6 @@
  */
 
 export * from './basic_info';
-export * from './capacity/capacity';
 export * from './change_logo/change_logo';
 export * from './change_name/change_name';
 export * from './level_card/level_card';

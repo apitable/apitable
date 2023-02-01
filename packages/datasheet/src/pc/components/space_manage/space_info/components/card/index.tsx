@@ -32,7 +32,7 @@ import { ISpaceLevelType, needHideUnLimitedSpaceLevel } from '../../interface';
 interface ICardProps {
   trailColor: string;
   strokeColor: string;
-  shape: 'line' | 'circle'
+  shape: 'line' | 'circle';
   unit?: string;
   title: string;
   titleTip: string;
@@ -56,26 +56,8 @@ interface ICardProps {
 
 export const Card: FC<ICardProps> = (props) => {
   const {
-    title,
-    usedPercent,
-    usedText,
-    remainText,
-    totalText,
-    remainPercent,
-    trailColor,
-    strokeColor,
-    shape,
-    unit,
-    titleTip,
-    titleLink,
-    titleButton,
-    valueIntro,
-    showPercent,
-    usedTextIsFloat,
-    minHeight = 302,
-    className,
-    level,
-    isMobile,
+    title, usedPercent, usedText, remainText, totalText, remainPercent, trailColor, strokeColor, shape, unit, titleTip,
+    titleLink, titleButton, valueIntro, showPercent, usedTextIsFloat, minHeight = 302, className, level, isMobile,
   } = props;
 
   const colors = useThemeColors();
@@ -95,7 +77,7 @@ export const Card: FC<ICardProps> = (props) => {
 
   const detail = (
     <>
-      <Desc 
+      <Desc
         color={_strokeColor}
         label={t(Strings.used)}
         text={usedText}
@@ -105,7 +87,7 @@ export const Card: FC<ICardProps> = (props) => {
       />
       {
         !unLimited &&
-        <Desc 
+        <Desc
           color={trailColor}
           label={t(Strings.remain)}
           text={remainText}
@@ -120,7 +102,7 @@ export const Card: FC<ICardProps> = (props) => {
   return (
     <div className={classNames(styles.card, className)} style={style}>
       <CardTitle isMobile={isMobile} title={title} tipTitle={titleTip} link={titleLink} button={titleButton} />
-      <div className={styles.cardNumber} >
+      <div className={styles.cardNumber}>
         <span className={styles.usedNum}>
           {usedTitleText}
         </span>
@@ -144,7 +126,7 @@ export const Card: FC<ICardProps> = (props) => {
           strokeColor={_strokeColor}
           percent={percent}
           showInfo={!isLine}
-          style={isLine ? { lineHeight: '12px', color: _strokeColor }: undefined}
+          style={isLine ? { lineHeight: '12px', color: _strokeColor } : undefined}
         />
       </div>
       {/* Show xx used, xx remaining */}
@@ -171,7 +153,7 @@ interface IDescProps {
 
 const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPercent }) => {
   return (
-    <Typography variant="body4" className={styles.descItem}>
+    <Typography variant='body4' className={styles.descItem}>
       <span className={styles.before} style={{ backgroundColor: color }} />
       <span>{label}</span>
       <span className={styles.customFont} style={{ fontSize: 14 }}>
@@ -203,7 +185,7 @@ const ProgressInCard: FC<IProgressInCardProps> = (props) => {
     strokeColor: 'red',
     trailColor: colors.lineColor,
     format: percent => <Typography
-      variant="h3"
+      variant='h3'
       color={color}
       className={styles.progressFormat}
     >
