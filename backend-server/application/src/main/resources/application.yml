@@ -117,6 +117,10 @@ starter:
       access-key: ${MINIO_ACCESS_KEY:apitable}
       secret-key: ${MINIO_SECRET_KEY:apitable@com}
       bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
+    aliyun:
+      endpoint: ${ALIYUN_ENDPOINT:apitable.com}
+      keyid: ${ALIYUN_KEY_ID:apitable.com}
+      keysecret: ${ALIYUN_KEY_SECRET:apitable.com}
   sms:
     enabled: ${SMS_ENABLED:false}
     local-area-code: ${SMS_LOCAL_AREA_CODE:+86}
@@ -163,3 +167,10 @@ grpc:
       security:
         clientAuthEnabled: false
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
+cos:
+  bucketName: testbucket-APPID
+  projectName: local_qsbase
+  businessName: knowledge_point
+  prefixDomain: http://ei-d-files.dongao.com/
+  fileSize: 20
+  expiration: 1

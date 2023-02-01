@@ -40,7 +40,8 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnClass(OssClientTemplate.class)
 @Import({ AwsS3AutoConfiguration.class,
         QiniuCloudAutoConfiguration.class,
-        MinioAutoConfiguration.class })
+        MinioAutoConfiguration.class,
+        AliyunAutoConfiguration.class})
 public class OssAutoConfiguration {
 
     @Bean

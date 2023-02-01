@@ -10,5 +10,6 @@ dependencies {
   implementation(rootProject.ext.dependencies['slf4j'])
   implementation(rootProject.ext.dependencies['hutool'])
   implementation(rootProject.ext.dependencies['gson'])
+  implementation(rootProject.ext.dependencies['aliyun-oss'])
   testImplementation(rootProject.ext.dependencies['spring-test-starter'])
 }

@@ -27,6 +27,8 @@ subprojects {
       mavenBom("org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}")
       mavenBom("de.codecentric:spring-boot-admin-dependencies:${spring_boot_admin_version}")
       mavenBom("com.amazonaws:aws-java-sdk-bom:${aws_java_sdk_version}")
+      mavenBom("com.aliyun.oss:aliyun-sdk-oss:${aliyun_oss_sdk_version}")
+
       mavenBom("io.grpc:grpc-bom:${io_grpc_version}")
       mavenBom("com.google.protobuf:protobuf-bom:${protobuf_java_version}")
       mavenBom("org.springframework.cloud:spring-cloud-sleuth-otel-dependencies:${spring_cloud_sleuth_otel_version}")
