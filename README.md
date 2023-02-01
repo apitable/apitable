@@ -260,9 +260,18 @@ Welcome, and thank you for your interest in contributing to APITable!
 
 There are many ways in which you can contribute, beyond writing code.
 
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
+
 You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
 
 Here's a quick guide to help you contribute to APITable.
+
 
 ### Development environment
 
