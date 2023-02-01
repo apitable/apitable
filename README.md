@@ -275,7 +275,7 @@ Here's a quick guide to help you contribute to APITable.
 
 ### Development environment
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+Learn how to set up your local environment, go to our [Developer Guide](./docs/contribute/developer-guide.md).
 
 ### Git workflow basic
 
