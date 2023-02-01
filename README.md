@@ -260,7 +260,7 @@ Welcome, and thank you for your interest in contributing to APITable!
 
 In addition to writing code, there are many ways for you to contribue.
 
-Such as the following:
+You can contribute as following:
 - Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
