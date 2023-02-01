@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.apitable.core.util.DateTimeUtil.dateToStamp;
 import static com.apitable.workspace.enums.NodeException.RUBBISH_NODE_NOT_EXIST;
 
 @Slf4j
@@ -131,7 +132,11 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
                         .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(ControlRoleManager.parseNodeRole(Node.MANAGER)))
                         .map(Map.Entry::getKey).collect(Collectors.toList());
                 if (CollUtil.isNotEmpty(rubbishNodeIdsAfterFilter)) {
-                    return nodeMapper.selectRubbishNodeInfo(spaceId, rubbishNodeIdsAfterFilter, subscriptionRemainDays);
+                    List<RubbishNodeVo> rubbishNodeVoList = nodeMapper.selectRubbishNodeInfo(spaceId, rubbishNodeIdsAfterFilter, subscriptionRemainDays);
+                    rubbishNodeVoList.forEach(rubbishNodeVo -> {
+                        rubbishNodeVo.setDeletedAt(dateToStamp(rubbishNodeVo.getDeletedAt()));
+                    });
+                    return rubbishNodeVoList;
                 }
             }
             // There is no permission.

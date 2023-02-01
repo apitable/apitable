@@ -71,9 +71,7 @@ public class RubbishNodeVo extends BaseNodeInfo {
     private Boolean isMemberNameModified;
 
     @ApiModelProperty(value = "Delete time", example = "2019-01-01 10:12:13", position = 9)
-    @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime deletedAt;
+    private String deletedAt;
 
     @ApiModelProperty(value = "Delete Path", dataType = "java.lang.String", example = "A/B", position = 10)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
@@ -92,7 +90,4 @@ public class RubbishNodeVo extends BaseNodeInfo {
     @ApiModelProperty(value = "Nick Name", example = "Zhang San")
     private String nickName;
 
-    public Integer getRemainDay() {
-        return retainDay - (int) (LocalDate.now(ZoneId.of("+8")).toEpochDay() - deletedAt.toLocalDate().toEpochDay());
-    }
 }

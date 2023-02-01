@@ -90,6 +90,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
+import static com.apitable.core.util.DateTimeUtil.dateToStamp;
 import static com.apitable.shared.constants.NotificationConstants.*;
 
 /**
@@ -435,8 +436,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         NotificationRenderMap renderField = notificationFactory.getRenderList(notificationModelDTOList);
         notificationModelDTOList.forEach(dto -> {
             NotificationDetailVo detailVo = NotificationDetailVo.builder().id(dto.getId().toString())
-                    .rowNo(dto.getRowNo()).toUserId(uuid).toUuid(uuid).createdAt(dto.getCreatedAt())
-                    .updatedAt(dto.getUpdatedAt()).isRead(dto.getIsRead()).notifyType(dto.getNotifyType())
+                    .rowNo(dto.getRowNo()).toUserId(uuid).toUuid(uuid).createdAt(dateToStamp(dto.getCreatedAt()))
+                    .updatedAt(dateToStamp(dto.getUpdatedAt())).isRead(dto.getIsRead()).notifyType(dto.getNotifyType())
                     .templateId(dto.getTemplateId())
                     .fromUser(notificationFactory.formatFromUser(dto.getFromUser(), dto.getSpaceId(), renderField)).build();
             detailVo.setNotifyBody(formatNotificationDetailBodyVo(dto, renderField));

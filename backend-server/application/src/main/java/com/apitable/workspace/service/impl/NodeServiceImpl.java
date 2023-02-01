@@ -173,6 +173,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.apitable.core.util.DateTimeUtil.dateToStamp;
 import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
 import static com.apitable.shared.util.NodeUtil.sortNode;
 import static com.apitable.core.constants.RedisConstants.getTemplateQuoteKey;
@@ -1751,7 +1752,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         MemberDTO memberDto = memberMapper.selectMemberDtoByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
         // construct node information window objects
         MemberInfo memberInfo = MemberInfo.builder()
-                .time(node.getCreatedAt())
+                .time(dateToStamp(node.getCreatedAt().toString().replace("T", " ")))
                 .build();
         if (memberDto != null) {
             memberInfo.setMemberName(memberDto.getMemberName());
