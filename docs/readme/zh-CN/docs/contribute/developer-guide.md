@@ -34,10 +34,10 @@ sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
 我们建议使用 [Homebrew](https://brew.sh/) 来安装任何缺失的依赖包：
 
 ```bash
-## 必要需要
-酿造安装 git
-酿造安装 --cask docker
-酿造安装
+## 必要
+brew install git
+brew install --cask docker
+brew install make
 ```
 
 ### Linux
