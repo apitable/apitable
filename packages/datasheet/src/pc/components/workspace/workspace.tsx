@@ -27,6 +27,7 @@ import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_con
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
 import { Router } from 'pc/components/route_manager/router';
 import WorkspaceRoute from 'pc/components/route_manager/workspace_route';
+import { expandUpgradeSpace } from 'pc/components/space_manage/upgrade_space/expand_upgrade_space';
 import Trash from 'pc/components/trash/trash';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
@@ -109,19 +110,24 @@ export const Workspace: React.FC = () => {
   const [panelVisible, setPanelVisible] = useState(false);
   const sideBarVisible = useSelector(state => state.space.sideBarVisible);
 
+  useMount(() => {
+    if (!query.get('choosePlan')) return;
+    expandUpgradeSpace();
+  });
+
   /**
    * Directory Tree Switch Source - Users.
    */
   const handleSetSideBarByUser = (visible, panel) => {
-    // To determine the type of directory tree switch, 
-    // if the right panel is expanded or the right panel is closed and 
-    // the user closes the directory tree at the same time, 
-    // it is considered as a user click operation and the expanded and 
-    // closed panels should not affect the directory tree state.    
+    // To determine the type of directory tree switch,
+    // if the right panel is expanded or the right panel is closed and
+    // the user closes the directory tree at the same time,
+    // it is considered as a user click operation and the expanded and
+    // closed panels should not affect the directory tree state.
     const resToggleType = panel || (!panel && sideBarVisible) ? SideBarType.User : SideBarType.UserWithoutPanel;
     setToggleType(resToggleType);
-    // If the right panel is not expanded or if the right panel is expanded and 
-    // the directory tree is also expanded, 
+    // If the right panel is not expanded or if the right panel is expanded and
+    // the directory tree is also expanded,
     // set the click type of the directory tree switch to be considered a user action.
     if (!panel || (panel && sideBarVisible)) {
       setClickType(SideBarClickType.User);
@@ -255,7 +261,7 @@ export const Workspace: React.FC = () => {
     >
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <SideBarContext.Provider value={sideContextValue}>
-          {/* TODO: `SplitPane` directly set `pane1Style` add animation will lead to the problem 
+          {/* TODO: `SplitPane` directly set `pane1Style` add animation will lead to the problem
            that can not be dragged, the next version to solve. 0.4 temporarily do not add animation */}
           <VikaSplitPanel
             panelLeft={

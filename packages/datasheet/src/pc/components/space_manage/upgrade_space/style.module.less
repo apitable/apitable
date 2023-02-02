@@ -24,3 +24,23 @@
   right: 0;
   bottom: 0;
 }
+
+.modalWrapper {
+  :global {
+    .ant-modal-body {
+      padding: 0 !important;
+      height: 520px;
+    }
+
+    .ant-modal-close-x {
+      &:hover, &:focus-within {
+        box-shadow: none !important;
+        background: none !important;
+      }
+
+      svg {
+        fill: var(--fc8);
+      }
+    }
+  }
+}
