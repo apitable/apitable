@@ -75,7 +75,6 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
             { qrcodeVisible ? 
               <div className={styles.helpText}>{t(Strings.qrcode_help)}</div> :
               <div className={styles.helpText}> 
-                {t(Strings.qrcode_help)} 
                 <a href={env.HELP_MENU_USER_COMMUNITY_URL} target="_blank" rel="noreferrer">{t(Strings.join_discord_community)}</a></div>
             }
             {!pageParams.embedId && <div className={styles.backButton}>
