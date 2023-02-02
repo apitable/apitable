@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -60,28 +64,27 @@
   <a href="docs/readme/ja-JP/README.md">日本語</a>
 </p>
 
-## ✨ Quick Start
+## ✨ Быстрый старт
 
-> APITable is currently a `Work In Progress`.
-> 
-> We will publish the first release in late February 2023.
-> 
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+Если вы просто хотите попробовать пригодиться[^info], используйте нашу версию с облачным хостингом на [apitable.com](https://apitable.com).
 
-If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
+Если вы хотите демонтировать этот проект с открытым исходным кодом, нажмите сюда для [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+Если вы хотите установить APITable на локальных или облачных компьютерах, смотрите [💾 Установка](#installation)
 
-## 🔥 Features
+Если вы хотите установить локальную среду разработки, прочитайте наш [🧑<unk> 💻 Руководство разработчика](./docs/contribute/developer-guide.md)
+
+Присоединяйтесь к [Discord](https://discord.gg/TwNb9nfdBU) или [Twitter](https://twitter.com/apitable_com) , чтобы оставаться на связи.
+## 🔥 Особенности
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">Сотрудничество в реальном времени</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">Автоматическая форма</a>
     </th>
 
   </tr>
@@ -101,10 +104,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">Первая панель API</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">Неограниченное число перекрестных ссылок</a>
     </th>
 </tr>
 
@@ -123,10 +126,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">Мощные Rows/Columns разрешения</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">встраиваться</a>
     </th>
   </tr>
 
@@ -145,196 +148,229 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 </table>
 
-APITable provides a range of amazing features, from the personal to the enterprise.
+APITable предоставляет целый ряд удивительных возможностей, от персональных до корпоративных.
 
-- Advanced technology stack and open-source
-  - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
-  - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
-  - **100k+** data rows with real-time collaboration.
-  - Full-stack API access, from `Data` to `Metadata`.
-  - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- Beautiful and Rich Database-Spreadsheet UI
-  - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
-  - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-  - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
-  - `Dark mode` and theme customization available.
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
-  - One-click API Panel
-- Batteries included
-  - Built-in 10+ official templates.
-  - Robot Automation and customization available.
-  - BI dashboard
-  - One-click auto-generated form
-  - Shareable and embeddable page.
-  - Multi-language support.
-  - Integration with n8n.io / Zapier / Appsmith... and more.
-- Excellent extensibility
-  - Extensible `Widget System` with over 20 officials open-source widgets.
-  - Customizable Graph & Chart & Dashboard
-  - Customizable Data Column Types
-  - Customizable Formulas
-  - Customizable Automation Robot Actions.
-- Enterprise-grade permissions
-  - `Mirror`, turn a View into a mirror to implement Row Permission.
-  - Activate `Column Permission` through a very simple operation.
-  - Folders / Sub-Folders / Files Permission.
-  - Tree structure folders and customizable node (file);
-  - Team Management & Organization Structure.
-- Enterprise features:
+- Передовой технологический стек и открытый исходный код
+  - `В реальном времени` позволяет нескольким пользователям редактировать данные в реальном времени или одновременно с алгоритмом `Операционное преобразование (OT)` алгоритм.
+  - Очень гладкий, удобный, супер-быстрый интерфейс с таблицами базы данных в `<canvas> Рендеринг-движке`.
+  - Родная архитектура базы данных: Changeset / Operation / Action / Snapshot и так далее.
+  - 100k+ рядов данных с возможностью совместной работы в реальном времени.
+  - Доступ к API Full-stack, от `Data` до `метаданных`.
+  - Таблица с одним направлением / двумя направлениями и `бесконечные перекрестные ссылки`
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+- пользовательский интерфейс для работы с базами данных и таблицами
+  - `CRUD`: Создание, Чтение, Обновление, Удаление таблиц, столбцов и строк
+  - `Операции с полями`: сортировка, фильтр, группировка, скрытие/скрытие, установка высоты.
+  - `На основе пространства`: Использование разделенных рабочих пространств вместо структуры на основе приложений/базы, возможность связывать неограниченное количество таблиц.
+  - Доступен темный режим и настройка темы.
+  - 7 типов представления: Вид сетки (Datasheet) / Вид галереи / Вид Mindmap / Вид Kanban / Полнофункциональный вид Gantt / Вид календаря.
+  - Панель API одним щелчком мыши
+- Батарейки в комплекте
+  - Встроенные 10+ официальных шаблонов
+  - Доступна автоматизация и настройка
+  - BI приборная панель
+  - Автоматически генерируемая форма в один клик
+  - Возможность поделиться и встроить страницу
+  - Поддержка нескольких языков
+  - Интеграция с n8n.io / Zapier / Appsmith... и многое другое
+- Отличная расширяемость
+  - Расширяемая система виджетов с более чем 20 официальными виджетами с открытым исходным кодом
+  - Настраиваемые графики, диаграммы и приборные панели
+  - Настраиваемые типы столбцов данных
+  - Настраиваемые формулы
+  - Настраиваемые действия роботов-автоматизаторов
+- Разрешения корпоративного уровня
+  - `Зеркало`, превратите представление в зеркало, чтобы реализовать разрешение на строку
+  - Активируйте разрешение столбцов с помощью очень простой операции
+  - Разрешение папок / вложенных папок / файлов
+  - Древовидная структура папок и настраиваемый узел (файл)
+  - Управление командой и организационная структура
+- Функции предприятия
   - SAML
-  - Single-Sign-On (SSO)
-  - Audit
-  - Database Auto Backup
-  - Data Exporter
-  - Watermark
+  - Единая регистрация (SSO)
+  - Аудит
+  - Автоматическое резервное копирование базы данных
+  - Экспортер данных
+  - Водяной знак
 - ....
 
-With extensible widgets and plugins, you can add more features.
+С помощью расширяемых виджетов и плагинов вы можете добавлять дополнительные функции
 
-## 💥 Use Cases
+## 💥 Примеры использования
 
-Why you must know APITable for your next software?
+Почему вы должны знать APITable для вашего следующего программного обеспечения?
 
-- As super management software
-  - Flexible Project Management & Tasks / Issues Management.
-  - Marketing Lead Management.
-  - Most flexible and connectable CRM.
-  - Flexible Business Intelligence (BI).
-  - People-Friendly Forms and Surveys
-  - Flexible ERP.
-  - Low-code and no-code platform.
-  - ...and more, APITable puts 1000 softwares in your pocket.
-- As a visual database infrastructure
-  - **Embed** APITable into your own software UIs.
-  - Visual Database with REST API.
-  - Admin dashboard.
-  - Central configuration management.
-  - All-in-one enterprise database that **connect all** your software.
-  - ...and more, APITable connects everything.
-- Also, it is open source and extensible
+- Как программное обеспечение для суперменеджмента
+  - Гибкое управление проектами и задачами / вопросами
+  - Управление маркетинговыми лидами
+  - Самая гибкая и подключаемая CRM
+  - Гибкая бизнес-аналитика (BI)
+  - Удобные для людей формы и опросы
+  - Гибкая ERP
+  - Low-code и no-code платформа
+  - ...и многое другое, APITable помещает 1000 программных продуктов в ваш карман
+- Как визуальная инфраструктура базы данных
+  - Встраивайте APITable в пользовательские интерфейсы своих программ
+  - Визуальная база данных с REST API
+  - Приборная панель администратора
+  - Центральное управление конфигурацией
+  - База данных предприятия "все в одном", которая соединяет все ваше программное обеспечение
+  - ...и многое другое, APITable объединяет все
+- Кроме того, она имеет открытый исходный код и расширяема.
 
-## 💞 API-oriented
+## 💞 Ориентированность на API
 
-#### API UI Panel
+#### Панель пользовательского интерфейса API
 
-Clicking the `API` button in the right corner will show the API Panel
+Нажав на кнопку API в правом углу, вы увидите панель API.
 
-#### SQL-like query
+#### SQL-подобный запрос
 
-APITable will provides a Datasheet Query Language (DQL) to query your database-spreadsheet contents.
+APITable предоставляет язык запросов Datasheet Query Language (DQL) для запроса содержимого вашей базы данных - электронной таблицы.
 
 ## 💝 Embed-friendly
 
-#### Share and Embed
+#### Делиться и встраивать
 
-Share your datasheet table or folder. Embed them by copying and pasting HTML scripts.
+Поделитесь таблицей или папкой с данными. Встраивайте их путем копирования и вставки HTML-скриптов.
 
-#### Enterprise-ready Embedding
+#### Встраивание с поддержкой предприятий
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+[APITable.com](https://apitable.com) предоставляет больше возможностей Enterprise-ready Embedding для ценных бумаг.
 
-## Installation
+## Установка
 
-Make sure you have `docker` & `curl` installed locally.
+Прежде чем начать:
+* Хост с установленными [docker](https://docs.docker.com/engine/install/) и [docker-compose v2](https://docs.docker.com/engine/install/).
+* Рекомендуется 4 CPU/8GB RAM или более.
+* Оболочка bash с установленными базовыми утилитами, такими как curl.
+* Нативные образы контейнеров arm64 (apple silicon) еще не готовы и могут привести к плохой производительности.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+Чтобы установить apitable с помощью docker compose, откройте терминал и выполните следующее:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+Затем откройте http://localhost:80 в браузере, чтобы посетить его. (имя пользователя по умолчанию `admin@apitable.com` и пароль `Apitable2022`).
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
-## 🧑‍💻 Contributing
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
 
-Welcome, and thank you for your interest in contributing to APITable!
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
 
-There are many ways in which you can contribute, beyond writing code.
+Если вы хотите настроить локальную среду разработки, [прочитайте наше руководство для разработчиков 🧑‍💻](./docs/contribute/developer-guide.md).
 
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
+## 🧑‍💻 Вклад
 
-Here's a quick guide to help you contribute to APITable.
+Добро пожаловать, и спасибо за ваш интерес к участию в разработке APITable!
 
-### Development environment
+In addition to writing code, there are many ways for you to contribute.
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+Вы можете внести свой вклад следующим образом:
+- Присоединиться и изменять переводы в нашем проекте переводов [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185).
+- [Создавать вопросы](https://github.com/apitable/apitable/issues/new/choose)
+- [Следить за нашим Твиттером](https://twitter.com/apitable_com)
+- [Создавать документацию](./docs)
+- [Внесение кода](./docs/contribute/developer-guide.md)
 
-### Git workflow basic
 
-Here's a general APITable git workflow:
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
-1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
-2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some features'`)
-5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-### Work conventions
+Вы можете прочитать Руководство по внесению кода в этот репозиторий, чтобы узнать, как вносить свой вклад.
 
-APITable use these common conventions:
+Вот краткое руководство, которое поможет вам внести свой вклад в APITable.
 
-- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
-- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
-- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
-- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
-### Documentations
+### Среда разработки
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
+О том, как настроить локальное окружение, читайте в нашем руководстве для разработчиков.
+
+### Основы рабочего процесса Git
+
+Вот общая схема работы APITable с git:
+
+1. Создайте проблему и опишите функции, которые вы хотите получить -> [Проблемы APITable](https://github.com/apitable/apitable/issues)
+2. Форк этого проекта -> [Форк проекта APITable](https://github.com/apitable/apitable/fork)
+3. Создайте свою ветку фич (`git checkout -b my-new-feature`)
+4. Зафиксируйте свои изменения  (`git commit -am 'Add some features'`)
+5. Опубликуйте ветку (`git push origin my-new-feature`)
+6. Создать новый запрос на притяжение -> [Создать запрос на притяжение во всех форках](https://github.com/apitable/apitable/compare)
+
+### Рабочие соглашения
+
+APITable использует эти общие соглашения:
+
+- Какова наша модель ветвления в Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- Как сотрудничать над своими форками проектов? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- Как написать хорошее сообщение о коммите? [Обычные коммиты](https://www.conventionalcommits.org/)
+- Каков формат нашего журнала изменений? [Сохранить журнал изменений](https://keepachangelog.com/en/1.0.0/)
+- Как создавать версии и теги? [Семантическое версионирование](https://semver.org/)
+- Что такое руководство по кодированию Java? [Руководство по кодированию Java](https://google.github.io/styleguide/javaguide.html)  | [Плагин Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
+- Что такое руководство по кодированию TypeScript? -> [Руководство по стилю TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Что такое обзор архитектуры? -> [Понять APITable - обзор архитектуры Документация](./docs/contribute/architecute-overview.md)
+
+### Документация
+
+- [Справочный центр](https://help.apitable.com/)
+- [👩‍💻 Центр разработчиков](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
-  - Scripting (Coming soon...)
+  - SDK для виджетов (Скоро появится...)
+  - Скриптинг (скоро будет...)
 
-## 🛣 Roadmap
+## 🛣 Дорожная карта
 
-### Future Features
+### Будущие возможности
 
-- Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
-- SQL-like Domain-Specific Languages
-- As an IdP
-- Web 3 features
+- Конструктор интерфейсов с тяжелым кодом
+- Embeddable 3rd party documentation components
+- SQL-подобные языки, специфичные для домена
+- В качестве IdP
+- Расширенный робот автоматизации
+- Особенности Web 3
 - ...
 
-### Hosted and Enterprise versions offer advanced features
+### Версии Hosted и Enterprise предлагают расширенные возможности
 
-- As an IdP;
+- В качестве IdP
 - SAML
 - Single-Sign-On
-- Audit
-- Database Backup
-- Watermark
+- Аудит
+- Резервное копирование базы данных
+- Интеграция с ChatGPT, Zapier, Slack, Google Workspace......
+- Водяной знак
 
-For more information, please contact us at <support@apitable.com>.
+Для получения дополнительной информации, пожалуйста, свяжитесь с нами по адресу <support@apitable.com>.
 
-## 👫 Get Involved
+## 👫 Принять участие
 
-### 🌏 Why we create APITable and open-source?
+### 🌏 Почему мы создали APITable с открытым исходным кодом?
 
-- We believe that `Database is the cornerstone` of all the software.
-- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+- Мы считаем, что база данных - это краеугольный камень всего программного обеспечения.
+- Мы считаем, что создание визуальной базы данных с богатым и простым пользовательским интерфейсом для всех может уменьшить сложность индустрии программного обеспечения и увеличить внедрение цифровых технологий в мире.
+- Мы верим, что открытая работа APITable может продвинуть человека вперед.
 
-### We are hiring remotely!
+### Мы принимаем на работу удаленно!
 
-We always search for good talents for APITable:
+Мы всегда ищем хорошие таланты для APITable:
 
-- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **Full-stack разработчик**: У вас есть опыт работы с React, NestJS, TypeScript, Spring Boot, Java, Terraform. И вам нравится писать качественный код с понятной документацией и юнит-тестами.
+- **Back-end разработчик**: У вас есть опыт работы с NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform.  И вам нравится писать высококачественный код с четкой документацией и модульными тестами.
+- **Front-end разработчик**: У вас есть опыт работы с React, NextJS, TypeScript, WebPack. И вам нравится писать высококачественный код с четкой документацией и модульными тестами.
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
+Независимо от времени и условий, если вы хотите присоединиться к команде APITable, не стесняйтесь и присылайте свое резюме на <talent@apitable.com>.
 
-## 📺 Screenshot
+## 📺 Скриншот
 
 <p align="center">
     <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
@@ -367,16 +403,16 @@ Regardless of time and conditions, if you want to get involved to the team of AP
     <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
-## 🥰 License
+## 🥰 Лицензия
 
-> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> Этот репозиторий содержит исходный код для Open Source версии APITable, выпущенной под лицензией AGPL.
 > 
-> If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+> Если вы хотите запустить свою собственную копию APITable или внести вклад в разработку, то это место для вас.
 > 
-> See [LICENSING](./LICENSING.md) for details.
+> [Подробности см. в разделе ЛИЦЕНЗИРОВАНИЕ.](./LICENSING.md)
 > 
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+> Если вы хотите использовать APITable онлайн, то вам не нужно запускать этот код, мы предлагаем размещенную версию приложения на сайте [APITable.com](https://apitable.com), оптимизированную для глобального акселератора.
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: Лицензия AGPL-3.0. Разработано компанией [APITable Ltd](https://apitable.com).

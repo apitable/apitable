@@ -42,11 +42,14 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
-  English
-  | 
+    | 
   <a href="docs/readme/fr-FR/README.md">Français</a>
   | 
   <a href="docs/readme/es-ES/README.md">Español</a>
@@ -60,18 +63,17 @@
   <a href="docs/readme/ja-JP/README.md">日本語</a>
 </p>
 
-## ✨ Inicio rápido
+## ✨ Inicio Rápido
 
-> APITable es actualmente un `Trabajo en progreso`.
-> 
-> Publicaremos la primera versión a finales de enero de 2023.
-> 
-> Únete a [Discord](https://discord.gg/TwNb9nfdBU) o [Twitter](https://twitter.com/apitable_com) para mantenerte en contacto.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->Si solo quieres probar APITable[^info], haz clic aquí para [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+Si solo quieres probar APITable [^info], utiliza nuestra versión alojada en la nube en apitable.com.
 
-Si desea instalar APITable en su entorno de computación local o en la nube, consulte [💾 Instalación](#installation)
+Si quieres demostrar este proyecto de código abierto de APITable, haz clic aquí para la demo en línea de [⚡️Gitpod](https://gitpod.io/#https://github.com/apitable/apitable).
 
-Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Si quieres instalar APITable en tu entorno local o en la nube, consulta [💾 Instalación](#installation)
 
+Si quieres configurar tu entorno de desarrollo local, lee nuestra guía de [🧑● 💻 Developer Guide](./docs/contribute/developer-guide.md)
+
+Únete a [Discord](https://discord.gg/TwNb9nfdBU) o [Twitter](https://twitter.com/apitable_com) para estar en contacto.
 ## 🔥 Características
 
 <table>
@@ -145,16 +147,16 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
 
 </table>
 
-APITable ofrece una gama de características asombrosas, desde lo personal hasta lo personal.
+APITable proporciona una amplia gama de características increíbles, desde lo personal hasta la empresa.
 
 - Pila de tecnología avanzada y código abierto
   - `La colaboración en tiempo real` permite a varios usuarios editar juntos en tiempo real, o simultáneamente con el algoritmo `Transformación operacional (OT)`.
-  - Interfaz de hoja de cálculo de base de datos extremadamente suave y fácil de usar en `<canvas> Motor de renderizado`.
+  - Interfaz de base de datos-hoja de cálculo extremadamente suave, fácil de usar y súper rápida en el motor de renderizado de ` canvas`.
   - Arquitectura nativa de base de datos: Cambios / Operación / Acción / Instantánea y así sucesivamente.
   - **100k+** filas de datos con colaboración en tiempo real.
   - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
   - Vínculo de tabla de una dirección / Bi-dirección y `Enlaces cruzados infinitos`
-  - Idiomas de programación y marco amigables con la comunidad, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
 - Bonito y rico Database-Hoja de cálculo UI
   - `CRUD`: Crear, leer, actualizar, eliminar las tablas, columnas y filas
   - `Operaciones de campos`: ordenar, filtro, agrupar, ocultar/desocultar, ajuste de altura.
@@ -237,15 +239,27 @@ Comparte tu tabla o carpeta de la hoja de datos. Los inserte copiando y pegando 
 
 ## Instalación
 
-Asegúrate de que tienes `docker` & `curl` instalado localmente.
+Antes de comenzar:
+* Se requiere un anfitrión con Docker y Docker Compose v2 instalado.
+* Se recomienda tener al menos 4 CPUs/8GB de RAM.
+* Se requiere una shell bash con utilidades básicas como curl instaladas.
+* Las imágenes de contenedor nativas arm64 (Apple Silicon) aún no están listas y pueden causar un mal rendimiento.
 
-Si tu ordenador ha instalado Docker Machine, abre tu terminal y ejecuta esto:
+Para instalar apitable usando docker-compose, abra su terminal y ejecute lo siguiente:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Luego abre [https://localhost:80](https://localhost:80) en tu navegador para visitarlo. (nombre de usuario predeterminado `admin@apitable.com` y contraseña `Apitable2022`)
+Luego abra [http://localhost:80](http://localhost:80)  en su navegador para visitarlo. (nombre de usuario predeterminado `admin@apitable.com` y contraseña `Apitable2022`)
+
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
 
 Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -253,15 +267,32 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
 
 Bienvenido, y gracias por su interés en contribuir a APITable!
 
-Hay muchas maneras en las que puedes contribuir, más allá de escribir código.
+In addition to writing code, there are many ways for you to contribute.
+
+Puedes contribuir de la siguiente manera:
+- Unirte y modificar traducciones en nuestro proyecto de traducción de [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Crear [problemas](https://github.com/apitable/apitable/issues/new/choose)
+- Seguir nuestro [Twitter](https://twitter.com/apitable_com)
+- Crear [documentación](./docs)
+- [Contribuir con código](./docs/contribute/developer-guide.md)
+
+
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
 
 Puede leer las [Directrices de contribución](./CONTRIBUTING.md) de este repositorio para aprender a contribuir.
 
 Aquí hay una guía rápida para ayudarte a contribuir a APITable.
 
+
 ### Medio ambiente de desarrollo
 
-Aprende cómo configurar tu entorno local, en nuestra [Guía para desarrolladores](./docs/contribute/developer-guide.md).
+Aprende cómo configurar tu entorno local, visita nuestra [Guía del Desarrollador](./docs/contribute/developer-guide.md).
 
 ### Flujo de trabajo Git básico
 
@@ -283,8 +314,10 @@ Utilizar estas convenciones comunes:
 - ¿Cómo escribir un buen mensaje de confirmación? ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
 - ¿Cuál es nuestro formato de registro de cambios? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
 - ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
-- ¿Qué es la guía de código de Java? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- ¿Qué es la guía de código de Java? Guía de codificación en Java | Plugin de Intellij IDEA
 - ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- ¿Qué es la Visión General de la Arquitectura? -> [ Comprender APITable - Visión General de la Arquitectura.](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
 
@@ -299,9 +332,10 @@ Utilizar estas convenciones comunes:
 ### Características futuras
 
 - Constructor de Interfaz de código pesado
-- Componentes de documentación de terceros incrustables
+- Embeddable 3rd party documentation components
 - Idiomas específicos del dominio de SQL
 - Como IdP
+- Advanced automation robot
 - Características Web 3
 - ...
 
@@ -312,6 +346,7 @@ Utilizar estas convenciones comunes:
 - Inicio de sesión simple
 - Auditoría
 - Copia de seguridad de base de datos
+- Avanzado robot de automatización. Integración con ChatGPT, Zapier, Slack, Google Workspace...
 - Marca de agua
 
 Para más información, por favor contáctenos en <support@apitable.com>.
@@ -352,10 +387,10 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
     <img src="docs/static/screenshot-extensible.png" alt="Imagen de captura de pantalla APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-hr.png" alt="Imagen de captura de pantalla APITable" />
@@ -364,7 +399,7 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
     <img src="docs/static/screenshot-it.png" alt="Imagen de captura de pantalla APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licencia

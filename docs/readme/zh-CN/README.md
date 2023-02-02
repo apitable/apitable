@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -62,16 +66,15 @@
 
 ## ✨ 快速开始
 
-> APITable 目前正在 `积极开发中`。
-> 
-> 我们将在 2023 年 2 月下旬公布第一份发行版本。
-> 
-> 加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->如果您只是想尝试APITable[^info], 点击这里 [⚡️Gitpod 在线 Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+如果你只是想试用一下 APITable[^info]，那可以使用我们托管在 [apitable.com](https://apitable.com)的云端版本。
+
+如果你想演示这个 APITable 开源项目，请单击此处获取[⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable)。
 
 如果您想要在本地或云端计算环境中安装 APITable ，请参阅 [💾 安装](#installation)
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
+加入 [Discord](https://discord.gg/TwNb9nfdBU) 或 [Twitter](https://twitter.com/apitable_com) 保持联系。
 ## 🔥 功能特性
 
 <table>
@@ -154,7 +157,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 实时协作 **100k+** 数据行
   - 从 `数据(Data)` 到 `元数据(MetaData)` 的全栈式API访问。
   - 单向/双向表链接和 `无限交叉链接`
-  - 社区友好的编程语言和框架，TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
 - 美观和齐全的多维表格UI界面
   - `CRUD`: 创建、浏览、更新、删除表、列和行
   - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
@@ -237,27 +240,56 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 
 ## 安装
 
-请确保您已在本地安装 `docker` & `curl` 。
+在你开始之前：
+* 安装 docker 和 docker-compose v2 的主机。
+* 有4 个或更多 CPU/8GB RAM。
+* 一个安装了 curl 等基本实用程序的 bash shell。
+* 原生 arm64 (apple silicon) 容器镜像尚未就绪，可能会导致性能不佳。
 
-如果您的计算机安装了 Docker ，打开您的终端并这样运行：
+要使用 docker compose 安装 apitable，请打开您的终端并运行：
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
+用你的浏览器打开[http://localhost:80](http://localhost:80)并浏览。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
+
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
 ## 🧑‍💻 贡献
 
-欢迎并感谢您有兴趣为 APITable 作出贡献！
+欢迎并感谢您为 APITable 作出贡献！
 
-除了编写代码，您还有许多方法可以做出贡献。
+In addition to writing code, there are many ways for you to contribute.
 
-你可以阅读这个仓库的 [贡献指南](./CONTRIBUTING.md) 来学习如何贡献.
+你可以通过如下方式给项目提供帮助:
+- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
+- 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
+- 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
+- 完善、增添项目的 [Documentation](./docs)
+- [贡献代码](./docs/contribute/developer-guide.md)
 
-这是一个帮助您为 APITable 作出贡献的快速指南。
+
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
+
+更多详情，请查看 [贡献指南](./CONTRIBUTING.md) 。
+
+这是一份入门指南，让您快速了解如何为 APITable 的茁壮成长贡献力量。
+
 
 ### 开发环境
 
@@ -285,6 +317,8 @@ APITable 可适用这些通用的约定：
 - 如何进行版本控制和标记？ [语义化版本控制](https://semver.org/)
 - Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript 编码准则是什么？ -> [TypeScript 风格指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- 什么是架构视图？ -> [了解APITable - 架构视图](./docs/contribute/architecute-overview.md)
 
 ### 文档
 
@@ -299,10 +333,11 @@ APITable 可适用这些通用的约定：
 ### 未来的功能
 
 - 重代码界面生成器
-- 可嵌入的第三方文档组件
+- Embeddable 3rd party documentation components
 - SQL类域特定语言
 - 作为一个 IdP
-- Web 3 功能
+- 先进的自动化机器人
+- 与 ChatGPT、Zapier、Slack、Google Workspace 集成……
 - ...
 
 ### 托管服务版和企业版提供高级功能
@@ -312,6 +347,7 @@ APITable 可适用这些通用的约定：
 - 单点登录
 - 审计
 - 数据库备份
+- 与ChatGPT、Zapier、Slack、Google Workspace等软件集成
 - 水印
 
 欲了解更多信息，请通过 <support@apitable.com> 联系我们。
@@ -332,7 +368,7 @@ APITable 可适用这些通用的约定：
 - **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
 - **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
 
-无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 talent@apitable
+无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 <talent@apitable.com>。
 
 ## 📺 截图
 
@@ -352,10 +388,10 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-extensible.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-hr.png" alt="可用屏幕截图图像" />
@@ -364,7 +400,7 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-it.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 许可协议

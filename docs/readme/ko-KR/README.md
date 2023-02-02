@@ -1,18 +1,22 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="APITable Cover Image
+" />
     </a>
 </p>
 
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment
+" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework
+" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework
+" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -28,7 +32,8 @@
     <br />
     <!-- LICENSE -->
     <a target="_blank" href="https://github.com/apitable/apitable/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
+        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL
+" />
     </a>
     <!-- Discord -->
     <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
@@ -41,6 +46,10 @@
     <!-- Github Action Build-->
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
+    </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
     </a>
 </p>
 
@@ -60,28 +69,27 @@
   <a href="docs/readme/ja-JP/README.md">日本語</a>
 </p>
 
-## ✨ Quick Start
+## ✨ 빠른 시작
 
-> APITable is currently a `Work In Progress`.
-> 
-> We will publish the first release in late February 2023.
-> 
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+만약 APITable 을 시험해보고 싶다면, 클라우드 호스팅 버전인 apitable.com을 사용하세요.
 
-If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
+만약 APITable 오픈소스 프로젝트를 데모해보고 싶다면, ⚡️Gitpod Online Demo에서 확인하세요.
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+만약 로컬 또는 클라우드 컴퓨팅 환경에 APITable을 설치하고 싶다면, 💾 설치를 참고하세요.
 
-## 🔥 Features
+만약 로컬 개발 환경을 설정하고 싶다면, 🧑💻 개발자 가이드를 읽으세요.
+
+Discord나 Twitter에 가입하여 연락을 유지하세요.
+## 🔥 기능
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">실시간 협업</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">자동 양식</a>
     </th>
 
   </tr>
@@ -101,10 +109,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">API-First 패널</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">무제한 교차 테이블 링크</a>
     </th>
 </tr>
 
@@ -123,10 +131,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">강력한 행/열 권한</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">임베드</a>
     </th>
   </tr>
 
@@ -145,238 +153,280 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 </table>
 
-APITable provides a range of amazing features, from the personal to the enterprise.
+APITable은 개인부터 기업까지 다양한 기능을 제공합니다.
 
-- Advanced technology stack and open-source
-  - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
-  - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
-  - **100k+** data rows with real-time collaboration.
-  - Full-stack API access, from `Data` to `Metadata`.
-  - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- Beautiful and Rich Database-Spreadsheet UI
-  - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
-  - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-  - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
-  - `Dark mode` and theme customization available.
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
-  - One-click API Panel
-- Batteries included
-  - Built-in 10+ official templates.
-  - Robot Automation and customization available.
-  - BI dashboard
-  - One-click auto-generated form
-  - Shareable and embeddable page.
-  - Multi-language support.
-  - Integration with n8n.io / Zapier / Appsmith... and more.
-- Excellent extensibility
-  - Extensible `Widget System` with over 20 officials open-source widgets.
-  - Customizable Graph & Chart & Dashboard
-  - Customizable Data Column Types
-  - Customizable Formulas
-  - Customizable Automation Robot Actions.
-- Enterprise-grade permissions
-  - `Mirror`, turn a View into a mirror to implement Row Permission.
-  - Activate `Column Permission` through a very simple operation.
-  - Folders / Sub-Folders / Files Permission.
-  - Tree structure folders and customizable node (file);
-  - Team Management & Organization Structure.
-- Enterprise features:
+- 고급 기술 스택 및 오픈소스
+  - 실시간 협업: 동시에 여러 사용자가 실시간으로 편집 가능, 또는 동시에 작업할 수 있는 OT(Operational Transformation) 알고리즘 사용
+  - canvas 렌더링 엔진에서 매우 부드럽고 사용자 친화적인 초고속 데이터베이스 스프레드시트 인터페이스
+  - 데이터베이스 네이티브 아키텍처: Changeset/Operation/Action/Snapshot 등
+  - 실시간 협업을 이용하여 10만 개 이상의 데이터 행 처리 가능
+  - 데이터부터 메타데이터까지 모두에 대한 Full-stack API 액세스
+  - 단방향/양방향 테이블 링크 및 무한 교차 링크
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+- 아름다운 및 풍부한 데이터베이스 스프레드시트 UI
+  - CRUD: 테이블, 열 및 행 생성, 읽기, 업데이트, 삭제
+  - 필드 작업: 정렬, 필터링, 그룹화, 숨기기/표시, 높이 설정 등
+  - 공간 기반: 앱/베이스 기반 구조 대신 별도의 작업 영역을 사용하여 무제한 테이블 링크 가능
+  - 다크 모드 및 테마 사용 가능
+  - `7개의 뷰 타입`: 그리드 뷰 (데이터 시트) / 갤러리 뷰 / 마인드맵 뷰 / 칸반 뷰 / 풀 기능 간트 뷰 / 캘린더 뷰
+  - 원클릭 API 패널
+- 배터리 포함
+  - 10개 이상의 공식 템플릿이 내장되어 있습니다.
+  - 로봇 자동화 및 사용자 정의 가능
+  - BI 대시 보드
+  - 원클릭 자동 생성 양식
+  - 공유 가능하고 임베드 가능한 페이지
+  - 다국어 지원
+  - n8n.io / Zapier / Appsmith 등과의 통합 등 더 많은 기능 제공
+- 뛰어난 확장성
+  - 20개 이상의 공식 오픈 소스 위젯을 포함한 확장 가능한 `위젯 시스템`
+  - 사용자 정의 가능한 그래프 및 차트 및 대시 보드
+  - 사용자 정의 가능한 데이터 열 유형
+  - 사용자 정의 가능한 수식
+  - 사용자 정의 가능한 자동화 로봇 동작
+- 기업급 권한
+  - `Mirror`, 행 권한 구현을 위해 뷰를 미러로 전환
+  - 매우 간단한 조작을 통해 `Column Permission` 활성화
+  - 폴더 / 하위 폴더 / 파일 권한
+  - 트리 구조 폴더 및 사용자 정의 노드 (파일)
+  - 팀 관리 및 조직 구조
+- 기업용 기능
   - SAML
   - Single-Sign-On (SSO)
-  - Audit
-  - Database Auto Backup
-  - Data Exporter
-  - Watermark
+  - 감사
+  - 데이터베이스 자동 백업
+  - 데이터 내보내기
+  - 워터 마크
 - ....
 
-With extensible widgets and plugins, you can add more features.
+확장 가능한 위젯 및 플러그인을 사용하여 더 많은 기능을 추가할 수 있습니다.
 
-## 💥 Use Cases
+## 💥 사용 사례
 
-Why you must know APITable for your next software?
+APITable을 알아야하는 이유는 무엇인가요?
 
-- As super management software
-  - Flexible Project Management & Tasks / Issues Management.
-  - Marketing Lead Management.
-  - Most flexible and connectable CRM.
-  - Flexible Business Intelligence (BI).
-  - People-Friendly Forms and Surveys
-  - Flexible ERP.
-  - Low-code and no-code platform.
-  - ...and more, APITable puts 1000 softwares in your pocket.
-- As a visual database infrastructure
-  - **Embed** APITable into your own software UIs.
-  - Visual Database with REST API.
-  - Admin dashboard.
-  - Central configuration management.
-  - All-in-one enterprise database that **connect all** your software.
-  - ...and more, APITable connects everything.
-- Also, it is open source and extensible
+- 슈퍼 매니지먼트 소프트웨어로서
+  - 유연한 프로젝트 관리 및 작업 / 문제 관리.
+  - 마케팅 리드 관리.
+  - 가장 유연하고 연결 가능한 CRM.
+  - 유연한 비즈니스 인텔리전스 (BI).
+  - 사용자 친화적인 양식 및 설문 조사
+  - 유연한 ERP.
+  - 로우코드 및 노코드 플랫폼.
+  - ... 그리고 더 많은 것, APITable은 당신의 포켓에 1000개의 소프트웨어를 담습니다.
+- 시각적인 데이터베이스 인프라로서
+  - APITable을 자신의 소프트웨어 UI에 삽입합니다.
+  - REST API와 함께 시각적인 데이터베이스.
+  - 관리 대시보드.
+  - 중앙 구성 관리.
+  - 모든 소프트웨어를 연결하는 올인원 엔터프라이즈 데이터베이스.
+  - ... 그리고 더 많은 것, APITable은 모든 것을 연결합니다.
+- 또한, 오픈 소스이며 확장 가능합니다.
 
-## 💞 API-oriented
+## 💞 API 지향
 
-#### API UI Panel
+#### API UI 패널
 
-Clicking the `API` button in the right corner will show the API Panel
+오른쪽 모서리에 있는 API 버튼을 클릭하면 API 패널이 표시됩니다.
 
-#### SQL-like query
+#### SQL과 유사한 쿼리
 
-APITable will provides a Datasheet Query Language (DQL) to query your database-spreadsheet contents.
+APITable은 데이터베이스 스프레드시트 내용을 쿼리하기 위한 데이터 시트 쿼리 언어(DQL)를 제공합니다.
 
-## 💝 Embed-friendly
+## 💝 임베드 가능
 
-#### Share and Embed
+#### 공유 및 임베드
 
-Share your datasheet table or folder. Embed them by copying and pasting HTML scripts.
+데이터 시트 테이블이나 폴더를. 공유하고 HTML 스크립트를 복사하여 붙여넣어 임베드할 수 있습니다.
 
-#### Enterprise-ready Embedding
+#### 기업용 임베드 기능
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+APITable.com은 보안에 더 적합한 기업용 임베드 기능을 제공합니다.
 
-## Installation
+## 설치
 
-Make sure you have `docker` & `curl` installed locally.
+시작하기 전에:
+* 도커와 도커 컴포즈 v2가 설치된 호스트가 필요합니다.
+* 4개의 CPU/8GB 이상의 RAM을 권장합니다.
+* curl과 같은 기본 유틸리티가 설치된 bash 쉘이 필요합니다.
+* Native arm64 (애플 실리콘) 컨테이너 이미지는 아직 준비되지 않았으며 성능 문제가 발생할 수 있습니다.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+도커 컴포즈를 사용하여 apitable을 설치하려면 터미널을 열고 다음을 실행하십시오:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+그런 다음 브라우저에서 http://localhost:80을 열어 방문하십시오. (기본 사용자 이름은 admin@apitable.com이고 비밀번호는 Apitable2022입니다)
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
-## 🧑‍💻 Contributing
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
 
-Welcome, and thank you for your interest in contributing to APITable!
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
 
-There are many ways in which you can contribute, beyond writing code.
+로컬 개발 환경을 설정하려면 🧑💻 개발자 가이드를 읽으십시오.
 
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
+## 🧑‍💻 기여하기
 
-Here's a quick guide to help you contribute to APITable.
+APITable에 기여해주신 것에 감사드립니다!
 
-### Development environment
+In addition to writing code, there are many ways for you to contribute.
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+아래와 같이 기여할 수 있습니다:
+- 우리의 [Crowdin 번역 프로젝트](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)에 참여하여 번역 수정
+- [Issue](https://github.com/apitable/apitable/issues/new/choose)를 생성
+- 우리의 [Twitter](https://twitter.com/apitable_com)를 팔로우
+- [문서](./docs) 작성
+- [코드 기여](./docs/contribute/developer-guide.md)
 
-### Git workflow basic
 
-Here's a general APITable git workflow:
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
-1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
-2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some features'`)
-5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-### Work conventions
+기여하는 방법에 대해 알아보려면 이 저장소의 [Contributing Guidelines](./CONTRIBUTING.md)을 읽어보세요.
 
-APITable use these common conventions:
+아래는 APITable에 기여하는 방법을 안내하는 빠른 가이드입니다.
 
-- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
-- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
-- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
-- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
-### Documentations
+### 개발 환경
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
-  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
-  - Scripting (Coming soon...)
+로컬 환경을 설정하는 방법을 알아보려면 [Developer Guide](./docs/contribute/developer-guide.md)를 참조하세요.
 
-## 🛣 Roadmap
+### Git 워크플로우 기본
 
-### Future Features
+APITable의 일반적인 Git 워크플로우는 다음과 같습니다:
 
-- Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
-- SQL-like Domain-Specific Languages
-- As an IdP
-- Web 3 features
+1. 원하는 기능을 설명하는 이슈를 작성합니다 -> [APITable issues](https://github.com/apitable/apitable/issues)
+2. 프로젝트를 포크합니다 -> [Fork APITable project](https://github.com/apitable/apitable/fork)
+3. 기능 브랜치를 생성합니다 (`git checkout -b my-new-feature`)
+4. 변경 사항을 커밋합니다 (`git commit -am 'Add some features'`)
+5. 브랜치를 게시합니다 (`git push origin my-new-feature`)
+6. 새로운 풀 리퀘스트를 만듭니다 -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
+
+### 작업 규칙
+
+APITable은 다음과 같은 공통 규칙을 사용합니다:
+
+- Git 브랜칭 모델은 무엇인가요? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- 포크 프로젝트에서 어떻게 협업하나요? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- 좋은 커밋 메시지는 어떻게 작성하나요? [Conventional Commits](https://www.conventionalcommits.org/)
+- 변경 로그 형식은 무엇인가요? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
+- 버전 관리와 태그는 어떻게 하나요? [Semantic Versioning](https://semver.org/)
+- 자바 코딩 가이드라인은 무엇인가요? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
+- 타입스크립트 코딩 가이드라인은 무엇인가요? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- 아키텍처 개요는 무엇인가요? 아키텍처 개요 이해
+
+### 문서화
+
+- [도움말 센터 ](https://help.apitable.com/)
+- [👩‍💻 개발자 센터](https://developers.apitable.com/)
+  - [🪡 REST API 문서](https://developers.apitable.com/api/introduction/)
+  - 위젯 SDK (곧 출시 예정)
+  - 스크립팅 (곧 출시 예정)
+
+## 🛣 로드맵
+
+### 미래 기능
+
+- Heavy-code 인터페이스 빌더
+- Embeddable 3rd party documentation components
+- SQL과 유사한 도메인 특화 언어
+- IdP로서
+- 고급 자동화 로봇
+- Web 3 기능
 - ...
 
-### Hosted and Enterprise versions offer advanced features
+### 호스팅 및 엔터프라이즈 버전에서 고급 기능 제공
 
-- As an IdP;
+- IdP로서;
 - SAML
 - Single-Sign-On
-- Audit
-- Database Backup
-- Watermark
+- 감사
+- 데이터베이스 백업
+- ChatGPT, Zapier, Slack, Google Workspace와 통합...
+- 워터마크
 
-For more information, please contact us at <support@apitable.com>.
+자세한 정보는 support@apitable.com으로 문의 바랍니다.
 
-## 👫 Get Involved
+## 👫 참여하세요
 
-### 🌏 Why we create APITable and open-source?
+### 🌏 APITable을 왜 만들었고 오픈 소스인 이유?
 
-- We believe that `Database is the cornerstone` of all the software.
-- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+- 우리는 데이터베이스가 모든 소프트웨어의 기반임을 믿습니다.
+- 우리는 모두를 위한 직관적인 비주얼 데이터베이스를 만들어 소프트웨어 산업의 어려움을 줄이고 세계적인 디지털화 수용률을 높일 수 있다고 믿습니다.
+- 우리는 APITable 작업을 오픈 소스로 공개함으로써 인류를 앞으로 나아가게 할 수 있다고 믿습니다.
 
-### We are hiring remotely!
+### 원격으로 채용 중입니다!
 
-We always search for good talents for APITable:
+우리는 언제나 APITable을 위한 좋은 인재를 찾고 있습니다:
 
-- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- 풀 스택 개발자: React, NestJS, TypeScript, Spring Boot, Java, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
+- 백엔드 개발자: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
+- 프론트엔드 개발자: React, NextJS, TypeScript, WebPack 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
+시간과 조건에 상관없이 APITable 팀에 참여하고 싶다면 언제든지 talent@apitable.com으로 이력서를 보내주십시오.
 
-## 📺 Screenshot
+## 📺 스크린샷
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image
+" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
-## 🥰 License
+## 🥰 라이선스
 
-> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> 이 저장소는 AGPL에 따라 공개된 APITable의 오픈 소스 버전의 소스 코드를 포함하고 있습니다.
 > 
-> If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+> 자체 APITable을 실행하거나 개발에 기여하려면 이곳이 최적의 장소입니다.
 > 
-> See [LICENSING](./LICENSING.md) for details.
+> 자세한 내용은 [LICENSING](./LICENSING.md)을 참조하십시오.
 > 
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+> 온라인으로 APITable을 사용하려면 이 코드를 실행할 필요가 없습니다. 전 세계 가속화를 위해 최적화된 [APITable.com](https://apitable.com)의 호스팅 버전을 제공합니다.
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: AGPL-3.0으로 라이선스가 부여됩니다. [APITable Ltd](https://apitable.com)에서 디자인되었습니다.  [↩](#fnref:info){.footnote-backref}

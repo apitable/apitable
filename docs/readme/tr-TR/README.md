@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -60,28 +64,27 @@
   <a href="docs/readme/ja-JP/README.md">日本語</a>
 </p>
 
-## ✨ Quick Start
+## ✨ Hızlı Başlangıç
 
-> APITable is currently a `Work In Progress`.
-> 
-> We will publish the first release in late February 2023.
-> 
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+Sadece APITable[^info]'i denemek istiyorsanız, [apitable.com](https://apitable.com) adresinde bulutta barındırılan sürümümüzü kullanın.
 
-If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
+Bu APITable açık kaynak projesinin demosunu yapmak istiyorsanız, [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable) için buraya tıklayın.
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+APITable'ı yerel veya bulut bilişim ortamınıza kurmak istiyorsanız, bkz. 💾 [Kurulum](#installation)
 
-## 🔥 Features
+Yerel geliştirme ortamınızı kurmak istiyorsanız 🧑‍💻 [Geliştirici Kılavuzumuzu okuyun](./docs/contribute/developer-guide.md)
+
+İletişimde kalmak için [Discord](https://discord.gg/TwNb9nfdBU) veya [>Twitter](https://twitter.com/apitable_com)'a katılın.
+## 🔥 Özellikler
 
 <table>
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">Gerçek Zamanlı İşbirliği</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">Otomatik Form</a>
     </th>
 
   </tr>
@@ -101,10 +104,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">API öncelikli Panel</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">Sınırsız çapraz tablo bağlantıları</a>
     </th>
 </tr>
 
@@ -123,10 +126,10 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">Güçlü Satır/Sütun</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">İzinleri Gömme</a>
     </th>
   </tr>
 
@@ -145,196 +148,229 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 </table>
 
-APITable provides a range of amazing features, from the personal to the enterprise.
+APITable, kişiselden işletmeye kadar bir dizi şaşırtıcı özellik sunar.
 
-- Advanced technology stack and open-source
-  - `Realtime collaboration` allows multiple users to edit together in real time, or simultaneously with the `Operational Transformation (OT)` Algorithm.
-  - Extremely smooth, user-friendly, super-fast database-spreadsheet interface in `<canvas> Rendering Engine`.
-  - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
-  - **100k+** data rows with real-time collaboration.
-  - Full-stack API access, from `Data` to `Metadata`.
-  - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- Beautiful and Rich Database-Spreadsheet UI
-  - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
-  - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
-  - `Space based`: Use separated workspaces in place of App/Base-based structure, make unlimited tables link together possible.
-  - `Dark mode` and theme customization available.
-  - `7 View Types`: Grid View (Datasheet) / Gallery View / Mindmap View / Kanban View / Full-Feature Gantt View / Calendar View
-  - One-click API Panel
-- Batteries included
-  - Built-in 10+ official templates.
-  - Robot Automation and customization available.
-  - BI dashboard
-  - One-click auto-generated form
-  - Shareable and embeddable page.
-  - Multi-language support.
-  - Integration with n8n.io / Zapier / Appsmith... and more.
-- Excellent extensibility
-  - Extensible `Widget System` with over 20 officials open-source widgets.
-  - Customizable Graph & Chart & Dashboard
-  - Customizable Data Column Types
-  - Customizable Formulas
-  - Customizable Automation Robot Actions.
-- Enterprise-grade permissions
-  - `Mirror`, turn a View into a mirror to implement Row Permission.
-  - Activate `Column Permission` through a very simple operation.
-  - Folders / Sub-Folders / Files Permission.
-  - Tree structure folders and customizable node (file);
-  - Team Management & Organization Structure.
-- Enterprise features:
+- Gelişmiş teknoloji yığını ve açık kaynak
+  - Gerçek zamanlı işbirliği, birden fazla kullanıcının gerçek zamanlı olarak veya Operasyonel Dönüşüm (OT) Algoritması ile aynı anda birlikte düzenleme yapmasına olanak tanır.
+  - canvas Rendering Engine'de son derece akıcı, kullanıcı dostu, süper hızlı veritabanı-spreadsheet arayüzü.
+  - Veritabanı yerel mimarisi: Değişiklik kümesi / İşlem / Eylem / Anlık görüntü vb.
+  - Gerçek zamanlı işbirliği ile 100k+ veri satırı.
+  - Verilerden Meta Verilere kadar tam yığın API erişimi.
+  - Tek Yönlü / Çift Yönlü Tablo Bağlantısı ve Sonsuz Çapraz Bağlantılar
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+- Güzel ve Zengin Veritabanı-Ekran Tablosu Kullanıcı Arayüzü
+  - `CRUD`: Tabloları, Sütunları ve Satırları Oluşturma, Okuma, Güncelleme, Silme
+  - `Alan İşlemleri`: sıralama, filtreleme, gruplama, gizleme/gösterme, yükseklik ayarı.
+  - `Alan tabanlı`: Uygulama/Taban tabanlı yapı yerine ayrılmış çalışma alanları kullanın, sınırsız tablonun birbirine bağlanmasını mümkün kılın.
+  - Karanlık mod ve tema özelleştirmesi mevcut.
+  - `7 Görünüm Türü`: Izgara Görünümü (Veri Sayfası) / Galeri Görünümü / Mindmap Görünümü / Kanban Görünümü / Tam Özellikli Gantt Görünümü / Takvim Görünümü
+  - Tek tıklamayla API Paneli
+- Piller dahil
+  - Yerleşik 10'dan fazla resmi şablon
+  - Robot Otomasyonu ve özelleştirme mevcuttur.
+  - BI gösterge tablosu
+  - Tek tıkla otomatik oluşturulan form
+  - Paylaşılabilir ve gömülebilir sayfa
+  - Çoklu dil desteği
+  - n8n.io / Zapier / Appsmith... ve daha fazlası ile entegrasyon
+- Mükemmel genişletilebilirlik
+  - 20'den fazla resmi açık kaynaklı widget ile Genişletilebilir Widget Sistemi
+  - Özelleştirilebilir Grafik & Çizelge & Gösterge Tablosu
+  - Özelleştirilebilir Veri Sütunu Türleri
+  - Özelleştirilebilir Formüller
+  - Özelleştirilebilir Otomasyon Robotu Eylemleri
+- Kurumsal düzeyde izinler
+  - `Ayna`, Satır İznini uygulamak için bir Görünümü aynaya dönüştürün
+  - Çok basit bir işlemle Sütun İznini etkinleştirin
+  - Klasörler / Alt Klasörler / Dosyalar İzni
+  - Ağaç yapısı klasörleri ve özelleştirilebilir düğüm (dosya)
+  - Ekip Yönetimi ve Organizasyon Yapısı
+- Kurumsal özellikler:
   - SAML
-  - Single-Sign-On (SSO)
-  - Audit
-  - Database Auto Backup
-  - Data Exporter
-  - Watermark
+  - Tek Oturum Açma (SSO)
+  - Denetim
+  - Veritabanı Otomatik Yedekleme
+  - Veri İhracatçısı
+  - Filigran
 - ....
 
-With extensible widgets and plugins, you can add more features.
+Genişletilebilir widget'lar ve eklentiler ile daha fazla özellik ekleyebilirsiniz.
 
-## 💥 Use Cases
+## 💥 Kullanım Örnekleri
 
-Why you must know APITable for your next software?
+Bir sonraki yazılımınız için neden APITable'ı bilmelisiniz?
 
-- As super management software
-  - Flexible Project Management & Tasks / Issues Management.
-  - Marketing Lead Management.
-  - Most flexible and connectable CRM.
-  - Flexible Business Intelligence (BI).
-  - People-Friendly Forms and Surveys
-  - Flexible ERP.
-  - Low-code and no-code platform.
-  - ...and more, APITable puts 1000 softwares in your pocket.
-- As a visual database infrastructure
-  - **Embed** APITable into your own software UIs.
-  - Visual Database with REST API.
-  - Admin dashboard.
-  - Central configuration management.
-  - All-in-one enterprise database that **connect all** your software.
-  - ...and more, APITable connects everything.
-- Also, it is open source and extensible
+- Süper yönetim yazılımı olarak
+  - Esnek Proje Yönetimi ve Görevler / Sorun Yönetimi
+  - Pazarlama Potansiyel Müşteri Yönetimi
+  - En esnek ve bağlanabilir CRM
+  - Esnek İş Zekası (BI)
+  - İnsan Dostu Formlar ve Anketler
+  - Esnek ERP
+  - Low-code ve no-code platform
+  - ...ve daha fazlası, APITable 1000 yazılımı cebinize koyar
+- Görsel bir veritabanı altyapısı olarak
+  - APITable'ı kendi yazılım kullanıcı arayüzlerinize gömün
+  - REST API ile Görsel Veritabanı
+  - Yönetici kontrol paneli
+  - Merkezi yapılandırma yönetimi
+  - Tüm yazılımlarınızı birbirine bağlayan hepsi bir arada kurumsal veritabanı
+  - ...ve daha fazlası, APITable her şeyi birbirine bağlar
+- Ayrıca, açık kaynak kodlu ve genişletilebilir
 
-## 💞 API-oriented
+## 💞 API odaklı
 
-#### API UI Panel
+#### API UI Paneli
 
-Clicking the `API` button in the right corner will show the API Panel
+Sağ köşedeki API düğmesine tıklamak API Panelini gösterecektir
 
-#### SQL-like query
+#### SQL benzeri sorgu
 
-APITable will provides a Datasheet Query Language (DQL) to query your database-spreadsheet contents.
+APITable, veritabanı-spreadsheet içeriklerinizi sorgulamak için bir Veri Sayfası Sorgu Dili (DQL) sağlayacaktır
 
-## 💝 Embed-friendly
+## 💝 Gömme dostu
 
-#### Share and Embed
+#### Paylaş ve Yerleştir
 
-Share your datasheet table or folder. Embed them by copying and pasting HTML scripts.
+Veri sayfası tablonuzu veya klasörünüzü paylaşın. HTML komut dosyalarını kopyalayıp yapıştırarak gömün.
 
-#### Enterprise-ready Embedding
+#### Kurumsal kullanıma hazır Gömme
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+[APITable.com](https://apitable.com), menkul kıymetler için daha fazla Kurumsal kullanıma hazır Yerleştirme özelliği sağlar
 
-## Installation
+## Kurulum
 
-Make sure you have `docker` & `curl` installed locally.
+Başlamadan önce:
+* [Docker](https://docs.docker.com/engine/install/)  ve [docker-compose v2](https://docs.docker.com/engine/install/) yüklü bir ana bilgisayar.
+* 4 CPU/8GB RAM veya daha fazlası önerilir.
+* Curl gibi temel yardımcı programların yüklü olduğu bir bash kabuğu.
+* Native arm64 (apple silicon) konteyner imajları henüz hazır değildir ve kötü performansa neden olabilir.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+Docker compose kullanarak apitable yüklemek için terminalinizi açın ve bunu çalıştırın:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+Ardından ziyaret etmek için tarayıcınızda http://localhost:80 adresini açın. (varsayılan kullanıcı adı `admin@apitable.com` ve şifre `Apitable2022`)
 
-If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
-## 🧑‍💻 Contributing
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
 
-Welcome, and thank you for your interest in contributing to APITable!
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
 
-There are many ways in which you can contribute, beyond writing code.
+Yerel geliştirme ortamınızı kurmak istiyorsanız [🧑‍💻 Geliştirici Kılavuzumuzu okuyun](./docs/contribute/developer-guide.md)
 
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
+## 🧑‍💻 Katkıda Bulunanlar
 
-Here's a quick guide to help you contribute to APITable.
+Hoş geldiniz ve APITable'a katkıda bulunmaya gösterdiğiniz ilgi için teşekkür ederiz!
 
-### Development environment
+In addition to writing code, there are many ways for you to contribute.
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+Aşağıdaki şekilde katkıda bulunabilirsiniz:
+- [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) Çeviri Projemize katılın ve çevirileri değiştirin
+- [Crowdin Çeviri Projemize katılın ve çevirileri değiştirin](https://github.com/apitable/apitable/issues/new/choose)
+- [Twitter'ımızı takip edin](https://twitter.com/apitable_com)
+- [Dokümantasyon Oluşturun](./docs)
+- [Katkıda Bulunan Kod](./docs/contribute/developer-guide.md)
 
-### Git workflow basic
 
-Here's a general APITable git workflow:
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
-1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
-2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some features'`)
-5. Publish the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
-### Work conventions
+Nasıl katkıda bulunacağınızı öğrenmek için bu deponun Katkıda Bulunma Yönergelerini okuyabilirsiniz.
 
-APITable use these common conventions:
+İşte APITable'a katkıda bulunmanıza yardımcı olacak hızlı bir kılavuz.
 
-- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
-- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
-- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
-- What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
-### Documentations
+### Geliştirme ortamı
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
-  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
-  - Scripting (Coming soon...)
+Yerel ortamınızı nasıl kuracağınızı öğrenmek için Geliştirici Kılavuzumuza gidin.
 
-## 🛣 Roadmap
+### Git iş akışı temel
 
-### Future Features
+İşte genel bir APITable git iş akışı:
 
-- Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
-- SQL-like Domain-Specific Languages
-- As an IdP
-- Web 3 features
+1. Bir sorun oluşturun ve istediğiniz özellikleri tanımlayın -> [APITable sorunları](https://github.com/apitable/apitable/issues)
+2. Bu projeyi çatalla -> [APITable projesini çatalla](https://github.com/apitable/apitable/fork)
+3. Özellik dalınızı oluşturun (`git checkout -b my-new-feature`)
+4. Değişikliklerinizi işleyin (`git commit -am 'Add some features'`)
+5. Dalı yayınlayın (`git push origin my-new-feature`)
+6. Yeni bir Çekme İsteği Oluştur -> [Çatallar arasında çekme isteği oluştur](https://github.com/apitable/apitable/compare)
+
+### İş sözleşmeleri
+
+APITable bu ortak kuralları kullanır:
+
+- Git dallanma modelimiz nedir? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- Çatal projelerinizde nasıl işbirliği yapabilirsiniz? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- İyi bir commit mesajı nasıl yazılır? [Geleneksel Komiteler](https://www.conventionalcommits.org/)
+- Değişiklik günlüğü formatımız nedir? [Değişiklik Günlüğünü Tut](https://keepachangelog.com/en/1.0.0/)
+- Versiyonlama ve etiketleme nasıl yapılır? [Anlamsal Versiyonlama](https://semver.org/)
+- Java Kodlama Kılavuzu nedir? [Java Kodlama Kılavuzu](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Eklentisi](https://plugins.jetbrains.com/plugin/8527)
+- TypeScript Kodlama Kılavuzu nedir? [-> TypeScript Stil Kılavuzu](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Mimariye Genel Bakış nedir? -> [APITable'ı Anlayın - Mimariye Genel Bakış](./docs/contribute/architecute-overview.md)
+
+### Belgeler
+
+- [Yardım Merkezi ](https://help.apitable.com/)
+- [👩‍💻 Geliştirici Merkezi](https://developers.apitable.com/)
+  - [🪡 REST API Dokümanları](https://developers.apitable.com/api/introduction/)
+  - Widget SDK (Çok yakında...)
+  - Scripting (Çok yakında...)
+
+## 🛣 Yol Haritası
+
+### Geleceğin Özellikleri
+
+- Ağır Kodlu Arayüz Oluşturucu
+- Embeddable 3rd party documentation components
+- SQL benzeri Alana Özgü Diller
+- Bir IdP olarak
+- Gelişmiş otomasyon robotu
+- Web 3 özellikleri
 - ...
 
-### Hosted and Enterprise versions offer advanced features
+### Hosted ve Enterprise sürümleri gelişmiş özellikler sunar
 
-- As an IdP;
+- Bir IdP olarak
 - SAML
-- Single-Sign-On
-- Audit
-- Database Backup
-- Watermark
+- Tek Oturum Açma
+- Denetim
+- Veritabanı Yedekleme
+- ChatGPT, Zapier, Slack, Google Workspace ile entegre edin......
+- Filigran
 
-For more information, please contact us at <support@apitable.com>.
+Daha fazla bilgi için lütfen <support@apitable.com> adresinden bizimle iletişime geçin.
 
-## 👫 Get Involved
+## 👫 Katılın
 
-### 🌏 Why we create APITable and open-source?
+### 🌏 Neden APITable ve açık kaynak oluşturuyoruz?
 
-- We believe that `Database is the cornerstone` of all the software.
-- We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
-- We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+- Veritabanının tüm yazılımların temel taşı olduğuna inanıyoruz.
+- Herkes için zengin ve kolay kullanıcı arayüzüne sahip bir Görsel Veritabanı yapmanın yazılım endüstrisinin zorluğunu azaltabileceğine ve dünyanın dijitalleşmeyi benimsemesini artırabileceğine inanıyoruz.
+- Açık kaynak kodlu APITable çalışmalarının İnsanoğlunu İleriye Taşıyabileceğine inanıyoruz.
 
-### We are hiring remotely!
+### Uzaktan işe alım yapıyoruz!
 
-We always search for good talents for APITable:
+APITable için her zaman iyi yetenekler arıyoruz:
 
-- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **Tam yığın geliştirici**: React, NestJS, TypeScript, Spring Boot, Java, Terraform ile ilgili deneyiminiz var. Ve açık dokümantasyon ve birim testleri ile yüksek kaliteli kod yazmayı seviyorsunuz.
+- **Arka uç geliştiricisi**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform ile ilgili deneyiminiz var. Ve açık dokümantasyon ve birim testleri ile yüksek kaliteli kod yazmayı seviyorsunuz.
+- **Ön uç geliştirici**: React, NextJS, TypeScript, WebPack ile deneyiminiz var. Ve açık dokümantasyon ve birim testleri ile yüksek kaliteli kod yazmayı seviyorsunuz.
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
+Zaman ve koşullar ne olursa olsun, APITable ekibine dahil olmak istiyorsanız, tereddüt etmeyin ve CV'nizi <talent@apitable.com> adresine gönderin.
 
-## 📺 Screenshot
+## 📺 Ekran Görüntüsü
 
 <p align="center">
     <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
@@ -367,16 +403,16 @@ Regardless of time and conditions, if you want to get involved to the team of AP
     <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
-## 🥰 License
+## 🥰 Lisans
 
-> This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
+> Bu depo, AGPL altında yayınlanan APITable'ın Açık Kaynak sürümü için kaynak kodunu içerir.
 > 
-> If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
+> Kendi APITable kopyanızı çalıştırmak veya geliştirmeye katkıda bulunmak istiyorsanız, burası tam size göre.
 > 
-> See [LICENSING](./LICENSING.md) for details.
+> Ayrıntılar için [LİSANSLAMA](./LICENSING.md) bölümüne bakınız.
 > 
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+> APITable'ı çevrimiçi kullanmak istiyorsanız, bu kodu çalıştırmanıza gerek yoktur, uygulamanın küresel hızlandırıcı için optimize edilmiş [APITable.com](https://apitable.com) adresinde barındırılan bir sürümünü sunuyoruz.
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: AGPL-3.0 ile lisanslanmıştır. APITable Ltd. tarafından tasarlanmıştır.
