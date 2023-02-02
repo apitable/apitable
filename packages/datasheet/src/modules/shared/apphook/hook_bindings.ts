@@ -17,7 +17,17 @@
  */
 
 import {
-  consistencyCheck, CollaCommandName, Events, IJOTAction, IUserInfo, OTActionName, Player, ResourceType, Selectors, Strings, t,
+  consistencyCheck,
+  CollaCommandName,
+  Events,
+  IJOTAction,
+  IUserInfo,
+  OTActionName,
+  Player,
+  ResourceType,
+  Selectors,
+  Strings,
+  t,
 } from '@apitable/core';
 import * as Sentry from '@sentry/nextjs';
 import { Modal } from 'pc/components/common';
@@ -100,7 +110,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
             duplicateRows,
             duplicateColumns,
             replaceRows,
-            recordsInMap
+            recordsInMap,
           } = data;
           const viewIndex = datasheet.snapshot.meta.views.findIndex(view => view.id === viewId);
           const rows = datasheet.snapshot.meta.views[viewIndex].rows;
@@ -127,11 +137,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
               n: OTActionName.ObjectReplace,
               p: ['meta', 'views', viewIndex, 'rows'],
               od: rows,
-              oi: recordsInMap.map(recordId => {
-                return {
-                  recordId: recordId
-                };
-              })
+              oi: recordsInMap.map(recordId => ({ recordId })),
             });
           }
 
@@ -169,20 +175,24 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
               });
             });
 
-          Array.from(rowsToDelete).sort().forEach((index, i) => {
-            actions.push({
-              n: OTActionName.ListDelete,
-              p: ['meta', 'views', viewIndex, 'rows', index - i],
-              ld: rows[index],
+          Array.from(rowsToDelete)
+            .sort()
+            .forEach((index, i) => {
+              actions.push({
+                n: OTActionName.ListDelete,
+                p: ['meta', 'views', viewIndex, 'rows', index - i],
+                ld: rows[index],
+              });
             });
-          });
-          Array.from(columnsToDelete).sort().forEach((index, i) => {
-            actions.push({
-              n: OTActionName.ListDelete,
-              p: ['meta', 'views', viewIndex, 'columns', index - i],
-              ld: columns[index],
+          Array.from(columnsToDelete)
+            .sort()
+            .forEach((index, i) => {
+              actions.push({
+                n: OTActionName.ListDelete,
+                p: ['meta', 'views', viewIndex, 'columns', index - i],
+                ld: columns[index],
+              });
             });
-          });
         });
 
         const operation = {
@@ -190,7 +200,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
           actions,
         };
 
-        resourceService.instance!.operationExecuted([{ resourceId: datasheetId, resourceType: ResourceType.Datasheet, operations:[operation] }]);
+        resourceService.instance!.operationExecuted([{ resourceId: datasheetId, resourceType: ResourceType.Datasheet, operations: [operation] }]);
         Sentry.captureMessage('fixConsistency: Data consistency errors found and attempts made to fix', {
           extra: {
             datasheetId,

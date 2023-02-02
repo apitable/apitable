@@ -130,7 +130,7 @@ export function receiveFormData(
         revision: sourceInfo.datasheetRevision,
         permissions: DEFAULT_READ_ONLY_PERMISSION
       } as INodeMeta
-    }, true)
+    }, { isPartOfData: true })
   ];
 }
 
