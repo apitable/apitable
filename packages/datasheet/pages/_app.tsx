@@ -298,10 +298,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     })();
   }, []);
 
+  useEffect(() => {
+    document.title = t(Strings.system_configuration_product_name);
+    const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    descMeta.content = t(Strings.client_meta_label_desc);
+  }, []);
+
   return <>
     <Head>
-      <title>{t(Strings.system_configuration_product_name)}</title>
-      <meta name='description' content={t(Strings.client_meta_label_desc)} />
+      <title />
+      <meta name='description' content='' />
       <meta
         name='keywords'
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
