@@ -170,10 +170,6 @@ describe('user service', () => {
   describe('test getMe', () => {
 
     it('should throw exception with invalid cookie', async() => {
-      // const res = async() => { 
-      //   await userService.getMe({ cookie: '' });
-      // };
-      // expect(res).toThrow(ServerException);
       try {
         await userService.getMe({ cookie: '' });
       } catch (error) {
