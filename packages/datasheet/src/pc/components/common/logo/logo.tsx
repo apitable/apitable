@@ -84,7 +84,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
           alt='logoText'
           className={styles.logoText}
           height={logoSize.logoTextHeight}
-          src={isLightTheme ? lightSrc : darkSrc}
+          src={!isLightTheme ? lightSrc : darkSrc}
         />
       );
     }
