@@ -163,9 +163,9 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
                 </div>;
               }) :
                 <div className={styles.empty}>
-                  <span className={styles.emptyImg}>
+                  <div className={styles.emptyImg}>
                     <Image src={templateEmptyPng} alt='' width={224} height={168} />
-                  </span>
+                  </div>
                   <p>
                     <TComponent
                       tkey={t(Strings.empty_dashboard_list)}
