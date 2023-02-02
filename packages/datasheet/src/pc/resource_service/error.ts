@@ -90,7 +90,7 @@ export const onError: IServiceError = (error, type) => {
   }
 
   if (type === 'subscribeUsage') {
-    triggerUsageAlertForDatasheet(errorMessage);
+    triggerUsageAlertForDatasheet?.(errorMessage);
     return;
   }
 };
