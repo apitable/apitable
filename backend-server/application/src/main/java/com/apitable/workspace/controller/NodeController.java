@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ import com.apitable.base.enums.ParameterException;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.vo.CreatedMemberInfoVo;
 import com.apitable.organization.vo.MemberBriefInfoVo;
+import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.notification.annotation.Notification;
@@ -68,6 +70,7 @@ import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.control.service.IControlService;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
@@ -83,6 +86,7 @@ import com.apitable.workspace.ro.NodeMoveOpRo;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.ro.NodeBundleOpRo;
+import com.apitable.workspace.vo.NodeCollaboratorsVo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
@@ -95,8 +99,11 @@ import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
 import com.apitable.workspace.vo.ShowcaseVo.Social;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
+import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.space.enums.SpaceException;
+import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.workspace.mapper.NodeDescMapper;
 import com.apitable.workspace.mapper.NodeFavoriteMapper;
@@ -105,6 +112,7 @@ import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.service.IDatasheetService;
 import com.apitable.workspace.service.INodeDescService;
 import com.apitable.workspace.service.INodeRelService;
+import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.NodeBundleService;
 import com.apitable.shared.util.information.InformationUtil;
@@ -117,6 +125,7 @@ import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.core.util.FileTool;
 import com.apitable.workspace.entity.NodeEntity;
+import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -184,6 +193,22 @@ public class NodeController {
     @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
+
+    @Resource
+    private SpaceMapper spaceMapper;
+
+    @Resource
+    private IControlService iControlService;
+
+    @Resource
+    private ISpaceRoleService iSpaceRoleService;
+
+    @Resource
+    private IOrganizationService iOrganizationService;
+
+    @Resource
+    private INodeRoleService iNodeRoleService;
+
     private static final String ROLE_DESC = "<br/>Role Type：<br/>" +
             "1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>" +
             "2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>" +
@@ -247,6 +272,88 @@ public class NodeController {
         }
         return ResponseData.success(iNodeService.getNodeInfoByNodeIds(filterNodeIds));
     }
+
+    @GetResource(path = "/listRole")
+    @ApiOperation(value = "Query node role list", notes = "Query node role list")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "Space ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "nodeId", value = "node ID", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
+        @ApiImplicitParam(name = "includeAdmin", value = "Whether to include the main administrator, can not be passed, the default includes", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+        @ApiImplicitParam(name = "includeSelf", value = "Whether to get self, can not be passed, default includes", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+        @ApiImplicitParam(name = "includeExtend", value = "Include superior inheritance permissions, not included by default", dataTypeClass = Boolean.class, paramType = "query", example = "false")
+    })
+    public ResponseData<NodeCollaboratorsVo> listRole(@RequestParam(name = "nodeId") String nodeId,
+        @RequestParam(name = "includeAdmin", defaultValue = "true") Boolean includeAdmin,
+        @RequestParam(name = "includeSelf", defaultValue = "true") Boolean includeSelf,
+        @RequestParam(name = "includeExtend", defaultValue = "false") Boolean includeExtend) {
+        Long userId = SessionContext. getUserId();
+        // Get the space ID, the method includes judging whether the node exists
+        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
+        // Get the member ID, the method includes judging whether the user is in this space
+        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
+        // Check if the user has permission to view
+        controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
+            status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+        NodeCollaboratorsVo collaboratorsVo = new NodeCollaboratorsVo();
+        // Query the permission mode of the node
+        iControlService.checkControlStatus(nodeId, status -> collaboratorsVo.setExtend(!status));
+        if (includeAdmin) {
+            //Query the node administrator view
+            List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
+            collaboratorsVo.setAdmins(iOrganizationService.findAdminsVo(admins, spaceId));
+        }
+        if (includeSelf) {
+            // query itself
+            List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(Collections.singletonList(memberId));
+            collaboratorsVo.setSelf(CollUtil.isNotEmpty(unitMemberVos) ? CollUtil.getFirst(unitMemberVos) : null);
+        }
+        // Query node role view
+        if (includeExtend) {
+            // Check inherited roles
+            String parentNodeId = iNodeRoleService. getNodeExtendNodeId(nodeId);
+            if (parentNodeId == null) {
+                // There is no parent node to open the permission, the default workbench role,
+                // load the root department information
+                collaboratorsVo.setRoleUnits(Collections.singletonList(iNodeRoleService.getRootNodeRoleUnit(spaceId)));
+                collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId));
+            }
+            else {
+                // Load the parent node role
+                collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(parentNodeId));
+                collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(parentNodeId));
+                collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, parentNodeId));
+            }
+        }
+        else {
+            // Automatically query the roles in the node permission mode
+            if (collaboratorsVo. getExtend()) {
+                // Query the role of the inherited schema
+                String parentNodeId = iNodeRoleService. getNodeExtendNodeId(nodeId);
+                if (parentNodeId == null) {
+                    // does not inherit the permissions of the parent node
+                    collaboratorsVo.setRoleUnits(Collections.singletonList(iNodeRoleService.getRootNodeRoleUnit(spaceId)));
+                    collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId));
+                    collaboratorsVo.setExtendNodeName(spaceMapper.selectSpaceNameBySpaceId(spaceId));
+                }
+                else {
+                    // Load the parent node role
+                    collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(parentNodeId));
+                    collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(parentNodeId));
+                    collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, parentNodeId));
+                    collaboratorsVo.setExtendNodeName(iNodeService.getNodeNameByNodeId(parentNodeId));
+                }
+            }
+            else {
+                // Query the node role of the specified mode
+                collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(nodeId));
+                collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(nodeId));
+                collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, nodeId));
+            }
+        }
+        collaboratorsVo.setBelongRootFolder(iNodeService.isNodeBelongRootFolder(spaceId, nodeId));
+        return ResponseData.success(collaboratorsVo);
+    }
+
 
     @GetResource(path = "/get", requiredPermission = false)
     @ApiOperation(value = "Query nodes", notes = "obtain information about the node " + ROLE_DESC)
