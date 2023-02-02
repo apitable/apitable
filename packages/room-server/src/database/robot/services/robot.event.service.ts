@@ -103,7 +103,7 @@ export class RobotEventService {
       EventTypeEnums.RecordMatchesConditions,
       EventTypeEnums.RecordCreated
     ], OFFICIAL_SERVICE_SLUG);
-    this.logger.info(`messageIds: [${ msgIds }]: The official service slug ${ OFFICIAL_SERVICE_SLUG }`)
+    this.logger.info(`messageIds: [${ msgIds }]: The official service slug ${ OFFICIAL_SERVICE_SLUG }`);
     this.logger.info(`messageIds: [${ msgIds }]: The triggered trigger: ${ dstIdTriggersMap }`);
     this.logger.info(`messageIds: [${ msgIds }]: The event and trigger's type map: ${ triggerSlugTypeIdMap }`);
     for (const event of events) {
