@@ -152,7 +152,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
           })}
         </div>
         <div className={styles.unitPermission}>
-          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1, borderLeftColor: colors.borderCommon }} />
+          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1, borderLeftColor: colors.borderCommonDefault }} />
 
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <DoubleSelect

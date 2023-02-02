@@ -49,6 +49,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.ant-pagination-item-link {
+  border: none !important;
+}
+
 .ant-switch-handle::before {
   background-color: var(--staticWhite0);
 }
@@ -87,6 +91,10 @@ circle.ant-progress-circle-trail {
   .ant-switch-handle::before {
     background-color: var(--staticWhite0);
   }
+}
+
+.ant-switch-checked:focus {
+  box-shadow: 0 0 0 2px var(--shadowCommonDefault);
 }
 
 .am-picker-col-mask {
@@ -138,6 +146,10 @@ circle.ant-progress-circle-trail {
 
 .ant-table-cell-scrollbar {
   box-shadow: none;
+}
+
+.ant-table-cell-scrollbar:not([rowspan]) {
+  box-shadow: 0 1px 0 1px var(--lowestBg);
 }
 
 .ant-table-filter-trigger:hover,

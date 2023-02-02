@@ -236,7 +236,7 @@ const TeamTag: FC<ITeamTag> = (props) => {
       [styles.tag]: isActive,
       [styles.dangerTag]: !isActive
     })}>
-      <Typography variant='body4' color={isActive ? colors.secondLevelText : colors.borderDanger} ellipsis>{tagText}</Typography>
+      <Typography variant='body4' color={isActive ? colors.secondLevelText : colors.borderDangerDefault} ellipsis>{tagText}</Typography>
     </div>
   );
 };
