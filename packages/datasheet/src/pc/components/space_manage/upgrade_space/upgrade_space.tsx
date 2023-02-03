@@ -25,6 +25,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { Skeleton } from '@apitable/components';
+
 const upperCaseFirstWord = (str: string) => {
   if (str.length < 2) {
     return str;
@@ -35,7 +36,7 @@ const upperCaseFirstWord = (str: string) => {
 const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useSelector(state => state.space.activeId);
-  const { product, recurringInterval } = useSelector(state => state.billing?.subscription)!;
+  const { product, recurringInterval } = useSelector(state => state.billing?.subscription) || {};
   const [loading, setLoading] = useState(true);
   const vars = getEnvVariables();
 

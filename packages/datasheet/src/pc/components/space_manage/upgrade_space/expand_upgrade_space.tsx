@@ -1,4 +1,5 @@
-import { colorVars } from '@apitable/components';
+import { colorVars, Typography } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import { CloseMiddleOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import UpgradeSpace from 'pc/components/space_manage/upgrade_space/upgrade_space';
@@ -14,7 +15,7 @@ export const expandUpgradeSpace = () => {
   const onModalClose = () => {
     root.unmount();
     container.parentElement!.removeChild(container);
-    location.search ='';
+    location.search = '';
   };
 
   root.render(
@@ -23,7 +24,7 @@ export const expandUpgradeSpace = () => {
         visible
         wrapClassName={styles.modalWrapper}
         maskClosable={false}
-        closeIcon={<CloseMiddleOutlined color={colorVars.fc3} size={8} />}
+        closeIcon={null}
         onCancel={onModalClose}
         destroyOnClose
         width={'1200px'}
@@ -31,6 +32,12 @@ export const expandUpgradeSpace = () => {
         centered
         zIndex={1100}
       >
+        <div className={styles.header}>
+          <Typography variant='h6'>
+            {t(Strings.upgrade)}
+          </Typography>
+          <CloseMiddleOutlined color={colorVars.fc3} size={16} onClick={onModalClose}/>
+        </div>
         <UpgradeSpace />
       </Modal>
     </div>,

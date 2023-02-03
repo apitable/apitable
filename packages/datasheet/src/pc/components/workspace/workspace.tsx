@@ -16,14 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { LinkButton } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
+// @ts-ignore
+import { destroyVikaby, showOrderModal, showVikaby } from 'enterprise';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
+import { useRouter } from 'next/router';
+import { TComponent } from 'pc/components/common/t_component';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
 import { Router } from 'pc/components/route_manager/router';
 import WorkspaceRoute from 'pc/components/route_manager/workspace_route';
@@ -41,8 +45,6 @@ import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
-// @ts-ignore
-import { destroyVikaby, showVikaby } from 'enterprise';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -111,8 +113,45 @@ export const Workspace: React.FC = () => {
   const sideBarVisible = useSelector(state => state.space.sideBarVisible);
 
   useMount(() => {
-    if (!query.get('choosePlan')) return;
+    if (!query.get('choosePlan') || isMobile) return;
     expandUpgradeSpace();
+  });
+
+  useMount(() => {
+    if (!query.get('stripePaySuccess') || isMobile) return;
+    showOrderModal({
+      modalTitle: t(Strings.upgrade_success_model, { orderType: t(Strings.upgrade) }),
+      modalSubTitle: (cb: () => void) => <>
+        <div className={styles.desc1}>
+          {
+            <TComponent
+              tkey={t(Strings.upgrade_success_1_desc)}
+              params={{
+                orderType: t(Strings.upgrade),
+                position:
+                  <LinkButton
+                    className={styles.linkButton}
+                    style={{
+                      display: 'inline-block',
+                    }}
+                    onClick={() => {
+                      if (isMobile) {
+                        return;
+                      }
+                      Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview', clearQuery: true }});
+                    }}
+                  >
+                    {t(Strings.space_overview)}
+                  </LinkButton>,
+
+              }}
+            />
+          }
+        </div>
+      </>,
+      qrCodeUrl: '',
+      btnText: t(Strings.got_it)
+    });
   });
 
   /**

@@ -25,11 +25,25 @@
   bottom: 0;
 }
 
+.header {
+  background-color: var(--bgCommonDefault);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
 .modalWrapper {
   :global {
+    .ant-modal-content {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
     .ant-modal-body {
       padding: 0 !important;
-      height: 520px;
+      height: 80vh;
     }
 
     .ant-modal-close-x {
