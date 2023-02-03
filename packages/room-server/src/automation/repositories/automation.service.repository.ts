@@ -17,14 +17,15 @@
  */
 
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
+import { ServiceBaseUrlDto } from 'automation/dtos/service.info.dto';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
 
-  public countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return this.count({
+  public async countOfficialServiceByServiceId(serviceId: string): Promise<number> {
+    return await this.count({
       where: {
         serviceId: serviceId,
         slug: OFFICIAL_SERVICE_SLUG,
@@ -32,8 +33,8 @@ export class AutomationServiceRepository extends Repository<AutomationServiceEnt
     });
   }
 
-  public countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
-    return this.count({
+  public async countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
+    return await this.count({
       where: {
         serviceId: serviceId,
         slug: slug,
@@ -41,4 +42,12 @@ export class AutomationServiceRepository extends Repository<AutomationServiceEnt
     });
   }
 
+  public async selectBaseUrlsByServiceIds(serviceIds: string[]): Promise<ServiceBaseUrlDto[]> {
+    return await this.find({
+      select: ['serviceId', 'baseUrl'],
+      where: {
+        serviceId: In(serviceIds),
+      }
+    });
+  }
 }

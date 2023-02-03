@@ -21,15 +21,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationTriggerTypeRepository } from './automation.trigger.type.repository';
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { DeepPartial } from 'typeorm';
-import { EventTypeEnums } from '../events/domains/event.type.enums';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 
 describe('AutomationTriggerTypeRepository', () => {
   let module: TestingModule;
   let repository: AutomationTriggerTypeRepository;
-  const theServiceId = 'theServiceId';
-  const theTriggerTypeId = 'theTriggerTypeId';
+  const theServiceId = 'serviceId';
+  const theTriggerTypeId = 'triggerTypeId';
+  const theEndpoint = 'endpoint';
   let entity: AutomationTriggerTypeEntity;
 
   beforeAll(async() => {
@@ -45,19 +45,25 @@ describe('AutomationTriggerTypeRepository', () => {
     }).compile();
 
     repository = module.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
+  });
 
+  beforeEach(async() => {
     const triggerType: DeepPartial<AutomationTriggerTypeEntity> = {
       serviceId: theServiceId,
       triggerTypeId: theTriggerTypeId,
-      endpoint: EventTypeEnums.RecordMatchesConditions,
+      endpoint: theEndpoint,
+      inputJSONSchema: {},
     };
     const record = repository.create(triggerType);
     entity = await repository.save(record);
   });
 
   afterAll(async() => {
-    await repository.delete(entity.id);
     await repository.manager.connection.close();
+  });
+
+  afterEach(async() => {
+    await repository.delete(entity.id);
   });
 
   it('should be defined', () => {
@@ -65,7 +71,7 @@ describe('AutomationTriggerTypeRepository', () => {
   });
 
   it('given a RecordMatchesConditions trigger type entity when get it by endpoint then should be got it', async() => {
-    const triggerTypeServiceRelDtos = await repository.getTriggerTypeServiceRelByEndPoint(EventTypeEnums.RecordMatchesConditions);
+    const triggerTypeServiceRelDtos = await repository.getTriggerTypeServiceRelByEndPoint(theEndpoint);
     expect(triggerTypeServiceRelDtos).toBeDefined();
     expect(triggerTypeServiceRelDtos.length).toEqual(1);
     expect(triggerTypeServiceRelDtos[0]!.serviceId).toEqual(theServiceId);
@@ -73,11 +79,18 @@ describe('AutomationTriggerTypeRepository', () => {
   });
 
   it('given a RecordMatchesConditions trigger type entity when get it by endpoint then should be got it', async() => {
-    const triggerTypeServiceRelWithEndpointDtos = await repository.getTriggerTypeServiceRelByEndPoints([EventTypeEnums.RecordMatchesConditions]);
+    const triggerTypeServiceRelWithEndpointDtos = await repository.getTriggerTypeServiceRelByEndPoints([theEndpoint]);
     expect(triggerTypeServiceRelWithEndpointDtos).toBeDefined();
     expect(triggerTypeServiceRelWithEndpointDtos.length).toEqual(1);
     expect(triggerTypeServiceRelWithEndpointDtos[0]!.serviceId).toEqual(theServiceId);
     expect(triggerTypeServiceRelWithEndpointDtos[0]!.triggerTypeId).toEqual(theTriggerTypeId);
-    expect(triggerTypeServiceRelWithEndpointDtos[0]!.endpoint).toEqual(EventTypeEnums.RecordMatchesConditions);
+    expect(triggerTypeServiceRelWithEndpointDtos[0]!.endpoint).toEqual(theEndpoint);
+  });
+
+  it('should be get inputJsonSchema by trigger type id.', async() => {
+    const inputJsonSchema = await repository.selectInputJsonSchemaById(theTriggerTypeId);
+    expect(inputJsonSchema).toBeDefined();
+    expect(inputJsonSchema!.triggerTypeId).toEqual(theTriggerTypeId);
+    expect(inputJsonSchema!.inputJSONSchema).toEqual({});
   });
 });

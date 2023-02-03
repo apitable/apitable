@@ -21,6 +21,7 @@ import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
 import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
+import { RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/robot.trigger.base.info.dto';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {
@@ -63,6 +64,26 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
         robotId: robotId,
         triggerTypeId: triggerTypeId,
         isDeleted: 0,
+      }
+    });
+  }
+
+  public async selectTriggerInfoByRobotId(robotId: string): Promise<RobotTriggerInfoDto | undefined> {
+    return await this.findOne({
+      select: ['triggerId', 'input', 'triggerTypeId'],
+      where: {
+        isDeleted: 0,
+        robotId: robotId
+      }
+    });
+  }
+
+  public async selectTriggerBaseInfosByRobotIds(robotIds: string[]): Promise<RobotTriggerBaseInfoDto[]> {
+    return await this.find({
+      select: ['triggerId', 'triggerTypeId', 'robotId'],
+      where: {
+        isDeleted: 0,
+        robotId: In(robotIds),
       }
     });
   }

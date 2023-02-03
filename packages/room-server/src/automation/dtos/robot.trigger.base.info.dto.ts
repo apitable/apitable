@@ -15,22 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 
-import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
-import { EntityRepository, In, Repository } from 'typeorm';
-import { ActionTypeBaseInfoDto } from '../dtos/action.type.info.dto';
+export type RobotTriggerBaseInfoDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'robotId'>
 
-@EntityRepository(AutomationActionTypeEntity)
-export class AutomationActionTypeRepository extends Repository<AutomationActionTypeEntity> {
+export type RobotTriggerInfoDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'input'>
 
-  public async selectByActionTypeIds(actionTypeIds: string[]): Promise<ActionTypeBaseInfoDto[]> {
-    return await this.find({
-      select: ['actionTypeId', 'inputJSONSchema', 'outputJSONSchema', 'endpoint', 'serviceId'],
-      where: {
-        isDeleted: 0,
-        actionTypeId: In(actionTypeIds),
-      }
-    }) as ActionTypeBaseInfoDto[];
-  }
+export type TriggerTriggerTypeRelDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId'>
 
+export class TriggerInputJsonSchemaDto {
+  triggerTypeId!: string;
+
+  inputJSONSchema?: object;
 }

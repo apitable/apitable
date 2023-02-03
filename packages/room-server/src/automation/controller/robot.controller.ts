@@ -21,18 +21,22 @@ import { UserService } from 'user/services/user.service';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { RobotCreateRo } from '../ros/robot.create.ro';
 import { AutomationService } from '../services/automation.service';
+import { RobotRobotService } from '../services/robot.robot.service';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 
 @Controller('nest/v1/robots')
 export class RobotController {
   constructor(
     private readonly automationRobotRepository: AutomationRobotRepository,
+    private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly automationService: AutomationService,
+    private readonly robotService: RobotRobotService,
     private readonly userService: UserService,
   ) { }
 
   @Get(['/'])
   getRobotListByResourceId(@Query('resourceId') resourceId: string) {
-    return this.automationRobotRepository.getRobotListByResourceId(resourceId);
+    return this.robotService.getRobotListByResourceId(resourceId);
   }
 
   @Post(['/'])
@@ -44,7 +48,7 @@ export class RobotController {
 
   @Get(['/:robotId'])
   getDatePack(@Param('robotId') robotId: string,) {
-    return this.automationRobotRepository.getRobotDetailById(robotId);
+    return this.robotService.getRobotDetailById(robotId);
   }
 
   @Delete(['/:robotId'])
@@ -71,13 +75,13 @@ export class RobotController {
   }
 
   @Get('/:robotId/base-info')
-  getRobotBaseInfo(@Param('robotId') robotId: string) {
-    return this.automationRobotRepository.getRobotBaseInfoByIds([robotId]);
+  async getRobotBaseInfo(@Param('robotId') robotId: string) {
+    return await this.robotService.getRobotBaseInfoByIds([robotId]);
   }
 
   @Get(['/:robotId/trigger'])
-  getRobotTrigger(@Param('robotId') robotId: string) {
-    return this.automationRobotRepository.getRobotTriggerById(robotId);
+  public async getRobotTrigger(@Param('robotId') robotId: string) {
+    return await this.automationTriggerRepository.selectTriggerInfoByRobotId(robotId);
   }
 
   @Get(['/:robotId/actions'])

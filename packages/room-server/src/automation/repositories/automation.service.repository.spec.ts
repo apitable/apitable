@@ -27,8 +27,9 @@ import { ConfigModule } from '@nestjs/config';
 
 describe('AutomationServiceRepository', () => {
   let module: TestingModule;
-  let automationServiceRepository: AutomationServiceRepository;
-  const theServiceId = 'theServiceId';
+  let repository: AutomationServiceRepository;
+  const theServiceId = 'serviceId';
+  const theBaseUrl = 'baseUrl';
   let entity: AutomationServiceEntity;
 
   beforeAll(async() => {
@@ -43,31 +44,46 @@ describe('AutomationServiceRepository', () => {
       providers: [AutomationServiceRepository],
     }).compile();
 
-    automationServiceRepository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
+    repository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
+  });
+
+  beforeEach(async() => {
     const service: DeepPartial<AutomationServiceEntity> = {
       serviceId: theServiceId,
       slug: OFFICIAL_SERVICE_SLUG,
+      baseUrl: theBaseUrl,
     };
-    const record = automationServiceRepository.create(service);
-    entity = await automationServiceRepository.save(record);
+    const record = repository.create(service);
+    entity = await repository.save(record);
   });
 
   afterAll(async() => {
-    await automationServiceRepository.delete(entity.id);
-    await automationServiceRepository.manager.connection.close();
+    await repository.manager.connection.close();
+  });
+
+  afterEach(async() => {
+    await repository.delete(entity.id);
   });
 
   it('should be defined', () => {
-    expect(automationServiceRepository).toBeDefined();
+    expect(repository).toBeDefined();
   });
 
   it("given one official service entity when judge whether the service id is the official service's id", async() => {
-    const number = await automationServiceRepository.countOfficialServiceByServiceId(entity.serviceId);
+    const number = await repository.countOfficialServiceByServiceId(entity.serviceId);
     expect(number).toEqual(1);
   });
 
   it('given one official service entity when judge whether the service with the special service id and service slug exist', async() => {
-    const number = await automationServiceRepository.countServiceByServiceIdAndSlug(entity.serviceId, OFFICIAL_SERVICE_SLUG);
+    const number = await repository.countServiceByServiceIdAndSlug(entity.serviceId, OFFICIAL_SERVICE_SLUG);
     expect(number).toEqual(1);
+  });
+
+  it('should be get services\' baseUrls', async() => {
+    const baseUrls = await repository.selectBaseUrlsByServiceIds([theServiceId]);
+    expect(baseUrls).toBeDefined();
+    expect(baseUrls.length).toEqual(1);
+    expect(baseUrls[0]!.serviceId).toEqual(theServiceId);
+    expect(baseUrls[0]!.baseUrl).toEqual(theBaseUrl);
   });
 });

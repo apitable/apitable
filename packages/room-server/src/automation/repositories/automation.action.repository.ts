@@ -17,10 +17,11 @@
  */
 
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { generateRandomString } from '@apitable/core';
 import { ActionCreateRo } from '../ros/action.create.ro';
 import { RobotRelDto } from '../dtos/robot.rel.dto';
+import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/robot.action.base.info.dto';
 
 @EntityRepository(AutomationActionEntity)
 export class AutomationActionRepository extends Repository<AutomationActionEntity> {
@@ -78,5 +79,25 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   changeActionTypeId(actionId: string, actionTypeId: string, userId: string) {
     // When switching action prototype, clear input
     return this.update({ actionId }, { actionTypeId, input: undefined, updatedBy: userId });
+  }
+
+  public async selectActionInfosByRobotId(robotId: string): Promise<RobotActionInfoDto[]>{
+    return await this.find({
+      select: ['actionId', 'actionTypeId', 'prevActionId', 'input'],
+      where: {
+        isDeleted: 0,
+        robotId: robotId,
+      }
+    }) as RobotActionInfoDto[];
+  }
+
+  public async selectActionBaseInfosByRobotIds(robotIds: string[]): Promise<RobotActionBaseInfoDto[]>{
+    return await this.find({
+      select: ['actionId', 'actionTypeId', 'prevActionId', 'robotId'],
+      where: {
+        isDeleted: 0,
+        robotId: In(robotIds),
+      }
+    }) as RobotActionBaseInfoDto[];
   }
 }

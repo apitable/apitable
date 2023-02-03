@@ -93,7 +93,7 @@ describe('RobotTriggerServiceTest', () => {
       .spyOn(automationTriggerTypeRepository, 'getTriggerTypeServiceRelByEndPoint')
       .mockResolvedValue([{ serviceId: 'serviceId', triggerTypeId: 'triggerTypeId' }]);
     jest.spyOn(automationServiceRepository, 'countOfficialServiceByServiceId').mockResolvedValue(1);
-    jest.spyOn(automationRobotRepository, 'getRobotIdByResourceId').mockResolvedValue([{ robotId: 'robotId' }]);
+    jest.spyOn(automationRobotRepository, 'selectRobotIdByResourceId').mockResolvedValue([{ robotId: 'robotId' }]);
     jest
       .spyOn(automationTriggerRepository, 'getTriggerByRobotIdAndTriggerTypeId')
       .mockResolvedValue([{ triggerId: 'triggerId', triggerTypeId: 'triggerTypeId', input: {}, robotId: 'robotId' }] as ResourceRobotTriggerDto[]);

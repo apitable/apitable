@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigModule } from "@nestjs/config";
-import { Test, TestingModule } from "@nestjs/testing";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { DeepPartial } from "typeorm";
-import { AutomationActionRepository } from "./automation.action.repository";
+// import { ConfigModule } from "@nestjs/config";
+import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DeepPartial } from 'typeorm';
+import { AutomationActionRepository } from './automation.action.repository';
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { DatabaseConfigService } from "shared/services/config/database.config.service";
+// import { DatabaseConfigService } from "shared/services/config/database.config.service";
 
 describe('AutomationActionRepository', () => {
   let module: TestingModule;
@@ -33,12 +33,19 @@ describe('AutomationActionRepository', () => {
   const theUserId = '123456';
   let entity: AutomationActionEntity;
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     module = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
-        TypeOrmModule.forRootAsync({
-          useClass: DatabaseConfigService,
+        TypeOrmModule.forRoot({
+          type: 'mysql',
+          host: 'localhost',
+          port: 3306,
+          username: 'root',
+          password: 'vikadata@com',
+          database: 'vikadata',
+          entityPrefix: 'vika_',
+          autoLoadEntities: true,
+          keepConnectionAlive: true,
         }),
         TypeOrmModule.forFeature([AutomationActionRepository]),
       ],
@@ -48,22 +55,23 @@ describe('AutomationActionRepository', () => {
     repository = module.get<AutomationActionRepository>(AutomationActionRepository);
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     await repository.manager.connection.close();
   });
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     const action: DeepPartial<AutomationActionEntity> = {
       actionId: theActionId,
       robotId: theRobotId,
       actionTypeId: theActionTypeId,
-      createdBy: theUserId
+      input: {},
+      createdBy: theUserId,
     };
     const record = repository.create(action);
     entity = await repository.save(record);
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await repository.delete(entity.id);
   });
 
@@ -71,14 +79,14 @@ describe('AutomationActionRepository', () => {
     expect(repository).toBeDefined();
   });
 
-  it('should be return robotId and preActionId', async() => {
+  it('should be return robotId and preActionId', async () => {
     const robotRel = await repository.selectRobotRelByActionId(theActionId);
     expect(robotRel).toBeDefined();
     expect(robotRel.robotId).toEqual(theRobotId);
     expect(robotRel.prevActionId).toEqual(null);
   });
 
-  it('should be update the action\'s pre action id', async() => {
+  it("should be update the action's pre action id", async () => {
     const newAction: DeepPartial<AutomationActionEntity> = {
       actionId: 'newActionId',
       robotId: theRobotId,
@@ -94,17 +102,36 @@ describe('AutomationActionRepository', () => {
     await repository.delete(theNewAction.id);
   });
 
-  it('should be update delete flag', async() => {
+  it('should be update delete flag', async () => {
     const theUpdateResult = await repository.deleteActionByActionId(theUserId, theActionId);
     expect(theUpdateResult).toBeDefined();
     expect(theUpdateResult.affected).toEqual(1);
     const theDeletedEntity = await repository.findOneOrFail({
       where: {
         actionId: theActionId,
-      }
+      },
     });
     expect(theDeletedEntity).toBeDefined();
     expect(theDeletedEntity.isDeleted).toBeTruthy();
   });
 
+  it('should get the action base infos by robot ids', async () => {
+    const actionBaseInfoDtos = await repository.selectActionBaseInfosByRobotIds([theRobotId]);
+    expect(actionBaseInfoDtos).toBeDefined();
+    expect(actionBaseInfoDtos.length).toEqual(1);
+    expect(actionBaseInfoDtos[0]!.actionId).toEqual(theActionId);
+    expect(actionBaseInfoDtos[0]!.actionTypeId).toEqual(theActionTypeId);
+    expect(actionBaseInfoDtos[0]!.robotId).toEqual(theRobotId);
+    expect(actionBaseInfoDtos[0]!.prevActionId).toEqual(null);
+  });
+
+  it('should be get the action infos by robot id', async () => {
+    const robotActionInfoDtos = await repository.selectActionInfosByRobotId(theRobotId);
+    expect(robotActionInfoDtos).toBeDefined();
+    expect(robotActionInfoDtos.length).toEqual(1);
+    expect(robotActionInfoDtos[0]!.actionId).toEqual(theActionId);
+    expect(robotActionInfoDtos[0]!.actionTypeId).toEqual(theActionTypeId);
+    expect(robotActionInfoDtos[0]!.prevActionId).toEqual(null);
+    expect(robotActionInfoDtos[0]!.input).toEqual({});
+  });
 });

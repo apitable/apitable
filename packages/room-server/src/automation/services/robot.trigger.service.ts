@@ -69,7 +69,7 @@ export class RobotTriggerService {
   private async _getResourceConditionalRobotTriggers(resourceId: string, triggerTypeId: string) {
     const resourceRobotTriggers: ResourceRobotTriggerDto[] = [];
     // get the datasheet's robots' id.
-    const datasheetRobots = await this.automationRobotRepository.getRobotIdByResourceId(resourceId);
+    const datasheetRobots = await this.automationRobotRepository.selectRobotIdByResourceId(resourceId);
     for (const robot of datasheetRobots) {
       // get the special trigger type's robot's triggers.
       const triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robot.robotId, triggerTypeId);

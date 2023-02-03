@@ -19,6 +19,7 @@
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { ITriggerTypeServiceRelDto } from '../dtos/trigger.type.service.rel.dto';
+import { TriggerInputJsonSchemaDto } from '../dtos/robot.trigger.base.info.dto';
 
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
@@ -66,5 +67,15 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
           JOIN ${this.manager.connection.options.entityPrefix}automation_service s ON s.service_id = tt.service_id
     WHERE tt.is_deleted = 0
     `);
+  }
+
+  public async selectInputJsonSchemaById(triggerTypeId: string): Promise<TriggerInputJsonSchemaDto | undefined> {
+    return await this.findOne({
+      select: ['triggerTypeId', 'inputJSONSchema'],
+      where: {
+        isDeleted: 0,
+        triggerTypeId,
+      },
+    });
   }
 }
