@@ -22,7 +22,7 @@ import { getFieldHeight, getVietualFieldHeight, hasCover } from 'pc/components/g
 import { store } from 'pc/store';
 import { useSelector } from 'react-redux';
 
-const FIRST_FIELD_HEIGHT = 26;
+const FIRST_FIELD_HEIGHT = 16;
 const FIELD_PADDING_TOP = 4;
 const FIELD_PADDING_BOTTOM = 12;
 const FIELD_TITLE_HEIGHT = 17;
