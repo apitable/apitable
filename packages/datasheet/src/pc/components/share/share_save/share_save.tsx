@@ -33,6 +33,7 @@ import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import IconNoSpace from 'static/icon/datasheet/datasheet_img_modal_nospace.png';
 import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 enum ModalType {
   Login = 'Login',
@@ -55,6 +56,8 @@ export const ShareSave: React.FC<IShareSave> = props => {
   const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string; logo: string }[]>([]);
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
+  const env = getEnvVariables();
+
   const onCancel = () => {
     setRadio('');
     setVisible(false);
@@ -67,7 +70,11 @@ export const ShareSave: React.FC<IShareSave> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          if (env.INVITE_USER_BY_AUTH0) {
+            Router.push(Navigation.WORKBENCH)
+          } else {
+            Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          }
         },
         onCancel: () => setVisible(false),
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },

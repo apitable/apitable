@@ -33,6 +33,7 @@ import { INodeTree, IShareSpaceInfo } from '../interface';
 import { ShareSave } from '../share_save';
 import { OperationCard } from './operation_card';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -117,6 +118,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   const userInfo = useSelector(state => state.user.info);
   const { formId, viewId } = useSelector(state => state.pageParams);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
+  const env = getEnvVariables();
 
   const saveToMySpace = () => {
     setVisible(true);
@@ -132,7 +134,11 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
       content: t(Strings.require_login_tip),
       okText: t(Strings.go_login),
       onOk: () => {
-        Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
+        if (env.INVITE_USER_BY_AUTH0) {
+          Router.push(Navigation.WORKBENCH)
+        } else {
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
+        }
       },
       okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
       type: 'warning',
