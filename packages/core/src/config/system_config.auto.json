@@ -5976,12 +5976,12 @@
                 "onSkip": [
                     "skip_current_wizard()"
                 ],
-                "uiConfig": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引导\", \n\"description\": \"模板中心提供了 1000+ 业务自动化解决方案，可免费安装应用\", \"children\":\"\" \n}"
+                "uiConfig": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引导\", \n\"description\": \"模板中心提供了 1000+ 业务自动化解决方案，可免费安装应用\", \"children\":\"\" \n}"
             },
             "106": {
                 "uiConfigId": "player_step_ui_config_106",
                 "uiType": "breath",
-                "uiConfig": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} "
+                "uiConfig": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} "
             },
             "107": {
                 "uiConfigId": "player_step_ui_config_107",
@@ -6672,9 +6672,9 @@
                 "to_tag": "users",
                 "notifications_type": "system",
                 "is_notification": true,
-                "format_string": "new_user_welcom_notify",
-                "url": "https://u.vika.cn/vhw8y",
-                "is_component": true
+                "format_string": "new_user_welcome_notify",
+                "is_component": true,
+                "redirect_url": "new_user_welcome_notify_url"
             },
             "quit_space": {
                 "can_jump": true,
