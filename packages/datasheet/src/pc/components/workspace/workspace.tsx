@@ -138,7 +138,7 @@ export const Workspace: React.FC = () => {
                       if (isMobile) {
                         return;
                       }
-                      Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview', clearQuery: true }});
+                      Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }, clearQuery: true });
                     }}
                   >
                     {t(Strings.space_overview)}
