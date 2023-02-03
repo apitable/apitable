@@ -19,6 +19,7 @@
 import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 // @ts-ignore
 import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
 import { last } from 'lodash';
@@ -249,7 +250,7 @@ const Trash: FC = () => {
                       />
                     </div>
                     <Tooltip title={deletedAt} textEllipsis>
-                      <div className={styles.expirationTime}>{deletedAt}</div>
+                      <div className={styles.expirationTime}>{dayjs(deletedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </Tooltip>
 
                     <Tooltip title={delPath || spaceName} textEllipsis>
