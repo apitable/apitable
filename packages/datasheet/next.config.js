@@ -25,7 +25,7 @@ const withPlugins = require('next-compose-plugins')
 const withTM = require('next-transpile-modules')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const isProd = process.env.NODE_ENV === 'production'
-const { withSentryConfig } = require('@sentry/nextjs')
+const {withSentryConfig} = require('@sentry/nextjs')
 
 const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
@@ -64,8 +64,8 @@ const localIdent = (loaderContext, localIdentName, localName, options) => {
 }
 
 // Overrides for css-loader plugin
-function cssLoaderOptions (modules) {
-  const { getLocalIdent, ...others } = modules
+function cssLoaderOptions(modules) {
+  const {getLocalIdent, ...others} = modules
   return {
     ...others,
     getLocalIdent: getLocalIdent || localIdent,
@@ -77,18 +77,18 @@ function cssLoaderOptions (modules) {
 const plugins = [
   [
     withLess, {
-      lessLoaderOptions: {
-        lessOptions: {
-          paths: [path.resolve(__dirname, './src')]
-        }
+    lessLoaderOptions: {
+      lessOptions: {
+        paths: [path.resolve(__dirname, './src')]
       }
     }
+  }
   ],
   [
     withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])
   ],
   [
-    withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
+    withBundleAnalyzer({enabled: process.env.ANALYZE === 'true'})
   ]
 ]
 
@@ -99,11 +99,10 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
 }
 
-const _withSentryConfig = isProd && !isIntranetEnv
-  ? withSentryConfig
+const _withSentryConfig = isProd ? withSentryConfig
   : (nextConfig, sentryConfig) => {
-      return nextConfig
-    }
+    return nextConfig
+  }
 
 module.exports = withPlugins(plugins, _withSentryConfig({
   // Use the CDN in production and localhost for development.
@@ -132,7 +131,7 @@ module.exports = withPlugins(plugins, _withSentryConfig({
   publicRuntimeConfig: {
     staticFolder: getStaticFolder()
   },
-  webpack (config, options) {
+  webpack(config, options) {
     config.resolve.symlinks = false
     const originalEntry = config.entry
 
@@ -166,8 +165,8 @@ module.exports = withPlugins(plugins, _withSentryConfig({
       })
       if (moduleSassRule) {
         // Get the config object for css-loader plugin
-        const cssLoader = moduleSassRule.use.find(({ loader }) => loader.includes('css-loader'))
-        const lessLoader = moduleSassRule.use.find(({ loader }) => loader.includes('less-loader'))
+        const cssLoader = moduleSassRule.use.find(({loader}) => loader.includes('css-loader'))
+        const lessLoader = moduleSassRule.use.find(({loader}) => loader.includes('less-loader'))
         if (cssLoader) {
           cssLoader.options = {
             ...cssLoader.options,
@@ -204,7 +203,7 @@ module.exports = withPlugins(plugins, _withSentryConfig({
       // })
     }
 
-    const { webpack } = options
+    const {webpack} = options
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /canvas|jsdom/,
@@ -238,11 +237,11 @@ module.exports = withPlugins(plugins, _withSentryConfig({
           loader: 'svgo-loader',
           options: {
             plugins: [
-              { name: 'removeNonInheritableGroupAttrs' },
-              { name: 'removeXMLNS' },
-              { name: 'collapseGroups' },
-              { name: 'removeStyleElement' },
-              { name: 'removeAttrs', params: { attrs: '(stroke|fill)' } }
+              {name: 'removeNonInheritableGroupAttrs'},
+              {name: 'removeXMLNS'},
+              {name: 'collapseGroups'},
+              {name: 'removeStyleElement'},
+              {name: 'removeAttrs', params: {attrs: '(stroke|fill)'}}
             ]
           }
         }
