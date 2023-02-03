@@ -127,6 +127,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
             style={{ ...style }}
             block={block}
             color='warning'
+            size="small"
           >
             {t(Strings.apply_template)}
             {showIcon && <IconArrowRight fill='white' />}

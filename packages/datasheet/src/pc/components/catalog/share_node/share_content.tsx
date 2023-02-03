@@ -66,9 +66,9 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   if (loading) {
     return (
       <div className={cls(styles.shareContent, styles.loading, { [styles.shareContentMobile]: isMobile })}>
-        <Skeleton count={1} style={{ marginTop: 0 }} width='38%' height='24px' />
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px' />
         <Skeleton count={2} style={{ marginTop: '16px' }} height='24px' />
-        <Skeleton count={1} style={{ marginTop: '32px' }} width='38%' height='24px' />
+        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px' />
         <Skeleton count={1} style={{ marginTop: '16px' }} height='24px' />
       </div>
     );
