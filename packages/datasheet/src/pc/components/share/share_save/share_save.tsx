@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, TextButton } from '@apitable/components';
+import { Button, IconButton, TextButton, ThemeName } from '@apitable/components';
 import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Modal, Radio } from 'antd';
 import classnames from 'classnames';
@@ -30,7 +30,8 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import IconNoSpace from 'static/icon/datasheet/datasheet_img_modal_nospace.png';
+import IconNoSpaceLight from 'static/icon/datasheet/space_img_empty_light.png';
+import IconNoSpaceDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
 import { getEnvVariables } from 'pc/utils/env';
@@ -57,6 +58,8 @@ export const ShareSave: React.FC<IShareSave> = props => {
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
   const env = getEnvVariables();
+  const themeName = useSelector(state => state.theme);
+  const IconNoSpace = themeName === ThemeName.Light ? IconNoSpaceLight : IconNoSpaceDark;
 
   const onCancel = () => {
     setRadio('');
@@ -71,7 +74,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
         okText: t(Strings.go_login),
         onOk: () => {
           if (env.INVITE_USER_BY_AUTH0) {
-            Router.push(Navigation.WORKBENCH)
+            Router.push(Navigation.WORKBENCH);
           } else {
             Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
           }

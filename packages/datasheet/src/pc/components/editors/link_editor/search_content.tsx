@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, LinkButton, useThemeColors } from '@apitable/components';
+import { Button, LinkButton, useThemeColors, ThemeName } from '@apitable/components';
 import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
   Strings, t, TextBaseField,
@@ -37,7 +37,9 @@ import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import ImageNoRecord from 'static/icon/datasheet/datasheet_img_modal_norecord.png';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
+
 import { RecordList } from './record_list';
 import style from './style.module.less';
 
@@ -65,7 +67,9 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
     return Selectors.getPermissions(state, foreignDatasheetId);
   });
   const { formId, mirrorId, datasheetId: urlDsId } = useSelector(state => state.pageParams);
-  
+  const themeName = useSelector(state => state.theme);
+  const ImageNoRecord = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
+
   const foreignView = useGetViewByIdWithDefault(field.property.foreignDatasheetId, field.property.limitToView) as any;
   const hasLimitToView = Boolean(field.property.limitToView && foreignView?.id === field.property.limitToView);
   const { recordMap, meta } = foreignDatasheet.snapshot;

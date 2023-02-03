@@ -19,10 +19,15 @@
 import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { FC } from 'react';
-import SearchImage from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+import { ThemeName } from '@apitable/components';
+import { useSelector } from 'react-redux';
 
 export const SearchEmpty: FC = () => {
+  const themeName = useSelector(state => state.theme);
+  const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (
     <div className={styles.searchEmpty}>
       <span className={styles.img}>

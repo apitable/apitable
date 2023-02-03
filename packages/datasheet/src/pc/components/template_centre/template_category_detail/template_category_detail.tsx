@@ -19,7 +19,7 @@
 import {
   ConfigConstant, integrateCdnHost, IReduxState, ITemplate, ITemplateCategory, Navigation, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
-import { Typography } from '@apitable/components';
+import { Typography, ThemeName } from '@apitable/components';
 import { Col, Row } from 'antd';
 import { TemplateListContext } from 'context/template_list';
 import parser from 'html-react-parser';
@@ -36,7 +36,8 @@ import { useTemplateRequest } from 'pc/hooks/use_template_request';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
@@ -76,6 +77,8 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
   const { run: getTemplateCategories, data: templateCategories } =
     useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
 
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   useEffect(() => {
     // Login status is required to access the space station template
     if (categoryId === 'tpcprivate' && user) {

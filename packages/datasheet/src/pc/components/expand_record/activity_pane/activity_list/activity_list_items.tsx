@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LinkButton, Typography, useThemeColors } from '@apitable/components';
+import { LinkButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
   OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional,
@@ -34,7 +34,8 @@ import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import * as React from 'react';
 import { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconNoList from 'static/icon/datasheet/activity/datasheet_img_activity_record.png';
+import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
+import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
 import { ActivityContext } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
@@ -81,6 +82,8 @@ export const ActivityListItems: FC<IActivityListProps & {
   const topRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver>();
   const productName = useSelector(state => String(state.billing?.subscription?.product).toLowerCase());
+  const themeName = useSelector(state => state.theme);
+  const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';

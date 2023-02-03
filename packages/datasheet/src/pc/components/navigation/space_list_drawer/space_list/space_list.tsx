@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton } from '@apitable/components';
+import { Button, Skeleton, ThemeName } from '@apitable/components';
 import { getMaxManageableSpaceCount, ISpaceInfo, Strings, t } from '@apitable/core';
 import { useRequest } from 'ahooks';
 import { Space, Tabs } from 'antd';
@@ -28,8 +28,10 @@ import { isSocialWecom } from 'enterprise';
 import { useSpaceRequest } from 'pc/hooks';
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import EmptyManagableListPng from 'static/icon/account/account_img_createspace@2x.png';
-import EmptyIntrantListPng from 'static/icon/datasheet/datasheet_img_modal_nospace.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
+import EmptyIntrantListPngLight from 'static/icon/datasheet/space_img_empty_light.png';
+import EmptyIntrantListPngDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import AddIcon from 'static/icon/space/space_icon_add@2x.png';
 import { NavigationContext } from '../../navigation_context';
 import { SpaceListItem } from './space_list_item';
@@ -55,7 +57,9 @@ export const SpaceList: FC = () => {
   const { data: spaceList, loading, run: runGetSpaceListReq } = useRequest(getSpaceListReq);
   // const { screenIsAtMost } = useResponsive();
   // const isMobile = screenIsAtMost(ScreenSize.md);
-
+  const themeName = useSelector(state => state.theme);
+  const EmptyIntrantListPng = themeName === ThemeName.Light ? EmptyIntrantListPngLight : EmptyIntrantListPngDark;
+  const EmptyManagableListPng = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const isWecom = isSocialWecom?.(spaceInfo);
 
