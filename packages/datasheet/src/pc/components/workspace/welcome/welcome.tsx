@@ -34,7 +34,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import WelcomeIconLight from 'static/icon/datasheet/workbench_empty_light.png';
-import WelcomeIconDark from 'static/icon/datasheet/workbench_empty_Dark.png';
+import WelcomeIconDark from 'static/icon/datasheet/workbench_empty_dark.png';
 import { CreateDataSheetModal } from './create_datasheet_modal';
 import styles from './style.module.less';
 
