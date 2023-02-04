@@ -59,9 +59,37 @@ export class RobotTriggerTypeService {
     }, {} as IServiceSlugTriggerTypeVo);
   }
 
-  async getTriggerType(lang = 'zh') {
-    const triggerTypes = await this.automationTriggerTypeRepository.getRobotTriggerTypes();
-    return triggerTypes.map(triggerType => {
+  /**
+   * Get all the trigger types info.
+   *
+   * There is an optimizing place: cache the result in memory.
+   * @param lang  the triggers' language version
+   */
+  public async getTriggerType(lang = 'zh') {
+    const triggerTypes = await this.automationTriggerTypeRepository.selectAllTriggerType();
+
+    const serviceIds = new Set<string>();
+    triggerTypes.forEach(triggerType => serviceIds.add(triggerType.serviceId));
+    const services = await this.automationServiceRepository.selectServiceByServiceIds([...serviceIds]);
+    const serviceIdToServiceMap = services.reduce((acc, item) => {
+      acc[item.serviceId] = item;
+      return acc;
+    }, {});
+
+    const triggerTypeDetails = triggerTypes.map(triggerType => {
+      const service = serviceIdToServiceMap[triggerType.serviceId];
+      return {
+        ...triggerType,
+        inputJsonSchema: triggerType.inputJSONSchema,
+        outputJsonSchema: triggerType.outputJSONSchema,
+        serviceName: service.name,
+        serviceLogo: service.logo,
+        serviceSlug: service.slug,
+        serviceI18n: service.i18n,
+      }
+    });
+
+    return triggerTypeDetails.map(triggerType => {
       return getTypeByItem(triggerType, lang, 'trigger');
     });
   }

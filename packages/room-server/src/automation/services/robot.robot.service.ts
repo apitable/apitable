@@ -25,7 +25,7 @@ import { AutomationActionEntity } from '../entities/automation.action.entity';
 import { IActionType, IRobot } from "@apitable/core";
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { customActionNamePrefix, customActionTypeMap } from '../actions/decorators/automation.action.decorator';
-import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/robot.action.base.info.dto';
+import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/action.dto';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { RobotBaseInfoVo } from '../vos/robot.base.info.vo';
@@ -33,7 +33,7 @@ import { RobotDetailVo } from '../vos/robot.detail.vo';
 import { CommonException, ServerException } from "shared/exception";
 import { InjectLogger } from "shared/common";
 import { Logger } from "winston";
-import { TriggerTriggerTypeRelDto } from '../dtos/robot.trigger.base.info.dto';
+import { TriggerTriggerTypeRelDto } from '../dtos/trigger.dto';
 
 @Injectable()
 export class RobotRobotService {

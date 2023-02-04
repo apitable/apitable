@@ -18,7 +18,7 @@
 
 import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { ActionTypeBaseInfoDto } from '../dtos/action.type.info.dto';
+import { ActionTypeBaseInfoDto } from '../dtos/action.type.dto';
 
 @EntityRepository(AutomationActionTypeEntity)
 export class AutomationActionTypeRepository extends Repository<AutomationActionTypeEntity> {

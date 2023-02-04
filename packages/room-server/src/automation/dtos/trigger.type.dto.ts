@@ -15,6 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 
-export type RobotBaseInfoDto = Pick<AutomationRobotEntity, 'name' | 'description' | 'isActive' | 'robotId'>
+export interface ITriggerTypeServiceRelDto {
+  serviceId: string,
+  triggerTypeId: string,
+  endpoint?: string,
+}
+
+export class TriggerTypeDetailDto {
+  triggerTypeId!: string;
+  name!: string;
+  description!: string;
+  endpoint!: string;
+  i18n?: object;
+  inputJSONSchema?: object;
+  outputJSONSchema?: object;
+  serviceId!: string;
+}
+
+export class TriggerInputJsonSchemaDto {
+  triggerTypeId!: string;
+  inputJSONSchema?: object;
+}

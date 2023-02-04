@@ -24,9 +24,9 @@ import { AutomationServiceRepository } from '../repositories/automation.service.
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EventTypeEnums } from '../events/domains/event.type.enums';
-import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { WinstonModule } from 'nest-winston';
+import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
 
 describe('RobotTriggerServiceTest', () => {
   let module: TestingModule;

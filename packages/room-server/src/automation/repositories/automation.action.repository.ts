@@ -20,8 +20,7 @@ import { AutomationActionEntity } from '../entities/automation.action.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { generateRandomString } from '@apitable/core';
 import { ActionCreateRo } from '../ros/action.create.ro';
-import { RobotRelDto } from '../dtos/robot.rel.dto';
-import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/robot.action.base.info.dto';
+import { RobotActionBaseInfoDto, RobotActionInfoDto, RobotRelDto } from '../dtos/action.dto';
 
 @EntityRepository(AutomationActionEntity)
 export class AutomationActionRepository extends Repository<AutomationActionEntity> {

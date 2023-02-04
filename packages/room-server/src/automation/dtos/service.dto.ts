@@ -15,16 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 
-export type RobotTriggerBaseInfoDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'robotId'>
+export class ServiceBaseUrlDto {
+  serviceId!: string;
 
-export type RobotTriggerInfoDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId' | 'input'>
+  baseUrl?: string;
+}
 
-export type TriggerTriggerTypeRelDto = Pick<AutomationTriggerEntity, 'triggerId' | 'triggerTypeId'>
-
-export class TriggerInputJsonSchemaDto {
-  triggerTypeId!: string;
-
-  inputJSONSchema?: object;
+export class ServiceInfoDto {
+  serviceId!: string;
+  slug!: string;
+  name?: string;
+  logo?: string;
+  i18n?: object;
 }

@@ -20,8 +20,7 @@ import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
-import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
-import { RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/robot.trigger.base.info.dto';
+import { ResourceRobotTriggerDto, RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/trigger.dto';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {

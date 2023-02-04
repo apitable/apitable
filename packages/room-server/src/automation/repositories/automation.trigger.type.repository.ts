@@ -18,8 +18,7 @@
 
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { ITriggerTypeServiceRelDto } from '../dtos/trigger.type.service.rel.dto';
-import { TriggerInputJsonSchemaDto } from '../dtos/robot.trigger.base.info.dto';
+import { ITriggerTypeServiceRelDto, TriggerInputJsonSchemaDto, TriggerTypeDetailDto } from '../dtos/trigger.type.dto';
 
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
@@ -48,25 +47,22 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
     });
   }
 
-  async getRobotTriggerTypes(): Promise<any[]> {
-    // todo(itou): replace dynamic sql
-    return await this.query(`
-    SELECT tt.trigger_type_id triggerTypeId,
-        tt.name,
-        tt.description,
-        tt.endpoint,
-        tt.i18n,
-        tt.input_json_schema inputJsonSchema,
-        tt.output_json_schema outputJsonSchema,
-        s.service_id serviceId,
-        s.name As serviceName,
-        s.logo as serviceLogo,
-        s.slug AS serviceSlug,
-        s.i18n as serviceI18n
-    FROM ${this.manager.connection.options.entityPrefix}automation_trigger_type tt
-          JOIN ${this.manager.connection.options.entityPrefix}automation_service s ON s.service_id = tt.service_id
-    WHERE tt.is_deleted = 0
-    `);
+  public async selectAllTriggerType(): Promise<TriggerTypeDetailDto[]> {
+    return await this.find({
+      select: [
+        'triggerTypeId',
+        'name',
+        'description',
+        'endpoint',
+        'i18n',
+        'inputJSONSchema',
+        'outputJSONSchema',
+        'serviceId',
+      ],
+      where: {
+        isDeleted: false,
+      }
+    })
   }
 
   public async selectInputJsonSchemaById(triggerTypeId: string): Promise<TriggerInputJsonSchemaDto | undefined> {

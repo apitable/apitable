@@ -27,15 +27,15 @@ import { LoggerConfigService } from '../../shared/services/config/logger.config.
 import { WinstonModule } from "nest-winston";
 import {
   RobotTriggerBaseInfoDto,
-  RobotTriggerInfoDto, TriggerInputJsonSchemaDto,
-  TriggerTriggerTypeRelDto
-} from '../dtos/robot.trigger.base.info.dto';
-import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/robot.action.base.info.dto';
-import { RobotBaseInfoDto } from '../dtos/robot.base.info.dto';
+  RobotTriggerInfoDto, TriggerTriggerTypeRelDto
+} from '../dtos/trigger.dto';
+import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/action.dto';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
-import { ActionTypeBaseInfoDto } from '../dtos/action.type.info.dto';
-import { ServiceBaseUrlDto } from '../dtos/service.info.dto';
+import { ActionTypeBaseInfoDto } from '../dtos/action.type.dto';
+import { ServiceBaseUrlDto } from '../dtos/service.dto';
 import { CommonException } from '../../shared/exception';
+import { TriggerInputJsonSchemaDto } from '../dtos/trigger.type.dto';
+import { RobotBaseInfoDto } from '../dtos/robot.dto';
 
 describe('RobotRobotServiceTest', () => {
   let module: TestingModule;

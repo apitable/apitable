@@ -19,7 +19,7 @@
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
-import { ServiceBaseUrlDto } from 'automation/dtos/service.info.dto';
+import { ServiceBaseUrlDto, ServiceInfoDto } from '../dtos/service.dto';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
@@ -50,4 +50,15 @@ export class AutomationServiceRepository extends Repository<AutomationServiceEnt
       }
     });
   }
+
+  public async selectServiceByServiceIds(serviceIds: string[]): Promise<ServiceInfoDto[]> {
+    return await this.find({
+      select: ['serviceId', 'name', 'logo', 'slug', 'i18n'],
+      where: {
+        serviceId: In(serviceIds),
+        isDeleted: false,
+      }
+    });
+  }
+
 }

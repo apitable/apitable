@@ -20,8 +20,7 @@ import { generateRandomString } from '@apitable/core';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { RobotCreateRo } from '../ros/robot.create.ro';
-import { ResourceRobotDto } from '../dtos/resource.robot.dto';
-import { RobotBaseInfoDto } from '../dtos/robot.base.info.dto';
+import { ResourceRobotDto, RobotBaseInfoDto } from '../dtos/robot.dto';
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
@@ -51,21 +50,6 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
 
   getResourceIdByRobotId(robotId: string) {
     return this.findOne({ robotId }, { select: ['resourceId'] }).then(res => res?.resourceId);
-  }
-
-  getRobotActionsById(robotId: string) {
-    // todo(itou): replace dynamic sql
-    return this.query(`
-    SELECT
-      action_id id,
-      action_type_id typeId,
-      input,
-      prev_action_id prevActionId
-    FROM
-      ${this.manager.connection.options.entityPrefix}automation_action
-    WHERE
-      is_deleted = 0 AND robot_id = ?
-    `, [robotId]);
   }
 
   async getRobotCountByResourceId(resourceId: string) {

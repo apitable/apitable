@@ -23,11 +23,13 @@ import { RobotCreateRo } from '../ros/robot.create.ro';
 import { AutomationService } from '../services/automation.service';
 import { RobotRobotService } from '../services/robot.robot.service';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 
 @Controller('nest/v1/robots')
 export class RobotController {
   constructor(
     private readonly automationRobotRepository: AutomationRobotRepository,
+    private readonly automationActionRepository: AutomationActionRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly automationService: AutomationService,
     private readonly robotService: RobotRobotService,
@@ -86,7 +88,7 @@ export class RobotController {
 
   @Get(['/:robotId/actions'])
   getRobotActions(@Param('robotId') robotId: string) {
-    return this.automationRobotRepository.getRobotActionsById(robotId);
+    return this.automationActionRepository.selectActionInfosByRobotId(robotId);
   }
 
   @Post(['/:robotId/active'])

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { RobotActionBaseInfoDto } from '../dtos/robot.action.base.info.dto';
-import { TriggerTriggerTypeRelDto } from '../dtos/robot.trigger.base.info.dto';
+import { RobotActionBaseInfoDto } from '../dtos/action.dto';
+import { TriggerTriggerTypeRelDto } from '../dtos/trigger.dto';
 
 export class RobotBaseInfoVo {
 
