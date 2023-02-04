@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import { ConfigModule } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DeepPartial } from 'typeorm';
 import { AutomationActionRepository } from './automation.action.repository';
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-// import { DatabaseConfigService } from "shared/services/config/database.config.service";
+import { DatabaseConfigService } from "shared/services/config/database.config.service";
 
 describe('AutomationActionRepository', () => {
   let module: TestingModule;
@@ -36,16 +36,9 @@ describe('AutomationActionRepository', () => {
   beforeAll(async () => {
     module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot({
-          type: 'mysql',
-          host: 'localhost',
-          port: 3306,
-          username: 'root',
-          password: 'vikadata@com',
-          database: 'vikadata',
-          entityPrefix: 'vika_',
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
+        ConfigModule.forRoot({ isGlobal: true }),
+        TypeOrmModule.forRootAsync({
+          useClass: DatabaseConfigService,
         }),
         TypeOrmModule.forFeature([AutomationActionRepository]),
       ],
