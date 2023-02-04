@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DeepPartial } from 'typeorm';
 import { AutomationActionRepository } from './automation.action.repository';
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { DatabaseConfigService } from "shared/services/config/database.config.service";
+import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 
 describe('AutomationActionRepository', () => {
   let module: TestingModule;
@@ -33,7 +33,7 @@ describe('AutomationActionRepository', () => {
   const theUserId = '123456';
   let entity: AutomationActionEntity;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -48,11 +48,11 @@ describe('AutomationActionRepository', () => {
     repository = module.get<AutomationActionRepository>(AutomationActionRepository);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await repository.manager.connection.close();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     const action: DeepPartial<AutomationActionEntity> = {
       actionId: theActionId,
       robotId: theRobotId,
@@ -64,7 +64,7 @@ describe('AutomationActionRepository', () => {
     entity = await repository.save(record);
   });
 
-  afterEach(async () => {
+  afterEach(async() => {
     await repository.delete(entity.id);
   });
 
@@ -72,14 +72,14 @@ describe('AutomationActionRepository', () => {
     expect(repository).toBeDefined();
   });
 
-  it('should be return robotId and preActionId', async () => {
+  it('should be return robotId and preActionId', async() => {
     const robotRel = await repository.selectRobotRelByActionId(theActionId);
     expect(robotRel).toBeDefined();
     expect(robotRel.robotId).toEqual(theRobotId);
     expect(robotRel.prevActionId).toEqual(null);
   });
 
-  it("should be update the action's pre action id", async () => {
+  it("should be update the action's pre action id", async() => {
     const newAction: DeepPartial<AutomationActionEntity> = {
       actionId: 'newActionId',
       robotId: theRobotId,
@@ -95,7 +95,7 @@ describe('AutomationActionRepository', () => {
     await repository.delete(theNewAction.id);
   });
 
-  it('should be update delete flag', async () => {
+  it('should be update delete flag', async() => {
     const theUpdateResult = await repository.deleteActionByActionId(theUserId, theActionId);
     expect(theUpdateResult).toBeDefined();
     expect(theUpdateResult.affected).toEqual(1);
@@ -108,7 +108,7 @@ describe('AutomationActionRepository', () => {
     expect(theDeletedEntity.isDeleted).toBeTruthy();
   });
 
-  it('should get the action base infos by robot ids', async () => {
+  it('should get the action base infos by robot ids', async() => {
     const actionBaseInfoDtos = await repository.selectActionBaseInfosByRobotIds([theRobotId]);
     expect(actionBaseInfoDtos).toBeDefined();
     expect(actionBaseInfoDtos.length).toEqual(1);
@@ -118,7 +118,7 @@ describe('AutomationActionRepository', () => {
     expect(actionBaseInfoDtos[0]!.prevActionId).toEqual(null);
   });
 
-  it('should be get the action infos by robot id', async () => {
+  it('should be get the action infos by robot id', async() => {
     const robotActionInfoDtos = await repository.selectActionInfosByRobotId(theRobotId);
     expect(robotActionInfoDtos).toBeDefined();
     expect(robotActionInfoDtos.length).toEqual(1);

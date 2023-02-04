@@ -86,7 +86,7 @@ export class RobotTriggerTypeService {
         serviceLogo: service.logo,
         serviceSlug: service.slug,
         serviceI18n: service.i18n,
-      }
+      };
     });
 
     return triggerTypeDetails.map(triggerType => {

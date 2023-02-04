@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IRobot } from "@apitable/core";
+import { IRobot } from '@apitable/core';
 import { RobotTriggerInfoDto } from '../dtos/trigger.dto';
 import { AutomationTriggerTypeEntity } from '../entities/automation.trigger.type.entity';
 
 export type RobotDetailVo = IRobot & {
   trigger: RobotTriggerInfoDto | {},
   triggerType? : Pick<AutomationTriggerTypeEntity, 'triggerTypeId' | 'inputJSONSchema'>,
-}
+};

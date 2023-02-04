@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
-import { AutomationRobotRepository } from "automation/repositories/automation.robot.repository";
-import { AutomationTriggerRepository } from "automation/repositories/automation.trigger.repository";
-import { groupBy } from "lodash";
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
+import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
+import { groupBy } from 'lodash';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { IActionType, IRobot } from "@apitable/core";
+import { IActionType, IRobot } from '@apitable/core';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { customActionNamePrefix, customActionTypeMap } from '../actions/decorators/automation.action.decorator';
 import { RobotActionBaseInfoDto, RobotActionInfoDto } from '../dtos/action.dto';
@@ -30,9 +30,9 @@ import { AutomationActionTypeRepository } from '../repositories/automation.actio
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { RobotBaseInfoVo } from '../vos/robot.base.info.vo';
 import { RobotDetailVo } from '../vos/robot.detail.vo';
-import { CommonException, ServerException } from "shared/exception";
-import { InjectLogger } from "shared/common";
-import { Logger } from "winston";
+import { CommonException, ServerException } from 'shared/exception';
+import { InjectLogger } from 'shared/common';
+import { Logger } from 'winston';
 import { TriggerTriggerTypeRelDto } from '../dtos/trigger.dto';
 
 @Injectable()
@@ -55,7 +55,7 @@ export class RobotRobotService {
    * @param   resourceId  the resource id
    * @return  RobotBaseInfoVo[]
    */
-  public async getRobotListByResourceId(resourceId: string): Promise<RobotBaseInfoVo[]>  {
+  public async getRobotListByResourceId(resourceId: string): Promise<RobotBaseInfoVo[]> {
     // get the resource's robots' id
     const robotIds = await this.automationRobotRepository.selectRobotIdsByResourceId(resourceId);
 
@@ -65,7 +65,6 @@ export class RobotRobotService {
     // call getRobotBaseInfoByIds
     return await this.getRobotBaseInfoByIds(robotIds.map(robotId => robotId.robotId));
   }
-
 
   public async getRobotBaseInfoByIds(robotIds: string[]): Promise<RobotBaseInfoVo[]> {
     const robotBaseInfoByIds: {[key: string]: RobotBaseInfoVo} = {};
@@ -187,14 +186,14 @@ export class RobotRobotService {
     };
   }
 
-  private static getActionIdToActionMap(actions: Pick<AutomationActionEntity, "actionId">[]) {
+  private static getActionIdToActionMap(actions: Pick<AutomationActionEntity, 'actionId'>[]) {
     return actions.reduce((acc, item) => {
       acc[item.actionId] = item;
       return acc;
     }, {});
   }
 
-  private static sortRobotActions(actions:  RobotActionBaseInfoDto[], actionIdToActionMap: {}): RobotActionBaseInfoDto[]{
+  private static sortRobotActions(actions: RobotActionBaseInfoDto[], actionIdToActionMap: {}): RobotActionBaseInfoDto[] {
     const actionSortList = [];
 
     const entryActionId = actions.find(item => item.prevActionId === null)?.actionId;
@@ -222,7 +221,7 @@ export class RobotRobotService {
     });
   }
 
-  private getRobotSortActionList(actions:  RobotActionBaseInfoDto[]): RobotActionBaseInfoDto[]{
+  private getRobotSortActionList(actions: RobotActionBaseInfoDto[]): RobotActionBaseInfoDto[]{
 
     const actionIdToActionMap = RobotRobotService.getActionIdToActionMap(actions);
 
@@ -260,6 +259,7 @@ export class RobotRobotService {
       return acc;
     }, {});
 
+    // the db's action type
     const iActionTypes: IActionType[] = actionTypes.reduce((acc, item) => {
       acc.push({
         id: item.actionTypeId,
@@ -269,8 +269,7 @@ export class RobotRobotService {
         baseUrl: serviceIdToBaseUrlMap[item.serviceId],
       });
       return acc;
-    }, [] as IActionType[])
-    // the db's action type
+    }, [] as IActionType[]);
 
     // the hot plug's action type
     actionTypeIds.forEach(actionTypeId => {

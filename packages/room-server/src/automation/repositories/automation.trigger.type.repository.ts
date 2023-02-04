@@ -62,7 +62,7 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
       where: {
         isDeleted: false,
       }
-    })
+    });
   }
 
   public async selectInputJsonSchemaById(triggerTypeId: string): Promise<TriggerInputJsonSchemaDto | undefined> {

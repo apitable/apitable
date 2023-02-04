@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from '@nestjs/testing';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { RobotRobotService } from './robot.robot.service';
@@ -24,7 +24,7 @@ import { AutomationTriggerRepository } from '../repositories/automation.trigger.
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { LoggerConfigService } from '../../shared/services/config/logger.config.service';
-import { WinstonModule } from "nest-winston";
+import { WinstonModule } from 'nest-winston';
 import {
   RobotTriggerBaseInfoDto,
   RobotTriggerInfoDto, TriggerTriggerTypeRelDto
@@ -47,7 +47,7 @@ describe('RobotRobotServiceTest', () => {
   let automationActionTypeRepository: AutomationActionTypeRepository;
   let automationServiceRepository: AutomationServiceRepository;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       providers: [
         AutomationTriggerRepository,
@@ -131,7 +131,7 @@ describe('RobotRobotServiceTest', () => {
     jest.spyOn(automationRobotRepository, 'selectRobotIdsByResourceId')
       .mockImplementation((resourceId: string): Promise<Pick<AutomationRobotEntity, 'robotId'>[]> => {
         if(resourceId === 'resourceId') {
-          return Promise.resolve([{robotId: robot1.robotId}, {robotId: robot2.robotId}, {robotId: robot3.robotId}]);
+          return Promise.resolve([{ robotId: robot1.robotId }, { robotId: robot2.robotId }, { robotId: robot3.robotId }]);
         }
         return Promise.resolve([]);
       });
@@ -203,7 +203,7 @@ describe('RobotRobotServiceTest', () => {
     module.close();
   });
 
-  it('should get robot base info by robot ids', async () => {
+  it('should get robot base info by robot ids', async() => {
     const robotBaseInfoVos = await service.getRobotBaseInfoByIds(['robot-1', 'robot-2', 'robot-3']);
     expect(robotBaseInfoVos.length).toEqual(3);
     expect(robotBaseInfoVos[2]!.nodes.length).toEqual(0);
@@ -218,12 +218,12 @@ describe('RobotRobotServiceTest', () => {
     expect((robotBaseInfoVos[0]!.nodes[2] as RobotActionBaseInfoDto).nextActionId).toEqual(undefined);
   });
 
-  it('should get robot base info by resource id', async () => {
+  it('should get robot base info by resource id', async() => {
     const robotBaseInfoVos = await service.getRobotListByResourceId('resourceId');
     expect(robotBaseInfoVos.length).toEqual(3);
   });
 
-  it('should get robot details info by robot id', async () => {
+  it('should get robot details info by robot id', async() => {
     const iRobot = await service.getRobotById('robot-1');
     expect(iRobot.id).toEqual('robot-1');
     expect(iRobot.triggerId).toEqual('trigger-1');
@@ -240,19 +240,19 @@ describe('RobotRobotServiceTest', () => {
     expect(iRobot.actionTypesById['action-type']?.outputJSONSchema).toEqual({});
   });
 
-  it('should be throw exception when the action is empty', async ()=> {
-    await expect(async () => {
+  it('should be throw exception when the action is empty', async()=> {
+    await expect(async() => {
       await service.getRobotById('robot-2');
     }).rejects.toThrow(CommonException.ROBOT_FORM_CHECK_ERROR.message);
   });
 
-  it('should be throw exception when the trigger is empty', async ()=> {
-    await expect(async () => {
+  it('should be throw exception when the trigger is empty', async()=> {
+    await expect(async() => {
       await service.getRobotById('robot-3');
     }).rejects.toThrow(CommonException.ROBOT_FORM_CHECK_ERROR.message);
   });
 
-  it('should get robot detail info vo by robot id', async () => {
+  it('should get robot detail info vo by robot id', async() => {
     const robotDetailVo = await service.getRobotDetailById('robot-1');
     expect(robotDetailVo.id).toEqual('robot-1');
     expect(robotDetailVo.triggerId).toEqual('trigger-1');

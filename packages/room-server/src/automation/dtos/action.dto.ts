@@ -46,4 +46,4 @@ export class RobotActionInfoDto {
   input!: object | null;
 }
 
-export type RobotRelDto = Pick<AutomationActionEntity, 'robotId' | 'prevActionId'>
+export type RobotRelDto = Pick<AutomationActionEntity, 'robotId' | 'prevActionId'>;
