@@ -32,6 +32,8 @@ public class SubscribeAssembler {
         result.setProduct(subscriptionInfo.getProduct());
         result.setPlan(subscriptionInfo.getBasePlan());
         result.setOnTrial(subscriptionInfo.onTrial());
+        result.setBillingMode(subscriptionInfo.getBillingMode());
+        result.setRecurringInterval(subscriptionInfo.getRecurringInterval());
         result.setDeadline(subscriptionInfo.getEndDate());
         if (CollUtil.isNotEmpty(subscriptionInfo.getAddOnPlans())) {
             result.setAddOnPlans(subscriptionInfo.getAddOnPlans());

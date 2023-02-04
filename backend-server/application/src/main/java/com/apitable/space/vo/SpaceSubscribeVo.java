@@ -47,6 +47,10 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean onTrial;
 
+    private String billingMode;
+
+    private String recurringInterval;
+
     @ApiModelProperty(value = "plan name", example = "bronze_no_billing_period", position = 3)
     private String plan;
 
