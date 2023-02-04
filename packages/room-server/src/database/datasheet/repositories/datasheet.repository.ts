@@ -45,19 +45,17 @@ export class DatasheetRepository extends Repository<DatasheetEntity> {
 
   /**
    * Query the revision numbers of multiple datasheets.
-   * 
+   * Notice: In fact, return data Revision is string type, not number type.
+   *
    * @param dstIds datasheet ID array
    */
-  selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
-    // todo(itou): replace dynamic sql
-    return this.query(
-      `
-          SELECT dst_id resourceId, revision
-          FROM ${this.manager.connection.options.entityPrefix}datasheet 
-          WHERE dst_id IN (?) AND is_deleted = 0
-        `,
-      [dstIds],
-    );
+  public async selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
+    return await this.createQueryBuilder()
+      .select('dst_id', 'resourceId')
+      .addSelect('revision')
+      .where('dst_id IN (:...dstIds)', { dstIds })
+      .andWhere('is_deleted = 0')
+      .getRawMany<IResourceRevision>();
   }
 
   /**
