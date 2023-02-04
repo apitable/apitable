@@ -25,7 +25,7 @@ const withPlugins = require('next-compose-plugins')
 const withTM = require('next-transpile-modules')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const isProd = process.env.NODE_ENV === 'production'
-const {withSentryConfig} = require('@sentry/nextjs')
+// const {withSentryConfig} = require('@sentry/nextjs')
 
 const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
@@ -99,10 +99,11 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
 }
 
-const _withSentryConfig = isProd ? withSentryConfig
-  : (nextConfig, sentryConfig) => {
-    return nextConfig
-  }
+const _withSentryConfig = isProd ? (nextConfig, sentryConfig) => {
+  return nextConfig
+} : (nextConfig, sentryConfig) => {
+  return nextConfig
+}
 
 module.exports = withPlugins(plugins, _withSentryConfig({
   // Use the CDN in production and localhost for development.
