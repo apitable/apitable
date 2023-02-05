@@ -16,30 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.base.model;
-
-import lombok.Data;
-
 /**
- * System Config DTO.
  *
  * @author Chambers
  */
-@Data
-public class SystemConfigDTO {
-
-    /**
-     * id.
-     */
-    private Long id;
-
-    /**
-     * i18n key.
-     */
-    private String i18nName;
-
-    /**
-     * Configuration value.
-     */
-    private String configMap;
-}
+package com.apitable.template.service.impl;
