@@ -1,0 +1,541 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`field with curly braces 1`] = `
+ValueOperandNode {
+  "context": {
+    "field": {
+      "id": "fld4",
+      "name": "Field 4",
+      "property": {
+        "datasheetId": "dst1",
+        "expression": "  {fld2}",
+      },
+      "type": 16,
+    },
+    "fieldMap": {
+      "fld1": {
+        "id": "fld1",
+        "name": "Field 1",
+        "property": {},
+        "type": 19,
+      },
+      "fld2": {
+        "id": "fld2",
+        "name": "Field 2",
+        "property": {
+          "precision": 0,
+        },
+        "type": 2,
+      },
+      "fld3": {
+        "id": "fld3",
+        "name": "Field 3",
+        "property": {
+          "autoFill": false,
+          "dateFormat": 3,
+          "includeTime": false,
+          "timeFormat": 0,
+        },
+        "type": 5,
+      },
+      "fld4": {
+        "id": "fld4",
+        "name": "Field 4",
+        "property": {
+          "datasheetId": "dst1",
+          "expression": "  {fld2}",
+        },
+        "type": 16,
+      },
+    },
+    "state": {},
+  },
+  "field": {
+    "id": "fld2",
+    "name": "Field 2",
+    "property": {
+      "precision": 0,
+    },
+    "type": 2,
+  },
+  "innerValueType": "String",
+  "name": "ValueOperandNode",
+  "token": Token {
+    "index": 2,
+    "type": "Value",
+    "value": "{fld2}",
+  },
+  "value": "{fld2}",
+  "valueType": "Number",
+}
+`;
+
+exports[`field without curly braces 1`] = `
+PureValueOperandNode {
+  "context": {
+    "field": {
+      "id": "fld4",
+      "name": "Field 4",
+      "property": {
+        "datasheetId": "dst1",
+        "expression": "fld2  ",
+      },
+      "type": 16,
+    },
+    "fieldMap": {
+      "fld1": {
+        "id": "fld1",
+        "name": "Field 1",
+        "property": {},
+        "type": 19,
+      },
+      "fld2": {
+        "id": "fld2",
+        "name": "Field 2",
+        "property": {
+          "precision": 0,
+        },
+        "type": 2,
+      },
+      "fld3": {
+        "id": "fld3",
+        "name": "Field 3",
+        "property": {
+          "autoFill": false,
+          "dateFormat": 3,
+          "includeTime": false,
+          "timeFormat": 0,
+        },
+        "type": 5,
+      },
+      "fld4": {
+        "id": "fld4",
+        "name": "Field 4",
+        "property": {
+          "datasheetId": "dst1",
+          "expression": "fld2  ",
+        },
+        "type": 16,
+      },
+    },
+    "state": {},
+  },
+  "field": {
+    "id": "fld2",
+    "name": "Field 2",
+    "property": {
+      "precision": 0,
+    },
+    "type": 2,
+  },
+  "innerValueType": "String",
+  "name": "PureValueOperandNode",
+  "token": Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "fld2",
+  },
+  "value": "fld2",
+  "valueType": "Number",
+}
+`;
+
+exports[`function call 3-arity function 1`] = `
+CallOperandNode {
+  "name": "CallOperandNode",
+  "params": [
+    NumberOperandNode {
+      "name": "NumberOperandNode",
+      "token": Token {
+        "index": 4,
+        "type": "Number",
+        "value": "31",
+      },
+      "value": "31",
+      "valueType": "Number",
+    },
+    UnaryOperatorNode {
+      "child": NumberOperandNode {
+        "name": "NumberOperandNode",
+        "token": Token {
+          "index": 9,
+          "type": "Number",
+          "value": "77",
+        },
+        "value": "77",
+        "valueType": "Number",
+      },
+      "name": "UnaryOperatorNode",
+      "token": Token {
+        "index": 8,
+        "type": "Minus",
+        "value": "-",
+      },
+    },
+    ValueOperandNode {
+      "context": {
+        "field": {
+          "id": "fld4",
+          "name": "Field 4",
+          "property": {
+            "datasheetId": "dst1",
+            "expression": "Max(31, -77, {fld3})",
+          },
+          "type": 16,
+        },
+        "fieldMap": {
+          "fld1": {
+            "id": "fld1",
+            "name": "Field 1",
+            "property": {},
+            "type": 19,
+          },
+          "fld2": {
+            "id": "fld2",
+            "name": "Field 2",
+            "property": {
+              "precision": 0,
+            },
+            "type": 2,
+          },
+          "fld3": {
+            "id": "fld3",
+            "name": "Field 3",
+            "property": {
+              "autoFill": false,
+              "dateFormat": 3,
+              "includeTime": false,
+              "timeFormat": 0,
+            },
+            "type": 5,
+          },
+          "fld4": {
+            "id": "fld4",
+            "name": "Field 4",
+            "property": {
+              "datasheetId": "dst1",
+              "expression": "Max(31, -77, {fld3})",
+            },
+            "type": 16,
+          },
+        },
+        "state": {},
+      },
+      "field": {
+        "id": "fld3",
+        "name": "Field 3",
+        "property": {
+          "autoFill": false,
+          "dateFormat": 3,
+          "includeTime": false,
+          "timeFormat": 0,
+        },
+        "type": 5,
+      },
+      "innerValueType": "String",
+      "name": "ValueOperandNode",
+      "token": Token {
+        "index": 13,
+        "type": "Value",
+        "value": "{fld3}",
+      },
+      "value": "{fld3}",
+      "valueType": "DateTime",
+    },
+  ],
+  "token": Token {
+    "index": 0,
+    "type": "Call",
+    "value": "Max",
+  },
+  "value": "Max",
+  "valueType": "Number",
+}
+`;
+
+exports[`function call nested function 1`] = `
+CallOperandNode {
+  "name": "CallOperandNode",
+  "params": [
+    CallOperandNode {
+      "name": "CallOperandNode",
+      "params": [
+        BinaryOperatorNode {
+          "left": NumberOperandNode {
+            "name": "NumberOperandNode",
+            "token": Token {
+              "index": 10,
+              "type": "Number",
+              "value": "31",
+            },
+            "value": "31",
+            "valueType": "Number",
+          },
+          "name": "BinaryOperatorNode",
+          "right": CallOperandNode {
+            "name": "CallOperandNode",
+            "params": [],
+            "token": Token {
+              "index": 13,
+              "type": "Call",
+              "value": "true",
+            },
+            "value": "true",
+            "valueType": "Boolean",
+          },
+          "token": Token {
+            "index": 12,
+            "type": "Add",
+            "value": "+",
+          },
+          "valueType": "String",
+        },
+      ],
+      "token": Token {
+        "index": 4,
+        "type": "Call",
+        "value": "rOuNd",
+      },
+      "value": "rOuNd",
+      "valueType": "Number",
+    },
+    BinaryOperatorNode {
+      "left": CallOperandNode {
+        "name": "CallOperandNode",
+        "params": [
+          StringOperandNode {
+            "name": "StringOperandNode",
+            "token": Token {
+              "index": 28,
+              "type": "String",
+              "value": "''",
+            },
+            "value": "''",
+            "valueType": "String",
+          },
+        ],
+        "token": Token {
+          "index": 22,
+          "type": "Call",
+          "value": "value",
+        },
+        "value": "value",
+        "valueType": "Number",
+      },
+      "name": "BinaryOperatorNode",
+      "right": StringOperandNode {
+        "name": "StringOperandNode",
+        "token": Token {
+          "index": 32,
+          "type": "String",
+          "value": "'b'",
+        },
+        "value": "'b'",
+        "valueType": "String",
+      },
+      "token": Token {
+        "index": 31,
+        "type": "Concat",
+        "value": "&",
+      },
+      "valueType": "String",
+    },
+    UnaryOperatorNode {
+      "child": UnaryOperatorNode {
+        "child": NumberOperandNode {
+          "name": "NumberOperandNode",
+          "token": Token {
+            "index": 39,
+            "type": "Number",
+            "value": "0",
+          },
+          "value": "0",
+          "valueType": "Number",
+        },
+        "name": "UnaryOperatorNode",
+        "token": Token {
+          "index": 38,
+          "type": "Minus",
+          "value": "-",
+        },
+      },
+      "name": "UnaryOperatorNode",
+      "token": Token {
+        "index": 37,
+        "type": "Minus",
+        "value": "-",
+      },
+    },
+  ],
+  "token": Token {
+    "index": 0,
+    "type": "Call",
+    "value": "Max",
+  },
+  "value": "Max",
+  "valueType": "Number",
+}
+`;
+
+exports[`function call nullary function 1`] = `
+CallOperandNode {
+  "name": "CallOperandNode",
+  "params": [],
+  "token": Token {
+    "index": 0,
+    "type": "Call",
+    "value": "record_id",
+  },
+  "value": "record_id",
+  "valueType": "String",
+}
+`;
+
+exports[`function call unary function 1`] = `
+CallOperandNode {
+  "name": "CallOperandNode",
+  "params": [
+    StringOperandNode {
+      "name": "StringOperandNode",
+      "token": Token {
+        "index": 4,
+        "type": "String",
+        "value": "'babe'",
+      },
+      "value": "'babe'",
+      "valueType": "String",
+    },
+  ],
+  "token": Token {
+    "index": 0,
+    "type": "Call",
+    "value": "inT",
+  },
+  "value": "inT",
+  "valueType": "Number",
+}
+`;
+
+exports[`unary operator minus 1`] = `
+UnaryOperatorNode {
+  "child": StringOperandNode {
+    "name": "StringOperandNode",
+    "token": Token {
+      "index": 4,
+      "type": "String",
+      "value": ""foo"",
+    },
+    "value": ""foo"",
+    "valueType": "String",
+  },
+  "name": "UnaryOperatorNode",
+  "token": Token {
+    "index": 2,
+    "type": "Minus",
+    "value": "-",
+  },
+}
+`;
+
+exports[`unary operator nested 1`] = `
+UnaryOperatorNode {
+  "child": UnaryOperatorNode {
+    "child": UnaryOperatorNode {
+      "child": UnaryOperatorNode {
+        "child": UnaryOperatorNode {
+          "child": UnaryOperatorNode {
+            "child": StringOperandNode {
+              "name": "StringOperandNode",
+              "token": Token {
+                "index": 10,
+                "type": "String",
+                "value": ""foo"",
+              },
+              "value": ""foo"",
+              "valueType": "String",
+            },
+            "name": "UnaryOperatorNode",
+            "token": Token {
+              "index": 9,
+              "type": "Minus",
+              "value": "-",
+            },
+          },
+          "name": "UnaryOperatorNode",
+          "token": Token {
+            "index": 8,
+            "type": "Minus",
+            "value": "-",
+          },
+        },
+        "name": "UnaryOperatorNode",
+        "token": Token {
+          "index": 7,
+          "type": "Add",
+          "value": "+",
+        },
+      },
+      "name": "UnaryOperatorNode",
+      "token": Token {
+        "index": 4,
+        "type": "Not",
+        "value": "!",
+      },
+    },
+    "name": "UnaryOperatorNode",
+    "token": Token {
+      "index": 3,
+      "type": "Minus",
+      "value": "-",
+    },
+  },
+  "name": "UnaryOperatorNode",
+  "token": Token {
+    "index": 2,
+    "type": "Add",
+    "value": "+",
+  },
+}
+`;
+
+exports[`unary operator not 1`] = `
+UnaryOperatorNode {
+  "child": StringOperandNode {
+    "name": "StringOperandNode",
+    "token": Token {
+      "index": 4,
+      "type": "String",
+      "value": ""foo"",
+    },
+    "value": ""foo"",
+    "valueType": "String",
+  },
+  "name": "UnaryOperatorNode",
+  "token": Token {
+    "index": 2,
+    "type": "Not",
+    "value": "!",
+  },
+}
+`;
+
+exports[`unary operator plus 1`] = `
+UnaryOperatorNode {
+  "child": StringOperandNode {
+    "name": "StringOperandNode",
+    "token": Token {
+      "index": 4,
+      "type": "String",
+      "value": ""foo"",
+    },
+    "value": ""foo"",
+    "valueType": "String",
+  },
+  "name": "UnaryOperatorNode",
+  "token": Token {
+    "index": 2,
+    "type": "Add",
+    "value": "+",
+  },
+}
+`;
