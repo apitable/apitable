@@ -131,7 +131,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
       return;
     }
     getLoginStatus({ spaceId: shareSpace.spaceId }, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [shareSpace]);
 
   useEffect(() => {
@@ -180,7 +180,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
       });
     }, 0);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [JSON.stringify(shareInfo)]);
 
   const component = useMemo(() => {

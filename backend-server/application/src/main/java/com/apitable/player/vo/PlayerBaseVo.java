@@ -18,16 +18,15 @@
 
 package com.apitable.player.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
-
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
 
 /**
  * <p>
@@ -82,8 +81,10 @@ public class PlayerBaseVo {
     private Integer playerType;
 
     @ApiModelProperty(value = "default avatar color number", example = "1")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private Integer avatarColor;
 
     @ApiModelProperty(value = "Nick Name", example = "Zhang San")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String nickName;
 }

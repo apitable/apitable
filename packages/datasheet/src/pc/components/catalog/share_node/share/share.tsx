@@ -65,7 +65,7 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
     if (newShareSettings) {
       onChange && onChange(newShareSettings);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [newShareSettings]);
 
   if (!shareSettings) {

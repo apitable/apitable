@@ -109,7 +109,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
 
   const modalHeight = useMemo(() => {
     return !ref.current ? 'auto' : ref.current.clientHeight;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [route]);
 
   function commandHandle(newField: IField) {

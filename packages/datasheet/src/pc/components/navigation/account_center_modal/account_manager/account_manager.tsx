@@ -86,7 +86,7 @@ export const AccountManager: FC = () => {
     return () => {
       window.removeEventListener('storage', storageChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

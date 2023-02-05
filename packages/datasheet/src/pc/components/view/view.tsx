@@ -100,7 +100,7 @@ export const View: React.FC = () => {
 
   const useKonva = useMemo(() => {
     return !getTestFunctionAvailable(SystemConfig.test_function.render_normal.feature_key);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentView.id]);
 
   const isOrgChart = currentView.type === ViewType.OrgChart;
@@ -119,7 +119,7 @@ export const View: React.FC = () => {
         padding: isMobile ? '0' : '',
         height: '100%',
         background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
-        paddingLeft: !isShowEmbedToolBar && !embedInfo.viewControl?.tabBar ? '0' : embedInfo.viewControl?.tabBar ? '24px' : '32px'
+        paddingLeft: isMobile || (!isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) ? 0 : embedInfo.viewControl?.tabBar ? '24px' : '32px'
       }}
     >
       { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>

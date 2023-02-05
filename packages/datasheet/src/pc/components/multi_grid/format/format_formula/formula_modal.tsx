@@ -122,7 +122,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     const tExp = expressionTransform(initExpression.trim(), { fieldMap, fieldPermissionMap }, 'name');
     parse(tExp);
     return tExp;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
   const [expression, setExpression] = useState<string>(transformedExp);
   const [cursorOffset, setCursorOffset] = useState<number>(expression.length);
@@ -132,7 +132,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     formulaColorantEleRef.current = document.getElementById(FORMULA_COLORANT_ELEMENT)!;
     formulaInputEleRef.current.innerText = expression;
     formulaInputEleRef.current.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -344,7 +344,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     if (activeToken) {
       setCurrentIndex(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeToken]);
 
   const { type: suggestType, id: suggestId, name: suggestName } = getSuggestItem(currentIndex);

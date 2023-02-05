@@ -153,8 +153,8 @@ export class Record {
   get title(): string | null {
     const state = this.wCtx.widgetStore.getState();
     const viewId = getActiveView(state);
-    const view = getView(state, viewId, this.datasheetId)!;
-    const primaryFieldId = view.columns[0].fieldId;
+    const view = getView(state, viewId!, this.datasheetId)!;
+    const primaryFieldId = view.columns[0]!.fieldId;
     return this.getCellValue(primaryFieldId) || t(Strings.record_unnamed);
   }
 

@@ -87,7 +87,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
 
   const scrollMaxHeight = useMemo(() => {
     return instance.getRowOffset(rowCount - 1) + 32;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [instance, rowCount, rowInitSize, rowHeight]);
 
   // Get the vertical visible area to render

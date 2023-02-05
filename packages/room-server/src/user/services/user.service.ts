@@ -21,8 +21,7 @@ import { EnvConfigKey } from 'shared/common';
 import { IAuthHeader, INamedUser, IOssConfig, IUserBaseInfo } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
-import { getConnection } from 'typeorm';
-import { UnitInfo } from 'database/interfaces';
+import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
@@ -37,23 +36,10 @@ export class UserService {
    * Get user info by UUIDs
    */
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
-    const queryRunner = getConnection().createQueryRunner();
-    const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
-    const users: any[] = await queryRunner.query(
-      `
-          SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
-                 vui.is_deleted isDeleted, vui.unit_type type,
-          IFNULL(vum.member_name,vu.nick_name) name, vu.avatar avatar, vum.is_active isActive,
-          IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
-          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
-          FROM ${tableNamePrefix}user vu
-          LEFT JOIN ${tableNamePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = ?
-          LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id
-          WHERE uuid IN (?)
-        `,
-      [spaceId, uuids],
-    );
-    await queryRunner.release();
+    if (uuids.length === 0) {
+      return await Promise.resolve([]);
+    }
+    const users: any[] = await this.userRepo.selectUserInfoBySpaceIdAndUuids(spaceId, uuids);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     return users.reduce<UnitInfo[]>((pre, cur) => {
       if (cur.avatar && !cur.avatar.startsWith('http')) {
@@ -81,6 +67,7 @@ export class UserService {
           avatar: user.avatar || '',
           nikeName: user.nikeName || '',
           isSocialNameModified: user.isSocialNameModified!,
+          avatarColor: Number(user.color),
         });
       });
     }

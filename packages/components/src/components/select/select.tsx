@@ -59,7 +59,7 @@ export const Select: FC<ISelectProps> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
-  const inputOnChange = (e: React.ChangeEvent, keyword: string) => {
+  const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
     setKeyword(keyword);
   };
 
@@ -70,7 +70,7 @@ export const Select: FC<ISelectProps> & {
       return;
     }
     setVisible(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [value, toggleVisible, defaultVisible, isInit]);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const Select: FC<ISelectProps> & {
       const size = (triggerRef.current.getRootDomNode() as HTMLElement).getBoundingClientRect();
       setTriggerInfo({ triggerSize: size, triggerOffset: OFFSET, adjust: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [triggerRef]);
 
   useClickAway(() => {
@@ -141,7 +141,7 @@ export const Select: FC<ISelectProps> & {
       >
         {
           dropdownRender || <ListDeprecate
-            onClick={(e, index) => {
+            onClick={(_e, index) => {
               setVisible(false);
               onSelected && onSelected(afterFilterOptions[index]!, index);
             }}
@@ -167,7 +167,7 @@ export const Select: FC<ISelectProps> & {
     );
   };
 
-  const triggerClick = (e: React.MouseEvent) => {
+  const triggerClick = () => {
     if (disabled) {
       return;
     }

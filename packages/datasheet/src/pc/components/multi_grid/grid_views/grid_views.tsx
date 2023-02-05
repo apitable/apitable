@@ -155,7 +155,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
         }
       }, 0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [highlightFieldId]);
 
   // Automatic jumping in regular mode
@@ -283,7 +283,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     }, 0);
     bottomLeftRef.current && bottomLeftRef.current.resetAfterRowIndex(0, true);
     bottomRightRef.current && bottomRightRef.current.resetAfterRowIndex(0, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [rowHeight, bottomLeftRef, bottomRightRef, rows, groupLevel]);
 
   // The cache is refreshed when columns change (adjusting column widths, etc.), 
@@ -295,7 +295,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
     upperLeftRef.current && upperLeftRef.current!.resetAfterColumnIndex(0, true);
     groupStatLeftRef.current && groupStatLeftRef.current!.resetAfterColumnIndex(0, true);
     groupStatRightRef.current && groupStatRightRef.current!.resetAfterColumnIndex(0, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [frozenColumns, bottomLeftRef, bottomRightRef, upperRightRef, groupStatLeftRef, groupStatRightRef, groupLevel]);
 
   const mainGridHeight = (unFixHeight: number) => {

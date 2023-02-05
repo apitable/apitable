@@ -73,7 +73,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     if (!editing && onClose) {
       onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editing]);
 
   useLayoutEffect(() => {
@@ -97,7 +97,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     if (!isFocus) {
       setEditing(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isFocus]);
 
   useImperativeHandle(

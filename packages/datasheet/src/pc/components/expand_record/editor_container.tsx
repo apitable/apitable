@@ -157,7 +157,7 @@ export const EditorContainer: React.FC<IEditorContainerProp> = props => {
       };
     }
     return undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isSideRecordOpen]);
 
   const _setShowHiddenField = (status: boolean) => {

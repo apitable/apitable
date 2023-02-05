@@ -346,7 +346,7 @@ devenv-up:
 
 .PHONY: devenv-down
 devenv-down: ## debug all devenv services with docker compose up -d
-	$(_DEVENV) down -v
+	$(_DEVENV) down -v --remove-orphans
 
 devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
@@ -442,7 +442,7 @@ _dataenv-volumes: ## create data folder with current user permissions
 		$$DATA_PATH/.data/rabbitmq \
 
 dataenv-down:
-	$(_DATAENV) down -v
+	$(_DATAENV) down -v --remove-orphans
 
 dataenv-ps:
 	$(_DATAENV) ps
@@ -459,7 +459,7 @@ up: _dataenv-volumes ## startup the application
 
 .PHONY: down
 down: ## shutdown the application
-	docker compose down -v
+	docker compose down -v --remove-orphans
 
 .PHONY:ps
 ps: ## docker compose ps
@@ -484,13 +484,6 @@ db-apply: ## init-db update database structure (use .env)
 	cd init-db ;\
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
 	docker run --rm --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
-
-
-db-apply-ee: ## init-db enterprise  database structure (use .env)
-	cp -rf ../enterprise/init-db init-db/src/main/resources/db/enterprise;\
-	cd init-db ;\
-	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
-	docker run --rm --network apitable_apitable --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
 
 changelog: ## make changelog with github api
 	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\

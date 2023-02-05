@@ -399,7 +399,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       }
     });
     return dataMap;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [startFieldId, endFieldId, ganttLinearRows, snapshot]);
 
   /**
@@ -805,7 +805,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         StoreActions.setGanttDateUnitType(defaultGanttViewStatus.dateUnitType || DateUnitType.Month, datasheetId),
       ]),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [view?.id]);
 
   useMount(() => {
@@ -837,7 +837,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [startFieldId, endFieldId, datasheetId, view, spaceId, mirrorId, isViewLock]);
 
   useEffect(() => {

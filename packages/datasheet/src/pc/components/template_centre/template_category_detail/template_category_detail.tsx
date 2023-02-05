@@ -87,7 +87,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
 
     setIsOfficial(true);
     getTemplateCategories(categoryId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [categoryId, user]);
 
   useEffect(() => {

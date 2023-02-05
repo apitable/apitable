@@ -211,7 +211,7 @@ export class Field {
   get isPrimary(): boolean {
     const state = this.wCtx.globalStore.getState();
     const snapshot = Selectors.getSnapshot(state, this.datasheetId);
-    return Boolean(snapshot?.meta.views[0].columns[0].fieldId === this.fieldData.id);
+    return Boolean(snapshot?.meta.views[0]!.columns[0]!.fieldId === this.fieldData.id);
   }
 
   /**

@@ -63,7 +63,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
         fetchData();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [unitMap, WWOpenData, spaceInfo]);
   return {
     unitTitleMap,

@@ -168,11 +168,9 @@ const TreeItemBase: FC<ITreeItemProps> = ({
   nodeId,
   selectable = true,
   isLeaf = false,
-  data = null,
   pos,
   parentNode,
   children,
-  className,
   draggable = true,
 }) => {
   const {
@@ -193,7 +191,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
 
   const [{ isOver }, dndDrop] = useDrop({
     accept: module,
-    hover: (item, monitor) => {
+    hover: (_item, monitor) => {
       setHoverNodeId(nodeId);
       const isGap = isOverGap(monitor.getClientOffset(), nodeRef.current);
       setDropPosition(isGap);

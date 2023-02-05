@@ -172,7 +172,7 @@ export const WorkbenchSide: FC = () => {
         onOk: handleClose,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [err, dispatch]);
 
   useEffect(() => {
@@ -188,7 +188,7 @@ export const WorkbenchSide: FC = () => {
       }
     }
     getPositionNode(activeNodeId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeNodeId, rootId]);
 
   useEffect(() => {
@@ -201,7 +201,7 @@ export const WorkbenchSide: FC = () => {
     if (activedNodeId && !treeNodesMap[activedNodeId] && !loading) {
       dispatch(StoreActions.getNodeInfo(activedNodeId));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading, activeNodeId]);
 
   const changeHandler = key => {
@@ -256,7 +256,7 @@ export const WorkbenchSide: FC = () => {
       setRightClickInfo,
       openFavorite,
       onSetContextMenu,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     }),
     [rightClickInfo, setRightClickInfo, onSetContextMenu, activeKey, setActiveKey],
   );

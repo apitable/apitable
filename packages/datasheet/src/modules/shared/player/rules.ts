@@ -21,7 +21,7 @@ import { store } from 'pc/store';
 import dayjs from 'dayjs';
 import * as dot from 'dot-object';
 import { isMatch } from 'lodash';
-import { isMobileApp } from 'pc/utils/env';
+import { getInitializationData, isMobileApp } from 'pc/utils/env';
 
 type IPlayerRulesCondition = 'device' | 'identity' | 'sign_up_time' | 'url';
 type IPlayerRulesOperator = 'IS' | 'IS_BEFORE' | 'IS_AFTER' | 'GREATER_THAN' | 'GREATER_THAN_OR_EQUAL'
@@ -33,7 +33,8 @@ enum PlayerRulesConditionType {
   IDENTITY = 'identity',
   SIGN_UP_TIME = 'sign_up_time',
   URL = 'url',
-  LABS = 'labs'
+  LABS = 'labs',
+  EDITION = 'edition',
 }
 
 enum DeviceType {
@@ -92,6 +93,9 @@ export const getConditionValue = (str: string) => {
     }
     case PlayerRulesConditionType.LABS: {
       return state.labs;
+    }
+    case PlayerRulesConditionType.EDITION: {
+      return getInitializationData().env?.split('-')[0];
     }
     default:
       return str;

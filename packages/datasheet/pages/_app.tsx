@@ -99,7 +99,7 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp(props: AppProps) {
+function MyApp(props: AppProps & { envVars: string }) {
   const router = useRouter();
   const isWidget = router.asPath.includes('widget-stage');
   if (isWidget) {
@@ -108,8 +108,9 @@ function MyApp(props: AppProps) {
   return MyAppMain(props);
 }
 
-function MyAppMain({ Component, pageProps }: AppProps) {
+function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: string }) {
   const router = useRouter();
+  const env = JSON.parse(envVars);
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
       return LoadingStatus.Complete;
@@ -168,7 +169,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useEffect(() => {
@@ -394,7 +395,20 @@ function MyAppMain({ Component, pageProps }: AppProps) {
         }
       </div>
     </Sentry.ErrorBoundary>}
-
+    {
+      env.GOOGLE_ANALYTICS_ID &&
+      <>
+        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${env.GOOGLE_ANALYTICS_ID}`} />
+        <Script id={'googleTag'}>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', ${env.GOOGLE_ANALYTICS_ID});
+          `}
+        </Script>
+      </>
+    }
   </>;
 }
 

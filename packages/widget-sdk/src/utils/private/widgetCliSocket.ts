@@ -45,7 +45,7 @@ class WidgetCliSocket implements IWidgetCliSocket {
   socket: SocketIOClient.Socket & { loading?: boolean };
   eventMap: Map<WidgetCliSocketType, ICallBack[]> = new Map();
 
-  constructor(origin: string, type: WidgetCliSocketType) {
+  constructor(origin: string, _type: WidgetCliSocketType) {
     this.socket = io(origin, { path: `/${SOCKET_PATH_DEFAULT}` }); // Establishing links
     this.socket.loading = true;
     this.socket.on(SOCKET_PATH_DEFAULT, (res: IWidgetCLiSocketResponse) => {
