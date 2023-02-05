@@ -171,6 +171,7 @@ CallOperandNode {
         "type": "Minus",
         "value": "-",
       },
+      "valueType": "Number",
     },
     ValueOperandNode {
       "context": {
@@ -358,6 +359,7 @@ CallOperandNode {
           "type": "Minus",
           "value": "-",
         },
+        "valueType": "Number",
       },
       "name": "UnaryOperatorNode",
       "token": Token {
@@ -365,6 +367,7 @@ CallOperandNode {
         "type": "Minus",
         "value": "-",
       },
+      "valueType": "Number",
     },
   ],
   "token": Token {
@@ -434,6 +437,7 @@ UnaryOperatorNode {
     "type": "Minus",
     "value": "-",
   },
+  "valueType": "Number",
 }
 `;
 
@@ -460,6 +464,7 @@ UnaryOperatorNode {
               "type": "Minus",
               "value": "-",
             },
+            "valueType": "Number",
           },
           "name": "UnaryOperatorNode",
           "token": Token {
@@ -467,6 +472,7 @@ UnaryOperatorNode {
             "type": "Minus",
             "value": "-",
           },
+          "valueType": "Number",
         },
         "name": "UnaryOperatorNode",
         "token": Token {
@@ -474,6 +480,7 @@ UnaryOperatorNode {
           "type": "Add",
           "value": "+",
         },
+        "valueType": "Number",
       },
       "name": "UnaryOperatorNode",
       "token": Token {
@@ -481,6 +488,7 @@ UnaryOperatorNode {
         "type": "Not",
         "value": "!",
       },
+      "valueType": "Boolean",
     },
     "name": "UnaryOperatorNode",
     "token": Token {
@@ -488,6 +496,7 @@ UnaryOperatorNode {
       "type": "Minus",
       "value": "-",
     },
+    "valueType": "Number",
   },
   "name": "UnaryOperatorNode",
   "token": Token {
@@ -495,6 +504,7 @@ UnaryOperatorNode {
     "type": "Add",
     "value": "+",
   },
+  "valueType": "Number",
 }
 `;
 
@@ -516,6 +526,7 @@ UnaryOperatorNode {
     "type": "Not",
     "value": "!",
   },
+  "valueType": "Boolean",
 }
 `;
 
@@ -537,5 +548,6 @@ UnaryOperatorNode {
     "type": "Add",
     "value": "+",
   },
+  "valueType": "String",
 }
 `;
