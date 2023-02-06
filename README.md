@@ -316,6 +316,7 @@ APITable use these common conventions:
 - Embbedable 3rd party documentation components
 - SQL-like Domain-Specific Languages
 - As an IdP
+- Advanced automation robot
 - Web 3 features
 - ...
 
@@ -326,6 +327,7 @@ APITable use these common conventions:
 - Single-Sign-On
 - Audit
 - Database Backup
+- Integrate with ChatGPT, Zapier, Slack, Google Workspace……
 - Watermark
 
 For more information, please contact us at <support@apitable.com>.

@@ -47,7 +47,7 @@
     "lint": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
-    "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx}",
+    "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif",
     "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
@@ -82,7 +82,7 @@
     "eslint-loader": "4.0.2",
     "eslint-plugin-flowtype": "5.2.0",
     "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsx-a11y": "6.3.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-vika": "0.0.1",

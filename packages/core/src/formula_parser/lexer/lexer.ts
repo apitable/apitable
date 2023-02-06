@@ -19,11 +19,11 @@
 import { Token, TokenType } from './token';
 import { t, Strings } from '../../exports/i18n';
 import { isNumber } from 'lodash';
-export const EXPR_GRAMMAR: { key: TokenType, exp: RegExp }[] = [
+export const EXPR_GRAMMAR: { key: TokenType; exp: RegExp }[] = [
   // The value in the record obtained by the field name constant
   { key: TokenType.Value, exp: /(\{\})|(\{(\\[{}])*[\s\S]*?[^\\]\})/ },
   // string literal
-  { key: TokenType.String, exp: /(["”“](([^\\"“”])*?\\["”“])*.*?["”“])|(['‘’](([^\\'‘’])*?\\['‘’])*.*?['‘’])/ }, 
+  { key: TokenType.String, exp: /(["”“](([^\\"“”])*?\\["”“])*.*?["”“])|(['‘’](([^\\'‘’])*?\\['‘’])*.*?['‘’])/ },
   // function name or field name constant
   { key: TokenType.Call, exp: /[^0-9.+\-|=*/><()（）!&%'"“”‘’^`~,，\s][^+\-|=*/><()（）!&%'"“”‘’^`~,，\s]*/ },
   // number literal
@@ -33,13 +33,13 @@ export const EXPR_GRAMMAR: { key: TokenType, exp: RegExp }[] = [
   // and
   { key: TokenType.And, exp: /&&/ },
   // greater or equal to
-  { key: TokenType.GreaterEqual, exp: />=/ }, 
+  { key: TokenType.GreaterEqual, exp: />=/ },
   // less than or equal to
   { key: TokenType.LessEqual, exp: /<=/ },
   // or
   { key: TokenType.Or, exp: /\|\|/ },
   // comma, parameter separator
-  { key: TokenType.Comma, exp: /[,，]/ }, 
+  { key: TokenType.Comma, exp: /[,，]/ },
   // Not
   { key: TokenType.Not, exp: /!/ },
   // add +
@@ -55,15 +55,15 @@ export const EXPR_GRAMMAR: { key: TokenType, exp: RegExp }[] = [
   // string concatenation
   { key: TokenType.Concat, exp: /&/ },
   // more than the
-  { key: TokenType.Greater, exp: />/ }, 
+  { key: TokenType.Greater, exp: />/ },
   // less than
   { key: TokenType.Less, exp: /</ },
   // equal to
   { key: TokenType.Equal, exp: /=/ },
   // Left parenthesis
-  { key: TokenType.LeftParen, exp: /[(（]/ }, 
+  { key: TokenType.LeftParen, exp: /[(（]/ },
   // closing parenthesis
-  { key: TokenType.RightParen, exp: /[)）]/ }, 
+  { key: TokenType.RightParen, exp: /[)）]/ },
   // whitespace characters
   { key: TokenType.Blank, exp: /\s+/ },
   // all other
@@ -130,15 +130,6 @@ export class FormulaExprLexer implements ILexer {
     this.currentIndex = -1;
   }
 
-  // private checkValidExpr() {
-  // // After all possible matches are completed, there is still the rest, indicating that there is an incorrect input.
-  // const invalidMatch = this.expression.replace(this.pattern(), '');
-
-  // if (invalidMatch) {
-  // throw new Error(`Unrecognized character: ${invalidMatch}`);
-  // }
-  // }
-
   private getFullMatches(): Token[] {
     const matched: string[] = this.expression.match(this.pattern()) || [];
     let index = 0;
@@ -152,9 +143,13 @@ export class FormulaExprLexer implements ILexer {
   private filterUselessToken(tokens: Token[]) {
     return tokens.filter(token => {
       if (token.type === TokenType.Unknown) {
-        this.errors.push(new Error(t(Strings.function_err_unrecognized_operator, {
-          token: token.value,
-        })));
+        this.errors.push(
+          new Error(
+            t(Strings.function_err_unrecognized_operator, {
+              token: token.value,
+            }),
+          ),
+        );
       }
       return token.type !== TokenType.Blank && token.type !== TokenType.Unknown;
     });
@@ -167,7 +162,7 @@ export class FormulaExprLexer implements ILexer {
       const type = key;
 
       if (regex.test(str)) {
-        // When the tokenType matches Call, it is necessary to judge whether there is a left bracket, if not, 
+        // When the tokenType matches Call, it is necessary to judge whether there is a left bracket, if not,
         // it means a pureValue without curly brackets
         if (type === TokenType.Call) {
           if (!nextStr || this.tokenizer(index, nextStr).type !== TokenType.LeftParen) {
@@ -182,9 +177,7 @@ export class FormulaExprLexer implements ILexer {
   }
 
   private pattern(): RegExp {
-    const pattern: string = EXPR_GRAMMAR
-      .map(g => `(${g.exp.source})`)
-      .join('|');
+    const pattern: string = EXPR_GRAMMAR.map(g => `(${g.exp.source})`).join('|');
 
     return new RegExp(pattern, 'g');
   }
