@@ -251,13 +251,21 @@ curl https://apitable.github.io/install.sh | bash
 
 ## 🧑‍💻 贡献
 
-欢迎并感谢您有兴趣为 APITable 作出贡献！
+欢迎并感谢您为 APITable 作出贡献！
 
-除了编写代码，您还有许多方法可以做出贡献。
+除了编写代码，您还有许多方法可以帮助 APITable 项目的茁壮成长。
 
-你可以阅读这个仓库的 [贡献指南](./CONTRIBUTING.md) 来学习如何贡献.
+你可以通过如下方式给项目提供帮助:
 
-这是一个帮助您为 APITable 作出贡献的快速指南。
+- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
+- 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
+- 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
+- 完善、增添项目的 [Documentation](./docs) 
+- 当然还有无限欢迎的 [Contributing Code](./docs/contribute/developer-guide.md)
+
+更多详情，请查看 [贡献指南](./CONTRIBUTING.md) 。
+
+这是一份入门指南，让您快速了解如何为 APITable 的茁壮成长贡献力量。
 
 ### 开发环境
 
