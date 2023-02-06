@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LinkButton } from '@apitable/components';
+import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
@@ -45,6 +45,8 @@ import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
+import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
+import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -105,6 +107,7 @@ export const Workspace: React.FC = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const query = useQuery();
   const router = useRouter();
+  const theme = useTheme();
 
   // Directory tree toggle source status, directory tree click status, sidebar switch.
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
@@ -122,7 +125,7 @@ export const Workspace: React.FC = () => {
     showOrderModal({
       modalTitle: t(Strings.upgrade_success_model, { orderType: t(Strings.upgrade) }),
       modalSubTitle: (cb: () => void) => <>
-        <div className={styles.desc1}>
+        <div className={styles.desc1} style={{ marginTop: 24 }}>
           {
             <TComponent
               tkey={t(Strings.upgrade_success_1_desc)}
@@ -138,7 +141,7 @@ export const Workspace: React.FC = () => {
                       if (isMobile) {
                         return;
                       }
-                      Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }, clearQuery: true });
+                      Router.redirect(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }, clearQuery: true });
                     }}
                   >
                     {t(Strings.space_overview)}
@@ -150,6 +153,11 @@ export const Workspace: React.FC = () => {
         </div>
       </>,
       qrCodeUrl: '',
+      illustrations: <img
+        width={'250px'}
+        src={theme.palette.type === 'light' ? UpgradeSucceedLight.src : UpgradeSucceedDark.src}
+        style={{ marginTop: 16 }}
+      />,
       btnText: t(Strings.got_it)
     });
   });
