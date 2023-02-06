@@ -17,17 +17,17 @@
  */
 
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
-import { DatasheetRepository } from './datasheet.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DatasheetEntity } from '../entities/datasheet.entity';
 import { DeepPartial } from 'typeorm';
+import { WidgetRepository } from './widget.repository';
+import { WidgetEntity } from '../entities/widget.entity';
 
 describe('DatasheetRepositoryTest', () => {
   let module: TestingModule;
-  let repository: DatasheetRepository;
-  let entity: DatasheetEntity;
+  let repository: WidgetRepository;
+  let entity: WidgetEntity;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -36,19 +36,18 @@ describe('DatasheetRepositoryTest', () => {
         TypeOrmModule.forRootAsync({
           useClass: DatabaseConfigService,
         }),
-        TypeOrmModule.forFeature([DatasheetRepository]),
+        TypeOrmModule.forFeature([WidgetRepository]),
       ],
-      providers: [DatasheetRepository],
     }).compile();
-    repository = module.get<DatasheetRepository>(DatasheetRepository);
+    repository = module.get<WidgetRepository>(WidgetRepository);
   });
 
   beforeEach(async() => {
-    const datasheet: DeepPartial<DatasheetEntity> = {
-      dstId: 'datasheetId',
+    const widgetEntity: DeepPartial<WidgetEntity> = {
+      widgetId: 'widgetId',
       revision: 1,
     };
-    const record = repository.create(datasheet);
+    const record = repository.create(widgetEntity);
     entity = await repository.save(record);
   });
 
@@ -60,10 +59,10 @@ describe('DatasheetRepositoryTest', () => {
     await repository.manager.connection.close();
   });
 
-  it('should get revisions by datasheet ids', async() => {
-    const revisions = await repository.selectRevisionByDstIds([entity.dstId!]);
-    expect(revisions.length).toEqual(1);
-    expect(revisions[0]?.resourceId).toEqual(entity.dstId);
-    expect(revisions[0]?.revision).toEqual('1');
+  it('should get revisions by widget ids', async() => {
+    const resourceRevisions = await repository.getRevisionByWdtIds([entity.widgetId]);
+    expect(resourceRevisions.length).toEqual(1);
+    expect(resourceRevisions[0]?.resourceId).toEqual(entity.widgetId);
+    expect(resourceRevisions[0]?.revision).toEqual('1');
   });
 });
