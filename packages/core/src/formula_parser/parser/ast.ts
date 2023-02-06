@@ -122,10 +122,24 @@ export class BinaryOperatorNode extends AstNode {
 export class UnaryOperatorNode extends AstNode {
   readonly child: AstNode;
   override readonly name = AstNodeType.UnaryOperatorNode;
+  override readonly valueType: BasicValueType;
 
   constructor(child: AstNode, token: Token) {
     super(token);
     this.child = child;
+    switch (token.type) {
+      case TokenType.Minus:
+        this.valueType = BasicValueType.Number;
+        break;
+      case TokenType.Not:
+        this.valueType = BasicValueType.Boolean;
+        break;
+      case TokenType.Add:
+        this.valueType = child.valueType;
+        break;
+      default:
+        throw new Error(`unreachable ${token.value}`);
+    }
   }
 
   override get numNodes(): number {
@@ -159,11 +173,7 @@ export abstract class ValueOperandNodeBase extends AstNode {
         }));
       }
       this.field = field;
-      if (field) {
-        this.valueType = Field.bindContext(field, context.state).basicValueType;
-      } else {
-        this.valueType = BasicValueType.String;
-      }
+      this.valueType = Field.bindContext(field, context.state).basicValueType;
     }
 
     const innerValueType: BasicValueType | undefined = (Field.bindContext(this.field, context.state) as any).innerBasicValueType;
