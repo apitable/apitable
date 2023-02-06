@@ -59,7 +59,7 @@ export const RobotEmptyList = () => {
       marginTop="80px"
       alignItems="center"
     >
-      <Image src={ImageNoRecord} alt="没有机器人哦" width={212} height={159} />
+      <Image src={ImageNoRecord} alt="没有机器人哦" width={200} height={150} />
       <Typography variant="body3" color={theme.color.fc1} style={{ marginTop: 16, width: 212 }}>
         {t(Strings.robot_panel_no_robot_tip)}
       </Typography>

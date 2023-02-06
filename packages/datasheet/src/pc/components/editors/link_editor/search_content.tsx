@@ -335,7 +335,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
             <div className={style.empty}>
               {onlyShowSelected ?
                 <>
-                  <img height={151} src={ImageNoRecord.src} alt="no record" />
+                  <img height={150} width={200} src={ImageNoRecord.src} alt="no record" />
                   <div className={style.text}>{t(Strings.no_selected_record)}</div>
                 </> :
                 <>

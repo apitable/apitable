@@ -41,7 +41,7 @@ export const SearchResult: React.FC<ISearchResultProps> = (props) => {
     return (
       <div className={styles.searchEmpty}>
         <span className={styles.emptyImage}>
-          <Image src={EmptyResultImage} alt={t(Strings.no_search_result)} />
+          <Image src={EmptyResultImage} alt={t(Strings.no_search_result)} width={200} height={150} />
         </span>
         <p className={styles.emptyText}>
           {<TComponent

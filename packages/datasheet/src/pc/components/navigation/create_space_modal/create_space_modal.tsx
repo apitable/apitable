@@ -103,7 +103,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
     return (
       <div>
         <div className={styles.spaceNameImg}>
-          <Image src={spaceNameImg} alt='createSpace Logo' width={366} height={275} />
+          <Image src={spaceNameImg} alt='createSpace Logo' width={320} height={240} />
         </div>
         {!isMobile && <div className={styles.title}>{t(Strings.new_space)}</div>}
         <div className={styles.subTitle}>{t(Strings.new_space_tips)}</div>

@@ -131,7 +131,9 @@ export const FolderContent: React.FC<IFolderContentProps> = (props) => {
         {
           !loading && !nodes.length && (
             <div className={styles.emptyFolder}>
-              <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} />
+              <div className={styles.emptyImg}>
+                <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} width={200} height={150} />
+              </div>
               <p>{t(Strings.folder_content_empty)}</p>
             </div>
           )

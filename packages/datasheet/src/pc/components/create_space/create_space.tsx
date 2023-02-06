@@ -114,7 +114,7 @@ const CreateSpace: FC<ICreateSpace> = props => {
 
       <div className={styles.formBox} style={{ marginTop: props.isShare ? 0 : '' }}>
         <span className={styles.createSpaceIcon}>
-          <Image src={CreateSpaceIcon} alt={t(Strings.create_workspace)} width={266} height={200} />
+          <Image src={CreateSpaceIcon} alt={t(Strings.create_workspace)} width={320} height={240} />
         </span>
         <div className={styles.title}>{t(Strings.create_workspace)}</div>
         <div className={styles.subTitle}>{t(Strings.create_space_sub_title)}~</div>

@@ -24,7 +24,7 @@ import { getWidgetDatasheet } from 'store';
 import { IReduxState } from '@apitable/core';
 import { useMeta } from 'hooks';
 import WidgetNoPermissionLight from 'static/icon/datasheet/dashboard_widget_permission_light.png';
-import WidgetNoPermissionDark from 'static/icon/datasheet/dashboard_widget_permission_light.png';
+import WidgetNoPermissionDark from 'static/icon/datasheet/dashboard_widget_permission_dark.png';
 import Image from 'next/image';
 import { ThemeName } from '@apitable/components';
 

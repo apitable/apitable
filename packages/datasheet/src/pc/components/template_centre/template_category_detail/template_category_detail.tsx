@@ -157,7 +157,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
         (isEmpty(templateList)) ?
           (
             <div className={styles.listEmpty}>
-              <Image src={templateEmptyPng} alt={t(Strings.template_no_template)} />
+              <Image src={templateEmptyPng} alt={t(Strings.template_no_template)} width={320} height={240} />
               <div className={styles.text}>{parser(t(Strings.how_create_template))}</div>
             </div>
           ) :

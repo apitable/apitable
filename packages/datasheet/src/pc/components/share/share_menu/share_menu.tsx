@@ -27,7 +27,8 @@ import * as React from 'react';
 import { ReactText } from 'react';
 import { useSelector } from 'react-redux';
 import PullDownIcon from 'static/icon/common/common_icon_pulldown.svg';
-import EditPng from 'static/icon/datasheet/share/datasheet_img_share_edit.png';
+import EditPngLight from 'static/icon/datasheet/share/share_space_edit_light.png';
+import EditPngDark from 'static/icon/datasheet/share/share_space_edit_dark.png';
 import SavePng from 'static/icon/datasheet/share/datasheet_img_share_save.png';
 import { INodeTree, IShareSpaceInfo } from '../interface';
 import { ShareSave } from '../share_save';
@@ -49,7 +50,7 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
   const colors = useThemeColors();
   const activedNodeId = useSelector(state => Selectors.getNodeId(state))!;
   const shareId = useSelector(state => state.pageParams.shareId);
-
+  
   if (!nodeTree) {
     return <></>;
   }
@@ -119,7 +120,8 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   const { formId, viewId } = useSelector(state => state.pageParams);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
   const env = getEnvVariables();
-
+  const themeName = useSelector(state => state.theme);
+  const EditPng = themeName === ThemeName.Light ? EditPngLight : EditPngDark;
   const saveToMySpace = () => {
     setVisible(true);
   };
