@@ -76,7 +76,7 @@ export const useCards = (props: ILayoutProps) => {
         />;
       },
       LevelCard: (props: ICardProps) => (
-        <LevelCard {...props} isMobile={isMobile} type={level} onUpgrade={onUpgrade} deadline={subscription?.deadline} />
+        <LevelCard {...props} isMobile={isMobile} type={level} onUpgrade={onUpgrade} deadline={subscription?.expireAt || subscription?.deadline} />
       ),
       InfoCard: (props: ICardProps) => (
         <Info {...props} {...infoProps} isMobile={isMobile} certified={basicCert} isSocialEnabled={isSocialEnabled} spaceId={spaceId} />
