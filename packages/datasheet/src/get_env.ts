@@ -197,6 +197,7 @@ export const getEnvVars = () => {
     USER_EDIT_EMAIL_VISIBLE: process.env.USER_EDIT_EMAIL_VISIBLE === 'true',
     NEW_USER_WELCOME_NOTIFY_URL: process.env.NEW_USER_WELCOME_NOTIFY_URL,
     INVITE_USER_BY_AUTH0: process.env.INVITE_USER_BY_AUTH0 === 'true',
+    ALARM_TIME_UTC_VISIBLE: process.env.ALARM_TIME_UTC_VISIBLE === 'true',
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
   };
