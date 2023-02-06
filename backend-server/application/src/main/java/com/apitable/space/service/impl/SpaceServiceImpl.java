@@ -131,6 +131,13 @@ import static com.apitable.organization.enums.OrganizationException.CREATE_MEMBE
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.NEW_SPACE_NAME;
 import static com.apitable.shared.constants.NotificationConstants.OLD_SPACE_NAME;
+import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
+import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
+import static com.apitable.space.enums.SpaceException.SPACE_QUIT_FAILURE;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.SET_MAIN_ADMIN_FAIL;
+import static com.apitable.workspace.enums.PermissionException.TRANSFER_SELF;
 
 /**
  * Space Service Implement Class.
