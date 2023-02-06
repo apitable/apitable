@@ -135,7 +135,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
       okText: t(Strings.go_login),
       onOk: () => {
         if (env.INVITE_USER_BY_AUTH0) {
-          Router.push(Navigation.WORKBENCH)
+          Router.push(Navigation.WORKBENCH);
         } else {
           Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
         }
@@ -153,7 +153,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   return (
     <div className={styles.shareMenu}>
       <div className={styles.logo} onClick={enterSpace}>
-        <Logo theme={ThemeName.Light} size='large' />
+        <Logo theme={ThemeName.Dark} size='large' />
       </div>
       <div className={styles.shareInfo}>
         <div className={styles.avatar}>

@@ -182,7 +182,7 @@ export const TemplateCategorySide: FC = () => {
           {!spaceId && (
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size='large' text={false} />
+                <Logo theme={ThemeName.Dark} size='large' text={false} />
               </div>
             </Tooltip>
           )}

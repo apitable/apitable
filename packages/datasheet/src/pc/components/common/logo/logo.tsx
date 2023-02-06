@@ -57,7 +57,7 @@ export const LogoText: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = 
 export const Logo: React.FC<ILogoProps> = (props) => {
   const colors = useThemeColors();
 
-  const { size = 'small', text = true, className, theme } = props;
+  const { size = 'small', text = true, className, theme = ThemeName.Light } = props;
   const isLightTheme = theme === ThemeName.Light;
   const logoSize = LogoSize[size];
 
@@ -76,7 +76,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
   const renderLogoText = () => {
     if (!text) return null;
 
-    if (envVars.USE_CUSTOM_PUBLIC_FILES) {
+    if (!envVars.USE_CUSTOM_PUBLIC_FILES) {
       const lightSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!) || '/logo_text_light.svg';
       const darkSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!) || '/logo_text_dark.svg';
       return (
@@ -84,14 +84,14 @@ export const Logo: React.FC<ILogoProps> = (props) => {
           alt='logoText'
           className={styles.logoText}
           height={logoSize.logoTextHeight}
-          src={!isLightTheme ? lightSrc : darkSrc}
+          src={isLightTheme ? lightSrc : darkSrc}
         />
       );
     }
 
     return LogoText && (
       <LogoText
-        fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
+        fill={isLightTheme ? colors.primaryColor : colors.staticWhite0}
         width={undefined}
         height={logoSize.logoTextHeight}
       />
