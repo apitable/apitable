@@ -33,7 +33,7 @@ describe('AutomationRobotRepository', () => {
   let module: TestingModule;
   let entity: AutomationRobotEntity;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -60,7 +60,7 @@ describe('AutomationRobotRepository', () => {
     expect(entity).toBeDefined();
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await automationRobotRepository.delete(entity.id);
     await automationRobotRepository.manager.connection.close();
   });
@@ -69,7 +69,7 @@ describe('AutomationRobotRepository', () => {
     expect(automationRobotRepository).toBeDefined();
   });
 
-  it('given one active robot entity when get active robots by resource id', async () => {
+  it('given one active robot entity when get active robots by resource id', async() => {
     const resourceRobotDtos = await automationRobotRepository.getActiveRobotsByResourceIds([theRobotResourceId]);
     expect(resourceRobotDtos).toBeDefined();
     expect(resourceRobotDtos.length).toEqual(1);
@@ -77,7 +77,7 @@ describe('AutomationRobotRepository', () => {
     expect(resourceRobotDtos[0]!.robotId).toEqual(theRobotId);
   });
 
-  it('given one active robot entity when get robot id by resource id', async () => {
+  it('given one active robot entity when get robot id by resource id', async() => {
     const robotIds = await automationRobotRepository.getRobotIdByResourceId(theRobotResourceId);
     expect(robotIds).toBeDefined();
     expect(robotIds.length).toEqual(1);
