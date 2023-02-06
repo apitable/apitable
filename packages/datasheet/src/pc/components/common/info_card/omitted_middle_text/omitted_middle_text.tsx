@@ -25,8 +25,8 @@ export const OmittedMiddleText: FC<{ suffixCount: number; children: string }> = 
   children,
 }) => {
   const colors = useThemeColors();
-  const start = children.slice(0, children.length - suffixCount).trim();
-  const suffix = children.slice(-suffixCount).trim();
+  const start = children.slice(0, children.length - suffixCount);
+  const suffix = children.slice(-suffixCount);
   return (
     <>
       { children.length > 5 ?

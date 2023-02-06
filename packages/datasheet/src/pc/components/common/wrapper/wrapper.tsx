@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useThemeMode } from '@apitable/components';
 import { configResponsive, useResponsive, useScroll } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -36,11 +37,12 @@ export const Wrapper: FC<IWrapper> = ({ children, className, hiddenLogo = false 
     large: 1023.98
   });
   const responsive = useResponsive();
+  const theme = useThemeMode();
   return (
     <div className={classNames(styles.wrapper, className)} style={{ position: 'relative' }}>
       <Image src={BgPng} objectFit={'cover'} layout={'fill'} />
       <div className={classNames(styles.logoWrapper, { [styles.shadow]: scroll?.top })}>
-        {!hiddenLogo && <Logo size={responsive.large ? 'large' : 'small'} />}
+        {!hiddenLogo && <Logo theme={theme} size={responsive.large ? 'large' : 'small'} />}
       </div>
       <div ref={childrenWrapperRef} className={styles.childrenWrapper}>
         {children}

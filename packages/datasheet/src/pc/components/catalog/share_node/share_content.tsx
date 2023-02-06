@@ -22,7 +22,7 @@ import { ChevronRightOutlined, InformationSmallOutlined } from '@apitable/icons'
 import cls from 'classnames';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { Avatar, Message } from 'pc/components/common';
+import { Avatar, AvatarSize, Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
@@ -65,10 +65,10 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
   if (loading) {
     return (
-      <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
-        <Skeleton count={1} width='38%' height='24px' />
+      <div className={cls(styles.shareContent, styles.loading, { [styles.shareContentMobile]: isMobile })}>
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px' />
         <Skeleton count={2} style={{ marginTop: '16px' }} height='24px' />
-        <Skeleton count={1} style={{ marginTop: '40px' }} width='38%' height='24px' />
+        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px' />
         <Skeleton count={1} style={{ marginTop: '16px' }} height='24px' />
       </div>
     );
@@ -165,6 +165,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
                             title={v.nickName || v.memberName} 
                             avatarColor={v.avatarColor}
                             id={v.memberId} 
+                            size={AvatarSize.Size24}
                           />
                         </div>
                       </Tooltip>

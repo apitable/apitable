@@ -29,6 +29,7 @@ import { Message, PasswordInput, IdentifyingCodeInput, WithTipWrapper } from 'pc
 import styles from './style.module.less';
 import { useUserRequest } from 'pc/hooks';
 import { getVerifyData, VerifyTypes, IChangePasswordConfig } from '../utils';
+
 export interface IModifyPasswordProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -82,13 +83,19 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
       setErrMsg({ identifyingCodeErrMsg: t(Strings.message_verification_code_empty) });
       return;
     }
-    const type = user.mobile ? ConfigConstant.CodeTypes.SMS_CODE : 
+
+    const type = user.mobile ? ConfigConstant.CodeTypes.SMS_CODE :
       ConfigConstant.CodeTypes.EMAIL_CODE;
-    const result = await modifyPassword(data.password, data.identifyingCode,type);
-    if (!result) { return; }
+    const result = await modifyPassword(data.password, data.identifyingCode, type);
+
+    if (!result) {
+      return;
+    }
+
     const { success, code, message } = result;
+
     if (success) {
-      Message.success(
+      (Strings.message_set_password_succeed || Strings.change_password_success) && Message.success(
         { content: user!.needPwd ? t(Strings.message_set_password_succeed) : t(Strings.change_password_success) }
       );
       setData(defaultData);
@@ -96,6 +103,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
       setActiveItem(0);
       return;
     }
+
     switch (code) {
       case StatusCode.PASSWORD_ERR: {
         setErrMsg({ passwordErrMsg: message });
@@ -115,11 +123,11 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
 
     const value = e.target.value.trim();
     setData({ identifyingCode: value });
-  },[setErrMsg, errMsg.identifyingCodeErrMsg, setData]);
+  }, [setErrMsg, errMsg.identifyingCodeErrMsg, setData]);
 
   const CodeContent = React.useMemo(() => {
     if (!user || !(user?.email || user?.mobile)) return null;
-    
+
     const { codeMode, label, accountText, smsType, emailType, areaCode, verifyAccount, prefixIcon } =
       getVerifyData({ key: VerifyTypes.CHANGE_PASSWORD }) as IChangePasswordConfig;
     return (
@@ -151,7 +159,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
                 error={Boolean(errMsg.identifyingCodeErrMsg)}
                 disabled={Boolean(
                   errMsg.accountErrMsg ||
-              errMsg.identifyingCodeErrMsg
+                  errMsg.identifyingCodeErrMsg
                 )}
               />
             </WithTipWrapper>
@@ -160,7 +168,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
       </>
     );
   }, [user, setErrMsg, errMsg.identifyingCodeErrMsg, errMsg.accountErrMsg, handleIdentifyingCodeChange]);
-  
+
   const btnDisabled = !(data.identifyingCode && data.password && data.confirmPassword &&
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);
 
@@ -170,7 +178,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
       <div className={styles.form}>
         <Form
           className={'modifyPassword'}
-          autoComplete="off"
+          autoComplete='off'
         >
           {CodeContent}
           <div className={classNames([styles.item, styles.newPassword])}>
@@ -183,7 +191,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
                   value={data.password}
                   onChange={e => { handlePasswordChange(e, 'password'); }}
                   placeholder={t(Strings.password_rules)}
-                  autoComplete="new-password"
+                  autoComplete='new-password'
                   error={Boolean(errMsg.passwordErrMsg)}
                   block
                 />
@@ -200,7 +208,7 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
                   value={data.confirmPassword}
                   onChange={e => { handlePasswordChange(e, 'confirmPassword'); }}
                   placeholder={t(Strings.placeholder_input_new_password_again)}
-                  autoComplete="new-password"
+                  autoComplete='new-password'
                   error={Boolean(errMsg.passwordErrMsg)}
                   block
                 />
@@ -208,10 +216,10 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
             </div>
           </div>
           <Button
-            color="primary"
+            color='primary'
             className={styles.saveBtn}
-            htmlType="submit"
-            size="large"
+            htmlType='submit'
+            size='large'
             disabled={btnDisabled}
             loading={loading}
             onClick={handleSubmit}

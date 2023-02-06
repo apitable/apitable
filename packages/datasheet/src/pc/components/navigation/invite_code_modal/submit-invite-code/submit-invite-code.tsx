@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Message, TextInput, Typography } from '@apitable/components';
+import { Button, Message, TextInput, Typography, ThemeName } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { WithTipWrapper } from 'pc/components/common';
@@ -24,9 +24,10 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
 import { dispatch } from 'pc/worker/store';
 import { FC, useState } from 'react';
-import imgUrl from 'static/icon/space/space_img_nickname.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import styles from './style.module.less';
-
+import { useSelector } from 'react-redux';
 interface ISubmitInviteCode {
   submitAndSuccess: () => void;
   myInviteCode: string;
@@ -38,7 +39,8 @@ export const SubmitInviteCode: FC<ISubmitInviteCode> = ({ submitAndSuccess, myIn
   const contactUs = useContactUs();
   const { submitInviteCodeReq } = useUserRequest();
   const { run: submitInviteCode, loading } = useRequest(submitInviteCodeReq, { manual: true });
-
+  const themeName = useSelector(state => state.theme);
+  const imgUrl = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const submit = () => {
     if (val === myInviteCode) {
       setErrMsg(t(Strings.invite_code_cannot_use_mine));

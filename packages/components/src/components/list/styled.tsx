@@ -26,7 +26,7 @@ export const ListStyled = styled.div.attrs(applyDefaultTheme)<IListProps>`
   ${props => {
     if (props.bordered) {
       return css`
-        border: 1px solid ${props.theme.color.borderCommon};
+        border: 1px solid ${props.theme.color.borderCommonDefault};
         border-radius: 4px;
       `;
     }
@@ -42,7 +42,7 @@ export const ListHeaderStyled = styled.div.attrs(applyDefaultTheme)`
   ${(props) => {
     return css`
       color: ${props.theme.color.textCommonPrimary};
-      border-bottom: 1px solid ${props.theme.color.borderCommon};
+      border-bottom: 1px solid ${props.theme.color.borderCommonDefault};
     `;
   }}
 `;
@@ -64,7 +64,7 @@ export const ListItemStyled = styled.div.attrs(applyDefaultTheme)`
   ${(props) => {
     return css`
       color: ${props.theme.color.textCommonPrimary};
-      border-bottom: 1px solid ${props.theme.color.borderCommon};
+      border-bottom: 1px solid ${props.theme.color.borderCommonDefault};
     `;
   }}
   &:last-child {

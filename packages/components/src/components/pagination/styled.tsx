@@ -50,7 +50,7 @@ export const PaginationItem = styled.button.attrs(applyDefaultTheme)<IPagination
 
   ${(props) => {
     const { disabled, theme, selected } = props;
-    const { textCommonPrimary, bgBglessHover, textSelectedPrimary } = theme.color;
+    const { textCommonPrimary, bgBglessHover, textBrandDefault } = theme.color;
     if (disabled) {
       return css`
         cursor: not-allowed;
@@ -59,8 +59,8 @@ export const PaginationItem = styled.button.attrs(applyDefaultTheme)<IPagination
     }
     if (selected) {
       return css`
-        color: ${textSelectedPrimary};
-        border: 1px solid ${textSelectedPrimary};
+        color: ${textBrandDefault};
+        border: 1px solid ${textBrandDefault};
         cursor: pointer;
       `;
     }

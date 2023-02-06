@@ -91,8 +91,7 @@ export class TriggerEventHelper {
       shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordMatchesConditions, conditionalTriggers, eventContext);
     }
 
-    this.logger.info(`${eventType} handler`, {
-      msgIds,
+    this.logger.info(`messageIds: [${ msgIds }]: Execute ${ eventType } handler. `, {
       shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
     });
 

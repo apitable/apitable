@@ -27,10 +27,10 @@ import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitEntity } from '../entities/unit.entity';
 import { UnitInfo } from '../../database/interfaces';
 import { UnitRepository } from '../repositories/unit.repository';
-import { UserRepository } from '../../user/repositories/user.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTagService } from './unit.tag.service';
 import { UnitTeamService } from './unit.team.service';
+import { UserService } from 'user/services/user.service';
 
 @Injectable()
 export class UnitService {
@@ -40,7 +40,7 @@ export class UnitService {
     private readonly tagService: UnitTagService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
-    private readonly userRepo: UserRepository,
+    private readonly userService: UserService,
   ) {}
 
   /**
@@ -48,7 +48,7 @@ export class UnitService {
    */
   async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
-    const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
+    const tableNamePrefix = this.unitRepo.manager.connection.options.entityPrefix;
     const unitInfo: any[] = await queryRunner.query(
       `
           SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
@@ -190,8 +190,8 @@ export class UnitService {
     const userMap = new Map<string, UnitBaseInfoDto>();
     if (!userIds.length) return userMap;
     const users = excludeDeleted
-      ? await this.userRepo.selectUserBaseInfoByIds(userIds as any[])
-      : await this.userRepo.selectUserBaseInfoByIdsWithDeleted(userIds);
+      ? await this.userService.selectUserBaseInfoByIds(userIds as any[])
+      : await this.userService.selectUserBaseInfoByIdsWithDeleted(userIds);
     const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {

@@ -122,7 +122,7 @@ export const NodeForm = (props: any) => {
                 height={24}
               />
             </span>
-            <Typography variant="h7">
+            <Typography variant="h7" ellipsis>
               {title}
             </Typography>
             {

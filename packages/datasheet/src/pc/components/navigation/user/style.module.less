@@ -3,11 +3,17 @@
 
 .userCenterDrawer {
   :global {
-    .ant-drawer-body {
+    .ant-drawer-header {
+      background: transparent;
+    }
+    .ant-drawer-wrapper-body {
       background: var(--primaryColor)
-        url("./workbench_img_membercard.png")
-        no-repeat center;
+      url("./workbench_img_membercard.png")
+      no-repeat center;
       background-size: cover;
+    }
+    .ant-drawer-body {
+      background: transparent;
       padding: 56px 16px 24px;
       height: 90%;
       overflow: auto;

@@ -656,7 +656,7 @@ export const FormContainer: React.FC = () => {
     >
       <Head>
         <meta property='og:description'
-          content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
+          content={serialize(formProps.description)} />
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* Form completion page */}

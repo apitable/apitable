@@ -57,7 +57,7 @@ export const LogoText: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = 
 export const Logo: React.FC<ILogoProps> = (props) => {
   const colors = useThemeColors();
 
-  const { size = 'small', text = true, className, theme } = props;
+  const { size = 'small', text = true, className, theme = ThemeName.Light } = props;
   const isLightTheme = theme === ThemeName.Light;
   const logoSize = LogoSize[size];
 
@@ -91,7 +91,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
 
     return LogoText && (
       <LogoText
-        fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
+        fill={isLightTheme ? colors.primaryColor : colors.staticWhite0}
         width={undefined}
         height={logoSize.logoTextHeight}
       />

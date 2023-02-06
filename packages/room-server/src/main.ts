@@ -44,11 +44,14 @@ import { ZIPKIN_MODULE_OPTIONS, ZIPKIN_MODULE_PROVIDER } from 'shared/services/z
 import { IZipkinModuleOptions } from 'shared/services/zipkin/zipkin.interface';
 import { ZipkinService } from 'shared/services/zipkin/zipkin.service';
 import { FastifyZipkinPlugin } from './shared/helpers';
+import * as immer from 'immer';
 
 /**
  * entrance method
  */
 async function bootstrap() {
+  immer.setAutoFreeze(false);
+
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   fastifyAdapter.register(fastifyMultipart);
   // registe helmet in fastify to avoid conflict with swagger

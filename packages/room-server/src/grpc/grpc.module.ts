@@ -28,7 +28,7 @@ import { GrpcController } from './controllers/grpc.controller';
   imports: [
     forwardRef(() => DatabaseModule),
     UserModule,
-    NodeModule,
+    forwardRef(() => NodeModule),
     GrpcClientModule,
   ],
   controllers: [GrpcController],

@@ -18,12 +18,17 @@
 
 package com.apitable.core.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static com.apitable.core.util.DateTimeUtil.localDateToSecond;
 
 /**
  * <p>
@@ -120,6 +125,14 @@ class DateTimeUtilTests {
 
         betweenDays = DateTimeUtil.between(startDateTime, endDateTime7, ChronoField.EPOCH_DAY);
         Assertions.assertEquals(3, betweenDays);
+    }
+
+    @Test
+    void testLocalDateToSecond() {
+        OffsetDateTime initDate = OffsetDateTime.of(2023, 2, 5, 0 , 0, 0, 0, ZoneOffset.UTC);
+        LocalDate date = initDate.toLocalDate();
+        Long timestamp = localDateToSecond(date, ZoneOffset.UTC);
+        Assertions.assertEquals(timestamp, 1675555200);
     }
 
 }

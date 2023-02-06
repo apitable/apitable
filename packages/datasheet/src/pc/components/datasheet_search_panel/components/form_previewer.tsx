@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
+import { Button, ThemeName } from '@apitable/components';
 import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classnames from 'classnames';
@@ -27,7 +27,8 @@ import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
 interface IFormPreviewerProps {
@@ -56,6 +57,8 @@ export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
       return !hidden && formSheetAccessible && !Field.bindModel(field).isComputed && field.type !== FieldType.AutoNumber;
     });
   }, [currentView.columns, fieldMap, fieldPermissionMap]);
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const canCreate = useMemo(() => {
     if (!currentView) {
@@ -71,6 +74,7 @@ export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
   useMount(() => {
     Player.doTrigger(Events.workbench_create_form_previewer_shown);
   });
+
   return (
     <div
       className={classnames(styles.formPreviewer, {

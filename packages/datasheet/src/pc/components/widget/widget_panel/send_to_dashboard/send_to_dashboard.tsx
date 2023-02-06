@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, useThemeColors } from '@apitable/components';
+import { Button, Skeleton, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { DashboardOutlined } from '@apitable/icons';
 import classNames from 'classnames';
@@ -31,9 +31,10 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
+import { useSelector } from 'react-redux';
 interface ISentToDashboardProps {
   widgetId: string;
 
@@ -64,6 +65,8 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
   const onClick = (nodeId: string) => {
     setSelectedId(nodeId);
   };
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   async function copyWidget(dashboardId: string) {
     const copyData = await WidgetApi.copyWidgetsToDashboard(dashboardId, [widgetId]);
@@ -163,9 +166,9 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
                 </div>;
               }) :
                 <div className={styles.empty}>
-                  <span className={styles.emptyImg}>
+                  <div className={styles.emptyImg}>
                     <Image src={templateEmptyPng} alt='' width={224} height={168} />
-                  </span>
+                  </div>
                   <p>
                     <TComponent
                       tkey={t(Strings.empty_dashboard_list)}

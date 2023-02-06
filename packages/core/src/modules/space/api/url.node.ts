@@ -115,3 +115,5 @@ export const NODE_RECENTLY_BROWSED = '/node/recentList';
 
 // Get node information - file information window
 export const GET_NODE_INFO_WINDOW = 'node/window';
+
+export const CHECKOUT_ORDER='/checkout';

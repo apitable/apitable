@@ -18,7 +18,6 @@
 
 import { Avatar, Box, Button, Typography } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import Image from 'next/image';
 import { getEnvVariables } from 'pc/utils/env';
 import { useRobot, useRobotContext } from '../../hooks';
 import { IStepProps } from '../interface';
@@ -47,7 +46,7 @@ export const RobotCreateGuideStep4 = (props: IStepProps) => {
         margin='0px 0px 24px 0px'
       >
         <Avatar
-          icon={<Image src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} />}
+          icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
           size='l'
         />
         <Typography >

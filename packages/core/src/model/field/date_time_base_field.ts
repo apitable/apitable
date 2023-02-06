@@ -25,7 +25,6 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { getLanguage, Strings, t } from '../../exports/i18n';
 import { isEqual, isNumber } from 'lodash';
-import { DEFAULT_TIMEZONE } from 'model/constants';
 import { isNullValue } from 'model/utils';
 import { IReduxState } from '../../exports/store';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
@@ -144,7 +143,7 @@ export const dateTimeFormat = (
   }
   // server-side
   if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    const date = dayjs(Number(timestamp)).tz(DEFAULT_TIMEZONE);
+    const date = dayjs(Number(timestamp));
     return date.format(format);
   }
   return dayjs(Number(timestamp)).format(format);

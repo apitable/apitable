@@ -19,6 +19,7 @@
 package com.apitable.player.vo;
 
 import cn.hutool.json.JSONObject;
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,47 +31,85 @@ import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * User message notification list
+ * User message notification list.
  * </p>
  */
 @Data
 @Builder(toBuilder = true)
 @ApiModel("User message notification list")
 public class NotificationDetailVo {
+
+    /**
+     * Message ID.
+     */
     @ApiModelProperty(value = "Message ID", example = "1261273764218")
     private String id;
 
+    /**
+     * is read.
+     */
     @ApiModelProperty(value = "Read 1 Read, 0 Unread", example = "1")
     private Integer isRead;
 
+    /**
+     * Notification Type.
+     */
     @ApiModelProperty(value = "Notification Type", example = "system")
     private String notifyType;
 
-    @ApiModelProperty(value = "Creation time", example = "2020-03-18 15:29:59")
-    private String createdAt;
+    /**
+     * Creation time.
+     */
+    @ApiModelProperty(value = "Creation time", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
+    private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "Update time", example = "2020-03-18 15:29:59")
-    private String updatedAt;
+    /**
+     * Update time.
+     */
+    @ApiModelProperty(value = "Update time", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
+    private LocalDateTime updatedAt;
 
+    /**
+     * Notified user ID.
+     */
     @Deprecated
     @ApiModelProperty(value = "Notified user ID", example = "1261273764218")
     private String toUserId;
 
+    /**
+     * Notified user uuid.
+     */
     @ApiModelProperty(value = "Notified user uuid", example = "aaaabb")
     private String toUuid;
 
+    /**
+     * Send notification to users.
+     */
     @ApiModelProperty(value = "Send notification to users")
     private PlayerBaseVo fromUser;
 
+    /**
+     * Notice content.
+     */
     @ApiModelProperty(value = "Notice content")
     private NotifyBody notifyBody;
 
+    /**
+     * Number of notification lines of the da.
+     */
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     @ApiModelProperty(value = "Number of notification lines of the day")
     private Integer rowNo;
 
+    /**
+     * Notification template ID.
+     */
     @ApiModelProperty(value = "Notification template ID")
     private String templateId;
 
@@ -78,23 +117,43 @@ public class NotificationDetailVo {
     @Builder
     @ApiModel("Notice content")
     public static class NotifyBody {
-        @ApiModelProperty(value = "Send notification to users", example = "Zoe has @ you 3 times in customizing the table")
+
+        /**
+         * Send notification to users.
+         */
+        @ApiModelProperty(value = "Send notification to users")
         @Deprecated
         private String template;
 
-        @ApiModelProperty(value = "Send notification to users", example = "Space Message")
+        /**
+         * Send notification to user.
+         */
+        @ApiModelProperty(value = "Send notification to users")
         private String title;
 
+        /**
+         * Node Information.
+         */
         @ApiModelProperty(value = "Node Information")
         private Node node;
 
+        /**
+         * spatial information.
+         */
         @ApiModelProperty(value = "spatial information ")
         private Space space;
 
-        @ApiModelProperty(value = "Notify additional fields" + NotificationConstants.BODY_EXTRAS_DESC,
-                example = NotificationConstants.BODY_EXTRAS_EXAMPLE)
+        /**
+         * Notify additional fields.
+         */
+        @ApiModelProperty(value = "Notify additional fields"
+            + NotificationConstants.BODY_EXTRAS_DESC,
+            example = NotificationConstants.BODY_EXTRAS_EXAMPLE)
         private JSONObject extras;
 
+        /**
+         * Notify Jump.
+         */
         @ApiModelProperty(value = "Notify Jump")
         private Intent intent;
 
@@ -104,6 +163,10 @@ public class NotificationDetailVo {
     @Builder
     @ApiModel("Notify Jump")
     public static class Intent {
+
+        /**
+         * Jump link.
+         */
         @ApiModelProperty(value = "Jump link", example = "https://apitable.com")
         private String url;
     }
@@ -112,12 +175,22 @@ public class NotificationDetailVo {
     @Builder
     @ApiModel("node")
     public static class Node {
+
+        /**
+         * Node ID.
+         */
         @ApiModelProperty(value = "Node ID")
         private String nodeId;
 
+        /**
+         * Node Information.
+         */
         @ApiModelProperty(value = "Node Information")
         private String nodeName;
 
+        /**
+         * Node icon.
+         */
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
         @ApiModelProperty(value = "Node icon")
         private String icon;
@@ -127,13 +200,24 @@ public class NotificationDetailVo {
     @Builder
     @ApiModel("space")
     public static class Space {
+
+        /**
+         * Space ID.
+         */
         @ApiModelProperty(value = "Space ID")
         private String spaceId;
 
+        /**
+         * Space name.
+         */
         @ApiModelProperty(value = "Space name")
         private String spaceName;
 
-        @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
+        /**
+         * Space avatar.
+         */
+        @JsonSerialize(nullsUsing = NullStringSerializer.class,
+            using = ImageSerializer.class)
         @ApiModelProperty(value = "Space avatar")
         private String logo;
     }

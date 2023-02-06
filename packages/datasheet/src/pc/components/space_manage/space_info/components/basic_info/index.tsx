@@ -19,9 +19,8 @@
 import { useMemo } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import { Typography, IconButton, ContextMenu, Button } from '@apitable/components';
+import { Typography, ContextMenu, Button, TextButton } from '@apitable/components';
 import { SettingOutlined, InfoFilled, DeleteOutlined } from '@apitable/icons';
-import { Drawer } from 'antd';
 import { DELETE_SPACE_CONTEXT_MENU_ID, SpaceLevelInfo } from '../../utils';
 import { ChangeLogo } from '../change_logo/change_logo';
 import { ChangeName } from '../change_name/change_name';
@@ -32,6 +31,7 @@ import styles from './style.module.less';
 import CorpCertifiedTag from './corp_certified_tag';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
+import { Popup } from 'pc/components/common/mobile/popup';
 
 interface IInfoProps {
   showContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
@@ -69,10 +69,15 @@ export const Info = (props: IInfoProps) => {
 
   return <div className={classnames(styles.card, className)} style={{ ...style, transform: 'none' }}>
     {env.DELETE_SPACE_VISIBLE && <div className={styles.moreMenuWrap} onClick={handleClick}>
-      <IconButton icon={SettingOutlined} size="small" />
+      <TextButton 
+        size='small'
+        prefixIcon={<SettingOutlined />}
+      >
+        {t(Strings.form_tab_setting)}
+      </TextButton>
     </div>}
     {
-      isMobile && <Drawer
+      isMobile && <Popup
         visible={visible}
         placement="bottom"
         title={t(Strings.org_chart_setting)}
@@ -82,7 +87,7 @@ export const Info = (props: IInfoProps) => {
       >
         <Button
           block
-          style={{ textAlign: 'left', color: 'rgb(227, 62, 56)' }}
+          style={{ textAlign: 'left', color: 'rgb(227, 62, 56)' ,marginTop:'24px' }}
           prefixIcon={<DeleteOutlined />}
           onClick={() => {
             setVisible(false);
@@ -91,7 +96,7 @@ export const Info = (props: IInfoProps) => {
         >
           {t(Strings.delete_space)}
         </Button>
-      </Drawer>
+      </Popup>
     }
     <ContextMenu
       menuId={DELETE_SPACE_CONTEXT_MENU_ID}

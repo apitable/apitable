@@ -373,16 +373,16 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const SearchPanel = (
     <div className={styles.searchPanel} onClick={e => e.stopPropagation()}>
       {!isMobile && <ButtonPlus.Icon className={styles.narrowBtn} icon={<IconNarrow width={24} height={24} />} size="small" onClick={hidePanel} />}
-      <h2 className={styles.searchPanelTitle}>
+      {!isMobile && <h2 className={styles.searchPanelTitle}>
         {getModalTitle(subColumnType)}
         {showSubColumnWithView && (
           <Tooltip title={t(Strings.form_tour_desc)}>
             <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target="_blank" rel="noreferrer">
-              <HelpIcon fill={colors.firstLevelText} />
+              <HelpIcon fill={colors.firstLevelText}/>
             </a>
           </Tooltip>
         )}
-      </h2>
+      </h2>}
       <SearchControl
         ref={editorRef}
         onFocus={() => searchValue && setShowSearch(true)}
@@ -452,7 +452,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
           document.body,
         )
       ) : (
-        <Popup open height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
+        <Popup title={getModalTitle(subColumnType)} open height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
           {SearchContainer}
         </Popup>
       )}

@@ -20,6 +20,7 @@ package com.apitable.workspace.vo;
 
 import java.time.LocalDateTime;
 
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +31,7 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * Node information window vo
+ * Node information window vo.
  * </p>
  */
 @Data
@@ -38,33 +39,33 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 public class NodeInfoWindowVo {
 
     /**
-     * Node ID
-     * */
+     * Node ID.
+     */
     private String nodeId;
 
     /**
-     * Node Name
-     * */
+     * Node Name.
+     */
     private String nodeName;
 
     /**
-     * Node Type
-     * */
+     * Node Type.
+     */
     private Integer nodeType;
 
     /**
-     * Node icon
-     * */
+     * Node icon.
+     */
     private String icon;
 
     /**
-     * Created by
-     * */
+     * Created by.
+     */
     private MemberInfo creator;
 
     /**
-     * Recently modified by
-     * */
+     * Recently modified by.
+     */
     private MemberInfo lastModifier;
 
     @Data
@@ -72,39 +73,41 @@ public class NodeInfoWindowVo {
     public static class MemberInfo {
 
         /**
-         * Member Name
-         * */
+         * Member Name.
+         */
         private String memberName;
 
         /**
-         * Member avatar
-         * */
-        @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
+         * Member avatar.
+         */
+        @JsonSerialize(nullsUsing = NullStringSerializer.class,
+            using = ImageSerializer.class)
         private String avatar;
 
         /**
-         * default avatar number
+         * default avatar number.
          */
         private Integer avatarColor;
 
         /**
-         * user nick name
+         * user nick name.
          */
         private String nickName;
 
         /**
-         * Time stamp
-         * */
+         * Time stamp.
+         */
+        @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
         private LocalDateTime time;
 
         /**
-         * Whether the member is activated
-         * */
+         * Whether the member is activated.
+         */
         private Boolean isActive;
 
         /**
-         * Delete member
-         * */
+         * Delete member.
+         */
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean isDeleted;
     }

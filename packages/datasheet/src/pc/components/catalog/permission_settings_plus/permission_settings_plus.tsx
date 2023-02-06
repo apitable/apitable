@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { stopPropagation } from 'pc/utils';
 import { FC, useState } from 'react';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -65,9 +66,9 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
         {visible && (
           <Popup
             className={styles.permissionDrawer}
-            height="90%"
+            height='90%'
             open={visible}
-            placement="bottom"
+            placement='bottom'
             title={
               <PermissionModalHeader
                 typeName={t(Strings.file)}
@@ -86,29 +87,31 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
       </ComponentDisplay>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         {visible && (
-          <Modal
-            visible
-            title={
-              <PermissionModalHeader
-                typeName={t(Strings.file)}
-                targetName={data.name}
-                targetIcon={getNodeIcon(data.icon, data.type)}
-                docIcon={<Title />}
-              />
-            }
-            bodyStyle={{ padding: '0 0 24px 0' }}
-            width={560}
-            onCancel={onClose}
-            destroyOnClose
-            footer={null}
-            className={classNames(styles.permissionModal, 'permission_setting_class')}
-            centered
-          >
-            <>
-              <Permission data={data} />
-              {permDescModalVisible && <PermissionDescModal visible onCancel={() => setPermDescModalVisible(false)} />}
-            </>
-          </Modal>
+          <div onMouseDown={stopPropagation}>
+            <Modal
+              visible
+              title={
+                <PermissionModalHeader
+                  typeName={t(Strings.file)}
+                  targetName={data.name}
+                  targetIcon={getNodeIcon(data.icon, data.type)}
+                  docIcon={<Title />}
+                />
+              }
+              bodyStyle={{ padding: '0 0 24px 0' }}
+              width={560}
+              onCancel={onClose}
+              destroyOnClose
+              footer={null}
+              className={classNames(styles.permissionModal, 'permission_setting_class')}
+              centered
+            >
+              <>
+                <Permission data={data} />
+                {permDescModalVisible && <PermissionDescModal visible onCancel={() => setPermDescModalVisible(false)} />}
+              </>
+            </Modal>
+          </div>
         )}
       </ComponentDisplay>
     </>
