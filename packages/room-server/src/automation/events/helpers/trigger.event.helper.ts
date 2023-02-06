@@ -70,7 +70,7 @@ export class TriggerEventHelper {
   }
 
   public recordCreatedTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
-   this._recordTriggerHandler(EventTypeEnums.RecordCreated, eventContext, metaContext);
+    this._recordTriggerHandler(EventTypeEnums.RecordCreated, eventContext, metaContext);
   }
 
   public recordMatchConditionsTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
@@ -102,7 +102,7 @@ export class TriggerEventHelper {
   }
 
   public getRenderTriggers(eventType: string, conditionalTriggers: AutomationTriggerEntity[], eventContext: CommonEventContext) {
-    const {datasheetId, datasheetName, recordId} = eventContext;
+    const { datasheetId, datasheetName, recordId } = eventContext;
     if(eventType == EventTypeEnums.RecordMatchesConditions) {
       return conditionalTriggers
         .filter(item => Boolean(item.input))
@@ -123,24 +123,24 @@ export class TriggerEventHelper {
           }
           return prev;
         }, [] as IShouldFireRobot[]);
-    } else {
-      return conditionalTriggers
-        .filter(item => Boolean(item.input))
-        .reduce((prev, item) => {
-          const triggerInput = this.renderInput(item.input!);
-          if (triggerInput.datasheetId === datasheetId) {
-            const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
-            prev.push({
-              robotId: item.robotId,
-              trigger: {
-                input: triggerInput,
-                output: triggerOutput,
-              }
-            });
-          }
-          return prev;
-        }, [] as IShouldFireRobot[]);
-    }
+    } 
+    return conditionalTriggers
+      .filter(item => Boolean(item.input))
+      .reduce((prev, item) => {
+        const triggerInput = this.renderInput(item.input!);
+        if (triggerInput.datasheetId === datasheetId) {
+          const triggerOutput = this.getTriggerOutput(datasheetId, datasheetName, recordId, eventContext);
+          prev.push({
+            robotId: item.robotId,
+            trigger: {
+              input: triggerInput,
+              output: triggerOutput,
+            }
+          });
+        }
+        return prev;
+      }, [] as IShouldFireRobot[]);
+    
   }
 
   public getTriggerOutput(datasheetId: string, datasheetName: string, recordId: string, eventContext: CommonEventContext) {
