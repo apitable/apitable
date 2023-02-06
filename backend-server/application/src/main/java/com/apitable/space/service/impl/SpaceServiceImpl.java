@@ -18,6 +18,19 @@
 
 package com.apitable.space.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
@@ -71,7 +84,14 @@ import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.space.assembler.SpaceAssembler;
 import com.apitable.space.assembler.SubscribeAssembler;
-import com.apitable.space.dto.*;
+import com.apitable.space.dto.ControlStaticsDTO;
+import com.apitable.space.dto.DatasheetStaticsDTO;
+import com.apitable.space.dto.GetSpaceListFilterCondition;
+import com.apitable.space.dto.MapDTO;
+import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.space.dto.SpaceAdminInfoDTO;
+import com.apitable.space.dto.SpaceCapacityUsedInfo;
+import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
@@ -79,8 +99,17 @@ import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
 import com.apitable.space.ro.SpaceUpdateOpRo;
-import com.apitable.space.service.*;
-import com.apitable.space.vo.*;
+import com.apitable.space.service.IInvitationService;
+import com.apitable.space.service.ISpaceInviteLinkService;
+import com.apitable.space.service.ISpaceRoleService;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.space.service.IStaticsService;
+import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.space.vo.SpaceInfoVO;
+import com.apitable.space.vo.SpaceSocialConfig;
+import com.apitable.space.vo.SpaceSubscribeVo;
+import com.apitable.space.vo.SpaceVO;
+import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
@@ -93,24 +122,15 @@ import com.apitable.workspace.service.INodeShareSettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static com.apitable.organization.enums.OrganizationException.CREATE_MEMBER_ERROR;
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.NEW_SPACE_NAME;
 import static com.apitable.shared.constants.NotificationConstants.OLD_SPACE_NAME;
-import static com.apitable.space.enums.SpaceException.*;
-import static com.apitable.workspace.enums.PermissionException.*;
 
 /**
  * Space Service Implement Class.
@@ -123,7 +143,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         implements ISpaceService {
 
     /** */
-    private static int DELETE_SPACE_RETAIN_DAYS = 7;
+    private static final int DELETE_SPACE_RETAIN_DAYS = 7;
 
 
     /** */
@@ -523,8 +543,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
         }
-        if (condition != null &&
-                BooleanUtil.isTrue(condition.getManageable())) {
+        if (condition != null
+            && BooleanUtil.isTrue(condition.getManageable())) {
             spaceDTOList = spaceDTOList.stream().filter(SpaceDTO::getAdmin)
                     .collect(Collectors.toList());
         }
@@ -587,10 +607,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // file control amount
         ControlStaticsDTO controlStaticsDTO =
                 iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
-        long nodeRoleNums = controlStaticsDTO != null ?
-                controlStaticsDTO.getNodeRoleCount() : 0L;
-        long fieldRoleNums = controlStaticsDTO != null ?
-                controlStaticsDTO.getFieldRoleCount() : 0L;
+        long nodeRoleNums = controlStaticsDTO != null
+            ? controlStaticsDTO.getNodeRoleCount() : 0L;
+        long fieldRoleNums = controlStaticsDTO != null
+            ? controlStaticsDTO.getFieldRoleCount() : 0L;
         // node statistics
         List<NodeTypeStaticsDTO> nodeTypeStaticDTOS =
                 iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
@@ -599,16 +619,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                         .isFileNode()).mapToLong(NodeTypeStaticsDTO::getTotal)
                 .sum();
         long mirrorNums = nodeTypeStaticDTOS.stream()
-                .filter(condition -> NodeType.MIRROR ==
-                        NodeType.toEnum(condition.getType()))
+                .filter(condition ->
+                    NodeType.MIRROR == NodeType.toEnum(condition.getType()))
                 .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
 
         Map<Integer, Integer> typeStaticsMap = nodeTypeStaticDTOS.stream()
                 .collect(Collectors.toMap(NodeTypeStaticsDTO::getType,
                         NodeTypeStaticsDTO::getTotal));
         long formViewNums =
-                typeStaticsMap.containsKey(NodeType.FORM.getNodeType()) ?
-                        typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
+            typeStaticsMap.containsKey(NodeType.FORM.getNodeType())
+                    ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // table view statistics
         DatasheetStaticsDTO viewVO =
                 iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
@@ -708,8 +728,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SubscriptionInfo subscriptionInfo =
                 entitlementServiceFacade.getSpaceSubscription(spaceId);
         // Plan total capacity except gift capacity
-        Long planCapacity = subscriptionInfo.getTotalCapacity().getValue() -
-                subscriptionInfo.getGiftCapacity().getValue();
+        Long planCapacity = subscriptionInfo.getTotalCapacity().getValue()
+            - subscriptionInfo.getGiftCapacity().getValue();
         // If the used attachment capacity is less than
         // the space subscription plan capacity,
         // the current used attachment capacity
@@ -728,8 +748,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             // If the attachment capacity is used in excess,
             // the used complimentary attachment capacity is equal to
             // the size of the complimentary assert capacity.
-            if (capacityUsedSize >
-                    subscriptionInfo.getTotalCapacity().getValue()) {
+            if (capacityUsedSize
+                > subscriptionInfo.getTotalCapacity().getValue()) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
             } else {
                 // gift capacity used left
@@ -842,8 +862,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         MemberEntity newMember = memberMapper.selectById(memberId);
         // Send email notification to the new main administrator
-        if (ObjectUtil.isNotNull(newMember) &&
-                StrUtil.isNotBlank(newMember.getEmail())) {
+        if (ObjectUtil.isNotNull(newMember)
+            && StrUtil.isNotBlank(newMember.getEmail())) {
             Dict dict = Dict.create();
             dict.set("USER_NAME", dto.getMemberName());
             dict.set("SPACE_NAME", dto.getSpaceName());
@@ -1173,8 +1193,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SubscribeAssembler assembler = new SubscribeAssembler();
         SpaceSubscribeVo result = assembler.toVo(subscriptionInfo);
         SpaceGlobalFeature spaceGlobalFeature = getSpaceGlobalFeature(spaceId);
-        boolean blackSpace = subscriptionInfo.isFree() ?
-                ObjectUtil.defaultIfNull(spaceGlobalFeature.getBlackSpace(),
+        boolean blackSpace = subscriptionInfo.isFree()
+            ? ObjectUtil.defaultIfNull(spaceGlobalFeature.getBlackSpace(),
                         Boolean.FALSE) : Boolean.FALSE;
         result.setBlackSpace(blackSpace);
         return result;
