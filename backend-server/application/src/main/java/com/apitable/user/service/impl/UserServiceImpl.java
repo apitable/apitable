@@ -57,6 +57,7 @@ import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
+import com.apitable.player.mapper.PlayerActivityMapper;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerActivityService;
 import com.apitable.player.service.IPlayerNotificationService;
@@ -156,6 +157,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     /** */
     @Resource
     private IPlayerActivityService iPlayerActivityService;
+
+    /** */
+    @Resource
+    private PlayerActivityMapper playerActivityMapper;
 
     /** */
     @Resource
@@ -892,6 +897,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             userInfo.transferDataFromDto(userLinkInfo, userLinkVos);
         } else {
             userInfo.setApiKey(iDeveloperService.getApiKeyByUserId(userId));
+            String actions = playerActivityMapper.selectActionsByUserId(userId);
+            userInfo.setWizards(JSONUtil.parseObj(actions));
         }
         // Cancel the account during the calm period,
         // and calculate the official cancellation time
