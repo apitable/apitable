@@ -313,7 +313,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
-      <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
       <meta name='renderer' content='webkit' />
       <meta
         name='viewport'
