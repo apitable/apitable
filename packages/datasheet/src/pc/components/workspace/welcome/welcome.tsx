@@ -210,7 +210,7 @@ export const Welcome: FC = () => {
       ) : (
         <div className={styles.welcome}>
           <div className={styles.contentWrapper}>
-            <Image src={WelcomeIcon} alt={t(Strings.welcome_interface)} />
+            <Image src={WelcomeIcon} alt={t(Strings.welcome_interface)} width={400} height={300} />
             {treeNodesMap[rootId].permissions.childCreatable ? (
               <>
                 <div className={styles.tip}>{t(Strings.welcome_workspace_tip1)}</div>
