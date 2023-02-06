@@ -1,0 +1,896 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`blank should accept full-width spaces 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "123",
+  },
+  Token {
+    "index": 3,
+    "type": "Blank",
+    "value": " 　　  ",
+  },
+  Token {
+    "index": 8,
+    "type": "PureValue",
+    "value": "A",
+  },
+]
+`;
+
+exports[`blank should produce a single blank token if given a string with only spaces 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "  　　  　",
+  },
+]
+`;
+
+exports[`blank should recognize contiguous spaces as a single blank token 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "12",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 3,
+    "type": "Number",
+    "value": "3",
+  },
+  Token {
+    "index": 4,
+    "type": "Blank",
+    "value": "     ",
+  },
+  Token {
+    "index": 9,
+    "type": "PureValue",
+    "value": "A",
+  },
+  Token {
+    "index": 10,
+    "type": "Blank",
+    "value": "    ",
+  },
+]
+`;
+
+exports[`call is converted into a pure value if the following left parenthesis is separated by spaces 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "ab",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 3,
+    "type": "LeftParen",
+    "value": "(",
+  },
+]
+`;
+
+exports[`call should accept Unicode characters 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Call",
+    "value": "α👀",
+  },
+  Token {
+    "index": 3,
+    "type": "LeftParen",
+    "value": "(",
+  },
+  Token {
+    "index": 4,
+    "type": "RightParen",
+    "value": ")",
+  },
+]
+`;
+
+exports[`call should be converted into a pure value if not immediately followed by a left parenthesis 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "ab",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 3,
+    "type": "Comma",
+    "value": ",",
+  },
+  Token {
+    "index": 4,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 5,
+    "type": "PureValue",
+    "value": "c",
+  },
+]
+`;
+
+exports[`call should be followed by left parenthesis 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "ab",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 3,
+    "type": "Call",
+    "value": "ab",
+  },
+  Token {
+    "index": 5,
+    "type": "LeftParen",
+    "value": "(",
+  },
+]
+`;
+
+exports[`get token getNextToken should produce tokens in order 1`] = `
+[
+  Token {
+    "index": 1,
+    "type": "Number",
+    "value": "123",
+  },
+]
+`;
+
+exports[`matches should not contain blank tokens 1`] = `
+[
+  Token {
+    "index": 2,
+    "type": "PureValue",
+    "value": "A",
+  },
+  Token {
+    "index": 4,
+    "type": "Number",
+    "value": "123",
+  },
+  Token {
+    "index": 8,
+    "type": "String",
+    "value": ""  "",
+  },
+]
+`;
+
+exports[`matches should not contain unknown tokens 1`] = `
+[
+  Token {
+    "index": 1,
+    "type": "Number",
+    "value": "123",
+  },
+]
+`;
+
+exports[`number accepts a sequence of periods 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "123",
+  },
+  Token {
+    "index": 3,
+    "type": "Comma",
+    "value": ",",
+  },
+  Token {
+    "index": 4,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 5,
+    "type": "Number",
+    "value": "......",
+  },
+]
+`;
+
+exports[`number accepts multiple decimal points 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "123......456",
+  },
+]
+`;
+
+exports[`number accepts single period 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": ".",
+  },
+]
+`;
+
+exports[`number should accept integers 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "1244444444444444444444444444444444444444",
+  },
+  Token {
+    "index": 40,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 42,
+    "type": "Number",
+    "value": "78",
+  },
+]
+`;
+
+exports[`number should accept starting decimal point 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": ".123",
+  },
+  Token {
+    "index": 4,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 5,
+    "type": "Number",
+    "value": ".0",
+  },
+]
+`;
+
+exports[`number should accept trailing decimal point 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Number",
+    "value": "123.",
+  },
+  Token {
+    "index": 4,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 5,
+    "type": "Number",
+    "value": "0.",
+  },
+]
+`;
+
+exports[`punctuation should accept full-width parentheses 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "LeftParen",
+    "value": "（",
+  },
+  Token {
+    "index": 1,
+    "type": "LeftParen",
+    "value": "(",
+  },
+  Token {
+    "index": 2,
+    "type": "RightParen",
+    "value": "）",
+  },
+  Token {
+    "index": 3,
+    "type": "RightParen",
+    "value": ")",
+  },
+]
+`;
+
+exports[`punctuation should accept operators with multiple characters 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "NotEqual",
+    "value": "!=",
+  },
+  Token {
+    "index": 2,
+    "type": "And",
+    "value": "&&",
+  },
+  Token {
+    "index": 4,
+    "type": "GreaterEqual",
+    "value": ">=",
+  },
+  Token {
+    "index": 6,
+    "type": "Less",
+    "value": "<",
+  },
+  Token {
+    "index": 7,
+    "type": "LessEqual",
+    "value": "<=",
+  },
+  Token {
+    "index": 9,
+    "type": "Equal",
+    "value": "=",
+  },
+  Token {
+    "index": 10,
+    "type": "Or",
+    "value": "||",
+  },
+]
+`;
+
+exports[`punctuation should accpet full-width commas 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Comma",
+    "value": "，",
+  },
+  Token {
+    "index": 1,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 2,
+    "type": "Comma",
+    "value": ",",
+  },
+  Token {
+    "index": 3,
+    "type": "Comma",
+    "value": "，",
+  },
+  Token {
+    "index": 4,
+    "type": "Comma",
+    "value": ",",
+  },
+  Token {
+    "index": 5,
+    "type": "Comma",
+    "value": ",",
+  },
+]
+`;
+
+exports[`punctuation should recognize single vertical bar as an unknown token 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "| |",
+  },
+]
+`;
+
+exports[`pure value should accept Unicode characters 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "Foo",
+  },
+  Token {
+    "index": 3,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 4,
+    "type": "PureValue",
+    "value": "a11",
+  },
+  Token {
+    "index": 7,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 8,
+    "type": "PureValue",
+    "value": "$T$",
+  },
+  Token {
+    "index": 11,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 12,
+    "type": "PureValue",
+    "value": "ᵣ☯",
+  },
+]
+`;
+
+exports[`string accepts backslash as the last character in a string 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "String",
+    "value": ""ab c\\"",
+  },
+]
+`;
+
+exports[`string escaping double-quotes in single-quoted strings is not allowed 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "String",
+    "value": "'ab \\"c'",
+  },
+  Token {
+    "index": 11,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 13,
+    "type": "String",
+    "value": "’a \\”c‘",
+  },
+  Token {
+    "index": 20,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 22,
+    "type": "String",
+    "value": "' \\"'",
+  },
+  Token {
+    "index": 27,
+    "type": "Blank",
+    "value": " ",
+  },
+]
+`;
+
+exports[`string escaping single-quotes in double-quoted strings is not allowed 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "String",
+    "value": ""ab \\'c"",
+  },
+  Token {
+    "index": 11,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 13,
+    "type": "String",
+    "value": "”a \\’c“",
+  },
+  Token {
+    "index": 20,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 22,
+    "type": "String",
+    "value": "' \\''",
+  },
+  Token {
+    "index": 27,
+    "type": "Blank",
+    "value": " ",
+  },
+]
+`;
+
+exports[`string is converted into pure values if not closed 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "PureValue",
+    "value": ""ab c",
+  },
+]
+`;
+
+exports[`string should accept Unicode quotation marks 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "String",
+    "value": ""abc"",
+  },
+  Token {
+    "index": 5,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 7,
+    "type": "String",
+    "value": ""ab c“",
+  },
+  Token {
+    "index": 13,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 15,
+    "type": "String",
+    "value": "”ab c“",
+  },
+]
+`;
+
+exports[`string should accept empty strings 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "String",
+    "value": """",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 4,
+    "type": "String",
+    "value": ""“",
+  },
+  Token {
+    "index": 6,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 8,
+    "type": "String",
+    "value": "”“",
+  },
+  Token {
+    "index": 10,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 11,
+    "type": "String",
+    "value": "''",
+  },
+  Token {
+    "index": 13,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 15,
+    "type": "String",
+    "value": "'’",
+  },
+]
+`;
+
+exports[`string should accept escape sequence 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "String",
+    "value": ""ab \\"c"",
+  },
+  Token {
+    "index": 11,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 13,
+    "type": "String",
+    "value": "”a \\”c“",
+  },
+  Token {
+    "index": 20,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 22,
+    "type": "String",
+    "value": "' \\''",
+  },
+  Token {
+    "index": 27,
+    "type": "Blank",
+    "value": " ",
+  },
+]
+`;
+
+exports[`string should accept mismatched quotation marks 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "String",
+    "value": ""abc"",
+  },
+  Token {
+    "index": 5,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 7,
+    "type": "String",
+    "value": ""ab c“",
+  },
+  Token {
+    "index": 13,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 15,
+    "type": "String",
+    "value": "”ab c"",
+  },
+  Token {
+    "index": 21,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 23,
+    "type": "String",
+    "value": "”ab c“",
+  },
+]
+`;
+
+exports[`string should accept single-quotes 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "String",
+    "value": "'abc'",
+  },
+  Token {
+    "index": 8,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 10,
+    "type": "String",
+    "value": "'ab c’",
+  },
+  Token {
+    "index": 16,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 18,
+    "type": "String",
+    "value": "‘ab c’",
+  },
+  Token {
+    "index": 24,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 26,
+    "type": "String",
+    "value": "‘ab c'",
+  },
+  Token {
+    "index": 32,
+    "type": "Blank",
+    "value": "  ",
+  },
+]
+`;
+
+exports[`unknown token is composed of only characters rejected by other tokens 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "a",
+  },
+  Token {
+    "index": 1,
+    "type": "Unknown",
+    "value": "~~~~~~~~~\`\`~",
+  },
+]
+`;
+
+exports[`unknown token makes other tokens accept characters that should not be accepted 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "PureValue",
+    "value": "abc",
+  },
+  Token {
+    "index": 3,
+    "type": "Blank",
+    "value": " ",
+  },
+  Token {
+    "index": 4,
+    "type": "Value",
+    "value": "~~~ {}  ",
+  },
+]
+`;
+
+exports[`value should accept empty name 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 3,
+    "type": "Value",
+    "value": "{}",
+  },
+  Token {
+    "index": 5,
+    "type": "Blank",
+    "value": "  ",
+  },
+]
+`;
+
+exports[`value should accept escape sequence 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Value",
+    "value": "{}",
+  },
+  Token {
+    "index": 2,
+    "type": "Blank",
+    "value": "   ",
+  },
+  Token {
+    "index": 5,
+    "type": "Value",
+    "value": "{  x\\{_ _\\\\\\}}",
+  },
+  Token {
+    "index": 19,
+    "type": "Value",
+    "value": "{}",
+  },
+]
+`;
+
+exports[`value should accept normal value 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Value",
+    "value": "{abc}",
+  },
+  Token {
+    "index": 5,
+    "type": "Blank",
+    "value": "    ",
+  },
+  Token {
+    "index": 9,
+    "type": "Value",
+    "value": "{🤯区间1  -a}",
+  },
+  Token {
+    "index": 20,
+    "type": "Blank",
+    "value": "  ",
+  },
+  Token {
+    "index": 22,
+    "type": "Value",
+    "value": "{   }",
+  },
+]
+`;
+
+exports[`value should accept whitespaces 1`] = `
+[
+  Token {
+    "index": 0,
+    "type": "Value",
+    "value": "{ Foo}",
+  },
+  Token {
+    "index": 6,
+    "type": "Value",
+    "value": "{-　 }",
+  },
+]
+`;

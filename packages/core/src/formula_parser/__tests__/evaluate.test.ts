@@ -86,7 +86,6 @@ const testEvaluate = (tests: any) => {
 };
 
 describe('FormulaEvaluate', () => {
-
   it('mix 1 or 2 operator', () => {
     const tests = [
       ['-1-1', { a: 0, b: '456', c: 1 }, -2],
@@ -110,7 +109,7 @@ describe('FormulaEvaluate', () => {
       ['1 + 2 * 3', { a: 1, b: '456', c: 2, d: 3 }, 7],
       ['1 + (1 + 3) * 2', { a: 1, b: '456', c: 2, d: 3 }, 9],
       ['2 * (2 + 3) - 10', { a: 1, b: '456', c: 2, d: 3 }, 0],
-      ['\'Courses平均成绩\' & \'=\' & ({a}+{c}+{d}) / 3', { a: 1, b: '456', c: 2, d: 3 }, 'Courses平均成绩=2'],
+      ["'Courses平均成绩' & '=' & ({a}+{c}+{d}) / 3", { a: 1, b: '456', c: 2, d: 3 }, 'Courses平均成绩=2'],
       ['1 + 2 + 3 + 5 - 1 * 2 * 3 / 4 % 5 * 323 % 1', { a: 0, b: '456', c: 1 }, 10.5],
       ['1 * 2 * 3 + 4 + 5', { a: 0, b: '456', c: 1 }, 15],
       ['IF(1 > 2, 3, 5)', { a: 0, b: '456', c: 1 }, 5],
@@ -225,20 +224,25 @@ describe('FormulaEvaluate', () => {
       ['SUM(1, 2, 3)', { a: 0, b: '456', c: 1 }, 6],
       ['SUM(1,2,3) + 3', { a: 0, b: '456', c: 1 }, 9],
       [
-        '{title} & "\'s exam score improved ：" & {中文期末考试成绩} - {midterm_exam_score} & "分"', 
-        { title: 'Mary Lee', 中文期末考试成绩: 40, midterm_exam_score: 20 }, 'Mary Lee\'s exam score improved ：20分'
+        '{title} & "\'s exam score improved ：" & {中文期末考试成绩} - {midterm_exam_score} & "分"',
+        { title: 'Mary Lee', 中文期末考试成绩: 40, midterm_exam_score: 20 },
+        "Mary Lee's exam score improved ：20分",
       ],
-      ['中文变量 & "进步了：" & 中文期末考试成绩 - midterm_exam_score & "分"', { 中文变量: 'Tom', 中文期末考试成绩: 40, midterm_exam_score: 20 }, 'Tom进步了：20分'],
+      [
+        '中文变量 & "进步了：" & 中文期末考试成绩 - midterm_exam_score & "分"',
+        { 中文变量: 'Tom', 中文期末考试成绩: 40, midterm_exam_score: 20 },
+        'Tom进步了：20分',
+      ],
       ['SUM(1, -2, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 8],
       ['SUM(1, {c}, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 11],
       ['SUM(1, c, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 11],
       ['IF(c, SUM(1,2,3), 3)', { a: 0, b: '456', c: 1 }, 6],
       ['IF({c}, SUM(1,2,3), 3)', { a: 0, b: '456', c: 1 }, 6],
-      ['IF({c}, SUM(1,2,3), \'3\')', { a: 0, b: '456', c: 1 }, 6],
-      ['IF(!{c}, SUM(1,2,3), \'3\')', { a: 0, b: '456', c: 1 }, '3'],
-      ['FIND(\'s\', \'sxsyz\', 1)', { a: 0, b: '456', c: 1 }, 1],
-      ['FIND(\'s\', \'sxsyz\', 0)', { a: 0, b: '456', c: 1 }, 1],
-      ['FIND(\'s\', \'sxsyz\', 2)', { a: 0, b: '456', c: 1 }, 3],
+      ["IF({c}, SUM(1,2,3), '3')", { a: 0, b: '456', c: 1 }, 6],
+      ["IF(!{c}, SUM(1,2,3), '3')", { a: 0, b: '456', c: 1 }, '3'],
+      ["FIND('s', 'sxsyz', 1)", { a: 0, b: '456', c: 1 }, 1],
+      ["FIND('s', 'sxsyz', 0)", { a: 0, b: '456', c: 1 }, 1],
+      ["FIND('s', 'sxsyz', 2)", { a: 0, b: '456', c: 1 }, 3],
       ['DAY({c})', { a: 0, b: '456', c: 1590565608830 }, 27],
       ['RECORD_ID()', { a: 0, b: '456' }, 'xyz'],
       ['record_id()', { a: 0, b: '456' }, 'xyz'], // lowercase
@@ -297,6 +301,11 @@ describe('FormulaEvaluate', () => {
       ['{a} - {c}', { a: -1, c: 66 }, -67],
       ['{a} - {c} - {c}', { a: 0, c: 3 }, -6],
     ];
+    testEvaluate(tests);
+  });
+
+  it('should evaluate single negation', () => {
+    const tests = [['-{a}', { a: 13 }, -13]];
     testEvaluate(tests);
   });
 
@@ -414,17 +423,16 @@ describe('FormulaEvaluate', () => {
       ['"test" & "-" & "123"', { a: '1', b: '2' }, 'test-123'],
       ['"abc\\""', { a: '1', b: '2' }, 'abc"'],
       ['"quotes test+=*/\\"123"', { a: '1', b: '2' }, 'quotes test+=*/"123'],
-      ['AND({a}=\'1\', {b}=\'2\')', { a: '1', b: '2' }, true],
-      ['\'test\' & \'-\' & \'123\'', { a: '1', b: '2' }, 'test-123'],
-      ['\'abc\\\'\'', { a: '1', b: '2' }, 'abc\''],
-      ['\'quote test+=*/\\\'123\'', { a: '1', b: '2' }, 'quote test+=*/\'123'],
+      ["AND({a}='1', {b}='2')", { a: '1', b: '2' }, true],
+      ["'test' & '-' & '123'", { a: '1', b: '2' }, 'test-123'],
+      ["'abc\\''", { a: '1', b: '2' }, "abc'"],
+      ["'quote test+=*/\\'123'", { a: '1', b: '2' }, "quote test+=*/'123"],
       ['AND({a}=\'1\', {b}="2")', { a: '1', b: '2' }, true],
-      ['\'test\' & \'-\' & "123"', { a: '1', b: '2' }, 'test-123'],
-      ['"abc\'"', { a: '1', b: '2' }, 'abc\''],
-      ['"quotes test+=*/\'123"', { a: '1', b: '2' }, 'quotes test+=*/\'123'],
+      ["'test' & '-' & \"123\"", { a: '1', b: '2' }, 'test-123'],
+      ['"abc\'"', { a: '1', b: '2' }, "abc'"],
+      ['"quotes test+=*/\'123"', { a: '1', b: '2' }, "quotes test+=*/'123"],
     ];
 
     testEvaluate(tests);
   });
-
 });
