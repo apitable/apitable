@@ -30,7 +30,6 @@ import { DatasheetRecordSourceService } from 'database/datasheet/services/datash
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { omit } from 'lodash';
