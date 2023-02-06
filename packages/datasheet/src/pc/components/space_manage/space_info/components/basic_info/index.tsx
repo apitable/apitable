@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import { Typography, IconButton, ContextMenu, Button } from '@apitable/components';
+import { Typography, ContextMenu, Button, TextButton } from '@apitable/components';
 import { SettingOutlined, InfoFilled, DeleteOutlined } from '@apitable/icons';
 import { DELETE_SPACE_CONTEXT_MENU_ID, SpaceLevelInfo } from '../../utils';
 import { ChangeLogo } from '../change_logo/change_logo';
@@ -69,7 +69,12 @@ export const Info = (props: IInfoProps) => {
 
   return <div className={classnames(styles.card, className)} style={{ ...style, transform: 'none' }}>
     {env.DELETE_SPACE_VISIBLE && <div className={styles.moreMenuWrap} onClick={handleClick}>
-      <IconButton icon={SettingOutlined} size="small" />
+      <TextButton 
+        size='small'
+        prefixIcon={<SettingOutlined />}
+      >
+        {t(Strings.form_tab_setting)}
+      </TextButton>
     </div>}
     {
       isMobile && <Popup
@@ -82,7 +87,7 @@ export const Info = (props: IInfoProps) => {
       >
         <Button
           block
-          style={{ textAlign: 'left', color: 'rgb(227, 62, 56)' ,marginTop:'24px'}}
+          style={{ textAlign: 'left', color: 'rgb(227, 62, 56)' ,marginTop:'24px' }}
           prefixIcon={<DeleteOutlined />}
           onClick={() => {
             setVisible(false);
