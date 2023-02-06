@@ -143,7 +143,7 @@ export const dateTimeFormat = (
   }
   // server-side
   if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    const date = dayjs(Number(timestamp)).tz(DEFAULT_TIMEZONE);
+    const date = dayjs(Number(timestamp));
     return date.format(format);
   }
   return dayjs(Number(timestamp)).format(format);
