@@ -31,7 +31,7 @@ describe('AutomationServiceRepository', () => {
   const theServiceId = 'theServiceId';
   let entity: AutomationServiceEntity;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -52,7 +52,7 @@ describe('AutomationServiceRepository', () => {
     entity = await automationServiceRepository.save(record);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await automationServiceRepository.delete(entity.id);
     await automationServiceRepository.manager.connection.close();
   });
@@ -61,12 +61,12 @@ describe('AutomationServiceRepository', () => {
     expect(automationServiceRepository).toBeDefined();
   });
 
-  it("given one official service entity when judge whether the service id is the official service's id", async () => {
+  it("given one official service entity when judge whether the service id is the official service's id", async() => {
     const number = await automationServiceRepository.countOfficialServiceByServiceId(entity.serviceId);
     expect(number).toEqual(1);
   });
 
-  it('given one official service entity when judge whether the service with the special service id and service slug exist', async () => {
+  it('given one official service entity when judge whether the service with the special service id and service slug exist', async() => {
     const number = await automationServiceRepository.countServiceByServiceIdAndSlug(entity.serviceId, OFFICIAL_SERVICE_SLUG);
     expect(number).toEqual(1);
   });

@@ -30,6 +30,7 @@ describe('developer service', () => {
   let developerService: DeveloperService;
   let developerRepo: DeveloperRepository;
   let userService: UserService;
+  let userRepository: UserRepository;
   const knownAPIKey = 'key1';
   const knownExpiredAPIKey= 'key2';
   const knownUserId = 12345;
@@ -48,8 +49,9 @@ describe('developer service', () => {
 
   beforeEach(() => {
     developerService = module.get<DeveloperService>(DeveloperService);
-    developerRepo = module.get<DeveloperRepository>(DeveloperRepository);
     userService = module.get<UserService>(UserService);
+    developerRepo = module.get<DeveloperRepository>(DeveloperRepository); 
+    userRepository = module.get<UserRepository>(UserRepository);
     jest.spyOn(developerRepo, 'selectUserIdByApiKey').mockImplementation(async(apiKey) => {
       if (apiKey === knownAPIKey) {
         return await Promise.resolve({ userId: BigInt(knownUserId) });

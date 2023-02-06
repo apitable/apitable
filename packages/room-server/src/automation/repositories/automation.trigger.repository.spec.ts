@@ -32,7 +32,7 @@ describe('AutomationTriggerRepository', () => {
   const theRobotId = 'theRobotId';
   let entity: AutomationTriggerEntity;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -56,7 +56,7 @@ describe('AutomationTriggerRepository', () => {
     entity = await repository.save(record);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await repository.delete(entity.id);
     await repository.manager.connection.close();
   });
@@ -65,7 +65,7 @@ describe('AutomationTriggerRepository', () => {
     expect(repository).toBeDefined();
   });
 
-  it('given a trigger entity when get trigger by the robot id and the trigger type id', async () => {
+  it('given a trigger entity when get trigger by the robot id and the trigger type id', async() => {
     const resourceRobotTriggerDtos = await repository.getTriggerByRobotIdAndTriggerTypeId(theRobotId, theTriggerTypeId);
     expect(resourceRobotTriggerDtos).toBeDefined();
     expect(resourceRobotTriggerDtos.length).toEqual(1);

@@ -25,9 +25,6 @@ const withPlugins = require('next-compose-plugins')
 const withTM = require('next-transpile-modules')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const isProd = process.env.NODE_ENV === 'production'
-// const {withSentryConfig} = require('@sentry/nextjs')
-
-const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
 /**
  * Stolen from https://stackoverflow.com/questions/10776600/testing-for-equality-of-regular-expressions
@@ -64,8 +61,8 @@ const localIdent = (loaderContext, localIdentName, localName, options) => {
 }
 
 // Overrides for css-loader plugin
-function cssLoaderOptions(modules) {
-  const {getLocalIdent, ...others} = modules
+function cssLoaderOptions (modules) {
+  const { getLocalIdent, ...others } = modules
   return {
     ...others,
     getLocalIdent: getLocalIdent || localIdent,
@@ -88,7 +85,7 @@ const plugins = [
     withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])
   ],
   [
-    withBundleAnalyzer({enabled: process.env.ANALYZE === 'true'})
+    withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
   ]
 ]
 
@@ -99,13 +96,7 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
 }
 
-const _withSentryConfig = isProd ? (nextConfig, sentryConfig) => {
-  return nextConfig
-} : (nextConfig, sentryConfig) => {
-  return nextConfig
-}
-
-module.exports = withPlugins(plugins, _withSentryConfig({
+module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
@@ -132,7 +123,7 @@ module.exports = withPlugins(plugins, _withSentryConfig({
   publicRuntimeConfig: {
     staticFolder: getStaticFolder()
   },
-  webpack(config, options) {
+  webpack (config, options) {
     config.resolve.symlinks = false
     const originalEntry = config.entry
 
@@ -166,8 +157,8 @@ module.exports = withPlugins(plugins, _withSentryConfig({
       })
       if (moduleSassRule) {
         // Get the config object for css-loader plugin
-        const cssLoader = moduleSassRule.use.find(({loader}) => loader.includes('css-loader'))
-        const lessLoader = moduleSassRule.use.find(({loader}) => loader.includes('less-loader'))
+        const cssLoader = moduleSassRule.use.find(({ loader }) => loader.includes('css-loader'))
+        const lessLoader = moduleSassRule.use.find(({ loader }) => loader.includes('less-loader'))
         if (cssLoader) {
           cssLoader.options = {
             ...cssLoader.options,
@@ -204,7 +195,7 @@ module.exports = withPlugins(plugins, _withSentryConfig({
       // })
     }
 
-    const {webpack} = options
+    const { webpack } = options
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /canvas|jsdom/,
@@ -238,11 +229,11 @@ module.exports = withPlugins(plugins, _withSentryConfig({
           loader: 'svgo-loader',
           options: {
             plugins: [
-              {name: 'removeNonInheritableGroupAttrs'},
-              {name: 'removeXMLNS'},
-              {name: 'collapseGroups'},
-              {name: 'removeStyleElement'},
-              {name: 'removeAttrs', params: {attrs: '(stroke|fill)'}}
+              { name: 'removeNonInheritableGroupAttrs' },
+              { name: 'removeXMLNS' },
+              { name: 'collapseGroups' },
+              { name: 'removeStyleElement' },
+              { name: 'removeAttrs', params: { attrs: '(stroke|fill)' } }
             ]
           }
         }
@@ -267,16 +258,5 @@ module.exports = withPlugins(plugins, _withSentryConfig({
     esmExternals: true,
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../')
-  },
-  sentry: {
-    disableServerWebpackPlugin: true,
-    hideSourceMaps: true
   }
-}, {
-  url: process.env.SENTRY_CONFIG_URL,
-  authToken: process.env.SENTRY_CONFIG_AUTH_TOKEN,
-  project: 'web-server',
-  dsn: process.env.SENTRY_CONFIG_DSN,
-  org: 'sentry',
-  release: process.env.BUILD_VERSION
-}))
+})

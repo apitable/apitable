@@ -782,7 +782,7 @@
             "to_tag": "users",
             "notifications_type": "system",
             "is_notification": true,
-            "format_string": "new_user_welcome_notify",
+            "format_string": "new_user_welcom_notify",
             "id": "new_user_welcome_notify",
             "is_component": true,
             "redirect_url": "new_user_welcome_notify_url"

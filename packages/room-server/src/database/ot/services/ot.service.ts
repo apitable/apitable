@@ -61,6 +61,7 @@ import { EntityManager, getManager } from 'typeorm';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
+import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { MetaService } from 'database/resource/services/meta.service';
 import { FormOtService } from './form.ot.service';
 import { EffectConstantName, IChangesetParseResult, 

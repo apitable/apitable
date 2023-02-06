@@ -19,6 +19,7 @@
 import { ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
+import { DatasheetWidgetRepository } from '../../datasheet/repositories/datasheet.widget.repository';
 import { Logger } from 'winston';
 import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';

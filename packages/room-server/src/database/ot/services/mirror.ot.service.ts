@@ -29,6 +29,7 @@ import { Logger } from 'winston';
 import { ResourceChangesetEntity } from '../../resource/entities/resource.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { MetaService } from 'database/resource/services/meta.service';
+import { ResourceMetaRepository } from '../../resource/repositories/resource.meta.repository';
 
 @Injectable()
 export class MirrorOtService {

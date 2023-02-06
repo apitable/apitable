@@ -20,9 +20,12 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RobotModule } from 'automation/robot.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
+import { DatasheetChangesetRepository } from 'database/datasheet/repositories/datasheet.changeset.repository';
+import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
 import { NodeModule } from 'node/node.module';
 import { OtModule } from 'database/ot/ot.module';
 import { UserModule } from 'user/user.module';
+import { WidgetRepository } from 'database/widget/repositories/widget.repository';
 import { WidgetModule } from 'database/widget/widget.module';
 import { ResourceController } from './controllers/resource.controller';
 import { ResourceDataInterceptor } from './middleware/resource.data.interceptor';
@@ -44,6 +47,10 @@ import { RoomResourceRelService } from './services/room.resource.rel.service';
     TypeOrmModule.forFeature([
       ResourceChangesetRepository,
       ResourceMetaRepository,
+      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
+      DatasheetChangesetRepository,
+      DatasheetRepository,
+      WidgetRepository,
     ]),
   ],
   providers: [ChangesetService, MetaService, ResourceService, RoomResourceRelService, ResourceDataInterceptor],

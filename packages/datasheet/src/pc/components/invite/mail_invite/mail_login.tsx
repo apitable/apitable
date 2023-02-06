@@ -46,7 +46,6 @@ const MailLogin: FC = () => {
     whenPageRefreshed();
   });
 
-
   return (
     <Wrapper>
       <div className={classNames('invite-children-center', styles.linkInviteLogin)}>
