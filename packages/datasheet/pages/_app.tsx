@@ -413,7 +413,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', ${env.GOOGLE_ANALYTICS_ID});
+            gtag('config', window.__initialization_data__.envVars.GOOGLE_ANALYTICS_ID);
           `}
         </Script>
       </>
