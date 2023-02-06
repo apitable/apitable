@@ -75,11 +75,10 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
                     <div className={styles.widgetIconBox}>
                       <Image src={item.widgetPackageIcon} alt="" width={16} height={16} />
                     </div>
-                    <Image
+                    <img
                       src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover_img.value)}
                       alt=""
                       width={'100%'}
-                      height={100}
                     />
                   </div>
                   <div className={styles.checked}>
@@ -89,7 +88,9 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
               );
             })
           ) : (
-            <Image src={templateEmptyPng} alt="" className={styles.emptyImg} />
+            <div className={styles.emptyImg}>
+              <Image src={templateEmptyPng} width={160} objectFit="contain" alt="" />
+            </div>
           )}
         </div>
       </div>
