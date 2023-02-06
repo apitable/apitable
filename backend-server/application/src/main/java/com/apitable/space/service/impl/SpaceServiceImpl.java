@@ -397,15 +397,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
         }
-        Map<String, SpaceDTO> spaceMaps = spaceDTOList.stream().collect(Collectors.toMap(SpaceDTO::getSpaceId, v -> v, (k1, k2) -> k1));
-        List<String> spaceIds = new ArrayList<>(spaceMaps.keySet());
+        List<String> spaceIds = spaceDTOList.stream()
+                .map(SpaceDTO::getSpaceId).collect(Collectors.toList());
         // get space domains
         Map<String, String> spaceDomains = socialServiceFacade.getDomainNameMap(spaceIds);
         // batch query subscriptions
         Map<String, SubscriptionFeature> spacePlanFeatureMap = entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
         // setting information
         List<SpaceVO> resultList = new ArrayList<>();
-        spaceMaps.forEach((spaceId, spaceDTO) -> {
+        for (SpaceDTO spaceDTO : spaceDTOList) {
+            String spaceId = spaceDTO.getSpaceId();
             SpaceVO spaceVO = SpaceAssembler.toVO(spaceDTO);
             SocialConnectInfo socialConnectInfo = socialServiceFacade.getConnectInfo(spaceId);
             SpaceSocialConfig socialConfig = SpaceAssembler.toSocialConfig(socialConnectInfo);
@@ -416,7 +417,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 spaceVO.setSpaceDomain(spaceDomains.get(spaceId));
             }
             resultList.add(spaceVO);
-        });
+        }
         return resultList;
     }
 
