@@ -782,10 +782,10 @@
             "to_tag": "users",
             "notifications_type": "system",
             "is_notification": true,
-            "format_string": "new_user_welcom_notify",
+            "format_string": "new_user_welcome_notify",
             "id": "new_user_welcome_notify",
-            "url": "https://u.vika.cn/vhw8y",
-            "is_component": true
+            "is_component": true,
+            "redirect_url": "new_user_welcome_notify_url"
         },
         "apply_space_beta_feature_success_notify_all": {
             "can_jump": true,

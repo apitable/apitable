@@ -306,7 +306,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
      */
     @Override
     public List<UserEntity> getByCodeAndMobilePhones(
-      final String code, final Collection<String> mobilePhones) {
+        final String code, final Collection<String> mobilePhones) {
         List<UserEntity> userEntities =
             baseMapper.selectByMobilePhoneIn(mobilePhones);
         if (userEntities.isEmpty()) {
@@ -398,7 +398,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // and has not been bound to other accounts,
             // activate the space members of the invited mail
             List<MemberDTO> inactiveMembers =
-              iMemberService.getInactiveMemberByEmails(email);
+                iMemberService.getInactiveMemberByEmails(email);
             inactiveMemberProcess(user.getId(), inactiveMembers);
         } else {
             String spaceName = user.getNickName();
@@ -429,11 +429,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         TaskManager.me().execute(() -> {
             // jump to third site
             NotificationTemplate template =
-                    notificationFactory.getTemplateById(NotificationTemplateId
-                        .NEW_USER_WELCOME_NOTIFY.getValue());
+                notificationFactory.getTemplateById(NotificationTemplateId
+                    .NEW_USER_WELCOME_NOTIFY.getValue());
             Dict extras = Dict.create();
-            if (StrUtil.isNotBlank(template.getUrl())
-                && template.getUrl().startsWith("http")) {
+            if (StrUtil.isNotBlank(template.getRedirectUrl())) {
                 Dict toast = Dict.create();
                 toast.put(EXTRA_TOAST_URL, template.getUrl());
                 toast.put("onClose",
@@ -477,15 +476,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             ? mobile : StringUtils.substringBefore(email, "@"));
         // Create user with mobile number
         UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .code(areaCode)
-                .mobilePhone(mobile)
-                .nickName(name)
-                .avatar(nullToDefaultAvatar(avatar))
-                .color(color)
-                .email(email)
-                .lastLoginTime(LocalDateTime.now())
-                .build();
+            .uuid(IdUtil.fastSimpleUUID())
+            .code(areaCode)
+            .mobilePhone(mobile)
+            .nickName(name)
+            .avatar(nullToDefaultAvatar(avatar))
+            .color(color)
+            .email(email)
+            .lastLoginTime(LocalDateTime.now())
+            .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         boolean hasSpace = false;
@@ -718,8 +717,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // and additional invitation rewards are given
         if (userDto.getMobile() == null) {
             TaskManager.me() .execute(
-              () -> userServiceFacade.rewardUserInfoUpdateAction(
-                  new RewardedUser(userId, userDto.getNickName())));
+                () -> userServiceFacade.rewardUserInfoUpdateAction(
+                    new RewardedUser(userId, userDto.getNickName())));
         }
     }
 
@@ -780,8 +779,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         }
         if (StrUtil.isNotBlank(param.getLocale())) {
             ExceptionUtil.isTrue(
-              LanguageConstants.isLanguagesSupported(param.getLocale()),
-              USER_LANGUAGE_SET_UN_SUPPORTED);
+                LanguageConstants.isLanguagesSupported(param.getLocale()),
+                USER_LANGUAGE_SET_UN_SUPPORTED);
             user.setLocale(param.getLocale());
         }
         if (StrUtil.isNotBlank(param.getNickName())) {
@@ -818,7 +817,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 }
             });
             user.setNickName(param.getNickName())
-                    .setIsSocialNameModified(SocialNameModified.YES.getValue());
+                .setIsSocialNameModified(SocialNameModified.YES.getValue());
             if (BooleanUtil.isTrue(param.getInit())) {
                 userServiceFacade.onUserChangeNicknameAction(userId,
                     param.getNickName());
@@ -847,9 +846,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     public void updatePwd(final Long id, final String password) {
         log.info("Change Password");
         UserEntity user = UserEntity.builder()
-                .id(id)
-                .password(passwordService.encode(password))
-                .build();
+            .id(id)
+            .password(passwordService.encode(password))
+            .build();
 
         // Delete Cache
         loginUserCacheService.delete(id);
@@ -899,7 +898,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         if (userInfo.getIsPaused()) {
             UserHistoryEntity userHistory =
                 iUserHistoryService.getLatestUserHistoryEntity(userId,
-                        UserOperationType.APPLY_FOR_CLOSING);
+                    UserOperationType.APPLY_FOR_CLOSING);
             ExceptionUtil.isNotNull(userHistory,
                 UserClosingException.USER_HISTORY_RECORD_ISSUE);
             userInfo.setCloseAt(userHistory.getCreatedAt()
@@ -1079,7 +1078,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     private void updateIsPaused(final Long userId, final boolean isPaused) {
         UserEntity userPaused = UserEntity.builder()
-                .id(userId).isPaused(isPaused).build();
+            .id(userId).isPaused(isPaused).build();
         baseMapper.updateById(userPaused);
     }
 
@@ -1134,12 +1133,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // Write the "Logout Completed" record to the history table.
         // 0 represents the system user
         UserHistoryEntity userHistory = UserHistoryEntity.builder()
-                .userId(user.getId())
-                .uuid(user.getUuid())
-                .userStatus(COMPLETE_CLOSING.getStatusCode())
-                .createdBy(user.getId())
-                .updatedBy(user.getId())
-                .build();
+            .userId(user.getId())
+            .uuid(user.getUuid())
+            .userStatus(COMPLETE_CLOSING.getStatusCode())
+            .createdBy(user.getId())
+            .updatedBy(user.getId())
+            .build();
         iUserHistoryService.create(userHistory);
     }
 
