@@ -110,9 +110,7 @@ export class DatasheetService {
     const endTime = +new Date();
     this.logger.info(`Finished main datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
     // Query foreignDatasheetMap and unitMap
-    const getProcessFieldProfiler = this.logger.startTimer();
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
-    getProcessFieldProfiler.done({ message: `getProcessFieldProfiler ${dstId} done` });
     return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
   }
 

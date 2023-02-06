@@ -213,7 +213,6 @@ export class OtService {
         `room:[${message.roomId}] ====> parseChanges Finished, duration: ${parseEndTime - beginTime}ms. General transaction start......`,
       );
       // ======== multiple-resource operation transaction BEGIN ========
-      this.logger.info('applyRoomChangeset-transaction-start', { msgIds });
       await getManager().transaction(async(manager: EntityManager) => {
         for (const { transaction, effectMap, commonData, resultSet } of transactions) {
           await transaction(manager, effectMap, commonData, resultSet);
@@ -229,7 +228,6 @@ export class OtService {
       });
       const endTime = +new Date();
       this.logger.info(`room:[${message.roomId}] ====> General transaction finished, duration: ${endTime - parseEndTime}ms`);
-      this.logger.info('applyRoomChangeset-transaction-end', { msgIds });
       // Process resource change event
       await this.resourceChangeHandler.handleResourceChange(message.roomId, transactions);
       // ======== multiple-resource operation transaction END ========

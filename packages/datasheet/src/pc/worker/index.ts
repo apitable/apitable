@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DispatchToStore, IReduxState, Selectors, StoreActions, SystemConfig } from '@apitable/core';
+import { DispatchToStore, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { Remote, wrap } from 'comlink';
 import { Store } from 'redux';
-import { getTestFunctionAvailable } from '../utils/storage';
 import { dispatch, remoteStoreWrap } from './store';
 
 /**
@@ -36,7 +35,7 @@ export const comlinkStore: {
 
 export async function initWorkerStore() {
   let worker: any, proxy: any;
-  const useWorker = getTestFunctionAvailable(SystemConfig.test_function.async_compute.feature_key);
+  const useWorker = false;
   if (typeof Worker === 'function' && useWorker) {
     (window as any).useWorkerCompute = true;
     worker = new Worker('./store/store_worker', { type: 'module', name: 'store_worker' });

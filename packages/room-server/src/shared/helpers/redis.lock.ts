@@ -17,8 +17,12 @@
  */
 
 /* eslint-disable space-before-function-paren */
-import * as util from 'util';
+import util from 'util';
 import { Redis } from 'ioredis';
+import fs from 'fs';
+import path from 'path';
+
+const listLock = fs.readFileSync(path.resolve(__dirname, 'list.lock.lua'), 'utf8');
 
 const defaultTimeout = 5000;
 const promisify = util.promisify || function (x: any) { return x; };
@@ -36,10 +40,8 @@ function acquireLock(client: Redis, lockNames: string[], timeout: number, retryD
   //   onLockAcquired(lockTimeoutValue);
   // });
   // set lockName as key
-  // eslint-disable-next-line 
-  const script = "local addKey = {} for _, v in ipairs(KEYS) do if (redis.call('SET', v, ARGV[1], 'NX', 'EX', ARGV[2])) then addKey[#addKey + 1] = v else if (#addKey > 0) then redis.call('DEL', unpack(addKey)) end return { 0, addKey } end end return { 1, addKey }";
   const expireSecond = timeout > 1000 ? timeout / 1000 : timeout;
-  (client.eval as any)(script, lockNames.length, ...lockNames, lockTimeoutValue, expireSecond, (err: any, result: any[]) => {
+  (client.eval as any)(listLock, lockNames.length, ...lockNames, lockTimeoutValue, expireSecond, (err: any, result: any[]) => {
     if (err) {
       return console.error('Redis lock eval error. Error: ' + err);
     }

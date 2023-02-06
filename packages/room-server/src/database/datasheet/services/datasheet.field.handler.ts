@@ -384,8 +384,8 @@ export class DatasheetFieldHandler {
    */
   private forEachRecordMap(dstId: string, recordMap: RecordMap, fieldLinkDstMap: Map<string, string>) {
     const beginTime = +new Date();
-    this.logger.info(`Start traverse main datasheet ${dstId} records`);
     if (Object.keys(recordMap).length === 0) return {};
+    this.logger.info(`Start traverse main datasheet ${dstId} records`);
     const foreignDstIdRecordIdsMap = Object.values(recordMap).reduce<{ [foreignDstId: string]: string[] }>((pre, cur) => {
       if (!isEmpty(cur) && !isEmpty(cur.data)) {
         // Only process records with link fields
