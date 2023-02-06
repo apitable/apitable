@@ -17,7 +17,7 @@
  */
 
 import { IResourceMeta, IResourceRevision } from '@apitable/core';
-import { EntityRepository, getConnection, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { ResourceMetaEntity } from '../entities/resource.meta.entity';
 
 @EntityRepository(ResourceMetaEntity)
@@ -65,22 +65,18 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
 
   /**
    * Obtain the revision numbers of multiple resources
+   * Notice: In fact, return data Revision is string type, not number type.
    *
    * @param resourceIds resource ID array
    */
-  async getRevisionByRscIds(resourceIds: string[]): Promise<IResourceRevision[]> {
-    const queryRunner = getConnection().createQueryRunner();
-    // todo(itou): replace dynamic sql
-    const revisionInfo = await queryRunner.query(
-      `
-          SELECT resource_id resourceId, revision
-          FROM ${this.manager.connection.options.entityPrefix}resource_meta
-          WHERE resource_id IN (?) AND is_deleted = 0
-        `,
-      [resourceIds],
-    );
-    await queryRunner.release();
-    return revisionInfo;
+  public async getRevisionByRscIds(resourceIds: string[]): Promise<IResourceRevision[]> {
+    return await this.find({
+      select: ['resourceId', 'revision'],
+      where: {
+        resourceId: In(resourceIds),
+        isDeleted: 0,
+      }
+    });
   }
 
   /**
