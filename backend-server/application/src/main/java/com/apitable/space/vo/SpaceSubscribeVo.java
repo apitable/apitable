@@ -58,6 +58,8 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> addOnPlans;
 
+    private Long expireAt;
+
     @ApiModelProperty(value = "subscription expiration time. if free, it is null.", example = "2019-01-01", position = 6)
     @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)
     @JsonSerialize(using = LocalDateSerializer.class)
