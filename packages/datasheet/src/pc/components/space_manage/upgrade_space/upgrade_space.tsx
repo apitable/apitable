@@ -78,6 +78,7 @@ const UpgradeSpace = () => {
             grade: upperCaseFirstWord(grade),
           }),
           cancelText: t(Strings.cancel),
+          zIndex: 1100,
           onOk: async() => {
             const res = await Api.checkoutOrder(spaceId!, priceId);
             const { url } = res.data;
@@ -98,6 +99,7 @@ const UpgradeSpace = () => {
               grade: upperCaseFirstWord(grade),
             }),
             cancelText: t(Strings.cancel),
+            zIndex: 1100,
             onOk: async() => {
               const res = await Api.checkoutOrder(spaceId!, priceId);
               const { url } = res.data;
@@ -117,6 +119,7 @@ const UpgradeSpace = () => {
           content: t(Strings.change_period_content),
           hiddenCancelBtn: false,
           cancelText: t(Strings.cancel),
+          zIndex: 1100,
           onOk: async() => {
             const res = await Api.checkoutOrder(spaceId!, priceId);
             const { url } = res.data;

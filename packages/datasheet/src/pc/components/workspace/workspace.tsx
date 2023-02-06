@@ -125,7 +125,7 @@ export const Workspace: React.FC = () => {
     showOrderModal({
       modalTitle: t(Strings.upgrade_success_model, { orderType: t(Strings.upgrade) }),
       modalSubTitle: (cb: () => void) => <>
-        <div className={styles.desc1} style={{ marginTop: 24 }}>
+        <div className={styles.desc1} style={{ marginTop: 24, fontSize: 16 }}>
           {
             <TComponent
               tkey={t(Strings.upgrade_success_1_desc)}
