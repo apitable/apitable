@@ -33,7 +33,7 @@ describe('FormSubmittedListener', () => {
   let triggerEventHelper: TriggerEventHelper;
   let formSubmittedListener: FormSubmittedListener;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
@@ -79,13 +79,13 @@ describe('FormSubmittedListener', () => {
     expect(formSubmittedListener).toBeDefined();
   });
 
-  it('Should not throw', async () => {
+  it('Should not throw', async() => {
     jest
       .spyOn(robotTriggerService, 'getTriggersByResourceAndEventType')
       .mockResolvedValue([{ triggerId: 'triggerId', triggerTypeId: 'triggerTypeId', input: {}, robotId: 'robotId' }]);
     jest.spyOn(triggerEventHelper, 'renderInput').mockReturnValue({ formId: 'formId' });
     jest.spyOn(automationService, 'handleTask');
-    await expect(async () => {
+    await expect(async() => {
       await formSubmittedListener.handleFormSubmittedEvent({
         scope: ResourceType.Form,
         realType: EventRealTypeEnums.REAL,

@@ -17,7 +17,7 @@
  */
 
 import { TrackEvents } from '@apitable/core';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 
 declare const sensors: {
   login(userId: string, cb?: () => void);
