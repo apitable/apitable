@@ -191,7 +191,7 @@ export class AutomationService {
       const { trigger, triggerType } = robot as any;
       let isTriggerValid = true;
       if (trigger && triggerType) {
-        const triggerInputSchema = triggerType.inputJsonSchema;
+        const triggerInputSchema = triggerType.inputJSONSchema;
         const triggerInput = trigger.input;
         const { hasError, errors, validationError } = validateMagicForm((triggerInputSchema as any).schema, triggerInput);
         if (hasError) {
