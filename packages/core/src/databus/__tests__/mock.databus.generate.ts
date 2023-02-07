@@ -18,10 +18,12 @@
 
 import { DataBus } from '../databus';
 import { MockDataLoaderSaver } from './mock.data.loader.saver';
-import { mockDatasheetMap } from './mock.datasheets';
+import { MockDatasheetGenerate } from './mock.datasheets.generate';
 import { MockStoreProvider } from './mock.store.provider';
 
-const dataLoader = new MockDataLoaderSaver(mockDatasheetMap);
+export const mockDatasheetGenerate = new MockDatasheetGenerate();
+
+const dataLoader = new MockDataLoaderSaver(mockDatasheetGenerate.data);
 
 export const MockDataBus = DataBus.create({
   dataLoader,
@@ -32,4 +34,3 @@ export const MockDataBus = DataBus.create({
 export const resetDataLoader = () => {
   dataLoader.reset();
 };
-

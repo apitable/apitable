@@ -20,17 +20,19 @@ import { IResourceOpsCollect, resourceOpsToChangesets } from 'command_manager';
 import { IDataSaver, ISaveOpsOptions } from 'databus/data.saver.interface';
 import { IBaseDatasheetPack, Selectors, StoreActions } from 'exports/store';
 import { IDataLoader } from '../data.loader.interface';
-import { mockDatasheetMap } from './mock.datasheets';
+import type { mockDatasheetMap } from './mock.datasheets';
 
 export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
   datasheets!: Record<string, IBaseDatasheetPack>;
+  initDatasheet: typeof mockDatasheetMap = {};
 
-  constructor() {
+  constructor(initDatasheet: typeof mockDatasheetMap) {
+    this.initDatasheet = initDatasheet;
     this.reset();
   }
 
   reset() {
-    this.datasheets = JSON.parse(JSON.stringify(mockDatasheetMap));
+    this.datasheets = JSON.parse(JSON.stringify(this.initDatasheet));
   }
 
   loadDatasheetPack(dstId: string): Promise<IBaseDatasheetPack | null> {
