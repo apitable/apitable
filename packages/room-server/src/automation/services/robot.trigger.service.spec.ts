@@ -25,6 +25,8 @@ import { AutomationRobotRepository } from '../repositories/automation.robot.repo
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EventTypeEnums } from '../events/domains/event.type.enums';
 import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { WinstonModule } from 'nest-winston';
 
 describe('RobotTriggerServiceTest', () => {
   let module: TestingModule;
@@ -36,6 +38,11 @@ describe('RobotTriggerServiceTest', () => {
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
+      imports: [
+        WinstonModule.forRootAsync({
+          useClass: LoggerConfigService,
+        }),
+      ],
       providers: [
         AutomationTriggerTypeRepository,
         AutomationTriggerRepository,
