@@ -20,7 +20,6 @@ import { IPermissions, IResourceMeta, Role } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NodeInfo } from 'database/interfaces';
-import { MetaService } from 'database/resource/services/meta.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { NodeService } from 'node/services/node.service';
 import { RestService } from 'shared/services/rest/rest.service';
@@ -32,7 +31,6 @@ describe('DashboardService', () => {
   let service: DashboardService;
   let nodeService: NodeService;
   let restService: RestService;
-  let metaService: MetaService;
   let resourceMetaRepository: ResourceMetaRepository;
   const knownDashboardId = 'dstNnnfdsffsbadaOd23';
   const permissions: IPermissions = Object.assign({ allowEditConfigurable: false });
@@ -91,13 +89,6 @@ describe('DashboardService', () => {
             hasLogin: jest.fn(), 
             fetchMe: jest.fn() 
           }
-        },
-        {
-          provide: MetaService,
-          useValue: {
-            selectMetaByResourceId: jest.fn(),
-          }
-        }
         }, 
         ResourceMetaRepository
       ],
@@ -117,8 +108,6 @@ describe('DashboardService', () => {
     service = module.get<DashboardService>(DashboardService);
     nodeService = module.get<NodeService>(NodeService);
     restService = module.get<RestService>(RestService);
-    metaService = module.get<MetaService>(MetaService);
-    jest.spyOn(metaService, 'selectMetaByResourceId').mockImplementation(async(dashboardId) => {
     resourceMetaRepository = module.get<ResourceMetaRepository>(ResourceMetaRepository);
     jest.spyOn(resourceMetaRepository, 'selectMetaByResourceId').mockImplementation(async(dashboardId) => {
       if (dashboardId === knownDashboardId) {
@@ -138,7 +127,6 @@ describe('DashboardService', () => {
       expect(service).toBeDefined();
       expect(nodeService).toBeDefined();
       expect(restService).toBeDefined();
-      expect(metaService).toBeDefined();
       expect(resourceMetaRepository).toBeDefined();
     });
 
