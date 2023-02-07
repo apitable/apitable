@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface ITriggerTypeServiceRelDto {
-  serviceId: string,
-  triggerTypeId: string,
-  endpoint?: string,
-}
+import { AutomationRobotEntity } from '../entities/automation.robot.entity';
+
+export type ResourceRobotDto = Pick<AutomationRobotEntity, 'robotId' | 'resourceId'>;
+
+export type RobotBaseInfoDto = Pick<AutomationRobotEntity, 'name' | 'description' | 'isActive' | 'robotId'>;

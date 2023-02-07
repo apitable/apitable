@@ -16,21 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
-import { EntityRepository, In, Repository } from 'typeorm';
-import { ActionTypeBaseInfoDto } from '../dtos/action.type.dto';
+export interface ITriggerTypeServiceRelDto {
+  serviceId: string,
+  triggerTypeId: string,
+  endpoint?: string,
+}
 
-@EntityRepository(AutomationActionTypeEntity)
-export class AutomationActionTypeRepository extends Repository<AutomationActionTypeEntity> {
+export class TriggerTypeDetailDto {
+  triggerTypeId!: string;
+  name!: string;
+  description!: string;
+  endpoint!: string;
+  i18n?: object;
+  inputJSONSchema?: object;
+  outputJSONSchema?: object;
+  serviceId!: string;
+}
 
-  public async selectByActionTypeIds(actionTypeIds: string[]): Promise<ActionTypeBaseInfoDto[]> {
-    return await this.find({
-      select: ['actionTypeId', 'inputJSONSchema', 'outputJSONSchema', 'endpoint', 'serviceId'],
-      where: {
-        isDeleted: 0,
-        actionTypeId: In(actionTypeIds),
-      }
-    }) as ActionTypeBaseInfoDto[];
-  }
-
+export class TriggerInputJsonSchemaDto {
+  triggerTypeId!: string;
+  inputJSONSchema?: object;
 }
