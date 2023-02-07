@@ -21,11 +21,11 @@ import { AutomationTriggerTypeRepository } from '../repositories/automation.trig
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
-import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
+import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
 
 @Injectable()
 export class RobotTriggerService {
@@ -42,7 +42,8 @@ export class RobotTriggerService {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
-      this.logger.info(`get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`)
+      this.logger.info(
+        `get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`);
       if(officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
@@ -69,7 +70,7 @@ export class RobotTriggerService {
   private async _getResourceConditionalRobotTriggers(resourceId: string, triggerTypeId: string) {
     const resourceRobotTriggers: ResourceRobotTriggerDto[] = [];
     // get the datasheet's robots' id.
-    const datasheetRobots = await this.automationRobotRepository.getRobotIdByResourceId(resourceId);
+    const datasheetRobots = await this.automationRobotRepository.selectRobotIdByResourceId(resourceId);
     for (const robot of datasheetRobots) {
       // get the special trigger type's robot's triggers.
       const triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robot.robotId, triggerTypeId);

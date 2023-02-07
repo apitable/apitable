@@ -17,6 +17,7 @@
  */
 
 import { Body, Controller, Delete, Headers, Param, Patch, Post } from '@nestjs/common';
+import { RobotActionService } from '../services/robot.action.service';
 import { UserService } from 'user/services/user.service';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { ActionCreateRo } from '../ros/action.create.ro';
@@ -25,6 +26,7 @@ import { ActionCreateRo } from '../ros/action.create.ro';
 export class RobotActionController {
   constructor(
     private readonly automationActionRepository: AutomationActionRepository,
+    private readonly automationActionService: RobotActionService,
     private readonly userService: UserService,
   ) { }
 
@@ -56,6 +58,6 @@ export class RobotActionController {
     @Headers('cookie') cookie: string
   ) {
     const { userId } = await this.userService.getMe({ cookie });
-    return this.automationActionRepository.deleteRobotActionByActionId(actionId, userId);
+    return this.automationActionService.deleteRobotActionByActionId(userId, actionId);
   }
 }

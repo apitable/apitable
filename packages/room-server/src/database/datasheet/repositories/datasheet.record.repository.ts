@@ -55,6 +55,7 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
 
   selectLinkRecordIdsByRecordIdAndFieldId(dstId: string, recordId: string, fieldId: string) {
     const path = `$.${fieldId}`;
+    // todo(itou): replace dynamic sql
     return this.query(
       `
        SELECT vdr.data->?  as linkRecordIds

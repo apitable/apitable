@@ -16,6 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotEntity } from '../entities/automation.robot.entity';
+import { AutomationActionEntity } from '../entities/automation.action.entity';
 
-export type ResourceRobotDto = Pick<AutomationRobotEntity, 'robotId' | 'resourceId'>;
+export class RobotActionBaseInfoDto {
+
+  actionId!: string;
+
+  actionTypeId!: string;
+
+  prevActionId!: string | null;
+
+  nextActionId?: string | null;
+
+  robotId!: string;
+}
+
+export class RobotActionInfoDto {
+
+  id?: string;
+
+  actionId!: string;
+
+  typeId?: string;
+
+  actionTypeId!: string;
+
+  prevActionId!: string | null;
+
+  input!: object | null;
+}
+
+export type RobotRelDto = Pick<AutomationActionEntity, 'robotId' | 'prevActionId'>;
