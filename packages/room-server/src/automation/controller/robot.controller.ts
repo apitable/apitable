@@ -87,8 +87,14 @@ export class RobotController {
   }
 
   @Get(['/:robotId/actions'])
-  getRobotActions(@Param('robotId') robotId: string) {
-    return this.automationActionRepository.selectActionInfosByRobotId(robotId);
+  public async getRobotActions(@Param('robotId') robotId: string) {
+    const actions = await this.automationActionRepository.selectActionInfosByRobotId(robotId);
+    // The iRobot interface's action's action id named id, and action type id named type id.
+    actions.forEach(action => {
+      action.id = action.actionId;
+      action.typeId = action.actionTypeId;
+    });
+    return actions;
   }
 
   @Post(['/:robotId/active'])
