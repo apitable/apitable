@@ -162,7 +162,7 @@ export class RobotRobotService {
     // If the entry action id is undefined, check there.
     const entryActionId = actions.find(item => item.prevActionId === null)?.actionId;
     if (!entryActionId) {
-      this.logger.info(`The robot [${robotId}] configuration info don't meet conditional: entryActionId: ${triggerId}`);
+      this.logger.info(`The robot [${robotId}] configuration info don't meet conditional: entryActionId: ${entryActionId}`);
       throw new ServerException(CommonException.ROBOT_FORM_CHECK_ERROR);
     }
 
