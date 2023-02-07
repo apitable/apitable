@@ -98,7 +98,6 @@ build: ## build
 
 build-local:
 	make _build-java
-	make _build-core
 	make _build-room
 	make _build-web
 
