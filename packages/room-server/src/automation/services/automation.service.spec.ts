@@ -28,6 +28,7 @@ import { CommonException } from '../../shared/exception';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
+import { RobotRobotService } from './robot.robot.service';
 
 describe('RobotActionTypeServiceTest', () => {
   let module: TestingModule;
@@ -35,6 +36,7 @@ describe('RobotActionTypeServiceTest', () => {
   let automationRobotRepository: AutomationRobotRepository;
   let automationRunHistoryRepository: AutomationRunHistoryRepository;
   let service: AutomationService;
+  let robotService: RobotRobotService;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -51,6 +53,12 @@ describe('RobotActionTypeServiceTest', () => {
             selectSpaceIdByNodeId: jest.fn(),
           },
         },
+        {
+          provide: RobotRobotService,
+          useValue: {
+            getRobotById: jest.fn(),
+          },
+        },
         AutomationRobotRepository,
         AutomationRunHistoryRepository,
       ],
@@ -59,6 +67,7 @@ describe('RobotActionTypeServiceTest', () => {
     automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
     automationRunHistoryRepository = module.get<AutomationRunHistoryRepository>(AutomationRunHistoryRepository);
     service = module.get<AutomationService>(AutomationService);
+    robotService = module.get<RobotRobotService>(RobotRobotService);
   });
 
   it('should be defined', () => {
@@ -85,7 +94,7 @@ describe('RobotActionTypeServiceTest', () => {
     jest.spyOn(nodeService, 'selectSpaceIdByNodeId').mockResolvedValue({ spaceId: 'spaceId' });
     jest.spyOn(automationRunHistoryRepository, 'create').mockImplementation();
     jest.spyOn(automationRunHistoryRepository, 'save').mockImplementation();
-    jest.spyOn(automationRobotRepository, 'getRobotById').mockResolvedValue({
+    jest.spyOn(robotService, 'getRobotById').mockResolvedValue({
       id: 'robotId',
       triggerId: 'triggerId',
       triggerTypeId: 'triggerTypeId',

@@ -91,7 +91,7 @@ describe('RobotTriggerTypeServiceTest', () => {
   });
 
   it('given one trigger type when get trigger type then should be get the i18n render trigger type', async() => {
-    jest.spyOn(automationTriggerTypeRepository, 'getRobotTriggerTypes').mockResolvedValue([
+    jest.spyOn(automationTriggerTypeRepository, 'selectAllTriggerType').mockResolvedValue([
       {
         triggerTypeId: 'triggerTypeId',
         name: '$robot_trigger_form_submitted_title',
@@ -103,18 +103,23 @@ describe('RobotTriggerTypeServiceTest', () => {
             $robot_trigger_form_submitted_title: 'Form is submitted',
           },
         },
-        inputJsonSchema: {},
-        outputJsonSchema: {},
+        inputJSONSchema: {},
+        outputJSONSchema: {},
         serviceId: 'serviceId',
-        serviceName: 'serviceName',
-        serviceLogo: 'url',
-        serviceSlug: 'serviceSlug',
-        serviceI18n: {
+      },
+    ]);
+    jest.spyOn(automationServiceRepository, 'selectServiceByServiceIds').mockResolvedValue([
+      {
+        serviceId: 'serviceId',
+        name: 'serviceName',
+        logo: 'url',
+        slug: 'serviceSlug',
+        i18n: {
           en: {
             $serviceName: 'serviceName',
           },
-        },
-      },
+        }
+      }
     ]);
     const triggerTypes = await service.getTriggerType('en');
     expect(triggerTypes).toBeDefined();

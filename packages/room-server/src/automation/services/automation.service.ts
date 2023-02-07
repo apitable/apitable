@@ -31,6 +31,7 @@ import { customActionMap } from '../actions/decorators/automation.action.decorat
 import { IActionResponse } from '../actions/interface/action.response';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
+import { RobotRobotService } from './robot.robot.service';
 
 /**
  * handle robot execution scheduling
@@ -46,6 +47,7 @@ export class AutomationService {
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,
+    private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
   ) {
     this.robotRunner = new AutomationRobotRunner({
@@ -63,8 +65,8 @@ export class AutomationService {
     }
   }
 
-  getRobotById(robotId: string) {
-    return this.automationRobotRepository.getRobotById(robotId);
+  async getRobotById(robotId: string) {
+    return await this.robotService.getRobotById(robotId);
   }
 
   /**
@@ -184,7 +186,7 @@ export class AutomationService {
   async activeRobot(robotId: string, user: IUserBaseInfo) {
     const errorsByNodeId: any = {};
     try {
-      const robot = await this.automationRobotRepository.getRobotDetailById(robotId);
+      const robot = await this.robotService.getRobotDetailById(robotId);
       const actions = Object.values(robot.actionsById);
       const { trigger, triggerType } = robot as any;
       let isTriggerValid = true;

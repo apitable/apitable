@@ -46,6 +46,9 @@ describe('AutomationTriggerRepository', () => {
 
     repository = module.get<AutomationTriggerRepository>(AutomationTriggerRepository);
 
+  });
+
+  beforeEach(async() => {
     const trigger: DeepPartial<AutomationTriggerEntity> = {
       triggerId: theTriggerId,
       triggerTypeId: theTriggerTypeId,
@@ -57,8 +60,11 @@ describe('AutomationTriggerRepository', () => {
   });
 
   afterAll(async() => {
-    await repository.delete(entity.id);
     await repository.manager.connection.close();
+  });
+
+  afterEach(async() => {
+    await repository.delete(entity.id);
   });
 
   it('should be defined', () => {
@@ -70,5 +76,28 @@ describe('AutomationTriggerRepository', () => {
     expect(resourceRobotTriggerDtos).toBeDefined();
     expect(resourceRobotTriggerDtos.length).toEqual(1);
     expect(resourceRobotTriggerDtos[0]!.triggerId).toEqual(theTriggerId);
+  });
+
+  it('should be get triggers by robot ids', async() => {
+    const robotTriggerBaseInfoDtos = await repository.selectTriggerBaseInfosByRobotIds([theRobotId]);
+    expect(robotTriggerBaseInfoDtos).toBeDefined();
+    expect(robotTriggerBaseInfoDtos.length).toEqual(1);
+    expect(robotTriggerBaseInfoDtos[0]!.triggerId).toEqual(theTriggerId);
+    expect(robotTriggerBaseInfoDtos[0]!.triggerTypeId).toEqual(theTriggerTypeId);
+    expect(robotTriggerBaseInfoDtos[0]!.robotId).toEqual(theRobotId);
+  });
+
+  it('should get trigger info by robot id', async() => {
+    const triggerInfo = await repository.selectTriggerInfoByRobotId(theRobotId);
+    expect(triggerInfo).toBeDefined();
+    expect(triggerInfo!.triggerId).toEqual(theTriggerId);
+    expect(triggerInfo!.triggerTypeId).toEqual(theTriggerTypeId);
+    expect(triggerInfo!.input).toEqual({});
+  });
+
+  it('should get undefined if robot not config the trigger', async() => {
+    await repository.delete(entity.id);
+    const triggerInfo = await repository.selectTriggerInfoByRobotId(theRobotId);
+    expect(triggerInfo).toEqual(undefined);
   });
 });

@@ -49,6 +49,7 @@ export class UnitService {
   async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
     const tableNamePrefix = this.unitRepo.manager.connection.options.entityPrefix;
+    // todo(itou): replace dynamic sql
     const unitInfo: any[] = await queryRunner.query(
       `
           SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
