@@ -68,7 +68,7 @@ COPY --from=builder /app/packages/datasheet/next.config.js \
 COPY --from=builder --chown=nextjs:nodejs /app/packages/datasheet/web_build/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/packages/datasheet/web_build/static ./packages/datasheet/web_build/static
 
-WORKDIR ./packages/datasheet
+WORKDIR /app/packages/datasheet
 
 USER nextjs
 

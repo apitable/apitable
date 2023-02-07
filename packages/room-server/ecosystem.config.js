@@ -17,7 +17,7 @@
  */
 
 // eslint-disable-next-line no-undef
-const instanceCount = parseInt(process.env.INSTANCE_COUNT, 10) || 4;
+const instanceCount = parseInt(process.env.INSTANCE_COUNT || '4', 10);
 // eslint-disable-next-line no-undef
 const maxMemoryRestart = process.env.INSTANCE_MAX_MEMORY || '1452M';
 // eslint-disable-next-line no-undef
@@ -40,7 +40,7 @@ module.exports = {
       // no log output
       out_file: '/dev/null',
       // no log output
-      error_file: '/dev/null',
-    },
-  ],
+      error_file: '/dev/null'
+    }
+  ]
 };
