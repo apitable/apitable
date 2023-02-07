@@ -23,7 +23,7 @@ import { HttpResponseInterceptor } from 'socket/interceptor/http.response.interc
 import { NodeShareDisableRo } from 'socket/ros/node/node.ro';
 import { RoomService } from 'socket/services/room/room.service';
 
-@Controller('node')
+@Controller(['node', 'socket/node'])
 @UseGuards(AuthGuard)
 @UseInterceptors(HttpResponseInterceptor)
 export class NodeController {

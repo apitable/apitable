@@ -26,7 +26,7 @@ export class SocketController {
     private readonly nestService: NestService
   ) {}
 
-  @Post('notify')
+  @Post(['notify', 'socket/notify'])
   async notify(@Body() message: SocketRo) {
     return await this.nestService.handleHttpNotify(message);
   }

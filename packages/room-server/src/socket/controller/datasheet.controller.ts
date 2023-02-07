@@ -23,7 +23,7 @@ import { HttpResponseInterceptor } from 'socket/interceptor/http.response.interc
 import { FieldPermissionChangeRo } from 'socket/ros/datasheet/datasheet.ro';
 import { RoomService } from 'socket/services/room/room.service';
 
-@Controller('datasheet')
+@Controller(['datasheet', 'socket/datasheet'])
 @UseGuards(AuthGuard)
 @UseInterceptors(HttpResponseInterceptor)
 export class DatasheetController {
