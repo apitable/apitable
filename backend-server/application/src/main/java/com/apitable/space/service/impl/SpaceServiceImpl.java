@@ -18,6 +18,19 @@
 
 package com.apitable.space.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
@@ -71,7 +84,14 @@ import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.space.assembler.SpaceAssembler;
 import com.apitable.space.assembler.SubscribeAssembler;
-import com.apitable.space.dto.*;
+import com.apitable.space.dto.ControlStaticsDTO;
+import com.apitable.space.dto.DatasheetStaticsDTO;
+import com.apitable.space.dto.GetSpaceListFilterCondition;
+import com.apitable.space.dto.MapDTO;
+import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.space.dto.SpaceAdminInfoDTO;
+import com.apitable.space.dto.SpaceCapacityUsedInfo;
+import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
@@ -79,8 +99,17 @@ import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
 import com.apitable.space.ro.SpaceUpdateOpRo;
-import com.apitable.space.service.*;
-import com.apitable.space.vo.*;
+import com.apitable.space.service.IInvitationService;
+import com.apitable.space.service.ISpaceInviteLinkService;
+import com.apitable.space.service.ISpaceRoleService;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.space.service.IStaticsService;
+import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.space.vo.SpaceInfoVO;
+import com.apitable.space.vo.SpaceSocialConfig;
+import com.apitable.space.vo.SpaceSubscribeVo;
+import com.apitable.space.vo.SpaceVO;
+import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
@@ -93,24 +122,22 @@ import com.apitable.workspace.service.INodeShareSettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static com.apitable.organization.enums.OrganizationException.CREATE_MEMBER_ERROR;
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.NEW_SPACE_NAME;
 import static com.apitable.shared.constants.NotificationConstants.OLD_SPACE_NAME;
-import static com.apitable.space.enums.SpaceException.*;
-import static com.apitable.workspace.enums.PermissionException.*;
+import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
+import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
+import static com.apitable.space.enums.SpaceException.SPACE_QUIT_FAILURE;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.SET_MAIN_ADMIN_FAIL;
+import static com.apitable.workspace.enums.PermissionException.TRANSFER_SELF;
 
 /**
  * Space Service Implement Class.
@@ -515,7 +542,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
      * @return List<SpaceVO>
      */
     @Override
-    public List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition) {
+    public List<SpaceVO> getSpaceListByUserId(
+        final Long userId,
+        final GetSpaceListFilterCondition condition
+    ) {
         List<SpaceDTO> spaceDTOList = baseMapper.selectListByUserId(userId);
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
@@ -529,28 +559,32 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
         }
-        Map<String, SpaceDTO> spaceMaps = spaceDTOList.stream().collect(Collectors.toMap(SpaceDTO::getSpaceId, v -> v, (k1, k2) -> k1));
-        List<String> spaceIds = new ArrayList<>(spaceMaps.keySet());
+        List<String> spaceIds = spaceDTOList.stream().map(SpaceDTO::getSpaceId)
+            .collect(Collectors.toList());
         // get space domains
         Map<String, String> spaceDomains =
-                socialServiceFacade.getDomainNameMap(spaceIds);
+            socialServiceFacade.getDomainNameMap(spaceIds);
         // batch query subscriptions
         Map<String, SubscriptionFeature> spacePlanFeatureMap =
-                entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
+            entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
         // setting information
         List<SpaceVO> resultList = new ArrayList<>();
-        spaceMaps.forEach((spaceId, spaceDTO) -> {
+        for (SpaceDTO spaceDTO : spaceDTOList) {
+            String spaceId = spaceDTO.getSpaceId();
             SpaceVO spaceVO = SpaceAssembler.toVO(spaceDTO);
-            SocialConnectInfo socialConnectInfo = socialServiceFacade.getConnectInfo(spaceId);
-            SpaceSocialConfig socialConfig = SpaceAssembler.toSocialConfig(socialConnectInfo);
+            SocialConnectInfo socialConnectInfo =
+                socialServiceFacade.getConnectInfo(spaceId);
+            SpaceSocialConfig socialConfig =
+                SpaceAssembler.toSocialConfig(socialConnectInfo);
             spaceVO.setSocial(socialConfig);
             if (spacePlanFeatureMap.containsKey(spaceId)) {
-                SubscriptionFeature planFeature = spacePlanFeatureMap.get(spaceId);
+                SubscriptionFeature planFeature =
+                    spacePlanFeatureMap.get(spaceId);
                 spaceVO.setMaxSeat(planFeature.getSeat().getValue());
                 spaceVO.setSpaceDomain(spaceDomains.get(spaceId));
             }
             resultList.add(spaceVO);
-        });
+        }
         return resultList;
     }
 
@@ -626,28 +660,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         vo.setGiftCapacityUsedSizes(
                 spaceCapacityUsedInfo.getGiftCapacityUsedSizes());
         // owner info
-        if (entity.getOwner() != null) {
-            MemberDTO ownerMember = memberMapper.selectDtoByMemberId(entity.getOwner());
-            if (ownerMember != null) {
-                vo.setOwnerName(ownerMember.getMemberName());
-                vo.setOwnerAvatar(ownerMember.getAvatar());
-                vo.setIsOwnerNameModified(ownerMember.getIsSocialNameModified() > 0);
-                if (entity.getCreator() != null) {
-                    if (entity.getCreator().equals(ownerMember.getId())) {
-                        vo.setCreatorName(ownerMember.getMemberName());
-                        vo.setCreatorAvatar(ownerMember.getAvatar());
-                        vo.setIsCreatorNameModified(ownerMember.getIsSocialNameModified() > 0);
-                    } else {
-                        MemberDTO creatorMember = memberMapper.selectDtoByMemberId(entity.getCreator());
-                        if (creatorMember != null) {
-                            vo.setCreatorName(creatorMember.getMemberName());
-                            vo.setCreatorAvatar(creatorMember.getAvatar());
-                            vo.setIsCreatorNameModified(creatorMember.getIsSocialNameModified() > 0);
-                        }
-                    }
-                }
-            }
-        }
+        this.appendOwnerInfo(vo, entity);
         if (ObjectUtil.isNotNull(entity.getPreDeletionTime())) {
             vo.setDelTime(entity.getPreDeletionTime()
                     .plusDays(DELETE_SPACE_RETAIN_DAYS));
@@ -736,7 +749,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             // the complimentary attachment capacity has been used to be 0.
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
         } else {
-            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(planCapacity);
+            spaceCapacityUsedInfo
+                .setCurrentBundleCapacityUsedSizes(planCapacity);
             // complimentary attachment capacity
             Long giftCapacity = subscriptionInfo.getGiftCapacity().getValue();
             // If the attachment capacity is used in excess,
@@ -827,8 +841,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                 TRANSFER_SELF);
         if (dto.getMobile() != null) {
             // check whether the mobile phone verification code is passed
-            ValidateTarget target = ValidateTarget.create(dto.getMobile(), dto.getAreaCode());
-            ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).verifyIsPass(target.getRealTarget());
+            ValidateTarget target =
+                ValidateTarget.create(dto.getMobile(), dto.getAreaCode());
+            ValidateCodeProcessorManage.me()
+                .findValidateCodeProcessor(ValidateCodeType.SMS)
+                .verifyIsPass(target.getRealTarget());
         } else if (dto.getEmail() != null) {
             // check whether the sms verification code is passed
             ValidateTarget target = ValidateTarget.create(dto.getEmail());
