@@ -42,7 +42,7 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
 @Module({
   imports: [
     forwardRef(()=>GrpcModule),
-    NodeModule, 
+    forwardRef(()=>NodeModule),
     DatasheetModule, 
     forwardRef(()=>ResourceModule), 
     WidgetModule, 

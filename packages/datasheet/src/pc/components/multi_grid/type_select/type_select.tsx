@@ -278,7 +278,7 @@ export const TypeSelectBase: React.FC<ITypeSelect> = props => {
 
   return (
     <div className={styles.typeSelect} ref={divRef}>
-      <h1>{t(Strings.select_one_field)}</h1>
+      {!isMobile && <h1>{t(Strings.select_one_field)}</h1>}
       {props.fieldIndex === 0 && (
         <div style={{ padding: '0 24px', marginBottom: 8 }}>
           <Typography variant="body4" color={colors.fc3}>

@@ -21,12 +21,15 @@ import { Selectors } from '@apitable/core';
 import { Modal as AntdModal } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { stopPropagation } from 'pc/utils';
 
 export const ModalWithTheme = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
-      <AntdModal {...props} />
+      <div onMouseDown={stopPropagation}>
+        <AntdModal {...props} />
+      </div>
     </ThemeProvider>
   );
 };

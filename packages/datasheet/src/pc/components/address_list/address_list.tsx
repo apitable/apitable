@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Alert } from '@apitable/components';
+import { Alert, ThemeName } from '@apitable/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
@@ -25,7 +25,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import OrgImage from 'static/icon/organization/organization_img_default.png';
+import OrgImageLight from 'static/icon/organization/contacts_empty_light.png';
+import OrgImageDark from 'static/icon/organization/contacts_empty_dark.png';
 import { ComponentDisplay } from '../common/component_display';
 import { ScreenSize } from '../common/component_display/enum';
 import { CommonSide } from '../common_side';
@@ -54,6 +55,8 @@ export const AddressList: React.FC = () => {
   // const [isMainAdmin, setIsMainAdmin] = useState(false);
   // const [permissionList, setPermissionList] = useState<string[]>([]);
   const contactSyncing = isSocialDingTalk?.(spaceInfo) && isContactSyncing?.(spaceInfo);
+  const themeName = useSelector(state => state.theme);
+  const OrgImage = themeName === ThemeName.Light ? OrgImageLight : OrgImageDark;
 
   useEffect(() => {
     dispatch(StoreActions.getTeamListData(user!));

@@ -54,7 +54,7 @@
     position: relative;
     width: 540px;
     height: 80vh;
-    background: var(--lowestBg);
+    background: var(--bgCommonHighest);
     box-shadow: var(--shadowCommonHigh);
     padding-top: 24px;
     overflow: hidden;
@@ -165,10 +165,11 @@
     }
 
     .emptyFolder {
-      img {
-        display: block;
+      .emptyImg {
+        display: flex;
         height: 150px;
         margin: 72px auto 16px;
+        justify-content: center;
       }
 
       p {
@@ -176,6 +177,16 @@
         font-size: 13px;
         text-align: center;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .searchPanelContainer {
+    .searchPanel {
+      background: none;
+      box-shadow: none;
+      padding-top: 0;
     }
   }
 }

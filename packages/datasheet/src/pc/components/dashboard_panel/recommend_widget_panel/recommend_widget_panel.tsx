@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, Skeleton, useThemeColors } from '@apitable/components';
+import { Button, IconButton, Skeleton, useThemeColors, ThemeName } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseLargeOutlined } from '@apitable/icons';
 import Image from 'next/image';
@@ -28,7 +28,8 @@ import { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
 interface IRecommendWidgetPanelProps {
@@ -58,6 +59,8 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const rootNodeId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const dispatch = useDispatch();
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const importWidget = ({ widgetIds }) => {
     quoteWidget(widgetIds);

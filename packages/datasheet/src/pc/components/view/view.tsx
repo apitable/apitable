@@ -17,7 +17,7 @@
  */
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, SystemConfig, t, ViewType } from '@apitable/core';
+import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -26,7 +26,6 @@ import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
-import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -99,8 +98,8 @@ export const View: React.FC = () => {
   useExpandWidget();
 
   const useKonva = useMemo(() => {
-    return !getTestFunctionAvailable(SystemConfig.test_function.render_normal.feature_key);
-    // eslint-disable-next-line
+    return true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentView.id]);
 
   const isOrgChart = currentView.type === ViewType.OrgChart;

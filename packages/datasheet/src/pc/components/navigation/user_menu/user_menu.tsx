@@ -17,9 +17,7 @@
  */
 
 import { Button, useThemeColors } from '@apitable/components';
-import {
-  ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, NAV_ID, Player, Selectors, Strings, t,
-} from '@apitable/core';
+import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
@@ -291,7 +289,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
           </div>
         </div>
         {
-          uploadModal && 
+          uploadModal &&
           <ImageCropUpload
             type={IUploadType.Avatar}
             avatarName={nickName}
@@ -376,7 +374,8 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             <span className={styles.label}>{t(Strings.email)}</span>
             {email || t(Strings.unbound)}
           </div>
-          {isEnterprise && !isWecomSpace && !isPrivateDeployment() && (
+
+          {isEnterprise && !isWecomSpace && INVITATION_CODE_VISIBLE && inviteCode && (
             <div className={classNames(styles.centerItem, styles.inviteItem)}>
               <span className={styles.label}>{t(Strings.personal_invite_code_usercenter)}</span>
               <div className={styles.valueWrapper}>
@@ -405,7 +404,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
         </div>
-        {!isWecomSpace && isEnterprise && (
+        {!isWecomSpace && INVITATION_CODE_VISIBLE && isEnterprise && (
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>

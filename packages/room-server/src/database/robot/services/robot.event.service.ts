@@ -87,7 +87,6 @@ export class RobotEventService {
   async handleChangesets(changesets: IRemoteChangeset[]) {
     const msgIds = changesets.map(cs => cs.messageId);
     const events = await this.opEventManager.asyncHandleChangesets(changesets);
-    this.logger.info('handleChangesets', { msgIds });
     if (events.length === 0) {
       return;
     }
@@ -104,9 +103,9 @@ export class RobotEventService {
       EventTypeEnums.RecordMatchesConditions,
       EventTypeEnums.RecordCreated
     ], OFFICIAL_SERVICE_SLUG);
-    this.logger.debug(`In this batch, changeset triggers ${events.length} events: `, events.map(item => item.eventName));
-    this.logger.debug('dstIdTriggersMap', dstIdTriggersMap);
-    this.logger.debug('triggerSlugTypeIdMap', triggerSlugTypeIdMap);
+    this.logger.info(`messageIds: [${ msgIds }]: The official service slug ${ OFFICIAL_SERVICE_SLUG }`);
+    this.logger.info(`messageIds: [${ msgIds }]: The triggered trigger: ${ dstIdTriggersMap }`);
+    this.logger.info(`messageIds: [${ msgIds }]: The event and trigger's type map: ${ triggerSlugTypeIdMap }`);
     for (const event of events) {
       this.eventEmitter.emit(event.eventName, {
         ...event,

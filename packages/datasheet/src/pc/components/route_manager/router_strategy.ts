@@ -173,9 +173,9 @@ export class RouterStrategy implements IRouterStrategy {
     return [path, query, clearQuery];
   };
 
-  static [Navigation.SPACE_MANAGE] = ({ params }: IFunctionParams): IFunctionResult => {
+  static [Navigation.SPACE_MANAGE] = ({ params, query, clearQuery }: IFunctionParams): IFunctionResult => {
     const path = joinPath(['/management', params!.pathInSpace]);
-    return [path];
+    return [path, query, clearQuery];
   };
 
   static [Navigation.TRASH] = (): IFunctionResult => {

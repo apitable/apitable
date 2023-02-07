@@ -17,18 +17,16 @@
  */
 
 import xor from 'lodash/xor';
-import { ISnapshot } from '../modules/database/store/interfaces/resource';
+import type { ISnapshot } from '../modules/database/store/interfaces/resource';
 
 export type IConsistencyErrorInfo = {
   viewId: string;
   viewName: string;
   recordsInMap: string[];
-  differentRecords?: string[];
   notExistInRecordMap?: string[];
   notExistInFieldMap?: string[];
   notExistInViewRow?: string[];
   notExistInViewColumn?: string[];
-  differentFields?: string[];
   duplicateRows?: number[];
   duplicateColumns?: number[];
   replaceRows?: boolean;
@@ -100,7 +98,6 @@ export function consistencyCheck(snapshot: ISnapshot) {
       } else {
         const notExistInRecordMap = differentRecords.filter(record => !snapshot.recordMap[record]);
         const notExistInViewRow = differentRecords.filter(record => snapshot.recordMap[record]);
-        err.differentRecords = differentRecords;
         err.notExistInRecordMap = notExistInRecordMap; // exists in view.rows, but not in recordMap, indicating that rows add ghost rows
         err.notExistInViewRow = notExistInViewRow; // exists in recordMap, but does not exist in view.rows, indicating that rows are missing in rows
       }
@@ -109,10 +106,9 @@ export function consistencyCheck(snapshot: ISnapshot) {
     if (differentFields.length) {
       const notExistInFieldMap = differentFields.filter(record => !snapshot.meta.fieldMap[record]);
       const notExistInViewColumn = differentFields.filter(record => snapshot.meta.fieldMap[record]);
-      err.differentFields = differentFields;
-      err.notExistInFieldMap = notExistInFieldMap; // exists in view.columns, but not in recordMap, indicating that columns have added ghost rows
+      err.notExistInFieldMap = notExistInFieldMap; // exists in view.columns, but not in fieldMap, indicating that columns have added ghost rows
 
-      // exists in recordMap, but does not exist in view.columns, indicating that rows are missing in columns
+      // exists in fieldMap, but does not exist in view.columns, indicating that rows are missing in columns
       err.notExistInViewColumn = notExistInViewColumn; 
     }
 

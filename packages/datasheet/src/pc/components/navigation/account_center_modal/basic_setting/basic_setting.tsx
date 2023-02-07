@@ -17,18 +17,18 @@
  */
 
 import { Button, LinkButton, stopPropagation, Typography, useThemeColors } from '@apitable/components';
-import { hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { hiddenMobile, IReduxState, isIdassPrivateDeployment, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
 import { Spin } from 'antd';
 import classNames from 'classnames';
+// @ts-ignore
+import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { ImageCropUpload, IPreviewShape, ISelectInfo, IUploadType } from 'pc/components/common/image_crop_upload';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-// @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise';
 import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
@@ -95,14 +95,14 @@ export const BasicSetting: FC = () => {
       return;
     }
     const { memberId, avatar, nickName, avatarColor } = user;
-    return <Avatar 
-      id={memberId} 
-      src={avatar} 
-      title={nickName} 
-      avatarColor={avatarColor} 
-      size={AvatarSize.Size80} 
-      className={styles.avatorImg} 
-      style={style} 
+    return <Avatar
+      id={memberId}
+      src={avatar}
+      title={nickName}
+      avatarColor={avatarColor}
+      size={AvatarSize.Size80}
+      className={styles.avatorImg}
+      style={style}
     />;
   };
   const uploadConfirm = (data: ISelectInfo) => {
@@ -139,7 +139,7 @@ export const BasicSetting: FC = () => {
         if (code === StatusCode.LOG_OUT_UNSATISFIED) {
           Modal.confirm({
             title: t(Strings.kindly_reminder),
-            content: <Typography variant="body2">{t(Strings.logout_warning)}</Typography>,
+            content: <Typography variant='body2'>{t(Strings.logout_warning)}</Typography>,
             okButtonProps: {
               color: 'warning',
             },
@@ -154,7 +154,7 @@ export const BasicSetting: FC = () => {
             closable: false,
             icon: (
               <div className={styles.statusIcon}>
-                <StatusIconFunc type="warning" />
+                <StatusIconFunc type='warning' />
               </div>
             ),
           });
@@ -236,11 +236,11 @@ export const BasicSetting: FC = () => {
                   <Spin spinning={!nameModal && (uploadAvatarLoading || avatarColorLoading)}>{renderAvatar()}</Spin>
                 </div>
               </div>
-              <LinkButton component="button" underline={false} className={styles.modifyBtn} onClick={() => setUploadModal(true)}>
+              <LinkButton component='button' underline={false} className={styles.modifyBtn} onClick={() => setUploadModal(true)}>
                 {t(Strings.change_avatar)}
               </LinkButton>
               {
-                uploadModal && 
+                uploadModal &&
                 <ImageCropUpload
                   type={IUploadType.Avatar}
                   avatarName={nickName}
@@ -263,7 +263,7 @@ export const BasicSetting: FC = () => {
               <div className={styles.label}>{t(Strings.personal_nickname)}:</div>
               <div className={styles.content}>{realNickName}</div>
               {!isIdassPrivateDeployment() && (
-                <LinkButton component="button" underline={false} onClick={() => setNameModal(true)}>
+                <LinkButton component='button' underline={false} onClick={() => setNameModal(true)}>
                   {t(Strings.modal_title_modify_nickname)}
                 </LinkButton>
               )}
@@ -274,11 +274,11 @@ export const BasicSetting: FC = () => {
                 <div className={styles.content}>{mobileContent()}</div>
                 {!isIdassPrivateDeployment() && (
                   <>
-                    <LinkButton component="button" underline={false} onClick={() => setMobileModal(true)}>
+                    <LinkButton component='button' underline={false} onClick={() => setMobileModal(true)}>
                       {user!.mobile ? t(Strings.button_change_phone) : t(Strings.button_bind_now)}
                     </LinkButton>
                     {user!.mobile && (
-                      <LinkButton component="button" underline={false} onClick={() => unBind('mobile')} color={colors.errorColor}>
+                      <LinkButton component='button' underline={false} onClick={() => unBind('mobile')} color={colors.errorColor}>
                         {t(Strings.unbind)}
                       </LinkButton>
                     )}
@@ -286,26 +286,25 @@ export const BasicSetting: FC = () => {
                 )}
               </div>
             )}
-            {env.DELETE_ACCOUNT_VISIBLE && (
-              <div className={styles.item}>
-                <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
-                <div className={styles.content}>{user?.email || t(Strings.unbound)}</div>
-                {!isIdassPrivateDeployment() && (
-                  <>
-                    <LinkButton component="button" underline={false} onClick={() => setEmailModal(true)}>
-                      {user!.email ? t(Strings.change_email) : t(Strings.button_bind_now)}
+
+            <div className={styles.item}>
+              <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
+              <div className={styles.content}>{user?.email || t(Strings.unbound)}</div>
+              {env.USER_EDIT_EMAIL_VISIBLE && (
+                <>
+                  <LinkButton component='button' underline={false} onClick={() => setEmailModal(true)}>
+                    {user!.email ? t(Strings.change_email) : t(Strings.button_bind_now)}
+                  </LinkButton>
+                  {user!.email && (
+                    <LinkButton component='button' underline={false} onClick={() => unBind('email')} color={colors.errorColor}>
+                      {t(Strings.unbind)}
                     </LinkButton>
-                    {user!.email && (
-                      <LinkButton component="button" underline={false} onClick={() => unBind('email')} color={colors.errorColor}>
-                        {t(Strings.unbind)}
-                      </LinkButton>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
+                  )}
+                </>
+              )}
+            </div>
           </div>
-          {!isPrivateDeployment() && (
+          {env.DELETE_ACCOUNT_VISIBLE && (
             <div className={styles.logout}>
               <Button
                 loading={getUserLoading}

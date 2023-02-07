@@ -101,9 +101,9 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
       // TODO: push task to queue, to ensure the order of execution
       try {
         output = await this.reqMethods.requestActionOutput(actionRuntimeInput, actionType);
-      } catch (error) {
+      } catch (error: any) {
         // execute action failed, most likely because of network error
-        throw new Error('action execute failed');
+        throw new Error(`action execute failed. error message: ${ error.message }`);
       }
       nextActionId = actionInstance.nextActionId;
       // console.log(output, nextActionId);

@@ -506,6 +506,14 @@ public interface IMemberService extends IService<MemberEntity> {
     int getTotalMemberCountBySpaceId(String spaceId);
 
     /**
+     * get space's total actived member amount.
+     *
+     * @param spaceId space id
+     * @return member amount
+     */
+    int getTotalActiveMemberCountBySpaceId(String spaceId);
+
+    /**
      * pre delete user info.
      * logic to delete.
      * Account logout can be cancelled during the cooling-off period.

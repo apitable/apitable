@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, useThemeColors } from '@apitable/components';
+import { Button, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';
@@ -31,7 +31,8 @@ import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import spaceNameImg from 'static/icon/account/account_img_createspace@2x.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import styles from './style.module.less';
 
@@ -46,7 +47,8 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
   const dispatch = useDispatch();
   const err = useSelector((state: IReduxState) => state.space.err);
   const colors = useThemeColors();
-
+  const themeName = useSelector(state => state.theme);
+  const spaceNameImg = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const { run: toGetUser } = useRequest((spaceId) => Api.getUserMe({ spaceId }).then(res => {
     const { data, success } = res.data;
     if (success) {
@@ -101,7 +103,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
     return (
       <div>
         <div className={styles.spaceNameImg}>
-          <Image src={spaceNameImg} alt='createSpace Logo' width={366} height={275} />
+          <Image src={spaceNameImg} alt='createSpace Logo' width={320} height={240} />
         </div>
         {!isMobile && <div className={styles.title}>{t(Strings.new_space)}</div>}
         <div className={styles.subTitle}>{t(Strings.new_space_tips)}</div>

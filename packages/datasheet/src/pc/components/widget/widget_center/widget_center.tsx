@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
+import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
-  Settings, StoreActions, Strings, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
+  CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
+  StoreActions, Strings, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
 } from '@apitable/core';
 import {
   AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled,
@@ -40,8 +40,11 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux'; 
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
+import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
+import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
+
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { ContextMenu, IContextMenuMethods } from './context_menu';
@@ -239,7 +242,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={ColumnUrlOutlined} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'}/>} variant='background' />
           </a>
         </Tooltip>}
       </div>
@@ -396,6 +399,9 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     listStatus.current = [...listStatus.current, type];
   }, [packageListMap]);
   const needPlaceholder = (packageListMap?.[WidgetReleaseType.Global]?.length ?? 0) % 2 !== 0;
+
+  const themeName = useSelector(state => state.theme);
+  const widgetCenterEmpty = themeName === ThemeName.Light ? WidgetCenterEmptyLight : WidgetCenterEmptyDark;
 
   useEffect(() => {
     fetchPackageList(tabActiveKey);
@@ -576,7 +582,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
                     showMenu={showMenu}
                   /> :
                   <div className={styles.listEmpty}>
-                    <Image src={integrateCdnHost(Settings.widget_center_space_widget_empty_img.value)} alt='' width={240} height={180} />
+                    <Image src={widgetCenterEmpty} alt='' width={240} height={180} />
                     <p className={styles.emptyTitle}>{t(Strings.is_empty_widget_center_space)}</p>
                     <p className={styles.emptyDesc}>{t(Strings.widget_center_space_introduction)}</p>
                     <div className={styles.emptyFooter}>

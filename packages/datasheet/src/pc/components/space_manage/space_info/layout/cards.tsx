@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Strings, t } from '@apitable/core';
+// @ts-ignore
+import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { useMemo } from 'react';
-import { t, Strings, isPrivateDeployment } from '@apitable/core';
+import { CapacityWithRewardCard, Card, Info, LevelCard, MultiLineCard } from '../components';
+import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
+import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView } from '../hooks';
 import { ILayoutProps } from '../interface';
-import { Info, LevelCard, Card, MultiLineCard, CapacityWithRewardCard } from '../components';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
-import { useCapacity, useApi, useFile, useRecord, useMember, useView, useOthers } from '../hooks';
-// @ts-ignore
-import { isSocialPlatformEnabled, inSocialApp, isSocialFeiShu } from 'enterprise';
-import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
 
 interface ICardProps {
   minHeight?: string | number;
@@ -63,20 +62,21 @@ export const useCards = (props: ILayoutProps) => {
   }, [spaceInfo]);
 
   // Opened by a third-party space station or through a third-party browser
-  const isSocial = isSocialEnabled || inSocialApp?.() || isSocialFeiShu?.() || !getEnvVariables().SPACE_ENTERPRISE_CERTIFICATION_FORM_URL;
+  const isSocial = isSocialEnabled || inSocialApp?.() || isSocialFeiShu?.();
 
   return useMemo(() => {
     return {
-      AdCard: (props: ICardProps) => (
-        <Advert
+      AdCard: (props: ICardProps) => {
+        const { SPACE_OVERVIEW_SOCIAL_AD_URL } = getEnvVariables();
+        return <Advert
           {...props}
           desc={isSocial ? undefined : t(Strings.space_setting_social_ad_decs)}
-          linkText={(isSocial || !getEnvVariables().SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : t(Strings.space_setting_social_ad_btn)}
-          linkUrl={isSocial ? undefined : buildSpaceCertSheetUrl(spaceId)}
-        />
-      ),
+          linkText={(isSocial || !SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : t(Strings.space_setting_social_ad_btn)}
+          linkUrl={(isSocial || !SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : SPACE_OVERVIEW_SOCIAL_AD_URL!}
+        />;
+      },
       LevelCard: (props: ICardProps) => (
-        <LevelCard {...props} isMobile={isMobile} type={level} onUpgrade={onUpgrade} deadline={subscription?.deadline} />
+        <LevelCard {...props} isMobile={isMobile} type={level} onUpgrade={onUpgrade} deadline={subscription?.expireAt || subscription?.deadline} />
       ),
       InfoCard: (props: ICardProps) => (
         <Info {...props} {...infoProps} isMobile={isMobile} certified={basicCert} isSocialEnabled={isSocialEnabled} spaceId={spaceId} />
@@ -113,6 +113,15 @@ export const useCards = (props: ILayoutProps) => {
       CapacityCard: (props: ICardProps) => {
         // If it is a third-party environment, use Card (without complimentary space information),
         // otherwise use CapacityWithRewardCard (with complimentary information)
+        const titleLink = (basicCert || isSocial || isMobileApp() || isMobile || !getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE)
+          ? undefined
+          : {
+            text: t(Strings.attachment_capacity_details_entry),
+            onClick: () => {
+              expandCapacityRewardModal();
+            },
+          };
+
         return isSocial ? (
           <Card
             {...props}
@@ -128,16 +137,7 @@ export const useCards = (props: ILayoutProps) => {
             strokeColor={strokeColor}
             title={t(Strings.space_capacity)}
             titleTip={t(Strings.member_data_desc_of_appendix)}
-            titleLink={
-              basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()
-                ? undefined
-                : {
-                  text: t(Strings.attachment_capacity_details_entry),
-                  onClick: () => {
-                    expandCapacityRewardModal();
-                  },
-                }
-            }
+            titleLink={titleLink}
           />
         ) : (
           <CapacityWithRewardCard
@@ -149,16 +149,7 @@ export const useCards = (props: ILayoutProps) => {
             strokeColor={strokeColor}
             title={t(Strings.space_capacity)}
             titleTip={t(Strings.member_data_desc_of_appendix)}
-            titleLink={
-              basicCert || isSocial || isMobileApp() || isMobile || isPrivateDeployment()
-                ? undefined
-                : {
-                  text: t(Strings.attachment_capacity_details_entry),
-                  onClick: () => {
-                    expandCapacityRewardModal();
-                  },
-                }
-            }
+            titleLink={titleLink}
           />
         );
       },

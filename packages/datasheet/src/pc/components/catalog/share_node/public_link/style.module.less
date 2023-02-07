@@ -237,7 +237,7 @@
 // More ways to invite
 .inviteMore {
   padding: 14px 0;
-  border-top: 1px solid var(--borderCommon);
+  border-top: 1px solid var(--borderCommonDefault);
   .displayAlignCenter();
 
   .inviteMoreTitle {
@@ -312,7 +312,7 @@
 }
 
 .downloadQrCodeImage {
-  border: 1px solid var(--borderCommon);
+  border: 1px solid var(--borderCommonDefault);
   border-radius: 4px;
   margin-bottom: 8px;
   box-sizing: border-box;
@@ -345,6 +345,9 @@
   height: 20px;
   padding-right: 32px;
   background: transparent !important;
+  svg {
+    fill: var(--textBrandDefault);
+  }
   :global {
     .optionLabel {
       color: var(--textBrandDefault) !important;

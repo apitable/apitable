@@ -93,7 +93,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
           <Button size="small" onClick={() => setCollection([])}>
             {t(Strings.clear_all_fields)}
           </Button>
-          <Button size="small" onClick={setAllFieldsHandler}>
+          <Button className={styles.button} size="small" onClick={setAllFieldsHandler}>
             {t(Strings.select_all_fields)}
           </Button>
         </div>

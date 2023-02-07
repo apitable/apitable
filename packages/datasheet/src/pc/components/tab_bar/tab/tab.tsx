@@ -186,7 +186,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
         templateId && !isIdassPrivateDeployment() &&
         <TemplateUseButton
           block={false}
-          style={{ marginRight: 12, marginBottom: 0 }}
+          style={{ marginRight: 12 }}
           showIcon
         />
       }

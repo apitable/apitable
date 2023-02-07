@@ -18,8 +18,6 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from 'user/repositories/user.repository';
-import { UserService } from 'user/services/user.service';
 import { RobotActionController } from './controller/action.controller';
 import { RobotActionTypeController } from './controller/action.type.controller';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
@@ -44,6 +42,7 @@ import { RecordCreatedListener } from './events/listeners/record.created.listene
 import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
 import { RobotServiceService } from './services/robot.service.service';
 import { NodeModule } from 'node/node.module';
+import { UserModule } from 'user/user.module';
 
 @Module({
   imports: [
@@ -55,10 +54,9 @@ import { NodeModule } from 'node/node.module';
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
       AutomationActionTypeRepository,
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      UserRepository
     ]),
     NodeModule,
+    UserModule,
     RobotServiceDynamicModule.forRoot(),
   ],
   controllers: [
@@ -75,7 +73,6 @@ import { NodeModule } from 'node/node.module';
     RobotTriggerService,
     RobotTriggerTypeService,
     RobotServiceService,
-    UserService,
     FormSubmittedListener,
     TriggerEventHelper,
     RecordCreatedListener,

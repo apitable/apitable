@@ -17,14 +17,14 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { DatasheetRecordRepository } from 'database/datasheet/repositories/datasheet.record.repository';
+import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { difference } from 'lodash';
 import { ApiException, ApiTipId } from 'shared/exception';
 
 @Injectable()
 export class FusionApiRecordService {
   constructor(
-    private readonly recordRepository: DatasheetRecordRepository
+    private readonly recordService: DatasheetRecordService
   ) {
   }
 
@@ -38,7 +38,7 @@ export class FusionApiRecordService {
    * @throws ApiException
    */
   public async validateRecordExists(dstId: string, recordIds: string[], error: ApiTipId) {
-    const dbRecordIds = await this.recordRepository.selectIdsByDstIdAndRecordIds(dstId, recordIds);
+    const dbRecordIds = await this.recordService.selectIdsByDstIdAndRecordIds(dstId, recordIds);
     if (!dbRecordIds?.length) {
       throw ApiException.tipError(error, { recordId: recordIds.join(', ') });
     }
