@@ -520,7 +520,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (CollUtil.isEmpty(spaceDTOList)) {
             return Collections.emptyList();
         }
-        if (condition != null && BooleanUtil.isTrue(condition.getManageable())) {
+        if (condition != null
+            && BooleanUtil.isTrue(condition.getManageable())) {
             spaceDTOList = spaceDTOList.stream()
                     .filter(SpaceDTO::getAdmin)
                     .collect(Collectors.toList());
