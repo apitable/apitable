@@ -398,7 +398,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
       />
       }
 
-      {isOperateSetting && <FieldSetting />}
+      {isOperateSetting && <FieldSetting datasheetId={datasheetId} viewId={viewId} />}
     </div>
   );
 };

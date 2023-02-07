@@ -41,7 +41,6 @@ interface IExpandRecordModal {
 
 const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
   const recordVision = useSelector(state => state.recordVision);
-  const hasRecordId = useSelector(state => Boolean(state.pageParams.recordId));
   useSelector(state => state.space.isSideRecordOpen);
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
   const isEditingCell = useSelector(state => Boolean(Selectors.getEditingCell(state)));
@@ -85,8 +84,8 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
     );
   };
 
-  // forced centering (no recordId in route or forceCenter set and not in full screen mode)
-  if (!hasRecordId || (props.forceCenter && !isRecordFullScreen)) {
+  // forced centering (forceCenter set and not in full screen mode)
+  if (props.forceCenter && !isRecordFullScreen) {
     return renderCenterModal();
   }
 

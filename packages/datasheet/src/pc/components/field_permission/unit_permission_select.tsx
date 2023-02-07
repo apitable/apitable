@@ -129,9 +129,9 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
         <div className={styles.unitValue} onClick={openMemberList} tabIndex={-1}>
           <div className={styles.placeholder}>
             <AddOutlined color={colors.thirdLevelText} />
-            <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all' }}>
-              {unitValue.length ? t(Strings.add) : t(Strings.add_member_or_unit)}
-            </Typography>
+            {!unitValue.length && <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all' }}>
+              {t(Strings.add_member_or_unit)}
+            </Typography>}
           </div>
           {unitValue.map((unitId) => {
             const unitInfo = unitMap[unitId];
@@ -152,7 +152,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
           })}
         </div>
         <div className={styles.unitPermission}>
-          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1 }} />
+          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1, borderLeftColor: colors.borderCommonDefault }} />
 
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <DoubleSelect

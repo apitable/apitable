@@ -350,4 +350,8 @@ export class DatasheetRecordService {
 
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]!) || '';
   }
+
+  async selectIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<string[] | null> {
+    return await this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
+  }
 }

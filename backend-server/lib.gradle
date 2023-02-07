@@ -145,5 +145,6 @@ ext {
     // Spring retry
     'spring-retry'                : "org.springframework.retry:spring-retry",
     'awaitility'                  : "org.awaitility:awaitility",
+    'stripe'                      : "com.stripe:stripe-java:22.0.0",
   ]
 }

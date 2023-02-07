@@ -20,30 +20,71 @@ package com.apitable.player.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
+/**
+ * Notification model.
+ */
 @Data
 public class NotificationModelDTO {
 
+    /**
+     * id.
+     */
     private Long id;
 
+    /**
+     * is read.
+     */
     private Integer isRead;
 
+    /**
+     * notify type.
+     */
     private String notifyType;
 
-    private String createdAt;
+    /**
+     * created time.
+     */
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    /**
+     * update time.
+     */
+    private LocalDateTime updatedAt;
 
+    /**
+     * node id.
+     */
     private String nodeId;
 
+    /**
+     * space id.
+     */
     private String spaceId;
 
+    /**
+     * to user id.
+     */
     private Long toUser;
 
+    /**
+     * template id.
+     */
     private String templateId;
 
+    /**
+     * from user id.
+     */
     private Long fromUser;
 
+    /**
+     * notify body.
+     */
     private String notifyBody;
 
+    /**
+     * row number.
+     */
     private Integer rowNo;
 }

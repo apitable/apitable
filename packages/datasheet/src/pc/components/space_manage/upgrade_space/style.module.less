@@ -24,3 +24,41 @@
   right: 0;
   bottom: 0;
 }
+
+.header {
+  background-color: var(--bgCommonDefault);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.modalWrapper {
+  :global {
+    .ant-modal-content {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .ant-modal-body {
+      padding: 0 !important;
+      height: 80vh;
+    }
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    .ant-modal-close-x {
+      &:hover, &:focus-within {
+        box-shadow: none !important;
+        background: none !important;
+      }
+
+      svg {
+        fill: var(--fc8);
+      }
+    }
+  }
+}

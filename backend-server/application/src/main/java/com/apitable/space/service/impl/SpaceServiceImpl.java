@@ -552,7 +552,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         if (condition != null
             && BooleanUtil.isTrue(condition.getManageable())) {
-            spaceDTOList = spaceDTOList.stream().filter(SpaceDTO::getAdmin)
+            spaceDTOList = spaceDTOList.stream()
+                    .filter(SpaceDTO::getAdmin)
                     .collect(Collectors.toList());
         }
         if (CollUtil.isEmpty(spaceDTOList)) {

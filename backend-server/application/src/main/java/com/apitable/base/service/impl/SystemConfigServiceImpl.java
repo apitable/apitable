@@ -18,6 +18,8 @@
 
 package com.apitable.base.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import cn.hutool.core.util.ObjectUtil;
@@ -25,6 +27,7 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.base.entity.SystemConfigEntity;
 import com.apitable.base.enums.SystemConfigType;
 import com.apitable.base.mapper.SystemConfigMapper;
+import com.apitable.base.model.SystemConfigDTO;
 import com.apitable.base.service.ISystemConfigService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
@@ -35,20 +38,30 @@ import org.springframework.stereotype.Service;
 import static com.apitable.core.constants.RedisConstants.GENERAL_CONFIG;
 
 /**
+ * System Config Service Implement Class.
+ *
  * @author tao
  */
 @Service
 @Slf4j
 public class SystemConfigServiceImpl implements ISystemConfigService {
 
+    /** */
     @Resource
     private SystemConfigMapper systemConfigMapper;
 
+    /** */
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
+    /**
+     * Get Wizard Config.
+     *
+     * @param lang Language
+     * @return config
+     */
     @Override
-    public Object getWizardConfig(String lang) {
+    public Object getWizardConfig(final String lang) {
         String key = StrUtil.format(GENERAL_CONFIG, "wizards", lang);
         Object cacheVal = redisTemplate.opsForValue().get(key);
         if (cacheVal != null) {
@@ -58,14 +71,47 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
         return findConfig(SystemConfigType.WIZARD_CONFIG, lang);
     }
 
+    /**
+     * Find Config.
+     *
+     * @param type  configuration type
+     * @param lang  configuration language (optional)
+     * @return config
+     */
     @Override
-    public String findConfig(SystemConfigType type, String lang) {
+    public String findConfig(final SystemConfigType type, final String lang) {
         return systemConfigMapper.selectConfigMapByType(type.getType(), lang);
     }
 
+    /**
+     * Find System Config DTOs.
+     *
+     * @param type  configuration type
+     * @return List<SystemConfigDTO>
+     */
     @Override
-    public void saveOrUpdate(Long userId, SystemConfigType type, String lang, String configVal) {
-        Long id = systemConfigMapper.selectIdByTypeAndLang(type.getType(), lang);
+    public List<SystemConfigDTO> findSystemConfigDTOs(
+        final SystemConfigType type) {
+        return systemConfigMapper.selectConfigDtoByType(type.getType());
+    }
+
+    /**
+     * Save Or Update.
+     *
+     * @param userId    user id
+     * @param type      configuration type
+     * @param lang      configuration language
+     * @param configVal configuration value
+     */
+    @Override
+    public void saveOrUpdate(
+        final Long userId,
+        final SystemConfigType type,
+        final String lang,
+        final String configVal
+    ) {
+        Long id =
+            systemConfigMapper.selectIdByTypeAndLang(type.getType(), lang);
         // does not exist, create a new record
         if (ObjectUtil.isNull(id)) {
             SystemConfigEntity entity = SystemConfigEntity.builder()

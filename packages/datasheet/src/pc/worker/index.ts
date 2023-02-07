@@ -16,25 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DispatchToStore, IReduxState, Selectors, StoreActions, SystemConfig } from '@apitable/core';
+import { DispatchToStore, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { Remote, wrap } from 'comlink';
 import { Store } from 'redux';
-import { getTestFunctionAvailable } from '../utils/storage';
 import { dispatch, remoteStoreWrap } from './store';
 
 /**
- * comlinkStore is similar to a full-duplex socket service, 
+ * comlinkStore is similar to a full-duplex socket service,
  * where the main thread can call the worker instance's methods imperatively via storeComlink.proxy.
- * At the same time the worker instance will also actively push some messages to update the redux of the main thread, 
+ * At the same time the worker instance will also actively push some messages to update the redux of the main thread,
  * so as to update the UI, actively pushing the data data for a redux action
-*/
-export const comlinkStore:
-{ worker: Worker | null, proxy: Remote<any> | null, store: Store<IReduxState> & { removeCache: (params: any[]) => void } | null }
-= { worker: null, proxy: null, store: null };
+ */
+export const comlinkStore: {
+  worker: Worker | null;
+  proxy: Remote<any> | null;
+  store: (Store<IReduxState> & { removeCache: (params: any[]) => void }) | null;
+} = { worker: null, proxy: null, store: null };
 
 export async function initWorkerStore() {
   let worker: any, proxy: any;
-  const useWorker = getTestFunctionAvailable(SystemConfig.test_function.async_compute.feature_key);
+  const useWorker = false;
   if (typeof Worker === 'function' && useWorker) {
     (window as any).useWorkerCompute = true;
     worker = new Worker('./store/store_worker', { type: 'module', name: 'store_worker' });
@@ -46,7 +47,7 @@ export async function initWorkerStore() {
         // console.log('worker data post spend time: ', Date.now() - data.postTime);
         // console.log('dispatch action from worker', data.action);
         dispatch(data.action);
-        return ;
+        return;
       } else if (e.data?.type === 'requestResource') {
         const datasheetId = e.data.datasheetId;
         if (datasheetId) {
@@ -55,8 +56,11 @@ export async function initWorkerStore() {
           if (datasheet) {
             console.log("Replenish data from the main thread's store to the worker", datasheet);
             comlinkStore.store!.dispatch({
-              ...StoreActions.receiveDataPack({ snapshot: datasheet.snapshot, datasheet }, datasheet.isPartOfData, () => state),
-              dispatchToStore: DispatchToStore.Remote
+              ...StoreActions.receiveDataPack(
+                { snapshot: datasheet.snapshot, datasheet },
+                { isPartOfData: datasheet.isPartOfData, getState: () => state },
+              ),
+              dispatchToStore: DispatchToStore.Remote,
             });
           }
         }
@@ -65,7 +69,7 @@ export async function initWorkerStore() {
       }
     });
   }
-  const wrappedStore = await remoteStoreWrap(proxy) as any;
+  const wrappedStore = (await remoteStoreWrap(proxy)) as any;
   comlinkStore.worker = worker;
   comlinkStore.proxy = proxy;
   comlinkStore.store = wrappedStore;

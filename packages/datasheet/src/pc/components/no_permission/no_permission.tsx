@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
-import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@apitable/core';
+import { Button, ThemeName } from '@apitable/components';
+import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
 import { Router } from 'pc/components/route_manager/router';
@@ -31,6 +31,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { ServiceQrCode } from 'enterprise';
 import { getEnvVariables } from 'pc/utils/env';
+import restrictedAccessLight from 'static/icon/datasheet/restricted_access_light.png';
+import restrictedAccessDark from 'static/icon/datasheet/restricted_access_dark.png';
 
 export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
@@ -51,6 +53,9 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
   const env = getEnvVariables();
   const qrcodeVisible = env.ERROR_PAGE_CUSTOMER_SERVICE_QRCODE_VISIBLE;
 
+  const themeName = useSelector(state => state.theme);
+  const RestrictedAccess = themeName === ThemeName.Light ? restrictedAccessLight : restrictedAccessDark;
+
   return (
     <div className={styles.pageWrapper}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -66,7 +71,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
                     </div>
                   </>
                   :
-                  <Image src={integrateCdnHost(Settings.workbench_no_permission_img.value)} width={230} height={200} />
+                  <Image src={RestrictedAccess} width={200} height={150} />
               } 
 
             </div>
@@ -75,7 +80,6 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
             { qrcodeVisible ? 
               <div className={styles.helpText}>{t(Strings.qrcode_help)}</div> :
               <div className={styles.helpText}> 
-                {t(Strings.qrcode_help)} 
                 <a href={env.HELP_MENU_USER_COMMUNITY_URL} target="_blank" rel="noreferrer">{t(Strings.join_discord_community)}</a></div>
             }
             {!pageParams.embedId && <div className={styles.backButton}>
@@ -95,7 +99,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
               qrcodeVisible ?
                 <Image src={NoPermissionPng} alt={t(Strings.no_permission)} />
                 :
-                <Image src={integrateCdnHost(Settings.workbench_no_permission_img.value)} width={230} height={200} />
+                <Image src={RestrictedAccess} width={200} height={150} />
             }
 
             <div className={styles.tidiv}>{t(Strings.not_found_this_file)}</div>

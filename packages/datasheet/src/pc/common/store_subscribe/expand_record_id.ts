@@ -49,10 +49,10 @@ store.subscribe(function routeRecordChange() {
   }
 
   preRecordId = recordId;
-  
+
   if (!isSideRecordOpen && state.recordVision === RecordVision.Side) {
     store.dispatch((StoreActions.toggleSideRecord(true)));
   }
 
-  expandRecordRoute();
+  expandRecordRoute({ preventOpenNewModal: true });
 });

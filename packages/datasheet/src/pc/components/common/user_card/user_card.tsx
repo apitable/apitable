@@ -23,18 +23,20 @@ import { Avatar, Loading, Tag } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TagColors } from '../tag';
 import styles from './style.module.less';
 import { IAvatarProps } from 'pc/components/common';
 import classNames from 'classnames';
+
 export interface IUserCard {
   memberId?: string;
   userId?: string;
   permissionVisible?: boolean;
   spareName?: string; // Alternate interface in case the interface does not query information
-  spareSrc?: string; 
+  spareSrc?: string;
   spaceName?: string; // If not passed, the space name in userinfo is taken by default
   isAlien?: boolean;
   isDeleted?: boolean;
@@ -42,6 +44,7 @@ export interface IUserCard {
   onClose?: () => void;
   avatarProps?: IAvatarProps;
 }
+
 enum TAGTYPE {
   Visitor = 'Visitor',
   Member = 'Member',
@@ -96,7 +99,7 @@ export const UserCard: FC<IUserCard> = ({
             return member[0].role;
           }
         }
-      } catch(e) {
+      } catch (e) {
         console.log('Get member role error', e);
       }
     }
@@ -113,14 +116,14 @@ export const UserCard: FC<IUserCard> = ({
   }
 
   const tagText = useMemo(() => {
-    if(isDeleted) {
+    if (isDeleted) {
       return t(Strings.member_status_removed);
     }
-  
-    if(!isActive || (memberInfo && !memberInfo.isActive)) {
+
+    if (!isActive || (memberInfo && !memberInfo.isActive)) {
       return t(Strings.added_not_yet);
     }
-  
+
     // Aliens
     if (isAlien) {
       return t(Strings.anonymous);
@@ -134,7 +137,9 @@ export const UserCard: FC<IUserCard> = ({
   const tooltipZIndex = 10001;
 
   const openPermissionModal = () => {
-    if (!activeNodeId) { return; }
+    if (!activeNodeId) {
+      return;
+    }
     dispatch(StoreActions.updatePermissionModalNodeId(activeNodeId));
     onClose && onClose();
   };
@@ -151,9 +156,9 @@ export const UserCard: FC<IUserCard> = ({
         {loading || (!memberRole && permissionVisible) ? <Loading /> :
           (
             <div>
-              {permissionVisible && memberRole && memberInfo &&
+              {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE &&
                 <div className={styles.cardTool} onClick={openPermissionModal}>
-                  <div className={styles.settingPermissionBtn} >
+                  <div className={styles.settingPermissionBtn}>
                     <SettingOutlined />
                   </div>
                   <span>{t(Strings.permission)}</span>
@@ -169,24 +174,24 @@ export const UserCard: FC<IUserCard> = ({
                   size={40}
                 />
                 <div className={styles.nameWrapper}>
-                  <Typography className={styles.name} variant="h7" color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                    { title || spareName }
+                  <Typography className={styles.name} variant='h7' color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
+                    {title || spareName}
                   </Typography>
                   {permissionVisible && memberRole &&
                     <div className={styles.permissionWrapper}>
                       <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     </div>
                   }
-                  <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive } />
+                  <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
                 </div>
               </div>
               <div className={styles.infoWrapper}>
                 <div className={styles.email}>
                   {
                     memberInfo?.email &&
-                      <Typography variant="body4" color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
-                        {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-                      </Typography>
+                    <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                      {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                    </Typography>
                   }
                 </div>
               </div>
@@ -196,10 +201,10 @@ export const UserCard: FC<IUserCard> = ({
                   <div className={styles.teamList}>
                     {memberInfo ?
                       memberInfo?.teamData?.map((item, index) => {
-                        return(
+                        return (
                           <div key={index} className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
                         );
-                      }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-' 
+                      }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-'
                     }
                   </div>
                 </div>
@@ -219,10 +224,10 @@ interface ITeamTag {
 
 const TeamTag: FC<ITeamTag> = (props) => {
   const { tagText, isActive } = props;
-  
+
   const colors = useThemeColors();
-  
-  if(tagText === '') {
+
+  if (tagText === '') {
     return null;
   }
 
@@ -230,8 +235,8 @@ const TeamTag: FC<ITeamTag> = (props) => {
     <div className={classNames({
       [styles.tag]: isActive,
       [styles.dangerTag]: !isActive
-    })} >
-      <Typography variant="body4" color={isActive ? colors.secondLevelText : colors.borderDanger} ellipsis >{tagText}</Typography>
+    })}>
+      <Typography variant='body4' color={isActive ? colors.secondLevelText : colors.borderDangerDefault} ellipsis>{tagText}</Typography>
     </div>
   );
 };

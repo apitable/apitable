@@ -163,7 +163,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     // Proactively setting editable to false bypasses conflict detection and avoids pop-ups that automatically restore modal boxes
     const previewSnapshot = cloneDatasheet.snapshot;
     try {
-      dispatch(StoreActions.receiveDataPack({ snapshot: previewSnapshot, datasheet: cloneDatasheet }, false));
+      dispatch(StoreActions.receiveDataPack({ snapshot: previewSnapshot, datasheet: cloneDatasheet }, { isPartOfData: false }));
     } catch (error) {
       console.log(error);
       Modal.error({

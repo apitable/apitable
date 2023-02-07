@@ -75,7 +75,6 @@ export const RobotRunHistory = () => {
       }
       <Box
         height="calc(100vh - 150px)"
-        overflow="scroll"
         ref={rootRef}
       >
         {

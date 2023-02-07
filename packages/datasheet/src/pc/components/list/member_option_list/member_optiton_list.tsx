@@ -30,6 +30,8 @@ import {
   Strings,
   t,
   UnitItem,
+  Selectors,
+  PermissionType
 } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
@@ -76,7 +78,8 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const containerRef = useRef<HTMLDivElement>(null);
   const { formId, embedId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
-
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  
   const refreshMemberList = useCallback(() => {
     // listData is not passed in, use stash directly
     if (!listData) {
@@ -263,7 +266,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
           run(keyword);
         }}
         // The share page is not allowed to appear View More, the organization in the space station will be leaked
-        footerComponent={showMoreTipButton && !shareId ? () => {
+        footerComponent={showMoreTipButton && !shareId && !(embedId && embedInfo.permissionType !== PermissionType.PRIVATEEDIT) ? () => {
           return <div
             className={styles.seeMore}
             onMouseUp={e => {

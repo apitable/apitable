@@ -19,13 +19,13 @@
 import { ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
-import { DatasheetWidgetRepository } from '../../datasheet/repositories/datasheet.widget.repository';
 import { Logger } from 'winston';
 import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';
 import { DatasheetFieldHandler } from 'database/datasheet/services/datasheet.field.handler';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
+import { DatasheetWidgetService } from 'database/datasheet/services/datasheet.widget.service';
 
 /**
  * @author Chambers
@@ -37,7 +37,7 @@ export class ResourceChangeHandler {
     @InjectLogger() private readonly logger: Logger,
     private readonly roomResourceRelService: RoomResourceRelService,
     private readonly nodeService: NodeService,
-    private readonly datasheetWidgetRepository: DatasheetWidgetRepository,
+    private readonly datasheetWidgetService: DatasheetWidgetService,
     private readonly datasheetFieldHandler: DatasheetFieldHandler,
   ) { }
 
@@ -150,7 +150,7 @@ export class ResourceChangeHandler {
     // New widget
     if (resultSet.addWidgetIds.length) {
       addResourceIds.push(...resultSet.addWidgetIds);
-      const dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(addResourceIds);
+      const dstIds = await this.datasheetWidgetService.selectDstIdsByWidgetIds(addResourceIds);
       if (dstIds?.length) {
         addResourceIds.push(...dstIds);
       }
@@ -158,10 +158,10 @@ export class ResourceChangeHandler {
     // Delete widget
     if (resultSet.deleteWidgetIds.length) {
       delResourceIds.push(...resultSet.deleteWidgetIds);
-      let dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(delResourceIds);
+      let dstIds = await this.datasheetWidgetService.selectDstIdsByWidgetIds(delResourceIds);
       if (dstIds?.length) {
         // Delete data source of undeleted widget
-        const reservedDstIds = await this.datasheetWidgetRepository.selectDstIdsByNodeId(dashboardId);
+        const reservedDstIds = await this.datasheetWidgetService.selectDstIdsByNodeId(dashboardId);
         if (reservedDstIds?.length) {
           dstIds = difference<string>(dstIds, reservedDstIds);
         }

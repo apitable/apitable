@@ -25,9 +25,9 @@ import { Store } from 'redux';
 import { CommonException, OtException, ServerException } from '../../../shared/exception';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
-import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
+import { DatasheetChangesetEntity } from '../entities/datasheet.changeset.entity';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
-import { DatasheetChangesetRepository } from '../../datasheet/repositories/datasheet.changeset.repository';
+import { DatasheetChangesetRepository } from '../repositories/datasheet.changeset.repository';
 import { CommandOptionsService } from 'database/command/services/command.options.service';
 import { CommandService } from 'database/command/services/command.service';
 import { UnitService } from 'unit/services/unit.service';
@@ -77,19 +77,25 @@ export class DatasheetChangesetService {
           const { result, changeSets } = this.commandService.execute(options, store);
           if (result && result.result == ExecuteResult.Success) {
             changeSets.map(item => {
-              if (changesetMap.has(item.resourceId)) {
-                changesetMap.get(item.resourceId)?.operations.push(...item.operations);
-              } else {
-                changesetMap.set(item.resourceId, item);
-              }
+              // add operations
+              this.changesetAddOperations(changesetMap, item);
             });
           } else {
+            // throw ot exception
             throw new ServerException(new OtException(CommonException.COMMON_ERROR_CODE, ('reason' in result && result.reason) || result.result));
           }
         }
       });
     });
     return Array.from(changesetMap.values());
+  }
+
+  public changesetAddOperations(changesetMap: Map<string, ILocalChangeset>, item: ILocalChangeset) {
+    if (changesetMap.has(item.resourceId)) {
+      changesetMap.get(item.resourceId)?.operations.push(...item.operations);
+    } else {
+      changesetMap.set(item.resourceId, item);
+    }
   }
 
   /**
@@ -209,11 +215,7 @@ export class DatasheetChangesetService {
       const { result, changeSets } = this.commandService.execute(setFieldAttrOptions, store);
       if (result && result.result == ExecuteResult.Success) {
         changeSets.map(item => {
-          if (changesetMap.has(item.resourceId)) {
-            changesetMap.get(item.resourceId)?.operations.push(...item.operations);
-          } else {
-            changesetMap.set(item.resourceId, item);
-          }
+          this.changesetAddOperations(changesetMap, item);
           // apply succeeded operations, writing data, to avoid field name duplicate
           store.dispatch(StoreActions.applyJOTOperations(item.operations, ResourceType.Datasheet, item.resourceId));
         });
@@ -251,11 +253,7 @@ export class DatasheetChangesetService {
     // Don't throw exception when written data is none
     if (result && (result.result == ExecuteResult.Success || result.result == ExecuteResult.None)) {
       changeSets.map(item => {
-        if (changesetMap.has(item.resourceId)) {
-          changesetMap.get(item.resourceId)?.operations.push(...item.operations);
-        } else {
-          changesetMap.set(item.resourceId, item);
-        }
+        this.changesetAddOperations(changesetMap, item);
       });
     } else {
       throw new ServerException(new OtException(CommonException.COMMON_ERROR_CODE, ('reason' in result && result.reason) || result.result));
@@ -377,4 +375,15 @@ export class DatasheetChangesetService {
     };
   }
 
+  async selectByDstIdAndRevisions(dstId: string, revisions: number[]): Promise<DatasheetChangesetEntity[]> {
+    return await this.datasheetChangesetRepository.selectByDstIdAndRevisions(dstId, revisions);
+  }
+
+  async countByDstIdAndMessageId(dstId: string, messageId: string): Promise<number> {
+    return await this.datasheetChangesetRepository.countByDstIdAndMessageId(dstId, messageId);
+  }
+
+  async getChangesetOrderList(dstId: string, startRevision: number, endRevision: number): Promise<any[]> {
+    return await this.datasheetChangesetRepository.getChangesetOrderList(dstId, startRevision, endRevision);
+  }
 }

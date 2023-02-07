@@ -166,11 +166,11 @@ export const HeaderDiv = styled.div.attrs(applyDefaultTheme)`
   line-height: 32px;
   padding: 4px 12px;
   ${props => {
-    const { textCommonPrimary, bgBrandDefault, borderBrand } = props.theme.color;
+    const { textCommonPrimary, bgBrandDefault, borderBrandDefault } = props.theme.color;
     return css`
       button {
         background-color: transparent;
-        border: 1px solid ${borderBrand};
+        border: 1px solid ${borderBrandDefault};
         color: ${bgBrandDefault};
         font-size: 12px;
         line-height: 24px;
