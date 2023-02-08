@@ -95,7 +95,7 @@ async function bootstrap() {
   // app.use(Sentry.Handlers.requestHandler());
 
   // global exception filter
-  app.useGlobalFilters(new GlobalExceptionFilter(logger, app.get<I18nService>(I18nService)));
+  app.useGlobalFilters(new GlobalExceptionFilter(app.get<I18nService>(I18nService)));
 
   // tracing all the requests by sentry
   app.useGlobalInterceptors(new TracingHandlerInterceptor());

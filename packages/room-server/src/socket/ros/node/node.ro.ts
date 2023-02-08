@@ -16,7 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IsArray, IsOptional, IsString } from 'class-validator';
+
 export class NodeShareDisableRo {
+  @IsString()
   nodeId!: string;
+
+  @IsArray()
+  @IsOptional()
   shareIds?: string[];
 }

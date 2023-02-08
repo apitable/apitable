@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IsObject, IsString } from 'class-validator';
+
 export class SocketRo {
+  @IsString()
   event!: string;
+
+  @IsObject()
   message: any;
 }
