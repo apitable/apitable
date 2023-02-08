@@ -309,7 +309,6 @@ _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	rm -rf packages/datasheet/web_build;\
-	yarn build:dst:pre;\
 	yarn sd
 
 _run-local-socket-server:
