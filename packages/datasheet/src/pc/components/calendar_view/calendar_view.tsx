@@ -68,7 +68,7 @@ interface ICalendarViewProps {
   width: number;
 }
 
-export const CalendarView: FC<ICalendarViewProps> = props => {
+export const CalendarView: FC<ICalendarViewProps> = () => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState<string>('');
   const {
@@ -128,7 +128,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
     return isDateTimeField(field) && !isCryptoField;
   });
   const { cellEditable: editable, rowCreatable, visualizationEditable } = permissions;
-  const firstFieldId = snapshot.meta.views[0].columns[0].fieldId;
+  const firstFieldId = snapshot.meta.views[0]!.columns[0]!.fieldId;
   const { gridVisible, gridWidth, settingPanelVisible: _settingPanelVisible, settingPanelWidth } = calendarViewStatus;
   const settingPanelVisible = (visualizationEditable || editable) && _settingPanelVisible;
   const { startFieldId, endFieldId, colorOption, isColNameVisible } = calendarStyle;
@@ -171,7 +171,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
     // eslint-disable-next-line
   }, [view?.id]);
 
-  const onGlobalMouseDown = e => {
+  const onGlobalMouseDown = (e: MouseEvent) => {
     if (isClickDragDropModal(e) || !activeCell) return;
     dispatch(StoreActions.clearSelection(datasheetId));
     dispatch(StoreActions.clearActiveRowInfo(datasheetId));
@@ -191,11 +191,11 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
   const isEndDisabled = isReaderEndField || (endField ? endField.type !== FieldType.DateTime : true);
 
   const draggable =
-    (startField || endField) &&
+    ((startField || endField) &&
     !isReaderStartField &&
     !isReaderEndField &&
     (startField ? startField.type === FieldType.DateTime : true) &&
-    (endField ? endField.type === FieldType.DateTime : true);
+    (endField ? endField.type === FieldType.DateTime : true))!;
 
   const listRecords = useMemo(() => {
     const records: {
@@ -267,7 +267,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
         height += DEFAULT_FIELD_HEIGHT;
       } else {
         height += 8;
-        const field = fieldMap[column.fieldId];
+        const field = fieldMap[column.fieldId]!;
         if (isColNameVisible) {
           height += DEFAULT_TITLE_HEIGHT + 4;
         }
@@ -411,7 +411,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
                 {
                   icon: <ClearOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.clear_date),
-                  onClick: ({ props: { recordId }}) => setRecord(recordId, null, null),
+                  onClick: (props: { recordId: string }) => setRecord(props.recordId, null, null),
                 },
               ]
               : undefined
@@ -428,7 +428,7 @@ export const CalendarView: FC<ICalendarViewProps> = props => {
               {!isMobile && (
                 <div
                   className={classNames(styles.toggleBtn, {
-                    [styles.active]: gridVisible,
+                    [styles.active!]: gridVisible,
                   })}
                   onClick={() => onPanelSizeChange(!gridVisible)}
                 >

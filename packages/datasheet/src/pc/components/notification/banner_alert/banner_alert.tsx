@@ -46,7 +46,7 @@ export const AlertUi = (props: IAlertProps) => {
   const colors = useThemeColors();
   const { showVikaby = true, content, btnText, onBtnClick, closable, onClose, upgrade } = props;
   return (
-    <div className={classNames(styles.alert, { [styles.hasUpgradeBtn]: upgrade })}>
+    <div className={classNames(styles.alert, { [styles.hasUpgradeBtn!]: upgrade })}>
       {showVikaby && <span className={styles.img}><Image src={Vikaby} /></span>}
       <div className={styles.body}>
         <Typography variant='h7' color={colors.primaryColor}>{content}</Typography>
@@ -76,7 +76,7 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
     }
   }
   const div = document.createElement('div');
-  div.setAttribute('class', styles.funcAlert);
+  div.setAttribute('class', styles.funcAlert!);
   div.setAttribute('id', BANNER_ALERT_ID);
   document.body.appendChild(div);
   const root = createRoot(div);

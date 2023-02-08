@@ -103,7 +103,7 @@ export const OrgChart: FC = () => {
     }
   };
 
-  const handleNodeContextMenu = (event: React.MouseEvent, node) => {
+  const handleNodeContextMenu = (event: React.MouseEvent, node: any) => {
     event.preventDefault();
     if (node.type !== NodeType.GhostNode) {
       showNodeMenu(event as React.MouseEvent<HTMLElement>, {

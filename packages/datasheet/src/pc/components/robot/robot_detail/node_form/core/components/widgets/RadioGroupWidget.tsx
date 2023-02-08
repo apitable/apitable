@@ -23,22 +23,13 @@ import { literal2Operand } from '../../../ui/utils';
 import { getLiteralOperandValue } from '@apitable/core';
 
 export const RadioGroupWidget = ({
-  schema,
-  label,
-  id,
-  disabled,
   options,
   value,
-  autofocus,
-  readonly,
-  required,
   onChange,
-  onBlur,
-  onFocus,
 }: IWidgetProps) => {
   const { enumOptions } = options;
   const _value = getLiteralOperandValue(value);
-  const _onChange = e => {
+  const _onChange = (e: any) => {
     const newValue = literal2Operand(e.target.value);
     onChange(newValue);
   };

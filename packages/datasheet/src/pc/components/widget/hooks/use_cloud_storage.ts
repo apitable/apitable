@@ -42,7 +42,7 @@ export function useCloudStorage<S>(key: string, widgetId: string): [S, Dispatch<
     }
     const storage = new CloudStorage(cloudStorageData, resourceService.instance, widgetId);
     const value = storage.get(key) as any;
-    const setValue = v => storage.set(key, v);
+    const setValue = (v: any) => storage.set(key, v);
     return [value || _initValue, setValue];
   }, [cloudStorageData, widgetId, key, _initValue]);
 }

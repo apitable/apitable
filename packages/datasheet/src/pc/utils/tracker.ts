@@ -20,11 +20,11 @@ import { TrackEvents } from '@apitable/core';
 import { getEnvVariables } from "pc/utils/env";
 
 declare const sensors: {
-  login(userId: string, cb?: () => void);
-  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void);
-  setProfile(props: { [key: string]: any }, cb?: () => void);
-  setOnceProfile(props: { [key: string]: any }, cb?: () => void);
-  quick(key: string, target: Element, props?: { [key: string]: any }, cb?: () => void)
+  login(userId: string, cb?: () => void):any;
+  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void):any;
+  setProfile(props: { [key: string]: any }, cb?: () => void):any;
+  setOnceProfile(props: { [key: string]: any }, cb?: () => void):any;
+  quick(key: string, target: Element, props?: { [key: string]: any }, cb?: () => void):any
 };
 
 export const tracker = {

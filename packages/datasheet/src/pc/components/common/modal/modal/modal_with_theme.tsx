@@ -23,7 +23,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { stopPropagation } from 'pc/utils';
 
-export const ModalWithTheme = (props) => {
+export const ModalWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

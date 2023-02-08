@@ -66,7 +66,7 @@ const { setHoverRecordId, setActiveFieldState, setHoverRowOfAddRecord, setGridVi
 
 export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiGridOwnStateProps> {
   gridRef: React.RefObject<IGridViewsHandle> = React.createRef();
-  static contextType = ScrollContext;
+  static override contextType = ScrollContext;
   eventBundle: Map<ShortcutActionName, () => void> | null = null;
   cacheScrollDomInfo = {
     maxScrollLeft: 0,
@@ -86,7 +86,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     (window as any).MultiGridsScroll = this.columnScroll;
   }
 
-  componentDidMount = () => {
+  override componentDidMount = () => {
     const eventBundle = new Map([
       [
         ShortcutActionName.PageDown,
@@ -125,7 +125,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
   };
 
-  componentDidUpdate = preProps => {
+  override componentDidUpdate = (preProps: { viewId: string; datasheetId: string; }) => {
     const { viewId, datasheetId } = this.props;
     if (preProps.viewId !== viewId && preProps.datasheetId !== datasheetId) {
       const cacheScroll = this.getCacheScrollPosition();
@@ -152,7 +152,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     };
   };
 
-  componentWillUnmount = () => {
+  override componentWillUnmount = () => {
     if (!this.eventBundle) {
       return;
     }
@@ -476,7 +476,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     gridRef.scrollToItem(GridRef.BottomRightRef, { align: props.align, rowIndex: props.rowIndex });
   };
 
-  updateScrollOffset = gridRef => {
+  updateScrollOffset = (gridRef: IGridViewsHandle) => {
     const bottomRightReg = gridRef.getReg(GridReg.BottomRightReg);
     if (!bottomRightReg) {
       return;
@@ -597,7 +597,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     });
   };
 
-  render() {
+  override render() {
     const {
       height,
       width,

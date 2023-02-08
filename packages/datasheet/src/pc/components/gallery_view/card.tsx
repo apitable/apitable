@@ -17,7 +17,7 @@
  */
 
 import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
-import { DropDirectionType, Selectors, Strings, t, StoreActions } from '@apitable/core';
+import { DropDirectionType, Selectors, Strings, t, StoreActions, IViewRow } from '@apitable/core';
 import { areEqual } from 'react-window';
 import classNames from 'classnames';
 import { XYCoord } from 'dnd-core';
@@ -25,7 +25,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
-import { useEffect } from 'react';
+import { CSSProperties, useEffect } from 'react';
 import * as React from 'react';
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
@@ -40,7 +40,14 @@ import { getAddValue, getGroupTitlePaddingTip } from './utils';
 import { StorageName, setStorage } from 'pc/utils/storage/storage';
 import { useDebounceFn } from 'ahooks';
 
-const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
+interface IGalleryItemCardBase {
+  columnIndex: number;
+  rowIndex: number;
+  style: CSSProperties;
+  data: any;
+}
+
+const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryItemCardBase) => {
   const colors = useThemeColors();
   const {
     visibleRecords,
@@ -92,7 +99,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
   });
   const canCollapse = transitionRecordIds.includes(groupHeadId);
 
-  const dispatchDOMDisplay = recordId => {
+  const dispatchDOMDisplay = (recordId: string) => {
     if (isSearching || !datasheetId) return;
     if (groupingCollapseIdsMap.has(recordId)) {
       groupingCollapseIdsMap.delete(recordId);
@@ -126,7 +133,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
       },
     });
   }
-  const changeGroupCollapseState = recordId => {
+  const changeGroupCollapseState = (recordId: string) => {
     if (isSearching || !datasheetId) return;
     if (!canCollapse) {
       onDoTransition(recordId);
@@ -179,8 +186,8 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
         if (!dragItem || !dropItem) {
           return;
         }
-        dragIndex = _visibleRecords.findIndex(v => v.recordId === dragItem.recordId);
-        hoverIndex = _visibleRecords.findIndex(v => v.recordId === dropItem.recordId);
+        dragIndex = _visibleRecords.findIndex((v: IViewRow) => v.recordId === dragItem.recordId);
+        hoverIndex = _visibleRecords.findIndex((v: IViewRow) => v.recordId === dropItem.recordId);
       }
 
       if (dragIndex === -1 || hoverIndex === -1) {
@@ -285,7 +292,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
       >
         <div
           className={classNames(styles.addNewRecordCard, styles.innerCard, {
-            [styles.innerCardForOneColumnMode]: isOneColumnMode,
+            [styles.innerCardForOneColumnMode!]: isOneColumnMode,
           })}
           style={{
             borderRadius: 4,
@@ -324,7 +331,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
         coverFieldId={coverFieldId}
         showEmptyCover
         className={classNames(styles.innerCard, {
-          [styles.innerCardForOneColumnMode]: isOneColumnMode,
+          [styles.innerCardForOneColumnMode!]: isOneColumnMode,
         })}
         isGallery
       />

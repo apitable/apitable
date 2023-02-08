@@ -111,7 +111,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     if (readonly) {
       return;
     }
-    const filteredCellValue = cellValue.filter(item => item.id !== cellValue[activeIndex].id);
+    const filteredCellValue = cellValue.filter((item: any) => item.id !== cellValue[activeIndex].id);
     onChange(filteredCellValue);
     const lastIndex = filteredCellValue.length - 1;
     if (activeIndex > lastIndex) {

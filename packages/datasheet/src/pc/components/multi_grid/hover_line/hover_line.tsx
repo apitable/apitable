@@ -29,10 +29,10 @@ interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;
   dragOption: IDragOption;
   setDirection: React.Dispatch<React.SetStateAction<DropDirectionType>>;
-  getFieldId?: (e) => string | null | undefined;
-  getRecordId?: (e) => string | null | undefined;
-  getElementRect?: (e, type: MoveType) => IElementRectProps;
-  checkIsOpacityLine?: (e) => boolean;
+  getFieldId?: (e: any) => string | null | undefined;
+  getRecordId?: (e: any) => string | null | undefined;
+  getElementRect?: (e: any, type: MoveType) => IElementRectProps;
+  checkIsOpacityLine?: (e: any) => boolean;
 }
 
 type IHoverLine = IHoverLineOwnProps & Pick<IDragProps, 'width' | 'height' | 'rowHeight'>;

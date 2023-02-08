@@ -103,7 +103,7 @@ export const useUserRequest = () => {
   /**
    * Direct login/registration
    */
-  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
+  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn) => {
     // Extract the spaceId of the invitation to join, which is needed to give away space
     const invite = store.getState().invite;
     const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;

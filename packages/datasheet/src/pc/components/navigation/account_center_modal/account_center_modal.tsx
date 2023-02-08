@@ -119,7 +119,13 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
     },
   ]);
 
-  const CustomTitle = ({ title, onClose, onClickNav }) => {
+  interface ICustomTitle {
+    title: string;
+    onClose: () => void;
+    onClickNav?: () => void;
+  }
+
+  const CustomTitle = ({ title, onClose, onClickNav }: ICustomTitle) => {
     return (
       <div
         style={{
@@ -188,7 +194,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
             visible={showNav}
             placement='left'
             closable={false}
-            title={<CustomTitle title={listData[activeItem].name} onClose={() => setShowNav(false)} onClickNav={null} />}
+            title={<CustomTitle title={listData[activeItem].name} onClose={() => setShowNav(false)} />}
             onClose={() => setShowNav(false)}
             bodyStyle={{
               padding: 16,

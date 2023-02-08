@@ -262,14 +262,14 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
             </span>;
           }
         }
-        onSearchChange={(e, keyword) => {
+        onSearchChange={(_e, keyword) => {
           run(keyword);
         }}
         // The share page is not allowed to appear View More, the organization in the space station will be leaked
         footerComponent={showMoreTipButton && !shareId && !(embedId && embedInfo.permissionType !== PermissionType.PRIVATEEDIT) ? () => {
           return <div
             className={styles.seeMore}
-            onMouseUp={e => {
+            onMouseUp={() => {
               expandUnitModal({
                 source: SelectUnitSource.Member,
                 onSubmit: values => handleSubmit(values),

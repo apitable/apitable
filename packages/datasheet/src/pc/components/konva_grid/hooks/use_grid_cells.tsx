@@ -313,7 +313,7 @@ export const useCells = (props: IUseGridBaseProps) => {
     <Shape
       listening={false}
       perfectDrawEnabled={false}
-      sceneFunc={(ctx) => cellsDrawer(ctx, 0, frozenColumnCount - 1)}
+      sceneFunc={(ctx: any) => cellsDrawer(ctx, 0, frozenColumnCount - 1)}
     />
   );
 
@@ -322,7 +322,7 @@ export const useCells = (props: IUseGridBaseProps) => {
     <Shape
       listening={false}
       perfectDrawEnabled={false}
-      sceneFunc={(ctx) => cellsDrawer(ctx, Math.max(columnStartIndex, frozenColumnCount), columnStopIndex)}
+      sceneFunc={(ctx: any) => cellsDrawer(ctx, Math.max(columnStartIndex, frozenColumnCount), columnStopIndex)}
     />
   );
 

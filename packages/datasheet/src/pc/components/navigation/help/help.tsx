@@ -198,7 +198,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   };
 
   const HelpBtn = () => {
-    const handleClick = e => {
+    const handleClick = () => {
       setVisible(!visible);
     };
     return (

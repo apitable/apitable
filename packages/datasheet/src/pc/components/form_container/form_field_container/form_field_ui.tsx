@@ -68,7 +68,7 @@ export const FormFieldUI: React.FC<IFormFieldUIProps> = ({
 
   const descIsEmpty = React.useMemo(() => isNumber(desc) ? false : !desc, [desc]);
 
-  const onShowMenu = (e) => {
+  const onShowMenu = (e: any) => {
     e.persist();
 
     showMenu(e, {

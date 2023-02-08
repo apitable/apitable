@@ -36,7 +36,7 @@ export const File: React.FC<{
   disable?: { budget: string, message: string },
   active?: boolean,
   id: string,
-  onClick?(id: string),
+  onClick?: (id: string) => void,
   richContent?: boolean,
   isMirror?: boolean
 }> = props => {

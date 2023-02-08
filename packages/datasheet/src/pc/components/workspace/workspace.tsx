@@ -124,7 +124,7 @@ export const Workspace: React.FC = () => {
     if (!query.get('stripePaySuccess') || isMobile) return;
     showOrderModal({
       modalTitle: t(Strings.upgrade_success_model, { orderType: t(Strings.upgrade) }),
-      modalSubTitle: (cb: () => void) => <>
+      modalSubTitle: () => <>
         <div className={styles.desc1} style={{ marginTop: 24, fontSize: 16 }}>
           {
             <TComponent
@@ -165,7 +165,7 @@ export const Workspace: React.FC = () => {
   /**
    * Directory Tree Switch Source - Users.
    */
-  const handleSetSideBarByUser = (visible, panel) => {
+  const handleSetSideBarByUser = (visible: boolean, panel?: boolean) => {
     // To determine the type of directory tree switch,
     // if the right panel is expanded or the right panel is closed and
     // the user closes the directory tree at the same time,
@@ -186,7 +186,7 @@ export const Workspace: React.FC = () => {
   /**
    * Directory Tree Switch Source - Panel.
    */
-  const handleSetSideBarByOther = visible => {
+  const handleSetSideBarByOther = (visible: boolean) => {
     setStorage(StorageName.IsPanelClosed, visible, StorageMethod.Set);
     dispatch(StoreActions.setSideBarVisible(visible));
   };

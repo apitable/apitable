@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, IField, RowHeightLevel, Strings, t } from '@apitable/core';
+import { IAttachmentValue, IAttacheField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useThemeColors } from '@apitable/components';
@@ -33,11 +33,11 @@ import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_i
 interface IUploadAttachment {
   datasheetId: string;
   recordId: string;
-  field: IField;
+  field: IAttacheField;
   cellValue: IAttachmentValue[];
   isInWebsite?: boolean;
   visible?: boolean;
-  setVisible?: (visible) => void;
+  setVisible?: (visible: boolean) => void;
   rowHeightLevel?: RowHeightLevel;
   onSave?: (cellValue: IAttachmentValue[]) => void;
   editable?: boolean;

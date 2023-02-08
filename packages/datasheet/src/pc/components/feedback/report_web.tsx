@@ -71,7 +71,7 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
     return (
       <div className={styles.feedbackMenu}>
         <div onClick={() => setMenuVisible(false)}>
-          {menuData[0].map((item, index) => (
+          {menuData[0].map((item: any, index: number) => (
             <ContextmenuItem key={index} name={item.text} icon={item.icon} onClick={item.onClick} />
           ))}
         </div>

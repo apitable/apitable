@@ -50,7 +50,7 @@ interface ISetWizardCompletedProps {
 }
 
 export const TriggerCommands: any = {
-  open_vikaby: (props) => {
+  open_vikaby: (props: { defaultExpandMenu: true, visible: true }) => {
     openVikaby?.({ ...props });
   },
   open_guide_wizard: (wizardId: number) => {

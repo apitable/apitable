@@ -42,7 +42,7 @@ interface IKonvaGridStageProps {
   listening?: boolean;
 }
 
-export const getCellOffsetLeft = (depth) => {
+export const getCellOffsetLeft = (depth: number) => {
   if (!depth) return 0;
   if (depth > 1) return (depth - 1) * GRID_GROUP_OFFSET;
   return 0;
@@ -116,7 +116,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
   const { columnStartIndex, columnStopIndex } = getHorizontalRangeInfo();
 
   // Get the prefix targetName
-  const getTargetName = (targetName) => {
+  const getTargetName = (targetName?: string | null) => {
     if (targetName == null || targetName === '') return KONVA_DATASHEET_ID.GRID_BLANK;
     return targetName.split('-')[0];
   };
@@ -186,7 +186,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
     });
   };
 
-  const setImmediatePointPosition = (e) => {
+  const setImmediatePointPosition = (e: KonvaEventObject<MouseEvent>) => {
     const targetName = e.target.name();
     const pos = stageRef.current?.getPointerPosition();
     if (pos == null) return;
@@ -219,7 +219,7 @@ export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
               _ref={stageRef}
               width={containerWidth}
               height={containerHeight}
-              onMouseDown={(e) => {
+              onMouseDown={(e: KonvaEventObject<MouseEvent>) => {
                 setImmediatePointPosition(e);
                 onMouseDown(e);
               }}

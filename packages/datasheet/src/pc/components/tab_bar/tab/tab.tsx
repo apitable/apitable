@@ -112,7 +112,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     // eslint-disable-next-line
   }, [views]);
 
-  const switchView = (e: React.MouseEvent | null, id: string) => {
+  const switchView = (_e: React.MouseEvent | null, id: string) => {
     if (activeView === id) {
       return;
     }

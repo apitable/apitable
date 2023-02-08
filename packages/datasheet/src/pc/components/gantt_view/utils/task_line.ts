@@ -23,7 +23,7 @@ import { slice } from 'lodash';
 /*
 * nodes: task recordId List
 */
-export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
+export const getAllCycleDAG = (nodes: string[], sourceAdj: { [x: string]: string[]; }) => {
   const pre: { [key: string]: string } = {};
   const color: { [key: string]: number | null } = {};
   
@@ -72,7 +72,7 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
   return cycleEdges;
 };
 
-export const detectCyclesStack = (nodes: string[], sourceAdj) => {
+export const detectCyclesStack = (nodes: string[], sourceAdj: IAdjacency) => {
   const color: { [key: string]: number | null } = {}; // Whether the record was accessed
   const cycleStack: string[] = []; // Manual Access Stack
   const stackAdj: string[][] = []; // Record the next parameter to be accessed by the current stack
@@ -141,7 +141,7 @@ export const detectCyclesStack = (nodes: string[], sourceAdj) => {
   return cycleEdges;
 };
 
-export const getAllTaskLine = (taskListJson) => {
+export const getAllTaskLine = (taskListJson: { [x: string]: any[]; }) => {
 
   const taskLineList : string[][] = [];
   
@@ -171,7 +171,7 @@ export const getTaskLineName = (sourceId: string, targetId: string) => {
   return `taskLine-${sourceId}-${targetId}`;
 };
 
-export const getCollapsedLinearRows = (ganttLinearRows: IGroupLinearRow[], groupCollapseIds) => {
+export const getCollapsedLinearRows = (ganttLinearRows: IGroupLinearRow[], groupCollapseIds: Iterable<string> | null | undefined) => {
   const groupingCollapseSet = new Set<string>(groupCollapseIds);
   let collapsedLinearRows;
   if(!groupCollapseIds) {

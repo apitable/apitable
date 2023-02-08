@@ -52,7 +52,7 @@ export const flatContextData = (
   let groupId = 0;
   return contextData.map((v) => {
     groupId += 1;
-    return v.map((item, index) => {
+    return v.map((item: IContextMenuItemProps, index: number) => {
       const res = {
         ...item,
         extraElement: item.shortcutKey,

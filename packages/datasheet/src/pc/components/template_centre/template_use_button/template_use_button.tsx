@@ -39,7 +39,7 @@ interface ITemplateUseButtonProps {
   block?: boolean;
 }
 
-const calcNodeNum = (directory: ITemplateTree[]) => {
+const calcNodeNum = (directory: ITemplateTree[]):number => {
   return directory.reduce<number>((total, cur) => {
     if (!cur.children.length) {
       return total + 1;

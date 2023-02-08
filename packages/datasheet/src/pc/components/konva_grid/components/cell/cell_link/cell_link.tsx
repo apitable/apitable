@@ -72,7 +72,7 @@ export const CellLink: FC<ICellProps> = (props) => {
   const [closeIconDownId, setCloseIconDownId] = useState<null | string>(null);
   const { renderContent } = renderData;
 
-  function onClick(e) {
+  function onClick(e: { evt: { button: MouseDownType; }; }) {
     if (e.evt.button === MouseDownType.Right) {
       return;
     }
@@ -81,7 +81,7 @@ export const CellLink: FC<ICellProps> = (props) => {
 
   function deleteItem(e: KonvaEventObject<MouseEvent>, index?: number) {
     e.evt.stopPropagation();
-    let value: string[] | null = (cellValue as string[]).filter((item, idx) => {
+    let value: string[] | null = (cellValue as string[]).filter((_item, idx) => {
       return idx !== index;
     });
     if (value.length === 0) {
@@ -188,8 +188,8 @@ export const CellLink: FC<ICellProps> = (props) => {
                 height={height}
                 fill={colors.shadowColor}
                 cornerRadius={4}
-                onClick={e => expand(id)}
-                onTap={e => expand(id)}
+                onClick={() => expand(id)}
+                onTap={() => expand(id)}
               />
               <Text
                 x={GRID_OPTION_ITEM_PADDING}
@@ -211,11 +211,11 @@ export const CellLink: FC<ICellProps> = (props) => {
                   backgroundHeight={16}
                   backgroundWidth={16}
                   cornerRadius={2}
-                  onTap={e => deleteItem(e, index)}
-                  onMouseDown={e => {
+                  onTap={(e: KonvaEventObject<MouseEvent>) => deleteItem(e, index)}
+                  onMouseDown={() => {
                     setCloseIconDownId(id);
                   }}
-                  onMouseUp={(e) => {
+                  onMouseUp={(e: KonvaEventObject<MouseEvent>) => {
                     if (closeIconDownId) {
                       deleteItem(e, index);
                     }

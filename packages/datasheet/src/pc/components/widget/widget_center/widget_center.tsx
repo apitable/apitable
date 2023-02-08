@@ -37,7 +37,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux'; 
@@ -418,11 +418,11 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     </div>;
   };
 
-  const renderTabBar = (props, DefaultTabBar) => (
+  const renderTabBar = (props: any, DefaultTabBar: any) => (
     <DefaultTabBar {...props} className={styles.tabNav} />
   );
 
-  const TabItemIntroduction = ({ introduction }) => (
+  const TabItemIntroduction = ({ introduction }: { introduction: string }) => (
     <div className={styles.tabItemTips}>
       <DefaultFilled size={16} color={colors.thirdLevelText} />
       <span>{introduction}</span>
@@ -490,14 +490,16 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     });
   };
 
-  const transferWidget = (memberId) => {
+  const transferWidget = (memberId: string) => {
     WidgetApi.transferWidget(curOperationProps.current.widgetPackageId, memberId).then(() => {
       Message.success({ content: t(Strings.widget_transfer_success) });
       fetchPackageList(WidgetReleaseType.Space, true);
     });
   };
 
-  const renderThumb = ({ style, ...props }) => {
+  const renderThumb = ({ style, ...props }: {
+    style: CSSProperties
+  }) => {
     const thumbStyle = {
       right: 4,
       borderRadius: 'inherit',
@@ -506,7 +508,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
 
-  const EmptyButtonWrapper = ({ children }) => {
+  const EmptyButtonWrapper = ({ children }: { children: JSX.Element }) => {
     if (!manageable) {
       return (
         <WrapperTooltip style={{ width: '100%' }} wrapper tip={t(Strings.no_permission_create_widget)}>
@@ -642,7 +644,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   </Modal>;
 };
 
-const WidgetCenterModalWithTheme = (props) => {
+const WidgetCenterModalWithTheme: React.FC<IWidgetCenterModalProps> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

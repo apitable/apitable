@@ -51,7 +51,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
     setFile(undefined);
     setKid(KidType.BeforeUpload);
   };
-  const setReqToken = (c) => {
+  const setReqToken = (c: () => void) => {
     reqToken = c;
   };
   // Cancel Upload
@@ -67,7 +67,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
     setMemberInvited(true);
   };
 
-  const onUploadProgress = progressEvent => {
+  const onUploadProgress = (progressEvent: { loaded: number; total: number; }) => {
     const value = Math.floor(progressEvent.loaded / progressEvent.total * 100);
     setPercent(value);
   };
@@ -80,7 +80,7 @@ export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal,
     formData.append('file', file);
     setKid(KidType.Processing);
     nvcVal && formData.append('data', nvcVal);
-    Api.uploadMemberFile(formData, onUploadProgress, c => {
+    Api.uploadMemberFile(formData, onUploadProgress, (c: () => void) => {
       setReqToken(c);
     }).then(res => {
       const { success, data, message, code } = res.data;

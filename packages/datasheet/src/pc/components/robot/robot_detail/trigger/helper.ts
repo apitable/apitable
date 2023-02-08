@@ -61,7 +61,7 @@ export const getOperatorOptions = (field: IField) => {
   }).filter(Boolean);
 };
 
-export const getBooleanOptionName = (value): string => {
+export const getBooleanOptionName = (value: string): string => {
   if (value === 'and') {
     return t(Strings.robot_trigger_match_condition_and);
   }
@@ -76,7 +76,7 @@ export enum FilterTypeEnums {
   FilterGroup = 'filterGroup',
 }
 
-export const addNewFilter = (filter, type: FilterTypeEnums, primaryFieldId?: string) => {
+export const addNewFilter = (filter: { operator: OperatorEnums; }, type: FilterTypeEnums, primaryFieldId?: string) => {
   const getNewFilter = () => {
     const newFilter: IExpressionOperand = {
       type: OperandTypeEnums.Expression,
@@ -105,6 +105,7 @@ export const addNewFilter = (filter, type: FilterTypeEnums, primaryFieldId?: str
   const newFilter = getNewFilter();
   if (filter) {
     return produce(filter, (draft) => {
+      // @ts-ignore
       draft.operands.push(newFilter);
     });
   }

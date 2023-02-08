@@ -195,7 +195,7 @@ export const TypeSelectBase: React.FC<ITypeSelect> = props => {
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }
 
-  const onScroll = ({ scrollTop, height, scrollHeight }) => {
+  const onScroll = ({ scrollTop, height, scrollHeight }: { scrollTop: number, height: number, scrollHeight: number }) => {
     const shadowEle = scrollShadowRef.current;
     if (!shadowEle) return;
     if (scrollTop + height > scrollHeight - 10) {

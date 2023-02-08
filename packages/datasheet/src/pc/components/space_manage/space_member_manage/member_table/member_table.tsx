@@ -199,8 +199,8 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       key: 'teamData',
       align: 'center',
       render: value => {
-        const text = value ? value.map(team => team.fullHierarchyTeamName).join(' & ') : [];
-        const tipsTitle = value ? (value.map((team, index) => <div key={index} className={styles.teamItem}>
+        const text = value ? value.map((team: any) => team.fullHierarchyTeamName).join(' & ') : [];
+        const tipsTitle = value ? (value.map((team: any, index: number) => <div key={index} className={styles.teamItem}>
           <p>-</p><p>{team.fullHierarchyTeamName}</p>
         </div>)) : '';
         return (
@@ -223,7 +223,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       key: 'operate',
       align: 'center',
       // width: isRootTeam ? 70 : 100,
-      render: (value, record) =>
+      render: (_value, record) =>
         <OperateCol
           prevBtnClick={() => editMemberBtn(record)}
           hideNextBtn={Boolean(hideDelBtn(record))}
@@ -255,7 +255,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
 
   const tableProps = {
     columns: spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial
-      ? columns : columns.filter((item, index) => index !== columns.length - 1),
+      ? columns : columns.filter((_item, index) => index !== columns.length - 1),
     dataSource: isEmptyData ? [] : props.searchMemberRes.length > 0 ? props.searchMemberRes : memberListInSpace,
     rowSelection: isBindSocial ? undefined : {
       selectedRowKeys: selectMemberListInSpace,
@@ -263,7 +263,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       onChange: onSelectMemberChange,
       columnWidth: 40,
     },
-    rowKey: record => String(record.orderNo),
+    rowKey: (record: any) => String(record.orderNo),
   };
 
   const showPagination = Boolean(selectedTeamInfoInSpace && selectedTeamInfoInSpace.memberCount &&

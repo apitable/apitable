@@ -19,8 +19,8 @@
 import { ActionConstants, ICacheTemporaryView, IJOTActionPayload, Selectors, StoreActions, visibleRowsBaseCacheManage } from '@apitable/core';
 
 type IUpdateCacheAction = StoreActions.IUpdateFieldPermissionMapAction | ICacheTemporaryView | IJOTActionPayload;
-export function rowsCacheAction({ getState }) {
-  return next => (action: IUpdateCacheAction) => {
+export function rowsCacheAction({ getState }: any) {
+  return (next: (arg0: IUpdateCacheAction) => any) => (action: IUpdateCacheAction) => {
     const state = getState();
     switch(action.type) {
       // Update fieldPermission

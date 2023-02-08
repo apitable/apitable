@@ -138,7 +138,7 @@ export const TemplateCategorySide: FC = () => {
     bindSearchQuery('');
   };
 
-  const onSearchInputKeyDown = e => {
+  const onSearchInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.Enter) {
       triggerTrack(keywords);
     }

@@ -39,7 +39,7 @@ export const RecordVisionSetting: FC = () => {
 
   const dispatch = useDispatch();
 
-  const handleSelected = (option) => {
+  const handleSelected = (option: any) => {
     const newValue: RecordVision = option.value;
     if (newValue === value) {
       return;

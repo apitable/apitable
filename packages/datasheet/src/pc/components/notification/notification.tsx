@@ -103,8 +103,8 @@ export const Notification: FC = () => {
     };
   }, [dispatch]);
 
-  const onTabActiveChange = active => {
-    setTabActiveKey(active);
+  const onTabActiveChange = (active: string) => {
+    setTabActiveKey(active as TabKey);
   };
   // Click to see the new tweeted messages
   const toNewMsg = () => {
@@ -125,7 +125,7 @@ export const Notification: FC = () => {
     getMoreRead(true, rowNo);
   };
   // Determine if the list of read messages has been rendered
-  const noticeListRended = (e, tabKey: string) => {
+  const noticeListRended = (e: any, tabKey: string) => {
     const lastNotice = tabKey === TabKey.Unprocessed ? unReadNoticeList[unReadNoticeList.length - 1] : readNoticeList[readNoticeList.length - 1];
     if (e.key === lastNotice.id) {
       tabKey === TabKey.Unprocessed ? setUnReadedListRendered(true) : setReadedListRendered(true);

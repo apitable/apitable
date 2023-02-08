@@ -36,7 +36,7 @@ import { ToolBar } from './tool_bar';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
-const FormTabBase = props => {
+const FormTabBase = () => {
   const { sideBarVisible } = useSideBarVisible();
   const colors = useThemeColors();
   const tabRef = useRef<HTMLDivElement>(null);

@@ -81,14 +81,14 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   // No attachment field directly does not show the cover
   if (!showCover) return null;
 
-  const coverField: IField = coverFieldId
+  const coverField = coverFieldId
     ? fieldMap[coverFieldId]
     : Object.values(fieldMap as IFieldMap).find((item: IField) => {
       return item.type === FieldType.Attachment;
     })!;
 
-  let coverValue = compact(Selectors.getCellValue(store.getState(), recordSnapshot, recordId, coverField.id));
-  if (coverField.type === FieldType.LookUp && coverValue) {
+  let coverValue = compact(Selectors.getCellValue(store.getState(), recordSnapshot, recordId, coverField!.id));
+  if (coverField?.type === FieldType.LookUp && coverValue) {
     if (Array.isArray(coverValue)) {
       coverValue = (coverValue as ILookUpValue).flat() as IAttachmentValue[];
     } else if (coverValue) {
@@ -97,7 +97,7 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
   }
 
   if (coverValue && coverValue.length && screenIsAtMost(ScreenSize.md)) {
-    const field = fieldMap[coverFieldId!];
+    const field = fieldMap[coverFieldId!]!;
     const editable = Field.bindModel(field).recordEditable() && permissions.cellEditable;
 
     return (
@@ -140,7 +140,7 @@ export const CardHeader: React.FC<ICardHeaderProps> = props => {
       showType={height === 320 ? ImageShowType.Thumbnail : ImageShowType.Marquee}
       isCoverFit={isCoverFit}
       recordId={recordId}
-      field={coverField}
+      field={coverField!}
     />
   ) : (
     <div style={{ width: '100%', height }} className={styles.nextImage}>

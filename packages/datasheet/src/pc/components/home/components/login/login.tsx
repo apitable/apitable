@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
     execNoTraceVerification(signIn);
   };
 
-  const preCheckOnSubmit = (data) => {
+  const preCheckOnSubmit = (data: { username?: string; password?: string; }) => {
     const errorMsg: ILoginErrorMsg = {};
     const checkPassword = (): boolean => {
       if (!data.password) {

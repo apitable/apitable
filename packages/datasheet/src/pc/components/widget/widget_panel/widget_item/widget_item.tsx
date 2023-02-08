@@ -146,7 +146,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
     // eslint-disable-next-line
   }, [isExpandWidget]);
 
-  const setDepDatasheetId = ({ datasheetId, mirrorId }) => {
+  const setDepDatasheetId = ({ datasheetId, mirrorId }: { datasheetId?: string, mirrorId?: string }) => {
     if (mirrorId) {
       datasheetId = Selectors.getMirrorSourceInfo(store.getState(), mirrorId)!.datasheetId;
     }
@@ -154,11 +154,11 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
       cmd: CollaCommandName.SetWidgetDepDstId,
       resourceId: widgetId,
       resourceType: ResourceType.Widget,
-      dstId: datasheetId,
+      dstId: datasheetId!,
       sourceId: mirrorId,
     });
     if (result.result === ExecuteResult.Success) {
-      dispatch(StoreActions.fetchDatasheet(datasheetId));
+      dispatch(StoreActions.fetchDatasheet(datasheetId!));
     }
     setSearchPanelVisible(false);
   };
@@ -387,7 +387,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
     });
   };
 
-  const saveWidgetName = e => {
+  const saveWidgetName = (e: any) => {
     setDragging(false);
     const value = e.target.value;
     setRename(false);
@@ -419,7 +419,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
 
   const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation='vertical' />;
 
-  const nameMouseUp = e => {
+  const nameMouseUp = (e: React.SyntheticEvent) => {
     setDragging(false);
     const now = new Date();
     // fixme: Here you should find a time less than the native dragstart trigger, 
@@ -519,7 +519,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
             'dragHandleDisabled',
           )}
           onClick={expand}
-          onMouseDown={e => {
+          onMouseDown={() => {
             hideAll();
           }}
         >

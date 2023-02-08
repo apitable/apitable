@@ -146,7 +146,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     );
   }
 
-  const getEnhanceTypeIcon = type => {
+  const getEnhanceTypeIcon = (type: string | number) => {
     if (!value) return null;
     const typeIconMap = {
       [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,

@@ -34,11 +34,11 @@ import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
 
-const SortableContainer = sortableContainer(({ children }) => {
+const SortableContainer = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({ children }) => <>{children}</>);
+const SortableItem = sortableElement(({ children }: any) => <>{children}</>);
 
 export const OptionList: React.FC<IOptionListProps> = (props) => {
   const {
@@ -92,7 +92,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
       }
     }
 
-    onClickItem(value);
+    onClickItem(value as any);
   }
 
   // The swap in the filter condition should get the true index of the current option in the original array
@@ -100,7 +100,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
     return optionList.findIndex(item => item.id === optionId);
   }, [optionList]);
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
+  const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
     dragOption!.setDraggingId(undefined);
     let actualOldIndex = oldIndex;
     let actualNewIndex = newIndex;
@@ -115,7 +115,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
 
   };
 
-  const onKeyEnter = (clearKeyword) => {
+  const onKeyEnter = (clearKeyword: () => void) => {
     const matchResult = getExactMatchResult();
     clearKeyword();
     if (!matchResult) {
@@ -187,14 +187,14 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
   return (
     <CommonList
       value={existValues || []}
-      onClickItem={(e, index) => {
+      onClickItem={(_e, index) => {
         switchOptionsStatus(optionByFilter[index].id);
       }}
       noDataTip={t(Strings.no_option)}
       footerComponent={renderFooter}
       showInput
       inputRef={inputRef}
-      onSearchChange={(e, keyword) => { setKeyword(keyword); }}
+      onSearchChange={(_e, keyword) => { setKeyword(keyword); }}
       monitorId={monitorId}
       onInputEnter={onKeyEnter}
       inputStyle={{ padding: 8 }}

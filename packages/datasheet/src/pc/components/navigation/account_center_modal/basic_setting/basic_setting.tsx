@@ -145,7 +145,7 @@ export const BasicSetting: FC = () => {
             },
             cancelButtonProps: {
               className: styles.cancelBtn,
-              onClick: e => {
+              onClick: (e: React.MouseEvent) => {
                 stopPropagation(e);
                 window.open(getEnvVariables().ACCOUNT_DELELTE_HELP_URL);
               },

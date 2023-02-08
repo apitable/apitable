@@ -70,7 +70,7 @@ const removeWidgetTask = (id: string) => {
   widgetWaitTask.splice(indexWait, 1);
 };
 
-let WIDGET_IFRAME_PATH;
+let WIDGET_IFRAME_PATH: string;
 if (process.env.NODE_ENV !== 'production') {
   WIDGET_IFRAME_PATH = process.env.NEXT_PUBLIC_REACT_APP_WIDGET_IFRAME ? `${process.env.NEXT_PUBLIC_REACT_APP_WIDGET_IFRAME}/widget-stage` :
     'http://localhost:3000/widget-stage';

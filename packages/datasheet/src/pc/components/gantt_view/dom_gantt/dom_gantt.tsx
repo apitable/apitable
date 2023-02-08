@@ -80,7 +80,7 @@ export const DomGantt: FC<IDomGanttBaseProps> = props => {
     });
   };
 
-  const onSelected = option => {
+  const onSelected = (option: { value: any; }) => {
     const dateUnitType = option.value;
     onGanttStatusChange('dateUnitType', option.value);
     dispatch(StoreActions.setGanttDateUnitType(dateUnitType, datasheetId!));

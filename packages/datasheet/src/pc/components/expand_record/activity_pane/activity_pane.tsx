@@ -20,7 +20,7 @@ import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseMiddleOutlined } from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu  } from 'antd';
 import classNames from 'classnames';
 import { pick } from 'lodash';
 import { MobileContextMenu, Tooltip } from 'pc/components/common';
@@ -91,10 +91,11 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
     }
   }, [showRecordHistory, selectType, handleCacheType]);
 
-  const handleMenuClick = e => {
-    if (ACTIVITY_SELECT_MAP[e.key]) {
-      setSelectType(e.key);
-      handleCacheType(e.key);
+  const handleMenuClick = (e: { key: string }) => {
+    const menuKey = e.key as ActivitySelectType;
+    if (ACTIVITY_SELECT_MAP[menuKey]) {
+      setSelectType(menuKey);
+      handleCacheType(menuKey);
       setSelectOpen(false);
     }
   };
@@ -151,7 +152,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
             >
               <div>
                 {ACTIVITY_SELECT_MAP[selectType][1]}
-                <span className={classNames(styles.selectIcon, { [styles.open]: selectOpen })}>
+                <span className={classNames(styles.selectIcon, { [styles.open!]: selectOpen })}>
                   <IconArrow width={16} height={16} fill={colors.thirdLevelText} />
                 </span>
               </div>

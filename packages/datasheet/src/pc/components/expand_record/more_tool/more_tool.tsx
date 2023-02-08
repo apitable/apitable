@@ -85,7 +85,7 @@ export const MoreTool: React.FC<IMoreToolProps> = props => {
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
 
-  const deleteRecord = (e: React.MouseEvent) => {
+  const deleteRecord = () => {
     const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data: [recordId],
@@ -103,7 +103,7 @@ export const MoreTool: React.FC<IMoreToolProps> = props => {
     onClose();
   };
 
-  const copyLink2clipBoard = (e: React.MouseEvent) => {
+  const copyLink2clipBoard = () => {
     copy2clipBoard(window.location.href, () => {
       Message.success({ content: t(Strings.link_copy_success) });
     });

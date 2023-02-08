@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, ICellValue, Strings, t } from '@apitable/core';
+import { FieldType, ICellValue, ISelectFieldOption, Strings, t } from '@apitable/core';
 import { Checkbox, Radio } from 'antd';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import classnames from 'classnames';
@@ -45,9 +45,12 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
   useImperativeHandle(
     ref,
     (): IEditor => ({
-      focus: () => {},
-      onEndEdit: (cancel: boolean) => {},
-      onStartEdit: (value?: string | string[] | null) => {},
+      focus: () => {
+      },
+      onEndEdit: () => {
+      },
+      onStartEdit: () => {
+      },
       setValue: (value?: string | string[] | null) => {
         setValue((value || defaultValue) as CheckboxValueType[]);
       },
@@ -57,7 +60,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
     }),
   );
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     if (disabled) {
       return;
     }
@@ -97,7 +100,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
     >
       {optionList.length ? (
         <GroupComponent value={value} onChange={onChange}>
-          {optionList.map(option => {
+          {optionList.map((option: ISelectFieldOption) => {
             return (
               <div className={styles.optionItemWrapper} key={option.id}>
                 <ChildComponent

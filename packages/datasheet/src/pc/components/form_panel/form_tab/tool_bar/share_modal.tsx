@@ -18,7 +18,7 @@
 
 import { Button, Skeleton } from '@apitable/components';
 import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { Radio, Space, Switch } from 'antd';
+import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
 import { DisabledShareFile } from 'pc/components/catalog/share_node/disabled_share_file/disabled_share_file';
@@ -57,7 +57,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const fileSharable = useSelector(state => state.space.spaceFeatures?.fileSharable);
   // Update Properties
-  const updateProps = partProps => {
+  const updateProps = (partProps: { fillAnonymous?: any; submitLimit?: any; }) => {
     const finalFormProps = produce(formProps, draft => {
       draft = Object.assign(draft, partProps);
       return draft;
@@ -148,7 +148,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     closeShare();
   };
 
-  const onFillMethodChange = e => {
+  const onFillMethodChange = (e: RadioChangeEvent) => {
     const checked = e.target.value;
     const params = checked
       ? {
@@ -160,7 +160,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
     updateProps(params);
   };
 
-  const onSubmitLimitChange = e => {
+  const onSubmitLimitChange = (e: RadioChangeEvent) => {
     updateProps({ submitLimit: e.target.value });
   };
 

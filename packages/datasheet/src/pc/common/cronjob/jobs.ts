@@ -26,15 +26,15 @@ import { getDstNetworkData } from './helper';
   }
 })();
 
-export const fixData = (store) => {
+export const fixData = () => {
   if (dataSelfHelper.needHelper) {
     // getCellValue The cell data missing at the time of the dstId-fieldId-recordId[].
-    const missKeys: string[] = [];
+    // const _missKeys: string[] = [];
     dataSelfHelper.dataMap.forEach((recordIdSet, key) => {
       const [dstId] = key.split('-');
       try {
-        const missRecordIds = Array.from(recordIdSet);
-        missKeys.push(...missRecordIds.map(recordId => `${key}-${recordId}`));
+        // const missRecordIds = Array.from(recordIdSet);
+        // _missKeys.push(...missRecordIds.map(recordId => `${key}-${recordId}`));
         recordIdSet.size > 0 && loadRecords(dstId, Array.from(recordIdSet)).then(() => {
           // FIXME: See if you still need a refresh here
           // Array.from(recordIdSet).forEach(recordId => {

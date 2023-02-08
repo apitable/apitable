@@ -122,7 +122,7 @@ export const Menu: React.FC = () => {
 
   function copyLink() {
     const url = new URL(window.location.href);
-    url.pathname = path.join(url.pathname, recordId);
+    url.pathname = path.join(url.pathname, recordId!);
 
     copy2clipBoard(url.toString(), () => {
       Message.success({ content: t(Strings.link_copy_success) });

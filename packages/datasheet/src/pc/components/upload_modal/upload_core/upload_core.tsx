@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, IField, moveArrayElement, RowHeightLevel } from '@apitable/core';
+import { IAttachmentValue, moveArrayElement, RowHeightLevel, IAttacheField } from '@apitable/core';
 import classNames from 'classnames';
 import type { Identifier } from 'dnd-core';
 import produce from 'immer';
@@ -40,7 +40,7 @@ const ScrollingComponent = withScrolling('div');
 
 interface IUploadCoreProps {
   recordId: string;
-  field: IField;
+  field: IAttacheField;
   datasheetId: string;
   cellValue: IAttachmentValue[];
   columnCount: 2 | 3 | 4;
@@ -60,6 +60,35 @@ export enum UploadCoreSize {
   // Small = 'Small'
 }
 
+interface ISortableList {
+  cellValue: IAttachmentValue[];
+  onSortEnd: () => void;
+  datasheetId: string;
+  recordId: string;
+  field: IAttacheField;
+  uploadList: IUploadFileList;
+  readonly?: boolean;
+  rowHeightLevel?: RowHeightLevel;
+  deleteUploadItem: (fileId: string) => void;
+  onSave?: (cellValue: IAttachmentValue[]) => void;
+  getCellValueFn?: (datasheetId: string | undefined, recordId: string, fieldId: string) => IAttachmentValue[];
+  onMove: ({oldIndex, newIndex}: { oldIndex: number, newIndex: number }) => void;
+}
+
+interface ISortableItem {
+  item: IAttachmentValue;
+  id: string;
+  idx: number;
+  cellValue: IAttachmentValue[];
+  recordId: string;
+  field: IAttacheField;
+  readonly?: boolean;
+  onSave?: (cellValue: IAttachmentValue[]) => void;
+  datasheetId: string;
+  onSortEnd: () => void;
+  onMove: ({oldIndex, newIndex}: { oldIndex: number, newIndex: number }) => void;
+}
+
 const SortableItem = (
   {
     item,
@@ -73,13 +102,13 @@ const SortableItem = (
     datasheetId,
     onSortEnd,
     onMove
-  }
+  }: ISortableItem
 ) => {
   const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>(
     {
       accept: ItemTypes.CARD,
-      drop(item: IDragItem, monitor) {
+      drop() {
         onSortEnd();
       },
       hover(item: IDragItem, monitor: DropTargetMonitor) {
@@ -155,12 +184,12 @@ const SortableList = (
     getCellValueFn,
     onSortEnd,
     onMove
-  }
+  }: ISortableList
 ) => {
   return (
     <div className={styles.sortContainer}>
       {
-        cellValue && cellValue.map((value, index) => {
+        cellValue && cellValue.map((value: IAttachmentValue, index: number) => {
           return (
             <SortableItem
               key={value.id}
@@ -261,7 +290,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
     onSave && onSave(cellValue);
   };
 
-  const onMove = ({ oldIndex, newIndex }) => {
+  const onMove = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
     const produceCellValue = produce(cellValue, draft => {
       moveArrayElement(draft, oldIndex, newIndex);
       return draft;

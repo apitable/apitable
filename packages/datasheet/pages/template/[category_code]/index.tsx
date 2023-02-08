@@ -29,7 +29,7 @@ import { getBaseUrl } from '../../../utils/get_base_url';
 const TemplateCentre = dynamic(() => import('pc/components/template_centre/template_centre'), { ssr: false });
 const TemplatePreview = dynamic(() => import('pc/components/template_centre/template_preview'), { ssr: true });
 
-const App = (props) => {
+const App = (props: { templateRecommendData: any; templateList: any; }) => {
   return <>
     <TemplateCentre>
       <TemplateRecommendContext.Provider value={{ recommendData: props.templateRecommendData }}>

@@ -76,7 +76,7 @@ const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddWidgetToDashboard,
         dashboardId: selectedId!,
-        widgetIds: data.map(item => item.id),
+        widgetIds: data.map((item: { id: string; }) => item.id),
         cols: 12,
       });
       if (result.result === ExecuteResult.Success) {

@@ -22,7 +22,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, ErrorFilled } from '@apitable/icons';
 import produce from 'immer';
-import { isEqual, set } from 'lodash';
+import { isEqual, PropertyPath, set } from 'lodash';
 import { useAllColumns } from 'pc/hooks';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ import { FieldSelect } from './field_select';
 import { addNewFilter as _addNewFilter, FilterTypeEnums, getBooleanOptionName, getFields, getOperatorOptions, op2fop } from './helper';
 import styles from './styles.module.less';
 
-const transformNullFilter = (filter) => {
+const transformNullFilter = (filter?: IExpression | null) => {
   return filter == null || isEqual(filter, EmptyNullOperand) ? {
     operator: OperatorEnums.And,
     operands: [],
@@ -48,21 +48,21 @@ interface IRecordMatchesConditionsFilterProps {
   depth?: number;
 }
 
-const WarningTip = (props) => {
+const WarningTip = (props: any) => {
   const theme = useTheme();
   return <Box
     display="flex"
     alignItems="center"
     gridColumn="property-start / value-end"
   >
-    <ErrorFilled color={theme.color.fc10} />
+    <ErrorFilled color={theme.color.fc10}/>
     <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
       {props.children}
     </Typography>
   </Box>;
 };
 /**
- * This is a recursively rendered component with up to 3 levels of nesting. Renders S-expressions as nested grouped conditional filters. 
+ * This is a recursively rendered component with up to 3 levels of nesting. Renders S-expressions as nested grouped conditional filters.
  * Supports adding, removing and modifying filter conditions.
  * Expression Classification
  * + Basic expressions
@@ -106,7 +106,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
    * @param path: The path of the subcomponent
    * @param value: The value of the subcomponent
    */
-  const handleChange = (path, value) => {
+  const handleChange = (path: PropertyPath, value: ILiteralOperand) => {
     // Here immer and lodash set do not match, direct json to
     const _filter = JSON.parse(JSON.stringify(filter));
     set(_filter, path, value);
@@ -251,7 +251,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
           <Button
             prefixIcon={<AddOutlined />}
             variant="fill"
-            onClick={(e) => {
+            onClick={() => {
               // console.log('addNewFilter', FilterTypeEnums.Filter);
               addNewFilter(FilterTypeEnums.Filter);
             }}

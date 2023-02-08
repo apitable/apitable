@@ -120,7 +120,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
     if (reqToken) {
       reqToken();
     }
-    Api.findNode(val, c => (reqToken = c))
+    Api.findNode(val, (c: () => void) => (reqToken = c))
       .then(res => {
         const { data, success } = res.data;
         if (success) {

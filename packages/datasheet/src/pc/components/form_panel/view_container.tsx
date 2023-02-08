@@ -20,7 +20,7 @@ import { Skeleton } from '@apitable/components';
 import styles from './style.module.less';
 import { FormContainer } from '../form_container';
 
-export const ViewContainer = (props) => {
+export const ViewContainer = (props: { loading?: boolean; }) => {
   if (props.loading) {
     return (
       <div className={styles.skeletonWrapper}>

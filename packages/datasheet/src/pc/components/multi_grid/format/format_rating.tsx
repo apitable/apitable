@@ -49,7 +49,7 @@ export const FormateRating: React.FC<IFormateRatingProps> = (props: IFormateRati
     label: `${item + 1}`,
   }));
 
-  const onSelect = emoji => {
+  const onSelect = (emoji: any) => {
     props.setCurrentField({
       ...props.currentField,
       property: { ...props.currentField.property, icon: emoji },

@@ -397,16 +397,21 @@ __metadata:
     "@types/express": ^4
     "@types/file-saver": ^2.0.3
     "@types/hbs": ^4
+    "@types/is-url": ^1.2.30
     "@types/jest": 24.0.18
     "@types/lodash": 4.14.161
+    "@types/markdown-it": 12.2.3
+    "@types/mime-types": ^2.1.1
     "@types/node": 12.7.3
     "@types/numeral": ^0.0.28
+    "@types/path-browserify": ^1.0.0
     "@types/prismjs": ^1.16.1
     "@types/qr-image": ^3
     "@types/qrcode": ^1.3.5
     "@types/quill": 1.3.6
     "@types/react": ^17.0.2
     "@types/react-beautiful-dnd": ^13.1.2
+    "@types/react-custom-scrollbars": ^4.0.10
     "@types/react-dom": 17.0.11
     "@types/react-dropzone": ^5.1.0
     "@types/react-grid-layout": ^1.1.1
@@ -11810,6 +11815,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/is-url@npm:^1.2.30":
+  version: 1.2.30
+  resolution: "@types/is-url@npm:1.2.30"
+  checksum: 81f337a7442f56d160ec0f63b2847cff368c5701f46a32c3c4fff5a1424b6afb4ad3eb7206febd26760a869680d61b7626e41f0ad652003f5783bcfda5b41d9e
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -11993,6 +12005,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/linkify-it@npm:*":
+  version: 3.0.2
+  resolution: "@types/linkify-it@npm:3.0.2"
+  checksum: dff8f10fafb885422474e456596f12d518ec4cdd6c33cca7a08e7c86b912d301ed91cf5a7613e148c45a12600dc9ab3d85ad16d5b48dc1aaeda151a68f16b536
+  languageName: node
+  linkType: hard
+
 "@types/loadjs@npm:^4":
   version: 4.0.1
   resolution: "@types/loadjs@npm:4.0.1"
@@ -12044,6 +12063,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/markdown-it@npm:12.2.3":
+  version: 12.2.3
+  resolution: "@types/markdown-it@npm:12.2.3"
+  dependencies:
+    "@types/linkify-it": "*"
+    "@types/mdurl": "*"
+  checksum: 868824a3e4d00718ba9cd4762cf16694762a670860f4b402e6e9f952b6841a2027488bdc55d05c2b960bf5078df21a9d041270af7e8949514645fe88fdb722ac
+  languageName: node
+  linkType: hard
+
 "@types/markdown-to-jsx@npm:^6.11.3":
   version: 6.11.3
   resolution: "@types/markdown-to-jsx@npm:6.11.3"
@@ -12059,6 +12088,13 @@ __metadata:
   dependencies:
     "@types/unist": "*"
   checksum: 5318624af815ac531e49de06da1d9458f1570f87274dced00353a240b2d2c4260f1fdd40c5e65784e4a4f49b0c5eb43f77faee60def723b501880ab3747b9916
+  languageName: node
+  linkType: hard
+
+"@types/mdurl@npm:*":
+  version: 1.0.2
+  resolution: "@types/mdurl@npm:1.0.2"
+  checksum: 79c7e523b377f53cf1f5a240fe23d0c6cae856667692bd21bf1d064eafe5ccc40ae39a2aa0a9a51e8c94d1307228c8f6b121e847124591a9a828c3baf65e86e2
   languageName: node
   linkType: hard
 
@@ -12284,6 +12320,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/path-browserify@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/path-browserify@npm:1.0.0"
+  checksum: e3f98ef9638fb75dc7547c3cde5fa86bc5986e38403ec91234abcc7b911e30711af7c6abc674d617d27c4a6c09e7f8e9d77662b1cc45d00d4708d94764202b61
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.0.0":
   version: 2.2.3
   resolution: "@types/prettier@npm:2.2.3"
@@ -12410,6 +12453,15 @@ __metadata:
     "@types/react": "*"
     "@types/reactcss": "*"
   checksum: 55e27e5c406ba8c9054f59b41a16c426fbf1aaf4f29c11c51debf3e720011831d45430993a2a5cec4b0d4e68b4bbf2f00dd5f0f50bfa00d0bea55e83a9717b95
+  languageName: node
+  linkType: hard
+
+"@types/react-custom-scrollbars@npm:^4.0.10":
+  version: 4.0.10
+  resolution: "@types/react-custom-scrollbars@npm:4.0.10"
+  dependencies:
+    "@types/react": "*"
+  checksum: 9b41b78c9f20e6d417f74d2b3847f140722bbb4b1b8fc567a17bab26f9084fc6be8cd423f0b05d57a126ea7cbdb4a1fb08bed60cd8a5d73a95ce6fc3157233cb
   languageName: node
   linkType: hard
 

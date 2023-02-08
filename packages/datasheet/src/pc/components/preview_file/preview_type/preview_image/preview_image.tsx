@@ -89,10 +89,10 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
 
   const transformWebpIfNeeded =
     isWebp(fileLikeProps) &&
-    (browser.satisfies({
+    (browser?.satisfies({
       safari: '<14',
     }) ||
-      browser.is('iOS'));
+      browser?.is('iOS'));
 
   const isRotated = rotate % 180 !== 0;
 

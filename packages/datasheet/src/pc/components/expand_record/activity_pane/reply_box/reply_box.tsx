@@ -22,14 +22,21 @@ import { ReplyComment } from 'pc/components/expand_record/activity_pane/reply_co
 import { useContext } from 'react';
 import { ActivityContext } from 'pc/components/expand_record/activity_pane/activity_context';
 import { useRequest } from 'pc/hooks';
-import { DatasheetApi } from '@apitable/core';
+import { DatasheetApi, IJOTAction } from '@apitable/core';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';
 
-export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }) => {
+interface IReplyBox {
+  action: number | IJOTAction;
+  handleEmoji: ( emojiKey: string) => void;
+  datasheetId: string;
+  expandRecordId: string;
+}
+
+export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: IReplyBox) => {
   const { emojis, commentReplyMap, updateCommentReplyMap } = useContext(ActivityContext);
   const { run: getCommentsByIds, loading: requestLoading } = useRequest(DatasheetApi.getCommentsByIds, { manual: true });
 
-  const getReplyComment = (action) => {
+  const getReplyComment = (action: number | IJOTAction) => {
     const commentId = get(action, 'commentMsg.reply.commentId');
     const isDeleted = get(action, 'commentMsg.reply.isDeleted');
 
@@ -57,7 +64,7 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }) =
       }
       const { success, data } = res.data;
       if (success) {
-        updateCommentReplyMap(pre => ({ ...pre, ...data }));
+        updateCommentReplyMap((pre: any) => ({ ...pre, ...data }));
       }
     });
   };

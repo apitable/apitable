@@ -130,7 +130,7 @@ export const useEvents = (props: IImageEventsProps) => {
     }
   };
 
-  const handleMouseUp = (event: MouseEvent) => {
+  const handleMouseUp = () => {
     setMoving(false);
   };
 

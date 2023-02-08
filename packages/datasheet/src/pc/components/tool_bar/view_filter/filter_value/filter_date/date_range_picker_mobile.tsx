@@ -28,7 +28,7 @@ import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
 import { Typography, useThemeColors } from '@apitable/components';
 
 export const DateRangePickerMobile: React.FC<IFilterDateProps & {
-  rangePickerChange(date: (Dayjs | null)[] | null);
+  rangePickerChange: (date: (Dayjs | null)[] | null) => void;
   dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null
 }> = (props) => {
   const colors = useThemeColors();
@@ -58,14 +58,14 @@ export const DateRangePickerMobile: React.FC<IFilterDateProps & {
     // eslint-disable-next-line
   }, [endDate, startDate]);
 
-  const startDateChange = (date) => {
+  const startDateChange = (date: React.SetStateAction<Date | undefined>) => {
     setStartDate(date);
     if (!endDate) {
       setEndVisible(true);
     }
   };
 
-  const endDateChange = (date) => {
+  const endDateChange = (date: React.SetStateAction<Date | undefined>) => {
     setEndDate(date);
     if (!startDate) {
       setStartVisible(true);

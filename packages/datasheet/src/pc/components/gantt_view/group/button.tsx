@@ -16,16 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
+import { Strings, t, KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { GANTT_TAB_BAR_HEIGHT } from 'pc/components/gantt_view/constant';
 import { Rect, Text } from 'pc/components/konva_components';
 import * as React from 'react';
+import { ILightOrDarkThemeColors } from '@apitable/components';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 
-const Button = (props) => {
-  const { containerWidth, marginRight, btnHeight, KONVA_DATASHEET_ID, btnWidth, colors, cornerRadius } = props;
+interface IButton {
+  containerWidth: number;
+  marginRight: number;
+  btnHeight: number;
+  btnWidth: number;
+  colors: ILightOrDarkThemeColors;
+  KONVA_DATASHEET_ID: any;
+  cornerRadius: number | number[];
+}
+
+const Button = (props: IButton) => {
+  const { containerWidth, marginRight, btnHeight, btnWidth, colors, cornerRadius } = props;
   return <Group
     x={containerWidth - marginRight + 0.5}
     y={(GANTT_TAB_BAR_HEIGHT - btnHeight) / 2 + 0.5}

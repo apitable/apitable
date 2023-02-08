@@ -29,6 +29,7 @@ import {
   moveArrayElement,
   SelectField,
   Selectors,
+  IField,
 } from '@apitable/core';
 import { produce } from 'immer';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -106,9 +107,9 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
 
   const [draggingId, setDraggingId] = useState<string | undefined>();
 
-  function afterDrag(trulyOldIndex, trulyNewIndex) {
+  function afterDrag(trulyOldIndex: number, trulyNewIndex: number) {
     setCurrentField(field => {
-      return produce(field, draft => {
+      return produce(field, (draft: IField) => {
         moveArrayElement(draft.property.options, trulyOldIndex, trulyNewIndex);
         return draft;
       });

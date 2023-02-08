@@ -16,18 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ILinearRow, RowHeightLevel, Strings, t } from '@apitable/core';
+import { ILinearRow, RowHeightLevel, Strings, t, IField } from '@apitable/core';
 import { LockNonzeroOutlined } from '@apitable/icons';
 import { GridLayout } from './layout';
-import { colors } from '@apitable/components';
+import { colors, ThemeName } from '@apitable/components';
 import { cellHelper } from '../../utils';
 import { IRenderStyleProps } from '../../interface';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
 
+interface ICell {
+  row: ILinearRow;
+  cellValue: any;
+  groupField: IField;
+  isCryptoField: boolean;
+  unitTitleMap?: object;
+  cacheTheme: ThemeName;
+}
+
 const LockNonzeroOutlinedPath = LockNonzeroOutlined.toString();
 
 export class GroupTabLayout extends GridLayout {
-  protected renderAddFieldBlank(row: ILinearRow) {
+  protected override renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;
     if (depth === 0) {
@@ -48,7 +57,7 @@ export class GroupTabLayout extends GridLayout {
     isCryptoField, 
     unitTitleMap,
     cacheTheme
-  }) {
+  }: ICell) {
     if (!this.isFirst) return;
     const { recordId, depth } = row;
     const y = this.y;
@@ -202,7 +211,7 @@ export class GroupTabLayout extends GridLayout {
     isCryptoField,
     unitTitleMap,
     cacheTheme,
-  }) {
+  }: ICell) {
     this.renderFirstCell({
       row, 
       cellValue, 

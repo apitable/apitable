@@ -82,7 +82,7 @@ const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
-  const resourceService = initResourceService(comlinkStore.store);
+  const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
 
@@ -122,7 +122,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const handleStart = (url) => {
+    const handleStart = () => {
       if (loading !== LoadingStatus.None) {
         return;
       }
@@ -150,7 +150,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       // ldsEle?.parentNode?.removeChild(ldsEle);
 
     };
-    const handleComplete = (url) => {
+    const handleComplete = () => {
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -274,7 +274,9 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
+    // @ts-ignore
     import('element-scroll-polyfill');
+    // @ts-ignore
     import('polyfill-object.fromentries');
     elementClosest(window);
   }, []);

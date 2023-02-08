@@ -125,7 +125,7 @@ export const BillingModal = (props?: IModalFuncProps) => {
     return;
   }
   if (!subscription && spaceId) {
-    getBillingInfo(spaceId).then(billingInfoReq => {
+    getBillingInfo(spaceId).then((billingInfoReq: any) => {
       if (!billingInfoReq) {
         return;
       }

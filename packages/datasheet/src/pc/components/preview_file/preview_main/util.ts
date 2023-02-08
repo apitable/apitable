@@ -47,7 +47,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
 
   const namesToCount = {};
 
-  const generateFileName = (file: IAttachmentValue, index: number) => {
+  const generateFileName = (file: IAttachmentValue) => {
     const fileName = file.name;
     if (namesToCount[fileName] == null) {
       namesToCount[fileName] = 1;
@@ -62,7 +62,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
     return fileName;
   };
 
-  files.forEach((file, index) => {
+  files.forEach((file) => {
     const promise = getFile(getDownloadSrc(file)).then((data) => {
       // issue: https://github.com/Stuk/jszip/issues/616
       // jszip is forcing UTC time as last modified date, in order to solve this problem, we need to handle it manually
@@ -71,7 +71,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
       const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60 * 1000); 
 
       // Download the file, and save it as an ArrayBuffer object
-      const fileName = generateFileName(file, index);
+      const fileName = generateFileName(file);
       zip.file(fileName, data, {
         binary: true,
         date: dateWithOffset,

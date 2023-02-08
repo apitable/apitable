@@ -134,7 +134,7 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
         unitId={''}
         roleOptions={defaultRole}
         title={t(Strings.batch_edit_permission)}
-        onChange={(unitId, value) => onClick && onClick(value)}
+        onChange={(_unitId, value) => onClick && onClick(value)}
         onRemove={onRemove}
       >
         <LinkButton

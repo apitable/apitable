@@ -62,7 +62,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
   const themeName = useSelector(state => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
-  const importWidget = ({ widgetIds }) => {
+  const importWidget = ({ widgetIds }: any) => {
     quoteWidget(widgetIds);
     setVisibleRecommend(false);
     setSearchPanelVisible(false);
@@ -88,7 +88,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
       setInstallingWidgetIds(null);
       const { success, data, message } = res.data;
       if (success) {
-        const importWidgetIds = data.map(item => item.id);
+        const importWidgetIds = data.map((item: any) => item.id);
         const result = resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.AddWidgetToDashboard,
           dashboardId: dashboardId!,
@@ -97,7 +97,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
         });
         if (result.result === ExecuteResult.Success) {
           const _batchActions: any[] = [];
-          data.forEach(item => {
+          data.forEach((item: any) => {
             _batchActions.push(StoreActions.receiveInstallationWidget(item.id, item));
           });
           dispatch(batchActions(_batchActions));

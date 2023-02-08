@@ -51,7 +51,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
   const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData } = props;
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
-  let TriggerComponent;
+  let TriggerComponent: any;
 
   switch (field.type) {
     case FieldType.Member:
@@ -121,7 +121,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
             {!cellValue && placeholder ? (
               <div className={styles.placeholder}>{placeholder}</div>
             ) : (
-              <DisplayComponent cellValue={cellValue} field={field} />
+              <DisplayComponent cellValue={cellValue as any} field={field as any} />
             )}
             <div className={styles.iconArrow}>
               <ChevronDownOutlined color={colors.black[500]} />
@@ -132,7 +132,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <div className={classNames(styles.displayBox, styles.option)} onClick={() => setVisible(!visible)}>
-          <DisplayComponent cellValue={cellValue} field={field} />
+          <DisplayComponent cellValue={cellValue as any} field={field as any} />
           <div className={styles.iconArrow}>
             <IconArrow width={16} height={16} fill={colors.fourthLevelText} />
           </div>

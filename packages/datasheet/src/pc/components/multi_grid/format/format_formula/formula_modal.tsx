@@ -383,7 +383,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
           {filteredFields.length > 0 && (
             <div className={styles.listGroup}>
               <h3>{t(Strings.field)}</h3>
-              {(filteredFields as any).map((result, index) => {
+              {(filteredFields as any).map((result: { item: IField }, index: number) => {
                 const fld = result.item;
                 const active = suggestId === fld.id && suggestType === 'field';
                 return (

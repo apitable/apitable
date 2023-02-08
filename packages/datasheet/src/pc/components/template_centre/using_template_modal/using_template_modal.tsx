@@ -103,7 +103,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
     }
   };
 
-  const onLoadData = treeNode => {
+  const onLoadData = (treeNode: any) => {
     const { id } = treeNode.props;
     if (treeData.findIndex(item => item.pId === id) !== -1) {
       return new Promise<void>(resolve => {
@@ -118,7 +118,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
     });
   };
 
-  const onChange = value => {
+  const onChange = (value: string) => {
     setNodeId(value);
   };
 

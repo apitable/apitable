@@ -149,14 +149,14 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
           reader.addEventListener('load', () => {
             const url = reader.result;
             (file as any).preview = url;
-            const imgData = getImgData(file, url);
+            const imgData = getImgData(file, url as string);
             if (uploader) {
               Transforms.insertNodes(editor, GENERATOR.image({}));
               uploader(file)
                 .then((res: API.IImageResponse) => {
                   updateImage(editor, { ...imgData, url: res.imgUrl });
                 })
-                .catch((err) => {
+                .catch((err: any) => {
                   message.error(err);
                 });
             } else {
