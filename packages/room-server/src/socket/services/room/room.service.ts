@@ -133,7 +133,7 @@ export class RoomService {
     // get all rooms of the datasheet resource
     const roomIds = [message.roomId];
     // custom request to get multiple service node pod sockets
-    socket.nsp.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (_err: any, replies: string | any[]) => {
+    socket.nsp.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
       this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies, err: `${_err}` });
       // no room connection return directly
       if (!replies.length) {
@@ -301,7 +301,7 @@ export class RoomService {
       await this.broadcastFieldPermissionChangeToUser(server, message, [...server.adapter.rooms.get(message.datasheetId)]);
     }
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (err: string, replies: string | any[]) => {
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(err: string, replies: string | any[]) => {
       this.logger.log({ message: 'FieldPermission:ServerSideEmit', replies, err: `${err}` });
       // no room connection return directly
       if (!replies.length) {
@@ -326,7 +326,7 @@ export class RoomService {
     const infos = await this.nestService.getSocketInfos(socketIds);
     // Build User ID - Permission Map
     const uuidToPermissionInfoMap = new Map<string, any>();
-    for (const { uuids, ...permissionInfo } of changes) {
+    for (const { uuids, ...permissionInfo } of changes!) {
       for (const uuid of uuids) {
         uuidToPermissionInfoMap.set(uuid, permissionInfo);
       }

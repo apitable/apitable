@@ -51,5 +51,6 @@ export class FieldPermissionChangeRo {
   setting?: any;
 
   @IsArray()
-  changes!: FieldPermissionChange[];
+  @IsOptional()
+  changes?: FieldPermissionChange[];
 }
