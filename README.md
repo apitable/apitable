@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -242,15 +246,19 @@ Embed them by copying and pasting HTML scripts.
 
 ## Installation
 
-Make sure you have `docker` & `curl` installed locally.
+Before you begin:
+* A host with [docker](https://docs.docker.com/engine/install/) and [docker-compose v2](https://docs.docker.com/engine/install/) installed.
+* 4 CPUs/8GB RAM or more are recommended.
+* A bash shell with basic utilities like curl installed.
+* Native arm64 (apple silicon) container images is not ready yet and may cause bad performance.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+To install apitable using docker compose, open your terminal and run this:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+Then open [http://localhost:80](http://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
