@@ -98,7 +98,7 @@
     "zipkin-transport-http": "^0.22.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.5.6",
+    "@nestjs/cli": "8.1.4",
     "@nestjs/schematics": "^8.0.4",
     "@nestjs/testing": "^8.1.2",
     "@types/cache-manager": "^3.4.2",
