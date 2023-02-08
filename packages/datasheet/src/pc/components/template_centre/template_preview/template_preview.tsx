@@ -50,7 +50,7 @@ export const TemplatePreview: FC = () => {
   const templateCategory = useSelector((state: IReduxState) => state.templateCentre.category);
   useEffect(() => {
     if (usingTemplate && !spaceId && !userInfo) {
-      setOpenLoginModal(true);
+      Router.redirect(Navigation.LOGIN);
       return;
     }
     // Current user is logged in

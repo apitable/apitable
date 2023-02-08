@@ -361,7 +361,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
                     /> :
                     (upImg || officialImgToken ? (
                       <span className={styles.previewImgWrapper}>
-                        <Image src={previewUrl} layout={'fill'} alt={''} />
+                        <img src={previewUrl} alt={''} />
                       </span>
                     ) : (
                       initPreview

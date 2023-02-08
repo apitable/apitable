@@ -29,7 +29,7 @@ const options = [{
   label: '简体中文',
   value: 'zh-CN'
 }, {
-  label: 'English (beta)',
+  label: 'English',
   value: 'en-US' 
 }];
 

@@ -149,6 +149,7 @@ export const FormContainer: React.FC = () => {
   const unmounted = useRef(false);
   const query = useQuery();
   const colors = useThemeColors();
+  const theme = useSelector(Selectors.getTheme);
 
   const dispatch = useDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
@@ -756,7 +757,7 @@ export const FormContainer: React.FC = () => {
                 params={{
                   logo: (
                     <span className={styles.logoWrap} onClick={onJump}>
-                      <Logo size='mini' />
+                      <Logo size='mini' theme={theme}/>
                     </span>
                   ),
                 }}
@@ -769,7 +770,7 @@ export const FormContainer: React.FC = () => {
         {shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
-              <Logo />
+              <Logo theme={theme}/>
             </span>
           </div>
         )}
