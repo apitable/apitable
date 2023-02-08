@@ -22,7 +22,8 @@
     "test:ut": "DOTENV_CONFIG_PATH=src/env/.env.dev-test jest --config ./jest-ut.config.json --colors --logHeapUsage --verbose --silent --ci --detectOpenHandles --forceExit",
     "test:ut:cov": "jest --config ./jest-ut.config.json --logHeapUsage --verbose --silent --ci --updateSnapshot --runInBand --detectOpenHandles --forceExit --coverage --coverageDirectory=coverage",
     "grpc:build": "tsproto --path src/proto --output src/proto/generated",
-    "grpc:clean": "rimraf src/proto/generated"
+    "grpc:clean": "rimraf src/proto/generated",
+    "copy:assets": "cp -r 'src/grpc/' 'dist/grpc/' && cp 'src/shared/helpers/list.lock.lua' 'dist/shared/helpers/list.lock.lua'"
   },
   "engines": {
     "node": "16.15.0"
@@ -97,7 +98,7 @@
     "zipkin-transport-http": "^0.22.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.5.6",
+    "@nestjs/cli": "8.1.4",
     "@nestjs/schematics": "^8.0.4",
     "@nestjs/testing": "^8.1.2",
     "@types/cache-manager": "^3.4.2",
