@@ -29,7 +29,6 @@ import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitEntity } from '../entities/unit.entity';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
-import { UnitTagService } from './unit.tag.service';
 import { UnitTeamService } from './unit.team.service';
 
 @Injectable()
@@ -37,7 +36,6 @@ export class UnitService {
   constructor(
     private readonly unitRepo: UnitRepository,
     private readonly memberService: UnitMemberService,
-    private readonly tagService: UnitTagService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
     private readonly userService: UserService,
@@ -168,9 +166,6 @@ export class UnitService {
     let refId;
     if (UnitTypeEnum.TEAM === unitType) {
       refId = await this.teamService.getIdBySpaceIdAndName(spaceId, unitName);
-    }
-    if (UnitTypeEnum.TAG === unitType) {
-      refId = await this.tagService.getIdBySpaceIdAndName(spaceId, unitName);
     }
     if (UnitTypeEnum.MEMBER === unitType) {
       refId = await this.memberService.getIdBySpaceIdAndName(spaceId, unitName);
