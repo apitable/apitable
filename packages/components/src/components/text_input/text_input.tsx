@@ -68,17 +68,17 @@ const InputWrapper = styled.div.attrs(applyDefaultTheme) <IInputWrapperProps>`
       ${!disabled && !error && css`
         &:hover {
           border-color: ${primary};
-          background-color: ${background.primary};   
+          background-color: ${color.bgControlsElevateDefault};   
         }
       `}
       ${!disabled && css`
         &:hover {
-          background-color: ${background.primary};
+          background-color: ${color.bgControlsElevateDefault};
         }
       `}
       :focus-within {
         border-color: ${focusBorderColor};
-        background-color: ${background.primary};
+        background-color: ${color.bgControlsElevateDefault};
       }
       // Error status
       ${error && css`

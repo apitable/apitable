@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Button, Typography, useTheme } from '@apitable/components';
+import { Box, Button, Typography, useTheme, ThemeName } from '@apitable/components';
 import { Api, Strings, SystemConfig, t } from '@apitable/core';
 import Image from 'next/image';
 // @ts-ignore
@@ -24,7 +24,10 @@ import { isWecomFunc } from 'enterprise';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
 import { useRequest } from 'pc/hooks';
 import { WECOM_ROBOT_URL } from 'pc/utils';
-import ImageNoRecord from 'static/icon/datasheet/datasheet_img_modal_norecord.png';
+import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png';
+import ImageNoRecordDark from 'static/icon/datasheet/automation_empty_dark.png';
+import { useSelector } from 'react-redux';
+
 import { useAddNewRobot, useShowRobot } from '../hooks';
 
 export const RobotEmptyList = () => {
@@ -38,6 +41,8 @@ export const RobotEmptyList = () => {
   const applyOpenTestFunction = useApplyOpenFunction();
 
   const { data: labsFeatureListData } = useRequest(Api.getLabsFeatureList);
+  const themeName = useSelector(state => state.theme);
+  const ImageNoRecord = themeName === ThemeName.Light ? ImageNoRecordLight : ImageNoRecordDark;
 
   const openTestFunction = () => {
     const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
@@ -54,7 +59,7 @@ export const RobotEmptyList = () => {
       marginTop="80px"
       alignItems="center"
     >
-      <Image src={ImageNoRecord} alt="没有机器人哦" width={212} height={159} />
+      <Image src={ImageNoRecord} alt="没有机器人哦" width={200} height={150} />
       <Typography variant="body3" color={theme.color.fc1} style={{ marginTop: 16, width: 212 }}>
         {t(Strings.robot_panel_no_robot_tip)}
       </Typography>

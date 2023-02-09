@@ -105,7 +105,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
       dateUnitType,
       rowHeightLevel,
       rowInitSize: getGanttHeaderHeight(dateUnitType),
-      rowIndicesMap: getRowIndicesMap(linearRows, rowHeight),
+      rowIndicesMap: getRowIndicesMap(linearRows, rowHeight, ViewType.Gantt),
       workDays,
       onlyCalcWorkDay,
       columnThreshold,

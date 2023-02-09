@@ -20,7 +20,7 @@ import {
   FieldType, ICreatedByProperty, IDatasheetUnits, IFieldMap, IForeignDatasheetMap, IFormulaField, ILinkFieldProperty, ILookUpProperty,
   IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty
 } from '@apitable/core';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
 import { InjectLogger } from 'shared/common';
@@ -29,7 +29,7 @@ import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/i
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
-import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
+import { DatasheetRepository } from '../repositories/datasheet.repository';
 import { NodeService } from 'node/services/node.service';
 import { UnitService } from 'unit/services/unit.service';
 import { UserService } from 'user/services/user.service';
@@ -50,6 +50,7 @@ export class DatasheetFieldHandler {
     @InjectLogger() private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly unitService: UnitService,
+    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly datasheetMetaService: DatasheetMetaService,
     private readonly datasheetRecordService: DatasheetRecordService,
@@ -383,8 +384,8 @@ export class DatasheetFieldHandler {
    */
   private forEachRecordMap(dstId: string, recordMap: RecordMap, fieldLinkDstMap: Map<string, string>) {
     const beginTime = +new Date();
-    this.logger.info(`Start traverse main datasheet ${dstId} records`);
     if (Object.keys(recordMap).length === 0) return {};
+    this.logger.info(`Start traverse main datasheet ${dstId} records`);
     const foreignDstIdRecordIdsMap = Object.values(recordMap).reduce<{ [foreignDstId: string]: string[] }>((pre, cur) => {
       if (!isEmpty(cur) && !isEmpty(cur.data)) {
         // Only process records with link fields

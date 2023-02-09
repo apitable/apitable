@@ -104,7 +104,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
   let linkId = useSelector(Selectors.getLinkId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
-
+  const embedId = useSelector(state => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
@@ -261,7 +261,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       } as any;
     }
 
-    const title = spaceInfo
+    const title = (spaceInfo || embedId )
       ? (getSocialWecomUnitName?.({
         name: _item.originName || _item.memberName,
         isModified: _item.isMemberNameModified,

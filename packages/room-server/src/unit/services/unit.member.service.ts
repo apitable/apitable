@@ -117,4 +117,8 @@ export class UnitMemberService {
       return pre;
     }, {});
   }
+
+  async selectSpaceIdsByUserId(userId: string): Promise<string[]> {
+    return await this.memberRepo.selectSpaceIdsByUserId(userId);
+  }
 }

@@ -43,6 +43,7 @@ import { isArray } from 'lodash';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
 import ReactDOMServer from 'react-dom/server';
+import { getEnvVariables } from 'pc/utils/env';
 
 const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
@@ -226,6 +227,7 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
 };
 
 export const getNoticeUrlParams = (data: INoticeDetail) => {
+  const env = getEnvVariables();
   const templateConfig = SystemConfig.notifications.templates[data.templateId];
   const configPathname = templateConfig?.url;
   const spaceId = data.notifyBody?.space?.spaceId;
@@ -234,7 +236,7 @@ export const getNoticeUrlParams = (data: INoticeDetail) => {
   const dataRecordId = data.notifyBody?.extras?.recordId;
   const recordIds = data.notifyBody?.extras?.recordIds || (dataRecordId ? [dataRecordId] : undefined);
   const recordId = recordIds && isArray(recordIds) ? recordIds[0] : '';
-  const toastUrl = data.notifyBody.extras?.toast?.url;
+  const toastUrl = data.templateId === 'new_user_welcome_notify' ? env.NEW_USER_WELCOME_NOTIFY_URL : data.notifyBody.extras?.toast?.url;
   const notifyId = data.id;
   const roleName = data.notifyBody.extras?.roleName;
 

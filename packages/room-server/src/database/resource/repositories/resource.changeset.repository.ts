@@ -54,6 +54,7 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
    * The order of the returned changeset list follows that of `revisions`.
    */
   getChangesetOrderList(resourceId: string, startRevision: number, endRevision: number): Promise<any[]> {
+    // todo(itou): replace dynamic sql
     return this.query(
       `
         SELECT vrc.message_id messageId, vu.uuid userId, vrc.revision, 

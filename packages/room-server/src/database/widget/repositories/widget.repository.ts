@@ -46,15 +46,13 @@ export class WidgetRepository extends Repository<WidgetEntity> {
   /**
    * Query revisions corresponding to multiple widgets
    */
-  getRevisionByWdtIds(widgetIds: string[]): Promise<IResourceRevision[]> {
-    return this.query(
-      `
-          SELECT widget_id resourceId, revision
-          FROM ${this.manager.connection.options.entityPrefix}widget
-          WHERE widget_id IN (?) AND is_deleted = 0
-        `,
-      [widgetIds],
-    );
+  public async getRevisionByWdtIds(widgetIds: string[]): Promise<IResourceRevision[]> {
+    return await this.createQueryBuilder()
+      .select('widget_id', 'resourceId')
+      .addSelect('revision')
+      .where('widget_id IN (:...widgetIds)', { widgetIds })
+      .andWhere('is_deleted = 0')
+      .getRawMany<IResourceRevision>();
   }
 
   getNodeIdAndRevision(widgetId: string): Promise<{ nodeId: string; revision: number } | undefined> {

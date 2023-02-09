@@ -1,6 +1,6 @@
 {
   "name": "@apitable/websocket",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
@@ -51,7 +51,7 @@
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.0.0",
+    "@nestjs/cli": "8.1.4",
     "@nestjs/schematics": "^8.0.4",
     "@nestjs/testing": "^8.1.2",
     "@types/express": "^4.17.14",

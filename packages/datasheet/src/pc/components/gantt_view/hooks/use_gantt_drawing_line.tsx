@@ -191,7 +191,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       switchArrowStyle(colors.fc10, true);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: true });
     } else {
-      switchArrowStyle(colors.borderBrand, false);
+      switchArrowStyle(colors.borderBrandDefault, false);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: false });
     }
   };
@@ -257,12 +257,12 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   };
 
   const drawingLine = (
-    <Group onMouseMove={() => setLinePointStyle(3.5, colors.borderBrand)} onMouseLeave={() => setLinePointStyle(2, colors.blackBlue[400])}>
+    <Group onMouseMove={() => setLinePointStyle(3.5, colors.borderBrandDefault)} onMouseLeave={() => setLinePointStyle(2, colors.blackBlue[400])}>
       <Arrow
         _ref={arrowRef}
         points={drawingLinePoints}
-        fill={colors.borderBrand}
-        stroke={colors.borderBrand}
+        fill={colors.borderBrandDefault}
+        stroke={colors.borderBrandDefault}
         strokeWidth={1}
         lineCap="round"
         dash={[2, 5]}

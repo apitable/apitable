@@ -20,8 +20,8 @@ import {
   CollaCommandManager, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IAttachmentValue, ICollaCommandExecuteResult, IGridViewColumn,
   IGridViewProperty, IRange, IReduxState, isImage, IStandardValueTable, IViewColumn, IViewRow, Range, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
-import { Modal } from 'antd';
 import { notify } from 'pc/components/common/notify';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { store } from 'pc/store';
 import { UploadManager } from 'pc/utils';
@@ -29,8 +29,6 @@ import { browser } from '../../../modules/shared/browser';
 import { ShortcutContext } from '../../../modules/shared/shortcut_key';
 import { recogClipboardURLData } from './clip_data_url_recog';
 import { ISerializer, Serializer } from './serializer';
-
-const { confirm } = Modal;
 
 interface IGetCutRangeDataReturn {
   datasheetId: string;
@@ -92,7 +90,8 @@ function extendViewIfNeed(
     return t(Strings.paste_tip_add_field);
   }
 
-  confirm({
+  Modal.confirm({
+    type: 'warning',
     title: t(Strings.paste),
     content: rightContent(),
     centered: true,
@@ -100,6 +99,9 @@ function extendViewIfNeed(
     cancelText: t(Strings.cancel),
     onCancel() { callback(false); },
     onOk() { callback(true); },
+    okButtonProps: {
+      color: 'primary'
+    }
   });
 }
 

@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { INode, Strings, t } from '@apitable/core';
+import { INode, Strings, t, ThemeName } from '@apitable/core';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import * as React from 'react';
-import EmptyResultImage from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
+import { useSelector } from 'react-redux';
 
 interface ISearchResultProps {
   searchResult: { folders: INode[], files: INode[] } | string
@@ -33,11 +35,13 @@ interface ISearchResultProps {
 
 export const SearchResult: React.FC<ISearchResultProps> = (props) => {
   const { searchResult, checkNodeDisable, onlyShowAvailable, onNodeClick } = props;
+  const themeName = useSelector(state => state.theme);
+  const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (typeof searchResult === 'string') {
     return (
       <div className={styles.searchEmpty}>
         <span className={styles.emptyImage}>
-          <Image src={EmptyResultImage} alt={t(Strings.no_search_result)} />
+          <Image src={EmptyResultImage} alt={t(Strings.no_search_result)} width={200} height={150} />
         </span>
         <p className={styles.emptyText}>
           {<TComponent

@@ -59,6 +59,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the children node list of a given node
    */
   async selectAllSubNodeIds(nodeId: string): Promise<string[]> {
+    // todo(itou): replace dynamic sql
     const raws = await this.query(
       `
           WITH RECURSIVE sub_ids (node_id) AS
@@ -90,6 +91,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Example: for a path of 3 nodes, the returned array is `[nodeId, parentId, grandparentId, great-grandparentId]`
    */
   async selectParentPathByNodeId(nodeId: string): Promise<string[]> {
+    // todo(itou): replace dynamic sql
     // Query the path with recursive SQL, the result set includes the given node.
     const raws = await this.query(
       `

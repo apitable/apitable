@@ -21,8 +21,11 @@ import Image from 'next/image';
 import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import * as React from 'react';
-import EmptyFolderImg from 'static/icon/datasheet/datasheet_img_folder_default.png';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { ScrollBar } from 'pc/components/scroll_bar';
+import { useSelector } from 'react-redux';
+import { ThemeName } from '@apitable/components';
 
 export interface IViewNode {
   nodeId: string;
@@ -52,6 +55,8 @@ export const FolderContent: React.FC<IFolderContentProps> = (props) => {
     nodes, onNodeClick, currentViewId, currentMirrorId, loading, onlyShowEditableNode,
     checkNodeDisable, currentDatasheetId, isSelectView, showMirrorNode
   } = props;
+  const themeName = useSelector(state => state.theme);
+  const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   return (
     <div className={styles.folderContent}>
       <ScrollBar>
@@ -126,7 +131,9 @@ export const FolderContent: React.FC<IFolderContentProps> = (props) => {
         {
           !loading && !nodes.length && (
             <div className={styles.emptyFolder}>
-              <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} />
+              <div className={styles.emptyImg}>
+                <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} width={200} height={150} />
+              </div>
               <p>{t(Strings.folder_content_empty)}</p>
             </div>
           )

@@ -142,7 +142,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
   function getBgColor(theme: ThemeName) {
     const field = fieldMap![kanbanFieldId];
     if (groupId === UN_GROUP) {
-      return colors.borderCommon;
+      return colors.borderCommonDefault;
     }
     if (field.type === FieldType.SingleSelect) {
       return inquiryValueByKey('color', groupId, field, theme);

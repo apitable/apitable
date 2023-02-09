@@ -47,12 +47,18 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean onTrial;
 
+    private String billingMode;
+
+    private String recurringInterval;
+
     @ApiModelProperty(value = "plan name", example = "bronze_no_billing_period", position = 3)
     private String plan;
 
     @ApiModelProperty(value = "added plan names", dataType = "List", example = "[\"space_capacity_50G_v1\",\"api_usage_20000_v1\"]", position = 5)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> addOnPlans;
+
+    private Long expireAt;
 
     @ApiModelProperty(value = "subscription expiration time. if free, it is null.", example = "2019-01-01", position = 6)
     @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)

@@ -50,11 +50,11 @@
         </td>
       </tr>
       <tr>
-        <td align="center" style="padding-top: 48px;color:#8a8a8a;font-family:Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;">copyright &copy; 2022-{{YEARS}} apitable. All rights reserved.</td>
+        <td align="center" style="padding-top: 48px;color:#8a8a8a;font-family:Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;">&copy; {{YEARS}} APITable Ltd.</td>
       </tr>
       <tr>
         <td align="center" style="padding-top: 16px;padding-bottom: 48px;">
-          <a href="https://apitable.com" target="_blank" style="color:#7b67ee;font-family:Helvetica,Arial,sans-serif;font-weight:400;text-decoration:none;">Contact us</a>
+          <a href="https://apitable.com/?home=1" target="_blank" style="color:#7b67ee;font-family:Helvetica,Arial,sans-serif;font-weight:400;text-decoration:none;">Contact us</a>
           </td>
       </tr>
     </table>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, useThemeColors } from '@apitable/components';
+import { Button, IconButton, useThemeColors, ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
@@ -27,12 +27,13 @@ import { FC } from 'react';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import DownloadIcon from 'static/icon/datasheet/datasheet_icon_download.svg';
 import QrCodePng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_bj.png';
-import GapBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_divider.png';
+import GapBgPngLight from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_light.png';
+import GapBgPngDark from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_dark.png';
 import FooterBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_down.png';
 import DuckPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_top.png';
 import MainBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_up.png';
 import styles from './style.module.less';
-
+import { useSelector } from 'react-redux';
 export interface IShareQrCodeProps {
   url: string;
   user: string;
@@ -61,6 +62,9 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
         container?.appendChild(canvas);
       });
   });
+
+  const themeName = useSelector(state => state.theme);
+  const GapBgPng = themeName === ThemeName.Light ? GapBgPngLight : GapBgPngDark;
 
   const downloadImage = () => {
     const downloadNode = document.getElementById('downloadContainer');

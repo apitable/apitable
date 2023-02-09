@@ -40,7 +40,7 @@ export const OperationCard: FC<IOperationCardProps> = ({ img, onClick, tipText, 
       { !isIframe() && (<div className={classnames(styles.operationCard, styles.loose)}>
         <IconButton icon={() => <CloseIcon fill="currentColor" />} className={styles.closeBtn} onClick={() => setIsCompact(true)} />
         <div className={styles.paint}>
-          <Image src={img as string} alt="" width="74" height="74" />
+          <Image src={img as string} alt="" width="80" height="80" />
         </div>
         <p className={styles.saveDesc}>{tipText}</p>
         <Button

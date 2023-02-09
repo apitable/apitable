@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
+import { Button, LinkButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
@@ -33,7 +33,8 @@ import { getNodeTypeByNodeId } from 'pc/utils';
 import * as React from 'react';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import DefaultPng from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import EyeIcon from 'static/icon/signin/signin_icon_display.svg';
 import { getNodeIcon } from '../../tree/node_icon';
 import { Share } from '../share';
@@ -55,6 +56,8 @@ export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
   const fileSharable = useSelector(state => state.space.spaceFeatures?.fileSharable);
+  const themeName = useSelector(state => state.theme);
+  const DefaultPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const onChange = (data: IShareSettings) => {
     setShareSettings(data);

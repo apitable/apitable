@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
+import { useThemeColors, ThemeName } from '@apitable/components';
 import { Api, INode, Navigation, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import type { InputRef } from 'antd';
@@ -34,7 +34,8 @@ import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import EmptyResultIcon from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import { Node } from './node';
 import styles from './style.module.less';
@@ -71,7 +72,8 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
+  const themeName = useSelector(state => state.theme);
+  const EmptyResultIcon = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   const findNodeByIndex = (index: number) => {
     for (const group of groupData) {
       if (group.data.length > index) {

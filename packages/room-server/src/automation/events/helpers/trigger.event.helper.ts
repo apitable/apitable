@@ -26,7 +26,7 @@ import {
   TRIGGER_INPUT_FILTER_FUNCTIONS,
   TRIGGER_INPUT_PARSER_FUNCTIONS
 } from '@apitable/core';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { getRecordUrl } from 'shared/helpers/env';
 import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { EventTypeEnums } from '../domains/event.type.enums';
@@ -54,6 +54,7 @@ export class TriggerEventHelper {
 
   constructor(
     @InjectLogger() private readonly logger: Logger,
+    @Inject(forwardRef(() => AutomationService))
     private readonly automationService: AutomationService,
   ) {
     // Convert trigger input to plain object
@@ -91,8 +92,7 @@ export class TriggerEventHelper {
       shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordMatchesConditions, conditionalTriggers, eventContext);
     }
 
-    this.logger.info(`${eventType} handler`, {
-      msgIds,
+    this.logger.info(`messageIds: [${ msgIds }]: Execute ${ eventType } handler. `, {
       shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
     });
 

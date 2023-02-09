@@ -164,16 +164,13 @@ export const useEmailInviteInModal = (
 
   useEffect(() => {
     if (!invite.length) {
+      setIsInvited(false);
+      setInvitedCount(0);
+      setErr('');
       return;
     }
 
     window['nvc'] ? execNoTraceVerification(request) : request();
-
-    return () => {
-      setIsInvited(false);
-      setInvitedCount(0);
-      setErr('');
-    };
   }, [spaceId, dispatch, invite, shareId, request]);
   return { isInvited, invitedCount, err };
 };

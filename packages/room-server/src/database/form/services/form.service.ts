@@ -30,7 +30,6 @@ import { DatasheetRecordSourceService } from 'database/datasheet/services/datash
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { omit } from 'lodash';
@@ -43,6 +42,7 @@ import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
+import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class FormService {
@@ -55,7 +55,7 @@ export class FormService {
     private readonly commandService: CommandService,
     private readonly otService: OtService,
     private readonly transform: FusionApiTransformer,
-    private resourceMetaRepository: ResourceMetaRepository,
+    private resourceMetaService: MetaService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly redisService: RedisService,
     private readonly eventEmitter: EventEmitter2,
@@ -70,13 +70,7 @@ export class FormService {
       auth,
       { internal: !templateId, main: true, notDst: true }
     );
-    // Query form metadata
-    const formProps = await this.fetchFormProps(formId);
-    // Query info of referenced datasheet and view
-    const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
-    const dstId = nodeRelInfo.datasheetId;
-    // Query meta of referenced datasheet
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
+    const {formProps, nodeRelInfo, dstId, meta} = await this.getRelDatasheetInfo(formId);
     // Get source datasheet permission in space
     if (!templateId) {
       const permissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
@@ -101,13 +95,7 @@ export class FormService {
     // Query node info
     const origin = { internal: false, main: true, shareId, notDst: true };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(formId, auth, origin);
-    // Query form metadata 
-    const formProps = await this.fetchFormProps(formId);
-    // Query info of referenced datasheet and view
-    const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
-    const dstId = nodeRelInfo.datasheetId;
-    // Query meta of referenced datasheet
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
+    const { formProps, nodeRelInfo, dstId, meta } = await this.getRelDatasheetInfo(formId);
     let hasSubmitted = false;
     // Check if form is already submitted when logged in and in share state
     if (shareId && userId) {
@@ -130,6 +118,17 @@ export class FormService {
     };
   }
 
+  private async getRelDatasheetInfo(formId: string) {
+    // Query form metadata
+    const formProps = await this.fetchFormProps(formId);
+    // Query info of referenced datasheet and view
+    const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
+    const dstId = nodeRelInfo.datasheetId;
+    // Query meta of referenced datasheet
+    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
+    return { formProps, nodeRelInfo, dstId, meta };
+  }
+
   async addRecord(
     props: {
       formId: string,
@@ -141,7 +140,7 @@ export class FormService {
   ): Promise<any> {
     const { formId, shareId, userId, recordData } = props;
     const dstId = await this.nodeService.getMainNodeId(formId);
-    const revision: any = await this.nodeService.getRevisionByDstId(dstId);
+    const revision: any = await this.resourceMetaService.getRevisionByDstId(dstId);
     // revision not found
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
@@ -193,8 +192,8 @@ export class FormService {
         recordUrl: getRecordUrl(dstId, recordId),
         ...eventFields
       };
-      this.logger.debug(
-        'eventContext',
+      this.logger.info(
+        'dispatchFormSubmittedEvent eventContext',
         eventContext,
         eventFields
       );
@@ -208,7 +207,7 @@ export class FormService {
         beforeApply: false,
       });
     } catch (error) {
-      this.logger.debug(error);
+      this.logger.info('dispatchFormSubmittedEvent error', error);
     }
   }
 
@@ -330,11 +329,11 @@ export class FormService {
   }
 
   async updateFormProps(userId: string, resourceId: string, formProps: IFormProps) {
-    await this.resourceMetaRepository.updateMetaDataByResourceId(resourceId, userId, formProps);
+    await this.resourceMetaService.updateMetaDataByResourceId(resourceId, userId, formProps);
   }
 
   // Obtain form metadata
   async fetchFormProps(formId: string) {
-    return await this.resourceMetaRepository.selectMetaByResourceId(formId);
+    return await this.resourceMetaService.selectMetaByResourceId(formId);
   }
 }

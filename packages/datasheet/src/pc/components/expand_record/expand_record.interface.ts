@@ -20,6 +20,7 @@ import { RecordType } from 'pc/components/expand_record/expand_record.enum';
 
 export interface IExpandRecordDatasheetProp {
   onClose?: () => void;
+  preventOpenNewModal?: boolean;
 }
 
 export interface IExpandRecordIndependentProp {
@@ -29,6 +30,7 @@ export interface IExpandRecordIndependentProp {
   viewId?: string;
   onClose?: () => void;
   forceCenter?: boolean;
+  preventOpenNewModal?: boolean;
 }
 
 export interface IPaneIconProps {
