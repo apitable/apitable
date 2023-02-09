@@ -66,7 +66,7 @@
 
 ## ✨ Quick Start
 
-If you just want try out APITable[^info], using our hosted cloud version at [apitable.com](https://apitable.com).
+If you just want to try out APITable[^info], use our hosted cloud version at [apitable.com](https://apitable.com).
 
 If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
