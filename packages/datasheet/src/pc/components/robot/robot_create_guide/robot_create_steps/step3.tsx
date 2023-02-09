@@ -79,7 +79,7 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
     props.goNextStep();
   };
 
-  const handleActionTypeIdChange = (option) => {
+  const handleActionTypeIdChange = (option: { value: any; }) => {
     const actionTypeId = option.value;
     if (actionTypeId) {
       setActionTypeId(actionTypeId);

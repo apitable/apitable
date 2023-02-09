@@ -7,6 +7,7 @@ export interface API {
 }
 
 export interface Tips {
+    api_set_view_lock_error:                              APIAddRowFailedWrongLengthOfValueClass;
     api_request_success:                                  APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_upload_attachment_error:                          APIAddRowFailedWrongLengthOfValueClass;
@@ -130,6 +131,8 @@ export interface Tips {
     api_param_toolbar_type_error:                         APIAddRowFailedWrongLengthOfValueClass;
     api_param_viewid_type_error:                          APIAddRowFailedWrongLengthOfValueClass;
     api_param_viewid_empty_error:                         APIAddRowFailedWrongLengthOfValueClass;
+    api_view_rules_empty_error:                           APIAddRowFailedWrongLengthOfValueClass;
+    api_fieldid_empty_error:                              APIAddRowFailedWrongLengthOfValueClass;
     api_param_basic_tools_type_error:                     APIAddRowFailedWrongLengthOfValueClass;
     api_param_share_btn_type_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_param_widget_btn_type_error:                      APIAddRowFailedWrongLengthOfValueClass;
@@ -143,6 +146,13 @@ export interface Tips {
     api_embed_link_limit:                                 APIAddRowFailedWrongLengthOfValueClass;
     api_embed_link_instance_limit:                        APIAddRowFailedWrongLengthOfValueClass;
     api_param_embed_permission_type_error:                APIAddRowFailedWrongLengthOfValueClass;
+    api_view_type_error:                                  APIAddRowFailedWrongLengthOfValueClass;
+    api_view_filter_conditions_empty_error:               APIAddRowFailedWrongLengthOfValueClass;
+    api_view_filter_operator_value_error:                 APIAddRowFailedWrongLengthOfValueClass;
+    api_view_filter_operator_not_support:                 APIAddRowFailedWrongLengthOfValueClass;
+    api_view_fieldid_not_exist:                           APIAddRowFailedWrongLengthOfValueClass;
+    api_param_viewids_empty_error:                        APIAddRowFailedWrongLengthOfValueClass;
+    api_param_titlebar_type_error:                        APIAddRowFailedWrongLengthOfValueClass;
 }
 
 export interface APIAddRowFailedWrongLengthOfValueClass {

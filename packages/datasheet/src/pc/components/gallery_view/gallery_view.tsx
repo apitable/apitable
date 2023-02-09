@@ -372,7 +372,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     groupRows,
     _visibleRecords,
   };
-  const itemKey = ({ columnIndex, rowIndex }) => {
+  const itemKey = ({ columnIndex, rowIndex }: { columnIndex: number; rowIndex: number  }) => {
     const realIndex = columnIndex + rowIndex * columnCount;
     const record = linearRows[realIndex];
     if (!record) return realIndex;
@@ -380,7 +380,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     return `${record.type}_${recordId}`;
   };
 
-  const getRowHeightByFieldType = (field: IField, paddingTop: number) => {
+  const getRowHeightByFieldType = (field: IField, paddingTop: number): number => {
     switch (field.type) {
       case FieldType.Text:
       case FieldType.URL:
@@ -454,7 +454,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
             paddingBottom: PADDING_BOTTOM,
           }}
           columnCount={columnCount}
-          columnWidth={index => cardWidth}
+          columnWidth={() => cardWidth}
           rowCount={linearRows.length}
           rowHeight={index => getRowHeight(index)}
           itemKey={itemKey}

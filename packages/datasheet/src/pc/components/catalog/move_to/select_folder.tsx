@@ -120,7 +120,11 @@ export const SelectFolder: React.FC<{
     onClickItem(rootId);
   };
 
-  const onScroll = ({ scrollTop, height, scrollHeight }) => {
+  const onScroll = ({ scrollTop, height, scrollHeight }: {
+    scrollTop: number;
+    height: number;
+    scrollHeight: number;
+  }) => {
     const shadowEle = scrollShadowRef.current;
     if (!shadowEle) return;
     if (scrollTop + height > scrollHeight - 10) {
@@ -171,7 +175,7 @@ export const SelectFolder: React.FC<{
               folderName={nodeName}
               icon={icon}
               onClick={onClickItem}
-              level={showLevel ? `${spaceName} ${item.superiorPath}` : ''}
+              level={showLevel ? `${spaceName} ${(item as ApiInterface.IRecentlyBrowsedFolder).superiorPath}` : ''}
             />;
           })
         }

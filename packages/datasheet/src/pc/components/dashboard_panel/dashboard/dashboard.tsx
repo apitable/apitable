@@ -141,14 +141,14 @@ export const Dashboard = () => {
     decisionOpenRecommend();
   }, [connect]);
 
-  const renameWidget = arg => {
+  const renameWidget = (arg: any) => {
     const {
       props: { renameCb },
     } = arg;
     renameCb && renameCb();
   };
 
-  const jumpToDatasheet = arg => {
+  const jumpToDatasheet = (arg: any) => {
     const {
       props: { widgetId, pickerViewId },
     } = arg;
@@ -189,7 +189,7 @@ export const Dashboard = () => {
     return widgetSnapshot?.datasheetId;
   };
 
-  const deleteWidget = arg => {
+  const deleteWidget = (arg: any) => {
     const {
       props: { widgetId, deleteCb },
     } = arg;
@@ -231,7 +231,7 @@ export const Dashboard = () => {
         onClick: ({ props }: { props?: any }) => {
           props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
         },
-        disabled: arg => {
+        disabled: (arg: any) => {
           const {
             props: { widgetId },
           } = arg;
@@ -256,7 +256,7 @@ export const Dashboard = () => {
         icon: <GotoLargeOutlined color={colors.thirdLevelText} />,
         text: t(Strings.jump_link_url),
         onClick: jumpToDatasheet,
-        disabled: arg => {
+        disabled: (arg: any) => {
           const {
             props: { widgetId },
           } = arg;
@@ -276,7 +276,7 @@ export const Dashboard = () => {
     expandWidgetCenter(InstallPosition.Dashboard);
   };
 
-  const onLayout = (currentLayout, allLayouts) => {
+  const onLayout = (__currentLayout: any, allLayouts: { [x: string]: any; }) => {
     if (!dashboardLayout || readonly) {
       return;
     }
@@ -433,7 +433,7 @@ export const Dashboard = () => {
       <Drawer
         placement={'bottom'}
         closable={false}
-        onClose={status => {
+        onClose={() => {
           setVisibleRecommend(false);
         }}
         visible={isMobile || !manageable ? false : visibleRecommend}

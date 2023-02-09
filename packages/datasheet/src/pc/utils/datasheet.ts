@@ -23,7 +23,7 @@ import { store } from 'pc/store';
 /** Get the isColNameVisible value, compatible with the previously created view isColNameVisible is undefined
  *  Default is true
  */
-export const getIsColNameVisible = (value) => {
+export const getIsColNameVisible = (value?: boolean) => {
   return typeof value === 'boolean' ? value : true;
 };
 

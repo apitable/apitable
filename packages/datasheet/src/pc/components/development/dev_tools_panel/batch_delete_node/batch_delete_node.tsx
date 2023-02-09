@@ -44,7 +44,7 @@ export const BatchDeleteNode: React.FC = () => {
     },
   });
 
-  const checkboxChange = (value) => {
+  const checkboxChange = (value: any[]) => {
     setValue(value);
   };
 

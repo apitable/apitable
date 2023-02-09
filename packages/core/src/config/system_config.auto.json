@@ -4316,7 +4316,6 @@
             "14": {
                 "repeat": true,
                 "completeIndex": -1,
-                "successMsg": "wizard_14_success_message",
                 "steps": "[[4]]",
                 "freeVCount": 200,
                 "integral_action": "wizard_video_reward"
@@ -4324,7 +4323,6 @@
             "15": {
                 "repeat": true,
                 "completeIndex": -1,
-                "successMsg": "wizard_15_success_message",
                 "steps": "[[5]]",
                 "freeVCount": 200,
                 "integral_action": "wizard_video_reward"
@@ -4332,7 +4330,6 @@
             "16": {
                 "repeat": true,
                 "completeIndex": -1,
-                "successMsg": "wizard_16_success_message",
                 "steps": "[[6]]",
                 "freeVCount": 200,
                 "integral_action": "wizard_video_reward"
@@ -4340,7 +4337,6 @@
             "17": {
                 "repeat": true,
                 "completeIndex": -1,
-                "successMsg": "wizard_17_success_message",
                 "steps": "[[7]]",
                 "freeVCount": 200,
                 "integral_action": "wizard_video_reward"
@@ -4367,7 +4363,6 @@
             },
             "20": {
                 "completeIndex": -1,
-                "successMsg": "wizard_20_success_message",
                 "freeVCount": 1000,
                 "integral_action": "complete_bind_email"
             },
@@ -4678,10 +4673,7 @@
             "70": {
                 "repeat": true,
                 "completeIndex": 1,
-                "successMsg": "wizard_18_success_message",
-                "steps": "[[26,27],[28,29],[30],[32],[35],[37,38],[39]]",
-                "freeVCount": 200,
-                "integral_action": "wizard_reward"
+                "steps": "[[26,27],[28,29],[30],[32],[35],[37,38],[39]]"
             },
             "71": {
                 "completeIndex": -1,

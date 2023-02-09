@@ -35,7 +35,7 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
       return commandFunc();
     }
 
-    if (browser.is('mobile')) {
+    if (browser?.is('mobile')) {
       showViewManualSaveInMobile();
     } else {
       Player.doTrigger(Events.view_notice_view_auto_false);

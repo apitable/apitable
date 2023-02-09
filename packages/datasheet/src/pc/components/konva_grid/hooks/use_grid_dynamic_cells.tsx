@@ -77,7 +77,7 @@ const DBL_CLICK_DISABLED_TYPES = new Set([
   FieldType.MultiSelect,
 ]);
 
-const EMPTY_ARRAY = [];
+const EMPTY_ARRAY: any[] = [];
 
 interface IUseDynamicCellsProps {
   instance: GridCoordinate;
@@ -91,7 +91,7 @@ interface IUseDynamicCellsProps {
 /**
  * Determine where a cell is located based on whether it is the first/last column
  */
-export const getCellHorizontalPosition = (props) => {
+export const getCellHorizontalPosition = (props: { depth: number; columnWidth: number; columnIndex: number; columnCount: number; }) => {
   const {
     depth,
     columnWidth,
@@ -456,9 +456,9 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             transformsEnabled={'position'}
             perfectDrawEnabled={false}
             shadowEnabled={false}
-            onDblClick={(e) => onDblClick(e, field, rowIndex, columnIndex)}
-            onMouseDown={(e) => onMouseDown(e, field, isActive)}
-            onTap={(e) => onMouseDown(e, field, isActive)}
+            onDblClick={(e: KonvaEventObject<MouseEvent>) => onDblClick(e, field, rowIndex, columnIndex)}
+            onMouseDown={(e: any) => onMouseDown(e, field, isActive)}
+            onTap={(e: any) => onMouseDown(e, field, isActive)}
           />
         );
       }

@@ -78,7 +78,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     if (uploader) {
       setUploading(true);
       uploader(file)
-        .then((res) => {
+        .then((res: API.IImageResponse) => {
           successFunc((res as API.IImageResponse).imgUrl);
         })
         .finally(() => {

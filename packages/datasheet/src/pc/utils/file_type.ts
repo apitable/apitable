@@ -218,10 +218,10 @@ export const getCellValueThumbSrc = (
   if (showOriginImageThumbnail(file)) {
     const transformWebpIfNeeded =
       (isWebp({ name: file.name, type: file.mimeType }) &&
-        browser.satisfies({
+        browser?.satisfies({
           safari: '<14',
         })) ||
-      browser.is('iOS');
+      browser?.is('iOS');
 
     imgSrc = cellValueToImageSrc(file, {
       ...option,

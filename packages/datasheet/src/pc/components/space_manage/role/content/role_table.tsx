@@ -113,7 +113,7 @@ export const RoleTable: React.FC<{
   const rowSelection = manageable
     ? {
       columnWidth: 4.8,
-      onChange: (selectedRowKeys: React.Key[], selectedRow: IMemberItem[]) => {
+      onChange: (_selectedRowKeys: React.Key[], selectedRow: IMemberItem[]) => {
         onBatchSelectMember && onBatchSelectMember(selectedRow.map(v => v.unitRefId));
       },
     }

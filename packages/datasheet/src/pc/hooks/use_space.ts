@@ -78,7 +78,7 @@ export const useCreateSubTeam = (name: string, spaceId: string, superId: string,
 // Edit member information
 export const useEditMember = (
   data: IUpdateMemberInfo,
-  spaceId: string,
+  _spaceId: string,
   teamId: string,
   pageNo: number,
   cancel: () => void,

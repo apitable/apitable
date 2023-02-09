@@ -138,7 +138,7 @@ const unitTagBase = {
   isTeam: false,
 };
 const triggerWrapBase = {
-  onClick: e => {
+  onClick: (e: React.MouseEvent) => {
     e.stopPropagation();
   },
   style: { display: 'inline-block' },
@@ -320,7 +320,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           if (!involveMemberArr || involveMemberArr.length === 0) {
             return;
           }
-          const userList = involveMemberArr.map(item => renderMember(item, data.notifyBody.space.spaceName, spaceInfo));
+          const userList = involveMemberArr.map((item: IFromUserInfo) => renderMember(item, data.notifyBody.space.spaceName, spaceInfo));
           return <>{userList}</>;
         }
         case TemplateKeyword.SpaceName: {
@@ -375,13 +375,13 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           return <b>{planName}</b>;
         }
         case TemplateKeyword.PayFee: {
-          return <b> {payFee}</b>;
+          return <b>&nbsp;{payFee}</b>;
         }
         case TemplateKeyword.ExpireAt: {
-          return <b> {dayjs(Number(expireAt)).format('YYYY-MM-DD')}</b>;
+          return <b>&nbsp;{dayjs(Number(expireAt)).format('YYYY-MM-DD')}</b>;
         }
         case TemplateKeyword.TaskExpireAt: {
-          return <b> {dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm')}</b>;
+          return <b>&nbsp;{dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm')}</b>;
         }
         case TemplateKeyword.FeatureName: {
           return <b>{featureName}</b>;
@@ -410,7 +410,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
     },
   };
   if (pureString) {
-    const userList = involveMemberArr.map(item => item.memberName || t(Strings.unnamed));
+    const userList = involveMemberArr.map((item: IFromUserInfo) => item.memberName || t(Strings.unnamed));
     return template
       .replace(keyWordAddClass(TemplateKeyword.MemberName), data?.fromUser?.memberName)
       .replace(keyWordAddClass(TemplateKeyword.UserName), data?.fromUser?.userName)

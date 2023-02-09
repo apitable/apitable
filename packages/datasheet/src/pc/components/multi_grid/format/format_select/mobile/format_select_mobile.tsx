@@ -100,7 +100,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   const onChange = (type: OptionSetting, id: string, value: number | string) => {
     setCurrentField(preState => {
-      const index = preState.property.options.findIndex(item => item.id === id);
+      const index = preState.property.options.findIndex((item: { id: string; }) => item.id === id);
       return produce(preState, draft => {
         switch (type) {
           case OptionSetting.SETCOLOR: {

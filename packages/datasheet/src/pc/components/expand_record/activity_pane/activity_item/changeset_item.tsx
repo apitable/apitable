@@ -231,7 +231,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
                       <IconButton onClick={handleReply} icon={CommentOutlined} shape="square" className={cls('replyIcon', styles.icon)} />
                       {allowDeleteComment && (
                         <IconButton
-                          onClick={e => {
+                          onClick={() => {
                             const commentItem = {
                               comment: get(changeset, 'operations.0.actions.0.li'),
                               expandRecordId,

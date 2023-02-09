@@ -654,7 +654,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
               {
                 recordId: record.id,
                 fieldId: field.id,
-                value: value.map(v => ({
+                value: value.map((v: any) => ({
                   ...v,
                   type: SegmentType.Url,
                   title: meta?.title,

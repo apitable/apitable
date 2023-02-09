@@ -64,14 +64,14 @@ enum IFormContentType {
   Welcome = 'Welcome',
 }
 
-const serialize = nodes => {
+const serialize = (nodes: any) => {
   if (Array.isArray(nodes)) {
     return nodes.map(n => Node.string(n)).join('\n');
   }
   return '';
 };
 
-const isEmptyValue = value => {
+const isEmptyValue = (value: unknown) => {
   if (value == null) {
     return true;
   }
@@ -149,6 +149,7 @@ export const FormContainer: React.FC = () => {
   const unmounted = useRef(false);
   const query = useQuery();
   const colors = useThemeColors();
+  const theme = useSelector(Selectors.getTheme);
 
   const dispatch = useDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
@@ -458,7 +459,7 @@ export const FormContainer: React.FC = () => {
   //   return defaultData;
   // };
 
-  const validValue = (localValue, fieldMap) => {
+  const validValue = (localValue: any, fieldMap: IFieldMap) => {
     if (!localValue || !fieldMap) {
       return {};
     }
@@ -756,7 +757,7 @@ export const FormContainer: React.FC = () => {
                 params={{
                   logo: (
                     <span className={styles.logoWrap} onClick={onJump}>
-                      <Logo size='mini' />
+                      <Logo size='mini' theme={theme}/>
                     </span>
                   ),
                 }}
@@ -769,7 +770,7 @@ export const FormContainer: React.FC = () => {
         {shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
-              <Logo />
+              <Logo theme={theme}/>
             </span>
           </div>
         )}
@@ -802,24 +803,24 @@ export const FormContainer: React.FC = () => {
                 {
                   icon: <EditOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.modify_field),
-                  hidden: ({ props }) => !props?.onEdit,
-                  onClick: ({ props }) => props?.onEdit && props.onEdit(),
+                  hidden: ({ props }: any) => !props?.onEdit,
+                  onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
                   icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.editing_field_desc),
-                  onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
+                  onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },
                 {
                   icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_above),
-                  disabled: ({ props }) => !props.onInsertAbove,
-                  onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
+                  disabled: ({ props }: any) => !props.onInsertAbove,
+                  onClick: ({ props }: any) => props?.onInsertAbove && props.onInsertAbove(),
                 },
                 {
                   icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_below),
-                  onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
+                  onClick: ({ props }: any) => props?.onInsertBelow && props.onInsertBelow(),
                 },
               ],
             ],

@@ -53,6 +53,11 @@ services:
     expose:
       - "3333"
       - "3334"
+      - "3001"
+      - "3002"
+      - "3006"
+      - "3005"
+      - "3007"
     env_file:
       - "${ENV_FILE:-.env}"
     environment:
@@ -60,31 +65,12 @@ services:
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
       - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
       - INSTANCE_MAX_MEMORY=4096M
+      - ENABLE_SOCKET=true
     networks:
       - apitable
     depends_on:
       mysql:
         condition: service_healthy
-
-  socket-server:
-    image: ${IMAGE_REGISTRY}/${IMAGE_SOCKET_SERVER}
-    pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
-    restart: always
-    expose:
-      - "3001"
-      - "3002"
-      - "3005"
-      - "3007"
-    environment:
-      - PORT=3001
-      - NOTIFICATION_PORT=3002
-      - SYS_MEMORY_RATIO=100
-      - NODE_MEMORY_RATIO=80
-      - NEST_GRPC_URL=room-server:3334
-    env_file:
-      - "${ENV_FILE:-.env}"
-    networks:
-      - apitable
 
   # Third Party Dockers
   gateway:
@@ -108,8 +94,6 @@ services:
       backend-server:
         condition: service_healthy
       room-server:
-        condition: service_started
-      socket-server:
         condition: service_started
       init-appdata:
         condition: service_completed_successfully

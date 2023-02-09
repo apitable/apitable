@@ -161,7 +161,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     arrowRef?.current?.dashEnabled(dashEnabled);
   };
 
-  const onDragMove = e => {
+  const onDragMove = (e: any) => {
     const node = e.target;
     const curX = node.x();
     const curY = node.y();
@@ -169,11 +169,11 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     const targetRecordId = includeTask(curX, curY);
 
     const noScrollCb = () => setDrawingLinePoints([x, y + 6, x, curY, curX, curY]);
-    const horizontalScrollCb = ({ scrollLeft }) => {
+    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => {
       setDrawingLinePoints([x, y + 6, x, curY, scrollLeft + pointX - gridWidth, curY]);
     };
-    const verticalScrollCb = ({ scrollTop }) => setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
-    const allScrollCb = ({ scrollLeft, scrollTop }) =>
+    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
+    const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number; scrollTop: number  }) =>
       setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, scrollLeft + pointX - gridWidth, scrollTop + pointY]);
     onDragScrollSpacing(
       scrollHandler,
@@ -196,7 +196,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     }
   };
 
-  const onDragEnd = e => {
+  const onDragEnd = () => {
     setDrawingLinePoints([]);
     setLinePointStyle(2, colors.blackBlue[400]);
     if (targetTaskInfo && targetTaskInfo.recordId !== '') {

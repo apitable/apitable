@@ -38,14 +38,14 @@ export const EmojiPopoverBase: FC<PropsWithChildren<IEmojiPopoverProps>> = ({ no
   const { updateNodeIconReq } = useCatalogTreeRequest();
   const { run: updateNodeIcon } = useRequest(updateNodeIconReq, { manual: true });
 
-  const stopPropagation = e => {
+  const stopPropagation = (e: React.SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
   };
 
-  const EmojiPicker = ({ nodeId }) => {
-    const selectEmoji = emoji => {
+  const EmojiPicker = ({ nodeId }: { nodeId: string }) => {
+    const selectEmoji = (emoji: { id: string; }) => {
       updateNodeIcon(nodeId, type, emoji.id);
       setVisible(false);
     };

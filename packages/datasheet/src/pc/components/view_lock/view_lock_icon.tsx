@@ -24,7 +24,7 @@ import { IViewProperty, /* Selectors,  */Strings, t } from '@apitable/core';
 import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
 import { useThemeColors } from '@apitable/components';
 
-export const ViewLockIcon: React.FC<{ viewId: string, view: IViewProperty }> = ({ viewId, view }) => {
+export const ViewLockIcon: React.FC<{ viewId: string, view: IViewProperty }> = ({ view }) => {
   // const currentView = useSelector(Selectors.getCurrentView);
   const colors = useThemeColors();
   if (!view.lockInfo) {

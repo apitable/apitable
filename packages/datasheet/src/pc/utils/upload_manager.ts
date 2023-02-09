@@ -143,12 +143,12 @@ export class UploadManager {
       };
     }
     this.notifyUploadListUpdate(cellId);
-    this.checkCapacitySizeBilling().then(res => {
+    this.checkCapacitySizeBilling().then(() => {
       if (this.isRequestLimit(cellId)) {
         return this.execute(cellId);
       }
-    });
-
+      return null;
+    })
   }
 
   /**
@@ -172,7 +172,7 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  private async execute(cellId: string) {
+  private async execute(cellId: string): Promise<any> {
     if (!this.uploadMap[cellId].waitQueue.length) {
       return;
     }
@@ -249,7 +249,7 @@ export class UploadManager {
       this.fileStatusMap.has(cellId) &&
       this.fileStatusMap.get(cellId)!.has(options.fileId)
     ) {
-      this.fileStatusMap
+      return this.fileStatusMap
         .get(cellId)!
         .get(options.fileId)!
         .forEach((item) => item());
@@ -387,7 +387,7 @@ export class UploadManager {
   }
 
   public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const request = async(nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
@@ -492,7 +492,7 @@ export class UploadManager {
       });
       return [];
     }
-    const list = fileList.map((item) => {
+    return fileList.map((item) => {
       const newId = getNewId(IDPrefix.File, [...exitIds, ...uploadListId]);
       exitIds.push(newId);
       return {
@@ -501,7 +501,6 @@ export class UploadManager {
         fileId: newId,
       };
     });
-    return list;
   }
 
   static checkFileSize(file: File) {

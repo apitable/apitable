@@ -122,7 +122,7 @@ export const useCards = (props: ILayoutProps) => {
             },
           };
 
-        return isSocial ? (
+        return isSocial || !getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE ? (
           <Card
             {...props}
             totalText={capacityData.allTotalText}

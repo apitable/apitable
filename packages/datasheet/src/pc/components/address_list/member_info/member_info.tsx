@@ -54,7 +54,7 @@ export const MemberInfo: FC = () => {
   const editNameClick = () => {
     setInEditName(true);
   };
-  const onPressEnter = e => {
+  const onPressEnter = (e: any) => {
     if (nameLengthErr) {
       return;
     }
@@ -70,7 +70,7 @@ export const MemberInfo: FC = () => {
       editMemberName({ memberId: memberInfo.memberId, memberName: e.target.value, teamIds });
     }
   };
-  const inputChange = e => {
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > ConfigConstant.MEMBER_NAME_LENGTH) {
       !nameLengthErr && setNameLengthErr(true);
     } else {

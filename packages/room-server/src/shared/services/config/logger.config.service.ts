@@ -20,7 +20,7 @@ import { Injectable } from '@nestjs/common';
 import { isDevMode } from 'app.environment';
 import { utilities as nestWinstonModuleUtilities, WinstonModuleOptions, WinstonModuleOptionsFactory } from 'nest-winston';
 import { join, resolve } from 'path';
-import { APPLICATION_NAME } from 'shared/common';
+import { APPLICATION_NAME } from 'shared/common/constants/bootstrap.constants';
 import * as winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
@@ -31,14 +31,14 @@ export class LoggerConfigService implements WinstonModuleOptionsFactory {
   private defaultAppName = APPLICATION_NAME;
 
   // logger directory
-  private logDir = resolve(process.cwd(), 'logs');
+  private logDir = resolve(process.cwd(), `logs/${this.defaultAppName}`);
 
   // logger exception file
   private exceptionFile = join(this.logDir, 'exceptions.log');
   // logger error file
   private errorFile = join(this.logDir, 'error.log');
   // logger app file
-  private logFile = join(this.logDir, `${this.defaultAppName}-%DATE%.log`);
+  private logFile = join(this.logDir, '%DATE%.log');
 
   // logger level
   private defaultLogLevel = process.env.LOG_LEVEL || 'info';

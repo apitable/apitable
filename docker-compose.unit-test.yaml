@@ -106,6 +106,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - INSTANCE_COUNT=1
       - APPLICATION_NAME=NEST_REST_SERVER
+      - ENABLE_SOCKET=false
       - NODE_OPTIONS=--max-old-space-size=4096
       - OSS_HOST=https://s1.vika.cn
       - OSS_BUCKET=QNY1

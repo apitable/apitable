@@ -100,7 +100,7 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
     }
     if (source === ModalType.Edit) {
       setSubmitBtnLoading(true);
-      setEditStart(true);
+      setEditStart?.(true);
       return;
     }
     handCancel();

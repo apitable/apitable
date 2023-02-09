@@ -86,7 +86,7 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
       link.download = `${nodeName}.png`;
       link.href = dataUrl;
       link.click();
-    }).catch(error => {
+    }).catch(() => {
       Message.error({ content: 'generation image failed' });
     });
   };

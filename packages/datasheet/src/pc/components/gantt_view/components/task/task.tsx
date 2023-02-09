@@ -53,7 +53,12 @@ interface ITaskProps {
   isTransform: boolean;
   leftAnchorEnable?: boolean;
   rightAnchorEnable?: boolean;
-  setTooltipInfo: (info) => void;
+  setTooltipInfo: (info: {
+    visible: boolean,
+    text?: string,
+    x?: number,
+    y?: number,
+  }) => void;
   targetTaskInfo: ITargetTaskInfo | null;
 }
 
@@ -218,7 +223,7 @@ const Task: FC<ITaskProps> = (props) => {
 
   const isDrawTargetTask = targetTaskInfo?.recordId === recordId;
 
-  const setTaskPosition = (data) => _setTaskPosition(prev => ({ ...prev, ...data }));
+  const setTaskPosition = (data: any) => _setTaskPosition(prev => ({ ...prev, ...data }));
 
   const onTooltipShow = (taskX: number, taskWidth: number, toolTipX: number, toolTipY: number, tipType = TipType.All) => {
     if (wheelingRef.current) return;
@@ -289,7 +294,7 @@ const Task: FC<ITaskProps> = (props) => {
     if (isTouchLeft) {
       return scrollHandler.scrollByValue({
         columnSpeed: -getSpeed(leftSpacing),
-        scrollCb: ({ scrollLeft, totalScrollX }) => {
+        scrollCb: ({ scrollLeft, totalScrollX }: { scrollLeft: number, totalScrollX: number }) => {
           const diffFactor = isLeft ? 1 : -1;
           setTaskPosition({
             x: isLeft ? scrollLeft + pointX - gridWidth - distanceToTaskLeft : curX,
@@ -303,7 +308,7 @@ const Task: FC<ITaskProps> = (props) => {
     if (isTouchRight) {
       return scrollHandler.scrollByValue({
         columnSpeed: getSpeed(rightSpacing),
-        scrollCb: ({ scrollLeft, totalScrollX, maxScrollSize }) => {
+        scrollCb: ({ scrollLeft, totalScrollX, maxScrollSize }: { scrollLeft: number, totalScrollX: number, maxScrollSize: number }) => {
           const curCount = totalScrollX % maxScrollSize > maxScrollSize - x ? 1 : 0;
           const prevCount = Math.floor(totalScrollX / maxScrollSize);
           const diffFactor = isLeft ? -1 : 1;
@@ -326,7 +331,7 @@ const Task: FC<ITaskProps> = (props) => {
     }
   };
 
-  const onTransformEnd = (e: KonvaEventObject<Event>) => {
+  const onTransformEnd = () => {
     setLocking(false);
     scrollHandler.stopScroll();
     setTooltipInfo({ visible: false });
@@ -367,9 +372,9 @@ const Task: FC<ITaskProps> = (props) => {
       setTaskPosition({ x: curX, y: curY });
       onTooltipShow(curX, taskWidth, pointX, pointY + 20);
     };
-    const horizontalScrollCb = ({ scrollLeft }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
-    const verticalScrollCb = ({ scrollTop }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
-    const allScrollCb = ({ scrollLeft, scrollTop }) => setTaskPosition({
+    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
+    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
+    const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number, scrollTop: number }) => setTaskPosition({
       x: scrollLeft + pointX - gridWidth - distanceToTaskLeft,
       y: scrollTop + pointY - distanceToTaskTop
     });
@@ -378,7 +383,7 @@ const Task: FC<ITaskProps> = (props) => {
       scrollHandler,
       gridWidth,
       instance, 
-      scrollState, 
+      scrollState as any,
       pointPosition,
       noScrollCb,
       horizontalScrollCb,
@@ -460,7 +465,7 @@ const Task: FC<ITaskProps> = (props) => {
       ctx.fillStrokeShape(shape);
     }
 
-    function roundRect(x, y, width, height, tlRadius = 0, trRadius = 0, brRadius = 0, blRadius = 0) {
+    function roundRect(x: number, y: number, width: number, height: number, tlRadius = 0, trRadius = 0, brRadius = 0, blRadius = 0) {
       ctx.beginPath();
       ctx.moveTo(x + tlRadius, y);
       ctx.lineTo(x + width - trRadius, y);

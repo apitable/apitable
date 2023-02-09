@@ -20,13 +20,15 @@ import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
 import { getRegResult, embedIdReg } from 'pc/hooks';
 import React from 'react';
+// @ts-ignore
+import { IEmbedProps } from 'enterprise';
 
 // @ts-ignore
 const DynamicComponentWithNoSSR = dynamic(() => import('enterprise').then((components) => {
   return components.Embed;
 }), { ssr: false });
 
-const App = (props) => {
+const App = (props: IEmbedProps) => {
   return DynamicComponentWithNoSSR && <DynamicComponentWithNoSSR {...props} />;
 };
 

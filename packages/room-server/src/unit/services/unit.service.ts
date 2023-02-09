@@ -18,19 +18,19 @@
 
 import { MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { UnitInfo } from 'database/interfaces';
 import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { getConnection } from 'typeorm';
+import { UserService } from 'user/services/user.service';
 import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitEntity } from '../entities/unit.entity';
-import { UnitInfo } from '../../database/interfaces';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTagService } from './unit.tag.service';
 import { UnitTeamService } from './unit.team.service';
-import { UserService } from 'user/services/user.service';
 
 @Injectable()
 export class UnitService {
@@ -215,5 +215,13 @@ export class UnitService {
       });
     });
     return userMap;
+  }
+
+  async getIdByUserIdAndSpaceId(userId: string, spaceId: string): Promise<string | undefined> {
+    const memberId = await this.memberService.getIdBySpaceIdAndUserId(spaceId, userId);
+    if (!memberId) {
+      return undefined;
+    }
+    return this.unitRepo.selectIdByRefIdAndSpaceId(memberId, spaceId).then(o => o?.id);
   }
 }

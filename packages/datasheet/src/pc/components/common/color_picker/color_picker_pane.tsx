@@ -84,7 +84,7 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
     </div>
   );
 
-  const onInput = e => {
+  const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = e.target.value;
     if (value.length > 100) {
@@ -145,13 +145,13 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
       <div className={styles.colorMenuGroup}>
         {renderMenu(
           t(Strings.option_configuration_basic_palette),
-          Array.from({ length: 20 }, (item, index) => index),
+          Array.from({ length: 20 }, (_item, index) => index),
           false,
           true,
         )}
         {renderMenu(
           t(Strings.option_configuration_advance_palette),
-          Array.from({ length: 30 }, (item, index) => index + 20),
+          Array.from({ length: 30 }, (_item, index) => index + 20),
           true,
         )}
       </div>

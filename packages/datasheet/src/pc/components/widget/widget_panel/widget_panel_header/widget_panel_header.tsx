@@ -90,7 +90,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
     expandWidgetCenter(InstallPosition.WidgetPanel, { installedWidgetHandle });
   };
 
-  const onMenuVisibleChange = status => {
+  const onMenuVisibleChange = (status: boolean) => {
     setOpenPanelList(status);
   };
 

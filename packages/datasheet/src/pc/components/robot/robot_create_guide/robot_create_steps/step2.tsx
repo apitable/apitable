@@ -59,7 +59,7 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
     return null;
   }
 
-  const handleTriggerTypeIdChange = (option) => {
+  const handleTriggerTypeIdChange = (option: { value: any; }) => {
     const triggerTypeId = option.value;
     if (triggerTypeId) {
       setTriggerTypeId(triggerTypeId);

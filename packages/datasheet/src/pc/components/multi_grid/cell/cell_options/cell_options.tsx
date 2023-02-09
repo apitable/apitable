@@ -35,7 +35,7 @@ import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './style.module.less';
 
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
-  const item = field.property.options.find(item => item.id === id);
+  const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (!item) {
     return '';
   }
@@ -59,7 +59,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const getOptionNameColor = useCallback((id: string, field: IField)=> {
-    const item = field.property.options.find(item => item.id === id);
+    const item = field.property.options.find((item: { id: string; }) => item.id === id);
     return item && item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
   }, [colors]);
 
@@ -91,7 +91,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
     stopPropagation(e);
     let value: string | string[] | null = null;
     if (!isSingleSelect) {
-      value = (cellValue as string[]).filter((item, idx) => {
+      value = (cellValue as string[]).filter((_item, idx) => {
         return idx !== index;
       });
       if (value.length === 0) {

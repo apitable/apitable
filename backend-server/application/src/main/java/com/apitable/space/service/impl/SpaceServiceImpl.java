@@ -543,8 +543,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
      */
     @Override
     public List<SpaceVO> getSpaceListByUserId(
-            final Long userId,
-            final GetSpaceListFilterCondition condition
+        final Long userId,
+        final GetSpaceListFilterCondition condition
     ) {
         List<SpaceDTO> spaceDTOList = baseMapper.selectListByUserId(userId);
         if (CollUtil.isEmpty(spaceDTOList)) {
@@ -560,26 +560,26 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return Collections.emptyList();
         }
         List<String> spaceIds = spaceDTOList.stream().map(SpaceDTO::getSpaceId)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
         // get space domains
         Map<String, String> spaceDomains =
-                socialServiceFacade.getDomainNameMap(spaceIds);
+            socialServiceFacade.getDomainNameMap(spaceIds);
         // batch query subscriptions
         Map<String, SubscriptionFeature> spacePlanFeatureMap =
-                entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
+            entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
         // setting information
         List<SpaceVO> resultList = new ArrayList<>();
         for (SpaceDTO spaceDTO : spaceDTOList) {
             String spaceId = spaceDTO.getSpaceId();
             SpaceVO spaceVO = SpaceAssembler.toVO(spaceDTO);
             SocialConnectInfo socialConnectInfo =
-                    socialServiceFacade.getConnectInfo(spaceId);
+                socialServiceFacade.getConnectInfo(spaceId);
             SpaceSocialConfig socialConfig =
-                    SpaceAssembler.toSocialConfig(socialConnectInfo);
+                SpaceAssembler.toSocialConfig(socialConnectInfo);
             spaceVO.setSocial(socialConfig);
             if (spacePlanFeatureMap.containsKey(spaceId)) {
                 SubscriptionFeature planFeature =
-                        spacePlanFeatureMap.get(spaceId);
+                    spacePlanFeatureMap.get(spaceId);
                 spaceVO.setMaxSeat(planFeature.getSeat().getValue());
                 spaceVO.setSpaceDomain(spaceDomains.get(spaceId));
             }
@@ -749,8 +749,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             // the complimentary attachment capacity has been used to be 0.
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
         } else {
-            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(
-                    planCapacity);
+            spaceCapacityUsedInfo
+                .setCurrentBundleCapacityUsedSizes(planCapacity);
             // complimentary attachment capacity
             Long giftCapacity = subscriptionInfo.getGiftCapacity().getValue();
             // If the attachment capacity is used in excess,
@@ -842,10 +842,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (dto.getMobile() != null) {
             // check whether the mobile phone verification code is passed
             ValidateTarget target =
-                    ValidateTarget.create(dto.getMobile(), dto.getAreaCode());
+                ValidateTarget.create(dto.getMobile(), dto.getAreaCode());
             ValidateCodeProcessorManage.me()
-                    .findValidateCodeProcessor(ValidateCodeType.SMS)
-                    .verifyIsPass(target.getRealTarget());
+                .findValidateCodeProcessor(ValidateCodeType.SMS)
+                .verifyIsPass(target.getRealTarget());
         } else if (dto.getEmail() != null) {
             // check whether the sms verification code is passed
             ValidateTarget target = ValidateTarget.create(dto.getEmail());

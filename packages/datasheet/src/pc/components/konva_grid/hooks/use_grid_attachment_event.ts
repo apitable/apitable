@@ -25,7 +25,15 @@ import { GRID_ROW_HEAD_WIDTH } from '../constant';
 import { useRef, useState } from 'react';
 import { isEqual } from 'lodash';
 
-export const useAttachmentEvent = (props) => {
+interface IAttachmentEvent {
+  instance: any;
+  gridBound: { x: number, y: number };
+  scrollTop: number;
+  scrollLeft: number;
+  offsetX: number;
+}
+
+export const useAttachmentEvent = (props: IAttachmentEvent) => {
   const { 
     instance, 
     gridBound, 
@@ -55,7 +63,7 @@ export const useAttachmentEvent = (props) => {
   const [draggingOutlineInfo, setDraggingOutlineInfo] = useState<{ rowIndex: number; columnIndex: number; } | null>(null);
   const { frozenColumnWidth } = instance;
 
-  const getCellInfoByPosition = (e) => {
+  const getCellInfoByPosition = (e: any) => {
     const x = scrollLeft + e.pageX - gridBound.x - offsetX;
     const y = scrollTop + e.pageY - gridBound.y;
     const frozenRange = GRID_ROW_HEAD_WIDTH + frozenColumnWidth;
@@ -74,7 +82,7 @@ export const useAttachmentEvent = (props) => {
     };
   };
 
-  const onDrop = (e) => {
+  const onDrop = (e: any) => {
     e.preventDefault();
     setDraggingOutlineInfo(null);
     const files: File[] = Array.from(e.dataTransfer.files);
@@ -98,7 +106,7 @@ export const useAttachmentEvent = (props) => {
     });
   };
 
-  const onDragOver = (e) => {
+  const onDragOver = (e: any) => {
     if (wheelingRef.current) return;
     e.persist();
     e.preventDefault();

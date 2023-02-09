@@ -40,7 +40,7 @@ interface IOperateColumnOwnProperty {
 }
 
 export interface IRowCheckedProps {
-  onCheck?(e): void;
+  onCheck?(e: any): void;
   isChecked: boolean;
   shape?: 'default' | 'circle'
 }

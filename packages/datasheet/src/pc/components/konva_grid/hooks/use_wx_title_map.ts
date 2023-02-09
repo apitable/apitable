@@ -36,7 +36,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
   const [unitTitleMap, setUnitTitleMap] = useState<object>({});
   const WWOpenData: {
     initCanvas?: () => void;
-    prefetch: (e, t) => void;
+    prefetch: (e: any, t: any) => void;
   } = (window as any).WWOpenData;
   useEffect(() => {
     const units = userNames || (unitMap && Object.values(unitMap));
@@ -47,7 +47,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
         const items = units.map(item => ({ type: WecomOpenDataType.UserName, id: item.name }));
         const fetchData = async() => {
           const result: { items: { data: string }[] } = await new Promise((resolve, reject) => {
-            WWOpenData.prefetch({ items }, (err, data) => {
+            WWOpenData.prefetch({ items }, (err: any, data: any) => {
               if (err) {
                 return reject(err);
               }

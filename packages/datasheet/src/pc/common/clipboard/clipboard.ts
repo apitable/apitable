@@ -368,7 +368,7 @@ export class Clipboard {
       };
     }, {} as IStandardValueTable);
     const text = Serializer.csv.serialize(stdValueTable);
-    const ie = browser.satisfies({ ie: '*' });
+    const ie = browser?.satisfies({ ie: '*' });
     let html = '';
     if (!ie) {
       html = Serializer.html.serialize(stdValueTable);

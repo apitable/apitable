@@ -24,10 +24,13 @@ import omit from 'lodash/omit';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { stopPropagation } from 'pc/utils';
+// @ts-ignore
 import MonthCalendar from 'rc-calendar/es/MonthCalendar';
+// @ts-ignore
 import RcDatePicker from 'rc-calendar/es/Picker';
 import * as React from 'react';
 import { ChangeEvent } from 'react';
+// @ts-ignore
 import { polyfill } from 'react-lifecycles-compat';
 import styles from './style.module.less';
 
@@ -134,7 +137,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
 
     noop = () => { return; };
 
-    render() {
+    override render() {
       const { value, showDate, open } = this.state;
       const props = omit(this.props, ['onChange']);
       const { prefixCls, suffixIcon, locale, localeCode } = props;

@@ -18,7 +18,7 @@
 
 import { Button, IconButton, TextButton, ThemeName } from '@apitable/components';
 import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { Modal, Radio } from 'antd';
+import { Modal, Radio, RadioChangeEvent } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common/avatar';
@@ -156,7 +156,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
   };
 
   const renderSpaceList = () => {
-    const onChange = e => {
+    const onChange = (e: RadioChangeEvent) => {
       setRadio(e.target.value);
     };
 

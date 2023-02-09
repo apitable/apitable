@@ -113,7 +113,7 @@ export const ImageBox: React.FC<IImageBoxProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className={styles.indexMarqueeWrapper} style={{ width: marqueeWrapperWidth }}>
                   {
-                    showImages.map((imgSrc, index) =>
+                    showImages.map((_imgSrc, index) =>
                       <div
                         key={index}
                         onMouseOver={() => setCurrentIndex(index)}

@@ -39,27 +39,23 @@ import {
   CoverOutlined,
   GotoLargeOutlined,
   Brokenlink1Outlined,
-  SelectOutlined
+  SelectOutlined,
+  IIconProps,
 } from '@apitable/icons';
-
 import { colorVars } from '@apitable/components';
 
 import { ElementType, MarkType, ALIGN } from '../../constant';
 
 import styles from './style.module.less';
+import { FC } from 'react';
 
 const HeadingIcon = ({ depth = 1 }) => {
   return <i className={styles.iconWrap}>
-      H<sub>{depth}</sub>
+    H<sub>{depth}</sub>
   </i>;
 };
 
-interface IIconProps {
-  color?: string;
-  size?: number;
-}
-
-const IconFactor = (Icon) => {
+const IconFactor = (Icon: FC<IIconProps>) => {
   return ({ color = colorVars.secondLevelText, ...others }: IIconProps) => <Icon color={color} {...others} />;
 };
 

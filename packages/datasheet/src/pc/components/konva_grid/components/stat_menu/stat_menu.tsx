@@ -38,7 +38,7 @@ export interface IFieldBoundary {
 
 interface IStatMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;
-  getBoundary: (e) => IFieldBoundary | null;
+  getBoundary: (e: MouseEvent) => IFieldBoundary | null;
 }
 
 export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
@@ -80,12 +80,12 @@ export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
 
   }
 
-  const showContextMenu = (e) => {
+  const showContextMenu = (e: any) => {
     if (e.button === MouseDownType.Right) return;
     const fieldBoundary = getBoundary(e);
     if (!fieldBoundary) return;
     const { x, y, fieldId } = fieldBoundary;
-    show(e, {
+    show((e as any), {
       id: KONVA_DATASHEET_ID.GRID_STAT_MENU,
       position: {
         x,

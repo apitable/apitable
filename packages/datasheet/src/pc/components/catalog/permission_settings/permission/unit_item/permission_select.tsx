@@ -50,7 +50,7 @@ export const PermissionSelect: React.FC<IPermissionSelectProps> = props => {
         <div className={styles.selectWrapper}>
           <Select
             value={role}
-            onSelected={(option, index) => {
+            onSelected={(option) => {
               if (option.value === 'remove') {
                 onRemove?.(unit.id);
                 return;

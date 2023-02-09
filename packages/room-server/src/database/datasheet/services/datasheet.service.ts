@@ -111,7 +111,13 @@ export class DatasheetService {
     this.logger.info(`Finished main datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
     // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
-    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
+    return {
+      snapshot: { meta, recordMap, datasheetId: node.id },
+      datasheet: node,
+      foreignDatasheetMap: combine.foreignDatasheetMap,
+      units: combine.units as (UserInfo | UnitInfo)[],
+      fieldPermissionMap,
+    };
   }
 
   /**

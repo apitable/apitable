@@ -19,10 +19,23 @@
 import dynamic from 'next/dynamic';
 import { Rect, Text } from 'pc/components/konva_components';
 import * as React from 'react';
+import { ILightOrDarkThemeColors } from '@apitable/components';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 
-const GanttTask = (props) => {
+interface IGanttTask {
+  colors: ILightOrDarkThemeColors;
+  x: number;
+  y: number;
+  text: string;
+  width: number;
+  height: number;
+  fill: string;
+  opacity: number;
+  cornerRadius: number;
+}
+
+const GanttTask = (props: IGanttTask) => {
   const { colors, x, y, text, width, height, fill, opacity, cornerRadius } = props;
   return <Group
     x={x}

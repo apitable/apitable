@@ -20,10 +20,10 @@ import { ThemeName, ThemeProvider } from '@apitable/components';
 import { useEffect, useState } from 'react';
 import { getTheme, switchTheme } from './theme';
 
-export const ThemeWrap = ({ children }) => {
+export const ThemeWrap = ({ children }: { children: JSX.Element }) => {
   const [theme, setTheme] = useState<ThemeName>(getTheme());
   useEffect(() => {
-    const messageListener = (event) => {
+    const messageListener = (event: MessageEvent<any>) => {
       const { data } = event;
       if (data?.type === 'vika_theme') {
         switchTheme(data?.vika_theme);

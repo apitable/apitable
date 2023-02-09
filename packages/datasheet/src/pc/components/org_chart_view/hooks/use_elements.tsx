@@ -31,7 +31,7 @@ export const useElements = (props: {
   fieldMap: IFieldMap;
   getCardHeight: (recordId: string | null) => number;
   nodeStateMap: INodeStateMap;
-  rows,
+  rows: any,
   datasheetId: string;
   linkFieldId: string;
   primaryFieldId: string;
@@ -62,7 +62,7 @@ export const useElements = (props: {
     const degrees: IDegrees = {};
     const adj: IAdj = {};
 
-    rows.forEach((row) => {
+    rows.forEach((row: any) => {
       degrees[row.recordId] = {
         degree: 0,
         inDegree: 0,
@@ -81,7 +81,7 @@ export const useElements = (props: {
 
     const baseHeight = rows.length && getCardHeight(rows[0].recordId) - 16;
     const data = rows.reduce(
-      (graph, row: IViewRow) => {
+      (graph: any, row: IViewRow) => {
         let linkIds = adj[row.recordId];
         if (!Array.isArray(linkIds)) {
           linkIds = [];

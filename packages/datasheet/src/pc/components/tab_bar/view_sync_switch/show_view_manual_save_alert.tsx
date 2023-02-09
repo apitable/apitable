@@ -54,7 +54,7 @@ interface IShowViewManualSaveInPcContentProps {
   modalClose(): void;
 }
 
-const ViewManualSaveAlertContentWithTheme = (props) => {
+const ViewManualSaveAlertContentWithTheme: React.FC<IShowViewManualSaveInPcContentProps> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

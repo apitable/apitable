@@ -244,7 +244,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
                 <DoubleSelect
                   value={value}
                   disabled={false}
-                  onSelected={(op, index) => handleShareAuthClick(op)}
+                  onSelected={(op) => handleShareAuthClick(op)}
                   triggerCls={styles.doubleSelect}
                   options={Permission}
                 />

@@ -32,7 +32,7 @@ const SpaceManage = dynamic(() => import('pc/components/space_manage/space_manag
   ),
 });
 
-const ManagementRouter = ({ children })=>{
+const ManagementRouter = ({ children }: any)=>{
   return <PrivateRoute><SideWrapper><SpaceManage>
     {children}
   </SpaceManage></SideWrapper></PrivateRoute>;

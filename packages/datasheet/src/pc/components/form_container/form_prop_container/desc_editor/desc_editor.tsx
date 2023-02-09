@@ -65,7 +65,7 @@ export const DescEditor: React.FC<IDescEditorProps> = (props) => {
     return <></>;
   }
 
-  const contentChangeHandler = (content) => {
+  const contentChangeHandler = (content: React.SetStateAction<undefined>) => {
     // Storage state
     setContent(content);
   };

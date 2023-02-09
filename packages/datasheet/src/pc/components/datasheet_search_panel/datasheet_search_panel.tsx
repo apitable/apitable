@@ -56,8 +56,8 @@ import styles from './style.module.less';
 interface ISearchPanelProps {
   folderId: string;
   activeDatasheetId: string;
-  setSearchPanelVisible(v: boolean);
-  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] });
+  setSearchPanelVisible: (v: boolean) => void;
+  onChange: (result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] }) => void;
   noCheckPermission?: boolean;
   subColumnType?: SubColumnType;
   showMirrorNode?: boolean;
@@ -98,7 +98,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const { activeDatasheetId, noCheckPermission, folderId, subColumnType, showMirrorNode } = props;
   const showSubColumnWithView = subColumnType === SubColumnType.View;
   const showSubColumnWithWidget = subColumnType === SubColumnType.Widget;
-  const editorRef = useRef<{ focus() } | null>(null);
+  const editorRef = useRef<{ focus: () => void } | null>(null);
 
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -262,7 +262,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
     });
   };
 
-  const hidePanel = e => {
+  const hidePanel = (e: any) => {
     stopPropagation(e);
     props.setSearchPanelVisible(false);
   };

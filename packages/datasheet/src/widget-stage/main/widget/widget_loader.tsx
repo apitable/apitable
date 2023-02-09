@@ -71,7 +71,7 @@ export const WidgetLoader: React.FC<{
     }
     const url = new URL(loadUrl || 'https://127.0.0.1:9000');
     const widgetCliSOcket = initWidgetCliSocket(url.origin, WidgetCliSocketType.LiveReload);
-    const reload = (res) => {
+    const reload = (res: any) => {
       console.log(res.success ? `The widget is hot updated: ${widgetId}` : 'Socket link disconnected');
       refresh();
     };

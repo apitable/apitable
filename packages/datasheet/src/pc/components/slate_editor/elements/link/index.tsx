@@ -44,7 +44,7 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
 
   const isExpanded = editor.selection && Range.isExpanded(editor.selection);
 
-  const handleVisibleChange = (next) => {
+  const handleVisibleChange = (next: boolean | ((prevState: boolean) => boolean)) => {
     if (isExpanded) return;
     setVisible(next);
     if (next) {
@@ -76,7 +76,7 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     submit(e.target.value);
   };

@@ -19,7 +19,7 @@
 import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
-  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, IDPrefix, StoreActions, Strings, t
+  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, ISetCalendarStyle, IDPrefix, StoreActions, Strings, t,
 } from '@apitable/core';
 import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -72,7 +72,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
   const { CALENDAR_SETTING_HELP_URL } = getEnvVariables();
   const fieldOptions = useMemo(() => {
     const options = columns.map(({ fieldId }) => {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       if ([Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime)) {
         return {
           label: field.name,
@@ -87,7 +87,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
         value: startFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)} />
+        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
       });
     }
     if (isCryptoEndField) {
@@ -95,14 +95,14 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
         value: endFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)} />
+        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
       });
     }
     options.push({
       label: t(Strings.calendar_add_date_time_field),
       value: 'add',
       disabled: !permissions.manageable,
-      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
+      prefixIcon: <AddOutlined color={colors.thirdLevelText}/>,
     });
     return options;
   }, [columns, endFieldId, fieldMap, isCryptoEndField, isCryptoStartField, permissions.manageable, startFieldId, colors]);
@@ -118,7 +118,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
           StoreActions.toggleCalendarSettingPanel(false, datasheetId!),
           StoreActions.toggleCalendarGuideStatus(true, datasheetId!),
           StoreActions.toggleCalendarGrid(true, datasheetId!),
-        ])
+        ]),
       );
     }
     const restStatus = guideStatus ? {} : { guideStatus: true, guideWidth: true };
@@ -131,7 +131,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     });
   };
 
-  const handleAddField = (styleKey) => {
+  const handleAddField = (styleKey: CalendarStyleKeyType) => {
     if (!permissions.manageable) {
       return;
     }
@@ -159,16 +159,17 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     }
   };
 
-  const handleStyleChange = (styleKey, styleValue) => {
+  const handleStyleChange = (styleKey: CalendarStyleKeyType, styleValue: ISetCalendarStyle['styleValue']) => {
     executeCommandWithMirror(() => {
+      const calendarStyle = {
+        styleKey,
+        styleValue,
+      } as ISetCalendarStyle;
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetCalendarStyle,
         viewId: viewId!,
         isClear: styleValue === UNUSED_END_DATE,
-        data: [{
-          styleKey,
-          styleValue,
-        }]
+        data: [calendarStyle]
       });
     }, {
       style: {
@@ -178,7 +179,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     });
   };
 
-  const onColorPick = (type: OptionSetting, id: string, value: string | number) => {
+  const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
     if (type === OptionSetting.SETCOLOR) {
       handleStyleChange(CalendarStyleKeyType.ColorOption, {
         ...colorOption,
@@ -249,7 +250,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
                       if (option.value === 'add') {
                         handleAddField(handleKey);
                       } else {
-                        handleStyleChange(handleKey, option.value);
+                        handleStyleChange(handleKey, option.value as string);
                       }
                     }
                   }

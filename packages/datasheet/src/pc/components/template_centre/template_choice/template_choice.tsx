@@ -66,7 +66,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
     });
   }, [templateRecommendData]);
 
-  const openTemplateDetail = ({ templateId }) => {
+  const openTemplateDetail = ({ templateId }: { templateId: string }) => {
     Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
@@ -75,7 +75,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
       },
     });
   };
-  const openTemplateAlbumDetail = ({ templateId }) => {
+  const openTemplateAlbumDetail = ({ templateId }: { templateId: string }) => {
     Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,

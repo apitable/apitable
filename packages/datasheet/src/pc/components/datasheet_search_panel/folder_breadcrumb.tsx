@@ -42,7 +42,7 @@ export const FolderBreadcrumb: React.FC<IFolderBreadcrumbProps> = (props) => {
             parents.map(breadItem => (
               <Breadcrumb.Item
                 key={breadItem.nodeId || breadItem.nodeName}
-                onClick={id => onNodeClick('Folder', breadItem.nodeId!)}
+                onClick={() => onNodeClick('Folder', breadItem.nodeId!)}
               >
                 {breadItem.nodeName}
               </Breadcrumb.Item>

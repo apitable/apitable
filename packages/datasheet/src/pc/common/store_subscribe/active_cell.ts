@@ -79,8 +79,8 @@ store.subscribe(function activeCellChange() {
       }
     });
 
-    _recordSnapshot.recordMap[recordId].data = {
-      ...recordSnapshot.recordMap[recordId].data,
+    _recordSnapshot.recordMap[recordId]!.data = {
+      ...recordSnapshot.recordMap[recordId]!.data,
       ...computeFieldData,
     };
     dispatch(StoreActions.setActiveRowInfo(datasheetId, {

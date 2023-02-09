@@ -65,10 +65,24 @@ const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_p
   ),
 });
 
-const DatasheetMain = ({
-  loading, datasheetErrorCode, isNoPermission, shareId, datasheetId,
-  preview, testFunctions, handleExitTest, mirrorId, embedId
-}) => {
+interface IDatasheetMain {
+  loading: boolean;
+  datasheetErrorCode?: number | null;
+  isNoPermission: boolean;
+  shareId?: string;
+  datasheetId?: string;
+  preview?: any;
+  testFunctions: any;
+  handleExitTest: any;
+  mirrorId?: string;
+  embedId?: string;
+}
+
+const DatasheetMain = (props: IDatasheetMain) => {
+  const {
+    loading, datasheetErrorCode, isNoPermission, shareId, datasheetId,
+    preview, testFunctions, handleExitTest, mirrorId, embedId
+  } = props;
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
@@ -381,7 +395,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
 
   const childComponent = (
     <AutoSizer style={{ width: '100%', height: '100%' }}>
-      {({ width, height }) =>
+      {({ width }) =>
         panelSize ? (
           <VikaSplitPanel
             panelLeft={datasheetMain}

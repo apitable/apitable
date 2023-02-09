@@ -88,7 +88,7 @@ const TaskContent: FC<ITaskContentProps> = (props) => {
           bgColor,
         },
         viewType: ViewType.Gantt,
-        callback: ({ width }) => curOffset += width,
+        callback: ({ width }: { width: number }) => curOffset += width,
         unitTitleMap,
         cacheTheme
       };

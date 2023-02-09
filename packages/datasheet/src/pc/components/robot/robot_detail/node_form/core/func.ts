@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function isObject(thing) {
+export function isObject(thing: object | null) {
   if (typeof File !== 'undefined' && thing instanceof File) {
     return false;
   }
   return typeof thing === 'object' && thing !== null && !Array.isArray(thing);
 }
 
-export function mergeObjects(obj1, obj2, concatArrays = false) {
+export function mergeObjects(obj1: object, obj2: object, concatArrays = false) {
   // Recursively merge deeply nested objects.
   const acc = Object.assign({}, obj1); // Prevent mutation of source object.
   return Object.keys(obj2).reduce((acc, key) => {

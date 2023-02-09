@@ -22,7 +22,7 @@
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/nextjs';
 import { Integrations } from '@sentry/tracing';
-import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@apitable/core';
+import { Api, getLanguage, injectStore, IReduxState, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@apitable/core';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';
@@ -33,6 +33,7 @@ import '../../modules/shared/apphook/hook_bindings';
 import { initCronjobs } from './cronjob';
 import './store_subscribe';
 import { APITable } from '../../modules/shared/apitable_lib';
+import { Store } from 'redux';
 // @ts-ignore
 import { isSocialUrlIgnored } from 'enterprise';
 
@@ -69,7 +70,7 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
   return false;
 }
 
-function initAxios(store) {
+function initAxios(store:  Store<IReduxState>) {
   axios.defaults.paramsSerializer = (params) => {
     return Object.keys(params).filter(it => {
       return params.hasOwnProperty(it);
@@ -109,6 +110,7 @@ function initAxios(store) {
       const spaceId = data.datasheet?.spaceId || data.mirror?.spaceId || data.dashboard?.spaceId || data.form?.spaceId;
       if (spaceId && (spaceId !== activeSpaceId)) {
         axios.defaults.headers.common['X-Space-Id'] = spaceId;
+        // @ts-ignore
         store.dispatch(StoreActions.getUserMe({ spaceId }));
       }
     }
@@ -261,7 +263,7 @@ function initBugTracker() {
   });
 }
 
-function initDayjs(comlink) {
+function initDayjs(comlink: any) {
   let lang = getLanguage() || 'zh-cn';
   lang = lang.toLowerCase().replace('_', '-');
   dayjs.locale(lang);
@@ -277,7 +279,7 @@ export function redirectIfUserApplyLogout() {
   }
 }
 
-export function initializer(comlink) {
+export function initializer(comlink: any) {
   initAxios(comlink.store);
 
   // Initialisation Field.bindModel
@@ -298,18 +300,17 @@ export function initializer(comlink) {
  * @param {*} dps Distance scrolled in every 16s for blocking test
  * @returns
  */
-function checkFps(fn, id, totalCount, dps) {
+function checkFps(fn: (arg0: WheelEvent) => void, id: string, totalCount: number, dps: any) {
   return new Promise(resolve => {
     const element = document.getElementById(id)!;
 
     function simulatScroll() {
       return setInterval(() => {
-        const deltaY = dps;
-        dispatchScrollEvent(deltaY);
+        dispatchScrollEvent(dps);
       }, 16);
     }
 
-    function dispatchScrollEvent(deltaY) {
+    function dispatchScrollEvent(deltaY: number) {
       const domRect = element.getBoundingClientRect();
       const evt = new WheelEvent('wheel', {
         deltaX: 0,
@@ -322,7 +323,7 @@ function checkFps(fn, id, totalCount, dps) {
       fn(evt);
     }
 
-    function showFps(totalCount) {
+    function showFps(totalCount: number) {
       window._fpsResult = {
         fps: [],
         averageFps: undefined,
@@ -332,7 +333,7 @@ function checkFps(fn, id, totalCount, dps) {
       let frame = 0;
       let count = 0; // Number of frame rate calculation nodes (about one second at a time)
       let time = Date.now();
-      let rafId;
+      let rafId: any;
 
       const scrollTmer = simulatScroll();
 
@@ -352,7 +353,7 @@ function checkFps(fn, id, totalCount, dps) {
           // Remove the first and last seconds
           result.fps.shift();
           result.fps.pop();
-          result.averageFps = result.fps.reduce((cur, prev) => cur + prev) / result.fps.length;
+          result.averageFps = result.fps.reduce((cur: any, prev: any) => cur + prev) / result.fps.length;
           console.log(result);
           window.clearInterval(timer);
           window.clearInterval(scrollTmer);

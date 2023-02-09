@@ -44,7 +44,7 @@ export const ThemeSetting: FC = () => {
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
 
-  const handleSelected = (option) => {
+  const handleSelected = (option: any) => {
     let newValue: ThemeName | 'system' = option.value;
     if (newValue === (systemTheme === SystemTheme.Open ? 'system' : theme)) {
       return;

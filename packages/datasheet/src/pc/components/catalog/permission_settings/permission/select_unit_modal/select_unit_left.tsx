@@ -210,7 +210,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setBreadCrumbData([...breadCrumbData, { name: unit.teamName, teamId: unit.teamId }]);
   };
 
-  const onChangeChecked = (e: CheckboxChangeEvent, unit: UnitItem) => {
+  const onChangeChecked = (_e: CheckboxChangeEvent, unit: UnitItem) => {
     const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
     if (idx !== -1) {
       setCheckedList(checkedList.filter(item => item.unitId !== unit.unitId));
@@ -442,7 +442,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {
             if (isExist) {
-              isExist = eachUnits.findIndex(item => item.unitId === listItem.unitId) === -1;
+              isExist = eachUnits.findIndex((item: { unitId: string; }) => item.unitId === listItem.unitId) === -1;
             }
           });
           return isExist;

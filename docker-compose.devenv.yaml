@@ -6,7 +6,7 @@ services:
     image: apitable/devenv:latest
     restart: always
     ports:
-      - 8081:8081
+      - "8081:8081"
     expose:
       - "8081"
     working_dir: /devenv
@@ -24,7 +24,7 @@ services:
     image: apitable/devenv:latest
     restart: always
     ports:
-      - 3000:3000
+      - "3000:3000"
     expose:
       - "3000"
     working_dir: /devenv
@@ -42,32 +42,19 @@ services:
     image: apitable/devenv:latest
     restart: always
     ports:
-     - 3333:3333
-     - 3334:3334
+     - "3333:3333"
+     - "3334:3334"
+     - "3001:3001"
+     - "3002:3002"
+     - "3006:3006"
+     - "3005:3005"
+     - "3007:3007"
     expose:
       - "3333"
       - "3334"
-    working_dir: /devenv
-    env_file:
-      - "${ENV_FILE:-.env}"
-    volumes:
-      - ./:/devenv
-    environment:
-      - HOME=/tmp
-    networks:
-      - apitable
-    command: sh -c "yarn install && yarn build:dst:pre && yarn start:room-server"
-  socket-server:
-    image: apitable/devenv:latest
-    restart: always
-    ports:
-      - 3001:3001
-      - 3002:3002
-      - 3005:3005
-      - 3007:3007
-    expose:
       - "3001"
       - "3002"
+      - "3006"
       - "3005"
       - "3007"
     working_dir: /devenv
@@ -77,9 +64,10 @@ services:
       - ./:/devenv
     environment:
       - HOME=/tmp
+      - ENABLE_SOCKET=true
     networks:
       - apitable
-    command: sh -c "cd packages/socket-server/ && yarn && yarn run start:dev"
+    command: sh -c "yarn install && yarn build:dst:pre && yarn start:room-server"
 
   protoc:
     image: apitable/protoc

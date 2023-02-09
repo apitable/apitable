@@ -65,8 +65,8 @@ export const SpaceList: FC = () => {
 
   useEffect(() => {
     if (spaceList && spaceList.length) {
-      setManagableList(spaceList.filter(space => space.admin));
-      setIntrantList(spaceList.filter(space => !space.admin));
+      setManagableList(spaceList.filter((space: { admin: ISpaceInfo; }) => space.admin));
+      setIntrantList(spaceList.filter((space: { admin: ISpaceInfo; }) => !space.admin));
     }
   }, [spaceList]);
 

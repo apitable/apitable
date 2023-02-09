@@ -41,7 +41,7 @@ export const User: FC = () => {
   const [showAccountCenter, setShowAccountCenter] = useState(false);
   const [showInviteCode, setShowInviteCode] = useState(false);
 
-  const openUserMenu = e => {
+  const openUserMenu = (e: React.MouseEvent) => {
     stopPropagation(e);
     setShowUserCard(prevState => !prevState);
   };

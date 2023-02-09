@@ -45,7 +45,7 @@ export interface IEditorContainerOwnProps {
   scrollLeft?: number;
 }
 
-export const attachEventHoc = WrapperComponent => {
+export const attachEventHoc = (WrapperComponent: any) => {
   const AttachEvent: React.FC<IEditorContainerOwnProps> = props => {
     const dispatch = useDispatch();
     const { scrollToItem } = props;
@@ -105,7 +105,7 @@ export const attachEventHoc = WrapperComponent => {
       }
       if (currentSearchCell) {
         const [searchRecordId, searchFieldId] = currentSearchCell;
-        const currentSearchUICell = Selectors.getCellUIIndex(state, { recordId: searchRecordId, fieldId: searchFieldId })!;
+        const currentSearchUICell = Selectors.getCellUIIndex(state, { recordId: searchRecordId!, fieldId: searchFieldId! })!;
         currentSearchUICell && scrollToItem(currentSearchUICell);
       }
     }, [currentSearchCell?.toString()]);
@@ -123,7 +123,7 @@ export const attachEventHoc = WrapperComponent => {
         return;
       }
       const view = Selectors.getCurrentView(store.getState());
-      const fieldId = view!.columns[0].fieldId;
+      const fieldId = view!.columns[0]!.fieldId;
       dispatch(
         StoreActions.setActiveCell(datasheetId, {
           recordId,

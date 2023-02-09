@@ -104,7 +104,7 @@ export const WidgetList = () => {
     });
   };
 
-  const onResizeStop = (layout, oldItem, newItem) => {
+  const onResizeStop = (_layout: any, _oldItem: any, newItem: { i: string; h: number; }) => {
     setDragging(false);
     recordWidgetHeight(newItem.i, newItem.h);
   };
@@ -127,7 +127,7 @@ export const WidgetList = () => {
     });
   };
 
-  const onDragStop = (layout, oldItem, newItem) => {
+  const onDragStop = (layout: any) => {
     setDragging(false);
     const layoutMap = keyBy(layout, 'i');
     const _layout = widgetList.map(item => {

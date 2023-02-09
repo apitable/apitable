@@ -33,7 +33,7 @@ interface IFileSelected {
   file: File | undefined;
   init: () => void;
   previewList: IErrorInfo[];
-  confirmImport(nvcVal?: string);
+  confirmImport: (nvcVal?: string) => void;
 }
 
 export const FileSelected: FC<IFileSelected> = ({

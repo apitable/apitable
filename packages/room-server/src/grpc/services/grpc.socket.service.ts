@@ -24,18 +24,20 @@ import * as Sentry from '@sentry/node';
 import { IRoomChannelMessage } from 'database/ot/interfaces/ot.interface';
 import { OtService } from 'database/ot/services/ot.service';
 import { ResourceService } from 'database/resource/services/resource.service';
-import { UserService } from 'user/services/user.service';
-import { ApiResponse } from 'fusion/vos/api.response';
-import { getIPAddress } from 'shared/helpers/system.helper';
-import { ClientStorage } from 'shared/services/socket/client.storage';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
-import { IClientRoomChangeResult, IWatchRoomMessage } from 'shared/services/socket/socket.interface';
-import { Logger } from 'winston';
-import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../shared/common';
-import { PermissionException, ServerException } from '../../shared/exception';
-import { IAuthHeader } from '../../shared/interfaces';
-import { NodeShareSettingService } from 'node/services/node.share.setting.service';
+import { ApiResponse } from 'fusion/vos/api.response';
 import { NodeService } from 'node/services/node.service';
+import { NodeShareSettingService } from 'node/services/node.share.setting.service';
+import { CommonStatusMsg, InjectLogger, sleep } from 'shared/common';
+import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
+import { RedisConstants } from 'shared/common/constants/socket.module.constants';
+import { PermissionException, ServerException } from 'shared/exception';
+import { getIPAddress } from 'shared/helpers/system.helper';
+import { IAuthHeader } from 'shared/interfaces';
+import { ClientStorage } from 'shared/services/socket/client.storage';
+import { IClientRoomChangeResult, IWatchRoomMessage } from 'shared/services/socket/socket.interface';
+import { UserService } from 'user/services/user.service';
+import { Logger } from 'winston';
 
 /**
  *
@@ -76,16 +78,13 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       do {
         try {
           const number = await this.publishIp(1);
-          if (!number) {
-            published = false;
-          } else {
-            published = true;
-          }
+          published = !!number;
         } catch (error) {
           published = false;
         }
         maxTimes++;
-      } while (!published && maxTimes < 10);
+        await sleep(500 * maxTimes);
+      } while (!published && maxTimes < 5);
       // TODO consider notifying the developer that registry was failed after max retry time is exceeded.
     }
   }
@@ -98,16 +97,13 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       do {
         try {
           const number = await this.publishIp(0);
-          if (!number) {
-            published = false;
-          } else {
-            published = true;
-          }
+          published = !!number;
         } catch (error) {
           published = false;
         }
         maxTimes++;
-      } while (!published && maxTimes < 10);
+        await sleep(500 * maxTimes);
+      } while (!published && maxTimes < 3);
       // TODO consider notifying the developer that leaving room was failed after max retry time is exceeded.
     }
     return Promise.resolve(signal);
@@ -131,7 +127,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     const start = Date.now();
     const result = await promise;
     const end = Date.now();
-    this.logger.info(`${key} TIME [${func}]: ${end - start}ms`, {
+    this.logger.log(`${key} TIME [${func}]: ${end - start}ms`, {
       logger: key,
       func: func,
       time: end - start,
@@ -283,21 +279,34 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   }
 
   async publishIp(action: number): Promise<number> {
-    const message = JSON.stringify({ ip: getIPAddress(), action });
+    const ipAddress = getIPAddress();
+    const data: IPublishRoomAddressMessage = {
+      address: `${ipAddress}:${BootstrapConstants.ROOM_GRPC_PORT}:${BootstrapConstants.SERVER_PORT}`,
+      action
+    };
+    const message = JSON.stringify(data);
     try {
       // Ensure stability of Redis connection
       const redis = this.redisService.getClient().duplicate();
-      const number = await redis.publish(VIKA_NEST_CHANNEL, message);
+      const number = await redis.publish(RedisConstants.ROOM_POOL_CHANNEL, message);
       if (!number) {
-        this.logger.error("socket service isn't started", { message, channel: VIKA_NEST_CHANNEL });
+        this.logger.warn({
+          message: "socket service isn't started",
+          channel: RedisConstants.ROOM_POOL_CHANNEL,
+          number
+        });
       } else {
-        this.logger.info('IP publish succeeded', { message, channel: VIKA_NEST_CHANNEL });
+        this.logger.info(`Room Client(grpc) [${ipAddress}:${BootstrapConstants.ROOM_GRPC_PORT}] publish succeeded`,
+          { action: data.action, channel: RedisConstants.ROOM_POOL_CHANNEL }
+        );
       }
       // Disconnect manually
       redis.disconnect();
       return number;
     } catch (e) {
-      this.logger.info('IP publish failed', { e: (e as Error).message, stack: (e as Error).stack, message });
+      this.logger.info(`Room Client(grpc) [${ipAddress}:${BootstrapConstants.ROOM_GRPC_PORT}] publish failed`,
+        { e: (e as Error).message, stack: (e as Error)?.stack, message }
+      );
       throw e;
     }
   }
@@ -308,4 +317,11 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       await this.publishIp(1);
     }
   }
+}
+
+interface IPublishRoomAddressMessage {
+  // format : ip:port(grpc):checkHealthyPort ;
+  // example: 127.0.0.1:3334:3333 ;
+  address: string;
+  action: number;
 }

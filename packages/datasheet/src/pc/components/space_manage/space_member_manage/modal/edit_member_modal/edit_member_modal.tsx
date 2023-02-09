@@ -23,7 +23,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditMember } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { useEffect, useState, FC } from 'react';
+import { useEffect, useState, FC, ChangeEvent } from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import CloseIcon from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
@@ -70,8 +70,8 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     mobile: '',
     email: '',
   });
-  const { 
-    memberName, email, memberId, avatar, teamData, nickName, mobile, isMemberNameModified, isNickNameModified, avatarColor 
+  const {
+    memberName, email, memberId, avatar, teamData, nickName, mobile, isMemberNameModified, isNickNameModified, avatarColor,
   } = memberInfoInSpace!;
   const [formData, setFormData] = useState<IUpdateMemberInfo>();
   const [teamList, setTeamList] = useState<ITeamsInSpace[]>([]);
@@ -106,7 +106,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
     setFormData(formData as IUpdateMemberInfo);
     setStart(true);
   };
-  const handleChange = (e, property: 'memberName' | 'nickName' | 'email') => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, property: 'memberName' | 'nickName' | 'email') => {
     if (formErr[property]) {
       setFormErr({ ...formErr, [property]: '' });
     }

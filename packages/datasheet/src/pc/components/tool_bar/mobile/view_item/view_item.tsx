@@ -38,7 +38,7 @@ export enum ActionType {
 interface IViewItemProps {
   view: IViewProperty;
   activeViewId: string;
-  onChange(actionType: ActionType, view: IViewProperty);
+  onChange: (actionType: ActionType, view: IViewProperty) => void;
   onClose(): void;
   draggable: boolean;
   validator(value: string): boolean;

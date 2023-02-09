@@ -322,7 +322,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     hideOperateBox();
   };
 
-  const handleFieldRequiredChange = required => {
+  const handleFieldRequiredChange = (required: boolean) => {
     setCurrentField((curField: IField) => {
       return { ...curField, required };
     });

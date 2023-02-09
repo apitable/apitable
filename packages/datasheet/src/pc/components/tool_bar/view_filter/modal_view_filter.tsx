@@ -52,7 +52,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
   // Mark if a new filter has been added, scrolling to the bottom directly in the addViewFilter function is not valid.
   const added = useRef<boolean>(false);
 
-  function addViewFilter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function addViewFilter() {
     const firstColumns = fieldMap[columns[0].fieldId];
     const exitIds = filterInfo ? filterInfo.conditions.map(item => item.conditionId) : [];
     const acceptFilterOperators = Field.bindModel(firstColumns).acceptFilterOperators;
@@ -82,7 +82,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
   function deleteFilter(idx: number) {
     setFilters({
       conjunction: filterInfo!.conjunction,
-      conditions: filterInfo!.conditions.filter((item, index) => {
+      conditions: filterInfo!.conditions.filter((_item, index) => {
         return index !== idx;
       }),
     });

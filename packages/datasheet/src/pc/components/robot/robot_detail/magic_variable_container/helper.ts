@@ -22,7 +22,7 @@ import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS, EmptyNullOperand, IFieldPermissionMap, Strings, t,
 } from '@apitable/core';
 import produce from 'immer';
-import { Transforms, Selection } from 'slate';
+import { Transforms, Selection, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
@@ -55,7 +55,7 @@ export type ISchemaPropertyListItemClickFunc = (listItem: ISchemaPropertyListIte
 
 const getPropertyItem = (props: {
   expression: IExpression,
-  propertySchema,
+  propertySchema: any,
   key: string,
   isJSONField: boolean
 }) => {
@@ -330,7 +330,7 @@ export const getExpressionChainList = (expression: IExpression): IExpressionChai
   switch (expression.operator as string) {
     // Binocular operators
     case 'getObjectProperty':
-      const chainList = expression.operands[1].value.map(item => ({
+      const chainList = expression.operands[1].value.map((item: any) => ({
         type: 'property',
         name: item, // Get the display name based on the attribute name + schema
         value: item,
@@ -415,20 +415,20 @@ export const formData2SlateValue = (value: any) => {
 
 export const hasMagicVariable = (values: any) => {
   // If or not magicVariable exists, the output value is an expression if it exists, or a string if it doesn't.
-  const isValueIncludesMagicVariable = (value) => {
+  const isValueIncludesMagicVariable = (value: any) => {
     if (value?.type === 'magicVariable') return true;
     if (value?.type === 'paragraph') {
-      return value.children.some((child) => {
+      return value.children.some((child: any) => {
         return isValueIncludesMagicVariable(child);
       });
     }
   };
-  return values.some((value) => {
+  return values.some((value: any) => {
     return isValueIncludesMagicVariable(value);
   });
 };
 
-export const transformParagraphToExpression = (paragraph) => {
+export const transformParagraphToExpression = (paragraph: any) => {
   const res: any = {
     type: OperandTypeEnums.Expression,
     value: {
@@ -436,7 +436,7 @@ export const transformParagraphToExpression = (paragraph) => {
       operands: [],
     },
   };
-  paragraph.children.forEach((child) => {
+  paragraph.children.forEach((child: any) => {
     if (child.type === 'magicVariable') {
       res.value.operands.push({
         type: OperandTypeEnums.Expression,
@@ -465,7 +465,7 @@ export const transformSlateValue = (paragraphs: any): {
       operands: [],
     },
   };
-  paragraphs.forEach((paragraph) => {
+  paragraphs.forEach((paragraph: any) => {
     res.value.operands.push(transformParagraphToExpression(paragraph));
   });
   // If it does not contain dynamic parameters, check if the value is null.
@@ -486,18 +486,18 @@ export const transformSlateValue = (paragraphs: any): {
   };
 };
 
-export const withMagicVariable = (editor) => {
+export const withMagicVariable = (editor: any) => {
   const { isInline, isVoid, onChange } = editor;
 
-  editor.isInline = element => {
+  editor.isInline = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
   };
 
-  editor.isVoid = element => {
+  editor.isVoid = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isVoid(element);
   };
 
-  editor.onChange = (...params) => {
+  editor.onChange = (...params: any) => {
     // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus,
     // for example, by adding a new link element
     if (editor.selection) {
@@ -514,7 +514,7 @@ export const withMagicVariable = (editor) => {
   return editor;
 };
 
-export const insertMagicVariable = (data, editor) => {
+export const insertMagicVariable = (data: any, editor: BaseEditor) => {
   setTimeout(() => {
     const mv = {
       type: 'magicVariable',

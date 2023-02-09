@@ -71,7 +71,7 @@ export const InsertPanel = () => {
     ];
   }, [formatList, mediaList, i18nText]);
 
-  const changeSelected = isUp => {
+  const changeSelected = (isUp: boolean) => {
     const menusSize = menus.length;
     const current = selected.split('-').map(i => +i);
     const currentGroup = menus[current[0]];
@@ -149,7 +149,7 @@ export const InsertPanel = () => {
         const generate = GENERATOR[item.value] || GENERATOR.paragraph;
         const nextElement = generate({});
         if (node.type === ElementType.PARAGRAPH && Node.string(node) === '' && !nextElement.isVoid) {
-          toggleBlock(editor, item.value);
+          toggleBlock(editor, item.value as ElementType);
           return;
         }
         // If the inserted position is originally a list, is there a more efficient way to insert a paragraph element first, 

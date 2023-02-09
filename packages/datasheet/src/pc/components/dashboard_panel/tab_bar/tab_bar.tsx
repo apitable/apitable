@@ -114,7 +114,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
     setIsFullScreen(isFullscreen);
   }, [isFullscreen, setIsFullScreen]);
 
-  const triggerOnChange = (status) => {
+  const triggerOnChange = (status: boolean) => {
     setOpenTrigger(status);
   };
 

@@ -112,7 +112,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const SelectedFieldItem = ({ fieldId }) => {
+  const SelectedFieldItem = ({ fieldId }: { fieldId: string }) => {
     if (!fieldMap[fieldId]) {
       return <></>;
     }

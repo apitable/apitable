@@ -125,7 +125,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
     }
   };
 
-  const openTemplateDetail = ({ templateId }) => {
+  const openTemplateDetail = ({ templateId }: { templateId: string }) => {
     Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
@@ -141,7 +141,7 @@ export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props =>
 
   const currentCategory = templateCategory.find(item => item.categoryCode === categoryId);
 
-  const openTemplateAlbumDetail = ({ templateId }) => {
+  const openTemplateAlbumDetail = ({ templateId }: { templateId: string }) => {
     Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,

@@ -43,8 +43,8 @@ import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
 
 // Simple recognition rules are used to process single line text enhancement fields.
-const isEmail = text => text && /.+@.+/.test(text);
-const isPhoneNumber = text => text && /^[0-9\-()（）#+]+$/.test(text);
+const isEmail = (text: string | null) => text && /.+@.+/.test(text);
+const isPhoneNumber = (text: string) => text && /^[0-9\-()（）#+]+$/.test(text);
 
 type ICellText = ICellComponentProps & {
   cellValue: ICellValue | typeof FormulaBaseError
@@ -61,11 +61,11 @@ export const CellText: React.FC<ICellText> = props => {
   const isEnhanceText = _isEnhanceText || fieldType === FieldType.Formula;
   const _handleEnhanceTextClick = useEnhanceTextClick();
   // Verify URL legitimacy when clicking on links
-  const handleURLClick = (e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
+  const handleURLClick = (_e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
     _handleEnhanceTextClick(type, text);
   };
-  const getEnhanceTypeIcon = type => {
+  const getEnhanceTypeIcon = (type: FieldType) => {
     const typeIconMap = {
       [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,
       [FieldType.Email]: <IconEmail fill={colors.thirdLevelText} />,

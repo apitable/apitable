@@ -65,7 +65,7 @@ export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = fa
     }
   }, [user.spaceId]);
 
-  const openMoreOperationHandler = e => {
+  const openMoreOperationHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 

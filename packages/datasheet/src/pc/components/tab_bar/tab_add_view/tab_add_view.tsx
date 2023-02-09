@@ -186,7 +186,6 @@ export const TabAddView: React.FC<ITabAddView> = props => {
           <ViewIntroduceList
             addNewView={addNewView}
             addNewNode={addNewNode}
-            style={{}}
             triggerInfo={triggerInfo}
           />
         }

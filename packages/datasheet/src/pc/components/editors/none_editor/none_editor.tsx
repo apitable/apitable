@@ -27,7 +27,7 @@ export interface IEditorProps extends IBaseEditorProps {
   toggleEditing?: (next?: boolean) => void;
 }
 
-export const NoneEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorProps> = (props, ref) => {
+export const NoneEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorProps> = (_props, ref) => {
   const inputRef = useRef<HTMLDivElement>(null);
 
   useImperativeHandle(ref, (): IEditor => ({

@@ -273,7 +273,7 @@ export const useGanttAssocitionLine = (props: IAssociaLinePorps) => {
     );
   };
 
-  taskEdges.forEach(taskLine => {
+  taskEdges.forEach((taskLine: [any, any]) => {
     const [sourceId, targetId] = taskLine;
     taskLineList.push(associationLineRender(sourceId, targetId));
   });

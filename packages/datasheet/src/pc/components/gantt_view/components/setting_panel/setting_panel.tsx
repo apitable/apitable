@@ -220,7 +220,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     });
   };
 
-  const onGanttStyleChange = (styleKey, styleValue) => {
+  const onGanttStyleChange = (styleKey: GanttStyleKeyType, styleValue: any) => {
     executeCommandWithMirror(
       () => {
         resourceService.instance!.commandManager.execute({
@@ -287,21 +287,21 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     onGanttStyleChange(styleKey, value);
   };
 
-  const onColorOptionSelect = option => {
+  const onColorOptionSelect = (option: { value: any; }) => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
       type: option.value,
     });
   };
 
-  const onSingleFieldSelect = option => {
+  const onSingleFieldSelect = (option: { value: any; }) => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
       fieldId: option.value,
     });
   };
 
-  const onColorPick = (type: OptionSetting, id: string, value: string | number) => {
+  const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
     if (type === OptionSetting.SETCOLOR) {
       onGanttStyleChange(GanttStyleKeyType.ColorOption, {
         ...colorOption,
@@ -361,7 +361,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     }
   };
 
-  const onLinkFieldIdChange = option => {
+  const onLinkFieldIdChange = (option: any) => {
     if (option.value === LinkFieldSet.Add) {
       onFieldSelect(GanttStyleKeyType.LinkFieldId, LinkFieldSet.Add);
     } else {

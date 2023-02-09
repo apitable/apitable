@@ -41,8 +41,8 @@ export const SwitchWidget = (props: IWidgetProps) => {
       width="100%"
       padding="4px"
       borderRadius="4px"
-      onBlur={onBlur && (event => onBlur(id, value))}
-      onFocus={onFocus && (event => onFocus(id, value))}
+      onBlur={onBlur && (() => onBlur(id, value))}
+      onFocus={onFocus && (() => onFocus(id, value))}
       onClick={() => onChange(!value)}
     >
       <Switch checked={value} disabled={shouldDisabled} /> <span style={{ paddingLeft: 8 }}>{label || schema.description}</span>

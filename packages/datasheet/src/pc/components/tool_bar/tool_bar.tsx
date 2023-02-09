@@ -91,10 +91,21 @@ import { getEnvVariables, isIframe } from 'pc/utils/env';
 // Already collapsed working directory: Hide all tools on the right side.
 // width:(0,540) -> Uncollapsed working directory: only the left working icon is displayed, all tools on the right are hidden.
 const HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH = 1080;
+const GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH = 1330;
 export const HIDDEN_TREE_WIDTH = 763;
 const HIDDEN_TOOLBAR_RIGHT_WIDTH = 465;
 const OFFSET_INPUT_WIDTH = 230;
 const SIDERBAR_WIDTH = 333;
+
+interface IHideFieldNode {
+  id: string;
+  type: ToolHandleType;
+  viewType: ViewType;
+  actualColumnCount: number;
+  visibleColumnsCount: number;
+  showLabel: boolean;
+  disabled: boolean;
+}
 
 const ToolbarBase = () => {
   const colors = useThemeColors();
@@ -185,7 +196,7 @@ const ToolbarBase = () => {
   const hiddenRightToolbar = Boolean(
     size && size.width && (size.width < HIDDEN_TOOLBAR_RIGHT_WIDTH || (size.width < HIDDEN_TREE_WIDTH - SIDERBAR_WIDTH && !sideBarVisible)),
   );
-  const showIconBarLabel = Boolean(size && size.width && size.width > HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH - offsetWidth);
+  const showIconBarLabel = Boolean(size && size.width && size.width > (isGanttView ? GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH : HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH) - offsetWidth);
   const showViewLockModal = useShowViewLockModal();
 
   const hiddenKanbanGroupCount = useMemo(() => {
@@ -521,9 +532,9 @@ const ToolbarBase = () => {
             onClick={() => {
               (activeView as IKanbanViewProperty).style.kanbanFieldId && showKanbanSetting();
             }}
-            icon={getKanbanIcon(kanbanFieldId, datasheetId!)}
+            icon={getKanbanIcon(kanbanFieldId)}
             text={t(Strings.kanban_group_tip, {
-              kanban_field_id: getKanbanFieldType(kanbanFieldId, datasheetId!),
+              kanban_field_id: getKanbanFieldType(kanbanFieldId),
             })}
             showViewLockModal={showViewLockModal}
           />
@@ -580,7 +591,6 @@ const ToolbarBase = () => {
                 visibleColumnsCount={visibleColumnsCount}
                 showLabel={showIconBarLabel}
                 disabled={!visualizationEditable || disabledWithMirror}
-                showViewLockModal={showViewLockModal}
               />
             </div>
           </Display>
@@ -596,7 +606,6 @@ const ToolbarBase = () => {
                 visibleColumnsCount={visibleGanttColumnsCount}
                 showLabel={showIconBarLabel}
                 disabled={!visualizationEditable || disabledWithMirror}
-                showViewLockModal={showViewLockModal}
               />
             </div>
           </Display>
@@ -819,7 +828,7 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
   );
 }
 
-const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCount, showLabel, disabled, showViewLockModal }) => {
+const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCount, showLabel, disabled }: IHideFieldNode) => {
   const hidedAmount = actualColumnCount - visibleColumnsCount;
   const hasHide = !(hidedAmount === 0);
   const isGridType = viewType === ViewType.Grid;
@@ -859,7 +868,7 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
   );
 };
 
-function getKanbanIcon(kanbanFieldId: string, datasheetId: string) {
+function getKanbanIcon(kanbanFieldId: string) {
   if (!kanbanFieldId) {
     return;
   }
@@ -867,7 +876,7 @@ function getKanbanIcon(kanbanFieldId: string, datasheetId: string) {
   return getFieldTypeIcon(field.type, colorVars.secondLevelText);
 }
 
-function getKanbanFieldType(kanbanFieldId: string, datasheetId: string) {
+function getKanbanFieldType(kanbanFieldId: string) {
   if (!kanbanFieldId) {
     return;
   }

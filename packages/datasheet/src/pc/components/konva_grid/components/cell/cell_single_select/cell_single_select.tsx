@@ -114,11 +114,11 @@ export const CellSingleSelect: FC<ICellProps> = (props) => {
             backgroundHeight={16}
             backgroundWidth={16}
             cornerRadius={2}
-            onTap={e => onChange?.(null)}
-            onMouseDown={e => {
+            onTap={() => onChange?.(null)}
+            onMouseDown={() => {
               setIsMouseDown(true);
             }}
-            onMouseUp={(e) => {
+            onMouseUp={() => {
               if (isMouseDown) {
                 onChange?.(null);
               }

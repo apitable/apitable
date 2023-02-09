@@ -145,7 +145,7 @@ export const SubAdmin: FC = () => {
       title: t(Strings.member_family_name),
       dataIndex: 'memberName',
       key: 'memberName',
-      render: (value, record) => {
+      render: (_value, record) => {
         const title = getSocialWecomUnitName?.({
           name: record?.memberName,
           isModified: record?.isMemberNameModified,
@@ -181,7 +181,7 @@ export const SubAdmin: FC = () => {
       dataIndex: 'operate',
       key: 'operate',
       align: 'left',
-      render: (value, record) => {
+      render: (_value, record) => {
         return (
           <div className={styles.operateBtn}>
             <TextButton

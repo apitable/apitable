@@ -23,7 +23,7 @@ import { Box, useTheme, Typography } from '@apitable/components';
 import { FormOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
 
-export const MagicVariableElement = props => {
+export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutputSchema[]; element?: any; children?: any; }) => {
   const { element, children } = props;
   const theme = useTheme();
   const nodeOutputSchemaList = props.nodeOutputSchemaList as INodeOutputSchema[];

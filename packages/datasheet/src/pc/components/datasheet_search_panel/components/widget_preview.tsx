@@ -32,7 +32,7 @@ import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 
 interface IWidgetPreviewProps {
-  onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] });
+  onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;
   installedWidgets: INodeInstalledWidget[];
 }
 export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {

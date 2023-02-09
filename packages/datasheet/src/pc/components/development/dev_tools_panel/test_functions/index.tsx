@@ -19,6 +19,7 @@
 import { Checkbox } from 'antd';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { useEffect, useRef, useState } from 'react';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 // import styles from './style.module.less';
 
 const testFunctions = [
@@ -31,7 +32,7 @@ export const TestFunctions = () => {
   const [enableFuncs, setEnableFuncs] = useState(getStorage(StorageName.TestFunctions) || {});
   const hasChange = useRef(false);
 
-  const handleChange = (func, e) => {
+  const handleChange = (func: { key: string | number; name: string; }, e: CheckboxChangeEvent) => {
     const checked = e?.target?.checked;
     const next = { ...enableFuncs };
     if (checked) {

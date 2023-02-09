@@ -54,7 +54,7 @@ const ThemeWrapper: React.FC = (props) => {
     const themeMedia = window.matchMedia('(prefers-color-scheme: light)');
     // Reset the theme when the systemTheme state changes to open
     setTheme(themeMedia.matches ? ThemeName.Light : ThemeName.Dark);
-    const listener = e => {
+    const listener = (e: MediaQueryListEvent) => {
       if (e.matches) {
         setTheme(ThemeName.Light);
       } else {
