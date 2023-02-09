@@ -3,6 +3,46 @@
 
 
 
+## [v0.18.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.18.0-alpha) (2023-02-09)
+
+
+### Bug fixes
+
+* fix: error logo in email templates @xukecheng 
+* fix: wrong left padding of views ([#278](https://github.com/apitable/apitable/pull/278)) @Sky-FE 
+* fix: correct space apply mail link ([#277](https://github.com/apitable/apitable/pull/277)) @ChambersChan 
+* fix: the gantt view is exported as a png image misplaced ([#281](https://github.com/apitable/apitable/pull/281)) @Sky-FE 
+* fix: error logo in email templates ([#276](https://github.com/apitable/apitable/pull/276)) @xukecheng 
+* fix: assets url ([#309](https://github.com/apitable/apitable/pull/309)) @Pengap 
+* fix: formula parser doesn't recognize single negation expresison ([#192](https://github.com/apitable/apitable/pull/192)) @arucil 
+* fix: space list sort issue ([#312](https://github.com/apitable/apitable/pull/312)) @ChambersChan 
+* fix: path get actions miss id and type id ([#317](https://github.com/apitable/apitable/pull/317)) @wuyitaoBoomboommm 
+* fix: active robot error validation ([#318](https://github.com/apitable/apitable/pull/318)) @wuyitaoBoomboommm 
+* fix: start web-server cause room-server compile error ([#324](https://github.com/apitable/apitable/pull/324)) @arucil 
+* fix: email contact us url ([#330](https://github.com/apitable/apitable/pull/330)) @xukecheng 
+* fix: missing .proto files ([#329](https://github.com/apitable/apitable/pull/329)) @yort-feng 
+* fix: there are wrong css for button in email @xukecheng 
+* fix: there are wrong css for button in email  ([#333](https://github.com/apitable/apitable/pull/333)) @xukecheng 
+
+### What's more
+
+* perf: help menu auto layout ([#260](https://github.com/apitable/apitable/pull/260)) @Sky-FE 
+* Fix: fix readme typo ([#262](https://github.com/apitable/apitable/pull/262)) @x1ah 
+* docs: improve zh-CN translations ([#265](https://github.com/apitable/apitable/pull/265)) @alexzhang1030 
+* chore: contributing in readme ([#284](https://github.com/apitable/apitable/pull/284)) @mr-kelly 
+* Update README.md ([#302](https://github.com/apitable/apitable/pull/302)) @garyli27 
+* style: upgrade jsx-ast-utils to support Optional Chaining ([#311](https://github.com/apitable/apitable/pull/311)) @yort-feng 
+* sync: hosted cloud ([#316](https://github.com/apitable/apitable/pull/316)) @mr-kelly 
+* chore: replace the sql statement with ORM api.  ([#273](https://github.com/apitable/apitable/pull/273)) @wuyitaoBoomboommm 
+* chore: root README_ZH.md ([#287](https://github.com/apitable/apitable/pull/287)) @mr-kelly 
+*  chore: replace contact url @xukecheng 
+* chore: upgrade email copy right @xukecheng 
+* docs: add better uptime badge and clarify installation requirement ([#328](https://github.com/apitable/apitable/pull/328)) @networkhermit 
+* chore: replace logo to png @xukecheng 
+* test: mirror service unit test ([#280](https://github.com/apitable/apitable/pull/280)) @yort-feng 
+* sync: hosted cloud ([#339](https://github.com/apitable/apitable/pull/339)) @Pengap 
+* docs: super link for architecture overview ([#341](https://github.com/apitable/apitable/pull/341)) @yort-feng 
+* docs: README for APITable.com cloud version ([#342](https://github.com/apitable/apitable/pull/342)) @mr-kelly 
 ## [v0.17.0-rc](https://github.com/apitable/apitable/releases/tag/v0.17.0-rc) (2023-01-23)
 
 
