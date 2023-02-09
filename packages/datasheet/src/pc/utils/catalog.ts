@@ -18,7 +18,7 @@
 
 import {
   ConfigConstant, Field, IDatasheetState, ISpaceBasicInfo, ISpaceInfo, ITreeNodesMap, IViewProperty, ResourceType, Selectors, StoreActions, Strings,
-  t, UnitItem,
+  t, UnitItem, IViewColumn,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'modules/shared/browser';
@@ -159,7 +159,7 @@ export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, e
   }
   return node.children.reduce((names, nodeId) => {
     if (!exceptArr.includes(nodeId)) {
-      names.push(treeNodesMap[nodeId][property]);
+      names.push(treeNodesMap[nodeId]![property]);
     }
     return names;
   }, [] as any[]);
@@ -204,7 +204,7 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
   const data = rows.map(row => {
     return visibleCols.map(col => {
       const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
-      const propsField = fieldMap[col.fieldId];
+      const propsField = fieldMap[col.fieldId]!;
       return Field.bindModel(propsField).cellValueToString(cellValue) || '';
     });
   });
@@ -273,9 +273,9 @@ const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) 
   });
 };
 
-const getColumnHeader = (datasheet: IDatasheetState, cols: any) => {
+const getColumnHeader = (datasheet: IDatasheetState, cols: IViewColumn[]) => {
   return cols.map(col => ({
-    header: datasheet.snapshot.meta.fieldMap[col.fieldId].name,
+    header: datasheet.snapshot.meta.fieldMap[col.fieldId]!.name,
   }));
 };
 
@@ -290,8 +290,8 @@ const getRowsAndCols = (datasheet: IDatasheetState, view?: IViewProperty) => {
     rows = Selectors.getVisibleRowsBase(store.getState(), datasheet.snapshot, view);
     cols = view.columns.filter(item => !item.hidden);
   } else {
-    rows = datasheet.snapshot.meta.views[0].rows;
-    cols = datasheet.snapshot.meta.views[0].columns;
+    rows = datasheet.snapshot.meta.views[0]!.rows;
+    cols = datasheet.snapshot.meta.views[0]!.columns;
   }
   return { rows, cols };
 };
@@ -329,7 +329,7 @@ export const getPermission = (role: string, data?: { shareInfo?: IShareSpaceInfo
 
 export const shouldOpenInNewTab = (e: React.MouseEvent) => {
   // Hold down cmd in mac environment or hold down ctrl in win environment and click left mouse button to open the table in new tab.
-  return (browser.is('Windows') && e.ctrlKey) || (browser.is('macOS') && e.metaKey);
+  return (browser?.is('Windows') && e.ctrlKey) || (browser?.is('macOS') && e.metaKey);
 };
 
 // Menu data source for switching permissions

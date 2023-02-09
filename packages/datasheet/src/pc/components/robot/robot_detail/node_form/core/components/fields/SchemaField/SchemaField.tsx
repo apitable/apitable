@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { JSONSchema7 } from 'json-schema';
 import { Fragment } from 'react';
 import { mergeObjects } from '../../../func';
 import { ISchemaFieldProps } from '../../../interface';
@@ -41,7 +42,7 @@ export function SchemaField(props: ISchemaFieldProps) {
   } = props;
   const { rootSchema, fields, formContext } = registry;
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || (registry as any).FieldTemplate || DefaultTemplate;
-  let idSchema = props.idSchema || {};
+  let idSchema: any = props.idSchema || {};
   const schema = retrieveSchema(props.schema, rootSchema, formData);
   // console.log('SchemaField.retrieveSchema', props.schema, schema);
   idSchema = mergeObjects(toIdSchema(schema, null, rootSchema, formData, idPrefix), idSchema);
@@ -50,9 +51,9 @@ export function SchemaField(props: ISchemaFieldProps) {
   const disabled = Boolean(props.disabled || uiSchema['ui:disabled']);
   const readonly = Boolean(
     props.readonly ||
-      uiSchema['ui:readonly'] ||
-      // props.schema.readOnly ||
-      schema.readOnly,
+    uiSchema['ui:readonly'] ||
+    // props.schema.readOnly ||
+    schema.readOnly,
   );
   const autofocus = Boolean(props.autofocus || uiSchema['ui:autofocus']);
   // console.log('SchemaField.schema', schema);
@@ -104,11 +105,11 @@ export function SchemaField(props: ISchemaFieldProps) {
     .trim();
 
   const fieldProps = {
-    description: <DescriptionField id={id + '__description'} description={description} formContext={formContext} />,
+    description: <DescriptionField id={id + '__description'} description={description} formContext={formContext}/>,
     rawDescription: description,
-    help: <Help id={id + '__help'} help={help} />,
+    help: <Help id={id + '__help'} help={help}/>,
     rawHelp: typeof help === 'string' ? help : undefined,
-    errors: <ErrorList errors={errors as any} />,
+    errors: <ErrorList errors={errors as any}/>,
     rawErrors: errors,
     id,
     label,
@@ -152,7 +153,7 @@ export function SchemaField(props: ISchemaFieldProps) {
             onBlur={props.onBlur}
             onChange={props.onChange}
             onFocus={props.onFocus}
-            options={schema.anyOf.map(_schema => retrieveSchema(_schema, rootSchema, formData))}
+            options={schema.anyOf.map((_schema: JSONSchema7) => retrieveSchema(_schema, rootSchema, formData))}
             baseType={schema.type}
             registry={registry as any}
             schema={schema}
@@ -170,7 +171,7 @@ export function SchemaField(props: ISchemaFieldProps) {
             onBlur={props.onBlur}
             onChange={props.onChange}
             onFocus={props.onFocus}
-            options={schema.oneOf.map(_schema => retrieveSchema(_schema, rootSchema, formData))}
+            options={schema.oneOf.map((_schema: JSONSchema7) => retrieveSchema(_schema, rootSchema, formData))}
             baseType={schema.type}
             registry={registry as any}
             schema={schema}

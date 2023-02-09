@@ -481,7 +481,7 @@ export const useGrid = (props: IUseGridProps) => {
         width={6}
         height={height}
         fill={'transparent'}
-        onMouseEnter={(e) => {
+        onMouseEnter={(e: any) => {
           const y = e.evt.layerY;
           const offsetX = remainWidth <= 385 ? -5 : 5;
           setShadowHover(true);

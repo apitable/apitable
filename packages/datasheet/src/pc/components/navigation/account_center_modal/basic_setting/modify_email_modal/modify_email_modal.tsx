@@ -135,7 +135,7 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewEmail(e.target.value);
     setErrMsg(defaultErrMsg);
   };

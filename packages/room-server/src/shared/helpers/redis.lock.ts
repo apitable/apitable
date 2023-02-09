@@ -81,6 +81,7 @@ export function RedisLock(client: Redis, retryDelay?: number): any {
       taskToPerform!(promisify(function (done) {
         done = done || function () { };
         if (lockTimeoutValue > Date.now()) {
+          // @ts-ignore
           client.del(lockName, done);
         } else {
           (done as () => void)();

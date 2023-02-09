@@ -64,15 +64,15 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
     <div
       onClick={() => expandRecordIdNavigate(recordId)}
       className={classNames(styles.cardBody, className, {
-        [styles.virtual]: isVirtual,
-        [styles.virtualGallery]: isGallery,
-        [styles.colName]: isColNameVisible,
+        [styles.virtual!]: isVirtual,
+        [styles.virtualGallery!]: isGallery,
+        [styles.colName!]: isColNameVisible,
       })}
       style={{ background: colors.defaultBg }}
     >
       {visibleFields.map((item, index) => {
         const cellValue = Selectors.getCellValue(store.getState(), recordSnapshot, recordId, item.fieldId);
-        const field = fieldMap[item.fieldId];
+        const field = fieldMap[item.fieldId]!;
         if (index === 0) {
           return (
             <div key={recordId} className={classNames(styles.cellTitle, styles.cellValue, 'ellipsis')}>
@@ -128,12 +128,12 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
                   cellValue={cellValue}
                   className={classNames(
                     {
-                      [styles.checkboxCell]: Field.bindModel(field).valueType === BasicValueType.Boolean,
-                      [styles.ratingCell]: fieldType === FieldType.Rating,
-                      [styles.multiSelectFieldCell]: isMultiSelectTypeField,
-                      [styles.singleCell]: isVirtual && SINGLE_TEXT_TYPE.includes(fieldType),
-                      [styles.isColNameHidden]: !isColNameVisible,
-                      [styles.cardCell]: true,
+                      [styles.checkboxCell!]: Field.bindModel(field).valueType === BasicValueType.Boolean,
+                      [styles.ratingCell!]: fieldType === FieldType.Rating,
+                      [styles.multiSelectFieldCell!]: isMultiSelectTypeField,
+                      [styles.singleCell!]: isVirtual && SINGLE_TEXT_TYPE.includes(fieldType),
+                      [styles.isColNameHidden!]: !isColNameVisible,
+                      [styles.cardCell!]: true,
                     },
                     styles.cellValue,
                   )}

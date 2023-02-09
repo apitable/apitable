@@ -44,7 +44,7 @@ export function useUrlQuery(): IQuery {
   const router = useRouter();
   const [query, setQuery] = useState<IQuery>(router.query);
   useEffect(() => {
-    const routeChangeCompleteFn = (url) => {
+    const routeChangeCompleteFn = (url: string) => {
       const queryStr = url?.split('?')?.[1];
       const urlSearchParams = new URLSearchParams(queryStr);
       setQuery(urlSearchParamsToObject(urlSearchParams));

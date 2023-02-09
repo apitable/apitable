@@ -35,7 +35,7 @@ interface IFormPreviewerProps {
   datasheetId: string;
   viewId: string;
   meta: IMeta;
-  onChange(result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string });
+  onChange: (result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string }) => void;
 }
 
 export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
@@ -92,7 +92,7 @@ export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
                 datasheetId={datasheetId}
                 viewId={viewId}
                 meta={meta}
-                fieldUI={({ title, index, children, required }) => (
+                fieldUI={({ title, index, children, required }: any) => (
                   <div className={styles.formField}>
                     <h4 className={styles.title} data-required={required}>
                       <span className={styles.indexClass}>{index}</span>.{title}

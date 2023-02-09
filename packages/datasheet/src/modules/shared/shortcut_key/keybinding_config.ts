@@ -79,7 +79,7 @@ export interface IKeyBinding {
 
 export function getKeyForOS(keyBinding: IKeyBinding) {
   const { key, winKey } = keyBinding;
-  return browser.is('Windows') ? winKey || key : key;
+  return browser?.is('Windows') ? winKey || key : key;
 }
 
 // Macifying the display of shortcut keys
@@ -119,7 +119,7 @@ export function getShortcutKeyString(actionName: ShortcutActionName | ShortcutKe
   }
   if (!shortcutKey) { return ''; }
   const { winKey, key } = shortcutKey;
-  if (browser.is('Windows')) {
+  if (browser?.is('Windows')) {
     const keyVal = winKey || key;
     return formatWinShortcutKey(keyVal);
   }

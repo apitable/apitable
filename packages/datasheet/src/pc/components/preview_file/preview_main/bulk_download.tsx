@@ -33,7 +33,7 @@ interface IBulkDownloadProps {
   className?: string;
 }
 
-export const BulkDownload: FC<IBulkDownloadProps> = ({ files, className, datasheetId }) => {
+export const BulkDownload: FC<IBulkDownloadProps> = ({ files, className }) => {
   const [loading, setLoading] = useState(false);
 
   return (

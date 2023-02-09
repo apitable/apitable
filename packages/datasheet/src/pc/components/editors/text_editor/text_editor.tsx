@@ -111,7 +111,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
     setEditorValue(null);
   };
 
-  const getValidValue = (originValue) => {
+  const getValidValue = (originValue: string) => {
     let segment: ISegment[] = [];
     switch (props.field.type) {
       case FieldType.URL:

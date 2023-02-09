@@ -29,6 +29,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useCallback, useRef, useState } from 'react';
+// @ts-ignore
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import SelectedIcon from 'static/icon/common/common_icon_select.svg';
@@ -49,7 +50,7 @@ const initCropConfigMap = new Map([
   [ICropShape.AnyShape, { unit: '%', width: 100, height: 100 }],
 ]);
 
-export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
+export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
   const {
     type = IUploadType.Other,
     confirm,
@@ -126,7 +127,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     setUpImgFile('');
   };
 
-  const onComplete = (crop, percentCrop) => {
+  const onComplete = (crop: { width: number; height: number; }, percentCrop: { width: number; height: number; }) => {
     const image = imgRef.current;
     if (!image) {
       return;
@@ -143,7 +144,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   };
 
   // Draw arbitrarily shaped cropped areas
-  const cropAnyView = (image, crop) => {
+  const cropAnyView = (image: any, crop: any) => {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
@@ -166,7 +167,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   };
 
   // Drawing a square cut-out area
-  const cropSquareView = (image, percentCrop) => {
+  const cropSquareView = (image: any, percentCrop: any) => {
     const canvas = document.createElement('canvas');
     const computedSize = Math.floor((image.naturalHeight * percentCrop.height) / 100);
     canvas.width = computedSize;
@@ -188,7 +189,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
   };
 
   // Drawing rectangular cut-out areas
-  const cropRectangleView = (image, percentCrop) => {
+  const cropRectangleView = (image: any, percentCrop: any) => {
     const canvas = document.createElement('canvas');
     const computedSize = Math.floor((image.naturalWidth * percentCrop.width) / 100);
     canvas.width = computedSize;
@@ -209,21 +210,22 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
     canvasToFile(canvas);
   };
 
-  const canvasToFile = canvas => {
+  const canvasToFile = (canvas: HTMLCanvasElement) => {
     canvas.toBlob(blob => {
       if (!blob) {
         new Error('Canvas is empty');
       }
       // Image Preview
-      setPreviewUrl(window.URL.createObjectURL(blob));
+      setPreviewUrl(window.URL.createObjectURL(blob!));
     }, (upImgFile as File).type);
     const imgBase64 = canvas.toDataURL((upImgFile as File).type, 1);
     const file = dataURLtoFile(imgBase64, (upImgFile as File).name);
     setUpImgFile(file);
   };
 
-  const dataURLtoFile = (urlData, fileName) => {
+  const dataURLtoFile = (urlData: string, fileName: string) => {
     const bytes = window.atob(urlData.split(',')[1]); // Remove the url header and convert to byte
+    // @ts-ignore
     const mime = urlData.split(',')[0].match(/:(.*?);/)[1];
     // Handling exceptions, converting ascii codes less than 0 to greater than 0
     const ab = new ArrayBuffer(bytes.length);
@@ -359,7 +361,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
                     /> :
                     (upImg || officialImgToken ? (
                       <span className={styles.previewImgWrapper}>
-                        <Image src={previewUrl} layout={'fill'} alt={''} />
+                        <img src={previewUrl} alt={''} />
                       </span>
                     ) : (
                       initPreview
@@ -458,7 +460,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props, ref) => {
                         [styles.squareImageWrapper]: imgWidth != null && imgWidth === imgHeight,
                       })}
                     >
-                      <ReactCrop src={upImg} onImageLoaded={onLoad} crop={crop} onChange={c => setCrop(c)} onComplete={onComplete} />
+                      <ReactCrop src={upImg} onImageLoaded={onLoad} crop={crop} onChange={(c: any) => setCrop(c)} onComplete={onComplete} />
                     </div>
                   )}
                 </div>

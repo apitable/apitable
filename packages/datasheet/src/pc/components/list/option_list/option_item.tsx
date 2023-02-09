@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t } from '@apitable/core';
+import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t, IField } from '@apitable/core';
 import classNames from 'classnames';
 import { produce } from 'immer';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
@@ -48,7 +48,7 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
   const deleteItem = (optionId: string): ICollaCommandExecuteResult<{}> => {
     const trulyIndex = getRealIndexOfOptions && getRealIndexOfOptions(optionId);
     return setCurrentField!(field => {
-      return produce(field, draft => {
+      return produce(field, (draft: IField) => {
         draft.property.options.splice(trulyIndex, 1);
         return draft;
       });
@@ -57,7 +57,7 @@ const OptionItemBase: React.FC<IOptionItem> = props => {
 
   const setOptionProperty = (optionIndex: number, propertyName: string, newValue: number | string): ICollaCommandExecuteResult<{}> => {
     return setCurrentField!(field => {
-      return produce(field, draft => {
+      return produce(field, (draft: IField) => {
         draft.property.options[optionIndex][propertyName] = newValue;
         return draft;
       });

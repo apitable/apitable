@@ -119,7 +119,7 @@ export const RobotListItemCard: React.FC<IRobotListItemCardProps> = ({ index, ro
               </React.Fragment>;
             })}
           </Box>
-          <Switch checked={robot!.isActive} size='small' disabled={readonly} loading={loading} onClick={(value, e) => {
+          <Switch checked={robot!.isActive} size='small' disabled={readonly} loading={loading} onClick={(_value, e) => {
             stopPropagation(e);
             toggleRobotActive();
           }} />

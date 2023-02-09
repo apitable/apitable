@@ -29,7 +29,7 @@ interface IReadingProps {
 
 const size = 160;
 
-export const Reading: FC<IReadingProps> = props => {
+export const Reading: FC<IReadingProps> = () => {
   const colors = useThemeColors();
   return (
     <div className={styles.content}>

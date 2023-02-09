@@ -17,7 +17,7 @@
  */
 
 import { Tooltip, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IAttachmentValue, IField, Selectors } from '@apitable/core';
+import { ConfigConstant, IAttachmentValue, IAttacheField, Selectors } from '@apitable/core';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
@@ -35,14 +35,14 @@ interface IPreviewItemProps {
   cellValue: IAttachmentValue[];
   index: number;
   recordId: string;
-  field: IField;
+  field: IAttacheField;
   // The caller needs to synthesize the final readonly incoming,
   // no additional 'permissions' are introduced here to determine permissions
   readonly?: boolean;
   style?: React.CSSProperties;
-  onSave: (cellValue: IAttachmentValue[]) => void;
-  setPreviewIndex(index: number): void;
-  setPreviewVisible(visible: boolean): void;
+  onSave?: (cellValue: IAttachmentValue[]) => void;
+  setPreviewIndex?: (index: number) => void;
+  setPreviewVisible?: (visible: boolean) => void;
 }
 
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
@@ -53,7 +53,7 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
   });
   const role = useSelector(state => Selectors.getDatasheet(state, datasheetId))?.role;
   const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state));
-  const fieldRole = useSelector(state => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
+  const fieldRole = useSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
   if (allowDownloadAttachment) return true;
   if (!fieldRole) return !(role === ConfigConstant.Role.Reader);
   return fieldRole === ConfigConstant.Role.Editor;

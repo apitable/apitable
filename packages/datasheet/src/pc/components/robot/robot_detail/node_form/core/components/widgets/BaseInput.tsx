@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { ChangeEvent } from 'react';
 
 interface IBaseInputProps {
   id: string;
@@ -82,7 +83,7 @@ function BaseInput(props: IBaseInputProps & any) {
     inputProps.max = schema.maximum;
   }
 
-  const _onChange = ({ target: { value }}) => {
+  const _onChange = ({ target: { value }}:  ChangeEvent<HTMLInputElement>) => {
     return props.onChange(value === '' ? options.emptyValue : value);
   };
 

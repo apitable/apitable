@@ -34,6 +34,7 @@ import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
 interface IRecordList {
   nodes: INode[];
   disabled?: boolean;
+
   onClose(): void;
 }
 
@@ -59,7 +60,7 @@ export const RecordList: FC<IRecordList> = (props) => {
   const {
     nodes,
     disabled,
-    onClose
+    onClose,
   } = props;
 
   const {
@@ -70,9 +71,9 @@ export const RecordList: FC<IRecordList> = (props) => {
     rowsCount,
   } = useContext(FlowContext);
 
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState<string>();
 
-  const handleSearch = (e, word) => {
+  const handleSearch = (_e: any, word: string) => {
     if (!keyword) {
       setKeyword(word);
     }

@@ -17,9 +17,24 @@
  */
 
 import { CommentBjEntireFilled } from '@apitable/icons';
-import { ILinearRowRecord, RowHeight } from '@apitable/core';
+import { ILinearRow, ILinearRowRecord, RowHeight } from '@apitable/core';
 import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
+import { ILightOrDarkThemeColors } from '@apitable/components';
+import * as React from 'react';
+
+interface IFirstCell {
+  row: ILinearRow;
+  style: React.CSSProperties;
+  isActiveRow: boolean;
+  isCheckedRow: boolean;
+  isHoverRow: boolean;
+  isDraggingRow: boolean;
+  isThisCellWillMove: boolean;
+  commentCount: any;
+  commentVisible?: boolean;
+  colors: ILightOrDarkThemeColors;
+}
 
 const CommentBjFilledPath = CommentBjEntireFilled.toString();
 
@@ -35,7 +50,7 @@ export class RecordRowLayout extends GridLayout {
     commentCount,
     commentVisible,
     colors
-  }) {
+  }: IFirstCell) {
     if (!this.isFirst) return;
 
     const { depth } = row;
@@ -106,7 +121,7 @@ export class RecordRowLayout extends GridLayout {
     row,
     style,
     colors,
-  }) {
+  }: Pick<IFirstCell, 'row' | 'style' | 'colors'>) {
     if (!this.isLast) return;
     this.renderAddFieldBlank(row);
     if (this.isFirst) return;
@@ -128,7 +143,7 @@ export class RecordRowLayout extends GridLayout {
     }
   }
 
-  private renderCommonCell({ style, colors }) {
+  private renderCommonCell({ style, colors }: Pick<IFirstCell, 'style' | 'colors'>) {
     if (this.isFirst || this.isLast) return;
 
     const { fill, stroke } = style;
@@ -142,7 +157,7 @@ export class RecordRowLayout extends GridLayout {
     });
   }
 
-  render(props) {
+  render(props: IFirstCell) {
     const { 
       row, 
       style,

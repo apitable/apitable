@@ -48,12 +48,12 @@ const FormatSelectItemBase: React.FC<IFormatSelectItem> = props => {
     addNewItem();
   };
 
-  const onDrag = e => {
+  const onDrag = (e: React.SyntheticEvent<Element, Event>) => {
     stopPropagation(e);
     setDraggingId(option.id);
   };
 
-  const onDrop = e => {
+  const onDrop = (e: React.SyntheticEvent<Element, Event>) => {
     stopPropagation(e);
     setDraggingId(null);
   };

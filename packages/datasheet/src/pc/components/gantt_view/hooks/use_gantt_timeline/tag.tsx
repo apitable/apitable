@@ -18,7 +18,7 @@
 
 import { Tag as KonvaTag } from 'react-konva';
 
-const Tag = (props) => {
+const Tag = (props: any) => {
   return <KonvaTag
     {...props}
   />;

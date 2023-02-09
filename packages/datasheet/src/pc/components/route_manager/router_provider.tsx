@@ -57,7 +57,7 @@ export const antdConfig = {
   renderEmpty: customizeRenderEmpty,
 };
 
-const RouterProvider = ({ children }) => {
+const RouterProvider = ({ children }: any) => {
   const cacheScrollMap = useRef({});
   const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ const RouterProvider = ({ children }) => {
   // so the behavior of the a tag is handled together with the proxy in navigationToUrl
   useEffect(() => {
     const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
-    const clickHandler = e => {
+    const clickHandler = (e: any) => {
       const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)`);
       const paths = ['/user', '/login', '/org', '/workbench', '/notify', '/management', '/invite', '/template', '/share'];
       let element = e.target;

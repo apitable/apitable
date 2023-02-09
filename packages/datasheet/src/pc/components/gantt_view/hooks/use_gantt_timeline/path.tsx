@@ -18,7 +18,7 @@
 
 import { Path as KonvaPath } from 'react-konva';
 
-const Path = (props) => {
+const Path = (props: any) => {
   return <KonvaPath {...props} />;
 };
 

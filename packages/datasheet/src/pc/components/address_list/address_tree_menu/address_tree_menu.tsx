@@ -65,7 +65,7 @@ export const AddressTreeMenu: FC<IAddressTreeMenu> = props => {
       );
     });
   };
-  const teamClick = (keys: ReactText[], event) => {
+  const teamClick = (keys: ReactText[], event: any) => {
     onSelect(keys as string[], event);
   };
   return (

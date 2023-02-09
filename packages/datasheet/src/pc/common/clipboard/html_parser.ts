@@ -19,7 +19,7 @@
 import { ISegment, SegmentType, string2Segment } from '@apitable/core';
 import { ITableCellData, ITableData } from './table_data';
 
-let measureContainer;
+let measureContainer: HTMLDivElement;
 
 (() => {
   if (!process.env.SSR) {

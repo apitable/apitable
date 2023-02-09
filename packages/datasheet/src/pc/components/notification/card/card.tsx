@@ -18,6 +18,7 @@
 
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { IQuery } from 'pc/components/route_manager/interface';
 import { FC, useRef, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
@@ -104,7 +105,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
 
     const url = new URL(window.location.href);
     url.pathname = joinPath([configPathname, nodeId, viewId, recordId]);
-    let query;
+    let query: IQuery = {};
     if (notifyType === NotifyType.Record || notifyType === NotifyType.Member) {
       query = { comment: 1 };
     }
@@ -134,12 +135,12 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
     });
   };
 
-  const handleWrapClick = e => {
+  const handleWrapClick = (e:  React.MouseEvent) => {
     processed(data);
     stopPropagation(e);
   };
 
-  const stopPropagation = e => {
+  const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
   };
@@ -164,11 +165,11 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
     return <div className={styles.text}>{text}</div>;
   };
 
-  const rejectJoinSpace = e => {
+  const rejectJoinSpace = (e: React.MouseEvent) => {
     processJoin(false);
     stopPropagation(e);
   };
-  const agreeJoinSpace = e => {
+  const agreeJoinSpace = (e: React.MouseEvent) => {
     processJoin(true);
     stopPropagation(e);
   };
@@ -213,7 +214,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
           data-test-id={getCardDataTestId()}
           key={data.id}
           id={data.id}
-          className={classNames(styles.msgCard, { [styles.canJump]: canJump || toastUrl })}
+          className={classNames(styles.msgCard, { [styles.canJump!]: canJump || toastUrl })}
           onClick={() => {
             if (mouseTimerRef.current + 300 > new Date().getTime()) {
               cardClick(data);

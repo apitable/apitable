@@ -66,7 +66,7 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
     });
   };
 
-  const saveWidgetName = e => {
+  const saveWidgetName = (e: any) => {
     const value = e.target.value;
     setRename(false);
     setErrTip('');
@@ -95,7 +95,7 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
   const ReactIconExpand = () => <IconExpand width={16} height={16} fill={colors.thirdLevelText} />;
   const ReactMoreOutlined = () => <MoreOutlined size={16} color={colors.thirdLevelText} className={styles.rotateIcon} />;
 
-  const nameMouseUp = e => {
+  const nameMouseUp = (e: React.SyntheticEvent) => {
     if (!dragging && !config.hideEditName) {
       setRename(true);
     } else {
@@ -169,7 +169,7 @@ export const WidgetHeaderMobile: React.FC<IWidgetHeaderProps> = props => {
             'dragHandleDisabled',
           )}
           onClick={expand}
-          onMouseDown={e => {
+          onMouseDown={() => {
             hideAll();
           }}
         >

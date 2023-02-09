@@ -489,7 +489,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   const clearTooltipInfo = useCallback(() => setTooltipInfo(DEFAULT_TOOLTIP_PROPS), [setTooltipInfo]);
 
-  const handleGridHorizontalScroll = e => {
+  const handleGridHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGridScrollState({
       scrollLeft,
@@ -499,7 +499,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleGanttHorizontalScroll = e => {
+  const handleGanttHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGanttScrollState({
       scrollLeft,
@@ -509,7 +509,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = e => {
+  const handleVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setGanttScrollState({
       scrollTop,
@@ -919,7 +919,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
   // Automatic scheduling of single-task modifications
-  const autoSingleTask = endData => {
+  const autoSingleTask = (endData: { recordId: string, endTime: number }) => {
     if (!linkFieldId || !startFieldId || !endFieldId) {
       return;
     }

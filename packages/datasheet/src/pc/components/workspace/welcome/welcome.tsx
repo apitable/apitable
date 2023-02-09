@@ -115,7 +115,7 @@ export const Welcome: FC = () => {
                           </div>
                         )}
                         <div className={styles.moduleContainer}>
-                          {(item.cards as any).map(card => {
+                          {(item.cards as any).map((card: any) => {
                             return <div
                               key={card.id}
                               className={styles.moduleItem}
@@ -166,7 +166,7 @@ export const Welcome: FC = () => {
                 </Typography>
                 <div className={styles.container}>
                   {data.map(item =>
-                    (item.cards as any).map(card => (
+                    (item.cards as any).map((card: any) => (
                       <div
                         key={card.id}
                         className={styles.moduleItem}

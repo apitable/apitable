@@ -86,7 +86,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
   const linkId = useSelector(Selectors.getLinkId);
   const formId = useSelector(state => state.pageParams.formId);
 
-  const onCancel = (e?) => {
+  const onCancel = () => {
     propsCancel('');
   };
 

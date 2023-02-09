@@ -40,7 +40,7 @@ export const Bottom: FC<IBottomProps> = ({
   return (
     <div 
       className={classNames(styles.collapse, {
-        [styles.horizontal]: horizontal,
+        [styles.horizontal!]: horizontal,
       })}
     >
       <svg

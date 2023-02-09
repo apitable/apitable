@@ -30,7 +30,7 @@ interface IRobotDetailProps {
   datasheetId: string,
   formList: IFormNodeItem[],
 }
-export const RobotDetailForm = ({ index, datasheetId, formList }: IRobotDetailProps) => {
+export const RobotDetailForm = ({ formList }: IRobotDetailProps) => {
   const [trigger, setTrigger] = useState<IRobotTrigger>();
   const ref = useRef<HTMLDivElement | null>(null);
   const { loading, data: actionTypes } = useActionTypes();

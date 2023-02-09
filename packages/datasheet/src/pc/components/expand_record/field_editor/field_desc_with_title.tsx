@@ -24,6 +24,7 @@ import { expandFieldDescEditorMobile } from 'pc/components/mobile_grid/field_des
 import { usePlatform } from 'pc/hooks/use_platform';
 import { FC, useRef, useState } from 'react';
 import * as React from 'react';
+// @ts-ignore
 import Clamp from 'react-multiline-clamp';
 import { webkitLineClamp } from 'webkit-line-clamp';
 
@@ -98,7 +99,7 @@ export const FieldDescWithTitle: FC<IFieldDescWithTitleProps> = ({
           maxLines={1000}
           withToggle
           withTooltip={false}
-          showMoreElement={({ toggle }) => (
+          showMoreElement={({ toggle }: { toggle: (e: React.MouseEvent) => void }) => (
             <LinkButton
               underline={false}
               onClick={toggle}
@@ -107,7 +108,7 @@ export const FieldDescWithTitle: FC<IFieldDescWithTitleProps> = ({
               {t(Strings.see_more)}
             </LinkButton>
           )}
-          showLessElement={({ toggle }) => (
+          showLessElement={({ toggle }: { toggle: (e: React.MouseEvent) => void }) => (
             <LinkButton
               underline={false}
               onClick={toggle}

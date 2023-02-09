@@ -30,7 +30,7 @@ import {
   t,
   Strings,
   IAttachmentValue,
-  Api,
+  Api, IAttacheField,
 } from '@apitable/core';
 import styles from './style.module.less';
 import { Button } from '@apitable/components';
@@ -165,7 +165,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     return attachmentRef.current as IAttachmentValue[];
   };
 
-  const handleFieldChange = value => {
+  const handleFieldChange = (value: string) => {
     setFormErrors(field.id, '');
     setFormToStorage && setFormToStorage(field.id, value);
   };
@@ -247,6 +247,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
         <ExpandAttachContext.Provider value={{ isFocus }}>
           <ExpandAttachment
             {...commonProps}
+            field={field as IAttacheField}
             recordId={recordId}
             cellValue={attachmentRef.current as IAttachmentValue[]}
             getCellValueFn={getCellValueFn}

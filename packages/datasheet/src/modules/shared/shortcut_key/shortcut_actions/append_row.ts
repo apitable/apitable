@@ -94,7 +94,7 @@ export function appendRow(option: IAppendRowsOption = {}) {
       dispatch(
         StoreActions.setActiveCell(datasheetId, {
           recordId: newRecordId,
-          fieldId: activeCell ? activeCell.fieldId : view.columns[0].fieldId,
+          fieldId: activeCell ? activeCell.fieldId : view.columns[0]!.fieldId,
         }),
       );
       if (isSideRecordOpen) {
@@ -128,7 +128,7 @@ export const appendRowCallback = (newRecordId: string) => {
   dispatch(
     StoreActions.setActiveCell(datasheetId, {
       recordId: newRecordId,
-      fieldId: activeCell ? activeCell.fieldId : view.columns[0].fieldId,
+      fieldId: activeCell ? activeCell.fieldId : view.columns[0]!.fieldId,
     }),
   );
   if (isSideRecordOpen) {
@@ -150,7 +150,7 @@ export const getCellValuesForGroupRecord = (recordId?: string) => {
   }
 
   return groupInfo.reduce<ICellValue[]>((result, groupField) => {
-    const field = snapshot.meta.fieldMap[groupField.fieldId];
+    const field = snapshot.meta.fieldMap[groupField.fieldId]!;
     if (!Field.bindModel(field).recordEditable()) {
       return result;
     }
@@ -171,7 +171,7 @@ export const findRowsIndexById = (recordId: string) => {
 export const getRecordCellValue = (state: IReduxState, recordId: string) => {
   const recordSnapshot = Selectors.getRecordSnapshot(state, recordId);
   if (recordSnapshot) {
-    return recordSnapshot.recordMap[recordId].data;
+    return recordSnapshot.recordMap[recordId]?.data;
   }
   return null;
 };

@@ -23,7 +23,7 @@ import styles from './style.module.less';
 
 const md = new MarkdownIt();
 // Remember old renderer, if overridden, or proxy to default renderer
-const defaultRender = md.renderer.rules.link_open || function render(tokens, idx, options, env, self) {
+const defaultRender = md.renderer.rules.link_open || function render(tokens, idx, options, _env, self) {
   return self.renderToken(tokens, idx, options);
 };
 md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
@@ -32,7 +32,7 @@ md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
   if (aIndex < 0) {
     tokens[idx].attrPush(['target', '_blank']); // add new attribute
   } else {
-    tokens[idx].attrs[aIndex][1] = '_blank';// replace value of existing attr
+    tokens[idx].attrs![aIndex][1] = '_blank';// replace value of existing attr
   }
   // pass token to default renderer.
   return defaultRender(tokens, idx, options, env, self);
@@ -45,11 +45,11 @@ interface IDescriptionFieldProps {
 
 export function DescriptionField(props: IDescriptionFieldProps) {
   const theme = useTheme();
-  const { id, description } = props;
+  const { id, description = '' } = props;
   if (!description) {
     return null;
   }
-  const descriptionHTMLString = md.render(description || '');
+  const descriptionHTMLString = md.render(description as string);
   if (typeof description === 'string') {
     return (
       <Typography variant="body4" color={theme.color.fc3} >

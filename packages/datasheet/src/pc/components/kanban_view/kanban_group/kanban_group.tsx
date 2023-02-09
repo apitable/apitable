@@ -195,17 +195,16 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
   };
 
   /**
-   * @description 
-   * After the fields with automatic sorting and column permissions are set as grouped fields of the kanban view, 
-   * the interaction effect of dragging and sorting will be different, 
+   * @description
+   * After the fields with automatic sorting and column permissions are set as grouped fields of the kanban view,
+   * the interaction effect of dragging and sorting will be different,
    * so a different calculation of the list height for virtual scrolling is needed
-   * 
+   *
    * @param {number} baseHeight
-   * @param {number} placeholderHeight
-   * @param {boolean} isHomeGroup
+   * @param placeholderHeight
    * @returns {number}
    */
-  const getFixedListHeight = (baseHeight: number, placeholderHeight: number, isHomeGroup: boolean) => {
+  const getFixedListHeight = (baseHeight: number, placeholderHeight: number) => {
     // TODO: Modify the logic here when you have field permissions
     if (!keepSort) {
       return baseHeight + placeholderHeight;
@@ -259,7 +258,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
               const extraHeight = dragInDiffGroup ? getCardHeight(snapshot.draggingOverWith || '', isMobile) : 0;
 
               const virtualHeightInner =
-                getFixedListHeight(sum(recordIds.map(recordId => getCardHeight(recordId, isMobile) + CARD_MARGIN)), extraHeight, !dragInDiffGroup) -
+                getFixedListHeight(sum(recordIds.map(recordId => getCardHeight(recordId, isMobile) + CARD_MARGIN)), extraHeight) -
                 CARD_MARGIN;
 
               const _maxVirtualHeight = height - (isMobile ? SMALL_SCREEN_PADDING : TOTAL_PC_OATHER_PADDING);

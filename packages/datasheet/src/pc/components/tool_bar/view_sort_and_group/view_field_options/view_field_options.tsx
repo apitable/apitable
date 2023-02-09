@@ -53,7 +53,7 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
     onChange(targetId);
   }
 
-  function toggleClick(e: React.MouseEvent) {
+  function toggleClick() {
     setIsOpen(!isOpen);
   }
 
@@ -67,7 +67,7 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
     return true;
   }
 
-  const getSuffixIcon = (fieldId: string, isFieldInvalid) => {
+  const getSuffixIcon = (fieldId: string, isFieldInvalid: boolean) => {
     if (fieldPermissionMap && fieldPermissionMap[fieldId]) {
       return <FieldPermissionLock fieldId={fieldId} />;
     }

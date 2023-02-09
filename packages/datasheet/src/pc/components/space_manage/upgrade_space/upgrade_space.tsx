@@ -57,7 +57,7 @@ const UpgradeSpace = () => {
         '*',
       );
     };
-    const receiveMes = event => {
+    const receiveMes = (event: any) => {
       if (!event) {
         return;
       }

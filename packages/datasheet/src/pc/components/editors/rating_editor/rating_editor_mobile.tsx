@@ -76,7 +76,7 @@ const RatingEditorMobileBase: React.FC<IRatingEditorMobileProps> = props => {
         className={style.ratingEditorPopupWrapper}
       >
         <div className={style.rateItemList}>
-          {[...Array(max + 1).keys()].map((item, index) => (
+          {[...Array(max + 1).keys()].map((_item, index) => (
             <RateItem
               key={index}
               onChange={value => {

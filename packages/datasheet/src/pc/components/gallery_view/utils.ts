@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  BasicValueType, Field, FieldType, IField, IFieldMap,
-  IGalleryViewStyle, ILookUpField, ISnapshot, IViewRow, Selectors
-} from '@apitable/core';
+import { BasicValueType, Field, FieldType, IField, IFieldMap, IGalleryViewStyle, ILookUpField, ISnapshot, IViewRow, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import { EACH_TEXT_LINE_HEIGHT } from '../record_card/card_text';
 import {
-  DEFAULT_SINGLE_TEXT_HEIGHT, FIELD_HEIGHT_MAP, FIELD_HEIGHT_MAP_MOBILE,
-  FIELD_HEIGHT_VIRTUAL_MAP, FIELD_HEIGHT_VIRTUAL_MAP_MOBILE,
-  GalleryGroupItemType, PADDING_RIGHT, PADDING_TOP, SHOW_THUMBIAL_WIDTH
+  DEFAULT_SINGLE_TEXT_HEIGHT,
+  FIELD_HEIGHT_MAP,
+  FIELD_HEIGHT_MAP_MOBILE,
+  FIELD_HEIGHT_VIRTUAL_MAP,
+  FIELD_HEIGHT_VIRTUAL_MAP_MOBILE,
+  GalleryGroupItemType,
+  PADDING_RIGHT,
+  PADDING_TOP,
+  SHOW_THUMBIAL_WIDTH,
 } from './constant';
 import { IGalleryGroupItem } from './interface';
 
@@ -153,7 +156,7 @@ export const getGroupLinearRows = (
       type: GalleryGroupItemType.GroupTitle,
     });
     // Blank placeholder
-    [...Array((columnCount - 1))].forEach((item, index) => {
+    [...Array((columnCount - 1))].forEach((_item, index) => {
       res.push({
         recordId: `${groupHeadRecordId}_${index}`,
         groupHeadRecordId,
@@ -183,7 +186,7 @@ export const getGroupLinearRows = (
         });
       }
       if (blankCardCount > 0) {
-        [...Array(blankCardCount)].forEach((item, index) => {
+        [...Array(blankCardCount)].forEach((_item, index) => {
           res.push({
             recordId: `${groupHeadRecordId}_${index}`,
             groupHeadRecordId,
@@ -239,7 +242,7 @@ export const getColumnWidthAndCount = (containerWith: number, isMobile: boolean,
 
 export const getGalleryLinearRows = (rows: IViewRow[], canAddCard: boolean) => {
   const res: IGalleryGroupItem[] = [];
-  rows.forEach((row, index) => {
+  rows.forEach((row) => {
     res.push({
       recordId: row.recordId,
       type: GalleryGroupItemType.Card,
@@ -271,11 +274,10 @@ export const getSearchItemIndex = (
 };
 
 // Determine if paddingTop should be added based on the previous type of the header
-export const getGroupTitlePaddingTip = (linearRows, index, rowIndex) => {
+export const getGroupTitlePaddingTip = (linearRows: IGalleryGroupItem[], index: number, rowIndex: number) => {
   if (rowIndex === 0) {
     return 16;
   }
   const prevItem = linearRows[index - 1];
-  const paddingTop = !prevItem || (prevItem && prevItem.type === GalleryGroupItemType.GroupHeadBlank) ? PADDING_TOP - 8 : PADDING_TOP;
-  return paddingTop;
+  return !prevItem || (prevItem && prevItem.type === GalleryGroupItemType.GroupHeadBlank) ? PADDING_TOP - 8 : PADDING_TOP;
 };

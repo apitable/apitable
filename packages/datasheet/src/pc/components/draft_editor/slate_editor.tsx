@@ -37,18 +37,19 @@ import { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, us
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createEditor, Descendant, Editor, Node, Range, Text, Transforms } from 'slate';
-import { withHistory } from 'slate-history';
+import { HistoryEditor, withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, useFocused, useSelected, withReact } from 'slate-react';
 import { ActivityContext } from '../expand_record/activity_pane/activity_context';
 import styles from './styles/style.module.less';
 import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
-const withLastSelection = editor => {
+const withLastSelection = (editor: ReactEditor) => {
   const { onChange } = editor;
   editor.onChange = (...params) => {
     if (editor.selection) {
       // ref.current = editor.selection as unknown as Selection;
+      // @ts-ignore
       editor.lastSelection = (editor.selection as unknown) as Selection;
     }
     onChange(...params);
@@ -56,7 +57,7 @@ const withLastSelection = editor => {
   return editor;
 };
 
-const Portal = ({ children }) => {
+const Portal = ({ children }: { children: any }) => {
   return typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
 };
 
@@ -88,10 +89,10 @@ function calcContainerStyle(maxRow: number): React.CSSProperties {
   };
 }
 
-const SlateEditor = (props, ref) => {
+const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
   const {
     readOnly, placeHolder, submit, syncContent, noMention, maxRow,
-    initialValue, emojis, handleEmoji, onBlur, className
+    initialValue, emojis, handleEmoji, onBlur, className,
   } = props;
   // blocks
   const membersListRef = useRef<HTMLDivElement | null>(null);
@@ -135,9 +136,9 @@ const SlateEditor = (props, ref) => {
   };
 
   useEffect(() => {
-    toPairs(emojis).forEach(([k, v]) => {
+    toPairs(emojis).forEach(([, v]) => {
       if (v && (v as any).length) {
-        (v as any).forEach(userId => {
+        (v as any).forEach((userId: string) => {
           const unit = find(values(unitMap), { userId });
           if (!unit) {
             DatasheetApi.fetchUserList(datasheetId, [userId]).then(res => {
@@ -165,7 +166,7 @@ const SlateEditor = (props, ref) => {
   const renderElement = useCallback(props => <Element {...props} />, []);
   const editor = useMemo(
     () => withLink(withMentions(withReact(withHistory(withLastSelection(createEditor() as ReactEditor))))),
-    []
+    [],
   );
 
   const clearContent = useCallback(() => {
@@ -372,11 +373,11 @@ const SlateEditor = (props, ref) => {
             <div
               ref={membersListRef}
               className={styles.members}
-              data-cy='mentions-portal'
+              data-cy="mentions-portal"
             >
               {loading ? <div className={styles.loading}>
-                <Spin size='small' indicator={<LoadingOutlined />} />
-              </div> :
+                  <Spin size="small" indicator={<LoadingOutlined/>}/>
+                </div> :
                 <>
                   <MemberOptionList
                     listData={members}
@@ -400,7 +401,7 @@ const SlateEditor = (props, ref) => {
                   {members.length > 0 && (
                     <div
                       className={styles.seeMore}
-                      onMouseUp={e => {
+                      onMouseUp={() => {
                         setVisible(false);
                         expandUnitModal({
                           source: SelectUnitSource.Member,
@@ -436,7 +437,8 @@ const SlateEditor = (props, ref) => {
                             }
                           },
                           isSingleSelect: true,
-                          onClose: () => {},
+                          onClose: () => {
+                          },
                           showTab: true,
                         });
                       }}
@@ -460,16 +462,15 @@ const SlateEditor = (props, ref) => {
             if (!v || !v.length) {
               return null;
             }
-            const names = v.map(userId => {
+            const names = v.map((userId: string) => {
               const unit = find(values(unitMap), { userId });
-              const title = getSocialWecomUnitName?.({
+              return getSocialWecomUnitName?.({
                 name: unit?.name,
                 isModified: unit?.isMemberNameModified,
                 spaceInfo,
               }) || unit?.name;
-              return title;
             });
-            const namesShow = names.map((name, idx) => (
+            const namesShow = names.map((name: any, idx: number) => (
               <span key={idx}>
                 {name}
                 {names.length - 1 !== idx && t(Strings.comma)}
@@ -478,7 +479,7 @@ const SlateEditor = (props, ref) => {
             return (
               <div className={styles.emojiUser} key={index}>
                 <span className={styles.emojiToggle} onClick={() => handleEmoji && handleEmoji(k)}>
-                  <Emoji emoji={k === 'good' ? '+1' : 'ok_hand'} size={16} />
+                  <Emoji emoji={k === 'good' ? '+1' : 'ok_hand'} size={16}/>
                 </span>
                 {names.length > 2 ? (
                   <Tooltip title={namesShow}>
@@ -496,35 +497,35 @@ const SlateEditor = (props, ref) => {
   );
 };
 
-const withMentions = editor => {
+const withMentions = (editor: ReactEditor & HistoryEditor) => {
   const { isInline, isVoid } = editor;
 
-  editor.isInline = element => {
+  editor.isInline = (element: any) => {
     return element.type === 'mention' || isInline(element);
   };
 
-  editor.isVoid = element => {
+  editor.isVoid = (element: any) => {
     return element.type === 'mention' || isVoid(element);
   };
 
   return editor;
 };
 
-const withLink = editor => {
+const withLink = (editor: ReactEditor & HistoryEditor) => {
   const { isInline, isVoid } = editor;
 
-  editor.isInline = element => {
+  editor.isInline = (element: any) => {
     return element.type === 'link' || isInline(element);
   };
 
-  editor.isVoid = element => {
+  editor.isVoid = (element: any) => {
     return element.type === 'link' || isVoid(element);
   };
 
   return editor;
 };
 
-const Element = props => {
+const Element = (props: any) => {
   const { attributes, children, element } = props;
   if (element.type === 'link') {
     return <LinkElement {...props} />;
@@ -534,7 +535,7 @@ const Element = props => {
   return <div {...attributes}>{children}</div>;
 };
 
-const MentionElement = ({ attributes, children, element }) => {
+const MentionElement = ({ attributes, children, element }: any) => {
   const adjustStyle = element.data?.avatar ? {} : { top: 0 };
   const focused = useFocused();
   const selected = useSelected();
@@ -558,7 +559,7 @@ const MentionElement = ({ attributes, children, element }) => {
   );
 };
 
-const LinkElement = ({ attributes, children, element }) => {
+const LinkElement = ({ attributes, children, element }: any) => {
   return (
     <span
       {...attributes}

@@ -181,7 +181,7 @@ export const NotificationVerificationModal: React.FC<IUnitProps> = props => {
   );
 };
 
-const MessageContent = ({ members }) => {
+const MessageContent = ({ members }: { members:  IApi.INoPermissionMemberResponseData[] }) => {
   const memberList = members.slice(0, 3);
   return (
     <>

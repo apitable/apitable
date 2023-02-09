@@ -1,6 +1,14 @@
 {
-  "logdir": "/home/vikadata/packages/room-server/logs",
-  "error_log": ["/home/vikadata/packages/room-server/logs/error.log", "/home/vikadata/packages/room-server/logs/exception.log"],
-  "packages": ["/home/vikadata/package.json", "/home/vikadata/packages/room-server/package.json"],
-  "disks": ["/home/vikadata/packages/room-server"]
+  "logdir": "/app/packages/room-server/logs",
+  "error_log": [
+    "/app/packages/room-server/logs/ROOM_SERVER/error.log",
+    "/app/packages/room-server/logs/ROOM_SERVER/exceptions.log",
+    "/app/packages/room-server/logs/SOCKET_SERVER/error.log",
+    "/app/packages/room-server/logs/SOCKET_SERVER/exceptions.log"
+  ],
+  "packages": [
+    "/app/package.json",
+    "/app/packages/room-server/package.json"
+  ],
+  "disks": ["/app"]
 }

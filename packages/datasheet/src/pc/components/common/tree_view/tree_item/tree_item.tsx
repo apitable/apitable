@@ -21,7 +21,7 @@ import { Spin } from 'antd';
 import classnames from 'classnames';
 import * as React from 'react';
 import { FC, useContext, useRef, useState } from 'react';
-import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
+import { DragSourceMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
 import TreeViewContext from '../tree_view_context';
 import './style.module.less';
 import { useResponsive } from 'pc/hooks';
@@ -35,6 +35,7 @@ export interface ITreeItemProps {
   data?: any;
   className?: string;
   draggable?: boolean;
+
   [customProp: string]: any;
 }
 
@@ -78,9 +79,9 @@ const TreeItemBase: FC<ITreeItemProps> = ({
 
   const [{ isOver }, dndDrop] = useDrop({
     accept: module,
-    hover: (item, monitor) => {
+    hover: (_item, monitor) => {
       setHoverNodeId(nodeId);
-      const isGap = isOverGap(monitor.getClientOffset(), nodeRef.current);
+      const isGap = isOverGap(monitor.getClientOffset()!, nodeRef.current);
       setDropPosition(isGap);
       dragOver({ dom: nodeRef.current, id: nodeId, parentNode, dropPosition: isGap });
     },
@@ -92,7 +93,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     }),
   });
 
-  const isOverGap = (clientOffset, treeNode: HTMLDivElement) => {
+  const isOverGap = (clientOffset: XYCoord, treeNode: HTMLDivElement) => {
     const offsetTop = getOffset(treeNode).top;
     const offsetHeight = treeNode.offsetHeight;
     const gapHeight = 12;
@@ -106,7 +107,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     return newDropPosition;
   };
 
-  const getOffset = ele => {
+  const getOffset = (ele: HTMLDivElement) => {
     let doc;
     let win;
     let docElem;
@@ -123,8 +124,8 @@ const TreeItemBase: FC<ITreeItemProps> = ({
       docElem = doc.documentElement;
 
       return {
-        top: rect.top + win.pageYOffset - docElem.clientTop,
-        left: rect.left + win.pageXOffset - docElem.clientLeft,
+        top: rect.top + (win?.pageYOffset || 0) - docElem.clientTop,
+        left: rect.left + (win?.pageXOffset || 0) - docElem.clientLeft,
       };
     }
 
@@ -173,7 +174,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     onRightClick && onRightClick(e, { ...data, pos });
   };
 
-  const renderChildren = children => {
+  const renderChildren = (children: any) => {
     return React.Children.map(children, (item, index) => renderTreeItem(item, index, pos));
   };
 

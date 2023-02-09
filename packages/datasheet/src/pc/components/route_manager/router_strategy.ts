@@ -204,7 +204,7 @@ export class RouterStrategy implements IRouterStrategy {
     return [`/user/wecom/${params!.wecomPath}`, query, clearQuery];
   };
 
-  static [Navigation.FEISHU] = ({ params, query, clearQuery }: IFunctionParams): IFunctionResult => {
+  static [Navigation.FEISHU] = ({ params, query }: IFunctionParams): IFunctionResult => {
     if (!params?.feiShuPath) {
       return [];
     }

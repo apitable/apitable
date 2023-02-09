@@ -22,7 +22,7 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { getEnvVariables, getInitializationData } from 'pc/utils/env';
 import semver from 'semver';
 
-const jsonToObject = (object) => {
+const jsonToObject = (object: any) => {
   const obj = { ...object };
   Object.keys(object).forEach(i => {
     obj[i] = i;

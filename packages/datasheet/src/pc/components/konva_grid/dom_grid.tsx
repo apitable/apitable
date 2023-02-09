@@ -287,7 +287,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const getPositionX = useCallback((x: number) => containerOffsetX + x + offsetX, [containerOffsetX, offsetX]);
 
-  const getElementRect = (e, type): IElementRectProps => {
+  const getElementRect = (_e: any, type: MoveType): IElementRectProps => {
     if (type === MoveType.Column) {
       const columnWidth = Selectors.getColumnWidth(visibleColumns[pointColumnIndex]);
       const isFrozenArea = pointColumnIndex < frozenColumnCount;
@@ -345,7 +345,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   };
 
-  const getStatMenuBoundary = (e: MouseEvent) => {
+  const getStatMenuBoundary = () => {
     const { targetName, fieldId } = getDetailByTargetName(realTargetName);
     if ([KONVA_DATASHEET_ID.GRID_GROUP_STAT, KONVA_DATASHEET_ID.GRID_BOTTOM_STAT].includes(targetName!)) {
       const rowIndex = targetName === KONVA_DATASHEET_ID.GRID_BOTTOM_STAT ? null : pointRowIndex;
@@ -358,7 +358,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     return null;
   };
 
-  const getBottomStatMenuBoundary = (e: MouseEvent) => {
+  const getBottomStatMenuBoundary = () => {
     const { targetName, fieldId } = getDetailByTargetName(realTargetName);
     if ([KONVA_DATASHEET_ID.GRID_BOTTOM_STAT].includes(targetName!)) {
       const rowIndex = targetName === KONVA_DATASHEET_ID.GRID_BOTTOM_STAT ? null : pointRowIndex;
@@ -371,7 +371,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     return null;
   };
 
-  const getGroupMenuBoundary = (e: MouseEvent) => {
+  const getGroupMenuBoundary = () => {
     const { targetName } = getDetailByTargetName(realTargetName);
     if ([KONVA_DATASHEET_ID.GRID_GROUP_STAT, KONVA_DATASHEET_ID.GRID_GROUP_TAB].includes(targetName!)) {
       return {
@@ -498,7 +498,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     ],
   );
 
-  const onDblClick = e => {
+  const onDblClick = (e: MouseEvent) => {
     e.preventDefault();
     if (targetName === KONVA_DATASHEET_ID.GRID_FIELD_HEAD) {
       const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
@@ -506,7 +506,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     }
   };
 
-  const onClick = e => {
+  const onClick = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
     if (prevTargetName.current != null && prevTargetName.current !== targetName) return;
     if (targetName === KONVA_DATASHEET_ID.GRID_FIELD_ADD_BUTTON) {
@@ -522,7 +522,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const editFieldDesc = useCallback(fieldId => clickFieldHead(FieldOperateType.FieldDesc, fieldId), [clickFieldHead]);
 
-  const onMouseDown = (e: MouseEvent) => {
+  const onMouseDown = () => {
     prevTargetName.current = targetName;
   };
 
@@ -559,7 +559,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     return false;
   }
 
-  const onGlobalMouseDown = e => {
+  const onGlobalMouseDown = (e: MouseEvent) => {
     if (isClickInExpandModal(e)) return;
     if (getParentNodeByClass(e.target as HTMLElement, ['vikaGridView', 'hideenFieldItem'])) return;
 
@@ -596,7 +596,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   });
 
-  const handleCellVerticalScroll = e => {
+  const handleCellVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setCellScrollState({
       scrollTop,

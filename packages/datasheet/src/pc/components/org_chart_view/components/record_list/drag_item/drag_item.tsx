@@ -49,7 +49,7 @@ const DragItemBase: FC<IDrag> = ({ node, style }) => {
     id: GRID_RECORD_MENU,
   });
   
-  const onContextMenu = (e) => {
+  const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     show(e, {
       props: {
         recordId: id

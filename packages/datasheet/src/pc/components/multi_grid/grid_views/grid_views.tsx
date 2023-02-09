@@ -205,7 +205,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
   const bottomRowCount = rows.length + 1;
 
   useEffect(() => {
-    if (!browser.isBrowser('Safari')) {
+    if (!browser?.isBrowser('Safari')) {
       return;
     }
 

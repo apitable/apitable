@@ -188,6 +188,18 @@ export const getViewTypeString = (viewType: ViewType): APIMetaViewType => {
   return ViewTypeStringMap[viewType];
 };
 
+export const getViewTypeByString = (viewType: APIMetaViewType): ViewType => {
+  const viewTypeStringMap = {
+    [APIMetaViewType.Grid]: ViewType.Grid,
+    [APIMetaViewType.Gallery]: ViewType.Gallery,
+    [APIMetaViewType.Kanban]: ViewType.Kanban,
+    [APIMetaViewType.Gantt]: ViewType.Gantt,
+    [APIMetaViewType.Calendar]: ViewType.Calendar,
+    [APIMetaViewType.Architecture]: ViewType.OrgChart,
+  };
+  return viewTypeStringMap[viewType];
+};
+
 export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaField): IAPIMetaNoneStringValueFormat | null => {
   // format to datetime
   if (BasicValueType.DateTime === fieldInstance.basicValueType) {

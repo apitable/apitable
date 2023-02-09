@@ -21,7 +21,7 @@ import { ReactEditor } from 'slate-react';
 import _isUrl from 'is-url';
 import { cloneDeep } from 'lodash';
 import { ElementType, LIST_ITEM_TYPE_DICT, IS_WRAP } from '../constant';
-import { IElement } from '../interface/element';
+import { IElement, IImageElementData } from '../interface/element';
 import { IVikaEditor } from '../interface/editor';
 
 const defaultPoint = {
@@ -56,7 +56,7 @@ export const getValidSelection = (editor: Editor & IVikaEditor) => {
   return editor.selection || editor.lastSelection || getDefaultSelection(editor.children[0] as IElement);
 };
 
-export const getCurrentElement = (editor, location?: Location) => {
+export const getCurrentElement = (editor: any, location?: Location) => {
   const selection = location || getValidSelection(editor) as Selection;
   const path = !selection ? 
     [0, 0] : Range.isRange(selection) ?
@@ -86,7 +86,7 @@ export const getParentElement = (editor: ReactEditor, curElement: IElement) => {
   }
 };
 
-export const getValidElementType = (editor: ReactEditor, curElement: IElement) => {
+export const getValidElementType = (editor: ReactEditor, curElement: IElement): ElementType => {
   if (!curElement) {
     return ElementType.PARAGRAPH;
   }
@@ -100,7 +100,7 @@ export const getValidElementType = (editor: ReactEditor, curElement: IElement) =
   return curType;
 };
 
-export const isBlockActive = (editor: Editor, blockType) => {
+export const isBlockActive = (editor: Editor, blockType: ElementType) => {
   try {
     const [match] = Editor.nodes(editor, {
       match: n =>
@@ -186,7 +186,7 @@ export const getValidPopupPosition = ({
   return { left, top };
 };
 
-export const getImgData = (file: File, url) => {
+export const getImgData = (file: File, url?: string): IImageElementData => {
   return {
     name: file.name,
     url,

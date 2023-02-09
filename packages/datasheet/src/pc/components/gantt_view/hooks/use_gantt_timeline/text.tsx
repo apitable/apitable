@@ -18,7 +18,7 @@
 
 import { Text as TextComponent } from 'react-konva';
 
-const Text = (props) => {
+const Text = (props: any) => {
   return <TextComponent
     {...props}
   />;

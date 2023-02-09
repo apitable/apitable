@@ -23,10 +23,12 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
+// @ts-ignore
 const EmojiEmoji = dynamic(() => import('emoji-mart/dist/components/emoji/emoji'), {
   ssr: false,
   loading: () => <Loading />,
 });
+// @ts-ignore
 const EmojiPicker = dynamic(() => import('emoji-mart/dist/components/picker/picker'), {
   ssr: false,
   loading: () => (

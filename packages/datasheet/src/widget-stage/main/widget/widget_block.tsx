@@ -204,7 +204,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
     if (!connected) {
       return;
     }
-    const fn = (e) => {
+    const fn = (e: { type: MouseListenerType; }) => {
       if (!e?.type) {
         return;
       }

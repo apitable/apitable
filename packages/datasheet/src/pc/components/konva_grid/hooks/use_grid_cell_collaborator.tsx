@@ -29,7 +29,7 @@ import { Avatar } from '../components';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/circle'), { ssr: false });
-const EMPTY_ARRAY = [];
+const EMPTY_ARRAY: never[] = [];
 
 const COLLABORATOR_CELL_TARGET_NAMES = new Set([
   KONVA_DATASHEET_ID.GRID_CELL,

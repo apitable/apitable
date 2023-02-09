@@ -100,7 +100,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     }),
   );
 
-  const editorRef = useRef<{ focus() }>(null);
+  const editorRef = useRef<{ focus: () => void }>(null);
   const searchContentRef = useRef<ISearchContentRefProps>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [onlyShowSelected, setOnlyShowSelected] = useState<boolean>(false);

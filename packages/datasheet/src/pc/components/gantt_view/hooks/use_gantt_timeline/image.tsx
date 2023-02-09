@@ -18,7 +18,7 @@
 
 import { Image as ImageComponent } from 'react-konva';
 
-const Image = (props) => {
+const Image = (props: any) => {
   return <ImageComponent
     {...props}
   />;

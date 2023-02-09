@@ -35,7 +35,7 @@ import GanttCreationNoDate from 'static/icon/account/gantt_creation_nodate.png';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 
-export const CreateFieldModal = memo((props) => {
+export const CreateFieldModal = memo(() => {
   const {
     viewId,
     columnCount,

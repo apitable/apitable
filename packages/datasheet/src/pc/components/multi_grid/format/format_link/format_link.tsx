@@ -81,7 +81,7 @@ export const FormateLink: React.FC<IFormateLinkProps> = memo((props: IFormateLin
     });
   };
 
-  const onChange = ({ datasheetId }) => {
+  const onChange = ({ datasheetId }: any) => {
     setForeignDatasheetId(datasheetId!);
     setSearchPanelVisible(false);
   };

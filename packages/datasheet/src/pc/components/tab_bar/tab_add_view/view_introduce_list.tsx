@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Alert, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
+import { Alert, Typography, useListenVisualHeight, useThemeColors, IUseListenTriggerInfo } from '@apitable/components';
 import {
   ConfigConstant, DATASHEET_ID, FormView, getMaxViewCountPerSheet, getViewAnalyticsId, getViewClass, Selectors, Strings, t, ViewType
 } from '@apitable/core';
@@ -35,6 +35,12 @@ import styles from './style.module.less';
 
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 459;
+
+interface IViewIntroduceList {
+  addNewView: (e: React.MouseEvent, viewType: ViewType) => void;
+  addNewNode: (e: React.MouseEvent, nodeType: ConfigConstant.NodeType) => void
+  triggerInfo?: IUseListenTriggerInfo;
+}
 
 const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
   const { viewType: fieldType } = props;
@@ -55,7 +61,7 @@ const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
   </div>;
 };
 
-const NodeIntroduce: React.FC<{ nodeType: ConfigConstant.NodeType }> = props => {
+const NodeIntroduce: React.FC<{ nodeType: ConfigConstant.NodeType }> = () => {
   const info = FormView.getViewIntroduce();
 
   if (!info) {
@@ -75,7 +81,7 @@ const NodeIntroduce: React.FC<{ nodeType: ConfigConstant.NodeType }> = props => 
   </div>;
 };
 
-export const ViewIntroduceList = props => {
+export const ViewIntroduceList = (props: IViewIntroduceList) => {
   const colors = useThemeColors();
   const { addNewView, addNewNode, triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -98,7 +104,7 @@ export const ViewIntroduceList = props => {
     triggerInfo,
   });
 
-  const TriggerComponent = (props) => {
+  const TriggerComponent = (props: { children?: any; popupComponent?: any; }) => {
     const { popupComponent } = props;
     return (
       <Trigger

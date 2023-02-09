@@ -59,7 +59,7 @@ export const ToolItem: React.FC<IToolItemProps> = props => {
       [styles.onlyIcon]: !shouldShowText,
     }),
     disabled,
-    onClick: e => {
+    onClick: (e: MouseEvent) => {
       if (showViewLockModal) {
         expandViewLock(activeView.id);
         return;

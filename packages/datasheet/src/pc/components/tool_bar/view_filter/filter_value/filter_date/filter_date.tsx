@@ -56,7 +56,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       durationValue = FilterDuration.Today;
     }
   }
-  let noDateProperty;
+  let noDateProperty: IDateTimeField;
   const ref = useRef<HTMLDivElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);

@@ -21,6 +21,7 @@ import { LogoPurpleFilled, LogoTextEnFilled, LogoTextFilled } from '@apitable/ic
 import dynamic from 'next/dynamic';
 import { EXPORT_IMAGE_PADDING } from 'pc/components/gantt_view/constant';
 import { Icon, Line, Text } from 'pc/components/konva_components';
+import { ILightOrDarkThemeColors } from '@apitable/components';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 
@@ -29,7 +30,15 @@ const LogoTextFilledPath = LogoTextFilled.toString();
 const LogoTextEnFilledPath = LogoTextEnFilled.toString();
 const LINE_WIDTH = 100;
 
-const BrandDesc = (props) => {
+interface IBrandDesc {
+  baseX: number;
+  containerHeight: number;
+  isLight: boolean;
+  colors: ILightOrDarkThemeColors;
+  isZhCN: boolean;
+}
+
+const BrandDesc = (props: IBrandDesc) => {
   const { baseX, containerHeight, isLight, colors, isZhCN } = props;
 
   return <Group

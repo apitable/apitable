@@ -34,7 +34,7 @@ import { IntercomProvider } from 'react-use-intercom';
 // @ts-ignore
 import { IntercomWrapper, WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
 
-export const SideWrapper = props => {
+export const SideWrapper = (props: { children: any }) => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const dispatch = useAppDispatch();
   const shortcutKeyPanelVisible = useSelector((state: IReduxState) => state.space.shortcutKeyPanelVisible);

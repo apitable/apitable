@@ -41,10 +41,10 @@ export const PreviewDisplayList: React.FC<IPreviewDisplayList> = memo(props => {
       (file: IAttachmentValue) => {
         const transformWebpIfNeeded =
           isWebp({ name: file.name, type: file.mimeType }) &&
-          browser.satisfies({
+          browser?.satisfies({
             safari: '<14',
           }) ||
-          browser.is('iOS');
+          browser?.is('iOS');
         return getCellValueThumbSrc(file, { w: DISPLAY_HEIGHT * (window.devicePixelRatio || 1), formatToJPG: transformWebpIfNeeded });
       }
       , []);

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { DescriptionOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
@@ -41,12 +41,12 @@ interface IRenderModalBase {
   visible: boolean;
   onClose: () => void;
   activeNodeId: string;
-  datasheetName: string;
+  datasheetName: string | null;
   modalStyle?: React.CSSProperties;
   isMobile?: boolean;
 }
 
-const getDefaultValue = (desc) => {
+const getDefaultValue = (desc: INodeDescription | null) => {
   if (!desc) return '';
   if (desc.type === SLATE_EDITOR_TYPE) return desc.data;
   return Deserializer.html(desc.render);
@@ -63,7 +63,7 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
   // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
   const editorHtml = useRef('');
 
-  const onCancel = (e, isButton?: boolean) => {
+  const onCancel = (e: any, isButton?: boolean) => {
     stopPropagation(e);
     const isExitInnerText = null;
     if (!isExitInnerText) {
@@ -273,7 +273,8 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
   );
 };
 
-export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile }) => {
+
+export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile }: Pick<IRenderModalBase, 'datasheetName' | 'activeNodeId' | 'isMobile'>) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const root = createRoot(div);

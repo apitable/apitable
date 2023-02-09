@@ -33,7 +33,7 @@ export const expandViewLock = (viewId: string, unlockHandle?: () => void) => {
     container.parentElement!.removeChild(container);
   };
 
-  const ViewLockWithTheme = (props) => {
+  const ViewLockWithTheme = (props: any) => {
     const cacheTheme = useSelector(Selectors.getTheme);
     return (
       <ThemeProvider theme={cacheTheme}>

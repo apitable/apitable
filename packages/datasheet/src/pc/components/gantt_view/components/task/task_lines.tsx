@@ -31,7 +31,7 @@ interface ITaskLineProps {
   dashEnabled: boolean;
   sourceId: string;
   targetId: string;
-  setLineTooltipInfo: (info) => void;
+  setLineTooltipInfo: (info: any) => void;
   pointPosition: PointPosition;
   isCycleLine: boolean;
 }

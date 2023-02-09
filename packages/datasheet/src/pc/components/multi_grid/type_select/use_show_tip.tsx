@@ -48,7 +48,7 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
   }, [container]);
 
   useEffect(() => {
-    let root;
+    let root: any;
 
     function unMountDiv() {
       if (!divRef.current) return;

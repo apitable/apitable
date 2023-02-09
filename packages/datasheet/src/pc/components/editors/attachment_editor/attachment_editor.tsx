@@ -22,7 +22,7 @@ import { IEditorProps } from '../options_editor';
 import { IEditor } from '../interface';
 import { FocusHolder } from '../focus_holder';
 import { UploadModal } from 'pc/components/upload_modal';
-import { IAttachmentValue } from '@apitable/core';
+import { IAttacheField, IAttachmentValue } from '@apitable/core';
 
 interface IAttachmentEditorProps {
   cellValue: IAttachmentValue[];
@@ -58,7 +58,7 @@ export const AttachmentEditorBase: React.ForwardRefRenderFunction<IEditor, IEdit
       {
         editing && !props.disabled && (
           <UploadModal
-            field={field}
+            field={field as IAttacheField}
             recordId={recordId}
             datasheetId={datasheetId}
             cellValue={cellValue}

@@ -73,7 +73,7 @@ const Trash: FC = () => {
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);
   const [noMore, setNoMore] = useState(false);
-  const handleSuccess = res => {
+  const handleSuccess = (res: { data: { success: any; data: any; }; }) => {
     const { success, data } = res.data;
     if (success) {
       const lastDataItem = last(data as ITrashItem[]);

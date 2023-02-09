@@ -38,7 +38,7 @@ import { KonvaGridContext } from '../..';
 
 interface IStatMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;
-  getBoundary: (e) => { x: number; y: number; row: ILinearRow } | null;
+  getBoundary: (e: any) => { x: number; y: number; row: ILinearRow } | null;
 }
 
 export const GroupMenu: React.FC<IStatMenuProps> = (props) => {

@@ -148,7 +148,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
     }
     setInEditName(true);
   };
-  const onPressEnter = e => {
+  const onPressEnter = (e: any) => {
     if (nameLengthErr) {
       return;
     }
@@ -158,7 +158,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
     }
     setNameLengthErr(false);
   };
-  const inputChange = e => {
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > ConfigConstant.MEMBER_NAME_LENGTH) {
       !nameLengthErr && setNameLengthErr(true);
     } else {
@@ -205,7 +205,10 @@ export const UserMenu: FC<IUserMenuProps> = props => {
     }, 0);
   };
 
-  const PrivacyItem = ({ label, onClick }) => (
+  const PrivacyItem = ({ label, onClick }: {
+    label: string;
+    onClick: (e: React.MouseEvent) => void;
+  }) => (
     <div className={classNames(styles.centerItem, styles.inviteItem, styles.linkItem)} onClick={onClick}>
       <span className={styles.label}>{label}</span>
       <div className={styles.valueWrapper}>

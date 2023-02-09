@@ -73,7 +73,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
     return getRecordName(cellValue, snapshot.meta.fieldMap[firstColumn.fieldId]) || '';
   }
 
-  function notifyEffect(content) {
+  function notifyEffect(content:  ITextNode[]) {
     const unitIds: string[] = walk(content);
     if (!unitIds.length) {
       return;
@@ -159,7 +159,7 @@ export const CommentEditor: React.FC<IActivityPaneProps> = props => {
     }
   }
 
-  const onClick = e => {
+  const onClick = () => {
     !focusStatus && setFocus && setFocus(true);
   };
 

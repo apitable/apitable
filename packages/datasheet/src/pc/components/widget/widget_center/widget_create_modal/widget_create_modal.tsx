@@ -399,7 +399,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
     });
   };
 
-  const copyLinkHandler = (text, index) => {
+  const copyLinkHandler = (text: string, index: number) => {
     if (isCopiedIndex !== null) {
       return;
     }
@@ -441,7 +441,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
             </Typography>
             <div className={styles.stepContentDesc}>{config?.[current].desc}</div>
             {
-              config?.[current].content.map((contentItem, index) => (
+              config?.[current].content.map((contentItem: any, index: number) => (
                 <div className={classNames(styles.contentItem, contentItem.value ?? styles.contentItemNoMargin)} key={index}>
                   <div className={styles.contentItemLabel}>{contentItem.label}</div>
                   {(contentItem.type === 'info' && contentItem.value || contentItem.type === 'input') && <div className={styles.contentItemValue}>

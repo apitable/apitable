@@ -64,7 +64,7 @@ export const CustomCycleEdge: FC<EdgeProps> = ({
       data: [{
         recordId: id,
         fieldId: linkFieldId,
-        value: linkIds.filter(item => item !== target),
+        value: linkIds.filter((item: string) => item !== target),
       }],
     });
   };

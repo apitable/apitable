@@ -243,7 +243,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
           expandFieldPermission(field);
         },
         disabled: !fieldPermissionManageable || !getEnvVariables().FIELD_PERMISSION_VISIBLE ,
-        hidden(arg) {
+        hidden(arg: any) {
           const { props: { fieldId }} = arg;
 
           if (!fieldId || embedId) {

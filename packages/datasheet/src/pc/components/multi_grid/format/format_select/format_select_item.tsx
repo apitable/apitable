@@ -43,7 +43,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
   const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const colors = useThemeColors();
-  const onChange = (index, e) => {
+  const onChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value.length > 100 && value.length > item.name.length) {
       return;

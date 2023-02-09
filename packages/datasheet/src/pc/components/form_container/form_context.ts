@@ -23,7 +23,7 @@ export interface IFormContext {
   formProps: IFormProps;
   formData: { [key: string]: any };
   formErrors: { [key: string]: any };
-  setFormData: (fieldId, value) => void;
+  setFormData: (fieldId: string, value: any) => void;
   setFormErrors: (fieldId: string, errMsg: string) => void;
   setFormToStorage?: (fieldId: string, value: string) => void;
 }

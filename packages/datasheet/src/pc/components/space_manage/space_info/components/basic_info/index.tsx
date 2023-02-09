@@ -59,7 +59,7 @@ export const Info = (props: IInfoProps) => {
     return { minHeight };
   }, [minHeight]);
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
       showContextMenu(e);
       return;
@@ -81,7 +81,7 @@ export const Info = (props: IInfoProps) => {
         visible={visible}
         placement="bottom"
         title={t(Strings.org_chart_setting)}
-        onClose={handleClick}
+        onClose={handleClick as any}
         height={122}
         headerStyle={{ borderBottom: 'none', paddingBottom: 0 }}
       >

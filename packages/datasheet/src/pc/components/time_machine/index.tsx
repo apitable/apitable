@@ -70,7 +70,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
   const [rollbackIng, setRollbackIng] = useState(false);
   const dispatch = useAppDispatch();
 
-  const fetchChangesets = (lastRevision) => {
+  const fetchChangesets = (lastRevision: number) => {
     setFetching(true);
     const startRevision = lastRevision - 99 > 0 ? lastRevision - 99 : 1;
     DatasheetApi.fetchChangesets<IChangesetPack>(datasheetId, ResourceType.Datasheet, startRevision, lastRevision + 1)

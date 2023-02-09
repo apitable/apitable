@@ -92,13 +92,13 @@ export const OrgChartSettingPanel: React.FC<IOrgChartSettingPanelProps> = props 
     TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.REPLAY_ORG_CHART_VIDEO);
   };
 
-  const handleChange = (key, value) => {
+  const handleChange = (key: OrgChartStyleKeyType, value: string | boolean) => {
     executeCommandWithMirror(() => {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetOrgChartStyle,
         viewId: activeView.id!,
-        styleKey: key,
-        styleValue: value,
+        styleKey: key as any,
+        styleValue: value as any,
       });
     }, {
       style: {
