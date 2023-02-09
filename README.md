@@ -307,6 +307,7 @@ APITable use these common conventions:
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
 - What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Architecture Overview? -> [Understand APITable - Architecture Overview](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
