@@ -42,8 +42,8 @@ ENV BUILD_VERSION ${BUILD_VERSION}
 
 ENV \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \
-    NEST_GRPC_URL=room-server:3334 \
-    SOCKET_GRPC_URL=room-server:3007 \
+    NEST_GRPC_URL=0.0.0.0:3334 \
+    SOCKET_GRPC_URL=0.0.0.0:3007 \
     \
     OSS_CACHE_TYPE=minio \
     OSS_HOST=assets \
