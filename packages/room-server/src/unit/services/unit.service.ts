@@ -27,7 +27,7 @@ import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTeamService } from './unit.team.service';
 import { UserService } from 'user/services/user.service';
-import { UnitBaseInfoDto} from '../dtos/unit.base.info.dto';
+import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitInfoDto } from '../dtos/unit.info.dto';
 
 @Injectable()
