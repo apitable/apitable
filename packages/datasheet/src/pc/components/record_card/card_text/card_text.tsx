@@ -55,9 +55,9 @@ export const CardText: React.FC<ICardTextProps> = ({ cellValue, field, maxLine, 
   return (
     <div
       className={classnames({
-        [styles.multi]: isMultiLine,
-        [styles.single]: !isMultiLine,
-        [styles.isVirtual]: isVirtual,
+        [styles.multi!]: isMultiLine,
+        [styles.single!]: !isMultiLine,
+        [styles.isVirtual!]: isVirtual,
       })}
       style={style}
     >

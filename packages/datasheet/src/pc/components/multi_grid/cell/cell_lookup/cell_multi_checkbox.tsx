@@ -41,7 +41,7 @@ export const CellMultiCheckbox: React.FC<ICellComponentProps> = props => {
       }}
     >
       {
-        field && (cellValue as boolean[]).filter(i => i).map((i, index) =>
+        field && (cellValue as boolean[]).filter(i => i).map((_i, index) =>
           (
             <span key={index} style={{ padding: '0 2px' }}>
               <Emoji emoji={field.property.icon} size={ConfigConstant.CELL_EMOJI_SIZE} />

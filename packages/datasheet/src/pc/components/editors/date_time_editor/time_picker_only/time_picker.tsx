@@ -82,7 +82,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: ITimePickerProps) {
+  override UNSAFE_componentWillReceiveProps(nextProps: ITimePickerProps) {
     if (nextProps.hasOwnProperty('open') && nextProps.open !== this.props.open) {
       this.setOpen(nextProps.open || false);
     }
@@ -160,7 +160,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     );
   }
 
-  render() {
+  override render() {
     const { props, state } = this;
     const {
       align,

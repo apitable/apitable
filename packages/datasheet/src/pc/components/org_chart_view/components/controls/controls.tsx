@@ -62,6 +62,9 @@ export const Controls: FC<IControlsProps> = ({
           onClick={() => setMenuVisible(!menuVisible)}
           size='small'
           active={menuVisible}
+          style={{
+            background: colors.defaultTag,
+          }}
         />
       </Tooltip>
       <Divider />

@@ -68,7 +68,7 @@ const FavoriteBase: FC = () => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
 
-  const onContextMenu = e => {
+  const onContextMenu = (e: React.SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
   };
@@ -129,7 +129,7 @@ const FavoriteBase: FC = () => {
                 onContextMenu={onContextMenu}
                 onClick={() => {
                   treeViewRef.current?.setLoadingNodeId(nodeId);
-                  loadData(nodeId).then(res => {
+                  loadData(nodeId).then(() => {
                     treeViewRef.current?.setLoadingNodeId('');
                   });
                 }}

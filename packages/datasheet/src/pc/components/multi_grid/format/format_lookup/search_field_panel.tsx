@@ -44,14 +44,14 @@ export interface IFieldSearchPanelProps {
   showType: ShowType;
   fields: IField[];
   field?: ILookUpField;
-  onChange(id: string);
+  onChange(id: string): void;
   errTip?: string;
   activeFieldId?: string;
-  setSearchPanelVisible?(v: boolean);
+  setSearchPanelVisible?(v: boolean): void;
   prefix?: React.ReactNode;
 }
 
-const NoLookupField = ({ showType, value }) => {
+const NoLookupField = ({ showType, value }: { showType: ShowType, value: string }) => {
   const colors = useThemeColors();
   return (
     <div
@@ -74,7 +74,7 @@ const NoLookupField = ({ showType, value }) => {
   );
 };
 
-const WarnTip = ({ text }) => {
+const WarnTip = ({ text } : { text: string }) => {
   const colors = useThemeColors();
   return (
     <Tooltip
@@ -86,7 +86,19 @@ const WarnTip = ({ text }) => {
   );
 };
 
-const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }) => {
+interface IFieldItem {
+  showType: ShowType;
+  handleFieldClick: (fieldId: string) => void;
+  field: IField;
+  activeFieldId?: string;
+  index: number;
+  currentIndex: number;
+  renderInlineNodeName: (dst: string) => void;
+  warnText?: string;
+  keyword: string;
+}
+
+const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }: IFieldItem) => {
   const colors = useThemeColors();
   const foreignDatasheetReadable = useMemo(() => {
     if (showType !== ShowType.LinkField) {
@@ -163,7 +175,7 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
     },
   });
 
-  const renderInlineNodeName = (datasheetId) => {
+  const renderInlineNodeName = (datasheetId: string) => {
     const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
     return (
       <InlineNodeName

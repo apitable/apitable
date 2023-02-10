@@ -20,13 +20,13 @@ import { Body, Controller, Headers, Param, Patch, Post } from '@nestjs/common';
 import { isProdMode } from 'app.environment';
 import { AutomationServiceCreateRo } from '../ros/service.create.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
-import { AutomationService } from '../services/automation.service';
 import { UserService } from 'user/services/user.service';
+import { RobotServiceService } from '../services/robot.service.service';
 
 @Controller('nest/v1/robots/actions')
 export class RobotServiceController {
   constructor(
-    private readonly automationService: AutomationService,
+    private readonly robotServiceService: RobotServiceService,
     private readonly userService: UserService,
   ) { }
 
@@ -36,7 +36,7 @@ export class RobotServiceController {
       throw new Error('cant create service in production mode');
     }
     const user = await this.userService.getMe({ cookie });
-    return this.automationService.createService(service, user);
+    return this.robotServiceService.createService(service, user);
   }
 
   @Patch('service/:serviceId')
@@ -49,7 +49,7 @@ export class RobotServiceController {
       throw new Error('cant update service in production mode');
     }
     const user = await this.userService.getMe({ cookie });
-    return this.automationService.updateService(serviceId, data, user);
+    return this.robotServiceService.updateService(serviceId, data, user);
   }
 
 }

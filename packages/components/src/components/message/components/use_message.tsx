@@ -76,7 +76,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         onDestroy: () => remove(key),
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [props]);
 
   return (
@@ -85,7 +85,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
         {({ key, className: motionClassName }) =>
           <MessageUI
             motionClassName={motionClassName}
-            {...uiPropsMap[key]}
+            {...uiPropsMap[key]!}
           />
         }
       </CSSMotionList>
@@ -95,7 +95,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
 
 export const createUseMessage = () => {
   let domWrapper: HTMLDivElement | null = null;
-  const useMessage = (props: IMessageUIProps) => {
+  return (props: IMessageUIProps) => {
     if (!domWrapper) {
       const rootDom = document.createElement('div');
       document.body.appendChild(rootDom);
@@ -105,7 +105,5 @@ export const createUseMessage = () => {
     root.render(
       <MessageUiContainer {...props} messageKey={props.messageKey} />);
   };
-
-  return useMessage;
 };
 

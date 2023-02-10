@@ -54,7 +54,7 @@ export const ReportReason: FC<IReportReasonProps> = ({ nodeId, onClose }) => {
     onClose();
   }, ref);
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     setReason(e.target.value);
   };
 

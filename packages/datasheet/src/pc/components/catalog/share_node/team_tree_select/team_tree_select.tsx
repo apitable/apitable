@@ -70,7 +70,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
       node.children = subTeams;
     });
     setTeamTree(nextTeamTree);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [subTeams]);
 
   const findNode = (data: ITeamTreeNode[], teamId: string): ITeamTreeNode | null => {
@@ -112,7 +112,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
     });
   };
 
-  const selectNodeHandler = (e: React.MouseEvent, selectedKeys: string | string[]) => {
+  const selectNodeHandler = (_e: React.MouseEvent, selectedKeys: string | string[]) => {
     if (typeof selectedKeys === 'string') {
       setCheckedTeamId(selectedKeys);
       onChange && onChange(selectedKeys);

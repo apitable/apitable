@@ -29,13 +29,13 @@ import { useClickAway, useToggle } from 'ahooks';
 import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';
 import { ManualSaveLottie } from 'pc/components/tab_bar/view_sync_switch/manual_save_lottie';
 
-export const ViewSyncStatus = ({ viewId }) => {
+export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
   const colors = useThemeColors();
   const { datasheetId, shareId } = useSelector(state => state.pageParams)!;
   const snapshot = useSelector(Selectors.getSnapshot)!;
   const [visible, { toggle }] = useToggle(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const currentView = useSelector(state => {
+  const currentView = useSelector(() => {
     return Selectors.getCurrentViewBase(snapshot, viewId, datasheetId);
   });
   const isViewAutoSave = Boolean(currentView?.autoSave);
@@ -80,7 +80,7 @@ export const ViewSyncStatus = ({ viewId }) => {
         })}
         id={'view_item_sync_icon'}
         style={{ margin: '0px 4px', width: 16, height: 16, display: 'flex' }}
-        onClick={(e) => {
+        onClick={() => {
           toggle();
         }}
       >

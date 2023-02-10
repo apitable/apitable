@@ -85,7 +85,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
     );
   };
 
-  const onJump = (formId) => {
+  const onJump = (formId: string) => {
     Router.push(Navigation.WORKBENCH, { params: { spaceId, formId }});
   };
 

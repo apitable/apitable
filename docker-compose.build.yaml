@@ -24,8 +24,3 @@ services:
     build:
       context: .
       dockerfile: packaging/Dockerfile.room-server
-  socket-server:
-    image: ${DISTRO:-apitable}/socket-server:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: packaging/Dockerfile.socket-server

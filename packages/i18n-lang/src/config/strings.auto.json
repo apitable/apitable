@@ -114,6 +114,26 @@
             "en_US": "New dashboard",
             "zh_HK": "新建儀錶盤"
         },
+        "add_datasheet_editor": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
+        "add_datasheet_manager": {
+            "zh_CN": "拥有该表格的所有操作权限",
+            "en_US": "Can perform all actions on the file",
+            "zh_HK": "擁有該表格的所有操作權限"
+        },
+        "add_datasheet_reader": {
+            "zh_CN": "可查看该表格内容或进行评论",
+            "en_US": "Can read data or comment on the datasheet",
+            "zh_HK": "可查看該表格內容或進行評論"
+        },
+        "add_datasheet_updater": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
+        },
         "add_favorite_success": {
             "zh_CN": "星标成功，可以前往星标栏查看",
             "en_US": "Pinned to top successfully",
@@ -133,6 +153,26 @@
             "zh_CN": "请选择一列进行筛选",
             "en_US": "Pick another field to Filter",
             "zh_HK": "請選擇一列進行篩選"
+        },
+        "add_folder_editor": {
+            "zh_CN": "在「只可更新」基础上，还可以编辑和分享文件",
+            "en_US": "In addition to \"Update-only\", can also edit and share files",
+            "zh_HK": "在「只可更新」基礎上，還可以編輯和分享文件"
+        },
+        "add_folder_manager": {
+            "zh_CN": "拥有该文件的所有操作权限",
+            "en_US": "Can perform all actions to the file",
+            "zh_HK": "擁有該文件的所有操作權限"
+        },
+        "add_folder_reader": {
+            "zh_CN": "只可查看该文件夹下的内容",
+            "en_US": "Can read files in the folder",
+            "zh_HK": "只可查看該文件夾下的內容"
+        },
+        "add_folder_updater": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "add_form": {
             "zh_CN": "新建神奇表单",
@@ -562,6 +602,10 @@
             "zh_CN": "API 用量超量使用",
             "en_US": "API overused",
             "zh_HK": "API 用量超量使用"
+        },
+        "api_fieldid_empty_error": {
+            "zh_CN": "fieldId 的值不能为空",
+            "en_US": "fieldId should not be empty"
         },
         "api_fields": {
             "zh_CN": "Fields 字段",
@@ -1081,6 +1125,10 @@
             "zh_CN": "参数 viewId 只接受 string 类型的值",
             "en_US": "the parameter toolBar must be a string type"
         },
+        "api_param_viewids_empty_error": {
+            "zh_CN": "viewIds 不能为空数组",
+            "en_US": "viewIds should not be empty"
+        },
         "api_param_widget_btn_type_error": {
             "zh_CN": "参数 widgetBtn 只接受 boolean 类型的值",
             "en_US": "the parameter widgetBtn must be a boolean type"
@@ -1308,6 +1356,9 @@
             "en_US": "Last Edited By field can't be edited",
             "zh_HK": "修改人列的值由系統自動生成，不允許編輯"
         },
+        "api_params_views_max_count_error": {
+            "zh_CN": "单次请求删除的视图不能超过 {count} 条"
+        },
         "api_query_params_invalid_fields": {
             "zh_CN": "传入的 fields 不存在：{fields}",
             "en_US": "Invalid fields",
@@ -1398,10 +1449,74 @@
             "en_US": "API usage",
             "zh_HK": "API 用量"
         },
+        "api_view_fieldid_not_exist": {
+            "zh_CN": "conditions fieldId对应的字段不存在",
+            "en_US": "the field corresponding to fieldId does not exist"
+        },
+        "api_view_filter_conditions_empty_error": {
+            "zh_CN": "conditions 不能为空数组",
+            "en_US": "conditions should not be empty"
+        },
+        "api_view_filter_operator_not_support": {
+            "zh_CN": "operator 的值和字段不匹配",
+            "en_US": "the value of operator does not match the field"
+        },
+        "api_view_filter_operator_value_error": {
+            "zh_CN": "operator 的值必须是以下值之一: is, isNot, contains, doesNotContain, isEmpty, isNotEmpty, isGreater, isGreaterEqual, isLess, isLessEqual, isRepeat",
+            "en_US": "operator must be one of the following values: is, isNot, contains, doesNotContain, isEmpty, isNotEmpty, isGreater, isGreaterEqual, isLess, isLessEqual, isRepeat"
+        },
+        "api_view_rules_empty_error": {
+            "zh_CN": "rules 的值不能为空数组",
+            "en_US": "rules should not be empty"
+        },
+        "api_view_type_error": {
+            "zh_CN": "type 必须是以下值之一: Grid, Gallery, Kanban, Gantt, Calendar, Architecture",
+            "en_US": "type must be one of the following values: Grid, Gallery, Gantt, Kanban, Calendar, Architecture"
+        },
         "api_your_token": {
             "zh_CN": "_替换成你的API_Token_",
             "en_US": "_Paste_Your_API_Token_",
             "zh_HK": "_替換成你的API_Token_"
+        },
+        "apitable_choose_basic": {
+            "zh_CN": "Start Now",
+            "en_US": "Start Now"
+        },
+        "apitable_choose_community": {
+            "zh_CN": "Download",
+            "en_US": "Download"
+        },
+        "apitable_choose_custom": {
+            "zh_CN": "Request Trial",
+            "en_US": "Request Trial"
+        },
+        "apitable_choose_enterprise": {
+            "zh_CN": "Contact Us",
+            "en_US": "Contact Us"
+        },
+        "apitable_choose_plus": {
+            "zh_CN": "Choose Plus",
+            "en_US": "Choose Plus"
+        },
+        "apitable_choose_pro": {
+            "zh_CN": "Choose Pro",
+            "en_US": "Choose Pro"
+        },
+        "apitable_origin_price_by_month": {
+            "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
+            "en_US": "{\n    \"plus\": \"$18\",\n    \"pro\": \"$30\"\n}"
+        },
+        "apitable_origin_price_by_year": {
+            "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
+            "en_US": "{\n    \"plus\": \"$11\",\n    \"pro\": \"$20\"\n}"
+        },
+        "apitable_privatized_deployment_desc": {
+            "zh_CN": "Manage it yourself",
+            "en_US": "Manage it yourself"
+        },
+        "apitable_public_cloud_desc": {
+            "zh_CN": "APITable as a service",
+            "en_US": "APITable as a service"
         },
         "app_closed": {
             "zh_CN": "未开启的应用",
@@ -1830,6 +1945,7 @@
         },
         "bronze_btn_text": {
             "zh_CN": "立即体验",
+            "en_US": "Start now",
             "zh_HK": "立即體驗"
         },
         "bronze_img": {
@@ -1893,6 +2009,11 @@
             "zh_HK": "下級"
         },
         "button_submit": {
+            "zh_CN": "提交",
+            "en_US": "Submit",
+            "zh_HK": "提交"
+        },
+        "button_submit_anonymous": {
             "zh_CN": "提交",
             "en_US": "Submit",
             "zh_HK": "提交"
@@ -2047,10 +2168,20 @@
             "en_US": "Cameroon",
             "zh_HK": "喀麥隆"
         },
+        "can_control": {
+            "zh_CN": "可以管理",
+            "en_US": "Manager",
+            "zh_HK": "可以管理"
+        },
         "can_duplicate": {
             "zh_CN": "可另存为副本",
             "en_US": "can save as copy",
             "zh_HK": "可另存為副本"
+        },
+        "can_edit": {
+            "zh_CN": "可以编辑",
+            "en_US": "can edit",
+            "zh_HK": "可以編輯"
         },
         "can_manage": {
             "zh_CN": "可管理",
@@ -2061,6 +2192,16 @@
             "zh_CN": "无法解绑",
             "en_US": "Can't unbind",
             "zh_HK": "無法解綁"
+        },
+        "can_read": {
+            "zh_CN": "只可阅读",
+            "en_US": "Read only",
+            "zh_HK": "只可閱讀"
+        },
+        "can_updater": {
+            "zh_CN": "只可更新",
+            "en_US": "Update-only",
+            "zh_HK": "只可更新"
         },
         "can_view": {
             "zh_CN": "可查看",
@@ -2386,6 +2527,10 @@
             "en_US": "Assign",
             "zh_HK": "確認移交"
         },
+        "claim_special_offer": {
+            "zh_CN": "获取特殊优惠",
+            "en_US": "Claim This Special Offer!"
+        },
         "clear": {
             "zh_CN": "清除",
             "en_US": "Clear",
@@ -2437,7 +2582,8 @@
             "zh_HK": "點擊同意"
         },
         "click_to_compare_with_detail": {
-            "zh_CN": "点击查看详细对比"
+            "zh_CN": "点击查看详细对比",
+            "en_US": "Detail"
         },
         "click_to_view": {
             "zh_CN": "点击查看",
@@ -3427,6 +3573,26 @@
             "en_US": "Dashboard",
             "zh_HK": "儀錶盤"
         },
+        "dashboard_editor_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以编辑小程序和分享仪表盘",
+            "en_US": "In addition to \"Read-only\", can also edit widget and share dashboard",
+            "zh_HK": "在「只可閱讀」基礎上，還可以編輯小程序和分享儀錶盤"
+        },
+        "dashboard_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除和配置仪表盘",
+            "en_US": "In addition to \"Editor\",  can also  add or delete dashboard",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置儀錶盤"
+        },
+        "dashboard_reader_label": {
+            "zh_CN": "只可查看该仪表盘内容",
+            "en_US": "Can read widget in the dashboard",
+            "zh_HK": "只可查看該儀錶盤內容"
+        },
+        "dashboard_updater_label": {
+            "zh_CN": "与「只可阅读」一致",
+            "en_US": "Same as \"Read-only\"",
+            "zh_HK": "與「只可閱讀」一致"
+        },
         "data_calculating": {
             "zh_CN": "数据计算中...",
             "en_US": "Computing...",
@@ -3447,6 +3613,11 @@
             "en_US": "Total Files",
             "zh_HK": "文件節點數量"
         },
+        "datasheet_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
         "datasheet_exist_widget": {
             "zh_CN": "此表包含的小程序：",
             "en_US": "The datasheet has installed these widgets:",
@@ -3456,6 +3627,16 @@
             "zh_CN": "当前处于模板体验中，需要使用模板才能正常写入数据",
             "en_US": "Use the template first, then you can modify or write data",
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
+        },
+        "datasheet_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以配置字段和表格",
+            "en_US": "In addition to \"Editor\",  can also configure datasheet and fields",
+            "zh_HK": "在「可以編輯」基礎上，還可以配置字段和表格"
+        },
+        "datasheet_reader_label": {
+            "zh_CN": "你仅可查看此表格的内容",
+            "en_US": " You can only view the datasheet but cannot edit it.\n",
+            "zh_HK": "你僅可查看此表格的內容"
         },
         "date_after_or_equal": {
             "zh_CN": "晚于等于",
@@ -3865,10 +4046,23 @@
             "en_US": "Click \"+\" to generate the token ",
             "zh_HK": "請點擊“+”手動生成 Token"
         },
+        "dingtalk_isv_integration_single_record_comment_mentioned": {
+            "zh_CN": "b4ac28623fd5493dbc5f995bb1cc17c7",
+            "en_US": "b4ac28623fd5493dbc5f995bb1cc17c7",
+            "zh_HK": "b4ac28623fd5493dbc5f995bb1cc17c7"
+        },
         "dingtalk_isv_production_single_record_comment_mentioned": {
             "zh_CN": "8f41773b6eb54d6bba9d82392956dea1",
             "en_US": "8f41773b6eb54d6bba9d82392956dea1",
             "zh_HK": "8f41773b6eb54d6bba9d82392956dea1"
+        },
+        "dingtalk_isv_staging_single_record_comment_mentioned": {
+            "zh_CN": "d81ea943488b41ebb42fdeacfb42d0ef",
+            "en_US": "d81ea943488b41ebb42fdeacfb42d0ef",
+            "zh_HK": "d81ea943488b41ebb42fdeacfb42d0ef"
+        },
+        "dingtalk_single_record_member_comment_title": {
+            "zh_CN": "评论通知"
         },
         "direction_above": {
             "zh_CN": "上方",
@@ -3984,6 +4178,10 @@
             "zh_CN": "向下移动一个单元格",
             "en_US": "Move to the cell below",
             "zh_HK": "向下移動一個單元格"
+        },
+        "downgrade": {
+            "zh_CN": "Downgrade",
+            "en_US": "Downgrade"
         },
         "download": {
             "zh_CN": "下载",
@@ -5493,6 +5691,11 @@
             "en_US": "Enter a description",
             "zh_HK": "請輸入描述"
         },
+        "form_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以设置和分享神奇表单",
+            "en_US": "In addition to \"Update-only\", can also configure or share form",
+            "zh_HK": "在「只可更新」基礎上，還可以設置和分享神奇表單"
+        },
         "form_empty_tip": {
             "zh_CN": "你还未填写内容，请填写后再提交",
             "en_US": "Please fill in the form first",
@@ -5568,6 +5771,11 @@
             "en_US": "Show logo",
             "zh_HK": "顯示 Logo"
         },
+        "form_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除神奇表单",
+            "en_US": "In addition to \"Editor\", can also configure form",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除神奇表單"
+        },
         "form_network_error_tip": {
             "zh_CN": "当前网络存在异常，请稍后再试",
             "en_US": "Network disconnected. Please try again later.",
@@ -5582,6 +5790,11 @@
             "zh_CN": "当前文件夹没有被设置为允许编辑，所以该表单无法填写",
             "en_US": "The form can't be filled because its folder is not editable",
             "zh_HK": "當前文件夾沒有被設置為允許編輯，所以該表單無法填寫"
+        },
+        "form_reader_label": {
+            "zh_CN": "只可查看该神奇表单，不允许提交",
+            "en_US": "Can read the form,not submit it",
+            "zh_HK": "只可查看該神奇表單，不允許提交"
         },
         "form_setting": {
             "zh_CN": "神奇表单设置",
@@ -5697,6 +5910,11 @@
             "zh_CN": "使用教程",
             "en_US": "User guide",
             "zh_HK": "使用教程"
+        },
+        "form_updater_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以提交神奇表单",
+            "en_US": "Can read, can also submit form",
+            "zh_HK": "在「只可閱讀」基礎上，還可以提交神奇表單"
         },
         "form_view": {
             "zh_CN": "神奇表单",
@@ -7459,7 +7677,7 @@
         },
         "history_view_tip": {
             "zh_CN": "可查看 ${day} 天的修改历史，",
-            "en_US": "You can view record activity in ${day} days, ",
+            "en_US": "You can view record activity in ${day} days. ",
             "zh_HK": "可查看 ${day} 天的修改歷史，"
         },
         "honduras": {
@@ -7699,6 +7917,10 @@
             "zh_CN": "安装",
             "en_US": "Install",
             "zh_HK": "安裝"
+        },
+        "installation": {
+            "zh_CN": "安装",
+            "en_US": "installation"
         },
         "integer": {
             "zh_CN": "整数（2）",
@@ -8812,7 +9034,8 @@
             "zh_HK": "主管理員名稱"
         },
         "main_contain": {
-            "zh_CN": "主要包含内容"
+            "zh_CN": "主要包含内容",
+            "en_US": "Main contents"
         },
         "malawi": {
             "zh_CN": "马拉维",
@@ -8999,7 +9222,9 @@
             "zh_HK": "毛里求斯"
         },
         "max_record_num_per_dst": {
-            "zh_CN": "当前支持的单表上限为 5w 行"
+            "zh_CN": "当前支持的单表上限为 5w 行",
+            "en_US": "The current limit for a single datasheet is 5w rows",
+            "zh_HK": "當前支持的單表上限為 5w 行"
         },
         "max_records": {
             "zh_CN": "记录数上限：${count}条",
@@ -9015,6 +9240,10 @@
             "zh_CN": "空间站每秒最大并发量",
             "en_US": "Maximum concurrent volume",
             "zh_HK": "空間站每秒最大並發量"
+        },
+        "maybe_later": {
+            "zh_CN": "跳过",
+            "en_US": "Maybe Later"
         },
         "mayotte": {
             "zh_CN": "马约特",
@@ -9296,10 +9525,25 @@
             "en_US": "Mirror",
             "zh_HK": "鏡像"
         },
+        "mirror_editor_label": {
+            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
+            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
+            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
+        },
         "mirror_from": {
             "zh_CN": "镜像来自：",
             "en_US": "Mirror from: ",
             "zh_HK": "鏡像來自："
+        },
+        "mirror_manager_label": {
+            "zh_CN": "在「可以编辑」基础上，还可以删除和配置镜像",
+            "en_US": "In addition to \"Editor\", can also configure mirror",
+            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置鏡像"
+        },
+        "mirror_reader_label": {
+            "zh_CN": "只可查看该镜像内容或进行评论",
+            "en_US": "Can read data or comment on the mirror",
+            "zh_HK": "只可查看該鏡像內容或進行評論"
         },
         "mirror_resource_dst_been_deleted": {
             "zh_CN": "生成当前镜像的原表已被删除，无法继续访问",
@@ -9310,6 +9554,11 @@
             "zh_CN": "生成该镜像的视图已被删除，无法访问镜像",
             "en_US": "Failed to access this mirror because the original view was deleted",
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
+        },
+        "mirror_uploader_label": {
+            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
+            "en_US": "Can read, add and edit records except deleting records",
+            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "mobile_space_list_tip": {
             "zh_CN": "更多「空间站管理」的功能请前往电脑网页端操作",
@@ -10905,6 +11154,14 @@
             "en_US": "Done",
             "zh_HK": "已完成添加"
         },
+        "player_step_ui_config_166": {
+            "zh_CN": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
+        },
+        "player_step_ui_config_167": {
+            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
+        },
         "please": {
             "zh_CN": "请",
             "en_US": "Please",
@@ -10944,6 +11201,11 @@
             "zh_CN": "请选择小组",
             "en_US": "Select a team",
             "zh_HK": "請選擇小組"
+        },
+        "plus_edition": {
+            "zh_CN": "Plus",
+            "en_US": "Plus",
+            "zh_HK": "Plus"
         },
         "png": {
             "zh_CN": "PNG 图片",
@@ -11105,6 +11367,11 @@
             "en_US": "Admin's account name",
             "zh_HK": "主管理員暱稱"
         },
+        "pro_edition": {
+            "zh_CN": "Pro",
+            "en_US": "Pro",
+            "zh_HK": "Pro"
+        },
         "process": {
             "zh_CN": "处理",
             "en_US": "Process",
@@ -11156,7 +11423,8 @@
             "zh_HK": "公測期"
         },
         "public_cloud": {
-            "zh_CN": "公有云"
+            "zh_CN": "公有云",
+            "en_US": "CLOUD"
         },
         "public_link": {
             "zh_CN": "公开链接",
@@ -13466,6 +13734,16 @@
             "en_US": "Share via QR code",
             "zh_HK": "通過二維碼分享"
         },
+        "share_reader": {
+            "zh_CN": "只可阅读",
+            "en_US": "read-only",
+            "zh_HK": "只可閱讀"
+        },
+        "share_reader_label": {
+            "zh_CN": "该分享内容仅可查看",
+            "en_US": "This shared content can be viewed only",
+            "zh_HK": "該分享內容僅可查看"
+        },
         "share_save": {
             "zh_CN": "可另存副本",
             "en_US": "Save as copy",
@@ -13633,6 +13911,9 @@
             "zh_CN": "斯洛文尼亚",
             "en_US": "Slovenia",
             "zh_HK": "斯洛文尼亞"
+        },
+        "social_dingtalk_single_record_comment_mention": {
+            "zh_CN": "### 🔔有人在评论中提及你\n\n**所在表:** {nodeName}\n\n**记录:** {recordTitle}\n\n“${commentContent}”"
         },
         "social_media": {
             "zh_CN": "新媒体运营",
@@ -14573,7 +14854,7 @@
         },
         "template": {
             "zh_CN": "模板",
-            "en_US": "template"
+            "en_US": "Template"
         },
         "template_advise_tip": {
             "zh_CN": "没有想要的模板？欢迎向我们提出建议和吐槽！",

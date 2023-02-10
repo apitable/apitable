@@ -96,7 +96,7 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
     setDragOver(false);
   }, [isFileDialogActive]);
 
-  const isMiniProgram = browser.is('wechat') && browser.is('android');
+  const isMiniProgram = browser?.is('wechat') && browser?.is('android');
 
   return (
     <div

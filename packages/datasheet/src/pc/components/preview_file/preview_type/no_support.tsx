@@ -43,7 +43,7 @@ interface INoSupportProps {
   disabledDownload?: boolean;
 }
 
-const getExt = fileName => {
+const getExt = (fileName: string) => {
   const matchedStr = fileName?.slice((Math.max(0, fileName.lastIndexOf('.')) || Infinity) + 1);
   return matchedStr === '.' ? null : matchedStr;
 };

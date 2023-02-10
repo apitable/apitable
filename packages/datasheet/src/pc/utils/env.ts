@@ -38,16 +38,14 @@ export function getEnvVariables() {
 }
 
 export function isHiddenIntercom() {
-  const env = getEnvVariables();
-  // TODO change HIDDEN_QRCODE to HiIDDEN_INTERCOM
-  return env.HIDDEN_QRCODE;
+  return getEnvVariables().INTERCOM_VISIBLE;
 }
 
 export function isMobileApp() {
   if (process.env.SSR) {
     return;
   }
-  return browser.getUA().includes(ConfigConstant.MOBILE_APP_UA);
+  return browser?.getUA().includes(ConfigConstant.MOBILE_APP_UA);
 }
 
 export function getReleaseVersion() {

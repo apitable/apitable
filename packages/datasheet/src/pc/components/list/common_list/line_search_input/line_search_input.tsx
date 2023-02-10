@@ -30,9 +30,9 @@ interface ILineSearchInputProps {
   placeholder?: string;
   className?: string;
   showCloseIcon?: boolean;
-  onChange?(e): void
-  onKeyDown?(e): void
-  onFocus?(e): void
+  onChange?(e: React.ChangeEvent<HTMLInputElement>): void
+  onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void
+  onFocus?(e: React.FocusEvent<HTMLInputElement>): void
   style?: React.CSSProperties;
   allowClear?: boolean
   onClear?(): void;

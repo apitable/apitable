@@ -70,7 +70,7 @@ export const useWorkbenchSideSync = () => {
     if (socketData && socketData.socketId !== NotificationStore.socket.id && socketData.spaceId === spaceId) {
       socketData && realTimeSyncTree(socketData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [socketData]);
 
   // Determines if the specified node exists and has been expanded
@@ -344,7 +344,7 @@ export const useWorkbenchSideSync = () => {
           datasheetMapKeys.includes(nodeId) && updateResourceRole([data[0]]);
           return;
         }
-        const newActiveNodeInfo = data.find(item => item.nodeId === activeNodeId);
+        const newActiveNodeInfo = data.find((item: any) => item.nodeId === activeNodeId);
         if (
           activeNodeId &&
           idsArray.includes(activeNodeId) &&

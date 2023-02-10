@@ -22,11 +22,13 @@ import { Modal as AntdModal } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-export const ModalWithTheme = (props) => {
+export const ModalWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
-      <AntdModal {...props} />
+      <div>
+        <AntdModal {...props} />
+      </div>
     </ThemeProvider>
   );
 };

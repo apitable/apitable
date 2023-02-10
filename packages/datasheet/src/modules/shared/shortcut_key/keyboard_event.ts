@@ -160,20 +160,20 @@ const INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
   if (process.env.SSR) {
     return;
   }
-  if (browser.is('ie')) {
+  if (browser?.is('ie')) {
     define(91, KeyCode.Meta);
-  } else if (browser.is('firefox')) {
+  } else if (browser?.is('firefox')) {
     define(59, KeyCode.US_SEMICOLON);
     define(107, KeyCode.US_EQUAL);
     define(61, KeyCode.US_EQUAL);
     define(109, KeyCode.US_MINUS);
     define(173, KeyCode.US_MINUS);
-    if (browser.is('macOS')) {
+    if (browser?.is('macOS')) {
       define(224, KeyCode.Meta);
     }
-  } else if (browser.is('WebKit')) {
+  } else if (browser?.is('WebKit')) {
     define(91, KeyCode.Meta);
-    if (browser.is('macOS')) {
+    if (browser?.is('macOS')) {
       // the two meta keys in the Mac have different key codes (91 and 93)
       define(93, KeyCode.Meta);
     } else {
@@ -216,15 +216,15 @@ export interface IKeyboardEvent {
   stopPropagation(): void;
 }
 
-let ctrlKeyMod;
+let ctrlKeyMod: number | KeyMod;
 const altKeyMod = KeyMod.Alt;
 const shiftKeyMod = KeyMod.Shift;
-let metaKeyMod;
+let metaKeyMod: number | KeyMod;
 
 (() => {
   if (!process.env.SSR) {
-    ctrlKeyMod = (browser.is('macOS') ? KeyMod.WinCtrl : KeyMod.CtrlCmd);
-    metaKeyMod = (browser.is('macOS') ? KeyMod.CtrlCmd : KeyMod.WinCtrl);
+    ctrlKeyMod = (browser?.is('macOS') ? KeyMod.WinCtrl : KeyMod.CtrlCmd);
+    metaKeyMod = (browser?.is('macOS') ? KeyMod.CtrlCmd : KeyMod.WinCtrl);
   }
 })();
 

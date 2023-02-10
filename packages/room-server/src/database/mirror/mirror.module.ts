@@ -28,7 +28,7 @@ import { MirrorService } from './services/mirror.service';
 @Module({
   imports: [
     forwardRef(()=>ResourceModule),
-    NodeModule, 
+    forwardRef(()=>NodeModule),
     UserModule,
     DatasheetModule,
     SubscriptionDynamicModule.forRoot(),

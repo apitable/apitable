@@ -46,9 +46,9 @@ export const MobileContextMenu: FC<IMobileContextMenuProps> = (props) => {
       onClose={() => onClose()}
     >
       <div onClick={onClose}>
-        {data.map((group, index) => (
+        {data.map((group: any, index: number) => (
           <div className={styles.group} key={index}>
-            {group.map(groupItem => {
+            {group.map((groupItem: any) => {
 
               if (!groupItem || hiddenItem(groupItem.hidden) || groupItem.unsupportable) {
                 return null;

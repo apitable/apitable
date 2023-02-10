@@ -19,6 +19,7 @@
 import * as React from 'react';
 import styles from './style.module.less';
 import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@apitable/core';
+import { IUseListenTriggerInfo } from '@apitable/components';
 import IconShort from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_short_normal.svg';
 import IconMedium from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_medium_normal.svg';
 import IconTail from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_high_normal.svg';
@@ -120,7 +121,11 @@ function extraTall(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => v
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ChangeRowHeight = (props) => {
+interface IChangeRowHeight {
+  triggerInfo: IUseListenTriggerInfo | undefined
+}
+
+export const ChangeRowHeight = (props: IChangeRowHeight) => {
   const { triggerInfo } = props;
   const view = useSelector(state => Selectors.getCurrentView(state))!;
 

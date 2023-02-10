@@ -63,7 +63,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   //     },
   //   }
   // };
-  const handleCreateFormChange = (triggerTypeId) => {
+  const handleCreateFormChange = (triggerTypeId: string) => {
     if (triggerTypeId) {
       createRobotTrigger(triggerTypeId);
     }

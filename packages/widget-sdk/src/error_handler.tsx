@@ -19,10 +19,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from 'core';
-import { WidgetEmptyPath } from './ui/widget_empty';
+// import { WidgetEmptyPath } from './ui/widget_empty';
 import { getWidgetDatasheet } from 'store';
 import { IReduxState } from '@apitable/core';
 import { useMeta } from 'hooks';
+import WidgetNoPermissionLight from 'static/icon/datasheet/dashboard_widget_permission_light.png';
+import WidgetNoPermissionDark from 'static/icon/datasheet/dashboard_widget_permission_dark.png';
+import Image from 'next/image';
+import { ThemeName } from '@apitable/components';
 
 export const ErrorHandler: React.FC = props => {
   let errorCode = useSelector(state => {
@@ -38,6 +42,11 @@ export const ErrorHandler: React.FC = props => {
 
     return null;
   });
+  const themeName = useSelector(state => {
+    const widgetState = state as any as IReduxState;
+    return widgetState.theme;
+  });
+  const widgetNoPermission = themeName === ThemeName.Light ? WidgetNoPermissionLight : WidgetNoPermissionDark;
 
   const { sourceId } = useMeta();
   const isLoading = useSelector(state => {
@@ -98,15 +107,14 @@ export const ErrorHandler: React.FC = props => {
         width: '100%',
       }}
     >
-      <div
-        style={{
-          background: `url('data:image/svg+xml;utf8,${encodeURIComponent(WidgetEmptyPath)}') center no-repeat`,
-          backgroundSize: '160px 120px',
-          width: 160,
-          height: 120,
-          margin: '0 auto',
-        }}
-      />
+      <div style={{
+        width: '160px',
+        height: '120px',
+        margin: '0 auto',
+      }}>
+        <Image src={widgetNoPermission} alt='' width={160} height={120} style={{ margin: '0 auto' }} />
+      </div>
+      
       <p
         style={{
           textAlign: 'center',

@@ -98,7 +98,7 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
 
   const verifyEditingValue = () => {
     let errorMsg = '';
-    const isExitSameName = list.findIndex(item => item.name === editingValue && item.id !== editingId);
+    const isExitSameName = list.findIndex((item: any) => item.name === editingValue && item.id !== editingId);
 
     if (isExitSameName !== -1) {
       errorMsg = t(Strings.name_repeat);

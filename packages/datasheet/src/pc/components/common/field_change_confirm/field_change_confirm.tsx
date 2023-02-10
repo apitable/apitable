@@ -26,7 +26,7 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import { NotifyKey } from '../notify/notify.interface';
 
 export function fieldChangeConfirm(props: {
-  fieldId: string, datasheetId?: string, onCancel?(), onOk?(),
+  fieldId: string, datasheetId?: string, onCancel?: () => void, onOk?: () => void,
 }) {
   const { fieldId, datasheetId, onCancel, onOk } = props;
 

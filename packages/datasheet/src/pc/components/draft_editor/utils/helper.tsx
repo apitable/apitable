@@ -68,7 +68,7 @@ function replaceUrl(text: string) {
     if (restText) {
       res.push(restText);
     }
-    return res.filter(t => t!== '').map(t => {
+    return res.filter((t: string) => t!== '').map((t: string) => {
       if (typeof t === 'string') {
         return { text: t };
       }

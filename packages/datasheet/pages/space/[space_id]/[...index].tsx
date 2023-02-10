@@ -36,7 +36,7 @@ const Page = () => {
     const _path = path.split('/').slice(3).join('/');
     dispatch(StoreActions.setActiveSpaceId(spaceId));
     router.replace(`/${_path}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   return <></>;

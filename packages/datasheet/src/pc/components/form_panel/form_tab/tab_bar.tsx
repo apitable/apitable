@@ -33,7 +33,7 @@ export const TabBar: FC<{ loading: boolean }> = ({ loading }) => {
           </Space>
         ) : (
           <AutoSizer style={{ width: '100%', height: '100%' }}>
-            {({ width }) => <FormTab />}
+            {() => <FormTab />}
           </AutoSizer>
         )
       }

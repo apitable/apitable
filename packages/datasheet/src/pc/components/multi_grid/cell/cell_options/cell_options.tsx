@@ -35,7 +35,7 @@ import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './style.module.less';
 
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
-  const item = field.property.options.find(item => item.id === id);
+  const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (!item) {
     return '';
   }
@@ -44,11 +44,6 @@ export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IFie
   }
   return item[key];
 }
-
-// export function getOptionNameColor(id: string, field: IField) {
-//   const item = field.property.options.find(item => item.id === id);
-//   return item && item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
-// }
 
 interface ICellOptionsProps extends ICellComponentProps {
   keyPrefix?: string;
@@ -64,7 +59,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const getOptionNameColor = useCallback((id: string, field: IField)=> {
-    const item = field.property.options.find(item => item.id === id);
+    const item = field.property.options.find((item: { id: string; }) => item.id === id);
     return item && item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
   }, [colors]);
 
@@ -72,7 +67,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
     if (typeof content !== 'string' || !content.length || !field) {
       return <></>;
     }
-    const color = getOptionNameColor(content, field);
+    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(content, field) : colors.staticWhite0;
     const iconColor = color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg;
     const style: React.CSSProperties = {
       background: inquiryValueByKey('color', content, field, cacheTheme),
@@ -81,7 +76,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
     return (
       <div style={style} className={classNames('tabItem', styles.tabItem, styles.single)}>
         <div className={classNames('optionText', styles.optionText)}>
-          <Typography variant="body4" className={styles.name} ellipsis>
+          <Typography variant="body4" className={styles.name} color={color} ellipsis>
             {inquiryValueByKey('name', content, field, cacheTheme)}
           </Typography>
         </div>
@@ -96,7 +91,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
     stopPropagation(e);
     let value: string | string[] | null = null;
     if (!isSingleSelect) {
-      value = (cellValue as string[]).filter((item, idx) => {
+      value = (cellValue as string[]).filter((_item, idx) => {
         return idx !== index;
       });
       if (value.length === 0) {
@@ -151,11 +146,12 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
             if (!field) {
               return null;
             }
+            const color = cacheTheme === ThemeName.Light ? getOptionNameColor(item, field) : colors.staticWhite0;
             const style: React.CSSProperties = {
               background: inquiryValueByKey('color', item, field, cacheTheme),
+              color,
             };
             const classname = classNames('tabItem', styles.tabItem, styles.multi);
-            const color = getOptionNameColor(item, field);
             const iconColor = color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg;
             return (
               <div
@@ -165,7 +161,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
                 key={props.keyPrefix ? `${props.keyPrefix}-${index}` : item + index}
               >
                 <div className={classNames('optionText', styles.optionText)} style={{ color }}>
-                  <Typography variant="body4" className={styles.name} ellipsis>
+                  <Typography variant="body4" className={styles.name} color={color} ellipsis>
                     {inquiryValueByKey('name', item, field, cacheTheme)}
                   </Typography>
                 </div>

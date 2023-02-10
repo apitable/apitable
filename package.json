@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -16,7 +16,8 @@
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
-    "start:room-server:perf:flame": "yarn workspace @apitable/room-server start:perf:flame",
+    "start:room-server:perf:flame": "yarn workspace @apitable/room-server start:room:perf:flame",
+    "start:socket-server": "yarn workspace @apitable/room-server start:socket:dev",
     "start:components": "yarn workspace @apitable/components start",
     "build:core": "yarn workspace @apitable/core build",
     "build:i18n": "yarn workspace @apitable/i18n-lang build",
@@ -47,7 +48,7 @@
     "lint": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
-    "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx}",
+    "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif",
     "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
@@ -82,7 +83,7 @@
     "eslint-loader": "4.0.2",
     "eslint-plugin-flowtype": "5.2.0",
     "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsx-a11y": "6.3.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-vika": "0.0.1",

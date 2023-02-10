@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { RedisModule, RedisModuleOptions } from '@apitable/nestjs-redis';
+import { RedisModule } from '@apitable/nestjs-redis';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
-import { enableScheduler } from 'app.environment';
+import { enableScheduler, enableSocket } from 'app.environment';
 import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
-import { SchedTaskDynamicModule } from 'shared/services/sched_task/sched.task.dynamic.module';
-import { FusionApiModule } from 'fusion/fusion.api.module';
-import { I18nModule } from 'nestjs-i18n';
-import path, { resolve } from 'path';
-import { DEFAULT_LANGUAGE, I18nJsonParser } from 'shared/adapters/I18n.json.parser';
-import { SharedModule } from 'shared/shared.module';
-import { SocketModule } from 'socket/socket.module';
+import { DeveloperModule } from 'developer/developer.module';
 import { EmbedDynamicModule } from 'embed/embed.dynamic.module';
 import { FusionApiDynamicModule } from 'fusion/fusion-api.dynamic.module';
+import { FusionApiModule } from 'fusion/fusion.api.module';
+import { GrpcModule } from 'grpc/grpc.module';
+import { I18nModule } from 'nestjs-i18n';
+import { NodeModule } from 'node/node.module';
+import path, { resolve } from 'path';
+import { DEFAULT_LANGUAGE, I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
-import { GrpcModule } from 'grpc/grpc.module';
-import { NodeModule } from 'node/node.module';
-import { DeveloperModule } from 'developer/developer.module';
+import { redisModuleOptions } from 'shared/services/config/redis.config.service';
+import { SchedTaskDynamicModule } from 'shared/services/sched_task/sched.task.dynamic.module';
+import { SharedModule } from 'shared/shared.module';
+import { SocketModule } from 'socket/socket.module';
 import { UnitModule } from 'unit/unit.module';
 import { UserModule } from 'user/user.module';
 
@@ -59,9 +60,7 @@ import { UserModule } from 'user/user.module';
     // Redis configuration
     RedisModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: () => {
-        return redisModuleOptions();
-      },
+      useFactory: () => redisModuleOptions(),
     }),
     EnvConfigModule,
     I18nModule.forRoot({
@@ -75,7 +74,7 @@ import { UserModule } from 'user/user.module';
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),
     FusionApiDynamicModule.forRoot(),
-    SocketModule.register(true), // TODO: whether or not use socket-module
+    SocketModule.register(enableSocket),
     ActuatorModule,
     FusionApiModule,
     DatabaseModule,
@@ -90,24 +89,3 @@ import { UserModule } from 'user/user.module';
 })
 export class AppModule {
 }
-
-const redisModuleOptions = () => {
-  const { host, port, password, db } = {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT!) || 6379,
-    db: parseInt(process.env.REDIS_DB!) || 0,
-    password: process.env.REDIS_PASSWORD,
-  };
-  const redisConfig: RedisModuleOptions = {
-    host,
-    port,
-  };
-  // use config values if there is a configuration
-  if (password) {
-    redisConfig.password = password;
-  }
-  if (db) {
-    redisConfig.db = db;
-  }
-  return redisConfig;
-};

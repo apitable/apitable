@@ -18,10 +18,41 @@
 
 import { colors, ThemeName } from '@apitable/components';
 import {
-  Api, ArrayValueField, BasicValueType, ConfigConstant, DatasheetApi, Field, FieldType, FormulaBaseError, handleNullArray, IAttachmentValue,
-  ICellValue, IField, ILookUpField, IMemberField, IMultiSelectedIds, ISegment, isGif, IUnitIds, LinkField, LOOKUP_VALUE_FUNC_SET, LookUpField,
-  MemberField, MemberType, ORIGIN_VALUES_FUNC_SET, OtherTypeUnitId, RollUpFuncType, RowHeightLevel, Selectors, Settings, StoreActions, string2Segment,
-  Strings, SymbolAlign, t, ViewType,
+  Api,
+  ArrayValueField,
+  BasicValueType,
+  ConfigConstant,
+  DatasheetApi,
+  Field,
+  FieldType,
+  FormulaBaseError,
+  handleNullArray,
+  IAttachmentValue,
+  ICellValue,
+  IField,
+  ILookUpField,
+  IMemberField,
+  IMultiSelectedIds,
+  ISegment,
+  isGif,
+  IUnitIds,
+  LinkField,
+  LOOKUP_VALUE_FUNC_SET,
+  LookUpField,
+  MemberField,
+  MemberType,
+  ORIGIN_VALUES_FUNC_SET,
+  OtherTypeUnitId,
+  RollUpFuncType,
+  RowHeightLevel,
+  Selectors,
+  Settings,
+  StoreActions,
+  string2Segment,
+  Strings,
+  SymbolAlign,
+  t,
+  ViewType,
 } from '@apitable/core';
 import { keyBy, sortBy } from 'lodash';
 import LRU from 'lru-cache';
@@ -36,10 +67,23 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import { getOptionNameColor, inquiryValueByKey } from '../components/cell';
 import {
-  GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT, GRID_CELL_ATTACHMENT_PADDING, GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
-  GRID_CELL_LINK_ITEM_HEIGHT, GRID_CELL_LINK_ITEM_PADDING, GRID_CELL_MEMBER_ITEM_HEIGHT, GRID_CELL_MEMBER_ITEM_MARGIN_TOP,
-  GRID_CELL_MEMBER_ITEM_PADDING_LEFT, GRID_CELL_MULTI_ITEM_MARGIN_LEFT, GRID_CELL_MULTI_ITEM_MARGIN_TOP, GRID_CELL_MULTI_ITEM_MIN_WIDTH,
-  GRID_CELL_MULTI_PADDING_TOP, GRID_CELL_VALUE_PADDING, GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT, GRID_MEMBER_ITEM_PADDING_RIGHT, GRID_OPTION_ITEM_HEIGHT,
+  GRID_CELL_ADD_ITEM_BUTTON_SIZE,
+  GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT,
+  GRID_CELL_ATTACHMENT_PADDING,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_LINK_ITEM_HEIGHT,
+  GRID_CELL_LINK_ITEM_PADDING,
+  GRID_CELL_MEMBER_ITEM_HEIGHT,
+  GRID_CELL_MEMBER_ITEM_MARGIN_TOP,
+  GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
+  GRID_CELL_MULTI_ITEM_MARGIN_LEFT,
+  GRID_CELL_MULTI_ITEM_MARGIN_TOP,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+  GRID_CELL_MULTI_PADDING_TOP,
+  GRID_CELL_VALUE_PADDING,
+  GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
+  GRID_MEMBER_ITEM_PADDING_RIGHT,
+  GRID_OPTION_ITEM_HEIGHT,
   GRID_OPTION_ITEM_PADDING,
 } from '../constant';
 import { IRenderProps } from '../interface';
@@ -48,8 +92,8 @@ import { imageCache } from './image_cache';
 import { IWrapTextDataProps } from './interface';
 
 // Simple recognition rules are used to process single line text enhancement fields.
-const isEmail = text => text && /.+@.+/.test(text);
-const isPhoneNumber = text => text && /^[0-9\-()（）#+]+$/.test(text);
+const isEmail = (text: string) => text && /.+@.+/.test(text);
+const isPhoneNumber = (text: string) => text && /^[0-9\-()（）#+]+$/.test(text);
 
 const calcFileWidth = (file: IAttachmentValue, ratioHeight: number) => {
   if (!(file.width && file.height)) {
@@ -87,7 +131,7 @@ const DEFAULT_RENDER_DATA = {
 };
 
 export class CellHelper extends KonvaDrawer {
-  public initStyle(field: IField, styleProps) {
+  public initStyle(field: IField, styleProps: { fontWeight: any; }): void | null {
     const { type: fieldType } = field;
     const { fontWeight = 'normal' } = styleProps;
 
@@ -129,7 +173,7 @@ export class CellHelper extends KonvaDrawer {
     }
   }
 
-  public renderCellValue(renderProps: IRenderProps, ctx?) {
+  public renderCellValue(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { field } = renderProps;
     const fieldType = field.type;
 
@@ -184,7 +228,7 @@ export class CellHelper extends KonvaDrawer {
     }
   }
 
-  private renderCellSingleSelect(renderProps: IRenderProps, ctx?) {
+  private renderCellSingleSelect(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, field, columnWidth, isActive, editable, callback, style, cacheTheme } = renderProps;
     if (cellValue == null) return DEFAULT_RENDER_DATA;
     const isOperating = isActive && editable;
@@ -243,12 +287,11 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellMultiSelect(renderProps: IRenderProps, ctx?) {
+  private renderCellMultiSelect(renderProps: IRenderProps, ctx?: any) {
     const { x, y, field, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, editable, callback, cacheTheme } = renderProps;
     if (!(cellValue as IMultiSelectedIds)?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
     const isOperating = editable && isActive;
-    const initPadding = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
-    let currentX = initPadding;
+    let currentX = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
@@ -346,7 +389,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellText(renderProps: IRenderProps, ctx?) {
+  private renderCellText(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, field, columnWidth, rowHeightLevel, isActive, style, callback, viewType = ViewType.Grid, realField } = renderProps;
 
     const generateRenderText = (): string | null => {
@@ -496,7 +539,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellDateTime(renderProps: IRenderProps, ctx?) {
+  private renderCellDateTime(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, field, columnWidth, style, callback } = renderProps;
     const cellString = Field.bindModel(field).cellValueToString(cellValue);
     const [date, time, timeRule] = cellString ? cellString.split(' ') : [];
@@ -542,7 +585,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellCheckbox(renderProps, ctx?) {
+  private renderCellCheckbox(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { x, y, field, cellValue, columnWidth, callback, style, isActive } = renderProps;
     const { isComputed } = Field.bindModel(field);
     const icon = isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
@@ -566,7 +609,7 @@ export class CellHelper extends KonvaDrawer {
     }
   }
 
-  private renderCellMultiCheckbox(renderProps: IRenderProps, ctx?) {
+  private renderCellMultiCheckbox(renderProps: IRenderProps, ctx?: any) {
     const { x, y, field, cellValue, columnWidth, callback } = renderProps;
 
     if (ctx && cellValue != null) {
@@ -593,7 +636,7 @@ export class CellHelper extends KonvaDrawer {
     }
   }
 
-  private renderCellRating(renderProps: IRenderProps, ctx?) {
+  private renderCellRating(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { x, y, field, cellValue: _cellValue, callback } = renderProps;
     const { icon, max } = field.property;
     const cellValue = (_cellValue as number) || 0;
@@ -639,7 +682,7 @@ export class CellHelper extends KonvaDrawer {
     });
   }
 
-  private renderCellAttachment(renderProps: IRenderProps, ctx?) {
+  private renderCellAttachment(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { x, y, cellValue, rowHeight, columnWidth, isActive, editable, callback, recordId, field } = renderProps;
     const loadedList: IAttachmentValue[] = (cellValue as IAttachmentValue[]) || [];
     const cellId = UploadManager.getCellId(recordId, field.id);
@@ -712,7 +755,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellMember(renderProps: IRenderProps, ctx?) {
+  private renderCellMember(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const {
       x,
       y,
@@ -909,7 +952,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellLink(renderProps: IRenderProps, ctx?) {
+  private renderCellLink(renderProps: IRenderProps, ctx?: any) {
     /**
      * What is currentResourceId?
      * See here: issue #1229
@@ -976,10 +1019,9 @@ export class CellHelper extends KonvaDrawer {
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
     const addBtnVisible = !field.property.limitSingleRecord;
     const isOperating = editable && isActive;
-    const initPadding = addBtnVisible && isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
-    let currentX = initPadding;
+    let currentX = addBtnVisible && isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
-    const displayText = (text): string => {
+    const displayText = (text: string | symbol | null): string => {
       if (text == null) return t(Strings.record_unnamed);
       switch (text) {
         case NO_DATA:
@@ -987,7 +1029,7 @@ export class CellHelper extends KonvaDrawer {
         case ERROR_DATA:
           return t(Strings.record_fail_data);
         default:
-          return text;
+          return text as string;
       }
     };
 
@@ -1082,7 +1124,7 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellLookUp(renderProps: IRenderProps, ctx?) {
+  private renderCellLookUp(renderProps: IRenderProps, ctx?: any) {
     renderProps = { ...renderProps, cellValue: handleNullArray(renderProps.cellValue) };
     const { field, cellValue } = renderProps;
     const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
@@ -1165,7 +1207,7 @@ export class CellHelper extends KonvaDrawer {
     }
   }
 
-  private renderCellFormula(renderProps: IRenderProps, ctx?) {
+  private renderCellFormula(renderProps: IRenderProps, ctx?: any) {
     const { field, cellValue } = renderProps;
     const isCheckbox = Field.bindModel(field).basicValueType === BasicValueType.Boolean;
     if (isCheckbox && !(cellValue instanceof FormulaBaseError)) {

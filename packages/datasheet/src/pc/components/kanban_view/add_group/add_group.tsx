@@ -42,7 +42,7 @@ export const AddGroup: React.FC<IAddGroup> = props => {
     return sanpshot.recordMap;
   });
   const ref = React.useRef<HTMLDivElement>(null);
-  const kanbanField = fieldMap[kanbanFieldId];
+  const kanbanField = fieldMap[kanbanFieldId]!;
   const [editing, setEditing] = useState(false);
   const command = useCommand();
 

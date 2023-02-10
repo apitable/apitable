@@ -30,8 +30,9 @@ const management = /(\/)?management(\/)?/; // Space Station Management
 
 export async function getEmojiNativeByName(emojiName: string) {
   if (!emojiName) return '';
+  // @ts-ignore
   const emojiIndex = await import('emoji-mart/dist/utils/emoji-index/emoji-index').then(module => module.default);
-  const emojiData = emojiIndex.search(emojiName).find(o => o.native && o.short_names[0] === emojiName);
+  const emojiData = emojiIndex.search(emojiName).find((o: any) => o.native && o.short_names[0] === emojiName);
   if (!emojiData) return '';
   return emojiData.native;
 }

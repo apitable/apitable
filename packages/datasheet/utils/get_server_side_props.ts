@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getServerSideProps(context) {
+export function getServerSideProps(context: any) {
   const spaceId = context.query.spaceId;
   const [path, query] = context.resolvedUrl.split('?');
   if(spaceId) {

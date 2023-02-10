@@ -35,14 +35,14 @@ import { IRenderContentBase } from '../interface';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
-  const item = field.property.options.find(item => item.id === id);
+  const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (!item) return '';
   if (key === 'color') return setColor(item[key], theme);
   return item[key]?.replace(/\r|\n/g, ' ');
 }
 
 export function getOptionNameColor(id: string, field: IField) {
-  const item = field.property.options.find(item => item.id === id);
+  const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (item == null) return colors.firstLevelText;
   return item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
 }
@@ -169,11 +169,11 @@ export const CellMultiSelect: FC<ICellProps> = (props) => {
                   backgroundHeight={16}
                   backgroundWidth={16}
                   cornerRadius={2}
-                  onTap={e => deleteItem(index)}
-                  onMouseDown={e => {
+                  onTap={() => deleteItem(index)}
+                  onMouseDown={() => {
                     setCloseIconDownId(cellValue![index]);
                   }}
-                  onMouseUp={(e) => {
+                  onMouseUp={() => {
                     if (closeIconDownId) {
                       deleteItem(index);
                     }

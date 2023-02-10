@@ -24,7 +24,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { copy2clipBoard } from 'pc/utils';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import HistoryIcon from 'static/icon/common/common_icon_history.svg';
@@ -36,11 +36,8 @@ import styles from './style.module.less';
 
 const { TreeNode } = TreeSelect;
 
-export interface ILinkInviteProps {
-  shareId?: string;
-}
 
-export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
+export const LinkInvite = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const { linkList, userInfo, teamList } = useSelector(
@@ -97,7 +94,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
           </TreeNode>
         );
       }
-      return <TreeNode {...config} isLeaf={userInfo!.isAdmin && item.children?.length ? false : true} key={item.teamId} />;
+      return <TreeNode {...config} isLeaf={!(userInfo!.isAdmin && item.children?.length)} key={item.teamId} />;
     });
   };
 

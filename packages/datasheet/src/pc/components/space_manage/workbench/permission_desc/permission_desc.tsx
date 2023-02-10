@@ -76,12 +76,12 @@ export const PermissionDesc: FC<IPermissionDescProps> = ({ style }) => {
     if (!config) {
       return;
     }
-    return config.map(per => {
+    return config.map((per: any) => {
       const { title, detail, key } = per;
       return (
         <Panel header={<div className={styles.panelHeader}><PullDownIcon />{title}</div>} key={key}>
           {
-            detail.map(item => (
+            detail.map((item: any) => (
               <Row className={styles.perItem} key={item.title}>
                 <Col span={7} className={styles.perItemLeft}>{item.title}</Col>
                 <Col span={17} className={classNames(styles.tagTitleRight, styles.perItemRight)}>

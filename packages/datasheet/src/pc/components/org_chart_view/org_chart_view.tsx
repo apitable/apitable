@@ -169,7 +169,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
       offsetLeft: 0,
       offsetTop: 0,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [containerRef.current, containerSize, rightPanelVisible, settingPanelVisible]);
 
   const bodySize = {
@@ -346,7 +346,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
         StoreActions.setOrgChartSettingPanelWidth(defaultOrgChartViewStatus.settingPanelWidth, datasheetId),
       ]),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [viewId]);
 
   const commandManager = resourceService.instance!.commandManager;
@@ -418,7 +418,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     if (!(!linkField && !hasLinkField)) {
       wizardHandler();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [linkField, hasLinkField]);
 
   // Click on the right panel to bring up the next step

@@ -63,7 +63,7 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
     }
   });
 
-  const onContextMenu = (e) => {
+  const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
     show(e, {
       props: {

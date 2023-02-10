@@ -57,7 +57,7 @@ export const LinkJump: FC<ILinkJumpProps> = (props) => {
     return <>{children}</>;
   }
 
-  const handleClick = e => {
+  const handleClick = (e: React.SyntheticEvent) => {
     stopPropagation(e);
     if (!foreignFieldId) {
       const url = new URL(window.location.href);

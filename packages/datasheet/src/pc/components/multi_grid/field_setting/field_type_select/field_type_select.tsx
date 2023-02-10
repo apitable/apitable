@@ -115,7 +115,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
         };
       });
       setVisible(false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     },
     [currentField.type],
   );
@@ -167,7 +167,13 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {visible && (
-              <Popup open={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
+              <Popup
+                title={t(Strings.select_one_field)}
+                open={visible}
+                onClose={() => setVisible(false)}
+                height="90%"
+                bodyStyle={{ padding: 0 }}
+              >
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

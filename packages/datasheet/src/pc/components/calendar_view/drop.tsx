@@ -39,7 +39,7 @@ interface IDrop {
   disabled?: boolean;
 }
 
-const DropBase = ({ children, date, update, disabled }: IDrop) => {
+const DropBase = ({ children, date, update }: IDrop) => {
   const colors = useThemeColors();
   const { 
     view, calendarStyle, setRecordModal, isStartDateTimeField,

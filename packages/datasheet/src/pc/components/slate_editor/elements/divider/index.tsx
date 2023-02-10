@@ -41,7 +41,7 @@ const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>
   }, [editor, element]);
 
   const DotList = useMemo(() => {
-    return Array(4).fill('').map((item, idx) => <i key={idx} className={styles.dot} />);
+    return Array(4).fill('').map((_item, idx) => <i key={idx} className={styles.dot} />);
   }, []);
 
   return <div className={styles.wrap}>

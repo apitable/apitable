@@ -82,7 +82,7 @@ export class NotificationStore {
       console.log('notification socket connected');
     });
 
-    ws.on('NOTIFY', (data) => {
+    ws.on('NOTIFY', (data: INoticeDetail) => {
       console.log('Receive real-time messages: ', data);
       const templateId = data.templateId;
       // Browser notifications
@@ -103,7 +103,7 @@ export class NotificationStore {
               notifyId
             } = getNoticeUrlParams(data);
 
-            let query;
+            let query: any;
             if (notifyType === NotifyType.Record) {
               query = { comment: 1, notifyId };
             }
@@ -147,7 +147,7 @@ export class NotificationStore {
   }
 
   static joinSpace(spaceId: string) {
-    this.socket.emit('WATCH_SPACE', { spaceId }, (result) => {
+    this.socket.emit('WATCH_SPACE', { spaceId }, (result: any) => {
       if (!result) {
         console.log('Failed to join space');
       }
@@ -156,7 +156,7 @@ export class NotificationStore {
 
   // recently browsed node
   static recentlyBrowsedNode(nodeId: string) {
-    this.socket?.emit('NODE_BROWSED', { nodeId }, (result) => {
+    this.socket?.emit('NODE_BROWSED', { nodeId }, (result: any) => {
       if (!result) {
         console.log('NODE_BROWSED fail');
       }

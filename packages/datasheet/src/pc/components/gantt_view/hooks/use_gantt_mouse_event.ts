@@ -116,7 +116,7 @@ export const useGanttMouseEvent = ({
     return null;
   };
 
-  const onTransformerAttach = (e: KonvaEventObject<MouseEvent>) => {
+  const onTransformerAttach = () => {
     if (![KONVA_DATASHEET_ID.GANTT_TASK, KONVA_DATASHEET_ID.GANTT_LINE_POINT].includes(pointTargetName)) return setTransformerId('');
     const task = getTaskData(pointRowIndex);
     if (task == null) return setTransformerId('');
@@ -273,7 +273,7 @@ export const useGanttMouseEvent = ({
     }
   };
 
-  const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
+  const onMouseUp = () => {
     const { x, visible } = dragSplitterInfo;
 
     setIsTaskLineDrawing(false);
@@ -308,18 +308,18 @@ export const useGanttMouseEvent = ({
   };
 
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
-    onTransformerAttach(e);
+    onTransformerAttach();
     onHighlightSplitterMove(e);
   };
 
-  const onDragStart = (e: KonvaEventObject<DragEvent>) => {
+  const onDragStart = () => {
     if (pointTargetName === KONVA_DATASHEET_ID.GANTT_TASK) {
       const pointRecordId = linearRows[pointRowIndex]?.recordId;
       setDragTaskId(pointRecordId);
     }
   };
 
-  const onDragMove = (e: KonvaEventObject<DragEvent>) => {
+  const onDragMove = () => {
     //
   };
 
@@ -351,7 +351,7 @@ export const useGanttMouseEvent = ({
     });
   }
 
-  const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+  const onDragEnd = () => {
     if (dragTaskId) {
       if (sortInfo?.keepSort && groupInfo) {
         setCellValueByKeepSort();

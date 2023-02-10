@@ -42,11 +42,12 @@ import { DatasheetRecordService } from './services/datasheet.record.service';
 import { DatasheetRecordSourceService } from './services/datasheet.record.source.service';
 import { DatasheetService } from './services/datasheet.service';
 import { RecordCommentService } from './services/record.comment.service';
+import { DatasheetWidgetService } from './services/datasheet.widget.service';
 
 @Module({
   imports: [
     forwardRef(()=>ResourceModule),
-    NodeModule,
+    forwardRef(()=>NodeModule),
     UnitModule,
     UserModule,
     CommandModule,
@@ -71,7 +72,8 @@ import { RecordCommentService } from './services/record.comment.service';
     DatasheetChangesetSourceService,
     RecordCommentService,
     DatasheetFieldHandler,
-    ComputeFieldReferenceManager
+    ComputeFieldReferenceManager,
+    DatasheetWidgetService,
   ],
   controllers: [DatasheetController],
   exports: [
@@ -83,7 +85,8 @@ import { RecordCommentService } from './services/record.comment.service';
     DatasheetChangesetSourceService,
     RecordCommentService,
     DatasheetFieldHandler,
-    ComputeFieldReferenceManager
+    ComputeFieldReferenceManager,
+    DatasheetWidgetService,
   ],
 })
 export class DatasheetModule {}

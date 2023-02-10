@@ -40,13 +40,10 @@ const MailLogin: FC = () => {
   );
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  localStorage.setItem('vika-preference-login-mode', 'mail');
 
   useMount(() => {
     whenPageRefreshed();
-  });
-
-  useMount(() => {
-    localStorage.setItem('vika-preference-login-mode', 'mail');
   });
 
   return (
@@ -65,7 +62,7 @@ const MailLogin: FC = () => {
         )}
         <div className={styles.loginContent}>
           {
-            LoginWithoutOther && 
+            LoginWithoutOther &&
             <LoginWithoutOther defaultEmail={inviteEmailInfo ? inviteEmailInfo.data.inviteEmail : ''} submitText={t(Strings.login)} />
           }
         </div>

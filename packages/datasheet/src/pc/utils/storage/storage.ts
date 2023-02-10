@@ -142,7 +142,7 @@ export const clearStorage = () => {
   }
 };
 
-export const deleteStorageByKey = (key) => {
+export const deleteStorageByKey = (key: StorageName) => {
   try {
     ds.remove(key);
   } catch (error) {
@@ -150,7 +150,7 @@ export const deleteStorageByKey = (key) => {
   }
 };
 
-export const getTestFunctionAvailable = (functionKey) => {
+export const getTestFunctionAvailable = (functionKey: string) => {
   const testFunctions = getStorage(StorageName.TestFunctions) as { [key: string]: string };
   if (testFunctions && typeof testFunctions === 'object') {
     return Boolean(testFunctions[functionKey]);

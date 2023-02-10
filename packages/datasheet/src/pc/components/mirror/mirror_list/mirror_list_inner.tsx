@@ -35,7 +35,12 @@ interface IMirrorListInner {
   loading: boolean;
 }
 
-const BlankInner = ({ createMirrorNode, mirrorCreatable }) => {
+interface IBlankInner {
+  mirrorCreatable: boolean;
+  createMirrorNode: () => void;
+}
+
+const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
   return (
     <div className={styles.blackInner}>
       <div className={styles.imgBox}>

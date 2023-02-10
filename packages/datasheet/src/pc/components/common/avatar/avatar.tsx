@@ -74,7 +74,7 @@ export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
   defaultIcon?: JSX.Element;
 }
 
-const AvatarHoc = Component => {
+const AvatarHoc = (Component: any) => {
   const ratio = process.env.SSR ? 2 : Math.max(window.devicePixelRatio, 2);
   const colors = getThemeColors();
   const themeName = getThemeName();

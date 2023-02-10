@@ -84,7 +84,7 @@ export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormu
         field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [from]);
 
   return (

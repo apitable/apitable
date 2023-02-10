@@ -1,11 +1,10 @@
-${USER_NAME} assigned you as the admin of the "${SPACE_NAME}" Space
+{{USER_NAME}} assigned you as the admin of the "{{SPACE_NAME}}" Space
 
 --------------------------------------------------------------------------------
 
 Click the button below to enter the Space
 
-${URL}
+{{URL}}
 
-
-copyright © 2022-${YEARS} apitable. All rights reserved.
-Contact us (https://apitable.com/)
+© {{YEARS}} APITable Ltd.
+Contact us (https://apitable.com/?home=1)

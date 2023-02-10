@@ -18,9 +18,9 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Strings, t } from '@apitable/core';
-import { Drawer } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
+import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { useRequest } from 'pc/hooks';
@@ -118,7 +118,7 @@ export const DelConfirmModal: FC<IDelConfirmModalProps> = props => {
 
   if (isMobile) {
     return (
-      <Drawer
+      <Popup
         visible
         title={t(Strings.delete_space)}
         placement='bottom'
@@ -128,7 +128,7 @@ export const DelConfirmModal: FC<IDelConfirmModalProps> = props => {
         closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
       >
         {renderContent()}
-      </Drawer>
+      </Popup>
     );
   }
 

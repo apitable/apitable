@@ -35,7 +35,7 @@ export function fulfillStore(datasheetPack: IBaseDatasheetPack, foreignDatasheet
       // Don't check linked datasheet, linked datasheet should be set to connected, or linked data can not be written
       store.dispatch(StoreActions.setDatasheetConnected(dstId));
       const dataPack = foreignDatasheetMap![dstId]!;
-      store.dispatch(StoreActions.receiveDataPack(dataPack, true));
+      store.dispatch(StoreActions.receiveDataPack(dataPack, { isPartOfData: true }));
       dataPack.fieldPermissionMap && store.dispatch(StoreActions.loadFieldPermissionMap(dataPack.fieldPermissionMap, dstId));
     });
   }

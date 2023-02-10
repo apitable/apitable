@@ -21,7 +21,7 @@ import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Spin } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
-import { ICropShape, ICustomTip, ImageCropUpload, IPreviewShape, Message } from 'pc/components/common';
+import { ICropShape, ICustomTip, ImageCropUpload, IPreviewShape, ISelectInfo, Message } from 'pc/components/common';
 import * as React from 'react';
 import { useState } from 'react';
 import EmptyState from 'static/icon/datasheet/emptystates.png';
@@ -83,7 +83,7 @@ export const ImgBaseUploader: React.FC<IImgBaseUploader> = props => {
     });
   };
 
-  const uploadConfirm = data => {
+  const uploadConfirm = (data:  ISelectInfo) => {
     const { customFile, officialToken } = data;
     if (officialToken) {
       onChange(officialToken, IFileType.Default);

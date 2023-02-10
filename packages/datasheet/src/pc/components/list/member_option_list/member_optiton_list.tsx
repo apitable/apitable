@@ -30,6 +30,8 @@ import {
   Strings,
   t,
   UnitItem,
+  Selectors,
+  PermissionType
 } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
@@ -74,9 +76,10 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { formId } = useSelector(state => state.pageParams);
+  const { formId, embedId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
-
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  
   const refreshMemberList = useCallback(() => {
     // listData is not passed in, use stash directly
     if (!listData) {
@@ -103,7 +106,12 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     if (!keyword?.length) {
       return initList;
     }
-    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    let res;
+    if(embedId) {
+      res = await Api.loadOrSearchEmbed(embedId, { filterIds: '', keyword, linkId, searchEmail });
+    } else {
+      res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    }
     const data: IUnitValue[] = res.data.data;
     if (uniqId === 'userId') {
       return data.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
@@ -254,14 +262,14 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
             </span>;
           }
         }
-        onSearchChange={(e, keyword) => {
+        onSearchChange={(_e, keyword) => {
           run(keyword);
         }}
         // The share page is not allowed to appear View More, the organization in the space station will be leaked
-        footerComponent={showMoreTipButton && !shareId ? () => {
+        footerComponent={showMoreTipButton && !shareId && !(embedId && embedInfo.permissionType !== PermissionType.PRIVATEEDIT) ? () => {
           return <div
             className={styles.seeMore}
-            onMouseUp={e => {
+            onMouseUp={() => {
               expandUnitModal({
                 source: SelectUnitSource.Member,
                 onSubmit: values => handleSubmit(values),

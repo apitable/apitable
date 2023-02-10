@@ -26,7 +26,7 @@ import { TComponent } from 'pc/components/common/t_component';
 // @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise';
 import { useCatalogTreeRequest } from 'pc/hooks';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
@@ -244,7 +244,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
                 <DoubleSelect
                   value={value}
                   disabled={false}
-                  onSelected={(op, index) => handleShareAuthClick(op)}
+                  onSelected={(op) => handleShareAuthClick(op)}
                   triggerCls={styles.doubleSelect}
                   options={Permission}
                 />

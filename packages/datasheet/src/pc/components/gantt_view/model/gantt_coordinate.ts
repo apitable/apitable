@@ -78,7 +78,7 @@ export class GanttCoordinate extends Coordinate {
   }
 
   // Get horizontal spacing
-  get columnWidth() {
+  override get columnWidth() {
     switch (this.dateUnitType) {
       case DateUnitType.Week: 
         return 100;
@@ -130,7 +130,7 @@ export class GanttCoordinate extends Coordinate {
   }
 
   // Get total width
-  get totalWidth() {
+  override get totalWidth() {
     return 2 * this.columnThreshold * this.columnWidth;
   }
 
@@ -254,16 +254,16 @@ export class GanttCoordinate extends Coordinate {
     }
   }
 
-  public getColumnStartIndex(offset: number) {
+  public override getColumnStartIndex(offset: number) {
     return Math.floor(offset / this.columnWidth);
   }
 
-  public getColumnStopIndex(offset: number) {
+  public override getColumnStopIndex(offset: number) {
     const totalOffset = offset + this.containerWidth;
     return Math.ceil(totalOffset / this.columnWidth);
   }
 
-  public getColumnOffset(index: number) {
+  public override getColumnOffset(index: number) {
     return this.columnWidth * index;
   }
 

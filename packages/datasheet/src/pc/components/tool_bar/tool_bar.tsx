@@ -91,10 +91,21 @@ import { getEnvVariables, isIframe } from 'pc/utils/env';
 // Already collapsed working directory: Hide all tools on the right side.
 // width:(0,540) -> Uncollapsed working directory: only the left working icon is displayed, all tools on the right are hidden.
 const HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH = 1080;
+const GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH = 1330;
 export const HIDDEN_TREE_WIDTH = 763;
 const HIDDEN_TOOLBAR_RIGHT_WIDTH = 465;
 const OFFSET_INPUT_WIDTH = 230;
 const SIDERBAR_WIDTH = 333;
+
+interface IHideFieldNode {
+  id: string;
+  type: ToolHandleType;
+  viewType: ViewType;
+  actualColumnCount: number;
+  visibleColumnsCount: number;
+  showLabel: boolean;
+  disabled: boolean;
+}
 
 const ToolbarBase = () => {
   const colors = useThemeColors();
@@ -185,9 +196,8 @@ const ToolbarBase = () => {
   const hiddenRightToolbar = Boolean(
     size && size.width && (size.width < HIDDEN_TOOLBAR_RIGHT_WIDTH || (size.width < HIDDEN_TREE_WIDTH - SIDERBAR_WIDTH && !sideBarVisible)),
   );
-  const showIconBarLabel = Boolean(size && size.width && size.width > HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH - offsetWidth);
+  const showIconBarLabel = Boolean(size && size.width && size.width > (isGanttView ? GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH : HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH) - offsetWidth);
   const showViewLockModal = useShowViewLockModal();
-  const isLogin = useSelector(state => state.user.isLogin);
 
   const hiddenKanbanGroupCount = useMemo(() => {
     return Object.keys(hiddenGroupMap || {})
@@ -389,16 +399,16 @@ const ToolbarBase = () => {
       return defaultValue;
     }
     return {
-      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false) && isLogin,
-      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false) && isLogin,
+      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false),
+      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false),
       widgetBtn: get(embedInfo, 'viewControl.toolBar.widgetBtn', false),
-      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false) && isLogin,
-      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false) && isLogin,
-      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false) && isLogin,
-      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false) && isLogin
+      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false),
+      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false),
+      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false),
+      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false)
     };
 
-  }, [embedInfo, embedId, isLogin]);
+  }, [embedInfo, embedId]);
 
   // The configuration array traversal for rendering, you need to manually specify a non-repeating key for the component,
   // usually the component name can be, repeatedly rendered components are followed by a number.
@@ -439,6 +449,7 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isApiPanelOpen })}
           showLabel={showIconBarLabel}
           id={DATASHEET_ID.API_BTN}
+          disabled={!permissions.editable}
         />
       ),
       key: 'api',
@@ -470,6 +481,7 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isRobotPanelOpen })}
           id={DATASHEET_ID.ROBOT_BTN}
           showLabel={showIconBarLabel}
+          disabled={!permissions.editable}
         />
       ),
       key: 'robot',
@@ -485,10 +497,11 @@ const ToolbarBase = () => {
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isTimeMachinePanelOpen })}
           id={DATASHEET_ID.TIME_MACHINE_BTN}
           showLabel={showIconBarLabel}
+          disabled={!permissions.editable}
         />
       ),
       key: 'timeMachine',
-      show: !mirrorId && !shareId && !templateId && permissions.editable && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
+      show: !mirrorId && !shareId && !templateId && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
     },
   ];
 
@@ -519,9 +532,9 @@ const ToolbarBase = () => {
             onClick={() => {
               (activeView as IKanbanViewProperty).style.kanbanFieldId && showKanbanSetting();
             }}
-            icon={getKanbanIcon(kanbanFieldId, datasheetId!)}
+            icon={getKanbanIcon(kanbanFieldId)}
             text={t(Strings.kanban_group_tip, {
-              kanban_field_id: getKanbanFieldType(kanbanFieldId, datasheetId!),
+              kanban_field_id: getKanbanFieldType(kanbanFieldId),
             })}
             showViewLockModal={showViewLockModal}
           />
@@ -578,7 +591,6 @@ const ToolbarBase = () => {
                 visibleColumnsCount={visibleColumnsCount}
                 showLabel={showIconBarLabel}
                 disabled={!visualizationEditable || disabledWithMirror}
-                showViewLockModal={showViewLockModal}
               />
             </div>
           </Display>
@@ -594,7 +606,6 @@ const ToolbarBase = () => {
                 visibleColumnsCount={visibleGanttColumnsCount}
                 showLabel={showIconBarLabel}
                 disabled={!visualizationEditable || disabledWithMirror}
-                showViewLockModal={showViewLockModal}
               />
             </div>
           </Display>
@@ -817,7 +828,7 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
   );
 }
 
-const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCount, showLabel, disabled, showViewLockModal }) => {
+const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCount, showLabel, disabled }: IHideFieldNode) => {
   const hidedAmount = actualColumnCount - visibleColumnsCount;
   const hasHide = !(hidedAmount === 0);
   const isGridType = viewType === ViewType.Grid;
@@ -857,7 +868,7 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
   );
 };
 
-function getKanbanIcon(kanbanFieldId: string, datasheetId: string) {
+function getKanbanIcon(kanbanFieldId: string) {
   if (!kanbanFieldId) {
     return;
   }
@@ -865,7 +876,7 @@ function getKanbanIcon(kanbanFieldId: string, datasheetId: string) {
   return getFieldTypeIcon(field.type, colorVars.secondLevelText);
 }
 
-function getKanbanFieldType(kanbanFieldId: string, datasheetId: string) {
+function getKanbanFieldType(kanbanFieldId: string) {
   if (!kanbanFieldId) {
     return;
   }

@@ -108,12 +108,12 @@ const GroupTabBase: React.FC<IGroupTab> = props => {
   const state = store.getState();
   const groupSketch = useMemo(() => {
     return new Group(groupInfo, Selectors.getGroupBreakpoint(state));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [JSON.stringify(groupInfo)]);
   const allGroupTabIds: string[] = useMemo(() => {
     if (!groupInfo) return [];
     return Array.from(groupSketch.getAllGroupTabIdsByRecomputed(state).keys());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [groupSketch]);
 
   if (!groupInfo.length) {

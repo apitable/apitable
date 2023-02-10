@@ -103,7 +103,7 @@ export const useUserRequest = () => {
   /**
    * Direct login/registration
    */
-  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
+  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn) => {
     // Extract the spaceId of the invitation to join, which is needed to give away space
     const invite = store.getState().invite;
     const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
@@ -361,6 +361,9 @@ export const useUserRequest = () => {
     return Api.updateUser({ avatar: token, init, avatarColor: null }).then((res) => {
       const { success, data } = res.data;
       if (success) {
+        Message.success({
+          content: t(Strings.avatar_modified_successfully),
+        });
         dispatch(StoreActions.setUserAvatarColor(null));
         dispatch(StoreActions.setUserAvatar(data));
         dispatch(StoreActions.setReqStatus(true));
@@ -377,6 +380,9 @@ export const useUserRequest = () => {
     }).then((res) => {
       const { success } = res.data;
       if (success) {
+        Message.success({
+          content: t(Strings.avatar_modified_successfully),
+        });
         dispatch(StoreActions.setUserAvatarColor(avatarColor));
         dispatch(StoreActions.setUserAvatar(''));
         dispatch(StoreActions.setReqStatus(true));

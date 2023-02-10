@@ -17,7 +17,7 @@
  */
 
 import { ApiTipConfig, ApiTipConstant, ConfigConstant, Strings, t } from '@apitable/core';
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, LoggerService } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
@@ -34,14 +34,14 @@ import { IExceptionOption, IHttpErrorResponse } from 'shared/interfaces/http.int
  */
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService, private readonly i18n: I18nService) {}
+  private readonly logger = new Logger(GlobalExceptionFilter.name);
+
+  constructor(private readonly i18n: I18nService) {}
 
   async catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<FastifyRequest>();
     const response = ctx.getResponse<FastifyReply>();
-
-    this.logger.error('request error', exception);
 
     // filter custom exception
     if (!(exception instanceof ServerException) && !(exception instanceof ApiException)) {
@@ -116,7 +116,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       code: statusCode,
       message: errMsg,
     };
-    this.logger.error('request error', exception?.stack || errMsg, exception?.message);
+
+    this.logger.error({
+      message: `request error: ${exception?.message || ''}`, 
+      response: exception?.response || ''
+    },
+    exception?.stack || errMsg);
+
     // set header, status code and error response data
     if (response instanceof ServerResponse) {
       response.setHeader('Content-Type', 'application/json');

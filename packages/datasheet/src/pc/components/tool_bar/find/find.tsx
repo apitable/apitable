@@ -120,7 +120,7 @@ export const Find = (props: IFindProps) => {
       dispatch(StoreActions.clearSelection(datasheetId!));
       // Cache the last grouping information.
       cacheLastGroupingCollapse();
-      let clearGroupCollapse;
+      let clearGroupCollapse: never[];
       switch (viewType) {
         case ViewType.Grid:
         case ViewType.Gallery:

@@ -82,7 +82,7 @@ export const CellRating: React.FC<ICellProps> = memo((props) => {
     });
   };
 
-  const handleMouseOut = (v: number) => {
+  const handleMouseOut = () => {
     setPendingValue(cellValue);
     clearTooltipInfo();
   };

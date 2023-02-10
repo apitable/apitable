@@ -42,7 +42,7 @@ interface ICellValueContainer {
 }
 
 export const OPERATE_COLUMN_WIDTH = 72;
-const EMPTY_ARRAY = [];
+const EMPTY_ARRAY: never[] = [];
 
 export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
   const {

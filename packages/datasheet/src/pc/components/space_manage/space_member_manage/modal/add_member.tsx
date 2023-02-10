@@ -47,7 +47,7 @@ export const AddMember: FC<IAddMember> = ({ onCancel }) => {
       const { success, data } = res.data;
       const arr: string[] = [selectedTeamInfoInSpace.teamId];
       if (success && data.length) {
-        data.forEach(item => {
+        data.forEach((item: { memberId: string; }) => {
           arr.push(item.memberId);
         });
       }

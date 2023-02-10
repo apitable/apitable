@@ -31,6 +31,7 @@ import {
   NodeHandleState,
   IBounds
 } from '../interfaces';
+// @ts-ignore
 import dagre from '@futpib/dagre';
 import { createGhostNodes } from './create_ghost_nodes';
 import { markHiddenNodes } from './mark_hidden_nodes';
@@ -71,7 +72,7 @@ export const findCycles = (nodes: Array<string>, adj: IAdj) => {
     cycle.push(start);
   };
 
-  const dfs = source => {
+  const dfs = (source: string) => {
     if (found) {
       return;
     }

@@ -51,7 +51,7 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
   const DefaultFieldUI = fieldUI || FormFieldUI;
 
   useEffect(() => {
-    function onMouseDown(e) {
+    function onMouseDown(e: MouseEvent | TouchEvent) {
       if (Boolean(getParentNodeByClass(e.target as HTMLElement, 'ant-drawer'))) return;
       if (clickWithinField.current) {
         clickWithinField.current = false;
@@ -67,6 +67,15 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
       window.removeEventListener('touchstart', onMouseDown);
     };
   }, []);
+
+  const onMouseDown = (type: FieldType, fieldId: string) => { 
+    clickWithinField.current = true; 
+
+    // Compatible with scenarios where clicking on a blank space in the date editor fails to focus
+    if (type === FieldType.DateTime) {
+      setFocusId(fieldId);
+    }
+  };
 
   return (
     <div className={styles.formFieldContainer} >
@@ -118,14 +127,8 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
                     ].includes(type)}
                   >
                     <div
-                      onMouseDown={() => { 
-                        clickWithinField.current = true; 
-
-                        // Compatible with scenarios where clicking on a blank space in the date editor fails to focus
-                        if (type === FieldType.DateTime) {
-                          setFocusId(fieldId);
-                        }
-                      }}
+                      onMouseDown={() => onMouseDown(type, fieldId)}
+                      onTouchStart={() => onMouseDown(type, fieldId)}
                       onFocus={() => setFocusId(fieldId)}
                     >
                       <FormField

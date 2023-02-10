@@ -37,7 +37,6 @@ export const ShareFail: React.FC = () => {
         <meta property='og:title' content={t(Strings.unavailable_og_title_content)} />
         <meta property='og:type' content='website' />
         <meta property='og:url' content={window.location.href} />
-        <meta property='og:image' content='https://s1.vika.cn/space/2021/12/01/992611616a744743a75c4b916e982dd6' />
         <meta property='og:site_name' content={t(Strings.og_site_name_content)} />
         <meta property='og:description' content={t(Strings.share_fail_og_description_content)} />
       </Head>

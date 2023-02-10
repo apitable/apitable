@@ -65,7 +65,7 @@ export const CellMember: FC<ICellProps> = props => {
   const avatarSize = AvatarSize.Size20;
 
   function deleteItem(index?: number) {
-    let value: string[] | null = (cellValue as string[]).filter((item, idx) => {
+    let value: string[] | null = (cellValue as string[]).filter((_item, idx) => {
       return idx !== index;
     });
     if (value.length === 0) {
@@ -143,11 +143,11 @@ export const CellMember: FC<ICellProps> = props => {
                     backgroundHeight={16}
                     backgroundWidth={16}
                     cornerRadius={2}
-                    onTap={e => deleteItem(index)}
-                    onMouseDown={e => {
+                    onTap={() => deleteItem(index)}
+                    onMouseDown={() => {
                       setCloseIconDownId(id);
                     }}
-                    onMouseUp={e => {
+                    onMouseUp={() => {
                       if (closeIconDownId) {
                         deleteItem(index);
                       }

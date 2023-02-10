@@ -30,7 +30,7 @@ import IconAdd from 'static/icon/common/add_big.svg';
 import BannerEditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { ButtonPlus } from '../../../common';
 import { IBasePropEditorProps, IModeEnum } from '../interface';
-import { IFileType, ImgBaseUploader } from './img_base_uploader';
+import { ImgBaseUploader } from './img_base_uploader';
 import styles from './style.module.less';
 
 interface ILogoImgUploaderProps extends IBasePropEditorProps {
@@ -51,7 +51,7 @@ export const LogoImgUploader: React.FC<ILogoImgUploaderProps> = props => {
   const logoAddIconSize = isMobile ? 16 : 32;
   const logoWrapClassName = classnames(styles.logoImgWrapper, isMobile && styles.logoWrapMobile);
 
-  const onChange = (file: any, type: IFileType) => {
+  const onChange = (file: any) => {
     const logoUrl = getCellValueThumbSrc(file, {
       w: logoSize * (window.devicePixelRatio || 1),
       formatToJPG: isGif({ name: file.name, type: file.mimeType }),

@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import elementClosest from 'element-closest';
 import 'enterprise/style.less';
 import ErrorPage from 'error_page';
+import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -81,7 +82,7 @@ const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
-  const resourceService = initResourceService(comlinkStore.store);
+  const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
 
@@ -99,7 +100,7 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp(props: AppProps) {
+function MyApp(props: AppProps & { envVars: string }) {
   const router = useRouter();
   const isWidget = router.asPath.includes('widget-stage');
   if (isWidget) {
@@ -108,8 +109,9 @@ function MyApp(props: AppProps) {
   return MyAppMain(props);
 }
 
-function MyAppMain({ Component, pageProps }: AppProps) {
+function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: string }) {
   const router = useRouter();
+  const env = JSON.parse(envVars);
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
       return LoadingStatus.Complete;
@@ -120,7 +122,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const handleStart = (url) => {
+    const handleStart = () => {
       if (loading !== LoadingStatus.None) {
         return;
       }
@@ -148,7 +150,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       // ldsEle?.parentNode?.removeChild(ldsEle);
 
     };
-    const handleComplete = (url) => {
+    const handleComplete = () => {
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -168,7 +170,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useEffect(() => {
@@ -257,7 +259,10 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
+      window.__initialization_data__.wizards = defaultsDeep({
+        guide: SystemConfig.guide,
+        player: SystemConfig.player,
+      }, JSON.parse(res.data.wizards));
 
     };
     getUser().then(() => {
@@ -269,7 +274,9 @@ function MyAppMain({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
+    // @ts-ignore
     import('element-scroll-polyfill');
+    // @ts-ignore
     import('polyfill-object.fromentries');
     elementClosest(window);
   }, []);
@@ -293,16 +300,21 @@ function MyAppMain({ Component, pageProps }: AppProps) {
     })();
   }, []);
 
+  useEffect(() => {
+    document.title = t(Strings.system_configuration_product_name);
+    const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    descMeta.content = t(Strings.client_meta_label_desc);
+  }, []);
+
   return <>
     <Head>
-      <title>{t(Strings.system_configuration_product_name)}</title>
-      <meta name='description' content={t(Strings.client_meta_label_desc)} />
+      <title />
+      <meta name='description' content='' />
       <meta
         name='keywords'
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
-      <meta property='og:image' content='/logo.png' />
       <meta name='renderer' content='webkit' />
       <meta
         name='viewport'
@@ -394,7 +406,20 @@ function MyAppMain({ Component, pageProps }: AppProps) {
         }
       </div>
     </Sentry.ErrorBoundary>}
-
+    {
+      env.GOOGLE_ANALYTICS_ID &&
+      <>
+        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${env.GOOGLE_ANALYTICS_ID}`} />
+        <Script id={'googleTag'}>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', window.__initialization_data__.envVars.GOOGLE_ANALYTICS_ID);
+          `}
+        </Script>
+      </>
+    }
   </>;
 }
 

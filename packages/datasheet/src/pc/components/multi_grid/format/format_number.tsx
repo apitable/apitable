@@ -78,7 +78,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
 
     const { symbolAlign, symbol, commaStyle } = property as INumberFieldProperty;
 
-    const getOptions = (symbol, symbolAlign, commaStyle?: string) => {
+    const getOptions = (symbol?: {} | null, symbolAlign?: SymbolAlign, commaStyle?: string) => {
       return optionData.map(item => {
         let label: React.ReactNode = item.label;
         if (commaStyle) {
@@ -129,10 +129,10 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
     defaultValue = defaultValue === '' ? undefined : defaultValue;
 
     numberRef.current!.onStartEdit(defaultValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
-  const handleChangeSymbolAlign = ({ value }) => {
+  const handleChangeSymbolAlign = ({ value }: any) => {
     setCurrentField({
       ...currentField,
       property: {
@@ -162,7 +162,7 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
     });
   };
 
-  const handleChangeNumberFieldSymbol = data => {
+  const handleChangeNumberFieldSymbol = (data: any) => {
     setCurrentField({
       ...currentField,
       property: {

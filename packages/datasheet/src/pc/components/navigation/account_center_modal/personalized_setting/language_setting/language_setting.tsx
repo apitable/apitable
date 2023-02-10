@@ -29,18 +29,18 @@ const options = [{
   label: '简体中文',
   value: 'zh-CN'
 }, {
-  label: 'English (beta)',
+  label: 'English',
   value: 'en-US' 
 }];
 
-export const LanguageSetting: FC = props => {
+export const LanguageSetting: FC = () => {
   const lang = getLanguage();
 
   const [value, setValue] = useState<string>(lang);
   const { updateLangReq } = useUserRequest();
   const { run: updateLang } = useRequest(updateLangReq, { manual: true });
 
-  const handleSelected = async(option) => {
+  const handleSelected = async(option: any) => {
     const newValue: string = option.value;
     if (newValue === value) {
       return;

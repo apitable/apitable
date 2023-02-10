@@ -19,7 +19,7 @@
 import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 import { useDispatch } from 'react-redux';
 
-export const useEditField = ({ datasheetId, fieldId, colIndex }) => {
+export const useEditField = ({ datasheetId, fieldId, colIndex }: { datasheetId: string, fieldId: string, colIndex?: number }) => {
   const dispatch = useDispatch();
   return (e: MouseEvent) => {
     if (typeof colIndex !== 'number') return;

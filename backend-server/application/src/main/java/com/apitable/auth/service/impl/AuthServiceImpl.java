@@ -18,54 +18,40 @@
 
 package com.apitable.auth.service.impl;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.auth.dto.UserLoginDTO;
 import com.apitable.auth.ro.LoginRo;
 import com.apitable.auth.service.IAuthService;
 import com.apitable.base.enums.ActionException;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
-import com.apitable.interfaces.billing.model.EntitlementRemark;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.interfaces.user.facade.UserLinkServiceFacade;
 import com.apitable.interfaces.user.model.UserLinkRequest;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.SocialAuthInfo;
 import com.apitable.shared.cache.service.SocialAuthInfoCacheService;
-import com.apitable.shared.captcha.CodeValidateScope;
-import com.apitable.shared.captcha.ValidateCodeProcessor;
-import com.apitable.shared.captcha.ValidateCodeProcessorManage;
-import com.apitable.shared.captcha.ValidateCodeType;
-import com.apitable.shared.captcha.ValidateTarget;
+import com.apitable.shared.captcha.*;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.user.enums.UserException.LOGIN_OFTEN;
-import static com.apitable.user.enums.UserException.MOBILE_EMPTY;
-import static com.apitable.user.enums.UserException.REGISTER_EMAIL_ERROR;
-import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
-import static com.apitable.core.constants.RedisConstants.ERROR_PWD_NUM_DIR;
-import static com.apitable.core.constants.RedisConstants.USER_AUTH_INFO_TOKEN;
-import static com.apitable.core.constants.RedisConstants.getUserInvitedJoinSpaceKey;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static com.apitable.core.constants.RedisConstants.*;
+import static com.apitable.user.enums.UserException.*;
 
 /**
  * Authorization-related service interface implementation
@@ -82,9 +68,6 @@ public class AuthServiceImpl implements IAuthService {
 
     @Resource
     private IMemberService iMemberService;
-
-    @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private SocialAuthInfoCacheService socialAuthInfoCacheService;
@@ -156,8 +139,7 @@ public class AuthServiceImpl implements IAuthService {
             // Query whether there is a space member corresponding to a mobile phone number
             List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
             iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
-        }
-        else {
+        } else {
             // registered a new user
             String nickName = socialLogin ? authInfo.getNickName() : null;
             String avatar = socialLogin ? authInfo.getAvatar() : null;
@@ -200,8 +182,7 @@ public class AuthServiceImpl implements IAuthService {
             // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
             List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
             iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
-        }
-        else {
+        } else {
             // Email automatic registration users do not provide third-party scan code login binding
             userId = registerUserUsingEmail(email);
             if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
@@ -237,8 +218,7 @@ public class AuthServiceImpl implements IAuthService {
     private void createOrActiveSpace(UserEntity user, List<Long> memberIds) {
         if (memberIds.isEmpty()) {
             iUserService.initialDefaultSpaceForUser(user);
-        }
-        else {
+        } else {
             iMemberService.activeIfExistInvitationSpace(user.getId(), memberIds);
         }
     }

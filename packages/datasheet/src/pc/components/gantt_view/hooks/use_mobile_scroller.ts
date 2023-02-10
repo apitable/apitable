@@ -17,6 +17,7 @@
  */
 
 import { useEffect, useRef, useCallback, useMemo } from 'react';
+// @ts-ignore
 import { Scroller } from 'scroller';
 import { IScrollCoordsProps } from './use_scroller';
 

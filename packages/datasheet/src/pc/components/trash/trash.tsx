@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apitable/components';
+import { Button, Skeleton, TextButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 // @ts-ignore
 import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
 import { last } from 'lodash';
@@ -32,7 +33,8 @@ import { useSelector } from 'react-redux';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
 import RecoverIcon from 'static/icon/datasheet/rightclick/recover.svg';
-import EmptyPng from 'static/icon/workbench/notification/workbench_img_no_notification.png';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { UnitTag } from '../catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { ButtonPlus, Message, Tooltip } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -66,10 +68,12 @@ const Trash: FC = () => {
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useAppDispatch();
   const { loading: recoverLoading, run: trashRecover } = useRequest(nodeId => Api.trashRecover(nodeId), { manual: true });
+  const themeName = useSelector(state => state.theme);
+  const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);
   const [noMore, setNoMore] = useState(false);
-  const handleSuccess = res => {
+  const handleSuccess = (res: { data: { success: any; data: any; }; }) => {
     const { success, data } = res.data;
     if (success) {
       const lastDataItem = last(data as ITrashItem[]);
@@ -249,7 +253,7 @@ const Trash: FC = () => {
                       />
                     </div>
                     <Tooltip title={deletedAt} textEllipsis>
-                      <div className={styles.expirationTime}>{deletedAt}</div>
+                      <div className={styles.expirationTime}>{dayjs(deletedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </Tooltip>
 
                     <Tooltip title={delPath || spaceName} textEllipsis>

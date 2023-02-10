@@ -28,7 +28,7 @@ interface ISubColumnProps {
   showSubColumnWithWidget: boolean;
   currentViewId: string;
   currentDatasheetId: string;
-  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] });
+  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] }): void;
 }
 
 export const SubColumn: React.FC<ISubColumnProps> = props => {
@@ -38,7 +38,7 @@ export const SubColumn: React.FC<ISubColumnProps> = props => {
   useEffect(() => {
     setInstalledWidgets(null);
     searchDatasheetInstalledWidget(currentDatasheetId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentDatasheetId]);
 
   const searchDatasheetInstalledWidget = (datasheetId: string) => {

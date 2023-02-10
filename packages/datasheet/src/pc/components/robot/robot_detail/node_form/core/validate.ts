@@ -125,7 +125,10 @@ export function toErrorList(errorSchema: any, fieldName = 'root') {
  * It's not working for now.
  * @param formData
  */
-function createErrorHandler(formData: object) {
+function createErrorHandler(formData: object): {
+  __errors: any[];
+  addError(message: any): void;
+} {
   const handler: {
     __errors: any[];
     addError(message: any): void;
@@ -151,7 +154,7 @@ function createErrorHandler(formData: object) {
   return handler;
 }
 
-function unwrapErrorHandler(errorHandler: object) {
+function unwrapErrorHandler(errorHandler: object): any {
   return Object.keys(errorHandler).reduce((acc, key) => {
     if (key === 'addError') {
       return acc;
@@ -196,7 +199,7 @@ export default function validateFormData(
   formData: any,
   schema: string | boolean | object,
   customValidate: ((arg0: any, arg1: any) => any) | undefined = undefined,
-  transformErrors:
+  _transformErrors:
     | ((
         arg0: {
           name: never;
@@ -215,8 +218,8 @@ export default function validateFormData(
         schemaPath: never;
       }[])
     | undefined = undefined,
-  additionalMetaSchemas = [],
-  customFormats = {},
+  _additionalMetaSchemas = [],
+  _customFormats = {},
 ) {
   // Include form data with undefined values, which is required for validation.
   const rootSchema = schema as JSONSchema7;

@@ -57,7 +57,7 @@ const NodeItemBase: FC<INodeItemProps> = ({ node, expanded = false, actived = fa
       const activeElem = document.getElementById(`${ConfigConstant.Modules.CATALOG}${node.nodeId}`);
       activeElem && activeElem.scrollIntoView({ block: 'nearest' });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [actived]);
 
   const addNodeHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -112,7 +112,7 @@ const NodeItemBase: FC<INodeItemProps> = ({ node, expanded = false, actived = fa
         onCancel: cancelDeleteModalHandler,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [deleting]);
 
   return deleting && !isMobile ? (

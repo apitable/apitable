@@ -35,7 +35,7 @@ export interface IStepItem {
 
 export const Steps: React.FC<IStepsProps> = ({ current, steps }) => {
   const colors = useThemeColors();
-  const stepItem = (item, index) => {
+  const stepItem = (item: IStepItem, index: number) => {
     const isFinish = current > index;
     return (
       <div key={item.title} className={classnames(

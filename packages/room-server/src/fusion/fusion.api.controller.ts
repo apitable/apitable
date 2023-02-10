@@ -17,9 +17,22 @@
  */
 
 import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
-import { RedisService } from '@apitable/nestjs-redis';
 import {
-  Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
+  Body,
+  CacheTTL,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
@@ -33,7 +46,6 @@ import { I18nService } from 'nestjs-i18n';
 import { API_MAX_MODIFY_RECORD_COUNTS, DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'shared/common';
 import { NodePermissionEnum } from 'shared/enums/node.permission.enum';
 import { ApiException } from 'shared/exception';
-import { RedisLock } from 'shared/helpers/redis.lock';
 import { ApiCacheInterceptor, apiCacheTTLFactory } from 'shared/interceptor/api.cache.interceptor';
 import { ApiNotifyInterceptor } from 'shared/interceptor/api.notify.interceptor';
 import { ApiUsageInterceptor } from 'shared/interceptor/api.usage.interceptor';
@@ -46,7 +58,6 @@ import { ApiSpaceGuard } from 'fusion/middleware/guard/api.space.guard';
 import { ApiUsageGuard } from 'fusion/middleware/guard/api.usage.guard';
 import { NodePermissionGuard } from 'fusion/middleware/guard/node.permission.guard';
 import { RestService } from 'shared/services/rest/rest.service';
-import { promisify } from 'util';
 import { AssetUploadQueryRo } from './ros/asset.query';
 import { DatasheetCreateRo } from './ros/datasheet.create.ro';
 import { FieldCreateRo } from './ros/field.create.ro';
@@ -72,7 +83,6 @@ import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
 import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
 import { FieldPipe } from './middleware/pipe/field.pipe';
 import { QueryPipe } from './middleware/pipe/query.pipe';
-import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 /**
  * TODO: cache response data, send notification while member changed, should maintain the data in the same server and cache them
@@ -88,7 +98,6 @@ export class FusionApiController {
     private readonly fusionApiService: FusionApiService,
     private readonly attachService: AttachmentService,
     private readonly restService: RestService,
-    private readonly redisService: RedisService,
     private readonly i18n: I18nService,
   ) {}
 
@@ -102,7 +111,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  public async findAll(@Param() param: RecordParamRo, @Query(ValidationPipe, QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
+  public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
     return ApiResponse.success(pageVo);
   }
@@ -128,20 +137,8 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
   async addRecords(@Param() param: RecordParamRo, @Query() query: RecordViewQueryRo, @Body(FieldPipe) body: RecordCreateRo): Promise<RecordListVo> {
-    await this.fusionApiService.checkDstRecordCount(param.datasheetId, body);
-    const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    /*
-     * Add locks to resources, api of the same resource can only be consumed sequentially.
-     * Solve the problem of concurrent writing of link fields and incomplete data of associated tables, 120 seconds timeout
-     */
-    const unlock = await lock('api.add.' + param.datasheetId, 120 * 1000);
-    try {
-      const res = await this.fusionApiService.addRecords(param.datasheetId, body, query.viewId!);
-      return ApiResponse.success(res);
-    } finally {
-      await unlock();
-    }
+    const res = await this.fusionApiService.addRecords(param.datasheetId, body, query.viewId!);
+    return ApiResponse.success(res);
   }
 
   @Get('/datasheets/:datasheetId/attachments/presignedUrl')
@@ -185,11 +182,7 @@ export class FusionApiController {
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
   // TODO: Waiting for nestjs official inheritance multi and fastify
-  public async addAttachment(
-    @Param() param: RecordParamRo,
-    @Req() req: FastifyRequest,
-    @Res() reply: FastifyReply
-  ): Promise<AttachmentVo> {
+  public async addAttachment(@Param() param: RecordParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     // check space capacity
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
@@ -417,7 +410,7 @@ export class FusionApiController {
     if (fields[0]!.id === fieldId) {
       throw ApiException.tipError(ApiTipConstant.api_params_primary_field_not_allowed_to_delete, { property: 'name' });
     }
-    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion!);
+    await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion);
     return ApiResponse.success({});
   }
 
@@ -514,11 +507,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async executeCommand(
-    @Body() body: ICollaCommandOptions,
-    @Param('datasheetId') datasheetId: string,
-    @Req() request: FastifyRequest
-  ) {
+  public async executeCommand(@Body() body: ICollaCommandOptions, @Param('datasheetId') datasheetId: string, @Req() request: FastifyRequest) {
     const commandBody = body;
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });

@@ -22,8 +22,8 @@ import { ChevronRightOutlined } from '@apitable/icons';
 
 import Image from 'next/image';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
-import robotAvatar from 'static/icon/robot/robot_avatar.png';
 import { useRobot, useToggleRobotActive } from '../hooks';
 import { IRobotCardInfo } from '../interface';
 import { NodeSpectator } from './node_spectator';
@@ -65,37 +65,37 @@ export const RobotListItemCard: React.FC<IRobotListItemCardProps> = ({ index, ro
     <Box
       border={`1px solid ${theme.color.fc5}`}
       borderLeft={`4px solid ${borderColor}`}
-      borderRadius="4px"
-      marginTop="16px"
+      borderRadius='4px'
+      marginTop='16px'
       background={theme.color.fc8}
-      height="68px"
+      height='68px'
       style={readonlyStyle}
     >
       <Box
-        padding="8px 0"
-        margin="0 8px"
+        padding='8px 0'
+        margin='0 8px'
         onClick={onClick}
       >
-        <Box display="flex" alignItems="center">
-          <Box width="100%">
-            <Box display="flex" alignItems="center">
+        <Box display='flex' alignItems='center'>
+          <Box width='100%'>
+            <Box display='flex' alignItems='center'>
               <Avatar
-                icon={<Image src={robotAvatar}/>}
+                icon={<Image alt={''} src={integrateCdnHost(getEnvVariables().ROBOT_DEFAULT_AVATAR!)} width={24} height={24} />}
                 style={{ marginRight: 4, minWidth: '24px' }}
-                size="xs"
+                size='xs'
               />
-              <Typography variant="h8" ellipsis>
+              <Typography variant='h8' ellipsis>
                 {name || t(Strings.robot_unnamed)}
               </Typography>
             </Box>
           </Box>
           <ChevronRightOutlined />
         </Box>
-        <Box display="flex" justifyContent="space-between" marginTop="8px" alignItems="center">
+        <Box display='flex' justifyContent='space-between' marginTop='8px' alignItems='center'>
           <Box
-            width="100%"
-            display="flex"
-            alignItems="center"
+            width='100%'
+            display='flex'
+            alignItems='center'
           >
             {nodeTypeList.map((nodeType, index) => {
               const isLast = index === nodeTypeList.length - 1;
@@ -104,7 +104,7 @@ export const RobotListItemCard: React.FC<IRobotListItemCardProps> = ({ index, ro
                   <Image
                     key={`${nodeType.nodeTypeId}_${index}`}
                     src={integrateCdnHost(nodeType.service.logo)}
-                    alt=""
+                    alt=''
                     width={24}
                     height={24}
                   />
@@ -112,14 +112,14 @@ export const RobotListItemCard: React.FC<IRobotListItemCardProps> = ({ index, ro
 
                 {
                   // spectator
-                  !isLast && <Box display="flex" margin="0 8px">
+                  !isLast && <Box display='flex' margin='0 8px'>
                     <NodeSpectator />
                   </Box>
                 }
               </React.Fragment>;
             })}
           </Box>
-          <Switch checked={robot!.isActive} size="small" disabled={readonly} loading={loading} onClick={(value, e) => {
+          <Switch checked={robot!.isActive} size='small' disabled={readonly} loading={loading} onClick={(_value, e) => {
             stopPropagation(e);
             toggleRobotActive();
           }} />

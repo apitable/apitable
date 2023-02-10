@@ -53,7 +53,7 @@ export const ViewRules: React.FC<IViewRules> = props => {
     return <IconArrowGray fill={colors.thirdLevelText} />;
 
   }
-  function changeDescType(e: React.MouseEvent, type: boolean) {
+  function changeDescType(_e: React.MouseEvent, type: boolean) {
     onChange(type);
   }
 

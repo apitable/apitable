@@ -29,7 +29,7 @@ import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
+import { AddFilled, AddOutlined, WidgetNarrowOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -114,7 +114,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
     setIsFullScreen(isFullscreen);
   }, [isFullscreen, setIsFullScreen]);
 
-  const triggerOnChange = (status) => {
+  const triggerOnChange = (status: boolean) => {
     setOpenTrigger(status);
   };
 
@@ -220,7 +220,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
       }
       {
         isEnoughToShowButton && <TextButton
-          prefixIcon={<WidgetExpandOutlined />}
+          prefixIcon={isFullscreen ? <WidgetNarrowOutlined /> : <WidgetExpandOutlined />}
           onClick={toggleFullscreen}
           className={styles.atcButton}
         >

@@ -26,7 +26,7 @@ export function useKeyboardCollapse(callback: Function) {
   const originHeight = useRef<number>(document.documentElement.clientHeight || document.body.clientHeight);
 
   useEffect(() => {
-    const isAndroid = browser.is('android');
+    const isAndroid = browser?.is('android');
     const handelAndroidResize = () => {
       const resizeHeight =
         document.documentElement.clientHeight || document.body.clientHeight;

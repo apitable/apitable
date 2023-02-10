@@ -161,7 +161,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     arrowRef?.current?.dashEnabled(dashEnabled);
   };
 
-  const onDragMove = e => {
+  const onDragMove = (e: any) => {
     const node = e.target;
     const curX = node.x();
     const curY = node.y();
@@ -169,11 +169,11 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     const targetRecordId = includeTask(curX, curY);
 
     const noScrollCb = () => setDrawingLinePoints([x, y + 6, x, curY, curX, curY]);
-    const horizontalScrollCb = ({ scrollLeft }) => {
+    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => {
       setDrawingLinePoints([x, y + 6, x, curY, scrollLeft + pointX - gridWidth, curY]);
     };
-    const verticalScrollCb = ({ scrollTop }) => setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
-    const allScrollCb = ({ scrollLeft, scrollTop }) =>
+    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
+    const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number; scrollTop: number  }) =>
       setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, scrollLeft + pointX - gridWidth, scrollTop + pointY]);
     onDragScrollSpacing(
       scrollHandler,
@@ -191,12 +191,12 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       switchArrowStyle(colors.fc10, true);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: true });
     } else {
-      switchArrowStyle(colors.borderBrand, false);
+      switchArrowStyle(colors.borderBrandDefault, false);
       setTargetTaskInfo({ recordId: targetRecordId, dashEnabled: false });
     }
   };
 
-  const onDragEnd = e => {
+  const onDragEnd = () => {
     setDrawingLinePoints([]);
     setLinePointStyle(2, colors.blackBlue[400]);
     if (targetTaskInfo && targetTaskInfo.recordId !== '') {
@@ -257,12 +257,12 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   };
 
   const drawingLine = (
-    <Group onMouseMove={() => setLinePointStyle(3.5, colors.borderBrand)} onMouseLeave={() => setLinePointStyle(2, colors.blackBlue[400])}>
+    <Group onMouseMove={() => setLinePointStyle(3.5, colors.borderBrandDefault)} onMouseLeave={() => setLinePointStyle(2, colors.blackBlue[400])}>
       <Arrow
         _ref={arrowRef}
         points={drawingLinePoints}
-        fill={colors.borderBrand}
-        stroke={colors.borderBrand}
+        fill={colors.borderBrandDefault}
+        stroke={colors.borderBrandDefault}
         strokeWidth={1}
         lineCap="round"
         dash={[2, 5]}

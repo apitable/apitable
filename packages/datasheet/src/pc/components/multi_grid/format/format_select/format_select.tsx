@@ -64,7 +64,7 @@ interface ISortableContainerProps {
 const SortableContainer: React.FC<ISortableContainerProps> = ({ onDragUpdate, onSortEnd, children }) => {
   return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
     <Droppable droppableId='droppable'>
-      {(provided, snapshot) => (
+      {(provided) => (
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
@@ -99,7 +99,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     });
   }
 
-  const onSortEnd = (result) => {
+  const onSortEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
@@ -123,7 +123,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   };
 
   // Here there is an unused parameter because of the generic property setting method defined in ColorPiker
-  const onOptionChange = (type: OptionSetting, id: string, value: number | string) => {
+  const onOptionChange = (_type: OptionSetting, id: string, value: number | string) => {
     selectColor(
       options.findIndex(item => item.id === id),
       value as number,

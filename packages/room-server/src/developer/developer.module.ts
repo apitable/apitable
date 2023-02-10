@@ -18,8 +18,6 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
-import { UserRepository } from 'user/repositories/user.repository';
 import { UserModule } from 'user/user.module';
 import { DeveloperRepository } from './repositories/developer.repository';
 import { DeveloperService } from './services/developer.service';
@@ -29,9 +27,6 @@ import { DeveloperService } from './services/developer.service';
     UserModule,
     TypeOrmModule.forFeature([
       DeveloperRepository,
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      UserRepository,
-      UnitMemberRepository,
     ]),
   ],
   providers: [DeveloperService],

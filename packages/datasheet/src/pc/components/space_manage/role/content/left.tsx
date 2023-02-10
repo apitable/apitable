@@ -120,7 +120,7 @@ export const Left: React.FC<{
       {
         icon: <EditOutlined/>,
         text: t(Strings.role_context_item_rename),
-        onClick: ({ onEdit, roleName, role }) => {
+        onClick: ({ onEdit, roleName, role }: any) => {
           expandEditRoleModal({
             value: roleName,
             title: t(Strings.rename_role_title),
@@ -132,7 +132,7 @@ export const Left: React.FC<{
       {
         icon: <DeleteOutlined/>,
         text: t(Strings.role_context_item_delete),
-        onClick: ({ onDelete, role }) => {
+        onClick: ({ onDelete, role }: any) => {
           onDelete?.(role);
         },
       }

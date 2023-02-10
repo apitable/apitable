@@ -53,7 +53,7 @@ export const MoreTool: React.FC = () => {
     return null;
   });
 
-  const undo = e => {
+  const undo = (e: any) => {
     stopPropagation(e);
     if (undoLength) {
       undoManager.undo();
@@ -61,7 +61,7 @@ export const MoreTool: React.FC = () => {
     }
   };
 
-  const redo = e => {
+  const redo = (e: any) => {
     stopPropagation(e);
     if (redoLength) {
       undoManager.redo();
@@ -145,7 +145,7 @@ export const MoreTool: React.FC = () => {
         });
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [datasheetId]);
 
   return (

@@ -48,10 +48,14 @@ const LinkConfirm: FC = () => {
         dispatch(StoreActions.updateInviteLinkInfo(null));
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
-        const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL } = getEnvVariables();
+        const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0 } = getEnvVariables();
         if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
           const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
           location.href = `${LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL}${redirectUri}`;
+          return;
+        }
+        if (INVITE_USER_BY_AUTH0) {
+          Router.push(Navigation.WORKBENCH);
           return;
         }
         Router.push(Navigation.INVITE, {

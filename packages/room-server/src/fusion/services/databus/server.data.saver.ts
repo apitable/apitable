@@ -80,7 +80,7 @@ export class ServerDataSaver implements databus.IDataSaver {
    * @param internalFix   [optional] use when repairing data
    */
   private async applyChangeSet(dstId: string, changesets: ILocalChangeset[], auth: IAuthHeader, internalFix?: IInternalFix): Promise<string> {
-    this.logger.info('API:ApplyChangeSet');
+    this.logger.info('API:ApplyChangeSet ' + dstId);
     const applyChangeSetProfiler = this.logger.startTimer();
     let applyAuth = auth;
     const message = {

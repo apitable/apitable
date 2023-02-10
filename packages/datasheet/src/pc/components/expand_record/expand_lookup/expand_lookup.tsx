@@ -165,7 +165,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
       return (
         <ExpandAttachment
           {...props}
-          field={field}
+          field={field as any}
           recordId={recordId}
           cellValue={cellValue as IAttachmentValue[]}
           onClick={() => undefined}

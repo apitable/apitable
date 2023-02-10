@@ -29,7 +29,7 @@ export const useSearchPanel = () => {
   const [panelVisible, setPanelVisible] = useState(false);
   const [panelInfo, setPanelInfo] = useState<IPanelInfo | null>(null);
   const { addTreeNode } = useCatalog();
-  const onChange = ({ datasheetId, viewId, viewName }) => {
+  const onChange = ({ datasheetId, viewId, viewName }: { datasheetId?: string, viewId?: string, viewName?: string }) => {
     setPanelVisible(false);
     addTreeNode(panelInfo?.folderId, ConfigConstant.NodeType.FORM, {
       datasheetId,

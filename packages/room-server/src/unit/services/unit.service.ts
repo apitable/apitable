@@ -18,16 +18,16 @@
 
 import { MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { UnitInfo } from 'database/interfaces';
 import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { getConnection } from 'typeorm';
+import { UserService } from 'user/services/user.service';
 import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitEntity } from '../entities/unit.entity';
-import { UnitInfo } from '../../database/interfaces';
 import { UnitRepository } from '../repositories/unit.repository';
-import { UserRepository } from '../../user/repositories/user.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTagService } from './unit.tag.service';
 import { UnitTeamService } from './unit.team.service';
@@ -40,7 +40,7 @@ export class UnitService {
     private readonly tagService: UnitTagService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
-    private readonly userRepo: UserRepository,
+    private readonly userService: UserService,
   ) {}
 
   /**
@@ -48,7 +48,8 @@ export class UnitService {
    */
   async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
-    const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
+    const tableNamePrefix = this.unitRepo.manager.connection.options.entityPrefix;
+    // todo(itou): replace dynamic sql
     const unitInfo: any[] = await queryRunner.query(
       `
           SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
@@ -111,6 +112,8 @@ export class UnitService {
           isDeleted: tmp?.isDeleted!,
           isNickNameModified: tmp?.isNickNameModified!,
           isMemberNameModified: tmp?.isMemberNameModified!,
+          nickName: tmp.nickName!,
+          avatarColor: tmp.avatarColor!,
           name: tmp.name,
           type: cur.unitType,
           unitId: cur.id,
@@ -188,8 +191,8 @@ export class UnitService {
     const userMap = new Map<string, UnitBaseInfoDto>();
     if (!userIds.length) return userMap;
     const users = excludeDeleted
-      ? await this.userRepo.selectUserBaseInfoByIds(userIds as any[])
-      : await this.userRepo.selectUserBaseInfoByIdsWithDeleted(userIds);
+      ? await this.userService.selectUserBaseInfoByIds(userIds as any[])
+      : await this.userService.selectUserBaseInfoByIdsWithDeleted(userIds);
     const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {
@@ -202,6 +205,8 @@ export class UnitService {
         isNickNameModified: user.isSocialNameModified !== 0,
         isMemberNameModified: member?.isMemberNameModified!,
         name: member ? member.memberName : user.nikeName!,
+        nickName: user.nikeName!,
+        avatarColor: user.color!,
         type: UnitTypeEnum.MEMBER,
         // NOTE here userId is uuid
         userId: user.uuid!,
@@ -210,5 +215,13 @@ export class UnitService {
       });
     });
     return userMap;
+  }
+
+  async getIdByUserIdAndSpaceId(userId: string, spaceId: string): Promise<string | undefined> {
+    const memberId = await this.memberService.getIdBySpaceIdAndUserId(spaceId, userId);
+    if (!memberId) {
+      return undefined;
+    }
+    return this.unitRepo.selectIdByRefIdAndSpaceId(memberId, spaceId).then(o => o?.id);
   }
 }

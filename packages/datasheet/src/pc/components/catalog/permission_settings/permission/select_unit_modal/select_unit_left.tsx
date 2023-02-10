@@ -104,7 +104,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
   let linkId = useSelector(Selectors.getLinkId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
-
+  const embedId = useSelector(state => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
@@ -130,7 +130,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     search(keyword, linkId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [keyword, linkId, isRole]);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     setUnits(unitsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [unitsData, source]);
 
   const isDisabled = useCallback(
@@ -210,7 +210,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setBreadCrumbData([...breadCrumbData, { name: unit.teamName, teamId: unit.teamId }]);
   };
 
-  const onChangeChecked = (e: CheckboxChangeEvent, unit: UnitItem) => {
+  const onChangeChecked = (_e: CheckboxChangeEvent, unit: UnitItem) => {
     const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
     if (idx !== -1) {
       setCheckedList(checkedList.filter(item => item.unitId !== unit.unitId));
@@ -261,15 +261,14 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       } as any;
     }
 
-    const title = spaceInfo
+    const title = (spaceInfo || embedId )
       ? (getSocialWecomUnitName?.({
         name: _item.originName || _item.memberName,
         isModified: _item.isMemberNameModified,
         spaceInfo,
       }) || _item.originName || _item.memberName)
       : '';
-    const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName } = _item;
-
+    const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName,email } = _item;
     return (
       <div className={classnames(styles.item, inSearch && styles.searchItem)} key={_item.unitId}>
         <div className={styles.checkWrapper}>
@@ -277,6 +276,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
             <div className={styles.itemContent}>
               <InfoCard
                 title={title || t(Strings.unnamed)}
+                email={email}
                 originTitle={memberName || t(Strings.unnamed)}
                 description={teamData ? teamData[0]?.fullHierarchyTeamName : ''}
                 style={{ backgroundColor: 'transparent' }}
@@ -442,7 +442,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {
             if (isExist) {
-              isExist = eachUnits.findIndex(item => item.unitId === listItem.unitId) === -1;
+              isExist = eachUnits.findIndex((item: { unitId: string; }) => item.unitId === listItem.unitId) === -1;
             }
           });
           return isExist;
@@ -513,7 +513,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       {!isRole && (
         <div className={styles.breadcrumb}>
           <HorizontalScroll>
-            <Breadcrumb separator="/">
+            <Breadcrumb separator='/'>
               {breadCrumbData.map(breadItem => (
                 <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
                   {breadItem.name}

@@ -399,7 +399,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       }
     });
     return dataMap;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [startFieldId, endFieldId, ganttLinearRows, snapshot]);
 
   /**
@@ -489,7 +489,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   const clearTooltipInfo = useCallback(() => setTooltipInfo(DEFAULT_TOOLTIP_PROPS), [setTooltipInfo]);
 
-  const handleGridHorizontalScroll = e => {
+  const handleGridHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGridScrollState({
       scrollLeft,
@@ -499,7 +499,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleGanttHorizontalScroll = e => {
+  const handleGanttHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGanttScrollState({
       scrollLeft,
@@ -509,7 +509,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = e => {
+  const handleVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setGanttScrollState({
       scrollTop,
@@ -805,7 +805,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         StoreActions.setGanttDateUnitType(defaultGanttViewStatus.dateUnitType || DateUnitType.Month, datasheetId),
       ]),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [view?.id]);
 
   useMount(() => {
@@ -837,7 +837,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [startFieldId, endFieldId, datasheetId, view, spaceId, mirrorId, isViewLock]);
 
   useEffect(() => {
@@ -919,7 +919,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
   // Automatic scheduling of single-task modifications
-  const autoSingleTask = endData => {
+  const autoSingleTask = (endData: { recordId: string, endTime: number }) => {
     if (!linkFieldId || !startFieldId || !endFieldId) {
       return;
     }

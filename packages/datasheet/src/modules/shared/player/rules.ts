@@ -21,7 +21,7 @@ import { store } from 'pc/store';
 import dayjs from 'dayjs';
 import * as dot from 'dot-object';
 import { isMatch } from 'lodash';
-import { isMobileApp } from 'pc/utils/env';
+import { getInitializationData, isMobileApp } from 'pc/utils/env';
 
 type IPlayerRulesCondition = 'device' | 'identity' | 'sign_up_time' | 'url';
 type IPlayerRulesOperator = 'IS' | 'IS_BEFORE' | 'IS_AFTER' | 'GREATER_THAN' | 'GREATER_THAN_OR_EQUAL'
@@ -33,7 +33,8 @@ enum PlayerRulesConditionType {
   IDENTITY = 'identity',
   SIGN_UP_TIME = 'sign_up_time',
   URL = 'url',
-  LABS = 'labs'
+  LABS = 'labs',
+  EDITION = 'edition',
 }
 
 enum DeviceType {
@@ -58,7 +59,7 @@ export const getConditionValue = (str: string) => {
     const strKey = Object.keys(tempObj)[0];
     switch (strKey) {
       case 'wizard': {
-        const id = tempObj[strKey].findIndex(item => item);
+        const id = tempObj[strKey].findIndex((item: any) => item);
         return (userWizards && userWizards.hasOwnProperty(id)) ? userWizards[id] : 0;
       }
       default: {
@@ -92,6 +93,9 @@ export const getConditionValue = (str: string) => {
     }
     case PlayerRulesConditionType.LABS: {
       return state.labs;
+    }
+    case PlayerRulesConditionType.EDITION: {
+      return getInitializationData().env?.split('-')[0];
     }
     default:
       return str;
@@ -143,15 +147,15 @@ export const isRulePassed = (conditionValue: any, operator: IPlayerRulesOperator
     }
     case 'ONE_OF_TRUE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.find(item => conditionValue.includes(item)));
+      return Boolean(conditionArr.find((item: any) => conditionValue.includes(item)));
     }
     case 'ALL_OF_TRUE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.every(item => conditionValue.includes(item)));
+      return Boolean(conditionArr.every((item: any) => conditionValue.includes(item)));
     }
     case 'ALL_OF_FALSE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.every(item => !conditionValue.includes(item)));
+      return Boolean(conditionArr.every((item: any) => !conditionValue.includes(item)));
     }
     case 'INCLUDES': {
       const conditionArgsValue = getConditionArgsValue(conditionArgs);
@@ -166,12 +170,12 @@ export const isRulePassed = (conditionValue: any, operator: IPlayerRulesOperator
   }
 };
 
-export const isRulesPassed = (rulesConfig, ruleIds: string[] | undefined) => {
+export const isRulesPassed = (rulesConfig: any[] | undefined, ruleIds: string[] | undefined) => {
   if (!ruleIds) {
     return true;
   }
   const someIsNotPass = ruleIds.find(ruleId => {
-    const curRule = rulesConfig.find(item => item.id === ruleId);
+    const curRule = rulesConfig?.find(item => item.id === ruleId);
     if (!curRule) {
       return true;
     }

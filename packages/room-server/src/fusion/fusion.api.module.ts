@@ -37,13 +37,10 @@ import { QueryPipe } from './middleware/pipe/query.pipe';
 import { FieldPipe } from './middleware/pipe/field.pipe';
 import { ApiAuthGuard } from './middleware/guard/api.auth.guard';
 import { FusionApiTransformer } from './transformer/fusion.api.transformer';
-import { DatasheetRecordRepository } from 'database/datasheet/repositories/datasheet.record.repository';
 import { FusionApiFilter } from './filter/fusion.api.filter';
-import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
 import { UserModule } from 'user/user.module';
 import { NodeModule } from 'node/node.module';
 import { UnitModule } from 'unit/unit.module';
-import { ValidationPipe } from './middleware/pipe/validation.pipe';
 
 @Module({
   imports: [
@@ -56,9 +53,6 @@ import { ValidationPipe } from './middleware/pipe/validation.pipe';
     }),
     TypeOrmModule.forFeature([
       ApiUsageRepository,
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      DatasheetRecordRepository,
-      UnitMemberRepository,
     ]),
   ],
   controllers: [FusionApiController],
@@ -66,7 +60,6 @@ import { ValidationPipe } from './middleware/pipe/validation.pipe';
     FusionApiRecordService,
     FusionApiService,
     DataBusService,
-    ValidationPipe,
     QueryPipe,
     FieldPipe,
     ApiAuthGuard,

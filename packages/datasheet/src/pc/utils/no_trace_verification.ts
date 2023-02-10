@@ -40,12 +40,12 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
     throw new Error('Man-machine verification code load failure');
   }
 
-  const successFun = data => {
+  const successFun = (data: React.SetStateAction<string | null>) => {
     Modal.destroyAll();
     successCallback(data);
   };
 
-  window['AWSC'].use('nvc', (state, module) => {
+  window['AWSC'].use('nvc', (_state: any, module: any) => {
     window['nvc'] = module.init({
       appkey: ConfigConstant.nvcAppkey,
       scene: 'nvc_login', // nvc_login and nc_login
@@ -70,5 +70,5 @@ export const execNoTraceVerification = (callback: (data?: string) => void) => {
   if (!window['nvc']) {
     throw new Error('Man-machine verification code load failure');
   }
-  window['nvc'].getNVCValAsync(nvcVal => callback(nvcVal));
+  window['nvc'].getNVCValAsync((nvcVal?: string) => callback(nvcVal));
 };

@@ -56,7 +56,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       durationValue = FilterDuration.Today;
     }
   }
-  let noDateProperty;
+  let noDateProperty: IDateTimeField;
   const ref = useRef<HTMLDivElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
@@ -101,7 +101,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       return;
     }
     dateEditorRef.current?.setValue(dataValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   function commandDateFn(date: ITimestamp | null) {

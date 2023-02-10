@@ -101,7 +101,7 @@ export const Capacity: FC<ICapacity> = ({ maxValue, curValue, dataColor, strokeC
               trailColor={colors.lineColor}
               strokeWidth={8}
               className={classNames({
-                [styles.isEdgeValue]: percent === 0 || percent === 100,
+                [styles.isEdgeValue!]: percent === 0 || percent === 100,
               })}
               format={() => usedCapacity}
             />

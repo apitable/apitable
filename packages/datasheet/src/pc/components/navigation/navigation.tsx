@@ -117,7 +117,7 @@ export const Navigation: FC = () => {
       }
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [newNoticeListFromWs, unReadCount]);
 
   useEffect(() => {
@@ -326,7 +326,7 @@ export const Navigation: FC = () => {
           </div>
         </div>
         <div className={styles.navWrapper} onClick={hiddenUserMenu}>
-          {navList.map(item => {
+          {navList.map((item: any) => {
             if (user && !user!.isAdmin && item.key === NavKey.SpaceManagement) {
               return null;
             }
@@ -401,6 +401,7 @@ export const Navigation: FC = () => {
           height={'90%'}
           className={classNames(styles.drawer, styles.notificationDrawer)}
           style={{ backgroundColor: colors.defaultBg }}
+          destroyOnClose
         >
           <Notification />
         </Popup>

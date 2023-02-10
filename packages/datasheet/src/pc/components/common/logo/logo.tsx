@@ -57,55 +57,41 @@ export const LogoText: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = 
 export const Logo: React.FC<ILogoProps> = (props) => {
   const colors = useThemeColors();
 
-  const { size = 'small', text = true, className, theme } = props;
+  const { size = 'small', text = true, className, theme = ThemeName.Light } = props;
   const isLightTheme = theme === ThemeName.Light;
   const logoSize = LogoSize[size];
 
   const envVars = getEnvVariables();
 
   const renderLogo = () => {
-    if (envVars.USE_CUSTOM_PUBLIC_FILES) {
-      return (
-        <img
-          alt="logo"
-          height={logoSize.logoSize}
-          src={integrateCdnHost(getEnvVariables().LOGO!)}
-          style={{ display: 'block' }}
-          width={logoSize.logoSize}
-        />
-      );
-    }
-
-    return (
-      <img
-        alt="logo"
-        height={logoSize.logoSize}
-        src="/logo.svg"
-        style={{ display: 'block' }}
-        width={logoSize.logoSize}
-      />
-    );
+    return <img
+      alt='logo'
+      height={logoSize.logoSize}
+      src={integrateCdnHost(getEnvVariables().LOGO!)}
+      style={{ display: 'block' }}
+      width={logoSize.logoSize}
+    />;
   };
 
   const renderLogoText = () => {
     if (!text) return null;
-    
+
     if (envVars.USE_CUSTOM_PUBLIC_FILES) {
       const lightSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!) || '/logo_text_light.svg';
       const darkSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!) || '/logo_text_dark.svg';
       return (
         <img
-          alt="logoText"
+          alt='logoText'
           className={styles.logoText}
           height={logoSize.logoTextHeight}
-          src={isLightTheme ? lightSrc: darkSrc}
+          src={isLightTheme ? lightSrc : darkSrc}
         />
       );
     }
 
     return LogoText && (
       <LogoText
-        fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
+        fill={isLightTheme ? colors.primaryColor : colors.staticWhite0}
         width={undefined}
         height={logoSize.logoTextHeight}
       />

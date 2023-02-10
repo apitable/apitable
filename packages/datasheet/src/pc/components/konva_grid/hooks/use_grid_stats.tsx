@@ -163,7 +163,7 @@ export const useStats = (props: IUseStatsProps) => {
       bottomFrozenStats,
       bottomStatBackground
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [
     instance, getStats, containerHeight, frozenColumnCount, columnStartIndex, columnStopIndex, rowInitSize,
     containerWidth, colors.defaultBg, colors.sheetLineColor, rowStartIndex, rowStopIndex, linearRows

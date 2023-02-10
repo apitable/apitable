@@ -18,16 +18,18 @@
 
 package com.apitable.user.service.impl;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import cn.hutool.core.collection.CollectionUtil;
+import org.junit.jupiter.api.Test;
+
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.ro.UserOpRo;
-import org.junit.jupiter.api.Test;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,5 +75,15 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         iUserService.edit(userSpace.getUserId(), param);
         List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getNickName()).isEqualTo("testName");
+    }
+
+    @Test
+    public void testEditPassword() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        iUserService.updatePwd(userSpace.getUserId(), "123456");
+
+        UserEntity userEntity = iUserService.getById(userSpace.getUserId());
+        assertThat(userEntity.getPassword()).isNotBlank();
     }
 }
