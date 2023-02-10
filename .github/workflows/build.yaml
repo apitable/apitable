@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16.15.0'
@@ -48,14 +48,29 @@ jobs:
   build-push: ## build and push to docker registry
     needs: unit-test
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+    strategy:
+      matrix:
+        target: [ backend-server, room-server, web-server, init-db ]
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
       - name: Fetch Sources
-        uses: actions/checkout@v2
-      # - uses: satackey/action-docker-layer-caching@v0.0.11
-      #   continue-on-error: true
+        uses: actions/checkout@v3
       - name: Build APITable and Push
         run: |
-          make buildpush-docker
+          make buildpush-docker target=${{ matrix.target }}
+
+  build-push-all-in-one: ## build and push to docker registry
+    needs: build-push
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+    env:
+      APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+      - name: Build APITable and Push
+        run: |
+          cp -pr gateway/ packaging/all-in-one/all-in-one/
+          make buildpush-docker target=all-in-one
