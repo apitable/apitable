@@ -19,7 +19,7 @@
 import { omit } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { UnitMemberEntity } from '../entities/unit.member.entity';
-import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member..dto';
+import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member.dto';
 
 /**
  * Operations on table `unit_member`
@@ -46,15 +46,11 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
     });
   }
 
-  selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<{ id: string } | undefined> {
-    return this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
+  async selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<{ id: string } | undefined> {
+    return await this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
   }
 
-  selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {
-    return this.count({ where: { id, spaceId, isDeleted: false }});
-  }
-
-  async selectMembersBySpaceIdAndUserIds(
+  public async selectMembersBySpaceIdAndUserIds(
     spaceId: string,
     userIds: string[],
     excludeDeleted: boolean,

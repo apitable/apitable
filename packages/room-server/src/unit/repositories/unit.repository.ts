@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EntityRepository, In, Not, Repository } from 'typeorm';
-import { UnitTypeEnum } from '../../shared/enums';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { UnitEntity } from '../entities/unit.entity';
+import { UnitBaseInfoDto } from '../dtos/unit.dto';
 
 /**
  * Operations on table `unit`
@@ -28,8 +28,8 @@ import { UnitEntity } from '../entities/unit.entity';
  */
 @EntityRepository(UnitEntity)
 export class UnitRepository extends Repository<UnitEntity> {
-  selectUnitMembersByIdsIncludeDeleted(unitIds: string[]): Promise<UnitEntity[]> {
-    return this.find({ select: ['id', 'unitType', 'unitRefId'], where: { id: In(unitIds), unitType: Not(UnitTypeEnum.TAG) }});
+  public async selectUnitMembersByIdsIncludeDeleted(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
+    return await this.find({ select: ['id', 'unitType', 'unitRefId'], where: { id: In(unitIds) }});
   }
 
   selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {

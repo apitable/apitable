@@ -15,11 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { IUserValue } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UnitBaseInfoDto implements IUserValue {
+export class UnitBaseInfoDto {
+  id!: string;
+  unitType!: number;
+  unitRefId!: number;
+}
+
+export class UnitInfoDto implements IUserValue {
   @ApiProperty({
     type: String,
     example: 0,

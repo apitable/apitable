@@ -19,7 +19,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UnitMemberService } from './unit.member.service';
 import { UnitMemberRepository } from '../repositories/unit.member.repository';
 import { UserService } from 'user/services/user.service';
-import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member..dto';
+import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member.dto';
 import { INamedUser } from '../../shared/interfaces';
 import { MemberType } from '@apitable/core';
 import { PermissionException } from '../../shared/exception';
@@ -63,7 +63,7 @@ describe('UnitMemberServiceTest', () => {
       id: 2023,
       uuid: '2023',
       avatar: 'avatar',
-      nikeName: 'nickName',
+      nickName: 'nickName',
       isSocialNameModified: 0,
       color: 0,
     };

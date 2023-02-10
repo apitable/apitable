@@ -24,12 +24,11 @@ import { UnitTypeEnum } from 'shared/enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { getConnection } from 'typeorm';
-import { UserService } from 'user/services/user.service';
-import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
-import { UnitEntity } from '../entities/unit.entity';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTeamService } from './unit.team.service';
+import { UserService } from 'user/services/user.service';
+import { UnitBaseInfoDto, UnitInfoDto } from '../dtos/unit.dto';
 
 @Injectable()
 export class UnitService {
@@ -82,7 +81,7 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:52 PM
    */
-  public async getUnitInfoByIdsIncludeDeleted(unitIds: string[]): Promise<UnitEntity[]> {
+  private async getUnitInfoByIdsIncludeDeleted(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
     if (!unitIds.length) return [];
     return await this.unitRepo.selectUnitMembersByIdsIncludeDeleted(unitIds);
   }
@@ -93,15 +92,15 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:53 PM
    */
-  public async getUnitMemberInfoByIds(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
-    const units: UnitEntity[] = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
+  public async getUnitMemberInfoByIds(unitIds: string[]): Promise<UnitInfoDto[]> {
+    const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
     const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
     const [members, teams] = await Promise.all([
       this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]),
       this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]),
     ]);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return units.reduce<UnitBaseInfoDto[]>((pre, cur) => {
+    return units.reduce<UnitInfoDto[]>((pre, cur) => {
       const tmp = cur.unitType === MemberType.Member ? members[cur.unitRefId] : teams[cur.unitRefId];
       if (tmp) {
         pre.push({
@@ -131,7 +130,7 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:11 PM
    */
-  private getMemberRefIdMapFromUnities(unitEntities: UnitEntity[]): IUnitMemberRefIdMap {
+  private getMemberRefIdMapFromUnities(unitEntities: UnitBaseInfoDto[]): IUnitMemberRefIdMap {
     const memberIds: number[] = [];
     const teamIds: number[] = [];
     const roleIds: number[] = [];
@@ -149,7 +148,7 @@ export class UnitService {
     return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds };
   }
 
-  async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
+  public async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
     return await this.unitRepo.selectCountByIdAndSpaceId(unitId, spaceId);
   }
 
@@ -162,7 +161,7 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/9/9 1:41 AM
    */
-  async getIdByNameAndType(unitName: string, unitType: UnitTypeEnum, spaceId: string): Promise<string | null> {
+  public async getIdByNameAndType(unitName: string, unitType: UnitTypeEnum, spaceId: string): Promise<string | null> {
     let refId;
     if (UnitTypeEnum.TEAM === unitType) {
       refId = await this.teamService.getIdBySpaceIdAndName(spaceId, unitName);
@@ -176,14 +175,14 @@ export class UnitService {
     return null;
   }
 
-  async getIdByRefIdAndSpaceId(refId: string, spaceId: string): Promise<string | null> {
+  private async getIdByRefIdAndSpaceId(refId: string, spaceId: string): Promise<string | null> {
     const entity = await this.unitRepo.selectIdByRefIdAndSpaceId(refId, spaceId);
     if (entity) return entity.id;
     return null;
   }
 
-  async getUnitMemberInfoByUserIds(spaceId: string, userIds: string[], excludeDeleted = true): Promise<Map<string, UnitBaseInfoDto>> {
-    const userMap = new Map<string, UnitBaseInfoDto>();
+  public async getUnitMemberInfoByUserIds(spaceId: string, userIds: string[], excludeDeleted = true): Promise<Map<string, UnitInfoDto>> {
+    const userMap = new Map<string, UnitInfoDto>();
     if (!userIds.length) return userMap;
     const users = excludeDeleted
       ? await this.userService.selectUserBaseInfoByIds(userIds as any[])
