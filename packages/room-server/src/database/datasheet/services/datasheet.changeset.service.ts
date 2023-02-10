@@ -30,7 +30,7 @@ import { DatasheetChangesetRepository } from '../repositories/datasheet.changese
 import { CommandOptionsService } from 'database/command/services/command.options.service';
 import { CommandService } from 'database/command/services/command.service';
 import { UnitService } from 'unit/services/unit.service';
-import { UnitInfoDto } from '../../../unit/dtos/unit.dto';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 @Injectable()
 export class DatasheetChangesetService {

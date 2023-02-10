@@ -15,10 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export class TeamBaseInfoDto {
+export class UnitMemberInfoDto {
   id!: string;
-
-  teamName!: string;
-
+  memberName!: string;
+  userId?: number;
+  mobile!: string;
+  spaceId!: string;
+  isActive!: boolean | 0;
   isDeleted!: boolean;
+  isSocialNameModified?: number;
 }
+

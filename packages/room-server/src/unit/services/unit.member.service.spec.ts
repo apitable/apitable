@@ -19,10 +19,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UnitMemberService } from './unit.member.service';
 import { UnitMemberRepository } from '../repositories/unit.member.repository';
 import { UserService } from 'user/services/user.service';
-import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member.dto';
+import { UnitMemberInfoDto } from '../dtos/unit.member.info.dto';
 import { INamedUser } from '../../shared/interfaces';
 import { MemberType } from '@apitable/core';
 import { PermissionException } from '../../shared/exception';
+import { UnitMemberBaseInfoDto } from '../dtos/unit.member.base.info.dto';
 
 describe('UnitMemberServiceTest', () => {
   let module: TestingModule;

@@ -18,7 +18,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnitTeamService } from './unit.team.service';
 import { UnitTeamRepository } from '../repositories/unit.team.repository';
-import { TeamBaseInfoDto } from '../dtos/unit.team.dto';
+import { UnitTeamBaseInfoDto } from '../dtos/unit.team.base.info.dto';
 import { MemberType } from '@apitable/core';
 
 describe('UnitTeamServiceTest', () => {
@@ -45,7 +45,7 @@ describe('UnitTeamServiceTest', () => {
     };
 
     jest.spyOn(unitTeamRepository, 'selectTeamsByIdsIncludeDeleted')
-      .mockImplementation((teamIds: number[]): Promise<TeamBaseInfoDto[]> => {
+      .mockImplementation((teamIds: number[]): Promise<UnitTeamBaseInfoDto[]> => {
         if(teamIds?.length === 1 && `${teamIds[0]}` == unitTeam.id) {
           return Promise.resolve([unitTeam]);
         }

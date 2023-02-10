@@ -119,6 +119,20 @@ describe('Test', () => {
           unitId: '2023',
         }
       });
+    jest.spyOn(unitRepository, 'selectUnitInfosBySpaceIdAndUnitIds')
+      .mockResolvedValue([{
+        unitId: '2023',
+        type: 3,
+        isDeleted: false,
+        name: 'memberName',
+        avatar: 'avatar',
+        avatarColor: 0,
+        nickName: 'nickName',
+        isMemberNameModified: false,
+        isActive: true,
+        userId: '2023',
+        uuid: '2023',
+      }]);
   });
 
   it('should be return unit info', async() => {
@@ -151,5 +165,20 @@ describe('Test', () => {
     expect(userIdToUnitMember.get('2023')?.isNickNameModified).toEqual(false);
     expect(userIdToUnitMember.get('2023')?.isActive).toBeTruthy();
     expect(userIdToUnitMember.get('2023')?.isDeleted).toBeFalsy();
+  });
+
+  it('should be return unit info by space id and unit id', async() => {
+    const unitInfos = await service.getUnitInfo('spaceId', ['2023']);
+    expect(unitInfos.length).toEqual(1);
+    expect(unitInfos[0]?.uuid).toEqual('2023');
+    expect(unitInfos[0]?.userId).toEqual('2023');
+    expect(unitInfos[0]?.unitId).toEqual('2023');
+    expect(unitInfos[0]?.isActive).toBeTruthy();
+    expect(unitInfos[0]?.isDeleted).toBeFalsy();
+    expect(unitInfos[0]?.avatar).toEqual('host/avatar');
+    expect(unitInfos[0]?.avatarColor).toEqual(0);
+    expect(unitInfos[0]?.name).toEqual('memberName');
+    expect(unitInfos[0]?.nickName).toEqual('nickName');
+    expect(unitInfos[0]?.type).toEqual(3);
   });
 });

@@ -18,12 +18,6 @@
 import { IUserValue } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UnitBaseInfoDto {
-  id!: string;
-  unitType!: number;
-  unitRefId!: number;
-}
-
 export class UnitInfoDto implements IUserValue {
   @ApiProperty({
     type: String,

@@ -19,7 +19,8 @@
 import { omit } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { UnitMemberEntity } from '../entities/unit.member.entity';
-import { UnitMemberBaseInfoDto, UnitMemberInfoDto } from '../dtos/unit.member.dto';
+import { UnitMemberInfoDto } from '../dtos/unit.member.info.dto';
+import { UnitMemberBaseInfoDto } from '../dtos/unit.member.base.info.dto';
 
 /**
  * Operations on table `unit_member`

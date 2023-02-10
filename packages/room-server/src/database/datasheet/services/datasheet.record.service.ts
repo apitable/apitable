@@ -31,7 +31,7 @@ import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
-import { UnitInfoDto } from '../../../unit/dtos/unit.dto';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 @Injectable()
 export class DatasheetRecordService {

@@ -15,21 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+export class UnitTeamBaseInfoDto {
+  id!: string;
 
-import { ApiProperty } from '@nestjs/swagger';
-import { CommentDto } from '../dtos/comment.dto';
-import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
+  teamName!: string;
 
-export class CommentListVo {
-  @ApiProperty({
-    type: [CommentDto],
-    description: 'record comment list',
-  })
-    comments!: CommentDto[];
-
-  @ApiProperty({
-    type: [CommentDto],
-    description: 'list of units involved in record comments',
-  })
-    units!: UnitInfoDto[];
+  isDeleted!: boolean;
 }

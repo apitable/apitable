@@ -23,12 +23,12 @@ import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
-import { getConnection } from 'typeorm';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTeamService } from './unit.team.service';
 import { UserService } from 'user/services/user.service';
-import { UnitBaseInfoDto, UnitInfoDto } from '../dtos/unit.dto';
+import { UnitBaseInfoDto} from '../dtos/unit.base.info.dto';
+import { UnitInfoDto } from '../dtos/unit.info.dto';
 
 @Injectable()
 export class UnitService {
@@ -43,29 +43,10 @@ export class UnitService {
   /**
    * Batch obtain unit infos
    */
-  async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
-    const queryRunner = getConnection().createQueryRunner();
-    const tableNamePrefix = this.unitRepo.manager.connection.options.entityPrefix;
-    // todo(itou): replace dynamic sql
-    const unitInfo: any[] = await queryRunner.query(
-      `
-          SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
-          COALESCE(vut.team_name, vum.member_name, vur.role_name) name, u.avatar avatar, u.color avatarColor,
-          u.nick_name nickName,
-          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
-          vum.is_active isActive, u.uuid userId, u.uuid uuid
-          FROM ${tableNamePrefix}unit vu
-          LEFT JOIN ${tableNamePrefix}unit_team vut ON vu.unit_ref_id = vut.id
-          LEFT JOIN ${tableNamePrefix}unit_member vum ON vu.unit_ref_id = vum.id
-          LEFT JOIN ${tableNamePrefix}unit_role vur ON vu.unit_ref_id = vur.id
-          LEFT JOIN ${tableNamePrefix}user u ON vum.user_id = u.id
-          WHERE vu.space_id = ? AND vu.id IN (?)
-        `,
-      [spaceId, unitIds],
-    );
-    await queryRunner.release();
+  public async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
+    const unitInfos = await this.unitRepo.selectUnitInfosBySpaceIdAndUnitIds(spaceId, unitIds);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return unitInfo.reduce((pre, cur) => {
+    return unitInfos.reduce((pre, cur) => {
       if (cur.avatar && !cur.avatar.startsWith('http')) {
         cur.avatar = oss.host + '/' + cur.avatar;
       }
