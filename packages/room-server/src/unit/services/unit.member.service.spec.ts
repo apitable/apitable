@@ -63,7 +63,7 @@ describe('UnitMemberServiceTest', () => {
       id: 2023,
       uuid: '2023',
       avatar: 'avatar',
-      nickName: 'nickName',
+      nikeName: 'nickName',
       isSocialNameModified: 0,
       color: 0,
     };
