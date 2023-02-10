@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     name: 'minio',
-    script: 'minio server /data',
+    script: 'minio --certs-dir /apitable/minio/config/certs server /apitable/minio/data',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
@@ -22,14 +22,14 @@ module.exports = {
     restart_delay: 1000
   }, {
     name: 'rabbitmq',
-    script: 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu "${GOSU_USER}" rabbitmq-server',
+    script: 'RABBITMQ_MNESIA_BASE=/apitable/rabbitmq RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu "${GOSU_USER}" rabbitmq-server',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
     restart_delay: 1000
   }, {
     name: 'redis',
-    cwd: '/var/lib/redis',
+    cwd: '/apitable/redis',
     script: 'gosu "${GOSU_USER}" redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"',
     out_file: '/dev/null',
     error_file: '/dev/null',
@@ -47,32 +47,9 @@ module.exports = {
     name: 'room-server',
     cwd: '/app/room-server/packages/room-server',
     env: {
-      PORT: "3333"
-    },
-    script: './dist/main.js',
-    out_file: '/dev/null',
-    error_file: '/dev/null',
-    max_restarts: 2147483647,
-    restart_delay: 1000
-  }, {
-    name: 'scheduler-server',
-    cwd: '/app/room-server/packages/room-server',
-    env: {
-      PORT: "3443",
-      GRPC_URL: "0.0.0.0:3444",
-      APPLICATION_NAME: "SCHEDULE_SERVER",
-      ENABLE_SCHED: "true"
-    },
-    script: './dist/main.js',
-    out_file: '/dev/null',
-    error_file: '/dev/null',
-    max_restarts: 2147483647,
-    restart_delay: 1000
-  }, {
-    name: 'socket-server',
-    cwd: '/app/socket-server/packages/socket-server',
-    env: {
-      PORT: "3001"
+      NODE_ENV: "production",
+      PORT: "3333",
+      ENABLE_SOCKET: "true"
     },
     script: './dist/main.js',
     out_file: '/dev/null',
@@ -83,6 +60,7 @@ module.exports = {
     name: 'web-server',
     cwd: '/app/web-server/packages/datasheet',
     env: {
+      NODE_ENV: "production",
       PORT: "3000"
     },
     script: 'node server.js',

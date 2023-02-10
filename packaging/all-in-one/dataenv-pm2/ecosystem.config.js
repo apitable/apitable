@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     name: 'minio',
-    script: 'minio server /data',
+    script: 'minio --certs-dir /apitable/minio/config/certs server /apitable/minio/data',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
@@ -22,14 +22,14 @@ module.exports = {
     restart_delay: 1000
   }, {
     name: 'rabbitmq',
-    script: 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu "${GOSU_USER}" rabbitmq-server',
+    script: 'RABBITMQ_MNESIA_BASE=/apitable/rabbitmq RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME} RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD} gosu "${GOSU_USER}" rabbitmq-server',
     out_file: '/dev/null',
     error_file: '/dev/null',
     max_restarts: 2147483647,
     restart_delay: 1000
   }, {
     name: 'redis',
-    cwd: '/var/lib/redis',
+    cwd: '/apitable/redis',
     script: 'gosu "${GOSU_USER}" redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"',
     out_file: '/dev/null',
     error_file: '/dev/null',

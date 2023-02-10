@@ -43,7 +43,7 @@ else
     # Not found
 	RUNNER := $(_DEVENV) run --rm --user $$UID:$$GID
 endif
-BUILDER := docker buildx bake -f docker-compose.build.yaml
+BUILDER := docker buildx bake
 
 ttt:
 	echo $(OS_NAME)

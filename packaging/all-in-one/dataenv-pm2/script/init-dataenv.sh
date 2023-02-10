@@ -2,7 +2,19 @@
 
 set -e
 
-if [[ -n "$(ls -A /var/lib/mysql)" ]]; then
+for i in /apitable/minio/data /apitable/minio/config; do
+    if [[ ! -d "${i}" ]]; then
+        mkdir -p "${i}"
+    fi
+done
+
+for i in /apitable/mysql /apitable/redis /apitable/rabbitmq; do
+    if [[ ! -d "${i}" ]]; then
+        install --directory --owner "${GOSU_USER}" --group "${GOSU_USER}" "${i}"
+    fi
+done
+
+if [[ -n "$(ls -A /apitable/mysql)" ]]; then
     exit
 fi
 

@@ -2,9 +2,9 @@ ARG APITABLE_VERSION=latest
 
 FROM apitable/backend-server:${APITABLE_VERSION} as backend-server
 FROM apitable/room-server:${APITABLE_VERSION} as room-server
-FROM apitable/socket-server:${APITABLE_VERSION} as socket-server
 FROM apitable/web-server:${APITABLE_VERSION} as web-server
 FROM apitable/init-db:${APITABLE_VERSION} as init-db
+
 FROM apitable/init-appdata:latest as init-appdata
 FROM apitable/imageproxy-server:latest as imageproxy-server
 
@@ -12,7 +12,6 @@ FROM apitable/dataenv-liquibase-pm2:latest
 
 COPY --from=backend-server /app/ /app/backend-server/
 COPY --from=room-server /app/ /app/room-server/
-COPY --from=socket-server /app/ /app/socket-server/
 COPY --from=web-server /app/ /app/web-server/
 COPY --from=imageproxy-server /app/ /app/imageproxy-server/
 COPY --from=init-db /liquibase/changelog/ /liquibase/changelog/
@@ -36,77 +35,83 @@ COPY script/init-appdata.sh /usr/local/bin/
 
 COPY ecosystem.config.js /
 
-CMD ["bash", "-c", "init-mysql.sh && add-host.sh && pm2-runtime start ecosystem.config.js"]
+CMD ["bash", "-c", "init-dataenv.sh && add-host.sh && pm2-runtime start ecosystem.config.js"]
+
+ARG BUILD_VERSION
+ENV BUILD_VERSION ${BUILD_VERSION}
 
 ENV \
-    NODE_ENV=production \
-    \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \
-    SOCKET_GRPC_URL=socket-server:3007 \
     NEST_GRPC_URL=room-server:3334 \
+    SOCKET_GRPC_URL=room-server:3007 \
     \
-    OSS_HOST=http://minio:9000 \
-    OSS_TYPE=QNY1 \
     OSS_CACHE_TYPE=minio \
+    OSS_HOST=assets \
+    OSS_TYPE=QNY1 \
     \
     MINIO_ACCESS_KEY=apitable \
     MINIO_SECRET_KEY=apitable@com \
     \
-    MYSQL_HOST=mysql \
-    MYSQL_PORT=3306 \
-    MYSQL_DATABASE=apitable \
-    MYSQL_USERNAME=root \
-    MYSQL_PASSWORD=apitable@com \
-    MYSQL_ROOT_PASSWORD=apitable@com \
     DATABASE_TABLE_PREFIX=apitable_ \
+    MYSQL_DATABASE=apitable \
+    MYSQL_HOST=mysql \
+    MYSQL_PASSWORD=apitable@com \
+    MYSQL_PORT=3306 \
+    MYSQL_ROOT_PASSWORD=apitable@com \
+    MYSQL_USERNAME=root \
     \
-    REDIS_HOST=redis \
-    REDIS_PORT=6379 \
-    REDIS_PASSWORD=apitable@com \
     REDIS_DB=0 \
+    REDIS_HOST=redis \
+    REDIS_PASSWORD=apitable@com \
+    REDIS_PORT=6379 \
     \
     RABBITMQ_HOST=rabbitmq \
+    RABBITMQ_PASSWORD=apitable@com \
     RABBITMQ_PORT=5672 \
     RABBITMQ_USERNAME=apitable \
-    RABBITMQ_PASSWORD=apitable@com \
     RABBITMQ_VHOST=/ \
     \
     TIMEZONE=Asia/Singapore \
     \
     ENV=apitable \
+    \
+    API_PROXY=http://backend-server:8081 \
+    BACKEND_INFO_URL=http://backend-server:8081/api/v1/client/info \
     PUBLIC_URL= \
     TEMPLATE_PATH=./static/web_build/index.html \
-    BACKEND_INFO_URL=http://backend-server:8081/api/v1/client/info \
-    API_PROXY=http://backend-server:8081 \
     USE_CUSTOM_PUBLIC_FILES=true \
     \
     NEST_GRPC_ADDRESS=static://room-server:3334 \
     \
-    SERVER_DOMAIN= \
     CALLBACK_DOMAIN= \
     CORS_ORIGINS=* \
-    SOCKET_DOMAIN=http://socket-server:3001/socket \
+    SERVER_DOMAIN= \
+    SOCKET_DOMAIN=http://room-server:3333/socket \
     \
     TEMPLATE_SPACE=spcNTxlv8Drra \
     \
-    SOCKET_URL=http://socket-server:3002 \
     SOCKET_RECONNECTION_ATTEMPTS=10 \
     SOCKET_RECONNECTION_DELAY=500 \
     SOCKET_TIMEOUT=5000 \
+    SOCKET_URL=http://room-server:3002 \
     \
     SMS_ENABLED=false \
     \
     MAIL_ENABLED=false \
     MAIL_HOST= \
-    MAIL_USERNAME= \
     MAIL_PASSWORD= \
+    MAIL_PORT= \
+    MAIL_SSL_ENABLE=true \
+    MAIL_USERNAME= \
     \
-    OSS_ENABLED=true \
     OSS_CLIENT_TYPE=aws \
+    OSS_ENABLED=true \
+    \
     AWS_ACCESS_KEY=apitable \
     AWS_ACCESS_SECRET=apitable@com \
     AWS_ENDPOINT=http://minio:9000 \
     AWS_REGION=us-east-1 \
     \
     OSS_BUCKET_NAME=assets \
-    VK_ASSETS_LTD_BUCKET=assets
+    VK_ASSETS_LTD_BUCKET=assets \
+    VK_ASSETS_LTD_URL=assets

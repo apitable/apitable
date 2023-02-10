@@ -6,13 +6,22 @@ ARG LB_SHA256=7462b6e92f7077e1858865c403d52f0dce1bd66d03b1fae907815c10825feb33
 
 RUN set -eux; \
   microdnf -y update; \
-  microdnf -y install findutils unzip zip; \
+  microdnf -y install findutils unzip; \
   microdnf clean all; \
-  curl -s "https://get.sdkman.io" | bash; \
-  set +u; \
-  source "/root/.sdkman/bin/sdkman-init.sh"; \
-  sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn; \
-  set -u; \
+  \
+  CORRETTO_VERSION=1.8.0_362.b08-1; \
+  export GNUPGHOME="$(mktemp -d)"; \
+  curl -fL -o corretto.key https://yum.corretto.aws/corretto.key; \
+  gpg --batch --import corretto.key; \
+  gpg --batch --export --armor '6DC3636DAE534049C8B94623A122542AB04F24E3' > corretto.key; \
+  rpm --import corretto.key; \
+  rm -fr "$GNUPGHOME" corretto.key; \
+  curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo; \
+  grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo; \
+  echo "priority=9" >> /etc/yum.repos.d/corretto.repo; \
+  microdnf -y install "java-1.8.0-amazon-corretto-devel-${CORRETTO_VERSION}"; \
+  (find /usr/lib/jvm/java-1.8.0-amazon-corretto -name src.zip -delete || true); \
+  \
   mkdir -p /liquibase/bin; \
   cd /liquibase; \
   curl -LO "https://github.com/liquibase/liquibase/releases/download/v${LIQUIBASE_VERSION}/liquibase-${LIQUIBASE_VERSION}.tar.gz"; \
@@ -28,8 +37,9 @@ RUN set -eux; \
   lpm update; \
   lpm add mysql --global
 
-ENV JAVA_HOME=/root/.sdkman/candidates/java/current
+
+ENV LANG C.UTF-8
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto
 ENV LIQUIBASE_HOME=/liquibase
-ENV PATH=$PATH:/root/.sdkman/candidates/java/current/bin
 
 COPY liquibase.docker.properties /liquibase/
