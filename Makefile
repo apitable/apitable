@@ -223,12 +223,12 @@ test-ut-backend:
 ###### 【backend server unit test】 ######
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
-	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin ;\
+	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin || true;\
 	$(BUILDER) $(target) --push
 
 .PHONY: build
 build-docker: ## build all containers
-	$(BUILDER) $(target)
+	$(BUILDER) $(target) --load
 
 .PHONY: _build-init-db
 _build-docker-init-db:

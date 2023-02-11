@@ -1,9 +1,9 @@
-ARG APITABLE_VERSION=latest
+ARG IMAGE_TAG=latest
 
-FROM apitable/backend-server:${APITABLE_VERSION} as backend-server
-FROM apitable/room-server:${APITABLE_VERSION} as room-server
-FROM apitable/web-server:${APITABLE_VERSION} as web-server
-FROM apitable/init-db:${APITABLE_VERSION} as init-db
+FROM apitable/backend-server:${IMAGE_TAG} as backend-server
+FROM apitable/room-server:${IMAGE_TAG} as room-server
+FROM apitable/web-server:${IMAGE_TAG} as web-server
+FROM apitable/init-db:${IMAGE_TAG} as init-db
 
 FROM apitable/init-appdata:latest as init-appdata
 FROM apitable/imageproxy-server:latest as imageproxy-server
@@ -17,7 +17,7 @@ COPY --from=imageproxy-server /app/ /app/imageproxy-server/
 COPY --from=init-db /liquibase/changelog/ /liquibase/changelog/
 COPY --from=init-appdata /app/ /app/init-appdata/
 
-RUN set -eux; \
+RUN set -euxo pipefail; \
   curl -LO https://github.com/Automattic/node-canvas/releases/download/v2.9.1/canvas-v2.9.1-node-v93-linux-glibc-x64.tar.gz; \
   tar -xzf canvas-v2.9.1-node-v93-linux-glibc-x64.tar.gz; \
   rm -rf /app/web-server/node_modules/canvas/build/Release; \
@@ -26,8 +26,8 @@ RUN set -eux; \
 
 COPY gateway/conf.d/ /etc/nginx/conf.d/
 
-RUN set -eux; \
-    sed -i 's| /dev/stdout ||' /etc/nginx/conf.d/nginx.conf; \
+RUN set -euxo pipefail; \
+    sed -i 's| /dev/stdout ||' /etc/nginx/conf.d/default.conf; \
     sed -i 's/\<8080\>/3000/' /etc/nginx/conf.d/upstream/ups-web-server.conf
 
 COPY script/add-host.sh /usr/local/bin/
@@ -37,8 +37,8 @@ COPY ecosystem.config.js /
 
 CMD ["bash", "-c", "init-dataenv.sh && add-host.sh && pm2-runtime start ecosystem.config.js"]
 
-ARG BUILD_VERSION
-ENV BUILD_VERSION ${BUILD_VERSION}
+ARG SEMVER_FULL
+ENV SEMVER_FULL=${SEMVER_FULL}
 
 ENV \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \

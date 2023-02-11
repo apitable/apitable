@@ -74,14 +74,12 @@ services:
 
   # Third Party Dockers
   gateway:
-    image: ${IMAGE_GATEWAY}
+    image: ${IMAGE_REGISTRY}/${IMAGE_GATEWAY}
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
     restart: always
     ports:
       - ${NGINX_HTTP_PORT:-80}:80
       - ${NGINX_HTTPS_PORT:-443}:443
-    volumes:
-      - ./gateway/conf.d:/etc/nginx/conf.d
     environment:
       - TZ=${TIMEZONE}
     networks:

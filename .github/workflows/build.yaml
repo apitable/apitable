@@ -3,12 +3,18 @@ name: build
 on:
   push:
     branches:
-      - "develop"
-      - "release/**"
+      - 'develop'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
     tags:
-      - "v*"
+      - 'v*.*.*'
   pull_request:
-    branches: [ "develop" ]
+    branches: [ develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 jobs:
@@ -23,9 +29,9 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
-          java-version: "8"
-          distribution: "corretto"
-          cache: "gradle"
+          java-version: '8'
+          distribution: 'corretto'
+          cache: 'gradle'
       - name: Test
         run: |
           make install
@@ -48,10 +54,10 @@ jobs:
   build-push: ## build and push to docker registry
     needs: unit-test
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name != 'pull_request' }}
     strategy:
       matrix:
-        target: [ backend-server, room-server, web-server, init-db ]
+        target: [ backend-server, room-server, web-server, init-db, openresty ]
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
@@ -59,12 +65,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Build APITable and Push
         run: |
+          eval "$(./scripts/semver-ci.sh)"
           make buildpush-docker target=${{ matrix.target }}
 
   build-push-all-in-one: ## build and push to docker registry
     needs: build-push
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name != 'pull_request' }}
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
@@ -73,4 +80,5 @@ jobs:
       - name: Build APITable and Push
         run: |
           cp -pr gateway/ packaging/all-in-one/all-in-one/
+          eval "$(./scripts/semver-ci.sh)"
           make buildpush-docker target=all-in-one

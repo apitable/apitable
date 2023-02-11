@@ -21,10 +21,10 @@ RUN yarn workspaces focus @apitable/datasheet root
 # stage builder
 FROM apitable/nodepy:16.15.0-alpine AS builder
 
-ARG SEMVER_FULL="development"
+ARG SEMVER_FULL="v0.0.0-alpha"
 ARG NEXT_ASSET_PREFIX=""
 ARG NEXT_PUBLIC_ASSET_PREFIX=""
-ENV BUILD_VERSION ${SEMVER_FULL}
+ENV SEMVER_FULL=${SEMVER_FULL}
 
 
 WORKDIR /app
