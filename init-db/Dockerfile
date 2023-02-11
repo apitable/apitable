@@ -33,6 +33,3 @@ CMD ["sh", "-c", "echo ${ACTION}; docker-entrypoint.sh \
                     --url=\"jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&autoReconnect=true&useSSL=true\" \
                      ${ACTION:=update} \
                     -Dtable.prefix=${DATABASE_TABLE_PREFIX:=apitable_}"]
-
-
-
