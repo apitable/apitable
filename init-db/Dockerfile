@@ -18,6 +18,9 @@ FROM liquibase/liquibase:4.8
 RUN lpm add mysql --global
 ADD src/main/resources /liquibase/changelog
 
+ARG SEMVER_FULL
+ENV SEMVER_FULL=${SEMVER_FULL}
+
 CMD ["sh", "-c", "echo ${ACTION}; docker-entrypoint.sh \
                     --classpath=/liquibase/changelog \
                     --changelog-file=${CHANGELOG_FILE:=db/changelog/db.changelog-master.xml} \

@@ -43,6 +43,9 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+ARG SEMVER_FULL
+ENV SEMVER_FULL=${SEMVER_FULL}
+
 # agenthub
 COPY --from=builder /app/packages/room-server/app-config.json /root/
 COPY --from=builder /app /app

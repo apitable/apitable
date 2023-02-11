@@ -4,13 +4,14 @@ ARG LIQUIBASE_VERSION=4.8.0
 ARG LPM_VERSION=0.1.3
 ARG LB_SHA256=7462b6e92f7077e1858865c403d52f0dce1bd66d03b1fae907815c10825feb33
 
-RUN set -eux; \
+RUN set -euxo pipefail; \
   microdnf -y update; \
   microdnf -y install findutils unzip; \
   microdnf clean all; \
   \
   CORRETTO_VERSION=1.8.0_362.b08-1; \
-  export GNUPGHOME="$(mktemp -d)"; \
+  GNUPGHOME="$(mktemp -d)"; \
+  export GNUPGHOME; \
   curl -fL -o corretto.key https://yum.corretto.aws/corretto.key; \
   gpg --batch --import corretto.key; \
   gpg --batch --export --armor '6DC3636DAE534049C8B94623A122542AB04F24E3' > corretto.key; \
@@ -36,7 +37,6 @@ RUN set -eux; \
   export LIQUIBASE_HOME=/liquibase; \
   lpm update; \
   lpm add mysql --global
-
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto

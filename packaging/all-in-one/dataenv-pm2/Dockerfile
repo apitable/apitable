@@ -6,7 +6,7 @@ ARG GOSU_VERSION=1.14
 
 ENV GOSU_USER=rabbitmq
 
-RUN set -eux; \
+RUN set -euxo pipefail; \
   arch="$(uname -m)"; \
   case "${arch}" in \
   aarch64) pkgArch='arm64' ;; \
@@ -14,10 +14,11 @@ RUN set -eux; \
   *) echo >&2 "error: unsupported architecture: '${arch}'"; exit 1 ;; \
   esac; \
   \
-  key='859BE8D7C586F538430B19C2467B942D3A79BD29'; \
-  export GNUPGHOME="$(mktemp -d)"; \
-  gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
-  gpg --batch --export --armor "$key" > /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql; \
+  key_id='859BE8D7C586F538430B19C2467B942D3A79BD29'; \
+  GNUPGHOME="$(mktemp -d)"; \
+  export GNUPGHOME; \
+  gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${key_id}"; \
+  gpg --batch --export --armor "${key_id}" > /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql; \
   rm -rf "$GNUPGHOME"; \
   microdnf -y update; \
   microdnf -y install shadow-utils; \
@@ -66,7 +67,7 @@ ENV PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/
 
 EXPOSE 80 3306 5672 6379 9000
 
-VOLUME /data /var/lib/mysql /var/lib/rabbitmq /var/lib/redis
+VOLUME /apitable
 
 COPY script/ /usr/local/bin/
 COPY ecosystem.config.js /
