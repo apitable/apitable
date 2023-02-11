@@ -52,7 +52,7 @@ target "init-db" {
 
 target "openresty" {
   context = "./gateway"
-  dockerfile = "packaging/Dockerfile.openresty"
+  dockerfile = "../packaging/Dockerfile.openresty"
   args = {
     SEMVER_FULL = SEMVER_FULL
   }

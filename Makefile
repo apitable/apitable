@@ -228,7 +228,7 @@ buildpush-docker: ## build all and push all to hub.docker.io registry
 
 .PHONY: build
 build-docker: ## build all containers
-	$(BUILDER) $(target)
+	$(BUILDER) $(target) --load
 
 .PHONY: _build-init-db
 _build-docker-init-db:

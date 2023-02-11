@@ -26,8 +26,8 @@ RUN set -euxo pipefail; \
 
 COPY gateway/conf.d/ /etc/nginx/conf.d/
 
-RUN set -eux; \
-    sed -i 's| /dev/stdout ||' /etc/nginx/conf.d/nginx.conf; \
+RUN set -euxo pipefail; \
+    sed -i 's| /dev/stdout ||' /etc/nginx/conf.d/default.conf; \
     sed -i 's/\<8080\>/3000/' /etc/nginx/conf.d/upstream/ups-web-server.conf
 
 COPY script/add-host.sh /usr/local/bin/

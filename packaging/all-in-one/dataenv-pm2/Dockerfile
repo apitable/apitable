@@ -60,7 +60,7 @@ RUN set -euxo pipefail; \
 
 COPY conf/my.cnf /etc/
 COPY conf/nginx.conf /usr/local/openresty/nginx/conf/
-COPY conf/nginx.vh.default.conf /etc/nginx/conf.d/nginx.conf
+COPY conf/nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 COPY conf/rabbitmq.conf /etc/rabbitmq/
 
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin
