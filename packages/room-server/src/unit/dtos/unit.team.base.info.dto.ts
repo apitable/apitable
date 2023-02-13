@@ -15,29 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+export class UnitTeamBaseInfoDto {
+  id!: string;
 
-export enum UnitTypeEnum {
-  /**
-   * Team
-   */
-  TEAM = 1,
-  /**
-   * ROLE
-   */
-  ROLE = 2,
-  /**
-   * Member
-   */
-  MEMBER = 3,
-}
+  teamName!: string;
 
-export enum UnitTypeTextEnum {
-  /**
-   * Team
-   */
-  Team = 'team',
-  /**
-   * Member
-   */
-  Member = 'member',
+  isDeleted!: boolean;
 }
