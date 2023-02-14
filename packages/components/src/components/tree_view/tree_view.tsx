@@ -58,7 +58,7 @@ const TreeViewRoot = styled.ul`
   }
 `;
 
-export const TreeView: FC<ITreeViewProps> = React.memo(
+export const TreeView: FC<React.PropsWithChildren<ITreeViewProps>> = React.memo(
   ({
     module,
     switcherIcon = <TriangleRight16Filled size={16} color={black[300]} />,
@@ -256,7 +256,7 @@ export const TreeView: FC<ITreeViewProps> = React.memo(
       setHighlightNodeId('');
     };
 
-    const GlobalStyle = createGlobalStyle`
+    const GlobalStyle: any = createGlobalStyle`
       * {
         box-sizing: border-box;
       }

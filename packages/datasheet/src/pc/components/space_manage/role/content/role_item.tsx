@@ -27,14 +27,14 @@ import styles from './style.module.less';
 
 export const ROLE_MENU_EDIT_ID = 'ROLE_MENU_EDIT';
 
-export const RoleItem: React.FC<{
+export const RoleItem: React.FC<React.PropsWithChildren<{
   selected?: boolean;
   role: IRoleItem;
   icon?: React.ReactElement;
   onEdit?: (role: IRoleItem, roleName: string) => void;
   onDelete?: (role: IRoleItem) => void;
   onClick?: (roleId: string) => void;
-}> = props => {
+}>> = props => {
   const { selected, role, icon, onEdit, onDelete, onClick } = props;
   const { roleName, roleId } = role;
   const { manageable } = useContext(RoleContext);

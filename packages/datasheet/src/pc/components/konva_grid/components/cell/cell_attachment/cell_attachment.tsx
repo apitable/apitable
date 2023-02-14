@@ -31,7 +31,7 @@ import { IRenderContentBase } from '../interface';
 
 const AddOutlinedPath = AddOutlined.toString();
 
-export const CellAttachment: FC<ICellProps> = (props) => {
+export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,

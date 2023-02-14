@@ -28,7 +28,7 @@ interface IProcessing {
   cancel: () => void;
   file: File | undefined;
 }
-export const Processing: FC<IProcessing> = ({ percent, cancel, file }) => {
+export const Processing: FC<React.PropsWithChildren<IProcessing>> = ({ percent, cancel, file }) => {
   const colors = useThemeColors();
   const cancelImport = () => {
     Message.success({ content: t(Strings.upload_canceled) });

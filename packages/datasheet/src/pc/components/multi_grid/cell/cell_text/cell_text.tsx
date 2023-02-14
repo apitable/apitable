@@ -51,7 +51,7 @@ type ICellText = ICellComponentProps & {
   rowHeightLevel?: RowHeightLevel,
 };
 
-export const CellText: React.FC<ICellText> = props => {
+export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
   const colors = useThemeColors();
   const { className, field, cellValue, toggleEdit, isActive, rowHeightLevel } = props;
   const fieldType = field.type;

@@ -42,14 +42,14 @@ export const defaultPage: IPageInfo = {
   page: 1,
 };
 
-export const RoleTable: React.FC<{
+export const RoleTable: React.FC<React.PropsWithChildren<{
   list: any[];
   total: number;
   onChangePage: (page: number, pageSize?: number) => void;
   onRemove?: (unitIds: string[]) => void;
   openAddMemberModal?: () => void;
   onBatchSelectMember?: (unitIds: string[]) => void;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { list, total, onChangePage, onRemove, openAddMemberModal, onBatchSelectMember } = props;
   const { manageable } = useContext(RoleContext);
@@ -157,7 +157,7 @@ export const RoleTable: React.FC<{
   );
 };
 
-const Empty: React.FC<{ wrapperHeight: number, addRole?: () => void }> = props => {
+const Empty: React.FC<React.PropsWithChildren<{ wrapperHeight: number, addRole?: () => void }>> = props => {
   const { wrapperHeight, addRole } = props;
   const colors = useThemeColors();
   const { manageable } = useContext(RoleContext);

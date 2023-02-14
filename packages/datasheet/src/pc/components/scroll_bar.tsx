@@ -24,7 +24,7 @@ interface ICustomScrollbarsProps {
   onScroll?: (e: any) => void;
   style?: React.CSSProperties;
 }
-export const ScrollBar: FC<ICustomScrollbarsProps> = (props) => {
+export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (props) => {
   const ref = React.useRef(null);
   const isHovering = useHover(ref);
 

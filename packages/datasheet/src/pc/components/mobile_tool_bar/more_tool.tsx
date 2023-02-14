@@ -35,7 +35,7 @@ import { Popover } from '../common/mobile/popover';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { stopPropagation } from 'pc/utils';
 
-export const MoreTool: React.FC = () => {
+export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const shareId = useSelector(state => state.pageParams.shareId);

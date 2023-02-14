@@ -30,7 +30,7 @@ import { InformationSmallOutlined } from '@apitable/icons/dist/components';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-export const FieldPermissionPlus: React.FC<IFieldPermissionProps> = props => {
+export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = props => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
   const theme = useSelector(Selectors.getTheme);

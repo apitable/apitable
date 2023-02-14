@@ -26,7 +26,7 @@ import { useSelector } from 'react-redux';
 import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
 
-export const FilterCheckbox: React.FC<Omit<IFilterCheckboxProps, 'execute'>> = props => {
+export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckboxProps, 'execute'>>> = props => {
   const { condition, onChange, field } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const checkboxRef = useRef<IEditor>(null);

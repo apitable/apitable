@@ -54,7 +54,7 @@ interface ICellMember extends ICellComponentProps {
   deletable?: boolean
 }
 
-export const CellMember: React.FC<ICellMember> = props => {
+export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = props => {
   const {
     cellValue: cellValueIncludeOldData, field: propsField, isActive, onChange, toggleEdit, readonly, className, rowHeightLevel, deletable = true,
   } = props;

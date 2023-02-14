@@ -35,7 +35,7 @@ interface ILoginErrorMsg {
   username?: string;
   password?: string;
 }
-export const Login: React.FC = () => {
+export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const { loginOrRegisterReq } = useUserRequest();
   const { run: loginReq, loading } = useRequest(loginOrRegisterReq, { manual: true });

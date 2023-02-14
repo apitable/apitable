@@ -25,25 +25,52 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * User Action Request Parameters
+ * User Action Request Parameters.
  */
 @Data
 @ApiModel("User Action Request Parameters")
 public class UserOpRo {
 
-    @ApiModelProperty(value = "Avatar", example = "https://...", position = 1)
+    /**
+     * nickName max size.
+     */
+    private final int maxSize = 32;
+
+    /**
+     * user avatar.
+     */
+    @ApiModelProperty(value = "Avatar", example = "https://...")
     private String avatar;
 
-    @ApiModelProperty(value = "default avatar color", example = "1", position = 2)
+    /**
+     * default avatar color number.
+     */
+    @ApiModelProperty(value = "default avatar color", example = "1")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "Nickname", example = "This is a nickname", position = 3)
-    @Size(max = 32, message = "Nickname length cannot exceed 32 bits")
+    /**
+     * user nickName.
+     */
+    @ApiModelProperty(value = "Nickname", example = "This is a nickname")
+    @Size(max = maxSize, message = "Nickname length cannot exceed 32 bits")
     private String nickName;
 
-    @ApiModelProperty(value = "Whether it is a registered initialization nickname", example = "true", position = 4)
+    /**
+     * is init.
+     */
+    @ApiModelProperty(value = "Whether it is a registered initialization "
+        + "nickname", example = "true")
     private Boolean init;
 
-    @ApiModelProperty(value = "Language", example = "zh-CN", position = 5)
+    /**
+     * locale.
+     */
+    @ApiModelProperty(value = "Language", example = "zh-CN")
     private String locale;
+
+    /**
+     * time zone.
+     */
+    @ApiModelProperty(value = "Time Zone", example = "America/Toronto")
+    private String timeZone;
 }

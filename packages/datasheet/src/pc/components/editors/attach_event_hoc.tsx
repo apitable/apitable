@@ -46,7 +46,7 @@ export interface IEditorContainerOwnProps {
 }
 
 export const attachEventHoc = (WrapperComponent: any) => {
-  const AttachEvent: React.FC<IEditorContainerOwnProps> = props => {
+  const AttachEvent: React.FC<React.PropsWithChildren<IEditorContainerOwnProps>> = props => {
     const dispatch = useDispatch();
     const { scrollToItem } = props;
     const containerRef = useRef<IContainerEdit | null>(null);

@@ -78,7 +78,7 @@ export interface ICommonTabRef {
   trigger?(): void;
 }
 
-export const UploadTab: React.FC<IUploadTabProps> = props => {
+export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = props => {
   const colors = useThemeColors();
   const { recordId, fieldId, setUploadList, className, cellValue } = props;
   const uploadManager = resourceService.instance!.uploadManager;

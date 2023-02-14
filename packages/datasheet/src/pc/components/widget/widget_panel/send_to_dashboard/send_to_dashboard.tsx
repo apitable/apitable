@@ -41,7 +41,7 @@ interface ISentToDashboardProps {
   onModuleDestroy(): void;
 }
 
-const SentToDashboard: React.FC<ISentToDashboardProps> = (props) => {
+const SentToDashboard: React.FC<React.PropsWithChildren<ISentToDashboardProps>> = (props) => {
   const { widgetId, onModuleDestroy } = props;
   const [nodeList, setNodeList] = useState<{ nodeName: ''; nodeType: ''; nodeId: ''; icon: '' }[] | null>(null);
   const [loadingOfList, setLoadingOfList] = useState(false);

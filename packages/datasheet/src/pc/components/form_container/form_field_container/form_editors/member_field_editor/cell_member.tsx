@@ -40,7 +40,7 @@ interface ICellMemberProps {
   deletable?: boolean;
 }
 
-export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = props => {
+export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & ICellMemberProps>> = props => {
   const {
     cellValue: cellValueIncludeOldData, 
     field, 

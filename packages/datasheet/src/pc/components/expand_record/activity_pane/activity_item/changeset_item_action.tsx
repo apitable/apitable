@@ -48,7 +48,7 @@ interface IActionItem {
   index: number;
 }
 
-const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
+const FieldSwitchTitle: React.FC<React.PropsWithChildren<{ od: any; oi: any }>> = ({ od, oi }) => {
   const colors = useThemeColors();
   return (
     <div className={styles.changesetAction}>
@@ -62,12 +62,12 @@ const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
   );
 };
 
-const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
+const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAction>> = (props) => {
   const { actions, datasheetId, cacheFieldOptions, revision } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-  const ActionItem: React.FC<IActionItem> = ({ action, index }) => {
+  const ActionItem: React.FC<React.PropsWithChildren<IActionItem>> = ({ action, index }) => {
     let { od, oi } = action as any;
     const { p } = action as any;
 

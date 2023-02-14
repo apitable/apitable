@@ -48,7 +48,7 @@ const calcNodeNum = (directory: ITemplateTree[]):number => {
   }, 0);
 };
 
-export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
+export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseButtonProps>> = props => {
   const { style, showIcon, children, id, block } = props;
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector(state => state.space.activeId);

@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,16 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { renderHook } from '@testing-library/react-hooks';
-import { noop } from 'lodash';
-import { useSettingsButton } from 'hooks/use_settings_button';
-import { createSimpleWrapper } from './simple_context_wrapper';
-
-test('use settings button should work', () => {
-  const wrapper = createSimpleWrapper();
-
-  const { result } = renderHook(() => useSettingsButton(), { wrapper });
-  const [isShowingSettings, toggleSettings] = result.current;
-  expect(isShowingSettings).toBe(false);
-  expect(toggleSettings).toEqual(noop);
-});
+/**
+ * widget.
+ */
+package com.apitable.widget.controller;

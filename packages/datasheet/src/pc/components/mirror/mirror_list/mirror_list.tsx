@@ -29,7 +29,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { MirrorOutlined } from '@apitable/icons';
 import { IForeignFormProps, IMirrorItem } from './interface';
 
-export const MirrorList: FC<IForeignFormProps> = props => {
+export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = props => {
   const colors = useThemeColors();
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);

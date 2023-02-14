@@ -58,7 +58,7 @@ interface IDisplay extends Partial<TriggerProps> {
 
 const OFFSET = [0, 8];
 
-export const Display: React.FC<IDisplay> = props => {
+export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
   const { style, children, type, className, onVisibleChange, disableAutoActiveItem = false } = props;
   const editable = useSelector(state => {
     const permissions = Selectors.getPermissions(state);

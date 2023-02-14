@@ -42,7 +42,7 @@ interface IViewIntroduceList {
   triggerInfo?: IUseListenTriggerInfo;
 }
 
-const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
+const ViewIntroduce: React.FC<React.PropsWithChildren<{ viewType: ViewType }>> = props => {
   const { viewType: fieldType } = props;
   const info = getViewClass(fieldType).getViewIntroduce()!;
   if (!info) {
@@ -61,7 +61,7 @@ const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
   </div>;
 };
 
-const NodeIntroduce: React.FC<{ nodeType: ConfigConstant.NodeType }> = () => {
+const NodeIntroduce: React.FC<React.PropsWithChildren<{ nodeType: ConfigConstant.NodeType }>> = () => {
   const info = FormView.getViewIntroduce();
 
   if (!info) {

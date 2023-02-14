@@ -37,7 +37,7 @@ interface IRecordList {
   disabled?: boolean;
 }
 
-export const RecordList: FC<IRecordList> = props => {
+export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
   const { setRecord, records, disabled } = props;
   const { keyword, setKeyword, view, onCloseGrid } = useContext(CalendarContext);
 

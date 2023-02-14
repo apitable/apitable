@@ -54,7 +54,7 @@ export interface INodeInfoBarProps {
   hiddenModule?: { icon?: boolean, permission?: boolean, favorite?: boolean };
 }
 
-export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }) => {
+export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ data, hiddenModule, style }) => {
   const {
     nodeId,
     icon,

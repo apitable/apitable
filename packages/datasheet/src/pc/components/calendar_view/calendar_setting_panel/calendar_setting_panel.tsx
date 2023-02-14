@@ -45,7 +45,7 @@ interface ICalendarSettingPanel {
   calendarStyle: ICalendarViewStyle;
 }
 
-export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle }) => {
+export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPanel>> = ({ calendarStyle }) => {
   const colors = useThemeColors();
   const { startFieldId, endFieldId, colorOption } = calendarStyle;
   const { color } = colorOption;

@@ -102,7 +102,7 @@ interface ISettingPanelProps {
   ganttViewStatus: IGanttViewStatus;
 }
 
-export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) => {
+export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = memo(({ ganttViewStatus }) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { view, fieldMap, ganttStyle, fieldPermissionMap, permissions, exitFieldNames } = useSelector(state => {

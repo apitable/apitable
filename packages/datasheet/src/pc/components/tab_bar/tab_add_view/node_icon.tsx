@@ -33,7 +33,7 @@ interface INodeIcon {
   onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
 }
 
-export const NodeIcon: React.FC<INodeIcon> = props => {
+export const NodeIcon: React.FC<React.PropsWithChildren<INodeIcon>> = props => {
   const colors = useThemeColors();
   const { nodeType, width = 15, height = 15, fill = colors.thirdLevelText, onClick } = props;
 

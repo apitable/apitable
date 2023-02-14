@@ -30,7 +30,7 @@ import InviteImage from 'static/icon/common/common_img_invite.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
 
-const LinkConfirm: FC = () => {
+const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();

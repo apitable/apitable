@@ -33,7 +33,7 @@ export interface IStepItem {
   onClick?: (item: IStepItem, index: number) => void;
 }
 
-export const Steps: React.FC<IStepsProps> = ({ current, steps }) => {
+export const Steps: React.FC<React.PropsWithChildren<IStepsProps>> = ({ current, steps }) => {
   const colors = useThemeColors();
   const stepItem = (item: IStepItem, index: number) => {
     const isFinish = current > index;

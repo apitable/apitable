@@ -24,7 +24,7 @@ export interface IWithTipTextInputProps extends ITextInputProps {
   helperText?: string;
 }
 
-export const WithTipTextInput: FC<IWithTipTextInputProps> = ({
+export const WithTipTextInput: FC<React.PropsWithChildren<IWithTipTextInputProps>> = ({
   className,
   helperText,
   ...rest

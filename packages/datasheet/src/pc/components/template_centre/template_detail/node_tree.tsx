@@ -34,7 +34,7 @@ interface INodeTreeProps {
   nodeTree: ITemplateTree;
 }
 
-export const NodeTree: FC<INodeTreeProps> = props => {
+export const NodeTree: FC<React.PropsWithChildren<INodeTreeProps>> = props => {
   const colors = useThemeColors();
   const { nodeTree } = props;
   const nodeId = useSelector(state => Selectors.getNodeId(state))!;

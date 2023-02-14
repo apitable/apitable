@@ -39,7 +39,7 @@ const config = {
   style: { minWidth: '400px' },
 };
 
-export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = props => {
+export const NormalModal: FC<React.PropsWithChildren<PropsWithChildren<INormalModalProps>>> = props => {
   const { title, className, subTitle, cancelText = t(Strings.cancel),
     okText = t(Strings.submit), ...rest } = props;
   return (

@@ -24,7 +24,7 @@ type ILookFieldPanelProps = Pick<IFieldSearchPanelProps, 'onChange' | 'fields' |
   relatedLinkField: ILinkField
 };
 
-export const LookupFieldPanel: React.FC<ILookFieldPanelProps> = (props) => {
+export const LookupFieldPanel: React.FC<React.PropsWithChildren<ILookFieldPanelProps>> = (props) => {
   return <FieldSearchPanel
     {...props}
     showType={ShowType.LookField}

@@ -59,7 +59,7 @@ const needTriggerStartEditField = [FieldType.Number, FieldType.Percent, FieldTyp
 
 const compactField = [FieldType.SingleSelect, FieldType.MultiSelect];
 
-export const FormField: React.FC<IFormFieldProps> = props => {
+export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = props => {
   const colors = useThemeColors();
   const shareId = useSelector(state => state.pageParams.shareId);
   const { datasheetId, field, isFocus = false, setFocusId, onClose, editable, recordId } = props;

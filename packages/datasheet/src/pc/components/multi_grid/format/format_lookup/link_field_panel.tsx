@@ -23,7 +23,7 @@ import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.
 
 type ILinkFieldPanel = Pick<IFieldSearchPanelProps, 'onChange' | 'fields' | 'activeFieldId' | 'setSearchPanelVisible'>;
 
-export const LinkFieldPanel: React.FC<ILinkFieldPanel> = (props) => {
+export const LinkFieldPanel: React.FC<React.PropsWithChildren<ILinkFieldPanel>> = (props) => {
   const { fields } = props;
   return <FieldSearchPanel
     {...props}

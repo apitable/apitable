@@ -110,7 +110,7 @@ export async function download(fileInfo: IAttachmentValue) {
   Message.destroy();
 }
 
-export const ToolBar: React.FC<IToolBar> = props => {
+export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = props => {
   const {
     transformInfo,
     fileInfo,

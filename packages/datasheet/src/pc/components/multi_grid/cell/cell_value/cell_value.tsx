@@ -55,7 +55,7 @@ export interface ICellValueComponent {
  * 2. Sub-component parameters are only allowed to accept ICellComponentProps as parameters, additional parameters are generally not allowed, 
  * please initiate a discussion if needed, for details on the use of specific parameters, please refer to the comments in their definitions.
  */
-const CellValueBase: React.FC<ICellValueComponent> = props => {
+const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = props => {
   const { field, recordId, cellValue, className, isActive, datasheetId, readonly, rowHeightLevel, cellTextClassName, showAlarm } = props;
   const commandManager = resourceService.instance!.commandManager;
   const cellEditable = useSelector(state => {

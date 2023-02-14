@@ -43,7 +43,7 @@ import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
 
-export const AddressSide: React.FC = () => {
+export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useSelector(
     (state: IReduxState) => ({
       teamList: state.addressList.teamList,

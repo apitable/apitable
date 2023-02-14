@@ -42,7 +42,9 @@ import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import styles from './style.module.less';
 
-export const TemplateDetail: FC = () => {
+const _SplitPane: any = SplitPane;
+
+export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
@@ -184,7 +186,7 @@ export const TemplateDetail: FC = () => {
   return (
     <div id={AutoTestID.TEMPLATE_DETAIL_CONTAINER} className={styles.templateDetailWrapper}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <SplitPane
+        <_SplitPane
           split='vertical'
           minSize={templateId ? 320 : 280}
           defaultSize={defaultSize}
@@ -196,7 +198,7 @@ export const TemplateDetail: FC = () => {
         >
           {isSkuPage ? <div /> : <CommonSide />}
           {MainComponent()}
-        </SplitPane>
+        </_SplitPane>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <div className={styles.mobile}>{MainComponent()}</div>

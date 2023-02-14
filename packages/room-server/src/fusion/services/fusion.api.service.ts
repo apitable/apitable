@@ -418,93 +418,85 @@ export class FusionApiService {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
     await this.fusionApiRecordService.validateRecordExists(dstId, body.getRecordIds(), ApiTipConstant.api_param_record_not_exists);
 
-    const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    const unlock = await lock('api.update.' + dstId, 120 * 1000);
+    const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
+    const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
 
-    try {
-      const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
-      const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
-
-      // Convert a field to get the modified column
-      const command: ICollaCommandOptions = this.transform.getUpdateRecordCommandOptions(dstId, body.records, meta);
-      const linkDatasheet: ILinkedRecordMap = this.request[DATASHEET_LINKED];
-      const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
-      const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
-      linkedRecordMap &&
-        linkedRecordMap[dstId]?.forEach(recordId => {
-          recordIdSet.add(recordId);
-        });
-      const recordIds = Array.from(recordIdSet);
-      const rows: IViewRow[] = recordIds.map(recordId => {
-        return { recordId };
+    // Convert a field to get the modified column
+    const command: ICollaCommandOptions = this.transform.getUpdateRecordCommandOptions(dstId, body.records, meta);
+    const linkDatasheet: ILinkedRecordMap = this.request[DATASHEET_LINKED];
+    const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
+    const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
+    linkedRecordMap &&
+      linkedRecordMap[dstId]?.forEach(recordId => {
+        recordIdSet.add(recordId);
       });
-      const auth = { token: this.request.headers.authorization };
+    const recordIds = Array.from(recordIdSet);
+    const rows: IViewRow[] = recordIds.map(recordId => {
+      return { recordId };
+    });
+    const auth = { token: this.request.headers.authorization };
 
-      const datasheet = await this.databusService.getDatasheet(dstId, {
-        auth,
-        recordIds,
-        linkedRecordMap,
-      });
-      if (datasheet === null) {
-        throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
-      }
-
-      if (viewId) {
-        await this.checkViewExists(datasheet, viewId);
-      }
-
-      const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);
-      const result = await this.databusService.doCommand(datasheet, command, {
-        auth,
-        prependOps: updateFieldOperations,
-      });
-
-      // No change required
-      if (result.result === ExecuteResult.None) {
-        // TODO return records in viewId instead of first view
-        const firstView = meta.views[0]!;
-        const view = await datasheet.getView({
-          getViewInfo: () => ({
-            viewId: firstView.id,
-            type: firstView.type,
-            name: firstView.name,
-            rows,
-            columns: firstView.columns,
-            fieldMap,
-          }),
-        });
-        if (view === null) {
-          // TODO throw exception
-          return { records: [] };
-        }
-
-        const records = await view.getRecords({});
-        return {
-          records: this.getRecordViewObjects(records),
-        };
-      }
-
-      // Command execution failed
-      if (result.result !== ExecuteResult.Success) {
-        throw ApiException.tipError(ApiTipConstant.api_update_error);
-      }
-
-      const newDatasheet = await this.databusService.getDatasheet(dstId, {
-        auth,
-        recordIds,
-        linkedRecordMap,
-      });
-      if (newDatasheet === null) {
-        throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
-      }
-
-      CacheManager.clear();
-
-      return this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
-    } finally {
-      await unlock();
+    const datasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
+      recordIds,
+      linkedRecordMap,
+    });
+    if (datasheet === null) {
+      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
+
+    if (viewId) {
+      await this.checkViewExists(datasheet, viewId);
+    }
+
+    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta, auth);
+    const result = await this.databusService.doCommand(datasheet, command, {
+      auth,
+      prependOps: updateFieldOperations,
+    });
+
+    // No change required
+    if (result.result === ExecuteResult.None) {
+      // TODO return records in viewId instead of first view
+      const firstView = meta.views[0]!;
+      const view = await datasheet.getView({
+        getViewInfo: () => ({
+          viewId: firstView.id,
+          type: firstView.type,
+          name: firstView.name,
+          rows,
+          columns: firstView.columns,
+          fieldMap,
+        }),
+      });
+      if (view === null) {
+        // TODO throw exception
+        return { records: [] };
+      }
+
+      const records = await view.getRecords({});
+      return {
+        records: this.getRecordViewObjects(records),
+      };
+    }
+
+    // Command execution failed
+    if (result.result !== ExecuteResult.Success) {
+      throw ApiException.tipError(ApiTipConstant.api_update_error);
+    }
+
+    const newDatasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
+      recordIds,
+      linkedRecordMap,
+    });
+    if (newDatasheet === null) {
+      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
+    }
+
+    CacheManager.clear();
+
+    return this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
   }
 
   private async getNewRecordListVo(

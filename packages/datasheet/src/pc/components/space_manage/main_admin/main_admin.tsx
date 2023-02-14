@@ -27,7 +27,7 @@ import { AdminInfo } from './admin_info';
 import { MainAdminModal } from './main_admin_modal';
 import styles from './style.module.less';
 
-export const MainAdmin: FC = () => {
+export const MainAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const spaceResource = useSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);

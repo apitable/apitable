@@ -167,7 +167,7 @@ export const useRobot = (_robotId?: string) => {
     });
   }, [dispatch]);
 
-  const updateRobot = useCallback((robot) => {
+  const updateRobot = useCallback((robot: any) => {
     dispatch({
       type: 'updateRobot',
       payload: {
@@ -176,7 +176,7 @@ export const useRobot = (_robotId?: string) => {
     });
   }, [dispatch]);
 
-  const updateRobotList = useCallback((robotList) => {
+  const updateRobotList = useCallback((robotList: any) => {
     dispatch({
       type: 'updateRobotList',
       payload: {

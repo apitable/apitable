@@ -29,7 +29,7 @@ import { MobileSideBar } from '../mobile_side_bar';
 import styles from './style.module.less';
 import cls from 'classnames';
 
-const TemplateCentre: FC = props => {
+const TemplateCentre: FC<React.PropsWithChildren<unknown>> = props => {
   const { getLoginStatusReq } = useUserRequest();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });

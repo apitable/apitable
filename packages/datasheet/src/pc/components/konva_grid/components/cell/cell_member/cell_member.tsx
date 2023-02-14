@@ -42,7 +42,7 @@ import { Avatar } from './avatar';
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellMember: FC<ICellProps> = props => {
+export const CellMember: FC<React.PropsWithChildren<ICellProps>> = props => {
   const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;

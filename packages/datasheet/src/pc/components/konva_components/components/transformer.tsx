@@ -35,7 +35,7 @@ enum PositionType {
   MiddleRight = 'MiddleRight',
 }
 
-export const Transformer: FC<ITransformerProps> = memo((props) => {
+export const Transformer: FC<React.PropsWithChildren<ITransformerProps>> = memo((props) => {
   const colors = useThemeColors();
   const { shapeName, leftAnchorEnable = true, rightAnchorEnable = true, boundBoxFunc } = props;
   const transformerRef = useRef<any>();

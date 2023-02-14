@@ -36,7 +36,7 @@ interface IFieldSelectModalProps {
   onOk: (collection: string[]) => void;
 }
 
-export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IFieldSelectModalProps) => {
+export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModalProps>> = (props: IFieldSelectModalProps) => {
   const { onCancel, onOk, field: currentField } = props;
   const currentFieldId = currentField.id;
   const fieldIdCollection = currentField.property.fieldIdCollection!;

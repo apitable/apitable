@@ -77,7 +77,7 @@ const MAX_HEIGHT = 640;
 /**
  * This component is reused by the Magic Form and Expand Modal, except for the DomGrid, which evokes it.
  */
-export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
+export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingProps>> = props => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();

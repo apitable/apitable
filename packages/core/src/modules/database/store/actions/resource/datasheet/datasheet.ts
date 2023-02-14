@@ -109,6 +109,7 @@ import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from
 import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../exports/store/selectors';
 import { FieldType } from 'types';
 import { consistencyCheck } from 'utils';
+import produce from 'immer';
 
 // export const applyJOTOperations = (operations: IOperation[], datasheetId: string): IJOTActionPayload => {
 //   return {
@@ -189,6 +190,20 @@ const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getSta
   return snapshot.meta.views[0]!.id;
 };
 
+const checkSortInto = (snapshot: ISnapshot) => {
+  return produce(snapshot, draft => {
+    const views = draft.meta.views;
+    for (const v of views) {
+      if (Array.isArray(v.sortInfo)) {
+        v.sortInfo = {
+          keepSort: true,
+          rules: v.sortInfo
+        };
+      }
+    }
+  });
+};
+
 export function receiveDataPack<T extends IServerDatasheetPack = IServerDatasheetPack>(
   payload: T,
   options?: { isPartOfData?: boolean; checkConsistency?: boolean; getState?: () => IReduxState },
@@ -207,7 +222,7 @@ export function receiveDataPack<T extends IServerDatasheetPack = IServerDatashee
     datasheetId: datasheet.id,
     payload: {
       ...datasheet,
-      snapshot,
+      snapshot: checkSortInto(snapshot),
       isPartOfData,
       activeView: getActiveViewFromData(datasheet, snapshot, getState)!,
     },

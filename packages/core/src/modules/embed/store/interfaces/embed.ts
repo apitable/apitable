@@ -20,18 +20,23 @@ import * as actions from '../action_constants';
 
 export interface IEmbedInfo {
   viewControl?: {
-      viewId?: string,
-      tabBar?: boolean,
-      toolBar: {
-          shareBtn?: boolean,
-          widgetBtn?: boolean,
-          apiBtn?: boolean,
-          formBtn?: boolean,
-          historyBtn?: boolean,
-          robotBtn?: boolean,
-    }, 
+    viewId?: string,
+    tabBar?: boolean,
+    titleBar?: boolean,
+    nodeInfoBar?: boolean;
+    collaboratorStatusBar?: boolean;
+    toolBar: {
+      shareBtn?: boolean,
+      widgetBtn?: boolean,
+      apiBtn?: boolean,
+      formBtn?: boolean,
+      historyBtn?: boolean,
+      robotBtn?: boolean,
+      addWidgetBtn?: boolean;
+      fullScreenBtn?: boolean
+    },
   },
-  primarySideBar?: boolean, 
+  primarySideBar?: boolean,
   bannerLogo?: boolean,
   spaceId?: string
   permissionType?: PermissionType,

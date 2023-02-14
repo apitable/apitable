@@ -106,7 +106,7 @@ export const DEFAULT_POINT_POSITION = {
   offsetLeft: 0,
 };
 
-export const KonvaGridView: FC<IGridViewProps> = memo(props => {
+export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,

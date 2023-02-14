@@ -26,7 +26,7 @@ import { RecordVisionSetting } from './record_vision_setting';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
-export const PersonalizedSetting: FC = () => {
+export const PersonalizedSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 

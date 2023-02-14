@@ -31,7 +31,7 @@ interface IHeader {
   disabledDownload?: boolean
 }
 
-export const Header: React.FC<IHeader> = props => {
+export const Header: React.FC<React.PropsWithChildren<IHeader>> = props => {
   const {
     fileName,
     readonly,

@@ -36,7 +36,7 @@ import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
 import styles from './style.module.less';
 
-export const TemplateDetailSide: React.FC = () => {
+export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const officialLogo = integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_AVATAR!);
 

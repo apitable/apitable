@@ -444,7 +444,7 @@ export const useGanttMouseEvent = ({
     }
   };
 
-  const mouseUp = useCallback((e) => {
+  const mouseUp = useCallback((e: any) => {
     if (getParentNodeByClass(e.target as HTMLElement, 'vikaGanttView')) return;
     scrollHandler.stopScroll();
     setDragTaskId(null);

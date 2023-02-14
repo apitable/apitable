@@ -43,7 +43,7 @@ export interface INodeItemProps {
   level: string;
 }
 
-const NodeItemBase: FC<INodeItemProps> = ({ node, expanded = false, actived = false, hasChildren = false, editing, deleting, from, level }) => {
+const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({ node, expanded = false, actived = false, hasChildren = false, editing, deleting, from, level }) => {
   const { deleteNodeReq } = useCatalogTreeRequest();
   const { run: deleteNode } = useRequest(deleteNodeReq, { manual: true });
   const dispatch = useDispatch();

@@ -35,7 +35,7 @@ interface IFooterBtnInModalProps {
   hiddenCancelBtn?: boolean;
 }
 
-export const FooterBtnInModal: FC<IFooterBtnInModalProps> = (props) => {
+export const FooterBtnInModal: FC<React.PropsWithChildren<IFooterBtnInModalProps>> = (props) => {
   const {
     onOk, onCancel, okButtonProps, cancelButtonProps, okText = t(Strings.confirm),
     okType = 'primary', cancelText = t(Strings.cancel), className, hiddenCancelBtn

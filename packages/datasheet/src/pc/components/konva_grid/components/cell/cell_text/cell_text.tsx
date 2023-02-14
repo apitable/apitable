@@ -38,7 +38,7 @@ const enhanceTextIconMap = {
   [FieldType.Phone]: ColumnPhoneFilledPath,
 };
 
-export const CellText: FC<ICellProps> = (props) => {
+export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,

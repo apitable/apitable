@@ -29,7 +29,7 @@ import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { IFilterDateProps } from '../../interface';
@@ -40,7 +40,7 @@ import { LocalFormat } from './local_format';
 
 const { RangePicker } = DatePicker;
 
-export const FilterDate: React.FC<IFilterDateProps> = props => {
+export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = props => {
   const { changeFilter, condition, field, conditionIndex, onChange } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
@@ -177,7 +177,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
                   value={dataValue as any}
                   locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
                   getPopupContainer={() => divRef.current!}
-                />, divRef.current)
+                />, divRef.current) as ReactNode
               }
             </div>
           </ComponentDisplay>

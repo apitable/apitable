@@ -41,7 +41,7 @@ export interface IRatingEditorMobileProps {
   filtering?: boolean;
 }
 
-const RatingEditorMobileBase: React.FC<IRatingEditorMobileProps> = props => {
+const RatingEditorMobileBase: React.FC<React.PropsWithChildren<IRatingEditorMobileProps>> = props => {
   const {
     editable,
     max,

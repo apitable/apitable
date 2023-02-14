@@ -24,15 +24,27 @@ let paramsDashboardId: string | undefined;
 
 store.subscribe(() => {
   const state = store.getState();
-  if (!state.space.activeId && !state.pageParams.shareId && !state.pageParams.templateId) {
+
+  const spaceId = state.space.activeId || state.share.spaceId || state.embedInfo?.spaceId;
+
+  if (!spaceId && !state.pageParams.shareId && !state.pageParams.templateId && !state.pageParams.embedId) {
     return;
   }
+
+  if ((state.pageParams.embedId && (!spaceId || !resourceService.instance?.initialized))) {
+    return;
+  }
+
   const previousParamsDashboardId = paramsDashboardId;
   paramsDashboardId = state.pageParams.dashboardId;
 
-  if (paramsDashboardId === previousParamsDashboardId) { return; }
+  if (paramsDashboardId === previousParamsDashboardId) {
+    return;
+  }
 
-  if (!paramsDashboardId) { return; }
+  if (!paramsDashboardId) {
+    return;
+  }
 
   if (!paramsDashboardId && previousParamsDashboardId) {
     // TODO: Destroy Dashboard
@@ -40,6 +52,7 @@ store.subscribe(() => {
   }
 
   const widgetMapKey = Object.keys(state.widgetMap);
+
   if (widgetMapKey.length) {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }

@@ -29,7 +29,7 @@ import { ShareContext } from 'pc/components/share/share';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise';
 
-const FormPanelBase: FC<{loading?: boolean}> = props => {
+const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props => {
   const { shareId, templateId } = useSelector(state => state.pageParams);
   const formErrCode = useSelector(state => Selectors.getFormErrorCode(state));
   const loading = useSelector(state => {

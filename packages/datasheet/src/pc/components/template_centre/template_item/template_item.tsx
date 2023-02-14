@@ -65,7 +65,7 @@ export interface ITemplateItemProps {
   onClick?: ({ event, templateId }: { event: React.MouseEvent; templateId: string }) => void;
 }
 
-export const TemplateItem: React.FC<ITemplateItemProps> = props => {
+export const TemplateItem: React.FC<React.PropsWithChildren<ITemplateItemProps>> = props => {
   const colors = useThemeColors();
   const {
     img,

@@ -22,7 +22,7 @@ import { EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@apitable/icons
 import { useBoolean } from 'ahooks';
 import styles from './style.module.less';
 
-export const PasswordInput: FC<ITextInputProps> = props => {
+export const PasswordInput: FC<React.PropsWithChildren<ITextInputProps>> = props => {
   const [isVisible, { toggle }] = useBoolean(false);
 
   return (

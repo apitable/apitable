@@ -62,11 +62,11 @@ interface ICommentUpdatedContext {
 
 export type IChangeSet = WithOptional<IRemoteChangeset, 'messageId' | 'resourceType'>;
 
-export const ActivityListItems: FC<IActivityListProps & {
+export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & {
   containerRef: React.RefObject<HTMLDivElement>;
   listRef: React.RefObject<HTMLDivElement>;
   setEmpty: (bool: boolean) => void;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { expandRecordId, datasheetId, selectType, setChooseComment, containerRef, listRef, setEmpty, mirrorId } = props;
   const dispatch = useDispatch();

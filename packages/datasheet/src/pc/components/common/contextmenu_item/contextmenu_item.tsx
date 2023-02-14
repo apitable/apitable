@@ -32,7 +32,7 @@ export interface IContextmenuItemProps {
   onClick?: ({ event }: { event: any, triggerEvent: any }) => void;
 }
 
-export const ContextmenuItem: FC<IContextmenuItemProps> = ({
+export const ContextmenuItem: FC<React.PropsWithChildren<IContextmenuItemProps>> = ({
   icon,
   name,
   shortcutKey,

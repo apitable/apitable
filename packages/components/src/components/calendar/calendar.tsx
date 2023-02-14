@@ -32,7 +32,7 @@ import { configResponsive, useResponsive } from 'ahooks';
 import { useTouch, Direction } from '../../hooks/use-touch';
 import format from 'date-fns/format';
 
-export const Calendar:FC<ICalendar> = props => {
+export const Calendar:FC<React.PropsWithChildren<ICalendar>> = props => {
   const { lang = 'zh', defaultDate, monthPicker, ...rest } = props;
   configResponsive({
     middle: 768,

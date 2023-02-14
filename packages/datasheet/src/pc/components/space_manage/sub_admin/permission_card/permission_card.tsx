@@ -33,7 +33,7 @@ interface IPermissionCardProps {
   inRead?: boolean;
 }
 
-export const PermissionCard: FC<IPermissionCardProps> = ({ defaultChecked, checked, onChange, inRead }) => {
+export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> = ({ defaultChecked, checked, onChange, inRead }) => {
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
 
   const onCheckChange = (value: string, checked: boolean) => {

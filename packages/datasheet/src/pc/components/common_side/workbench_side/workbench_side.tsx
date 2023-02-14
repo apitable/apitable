@@ -63,7 +63,7 @@ export interface IDatasheetPanelInfo {
   datasheetId?: string;
 }
 
-export const WorkbenchSide: FC = () => {
+export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();

@@ -51,7 +51,7 @@ enum TAGTYPE {
   Alien = 'Alien',
 }
 
-export const UserCard: FC<IUserCard> = ({
+export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   memberId,
   userId,
   spareName,
@@ -222,7 +222,7 @@ interface ITeamTag {
   isActive?: boolean | undefined;
 }
 
-const TeamTag: FC<ITeamTag> = (props) => {
+const TeamTag: FC<React.PropsWithChildren<ITeamTag>> = (props) => {
   const { tagText, isActive } = props;
 
   const colors = useThemeColors();

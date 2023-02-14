@@ -20,7 +20,7 @@ import * as React from 'react';
 import { IconButtonStyle } from './styled';
 import { IIconButtonProps } from './interface';
 
-export const IconButton: React.FC<IIconButtonProps> = ({
+export const IconButton: React.FC<React.PropsWithChildren<IIconButtonProps>> = ({
   icon: IconComponent, 
   size = 'small',
   variant = 'default',
@@ -36,7 +36,7 @@ export const IconButton: React.FC<IIconButtonProps> = ({
   };
   const extraProps = component === 'button' ? { type: 'button' } : {};
   return (
-    <IconButtonStyle as={component} size={size} variant={variant} disabled={disabled} active={active} {...restProps} {...extraProps}>
+    <IconButtonStyle as={component as any} size={size} variant={variant} disabled={disabled} active={active} {...restProps} {...extraProps}>
       <IconComponent size={sizeMap[size]} currentColor />
     </IconButtonStyle >
   );

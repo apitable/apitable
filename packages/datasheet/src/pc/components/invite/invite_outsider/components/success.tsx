@@ -30,7 +30,7 @@ interface IErrorContentProps {
   close: () => void;
   init: () => void;
 }
-export const Success: FC<IErrorContentProps> = ({ responseInfo, close, init }) => {
+export const Success: FC<React.PropsWithChildren<IErrorContentProps>> = ({ responseInfo, close, init }) => {
   const [showErrors, setShowErrors] = useState(false);
   if(!responseInfo){
     return null;

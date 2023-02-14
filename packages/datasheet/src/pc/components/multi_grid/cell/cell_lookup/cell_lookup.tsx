@@ -44,7 +44,7 @@ interface ICellLookUpProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel,
 }
 
-export const CellLookUpBase: React.FC<ICellLookUpProps> = props => {
+export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>> = props => {
   const { field, recordId, isActive, className, rowHeightLevel, cellValue: originalCellValue } = props;
   let cellValue = handleNullArray(originalCellValue);
   const realField = Field.bindModel(field).getLookUpEntityField();
@@ -205,7 +205,7 @@ export const CellLookUpBase: React.FC<ICellLookUpProps> = props => {
   }
 };
 
-export const CellLookUp: React.FC<ICellLookUpProps> = props => {
+export const CellLookUp: React.FC<React.PropsWithChildren<ICellLookUpProps>> = props => {
   const [showTip, setShowTip] = useState(false);
   useEffect(() => {
     setShowTip(false);

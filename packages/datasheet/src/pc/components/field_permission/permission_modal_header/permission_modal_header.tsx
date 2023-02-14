@@ -33,7 +33,7 @@ interface IPermissionModalHeaderProps {
   targetIcon?: JSX.Element;
 }
 
-export const PermissionModalHeader: React.FC<IPermissionModalHeaderProps> = props => {
+export const PermissionModalHeader: React.FC<React.PropsWithChildren<IPermissionModalHeaderProps>> = props => {
   const colors = useThemeColors();
   const { typeName, targetName, targetIcon, onModalClose, docIcon } = props;
 

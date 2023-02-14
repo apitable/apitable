@@ -42,7 +42,7 @@ export interface INodeContextMenuProps {
   contextMenu: IContextMenuClickState;
 }
 
-export const NodeContextMenu: FC<INodeContextMenuProps> = memo(({ onHidden, openDatasheetPanel, openCatalog, contextMenu }) => {
+export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>> = memo(({ onHidden, openDatasheetPanel, openCatalog, contextMenu }) => {
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
   const { rightClickInfo, openFavorite } = useContext(WorkbenchSideContext);

@@ -1548,7 +1548,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private void createFileMeta(Long userId, String spaceId, String nodeId, Integer type, String name, NodeRelRo nodeRel) {
         switch (NodeType.toEnum(type)) {
             case DATASHEET:
-                iDatasheetService.create(spaceId, nodeId, name, userId);
+                String viewName = nodeRel != null
+                    ? nodeRel.getViewName() : null;
+                iDatasheetService.create(userId, spaceId, nodeId, name, viewName);
                 break;
             case FORM:
                 // create node association relationship

@@ -30,7 +30,7 @@ import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_con
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { IconButton, useThemeColors } from '@apitable/components';
 
-export const Undo: React.FC<{ className?: string }> = ({ className }) => {
+export const Undo: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ className }) => {
   const colors = useThemeColors();
   const undo = () => {
     if (undoLength) {

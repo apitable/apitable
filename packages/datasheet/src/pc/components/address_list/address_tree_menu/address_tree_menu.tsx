@@ -32,7 +32,7 @@ export interface IAddressTreeMenu {
   listData: ITeamList[];
   onSelect: (keys: string[], event: AntTreeNodeSelectedEvent) => void;
 }
-export const AddressTreeMenu: FC<IAddressTreeMenu> = props => {
+export const AddressTreeMenu: FC<React.PropsWithChildren<IAddressTreeMenu>> = props => {
   const { listData, onSelect } = props;
   const { teamId } = useSelector((state: IReduxState) => state.addressList.selectedTeamInfo);
 

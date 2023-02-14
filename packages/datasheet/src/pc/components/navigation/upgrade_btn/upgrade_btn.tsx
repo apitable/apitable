@@ -26,7 +26,7 @@ interface IUpgradeBtnProps {
   onClick: () => void
 }
 
-export const UpgradeBtn: FC<IUpgradeBtnProps> = ({ onClick }) => {
+export const UpgradeBtn: FC<React.PropsWithChildren<IUpgradeBtnProps>> = ({ onClick }) => {
   const isZhCN = getLanguage() === 'zh-CN';
   return (
     <div

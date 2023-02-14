@@ -46,7 +46,7 @@ interface IInviteOutsiderTabsProps {
   shareId?: string;
 }
 
-export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
+export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsProps>> = props => {
   const { cancelModal, resUpdate, shareId } = props;
   const { emailInvitationDisable } = getCustomConfig();
   const { CONTACTS_MODAL_BULK_IMPORT_VISIBLE, CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE } = getEnvVariables();

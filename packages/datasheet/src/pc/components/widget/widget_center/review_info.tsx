@@ -27,7 +27,7 @@ type IReviewInfo = IWidgetPackage & {
   onClose?: () => void
 };
 
-export const ReviewInfo: React.FC<IReviewInfo> = (props) => {
+export const ReviewInfo: React.FC<React.PropsWithChildren<IReviewInfo>> = (props) => {
   const {
     name,
     description,

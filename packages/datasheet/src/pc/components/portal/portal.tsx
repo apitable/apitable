@@ -27,7 +27,7 @@ export interface IPortalProps {
   getContainer?: () => HTMLElement;
 }
 
-export const Portal: React.FC<IPortalProps> = ({
+export const Portal: React.FC<React.PropsWithChildren<IPortalProps>> = ({
   children,
   zIndex,
   visible = true,

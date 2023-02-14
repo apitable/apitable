@@ -28,7 +28,7 @@ interface IResModal {
   tip: string;
 }
 
-export const DelSuccess: FC<IResModal> = ({ tip }) => {
+export const DelSuccess: FC<React.PropsWithChildren<IResModal>> = ({ tip }) => {
   const [timer, setTimer] = useState<number>();
   // const dispatch = useDispatch();
 

@@ -115,7 +115,7 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
   );
 };
 
-export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible, setVisible, loading }) => {
+export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ shareSpace, shareNode, visible, setVisible, loading }) => {
   const userInfo = useSelector(state => state.user.info);
   const { formId, viewId } = useSelector(state => state.pageParams);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));

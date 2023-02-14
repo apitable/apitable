@@ -55,7 +55,7 @@ export const isWithinFrozenColumnBoundary = (x: number, depth: number, frozenCol
   return x > min && x < max;
 };
 
-export const KonvaGridStage: FC<IKonvaGridStageProps> = memo((props) => {
+export const KonvaGridStage: FC<React.PropsWithChildren<IKonvaGridStageProps>> = memo((props) => {
   const {
     instance,
     pointPosition,

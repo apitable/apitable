@@ -53,7 +53,7 @@ interface IContextMenuProps {
   setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-export const ContextMenu: React.FC<IContextMenuProps> = props => {
+export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> = props => {
   const {
     activeViewId,
     viewList,

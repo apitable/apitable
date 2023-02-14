@@ -232,7 +232,7 @@ const SortableList = (
   );
 };
 
-export const UploadCore: React.FC<IUploadCoreProps> = props => {
+export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = props => {
   const {
     recordId,
     field,

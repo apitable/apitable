@@ -74,7 +74,7 @@ A field name exists that does not match the variable rules, please turn on "Use 
 [Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.
 `;
 
-export const FieldCode: React.FC<IFieldCode> = props => {
+export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props => {
   const { codeType, byFieldId, token, language, setLanguage, showApiToken } = props;
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const viewId = useSelector(Selectors.getActiveView)!;

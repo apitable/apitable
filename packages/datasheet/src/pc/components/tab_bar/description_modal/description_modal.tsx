@@ -52,7 +52,7 @@ const getDefaultValue = (desc: INodeDescription | null) => {
   return Deserializer.html(desc.render);
 };
 
-const RenderModalBase: React.FC<IRenderModalBase> = props => {
+const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = props => {
   const { visible, onClose, activeNodeId, datasheetName, modalStyle, isMobile } = props;
   const dispatch = useDispatch();
   const nodeDesc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);
@@ -229,7 +229,7 @@ function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
   return [];
 }
 
-export const DescriptionModal: React.FC<IDescriptionModal> = props => {
+export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = props => {
   const { activeNodeId, datasheetName, showIntroduction = true, className, showIcon = true, ...rest } = props;
   const [visible, setVisible] = useState(false);
   const desc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);

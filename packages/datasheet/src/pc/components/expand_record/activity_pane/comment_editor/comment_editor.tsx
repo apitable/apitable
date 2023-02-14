@@ -43,7 +43,7 @@ import styles from './style.module.less';
 
 const MAX_COMMENT_LENGTH = 1000;
 
-export const CommentEditor: React.FC<IActivityPaneProps> = props => {
+export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>> = props => {
   const { datasheetId, expandRecordId, viewId } = props;
   const unitId = useSelector(state => state.user.info?.unitId)!;
   const curViewId = useSelector(state => viewId || state.pageParams.viewId);

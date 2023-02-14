@@ -90,7 +90,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const compactMode = formProps?.compactMode;
 
   const onSave = useCallback(
-    value => {
+    (value: any) => {
       let finalValue: ICellValue = null;
 
       if (value == null) {

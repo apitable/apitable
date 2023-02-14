@@ -23,7 +23,7 @@ import React from 'react';
 
 type IRenderValue = Pick<ISelectProps, 'renderValue'>;
 
-export const SelectItem: React.FC<{ item: IOption; isChecked?: boolean } & Required<IRenderValue>> = (props) => {
+export const SelectItem: React.FC<React.PropsWithChildren<{ item: IOption; isChecked?: boolean } & Required<IRenderValue>>> = (props) => {
   const { item, children, renderValue, isChecked } = props;
 
   const getEllipsisConfig = () => {

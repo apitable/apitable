@@ -40,7 +40,7 @@ export interface IMemberFieldEditorProps extends IBaseEditorProps {
   onClose?: (...args: any) => void;
 }
 
-export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwardRef((props, ref) => {
+export const MemberFieldEditor: React.FC<React.PropsWithChildren<IMemberFieldEditorProps>> = React.forwardRef((props, ref) => {
   const { field, cellValue, editable, isFocus, onSave, onClose } = props;
   const editorRef = useRef<IEditor>(null);
   const containerRef = useRef<HTMLDivElement>(null);

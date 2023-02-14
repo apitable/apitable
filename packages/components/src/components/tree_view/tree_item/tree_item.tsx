@@ -163,7 +163,7 @@ const ChildWrapper = styled.ul`
   margin: 0;
 `;
 
-const TreeItemBase: FC<ITreeItemProps> = ({
+const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
   label,
   nodeId,
   selectable = true,

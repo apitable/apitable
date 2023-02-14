@@ -81,7 +81,7 @@ interface IFunctionItem {
 const FunctionsArray = Array.from(Functions)
   .map(item => item[1])
   .filter(item => item.name !== 'ISERROR');
-export const FormulaModal: React.FC<IFormulaModal> = props => {
+export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = props => {
   const colors = useThemeColors();
   const { field, expression: initExpression, onClose, onSave, datasheetId } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;

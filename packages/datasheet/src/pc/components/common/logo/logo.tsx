@@ -49,12 +49,12 @@ interface ILogoProps {
   theme?: ThemeName;
 }
 
-export const LogoText: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = {
+export const LogoText: React.FunctionComponent<React.PropsWithChildren<React.SVGProps<SVGSVGElement>>> = {
   'zh-CN': LogoTextZhCN,
   'en-US': LogoTextEnUS,
 }[getLanguage()];
 
-export const Logo: React.FC<ILogoProps> = (props) => {
+export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
   const colors = useThemeColors();
 
   const { size = 'small', text = true, className, theme = ThemeName.Light } = props;

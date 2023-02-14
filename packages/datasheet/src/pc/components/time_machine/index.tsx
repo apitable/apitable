@@ -45,7 +45,7 @@ import { getForeignDatasheetIdsByOp } from './utils';
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 
-export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({ onClose }) => {
+export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const curDatasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [curPreview, setCurPreview] = useState<number>();
@@ -128,7 +128,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     });
   };
 
-  const executeRollback = useCallback((operations) => {
+  const executeRollback = useCallback((operations: any) => {
     try {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.Rollback,
@@ -147,7 +147,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     dispatch(StoreActions.resetDatasheet(PREVIEW_DATASHEET_ID));
   }, [datasheetId, dispatch]);
 
-  const executePreview = useCallback((operations, index) => {
+  const executePreview = useCallback((operations: any, index: any) => {
     const cloneDatasheet = fastCloneDeep(curDatasheet)!;
     const actions = getRollbackActions(operations, store.getState(), cloneDatasheet.snapshot);
     console.log('---------preview actions', actions);

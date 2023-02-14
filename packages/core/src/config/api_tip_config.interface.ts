@@ -152,7 +152,10 @@ export interface Tips {
     api_view_filter_operator_not_support:                 APIAddRowFailedWrongLengthOfValueClass;
     api_view_fieldid_not_exist:                           APIAddRowFailedWrongLengthOfValueClass;
     api_param_viewids_empty_error:                        APIAddRowFailedWrongLengthOfValueClass;
-    api_param_titlebar_type_error:                        APIAddRowFailedWrongLengthOfValueClass;
+    api_param_node_info_bar_type_error:                   APIAddRowFailedWrongLengthOfValueClass;
+    api_param_collaborator_status_bar_type_error:         APIAddRowFailedWrongLengthOfValueClass;
+    api_param_add_widget_btn_type_error:                  APIAddRowFailedWrongLengthOfValueClass;
+    api_param_full_screen_btn_type_error:                 APIAddRowFailedWrongLengthOfValueClass;
 }
 
 export interface APIAddRowFailedWrongLengthOfValueClass {

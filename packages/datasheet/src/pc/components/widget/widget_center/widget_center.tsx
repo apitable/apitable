@@ -370,7 +370,7 @@ const WidgetPackageList = (props: IWidgetPackageListProps) => {
   );
 };
 
-export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
+export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterModalProps>> = (props) => {
   const colors = useThemeColors();
   const { onModalClose, installPosition } = props;
   const [tabActiveKey, setTabActiveKey] = useState<WidgetReleaseType>(WidgetReleaseType.Global);
@@ -460,7 +460,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     },
   ];
 
-  const showMenu = useCallback((e: React.MouseEvent, props) => {
+  const showMenu = useCallback((e: React.MouseEvent, props: any) => {
     contextMenuRef && contextMenuRef.current?.show(e, props);
     e.nativeEvent.stopImmediatePropagation();
   }, []);
@@ -644,7 +644,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   </Modal>;
 };
 
-const WidgetCenterModalWithTheme: React.FC<IWidgetCenterModalProps> = (props) => {
+const WidgetCenterModalWithTheme: React.FC<React.PropsWithChildren<IWidgetCenterModalProps>> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

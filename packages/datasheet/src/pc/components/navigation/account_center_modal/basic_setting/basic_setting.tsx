@@ -49,7 +49,7 @@ const customTips = {
   }),
 };
 
-export const BasicSetting: FC = () => {
+export const BasicSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const { user, spaceInfo } = useSelector(
     (state: IReduxState) => ({
       user: state.user.info,

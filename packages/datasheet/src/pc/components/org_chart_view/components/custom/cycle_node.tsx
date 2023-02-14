@@ -21,7 +21,7 @@ import { NodeProps } from '@apitable/react-flow';
 import styles from './styles.module.less';
 import { INodeData } from '../../interfaces';
 
-export const CycleNode: FC<NodeProps<INodeData>> = memo((props) => {
+export const CycleNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo((props) => {
 
   const {
     data,

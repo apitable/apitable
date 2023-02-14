@@ -48,7 +48,7 @@ interface IViewItemOwnProps {
 type IViewItemProps = IViewItemOwnProps;
 
 // TODO: Deletion requires pop-up confirmation.
-export const ViewItem: React.FC<IViewItemProps> = props => {
+export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props => {
   const {
     currentViewId, currentViewName, isEditingId, renameEvent, viewType,
     switchView, confirmDelete, errorMsg, onInput, onPressEnter,

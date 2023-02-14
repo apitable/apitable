@@ -39,7 +39,7 @@ export interface ITreeItemProps {
   [customProp: string]: any;
 }
 
-const TreeItemBase: FC<ITreeItemProps> = ({
+const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
   label,
   nodeId,
   selectable = true,

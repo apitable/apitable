@@ -36,7 +36,7 @@ const MAX_HEIGHT = 336;
 const MIN_HGEIGHT = 80;
 const CLS = 'scroll-color-relative-absolute';
 
-export const CommonList: React.FC<ICommonListProps> & { Option: React.FC<IOptionItemProps> } = props => {
+export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & { Option: React.FC<React.PropsWithChildren<IOptionItemProps>> } = props => {
   const {
     inputPlaceHolder,
     showInput,

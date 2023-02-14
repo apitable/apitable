@@ -26,7 +26,7 @@ interface IColorPickerMobileProps extends IColorPickerPane {
   visible: boolean;
 }
 
-export const ColorPickerMobile: React.FC<IColorPickerMobileProps> = props => {
+export const ColorPickerMobile: React.FC<React.PropsWithChildren<IColorPickerMobileProps>> = props => {
   const {
     visible,
     ...rest

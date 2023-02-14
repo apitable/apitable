@@ -35,7 +35,7 @@ import styles from './style.module.less';
 // @ts-ignore
 import { getBillingInfo, isSocialDingTalk } from 'enterprise';
 
-const ModalBase: FC<IModalProps> = (props) => {
+const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const {
     footer, closeIcon, okText, okType, cancelText, okButtonProps, footerBtnCls,
     cancelButtonProps, confirmLoading, onOk, onCancel, className, children, hiddenCancelBtn, ...rest
@@ -70,7 +70,7 @@ const ModalBase: FC<IModalProps> = (props) => {
   );
 };
 
-export type IModal = FC<IModalProps> & {
+export type IModal = FC<React.PropsWithChildren<IModalProps>> & {
   confirm: (props?: IModalFuncProps) => IModalReturn,
   warning: (props?: IModalFuncProps) => IModalReturn,
   danger: (props?: IModalFuncProps) => IModalReturn,

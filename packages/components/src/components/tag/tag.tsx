@@ -69,7 +69,7 @@ const CloseWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const Tag: FC<ITagProps> = React.forwardRef((props, ref) => {
+export const Tag: FC<React.PropsWithChildren<ITagProps>> = React.forwardRef((props, ref) => {
   const theme = useProviderTheme();
   const { children, shape = 'square', type = 'fill', color = theme.color.fill0,
     closable = false, closeIcon = <CloseSmallOutlined />, icon, onClose } = props;

@@ -20,7 +20,7 @@ import React, { Fragment } from 'react';
 import { Tooltip } from './tooltip';
 import { IWrapperTooltip } from './interface';
 
-export const WrapperTooltip: React.FC<IWrapperTooltip> = (props) => {
+export const WrapperTooltip: React.FC<React.PropsWithChildren<IWrapperTooltip>> = (props) => {
   const { tip, wrapper, children } = props;
 
   if (wrapper) {

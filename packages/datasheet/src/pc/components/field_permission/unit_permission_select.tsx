@@ -37,7 +37,7 @@ import { MobileSelect } from 'pc/components/common';
 import { AddOutlined, CheckOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message/message';
 
-export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props => {
+export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermissionSelectProps>> = props => {
   const colors = useThemeColors();
   const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [], showTeams, searchEmail } = props;
   const unitMap =

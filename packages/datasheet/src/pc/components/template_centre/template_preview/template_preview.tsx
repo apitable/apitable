@@ -34,7 +34,7 @@ import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 
-export const TemplatePreview: FC = () => {
+export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use
   const [usingTemplate, setUsingTemplate] = useState('');
   const [openLoginModal, setOpenLoginModal] = useState(false);

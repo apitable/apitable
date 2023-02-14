@@ -26,7 +26,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { SpaceInfoPopover } from './space-info-popover';
 import styles from './style.module.less';
 
-const Content: FC = () => {
+const Content: FC<React.PropsWithChildren<unknown>> = () => {
   const subscription = useSelector(state => state.billing?.subscription, shallowEqual);
   const level = (subscription ? subscription.product.toLowerCase() : LevelType.Bronze) as ISpaceLevelType;
   const {
@@ -41,7 +41,7 @@ const Content: FC = () => {
   );
 };
 
-export const SpaceInfo: FC = () => {
+export const SpaceInfo: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>

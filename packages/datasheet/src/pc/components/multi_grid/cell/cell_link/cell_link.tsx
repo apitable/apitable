@@ -52,7 +52,7 @@ interface ICellLink extends ICellComponentProps {
   datasheetId?: string;
 }
 
-export const CellLink: React.FC<ICellLink> = props => {
+export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
   const {
     onChange, isActive, cellValue, field: propsField, toggleEdit, className, readonly, keyPrefix, rowHeightLevel,
   } = props;

@@ -36,7 +36,7 @@ interface ICustomNodeBase {
   isDragging: boolean;
 }
 
-export const CustomNodeBase: FC<ICustomNodeBase> = memo((props) => {
+export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo((props) => {
   const {
     id,
     data,

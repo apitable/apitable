@@ -41,7 +41,7 @@ interface IPermissionSelectProps {
   roleInvalid?: boolean;
 }
 
-export const PermissionSelect: React.FC<IPermissionSelectProps> = props => {
+export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelectProps>> = props => {
   const { roleOptions, role, onChange, unit, allowRemove = true, onRemove, roleInvalid } = props;
   const colors = useThemeColors();
   return (

@@ -16,27 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Settings } from 'config';
 import { IJOTAction, OTActionName } from 'engine';
-import { Strings, t } from '../../exports/i18n';
 import { Field } from 'model/field';
+import { BasicValueType } from 'types';
+import { integrateCdnHost } from 'utils';
+import { Strings, t } from '../../exports/i18n';
 import {
-  GanttColorType, IFieldMap, IGanttViewColumn, IGanttViewProperty, ISetGanttStyle, ISnapshot, IViewProperty, ViewType
+  GanttColorType,
+  IFieldMap,
+  IGanttViewColumn,
+  IGanttViewProperty,
+  IReduxState,
+  ISetGanttStyle,
+  ISnapshot,
+  IViewProperty,
+  ViewType
 } from '../../exports/store';
 import { getViewIndex } from '../../exports/store/selectors';
-import { BasicValueType } from 'types';
 import { DatasheetActions } from '../datasheet';
 import { View } from './views';
-import { integrateCdnHost } from 'utils';
-import { Settings } from 'config';
 
 export const DEFAULT_WORK_DAYS = [1, 2, 3, 4, 5];
 
 export class GanttView extends View {
-  override get recordShowName(){
+  override get recordShowName() {
     return t(Strings.gantt_task);
   }
 
-  override get recordShowUnit(){
+  override get recordShowUnit() {
     return '';
   }
 
@@ -48,17 +56,17 @@ export class GanttView extends View {
     };
   }
 
-  static findDateTimeFieldIds(srcView: IViewProperty, fieldMap: IFieldMap) {
+  static findDateTimeFieldIds(srcView: IViewProperty, fieldMap: IFieldMap, state?: IReduxState) {
     const filterIds = srcView.columns.filter(({ fieldId }) => {
       const field = fieldMap[fieldId]!;
-      return Field.bindModel(field).basicValueType === BasicValueType.DateTime;
+      return Field.bindModel(field, state).basicValueType === BasicValueType.DateTime;
     }).map(column => column.fieldId);
     return filterIds;
   }
 
-  static defaultStyle(snapshot: ISnapshot, activeViewId: string | null | undefined) {
+  static defaultStyle(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState) {
     const srcView = this.getSrcView(snapshot, activeViewId);
-    const dateTimeFieldIds = this.findDateTimeFieldIds(srcView, snapshot.meta.fieldMap);
+    const dateTimeFieldIds = this.findDateTimeFieldIds(srcView, snapshot.meta.fieldMap, state);
 
     return {
       startFieldId: dateTimeFieldIds[0]!,
@@ -91,7 +99,7 @@ export class GanttView extends View {
     return columns;
   }
 
-  static generateDefaultProperty(snapshot: ISnapshot, activeViewId: string | null | undefined): IGanttViewProperty {
+  static generateDefaultProperty(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState): IGanttViewProperty {
     const srcView = this.getSrcView(snapshot, activeViewId);
     const views = snapshot.meta.views;
 
@@ -103,7 +111,7 @@ export class GanttView extends View {
       columns: this.defaultColumns(srcView),
       rows: this.defaultRows(srcView),
       frozenColumnCount: 1,
-      style: this.defaultStyle(snapshot, activeViewId),
+      style: this.defaultStyle(snapshot, activeViewId, state),
     };
   }
 

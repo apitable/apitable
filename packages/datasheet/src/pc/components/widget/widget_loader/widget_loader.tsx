@@ -33,6 +33,8 @@ import ReactDom from 'react-dom';
 import { expandWidgetDevConfig } from '../widget_center/widget_create_modal';
 import styles from './styles.module.less';
 
+const _ErrorBoundary: any = ErrorBoundary;
+
 (()=>{
   if(!process.env.SSR){
     const prefix = getEnvVariables().WIDGET_REPO_PREFIX;
@@ -160,9 +162,9 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
       return <div className={styles.configInfo}><Loading /></div>;
     }
     return <>
-      <ErrorBoundary id={id} datasheetId={datasheetId} logError={!isDevMode}>
+      <_ErrorBoundary id={id} datasheetId={datasheetId} logError={!isDevMode}>
         <WidgetComponent />
-      </ErrorBoundary>
+      </_ErrorBoundary>
     </>;
   };
 

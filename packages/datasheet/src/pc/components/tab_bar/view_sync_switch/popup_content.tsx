@@ -101,7 +101,7 @@ export const confirmViewAutoSave = (autoSave: boolean, datasheetId: string, view
   });
 };
 
-export const PopupContent: React.FC<IPopupContentProps> = (props) => {
+export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>> = (props) => {
   const colors = useThemeColors();
   const { datasheetId, viewId, autoSave, onClose, contentRef, shareId, isViewLock } = props;
   // TODO: Replace the permissions here with more granular ones

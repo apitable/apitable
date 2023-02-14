@@ -38,7 +38,7 @@ export const closeWidgetRoute = (widgetId: string, widgetFullScreen?: IWidgetFul
 export const expandWidgetRoute = (widgetId: string, isReplace?: boolean, widgetFullScreen?: IWidgetFullScreenType) => {
   const state = store.getState();
   const spaceId = state.space.activeId;
-  const { datasheetId, dashboardId, viewId, shareId, templateId, categoryId, mirrorId } =
+  const { datasheetId, dashboardId, viewId, shareId, templateId, categoryId, mirrorId, embedId } =
     { ...state.pageParams };
 
   const nodeId = dashboardId || mirrorId || datasheetId;
@@ -49,6 +49,9 @@ export const expandWidgetRoute = (widgetId: string, isReplace?: boolean, widgetF
   } else if (templateId) {
     const params = { nodeId: nodeId, viewId, spaceId, widgetId, categoryId, templateId };
     isReplace ? Router.replace(Navigation.TEMPLATE, { params, query }) : Router.push(Navigation.TEMPLATE, { params, query });
+  } else if (embedId) {
+    const params = { nodeId: nodeId, widgetId, embedId };
+    isReplace ? Router.replace(Navigation.EMBED_SPACE, { params, query }) : Router.push(Navigation.EMBED_SPACE, { params, query });
   } else {
     const params = { nodeId: nodeId, datasheetId, viewId, spaceId, widgetId };
     isReplace ? Router.replace(Navigation.WORKBENCH, { params, query }) : Router.push(Navigation.WORKBENCH, { params, query });

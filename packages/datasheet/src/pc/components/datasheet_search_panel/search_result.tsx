@@ -33,7 +33,7 @@ interface ISearchResultProps {
   checkNodeDisable(node: INode): undefined | { budget: string, message: string },
 }
 
-export const SearchResult: React.FC<ISearchResultProps> = (props) => {
+export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
   const { searchResult, checkNodeDisable, onlyShowAvailable, onNodeClick } = props;
   const themeName = useSelector(state => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;

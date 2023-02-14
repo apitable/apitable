@@ -37,7 +37,7 @@ interface IToolBarProps {
   showLabel?: boolean;
 }
 
-export const ToolBar: React.FC<IToolBarProps> = props => {
+export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props => {
   const { nodeShared, showLabel = true } = props;
   const colors = useThemeColors();
   const [isPanelShow, setPanelShow] = useState<boolean>(false);

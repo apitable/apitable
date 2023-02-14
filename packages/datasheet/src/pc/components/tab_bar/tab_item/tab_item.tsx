@@ -54,7 +54,7 @@ export interface ITabbarItemProps {
   showViewStatusIcon?: boolean;
 }
 
-export const TabItem: FC<ITabbarItemProps> = props => {
+export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
   const {
     editing,
     data,

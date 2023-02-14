@@ -28,7 +28,7 @@ interface IMemory {
   cellValue: IAttachmentValue[];
 }
 
-export const Memory: React.FC<IMemory> = props => {
+export const Memory: React.FC<React.PropsWithChildren<IMemory>> = props => {
   const { cellValue } = props;
   const [usedMemory, setUsedMemory] = useState(0);
   const [totalMemory, setTotalMemory] = useState(0);

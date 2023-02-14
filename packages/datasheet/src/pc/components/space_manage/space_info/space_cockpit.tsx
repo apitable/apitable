@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux';
 import { RecoverSpace } from './components/recover_space/recover_space';
 import { SpaceInfo } from './space_info';
 
-const SpaceCockpit: FC = () => {
+const SpaceCockpit: FC<React.PropsWithChildren<unknown>> = () => {
   const spaceInfo = useSelector((state: IReduxState) => (state.space.curSpaceInfo));
 
   useMount(() => {

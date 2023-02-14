@@ -64,7 +64,7 @@ export function compatible(text: string | object) {
   return text.trim();
 }
 
-export const HeaderInner: React.FC<IHeadInnerProps> = props => {
+export const HeaderInner: React.FC<React.PropsWithChildren<IHeadInnerProps>> = props => {
   const { field, isShowHighLight, curColumnIndex, isSelected } = props;
   const colors = useThemeColors();
   const { operate, fieldId: operateFieldId } = useSelector(Selectors.gridViewActiveFieldState);

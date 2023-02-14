@@ -24,7 +24,7 @@ import { Login } from './components/login';
 import { NavBar } from './components/nav_bar';
 import styles from './style.module.less';
 
-export const MobileHome: React.FC = () => {
+export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.mobileHome}>
       <div className={styles.header}>

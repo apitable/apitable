@@ -26,7 +26,7 @@ interface IStatusAlertProps {
   style?: React.CSSProperties;
 }
 
-export const StatusAlert: React.FC<IStatusAlertProps> = (props) => {
+export const StatusAlert: React.FC<React.PropsWithChildren<IStatusAlertProps>> = (props) => {
   const { style, content } = props;
   return <div className={styles.closeSyncViewTip} style={style}>
     <DefaultFilled />

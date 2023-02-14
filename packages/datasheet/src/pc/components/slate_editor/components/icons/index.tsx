@@ -55,7 +55,7 @@ const HeadingIcon = ({ depth = 1 }) => {
   </i>;
 };
 
-const IconFactor = (Icon: FC<IIconProps>) => {
+const IconFactor = (Icon: FC<React.PropsWithChildren<IIconProps>>) => {
   return ({ color = colorVars.secondLevelText, ...others }: IIconProps) => <Icon color={color} {...others} />;
 };
 

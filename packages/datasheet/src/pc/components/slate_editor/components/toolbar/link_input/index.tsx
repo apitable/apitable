@@ -69,10 +69,10 @@ export const LinkInput = ({
 
   useClickAway(() => { setVisible(false); }, [triggerRef, inputPanelRef, inlineInputPanelRef]);
 
-  const handleTextChange = useCallback((e) => {
+  const handleTextChange = useCallback((e: any) => {
     setText(e.target.value);
   }, []);
-  const handleLinkChange = useCallback((e) => {
+  const handleLinkChange = useCallback((e: any) => {
     setLink(e.target.value);
   }, []);
 
@@ -93,7 +93,7 @@ export const LinkInput = ({
     }
   };
 
-  const handleVisibleChange = useCallback(next => {
+  const handleVisibleChange = useCallback((next: any) => {
     const nextVisible = disabled ? false : next;
     setVisible(nextVisible);
     if (nextVisible) {

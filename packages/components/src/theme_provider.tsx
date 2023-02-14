@@ -26,14 +26,16 @@ interface IThemeContext {
   theme?: ThemeName | ITheme;
 }
 
-export const ThemeProvider: React.FC<IThemeContext> = (props) => {
+const _Provider: any = Provider;
+
+export const ThemeProvider: React.FC<React.PropsWithChildren<IThemeContext>> = (props) => {
   const { theme } = props;
   const themeName = theme || getThemeName();
   if (typeof themeName !== 'string') {
-    return <Provider theme={themeName} >{props.children}</Provider>;
+    return <_Provider theme={themeName} >{props.children}</_Provider>;
   }
   const themeColor = themeName.includes(ThemeName.Dark) ? dark : light;
-  return <Provider theme={themeColor} >{props.children}</Provider>;
+  return <_Provider theme={themeColor} >{props.children}</_Provider>;
 };
 
 export const ThemeContext = Context as IThemeContext;

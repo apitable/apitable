@@ -58,7 +58,7 @@ export interface IAccountCenterModalProps {
   setShowAccountCenter: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
+export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalProps>> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 

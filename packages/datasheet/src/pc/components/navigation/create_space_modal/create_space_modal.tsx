@@ -41,7 +41,7 @@ export interface ICreateSpaceModalProps {
   isMobile: boolean;
 }
 
-export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
+export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps>> = props => {
   const { isMobile } = props;
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();

@@ -40,7 +40,7 @@ export interface IShareProps {
   onChange?: (data: IShareSettings) => void;
 }
 
-export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
+export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings, onChange, nodeId }) => {
   // Whether to display the drop-down menu
   const [menuVisible, setMenuVisible] = useState(false);
   // Control the display of modal boxes for sharing QR codes

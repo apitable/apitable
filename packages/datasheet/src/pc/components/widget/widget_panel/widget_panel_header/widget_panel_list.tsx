@@ -36,7 +36,7 @@ import { useResponsive } from 'pc/hooks';
 import { FC } from 'react';
 import { WrapperTooltip } from './wrapper_tooltip';
 
-export const WidgetPanelList: FC<{ onClickItem?: (panelIndex: number) => void }> = ({ onClickItem }) => {
+export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelIndex: number) => void }>> = ({ onClickItem }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 

@@ -19,20 +19,20 @@
 import { Button, IconButton } from '@apitable/components';
 import { AutoTestID } from '@apitable/core';
 import classnames from 'classnames';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { FC, useState } from 'react';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
 import { isIframe } from 'pc/utils/env';
 
 export interface IOperationCardProps {
-  img: React.ReactNode;
+  img: StaticImageData;
   tipText: string;
   btnText: string;
   onClick: () => void;
 }
 
-export const OperationCard: FC<IOperationCardProps> = ({ img, onClick, tipText, btnText }) => {
+export const OperationCard: FC<React.PropsWithChildren<IOperationCardProps>> = ({ img, onClick, tipText, btnText }) => {
   const [isCompact, setIsCompact] = useState(false);
 
   return (
@@ -40,7 +40,7 @@ export const OperationCard: FC<IOperationCardProps> = ({ img, onClick, tipText, 
       { !isIframe() && (<div className={classnames(styles.operationCard, styles.loose)}>
         <IconButton icon={() => <CloseIcon fill="currentColor" />} className={styles.closeBtn} onClick={() => setIsCompact(true)} />
         <div className={styles.paint}>
-          <Image src={img as string} alt="" width={80} height={80} />
+          <Image src={img} alt="" width={80} height={80} />
         </div>
         <p className={styles.saveDesc}>{tipText}</p>
         <Button

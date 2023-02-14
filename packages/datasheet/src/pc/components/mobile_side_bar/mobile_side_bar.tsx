@@ -28,7 +28,7 @@ import { CommonSide } from '../common_side';
 import { Navigation } from '../navigation';
 import styles from './style.module.less';
 
-export const MobileSideBar: React.FC = () => {
+export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const spaceId = useSelector(state => state.space.activeId);
   const router = useRouter();

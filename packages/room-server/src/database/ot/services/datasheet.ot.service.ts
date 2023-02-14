@@ -146,17 +146,7 @@ export class DatasheetOtService {
   }
 
   /**
-   * @description Analyze Operation, apply special handling accordingly
-   * @param spaceId
-   * @param operation
-   * @param datasheetId
-   * @param permission
-   * @param cookie
-   * @param token
-   * @param getNodeRole
-   * @param effectMap
-   * @param resultSet
-   * @returns
+   * Analyze Operation, apply special handling accordingly
    */
   async analyseOperates(
     spaceId: string,
@@ -182,7 +172,6 @@ export class DatasheetOtService {
     resultSet.temporaryViews = meta.views;
     for (const { mainLinkDstId } of operation) {
       const _condition = mainLinkDstId || mainDatasheetId;
-      this.logger.info(`Related data of current operation misses mainLinkDstId: ${datasheetId}`);
       const condition = auth.internal || datasheetId === _condition || sourceType === SourceTypeEnum.FORM;
       const mainDstPermission = condition ? permission : await getNodeRole(_condition, auth);
       resultSet.mainLinkDstPermissionMap.set(_condition, mainDstPermission);
@@ -412,6 +401,7 @@ export class DatasheetOtService {
         }
       }
     }
+
     // Validate cell operations without edit permission, if is operation related to linking
     if (resultSet.fldOpInRecMap.size > 0) {
       for (const [fieldId, cmd] of resultSet.fldOpInRecMap.entries()) {
@@ -442,6 +432,7 @@ export class DatasheetOtService {
         }
       }
     }
+
     // Not undo operation, create LookUp requires permission above readable of linked datasheet.
     // If the target field set field permission, permission above readable of this field is also required.
     if (resultSet.toCreateLookUpProperties.length > 0) {
@@ -2303,7 +2294,7 @@ export class DatasheetOtService {
    * @param dstId datasheet ID
    * @param effectMap effect variable collection
    */
-  private async getMetaDataByCache(dstId: string, effectMap: Map<string, any>): Promise<IMeta> {
+  async getMetaDataByCache(dstId: string, effectMap: Map<string, any>): Promise<IMeta> {
     if (effectMap.has(EffectConstantName.Meta)) {
       return effectMap.get(EffectConstantName.Meta);
     }

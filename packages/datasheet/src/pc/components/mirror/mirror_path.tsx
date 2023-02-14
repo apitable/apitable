@@ -35,7 +35,7 @@ interface IMirrorPath {
   nodeInfo: INodeMeta;
 }
 
-export const MirrorPath: React.FC<IMirrorPath> = props => {
+export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = props => {
   const colors = useThemeColors();
   const { breadInfo, permission, nodeInfo } = props;
   const { sideBarVisible } = useSideBarVisible();

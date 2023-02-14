@@ -61,7 +61,7 @@ interface IKanbanViewProps {
   width: number;
 }
 
-export const KanbanView: React.FC<IKanbanViewProps> = props => {
+export const KanbanView: React.FC<React.PropsWithChildren<IKanbanViewProps>> = props => {
   const { width, height } = props;
   const groupIds = useSelector(Selectors.getKanbanGroupMapIds) || [];
   const view = useSelector(Selectors.getCurrentView) as IKanbanViewProperty;
@@ -379,7 +379,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   );
 };
 
-export const FancyTooltip: React.FC<{ left: number }> = ({ left }) => {
+export const FancyTooltip: React.FC<React.PropsWithChildren<{ left: number }>> = ({ left }) => {
   const shareId = useSelector(state => state.pageParams.shareId);
 
   return ReactDOM.createPortal(

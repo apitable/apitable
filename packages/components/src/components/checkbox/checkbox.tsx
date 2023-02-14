@@ -23,7 +23,7 @@ import { CheckboxIconWrapper, CheckboxWrapper } from './styled';
 import { ICheckboxProps } from './interface';
 import { useProviderTheme } from 'hooks';
 
-export const Checkbox: React.FC<ICheckboxProps> = props => {
+export const Checkbox: React.FC<React.PropsWithChildren<ICheckboxProps>> = props => {
   const { size = 16, onChange, color, disabled, checked: _checked, children } = props;
   const isCheckedBoolean = typeof _checked === 'boolean';
   const checkboxRef = useRef<HTMLDivElement>(null);

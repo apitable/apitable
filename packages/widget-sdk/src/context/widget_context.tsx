@@ -25,6 +25,8 @@ import { uniqueId } from 'lodash';
 import { IWidgetStore } from 'store';
 import { Store } from 'redux';
 import { ThemeName } from '@apitable/components';
+
+const _Provider: any = Provider;
 /**
  * 1. provide the ability to read and write to the data source of the widget.
  * 2. provide the ability to read and write to the datasheet data.
@@ -48,7 +50,7 @@ export const WidgetConfigContext = React.createContext<IWidgetConfig>(null!);
 /**
  * Within the main project, the WidgetProvider need to be wrapped before the widget be used.
  */
-export const WidgetProvider: React.FC<IWidgetProviderProps> = props => {
+export const WidgetProvider: React.FC<React.PropsWithChildren<IWidgetProviderProps>> = props => {
   const {
     id, globalStore, resourceService, className, style, locale = 'zh-CN', theme = ThemeName.Light,
     runtimeEnv = RuntimeEnv.Desktop, isShowingSettings, isFullscreen, toggleSettings, toggleFullscreen, expandRecord, children
@@ -84,7 +86,7 @@ export const WidgetProvider: React.FC<IWidgetProviderProps> = props => {
   }
 
   return (
-    <Provider store={widgetStore}>
+    <_Provider store={widgetStore}>
       <WidgetContext.Provider value={widgetContextValue}>
         <WidgetConfigContext.Provider value={widgetConfigValue}>
           <div className={className} style={{ height: '100%', width: '100%', ...(style as any) }}>
@@ -92,6 +94,6 @@ export const WidgetProvider: React.FC<IWidgetProviderProps> = props => {
           </div>
         </WidgetConfigContext.Provider>
       </WidgetContext.Provider>
-    </Provider>
+    </_Provider>
   );
 };

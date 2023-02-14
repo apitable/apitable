@@ -67,7 +67,7 @@ interface IGalleryViewProps {
   width?: number;
 }
 
-export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerWidth, height }) => {
+export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps>> = ({ width: containerWidth, height }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const {
@@ -336,7 +336,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   };
 
   const onDoTransition = React.useCallback(
-    recordId => {
+    (recordId: any) => {
       if (groupingCollapseIds == null) return;
       if (recordId) {
         setTransitionRecordIds(recordIds => [...recordIds, recordId]);

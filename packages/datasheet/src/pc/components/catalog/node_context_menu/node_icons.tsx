@@ -97,7 +97,7 @@ export enum NodeIcon {
 
 // Enumeration and Resource Location Matching Table
 export const nodeIconImportMap: {
-  [iconName: string]: React.FC<IIconProps>
+  [iconName: string]: React.FC<React.PropsWithChildren<IIconProps>>
 } = {
   [NodeIcon.Search]: SearchOutlined,
   [NodeIcon.Add]: AddOutlined,

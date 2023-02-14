@@ -51,7 +51,7 @@ const DEFAULT_ROLE: IRoleOption[] = [
 
 ];
 
-export const UnitItem: FC<IUnitItemProps> = (props) => {
+export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => {
   const colors = useThemeColors();
   const {
     unit, role, disabled, identity, className,

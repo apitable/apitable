@@ -30,7 +30,7 @@ export interface INodeProps {
   className?: string;
 }
 
-export const Node: FC<INodeProps> = props => {
+export const Node: FC<React.PropsWithChildren<INodeProps>> = props => {
   const { node, onMouseDown } = props;
   const spaceName = useSelector(state => state.user.info?.spaceName);
 

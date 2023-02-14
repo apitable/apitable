@@ -21,13 +21,19 @@ import {
   clearComputeCache,
   ConfigConstant,
   DEFAULT_EDITOR_PERMISSION,
+  FieldType,
+  IChangeset,
+  IFieldMap,
   IJOTAction,
   ILocalChangeset,
+  IOperation,
   IRemoteChangeset,
   jot,
+  OTActionName,
   ResourceIdPrefix,
   ResourceType,
 } from '@apitable/core';
+import * as Sentry from '@sentry/node';
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
 import { DatasheetChangesetService } from 'database/datasheet/services/datasheet.changeset.service';
@@ -46,7 +52,7 @@ import { ChangesetService } from 'database/resource/services/changeset.service';
 import { ResourceService } from 'database/resource/services/resource.service';
 import { UserService } from 'user/services/user.service';
 import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
-import { isNil } from 'lodash';
+import { difference, intersection, isEqual, isNil, sortBy, union } from 'lodash';
 import { EnvConfigKey } from 'shared/common';
 import { InjectLogger } from 'shared/common/decorators';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
@@ -63,10 +69,62 @@ import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { MetaService } from 'database/resource/services/meta.service';
 import { FormOtService } from './form.ot.service';
-import { EffectConstantName, IChangesetParseResult, 
-  ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from '../interfaces/ot.interface';
+import {
+  EffectConstantName,
+  IChangesetParseResult,
+  ICommonData,
+  IOtEventContext,
+  IRoomChannelMessage,
+  MAX_REVISION_DIFF,
+} from '../interfaces/ot.interface';
 import { ResourceChangeHandler } from './resource.change.handler';
 import { RobotEventService } from 'database/robot/services/robot.event.service';
+import fs from 'fs';
+
+fs.writeFileSync('shit.log', '', 'utf-8');
+
+class CellActionMap {
+  readonly map: Map<string, Map<string, IJOTAction>> = new Map();
+
+  set(recordId: string, fieldId: string, action: IJOTAction) {
+    let fields = this.map.get(fieldId);
+    if (!fields) {
+      fields = new Map();
+      this.map.set(fieldId, fields);
+    }
+    fields.set(recordId, action);
+  }
+
+  get(recordId: string, fieldId: string): IJOTAction | undefined {
+    let fields = this.map.get(fieldId);
+    if (!fields) {
+      fields = new Map();
+      this.map.set(fieldId, fields);
+    }
+    return fields.get(recordId);
+  }
+
+  delete(recordId: string, fieldId: string) {
+    let fields = this.map.get(fieldId);
+    if (!fields) {
+      fields = new Map();
+      this.map.set(fieldId, fields);
+    }
+    fields.delete(recordId);
+  }
+
+  isEmpty(): boolean {
+    if (this.map.size === 0) {
+      return true;
+    }
+    for (const v of this.map.values()) {
+      if (v.size) {
+        return false;
+      }
+    }
+    return false;
+  }
+}
 
 /**
  * OT management service
@@ -106,7 +164,7 @@ export class OtService {
    *
    * @param nodeId node ID.
    */
-  getNodeRole = async(
+  private getNodeRole = async(
     nodeId: string,
     auth: IAuthHeader,
     shareId?: string,
@@ -241,10 +299,8 @@ export class OtService {
     // Add to queue, submit to java to calculate attachment capacity in op,
     // add to queue individually to avoid concurrency
     this.logger.info('applyRoomChangeset-handle-attach', { roomId: message.roomId, msgIds });
-    if (attachCites.length) {
-      for (const item of attachCites) {
-        this.restService.calDstAttachCite(auth, item);
-      }
+    for (const item of attachCites) {
+      this.restService.calDstAttachCite(auth, item);
     }
 
     const thisBatchResourceIds = results.reduce((ids, result) => {
@@ -330,8 +386,16 @@ export class OtService {
       this.logger.info(`REVISION_ERROR : ${resourceRevision}  --- ${nodeId} --- ${resourceId}`);
       throw new ServerException(OtException.REVISION_ERROR);
     }
+
+    // Effect variable collector
+    const effectMap = new Map<string, any>();
+
     // Transform operations submitted by client into correct changeset
-    const remoteChangeset = await this.transform(changeset, resourceRevision);
+    const remoteChangeset = await this.transform(changeset, resourceRevision, effectMap);
+    effectMap.set(EffectConstantName.RemoteChangeset, remoteChangeset);
+    // Map that needs notification
+    effectMap.set(EffectConstantName.MentionedMessages, []);
+
     // Obtain max revision of changesets
     const changesetRevision = await this.changesetService.getMaxRevision(resourceId, resourceType);
     if (this.logger.isDebugEnabled()) {
@@ -353,12 +417,6 @@ export class OtService {
     const permission = internalAuth
       ? { ...this.permissionServices.getDefaultManagerPermission(), userId: internalAuth.userId, uuid: internalAuth.uuid }
       : await this.getNodeRole(nodeId, auth, shareId, roomId, sourceDatasheetId, sourceType, allowAllEntrance);
-
-    // Effect variable collector
-    const effectMap = new Map<string, any>();
-    effectMap.set(EffectConstantName.RemoteChangeset, remoteChangeset);
-    // Map that needs notification
-    effectMap.set(EffectConstantName.MentionedMessages, []);
 
     // Traverse operations from client, there may be multiple operations, but applied on the same resource.
     const beginTime = +new Date();
@@ -422,7 +480,7 @@ export class OtService {
   /**
    * @param dbRevision revision of changesets in database
    */
-  private async transform(changeset: ILocalChangeset, dbRevision: number): Promise<IRemoteChangeset> {
+  private async transform(changeset: ILocalChangeset, dbRevision: number, effectMap: Map<string, any>): Promise<IRemoteChangeset> {
     const { baseRevision, ...localChangeset } = changeset;
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${changeset.resourceId}] revision in database:${dbRevision}`);
@@ -439,7 +497,7 @@ export class OtService {
       throw new ServerException(OtException.REVISION_OVER_LIMIT);
     }
 
-    this.logger.info(`${changeset.resourceId}[${baseRevision}/${dbRevision}] operations length: ${JSON.stringify(changeset.operations).length}`);
+    this.logger.info(`${changeset.resourceId}[${baseRevision}/${dbRevision}] operations length: ${changeset.operations.length}`);
     // baseRevision is not equal to currentRevision, needs transform
     if (revisionDiff > 0) {
       // Generate revision diff array, for example, if changesets of revisions 8~10 will be fetched, generate [8,9,10]
@@ -450,7 +508,7 @@ export class OtService {
         this.logger.info(`REVISION_ERROR :${revisions.join(',')} --- ${changesets.map(item => item.revision).join(',')} --- ${changeset.resourceId}`);
         throw new ServerException(OtException.REVISION_ERROR);
       }
-      let serverActions = changesets.reduce<IJOTAction[]>((pre, cs) => {
+      const serverActions = changesets.reduce<IJOTAction[]>((pre, cs) => {
         cs.operations?.forEach(op => {
           pre.push(...op.actions);
         });
@@ -467,31 +525,235 @@ export class OtService {
         this.logger.error(`${changeset.resourceId}[action diff too large]${localActionLength}/${serverActions.length}`);
         throw new ServerException(OtException.REVISION_OVER_LIMIT);
       }
-      // cross transform to generate new operations
-      // For the principle, see  https://ones.ai/wiki/#/team/NqxK6uTp/space/L8swSDkE/page/GjwDGTz1
-      const newOperations = localChangeset.operations.map(op => {
-        const [leftOp, rightOp] = jot.transformX(op.actions, serverActions);
-        serverActions = rightOp;
 
-        for (const v of leftOp) {
-          // Handling unsynchronized view settings. Client saving view settings will lead to entire replace of 'columns' field,
-          // which is bad for transform.
-          // So if 'columns' is being changed, and the lengths of 'oi' and 'oi' does not equal, throw an exception.
-          if (v.p.includes('columns') && v['oi'] && v['od'] && v['oi'].length !== v['od'].length) {
-            throw new ServerException(OtException.OPERATION_ABNORMAL);
-          }
-        }
-        return {
-          cmd: op.cmd,
-          actions: leftOp,
-          mainLinkDstId: op.mainLinkDstId,
-        };
-      });
-
-      return { ...localChangeset, revision: dbRevision + 1, operations: newOperations };
+      const fieldMap =
+        localChangeset.resourceType === ResourceType.Datasheet
+          ? (await this.datasheetOtService.getMetaDataByCache(localChangeset.resourceId, effectMap)).fieldMap
+          : null;
+      const remoteChangeset = OtService.transformLocalChangeset(localChangeset, serverActions, dbRevision, fieldMap);
+      let a1 = fs.readFileSync('shit.log', 'utf-8');
+      a1 += `vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\nclient changeset: ${JSON.stringify(
+        localChangeset,
+        null,
+        2,
+      )}\n================= serverActions: ${JSON.stringify(serverActions, null, 2)}\n================ result:${JSON.stringify(
+        remoteChangeset,
+        null,
+        2,
+      )}\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n`;
+      fs.writeFileSync('shit.log', a1, 'utf-8');
+      return remoteChangeset;
     }
 
     return { ...localChangeset, revision: dbRevision + 1 };
+  }
+
+  static transformLocalChangeset(
+    localChangeset: IChangeset,
+    serverActions: IJOTAction[],
+    dbRevision: number,
+    fieldMap: IFieldMap | null,
+  ): IRemoteChangeset {
+    let serverLinkCellActions: CellActionMap | undefined;
+    let linkFieldIds: Set<string> | undefined;
+    // all link fields that have been changed to other types or deleted by server actions.
+    let changedFieldIds: Set<string> | undefined;
+
+    if (fieldMap) {
+      serverLinkCellActions = new CellActionMap();
+      linkFieldIds = new Set();
+      changedFieldIds = new Set();
+
+      for (const fieldId in fieldMap) {
+        if (fieldMap[fieldId]!.type === FieldType.Link) {
+          linkFieldIds.add(fieldId);
+        }
+      }
+      const latestFieldIds = new Set(linkFieldIds);
+
+      const serverActionsRev = [...serverActions];
+      serverActionsRev.reverse();
+      for (const action of serverActionsRev) {
+        // p: recordMap.[recordId].data.[fieldId]
+        if (action.p.length === 4 && action.p[0] === 'recordMap' && action.p[2] === 'data' && linkFieldIds.has(action.p[3] as string)) {
+          // modify magic-link cell
+          const recordId = action.p[1] as string;
+          const fieldId = action.p[3] as string;
+          const nextAction = serverLinkCellActions.get(recordId, fieldId);
+          if (nextAction) {
+            const newOp = jot.compose([action], [nextAction]);
+            if (newOp.length) {
+              const newAction = newOp[newOp.length - 1]!;
+              if ('oi' in newAction && 'od' in newAction) {
+                // NOTE This bypasses a bug of json0. Maybe fork json0 and fix it later.
+                if (!isEqual(newAction.oi, newAction.od)) {
+                  serverLinkCellActions.set(recordId, fieldId, newAction);
+                } else {
+                  serverLinkCellActions.delete(recordId, fieldId);
+                }
+              } else {
+                serverLinkCellActions.set(recordId, fieldId, newAction);
+              }
+            } else {
+              serverLinkCellActions.delete(recordId, fieldId);
+            }
+          } else {
+            serverLinkCellActions.set(recordId, fieldId, action);
+          }
+          // p: meta.fieldMap.[fieldId]
+        } else if (action.p.length === 3 && action.p[1] === 'fieldMap') {
+          const fieldId = action.p[2] as string;
+          // field type change
+          if ('od' in action && 'oi' in action && action.od.type !== action.oi.type) {
+            if (action.oi.type === FieldType.Link) {
+              linkFieldIds.delete(fieldId);
+            } else if (action.od.type === FieldType.Link) {
+              linkFieldIds.add(fieldId);
+            }
+          } else if (!('od' in action) && 'oi' in action && action.oi.type === FieldType.Link) {
+            linkFieldIds.delete(fieldId);
+          } else if ('od' in action && !('oi' in action) && action.od.type === FieldType.Link) {
+            linkFieldIds.add(fieldId);
+          }
+        }
+      }
+
+      for (const fieldId of linkFieldIds) {
+        if (!latestFieldIds.has(fieldId)) {
+          changedFieldIds.add(fieldId);
+        }
+      }
+    }
+
+    const originalServerActions = serverActions;
+    // cross transform to generate new operations
+    // For the principle, see  https://ones.ai/wiki/#/team/NqxK6uTp/space/L8swSDkE/page/GjwDGTz1
+    const newOperations: IOperation[] = localChangeset.operations.map((op, i) => {
+      const [leftOp, rightOp] = jot.transformX(op.actions, serverActions);
+      serverActions = rightOp;
+
+      for (const v of leftOp) {
+        // Handling unsynchronized view settings. Client saving view settings will lead to entire replace of 'columns' field,
+        // which is bad for transform.
+        // So if 'columns' is being changed, and the lengths of 'oi' and 'od' does not equal, throw an exception.
+        // p: meta.views.[viewIndex].columns
+        if (v.p[3] === 'columns' && v['oi'] && v['od'] && v['oi'].length !== v['od'].length) {
+          throw new ServerException(OtException.OPERATION_ABNORMAL);
+        }
+      }
+
+      // Handling magic-link cell changes
+      if (serverLinkCellActions && (!serverLinkCellActions.isEmpty() || changedFieldIds!.size)) {
+        const expectedTransformedActions: Map<string, IJOTAction | null> = new Map();
+        for (const action of op.actions) {
+          if (action.p.length === 4 && action.p[0] === 'recordMap' && action.p[2] === 'data' && linkFieldIds!.has(action.p[3] as string)) {
+            const recordId = action.p[1] as string;
+            const fieldId = action.p[3] as string;
+            const cellId = recordId + '-' + fieldId;
+            if (changedFieldIds?.has(fieldId)) {
+              Sentry.captureMessage('Operation conflict involving magic-link cell update', {
+                extra: {
+                  recordId,
+                  fieldId,
+                  localChangeset,
+                  errorOpIndex: i,
+                  originalServerActions,
+                },
+              });
+              throw new ServerException(OtException.OPERATION_CONFLICT);
+            }
+            const serverAction = serverLinkCellActions.get(recordId, fieldId);
+            if (serverAction) {
+              // Found a pair of actions that modify the same magic-link cell, compute their expected transforma result.
+              expectedTransformedActions.set(cellId, OtService.transformLinkCellAction(action, serverAction));
+            }
+            // p: meta.fieldMap.[fieldId]
+          } else if (action.p.length === 3 && action.p[1] === 'fieldMap' && linkFieldIds!.has(action.p[2] as string)) {
+            // field type change
+            const fieldId = action.p[2] as string;
+            if (serverLinkCellActions.map.get(fieldId)?.size) {
+              Sentry.captureMessage('Operation conflict involving magic-link cell update', {
+                extra: {
+                  fieldId,
+                  localChangeset,
+                  errorOpIndex: i,
+                  originalServerActions,
+                },
+              });
+              throw new ServerException(OtException.OPERATION_CONFLICT);
+            }
+          }
+        }
+
+        // Rectify transformed actions
+        const newLeftOp: IJOTAction[] = [];
+        for (const action of leftOp) {
+          if (action.p.length === 4 && action.p[0] === 'recordMap' && action.p[2] === 'data' && linkFieldIds!.has(action.p[3] as string)) {
+            const cellId = (action.p[1] as string) + '-' + (action.p[3] as string);
+            const expected = expectedTransformedActions.get(cellId);
+            if (expected !== undefined) {
+              expectedTransformedActions.delete(cellId);
+              if (expected) {
+                newLeftOp.push(expected);
+              }
+            } else {
+              newLeftOp.push(action);
+            }
+          } else {
+            newLeftOp.push(action);
+          }
+        }
+        for (const action of expectedTransformedActions.values()) {
+          if (action) {
+            newLeftOp.push(action);
+          }
+        }
+
+        return {
+          cmd: op.cmd,
+          actions: newLeftOp,
+          mainLinkDstId: op.mainLinkDstId,
+        };
+      }
+
+      return {
+        cmd: op.cmd,
+        actions: leftOp,
+        mainLinkDstId: op.mainLinkDstId,
+      };
+    });
+
+    return { ...localChangeset, revision: dbRevision + 1, operations: newOperations };
+  }
+
+  static transformLinkCellAction(clientAction: IJOTAction, serverAction: IJOTAction): IJOTAction | null {
+    const od = (clientAction['od'] as string[]) ?? [];
+    const oiClient = (clientAction['oi'] as string[]) ?? [];
+    const oiServer = (serverAction['oi'] as string[]) ?? [];
+    const unchanged = intersection(od, oiServer, oiClient);
+    const added = union(difference(oiServer, od), difference(oiClient, od));
+    const oi = union(unchanged, added);
+    if (isEqual(sortBy(oiServer), sortBy(oi))) {
+      return null;
+    } else if (oiServer.length && oi.length) {
+      return {
+        n: OTActionName.ObjectReplace,
+        od: oiServer,
+        oi,
+        p: clientAction.p,
+      };
+    } else if (oiServer.length) {
+      return {
+        n: OTActionName.ObjectDelete,
+        od: oiServer,
+        p: clientAction.p,
+      };
+    }
+    return {
+      n: OTActionName.ObjectInsert,
+      oi,
+      p: clientAction.p,
+    };
   }
 
   /**
@@ -537,7 +799,7 @@ export class OtService {
     return true;
   }
 
-  async applyDstChangeset(
+  private async applyDstChangeset(
     message: IRoomChannelMessage,
     sourceType = SourceTypeEnum.RELATION_EFFECT,
   ): Promise<{ result?: IRemoteChangeset[]; error?: ServerException }> {
@@ -566,10 +828,10 @@ export class OtService {
 
   async applyChangesets(roomId: string, changesets: ILocalChangeset[], auth: IAuthHeader, shareId?: string) {
     const changeResult = await this.applyRoomChangeset({ allowAllEntrance: true, roomId, shareId, changesets }, auth);
-    this.logger.info('Resource:ApplyChangeSet Success!');
+    this.logger.info(`room[${roomId}] Resource:ApplyChangeSet Success!`);
     // Notify socket service to broadcast
     await this.nestRoomChange(roomId, changeResult);
-    this.logger.info('Resource:NotifyChangeSet Success!');
+    this.logger.info(`room[${roomId}] Resource:NotifyChangeSet Success!`);
     return changeResult;
   }
 }

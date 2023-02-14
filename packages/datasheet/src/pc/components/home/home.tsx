@@ -32,7 +32,7 @@ configResponsive({
   large: 1023.98,
 });
 
-const HomeBase: FC = () => {
+const HomeBase: FC<React.PropsWithChildren<unknown>> = () => {
   configResponsive({
     large: 1023.98,
   });

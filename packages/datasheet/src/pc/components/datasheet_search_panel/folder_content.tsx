@@ -50,7 +50,7 @@ interface IFolderContentProps {
   checkNodeDisable(node: INode): undefined | { budget: string, message: string },
 }
 
-export const FolderContent: React.FC<IFolderContentProps> = (props) => {
+export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
   const {
     nodes, onNodeClick, currentViewId, currentMirrorId, loading, onlyShowEditableNode,
     checkNodeDisable, currentDatasheetId, isSelectView, showMirrorNode

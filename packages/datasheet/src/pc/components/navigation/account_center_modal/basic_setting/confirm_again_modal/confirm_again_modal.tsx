@@ -27,7 +27,7 @@ interface IConfirmAgainModalProps {
   confirmText: string;
   setConfirmText: React.Dispatch<React.SetStateAction<string>>;
 }
-export const ConfirmAgainModal: FC<IConfirmAgainModalProps> = ({
+export const ConfirmAgainModal: FC<React.PropsWithChildren<IConfirmAgainModalProps>> = ({
   confirmText,
   setConfirmText,
 }) => {

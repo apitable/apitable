@@ -62,7 +62,7 @@ function isSelectField(field: IField) {
   return Field.bindModel(field) instanceof SelectField;
 }
 
-export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
+export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectProps>> = props => {
   const { setCurrentField, currentField, activeFieldId, activeFieldIndex, snapshot, datasheetId, isMobile, showAdvancedFields } = props;
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);

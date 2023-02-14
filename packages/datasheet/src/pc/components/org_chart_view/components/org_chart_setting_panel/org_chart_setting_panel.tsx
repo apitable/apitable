@@ -40,7 +40,7 @@ interface IOrgChartSettingPanelProps {
   onAddField: () => void;
 }
 
-export const OrgChartSettingPanel: React.FC<IOrgChartSettingPanelProps> = props => {
+export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSettingPanelProps>> = props => {
 
   const { onClose, onAddField } = props;
 

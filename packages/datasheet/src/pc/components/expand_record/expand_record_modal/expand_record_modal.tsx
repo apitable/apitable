@@ -39,7 +39,7 @@ interface IExpandRecordModal {
   children: JSX.Element[];
 }
 
-const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
+const ExpandRecordModalBase: FC<React.PropsWithChildren<IExpandRecordModal>> = props => {
   const recordVision = useSelector(state => state.recordVision);
   useSelector(state => state.space.isSideRecordOpen);
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
@@ -101,6 +101,7 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
         {props.children}
       </div>
     );
+    // @ts-ignore
     return <Portal getContainer={() => document.querySelector(`#${DATASHEET_ID.SIDE_RECORD_PANEL}`) as HTMLElement}>{() => children}</Portal>;
   }
 

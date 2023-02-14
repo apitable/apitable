@@ -46,7 +46,7 @@ interface IMicroColumnStateProps {
   fieldIndexMap: Map<string, number>;
 }
 
-const MicroColumnBase: React.FC = () => {
+const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const {
     snapshot,

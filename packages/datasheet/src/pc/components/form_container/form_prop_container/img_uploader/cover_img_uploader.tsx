@@ -48,7 +48,7 @@ const customTips = {
   cropDesc: t(Strings.form_cover_crop_desc),
 };
 
-export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = props => {
+export const CoverImgUploader: React.FC<React.PropsWithChildren<ICoverImgUploaderProps>> = props => {
   const { formId, mode, coverUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
   const officialImgs = Settings.workbench_folder_default_cover_list.value.split(',');

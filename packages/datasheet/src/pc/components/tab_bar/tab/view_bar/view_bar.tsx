@@ -53,7 +53,7 @@ const VIEW_PADDING_WIDTH = 20;
 const MIN_VIEW_WIDTH = VIEW_SYNC_ICON_FIXED_WIDTH + VIEW_ICON_WIDTH + VIEW_PADDING_WIDTH;
 const EDITING_WIDTH = 160;
 
-export const ViewBar: React.FC<IViewBarProps> = props => {
+export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props => {
   const { views, editIndex, setEditIndex, switchView, extra, className } = props;
   const [viewList, setViewList] = useState(views);
   const datasheetLoading = useSelector(state => Selectors.getDatasheetLoading(state));

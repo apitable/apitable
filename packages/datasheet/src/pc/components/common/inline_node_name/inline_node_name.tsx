@@ -45,7 +45,7 @@ interface IInlineNodeNameProps {
   iconEditable?: boolean;
 }
 
-export const InlineNodeName: React.FC<IInlineNodeNameProps> = props => {
+export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNameProps>> = props => {
   const {
     nodeId, nodeName, nodeIcon, withIcon, iconSize = 18, size = 16, withBrackets, nodeNameStyle,
     prefix = '', className, withTip, iconEditable,

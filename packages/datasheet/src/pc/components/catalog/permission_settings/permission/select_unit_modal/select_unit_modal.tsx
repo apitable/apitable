@@ -60,7 +60,7 @@ export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   showTab?: boolean; // show role and org tab
 }
 
-export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
+export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>> = props => {
   const {
     isSingleSelect,
     checkedList: propsCheckedList,

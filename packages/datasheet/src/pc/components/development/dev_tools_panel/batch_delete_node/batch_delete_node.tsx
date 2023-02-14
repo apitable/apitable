@@ -24,7 +24,7 @@ import { Checkbox } from 'antd';
 import { Button } from '@apitable/components';
 import { Modal } from 'pc/components/common';
 
-export const BatchDeleteNode: React.FC = () => {
+export const BatchDeleteNode: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [treeList, setTreeList] = useState<any[]>([]);
   const [value, setValue] = useState<string[]>([]);
   const allowList = ['integration', 'test', 'localhost'];

@@ -53,7 +53,7 @@ interface IFieldMenuProps {
   onFrozenColumn?: (fieldId: string) => void;
 }
 
-export const FieldMenu: React.FC<IFieldMenuProps> = memo((
+export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = memo((
   {
     fieldId,
     editFieldSetting: _editFieldSetting,

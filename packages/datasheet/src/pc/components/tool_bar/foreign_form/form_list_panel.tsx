@@ -48,7 +48,7 @@ interface IFormListPanelProps {
   formList: IFormNodeItem[];
 }
 
-export const FormListPanel: FC<IFormListPanelProps> = (props) => {
+export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (props) => {
   const {
     spaceId,
     folderId,

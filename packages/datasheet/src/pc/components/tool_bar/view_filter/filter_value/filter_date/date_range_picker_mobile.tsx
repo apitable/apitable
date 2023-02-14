@@ -27,10 +27,10 @@ import styles from '../style.module.less';
 import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
 import { Typography, useThemeColors } from '@apitable/components';
 
-export const DateRangePickerMobile: React.FC<IFilterDateProps & {
+export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDateProps & {
   rangePickerChange: (date: (Dayjs | null)[] | null) => void;
   dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null
-}> = (props) => {
+}>> = (props) => {
   const colors = useThemeColors();
   const { rangePickerChange, dataValue } = props;
   const [startVisible, setStartVisible] = useState(false);

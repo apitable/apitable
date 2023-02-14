@@ -110,7 +110,7 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
   return newCurrentField;
 };
 
-export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormateLookUpProps) => {
+export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps>> = memo((props: IFormateLookUpProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, datasheetId } = props;
   const activeDstId = useSelector(state => datasheetId || Selectors.getActiveDatasheetId(state))!;

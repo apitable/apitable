@@ -68,7 +68,7 @@ export enum ExpandType {
   RetractAll = 'RetractAll',
 }
 
-const GroupTabBase: React.FC<IGroupTab> = props => {
+const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
   const { row, actualColumnIndex, groupInfo, isSort } = props;
   const fieldId = groupInfo[row.depth]?.fieldId;
   const pathKey = `${row.recordId}_${row.depth}`;

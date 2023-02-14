@@ -66,7 +66,7 @@ const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),
 };
 
-export const UserMenu: FC<IUserMenuProps> = props => {
+export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
   const colors = useThemeColors();
   const { ACCOUNT_LOGOUT_VISIBLE, USER_BIND_PHONE_VISIBLE, INVITATION_CODE_VISIBLE } = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(

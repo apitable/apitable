@@ -31,6 +31,7 @@ export const DashboardPanel = () => {
 
   const isNoPermission = dashboardErrCode === StatusCode.NODE_NOT_EXIST ||
     dashboardErrCode === StatusCode.NOT_PERMISSION || dashboardErrCode === StatusCode.NODE_DELETED;
+
   if (loading) {
     return <div className={styles.skeletonWrapper}>
       <Skeleton height="24px" />

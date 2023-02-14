@@ -28,7 +28,7 @@ import { TextInput, Button, LinkButton } from '@apitable/components';
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
 }
-export const SelectAdmin: FC<IVerifyAdminProps> = props => {
+export const SelectAdmin: FC<React.PropsWithChildren<IVerifyAdminProps>> = props => {
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const [keyword, setKeyword] = useState('');
   const [searchMember, setSearchMember] = useState<ISearchMemberData[]>([]);

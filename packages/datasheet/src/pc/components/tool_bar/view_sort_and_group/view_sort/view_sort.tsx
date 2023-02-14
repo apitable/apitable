@@ -43,7 +43,7 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewSort: React.FC<IViewSetting> = props => {
+export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
   const activeViewGroupInfo = useSelector(Selectors.getActiveViewGroupInfo);

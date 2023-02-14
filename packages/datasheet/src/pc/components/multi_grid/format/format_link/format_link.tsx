@@ -38,7 +38,7 @@ interface IFormateLinkProps {
   datasheetId?: string;
 }
 
-export const FormateLink: React.FC<IFormateLinkProps> = memo((props: IFormateLinkProps) => {
+export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> = memo((props: IFormateLinkProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, hideOperateBox, datasheetId: propDatasheetId } = props;
   const limitSingleRecord = currentField.property.limitSingleRecord;

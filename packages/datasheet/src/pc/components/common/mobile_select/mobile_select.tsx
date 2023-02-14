@@ -28,7 +28,7 @@ import classNames from 'classnames';
 import { Popup } from '../mobile/popup';
 import { IMobileSelectProps } from './interface';
 
-const MobileSelectBase: React.FC<IMobileSelectProps> = props => {
+const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = props => {
   const {
     optionData,
     triggerComponent,
@@ -42,7 +42,7 @@ const MobileSelectBase: React.FC<IMobileSelectProps> = props => {
   } = props;
   const colors = useThemeColors();
   const onChange = useCallback(
-    (value: SelectValue, options?) => {
+    (value: SelectValue, options?: any) => {
       _onChange && _onChange(value, options);
     },
     [_onChange],

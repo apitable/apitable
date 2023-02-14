@@ -38,7 +38,7 @@ enum RetryIconSize {
   Default = 32,
 }
 
-export const UploadItem: React.FC<IUploadFileItemProps> = props => {
+export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>> = props => {
   const {
     recordId, field, file, fileUrl, fileId, datasheetId, status,
     isCell, cellHeight, deleteUploadItem, rowHeightLevel, onSave, getCellValueFn

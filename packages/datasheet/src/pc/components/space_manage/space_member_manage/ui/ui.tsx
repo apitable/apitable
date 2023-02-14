@@ -27,7 +27,7 @@ import { Identity } from '../../identity';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
 
-export const Reinvite: FC<{record: IMemberInfoInSpace}> = ({ record }) => {
+export const Reinvite: FC<React.PropsWithChildren<{record: IMemberInfoInSpace}>> = ({ record }) => {
   const reSendEmail = (record: IMemberInfoInSpace) => {
     Api.reSendInvite(record.email).then(res => {
       const { success, message } = res.data;
@@ -84,14 +84,14 @@ export const nameColRender = (value: string, record: IMemberInfoInSpace, spaceIn
   );
 };
 
-export const OperateCol: FC<{
+export const OperateCol: FC<React.PropsWithChildren<{
   prevBtnClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void),
   prevBtnText?: string,
   nextBtnClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void),
   nextBtnText?: string,
   disabledNextBtn?: boolean,
   hideNextBtn?: boolean,
-}> = ({
+}>> = ({
   prevBtnClick,
   prevBtnText = t(Strings.edit),
   nextBtnClick,

@@ -28,6 +28,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { ViewIcon } from '../../view_switcher/view_icon';
 import style from '../style.module.less';
 
+const _SwipeOut: any = SwipeOut;
+
 export enum ActionType {
   Delete,
   Rename,
@@ -44,7 +46,7 @@ interface IViewItemProps {
   validator(value: string): boolean;
 }
 
-export const ViewItem: React.FC<IViewItemProps> = props => {
+export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props => {
   const colors = useThemeColors();
   const {
     onChange,
@@ -155,7 +157,7 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
   const fontColor = active ? colors.primaryColor : colors.firstLevelText;
 
   return (
-    <SwipeOut
+    <_SwipeOut
       right={_rightContent}
       autoClose
       disabled={!viewCreatable && !viewRenamable && !viewRemovable}
@@ -183,6 +185,6 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
           {view.name}
         </span>
       </div>
-    </SwipeOut>
+    </_SwipeOut>
   );
 };

@@ -64,7 +64,7 @@ interface ICardHeaderProps {
   showOneImage?: boolean;
 }
 
-export const CardHeader: React.FC<ICardHeaderProps> = props => {
+export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = props => {
   const { coverFieldId, recordId, width, height, isCoverFit, showEmptyCover, showOneImage } = props;
 
   const { recordSnapshot, permissions } = useSelector(state => {

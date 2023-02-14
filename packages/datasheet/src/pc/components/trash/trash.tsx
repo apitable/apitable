@@ -58,7 +58,7 @@ export interface ITrashItem {
   isMemberNameModified?: boolean;
 }
 
-const Trash: FC = () => {
+const Trash: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const spaceName = useSelector((state: IReduxState) => state.user.info?.spaceName);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);

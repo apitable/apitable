@@ -22,7 +22,7 @@ import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
-import { In, SelectQueryBuilder } from 'typeorm';
+import { In } from 'typeorm';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
@@ -41,29 +41,6 @@ export class DatasheetRecordService {
     private readonly datasheetChangesetService: DatasheetChangesetService,
   ) {}
 
-  async insertBatch(entities: DatasheetRecordEntity[]) {
-    await this.recordRepo
-      .createQueryBuilder()
-      .insert()
-      .into(DatasheetRecordEntity)
-      .values(entities)
-      .execute();
-  }
-
-  async getByRecordIdsAndIsDeleted(dstId: string, recordIds: string[], isDeleted: boolean): Promise<string[]> {
-    const raw = await this.recordRepo
-      .createQueryBuilder()
-      .select('record_id', 'recordId')
-      .where('record_id IN(:...recordIds)', { recordIds })
-      .andWhere('dst_id = :dstId', { dstId })
-      .andWhere('is_deleted = :isDeleted', { isDeleted })
-      .getRawMany();
-    return raw.reduce<string[]>((pre, cur) => {
-      pre.push(cur.recordId);
-      return pre;
-    }, []);
-  }
-
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
@@ -80,51 +57,6 @@ export class DatasheetRecordService {
     });
     const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
     return this.formatRecordMap(records, commentCountMap, recordIds);
-  }
-
-  async getRelatedRecordCells(datasheetId: string, recordIds: string[], fieldKeyNames: string[], isDeleted = false): Promise<RecordMap> {
-    const raw = await this.getSelectQueryBuilder(datasheetId, recordIds, fieldKeyNames, isDeleted).getRawMany();
-    const records = raw.reduce<any[]>((pre, cur) => {
-      const data = {};
-      for (const fieldKeyName of fieldKeyNames) {
-        data[fieldKeyName] = cur[fieldKeyName];
-      }
-      const record = { recordId: cur.recordId, data, recordMeta: { fieldUpdatedMap: cur.fieldUpdatedMap }};
-      pre.push(record);
-      return pre;
-    }, []);
-    return this.formatRecordMapWithRelatedCellsOnly(records);
-  }
-
-  private getSelectQueryBuilder(
-    datasheetId: string,
-    recordIds: string[],
-    fieldKeyNames: string[],
-    isDeleted = false,
-  ): SelectQueryBuilder<DatasheetRecordEntity> {
-    const selectQueryBuilder = this.recordRepo.createQueryBuilder().select('record_id', 'recordId');
-    for (const fieldKeyName of fieldKeyNames) {
-      const jsonExtractFieldKeyName = `JSON_EXTRACT(data, '$.${fieldKeyName}')`;
-      selectQueryBuilder.addSelect(jsonExtractFieldKeyName, fieldKeyName);
-    }
-    selectQueryBuilder.addSelect("JSON_EXTRACT(field_updated_info, '$.fieldUpdatedMap')", 'fieldUpdatedMap');
-    selectQueryBuilder
-      .where('record_id IN(:...recordIds)', { recordIds })
-      .andWhere('dst_id = :datasheetId', { datasheetId })
-      .andWhere('is_deleted = :isDeleted', { isDeleted });
-    return selectQueryBuilder;
-  }
-
-  private formatRecordMapWithRelatedCellsOnly(records: DatasheetRecordEntity[]) {
-    return records.reduce<RecordMap>((pre, cur) => {
-      pre[cur.recordId!] = {
-        id: cur.recordId!,
-        data: cur.data || {},
-        recordMeta: cur.recordMeta,
-        commentCount: undefined as any,
-      };
-      return pre;
-    }, {});
   }
 
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
@@ -297,7 +229,7 @@ export class DatasheetRecordService {
    * @author Zoe Zheng
    * @date 2021/4/12 11:48 AM
    */
-  async getRecordRevisionHistoryAsc(
+  private async getRecordRevisionHistoryAsc(
     dstId: string,
     recordId: string,
     type: RecordHistoryTypeEnum,

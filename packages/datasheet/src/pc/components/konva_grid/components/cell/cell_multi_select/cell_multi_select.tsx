@@ -50,7 +50,7 @@ export function getOptionNameColor(id: string, field: IField) {
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
 
-export const CellMultiSelect: FC<ICellProps> = (props) => {
+export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,

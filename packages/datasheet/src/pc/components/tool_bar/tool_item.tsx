@@ -46,7 +46,7 @@ type IToolItemProps = {
 // The number of text positions in the toolItem will also affect the width here.
 // const SHOW_TOOL_TEXT_WIDTH = 999;
 
-export const ToolItem: React.FC<IToolItemProps> = props => {
+export const ToolItem: React.FC<React.PropsWithChildren<IToolItemProps>> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { isActive, className, showLabel = true, disabled, onClick, icon, text, id, showViewLockModal, isHide } = props;

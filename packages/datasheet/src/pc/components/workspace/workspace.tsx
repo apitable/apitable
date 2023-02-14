@@ -90,7 +90,7 @@ const resumeUserHistory = (path: string) => {
   }
 };
 
-export const Workspace: React.FC = () => {
+export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const localSize = getStorage(StorageName.SplitPos);
   const defaultSidePanelSize = localSize && localSize !== 280 ? localSize : 335;

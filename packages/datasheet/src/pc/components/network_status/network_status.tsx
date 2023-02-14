@@ -51,7 +51,7 @@ const ID = {
   NETWORK_LOADING: 'network_loading',
 };
 
-export const NetworkStatus: FC<INetworkStatusProps> = props => {
+export const NetworkStatus: FC<React.PropsWithChildren<INetworkStatusProps>> = props => {
   const { currentStatus = Network.Online } = props;
 
   useMount(() => {

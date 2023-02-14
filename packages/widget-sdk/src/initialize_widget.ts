@@ -76,7 +76,7 @@ export function loadWidget(url: string, widgetPackageId: string, refresh?: boole
   });
 }
 
-export function initializeWidget(Component: React.FC, widgetPackageId: string | undefined) {
+export function initializeWidget(Component: React.FC<React.PropsWithChildren<unknown>>, widgetPackageId: string | undefined) {
   if (!widgetPackageId) {
     throw Error('widget load error, widgetPackageId is undefined');
   }

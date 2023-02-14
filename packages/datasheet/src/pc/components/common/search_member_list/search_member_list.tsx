@@ -41,7 +41,7 @@ interface ISearchMemberListProps {
   placehodler?: string;
 }
 
-export const SearchMemberList: FC<ISearchMemberListProps> = props => {
+export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps>> = props => {
   const { searchResult, initInputText } = props;
   const [keyword, setKeyword] = useState('');
   const [listVisible, setListVisible] = useState(false);

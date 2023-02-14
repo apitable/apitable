@@ -38,7 +38,7 @@ interface IFormPreviewerProps {
   onChange: (result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string }) => void;
 }
 
-export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
+export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps>> = props => {
   const { datasheetId, viewId, meta, onChange } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

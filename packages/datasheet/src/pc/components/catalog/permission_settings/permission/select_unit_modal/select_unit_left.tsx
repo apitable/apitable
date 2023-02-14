@@ -68,7 +68,7 @@ const triggerBase = {
   }
 };
 
-export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
+export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftProps>> = props => {
   const colors = useThemeColors();
   const {
     isSingleSelect,

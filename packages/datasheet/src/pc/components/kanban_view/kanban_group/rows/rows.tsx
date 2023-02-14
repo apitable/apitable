@@ -43,7 +43,7 @@ interface ICardProps {
   className?: string;
 }
 
-export const Card: React.FC<ICardProps> = props => {
+export const Card: React.FC<React.PropsWithChildren<ICardProps>> = props => {
   const { provided, row, style, isDragging, cardHeight, groupId, className } = props;
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
   const activeView = useSelector(state => Selectors.getCurrentView(state)) as IKanbanViewProperty;
@@ -123,7 +123,7 @@ interface IRowBaseProps {
   style: React.CSSProperties;
 }
 
-const RowBase: React.FC<IRowBaseProps> = props => {
+const RowBase: React.FC<React.PropsWithChildren<IRowBaseProps>> = props => {
   const { data: items, index, style } = props;
   const { rows, cardHeight, groupId, keepSort } = items;
   const row = rows[index];

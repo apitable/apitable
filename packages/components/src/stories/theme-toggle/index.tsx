@@ -39,7 +39,7 @@ interface IThemeToggle {
   lang?: 'en' | 'zh'
 }
 
-export const ThemeToggle: React.FC<IThemeToggle> = props => {
+export const ThemeToggle: React.FC<React.PropsWithChildren<IThemeToggle>> = props => {
   const isEn = props.lang === 'en';
   const [theme, setTheme] = useState('light');
   return (
