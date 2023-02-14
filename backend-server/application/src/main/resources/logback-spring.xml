@@ -33,6 +33,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/backup/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${LOGGER_MAX_HISTORY_DAYS}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -60,6 +61,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/backup/${LOG_FILE_NAME}-total-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${LOGGER_MAX_HISTORY_DAYS}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
