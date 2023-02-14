@@ -25,7 +25,7 @@ import keyBy from 'lodash/keyBy';
 import { store } from 'pc/store';
 import { getTestFunctionAvailable } from 'pc/utils/storage';
 
-const compose = (...args) => (value, datasheetId) => args.reduceRight((preValue, curFn) => curFn(preValue, datasheetId), value);
+const compose = (...args: any) => (value: any, datasheetId: string) => args.reduceRight((preValue: any, curFn: (arg0: any, arg1: string) => any) => curFn(preValue, datasheetId), value);
 
 export const checkComputeRef = (curField: string | ILookUpField | IFormulaField) => {
   if (typeof curField === 'string') {
@@ -87,7 +87,7 @@ export class CheckFieldSettingBase {
     return compose(
       CheckFieldSettingBase.checkFieldNameLen,
       CheckFieldSettingBase.checkFieldNameBlank,
-    )(curField, datasheetId);
+    )(curField, datasheetId!);
   }
 }
 
@@ -140,7 +140,7 @@ class CheckFieldOption {
       CheckFieldOption.checkOptionBlank,
       // CheckFieldOption.checkNameLen,
       CheckFieldSettingBase.checkStream,
-    )(curField, datasheetId);
+    )(curField, datasheetId!);
   }
 }
 
@@ -170,7 +170,7 @@ class CheckFieldLink {
       CheckFieldLink.checkForeignDatasheet,
       CheckFieldLink.checkForeignDatasheetId,
       CheckFieldSettingBase.checkStream,
-    )(curField, datasheetId);
+    )(curField, datasheetId!);
   }
 }
 
@@ -201,7 +201,7 @@ class CheckFieldLookUp {
       checkComputeRef,
       CheckFieldLookUp.checkExitLinkField,
       CheckFieldSettingBase.checkStream,
-    )(curField, datasheetId);
+    )(curField, datasheetId!);
   }
 }
 
@@ -210,7 +210,7 @@ class CheckFieldFormula {
     return compose(
       checkComputeRef,
       CheckFieldSettingBase.checkStream,
-    )(curField, datasheetId);
+    )(curField, datasheetId!);
   }
 }
 

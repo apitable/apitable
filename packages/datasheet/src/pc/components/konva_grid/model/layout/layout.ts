@@ -22,6 +22,18 @@ import { colors } from '@apitable/components';
 import { KonvaDrawer } from '../../utils/drawer';
 import { GRID_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_OFFSET } from '../../constant';
 
+interface ILayout {
+  x: number;
+  y: number;
+  rowIndex: number;
+  columnIndex: number;
+  rowHeight: number;
+  columnWidth: number;
+  groupCount: number;
+  columnCount: number;
+  viewType: ViewType;
+}
+
 export class GridLayout extends KonvaDrawer {
   protected x = 0;
   protected y = 0;
@@ -31,9 +43,9 @@ export class GridLayout extends KonvaDrawer {
   protected columnIndex = 0;
   protected groupCount = 0;
   protected columnCount = 0;
-  protected viewType: ViewType = ViewType.Grid;
+  protected viewType = ViewType.Grid;
 
-  init({ x, y, rowIndex, columnIndex, rowHeight, columnWidth, groupCount, columnCount, viewType }) {
+  init({ x, y, rowIndex, columnIndex, rowHeight, columnWidth, groupCount, columnCount, viewType }: ILayout) {
     this.x = x;
     this.y = y;
     this.rowIndex = rowIndex;
@@ -78,7 +90,7 @@ export class GridLayout extends KonvaDrawer {
     return backgrounds[depth];
   }
 
-  protected renderAddFieldBlank(row: ILinearRow) {
+  protected renderAddFieldBlank(_row: ILinearRow) {
     const width = this.addBtnWidth;
     const background = this.getGroupBackgroundByDepth(0);
     const x = this.x + this.columnWidth;

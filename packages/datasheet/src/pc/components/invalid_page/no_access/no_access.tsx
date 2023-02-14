@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
+import { Button, useThemeMode } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';
@@ -29,10 +29,12 @@ export const NoAccess: FC = () => {
   const returnHome = () => {
     Router.redirect(Navigation.HOME);
   };
+  const theme = useThemeMode();
+
   return (
     <div className={styles.noAccess}>
       <div className={styles.logo}>
-        <Logo size='large' />
+        <Logo size='large' theme={theme} />
       </div>
       <div className={styles.noAccessImage}>
         <Image src={NoAccessImage} alt={t(Strings.system_configuration_product_name)} />

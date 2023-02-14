@@ -31,7 +31,7 @@ import { CellAttachment } from '../cell_attachment';
 import { CellMultiSelect } from '../cell_multi_select';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 
-const CellPlaceHolder = props => {
+const CellPlaceHolder = (props: { rowHeight: number; }) => {
   const { rowHeight } = props;
   const { setActiveCellBound } = useContext(KonvaGridContext);
   useMemo(() => setActiveCellBound({ height: rowHeight }), [rowHeight, setActiveCellBound]);

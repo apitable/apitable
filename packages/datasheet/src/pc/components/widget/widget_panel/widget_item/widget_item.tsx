@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Divider, IconButton, Loading, useContextMenu, useThemeColors } from '@apitable/components';
+import { Divider, IconButton, Loading, useContextMenu, useThemeColors, ThemeName } from '@apitable/components';
 import {
   CollaCommandName,
   ExecuteResult,
@@ -51,7 +51,8 @@ import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PngLinkdatasheet from 'static/icon/datasheet/chart/linkdatasheet.png';
+import PngLinkdatasheetLight from 'static/icon/datasheet/chart/dashboard_widget_empty_light.png';
+import PngLinkdatasheetDark from 'static/icon/datasheet/chart/dashboard_widget_empty_dark.png';
 import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useDevLoadCheck, useFullScreen } from '../../hooks';
@@ -100,6 +101,8 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
   const errorCode = useSelector(state => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
 
   const dispatch = useAppDispatch();
+  const themeName = useSelector(state => state.theme);
+  const PngLinkdatasheet = themeName === ThemeName.Light ? PngLinkdatasheetLight : PngLinkdatasheetDark;
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const [isSettingOpened, { toggle: toggleSettingOpened }] = useToggle(false);
@@ -143,7 +146,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
     // eslint-disable-next-line
   }, [isExpandWidget]);
 
-  const setDepDatasheetId = ({ datasheetId, mirrorId }) => {
+  const setDepDatasheetId = ({ datasheetId, mirrorId }: { datasheetId?: string, mirrorId?: string }) => {
     if (mirrorId) {
       datasheetId = Selectors.getMirrorSourceInfo(store.getState(), mirrorId)!.datasheetId;
     }
@@ -151,11 +154,11 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
       cmd: CollaCommandName.SetWidgetDepDstId,
       resourceId: widgetId,
       resourceType: ResourceType.Widget,
-      dstId: datasheetId,
+      dstId: datasheetId!,
       sourceId: mirrorId,
     });
     if (result.result === ExecuteResult.Success) {
-      dispatch(StoreActions.fetchDatasheet(datasheetId));
+      dispatch(StoreActions.fetchDatasheet(datasheetId!));
     }
     setSearchPanelVisible(false);
   };
@@ -221,7 +224,7 @@ export const WidgetItem: React.FC<IWidgetItemProps> = props => {
           {widget &&
             (doNotBindDatasheet ? (
               <div className={styles.mask}>
-                <Image src={PngLinkdatasheet} alt='' />
+                <Image src={PngLinkdatasheet} alt='' width={160} height={120} objectFit='contain'/>
                 {!linkId && (
                   <span
                     onClick={() => {
@@ -384,7 +387,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
     });
   };
 
-  const saveWidgetName = e => {
+  const saveWidgetName = (e: any) => {
     setDragging(false);
     const value = e.target.value;
     setRename(false);
@@ -416,7 +419,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
 
   const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation='vertical' />;
 
-  const nameMouseUp = e => {
+  const nameMouseUp = (e: React.SyntheticEvent) => {
     setDragging(false);
     const now = new Date();
     // fixme: Here you should find a time less than the native dragstart trigger, 
@@ -516,7 +519,7 @@ export const WidgetHeader: React.FC<IWidgetHeaderProps> = props => {
             'dragHandleDisabled',
           )}
           onClick={expand}
-          onMouseDown={e => {
+          onMouseDown={() => {
             hideAll();
           }}
         >

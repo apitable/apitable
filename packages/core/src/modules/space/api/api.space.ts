@@ -18,20 +18,19 @@
 
 import axios from 'axios';
 import { ConfigConstant } from 'config';
-import * as Url from '../../shared/api/url';
-import {
-  IApiWrapper, INode, INodesMapItem,
-  IParent, IUpdateRoleData,
-} from '../../../exports/store';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
+import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
+import * as Url from '../../shared/api/url';
+
 const CancelToken = axios.CancelToken;
+
 /**
- * 
+ *
  * Query the node tree of the workbench, limit the query to two layers
- * 
- * @param depth 
- * @returns 
+ *
+ * @param depth
+ * @returns
  */
 export function getNodeTree(depth?: number) {
   return axios.get(Url.GET_NODE_TREE, {
@@ -42,22 +41,22 @@ export function getNodeTree(depth?: number) {
 }
 
 /**
- * 
+ *
  * Get and query the root node
- * 
- * @returns 
+ *
+ * @returns
  */
 export function getRootNode() {
   return axios.get(Url.GET_ROOT_NODE);
 }
 
 /**
- * 
+ *
  * Query the child node list
- * 
- * @param nodeId 
- * @param nodeType 
- * @returns 
+ *
+ * @param nodeId
+ * @param nodeType
+ * @returns
  */
 export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
@@ -70,9 +69,9 @@ export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
 
 /**
  * Get Node's Parent Node List
- * 
- * @param nodeId 
- * @returns 
+ *
+ * @param nodeId
+ * @returns
  */
 export function getParents(nodeId: string) {
   return axios.get<IApiWrapper & { data: IParent[] }>(Url.GET_PARENTS, {
@@ -83,11 +82,11 @@ export function getParents(nodeId: string) {
 }
 
 /**
- * 
+ *
  * Get Node Info
- * 
- * @param nodeIds 
- * @returns 
+ *
+ * @param nodeIds
+ * @returns
  */
 export function getNodeInfo(nodeIds: string) {
   return axios.get(Url.GET_NODE_INFO, {
@@ -98,8 +97,8 @@ export function getNodeInfo(nodeIds: string) {
 }
 
 /**
- * query the child nodes with the parent node id, 
- * 
+ * query the child nodes with the parent node id,
+ *
  * @param parentId parent node id
  */
 export function getNodeListByParentId(parentId: string) {
@@ -107,9 +106,9 @@ export function getNodeListByParentId(parentId: string) {
 }
 
 /**
- * 
+ *
  * Get relevant nodes(form/mirror) of the node
- * 
+ *
  * @param dstId datasheet id
  * @param viewId view id. if empty, query all views' relevant nodes.
  * @param type   relevant nodes type. if empty, query all types.
@@ -126,7 +125,7 @@ export function getRelateNodeByDstId(dstId: string, viewId?: string, type?: numb
 
 /**
  * Create Space
- * 
+ *
  * @param name Space Name
  */
 export function createSpace(name: string) {
@@ -137,10 +136,10 @@ export function createSpace(name: string) {
 
 /**
  * Move Nodes
- * 
+ *
  * @param nodeId the node id that will be moved.
  * @param parentId the parent node id that will be placed here.
- * @param preNodeId 
+ * @param preNodeId
  */
 export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
   return axios.post(Url.MOVE_NODE, {
@@ -175,9 +174,9 @@ export function getSpecifyNodeList(nodeType: NodeType) {
 
 /**
  * Edit Node
- * 
+ *
  * @param nodeId Node ID
- * @param data 
+ * @param data
  */
 export function editNode(nodeId: string, data: { nodeName?: string; icon?: string; cover?: string; showRecordHistory?: ShowRecordHistory }) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
@@ -185,7 +184,7 @@ export function editNode(nodeId: string, data: { nodeName?: string; icon?: strin
 
 /**
  * duplicate the node
- * 
+ *
  */
 export function copyNode(nodeId: string, copyAll: boolean) {
   return axios.post(Url.COPY_NODE, {
@@ -196,7 +195,7 @@ export function copyNode(nodeId: string, copyAll: boolean) {
 
 /**
  * Get Datasheet ID by Node ID
- * 
+ *
  * @param nodeId Node ID
  */
 export function getDstId(nodeId: string) {
@@ -226,7 +225,7 @@ export function spaceList(onlyManageable?: boolean) {
 
 /**
  * Quit the Space
- * @param spaceId 
+ * @param spaceId
  */
 export function quitSpace(spaceId: string) {
   return axios.post(`${Url.QUIT_SPACE}${spaceId}`);
@@ -234,7 +233,7 @@ export function quitSpace(spaceId: string) {
 
 /**
  * Find nodes
- * 
+ *
  * @param keyword the keyword to search
  */
 export function findNode(keyword: string, ctx: any) {
@@ -248,10 +247,10 @@ export function findNode(keyword: string, ctx: any) {
 
 /**
  * Search nodes
- * 
- * @param spaceId 
- * @param keyword 
- * @returns 
+ *
+ * @param spaceId
+ * @param keyword
+ * @returns
  */
 export function searchNode(spaceId: string, keyword: string) {
   return axios.get<IApiWrapper & { data: INode[] }>(Url.SEARCH_NODE, {
@@ -275,13 +274,13 @@ export function allowVisiableSetting(nodeId: string) {
 }
 
 /**
- * 
+ *
  * import datasheet by file
- * 
- * @param formData 
- * @param onUploadProgress 
- * @param ctx 
- * @returns 
+ *
+ * @param formData
+ * @param onUploadProgress
+ * @param ctx
+ * @returns
  */
 export function importFile(formData: any, onUploadProgress: any, ctx: any) {
   return axios.post(Url.IMPORT_FILE, formData, {
@@ -293,8 +292,8 @@ export function importFile(formData: any, onUploadProgress: any, ctx: any) {
 
 /**
  * Switch Space
- * @param spaceId 
- * @returns 
+ * @param spaceId
+ * @returns
  */
 export function switchSpace(spaceId: string) {
   return axios.post(urlcat(Url.SWITCH_SPACE, { spaceId }));
@@ -302,11 +301,11 @@ export function switchSpace(spaceId: string) {
 
 /**
  * Delete Space
- * 
- * @param spaceId 
- * @param code 
- * @param type 
- * @returns 
+ *
+ * @param spaceId
+ * @param code
+ * @param type
+ * @returns
  */
 export function deleteSpace(spaceId: string, code?: string, type?: string) {
   return axios.delete(urlcat(Url.DELETE_SPACE, { spaceId }), {
@@ -318,10 +317,10 @@ export function deleteSpace(spaceId: string, code?: string, type?: string) {
 }
 
 /**
- * 
+ *
  * Delete the space immediately
- * 
- * @returns 
+ *
+ * @returns
  */
 export function deleteSpaceNow() {
   return axios.delete(Url.DELETE_SPACE_NOW);
@@ -329,9 +328,9 @@ export function deleteSpaceNow() {
 
 /**
  * Update/Edit the space
- * 
- * @param name 
- * @param logo 
+ *
+ * @param name
+ * @param logo
  */
 export function updateSpace(name?: string, logo?: string) {
   return axios.post(Url.UPDATE_SPACE, {
@@ -342,28 +341,27 @@ export function updateSpace(name?: string, logo?: string) {
 
 /**
  * Get space info
- * 
- * @param spaceId 
- * @returns 
+ *
+ * @param spaceId
+ * @returns
  */
 export function spaceInfo(spaceId: string) {
-  return axios.get(Url.
-    SPACE_INFO + spaceId);
+  return axios.get(Url.SPACE_INFO + spaceId);
 }
 
 /**
  * Recover space
- * 
- * @param spaceId 
- * @returns 
+ *
+ * @param spaceId
+ * @returns
  */
 export function recoverSpace(spaceId: string) {
   return axios.post(Url.RECOVER_SPACE + spaceId);
 }
 
 /**
- * Search space size 
- * @returns 
+ * Search space size
+ * @returns
  */
 export function searchSpaceSize() {
   return axios.get(Url.SPACE_MEMORY);
@@ -371,7 +369,7 @@ export function searchSpaceSize() {
 
 /**
  * Get the number of nodes(folders and files) in the specified space
- * @param spaceId 
+ * @param spaceId
  */
 export function getSpaceNodeNumber() {
   return axios.get(Url.NODE_NUMBER);
@@ -379,15 +377,15 @@ export function getSpaceNodeNumber() {
 
 /**
  * Get the permissions resources of the specified space
- * @param spaceId 
+ * @param spaceId
  */
 export function getSpaceResource() {
   return axios.get(Url.SPACE_RESOURCE);
 }
 
 /**
- * clean the red dot of space 
- * @param spaceId 
+ * clean the red dot of space
+ * @param spaceId
  */
 export function removeSpaceRedPoint(spaceId: string) {
   return axios.post(`${Url.REMOVE_RED_POINT}${spaceId}`);
@@ -409,7 +407,7 @@ export function changeMainAdmin(memberId: string) {
 
 /**
  * query the list of admins
- * 
+ *
  * @param pageObjectParams pagination params
  */
 export function getlistRole(pageObjectParams: string) {
@@ -433,7 +431,7 @@ export function subAdminPermission(memberId: string) {
 
 /**
  * fuzzy search members
- * 
+ *
  * @param keyword the keyword to search
  */
 export function searchMember(keyword: string, filter: boolean) {
@@ -447,7 +445,7 @@ export function searchMember(keyword: string, filter: boolean) {
 
 /**
  * add sub-admin
- * 
+ *
  * @param memberId member id
  * @param resourceCodes operation resources set, no orders, auto verify
  */
@@ -460,7 +458,7 @@ export function addSubMember(memberIds: string[], resourceCodes: string[]) {
 
 /**
  * edit sub-admin
- * 
+ *
  * @param memberId member id
  * @param resourceCodes operation resources set, no orders, auto verify
  */
@@ -474,7 +472,7 @@ export function editSubMember(id: string, memberId: string, resourceCodes: strin
 
 /**
  * search organization resource
- * 
+ *
  * @param keyword keywords(tag/team)
  */
 export function searchUnit(keyword: string, linkId?: string) {
@@ -515,7 +513,7 @@ export function getSubUnitList(teamId?: string, linkId?: string) {
 
 /**
  * Update(edit) role
- * 
+ *
  * @param data data info
  */
 export function updateRole(data: IUpdateRoleData) {
@@ -561,10 +559,10 @@ export function switchNodeAssignableStatus() {
 
 /**
  * Get Space Reward infos
- * 
- * @param isExpire 
- * @param pageNo 
- * @returns 
+ *
+ * @param isExpire
+ * @param pageNo
+ * @returns
  */
 export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
   const pageObjectParams = JSON.stringify({
@@ -583,10 +581,10 @@ export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
 
 /**
  * change node's description
- * 
- * @param nodeId 
- * @param desc 
- * @returns 
+ *
+ * @param nodeId
+ * @param desc
+ * @returns
  */
 export function changeNodeDesc(nodeId: string, desc: string) {
   return axios.post(Url.CHANGE_NODE_DESC, {
@@ -605,6 +603,7 @@ export function readShareInfo(shareId: string, headers?: Record<string, string>)
  * get embed Info
  */
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
+
 export function getEmbedLinkInfo(linkId: string, headers?: Record<string, string>) {
   return axios.get(Url.EMBED_LINK_INFO + `/${linkId}`, {
     baseURL,
@@ -621,9 +620,9 @@ export function storeShareData(shareId: string, spaceId: string) {
 
 /**
  * disable the node's share link
- * 
+ *
  * @export
- * @param {string} nodeId 
+ * @param {string} nodeId
  * @returns
  */
 export function disableShare(nodeId: string) {
@@ -632,9 +631,9 @@ export function disableShare(nodeId: string) {
 
 /**
  * refresh node's share link
- * 
+ *
  * @export
- * @param {string} nodeId 
+ * @param {string} nodeId
  * @returns
  */
 export function regenerateShareLink(nodeId: string) {
@@ -643,9 +642,9 @@ export function regenerateShareLink(nodeId: string) {
 
 /**
  * get node's share setting
- * 
+ *
  * @export
- * @param {string} nodeId 
+ * @param {string} nodeId
  * @returns
  */
 export function getShareSettings(nodeId: string) {
@@ -667,8 +666,8 @@ export function updateShare(
 
 /**
  * folder node preview
- * 
- * @param nodeId 
+ *
+ * @param nodeId
  */
 export function nodeShowcase(nodeId: string, shareId?: string) {
   return axios.get(Url.NODE_SHOWCASE, {
@@ -679,3 +678,9 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
+export function checkoutOrder(spaceId: string, priceId: string) {
+  return axios.post(Url.CHECKOUT_ORDER, {
+    spaceId,
+    priceId,
+  });
+}

@@ -42,7 +42,8 @@ import { KeyCode } from 'pc/utils/keycode';
 import { tracker } from 'pc/utils/tracker';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchDefaultPng from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
 import styles from './style.module.less';
@@ -70,6 +71,8 @@ export const TemplateCategorySide: FC = () => {
   // Keep track of the keywords that have been reported to avoid duplication of buried reports
   const hasTrackSearchKeyWords = useRef('');
   const router = useRouter();
+  const themeName = useSelector(state => state.theme);
+  const SearchDefaultPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   useEffect(() => {
     if (templateCategory) {
@@ -135,7 +138,7 @@ export const TemplateCategorySide: FC = () => {
     bindSearchQuery('');
   };
 
-  const onSearchInputKeyDown = e => {
+  const onSearchInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.Enter) {
       triggerTrack(keywords);
     }
@@ -179,7 +182,7 @@ export const TemplateCategorySide: FC = () => {
           {!spaceId && (
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size='large' text={false} />
+                <Logo theme={ThemeName.Dark} size='large' text={false} />
               </div>
             </Tooltip>
           )}

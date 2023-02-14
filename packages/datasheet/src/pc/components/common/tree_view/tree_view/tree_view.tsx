@@ -151,7 +151,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     });
   };
 
-  const renderTreeItem = (child, index: number, level = '0') => {
+  const renderTreeItem = (child: any, index: number, level = '0') => {
     const pos = `${level}-${index}`;
     const cloneProps = {
       pos,
@@ -160,13 +160,13 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     return React.cloneElement(child, cloneProps);
   };
 
-  const singleSelectHandler = (e, nodeId: string) => {
+  const singleSelectHandler = (e: React.MouseEvent, nodeId: string) => {
     const newSelected = [nodeId];
     onSelect && onSelect(e, nodeId);
     selectedIdsRef.current = newSelected;
   };
 
-  const renderTree = (children, parentNode = null, level = '0') => {
+  const renderTree = (children: any[], parentNode = null, level = '0') => {
     return children.map((node, index) => {
       if (node.children && node.children.length) {
         return <TreeItem
@@ -204,15 +204,15 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     onKeyDown && onKeyDown(e);
   };
 
-  const dragStart = treeNode => {
+  const dragStart = (treeNode: { id: React.SetStateAction<string>; }) => {
     setDragNodesId(treeNode.id);
   };
 
-  const dragOver = treeNode => {
+  const dragOver = (treeNode: { id: any; }) => {
     onDragOver && onDragOver({ dragNodeId, targetNodeId: treeNode.id, ...treeNode });
   };
 
-  const drop = treeNode => {
+  const drop = (treeNode: any) => {
     onDrop && onDrop(treeNode);
     resetState();
   };

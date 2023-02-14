@@ -134,7 +134,7 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
         unitId={''}
         roleOptions={defaultRole}
         title={t(Strings.batch_edit_permission)}
-        onChange={(unitId, value) => onClick && onClick(value)}
+        onChange={(_unitId, value) => onClick && onClick(value)}
         onRemove={onRemove}
       >
         <LinkButton
@@ -153,21 +153,23 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
     <Dropdown
       trigger={['click']}
       overlay={
-        <Menu onClick={() => setBatchSelectVisible(false)}>
-          {defaultRole.map(v => (
-            <MenuItem key={v.value} item={v} onClick={onClick} />
-          ))}
-          {onRemove && (
-            <MenuItem
-              className={styles.batchDeleteItem}
-              item={{ label: t(Strings.remove_role), value: 'remove' }}
-              option={{ labelColor: colors.textDangerDefault }}
-              onClick={onRemove}
-            >
-              {t(Strings.remove_role)}
-            </MenuItem>
-          )}
-        </Menu>
+        <div style={{ maxWidth: '240px' }}>
+          <Menu onClick={() => setBatchSelectVisible(false)}>
+            {defaultRole.map(v => (
+              <MenuItem key={v.value} item={v} onClick={onClick} />
+            ))}
+            {onRemove && (
+              <MenuItem
+                className={styles.batchDeleteItem}
+                item={{ label: t(Strings.remove_role), value: 'remove' }}
+                option={{ labelColor: colors.textDangerDefault }}
+                onClick={onRemove}
+              >
+                {t(Strings.remove_role)}
+              </MenuItem>
+            )}
+          </Menu>
+        </div>
       }
       visible={batchSelectVisible}
       onVisibleChange={setBatchSelectVisible}

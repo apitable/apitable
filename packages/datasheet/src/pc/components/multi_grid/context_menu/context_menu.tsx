@@ -69,9 +69,9 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     };
   };
 
-  const showContextMenu = (e) => {
+  const showContextMenu = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
-    const { recordId, fieldId } = getIdMapByEvent ? getIdMapByEvent(e) : _getIdMapByEvent(e);
+    const { recordId, fieldId } = getIdMapByEvent ? getIdMapByEvent(e as MouseEvent) : _getIdMapByEvent(e as MouseEvent);
     if (!recordId && !fieldId) {
       hideAll();
       return;
@@ -80,7 +80,7 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
 
     if (fieldId) {
-      showField(e, {
+      showField((e as any), {
         id: DATASHEET_ID.FIELD_CONTEXT,
         props: {
           fieldId,
@@ -97,7 +97,7 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
         return;
       }
       
-      showGrid(e, {
+      showGrid((e as any), {
         id: GRID_RECORD_MENU,
         props: {
           recordId,

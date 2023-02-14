@@ -191,7 +191,7 @@ export const Select: FC<ISelectProps> & {
       popupStyle={{
         width: 'max-content',
         position: 'absolute',
-        zIndex: 1000, // Same level as antd modal
+        zIndex: 1200, // Same level as antd modal
       }}
       ref={triggerRef}
       popupVisible={visible}

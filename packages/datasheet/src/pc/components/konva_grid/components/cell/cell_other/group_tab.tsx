@@ -62,7 +62,7 @@ export const GroupTab: FC<IGroupTabProps> = memo((props) => {
     setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
   }, [isSearching, dispatch, datasheetId, viewId]);
 
-  function clickExpandToggle(e: React.MouseEvent) {
+  function clickExpandToggle() {
     if (groupingCollapseIdsSet.has(pathKey)) {
       groupingCollapseIdsSet.delete(pathKey);
     } else {

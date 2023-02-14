@@ -237,7 +237,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
     ],
   };
 
-  const renderToolItem = (toolItemProps: IPreviewToolItem, index) => {
+  const renderToolItem = (toolItemProps: IPreviewToolItem, index: number) => {
     const component = toolItemProps.icon ? <toolItemProps.icon size={16} color={colors.black[50]} /> : toolItemProps.component;
     return <PreviewToolItem key={index} {...toolItemProps} component={component} />;
   };

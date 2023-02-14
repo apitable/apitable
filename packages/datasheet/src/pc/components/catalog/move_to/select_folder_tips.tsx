@@ -28,7 +28,7 @@ export const SelectFolderTips: React.FC<{
   isWhole?: boolean;
   data: IParent[];
   setIsWhole: (isWhole: boolean) => void;
-  onClick: (nodeId) => void;
+  onClick: (nodeId: string) => void;
 }> = (props) => {
   const { isWhole, data, setIsWhole, onClick } = props;
   const colors = useThemeColors();

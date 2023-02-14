@@ -25,9 +25,6 @@ const withPlugins = require('next-compose-plugins')
 const withTM = require('next-transpile-modules')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const isProd = process.env.NODE_ENV === 'production'
-const { withSentryConfig } = require('@sentry/nextjs')
-
-const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
 /**
  * Stolen from https://stackoverflow.com/questions/10776600/testing-for-equality-of-regular-expressions
@@ -77,12 +74,12 @@ function cssLoaderOptions (modules) {
 const plugins = [
   [
     withLess, {
-      lessLoaderOptions: {
-        lessOptions: {
-          paths: [path.resolve(__dirname, './src')]
-        }
+    lessLoaderOptions: {
+      lessOptions: {
+        paths: [path.resolve(__dirname, './src')]
       }
     }
+  }
   ],
   [
     withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])
@@ -99,17 +96,11 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : ''
 }
 
-const _withSentryConfig = isProd && !isIntranetEnv
-  ? withSentryConfig
-  : (nextConfig, sentryConfig) => {
-      return nextConfig
-    }
-
-module.exports = withPlugins(plugins, _withSentryConfig({
+module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
-    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 'legacy-s1.apitable.com'],
+    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 'legacy-s1.apitable.com', 's1.apitable.com'],
     remotePatterns: [{
       protocol: 'http',
       hostname: '**',
@@ -267,16 +258,5 @@ module.exports = withPlugins(plugins, _withSentryConfig({
     esmExternals: true,
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../')
-  },
-  sentry: {
-    disableServerWebpackPlugin: true,
-    hideSourceMaps: true
   }
-}, {
-  url: process.env.SENTRY_CONFIG_URL,
-  authToken: process.env.SENTRY_CONFIG_AUTH_TOKEN,
-  project: 'web-server',
-  dsn: process.env.SENTRY_CONFIG_DSN,
-  org: 'sentry',
-  release: process.env.BUILD_VERSION
-}))
+})

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography, useThemeColors, useListenVisualHeight } from '@apitable/components';
+import { Button, Typography, useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
 import {
   FieldType,
   IKanbanViewProperty,
@@ -52,7 +52,7 @@ import styles from './styles.module.less';
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const HiddenKanbanGroup = props => {
+export const HiddenKanbanGroup = (props: { triggerInfo?: IUseListenTriggerInfo; }) => {
   const { triggerInfo } = props;
   const { mobile } = usePlatform();
 
@@ -143,7 +143,7 @@ export const HiddenKanbanGroup = props => {
 
   const CellWrapper = isMemberField ? CellMember : CellOptions;
 
-  const groupItem = (provided, isDragDisabled, visible, id) => (
+  const groupItem = (provided: any, isDragDisabled: boolean, visible: boolean | undefined, id: any) => (
     <div
       key={id}
       className={classNames({

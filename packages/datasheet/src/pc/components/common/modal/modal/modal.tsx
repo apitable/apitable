@@ -27,15 +27,13 @@ import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
 import { destroyFns } from './utils';
 import { ModalWithTheme } from './modal_with_theme';
 import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
-// @ts-ignore
-import { isSocialDingTalk } from 'enterprise';
 import { store } from 'pc/store';
 import React, { FC, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
 // @ts-ignore
-import { getBillingInfo } from 'enterprise';
+import { getBillingInfo, isSocialDingTalk } from 'enterprise';
 
 const ModalBase: FC<IModalProps> = (props) => {
   const {
@@ -127,7 +125,7 @@ export const BillingModal = (props?: IModalFuncProps) => {
     return;
   }
   if (!subscription && spaceId) {
-    getBillingInfo(spaceId).then(billingInfoReq => {
+    getBillingInfo(spaceId).then((billingInfoReq: any) => {
       if (!billingInfoReq) {
         return;
       }

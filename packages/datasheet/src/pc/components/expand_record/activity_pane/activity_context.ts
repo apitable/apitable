@@ -25,7 +25,7 @@ interface ICommentEmoji {
   }
 }
 
-interface ICommentReplyMap {
+export interface ICommentReplyMap {
   [commentId: string]: any
 }
 

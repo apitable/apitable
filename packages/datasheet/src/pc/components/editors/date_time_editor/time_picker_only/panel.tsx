@@ -19,7 +19,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-const scrollTo = (element, to, duration) => {
+const scrollTo = (element: HTMLUListElement, to: number, duration: number) => {
   const requestAnimationFrame = window.requestAnimationFrame ||
     function requestAnimationFrameTimeout() {
       return setTimeout(arguments[0], 10);
@@ -97,11 +97,11 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     document.addEventListener('click', this.handleClickOutside);
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside);
   }
 
@@ -138,17 +138,17 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
     const hourOptions = generateOptions(24, hourStep);
     const minuteOptions = generateOptions(60, minuteStep);
 
-    let selectHour;
-    let selectMinute;
+    let selectHour: number;
+    let selectMinute: number;
     let isValidHour = true;
     let isValidMinite = true;
 
     if (value !== '') {
       const splitTime = value.split(':');
       isValidHour = !Number.isNaN(parseInt(splitTime[0], 10));
-      selectHour = isValidHour ? parseInt(splitTime[0], 10) : '';
+      selectHour = isValidHour ? parseInt(splitTime[0], 10) : 0;
       isValidMinite = splitTime.length > 1 && !Number.isNaN(parseInt(splitTime[1], 10));
-      selectMinute = isValidHour && isValidMinite ? parseInt(splitTime[1], 10) : '';
+      selectMinute = isValidHour && isValidMinite ? parseInt(splitTime[1], 10) : 0;
     } else {
       const time = new Date();
       selectHour = time.getHours();
@@ -198,13 +198,13 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
     });
   }
 
-  handleClickOutside(event) {
+  handleClickOutside(event: any) {
     if (this.panelRef && this.panelRef.current && !this.panelRef.current.contains(event.target)) {
       this.props.clickPanelOutside();
     }
   }
 
-  render() {
+  override render() {
     const {
       prefixCls,
     } = this.props;

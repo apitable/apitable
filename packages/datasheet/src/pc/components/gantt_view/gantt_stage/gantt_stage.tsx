@@ -116,7 +116,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
   const { columnStartIndex: gridColumnStartIndex, columnStopIndex: gridColumnStopIndex } = getGridHorizontalRangeInfo();
 
   // Get prefix targetName
-  const getTargetName = (targetName) => {
+  const getTargetName = (targetName?: string | null) => {
     if (targetName == null || targetName === '') {
       return KONVA_DATASHEET_ID.GANTT_BLANK;
     }
@@ -272,7 +272,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
 
   const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
     onGridMouseUp(e);
-    onGanttMouseUp(e);
+    onGanttMouseUp();
   };
 
   const onClick = (e: any) => {
@@ -280,7 +280,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
     onGanttClick(e);
   };
 
-  const setImmediatePointPosition = (e) => {
+  const setImmediatePointPosition = (e: any) => {
     const targetName = e.target.name();
     const pos = stageRef.current?.getPointerPosition();
     if (pos == null) {
@@ -333,7 +333,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
                   _ref={stageRef}
                   width={containerWidth}
                   height={containerHeight}
-                  onMouseDown={(e) => {
+                  onMouseDown={(e: KonvaEventObject<MouseEvent>) => {
                     setImmediatePointPosition(e);
                     onMouseDown(e);
                   }}
@@ -344,7 +344,7 @@ const GanttStage: FC<IGanttStageProps> = memo((props) => {
                   onDragEnd={onGanttDragEnd}
                   onClick={onClick}
                   onTap={onClick}
-                  onTouchStart={(e) => {
+                  onTouchStart={(e: any) => {
                     if (isTouchDevice && !isMobile) {
                       setImmediatePointPosition(e);
                     }

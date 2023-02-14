@@ -18,7 +18,7 @@
 
 import { Rect as RectComponent } from 'react-konva';
 
-const Rect = (props) => {
+const Rect = (props: any) => {
   return <RectComponent
     {...props}
   />;

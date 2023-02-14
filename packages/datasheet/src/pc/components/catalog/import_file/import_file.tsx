@@ -59,7 +59,7 @@ export const ImportFile: FC<IImportFileProps> = ({
 
   const [isFail, setIsFail] = useState<ProgressType>(ConfigConstant.PROGRESS_NORMAL);
 
-  const onUploadProgress = progressEvent => {
+  const onUploadProgress = (progressEvent: { loaded: number; total: number; }) => {
     if (!isUploading) {
       setIsUploading(true);
     }
@@ -91,7 +91,7 @@ export const ImportFile: FC<IImportFileProps> = ({
     formData.append('parentId', parentId);
     formData.append('spaceId', spaceId);
     setProcessing(true);
-    Api.importFile(formData, onUploadProgress, c => {
+    Api.importFile(formData, onUploadProgress, (c: () => void) => {
       reqToken = c;
     }).then(res => {
       stopPercent();

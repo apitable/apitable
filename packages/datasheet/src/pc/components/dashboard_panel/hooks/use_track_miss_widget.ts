@@ -55,7 +55,7 @@ export const useTrackMissWidgetAndDep = () => {
           const state: IReduxState = getState();
           const datasheetMap = state.datasheetMap;
           const existDatasheetIds = Object.keys(datasheetMap);
-          const datasheetIds = data.map(item => item.snapshot.datasheetId).filter(item => Boolean(item));
+          const datasheetIds = data.map((item: any) => item.snapshot.datasheetId).filter((item: any) => Boolean(item));
           const afterFilterRepeatIds: string[] = [...new Set(datasheetIds)] as string[];
           for (const id of afterFilterRepeatIds) {
             if (!existDatasheetIds.includes(id)) {

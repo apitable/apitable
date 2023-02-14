@@ -198,20 +198,21 @@ export const TeamTree: FC<IModalProps> = props => {
     }
   };
 
-  const handleAddDeptClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+  const handleAddDeptClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setCreateDeptModalVisible(true);
     }, spaceInfo);
   };
 
-  const handleRenameClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+  const handleRenameClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setRenameDeptModalVisible(true);
     }, spaceInfo);
   };
-  const handleDeleteClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+
+  const handleDeleteClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
     socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       if (data) {
@@ -221,7 +222,7 @@ export const TeamTree: FC<IModalProps> = props => {
             if (data.hasChildren || data.memberCount > 0) {
               rejectDeleteTeam();
             } else {
-              confrimDeleteTeam(data.teamId);
+              confirmDeleteTeam(data.teamId);
             }
           }
         });
@@ -234,7 +235,7 @@ export const TeamTree: FC<IModalProps> = props => {
       content: t(Strings.warning_exists_sub_team_or_member),
     });
   };
-  const confrimDeleteTeam = (teamId: string) => {
+  const confirmDeleteTeam = (teamId: string) => {
     const confirmDelTeamOk = () => {
       if (user) {
         Api.deleteTeam(teamId).then(res => {
@@ -256,7 +257,7 @@ export const TeamTree: FC<IModalProps> = props => {
       maskClosable: true,
     });
   };
-  const onSelect = (keys: ReactText[], { node }) => {
+  const onSelect = (_keys: ReactText[], { node }: any) => {
     props.setSearchMemberRes([]);
     if (node.props.title) {
       const { teamId } = (node.props.title as React.ReactElement).props;
@@ -298,7 +299,7 @@ export const TeamTree: FC<IModalProps> = props => {
   };
 
   const operateButtonCom = React.useMemo(() => {
-    const getButton = (props) => {
+    const getButton = (props: { onClick: () => void }) => {
       const { onClick } = props;
       return (
         <Button

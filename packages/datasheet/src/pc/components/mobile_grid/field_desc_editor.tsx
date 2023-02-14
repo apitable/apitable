@@ -17,7 +17,7 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { CollaCommandName, Strings, t } from '@apitable/core';
+import { CollaCommandName, Strings, t, IField } from '@apitable/core';
 import { Input } from 'antd';
 import { Modal } from 'antd-mobile';
 import type { Action } from 'antd-mobile/es/components/modal';
@@ -34,7 +34,13 @@ const { TextArea } = Input;
 
 const noop = () => { };
 
-const FieldDescEditor = ({ field, onClose, readOnly }) => {
+interface IFieldDescEditor {
+  field: IField;
+  onClose: () => void;
+  readOnly: boolean;
+}
+
+const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
   const [value, setValue] = useState(field.desc || '');
   const colors = useThemeColors();
   const textLenHasExceeded = value.length > FIELD_DESC_LENGTH;
@@ -137,7 +143,7 @@ const FieldDescEditor = ({ field, onClose, readOnly }) => {
   );
 };
 
-export const expandFieldDescEditorMobile = ({ field, readOnly }) => {
+export const expandFieldDescEditorMobile = ({ field, readOnly }: Omit<IFieldDescEditor, 'onClose'>) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const root = createRoot(div);

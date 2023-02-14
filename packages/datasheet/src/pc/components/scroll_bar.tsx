@@ -21,14 +21,14 @@ import { FC } from 'react';
 import * as React from 'react';
 import { useHover } from 'ahooks';
 interface ICustomScrollbarsProps {
-  onScroll?: (e) => void;
+  onScroll?: (e: any) => void;
   style?: React.CSSProperties;
 }
 export const ScrollBar: FC<ICustomScrollbarsProps> = (props) => {
   const ref = React.useRef(null);
   const isHovering = useHover(ref);
 
-  const renderThumb = ({ style, ...props }) => {
+  const renderThumb = ({ style, ...props }: any) => {
     const thumbStyle = {
       borderRadius: 6,
       backgroundColor: 'rgba(191, 193, 203, 0.5)',

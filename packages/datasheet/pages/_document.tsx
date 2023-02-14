@@ -17,7 +17,7 @@
  */
 
 import { integrateCdnHost } from '@apitable/core';
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
 import { getInitialProps } from '../utils/get_initial_props';
@@ -31,7 +31,7 @@ interface IClientInfo {
 }
 
 class MyDocument extends Document<IClientInfo> {
-  static async getInitialProps(ctx) {
+  static override async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
     const initData = await getInitialProps({ ctx }) as any;
     return {
@@ -40,14 +40,15 @@ class MyDocument extends Document<IClientInfo> {
     };
   }
 
-  render() {
+  override render() {
     const { env, version, envVars, locale } = this.props;
     return (
       <Html>
         <Head>
-          <link rel='apple-touch-icon' href='/logo.png' />
+          <link rel='apple-touch-icon' href={integrateCdnHost(JSON.parse(envVars).LOGO)} />
           <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
-          <link rel='manifest' href={'/manifest.json'} />
+          <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
+          <link rel='manifest' href={'/file/manifest.json'} />
           <script src={'/file/js/browser_check.2.js'} async />
           {/* injection of custom configs of editions, e.g. APITable */}
           <script src='/custom/custom_config.js' defer />

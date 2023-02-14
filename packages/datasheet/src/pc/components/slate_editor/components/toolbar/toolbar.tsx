@@ -97,7 +97,7 @@ export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
     }
   }, [editor]);
 
-  const handleInsertLinkNode = (data) => {
+  const handleInsertLinkNode = (data: { link: string; text: string; }) => {
     const validSelection = getValidSelection(editor);
     ReactEditor.focus(editor);
     Transforms.select(editor, validSelection);
@@ -119,16 +119,16 @@ export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
     changeElementTypeAfterLayout();
   });
 
-  const renderAlignTrigger = (align) => {
+  const renderAlignTrigger = (align: string) => {
     const AlignIcon = Icons[align];
     return <AlignIcon />;
   };
-  const renderElementTypeTrigger = (type) => {
+  const renderElementTypeTrigger = (type: string) => {
     const Icon = Icons[type] || Icons.paragraph;
     return <Icon />;
   };
 
-  const handleElementTypeSelectVisibleChange = useCallback((next) => {
+  const handleElementTypeSelectVisibleChange = useCallback(() => {
     try {
       ReactEditor.focus(editor);
       Transforms.select(editor, getValidSelection(editor));

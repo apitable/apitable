@@ -43,7 +43,7 @@ export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFor
 
     private picker: any;
 
-    componentDidMount() {
+    override componentDidMount() {
       const { autoFocus, disabled } = this.props;
       if (autoFocus && !disabled) {
         this.focus();
@@ -135,7 +135,7 @@ export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFor
       );
     };
 
-    render() {
+    override render() {
       return (
         <LocaleReceiver
           componentName="DatePicker"

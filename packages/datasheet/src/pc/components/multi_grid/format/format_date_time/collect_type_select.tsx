@@ -102,7 +102,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
     label: option.name,
   }));
 
-  const SelectedFieldItem = ({ fieldId }) => {
+  const SelectedFieldItem = ({ fieldId }: { fieldId: string }) => {
     if (!fieldMap[fieldId]) {
       return <></>;
     }

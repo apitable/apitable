@@ -171,8 +171,8 @@ export const FieldTitle: React.FC<IFieldTitleProps> = props => {
     });
   };
   const columnHidden = view.columns[columnIndexOfView]?.hidden;
-  const onShowMenu = e => {
-    showMenu(e, {
+  const onShowMenu = (e: MouseEvent) => {
+    showMenu((e as any), {
       props: {
         onInsertAbove: firstColumnId !== fieldId ? () => onAppendField(e, Number(columnIndexOfView) - 1, columnHidden) : null,
         onInsertBelow: () => onAppendField(e, Number(columnIndexOfView), columnHidden),

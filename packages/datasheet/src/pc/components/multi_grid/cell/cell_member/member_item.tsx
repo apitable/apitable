@@ -65,8 +65,10 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
           defaultIcon={isSelf ? <MemberIcon width={12} height={12} fill={colors.defaultBg} /> : undefined}
         />
         <div className={styles.memberWithTeamsDesc}>
-          <div className={classNames('unitName', styles.unitName)}>
-            {title}
+          <div className={styles.unitNameWrap}>
+            <span className={classNames('unitName', styles.unitName)}>
+              {title}
+            </span>
             {!isActive && <div className={styles.unInvited}>{t(Strings.pending_invite)}</div>}
           </div>
           {team && <div className={styles.teams}>{team}</div>}
@@ -75,14 +77,13 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
       </div>
     );
   }
-  
+
   return (
     <span
       className={classNames('unitMember', {
         [styles.unitItemWrapper]: true,
-        [styles.unitTeam]: unitInfo.type === MemberType.Team,
         [styles.unitMember]: unitInfo.type === MemberType.Member,
-        [styles.unitTeam]: unitInfo.type === MemberType.Role,
+        [styles.unitTeam]: unitInfo.type === MemberType.Role || unitInfo.type === MemberType.Team,
         [styles.isLeave]: isUnitLeave(unitInfo),
         [styles.selected]: selected,
       })}

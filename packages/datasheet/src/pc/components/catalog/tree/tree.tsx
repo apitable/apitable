@@ -67,7 +67,7 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
     ConfigConstant.NodeType.MIRROR,
   ]);
 
-  const onContextMenu = e => {
+  const onContextMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
   };
@@ -118,7 +118,7 @@ const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
                 onContextMenu={onContextMenu}
                 onClick={() => {
                   treeViewRef.current?.setLoadingNodeId(nodeId);
-                  loadData(nodeId).then(res => {
+                  loadData(nodeId).then(() => {
                     treeViewRef.current?.setLoadingNodeId('');
                   });
                 }}

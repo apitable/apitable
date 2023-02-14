@@ -22,6 +22,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';
 import { store } from 'pc/store';
 import browserPath from 'path-browserify';
+import urlcat from 'urlcat';
 
 export function joinPath(pathParams: (string | undefined)[]) {
   const params: string[] = [];
@@ -32,6 +33,10 @@ export function joinPath(pathParams: (string | undefined)[]) {
       break;
     }
     params.push(param);
+  }
+
+  if (params.length === 2) {
+    return urlcat(params[0], params[1]);
   }
 
   return browserPath.join(...params);

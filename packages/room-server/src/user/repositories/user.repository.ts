@@ -18,6 +18,7 @@
 
 import { UserEntity } from '../entities/user.entity';
 import { EntityRepository, getConnection, In, Repository } from 'typeorm';
+import { UserBaseInfoDto } from '../dtos/user.dto';
 
 /**
  * Operations on table `developer`
@@ -57,6 +58,7 @@ export class UserRepository extends Repository<UserEntity> {
   async selectUserInfoBySpaceIdAndUuids(spaceId: string, uuids: string[]): Promise<any[]> {
     const queryRunner = getConnection().createQueryRunner();
     const tableNamePrefix = this.manager.connection.options.entityPrefix;
+    // todo(itou): replace dynamic sql
     const users: any[] = await queryRunner.query(`
           SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
                  vui.is_deleted isDeleted, vui.unit_type type,
@@ -80,8 +82,14 @@ export class UserRepository extends Repository<UserEntity> {
    * @author Zoe Zheng
    * @date 2020/7/24 6:10 PM
    */
-  selectUserBaseInfoByIds(userIds: number[]): Promise<UserEntity[]> {
-    return this.find({ select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'], where: [{ id: In(userIds), isDeleted: false }] });
+  public async selectUserBaseInfoByIds(userIds: number[]): Promise<UserBaseInfoDto[]> {
+    return await this.find({
+      select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'],
+      where: [{
+        id: In(userIds),
+        isDeleted: false
+      }]
+    });
   }
 
   selectUserBaseInfoByIdsWithDeleted(userIds: string[]): Promise<UserEntity[]> {

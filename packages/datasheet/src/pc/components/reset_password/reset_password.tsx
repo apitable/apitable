@@ -120,7 +120,7 @@ const ResetPassword: FC = () => {
     Router.push(Navigation.LOGIN);
   };
 
-  const onModeChange = mode => {
+  const onModeChange = (mode: React.SetStateAction<string>) => {
     setMode(mode);
   };
   const btnDisable = !(state.account && state.identifyingCode && state.password && state.secondPassword);

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, TextButton } from '@apitable/components';
+import { Button, IconButton, TextButton, ThemeName } from '@apitable/components';
 import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { Modal, Radio } from 'antd';
+import { Modal, Radio, RadioChangeEvent } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common/avatar';
@@ -30,9 +30,11 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import IconNoSpace from 'static/icon/datasheet/datasheet_img_modal_nospace.png';
+import IconNoSpaceLight from 'static/icon/datasheet/space_img_empty_light.png';
+import IconNoSpaceDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 enum ModalType {
   Login = 'Login',
@@ -55,6 +57,10 @@ export const ShareSave: React.FC<IShareSave> = props => {
   const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string; logo: string }[]>([]);
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
+  const env = getEnvVariables();
+  const themeName = useSelector(state => state.theme);
+  const IconNoSpace = themeName === ThemeName.Light ? IconNoSpaceLight : IconNoSpaceDark;
+
   const onCancel = () => {
     setRadio('');
     setVisible(false);
@@ -67,7 +73,11 @@ export const ShareSave: React.FC<IShareSave> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          if (env.INVITE_USER_BY_AUTH0) {
+            Router.push(Navigation.WORKBENCH);
+          } else {
+            Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          }
         },
         onCancel: () => setVisible(false),
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
@@ -146,7 +156,7 @@ export const ShareSave: React.FC<IShareSave> = props => {
   };
 
   const renderSpaceList = () => {
-    const onChange = e => {
+    const onChange = (e: RadioChangeEvent) => {
       setRadio(e.target.value);
     };
 

@@ -18,7 +18,7 @@
 
 import { ContextKeyEvaluate } from '../context_key';
 
-const testEvaluate = tests => {
+const testEvaluate = (tests: any[]) => {
   tests.forEach(test => {
     const [expression, context, expectedResult] = test;
     for (const key in context) {

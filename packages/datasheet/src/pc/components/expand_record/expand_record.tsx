@@ -64,23 +64,24 @@ import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
 import { last } from 'lodash';
 import styles from './style.module.less';
+import { IModalReturn } from '../common/modal/modal/modal.interface';
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   const colors = useThemeColors();
   return (
     <Tooltip title={active ? t(Strings.put_away_record_comments) : t(Strings.view_record_comments)}>
       <IconButton
-        component='button'
-        shape='square'
+        component="button"
+        shape="square"
         className={active ? styles.activeIcon : styles.icon}
-        icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
+        icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3}/>}
         onClick={() => onClick()}
       />
     </Tooltip>
   );
 };
 
-const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
+const SubscribeButton = ({ active, onSubOrUnsub }: { active: boolean; onSubOrUnsub: () => void }): JSX.Element => {
   const [updating, setUpdating] = useState(false);
 
   const _onSubOrUnsub = async() => {
@@ -97,11 +98,11 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
   return (
     <Tooltip title={active ? t(Strings.cancel_watch_record_button_tooltips) : t(Strings.watch_record_button_tooltips)}>
       <IconButton
-        component='button'
-        shape='square'
+        component="button"
+        shape="square"
         disabled={updating}
         className={active ? styles.activeIcon : styles.icon}
-        icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
+        icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3}/>}
         onClick={() => _onSubOrUnsub()}
       />
     </Tooltip>
@@ -112,12 +113,12 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
  * Expand the card to actually call it
  */
 export const expandRecordInner = (props: IExpandRecordInnerProp) => {
-  const { recordType, onClose, datasheetId } = props;
+  const { recordType, onClose, datasheetId, preventOpenNewModal } = props;
 
   const focusHolderRef = React.createRef<HTMLInputElement>();
   expandRecordManager.pushFocusHolderRef(focusHolderRef);
   let container = document.querySelector(`.${EXPAND_RECORD}`);
-  if (!container) {
+  if (!container || !preventOpenNewModal) {
     container = document.createElement('div');
     container.classList.add(EXPAND_RECORD);
   } else {
@@ -154,7 +155,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   recordModalCloseFns.unshift(modalClose);
 
-  const monitorBodyFocus = e => {
+  const monitorBodyFocus = (e: KeyboardEvent) => {
     if (!focusHolderRef.current) {
       return;
     }
@@ -191,7 +192,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
         <div
           ref={focusHolderRef}
           tabIndex={-1}
-          onFocus={e => {
+          onFocus={() => {
             document.body.onkeydown = monitorBodyFocus;
           }}
         />
@@ -226,11 +227,12 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     if (independentDataLoading) {
       resourceService
         .instance!.switchResource({
-          to: nodeId,
-          resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
-          extra: { recordIds: recordIds },
+        to: nodeId,
+        resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
+        extra: { recordIds: recordIds },
+      })
+        .catch(() => {
         })
-        .catch(() => {})
         .then(() => {
           setIndependentDataLoading(false);
           isMirror && setDatasheetId(store.getState().mirrorMap[nodeId].mirror?.sourceInfo.datasheetId);
@@ -250,8 +252,8 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   const isPathWithRecordId = last(pathnameArr)?.startsWith('rec');
 
   const errorHandle = useMemo(
-    () => (errorCode, recordIds?, activeRecordId?) => {
-      let customModal;
+    () => (errorCode?: number | null, _recordIds?: string[], activeRecordId?: string | number) => {
+      let customModal: IModalReturn;
       switch (errorCode) {
         case StatusCode.NODE_NOT_EXIST:
         case StatusCode.NODE_DELETED:
@@ -374,7 +376,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   return <ExpandRecordComponent {...commonProps} />;
 };
 
-const WrapperWithTheme = props => {
+const WrapperWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

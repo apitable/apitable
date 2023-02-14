@@ -43,6 +43,7 @@ import { isArray } from 'lodash';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
 import ReactDOMServer from 'react-dom/server';
+import { getEnvVariables } from 'pc/utils/env';
 
 const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
@@ -137,7 +138,7 @@ const unitTagBase = {
   isTeam: false,
 };
 const triggerWrapBase = {
-  onClick: e => {
+  onClick: (e: React.MouseEvent) => {
     e.stopPropagation();
   },
   style: { display: 'inline-block' },
@@ -226,6 +227,7 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
 };
 
 export const getNoticeUrlParams = (data: INoticeDetail) => {
+  const env = getEnvVariables();
   const templateConfig = SystemConfig.notifications.templates[data.templateId];
   const configPathname = templateConfig?.url;
   const spaceId = data.notifyBody?.space?.spaceId;
@@ -234,7 +236,7 @@ export const getNoticeUrlParams = (data: INoticeDetail) => {
   const dataRecordId = data.notifyBody?.extras?.recordId;
   const recordIds = data.notifyBody?.extras?.recordIds || (dataRecordId ? [dataRecordId] : undefined);
   const recordId = recordIds && isArray(recordIds) ? recordIds[0] : '';
-  const toastUrl = data.notifyBody.extras?.toast?.url;
+  const toastUrl = data.templateId === 'new_user_welcome_notify' ? env.NEW_USER_WELCOME_NOTIFY_URL : data.notifyBody.extras?.toast?.url;
   const notifyId = data.id;
   const roleName = data.notifyBody.extras?.roleName;
 
@@ -318,7 +320,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           if (!involveMemberArr || involveMemberArr.length === 0) {
             return;
           }
-          const userList = involveMemberArr.map(item => renderMember(item, data.notifyBody.space.spaceName, spaceInfo));
+          const userList = involveMemberArr.map((item: IFromUserInfo) => renderMember(item, data.notifyBody.space.spaceName, spaceInfo));
           return <>{userList}</>;
         }
         case TemplateKeyword.SpaceName: {
@@ -373,13 +375,13 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           return <b>{planName}</b>;
         }
         case TemplateKeyword.PayFee: {
-          return <b> {payFee}</b>;
+          return <b>&nbsp;{payFee}</b>;
         }
         case TemplateKeyword.ExpireAt: {
-          return <b> {dayjs(Number(expireAt)).format('YYYY-MM-DD')}</b>;
+          return <b>&nbsp;{dayjs(Number(expireAt)).format('YYYY-MM-DD')}</b>;
         }
         case TemplateKeyword.TaskExpireAt: {
-          return <b> {dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm')}</b>;
+          return <b>&nbsp;{dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm')}</b>;
         }
         case TemplateKeyword.FeatureName: {
           return <b>{featureName}</b>;
@@ -408,7 +410,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
     },
   };
   if (pureString) {
-    const userList = involveMemberArr.map(item => item.memberName || t(Strings.unnamed));
+    const userList = involveMemberArr.map((item: IFromUserInfo) => item.memberName || t(Strings.unnamed));
     return template
       .replace(keyWordAddClass(TemplateKeyword.MemberName), data?.fromUser?.memberName)
       .replace(keyWordAddClass(TemplateKeyword.UserName), data?.fromUser?.userName)

@@ -39,7 +39,7 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
   dragOption?: {
     draggingId: string | undefined
     setDraggingId: any
-    afterDrag (trulyOldIndex, trulyNewIndex): void
+    afterDrag (trulyOldIndex: any, trulyNewIndex: any): void
   };
 
   /**
@@ -52,7 +52,7 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
    * @param {string} keyword
    * @param {*} cb
    */
-  onAddHandle?(keyword: string, cb): void;
+  onAddHandle?(keyword: string, cb: any): void;
 
   /**
    * @description Capture the internal Input instance of the component to facilitate triggering focus

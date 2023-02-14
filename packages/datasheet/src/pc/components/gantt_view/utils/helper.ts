@@ -17,11 +17,13 @@
  */
 
 import { CellType, defaultGanttViewStatus, IGanttViewStatus, ViewType } from '@apitable/core';
-import { ITargetNameDetail, TimeoutID, AreaType } from '../interface';
-import { GANTT_HEADER_HEIGHT, 
-  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions
+import { ITargetNameDetail, TimeoutID, AreaType, IScrollHandler, IScrollState } from '../interface';
+import {
+  GANTT_HEADER_HEIGHT,
+  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions,
 } from 'pc/components/gantt_view';
 import { getStorage, StorageName } from 'pc/utils/storage';
+import { GanttCoordinate } from '../model';
 
 export const cancelTimeout = (timeoutID: TimeoutID) => {
   cancelAnimationFrame(timeoutID.id);
@@ -79,19 +81,19 @@ export const generateTargetName = ({
  */
 export const getDetailByTargetName = (_targetName: string | null): ITargetNameDetail => {
   if (_targetName == null) {
-    return { 
-      targetName: null, 
+    return {
+      targetName: null,
       fieldId: null,
-      recordId: null, 
-      mouseStyle: null 
+      recordId: null,
+      mouseStyle: null,
     };
   }
 
   const flag = '$';
   const [targetName, fieldId, recordId, mouseStyle] = _targetName.split('-');
-  return { 
-    targetName, 
-    fieldId: fieldId === flag ? null : fieldId, 
+  return {
+    targetName,
+    fieldId: fieldId === flag ? null : fieldId,
     recordId: recordId === flag ? null : recordId,
     mouseStyle: mouseStyle === flag ? null : mouseStyle,
   };
@@ -110,15 +112,15 @@ export const getSpeed = (spacing: number) => {
 };
 
 export const onDragScrollSpacing = (
-  scrollHandler, 
-  gridWidth, 
-  instance, 
-  scrollState, 
-  pointPosition,
-  noScrollSet,
-  horizontalScrollCb,
-  verticalScrollCb,
-  allScrollCb
+  scrollHandler: IScrollHandler,
+  gridWidth: number,
+  instance: GanttCoordinate,
+  scrollState: IScrollState,
+  pointPosition: any,
+  noScrollSet: () => void,
+  horizontalScrollCb: Function | undefined,
+  verticalScrollCb: Function | undefined,
+  allScrollCb: Function | undefined
 ) => {
   const { containerWidth: ganttWidth, containerHeight: ganttHeight } = instance;
   const { scrollTop } = scrollState;
@@ -169,6 +171,12 @@ export const getGanttViewStatusWithDefault = ({
   viewId,
   mirrorId,
   isViewLock
+}: {
+  spaceId: string;
+  datasheetId: string;
+  viewId: string;
+  mirrorId: string;
+  isViewLock: boolean;
 }): IGanttViewStatus => {
   const ganttStatusMap = getStorage(StorageName.GanttStatusMap);
   const ganttStatus = ganttStatusMap?.[`${spaceId}_${datasheetId}_${viewId}`] || {};

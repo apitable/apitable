@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -62,20 +66,15 @@
 
 ## ✨ Quick Start
 
-> APITable is currently a `Work In Progress`.
->
-> We will publish the first release in late February 2023.
->
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
+If you just want to try out APITable[^info], use our cloud-hosted version at [apitable.com](https://apitable.com).
 
-<!-- If you just want try out APITable[^info], using our hosted version at [apitable.com](https://apitable.com). -->
-
-If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
+Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
 ## 🔥 Features
 
 <table>
@@ -242,15 +241,19 @@ Embed them by copying and pasting HTML scripts.
 
 ## Installation
 
-Make sure you have `docker` & `curl` installed locally.
+Before you begin:
+* A host with [docker](https://docs.docker.com/engine/install/) and [docker-compose v2](https://docs.docker.com/engine/install/) installed.
+* 4 CPUs/8GB RAM or more are recommended.
+* A bash shell with basic utilities like curl installed.
+* Native arm64 (apple silicon) container images is not ready yet and may cause bad performance.
 
-If you computer has installed Docker Machine, open your terminal and run this:
+To install apitable using docker compose, open your terminal and run this:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+Then open [http://localhost:80](http://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -258,15 +261,24 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 Welcome, and thank you for your interest in contributing to APITable!
 
-There are many ways in which you can contribute, beyond writing code.
+In addition to writing code, there are many ways for you to contribue.
+
+You can contribute as following:
+- Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
 
 You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
 
 Here's a quick guide to help you contribute to APITable.
 
+
 ### Development environment
 
-Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
+Learn how to set up your local environment, go to our [Developer Guide](./docs/contribute/developer-guide.md).
 
 ### Git workflow basic
 
@@ -290,6 +302,7 @@ APITable use these common conventions:
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
 - What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Architecture Overview? -> [Understand APITable - Architecture Overview](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
@@ -307,6 +320,7 @@ APITable use these common conventions:
 - Embbedable 3rd party documentation components
 - SQL-like Domain-Specific Languages
 - As an IdP
+- Advanced automation robot
 - Web 3 features
 - ...
 
@@ -317,6 +331,7 @@ APITable use these common conventions:
 - Single-Sign-On
 - Audit
 - Database Backup
+- Integrate with ChatGPT, Zapier, Slack, Google Workspace……
 - Watermark
 
 For more information, please contact us at <support@apitable.com>.

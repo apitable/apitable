@@ -38,7 +38,7 @@ interface IModalProps {
 export const MainAdminModal: FC<IModalProps> = ({ cancelModal }) => {
   const [current, setCurrent] = useState(0);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const progressDot = (dot, { status, index }) => {
+  const progressDot = (_dot: any, { status, index }: any) => {
     return (
       <span
         className={

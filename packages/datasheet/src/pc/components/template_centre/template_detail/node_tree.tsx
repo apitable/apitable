@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
+import { ILightOrDarkThemeColors, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@apitable/core';
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
@@ -62,7 +62,7 @@ export const NodeTree: FC<INodeTreeProps> = props => {
     isMobile && setSideBarVisible(false);
   }
 
-  const renderNode = (node: INodeTree[] | undefined, colors) => {
+  const renderNode = (node: INodeTree[] | undefined, colors: ILightOrDarkThemeColors) => {
     if (!node || !node.length) {
       return <></>;
     }

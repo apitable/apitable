@@ -188,7 +188,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     changeView(prevViewId);
   };
 
-  const moveView = (viewId, newIndex) => {
+  const moveView = (viewId: string, newIndex: number) => {
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveViews,
       data: [
@@ -220,7 +220,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     if (to === -1) {
       return;
     }
-    const viewId = viewList.filter((v, i) => i === from)[0].id;
+    const viewId = viewList.filter((_v, i) => i === from)[0].id;
     setViewList(pre => {
       const list = pre.slice(0);
       moveArrayElement(list, from, to);
@@ -289,8 +289,8 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
   // };
 
   // const fixedWidth = getFixedWidth();
-  const getShowViewStatus = (item) => {
-    return item.lockInfo || item.autoSave || operateViewIds?.includes(item.id);
+  const getShowViewStatus = (item: IViewProperty) => {
+    return !!item.lockInfo || item.autoSave || operateViewIds?.includes(item.id);
   };
 
   let contextMenuId = activeViewId;

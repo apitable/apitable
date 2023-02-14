@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api } from '@apitable/core';
+import { Api, IShareInfo } from '@apitable/core';
 import axios from 'axios';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
@@ -26,7 +26,7 @@ import { getBaseUrl } from '../../utils/get_base_url';
 
 const DynamicComponentWithNoSSR = dynamic(() => import('../../src/pc/components/share/share'), { ssr: false });
 
-const App = (props) => {
+const App = (props: { shareInfo: Required<IShareInfo> | undefined }) => {
   return <>
     <DynamicComponentWithNoSSR {...props} />
   </>;

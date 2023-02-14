@@ -28,7 +28,7 @@ export const FilterOptions: React.FC<IFilterOptionProps> = props => {
   // The field passed in here is the entity field. fieldType inside the condition is the real field.
   const fieldType = condition.fieldType === FieldType.LookUp ? FieldType.MultiSelect : condition.fieldType;
   const fieldValue = field.property.options;
-  const filterValue = condition.value ? fieldValue.filter(item => condition.value.includes(item.id)) : [];
+  const filterValue = condition.value ? fieldValue.filter((item: { id: any; }) => condition.value.includes(item.id)) : [];
 
   useEffect(() => {
     if (fieldType === FieldType.MultiSelect) {
@@ -58,7 +58,7 @@ export const FilterOptions: React.FC<IFilterOptionProps> = props => {
       field={field}
       isMulti={isMulti}
       onChange={_onCHange}
-      cellValue={filterValue.map(item => item.id)}
+      cellValue={filterValue.map((item: { id: any; }) => item.id)}
       listData={field.property.options}
     />
   );

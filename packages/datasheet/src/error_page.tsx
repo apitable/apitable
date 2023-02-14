@@ -24,8 +24,15 @@ import { Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
+import { useEffect } from 'react';
 
 const ErrorPage = () => {
+  useEffect(() => {
+    window.parent.postMessage({
+      message: 'pageCrash',
+    }, '*');
+  }, []);
+
   const handleClick = () => {
     window.location.href = '/workbench';
   };

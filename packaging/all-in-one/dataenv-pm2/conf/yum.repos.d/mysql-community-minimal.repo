@@ -1,0 +1,7 @@
+[mysql8.0-server-minimal]
+name=MySQL 8.0 Server Minimal
+enabled=1
+baseurl=https://repo.mysql.com/yum/mysql-8.0-community/docker/el/8/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+module_hotfixes=true

@@ -396,7 +396,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     offsetX,
   });
 
-  const handleHorizontalScroll = e => {
+  const handleHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setScrollState(prev => ({
       ...prev,
@@ -408,7 +408,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = e => {
+  const handleVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setScrollState(prev => ({
       ...prev,

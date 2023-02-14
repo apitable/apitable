@@ -24,7 +24,7 @@ export function generateRowId() {
 
 export function generateKeyedFormData(formData: any) {
   const { operands } = formData.value;
-  const newOperands = operands.map((v) => (
+  const newOperands = operands.map((v: { key: any; }) => (
     { ...v, key: v.key || generateRowId() }
   ));
   return {
@@ -44,7 +44,7 @@ export function generateKeyedFormData(formData: any) {
 
 export function keyedToPlainFormData(keyedFormData: any) {
   const { operands } = keyedFormData.value;
-  const newOperands = operands.map((v) => {
+  const newOperands = operands.map((v: any) => {
     // eslint-disable-next-line
     const { key, ...rest } = v;
     return { ...rest };

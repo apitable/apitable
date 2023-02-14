@@ -186,7 +186,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
   );
 };
 
-const Row = props => {
+const Row = (props: any) => {
   const { index, data, style } = props;
   const { roleList } = data;
   const { members, admins, owner } = roleList;
@@ -203,7 +203,7 @@ const Row = props => {
           isTeam: false,
         }}
         identity={{
-          admin: Boolean(admins.find(item => item.memberId === member.memberId)),
+          admin: Boolean(admins.find((item: any) => item.memberId === member.memberId)),
           permissionOpener: owner?.memberId === member.memberId,
         }}
         disabled

@@ -66,7 +66,7 @@ const optionTimeFormatData = [
 export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime) => {
   const { currentField, setCurrentField } = props;
   const [isModalShow, setModalShow] = useState(false);
-  const handleDateFormatChange = ({ value }) => {
+  const handleDateFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,
       property: {
@@ -76,7 +76,7 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
     });
   };
 
-  const handleTimeFormatChange = ({ value }) => {
+  const handleTimeFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,
       property: {

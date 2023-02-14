@@ -20,7 +20,7 @@ import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
-import { ResourceRobotTriggerDto } from '../dtos/resource.robot.trigger.dto';
+import { ResourceRobotTriggerDto, RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/trigger.dto';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {
@@ -33,25 +33,6 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
         isDeleted: false,
       },
     });
-  }
-
-  getTriggersByResourceAndTriggerTypeId(datasheetId: string, triggerTypeId: string): Promise<any[]> {
-    return this.query(
-      `
-    SELECT
-      trigger_id triggerId,
-      trigger_type_id triggerTypeId,
-      input,
-      vat.robot_id robotId
-    FROM
-      ${this.manager.connection.options.entityPrefix}automation_trigger vat
-      JOIN ${this.manager.connection.options.entityPrefix}automation_robot rbt ON rbt.resource_id = ?
-        AND rbt.robot_id = vat.robot_id AND rbt.is_active = 1 AND rbt.is_deleted = 0
-    WHERE
-      vat.is_deleted = 0 AND vat.trigger_type_id = ?
-        `,
-      [datasheetId, triggerTypeId],
-    );
   }
 
   createTrigger(trigger: TriggerCreateRo, userId: string): Promise<AutomationTriggerEntity> {
@@ -82,6 +63,26 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
         robotId: robotId,
         triggerTypeId: triggerTypeId,
         isDeleted: 0,
+      }
+    });
+  }
+
+  public async selectTriggerInfoByRobotId(robotId: string): Promise<RobotTriggerInfoDto | undefined> {
+    return await this.findOne({
+      select: ['triggerId', 'input', 'triggerTypeId'],
+      where: {
+        isDeleted: 0,
+        robotId: robotId
+      }
+    });
+  }
+
+  public async selectTriggerBaseInfosByRobotIds(robotIds: string[]): Promise<RobotTriggerBaseInfoDto[]> {
+    return await this.find({
+      select: ['triggerId', 'triggerTypeId', 'robotId'],
+      where: {
+        isDeleted: 0,
+        robotId: In(robotIds),
       }
     });
   }

@@ -43,7 +43,7 @@
 
     <select id="selectConfigDtoByType"
             resultType="com.apitable.base.model.SystemConfigDTO">
-        SELECT id, i18n_name
+        SELECT id, i18n_name, config_map
         FROM ${tablePrefix}system_config
         WHERE `type` = #{type}
           AND is_deleted = 0

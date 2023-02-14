@@ -43,7 +43,7 @@ export const SearchInput: FC<ISearchInput> = props => {
     change(val);
   };
 
-  const onKeyDown = e => {
+  const onKeyDown = (e: KeyboardEvent) => {
     if (e.keyCode === KeyCode.Esc) {
       onClose && onClose();
     }

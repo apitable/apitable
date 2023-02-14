@@ -100,7 +100,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
       link.href = dataUrl;
       link.click();
     }).catch(error => {
-      Message.error({ content: 'generation image failed' });
+      Message.error({ content: `generation image failed ${error}` });
     });
   };
 

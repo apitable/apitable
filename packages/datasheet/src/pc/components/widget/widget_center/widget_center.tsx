@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
+import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
-  Settings, StoreActions, Strings, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
+  CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
+  StoreActions, Strings, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
 } from '@apitable/core';
 import {
   AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled,
@@ -37,11 +37,14 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux'; 
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
+import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
+import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
+
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { ContextMenu, IContextMenuMethods } from './context_menu';
@@ -239,7 +242,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={ColumnUrlOutlined} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'}/>} variant='background' />
           </a>
         </Tooltip>}
       </div>
@@ -397,6 +400,9 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   }, [packageListMap]);
   const needPlaceholder = (packageListMap?.[WidgetReleaseType.Global]?.length ?? 0) % 2 !== 0;
 
+  const themeName = useSelector(state => state.theme);
+  const widgetCenterEmpty = themeName === ThemeName.Light ? WidgetCenterEmptyLight : WidgetCenterEmptyDark;
+
   useEffect(() => {
     fetchPackageList(tabActiveKey);
   }, [tabActiveKey, fetchPackageList]);
@@ -412,11 +418,11 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     </div>;
   };
 
-  const renderTabBar = (props, DefaultTabBar) => (
+  const renderTabBar = (props: any, DefaultTabBar: any) => (
     <DefaultTabBar {...props} className={styles.tabNav} />
   );
 
-  const TabItemIntroduction = ({ introduction }) => (
+  const TabItemIntroduction = ({ introduction }: { introduction: string }) => (
     <div className={styles.tabItemTips}>
       <DefaultFilled size={16} color={colors.thirdLevelText} />
       <span>{introduction}</span>
@@ -484,14 +490,16 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     });
   };
 
-  const transferWidget = (memberId) => {
+  const transferWidget = (memberId: string) => {
     WidgetApi.transferWidget(curOperationProps.current.widgetPackageId, memberId).then(() => {
       Message.success({ content: t(Strings.widget_transfer_success) });
       fetchPackageList(WidgetReleaseType.Space, true);
     });
   };
 
-  const renderThumb = ({ style, ...props }) => {
+  const renderThumb = ({ style, ...props }: {
+    style: CSSProperties
+  }) => {
     const thumbStyle = {
       right: 4,
       borderRadius: 'inherit',
@@ -500,7 +508,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
 
-  const EmptyButtonWrapper = ({ children }) => {
+  const EmptyButtonWrapper = ({ children }: { children: JSX.Element }) => {
     if (!manageable) {
       return (
         <WrapperTooltip style={{ width: '100%' }} wrapper tip={t(Strings.no_permission_create_widget)}>
@@ -576,7 +584,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
                     showMenu={showMenu}
                   /> :
                   <div className={styles.listEmpty}>
-                    <Image src={integrateCdnHost(Settings.widget_center_space_widget_empty_img.value)} alt='' width={240} height={180} />
+                    <Image src={widgetCenterEmpty} alt='' width={240} height={180} />
                     <p className={styles.emptyTitle}>{t(Strings.is_empty_widget_center_space)}</p>
                     <p className={styles.emptyDesc}>{t(Strings.widget_center_space_introduction)}</p>
                     <div className={styles.emptyFooter}>
@@ -636,7 +644,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   </Modal>;
 };
 
-const WidgetCenterModalWithTheme = (props) => {
+const WidgetCenterModalWithTheme: React.FC<IWidgetCenterModalProps> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>

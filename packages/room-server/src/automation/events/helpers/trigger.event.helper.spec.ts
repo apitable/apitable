@@ -123,7 +123,7 @@ describe('TriggerEventHelper', () => {
     };
   };
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({

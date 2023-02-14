@@ -102,7 +102,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     bottom: ['tl', 'bl'],
   };
 
-  state: IDateTimeEditorState = {
+  override state: IDateTimeEditorState = {
     dateValue: '',
     displayDateStr: '',
     timeValue: '',
@@ -180,7 +180,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     }
   };
 
-  componentDidUpdate(cur: IDateTimeEditorProps) {
+  override componentDidUpdate(cur: IDateTimeEditorProps) {
     if (this.props.editing !== cur.editing) {
       this.setState({
         isIllegal: false,
@@ -370,7 +370,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   };
 
-  render() {
+  override render() {
     const lang = {
       'zh-CN': zhCN,
       'en-US': enUS,

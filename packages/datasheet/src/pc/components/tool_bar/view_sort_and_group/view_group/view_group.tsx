@@ -123,7 +123,7 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
   }
 
   function deleteItem(index: number) {
-    const result = activeViewGroupInfo.filter((item, idx) => idx !== index);
+    const result = activeViewGroupInfo.filter((_item, idx) => idx !== index);
     submitGroup(result.length ? result : null);
   }
 

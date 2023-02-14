@@ -27,6 +27,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,10 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.base.enums.SystemConfigType;
+import com.apitable.base.model.SystemConfigDTO;
+import com.apitable.base.service.ISystemConfigService;
+import com.apitable.shared.component.LanguageManager;
 import com.apitable.widget.service.IWidgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -100,52 +105,76 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.apitable.workspace.enums.NodeException.NOT_ALLOW;
 
 /**
- * <p>
- * Template Service Implement Class
- * </p>
+ * Template Service Implement Class.
+ *
+ * @author Chambers
  */
 @Slf4j
 @Service
-public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEntity> implements ITemplateService {
+public class TemplateServiceImpl
+    extends ServiceImpl<TemplateMapper, TemplateEntity>
+    implements ITemplateService {
 
+    /** */
+    @Resource
+    private ISystemConfigService systemConfigService;
+
+    /** */
     @Resource
     private INodeService iNodeService;
 
+    /** */
     @Resource
     private NodeMapper nodeMapper;
 
+    /** */
     @Resource
     private INodeDescService iNodeDescService;
 
+    /** */
     @Resource
     private IDatasheetService iDatasheetService;
 
+    /** */
     @Resource
     private LimitProperties limitProperties;
 
+    /** */
     @Resource
     private ConstProperties constProperties;
 
+    /** */
     @Resource
     private IFieldRoleService iFieldRoleService;
 
+    /** */
     @Resource
     private ITemplatePropertyService templatePropertyService;
 
+    /** */
     @Resource
     private ITemplateAlbumService iTemplateAlbumService;
 
+    /** */
     @Resource
     private TemplateConfigCacheService templateConfigCacheService;
 
+    /** */
     @Resource
     private INodeRelService iNodeRelService;
 
+    /** */
     @Resource
     private IWidgetService iWidgetService;
 
+    /**
+     * Get SpaceId.
+     *
+     * @param templateId templateId
+     * @return spaceId
+     */
     @Override
-    public String getSpaceId(String templateId) {
+    public String getSpaceId(final String templateId) {
         log.info("Get space id by template id 「{}」", templateId);
         // Check if the template exists
         String spaceId = baseMapper.selectTypeIdByTempId(templateId);
@@ -153,122 +182,220 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return spaceId;
     }
 
+    /**
+     * Check Template Foreign Node.
+     *
+     * @param memberId  memberId
+     * @param nodeId    nodeId
+     */
     @Override
-    public void checkTemplateForeignNode(Long memberId, String nodeId) {
+    public void checkTemplateForeignNode(final Long memberId,
+        final String nodeId) {
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         switch (nodeType) {
             case FOLDER:
                 // Check the permissions of all child descendant nodes
-                List<String> subNodeIds = iNodeService.checkSubNodePermission(memberId, nodeId, ControlRoleManager.parseNodeRole(Node.MANAGER));
+                List<String> subNodeIds =
+                    iNodeService.checkSubNodePermission(memberId, nodeId,
+                        ControlRoleManager.parseNodeRole(Node.MANAGER));
                 if (subNodeIds == null || subNodeIds.isEmpty()) {
                     break;
                 }
-                // Requirements for various types of nodes in the descendants of the syndrome
+                // Requirements for various types of
+                // nodes in the descendants of the syndrome
                 this.checkFolderTemplate(subNodeIds, memberId);
                 break;
             case DATASHEET:
-                this.checkDatasheetTemplate(Collections.singletonList(nodeId), false, TemplateException.NODE_LINK_FOREIGN_NODE);
+                this.checkDatasheetTemplate(Collections.singletonList(nodeId),
+                    false, TemplateException.NODE_LINK_FOREIGN_NODE);
                 // Check Field Permissions
                 this.checkFieldPermission(memberId, nodeId);
                 break;
             case FORM:
-                throw new BusinessException(TemplateException.SINGLE_FORM_CREATE_FAIL);
+                throw new BusinessException(
+                    TemplateException.SINGLE_FORM_CREATE_FAIL);
             case DASHBOARD:
-                throw new BusinessException(TemplateException.SINGLE_DASHBOARD_CREATE_FAIL);
+                throw new BusinessException(
+                    TemplateException.SINGLE_DASHBOARD_CREATE_FAIL);
             case MIRROR:
-                throw new BusinessException(TemplateException.SINGLE_MIRROR_CREATE_FAIL);
+                throw new BusinessException(
+                    TemplateException.SINGLE_MIRROR_CREATE_FAIL);
             default:
                 throw new BusinessException(NOT_ALLOW);
         }
     }
 
+    /**
+     * Check Folder Template.
+     *
+     * @param subNodeIds    subNodeIds
+     * @param memberId      memberId
+     */
     @Override
-    public void checkFolderTemplate(List<String> subNodeIds, Long memberId) {
-        // Requirements for various types of nodes in the descendants of the syndrome
-        List<BaseNodeInfo> nodeInfos = nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
+    public void checkFolderTemplate(final List<String> subNodeIds,
+        final Long memberId) {
+        // Requirements for various types of
+        // nodes in the descendants of the syndrome
+        List<BaseNodeInfo> nodeInfos =
+            nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
         Map<Integer, List<String>> nodeTypeToNodeIdsMap = nodeInfos.stream()
-                .collect(Collectors.groupingBy(BaseNodeInfo::getType, Collectors.mapping(BaseNodeInfo::getNodeId, Collectors.toList())));
-        // If there is a number table, check whether it is associated with an external number table
-        if (nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
-            this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()), true, TemplateException.FOLDER_NODE_LINK_FOREIGN_NODE);
+                .collect(Collectors.groupingBy(BaseNodeInfo::getType,
+                    Collectors.mapping(BaseNodeInfo::getNodeId,
+                        Collectors.toList())));
+        // If there is a number table,
+        // check whether it is associated with an external number table
+        if (nodeTypeToNodeIdsMap
+            .containsKey(NodeType.DATASHEET.getNodeType())) {
+            this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(
+                NodeType.DATASHEET.getNodeType()), true,
+                TemplateException.FOLDER_NODE_LINK_FOREIGN_NODE);
             // Check Field Permissions
-            for (String subNodeId : nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType())) {
+            for (String subNodeId : nodeTypeToNodeIdsMap
+                .get(NodeType.DATASHEET.getNodeType())) {
                 this.checkFieldPermission(memberId, subNodeId);
             }
         }
-        // If there is a collection table, check whether it is associated with an external data table
-        this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.FORM.getNodeType(), TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
-        // If there is a dashboard, verify whether the data source of the component references an external data table
-        if (nodeTypeToNodeIdsMap.containsKey(NodeType.DASHBOARD.getNodeType())) {
-            iWidgetService.checkWidgetReference(subNodeIds, nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()));
+        // If there is a collection table,
+        // check whether it is associated with an external data table
+        this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap,
+            NodeType.FORM.getNodeType(),
+            TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
+        // If there is a dashboard, verify whether the data source of
+        // the component references an external data table
+        if (nodeTypeToNodeIdsMap
+            .containsKey(NodeType.DASHBOARD.getNodeType())) {
+            iWidgetService.checkWidgetReference(subNodeIds,
+                nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()));
         }
         // If there is a mirror, check whether the external data table is mapped
-        this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.MIRROR.getNodeType(), TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
+        this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap,
+            NodeType.MIRROR.getNodeType(),
+            TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
     }
 
+    /**
+     * Check Datasheet Template.
+     *
+     * @param nodeIds           nodeIds
+     * @param isBuildNodeName   isBuildNodeName
+     * @param templateException templateException
+     */
     @Override
-    public void checkDatasheetTemplate(List<String> nodeIds, Boolean isBuildNodeName, TemplateException templateException) {
-        // The number table included in the template is created. If an external number table is associated, the template cannot be created.
-        Map<String, List<String>> foreignDstIdsMap = iDatasheetService.getForeignFieldNames(nodeIds);
-        if (foreignDstIdsMap != null) {
-            for (String foreignNodeId : foreignDstIdsMap.keySet()) {
-                Map<String, Object> foreignMap = new HashMap<>();
-                if (isBuildNodeName) {
-                    foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(foreignNodeId));
-                }
-                foreignMap.put("FOREIGN_FIELD_NAMES", foreignDstIdsMap.get(foreignNodeId));
-                throw new BusinessException(templateException, foreignMap);
-            }
+    public void checkDatasheetTemplate(
+        final List<String> nodeIds,
+        final Boolean isBuildNodeName,
+        final TemplateException templateException
+    ) {
+        // The number table included in the template is created.
+        // If an external number table is associated,
+        // the template cannot be created.
+        Map<String, List<String>> foreignDstIdsMap =
+            iDatasheetService.getForeignFieldNames(nodeIds);
+        if (foreignDstIdsMap == null) {
+            return;
         }
-    }
-
-    @Override
-    public void checkFormOrMirrorIsForeignNode(List<String> subNodeIds, Map<Integer, List<String>> nodeTypeToNodeIdsMap, int nodeType, TemplateException templateException) {
-        if (nodeTypeToNodeIdsMap.containsKey(nodeType)) {
+        for (String foreignNodeId : foreignDstIdsMap.keySet()) {
             Map<String, Object> foreignMap = new HashMap<>();
-            if (!nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
-                // get the first form id
-                String firstNodeId = nodeTypeToNodeIdsMap.get(nodeType).get(0);
-                foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(firstNodeId));
-                throw new BusinessException(templateException, foreignMap);
+            if (isBuildNodeName) {
+                foreignMap.put("NODE_NAME",
+                    nodeMapper.selectNodeNameByNodeId(foreignNodeId));
             }
-            // Batch query associated nodes corresponding to the master node
-            Map<String, String> relNodeToMainNodeMap = iNodeRelService.getRelNodeToMainNodeMap(nodeTypeToNodeIdsMap.get(nodeType));
-            // Traverse slave nodes
-            for (String relNode : relNodeToMainNodeMap.keySet()) {
-                // Throws an exception if the primary node of the associated node is not in the folder
-                if (!subNodeIds.contains(relNodeToMainNodeMap.get(relNode))) {
-                    foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(relNode));
-                    throw new BusinessException(templateException, foreignMap);
-                }
+            foreignMap.put("FOREIGN_FIELD_NAMES",
+                foreignDstIdsMap.get(foreignNodeId));
+            throw new BusinessException(templateException, foreignMap);
+        }
+    }
+
+    /**
+     * Check Form Or Mirror Is Foreign Node.
+     *
+     * @param subNodeIds            subNodeIds
+     * @param nodeTypeToNodeIdsMap  nodeTypeToNodeIdsMap
+     * @param nodeType              nodeType
+     * @param templateException     templateException
+     */
+    @Override
+    public void checkFormOrMirrorIsForeignNode(
+        final List<String> subNodeIds,
+        final Map<Integer, List<String>> nodeTypeToNodeIdsMap,
+        final int nodeType,
+        final TemplateException templateException
+    ) {
+        if (!nodeTypeToNodeIdsMap.containsKey(nodeType)) {
+            return;
+        }
+        Map<String, Object> foreignMap = new HashMap<>();
+        List<String> nodeIds = nodeTypeToNodeIdsMap.get(nodeType);
+        if (!nodeTypeToNodeIdsMap
+            .containsKey(NodeType.DATASHEET.getNodeType())) {
+            // get the first form id
+            String firstNodeId = nodeIds.get(0);
+            foreignMap.put("NODE_NAME",
+                nodeMapper.selectNodeNameByNodeId(firstNodeId));
+            throw new BusinessException(templateException, foreignMap);
+        }
+        // Batch query associated nodes corresponding to the master node
+        Map<String, String> relNodeToMainNodeMap =
+            iNodeRelService.getRelNodeToMainNodeMap(nodeIds);
+        // Traverse slave nodes
+        for (String relNode : relNodeToMainNodeMap.keySet()) {
+            // Throws an exception if the primary node of
+            // the associated node is not in the folder
+            if (!subNodeIds.contains(relNodeToMainNodeMap.get(relNode))) {
+                foreignMap.put("NODE_NAME",
+                    nodeMapper.selectNodeNameByNodeId(relNode));
+                throw new BusinessException(templateException, foreignMap);
             }
         }
     }
 
+    /**
+     * Check Field Permission.
+     *
+     * @param memberId  memberId
+     * @param nodeId    nodeId
+     */
     @Override
-    public void checkFieldPermission(Long memberId, String nodeId) {
-        Map<String, FieldPermissionInfo> fieldPermissionMap = iFieldRoleService.getFieldPermissionMap(memberId, nodeId, null);
+    public void checkFieldPermission(final Long memberId, final String nodeId) {
+        Map<String, FieldPermissionInfo> fieldPermissionMap =
+            iFieldRoleService.getFieldPermissionMap(memberId, nodeId, null);
         if (MapUtil.isNotEmpty(fieldPermissionMap)) {
             FieldPermissionInfo info = fieldPermissionMap.values().stream()
                     .filter(val -> !Boolean.TRUE.equals(val.getHasRole()))
                     .findFirst().orElse(null);
-            ExceptionUtil.isNull(info, TemplateException.FIELD_PERMISSION_INSUFFICIENT);
+            ExceptionUtil.isNull(info,
+                TemplateException.FIELD_PERMISSION_INSUFFICIENT);
         }
     }
 
+    /**
+     * Create.
+     *
+     * @param userId    userId
+     * @param spaceId   spaceId
+     * @param ro        ro
+     * @return template id
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String create(Long userId, String spaceId, CreateTemplateRo ro) {
-        log.info("User「{}」create template「{}」in space「{}」", userId, ro.getName(), spaceId);
+    public String create(final Long userId, final String spaceId,
+        final CreateTemplateRo ro) {
+        log.info("User「{}」create template「{}」in space「{}」", userId,
+            ro.getName(), spaceId);
         // If there is a template with the same name, overwrite the old template
         Long id = baseMapper.selectIdByTypeIdAndName(spaceId, ro.getName());
-        TemplateEntity entity = TemplateEntity.builder().id(id).type(TemplateType.SPACE.getType()).typeId(spaceId).name(ro.getName()).build();
+        TemplateEntity entity = TemplateEntity.builder()
+            .id(id)
+            .type(TemplateType.SPACE.getType())
+            .typeId(spaceId)
+            .name(ro.getName())
+            .build();
         // Official template space, no quantity verification
         if (constProperties.getTemplateSpace().contains(spaceId)) {
             entity.setType(TemplateType.OFFICIAL.getType());
-        }
-        else if (id == null) {
-            // Non-template space, and not covered by the same name, the upper limit of the number of checks
+        } else if (id == null) {
+            // Non-template space, and not covered by the same name,
+            // the upper limit of the number of checks
             this.verifyNumberLimit(spaceId);
         }
         String tempId;
@@ -285,8 +412,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             TemplateInfo info = baseMapper.selectInfoById(id);
             iNodeService.delTemplateRefNode(userId, info.getNodeId());
             tempId = info.getTemplateId();
-        }
-        else {
+        } else {
             tempId = IdUtil.createTemplateId();
             entity.setTemplateId(tempId);
         }
@@ -294,14 +420,23 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         entity.setNodeId(nodeId);
         boolean flag = this.saveOrUpdate(entity);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // Dump node method, there is a GRPC call, if it is not an asynchronous call, you need to ensure that the last call
-        iNodeService.copyNodeToSpace(userId, spaceId, "template", ro.getNodeId(), options);
+        // Dump node method, there is a GRPC call,
+        // if it is not an asynchronous call,
+        // you need to ensure that the last call
+        iNodeService.copyNodeToSpace(userId, spaceId, "template",
+            ro.getNodeId(), options);
         return tempId;
     }
 
+    /**
+     * Delete.
+     *
+     * @param userId        userId
+     * @param templateId    templateId
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long userId, String templateId) {
+    public void delete(final Long userId, final String templateId) {
         log.info("User「{}」delete template「{}」", userId, templateId);
         // delete template mapped node
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
@@ -311,29 +446,66 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         baseMapper.updateIsDeletedByTempId(templateId);
     }
 
+    /**
+     * Get Recommend.
+     *
+     * @param lang language
+     * @return RecommendVo
+     */
     @Override
-    public RecommendVo getRecommend(String lang) {
+    public RecommendVo getRecommend(final String lang) {
         RecommendVo recommend = new RecommendVo();
-        String recommendConfigValue = templateConfigCacheService.getRecommendConfigCacheByLang(lang);
+        String recommendConfigValue = this.getRecommendConfig(lang);
         if (recommendConfigValue == null) {
             return recommend;
         }
-        RecommendConfig config = JSONUtil.parseObj(recommendConfigValue).toBean(RecommendConfig.class);
+        RecommendConfig config =
+            JSONUtil.parseObj(recommendConfigValue)
+                .toBean(RecommendConfig.class);
         if (config == null) {
             return recommend;
         }
         recommend.setTop(config.getTop());
         // build album group
-        List<AlbumGroupVo> albumGroups = this.buildAlbumGroups(config.getAlbumGroups());
+        List<AlbumGroupVo> albumGroups =
+            this.buildAlbumGroups(config.getAlbumGroups());
         recommend.setAlbumGroups(albumGroups);
         // build template group
-        List<TemplateGroupVo> templateGroupVos = this.buildTemplateGroups(config.getTemplateGroups());
-        recommend.setCategories(templateGroupVos);
+        List<TemplateGroupVo> templateGroupVos =
+            this.buildTemplateGroups(config.getTemplateGroups());
         recommend.setTemplateGroups(templateGroupVos);
         return recommend;
     }
 
-    private List<AlbumGroupVo> buildAlbumGroups(List<AlbumGroup> albumGroups) {
+    private String getRecommendConfig(final String lang) {
+        List<SystemConfigDTO> systemConfigDTOs =
+            systemConfigService.findSystemConfigDTOs(
+                SystemConfigType.RECOMMEND_CONFIG);
+        if (systemConfigDTOs.isEmpty()) {
+            return null;
+        }
+        Optional<SystemConfigDTO> firstOptional = systemConfigDTOs.stream()
+            .filter(i -> lang.equals(i.getI18nName()))
+            .findFirst();
+        if (firstOptional.isPresent()) {
+            return firstOptional.get().getConfigMap();
+        }
+        // If the configuration with assign language is not exist,
+        // return configuration of default language.
+        String defaultLanguageTag =
+            LanguageManager.me().getDefaultLanguageTagWithUnderLine();
+        if (defaultLanguageTag.equals(lang)) {
+            return null;
+        }
+        Optional<SystemConfigDTO> secondOptional = systemConfigDTOs.stream()
+            .filter(i -> defaultLanguageTag.equals(i.getI18nName()))
+            .findFirst();
+        return secondOptional.map(SystemConfigDTO::getConfigMap).orElse(null);
+    }
+
+    private List<AlbumGroupVo> buildAlbumGroups(
+        final List<AlbumGroup> albumGroups
+    ) {
         if (CollUtil.isEmpty(albumGroups)) {
             return new ArrayList<>();
         }
@@ -346,11 +518,14 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         }
 
         // query album information uniformly
-        List<AlbumVo> templateVoList = iTemplateAlbumService.getAlbumVosByAlbumIds(albumIds);
-        Map<String, AlbumVo> albumIdToAlbumVoMap = templateVoList.stream().collect(Collectors.toMap(AlbumVo::getAlbumId, i -> i));
+        List<AlbumVo> templateVoList =
+            iTemplateAlbumService.getAlbumVosByAlbumIds(albumIds);
+        Map<String, AlbumVo> albumIdToAlbumVoMap = templateVoList.stream()
+            .collect(Collectors.toMap(AlbumVo::getAlbumId, i -> i));
         // build group vo
         for (AlbumGroup group : albumGroups) {
-            List<AlbumVo> albumVos = new ArrayList<>(group.getAlbumIds().size());
+            List<AlbumVo> albumVos =
+                new ArrayList<>(group.getAlbumIds().size());
             for (String albumId : group.getAlbumIds()) {
                 if (albumIdToAlbumVoMap.containsKey(albumId)) {
                     albumVos.add(albumIdToAlbumVoMap.get(albumId));
@@ -358,46 +533,66 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             }
             // if the album under the group does not exist, it will not return
             if (CollUtil.isNotEmpty(albumVos)) {
-                AlbumGroupVo albumGroupVo = new AlbumGroupVo(group.getName(), albumVos);
+                AlbumGroupVo albumGroupVo =
+                    new AlbumGroupVo(group.getName(), albumVos);
                 albumGroupVos.add(albumGroupVo);
             }
         }
         return albumGroupVos;
     }
 
-    private List<TemplateGroupVo> buildTemplateGroups(List<TemplateGroup> templateGroups) {
+    private List<TemplateGroupVo> buildTemplateGroups(
+        final List<TemplateGroup> templateGroups
+    ) {
         // summarize template IDs under each group
         List<String> templateIds = new ArrayList<>();
-        List<TemplateGroupVo> templateGroupVos = new ArrayList<>(templateGroups.size());
-        templateGroups.forEach(group -> templateIds.addAll(group.getTemplateIds()));
+        List<TemplateGroupVo> templateGroupVos =
+            new ArrayList<>(templateGroups.size());
+        templateGroups
+            .forEach(group -> templateIds.addAll(group.getTemplateIds()));
         if (CollUtil.isEmpty(templateIds)) {
             return templateGroupVos;
         }
 
         // query template information uniformly
-        List<TemplateVo> templateVoList = this.getTemplateVoList(constProperties.getTemplateSpace(), null, templateIds, false);
-        Map<String, TemplateVo> templateIdToTemplateVoMap = templateVoList.stream().collect(Collectors.toMap(TemplateVo::getTemplateId, i -> i));
+        List<TemplateVo> templateVoList =
+            this.getTemplateVoList(constProperties.getTemplateSpace(),
+                null, templateIds, false);
+        Map<String, TemplateVo> templateIdToTemplateVoMap =
+            templateVoList.stream()
+                .collect(Collectors.toMap(TemplateVo::getTemplateId, i -> i));
         // build group vo
         for (TemplateGroup group : templateGroups) {
-            List<TemplateVo> templateVos = new ArrayList<>(group.getTemplateIds().size());
+            List<TemplateVo> templateVos =
+                new ArrayList<>(group.getTemplateIds().size());
             for (String templateId : group.getTemplateIds()) {
                 if (templateIdToTemplateVoMap.containsKey(templateId)) {
                     templateVos.add(templateIdToTemplateVoMap.get(templateId));
                 }
             }
-            // if the template under the group does not exist, it will not return
+            // if the template under the group does not exist,
+            // it will not return
             if (CollUtil.isNotEmpty(templateVos)) {
-                TemplateGroupVo templateGroupVo = new TemplateGroupVo(group.getName(), templateVos);
+                TemplateGroupVo templateGroupVo =
+                    new TemplateGroupVo(group.getName(), templateVos);
                 templateGroupVos.add(templateGroupVo);
             }
         }
         return templateGroupVos;
     }
 
+    /**
+     * Get Template Category List.
+     *
+     * @param lang language
+     * @return List<TemplateCategoryMenuVo>
+     */
     @Override
-    public List<TemplateCategoryMenuVo> getTemplateCategoryList(String lang) {
+    public List<TemplateCategoryMenuVo> getTemplateCategoryList(
+        final String lang) {
         List<TemplatePropertyDto> properties =
-                templatePropertyService.getTemplatePropertiesWithLangAndOrder(TemplatePropertyType.CATEGORY, lang);
+                templatePropertyService.getTemplatePropertiesWithLangAndOrder(
+                    TemplatePropertyType.CATEGORY, lang);
         List<TemplateCategoryMenuVo> categoryVos = new ArrayList<>();
         for (TemplatePropertyDto property : properties) {
             TemplateCategoryMenuVo vo = new TemplateCategoryMenuVo();
@@ -408,39 +603,72 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return categoryVos;
     }
 
+    /**
+     * Get Template Category Content View.
+     *
+     * @param categoryCode categoryCode
+     * @return TemplateCategoryContentVo
+     */
     @Override
-    public TemplateCategoryContentVo getTemplateCategoryContentVo(String categoryCode) {
+    public TemplateCategoryContentVo getTemplateCategoryContentVo(
+        final String categoryCode
+    ) {
         TemplateCategoryContentVo contentVo = new TemplateCategoryContentVo();
         // get album views
-        List<AlbumVo> albumVos = iTemplateAlbumService.getAlbumVosByCategoryCode(categoryCode);
+        List<AlbumVo> albumVos =
+            iTemplateAlbumService.getAlbumVosByCategoryCode(categoryCode);
         contentVo.setAlbums(albumVos);
         // get template views
-        List<TemplateVo> templateVos = this.getTemplateVoList(constProperties.getTemplateSpace(), categoryCode, null, Boolean.FALSE);
+        List<TemplateVo> templateVos =
+            this.getTemplateVoList(constProperties.getTemplateSpace(),
+                categoryCode, null, Boolean.FALSE);
         contentVo.setTemplates(templateVos);
         return contentVo;
     }
 
+    /**
+     * Get Template View List.
+     *
+     * @param spaceId      space id
+     * @param categoryCode template category code(no require)
+     * @param templateIds  template id list(no require)
+     * @param isPrivate    whether it is a private template in the space station
+     * @return List<TemplateVo>
+     */
     @Override
-    public List<TemplateVo> getTemplateVoList(String spaceId, String categoryCode, List<String> templateIds, Boolean isPrivate) {
+    public List<TemplateVo> getTemplateVoList(
+        final String spaceId,
+        final String categoryCode,
+        final List<String> templateIds,
+        final Boolean isPrivate
+    ) {
+        List<String> tplIds = templateIds;
         List<TemplateVo> vos = new ArrayList<>();
 
         if (StrUtil.isNotBlank(categoryCode)) {
             // Get template id from data
-            templateIds = templatePropertyService.getTemplateIdsByPropertyCodeAndType(categoryCode,
-                    TemplatePropertyType.CATEGORY);
-            if (templateIds.isEmpty()) {
+            tplIds =
+                templatePropertyService.getTemplateIdsByPropertyCodeAndType(
+                    categoryCode, TemplatePropertyType.CATEGORY);
+            if (tplIds.isEmpty()) {
                 return vos;
             }
         }
-        List<TemplateDto> templateDtoList = baseMapper.selectDtoByTypeId(spaceId, templateIds);
+        List<TemplateDto> templateDtoList =
+            baseMapper.selectDtoByTypeId(spaceId, tplIds);
         if (CollUtil.isNotEmpty(templateDtoList)) {
             // Switch to memory custom sorting
-            CollectionUtil.customSequenceSort(templateDtoList, TemplateDto::getTemplateId, templateIds);
-            List<String> templateIdList = templateDtoList.stream().map(TemplateDto::getTemplateId).collect(Collectors.toList());
-            Map<String, List<String>> tags = templatePropertyService.getTemplatesTags(templateIdList);
+            CollectionUtil.customSequenceSort(templateDtoList,
+                TemplateDto::getTemplateId, tplIds);
+            List<String> templateIdList = templateDtoList.stream()
+                .map(TemplateDto::getTemplateId).collect(Collectors.toList());
+            Map<String, List<String>> tags =
+                templatePropertyService.getTemplatesTags(templateIdList);
             // get node description
-            List<String> nodeIds = templateDtoList.stream().map(TemplateDto::getNodeId).collect(Collectors.toList());
-            Map<String, String> nodeIdToDescMap = iNodeDescService.getNodeIdToDescMap(nodeIds);
+            List<String> nodeIds = templateDtoList.stream()
+                .map(TemplateDto::getNodeId).collect(Collectors.toList());
+            Map<String, String> nodeIdToDescMap =
+                iNodeDescService.getNodeIdToDescMap(nodeIds);
             templateDtoList.forEach(dto -> {
                 TemplateVo vo = TemplateVo.builder()
                         .templateId(dto.getTemplateId())
@@ -451,7 +679,8 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                         .description(nodeIdToDescMap.get(dto.getNodeId()))
                         .tags(tags.get(dto.getTemplateId()))
                         .build();
-                // The template belongs to the space station and shows the creator information
+                // The template belongs to the space station
+                // and shows the creator information
                 if (BooleanUtil.isTrue(isPrivate)) {
                     vo.setUserId(dto.getUuid());
                     vo.setUuid(dto.getUuid());
@@ -465,11 +694,22 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return vos;
     }
 
+    /**
+     * Get Directory Vo.
+     *
+     * @param categoryCode template category code(no require)
+     * @param templateId   template id
+     * @param isPrivate    whether it is a private template in the space station
+     * @param lang         language
+     * @return TemplateDirectoryVo
+     */
     @Override
-    public TemplateDirectoryVo getDirectoryVo(String categoryCode, String templateId, Boolean isPrivate, String lang) {
+    public TemplateDirectoryVo getDirectoryVo(final String categoryCode,
+        final String templateId, final Boolean isPrivate, final String lang) {
         log.info("Get template 「{}」 directory view", templateId);
         TemplateDto templateDto = baseMapper.selectDtoByTempId(templateId);
-        ExceptionUtil.isNotNull(templateDto, TemplateException.TEMPLATE_INFO_ERROR);
+        ExceptionUtil.isNotNull(templateDto,
+            TemplateException.TEMPLATE_INFO_ERROR);
         NodeShareTree nodeTree = new NodeShareTree();
         nodeTree.setNodeId(templateDto.getNodeId());
         nodeTree.setNodeName(templateDto.getNodeName());
@@ -481,53 +721,71 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 .nodeTree(nodeTree)
                 .build();
         if (templateDto.getType() == NodeType.FOLDER.getNodeType()) {
-            List<NodeShareTree> treeByNodeIds = nodeMapper.selectShareTreeByNodeId(templateDto.getTypeId(), templateDto.getNodeId());
+            List<NodeShareTree> treeByNodeIds =
+                nodeMapper.selectShareTreeByNodeId(templateDto.getTypeId(),
+                    templateDto.getNodeId());
             if (CollUtil.isNotEmpty(treeByNodeIds)) {
-                List<NodeShareTree> treeList = new DefaultTreeBuildFactory<NodeShareTree>(templateDto.getNodeId()).doTreeBuild(treeByNodeIds);
+                List<NodeShareTree> treeList =
+                    new DefaultTreeBuildFactory<NodeShareTree>(
+                        templateDto.getNodeId()).doTreeBuild(treeByNodeIds);
                 nodeTree.setChildren(treeList);
             }
         }
-        // Template belongs to space station, showing creator and space information
+        // Template belongs to space station,
+        // showing creator and space information
         if (BooleanUtil.isTrue(isPrivate)) {
             vo.setUserId(templateDto.getUuid());
             vo.setUuid(templateDto.getUuid());
             vo.setAvatar(templateDto.getAvatar());
             vo.setNickName(templateDto.getNickName());
             vo.setSpaceName(templateDto.getSpaceName());
-        }
-        else {
+        } else {
             // Official template, return template classification information
             this.complementCategoryInfo(categoryCode, templateId, vo, lang);
         }
         return vo;
     }
 
+    /**
+     * Get Default Template NodeId.
+     *
+     * @return NodeId
+     */
     @Override
     public String getDefaultTemplateNodeId() {
         if (Locale.US.equals(LocaleContextHolder.getLocale())) {
-            return baseMapper.selectNodeIdByTempId(constProperties.getQuoteEnTemplateId());
+            String quoteEnTemplateId = constProperties.getQuoteEnTemplateId();
+            return baseMapper.selectNodeIdByTempId(quoteEnTemplateId);
         }
-        return baseMapper.selectNodeIdByTempId(constProperties.getQuoteTemplateId());
+        String quoteTemplateId = constProperties.getQuoteTemplateId();
+        return baseMapper.selectNodeIdByTempId(quoteTemplateId);
     }
 
-    private List<TemplateSearchResult> searchTemplate(String keyword, String rawLang) {
+    private List<TemplateSearchResult> searchTemplate(final String keyword,
+        final String rawLang) {
         log.info("Fuzzy Search Template. keyword:{},lang:{}", keyword, rawLang);
-        String lang = templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
+        String lang =
+            templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
         // Get template custom IDs of all online templates
         LinkedHashSet<String> templateIds =
-                templatePropertyService.getTemplateIdsByKeyWordAndLang(StrUtil.trim(keyword), lang);
+                templatePropertyService.getTemplateIdsByKeyWordAndLang(
+                    StrUtil.trim(keyword), lang);
         if (CollUtil.isEmpty(templateIds)) {
             return new ArrayList<>();
         }
         // Fuzzy query template name
-        List<OnlineTemplateDto> results = baseMapper.selectByTemplateIds(templateIds);
+        List<OnlineTemplateDto> results =
+            baseMapper.selectByTemplateIds(templateIds);
         if (CollUtil.isEmpty(results)) {
             return new ArrayList<>();
         }
         Map<String, List<OnlineTemplateDto>> onlineTemplateMap =
-                results.stream().collect(Collectors.groupingBy(OnlineTemplateDto::getTemplateId));
+            results.stream()
+                .collect(
+                    Collectors.groupingBy(OnlineTemplateDto::getTemplateId));
         // Guaranteed order
-        LinkedHashMap<String, TemplateSearchResult> templates = new LinkedHashMap<>(onlineTemplateMap.size());
+        LinkedHashMap<String, TemplateSearchResult> templates =
+            new LinkedHashMap<>(onlineTemplateMap.size());
         for (String templateId : templateIds) {
             TemplateSearchResult searchResult = new TemplateSearchResult();
             // Get grouped
@@ -538,12 +796,15 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             for (OnlineTemplateDto dto : onlineTemplateMap.get(templateId)) {
                 searchResult.setTemplateId(dto.getTemplateId());
                 searchResult.setTemplateName(dto.getTemplateName());
-                if (dto.getPropertyType().equals(TemplatePropertyType.CATEGORY.getType())) {
+                if (dto.getPropertyType()
+                    .equals(TemplatePropertyType.CATEGORY.getType())) {
                     searchResult.setCategoryName(dto.getPropertyName());
                     searchResult.setCategoryCode(dto.getPropertyCode());
                 }
-                if (dto.getPropertyType().equals(TemplatePropertyType.TAG.getType())) {
-                    List<String> tags = searchResult.getTags() != null ? searchResult.getTags() : new ArrayList<>();
+                if (dto.getPropertyType()
+                    .equals(TemplatePropertyType.TAG.getType())) {
+                    List<String> tags = searchResult.getTags() != null
+                        ? searchResult.getTags() : new ArrayList<>();
                     tags.add(dto.getPropertyName());
                     searchResult.setTags(tags);
                 }
@@ -553,22 +814,34 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return new ArrayList<>(templates.values());
     }
 
+    /**
+     * Global Search Template.
+     *
+     * @param lang lang
+     * @param keyword keyword
+     * @param className className
+     * @return TemplateSearchDTO
+     */
     @Override
-    public TemplateSearchDTO globalSearchTemplate(String lang, String keyword, String className) {
+    public TemplateSearchDTO globalSearchTemplate(final String lang,
+        final String keyword, final String className) {
         TemplateSearchDTO result = new TemplateSearchDTO();
         // search template
-        List<TemplateSearchResult> templates = this.searchTemplate(keyword, lang);
+        List<TemplateSearchResult> templates =
+            this.searchTemplate(keyword, lang);
         List<String> originTemplateNames = new ArrayList<>(templates.size());
         Set<String> originTagNames = new HashSet<>();
         // replace style of keyword
         templates.forEach(template -> {
             originTemplateNames.add(template.getTemplateName());
-            template.setTemplateName(InformationUtil.keywordHighlight(template.getTemplateName(), keyword, className));
+            template.setTemplateName(InformationUtil.keywordHighlight(
+                template.getTemplateName(), keyword, className));
             if (template.getTags() != null) {
                 List<String> tags = new ArrayList<>(template.getTags().size());
                 for (String tag : template.getTags()) {
                     originTagNames.add(tag);
-                    tags.add(InformationUtil.keywordHighlight(tag, keyword, className));
+                    tags.add(InformationUtil.keywordHighlight(tag, keyword,
+                        className));
                 }
                 template.setTags(tags);
             }
@@ -578,22 +851,30 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         result.setTagNames(originTagNames);
 
         // search template album
-        List<AlbumVo> albumVos = iTemplateAlbumService.searchAlbums(lang, keyword);
+        List<AlbumVo> albumVos =
+            iTemplateAlbumService.searchAlbums(lang, keyword);
         if (albumVos.isEmpty()) {
             return result;
         }
         List<String> albumNames = new ArrayList<>(albumVos.size());
         albumVos.forEach(album -> {
             albumNames.add(album.getName());
-            album.setName(InformationUtil.keywordHighlight(album.getName(), keyword, className));
+            album.setName(InformationUtil.keywordHighlight(album.getName(),
+                keyword, className));
         });
         result.setAlbums(albumVos);
         result.setAlbumNames(albumNames);
         return result;
     }
 
+    /**
+     * Get Node Ids.
+     *
+     * @param templateId templateId
+     * @return NodeIds
+     */
     @Override
-    public List<String> getNodeIdsByTemplateId(String templateId) {
+    public List<String> getNodeIdsByTemplateId(final String templateId) {
         // Query the node ID of the template map
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TemplateException.TEMPLATE_INFO_ERROR);
@@ -612,18 +893,26 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return nodeIds;
     }
 
-    private void complementCategoryInfo(String categoryCode, String templateId, TemplateDirectoryVo vo, String lang) {
-        String val = templateConfigCacheService.getCategoriesListConfigCacheByLang(lang);
+    private void complementCategoryInfo(
+        final String categoryCode,
+        final String templateId,
+        final TemplateDirectoryVo vo,
+        final String lang
+    ) {
+        String val =
+            templateConfigCacheService.getCategoriesListConfigCacheByLang(lang);
         if (val == null) {
             return;
         }
-        List<CategoryDto> dtoList = JSONUtil.parseArray(val).toList(CategoryDto.class);
+        List<CategoryDto> dtoList =
+            JSONUtil.parseArray(val).toList(CategoryDto.class);
         for (CategoryDto category : dtoList) {
             // If the template is not under the category, skip it
             if (!category.getTemplateIds().contains(templateId)) {
                 continue;
             }
-            // Priority is given to the information of the specified classification code
+            // Priority is given to
+            // the information of the specified classification code
             if (category.getCategoryCode().equals(categoryCode)) {
                 vo.setCategoryCode(categoryCode);
                 vo.setCategoryName(category.getCategoryName());
@@ -642,10 +931,13 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     }
 
     /**
-     * Verify that the number of templates has reached the limit
+     * Verify that the number of templates has reached the limit.
+     *
+     * @param spaceId spaceId
      */
-    private void verifyNumberLimit(String spaceId) {
+    private void verifyNumberLimit(final String spaceId) {
         int count = SqlTool.retCount(baseMapper.countByTypeId(spaceId));
-        ExceptionUtil.isTrue(count < limitProperties.getTemplateMaxCount(), TemplateException.NUMBER_LIMIT);
+        ExceptionUtil.isTrue(count < limitProperties.getTemplateMaxCount(),
+            TemplateException.NUMBER_LIMIT);
     }
 }

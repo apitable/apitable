@@ -137,7 +137,7 @@ export const MemberFieldEditor: React.FC<IMemberFieldEditorProps> = React.forwar
     }
   };
 
-  const onChange = cellValue => {
+  const onChange = (cellValue: any) => {
     onSave && onSave(cellValue);
   };
 

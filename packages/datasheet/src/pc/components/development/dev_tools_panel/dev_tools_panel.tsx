@@ -33,10 +33,15 @@ enum MenuItemName {
 }
 
 interface IDevMenuProps {
-  onClick(name: MenuItemName)
+  onClick: (name: MenuItemName) => void;
 }
 
-const Container = props => <div style={{
+interface IContainer {
+  children: any;
+  onClose: (visible: false) => void;
+}
+
+const Container = (props: IContainer) => <div style={{
   fontSize: 12,
   height: '100%',
   overflow: 'hidden',
@@ -62,6 +67,7 @@ const Container = props => <div style={{
 
 export const openEruda = () => {
   Message.loading({ content: 'opening ...' });
+  // @ts-ignore
   import('eruda')
     .then(module => module.default)
     .then(eruda => {
@@ -86,10 +92,10 @@ const DevMenu: React.FC<IDevMenuProps> = props => {
 };
 
 interface IDevToolsPanel {
-  onClose?: (visible: false) => void;
+  onClose: (visible: false) => void;
 }
 
-export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose = (visible: false) => { } }) => {
+export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose }) => {
   const [name, setName] = useState<MenuItemName>(MenuItemName.Empty);
   const contentMap = useMemo(() => [
     <DevMenu onClick={setName} key="devMenu" />,

@@ -344,7 +344,7 @@ export const useWorkbenchSideSync = () => {
           datasheetMapKeys.includes(nodeId) && updateResourceRole([data[0]]);
           return;
         }
-        const newActiveNodeInfo = data.find(item => item.nodeId === activeNodeId);
+        const newActiveNodeInfo = data.find((item: any) => item.nodeId === activeNodeId);
         if (
           activeNodeId &&
           idsArray.includes(activeNodeId) &&

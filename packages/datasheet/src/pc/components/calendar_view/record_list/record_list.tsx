@@ -57,7 +57,7 @@ export const RecordList: FC<IRecordList> = props => {
     }
   };
 
-  const onSearchChange = (e, word) => {
+  const onSearchChange = (_e: any, word: string) => {
     if (!keyword) {
       setKeyword('');
     }

@@ -62,7 +62,7 @@ export const CellAttachment: FC<ICellProps> = (props) => {
   });
   const { renderContent } = renderData;
 
-  const onClick = (e, index: number) => {
+  const onClick = (e: any, index: number) => {
     if (e.evt.button !== MouseDownType.Left && e.type !== 'tap') return;
     if (isActive) {
       expandPreviewModal({
@@ -135,10 +135,10 @@ export const CellAttachment: FC<ICellProps> = (props) => {
               width={width}
               height={height}
               fill={'transparent'}
-              onClick={e => onClick(e, index)}
-              onTap={e => onClick(e, index)}
-              onMouseEnter={e => onMouseEnter(item)}
-              onMouseOut={e => clearTooltipInfo()}
+              onClick={(e: any) => onClick(e, index)}
+              onTap={(e: any) => onClick(e, index)}
+              onMouseEnter={() => onMouseEnter(item)}
+              onMouseOut={() => clearTooltipInfo()}
             />
           );
         })

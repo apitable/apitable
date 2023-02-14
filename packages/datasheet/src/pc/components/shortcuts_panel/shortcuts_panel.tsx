@@ -37,19 +37,19 @@ export const ShortcutsPanel: FC = () => {
 
   /** Get the data source of the shortcut key to be displayed */
   const generateData = () => {
-    const data = new Map<string, any>();
+    const data = new Map<string, { keys: string[]; descKey: string }[]>();
     for (const shortcutKey of SystemConfig.shortcut_keys) {
       if (shortcutKey.show) {
         const groupName = shortcutKey.type!.toString();
         if (!data.has(groupName)) {
           data.set(groupName, []);
         }
-        const findShortcut = data.get(groupName).find(element => element.descKey === shortcutKey.name!.toString());
+        const findShortcut = data.get(groupName)?.find(element => element.descKey === shortcutKey.name!.toString());
         if (findShortcut) {
           findShortcut.keys.push(getShortcutKeyString(shortcutKey));
           continue;
         }
-        data.get(groupName).push({
+        data.get(groupName)?.push({
           keys: [getShortcutKeyString(shortcutKey)],
           descKey: shortcutKey.name!.toString(),
         });
@@ -66,12 +66,12 @@ export const ShortcutsPanel: FC = () => {
           <div className={styles.groupName}>{ groupName ? t(Strings[groupName]) : ''}</div>
           <Space className={styles.groupContent} direction="vertical" size={18}>
             {value.map(shortcutKey => (
-              <div key={shortcutKey.name} className={styles.shortcutKeyItem}>
+              <div key={shortcutKey.descKey} className={styles.shortcutKeyItem}>
                 <Space className={styles.keys} size={0}>
                   {shortcutKey.keys.map((key: string, index) => (
                     <>
                       <Space key={key} >
-                        {key.split(browser.is('Windows') ? ' + ' : ' ').map(item => (
+                        {key.split(browser?.is('Windows') ? ' + ' : ' ').map(item => (
                           <div key={item} className={styles.keyItem}>{item}</div>
                         ))}
                       </Space>

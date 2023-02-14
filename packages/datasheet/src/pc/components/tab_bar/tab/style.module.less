@@ -169,3 +169,23 @@
     color: var(--textCommonPrimary);
   }
 }
+
+.inputBox {
+  outline: none;
+  width: 160px;
+  height: 21px;
+  line-height: 21px;
+  border-radius: 2px;
+  font-size: 14px;
+  z-index: 3;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: var(--defaultBg);
+  margin-right: 8px;
+  padding: 12px 4px;
+
+  &.error{
+    border: 1px solid var(--errorColor);
+  }
+}

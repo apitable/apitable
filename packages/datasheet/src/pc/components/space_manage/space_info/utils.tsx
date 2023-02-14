@@ -49,85 +49,95 @@ export const getPercent = (percent: number) => {
   return percent;
 };
 
+const bronzeAndFree = {
+  strokeColor: `${colors.bronzeFg}80`,
+  trailColor: colors.fc5,
+  hightLightColor: colors.bronzeFg,
+  cardTitleColor: colors.orange[900],
+  cardTagStyle: { background: `${colors.bronzeFg}4d`, color: colors.fc8 },
+  secondTextColor: `${colors.bronzeFg}CC`,
+  skinStyle: {
+    right: 16,
+    top: 0,
+    width: '68px',
+    height: '82px',
+  },
+  cardTagPosition: Position.L,
+  cardBg: BronzeCardBg,
+  cardSkin: BronzeCardSkin,
+  upgradeBtnColor: undefined,
+  expirationColor: undefined,
+  logo: <BronzeFilled size={24} />,
+  getLabel: (text: string) => {
+    return <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
+    <span className={styles.icon}>
+      <BronzeFilled size={16} />
+    </span>
+    <span className={styles.text}>{text}</span>
+  </span>;
+  }
+};
+
+const silverAndPlus = {
+  strokeColor: colors.silverFg,
+  trailColor: colors.silverBg,
+  cardTitleColor: colors.indigo[600],
+  hightLightColor: colors.silverFg,
+  cardTagStyle: { background: colors.indigo[200], color: colors.fc8 },
+  secondTextColor: colors.silverFg,
+  cardTagPosition: Position.L,
+  cardBg: SilverCardBg,
+  cardSkin: SilverCardSkin,
+  upgradeBtnColor: undefined,
+  expirationColor: undefined,
+  skinStyle: {
+    right: 16,
+    top: 0,
+    width: '68px',
+    height: '82px',
+  },
+  logo: <SilverFilled size={24} />,
+  getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
+    <span className={styles.icon}>
+      <SilverFilled size={16} />
+    </span>
+    <span className={styles.text}>{text}</span>
+  </span>,
+};
+
+const goldenAndPro = {
+  strokeColor: colors.warningColor,
+  trailColor: colors.goldenBg,
+  cardTitleColor: colors.orange[800],
+  hightLightColor: colors.orange[500],
+  cardTagStyle: { background: colors.orange[400], color: colors.fc8 },
+  secondTextColor: `${colors.orange[800]}cc`,
+  expirationColor: colors.orange[600],
+  cardTagPosition: Position.L,
+  cardBg: GoldenCardBg,
+  cardSkin: GoldenCardSkin,
+  upgradeBtnColor: undefined,
+  skinStyle: {
+    right: 16,
+    top: 0,
+    width: '68px',
+    height: '82px',
+  },
+  logo: <GoldFilled size={24} />,
+  getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
+    <span className={styles.icon}>
+      <GoldFilled size={16} />
+    </span>
+    <span className={styles.text}>{text}</span>
+  </span>,
+};
 const LevelConfigMap = {
-  bronze: {
-    strokeColor: `${colors.bronzeFg}80`,
-    trailColor: colors.fc5,
-    hightLightColor: colors.bronzeFg,
-    cardTitleColor: colors.orange[900],
-    cardTagStyle: { background: `${colors.bronzeFg}4d`, color: colors.fc8 },
-    secondTextColor: `${colors.bronzeFg}CC`,
-    skinStyle: {
-      right: 16,
-      top: 0,
-      width: '68px',
-      height: '82px',
-    },
-    cardTagPosition: Position.L,
-    cardBg: BronzeCardBg,
-    cardSkin: BronzeCardSkin,
-    upgradeBtnColor: undefined,
-    expirationColor: undefined,
-    logo: <BronzeFilled size={24} />,
-    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
-      <span className={styles.icon}>
-        <BronzeFilled size={16} />
-      </span>
-      <span className={styles.text}>{text}</span>
-    </span>,
-  },
-  silver: {
-    strokeColor: colors.silverFg,
-    trailColor: colors.silverBg,
-    cardTitleColor: colors.indigo[600],
-    hightLightColor: colors.silverFg,
-    cardTagStyle: { background: colors.indigo[200], color: colors.fc8 },
-    secondTextColor: colors.silverFg,
-    cardTagPosition: Position.L,
-    cardBg: SilverCardBg,
-    cardSkin: SilverCardSkin,
-    upgradeBtnColor: undefined,
-    expirationColor: undefined,
-    skinStyle: {
-      right: 16,
-      top: 0,
-      width: '68px',
-      height: '82px',
-    },
-    logo: <SilverFilled size={24} />,
-    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
-      <span className={styles.icon}>
-        <SilverFilled size={16} />
-      </span>
-      <span className={styles.text}>{text}</span>
-    </span>,
-  },
-  golden: {
-    strokeColor: colors.warningColor,
-    trailColor: colors.goldenBg,
-    cardTitleColor: colors.orange[800],
-    hightLightColor: colors.orange[500],
-    cardTagStyle: { background: colors.orange[400], color: colors.fc8 },
-    secondTextColor: `${colors.orange[800]}cc`,
-    expirationColor: colors.orange[600],
-    cardTagPosition: Position.L,
-    cardBg: GoldenCardBg,
-    cardSkin: GoldenCardSkin,
-    upgradeBtnColor: undefined,
-    skinStyle: {
-      right: 16,
-      top: 0,
-      width: '68px',
-      height: '82px',
-    },
-    logo: <GoldFilled size={24} />,
-    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
-      <span className={styles.icon}>
-        <GoldFilled size={16} />
-      </span>
-      <span className={styles.text}>{text}</span>
-    </span>,
-  },
+  bronze: bronzeAndFree,
+  free: bronzeAndFree,
+  silver: silverAndPlus,
+  plus: silverAndPlus,
+  golden: goldenAndPro,
+  pro: goldenAndPro,
   enterprise: {
     strokeColor: colors.enterpriseFg,
     trailColor: colors.enterpriseBg,
@@ -198,6 +208,24 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     titleTip: t(Strings.grade_desc),
     buttonText: t(Strings.upgrade),
     tagText: t(Strings.free_edition),
+  }),
+  free: getSpaceConfig('free', {
+    title: t(Strings.subscribe_grade_free),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.upgrade),
+    tagText: t(Strings.free_edition),
+  }),
+  plus: getSpaceConfig('plus', {
+    title: t(Strings.subscribe_grade_plus),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.upgrade),
+    tagText: t(Strings.paid_edition),
+  }),
+  pro: getSpaceConfig('pro', {
+    title: t(Strings.subscribe_grade_pro),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.upgrade),
+    tagText: t(Strings.paid_edition),
   }),
   dingtalk_base: getSpaceConfig('bronze', {
     title: t(Strings.dingtalk_base),

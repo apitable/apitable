@@ -117,7 +117,7 @@ export const AddressSide: React.FC = () => {
               color='primary'
               prefixIcon={<AddOutlined />}
               id={ADDRESS_ID.INVITE_BTN}
-              className={classNames({ [styles.inviteBtnMobile]: isMobile })}
+              className={classNames({ [styles.inviteBtnMobile!]: isMobile })}
               onClick={() => {
                 expandUnitModal({
                   source: SelectUnitSource.SyncMember,
@@ -147,8 +147,8 @@ export const AddressSide: React.FC = () => {
             prefixIcon={<AddressOutlined />}
             id={ADDRESS_ID.INVITE_BTN}
             className={classNames({
-              [styles.inviteBtnMobile]: isMobile,
-              [styles.isSyncingMembers]: isSyncingMembers,
+              [styles.inviteBtnMobile!]: isMobile,
+              [styles.isSyncingMembers!]: isSyncingMembers,
             })}
             onClick={() => expandInviteModal({ resUpdate: () => teamClick(ConfigConstant.ROOT_TEAM_ID) })}
           >
@@ -195,7 +195,7 @@ export const AddressSide: React.FC = () => {
         <div style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }} className={styles.filter}>
           {OperateButton}
           <div className={styles.menu}>
-            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0])} inSearch={inSearch} />
+            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0]!)} inSearch={inSearch} />
           </div>
         </div>
         {/* <ComponentDisplay minWidthCompatible={ScreenSize.md}> */}

@@ -36,7 +36,7 @@ interface ITaskGroupHeaderProps {
   groupCount: number;
   groupInfo: IGanttGroupInfo;
   pointPosition: PointPosition;
-  setTooltipInfo: (info) => void;
+  setTooltipInfo: (info: any) => void;
 }
 
 // Icon Path

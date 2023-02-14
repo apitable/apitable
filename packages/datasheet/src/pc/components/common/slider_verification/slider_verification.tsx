@@ -22,10 +22,17 @@ import { FC } from 'react';
 import styles from './style.module.less';
 import { Modal, Typography, colorVars } from '@apitable/components';
 
-export const SliderVerification: FC = props => {
+export const SliderVerification: FC = () => {
 
   useMount(() => {
-    window['nvc']?.getNC({ renderTo: ConfigConstant.CaptchaIds.DEFAULT });
+    window['nvc']?.getNC({ 
+      renderTo: ConfigConstant.CaptchaIds.DEFAULT,
+      upLang: {
+        cn: {
+          SLIDE: t(Strings.slider_verification_tips)
+        }
+      }
+    });
   });
 
   return (

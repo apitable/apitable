@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
+import { Button, ThemeName } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
@@ -28,7 +28,9 @@ import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import CreateSpaceIcon from 'static/icon/space/space_img_nickname.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
+
 // @ts-ignore
 import { isSocialDomain } from 'enterprise';
 import styles from './style.module.less';
@@ -42,6 +44,9 @@ const CreateSpace: FC<ICreateSpace> = props => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
+  const themeName = useSelector(state => state.theme);
+  const CreateSpaceIcon = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
+
   const { isCreateSpace, err, user } = useSelector((state: IReduxState) => ({
     isCreateSpace: state.user.isCreateSpace,
     err: state.space.err,
@@ -109,7 +114,7 @@ const CreateSpace: FC<ICreateSpace> = props => {
 
       <div className={styles.formBox} style={{ marginTop: props.isShare ? 0 : '' }}>
         <span className={styles.createSpaceIcon}>
-          <Image src={CreateSpaceIcon} alt={t(Strings.create_workspace)} width={266} height={200} />
+          <Image src={CreateSpaceIcon} alt={t(Strings.create_workspace)} width={320} height={240} />
         </span>
         <div className={styles.title}>{t(Strings.create_workspace)}</div>
         <div className={styles.subTitle}>{t(Strings.create_space_sub_title)}~</div>

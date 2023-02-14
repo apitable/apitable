@@ -17,7 +17,7 @@
  */
 
 // FIXME:THEME
-import { colors } from '@apitable/components';
+import { colors, ThemeName } from '@apitable/components';
 import { ISegment, SegmentType } from '@apitable/core';
 import { DepartmentNonzeroOutlined } from '@apitable/icons';
 import GraphemeSplitter from 'grapheme-splitter';
@@ -43,7 +43,7 @@ export class KonvaDrawer {
   ctx: CanvasRenderingContext2D = autoSizerCanvas.context!;
   needDraw = false;
 
-  public initCtx(ctx) {
+  public initCtx(ctx: CanvasRenderingContext2D) {
     this.needDraw = Boolean(ctx);
     this.ctx = ctx || autoSizerCanvas.context!;
     /**
@@ -246,7 +246,7 @@ export class KonvaDrawer {
     const baselineOffset = verticalAlign === 'top' ? fontSize / 2 : 0;
     const fontStyle = `${fontWeight}-${fontSize}px`;
     const isUnderline = textDecoration === 'underline';
-    const textRenderer = (textDataList) => {
+    const textRenderer = (textDataList: any[]) => {
       textDataList.forEach(data => {
         const { offsetX, offsetY, text, width, linkUrl } = data;
         this.ctx.fillText(text, x + offsetX, y + offsetY + baselineOffset);
@@ -560,7 +560,19 @@ export class KonvaDrawer {
     };
   }
 
-  public avatar(props) {
+  public avatar(props: {
+    x: number;
+    y: number;
+    url: string;
+    bgColor: string;
+    id: string;
+    title: string;
+    size: AvatarSize;
+    type: AvatarType;
+    opacity: number;
+    cacheTheme: ThemeName;
+    isGzip?: boolean;
+  }) {
     const {
       x = 0,
       y = 0,
@@ -649,15 +661,15 @@ export class KonvaDrawer {
   }
 
   private convertEndpointToCenterParameterization(
-    x1,
-    y1,
-    x2,
-    y2,
-    fa,
-    fs,
-    rx,
-    ry,
-    psiDeg
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    fa: any,
+    fs: number,
+    rx: number,
+    ry: number,
+    psiDeg: number
   ) {
     const psi = psiDeg * (Math.PI / 180.0);
     const xp =
@@ -691,13 +703,13 @@ export class KonvaDrawer {
     const cx = (x1 + x2) / 2.0 + Math.cos(psi) * cxp - Math.sin(psi) * cyp;
     const cy = (y1 + y2) / 2.0 + Math.sin(psi) * cxp + Math.cos(psi) * cyp;
 
-    const vMag = function(v) {
+    const vMag = function(v: number[]) {
       return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
     };
-    const vRatio = function(u, v) {
+    const vRatio = function(u: number[], v: number[]) {
       return (u[0] * v[0] + u[1] * v[1]) / (vMag(u) * vMag(v));
     };
-    const vAngle = function(u, v) {
+    const vAngle = function(u: number[], v: number[]) {
       return (u[0] * v[1] < u[1] * v[0] ? -1 : 1) * Math.acos(vRatio(u, v));
     };
     const theta = vAngle([1, 0], [(xp - cxp) / rx, (yp - cyp) / ry]);
@@ -720,24 +732,24 @@ export class KonvaDrawer {
     return [cx, cy, rx, ry, theta, dTheta, psi, fs];
   }
 
-  private getLineLength(x1, y1, x2, y2) {
+  private getLineLength(x1: number, y1: number, x2: number, y2: number) {
     return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
   }
 
-  private getPointOnCubicBezier(pct, P1x, P1y, P2x, P2y, P3x, P3y, P4x, P4y) {
-    function CB1(t) {
+  private getPointOnCubicBezier(pct: number, P1x: number, P1y: number, P2x: number, P2y: number, P3x: number, P3y: number, P4x: number, P4y: number) {
+    function CB1(t: number) {
       return t * t * t;
     }
 
-    function CB2(t) {
+    function CB2(t: number) {
       return 3 * t * t * (1 - t);
     }
 
-    function CB3(t) {
+    function CB3(t: number) {
       return 3 * t * (1 - t) * (1 - t);
     }
 
-    function CB4(t) {
+    function CB4(t: number) {
       return (1 - t) * (1 - t) * (1 - t);
     }
 
@@ -750,16 +762,16 @@ export class KonvaDrawer {
     };
   }
 
-  private getPointOnQuadraticBezier(pct, P1x, P1y, P2x, P2y, P3x, P3y) {
-    function QB1(t) {
+  private getPointOnQuadraticBezier(pct: number, P1x: number, P1y: number, P2x: number, P2y: number, P3x: number, P3y: number) {
+    function QB1(t: number) {
       return t * t;
     }
 
-    function QB2(t) {
+    function QB2(t: number) {
       return 2 * t * (1 - t);
     }
 
-    function QB3(t) {
+    function QB3(t: number) {
       return (1 - t) * (1 - t);
     }
 
@@ -772,7 +784,7 @@ export class KonvaDrawer {
     };
   }
 
-  private getPointOnEllipticalArc(cx, cy, rx, ry, theta, psi) {
+  private getPointOnEllipticalArc(cx: number, cy: number, rx: number, ry: number, theta: number, psi: number) {
     const cosPsi = Math.cos(psi);
     const sinPsi = Math.sin(psi);
     const pt = {
@@ -785,7 +797,7 @@ export class KonvaDrawer {
     };
   }
 
-  private calcLength(x, y, cmd, points) {
+  private calcLength(x: number, y: number, cmd: string, points: number[]) {
     let len, p1, p2, t;
 
     switch (cmd) {
@@ -1196,7 +1208,7 @@ export class KonvaDrawer {
     return ca;
   }
 
-  public path(props) {
+  public path(props: { x: number; y: number; data: string; size?: AvatarSize; scaleX?: number; scaleY?: number; fill: string; }) {
     const { x, y, scaleX = 1, scaleY = 1, data, fill } = props;
     const dataArray = this.parsePathData(data);
 

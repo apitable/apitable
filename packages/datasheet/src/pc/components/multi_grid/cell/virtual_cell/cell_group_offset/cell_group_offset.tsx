@@ -60,7 +60,7 @@ export const CellGroupOffset: React.FC<ICellGroupOffset> = React.memo(({
       }}
     >
       {
-        !isDepth0BlankRow && actualColumnIndex === 0 && new Array(groupLength - 1).fill('').map((item, index) => {
+        !isDepth0BlankRow && actualColumnIndex === 0 && new Array(groupLength - 1).fill('').map((_item, index) => {
           const hasBorderLeft = () => {
             if (row.type === CellType.Blank) {
               return row.depth > index;
@@ -100,7 +100,7 @@ export const CellGroupOffset: React.FC<ICellGroupOffset> = React.memo(({
       {children}
       {
         !isDepth0BlankRow && columnsLength > 1 && actualColumnIndex === columnsLength - 1 &&
-        groupLength - 2 > -1 && new Array(groupLength - 2).fill('').map((item, index) => {
+        groupLength - 2 > -1 && new Array(groupLength - 2).fill('').map((_item, index) => {
           const hasBorderRight = () => {
             if (row.type === CellType.Blank) {
               return row.depth === 2;

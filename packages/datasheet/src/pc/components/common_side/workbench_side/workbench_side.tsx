@@ -204,8 +204,8 @@ export const WorkbenchSide: FC = () => {
     // eslint-disable-next-line
   }, [loading, activeNodeId]);
 
-  const changeHandler = key => {
-    setActiveKey(key);
+  const changeHandler = (key: string | string[]) => {
+    setActiveKey(key as string[]);
     localStorage.setItem('vika_workbench_active_key', JSON.stringify(key));
   };
 
@@ -233,7 +233,10 @@ export const WorkbenchSide: FC = () => {
     onSetContextMenu(e);
   };
 
-  const openDatasheetPanel = (visible, info) => {
+  const openDatasheetPanel = (visible: boolean, info: {
+    folderId: string;
+    datasheetId?: string;
+  }) => {
     setPanelVisible(visible);
     setPanelInfo(info);
   };

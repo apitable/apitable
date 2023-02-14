@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, useContext } from 'react';
+import { memo, MouseEvent, useContext } from 'react';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { useContextMenu } from '@apitable/components';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -33,8 +33,8 @@ interface IDrag {
 }
 
 const DragItemBase = ({ id, disabled }: IDrag) => {
-  const { 
-    fieldMap, calendarStyle, columns, currentSearchCell, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField
+  const {
+    fieldMap, calendarStyle, columns, currentSearchCell, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField,
   } = useContext(CalendarContext);
   const { startFieldId, endFieldId } = calendarStyle;
   const noRequiredField = (!startFieldId && !endFieldId) || (!isStartDateTimeField && !isEndDateTimeField);
@@ -44,8 +44,8 @@ const DragItemBase = ({ id, disabled }: IDrag) => {
   const { show } = useContextMenu({
     id: GRID_RECORD_MENU,
   });
-  
-  const onContextMenu = (e) => {
+
+  const onContextMenu = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     show(e, {
       props: {

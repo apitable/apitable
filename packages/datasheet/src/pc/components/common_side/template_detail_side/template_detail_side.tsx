@@ -143,6 +143,7 @@ export const TemplateDetailSide: React.FC = () => {
                 onClick={shareTemplate}
                 style={{
                   color: colors.blackBlue[50],
+                  marginTop: 16
                 }}
               >
                 {t(Strings.copy_template_share_link)}

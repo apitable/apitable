@@ -79,13 +79,13 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
     if (fakeField) field = fakeField as IField;
   }
 
-  const inputChange = e => {
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue(value);
     debounceInput(value);
   };
 
-  const submitFilterValue = selectValue => {
+  const submitFilterValue = (selectValue: any) => {
     // The filter component of the toolbar is go here.
     changeFilter && changeFilter(value => {
       // Check that if the selectValue is the same as the old value, do not update the store.

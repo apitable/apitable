@@ -18,56 +18,35 @@
 
 import { MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { UnitInfo } from 'database/interfaces';
 import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
-import { getConnection } from 'typeorm';
-import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
-import { UnitEntity } from '../entities/unit.entity';
-import { UnitInfo } from '../../database/interfaces';
 import { UnitRepository } from '../repositories/unit.repository';
-import { UserRepository } from '../../user/repositories/user.repository';
 import { UnitMemberService } from './unit.member.service';
-import { UnitTagService } from './unit.tag.service';
 import { UnitTeamService } from './unit.team.service';
+import { UserService } from 'user/services/user.service';
+import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
+import { UnitInfoDto } from '../dtos/unit.info.dto';
 
 @Injectable()
 export class UnitService {
   constructor(
     private readonly unitRepo: UnitRepository,
     private readonly memberService: UnitMemberService,
-    private readonly tagService: UnitTagService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
-    private readonly userRepo: UserRepository,
+    private readonly userService: UserService,
   ) {}
 
   /**
    * Batch obtain unit infos
    */
-  async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
-    const queryRunner = getConnection().createQueryRunner();
-    const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
-    const unitInfo: any[] = await queryRunner.query(
-      `
-          SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
-          COALESCE(vut.team_name, vum.member_name, vur.role_name) name, u.avatar avatar, u.color avatarColor,
-          u.nick_name nickName,
-          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
-          vum.is_active isActive, u.uuid userId, u.uuid uuid
-          FROM ${tableNamePrefix}unit vu
-          LEFT JOIN ${tableNamePrefix}unit_team vut ON vu.unit_ref_id = vut.id
-          LEFT JOIN ${tableNamePrefix}unit_member vum ON vu.unit_ref_id = vum.id
-          LEFT JOIN ${tableNamePrefix}unit_role vur ON vu.unit_ref_id = vur.id
-          LEFT JOIN ${tableNamePrefix}user u ON vum.user_id = u.id
-          WHERE vu.space_id = ? AND vu.id IN (?)
-        `,
-      [spaceId, unitIds],
-    );
-    await queryRunner.release();
+  public async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
+    const unitInfos = await this.unitRepo.selectUnitInfosBySpaceIdAndUnitIds(spaceId, unitIds);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return unitInfo.reduce((pre, cur) => {
+    return unitInfos.reduce((pre, cur) => {
       if (cur.avatar && !cur.avatar.startsWith('http')) {
         cur.avatar = oss.host + '/' + cur.avatar;
       }
@@ -83,7 +62,7 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:52 PM
    */
-  public async getUnitInfoByIdsIncludeDeleted(unitIds: string[]): Promise<UnitEntity[]> {
+  private async getUnitInfoByIdsIncludeDeleted(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
     if (!unitIds.length) return [];
     return await this.unitRepo.selectUnitMembersByIdsIncludeDeleted(unitIds);
   }
@@ -94,15 +73,15 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:53 PM
    */
-  public async getUnitMemberInfoByIds(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
-    const units: UnitEntity[] = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
+  public async getUnitMemberInfoByIds(unitIds: string[]): Promise<UnitInfoDto[]> {
+    const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
     const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
     const [members, teams] = await Promise.all([
       this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]),
       this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]),
     ]);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return units.reduce<UnitBaseInfoDto[]>((pre, cur) => {
+    return units.reduce<UnitInfoDto[]>((pre, cur) => {
       const tmp = cur.unitType === MemberType.Member ? members[cur.unitRefId] : teams[cur.unitRefId];
       if (tmp) {
         pre.push({
@@ -132,7 +111,7 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:11 PM
    */
-  private getMemberRefIdMapFromUnities(unitEntities: UnitEntity[]): IUnitMemberRefIdMap {
+  private getMemberRefIdMapFromUnities(unitEntities: UnitBaseInfoDto[]): IUnitMemberRefIdMap {
     const memberIds: number[] = [];
     const teamIds: number[] = [];
     const roleIds: number[] = [];
@@ -150,7 +129,7 @@ export class UnitService {
     return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds };
   }
 
-  async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
+  public async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
     return await this.unitRepo.selectCountByIdAndSpaceId(unitId, spaceId);
   }
 
@@ -163,13 +142,10 @@ export class UnitService {
    * @author Zoe Zheng
    * @date 2020/9/9 1:41 AM
    */
-  async getIdByNameAndType(unitName: string, unitType: UnitTypeEnum, spaceId: string): Promise<string | null> {
+  public async getIdByNameAndType(unitName: string, unitType: UnitTypeEnum, spaceId: string): Promise<string | null> {
     let refId;
     if (UnitTypeEnum.TEAM === unitType) {
       refId = await this.teamService.getIdBySpaceIdAndName(spaceId, unitName);
-    }
-    if (UnitTypeEnum.TAG === unitType) {
-      refId = await this.tagService.getIdBySpaceIdAndName(spaceId, unitName);
     }
     if (UnitTypeEnum.MEMBER === unitType) {
       refId = await this.memberService.getIdBySpaceIdAndName(spaceId, unitName);
@@ -180,18 +156,18 @@ export class UnitService {
     return null;
   }
 
-  async getIdByRefIdAndSpaceId(refId: string, spaceId: string): Promise<string | null> {
+  private async getIdByRefIdAndSpaceId(refId: string, spaceId: string): Promise<string | null> {
     const entity = await this.unitRepo.selectIdByRefIdAndSpaceId(refId, spaceId);
     if (entity) return entity.id;
     return null;
   }
 
-  async getUnitMemberInfoByUserIds(spaceId: string, userIds: string[], excludeDeleted = true): Promise<Map<string, UnitBaseInfoDto>> {
-    const userMap = new Map<string, UnitBaseInfoDto>();
+  public async getUnitMemberInfoByUserIds(spaceId: string, userIds: string[], excludeDeleted = true): Promise<Map<string, UnitInfoDto>> {
+    const userMap = new Map<string, UnitInfoDto>();
     if (!userIds.length) return userMap;
     const users = excludeDeleted
-      ? await this.userRepo.selectUserBaseInfoByIds(userIds as any[])
-      : await this.userRepo.selectUserBaseInfoByIdsWithDeleted(userIds);
+      ? await this.userService.selectUserBaseInfoByIds(userIds as any[])
+      : await this.userService.selectUserBaseInfoByIdsWithDeleted(userIds);
     const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {
@@ -214,5 +190,13 @@ export class UnitService {
       });
     });
     return userMap;
+  }
+
+  async getIdByUserIdAndSpaceId(userId: string, spaceId: string): Promise<string | undefined> {
+    const memberId = await this.memberService.getIdBySpaceIdAndUserId(spaceId, userId);
+    if (!memberId) {
+      return undefined;
+    }
+    return this.unitRepo.selectIdByRefIdAndSpaceId(memberId, spaceId).then(o => o?.id);
   }
 }

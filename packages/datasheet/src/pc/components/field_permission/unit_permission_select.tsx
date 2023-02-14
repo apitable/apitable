@@ -22,12 +22,12 @@ import styles from './styles.module.less';
 import { PopStructure } from 'pc/components/editors/pop_structure';
 import { MemberOptionList } from 'pc/components/list';
 import { useSelector } from 'react-redux';
-import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
+import { ConfigConstant, Selectors, Strings, t, IUnitIds } from '@apitable/core';
 import { Divider } from 'antd';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { stopPropagation } from 'pc/utils';
 import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
-import { DoubleSelect, Typography, Button, useThemeColors } from '@apitable/components';
+import { DoubleSelect, Typography, Button, useThemeColors, IDoubleOptions } from '@apitable/components';
 import { IUnitPermissionSelectProps } from './interface';
 import classnames from 'classnames';
 import { useClickAway } from 'ahooks';
@@ -47,7 +47,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
   const [height, setHeight] = useState(0);
   const [editing, setEditing] = useState(false);
-  const [unitValue, setUnitValue] = useState<string[]>([]);
+  const [unitValue, setUnitValue] = useState<IUnitIds>([]);
   const [permissionValue, setPermissionValue] = useState(permissionList[2] || permissionList[0]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const unitListRef = useRef<HTMLDivElement>(null);
@@ -61,7 +61,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     }
   }, [permissionCommitRemindStatus, noPermissionMembers]);
 
-  const changePermission = (option) => {
+  const changePermission = (option: React.SetStateAction<IDoubleOptions>) => {
     setPermissionValue(option);
   };
 
@@ -71,11 +71,11 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     }
   }, [editing, unitValue]);
 
-  const onMentionSelect = value => {
+  const onMentionSelect = (value: IUnitIds) => {
     setUnitValue(value);
   };
 
-  const openMemberList = (e, toggleClose = true) => {
+  const openMemberList = (e: React.MouseEvent, toggleClose = true) => {
     !editing && document.body.click();
     stopPropagation(e);
     if (toggleClose) {
@@ -97,7 +97,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
     'click',
   );
 
-  const submitPermission = e => {
+  const submitPermission = (e: React.MouseEvent) => {
     if (!unitValue.length) {
       openMemberList(e, false);
       return;
@@ -129,9 +129,9 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
         <div className={styles.unitValue} onClick={openMemberList} tabIndex={-1}>
           <div className={styles.placeholder}>
             <AddOutlined color={colors.thirdLevelText} />
-            <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all' }}>
-              {unitValue.length ? t(Strings.add) : t(Strings.add_member_or_unit)}
-            </Typography>
+            {!unitValue.length && <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all' }}>
+              {t(Strings.add_member_or_unit)}
+            </Typography>}
           </div>
           {unitValue.map((unitId) => {
             const unitInfo = unitMap[unitId];
@@ -152,7 +152,7 @@ export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props 
           })}
         </div>
         <div className={styles.unitPermission}>
-          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1 }} />
+          <Divider type={'vertical'} style={{ height: 12, marginRight: 0, top: 1, borderLeftColor: colors.borderCommonDefault }} />
 
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <DoubleSelect

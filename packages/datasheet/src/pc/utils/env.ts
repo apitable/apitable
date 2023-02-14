@@ -45,7 +45,7 @@ export function isMobileApp() {
   if (process.env.SSR) {
     return;
   }
-  return browser.getUA().includes(ConfigConstant.MOBILE_APP_UA);
+  return browser?.getUA().includes(ConfigConstant.MOBILE_APP_UA);
 }
 
 export function getReleaseVersion() {

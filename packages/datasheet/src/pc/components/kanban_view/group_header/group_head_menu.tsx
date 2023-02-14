@@ -53,7 +53,12 @@ import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
 import { IGroupHeaderProps } from './interface';
 
-const CollapseWrapper = ({ isCollapse, children }) => {
+interface ICollapseWrapper {
+  isCollapse?: boolean;
+  children: any;
+}
+
+const CollapseWrapper = ({ isCollapse, children }: ICollapseWrapper) => {
   if (isCollapse) {
     return (
       <div
@@ -130,7 +135,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     }
     const newField = {
       ...field,
-      property: { ...field.property, unitIds: field.property.unitIds.filter(item => item !== groupId) },
+      property: { ...field.property, unitIds: field.property.unitIds.filter((item: string) => item !== groupId) },
     };
     setFieldAttr(newField);
   }
@@ -142,7 +147,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
   function getBgColor(theme: ThemeName) {
     const field = fieldMap![kanbanFieldId];
     if (groupId === UN_GROUP) {
-      return colors.borderCommon;
+      return colors.borderCommonDefault;
     }
     if (field.type === FieldType.SingleSelect) {
       return inquiryValueByKey('color', groupId, field, theme);
@@ -232,7 +237,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
         }
         const newField = {
           ...field,
-          property: { ...field.property, options: field.property.options.filter(item => item.id !== groupId) },
+          property: { ...field.property, options: field.property.options.filter((item: { id: string; }) => item.id !== groupId) },
         };
         setFieldAttr(newField);
         notifyWithUndo(t(Strings.delete_kanban_group), NotifyKey.DeleteKanbanGroup);
@@ -240,7 +245,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     });
   }
 
-  const showMore = e => {
+  const showMore = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
     show(e, {
       props: {

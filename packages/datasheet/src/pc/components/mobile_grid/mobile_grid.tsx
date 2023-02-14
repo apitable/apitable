@@ -102,7 +102,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
 
   const [activeFieldId, setActiveFieldId] = useState<string | null>(null);
 
-  const onHeaderClick = e => {
+  const onHeaderClick = (e: React.MouseEvent) => {
     const element = e.target as HTMLElement;
     const fieldTitle = getParentNodeByClass(element, styles.fieldTitleWrapper);
     const fieldElement = getParentNodeByClass(element, FIELD_HEAD_CLASS);
@@ -136,7 +136,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
 
   const generateItemKey = () => {
     const columns = remainingColumns;
-    return ({ rowIndex, columnIndex }) => {
+    return ({ rowIndex, columnIndex }: { rowIndex: number; columnIndex: number }) => {
       let recordId = rowIndex + '';
       let fieldId = columnIndex + '';
       if (columns[columnIndex] && columns[columnIndex].fieldId) {
@@ -196,7 +196,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
     }
   }, [GRID_HEIGHT, GRID_INNER_DIV_HEIGHT, syncScroll]);
 
-  const isIOS = browser.is('iOS');
+  const isIOS = browser?.is('iOS');
 
   const onAndroidScroll = useCallback(({
     scrollLeft,
@@ -219,7 +219,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
     return COLUMN_WIDTH;
   }, [width, remainingColumns.length]);
 
-  const onGridClick = e => {
+  const onGridClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     const recordId = getElementDataset(getParentNodeByClass(target, [
       styles.cellWrapper,
@@ -398,7 +398,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
       />
       }
 
-      {isOperateSetting && <FieldSetting />}
+      {isOperateSetting && <FieldSetting datasheetId={datasheetId} viewId={viewId} />}
     </div>
   );
 };

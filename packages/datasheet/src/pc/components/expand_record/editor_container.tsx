@@ -17,7 +17,7 @@
  */
 
 import { TextButton, useThemeColors } from '@apitable/components';
-import { Strings, t, ViewType } from '@apitable/core';
+import { Strings, t, ViewType, IViewColumn } from '@apitable/core';
 import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -28,7 +28,18 @@ import { useSelector } from 'react-redux';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
 
-const FieldEditorContainer = (props: any) => {
+interface IFieldEditorContainer {
+  fields: IViewColumn[];
+  visible: boolean;
+  focusFieldId: string | null;
+  clickWithinField:  React.MutableRefObject<boolean | undefined>;
+  datasheetId: string;
+  expandRecordId: string;
+  setFocusFieldId: (focusFieldId: any) => void;
+  mirrorId?: string;
+}
+
+const FieldEditorContainer = (props: IFieldEditorContainer) => {
   const {
     fields,
     visible = true,
@@ -42,29 +53,33 @@ const FieldEditorContainer = (props: any) => {
   if (!fields) {
     return null;
   }
-  return fields.map((item, index) => {
-    const isFocus = focusFieldId === item.fieldId;
-    return (
-      <div
-        style={{ display: visible ? 'block' : 'none' }}
-        key={item.fieldId}
-        className={classNames(styles.fieldWrapper, 'fieldWrapper')}
-        onMouseDown={() => { clickWithinField.current = true; }}
-      >
-        <FieldEditor
-          datasheetId={datasheetId}
-          mirrorId={mirrorId}
-          fieldId={item.fieldId}
-          expandRecordId={expandRecordId}
-          isFocus={isFocus}
-          setFocus={setFocusFieldId}
-          showAlarm
-          allowToInsertField
-          colIndex={index}
-        />
-      </div>
-    );
-  });
+  return (
+    <>
+      {fields.map((item, index) => {
+        const isFocus = focusFieldId === item.fieldId;
+        return (
+          <div
+            style={{ display: visible ? 'block' : 'none' }}
+            key={item.fieldId}
+            className={classNames(styles.fieldWrapper, 'fieldWrapper')}
+            onMouseDown={() => { clickWithinField.current = true; }}
+          >
+            <FieldEditor
+              datasheetId={datasheetId}
+              mirrorId={mirrorId}
+              fieldId={item.fieldId}
+              expandRecordId={expandRecordId}
+              isFocus={isFocus}
+              setFocus={setFocusFieldId}
+              showAlarm
+              allowToInsertField
+              colIndex={index}
+            />
+          </div>
+        );
+      })}
+    </>
+  )
 };
 
 interface IEditorContainerProp {
@@ -77,7 +92,7 @@ interface IEditorContainerProp {
   showHiddenField: boolean;
   disappearHiddenField?: boolean;
   setShowHiddenField: (showHiddenField: boolean) => void;
-  setFocusFieldId: (focusFieldId) => void;
+  setFocusFieldId: (focusFieldId: any) => void;
   modalClose: () => void;
 }
 

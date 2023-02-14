@@ -170,7 +170,6 @@ export const MoreListDiv = styled.div.attrs(applyDefaultTheme)<{ isMobile: boole
       text-overflow: ellipsis;
       white-space: nowrap;
       ${props => css`
-        box-shadow: ${props.theme.color.shadowCommonHighest};
         background-color: ${props.theme.color.defaultBg};
         color: ${props.theme.color.fc1};
       `}

@@ -26,7 +26,7 @@ import { SchemaPropertyList } from './magic_variable_list';
 
 interface ISchemaMapProps {
   nodeOutputSchemaList: INodeOutputSchema[];
-  insertMagicVariable: (data) => void;
+  insertMagicVariable: (data: IExpression) => void;
   setOpen: (open: boolean) => void;
   isJSONField: boolean;
 }
@@ -147,7 +147,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
         goNext(listItem);
       }
     },
-    onArrowLeftPress: (index) => {
+    onArrowLeftPress: () => {
       goPrev();
     },
     onEscapePress: () => {

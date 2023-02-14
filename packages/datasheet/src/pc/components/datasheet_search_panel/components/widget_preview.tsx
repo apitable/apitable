@@ -17,7 +17,7 @@
  */
 
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
-import { Button, useThemeColors } from '@apitable/components';
+import { Button, useThemeColors, ThemeName } from '@apitable/components';
 import { CheckOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';
@@ -25,12 +25,14 @@ import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
 import * as React from 'react';
 import { useState } from 'react';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { INodeInstalledWidget } from '../interface';
 import styles from './style.module.less';
+import { useSelector } from 'react-redux';
 
 interface IWidgetPreviewProps {
-  onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] });
+  onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;
   installedWidgets: INodeInstalledWidget[];
 }
 export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
@@ -44,7 +46,8 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
       setSelectedWidgetIds([...selectedWidgetIds, id]);
     }
   };
-
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (
     <div className={styles.widgetList}>
       <h2>{t(Strings.datasheet_exist_widget)}</h2>
@@ -72,11 +75,10 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
                     <div className={styles.widgetIconBox}>
                       <Image src={item.widgetPackageIcon} alt="" width={16} height={16} />
                     </div>
-                    <Image
+                    <img
                       src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover_img.value)}
                       alt=""
                       width={'100%'}
-                      height={100}
                     />
                   </div>
                   <div className={styles.checked}>
@@ -86,7 +88,9 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
               );
             })
           ) : (
-            <Image src={templateEmptyPng} alt="" className={styles.emptyImg} />
+            <div className={styles.emptyImg}>
+              <Image src={templateEmptyPng} width={160} objectFit="contain" alt="" />
+            </div>
           )}
         </div>
       </div>

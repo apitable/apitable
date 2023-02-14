@@ -21,12 +21,13 @@ import classNames from 'classnames';
 import styles from './style.module.less';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useThemeColors } from '@apitable/components';
+import { ViewType } from '@apitable/core';
 
 export const View: React.FC<{ 
   id: string,
   active?: boolean, 
-  viewType,
-  onClick?(id: string) 
+  viewType: ViewType,
+  onClick?(id: string): void
 }> = props => {
   const { 
     children, 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LinkButton, Typography, useThemeColors } from '@apitable/components';
+import { LinkButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
   OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional,
@@ -34,8 +34,9 @@ import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import * as React from 'react';
 import { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconNoList from 'static/icon/datasheet/activity/datasheet_img_activity_record.png';
-import { ActivityContext } from '../activity_context';
+import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
+import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
+import { ActivityContext, ICommentReplyMap } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
@@ -81,6 +82,8 @@ export const ActivityListItems: FC<IActivityListProps & {
   const topRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver>();
   const productName = useSelector(state => String(state.billing?.subscription?.product).toLowerCase());
+  const themeName = useSelector(state => state.theme);
+  const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';
@@ -152,7 +155,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         if (hasAddEmoji) {
           const commentId: string = get(action, 'li.commentId');
           const curEmojis: ICommentMsg['emojis'] = get(action, 'li.commentMsg.emojis');
-          const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
+          const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
           set(newEmojis, `${commentId}.${emojiKey}`, uniq([...emojiUserIds, ...newUserIds]));
@@ -162,7 +165,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         if (hasDeleteEmoji) {
           const commentId: string = get(action, 'ld.commentId');
           const curEmojis: ICommentMsg['emojis'] = get(action, 'ld.commentMsg.emojis');
-          const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
+          const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
           set(
@@ -284,7 +287,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       if (data) {
         const { changesets, units, emojis: newEmojis, commentReplyMap } = data;
         setEmojis({ ...emojis, ...newEmojis });
-        updateCommentReplyMap(pre => ({ ...pre, ...commentReplyMap }));
+        updateCommentReplyMap((pre: ICommentReplyMap) => ({ ...pre, ...commentReplyMap }));
         // Update membership information
         dispatch(StoreActions.updateUnitMap(keyBy(units, 'unitId')));
 

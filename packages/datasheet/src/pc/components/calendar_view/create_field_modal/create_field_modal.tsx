@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography } from '@apitable/components';
+import { Button, Typography, ThemeName } from '@apitable/components';
 import {
   CalendarStyleKeyType,
   CollaCommandName,
@@ -38,7 +38,8 @@ import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
 import { resourceService } from 'pc/resource_service';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
-import GanttCreationDate from 'static/icon/account/gantt_creation.png';
+import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
+import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
@@ -54,6 +55,8 @@ export const CreateFieldModal = memo(() => {
     };
   });
   const manageable = permissions.manageable;
+  const themeName = useSelector(state => state.theme);
+  const GanttCreationDate = themeName === ThemeName.Light ? GanttCreationDateLight : GanttCreationDateDark;
 
   const generateField = (fieldId: string, name: string) => {
     return {

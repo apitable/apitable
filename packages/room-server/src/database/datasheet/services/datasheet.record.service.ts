@@ -26,12 +26,12 @@ import { In, SelectQueryBuilder } from 'typeorm';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
 import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -207,7 +207,7 @@ export class DatasheetRecordService {
     fieldIds: string[],
   ): Promise<RecordHistoryDto | null> {
     let changesets: ChangesetBaseDto[] = [];
-    const units: UnitBaseInfoDto[] = [];
+    const units: UnitInfoDto[] = [];
     let emojis: CommentEmojiDto = {};
     const revisions = await this.getRecordRevisionHistoryAsc(dstId, recordId, query.type, showRecordHistory, query.limitDays);
     const maxRevisionIndex =
@@ -349,5 +349,9 @@ export class DatasheetRecordService {
     }
 
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]!) || '';
+  }
+
+  async selectIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<string[] | null> {
+    return await this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 }

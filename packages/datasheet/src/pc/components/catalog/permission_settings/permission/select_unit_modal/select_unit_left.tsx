@@ -104,7 +104,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
   let linkId = useSelector(Selectors.getLinkId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
-
+  const embedId = useSelector(state => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
@@ -210,7 +210,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setBreadCrumbData([...breadCrumbData, { name: unit.teamName, teamId: unit.teamId }]);
   };
 
-  const onChangeChecked = (e: CheckboxChangeEvent, unit: UnitItem) => {
+  const onChangeChecked = (_e: CheckboxChangeEvent, unit: UnitItem) => {
     const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
     if (idx !== -1) {
       setCheckedList(checkedList.filter(item => item.unitId !== unit.unitId));
@@ -261,7 +261,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       } as any;
     }
 
-    const title = spaceInfo
+    const title = (spaceInfo || embedId )
       ? (getSocialWecomUnitName?.({
         name: _item.originName || _item.memberName,
         isModified: _item.isMemberNameModified,
@@ -442,7 +442,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {
             if (isExist) {
-              isExist = eachUnits.findIndex(item => item.unitId === listItem.unitId) === -1;
+              isExist = eachUnits.findIndex((item: { unitId: string; }) => item.unitId === listItem.unitId) === -1;
             }
           });
           return isExist;

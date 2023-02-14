@@ -19,7 +19,6 @@
 package com.apitable.shared.component.notification;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +51,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD_LIMITED;
@@ -103,13 +101,16 @@ import static java.util.stream.Collectors.toList;
 public class NotifyMailFactory {
 
   /** */
-  @Resource private BeetlTemplate beetlTemplate;
+  @Resource
+  private BeetlTemplate beetlTemplate;
 
   /** */
-  @Resource private EmailSendProperties emailSendProperties;
+  @Resource
+  private EmailSendProperties emailSendProperties;
 
   /** */
-  @Resource private MailFacade mailFacade;
+  @Resource
+  private MailFacade mailFacade;
 
   /** */
   @Autowired(required = false)
@@ -185,10 +186,6 @@ public class NotifyMailFactory {
       final Dict subjectDict,
       final Dict dict,
       final List<String> to) {
-    MailText mailText = new MailText(subjectType, subjectDict).getTemplate();
-
-    String htmlTemplateName = mailText.getHtmlTemplateName();
-    String textTemplateName = mailText.getTextTemplateName();
     String lang =
         StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
     // load subject.properties
@@ -196,9 +193,8 @@ public class NotifyMailFactory {
     String subject =
         StrUtil.format(properties.getProperty(subjectType), subjectDict);
 
-    if (StrUtil.hasBlank(htmlTemplateName, textTemplateName, subject)) {
-      log.warn("Lost parameters，"
-          + "please check param(htmlBtl, textBtl, subject).");
+    if (StrUtil.isBlank(subject)) {
+      log.warn("Lost mail subject.");
       return;
     }
     if (cloudMailSender != null) {
@@ -209,8 +205,18 @@ public class NotifyMailFactory {
       log.warn("Mail service not configured");
       return;
     }
-    String htmlTemplatePath = loadTemplateResourcePath(lang, htmlTemplateName);
-    String textTemplatePath = loadTemplateResourcePath(lang, textTemplateName);
+
+    MailText mailText = new MailText(subjectType, subjectDict).getTemplate();
+    String htmlTemplateName = mailText.getHtmlTemplateName();
+    String textTemplateName = mailText.getTextTemplateName();
+    if (StrUtil.hasBlank(htmlTemplateName, textTemplateName)) {
+      log.warn("Lost parameters，please check param(htmlBtl, textBtl).");
+      return;
+    }
+    String htmlTemplatePath = mailFacade.loadTemplateResourcePath(lang,
+        htmlTemplateName);
+    String textTemplatePath = mailFacade.loadTemplateResourcePath(lang,
+        textTemplateName);
     primevalMailSend(
         subject,
         beetlTemplate.render(htmlTemplatePath, dict),
@@ -219,42 +225,11 @@ public class NotifyMailFactory {
   }
 
   private Properties loadSubjectProperties(final String locale) {
-    final Properties properties = new Properties();
-    String path = StrUtil.format(
-        "templates/notification/enterprise/{}/subject.properties", locale);
-    ClassPathResource resource = new ClassPathResource(path);
-    if (resource.exists()) {
-      try (InputStream in = resource.getInputStream()) {
-        properties.load(in);
-      } catch (IOException e) {
+    try {
+        return mailFacade.getSubjectProperties(locale);
+    } catch (IOException e) {
         log.error("load subject error", e);
         throw new BusinessException("Fail to Send Email");
-      }
-    } else {
-      ClassPathResource defaultResource =
-          new ClassPathResource("templates/notification/subject.properties");
-      try (InputStream in = defaultResource.getInputStream()) {
-        properties.load(in);
-      } catch (IOException e) {
-        log.error("load subject error", e);
-        throw new BusinessException("Fail to Send Email");
-      }
-    }
-    return properties;
-  }
-
-  private String loadTemplateResourcePath(
-      final String locale, final String templateName) {
-    String templatePath =
-        StrUtil.format("templates/notification/enterprise/{}/{}",
-            locale, templateName);
-    ClassPathResource resource = new ClassPathResource(templatePath);
-    if (resource.exists()) {
-      // load locale priority
-      return StrUtil.format("notification/enterprise/{}/{}",
-          locale, templateName);
-    } else {
-      return StrUtil.format("notification/{}", templateName);
     }
   }
 
@@ -288,7 +263,8 @@ public class NotifyMailFactory {
       final String subjectType,
       final Dict dict,
       final String textBtl,
-      final List<String> to) {
+      final List<String> to
+  ) {
     if (cloudMailSender != null) {
       CloudEmailMessage message = new CloudEmailMessage();
       message.setSubject(subject);
@@ -330,7 +306,8 @@ public class NotifyMailFactory {
       final String lang,
       final String subjectType,
       final Dict dict,
-      final List<String> to) {
+      final List<String> to
+  ) {
     CloudEmailMessage message = new CloudEmailMessage();
     message.setSubject(subject);
     message.setPersonal(emailSendProperties.getPersonal());

@@ -99,6 +99,7 @@ dependencies {
 
   // for apitable-ee
   implementation(rootProject.ext.dependencies['auth0'])
+  implementation(rootProject.ext.dependencies['stripe'])
 }
 
 jar {

@@ -23,6 +23,8 @@ import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
+import { UserEntity } from '../entities/user.entity';
+import { UserBaseInfoDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UserService {
@@ -110,5 +112,17 @@ export class UserService {
       return await this.getMe({ cookie });
     }
     return {} as IUserBaseInfo;
+  }
+
+  async selectUserBaseInfoByIds(userIds: number[]): Promise<UserBaseInfoDto[]> {
+    return await this.userRepo.selectUserBaseInfoByIds(userIds);
+  }
+
+  async selectUserBaseInfoByIdsWithDeleted(userIds: string[]): Promise<UserEntity[]> {
+    return await this.userRepo.selectUserBaseInfoByIdsWithDeleted(userIds);
+  }
+
+  async selectUserBaseInfoById(userId: string): Promise<UserEntity | undefined> {
+    return await this.userRepo.selectUserBaseInfoById(userId);
   }
 }

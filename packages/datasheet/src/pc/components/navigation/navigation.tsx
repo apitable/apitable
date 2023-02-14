@@ -326,7 +326,7 @@ export const Navigation: FC = () => {
           </div>
         </div>
         <div className={styles.navWrapper} onClick={hiddenUserMenu}>
-          {navList.map(item => {
+          {navList.map((item: any) => {
             if (user && !user!.isAdmin && item.key === NavKey.SpaceManagement) {
               return null;
             }

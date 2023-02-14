@@ -18,12 +18,15 @@
 
 package com.apitable.base.service;
 
+import java.util.List;
+
 import com.apitable.base.enums.SystemConfigType;
+import com.apitable.base.model.SystemConfigDTO;
 
 public interface ISystemConfigService {
 
     /**
-     * Get generic configuration
+     * Get Wizard Config.
      *
      * @param lang Language
      * @return val
@@ -31,7 +34,7 @@ public interface ISystemConfigService {
     Object getWizardConfig(String lang);
 
     /**
-     * get configuration
+     * Find Config.
      *
      * @param type  configuration type
      * @param lang  configuration language (optional)
@@ -40,13 +43,23 @@ public interface ISystemConfigService {
     String findConfig(SystemConfigType type, String lang);
 
     /**
-     * save or update config
+     * Get system config DTO list.
+     *
+     * @param type  configuration type
+     * @return List<String>
+     * @author Chambers
+     */
+    List<SystemConfigDTO> findSystemConfigDTOs(SystemConfigType type);
+
+    /**
+     * Save Or Update.
      *
      * @param userId    user id
      * @param type      configuration type
      * @param lang      configuration language
      * @param configVal configuration value
      */
-    void saveOrUpdate(Long userId, SystemConfigType type, String lang, String configVal);
+    void saveOrUpdate(Long userId, SystemConfigType type, String lang,
+        String configVal);
 
 }

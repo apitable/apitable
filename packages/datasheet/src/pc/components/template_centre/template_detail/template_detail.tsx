@@ -162,7 +162,9 @@ export const TemplateDetail: FC = () => {
           }
         }
       })
-      .catch(err => {});
+      .catch(err => {
+        console.warn(err);
+      });
   };
 
   const MainComponent = () => {

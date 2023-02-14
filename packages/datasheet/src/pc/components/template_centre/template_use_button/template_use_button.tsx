@@ -39,7 +39,7 @@ interface ITemplateUseButtonProps {
   block?: boolean;
 }
 
-const calcNodeNum = (directory: ITemplateTree[]) => {
+const calcNodeNum = (directory: ITemplateTree[]):number => {
   return directory.reduce<number>((total, cur) => {
     if (!cur.children.length) {
       return total + 1;
@@ -79,7 +79,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          Router.redirect(Navigation.LOGIN);
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning'
@@ -127,6 +127,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
             style={{ ...style }}
             block={block}
             color='warning'
+            size="middle"
           >
             {t(Strings.apply_template)}
             {showIcon && <IconArrowRight fill='white' />}

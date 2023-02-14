@@ -43,22 +43,28 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+ARG SEMVER_FULL
+ENV SEMVER_FULL=${SEMVER_FULL}
+
 # agenthub
 COPY --from=builder /app/packages/room-server/app-config.json /root/
 COPY --from=builder /app /app
 
-# pm2
-RUN npm install pm2 --global
+RUN npm install pm2@latest --global  \
+    && rm -fr packages/*/src
 
-# local 
-#ENV APP_ID 87508
-#ENV APP_SECRET f945aafb5a96077fe001b51e445250468da09756
-#ENV NODE_LOG_DIR /app/packages/room-server/logs
-#ENV ENABLE_NODE_LOG YES
+# (room|socket):http
+EXPOSE 3001
 EXPOSE 3333
-# grpc port
+# room:grpc port
 EXPOSE 3334
-# 部署类型
-ENV DEPLOY_TYPE="SaaS"
+# socket:notification
+EXPOSE 3002
+# socket:datasheet
+EXPOSE 3006
+# socket:room
+EXPOSE 3005
+# socket:rpcx
+EXPOSE 3007
 
 CMD [ "pm2-runtime", "packages/room-server/ecosystem.config.js" ]

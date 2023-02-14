@@ -34,7 +34,7 @@ export const FormateCheckbox: React.FC<IFormateCheckboxProps> = (props: IFormate
 
   const { currentField, setCurrentField } = props;
   const colors = useThemeColors();
-  const onSelect = emoji => {
+  const onSelect = (emoji: any) => {
     setCurrentField({
       ...currentField,
       property: { ...currentField.property, icon: emoji },

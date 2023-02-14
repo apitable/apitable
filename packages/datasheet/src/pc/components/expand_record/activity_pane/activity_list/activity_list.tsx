@@ -33,9 +33,9 @@ export const ActivityList: FC<IActivityListProps> = props => {
   return (
     <div className={styles.activityContainer} ref={containerRef}>
       <div className={cls(styles.activityList, {
-        [styles.isReply]: Boolean(replyText),
-        [styles.empty]: empty,
-        [styles.allowComment]: props.selectType !== ActivitySelectType.Changeset
+        [styles.isReply!]: Boolean(replyText),
+        [styles.empty!]: empty,
+        [styles.allowComment!]: props.selectType !== ActivitySelectType.Changeset
       })} ref={listRef}>
         <ActivityListItems
           {...props}

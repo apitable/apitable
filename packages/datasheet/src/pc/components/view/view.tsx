@@ -17,7 +17,7 @@
  */
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, SystemConfig, t, ViewType } from '@apitable/core';
+import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -26,7 +26,6 @@ import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
-import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -99,8 +98,8 @@ export const View: React.FC = () => {
   useExpandWidget();
 
   const useKonva = useMemo(() => {
-    return !getTestFunctionAvailable(SystemConfig.test_function.render_normal.feature_key);
-    // eslint-disable-next-line
+    return true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentView.id]);
 
   const isOrgChart = currentView.type === ViewType.OrgChart;
@@ -119,7 +118,7 @@ export const View: React.FC = () => {
         padding: isMobile ? '0' : '',
         height: '100%',
         background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
-        paddingLeft: !isShowEmbedToolBar && !embedInfo.viewControl?.tabBar ? '0' : embedInfo.viewControl?.tabBar ? '24px' : '32px'
+        paddingLeft: isMobile || (!isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) ? 0 : embedInfo.viewControl?.tabBar ? '24px' : '32px'
       }}
     >
       { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -164,42 +163,42 @@ export const View: React.FC = () => {
               {
                 icon: <EditOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.modify_field),
-                hidden: ({ props }) => !props?.onEdit,
-                onClick: ({ props }) => props?.onEdit && props.onEdit(),
+                hidden: ({ props }: any) => !props?.onEdit,
+                onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
               },
               {
                 icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.editing_field_desc),
-                onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
+                onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
               },
               {
                 icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.insert_field_above),
-                disabled: ({ props }) => !props.onInsertAbove,
-                onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
+                disabled: ({ props }: any) => !props.onInsertAbove,
+                onClick: ({ props }: any) => props?.onInsertAbove && props.onInsertAbove(),
               },
               {
                 icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.insert_field_below),
-                onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
+                onClick: ({ props }: any) => props?.onInsertBelow && props.onInsertBelow(),
               },
               {
                 icon: <CopyOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.duplicate_field),
-                hidden: ({ props }) => !props?.onCopyField,
-                onClick: ({ props }) => props?.onCopyField && props.onCopyField(),
+                hidden: ({ props }: any) => !props?.onCopyField,
+                onClick: ({ props }: any) => props?.onCopyField && props.onCopyField(),
               },
               {
                 icon: <HideFilled color={colors.thirdLevelText} />,
                 text: t(Strings.hide_fields),
-                hidden: ({ props }) => !props?.onHiddenField,
-                onClick: ({ props }) => props?.onHiddenField && props.onHiddenField(),
+                hidden: ({ props }: any) => !props?.onHiddenField,
+                onClick: ({ props }: any) => props?.onHiddenField && props.onHiddenField(),
               },
               {
                 icon: <DeleteOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.delete_field),
-                hidden: ({ props }) => !props?.onDeleteField,
-                onClick: ({ props }) => props?.onDeleteField && props.onDeleteField(),
+                hidden: ({ props }: any) => !props?.onDeleteField,
+                onClick: ({ props }: any) => props?.onDeleteField && props.onDeleteField(),
               },
             ],
           ],

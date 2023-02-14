@@ -11,6 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .am-picker-col-item,
+.adm-auto-center-content,
 .cp-time-picker,
 .ant-dropdown-menu-item,
 .ant-dropdown-menu-submenu-title,
@@ -47,6 +48,10 @@ h1, h2, h3, h4, h5, h6 {
   a {
     color: var(--fc1) !important;
   }
+}
+
+.ant-pagination-item-link {
+  border: none !important;
 }
 
 .ant-switch-handle::before {
@@ -87,6 +92,10 @@ circle.ant-progress-circle-trail {
   .ant-switch-handle::before {
     background-color: var(--staticWhite0);
   }
+}
+
+.ant-switch-checked:focus {
+  box-shadow: 0 0 0 2px var(--shadowCommonDefault);
 }
 
 .am-picker-col-mask {
@@ -140,6 +149,10 @@ circle.ant-progress-circle-trail {
   box-shadow: none;
 }
 
+.ant-table-cell-scrollbar:not([rowspan]) {
+  box-shadow: 0 1px 0 1px var(--lowestBg);
+}
+
 .ant-table-filter-trigger:hover,
 .ant-table-filter-trigger-container-open,
 .ant-table-filter-trigger-container:hover,
@@ -177,6 +190,14 @@ circle.ant-progress-circle-trail {
   flex-direction: row-reverse;
 }
 
+.ant-select-tree-node-selected {
+  background-color: transparent;
+}
+
+.ant-select-tree {
+  box-shadow: none;
+}
+
 .ant-drawer-close {
   position: absolute;
   right: 0;
@@ -190,6 +211,26 @@ circle.ant-progress-circle-trail {
 
 button:focus-visible {
   outline: unset !important;
+}
+
+.taskMobileModal {
+  .ant-drawer-body {
+    background-color: inherit;
+  }
+}
+
+.taskModal {
+  border: 1px solid var(--borderCommon);
+  background-color: var(--bgCommonHighest);
+  box-shadow: var(--shadowCommonDefault);
+}
+
+.ant-table-cell-scrollbar:not([rowspan]){
+  box-shadow: none;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--defaultBg);
 }
 
 @media screen and (max-width: 768px) {

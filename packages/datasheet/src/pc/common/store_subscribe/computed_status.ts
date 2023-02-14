@@ -20,9 +20,9 @@ import { Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { message } from 'antd';
 
-let hide;
-let lastStatus;
-let timer; 
+let hide: (() => void) | undefined;
+let lastStatus: boolean;
+let timer: NodeJS.Timeout | null | undefined;
 const key = 'COMPUTED_STATUS_MESSAGE';
 store.subscribe(function computedStatusChange() {
   const state = store.getState();

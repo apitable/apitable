@@ -160,7 +160,7 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
         (typeof od[0] === 'object' ? has(od, '0.id') : Boolean(od[0]));
       let diff = shouldDiff ? intersectionWith(oi, od, isEqual) : null;
       if (diff) {
-        const compare = item => typeof item === 'object' ? item.id : item;
+        const compare = (item: { id: any; }) => typeof item === 'object' ? item.id : item;
         oi = xorBy(oi, diff, compare);
         od = xorBy(od, diff, compare);
         if (oi.length === 0) {

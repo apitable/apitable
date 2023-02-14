@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, Skeleton, useThemeColors } from '@apitable/components';
+import { Button, IconButton, Skeleton, useThemeColors, ThemeName } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseLargeOutlined } from '@apitable/icons';
 import Image from 'next/image';
@@ -28,7 +28,8 @@ import { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import templateEmptyPng from 'static/icon/template/template_img_empty.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
 interface IRecommendWidgetPanelProps {
@@ -58,8 +59,10 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const rootNodeId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const dispatch = useDispatch();
+  const themeName = useSelector(state => state.theme);
+  const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
-  const importWidget = ({ widgetIds }) => {
+  const importWidget = ({ widgetIds }: any) => {
     quoteWidget(widgetIds);
     setVisibleRecommend(false);
     setSearchPanelVisible(false);
@@ -85,7 +88,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
       setInstallingWidgetIds(null);
       const { success, data, message } = res.data;
       if (success) {
-        const importWidgetIds = data.map(item => item.id);
+        const importWidgetIds = data.map((item: any) => item.id);
         const result = resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.AddWidgetToDashboard,
           dashboardId: dashboardId!,
@@ -94,7 +97,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
         });
         if (result.result === ExecuteResult.Success) {
           const _batchActions: any[] = [];
-          data.forEach(item => {
+          data.forEach((item: any) => {
             _batchActions.push(StoreActions.receiveInstallationWidget(item.id, item));
           });
           dispatch(batchActions(_batchActions));

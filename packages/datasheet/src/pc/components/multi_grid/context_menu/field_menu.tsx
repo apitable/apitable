@@ -321,7 +321,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         },
         disabled: !Boolean(fieldPermissionManageable),
         disabledTip: t(Strings.set_field_permission_no_access),
-        hidden(arg) {
+        hidden(arg: any) {
           if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || embedId) {
             return true;
           }
