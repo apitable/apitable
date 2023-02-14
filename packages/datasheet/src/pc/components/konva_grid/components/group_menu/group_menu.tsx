@@ -41,7 +41,7 @@ interface IStatMenuProps {
   getBoundary: (e: any) => { x: number; y: number; row: ILinearRow } | null;
 }
 
-export const GroupMenu: React.FC<IStatMenuProps> = (props) => {
+export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (props) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { parentRef, getBoundary } = props;

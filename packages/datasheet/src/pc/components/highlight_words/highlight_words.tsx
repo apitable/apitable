@@ -25,7 +25,7 @@ export interface IHighlightWords {
   words: string;
 }
 
-export const HighlightWords:React.FC<IHighlightWords> = (props) => {
+export const HighlightWords:React.FC<React.PropsWithChildren<IHighlightWords>> = (props) => {
   const { keyword, words } = props;
   if (!keyword) {
     return <>{words}</>;

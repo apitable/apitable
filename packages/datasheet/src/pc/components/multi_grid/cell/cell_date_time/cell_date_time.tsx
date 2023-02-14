@@ -36,7 +36,7 @@ interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
 }
 
-export const CellDateTime: React.FC<ICellDateTime> = props => {
+export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = props => {
   const colors = useThemeColors();
   const { className, field, recordId, cellValue, toggleEdit, showAlarm } = props;
   const { snapshot, user, dstId } = useSelector(state => {

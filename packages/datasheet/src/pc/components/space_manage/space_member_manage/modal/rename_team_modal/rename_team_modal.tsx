@@ -28,7 +28,7 @@ interface IModalProps {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-export const RenameTeamModal: FC<IModalProps> = props => {
+export const RenameTeamModal: FC<React.PropsWithChildren<IModalProps>> = props => {
   const dispatch = useAppDispatch();
   const [err, setErr] = useState('');
   const {

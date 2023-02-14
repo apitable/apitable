@@ -31,11 +31,11 @@ import { SelectFolderTips } from './select_folder_tips';
 
 import styles from './style.module.less';
 
-export const SelectFolder: React.FC<{
+export const SelectFolder: React.FC<React.PropsWithChildren<{
   selectedFolderId?: string;
   selectedFolderParentList: IParent[];
   onChange: (folderId: string) => void
-}> = (props) => {
+}>> = (props) => {
   const { selectedFolderId, selectedFolderParentList, onChange } = props;
   const rootId = useSelector(state => state.catalogTree.rootId);
   const spaceName = useSelector(state => state.user.info?.spaceName);

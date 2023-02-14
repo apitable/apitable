@@ -48,7 +48,7 @@ import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.sv
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
 import styles from './style.module.less';
 
-export const TemplateCategorySide: FC = () => {
+export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   /** official category list */
   const [categoryList, setCategoryList] = useState<ITemplateCategory[]>([]);
@@ -116,7 +116,7 @@ export const TemplateCategorySide: FC = () => {
    * 4. Click to clear to report current results
    * 5. Input box enter
    */
-  const triggerTrack = useCallback(keywords => {
+  const triggerTrack = useCallback((keywords: any) => {
     if (!keywords || hasTrackSearchKeyWords.current === keywords) {
       return;
     }

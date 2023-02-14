@@ -62,7 +62,7 @@ const triggerBase = {
   }
 };
 
-export const UnitItem: FC<IUnitItemProps> = props => {
+export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
   const colors = useThemeColors();
   const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, 
     disabled, onChange, onRemove, isDetail, teamData, memberId } = props;

@@ -40,7 +40,7 @@ export interface IDownloadQrCodeProps {
   isMobile: boolean;
 }
 
-export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
+export const DownloadQrCode: FC<React.PropsWithChildren<IDownloadQrCodeProps>> = ({
   nodeId,
   width,
   isMobile,

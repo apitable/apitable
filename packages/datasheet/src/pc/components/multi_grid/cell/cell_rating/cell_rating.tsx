@@ -29,7 +29,7 @@ interface ICellRating extends ICellComponentProps {
   field: IRatingField;
 }
 
-export const CellRating: React.FC<ICellRating> = props => {
+export const CellRating: React.FC<React.PropsWithChildren<ICellRating>> = props => {
   const { className, field, cellValue, isActive, onChange, readonly } = props;
   // Activate the scoring cell for the first time, without updating the value. (Anti-touch)
   const [lock, setLock] = useState(true);

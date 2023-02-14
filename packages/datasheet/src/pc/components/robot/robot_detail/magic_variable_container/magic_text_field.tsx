@@ -94,14 +94,14 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     }
   }, [isOpen, editor]);
 
-  const updateFormValue = useCallback((value) => {
+  const updateFormValue = useCallback((value: any) => {
     // console.log('1.Form input SlateValue', value);
     const { value: transformedValue } = transformSlateValue(value);
     // console.log('2.Form input TransformSlateValue', transformedValue, isMagicVariable);
     onChange && onChange(transformedValue);
   }, [onChange]);
 
-  const handleKeyDown = useCallback((event) => {
+  const handleKeyDown = useCallback((event: any) => {
     inputRef.current && clearTimeout(inputRef.current);
     if (event.key === '/') {
       Transforms.insertText(editor, '/');

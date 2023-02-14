@@ -40,7 +40,7 @@ interface IMemberTable {
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;
 }
 
-export const MemberTable: FC<IMemberTable> = (props) => {
+export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const [pageNo, setPageNo] = useState(1);

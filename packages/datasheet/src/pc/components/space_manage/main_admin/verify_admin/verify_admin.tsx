@@ -41,7 +41,7 @@ import { getSocialWecomUnitName } from 'enterprise';
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
 }
-export const VerifyAdmin: FC<IVerifyAdminProps> = (props) => {
+export const VerifyAdmin: FC<React.PropsWithChildren<IVerifyAdminProps>> = (props) => {
   const [identifyingCode, setIdentifyingCode] = useState('');
   const mainAdminInfo = useSelector(
     (state: IReduxState) => state.spacePermissionManage.mainAdminInfo

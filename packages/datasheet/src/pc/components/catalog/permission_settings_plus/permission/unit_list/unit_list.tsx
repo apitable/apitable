@@ -35,7 +35,7 @@ export interface IUnitListProps {
   onChange?: (unitId: string, role: string) => void;
 }
 
-export const UnitList: FC<IUnitListProps> = ({
+export const UnitList: FC<React.PropsWithChildren<IUnitListProps>> = ({
   roleUnits,
   admins,
   owner,

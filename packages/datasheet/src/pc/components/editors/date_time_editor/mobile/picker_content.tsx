@@ -50,7 +50,7 @@ interface ICustomChildren {
   arrowIcon?: JSX.Element | null;
 }
 
-export const CustomChildren: React.FC<ICustomChildren> = props => {
+export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> = props => {
   const {
     onClick,
     children,
@@ -81,7 +81,7 @@ export const CustomChildren: React.FC<ICustomChildren> = props => {
   );
 };
 
-const PickerContentBase: FC<IPickerContentProps> = (props) => {
+const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (props) => {
   const colors = useThemeColors();
   const {
     value,

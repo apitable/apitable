@@ -76,7 +76,7 @@ const CollapseWrapper = ({ isCollapse, children }: ICollapseWrapper) => {
   return <>{children}</>;
 };
 
-export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
+export const GroupHeader: React.FC<React.PropsWithChildren<IGroupHeaderProps>> = props => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const { groupId, kanbanGroupMap, provided, setCollapse, collapse, scrollToItem } = props;

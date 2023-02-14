@@ -33,7 +33,7 @@ interface IDrag {
   style?: React.CSSProperties;
 }
 
-const DragItemBase: FC<IDrag> = ({ node, style }) => {
+const DragItemBase: FC<React.PropsWithChildren<IDrag>> = ({ node, style }) => {
   const { id } = node;
 
   const { 

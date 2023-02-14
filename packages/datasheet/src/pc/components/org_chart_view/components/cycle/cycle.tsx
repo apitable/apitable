@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useEffect } from 'react';
+import { FC, useEffect, PropsWithChildren } from 'react';
 import ReactFlow, { Elements, PanOnScrollMode, useZoomPanHelper } from '@apitable/react-flow';
 import { CustomCycleEdge } from '../custom/custom_cycle_edge';
 import { CycleNode } from '../custom/cycle_node';
@@ -29,7 +29,7 @@ import { NodeType } from '../../constants';
 interface ICycle {
   elements: Elements;
 }
-export const Cycle: FC<ICycle> = ({ elements }) => {
+export const Cycle: FC<PropsWithChildren<ICycle>> = ({ elements }) => {
   const colors = useThemeColors();
   const {
     fitView,
@@ -61,11 +61,11 @@ export const Cycle: FC<ICycle> = ({ elements }) => {
         preventScrolling={false}
         selectionKeyCode=""
         edgeTypes={{
-          [NodeType.CustomCycleEdge]: CustomCycleEdge,
-          [NodeType.CustomEdge]: CustomEdge
+          [NodeType.CustomCycleEdge]: CustomCycleEdge as any,
+          [NodeType.CustomEdge]: CustomEdge as any
         }}
         nodeTypes={{
-          [NodeType.CycleNode]: CycleNode
+          [NodeType.CycleNode]: CycleNode as any
         }}
         panOnScrollSpeed={1}
         arrowHeadColor={colors.errorColor}

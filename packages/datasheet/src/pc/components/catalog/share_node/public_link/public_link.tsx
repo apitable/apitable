@@ -45,7 +45,7 @@ export interface IPublicLinkProps {
   setActiveTab?: React.Dispatch<React.SetStateAction<ShareTab>>;
 }
 
-export const PublicLink: FC<IPublicLinkProps> = ({ nodeId, setActiveTab }) => {
+export const PublicLink: FC<React.PropsWithChildren<IPublicLinkProps>> = ({ nodeId, setActiveTab }) => {
   const colors = useThemeColors();
   const { getShareSettingsReq, disableShareReq } = useCatalogTreeRequest();
   const { run: disableShare, loading: disableShareLoading } = useRequest(() => disableShareReq(nodeId), { manual: true });

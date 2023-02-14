@@ -51,7 +51,7 @@ enum PageArrow {
   NEXT,
 }
 
-const PaginationBase: FC<IPaginationProps> = (props) => {
+const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) => {
   const {
     className,
     current = 1,

@@ -36,7 +36,7 @@ import { MultiplemembersFilled } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
-export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
+export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePermission>> = props => {
   const colors = useThemeColors();
   const { permissionStatus, onClose, field } = props;
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);

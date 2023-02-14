@@ -37,7 +37,7 @@ import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
 
-export const FilterValue: React.FC<IFilterValueProps> = props => {
+export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;

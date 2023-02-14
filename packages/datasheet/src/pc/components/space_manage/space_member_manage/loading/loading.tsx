@@ -28,7 +28,7 @@ const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'
 interface ILoading {
   style?: React.CSSProperties;
 }
-export const Loading: FC<ILoading> = ({ style }) => {
+export const Loading: FC<React.PropsWithChildren<ILoading>> = ({ style }) => {
   return (
     <div className={styles.loadingWrapper} style={style}>
       <Spin

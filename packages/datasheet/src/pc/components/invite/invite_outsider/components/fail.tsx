@@ -25,7 +25,7 @@ interface IErrorContentProps {
   err?: string;
   init: () => void;
 }
-export const Fail: FC<IErrorContentProps> = props => {
+export const Fail: FC<React.PropsWithChildren<IErrorContentProps>> = props => {
   const { err, init } = props;
   return (
     <div className={styles.fail}>

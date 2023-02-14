@@ -40,7 +40,7 @@ interface ICreateSpace {
   submitCb?: (name: string) => Promise<void>;
 }
 
-const CreateSpace: FC<ICreateSpace> = props => {
+const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();

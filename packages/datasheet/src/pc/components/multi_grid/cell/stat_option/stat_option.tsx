@@ -87,7 +87,7 @@ export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   return column.statType;
 };
 
-const StatOptionBase: React.FC<IStatOption> = props => {
+const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => {
   const colors = useThemeColors();
   const { className, row, fieldId } = props;
   const triggerRef = useRef<any>(null);

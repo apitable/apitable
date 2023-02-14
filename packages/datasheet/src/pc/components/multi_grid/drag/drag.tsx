@@ -84,7 +84,7 @@ export const dependsGroup2ChangeData = (
   return null;
 };
 
-export const Drag: React.FC<IDragProps> = props => {
+export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
   const { gridRef, scrollWhenHitViewEdg, getFieldId, checkInGrid, checkIsOpacityLine, getClickCellId: _getClickCellId } = props;
   const {
     gridViewDragState,

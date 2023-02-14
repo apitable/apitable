@@ -44,7 +44,7 @@ export interface IItemRender {
   node: INodesMapItem;
 }
 
-export const ItemRender: React.FC<IItemRender> = (props) => {
+export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props) => {
 
   const {
     id,

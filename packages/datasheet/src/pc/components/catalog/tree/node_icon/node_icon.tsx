@@ -38,7 +38,7 @@ export interface INodeIconProps {
   size?: number;
 }
 
-export const NodeIcon: FC<INodeIconProps> = ({
+export const NodeIcon: FC<React.PropsWithChildren<INodeIconProps>> = ({
   nodeId,
   icon,
   type = ConfigConstant.NodeType.DATASHEET,

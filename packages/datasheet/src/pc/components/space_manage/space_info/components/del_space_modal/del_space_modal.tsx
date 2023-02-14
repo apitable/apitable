@@ -40,7 +40,7 @@ export interface IDelSpaceModalProps {
   setIsDelSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const DelSpaceModal: FC<IDelSpaceModalProps> = (props) => {
+export const DelSpaceModal: FC<React.PropsWithChildren<IDelSpaceModalProps>> = (props) => {
   const [identifyingCode, setIdentifyingCode] = useState('');
   const { setIsDelSpaceModal, setIsDelSuccessModal } = props;
   const { user, spaceId } = useSelector((state: IReduxState) => ({

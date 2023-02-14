@@ -41,7 +41,7 @@ interface IRecordOperationArea {
   showPageTurn?: boolean;
 }
 
-export const RecordOperationArea: React.FC<IRecordOperationArea> = props => {
+export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperationArea>> = props => {
   const { datasheetId, activeRecordId, recordIds, fromCurrentDatasheet, modalClose, switchRecord, gotoSourceDst, showPageTurn } = props;
   const dispatch = useDispatch();
   const isEmbed = useSelector(state => Boolean(state.pageParams.embedId));

@@ -40,7 +40,7 @@ const defaultData = {
   confirmPassword: ''
 };
 
-export const ModifyPassword: FC<IModifyPasswordProps> = props => {
+export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> = props => {
   const { setActiveItem } = props;
   const [data, setData] = useSetState<{
     identifyingCode: string;

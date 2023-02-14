@@ -54,7 +54,7 @@ interface IShowViewManualSaveInPcContentProps {
   modalClose(): void;
 }
 
-const ViewManualSaveAlertContentWithTheme: React.FC<IShowViewManualSaveInPcContentProps> = (props) => {
+const ViewManualSaveAlertContentWithTheme: React.FC<React.PropsWithChildren<IShowViewManualSaveInPcContentProps>> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
@@ -63,7 +63,7 @@ const ViewManualSaveAlertContentWithTheme: React.FC<IShowViewManualSaveInPcConte
   );
 };
 
-const ViewManualSaveAlertContent: React.FC<IShowViewManualSaveInPcContentProps> = (props) => {
+const ViewManualSaveAlertContent: React.FC<React.PropsWithChildren<IShowViewManualSaveInPcContentProps>> = (props) => {
   const { modalClose } = props;
   const { datasheetId, viewId } = useSelector(state => state.pageParams);
   const currentView = useSelector(state => Selectors.getCurrentView(state, datasheetId));

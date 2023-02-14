@@ -53,7 +53,7 @@ const getGroupBackgroundByDepth = (depth: number, groupLength: number, viewType:
   return bgList[depth];
 };
 
-export const Stat: FC<IStatProps> = memo((props) => {
+export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
   const { x = 0, y = 0, width, height, fieldId, row, isFrozen, viewType = ViewType.Grid } = props;
   const [isCurrent, setCurrent] = useState(false);
   const state = store.getState();

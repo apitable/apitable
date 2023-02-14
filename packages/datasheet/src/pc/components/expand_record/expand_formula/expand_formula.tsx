@@ -25,7 +25,7 @@ import styles from '../field_editor/style.module.less';
 import { CellCheckbox } from 'pc/components/multi_grid/cell/cell_checkbox';
 import expandRecordStyles from '../style.module.less';
 
-export const ExpandFormula: React.FC<IBaseEditorProps & { recordId: string }> = props => {
+export const ExpandFormula: React.FC<React.PropsWithChildren<IBaseEditorProps & { recordId: string }>> = props => {
   const { recordId } = props;
   const field = props.field as IFormulaField;
   const cellValue = useComputeCellValue({

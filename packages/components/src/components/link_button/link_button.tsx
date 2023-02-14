@@ -34,7 +34,7 @@ export const LinkButton = ({
   const extraProps = component === 'button' ? { type: 'button' } : {};
 
   return <StyledLinkButton
-    as={component}
+    as={component as any}
     color={color}
     {...extraProps}
     {...restProps}

@@ -69,7 +69,7 @@ export const MenuContext = React.createContext<IMenuContext>({
   insertDirection: 'horizontal',
 });
 
-export const Menu: React.FC = () => {
+export const Menu: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { contextState, setContextState, insertDirection } = useContext(MenuContext);
   const colors = useThemeColors();
   const { recordId, x, y, onAddRecord } = contextState;

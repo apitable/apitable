@@ -21,7 +21,7 @@ import { IAvatarGroup } from './intarface';
 import { AvatarGroupStyled } from './styled';
 import { Avatar } from '../index';
 
-export const AvatarGroup: FC<IAvatarGroup> = ({
+export const AvatarGroup: FC<React.PropsWithChildren<IAvatarGroup>> = ({
   max = 5, children, maxStyle, size
 }) => {
   const childrenArr = (Array.isArray(children) ? children : [children]).map((child, index) =>

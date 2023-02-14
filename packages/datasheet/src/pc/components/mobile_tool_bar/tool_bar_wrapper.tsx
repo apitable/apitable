@@ -39,7 +39,7 @@ export interface IToolBarWrapperProps {
   hideToolBar?: boolean;
 }
 
-export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) => {
+export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperProps>> = ({ hideToolBar }) => {
   const { setSideBarVisible } = useSideBarVisible();
   const [viewMenuVisible, setViewMenuVisible] = useState(false);
   const { datasheetId, mirrorId, embedId } = useSelector(state => state.pageParams);
@@ -53,6 +53,10 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
   const isCalendarView = activeView && activeView.type === ViewType.Calendar;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const embedInfo = useSelector(state => state.embedInfo);
+  if(embedInfo.viewControl?.viewId === activeView.id) {
+    return <></>;
+  }
   return (
     <>
       <div className={classNames(styles.mobileToolBar, {

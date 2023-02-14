@@ -53,7 +53,7 @@ interface IConditionList {
   field?: ILookUpField;
 }
 
-const ConditionList: FC<IConditionList> = props => {
+const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
   const { filterInfo, fieldMap, changeFilter, deleteFilter, datasheetId, field } = props;
   const { conditions, conjunction = FilterConjunctionEnum.And } = filterInfo || {};
   const columns = useSelector(state => {

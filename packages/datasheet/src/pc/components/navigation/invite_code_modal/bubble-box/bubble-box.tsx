@@ -22,7 +22,7 @@ import { FC } from 'react';
 import GoldImg from 'static/icon/workbench/workbench_account_gold_icon.png';
 import styles from './style.module.less';
 
-export const BubbleBox: FC = () => {
+export const BubbleBox: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.bubbleBox}>
       <div className={styles.arrow} />

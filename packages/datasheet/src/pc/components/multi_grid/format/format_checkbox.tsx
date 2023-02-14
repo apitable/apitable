@@ -30,7 +30,7 @@ interface IFormateCheckboxProps {
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormateCheckbox: React.FC<IFormateCheckboxProps> = (props: IFormateCheckboxProps) => {
+export const FormateCheckbox: React.FC<React.PropsWithChildren<IFormateCheckboxProps>> = (props: IFormateCheckboxProps) => {
 
   const { currentField, setCurrentField } = props;
   const colors = useThemeColors();

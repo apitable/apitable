@@ -38,7 +38,7 @@ interface IAvertProps {
   minHeight?: string | number;
 }
 
-export const Advert: FC<IAvertProps> = props => {
+export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
   const { adData } = useContext(SpaceContext);
 
   const handleClick = () => {

@@ -42,7 +42,7 @@ let reqToken: () => void;
 
 type ProgressType = 'normal' | 'active' | 'success' | 'exception' | undefined;
 
-export const ImportFile: FC<IImportFileProps> = ({
+export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({
   parentId,
   onCancel,
 }) => {

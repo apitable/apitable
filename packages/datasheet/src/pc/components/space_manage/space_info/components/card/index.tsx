@@ -54,7 +54,7 @@ interface ICardProps {
   isMobile?: boolean;
 }
 
-export const Card: FC<ICardProps> = (props) => {
+export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
   const {
     title, usedPercent, usedText, remainText, totalText, remainPercent, trailColor, strokeColor, shape, unit, titleTip,
     titleLink, titleButton, valueIntro, showPercent, usedTextIsFloat, minHeight = 302, className, level, isMobile,
@@ -151,7 +151,7 @@ interface IDescProps {
   usedPercent: number,
 }
 
-const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPercent }) => {
+const Desc: FC<React.PropsWithChildren<IDescProps>> = ({ color, label, text, unit, showPercent, usedPercent }) => {
   return (
     <Typography variant='body4' className={styles.descItem}>
       <span className={styles.before} style={{ backgroundColor: color }} />
@@ -174,7 +174,7 @@ interface IProgressInCardProps extends ProgressProps {
   color?: string;
 }
 
-const ProgressInCard: FC<IProgressInCardProps> = (props) => {
+const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = (props) => {
   const color = props.color;
 
   const colors = useThemeColors();

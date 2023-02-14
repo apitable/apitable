@@ -37,7 +37,7 @@ interface ISearch extends IFind {
   onClose(): void;
 }
 
-const Search: React.FC<ISearch> = ({
+const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
   datasheetId,
   onClose,
 }) => {
@@ -121,7 +121,7 @@ const Search: React.FC<ISearch> = ({
   );
 };
 
-export const Find: React.FC<IFind> = ({
+export const Find: React.FC<React.PropsWithChildren<IFind>> = ({
   datasheetId,
 }) => {
   const [visible, setVisible] = useState(false);

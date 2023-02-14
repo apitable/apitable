@@ -51,7 +51,7 @@ interface ICellOptionsProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel
 }
 
-export const CellOptions: React.FC<ICellOptionsProps> = props => {
+export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> = props => {
   const { field: propsField, cellValue, isActive, className, onChange, toggleEdit, readonly, rowHeightLevel, deletable = true } = props;
   const isSingleSelect = !Array.isArray(cellValue);
   const field = Selectors.findRealField(store.getState(), propsField);

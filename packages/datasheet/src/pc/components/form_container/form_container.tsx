@@ -89,7 +89,7 @@ const defaultMeta = {
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
 
-export const FormContainer: React.FC = () => {
+export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
   const {
     id,
     name,
@@ -629,7 +629,7 @@ export const FormContainer: React.FC = () => {
   }, [fieldMap]);
 
   const _setFormData = useCallback(
-    (fieldId, value) => {
+    (fieldId: any, value: any) => {
       setFormData(prev => {
         const data = { ...prev, [fieldId]: value };
         patchRecord({ id: recordId, data } as IRecord);

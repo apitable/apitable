@@ -36,7 +36,7 @@ interface IFileSelected {
   confirmImport: (nvcVal?: string) => void;
 }
 
-export const FileSelected: FC<IFileSelected> = ({
+export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
   file, init,
   previewList, confirmImport
 }) => {

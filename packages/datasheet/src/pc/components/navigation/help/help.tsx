@@ -45,7 +45,7 @@ export interface IHelpProps {
   templateActived: boolean;
 }
 
-export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
+export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templateActived }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -211,7 +211,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     );
   };
 
-  const ContextmenuList: FC<{ menuItems: any[] }> = ({ menuItems }) => {
+  const ContextmenuList: FC<React.PropsWithChildren<{ menuItems: any[] }>> = ({ menuItems }) => {
     return (
       <>
         {menuItems.map(item => (

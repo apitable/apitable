@@ -17,8 +17,8 @@
  */
 
 import axios from 'axios';
-import * as Url from './url.data';
 import urlcat from 'urlcat';
+import * as Url from './url.data';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
@@ -36,6 +36,12 @@ export const fetchShareDashboardPack = (dashboardId: string, shareId: string,) =
 
 export const fetchTemplateDashboardPack = (dashboardId: string, templateId: string) => {
   return axios.get(urlcat(Url.FETCH_TEMPLATE_DASHBOARD, { dashboardId, templateId }), {
+    baseURL,
+  });
+};
+
+export const fetchEmbedDashboardPack = (dashboardId: string, embedId: string) => {
+  return axios.get(urlcat(Url.FETCH_EMBED_DASHBOARD, { dashboardId, embedId }), {
     baseURL,
   });
 };

@@ -29,7 +29,7 @@ interface IQuickAppendProps {
   hoverRecordId?: string;
 }
 
-export const QuickAppend: React.FC<IQuickAppendProps> = React.memo(props => {
+export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> = React.memo(props => {
 
   const {
     top,

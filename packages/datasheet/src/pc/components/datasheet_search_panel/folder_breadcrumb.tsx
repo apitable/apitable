@@ -29,7 +29,7 @@ interface IFolderBreadcrumbProps {
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void,
 }
 
-export const FolderBreadcrumb: React.FC<IFolderBreadcrumbProps> = (props) => {
+export const FolderBreadcrumb: React.FC<React.PropsWithChildren<IFolderBreadcrumbProps>> = (props) => {
   const colors = useThemeColors();
   const { parents, onNodeClick } = props;
   return (

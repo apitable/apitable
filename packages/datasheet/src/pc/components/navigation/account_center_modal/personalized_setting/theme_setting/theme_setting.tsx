@@ -37,7 +37,7 @@ const options = [{
   value: 'system'
 }];
 
-export const ThemeSetting: FC = () => {
+export const ThemeSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {
     defaultValue: getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName || ThemeName.Light
   });

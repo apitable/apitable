@@ -38,7 +38,7 @@ interface IShareLinkProps {
   shareName: string;
 }
 
-export const ShareLink: React.FC<IShareLinkProps> = props => {
+export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = props => {
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
   const colors = useThemeColors();
   const { shareSettings, userInfo, shareName } = props;

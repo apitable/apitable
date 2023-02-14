@@ -48,7 +48,7 @@ const getExt = (fileName: string) => {
   return matchedStr === '.' ? null : matchedStr;
 };
 
-export const NoSupport: FC<INoSupportProps> = props => {
+export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => {
   const { icon, downloadUrl, isMainAdmin, footer, spaceId, onClose, fileName, type, disabledDownload } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

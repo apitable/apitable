@@ -36,7 +36,7 @@ interface IMoreToolProps {
   disabledDownload?: boolean
 }
 
-export const MoreTool: React.FC<IMoreToolProps> = props => {
+export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props => {
   const colors = useThemeColors();
   const {
     readonly,

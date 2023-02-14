@@ -46,7 +46,7 @@ export interface ISpaceListItemProps {
   refreshList?: () => void;
 }
 
-export const SpaceListItem: FC<ISpaceListItemProps> = ({ spaceInfo, actived = false, managable = false, refreshList }) => {
+export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = ({ spaceInfo, actived = false, managable = false, refreshList }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const { closeSpaceListDrawer } = useContext(NavigationContext);

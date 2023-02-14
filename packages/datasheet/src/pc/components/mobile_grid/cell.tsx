@@ -42,7 +42,7 @@ interface ICellFuncOwnProps {
 
 type ChildProps = GridChildComponentProps & ListChildComponentProps;
 
-const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
+const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>> = props => {
   const colors = useThemeColors();
   const {
     columnIndex,

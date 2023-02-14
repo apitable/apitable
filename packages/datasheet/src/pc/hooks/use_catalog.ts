@@ -75,6 +75,9 @@ export const useCatalog = () => {
       }, 0);
       nodeName = existForm ? `${t(Strings.view_form)}${existForm + 1}` : t(Strings.view_form);
     }
+    if (type === ConfigConstant.NodeType.DATASHEET) {
+      extra = { viewName: t(Strings.default_view) };
+    }
     addNode(parentNodeId, type, nodeName, undefined, extra);
   };
 

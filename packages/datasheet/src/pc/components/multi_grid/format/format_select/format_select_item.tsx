@@ -39,7 +39,7 @@ export interface IFormatSelectItem {
   addNewItem: () => void;
 }
 
-export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
+export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
   const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const colors = useThemeColors();

@@ -20,7 +20,7 @@ import styles from './style.module.less';
 import { FC } from 'react';
 import { useThemeColors } from '@apitable/components';
 
-export const OmittedMiddleText: FC<{ suffixCount: number; children: string }> = ({
+export const OmittedMiddleText: FC<React.PropsWithChildren<{ suffixCount: number; children: string }>> = ({
   suffixCount = 5,
   children,
 }) => {

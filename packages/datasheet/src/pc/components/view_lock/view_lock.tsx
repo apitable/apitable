@@ -27,7 +27,7 @@ import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { IViewLockProps } from './interface';
 import styles from './style.module.less';
 
-export const ViewLock: React.FC<IViewLockProps> = props => {
+export const ViewLock: React.FC<React.PropsWithChildren<IViewLockProps>> = props => {
   const colors = useThemeColors();
   const { viewId, onModalClose, unlockHandle } = props;
   const view = useSelector(state => {

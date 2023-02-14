@@ -196,7 +196,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(String spaceId, String dstId, String dstName, Long creator) {
+    public void create(
+        final Long creator,
+        final String spaceId,
+        final String dstId,
+        final String dstName,
+        final String viewName
+    ) {
         log.info("Create datasheet");
         DatasheetEntity datasheet = DatasheetEntity.builder()
                 .spaceId(spaceId)
@@ -209,11 +215,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         boolean flag = this.save(datasheet);
         ExceptionUtil.isTrue(flag, DataSheetException.CREATE_FAIL);
         // Initialize datasheet information
-        SnapshotMapRo snapshot = initialize();
+        SnapshotMapRo snapshot = initialize(viewName);
         // Save Meta information
-        datasheetMetaService.create(creator, datasheet.getDstId(), JSONUtil.parseObj(snapshot.getMeta()).toString());
+        String meta = JSONUtil.parseObj(snapshot.getMeta()).toString();
+        datasheetMetaService.create(creator, datasheet.getDstId(), meta);
         // Save record information
-        datasheetRecordService.saveBatch(creator, snapshot.getRecordMap(), datasheet.getDstId());
+        datasheetRecordService.saveBatch(creator, snapshot.getRecordMap(),
+            dstId);
     }
 
     @Override
@@ -252,7 +260,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         datasheetMetaMapper.updateIsDeletedByNodeId(userId, nodeIds, isDel);
     }
 
-    private SnapshotMapRo initialize() {
+    private SnapshotMapRo initialize(final String viewName) {
         // get language
         Locale currentLang = LocaleContextHolder.getLocale();
         // call the template to get the snapshot
@@ -271,7 +279,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         metaMap.put("viewId", viewId);
         // internationalization elements
         // view name
-        metaMap.put("defaultView", I18nStringsUtil.t("default_view", currentLang));
+        String defaultViewName =
+            StrUtil.isNotBlank(viewName) ? viewName
+                : I18nStringsUtil.t("default_view", currentLang);
+        metaMap.put("defaultView", defaultViewName);
         // Datasheet title column
         metaMap.put("defaultDatasheetTitle", I18nStringsUtil.t("default_datasheet_title", currentLang));
         // Datasheet options column

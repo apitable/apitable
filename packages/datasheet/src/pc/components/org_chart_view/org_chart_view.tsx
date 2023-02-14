@@ -67,13 +67,15 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
 
+const _ReactFlowProvider: any = ReactFlowProvider;
+
 export interface IOrgChartViewProps {
   width: number;
   height: number;
   isMobile?: boolean;
 }
 
-export const OrgChartView: FC<IOrgChartViewProps> = ({
+export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({
   width,
   height,
   isMobile,
@@ -466,7 +468,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
           size={size}
           allowResize={false}
           panelLeft={(
-            <ReactFlowProvider>
+            <_ReactFlowProvider>
               <div
                 className={styles.orgChartView}
                 onContextMenu={e => {
@@ -476,7 +478,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
               >
                 <Cycle elements={cycleElements} />
               </div>
-            </ReactFlowProvider>
+            </_ReactFlowProvider>
           )}
           panelRight={panelRight}
         />
@@ -501,7 +503,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
           size={size}
           allowResize={false}
           panelLeft={(
-            <ReactFlowProvider>
+            <_ReactFlowProvider>
               <OrgChart />
               {fieldVisible && linkField && (
                 <>
@@ -509,7 +511,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
                   <EdgeContextMenu />
                 </>
               )}
-            </ReactFlowProvider>
+            </_ReactFlowProvider>
           )}
           panelRight={panelRight}
         />

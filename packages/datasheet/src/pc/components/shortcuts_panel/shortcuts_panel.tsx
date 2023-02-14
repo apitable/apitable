@@ -28,7 +28,7 @@ import { useDispatch } from 'react-redux';
 import ShortcutKeyIcon from 'static/icon/workbench/keyboardshortcuts.svg';
 import { browser } from 'modules/shared/browser';
 
-export const ShortcutsPanel: FC = () => {
+export const ShortcutsPanel: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
 
   const closeShortcutKeyPanel = () => {

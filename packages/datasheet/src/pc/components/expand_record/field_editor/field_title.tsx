@@ -84,7 +84,7 @@ export interface IFieldDescCollapseStatus {
   };
 }
 
-export const FieldTitle: React.FC<IFieldTitleProps> = props => {
+export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = props => {
   const {
     isFocus,
     recordId,

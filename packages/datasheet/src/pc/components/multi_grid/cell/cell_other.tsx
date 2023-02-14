@@ -60,9 +60,7 @@ export function backCorrectAvatarName(collaborator: ICollaboratorCursor | IColla
   return nickName || memberName || userName || t(Strings.alien);
 }
 
-export const CollaboratorMark: React.FC<
-  { displayRowIndex: number, collaboratorCell: ICollaboratorCursor[] }
-> = ({ displayRowIndex, collaboratorCell }) => {
+export const CollaboratorMark: React.FC<React.PropsWithChildren<{ displayRowIndex: number, collaboratorCell: ICollaboratorCursor[] }>> = ({ displayRowIndex, collaboratorCell }) => {
   if (!collaboratorCell) return null;
   // 1, 2 rows of synergistic cell information will be obscured by the table header, displayed below the cell
   const cellCollaboratorClassName = [1, 2].includes(displayRowIndex) ?

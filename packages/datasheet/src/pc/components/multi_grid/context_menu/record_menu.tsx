@@ -71,7 +71,7 @@ export function copyRecord(recordId: string) {
   });
 }
 
-export const RecordMenu: React.FC<IRecordMenuProps> = props => {
+export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = props => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
   const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));

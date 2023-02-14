@@ -45,7 +45,7 @@ const CommentBjFilledPath = CommentBjEntireFilled.toString();
 
 const ICON_SIZE = 16;
 
-export const RowHeadOperation: FC<IRowHeadOperationProps> = memo((props) => {
+export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps>> = memo((props) => {
   const { instance, isChecked, isHovered, isActive, rowIndex, commentCount, isAllowDrag, recordId } = props;
   const { rowHeight } = instance;
   const { setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);

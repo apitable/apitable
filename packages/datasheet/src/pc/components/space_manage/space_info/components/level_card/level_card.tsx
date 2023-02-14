@@ -42,7 +42,7 @@ interface ILevelCard {
   isMobile?: boolean;
 }
 
-export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className, isMobile }) => {
+export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHeight, deadline, className, isMobile }) => {
   const {
     title,
     levelCard: {

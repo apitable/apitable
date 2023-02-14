@@ -33,7 +33,7 @@ export interface ISpaceListDrawerProps {
   onClose: (value: boolean) => void;
 }
 
-export const SpaceListDrawer: FC<ISpaceListDrawerProps> = ({ visible, onClose }) => {
+export const SpaceListDrawer: FC<React.PropsWithChildren<ISpaceListDrawerProps>> = ({ visible, onClose }) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

@@ -36,7 +36,7 @@ const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 })
 };
 
-const SettingNickname: FC = () => {
+const SettingNickname: FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const colors = useThemeColors();
   const [avatarSelectModalVisible, setAvatarSelectModalVisible] = useState(false);

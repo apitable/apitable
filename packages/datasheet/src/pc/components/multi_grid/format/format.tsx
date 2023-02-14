@@ -41,7 +41,7 @@ interface IFieldFormatProps {
   datasheetId?: string;
 }
 
-export const FieldFormat: React.FC<IFieldFormatProps> = props => {
+export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = props => {
   const { from, currentField, setCurrentField, hideOperateBox, datasheetId } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {

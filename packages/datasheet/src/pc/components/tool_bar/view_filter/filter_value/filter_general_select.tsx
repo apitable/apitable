@@ -46,7 +46,7 @@ interface IFilterGeneralSelectProps {
   listData: (IUnitValue | IUserValue)[] | ISelectFieldOption[];
 }
 
-export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props => {
+export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = props => {
   const colors = useThemeColors();
   const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData } = props;
   const isMemberField: boolean = field.type === FieldType.Member;

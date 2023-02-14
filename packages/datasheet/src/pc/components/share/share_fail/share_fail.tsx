@@ -26,7 +26,7 @@ import * as React from 'react';
 import IconFail from 'static/icon/common/common_img_invite_linkfailure.png';
 import styles from './style.module.less';
 
-export const ShareFail: React.FC = () => {
+export const ShareFail: React.FC<React.PropsWithChildren<unknown>> = () => {
   const backToSpace = () => {
     Router.replace(Navigation.HOME);
   };

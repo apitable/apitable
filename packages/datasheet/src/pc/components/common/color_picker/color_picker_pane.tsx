@@ -41,7 +41,7 @@ export interface IColorPickerPane {
   onClose: () => void;
 }
 
-export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
+export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>> = props => {
   const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();

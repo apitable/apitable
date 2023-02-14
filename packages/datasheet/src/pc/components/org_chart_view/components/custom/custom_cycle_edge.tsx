@@ -28,7 +28,8 @@ import styles from './styles.module.less';
 
 const foreignObjectSize = 40;
 
-export const CustomCycleEdge: FC<EdgeProps> = ({
+
+export const CustomCycleEdge: FC<React.PropsWithChildren<EdgeProps>> = ({
   id,
   sourceX: x1,
   sourceY: y1,

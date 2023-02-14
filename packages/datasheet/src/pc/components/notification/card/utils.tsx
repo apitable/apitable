@@ -100,7 +100,7 @@ enum NotifyStatusType {
   Invalid = 3, // Reason for Invalid: 0 - email invitation, 1 - address book import, 2 - invitation link
 }
 
-export const JoinMsgApplyStatus: FC<{ status: number }> = ({ status }): React.ReactElement => {
+export const JoinMsgApplyStatus: FC<React.PropsWithChildren<{ status: number }>> = ({ status }): React.ReactElement => {
   switch (status) {
     case NotifyStatusType.Agree: {
       return <div className={classNames(styles.processRes, styles.info)}>{t(Strings.agreed)}</div>;

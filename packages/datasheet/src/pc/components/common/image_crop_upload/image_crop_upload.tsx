@@ -50,7 +50,7 @@ const initCropConfigMap = new Map([
   [ICropShape.AnyShape, { unit: '%', width: 100, height: 100 }],
 ]);
 
-export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
+export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (props) => {
   const {
     type = IUploadType.Other,
     confirm,
@@ -116,7 +116,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
     setPreviewUrl('');
   };
 
-  const onLoad = useCallback(img => {
+  const onLoad = useCallback((img: any) => {
     imgRef.current = img;
   }, []);
 

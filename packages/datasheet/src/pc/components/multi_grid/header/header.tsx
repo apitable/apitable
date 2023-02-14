@@ -50,7 +50,7 @@ interface IHeaderFuncProps {
   fieldCreatable: boolean;
 }
 
-const HeaderFunc: React.FC<GridChildComponentProps & { rightRegion: boolean }> = (
+const HeaderFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & { rightRegion: boolean }>> = (
   { columnIndex, style, rightRegion },
 ) => {
   const colors = useThemeColors();

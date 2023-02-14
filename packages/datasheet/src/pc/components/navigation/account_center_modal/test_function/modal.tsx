@@ -39,7 +39,7 @@ interface IModalProps {
   feature: ApiInterface.ILabsFeature
 }
 
-export const Modal: React.FC<IModalProps> = props => {
+export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
   const { onClose, feature, status } = props;
   const config = SystemConfig.test_function[feature.key];
   const loadingMessage = useRef<boolean>(false);

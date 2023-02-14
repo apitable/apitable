@@ -126,7 +126,7 @@ const notificationVerification = (props: IUnitProps) => {
   );
 };
 
-export const NotificationVerificationModal: React.FC<IUnitProps> = props => {
+export const NotificationVerificationModal: React.FC<React.PropsWithChildren<IUnitProps>> = props => {
   const { members, setPermission, manageable, closeModal } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

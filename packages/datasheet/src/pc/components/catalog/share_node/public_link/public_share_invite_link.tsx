@@ -40,7 +40,7 @@ export interface IPublicShareLinkProps {
   isMobile: boolean;
 }
 
-export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile }) => {
+export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isMobile }) => {
   const dispatch = useDispatch();
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();

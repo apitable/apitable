@@ -37,7 +37,7 @@ interface IControlsProps {
   fitView: () => void;
 }
 
-export const Controls: FC<IControlsProps> = ({
+export const Controls: FC<React.PropsWithChildren<IControlsProps>> = ({
   zoomIn,
   zoomOut,
   zoomReset,

@@ -24,7 +24,7 @@ interface ICheckProps {
   isChecked: boolean;
 }
 
-export const Check: React.FC<ICheckProps> = props => {
+export const Check: React.FC<React.PropsWithChildren<ICheckProps>> = props => {
   const colors = useThemeColors();
   const { isChecked } = props;
   if (isChecked) {

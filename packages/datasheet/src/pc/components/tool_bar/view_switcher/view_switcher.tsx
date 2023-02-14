@@ -125,12 +125,12 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
   };
 };
 
-export const AddNewViewList: React.FC<{
+export const AddNewViewList: React.FC<React.PropsWithChildren<{
   addNewViews(e: React.MouseEvent, viewType: ViewType): void;
   style?: React.CSSProperties;
   isMobile?: boolean;
   isViewCountOverLimit?: boolean;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { addNewViews, style, isMobile, isViewCountOverLimit } = props;
   const btnStyle = {
@@ -251,7 +251,7 @@ export const AddNewViewList: React.FC<{
 
 const MIN_HEIGHT = 60;
 const MAX_HEIGHT = 340;
-export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
+export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProperty>> = props => {
   const { close, triggerInfo } = props;
   const activityViewId = useSelector(state => state.pageParams.viewId);
   const { viewCreatable, viewRenamable, viewMovable, viewRemovable, views, datasheetId } = useSelector(state => {

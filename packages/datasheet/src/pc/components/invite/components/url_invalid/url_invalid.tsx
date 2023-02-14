@@ -30,7 +30,7 @@ interface IUrlInvalid {
   reason: string;
 }
 
-export const UrlInvalid: FC<IUrlInvalid> = ({ reason }) => {
+export const UrlInvalid: FC<React.PropsWithChildren<IUrlInvalid>> = ({ reason }) => {
   const returnHome = () => {
     Router.push(Navigation.HOME);
   };

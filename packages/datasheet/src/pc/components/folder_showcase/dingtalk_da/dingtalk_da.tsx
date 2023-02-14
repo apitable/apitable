@@ -33,7 +33,7 @@ interface IDingTalkDaProps {
   corpId: string;
 }
 
-export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
+export const DingTalkDa: FC<React.PropsWithChildren<IDingTalkDaProps>> = (props) => {
   const { suiteKey, bizAppId, corpId } = props;
   const { show } = useContextMenu({ id: DINGTALK_DA });
 

@@ -44,7 +44,7 @@ const defaultErrMsg = {
   passwordErrMsg: '',
 };
 
-const ResetPassword: FC = () => {
+const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
   const [state, setState] = useSetState<IState>({
     areaCode: '',
     account: '',

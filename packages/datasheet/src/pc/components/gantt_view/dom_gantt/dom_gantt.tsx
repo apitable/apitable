@@ -57,7 +57,7 @@ const unitOptions = [
   },
 ];
 
-export const DomGantt: FC<IDomGanttBaseProps> = props => {
+export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = props => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { containerWidth, gridWidth, gridVisible, dateUnitType } = props;

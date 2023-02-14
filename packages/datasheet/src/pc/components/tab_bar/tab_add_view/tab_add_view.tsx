@@ -50,7 +50,7 @@ interface ITabAddView {
 
 const OFFSET = [0, 8];
 
-export const TabAddView: React.FC<ITabAddView> = props => {
+export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props => {
   const { activityViewId, viewCount, switchView, setEditIndex, disabled = false } = props;
   const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
   // const [plusVisible, setPlusVisible] = useState(false);

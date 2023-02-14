@@ -120,7 +120,7 @@ export const DEFAULT_SCROLL_STATE = {
   isScrolling: false,
 };
 
-export const GanttView: FC<IGanttViewProps> = memo(props => {
+export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,
@@ -579,7 +579,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   // Return to a time
   const backTo = useCallback(
-    (dateTime, offsetX: number = -ganttWidth / 2) => {
+    (dateTime: any, offsetX: number = -ganttWidth / 2) => {
       ganttInstance.initTimeline(dateUnitType, dateTime);
       const columnIndex = ganttInstance.getIndexFromStartDate(dateTime, unitType);
       const currentScrollLeft = ganttInstance.getColumnOffset(columnIndex) + offsetX;

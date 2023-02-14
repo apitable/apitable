@@ -138,7 +138,9 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
     } : {};
   }, [datasheetId, triggerType?.endpoint, uiSchema]);
 
-  const handleUpdateFormChange = useCallback(({ formData }) => {
+  const handleUpdateFormChange = useCallback(({
+    formData
+  }: any) => {
     if (!shallowEqual(formData, trigger.input)) {
       updateTriggerInput(trigger.triggerId, formData).then(() => {
         mutate({

@@ -45,7 +45,7 @@ export const imgUrl = (token: string, imageHeight: number) => {
   return getImageThumbSrc(token, { h: Math.ceil(imageHeight * 2), quality: 90 });
 };
 
-export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
+export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> = props => {
   const { setUsingTemplate } = props;
   const [_templateRecommendData, setTemplateRecommendData] = useState<ITemplateRecommendResponse>();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);

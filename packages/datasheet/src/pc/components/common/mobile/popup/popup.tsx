@@ -24,7 +24,7 @@ import { useThemeColors } from '@apitable/components';
 import style from './style.module.less';
 import classNames from 'classnames';
 
-export const Popup: React.FC<DrawerProps> = props => {
+export const Popup: React.FC<React.PropsWithChildren<DrawerProps>> = props => {
   const colors = useThemeColors();
   return (
     <Drawer

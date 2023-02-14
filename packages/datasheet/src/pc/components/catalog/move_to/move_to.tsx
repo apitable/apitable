@@ -31,10 +31,10 @@ import { Router } from 'pc/components/route_manager/router';
 import styles from './style.module.less';
 import { TComponent } from 'pc/components/common/t_component';
 
-export const MoveTo: React.FC<{
+export const MoveTo: React.FC<React.PropsWithChildren<{
   nodeIds: string[]
   onClose?:() => void;
-}> = (props) => {
+}>> = (props) => {
   const { nodeIds, onClose } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [parentList, setParentList] = useState<IParent[]>([]);

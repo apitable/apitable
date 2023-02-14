@@ -33,7 +33,7 @@ interface ISubmitInviteCode {
   myInviteCode: string;
 }
 
-export const SubmitInviteCode: FC<ISubmitInviteCode> = ({ submitAndSuccess, myInviteCode }) => {
+export const SubmitInviteCode: FC<React.PropsWithChildren<ISubmitInviteCode>> = ({ submitAndSuccess, myInviteCode }) => {
   const [val, setVal] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const contactUs = useContactUs();

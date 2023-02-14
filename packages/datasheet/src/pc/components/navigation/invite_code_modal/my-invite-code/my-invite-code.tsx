@@ -23,7 +23,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 import classNames from 'classnames';
 
-export const MyInviteCode: FC<{ inviteCode: string }> = ({ inviteCode }) => {
+export const MyInviteCode: FC<React.PropsWithChildren<{ inviteCode: string }>> = ({ inviteCode }) => {
   const inviteCodeUrl = `${location.origin}/?inviteCode=${inviteCode}`;
 
   return (

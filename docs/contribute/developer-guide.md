@@ -27,7 +27,7 @@ curl -s "https://get.sdkman.io" | bash
 # install nodejs 
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # install java development kit
-sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
+sdk env install
 ```
 
 ### macOS

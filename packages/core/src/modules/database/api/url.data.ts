@@ -20,6 +20,7 @@
 export const FETCH_DASHBOARD = '/dashboard/:dashboardId/dataPack';
 export const FETCH_SHARE_DASHBOARD = '/share/:shareId/dashboard/:dashboardId/dataPck';
 export const FETCH_TEMPLATE_DASHBOARD = '/template/:templateId/dashboard/:dashboardId/dataPck';
+export const FETCH_EMBED_DASHBOARD = '/embedlinks/:embedId/dashboards/:dashboardId/dataPack';
 // =============== Dashboard related =======================
 
 // =============== Column permissions related start =======================

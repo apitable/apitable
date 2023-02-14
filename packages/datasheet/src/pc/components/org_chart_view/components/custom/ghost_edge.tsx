@@ -24,7 +24,7 @@ import { useDragLayer, DragLayerMonitor } from 'react-dnd';
 import { useMount } from 'ahooks';
 import useRafState from '../../hooks/use_raf_state';
 
-export const GhostEdge: FC<EdgeProps> = memo(({
+export const GhostEdge: FC<React.PropsWithChildren<EdgeProps>> = memo(({
   id,
   source: parentId,
   target,

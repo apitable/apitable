@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType } from '@apitable/core';
+import { CellType, ViewType } from '@apitable/core';
 import { Rect } from 'pc/components/konva_components';
 import {
   GRID_BOTTOM_STAT_HEIGHT, GRID_GROUP_OFFSET, GRID_GROUP_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext
@@ -24,6 +24,9 @@ import {
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 import { Stat } from '../components/stat';
+import dynamic from 'next/dynamic';
+const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
+const LineComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/line'), { ssr: false });
 
 interface IUseStatsProps {
   instance: GridCoordinate;
@@ -62,7 +65,7 @@ export const useStats = (props: IUseStatsProps) => {
     containerHeight
   } = instance;
   const viewType = view.type;
-
+  
   // Rendering statistics column
   const getStats = useCallback(({
     y,
@@ -71,7 +74,7 @@ export const useStats = (props: IUseStatsProps) => {
     columnStopIndex,
     isFrozen = false,
     renderType = RenderType.Group
-  }) => {
+  }: any) => {
     const { recordId, depth } = row || {};
     const stats: React.ReactNode[] = [];
     const isGroup = renderType === RenderType.Group;
@@ -144,16 +147,30 @@ export const useStats = (props: IUseStatsProps) => {
       renderType: RenderType.Bottom,
     });
 
+    const hiddenLeftBorder = viewType === ViewType.Grid;
+
     const bottomStatBackground = (
-      <Rect
+      <Group
         x={0.5}
         y={containerHeight - GRID_BOTTOM_STAT_HEIGHT - 0.5}
-        width={containerWidth}
-        height={GRID_BOTTOM_STAT_HEIGHT + 1}
-        fill={colors.defaultBg}
-        stroke={colors.sheetLineColor}
-        strokeWidth={1}
-      />
+      >
+        <Rect
+          x={0}
+          y={0}
+          width={containerWidth}
+          height={GRID_BOTTOM_STAT_HEIGHT + 1}
+          fill={colors.defaultBg}
+          stroke={colors.borderCommonDefault}
+          strokeWidth={1}
+        />
+        { hiddenLeftBorder && <LineComponent
+          x={0}
+          y={0}
+          points={[0, 0, 0, GRID_BOTTOM_STAT_HEIGHT + 1]}
+          stroke={colors.defaultBg}
+          strokeWidth={1}
+        />}
+      </Group>
     );
 
     return {
@@ -166,6 +183,6 @@ export const useStats = (props: IUseStatsProps) => {
     // eslint-disable-next-line
   }, [
     instance, getStats, containerHeight, frozenColumnCount, columnStartIndex, columnStopIndex, rowInitSize,
-    containerWidth, colors.defaultBg, colors.sheetLineColor, rowStartIndex, rowStopIndex, linearRows
+    containerWidth, colors.defaultBg, colors.borderCommonDefault, rowStartIndex, rowStopIndex, linearRows
   ]);
 };

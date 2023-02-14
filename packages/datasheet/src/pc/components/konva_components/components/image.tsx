@@ -35,7 +35,7 @@ export interface IImageProps extends ShapeConfig {
   clipFunc?: (ctx: any) => void;
 }
 
-export const Image: React.FC<IImageProps> = memo((props) => {
+export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props) => {
   const {
     name,
     url,

@@ -39,7 +39,7 @@ interface IGroupTabProps {
 const TriangleDown16FilledPath = TriangleDown16Filled.toString();
 const TriangleRight16FilledPath = TriangleRight16Filled.toString();
 
-export const GroupTab: FC<IGroupTabProps> = memo((props) => {
+export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props) => {
   const { x = 0, y = 0, width, height, recordId, depth } = props;
   const {
     datasheetId,

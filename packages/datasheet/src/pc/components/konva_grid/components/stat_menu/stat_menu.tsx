@@ -41,7 +41,7 @@ interface IStatMenuProps {
   getBoundary: (e: MouseEvent) => IFieldBoundary | null;
 }
 
-export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
+export const StatMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = React.memo((props) => {
   const { getBoundary, parentRef } = props;
   const [fieldId, setFieldId] = useState<string>('');
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_STAT_MENU });

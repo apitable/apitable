@@ -35,7 +35,7 @@ interface IViewRules {
   invalidTip?: string;
 }
 
-export const ViewRules: React.FC<IViewRules> = props => {
+export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props => {
   const colors = useThemeColors();
   const { onChange, rulesItem, invalid, invalidTip } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;

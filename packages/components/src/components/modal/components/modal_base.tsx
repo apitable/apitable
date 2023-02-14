@@ -43,7 +43,7 @@ const getPosition = (e: MouseEvent) => {
   }, 100);
 };
 
-export const ModalBase: React.FC<IModalProps> = (props) => {
+export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props) => {
 
   const {
     className,

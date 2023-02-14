@@ -35,7 +35,7 @@ interface IFormateRatingProps {
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormateRating: React.FC<IFormateRatingProps> = (props: IFormateRatingProps) => {
+export const FormateRating: React.FC<React.PropsWithChildren<IFormateRatingProps>> = (props: IFormateRatingProps) => {
   const colors = useThemeColors();
   const handleMaxChange = ({ value }: { value: SelectValue }) => {
     props.setCurrentField({

@@ -59,7 +59,7 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
   return fieldRole === ConfigConstant.Role.Editor;
 };
 
-export const PreviewItem: React.FC<IPreviewItemProps> = props => {
+export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> = props => {
   const { name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId } = props;
   const file = cellValue.find(item => item.id === id);
   const fieldId = field.id;

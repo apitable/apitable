@@ -34,7 +34,7 @@ const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_tim
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
 
-export const CellSingleSelect: FC<ICellProps> = (props) => {
+export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,

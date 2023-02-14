@@ -25,7 +25,7 @@ interface IComponentDisplay {
   minWidthCompatible?: ScreenSize; 
 }
 
-export const ComponentDisplay: React.FC<IComponentDisplay> = props => {
+export const ComponentDisplay: React.FC<React.PropsWithChildren<IComponentDisplay>> = props => {
   const { maxWidthCompatible, minWidthCompatible } = props;
   const { screenIsAtLeast, screenIsAtMost } = useResponsive();
 

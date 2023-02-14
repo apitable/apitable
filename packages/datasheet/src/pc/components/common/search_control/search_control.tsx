@@ -22,6 +22,7 @@ import { LineSearchInput } from 'pc/components/list/common_list/line_search_inpu
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import { ScreenSize } from '../component_display';
 import style from './style.module.less';
@@ -55,6 +56,10 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISear
 
   const editorRef = useRef<InputRef>(null);
 
+  const { embedId, dashboardId } = useSelector(state => state.pageParams);
+
+  const hideSearchAndSwitch = Boolean(embedId && dashboardId);
+
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -71,16 +76,18 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISear
   return (
     <div className={style.searchContainer}>
       <div className={style.inputContainer} onClick={stopPropagation}>
-        <LineSearchInput
-          value={value}
-          placeholder={placeholder}
-          onChange={e => onValueChange && onValueChange(e.target.value)}
-          onKeyDown={e => onkeyDown && onkeyDown(e)}
-          onFocus={onFocus}
-          ref={editorRef}
-          size={isMobile ? 'large' : 'default'}
-          onClear={onCancelClick}
-        />
+        {
+          !hideSearchAndSwitch && <LineSearchInput
+            value={value}
+            placeholder={placeholder}
+            onChange={e => onValueChange && onValueChange(e.target.value)}
+            onKeyDown={e => onkeyDown && onkeyDown(e)}
+            onFocus={onFocus}
+            ref={editorRef}
+            size={isMobile ? 'large' : 'default'}
+            onClear={onCancelClick}
+          />
+        }
       </div>
       {switchVisible && (
         <div className={style.searchOption}>

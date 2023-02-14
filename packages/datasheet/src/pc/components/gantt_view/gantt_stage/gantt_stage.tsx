@@ -46,7 +46,7 @@ interface IGanttStageProps {
   listening?: boolean;
 }
 
-const GanttStage: FC<IGanttStageProps> = memo((props) => {
+const GanttStage: FC<React.PropsWithChildren<IGanttStageProps>> = memo((props) => {
   const {
     gridInstance,
     ganttInstance,

@@ -22,7 +22,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 import { Modal, Typography, colorVars } from '@apitable/components';
 
-export const SliderVerification: FC = () => {
+export const SliderVerification: FC<React.PropsWithChildren<unknown>> = () => {
 
   useMount(() => {
     window['nvc']?.getNC({ 

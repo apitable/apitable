@@ -45,7 +45,7 @@ interface IDisplayFileProps {
   disabledDownload?: boolean;
 }
 
-const DisplayFileBase: React.FC<IDisplayFileProps> = props => {
+const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = props => {
   const {
     fileList,
     index,

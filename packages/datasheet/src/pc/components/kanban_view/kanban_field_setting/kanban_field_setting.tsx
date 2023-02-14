@@ -53,7 +53,7 @@ interface ISettingHeadProps {
   setRoute: React.Dispatch<React.SetStateAction<KanbanRoute>>;
 }
 
-const SettingHead: React.FC<ISettingHeadProps> = ({ route, setRoute }) => {
+const SettingHead: React.FC<React.PropsWithChildren<ISettingHeadProps>> = ({ route, setRoute }) => {
   return (
     <div className={styles.header}>
       {
@@ -74,7 +74,7 @@ const SettingHead: React.FC<ISettingHeadProps> = ({ route, setRoute }) => {
   );
 };
 
-export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = ({ onClose }) => {
+export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFieldSettingModalProps>> = ({ onClose }) => {
   const [route, setRoute] = useState<KanbanRoute>(KanbanRoute.Init);
   const columnCount = useSelector(Selectors.getColumnCount)!;
   const groupFieldId = useSelector(Selectors.getKanbanFieldId);

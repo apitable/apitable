@@ -40,7 +40,7 @@ export interface IFormatSelectItem {
   onChange(type: OptionSetting, id: string, value: number | string): void;
 }
 
-const FormatSelectItemBase: React.FC<IFormatSelectItem> = props => {
+const FormatSelectItemBase: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
   const { option, index, draggingId, optionsLength, setDraggingId, addNewItem, onChange } = props;
   const colors = useThemeColors();
   const pressEnter = (e: React.KeyboardEvent) => {

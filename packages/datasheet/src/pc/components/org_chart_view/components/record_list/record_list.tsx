@@ -55,7 +55,7 @@ export const addRecord = (viewId: string, index: number, autoOpen = true) => {
 };
 
 // TODO: Extracted as a public business component
-export const RecordList: FC<IRecordList> = (props) => {
+export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
   const colors = useThemeColors();
   const {
     nodes,

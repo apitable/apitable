@@ -93,7 +93,7 @@ interface IWidgetCreateModalProps {
   closeModal?: (closeWidgetCenter?: boolean) => void;
 }
 
-const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
+const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
@@ -156,7 +156,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
   );
   const isValid = widgetName && selectTemplate;
   return (
-    <Modal
+    (<Modal
       title={<Title />}
       visible
       centered
@@ -222,7 +222,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
         </div>
         {templateDataLoading && <Loading style={{ backgroundColor: colors.defaultBg }} />}
       </div>
-    </Modal>
+    </Modal>)
   );
 };
 
@@ -270,7 +270,7 @@ const WidgetCretInvalidError = () => (
   </div>
 );
 
-const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) => {
+const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreateStepsProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
@@ -523,7 +523,7 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
   ));
 };
 
-const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
+const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevConfigProps>> = (props) => {
   const colors = useThemeColors();
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);

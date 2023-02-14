@@ -71,7 +71,7 @@ interface ITypeSelectItemProps extends ITypeSelect {
   style?: React.CSSProperties;
 }
 
-const TypeSelectItem: React.FC<ITypeSelectItemProps> = props => {
+const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = props => {
   const { fieldList, fieldType, index, setInfo, style } = props;
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
@@ -150,7 +150,7 @@ function filterAdvanceGroup(fieldType: FieldType) {
   return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Advanced;
 }
 
-export const TypeSelectBase: React.FC<ITypeSelect> = props => {
+export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = props => {
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);

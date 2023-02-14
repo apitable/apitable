@@ -52,7 +52,7 @@ export interface IIdentifyingCodeInputProps extends ITextInputProps {
   checkAccount?: () => boolean;
 }
 
-export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
+export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeInputProps>> = ({
   mode = ConfigConstant.LoginMode.PHONE,
   data,
   disabled = false,

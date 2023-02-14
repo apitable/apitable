@@ -33,7 +33,7 @@ interface ISelectPopupProps extends ISelectUnitLeftProps {
   showTab?: boolean;
 }
 
-export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
+export const SelectUnitPopup: FC<React.PropsWithChildren<ISelectPopupProps>> = props => {
   const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, onCancel, onOk, linkId, showTab } = props;
 
   const formId = useSelector(state => state.pageParams.formId);

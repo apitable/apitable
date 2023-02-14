@@ -41,6 +41,9 @@ public class NodeRelRo {
     @ApiModelProperty(value = "View ID", position = 2)
     private String viewId;
 
+    @ApiModelProperty(value = "View Name", position = 2)
+    private String viewName;
+
     public NodeRelRo(String viewId) {
         this.viewId = viewId;
     }

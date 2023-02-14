@@ -31,7 +31,7 @@ export interface IEmojiPopoverProps {
   onSelect(emoji: string): void;
 }
 
-export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props => {
+export const EmojiPickerBase: FC<React.PropsWithChildren<PropsWithChildren<IEmojiPopoverProps>>> = props => {
   const { children, onSelect } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const { screenIsAtMost } = useResponsive();

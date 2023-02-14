@@ -17,14 +17,21 @@
  */
 
 import {
-  generateRandomString, getNewIds, IDPrefix, IListDeleteAction, IListInsertAction, ILocalChangeset, IObjectDeleteAction, IObjectInsertAction,
-  ResourceType
+  generateRandomString,
+  getNewIds,
+  IDPrefix,
+  IListDeleteAction,
+  IListInsertAction,
+  ILocalChangeset,
+  IObjectDeleteAction,
+  IObjectInsertAction,
+  ResourceType,
 } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { OtService } from 'database/ot/services/ot.service';
-import { IRoomChannelMessage } from '../interfaces/ot.interface';
+import { IRoomChannelMessage } from '../../interfaces/ot.interface';
 
 describe('OtService', () => {
   let app: NestFastifyApplication;
@@ -61,17 +68,17 @@ describe('OtService', () => {
             cmd: 'AddRecords',
             actions: [
               { n: 'LI', p: ['meta', 'views', 0, 'rows', 1], li: { recordId }} as IListInsertAction,
-              { n: 'OI', p: ['recordMap', recordId], oi: { id: recordId, data: {}, commentCount: 0 }} as IObjectInsertAction
-            ]
+              { n: 'OI', p: ['recordMap', recordId], oi: { id: recordId, data: {}, commentCount: 0 }} as IObjectInsertAction,
+            ],
           },
           {
             cmd: 'DeleteRecords',
             actions: [
               { n: 'LD', p: ['meta', 'views', 0, 'rows', 1], ld: { recordId }} as IListDeleteAction,
-              { n: 'OD', p: ['recordMap', recordId], od: { id: recordId, data: {}, commentCount: 0 }} as IObjectDeleteAction
-            ]
-          }
-        ]
+              { n: 'OD', p: ['recordMap', recordId], od: { id: recordId, data: {}, commentCount: 0 }} as IObjectDeleteAction,
+            ],
+          },
+        ],
       };
       const message: IRoomChannelMessage = { roomId: dstId, changesets: [cs], internalAuth: { userId: '', uuid: '' }};
       const { resultSet } = await otService.parseChanges(spaceId, message, cs, {});
@@ -90,17 +97,17 @@ describe('OtService', () => {
             cmd: '"DeleteRecords"',
             actions: [
               { n: 'LD', p: ['meta', 'views', 0, 'rows', 1], ld: { recordId }} as IListDeleteAction,
-              { n: 'OD', p: ['recordMap', recordId], od: { id: recordId, data: {}, commentCount: 0 }} as IObjectDeleteAction
-            ]
+              { n: 'OD', p: ['recordMap', recordId], od: { id: recordId, data: {}, commentCount: 0 }} as IObjectDeleteAction,
+            ],
           },
           {
             cmd: 'UNDO:"DeleteRecords"',
             actions: [
               { n: 'LI', p: ['meta', 'views', 0, 'rows', 1], li: { recordId }} as IListInsertAction,
-              { n: 'OI', p: ['recordMap', recordId], oi: { id: recordId, data: {}, commentCount: 0 }} as IObjectInsertAction
-            ]
-          }
-        ]
+              { n: 'OI', p: ['recordMap', recordId], oi: { id: recordId, data: {}, commentCount: 0 }} as IObjectInsertAction,
+            ],
+          },
+        ],
       };
       const message: IRoomChannelMessage = { roomId: dstId, changesets: [cs], internalAuth: { userId: '', uuid: '' }};
       const { resultSet } = await otService.parseChanges(spaceId, message, cs, {});

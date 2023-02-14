@@ -43,7 +43,7 @@ interface IGanttExportProps {
   dateUnitType: DateUnitType;
 }
 
-export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
+export const GanttExport: FC<React.PropsWithChildren<IGanttExportProps>> = ({ dateUnitType }) => {
   const {
     view,
     rowHeight,

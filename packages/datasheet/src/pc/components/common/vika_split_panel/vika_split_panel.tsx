@@ -23,6 +23,8 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 import { EmitterEventName, SimpleEmitter } from 'modules/shared/simple_emitter';
 
+const _SplitPane: any = SplitPane;
+
 interface IVikaSplitPanelProps extends Omit<SplitPaneProps, 'SplitPaneProps'> {
   panelLeft: JSX.Element;
   panelRight: JSX.Element;
@@ -30,7 +32,7 @@ interface IVikaSplitPanelProps extends Omit<SplitPaneProps, 'SplitPaneProps'> {
 
 export const simpleEmitter = new SimpleEmitter();
 
-export const VikaSplitPanel: React.FC<IVikaSplitPanelProps> = memo((props) => {
+export const VikaSplitPanel: React.FC<React.PropsWithChildren<IVikaSplitPanelProps>> = memo((props) => {
   const { panelLeft, panelRight, onDragFinished, ...rest } = props;
   const [dragging, setDragging] = useState(false);
   const onDragEnd = (newSize: number) => {
@@ -45,7 +47,7 @@ export const VikaSplitPanel: React.FC<IVikaSplitPanelProps> = memo((props) => {
     simpleEmitter.emit(EmitterEventName.PanelDragging, dragging);
   }, [dragging]);
 
-  return <SplitPane
+  return <_SplitPane
     onDragStarted={onDragStart}
     onDragFinished={onDragEnd}
     resizerClassName={
@@ -58,5 +60,5 @@ export const VikaSplitPanel: React.FC<IVikaSplitPanelProps> = memo((props) => {
   >
     {panelLeft}
     {panelRight}
-  </SplitPane>;
+  </_SplitPane>;
 });

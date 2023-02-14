@@ -35,7 +35,7 @@ interface IReportWeb {
   nodeId: string;
 }
 
-export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
+export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) => {
   /** Control menu display */
   const [menuVisible, setMenuVisible] = useState(false);
   /** Control the display of the modal box for filling in the reason for reporting */

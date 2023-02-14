@@ -40,7 +40,7 @@ function showLeftOrRight(positionX: number, boxWidth: number) {
   
 }
 
-export const AutoLayout: React.FC<IAutoLayoutProps> = props => {
+export const AutoLayout: React.FC<React.PropsWithChildren<IAutoLayoutProps>> = props => {
   const { fieldRectLeft } = useSelector(state => Selectors.gridViewActiveFieldState(state, props.datasheetId));
   return (
     <div className={styles.autoLayout} style={showLeftOrRight(fieldRectLeft, props.boxWidth)}>

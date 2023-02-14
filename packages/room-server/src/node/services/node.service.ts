@@ -18,19 +18,19 @@
 
 import { IFormProps, IPermissions, Role } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { NodeDescriptionService } from 'node/services/node.description.service';
+import { MetaService } from 'database/resource/services/meta.service';
 import { get, omit } from 'lodash';
+import { NodeDescriptionService } from 'node/services/node.description.service';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
+import { UnitMemberService } from 'unit/services/unit.member.service';
 import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from '../../database/interfaces';
 import { NodeRelRepository } from '../repositories/node.rel.repository';
 import { NodeRepository } from '../repositories/node.repository';
-import { UnitMemberService } from 'unit/services/unit.member.service';
 import { NodePermissionService } from './node.permission.service';
 import { NodeShareSettingService } from './node.share.setting.service';
-import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class NodeService {
@@ -42,7 +42,8 @@ export class NodeService {
     private readonly nodeRepository: NodeRepository,
     private readonly nodeRelRepository: NodeRelRepository,
     private readonly resourceMetaService: MetaService,
-  ) {}
+  ) {
+  }
 
   async checkNodeIfExist(nodeId: string, exception?: IBaseException) {
     const count = await this.nodeRepository.selectCountByNodeId(nodeId);
@@ -182,8 +183,8 @@ export class NodeService {
     return showRecordHistory;
   }
 
-  async selectNodeNameAndIconByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
-    return await this.nodeRepository.selectNodeNameAndIconByNodeId(nodeId);
+  async selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+    return await this.nodeRepository.selectNodeBaseInfoByNodeId(nodeId);
   }
 
   async selectSpaceIdByNodeId(nodeId: string): Promise<{ spaceId: string } | undefined> {

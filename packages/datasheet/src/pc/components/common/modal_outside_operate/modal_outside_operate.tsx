@@ -33,7 +33,7 @@ interface IModalOutsideOperateProps {
   getContainer?: HTMLElement | false
 }
 
-export const ModalOutsideOperate: React.FC<IModalOutsideOperateProps> = (props) => {
+export const ModalOutsideOperate: React.FC<React.PropsWithChildren<IModalOutsideOperateProps>> = (props) => {
 
   const { pageTurn, onModalClose, children, modalClassName, modalWidth, showOutsideOperate = true, getContainer } = props;
   return <Modal

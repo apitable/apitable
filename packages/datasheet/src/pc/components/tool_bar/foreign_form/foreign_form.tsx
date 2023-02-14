@@ -35,7 +35,7 @@ interface IForeignFormProps {
   isHide?: boolean;
 }
 
-export const ForeignForm: FC<IForeignFormProps> = (props) => {
+export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (props) => {
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);

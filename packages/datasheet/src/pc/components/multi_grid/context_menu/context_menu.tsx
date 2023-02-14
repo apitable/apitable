@@ -42,7 +42,7 @@ interface IContextFieldOwnProps {
   onFrozenColumn?: (fieldId: string) => void;
 }
 
-export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
+export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnProps>> = props => {
   const { getIdMapByEvent, parentRef, editFieldSetting, editFieldDesc, onFrozenColumn } = props;
   const [fieldIdForMenu, setFieldIdForMenu] = useState('');
   const dispatch = useDispatch();

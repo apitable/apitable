@@ -23,7 +23,7 @@ import { FC, memo } from 'react';
 
 const TextComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/text'), { ssr: false });
 
-export const Text: FC<ShapeConfig> = memo((props) => {
+export const Text: FC<React.PropsWithChildren<ShapeConfig>> = memo((props) => {
   const colors = useThemeColors();
   const {
     x,

@@ -52,7 +52,7 @@ interface IPermissionDescProps {
   style?: React.CSSProperties;
 }
 
-export const PermissionDesc: FC<IPermissionDescProps> = ({ style }) => {
+export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> = ({ style }) => {
   const renderTag = (arr: ITagProps[]) => {
     if (!arr.length) {
       return;
@@ -119,7 +119,7 @@ export const PermissionDesc: FC<IPermissionDescProps> = ({ style }) => {
   );
 };
 
-export const PermissionDescModal: FC<IModalProps> = props => {
+export const PermissionDescModal: FC<React.PropsWithChildren<IModalProps>> = props => {
   return (
     <Modal
       title={

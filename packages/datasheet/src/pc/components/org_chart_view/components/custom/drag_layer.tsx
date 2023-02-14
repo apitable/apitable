@@ -25,7 +25,7 @@ import styles from './styles.module.less';
 import { FlowContext } from '../../context/flow_context';
 import { useUpdateEffect } from 'ahooks';
 
-export const DragLayer: FC = () => {
+export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
 
   const [translateX, translateY, scale] = useStoreState(state => state.transform);
 

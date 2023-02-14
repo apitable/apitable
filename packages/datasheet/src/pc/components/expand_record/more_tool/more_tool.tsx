@@ -54,7 +54,7 @@ interface IMoreToolProps {
   datasheetId: string;
   mirrorId?: string;
 }
-export const MoreTool: React.FC<IMoreToolProps> = props => {
+export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props => {
   const colors = useThemeColors();
   const {
     recordId,

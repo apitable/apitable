@@ -22,7 +22,7 @@ import * as React from 'react';
 import { IFilterOptionProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
-export const FilterOptions: React.FC<IFilterOptionProps> = props => {
+export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>> = props => {
   const { condition, field, onChange } = props;
   const [isMulti, setIsMulti] = useState(false);
   // The field passed in here is the entity field. fieldType inside the condition is the real field.

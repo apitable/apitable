@@ -46,7 +46,7 @@ interface IFieldMenu {
   fieldId: string;
 }
 
-export const FieldMenu: React.FC<IFieldMenu> = (
+export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
   {
     onClose,
     fieldId,

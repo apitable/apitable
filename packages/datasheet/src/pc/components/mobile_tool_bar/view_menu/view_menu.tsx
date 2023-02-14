@@ -27,7 +27,7 @@ interface IViewMenu {
   onClose: () => void;
 }
 
-export const ViewMenu: React.FC<IViewMenu> = props => {
+export const ViewMenu: React.FC<React.PropsWithChildren<IViewMenu>> = props => {
   const {
     visible,
     onClose,

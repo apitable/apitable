@@ -30,7 +30,7 @@ interface IAddMember {
   setTeamList?: React.Dispatch<React.SetStateAction<ITeamsInSpace[]>>;
   teamList?: ITeamsInSpace[];
 }
-export const ChangeMemberTeam: FC<IAddMember> = ({ onCancel, inEditMember, setTeamList, teamList }) => {
+export const ChangeMemberTeam: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel, inEditMember, setTeamList, teamList }) => {
   const {
     selectedTeamInfoInSpace,
     selectMemberListInSpace,

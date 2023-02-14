@@ -34,7 +34,7 @@ export interface IEditingNodeProps {
   node: INodesMapItem;
 }
 
-export const EditingNode: FC<IEditingNodeProps> = ({
+export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({
   node,
 }) => {
   const [errMsg, setErrMsg] = useState('');

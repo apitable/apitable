@@ -75,7 +75,7 @@ export const openEruda = () => {
       Message.destroy();
     });
 };
-const DevMenu: React.FC<IDevMenuProps> = props => {
+const DevMenu: React.FC<React.PropsWithChildren<IDevMenuProps>> = props => {
   return (
     <div style={{
       display: 'flex',
@@ -95,7 +95,7 @@ interface IDevToolsPanel {
   onClose: (visible: false) => void;
 }
 
-export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose }) => {
+export const DevToolsPanel: React.FC<React.PropsWithChildren<IDevToolsPanel>> = ({ onClose }) => {
   const [name, setName] = useState<MenuItemName>(MenuItemName.Empty);
   const contentMap = useMemo(() => [
     <DevMenu onClick={setName} key="devMenu" />,

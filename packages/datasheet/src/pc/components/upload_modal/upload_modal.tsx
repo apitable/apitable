@@ -43,7 +43,7 @@ interface IUploadAttachment {
   editable?: boolean;
 }
 
-export const UploadModal: React.FC<IUploadAttachment> = props => {
+export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> = props => {
   const colors = useThemeColors();
   const {
     recordId,

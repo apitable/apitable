@@ -47,7 +47,7 @@ export interface ITeamworkProps {
   jumpPublicLink: () => void;
 }
 
-export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
+export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, jumpPublicLink }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [joinTeamId, setJoinTeamId] = useState('');

@@ -26,7 +26,7 @@ import { Tooltip } from 'antd';
 import { Strings, t } from '@apitable/core';
 import { usePrevious } from 'ahooks';
 
-export const ScrollBarHorizon: React.FC<IScrollBarProps & IScrollBarHorizon> = props => {
+export const ScrollBarHorizon: React.FC<React.PropsWithChildren<IScrollBarProps & IScrollBarHorizon>> = props => {
   const { gridVisibleLength, dataTotalLength, scrollAreaLength, scrollLeft } = props;
   const { scrollbarRef, slideRef, minScrollBarSize, handleMouseDown, calcSlideOffset } =
     useScrollBar({ ...props, scrollBarOffset: scrollLeft, direction: ScrollBarDirection.Horizon });

@@ -23,7 +23,7 @@ import ArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { useThemeColors } from '@apitable/components';
 
 // richContent: Search results are returned as rich text tags for display highlighting
-export const Folder: React.FC<{ id: string, onClick?: (id: string) => void, richContent?: boolean }> = props => {
+export const Folder: React.FC<React.PropsWithChildren<{ id: string, onClick?: (id: string) => void, richContent?: boolean }>> = props => {
   const { children, id, richContent, onClick } = props;
   const colors = useThemeColors();
   return (

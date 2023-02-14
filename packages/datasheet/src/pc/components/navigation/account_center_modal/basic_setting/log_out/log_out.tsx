@@ -27,7 +27,7 @@ interface ILogoutProps {
   setStep: React.Dispatch<React.SetStateAction<StepStatus>>;
 }
 
-export const Logout: FC<ILogoutProps> = props => {
+export const Logout: FC<React.PropsWithChildren<ILogoutProps>> = props => {
   const { userData, setStep, step } = props;
 
   return (

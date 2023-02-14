@@ -44,7 +44,7 @@ window['_isSocialWecom'] = isSocialWecom;
 
 const widgetRuntimeEnv = query.get('runtimeEnv') as RuntimeEnv;
 
-export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
+export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>> = ({ widgetId }) => {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [isShowingSettings, setIsShowingSettings] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>();
@@ -173,7 +173,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
     }
   }, [connected]);
 
-  const updateConfig = useCallback((config) => {
+  const updateConfig = useCallback((config: any) => {
     widgetStore.dispatch(updateWidgetConfigAction(config));
     widgetMessage.syncWidgetConfig(config);
   }, []);
@@ -192,7 +192,7 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
     updateConfig(config);
   }, [isFullscreen, updateConfig]);
 
-  const expandRecord = useCallback((props) => {
+  const expandRecord = useCallback((props: any) => {
     widgetMessage.expandRecord(props);
   }, []);
 

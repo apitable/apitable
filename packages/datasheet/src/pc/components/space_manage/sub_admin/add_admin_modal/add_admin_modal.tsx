@@ -52,7 +52,7 @@ export enum ModalType {
   Add = 'add',
 }
 
-export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
+export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
   const { subAdminList, userInfo } = useSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],

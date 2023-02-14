@@ -54,7 +54,7 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
   );
 };
 
-export const MirrorListInner: React.FC<IMirrorListInner> = props => {
+export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>> = props => {
   const colors = useThemeColors();
   const { mirrorList, loading } = props;
   const { datasheetId, viewId } = useSelector(state => state.pageParams)!;

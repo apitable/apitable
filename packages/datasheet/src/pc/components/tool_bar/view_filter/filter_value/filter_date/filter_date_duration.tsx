@@ -43,7 +43,7 @@ interface IFilterDateDurationProps {
   condition: IFilterCondition<FieldType>;
 }
 
-export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
+export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDurationProps>> = props => {
   const { conditionIndex, condition, changeFilter } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();

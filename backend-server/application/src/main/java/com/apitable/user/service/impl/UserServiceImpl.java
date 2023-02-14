@@ -18,15 +18,22 @@
 
 package com.apitable.user.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
+import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
+import static com.apitable.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
+import static com.apitable.user.enums.UserException.LINK_EMAIL_ERROR;
+import static com.apitable.user.enums.UserException.MODIFY_PASSWORD_ERROR;
+import static com.apitable.user.enums.UserException.MUST_BIND_EAMIL;
+import static com.apitable.user.enums.UserException.MUST_BIND_MOBILE;
+import static com.apitable.user.enums.UserException.REGISTER_FAIL;
+import static com.apitable.user.enums.UserException.SIGN_IN_ERROR;
+import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
+import static com.apitable.user.enums.UserException.USER_LANGUAGE_SET_UN_SUPPORTED;
+import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
+import static com.apitable.user.enums.UserOperationType.COMPLETE_CLOSING;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -101,31 +108,21 @@ import com.apitable.workspace.service.INodeShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
-import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
-import static com.apitable.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
-import static com.apitable.user.enums.UserException.LINK_EMAIL_ERROR;
-import static com.apitable.user.enums.UserException.MODIFY_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.MUST_BIND_EAMIL;
-import static com.apitable.user.enums.UserException.MUST_BIND_MOBILE;
-import static com.apitable.user.enums.UserException.REGISTER_FAIL;
-import static com.apitable.user.enums.UserException.SIGN_IN_ERROR;
-import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.USER_LANGUAGE_SET_UN_SUPPORTED;
-import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
-import static com.apitable.user.enums.UserOperationType.COMPLETE_CLOSING;
 
 /** User table service implementation class. */
 @Service
@@ -781,6 +778,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         if (ObjectUtil.isNotNull(param.getAvatarColor())) {
             userMapper.updateUserAvatarInfo(userId, null,
                 param.getAvatarColor());
+        }
+        if (StrUtil.isNotBlank(param.getTimeZone())) {
+            user.setTimeZone(param.getTimeZone());
         }
         if (StrUtil.isNotBlank(param.getLocale())) {
             ExceptionUtil.isTrue(
