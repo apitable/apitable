@@ -67,7 +67,6 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
-import dayjs from 'dayjs';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -324,7 +323,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
-      const timeZone = dayjs.tz.guess();
+      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       if (!timeZone) return;
       // set default timeZone
       if (curTimezone === null) {
