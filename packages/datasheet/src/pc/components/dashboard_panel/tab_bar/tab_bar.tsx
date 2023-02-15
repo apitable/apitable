@@ -22,7 +22,7 @@ import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget_center';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
-import { useQuery, useSideBarVisible } from 'pc/hooks';
+import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import RcTrigger from 'rc-trigger';
 import { default as React, useEffect, useRef, useState } from 'react';
@@ -105,6 +105,20 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
     };
   }, shallowEqual);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const previousDashboardName = usePrevious(dashboardName);
+
+  useEffect(() => {
+    if (!previousDashboardName || !dashboardName) return;
+    if (previousDashboardName === dashboardName) return;
+
+    window.parent.postMessage({
+      message: 'changeNodeName', data: {
+        roomId: dashboardId,
+        nodeName: dashboardName
+      }
+    }, '*');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dashboardName, previousDashboardName]);
 
   const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
 

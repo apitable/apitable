@@ -40,7 +40,7 @@ import * as React from 'react';
 import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux'; 
+import { Provider, useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
 import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
@@ -242,7 +242,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'}/>} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'} />} variant='background' />
           </a>
         </Tooltip>}
       </div>
@@ -424,8 +424,12 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
 
   const TabItemIntroduction = ({ introduction }: { introduction: string }) => (
     <div className={styles.tabItemTips}>
-      <DefaultFilled size={16} color={colors.thirdLevelText} />
-      <span>{introduction}</span>
+      {
+        getEnvVariables().WIDGET_CENTER_OFFICIAL_TIP_VISIBLE && <>
+          <DefaultFilled size={16} color={colors.thirdLevelText} />
+          <span>{introduction}</span>
+        </>
+      }
     </div>
   );
 
@@ -548,7 +552,9 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
       >
         <TabPane tab={t(Strings.widget_center_tab_official)} key={WidgetReleaseType.Global}>
           <Scrollbars renderThumbVertical={renderThumb} style={{ width: '100%', height: '100%' }}>
+
             <TabItemIntroduction introduction={t(Strings.widget_center_official_introduction)} />
+
             {
               loading ? <div className={styles.skeletonWrap}>
                 <Skeleton count={1} width='38%' />
