@@ -175,11 +175,10 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);
 
   const handRest = () => {
-    Api.apitableChangePasswordEmail().then(res => {
+    //@ts-ignore
+    Api?.apitableChangePasswordEmail().then(res => {
       const { success, message } = res.data;
-      if (success) {
-        console.log('success');
-      }
+      if (success) return;
       Message.error({ content: message });
       return null;
     });
