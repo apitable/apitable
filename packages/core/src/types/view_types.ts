@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUnitIds } from 'types/field_types';
-import { FieldType, ITimestamp } from './field_types';
-import { t, Strings } from '../exports/i18n';
+import type { IUnitIds } from 'types/field_types';
+import type { FieldType, ITimestamp } from './field_types';
+import { t, Strings } from 'exports/i18n';
 
 export interface ISortedField {
   fieldId: string;

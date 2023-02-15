@@ -79,9 +79,6 @@ import {
 } from '../interfaces/ot.interface';
 import { ResourceChangeHandler } from './resource.change.handler';
 import { RobotEventService } from 'database/robot/services/robot.event.service';
-import fs from 'fs';
-
-fs.writeFileSync('shit.log', '', 'utf-8');
 
 class CellActionMap {
   readonly map: Map<string, Map<string, IJOTAction>> = new Map();
@@ -531,17 +528,6 @@ export class OtService {
           ? (await this.datasheetOtService.getMetaDataByCache(localChangeset.resourceId, effectMap)).fieldMap
           : null;
       const remoteChangeset = OtService.transformLocalChangeset(localChangeset, serverActions, dbRevision, fieldMap);
-      let a1 = fs.readFileSync('shit.log', 'utf-8');
-      a1 += `vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\nclient changeset: ${JSON.stringify(
-        localChangeset,
-        null,
-        2,
-      )}\n================= serverActions: ${JSON.stringify(serverActions, null, 2)}\n================ result:${JSON.stringify(
-        remoteChangeset,
-        null,
-        2,
-      )}\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n`;
-      fs.writeFileSync('shit.log', a1, 'utf-8');
       return remoteChangeset;
     }
 

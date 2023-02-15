@@ -1,6 +1,6 @@
 import { IReduxState } from 'exports/store';
 import { getDatasheet, getMirror } from 'exports/store/selectors';
-import { FieldType, ILinkFieldProperty, ILinkIds } from 'types';
+import { FieldType, ILinkFieldProperty, ILinkIds } from 'types/field_types';
 
 export type ILinkConsistencyError = {
   mainDstId: string;

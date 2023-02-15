@@ -17,8 +17,8 @@
  */
 
 import { BasicValueType, FormulaFuncType, IField } from 'types';
-import { AstNode } from 'formula_parser/parser/ast';
-import { IRecord, IReduxState } from '../../exports/store';
+import type { AstNode } from 'formula_parser/parser/ast';
+import type { IRecord, IReduxState } from 'exports/store';
 
 export interface IFormulaParam<T = any> {
   node: AstNode;

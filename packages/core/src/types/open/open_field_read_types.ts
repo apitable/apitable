@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from '../field_api_enums';
-import { IFormat } from '../field_api_property_types';
-import { BasicValueType, CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
+import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from '../field_api_enums';
+import type { IFormat } from '../field_api_property_types';
+import type { BasicValueType, CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
 export interface IOpenField {
   /** fieldId */
   id: string;

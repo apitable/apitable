@@ -21,9 +21,11 @@
 import dayjs, { Dayjs, isDayjs, QUnitType } from 'dayjs';
 import { FormulaBaseError, FormulaFunc, IFormulaContext, IFormulaParam } from './basic';
 import { BasicValueType, FormulaFuncType } from 'types';
-import { AstNode, ValueOperandNode } from 'formula_parser/parser';
-import { dateStrReplaceCN } from 'utils';
+import type { AstNode, ValueOperandNode } from 'formula_parser/parser/ast';
+import { dateStrReplaceCN } from 'utils/string';
 import { TokenType } from 'formula_parser/lexer';
+import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
+import { UnitError } from 'formula_parser/errors/unit.error';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
@@ -48,8 +50,6 @@ import 'dayjs/locale/de'; // german
 import 'dayjs/locale/ja'; // Japanese
 import 'dayjs/locale/ko'; // Korean
 import 'dayjs/locale/hi'; // Hindi
-import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
-import { UnitError } from 'formula_parser/errors/unit.error';
 
 dayjs.extend(quarterOfYear);
 dayjs.extend(weekOfYear);

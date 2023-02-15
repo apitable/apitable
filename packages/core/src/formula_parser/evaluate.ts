@@ -16,19 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FormulaExprLexer } from './lexer/lexer';
-import { AstNode } from './parser/ast';
-import { FormulaExprParser } from './parser/parser';
+import { AstNode, FormulaExprParser } from './parser';
 import { Interpreter, ResolverFunction } from './interpreter/interpreter';
-import { IFieldMap, IFieldPermissionMap, IReduxState, Selectors } from '../exports/store';
-import { TokenType } from './lexer';
-import { getCellValue, getDatasheet, getFieldMap } from '../exports/store/selectors';
+import { IFieldMap, IFieldPermissionMap, IReduxState, Selectors } from 'exports/store';
+import { TokenType, FormulaExprLexer } from './lexer';
+import { getCellValue, getDatasheet, getFieldMap } from 'exports/store/selectors';
 import { Field, LookUpField, ArrayValueField } from 'model';
 import { IFormulaContext, IFormulaEvaluateContext, FormulaBaseError } from './functions/basic';
 import { BasicValueType, FieldType, IField } from 'types';
-import { t, Strings } from '../exports/i18n';
+import { t, Strings } from 'exports/i18n';
 import { isFinite, isNumber } from 'lodash';
 import { ConfigConstant } from 'config';
+import { ROLLUP_KEY_WORDS } from './consts';
 
 export interface IFormulaExpr {
   lexer: FormulaExprLexer;
@@ -38,9 +37,6 @@ export interface IFormulaExpr {
 export interface IFormulaError {
   error: Error;
 }
-
-// reserved keyword: values are used to rollup the lookup field
-export const ROLLUP_KEY_WORDS = 'values';
 
 function resolverWrapper(context: IFormulaContext): ResolverFunction {
   /**
@@ -72,9 +68,11 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
 
     const field = fieldMap[fieldId];
     if (!field && !fieldRole) {
-      throw new Error(t(Strings.view_field_search_not_found_tip, {
-        value: fieldId,
-      }));
+      throw new Error(
+        t(Strings.view_field_search_not_found_tip, {
+          value: fieldId,
+        }),
+      );
     }
 
     const record = context.record;
@@ -99,7 +97,6 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
     }
     return cellValue;
   };
-
 }
 
 // The buffer for the calculation result of the formula field. The input value is unchanged and does not need to be recalculated
@@ -128,7 +125,9 @@ export class ExpCache {
 }
 
 export function parse(
-  expression: string, context: { field: IField, fieldMap: IFieldMap, state: IReduxState }, updateCache?: boolean,
+  expression: string,
+  context: { field: IField; fieldMap: IFieldMap; state: IReduxState },
+  updateCache?: boolean,
 ): IFormulaExpr | IFormulaError {
   if (!expression || !expression.trim()) {
     return {
@@ -137,7 +136,7 @@ export function parse(
   }
 
   const field = context.field;
-  const datasheetId = (field && (field.property && (field.property as any).datasheetId)) || '';
+  const datasheetId = (field && field.property && (field.property as any).datasheetId) || '';
 
   if (!updateCache && ExpCache.has(datasheetId, field.id, expression)) {
     return ExpCache.get(datasheetId, field.id, expression)!;
@@ -168,12 +167,7 @@ export function parse(
  * @param {Resolver} [resolver]
  * @returns {any}
  */
-export function evaluate(
-  expression: string,
-  context: IFormulaEvaluateContext,
-  shouldThrow?: boolean,
-  forceThrow?: boolean,
-): any {
+export function evaluate(expression: string, context: IFormulaEvaluateContext, shouldThrow?: boolean, forceThrow?: boolean): any {
   if (!expression) {
     return null;
   }
@@ -209,7 +203,9 @@ export function evaluate(
 
 // Convert an expression with fieldName as variable name to an expression with fieldId as variable name
 export function expressionTransform(
-  expression: string, { fieldMap, fieldPermissionMap }: { fieldMap: IFieldMap, fieldPermissionMap?: IFieldPermissionMap }, to: 'id' | 'name',
+  expression: string,
+  { fieldMap, fieldPermissionMap }: { fieldMap: IFieldMap; fieldPermissionMap?: IFieldPermissionMap },
+  to: 'id' | 'name',
 ): string {
   if (!expression) {
     return expression;
@@ -249,9 +245,11 @@ export function expressionTransform(
       if (/[/+\-|=*/><()（）!&%'"“”‘’^`~,，\s]/.test(name)) {
         return `{${name}}`;
       }
-      console.log(t(Strings.not_found_field_the_name_as, {
-        value: pureTokenValue,
-      }));
+      console.log(
+        t(Strings.not_found_field_the_name_as, {
+          value: pureTokenValue,
+        }),
+      );
       return name;
     }
 
@@ -269,9 +267,11 @@ export function expressionTransform(
         return to === 'id' ? `{${field.id}}` : `{${field.name.replace(/[{}\\]/g, '\\$&')}}`;
       }
 
-      console.log(t(Strings.not_found_field_the_name_as, {
-        value: pureTokenValue,
-      }));
+      console.log(
+        t(Strings.not_found_field_the_name_as, {
+          value: pureTokenValue,
+        }),
+      );
       return tokenValue;
     }
 

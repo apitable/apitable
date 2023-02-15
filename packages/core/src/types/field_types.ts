@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { t, Strings } from '../exports/i18n';
-import { IFilterInfo } from './view_types';
+import { t, Strings } from 'exports/i18n';
+import type { IFilterInfo } from './view_types';
+
 /* eslint-disable */
 export type ITextFieldProperty = null;
 export type IEmailProperty = null;

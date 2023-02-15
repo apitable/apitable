@@ -17,7 +17,7 @@
  */
 
 import accept from 'attr-accept';
-import { IAttachmentValue } from 'types/field_types';
+import type { IAttachmentValue } from 'types/field_types';
 import urlcat from 'urlcat';
 
 export enum CutMethod {

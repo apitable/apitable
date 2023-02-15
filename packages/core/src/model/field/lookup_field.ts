@@ -17,7 +17,8 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
-import { evaluate, parse, ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';
+import { evaluate, parse } from 'formula_parser/evaluate';
+import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { Functions } from 'formula_parser/functions';
 import { Strings, t } from '../../exports/i18n';
 import Joi from 'joi';

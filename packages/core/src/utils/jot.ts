@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAnyAction } from 'engine';
+import type { IAnyAction } from 'engine';
 
 export enum ActionType {
   AddRow = 'addRow',
