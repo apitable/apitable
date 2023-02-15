@@ -212,6 +212,17 @@ export const setUserAvatarColor = (data: number | null) => {
 };
 
 /**
+ * set user timezone
+ * @param data timezone
+ */
+export const setUserTimeZone = (data: string | null) => {
+  return {
+    type: actions.SET_USER_TIMEZONE,
+    payload: data,
+  };
+};
+
+/**
  * get verify code by email
  * @param email 
  */
