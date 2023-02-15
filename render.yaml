@@ -11,4 +11,4 @@ services:
     disk:
       name: apitable-data
       mountPath: /apitable
-      sizeGB: 20
+      sizeGB: 50
