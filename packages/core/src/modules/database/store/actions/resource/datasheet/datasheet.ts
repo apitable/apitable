@@ -44,6 +44,7 @@ import {
   IServerDatasheetPack,
   ISetFieldInfoState,
   ISnapshot,
+  ModalConfirmKey,
 } from '../../../../../../exports/store';
 import {
   ACTIVE_EXPORT_VIEW_ID,
@@ -110,14 +111,7 @@ import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../
 import { FieldType } from 'types';
 import { consistencyCheck } from 'utils';
 import produce from 'immer';
-
-// export const applyJOTOperations = (operations: IOperation[], datasheetId: string): IJOTActionPayload => {
-//   return {
-//     type: JOT_ACTION,
-//     payload: { operations },
-//     datasheetId,
-//   };
-// };
+import { checkLinkConsistency } from 'utils/link_consistency_check';
 
 export function requestDatasheetPack(datasheetId: string) {
   return {
@@ -126,10 +120,7 @@ export function requestDatasheetPack(datasheetId: string) {
   };
 }
 
-function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boolean, getState?: () => IReduxState) {
-  if (isPartOfData) {
-    return;
-  }
+function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => IReduxState) {
   const { snapshot, datasheet } = payload;
 
   // @su
@@ -168,12 +159,33 @@ function consistencyCheckHandle(payload: IServerDatasheetPack, isPartOfData: boo
     });
 
     Player.doTrigger(Events.app_modal_confirm, {
-      key: 'fixConsistency',
+      key: ModalConfirmKey.FixInnerConsistency,
       metaData: {
         datasheetId: datasheet.id,
       },
     });
   }
+}
+
+function ensureLinkConsistency(state: IReduxState) {
+  const error = checkLinkConsistency(state);
+  if (!error || !error.missingRecords.size) {
+    return;
+  }
+
+  Player.doTrigger(Events.app_error_logger, {
+    error: new Error(t(Strings.error_data_consistency_and_check_the_snapshot)),
+    metaData: {
+      error,
+    },
+  });
+
+  Player.doTrigger(Events.app_modal_confirm, {
+    key: ModalConfirmKey.FixLinkConsistency,
+    metaData: {
+      error,
+    },
+  });
 }
 
 const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getState?: () => IReduxState) => {
@@ -206,15 +218,15 @@ const checkSortInto = (snapshot: ISnapshot) => {
 
 export function receiveDataPack<T extends IServerDatasheetPack = IServerDatasheetPack>(
   payload: T,
-  options?: { isPartOfData?: boolean; checkConsistency?: boolean; getState?: () => IReduxState },
+  options?: { isPartOfData?: boolean; fixConsistency?: boolean; getState?: () => IReduxState },
 ): ILoadedDataPackAction {
   const { snapshot, datasheet } = payload;
-  const { isPartOfData = false, checkConsistency = true, getState } = options ?? {};
+  const { isPartOfData = false, fixConsistency = true, getState } = options ?? {};
 
-  if (checkConsistency) {
+  if (fixConsistency && !isPartOfData) {
     // TODO: move data consistency check  to node layer, and ensure full recover mechanism
     // check data consistency only when data is editable
-    consistencyCheckHandle(payload, isPartOfData, getState);
+    ensureInnerConsistency(payload, getState);
   }
 
   return {
@@ -353,6 +365,13 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
         })
         .then(props => {
           fetchDatasheetPackSuccess(props);
+          if (props.responseBody.success) {
+            if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
+              dispatch((_dispatch: any, getState: () => IReduxState) => {
+                ensureLinkConsistency(getState());
+              });
+            }
+          }
         });
     }
     return;
@@ -442,6 +461,7 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
     }
     dispatch(batchActions(dispatchActions));
   }
+
   if (!responseBody.success) {
     dispatch(datasheetErrorCode(datasheetId, responseBody.code));
   }
