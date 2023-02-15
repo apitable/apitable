@@ -47,7 +47,7 @@ export class LoggerConfigService implements WinstonModuleOptionsFactory {
   private defaultMaxSize = process.env.LOGGING_MAX_FILE_SIZE || '50m';
 
   // logger rotate maxFiles
-  private defaultMaxFiles = '14d';
+  private defaultMaxFiles = process.env.LOGGER_MAX_HISTORY_DAYS || '7d';
 
   // logger formatter
   private formatter = winston.format.combine(
