@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '../exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import { isString } from 'lodash';
-import { ICellValue } from 'model';
+import type { ICellValue } from 'model';
 
 /**
  * Filter the strings in the cells of the numeric column, that is, illegal processing

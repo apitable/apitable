@@ -42,6 +42,7 @@ export {
 };
 
 export * from './emojis_config';
+export * from './timezones';
 export * from './dom_id';
 export * from './konva_id';
 export * from './env';

@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t, IUserInfo, TIMEZONES } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -118,7 +118,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     }
     return LoadingStatus.None;
   });
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
@@ -305,6 +305,46 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     descMeta.content = t(Strings.client_meta_label_desc);
   }, []);
+
+  const curTimezone = userData?.timeZone;
+  const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
+    Api.updateUser({ timeZone }).then((res: any) => {
+      const { success } = res.data;
+      if (success) {
+        store.dispatch(StoreActions.setUserTimeZone(timeZone));
+        setUserData({
+          ...userData!,
+          timeZone,
+        })
+        cb?.();
+      }
+    })
+  }
+
+  useEffect(() => {
+    const checkTimeZoneChange = () => {
+      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!timeZone) return;
+      // set default timeZone
+      if (curTimezone === null) {
+        updateUserTimeZone(timeZone);
+      } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
+        updateUserTimeZone(timeZone, () => {
+          const currentTimeZoneData = TIMEZONES.find((tz: { utc: string; tzCode: string; }) => tz.tzCode === timeZone);
+          Modal.warning({
+            title: t(Strings.notify_time_zone_change_title),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
+          })
+        })
+      }
+    }
+    checkTimeZoneChange();
+    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [curTimezone]);
 
   return <>
     <Head>

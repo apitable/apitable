@@ -2,7 +2,7 @@
     "strings": {
         "access_to_space_station_editors": {
             "zh_CN": "进入空间站编辑",
-            "en_US": "Enter the Space to edit",
+            "en_US": "Enter the space to edit",
             "zh_HK": "進入空間站編輯"
         },
         "account_ass_manage": {
@@ -892,6 +892,10 @@
             "en_US": "Upload attachments",
             "zh_HK": "上傳文件"
         },
+        "api_param_add_widget_btn_type_error": {
+            "zh_CN": "参数 addWidgetBtn 只接受 boolean 类型的值",
+            "en_US": "the parameter addWidgetBtn must be a boolean type"
+        },
         "api_param_api_btn_type_error": {
             "zh_CN": "参数 apiBtn 只接受 boolean 类型的值",
             "en_US": "the parameter apiBtn must be a boolean type"
@@ -924,6 +928,10 @@
             "zh_CN": "field:{field} 勾选字段必须是布尔值",
             "en_US": "field:{field} Checkbox field value must be boolean",
             "zh_HK": "field:{field} 勾選字段必須是布爾值"
+        },
+        "api_param_collaborator_status_bar_type_error": {
+            "zh_CN": "参数 collaboratorStatusBar 只接受 boolean 类型的值",
+            "en_US": "the parameter collaboratorStatusBar must be a boolean type"
         },
         "api_param_collapsed_type_error": {
             "zh_CN": "参数 collapsed 只接受 boolean 类型的值",
@@ -961,6 +969,10 @@
             "zh_CN": "{value}",
             "en_US": "{value}",
             "zh_HK": "{value}"
+        },
+        "api_param_full_screen_btn_type_error": {
+            "zh_CN": "参数 fullScreenBtn 只接受 boolean 类型的值",
+            "en_US": "the parameter fullScreenBtn must be a boolean type"
         },
         "api_param_history_btn_type_error": {
             "zh_CN": "参数 historyBtn 只接受 boolean 类型的值",
@@ -1013,6 +1025,10 @@
         "api_param_node_id_not_empty_key": {
             "zh_CN": "参数 nodeId 为必填项",
             "en_US": "the parameter nodeId is required"
+        },
+        "api_param_node_info_bar_type_error": {
+            "zh_CN": "参数 titleBar 只接受 boolean 类型的值",
+            "en_US": "the parameter titleBar must be a boolean type"
         },
         "api_param_number_field_type_error": {
             "zh_CN": "field:{field} 数字字段的值必须是数字",
@@ -1384,6 +1400,10 @@
             "en_US": "SERVER_ERROR ({value})",
             "zh_HK": "SERVER_ERROR ({value})"
         },
+        "api_set_view_lock_error": {
+            "zh_CN": "修改视图锁失败",
+            "en_US": "Failed to update view lock info"
+        },
         "api_show_token": {
             "zh_CN": "显示 API Token",
             "en_US": "Show API Token",
@@ -1446,7 +1466,7 @@
         },
         "api_usage": {
             "zh_CN": "API 用量",
-            "en_US": "API usage",
+            "en_US": "API Usage",
             "zh_HK": "API 用量"
         },
         "api_view_fieldid_not_exist": {
@@ -1502,13 +1522,25 @@
             "zh_CN": "Choose Pro",
             "en_US": "Choose Pro"
         },
+        "apitable_og_product_description_content": {
+            "zh_CN": "APITable is an API-first, embed-friendly no-code database, the best Airtable open-source alternative. Get your data and projects managed magically.",
+            "en_US": "APITable is an API-first, embed-friendly no-code database, the best Airtable open-source alternative. Get your data and projects managed magically."
+        },
+        "apitable_og_site_name_content": {
+            "zh_CN": "APITable | Open source no-code database and Airtable alternative",
+            "en_US": "APITable | Open source no-code database and Airtable alternative"
+        },
         "apitable_origin_price_by_month": {
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
-            "en_US": "{\n    \"plus\": \"$18\",\n    \"pro\": \"$30\"\n}"
+            "en_US": "{\n    \"plus\": \"$8\",\n    \"pro\": \"$16\"\n}"
         },
         "apitable_origin_price_by_year": {
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
-            "en_US": "{\n    \"plus\": \"$11\",\n    \"pro\": \"$20\"\n}"
+            "en_US": "{\n    \"plus\": \"$6\",\n    \"pro\": \"$14\"\n}"
+        },
+        "apitable_price_sub_title": {
+            "zh_CN": "Early Bird Offer ${discount} Ends March 1,2023",
+            "en_US": "Early Bird Offer ${discount} Ends March 7,2023"
         },
         "apitable_privatized_deployment_desc": {
             "zh_CN": "Manage it yourself",
@@ -1578,10 +1610,38 @@
             "en_US": "All-platform client support",
             "zh_HK": "全平台客戶端支持"
         },
+        "archive_record_in_menu": {
+            "zh_CN": "归档记录",
+            "en_US": "Archive record"
+        },
+        "archive_record_success": {
+            "zh_CN": "已归档记录",
+            "en_US": "Successfully archived records"
+        },
+        "archive_records_exceed_num": {
+            "zh_CN": "归档记录已达到 10000 条，无法继续添加",
+            "en_US": "Archived records have reached 10000, can't continue to add"
+        },
+        "archive_records_in_menu": {
+            "zh_CN": "归档 ${chose_num} 条记录",
+            "en_US": "Archive ${chose_num} records"
+        },
+        "archive_records_success": {
+            "zh_CN": "已归档 ${chose_num} 条记录",
+            "en_US": "${chose_num} record(s) successfully archived"
+        },
         "archived_failure": {
             "zh_CN": "转存失败",
             "en_US": "Transferring failed",
             "zh_HK": "轉存失敗"
+        },
+        "archived_operator_description": {
+            "zh_CN": "${archived_operator} 归档了 ${archived_num} 条记录",
+            "en_US": "${archived_operator} archived ${archived_num} record(s)"
+        },
+        "archived_records": {
+            "zh_CN": "归档箱",
+            "en_US": "Archived records"
         },
         "archived_successfully": {
             "zh_CN": "转存成功",
@@ -1770,7 +1830,7 @@
         },
         "back_workbench": {
             "zh_CN": "回到工作台",
-            "en_US": "Back to Workbench",
+            "en_US": "Workbench",
             "zh_HK": "回到工作台"
         },
         "background_purple": {
@@ -1815,7 +1875,7 @@
         },
         "batch_remove": {
             "zh_CN": "移出小组",
-            "en_US": "Move out of the team",
+            "en_US": "Remove",
             "zh_HK": "移出小組"
         },
         "behavior_type": {
@@ -1947,6 +2007,11 @@
             "zh_CN": "立即体验",
             "en_US": "Start now",
             "zh_HK": "立即體驗"
+        },
+        "bronze_grade": {
+            "zh_CN": "青铜级",
+            "en_US": "Bronze",
+            "zh_HK": "青銅級"
         },
         "bronze_img": {
             "zh_CN": "URL",
@@ -2195,7 +2260,7 @@
         },
         "can_read": {
             "zh_CN": "只可阅读",
-            "en_US": "Read only",
+            "en_US": "Read-only",
             "zh_HK": "只可閱讀"
         },
         "can_updater": {
@@ -2354,7 +2419,7 @@
         },
         "change_main_admin": {
             "zh_CN": "变更主管理员",
-            "en_US": "Change admin",
+            "en_US": "Change",
             "zh_HK": "變更主管理員"
         },
         "change_member_team_fail": {
@@ -2389,7 +2454,7 @@
         },
         "change_primary_admin": {
             "zh_CN": "更换主管理员",
-            "en_US": "Change admin",
+            "en_US": "Change",
             "zh_HK": "更換主管理員"
         },
         "change_primary_admin_succeed": {
@@ -2828,6 +2893,10 @@
             "en_US": " deleted record",
             "zh_HK": "刪除了記錄"
         },
+        "command_fix_consistency": {
+            "zh_CN": "修复了数据",
+            "en_US": " fixed data consistency"
+        },
         "command_insert_comment": {
             "zh_CN": "添加了评论",
             "en_US": " commented",
@@ -2930,7 +2999,7 @@
             "zh_HK": "交流群"
         },
         "community": {
-            "zh_CN": "社区版(COMMING SOON)",
+            "zh_CN": "社区版",
             "en_US": "Community"
         },
         "community_and_local_interest": {
@@ -3037,6 +3106,10 @@
             "zh_CN": "确认加入空间站",
             "en_US": "Confirm to join the Space",
             "zh_HK": "確認加入空間站"
+        },
+        "confirm_link_inconsistency_detected": {
+            "zh_CN": "关联字段发现异常数据，是否自动修复？",
+            "en_US": "Abnormal data have been found in link cells, fix them automatically?"
         },
         "confirm_link_toggle_clear_filter": {
             "zh_CN": "请确定切换关联列，切换后筛选条件将被清空",
@@ -3485,7 +3558,7 @@
         },
         "current_count_of_person": {
             "zh_CN": "现有成员数",
-            "en_US": "Total members",
+            "en_US": "Total Members",
             "zh_HK": "現有成員數"
         },
         "current_field_fail": {
@@ -3675,7 +3748,7 @@
         },
         "dating_back_to": {
             "zh_CN": "可回溯",
-            "en_US": "Can go back up to",
+            "en_US": "go back",
             "zh_HK": "可回溯"
         },
         "day": {
@@ -3807,6 +3880,10 @@
             "zh_CN": "删除",
             "en_US": "Delete",
             "zh_HK": "刪除"
+        },
+        "delete_archived_records_warning_description": {
+            "zh_CN": "该记录将被永久删除，也无法再还原到表格中，是否继续？",
+            "en_US": "Record(s) will be permanently deleted and can't be restored to datasheet. Do you want to continue?"
         },
         "delete_comment_tip_content": {
             "zh_CN": "评论删除后无法恢复，确定要删除吗？",
@@ -4362,6 +4439,22 @@
             "zh_CN": "请输入邮箱",
             "en_US": "Enter email address",
             "zh_HK": "請輸入郵箱"
+        },
+        "email_verify_warning_button_back": {
+            "zh_CN": "返回登录页面",
+            "en_US": "Return to login page"
+        },
+        "email_verify_warning_button_resend": {
+            "zh_CN": "重新发送",
+            "en_US": "Resend email"
+        },
+        "email_verify_warning_desc": {
+            "zh_CN": "带有确认链接的消息已发送至 ${email_address}。请点击链接激活您的帐户。",
+            "en_US": "A message with a confirmation link has been sent to ${email_address}. Please follow the link to activate your account."
+        },
+        "email_verify_warning_title": {
+            "zh_CN": "请验证你的电子邮件",
+            "en_US": "Please confirm your email"
         },
         "embed_error_page_help": {
             "zh_CN": "点击了解失效原因",
@@ -7170,7 +7263,7 @@
         },
         "gantt_historical_data_warning": {
             "zh_CN": "是否要处理历史数据",
-            "en_US": "Do you want to deal with historical data?"
+            "en_US": "How to handle old data?"
         },
         "gantt_init_fields_button": {
             "zh_CN": "创建日期字段",
@@ -7213,12 +7306,12 @@
         },
         "gantt_open_auto_schedule_warning": {
             "zh_CN": "是否要根据依赖关系对目前已有的任务进行自动编排？编排后部分后置任务的开始和结束日期会被自动修改",
-            "en_US": "When turned on, Do you want tasks with dependencies will be aligned automatically? the date of some tasks will be changed",
+            "en_US": "Do you want tasks with dependencies to be automatically aligned when this feature is on? Some tasks' dates will be changed.",
             "zh_HK": "是否要根據依賴關係對目前已有的任務進行自動編排？編排後部分後置任務的開始和結束日期會被自動修改"
         },
         "gantt_open_auto_schedule_warning_no": {
             "zh_CN": "不修改历史数据",
-            "en_US": "Do not modify historical data",
+            "en_US": "Don't change old data",
             "zh_HK": "不修改歷史數據"
         },
         "gantt_pick_dates_tips": {
@@ -7920,7 +8013,7 @@
         },
         "installation": {
             "zh_CN": "安装",
-            "en_US": "installation"
+            "en_US": "Installation"
         },
         "integer": {
             "zh_CN": "整数（2）",
@@ -9223,8 +9316,8 @@
         },
         "max_record_num_per_dst": {
             "zh_CN": "当前支持的单表上限为 5w 行",
-            "en_US": "The current limit for a single datasheet is 5w rows",
-            "zh_HK": "當前支持的單表上限為 5w 行"
+            "en_US": "The current limit for a single datasheet is 50000 rows",
+            "zh_HK": "當前支持的單表上限為 50000 行"
         },
         "max_records": {
             "zh_CN": "记录数上限：${count}条",
@@ -9682,7 +9775,7 @@
         },
         "more_template": {
             "zh_CN": "更多模板",
-            "en_US": "More templates",
+            "en_US": "More",
             "zh_HK": "更多模板"
         },
         "more_tips": {
@@ -9872,7 +9965,7 @@
         },
         "new_space": {
             "zh_CN": "新建空间站",
-            "en_US": "New Space",
+            "en_US": "Create a New Space",
             "zh_HK": "新建空間站"
         },
         "new_space_is_unactived": {
@@ -9881,9 +9974,9 @@
             "zh_HK": "你的空間站數量已達10個上限。當前受邀的空間站將處於未激活狀態，且暫時無法訪問。"
         },
         "new_space_tips": {
-            "zh_CN": "Hi，给你的空间站起个名字吧～",
-            "en_US": "First, name your Space~",
-            "zh_HK": "Hi，給你的空間站起個名字吧～"
+            "zh_CN": " ",
+            "en_US": " ",
+            "zh_HK": " "
         },
         "new_view": {
             "zh_CN": "创建视图",
@@ -10826,7 +10919,7 @@
         },
         "other_views": {
             "zh_CN": "高级视图",
-            "en_US": "Advanced View",
+            "en_US": "Advanced Views",
             "zh_HK": "高級視圖"
         },
         "owner": {
@@ -11114,15 +11207,20 @@
             "en_US": "Enter ${minCount}-${maxCount} characters",
             "zh_HK": "請輸入 ${minCount}-${maxCount} 字的暱稱"
         },
+        "placeholder_input_password": {
+            "zh_CN": "请输入密码",
+            "en_US": "Enter a password",
+            "zh_HK": "請輸入密碼"
+        },
         "placeholder_input_team_name": {
             "zh_CN": "请输入小组名称",
             "en_US": "Name the team",
             "zh_HK": "請輸入小組名稱"
         },
         "placeholder_input_workspace_name": {
-            "zh_CN": "请输入空间站名称（${minCount}-${maxCount} 个字符）",
-            "en_US": "Enter a name with ${minCount}-${maxCount} characters",
-            "zh_HK": "請輸入空間站名稱（${minCount}-${maxCount} 個字符）"
+            "zh_CN": "请输入空间站名称",
+            "en_US": "Enter space name",
+            "zh_HK": "請輸入空間站名稱"
         },
         "placeholder_input_workspace_new_name": {
             "zh_CN": "请输入新的空间站名称（${minCount}~${maxCount}个字）",
@@ -11155,12 +11253,12 @@
             "zh_HK": "已完成添加"
         },
         "player_step_ui_config_166": {
-            "zh_CN": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
-            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save Big!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the  bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
+            "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save 50%!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the early bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
         },
         "player_step_ui_config_167": {
-            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}",
-            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Other Things\",\n        \"Manufacture\",\n        \"Business Owner\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
+            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Manufacture\",\n        \"Other Things\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\",\n        \"Through a friend\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
         },
         "please": {
             "zh_CN": "请",
@@ -11424,7 +11522,7 @@
         },
         "public_cloud": {
             "zh_CN": "公有云",
-            "en_US": "CLOUD"
+            "en_US": "Cloud"
         },
         "public_link": {
             "zh_CN": "公开链接",
@@ -11795,7 +11893,7 @@
         },
         "remove_from_the_team": {
             "zh_CN": "移出小组",
-            "en_US": "Move out of the team",
+            "en_US": "Remove",
             "zh_HK": "移出小組"
         },
         "remove_member_fail": {
@@ -11951,6 +12049,11 @@
             "en_US": "Reset",
             "zh_HK": "重置"
         },
+        "reset_password_via_email": {
+            "zh_CN": "通过电子邮件重置密码",
+            "en_US": "Reset password via email",
+            "zh_HK": "通過電子郵件重置密碼"
+        },
         "resource_load_failed": {
             "zh_CN": "资源加载失败，请刷新后再试",
             "en_US": "Loading failed, please refresh and try again",
@@ -11981,6 +12084,10 @@
             "en_US": "Remaining: ${memory}",
             "zh_HK": "剩餘空間站容量：${memory}"
         },
+        "restore": {
+            "zh_CN": "取消归档",
+            "en_US": "Restore"
+        },
         "restore_space": {
             "zh_CN": "恢复空间站",
             "en_US": "Restore Space",
@@ -11990,6 +12097,10 @@
             "zh_CN": "此空间站将正式删除",
             "en_US": "This Space will be deleted forever at this given time",
             "zh_HK": "此空間站將正式刪除"
+        },
+        "restore_success": {
+            "zh_CN": "还原成功",
+            "en_US": "Restored successfully"
         },
         "retail": {
             "zh_CN": "零售业",
@@ -12328,7 +12439,7 @@
         },
         "robot_new_action": {
             "zh_CN": "新的操作",
-            "en_US": "New action",
+            "en_US": "Add an action",
             "zh_HK": "新的操作"
         },
         "robot_new_action_tooltip": {
@@ -13676,7 +13787,7 @@
         },
         "share_only_desc": {
             "zh_CN": "他人在空间站外只有查看表格的权限",
-            "en_US": "External users outside the Space can only view the file",
+            "en_US": "External users outside the space can only view the file",
             "zh_HK": "他人在空間站外只有查看表格的權限"
         },
         "share_only_title": {
@@ -13902,6 +14013,10 @@
             "en_US": "Skip",
             "zh_HK": "跳過"
         },
+        "slider_verification_tips": {
+            "zh_CN": "请按住滑块，拖动到最右边",
+            "en_US": "Please hold the slider and drag to the right"
+        },
         "slovakia": {
             "zh_CN": "斯洛伐克",
             "en_US": "Slovakia",
@@ -14082,7 +14197,7 @@
         },
         "space_capacity": {
             "zh_CN": "附件容量",
-            "en_US": "Attachments storage",
+            "en_US": "Attachments Storage",
             "zh_HK": "附件容量"
         },
         "space_changed_ordinary_user": {
@@ -14516,6 +14631,18 @@
             "en_US": "Submit requirements",
             "zh_HK": "提交需求"
         },
+        "subscribe_grade_free": {
+            "zh_CN": "Free",
+            "en_US": "Free"
+        },
+        "subscribe_grade_plus": {
+            "zh_CN": "Plus",
+            "en_US": "Plus"
+        },
+        "subscribe_grade_pro": {
+            "zh_CN": "Pro",
+            "en_US": "Pro"
+        },
         "success": {
             "zh_CN": "成功",
             "en_US": "Success",
@@ -14581,7 +14708,7 @@
         },
         "support_access_to_editors": {
             "zh_CN": "当前空间站支持进入编辑",
-            "en_US": "You are allowed to access the current Space to edit.",
+            "en_US": "You are allowed to access the current space to edit.",
             "zh_HK": "當前空間站支持進入編輯"
         },
         "support_attachment_formats": {
@@ -15354,7 +15481,7 @@
         },
         "total_records": {
             "zh_CN": "空间站记录数",
-            "en_US": "Total records",
+            "en_US": "Total Records",
             "zh_HK": "空間站記錄數"
         },
         "total_storage": {
@@ -16085,7 +16212,7 @@
         },
         "welcome_more_help": {
             "zh_CN": "更多帮助",
-            "en_US": "More Help",
+            "en_US": "More",
             "zh_HK": "更多幫助"
         },
         "welcome_sub_title2": {
@@ -16177,6 +16304,11 @@
             "zh_CN": "下架小程序",
             "en_US": "Unpublish widget",
             "zh_HK": "下架小程序"
+        },
+        "widget_center_official_introduction": {
+            "zh_CN": "官方推荐的小程序由官方认证的开发者发布，所有空间站皆可安装使用",
+            "en_US": "Recommended widgets are published by officially certified developers and can be installed in all Spaces",
+            "zh_HK": "官方推薦的小程序由官方認證的開發者發布，所有空間站皆可安裝使用"
         },
         "widget_center_publisher": {
             "zh_CN": "发布者：",
@@ -16720,7 +16852,7 @@
         },
         "without_day": {
             "zh_CN": "无期限",
-            "en_US": "unlimited",
+            "en_US": "indefinite",
             "zh_HK": "無期限"
         },
         "work_data": {

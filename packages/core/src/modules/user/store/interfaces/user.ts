@@ -92,7 +92,8 @@ export interface IUserInfo {
    * a global switch.
    * whether permits to send subscription notification message 
    */
-  sendSubscriptionNotify: boolean; 
+  sendSubscriptionNotify: boolean;
+  timeZone: string | null;
 }
 
 export interface IUser {
@@ -155,6 +156,11 @@ export interface ISetUserAvatarAction {
 export interface ISetUserAvatarColorAction {
   type: typeof actions.SET_USER_AVATAR_COLOR;
   payload: number | null;
+}
+
+export interface ISetUserTimezoneAction {
+  type: typeof actions.SET_USER_TIMEZONE;
+  payload: string | null;
 }
 
 export interface ISetReqStatusAction {

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   SingleSelectField,
 } from 'model';
 import { IField, FieldType } from 'types/field_types';

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, FC, useContext } from 'react';
+import { memo, FC, useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { NoPermission } from '../no_permission';
@@ -37,6 +37,19 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
     const formLoading = Selectors.getFormLoading(state);
     return Boolean(!form) || formLoading;
   });
+
+  useEffect(() => {
+    const load = () => {
+      window.parent.postMessage({
+        message: 'pageLoaded',
+      }, '*');
+    };
+
+    window.addEventListener('load', load);
+    return () => {
+      window.removeEventListener('load', load);
+    };
+  }, []);
 
   const isNoPermission = (
     formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ||

@@ -17,11 +17,11 @@
  */
 
 import { Token, TokenType } from '../lexer/token';
-import { IFieldMap, IReduxState } from '../../exports/store';
+import type { IFieldMap, IReduxState } from 'exports/store';
 import { Field } from 'model';
 import { BasicValueType, IField } from 'types';
-import { ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';
-import { t, Strings } from '../../exports/i18n';
+import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
+import { t, Strings } from 'exports/i18n';
 
 export enum AstNodeType {
   BinaryOperatorNode = 'BinaryOperatorNode',
