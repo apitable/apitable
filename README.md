@@ -255,6 +255,14 @@ curl https://apitable.github.io/install.sh | bash
 
 Then open [http://localhost:80](http://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
 ## 🧑‍💻 Contributing
