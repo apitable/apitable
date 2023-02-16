@@ -60,7 +60,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
-import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
@@ -378,7 +377,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         `}
     </Script>
     {/*Baidu Statistics*/}
-    <Script id={'baiduAnalyse'}>
+    {!env.DISABLE_AWSC && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
@@ -388,7 +387,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             s.parentNode.insertBefore(hm, s);
           })();
         `}
-    </Script>
+    </Script>}
     <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
@@ -424,9 +423,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           })
         `}
     </Script>
-    <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-    <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-    <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+    {!env.DISABLE_AWSC &&
+      <>
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+        <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+      </>
+    }
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
         {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
