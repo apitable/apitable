@@ -202,5 +202,6 @@ export const getEnvVars = () => {
     IS_APITABLE: process.env.IS_APITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
+    IS_ENTERPRISE: process.env.IS_ENTERPRISE === 'true',
   };
 };
