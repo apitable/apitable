@@ -431,6 +431,7 @@ export const useUserRequest = () => {
     type: number,
     data?: string
   ) => {
+    const env = getEnvVariables();
     return Api.getSmsCode(areaCode, phone, type, data).then((res) => {
       const { success, code } = res.data;
       if (success) {
