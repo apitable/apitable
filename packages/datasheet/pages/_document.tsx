@@ -50,8 +50,9 @@ class MyDocument extends Document<IClientInfo> {
           <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <link rel='manifest' href={'/file/manifest.json'} />
           <script src={'/file/js/browser_check.2.js'} async />
+          <script src={'/file/js/sensors.js'} async />
           {/* injection of custom configs of editions, e.g. APITable */}
-          <script src='/custom/custom_config.js' defer />
+          {!JSON.parse(envVars).DISABLE_AWSC && <script src='/custom/custom_config.js' async />}
           {
             JSON.parse(envVars).COOKIEBOT_ID &&
             <script 
