@@ -26,6 +26,7 @@ import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { getEnvVariables } from './env';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;
@@ -53,12 +54,15 @@ interface IQueue {
 }
 
 export const checkNetworkEnv = (code: number) => {
+  const env = getEnvVariables();
   if (code === StatusCode.PHONE_VALIDATION || code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
     Modal.confirm({
       title: t(Strings.warning),
       content: t(Strings.status_code_phone_validation),
       onOk: () => {
-        window['nvc'].reset();
+        if (!env.DISABLE_AWSC) {
+          window['nvc'].reset();
+        }
       },
       type: 'warning',
       okText: t(Strings.got_it),
