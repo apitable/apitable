@@ -424,9 +424,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           })
         `}
     </Script>
-    <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-    <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-    <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+    {!env.DISABLE_AWSC &&
+      <>
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+        <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+      </>
+    }
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
         {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>

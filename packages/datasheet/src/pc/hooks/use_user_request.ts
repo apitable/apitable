@@ -31,6 +31,7 @@ import { getSearchParams } from 'pc/utils';
 import { isLocalSite } from 'pc/utils/catalog';
 import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
+import { getEnvVariables } from 'pc/utils/env';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
@@ -174,6 +175,7 @@ export const useUserRequest = () => {
    * Log in [abandoned]
    */
   const loginReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
+    const env = getEnvVariables();
     return Api.signIn(loginData).then((res) => {
       const { success, code, message, data } = res.data;
       if (success) {
@@ -225,7 +227,9 @@ export const useUserRequest = () => {
           title: t(Strings.warning),
           content: t(Strings.status_code_phone_validation),
           onOk: () => {
-            window['nvc'].reset();
+            if (!env.DISABLE_AWSC) {
+              window['nvc'].reset();
+            }
           },
           type: 'warning',
           okText: t(Strings.got_it),
@@ -427,6 +431,7 @@ export const useUserRequest = () => {
     type: number,
     data?: string
   ) => {
+    const env = getEnvVariables();
     return Api.getSmsCode(areaCode, phone, type, data).then((res) => {
       const { success, code } = res.data;
       if (success) {
@@ -440,7 +445,9 @@ export const useUserRequest = () => {
           title: t(Strings.warning),
           content: t(Strings.status_code_phone_validation),
           onOk: () => {
-            window['nvc'].reset();
+            if (!env.DISABLE_AWSC) {
+              window['nvc'].reset();
+            }
           },
           type: 'warning',
           okText: t(Strings.got_it),
