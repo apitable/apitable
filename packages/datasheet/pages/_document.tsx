@@ -49,10 +49,10 @@ class MyDocument extends Document<IClientInfo> {
           <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <link rel='manifest' href={'/file/manifest.json'} />
-          <script src={'/file/js/browser_check.2.js'} async />
-          <script src={'/file/js/sensors.js'} async />
+          <script src='/file/js/browser_check.2.js' async />
+          {!JSON.parse(envVars).DISABLE_AWSC && <script src='/file/js/sensors.js' async />}
           {/* injection of custom configs of editions, e.g. APITable */}
-          {!JSON.parse(envVars).DISABLE_AWSC && <script src='/custom/custom_config.js' async />}
+          <script src='/custom/custom_config.js' async />
           {
             JSON.parse(envVars).COOKIEBOT_ID &&
             <script 
