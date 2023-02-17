@@ -91,36 +91,46 @@ export const TextButtonBase = styled.button.attrs(applyDefaultTheme) <ITextButto
     return;
   }};
   ${(props) => {
-    const { fc1, fill2, fill1, deepPurple, red } = props.theme.color;
+    const { 
+      bgBglessHover, 
+      bgBglessActive, 
+      textCommonPrimary, 
+      bgBrandLightDefault, 
+      bgBrandLightHover,
+      textBrandDefault,
+      bgDangerLightDefault,
+      bgDangerLightHover,
+      textDangerDefault,
+    } = props.theme.color;
     const colorMap = {
       default: {
-        normal: fc1,
-        hover: fc1,
-        press: fc1,
+        normal: textCommonPrimary,
+        hover: textCommonPrimary,
+        press: textCommonPrimary,
       },
       primary: {
-        normal: deepPurple[500],
-        hover: deepPurple[600],
-        press: deepPurple[700],
+        normal: textBrandDefault,
+        hover: textBrandDefault,
+        press: textBrandDefault,
       },
       danger: {
-        normal: red[500],
-        hover: red[600],
-        press: red[700],
+        normal: textDangerDefault,
+        hover: textDangerDefault,
+        press: textDangerDefault,
       },
     };
     const backgroundMap = {
       default: {
-        hover: fill1,
-        press: fill2,
+        hover: bgBglessHover,
+        press: bgBglessActive,
       },
       primary: {
-        hover: deepPurple[100],
-        press: deepPurple[200],
+        hover: bgBrandLightDefault,
+        press: bgBrandLightHover,
       },
       danger: {
-        hover: red[100],
-        press: red[200],
+        hover: bgDangerLightDefault,
+        press: bgDangerLightHover,
       },
     };
     const btnColor = props.btnColor || 'default';
