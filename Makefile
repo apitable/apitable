@@ -355,6 +355,7 @@ install: install-local
 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
+    sdk env install
 	yarn install && yarn build:dst:pre
 	cd backend-server && ./gradlew build -x test --stacktrace
 
