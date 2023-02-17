@@ -125,6 +125,10 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, [embedInfo]);
+
+  useEffect(() => {
     simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, widgetId => {
       setDevWidgetId(widgetId);
     });
