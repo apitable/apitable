@@ -183,7 +183,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
       return null;
     });
   };
-
+  
   return (
     <div className={styles.modifyPasswordWrapper}>
       <div className={styles.title}>{user!.needPwd ? t(Strings.set_password) : t(Strings.change_password)}</div>
