@@ -68,7 +68,6 @@ export const KanbanView: React.FC<React.PropsWithChildren<IKanbanViewProps>> = p
   const hiddenGroupMap = view.style.hiddenGroupMap || {};
   const visibleGroupIds = groupIds.filter(id => !hiddenGroupMap[id]);
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const commandManager = resourceService.instance!.commandManager;
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId);
   const { viewId, datasheetId } = useSelector(state => state.pageParams);
   const field = useSelector(state => Selectors.getField(state, kanbanFieldId || ''));
@@ -186,7 +185,7 @@ export const KanbanView: React.FC<React.PropsWithChildren<IKanbanViewProps>> = p
       direction,
     };
 
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       data: [moveData],
       viewId: viewId!,

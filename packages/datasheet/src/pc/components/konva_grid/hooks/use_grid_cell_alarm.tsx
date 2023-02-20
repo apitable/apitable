@@ -35,7 +35,7 @@ interface IUseCellAlarmProps {
   columnStopIndex: number;
   scrollState: IScrollState;
   pointPosition: PointPosition;
-  toggleEditing: () => boolean | void;
+  toggleEditing: () => Promise<boolean | void>;
 }
 
 const NotificationSmallOutlinedPath = NotificationSmallOutlined.toString();
@@ -147,11 +147,11 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
           })}
           data={NotificationSmallOutlinedPath}
           fill={theme.color.thirdLevelText}
-          onClick={() => {
+          onClick={async() => {
             clearTooltipInfo();
-            toggleEditing();
+            await toggleEditing();
             const user = state.user.info;
-            resourceService.instance!.commandManager!.execute({
+            resourceService.instance!.commandManager.execute({
               cmd: CollaCommandName.SetDateTimeCellAlarm,
               recordId: pointRecordId,
               fieldId: pointFieldId,

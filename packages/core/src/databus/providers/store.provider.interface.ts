@@ -16,15 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType } from 'types';
-import { IResource } from './resource.interface';
+import { IReduxState, IServerDatasheetPack } from 'exports/store';
+import { Store } from 'redux';
 
-export class Form implements IResource {
-  readonly type = ResourceType.Form;
-
-  constructor(public readonly id: string, public readonly name: string) {}
-
-  public get revision(): number {
-    throw 'TODO';
-  }
+/**
+ * A store provider is responsible for creating internal redux stores for `Datasheet`s.
+ */
+export interface IStoreProvider {
+  /**
+   * Creates a redux store from the datasheet pack.
+   */
+  createStore(datasheetPack: IServerDatasheetPack, options: IStoreOptions): Promise<Store<IReduxState>> | Store<IReduxState>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IStoreOptions {}

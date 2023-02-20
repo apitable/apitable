@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IBaseDatasheetPack, IReduxState } from 'exports/store';
-import { Store } from 'redux';
+import { ResourceType } from 'types';
+import { IResource } from './resource.interface';
 
-/**
- * A store provider is responsible for creating internal redux stores of `Datasheet`s.
- */
-export interface IStoreProvider {
-  /**
-   * Creates a redux store from the datasheet pack.
-   */
-  createStore(datasheetPack: IBaseDatasheetPack): Promise<Store<IReduxState>> | Store<IReduxState>;
+export class Widget implements IResource {
+  readonly type = ResourceType.Widget;
+
+  constructor(public readonly id: string, public readonly name: string) {}
+
+  public get revision(): number {
+    throw new Error('TODO');
+  }
 }

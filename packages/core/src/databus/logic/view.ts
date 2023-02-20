@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName } from 'commands';
 import { ICollaCommandExecuteResult } from 'command_manager';
 import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewRow, Selectors, ViewType } from 'exports/store';
 import { keyBy } from 'lodash';
+import { ICellValue } from 'model';
 import { Store } from 'redux';
 import { Datasheet, ISaveOptions } from './datasheet';
 import { Field } from './field';
@@ -36,15 +36,15 @@ export class View {
 
   /**
    * Create a `View` instance from `IViewInfo`.
-   * 
-   * This constructor is not intended for public use.
+   *
+   * @internal This constructor is not intended for public use.
    */
   constructor(private readonly datasheet: Datasheet, private readonly store: Store<IReduxState>, info: IViewInfo) {
-    const { name, type, viewId, rows, columns, fieldMap } = info;
+    const { name, type, id, rows, columns, fieldMap } = info;
 
     this.name = name;
     this.type = type;
-    this.id = viewId;
+    this.id = id;
     this.rows = rows;
     this.columns = columns;
     this.fieldMap = fieldMap;
@@ -119,23 +119,17 @@ export class View {
   }
 
   /**
-   * Add records to the datasheet via this view. This method delegates the command execution to the
-   * `doCommand` method of the datasheet.
-   * 
-   * @param options options for adding records
-   * @param saveOptions options for the data saver.
-   * @return If the command succeeded, the `data` field of the return value is an array of record IDs.
+   * Add records to the datasheet via this view.
+   *
+   * @param options Options for adding records.
+   * @param saveOptions Options for the data saver.
+   * @return If the command execution succeeded, the `data` field of the return value is an array of record IDs.
    */
-  public addRecords(options: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICollaCommandExecuteResult<string[]>> {
-    return this.datasheet.doCommand<string[]>(
+  public addRecords(recordOptions: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICollaCommandExecuteResult<string[]>> {
+    return this.datasheet.addRecords(
       {
-        cmd: CollaCommandName.AddRecords,
-        datasheetId: this.datasheet.id,
+        ...recordOptions,
         viewId: this.id,
-        index: options.index,
-        count: 'count' in options ? options.count : options.recordValues.length,
-        cellValues: 'count' in options ? undefined : options.recordValues,
-        ignoreFieldPermission: true,
       },
       saveOptions,
     );
@@ -146,6 +140,9 @@ export class View {
  * Options for creating a `View` instance.
  */
 export interface IViewOptions {
+  /**
+   * The function to get the `IViewInfo` of a view from the internal redux state.
+   */
   getViewInfo: (state: IReduxState) => Promise<IViewInfo | null> | IViewInfo | null;
 }
 
@@ -155,7 +152,7 @@ export interface IViewOptions {
 export interface IViewInfo {
   name: string;
   type: ViewType;
-  viewId: string;
+  id: string;
   rows: IViewRow[];
   columns: IViewColumn[];
   fieldMap: IFieldMap;
@@ -196,6 +193,13 @@ export type IAddRecordsOptions =
        * default values are set for corresponding fields.
        */
       count: number;
+
+      /**
+       * The cell values of the group which the new records belongs to.
+       */
+      groupCellValues?: ICellValue[];
+
+      ignoreFieldPermission?: boolean;
     }
   | {
       /**
@@ -207,6 +211,13 @@ export type IAddRecordsOptions =
        * New record values.
        */
       recordValues: IRecordCellValue[];
+
+      /**
+       * The cell values of the group which the new records belongs to.
+       */
+      groupCellValues?: ICellValue[];
+
+      ignoreFieldPermission?: boolean;
     };
 
 /**
@@ -214,7 +225,7 @@ export type IAddRecordsOptions =
  */
 export interface IFieldsOptions {
   /**
-   * If hidden fields are included. Defaults to false.
+   * If hidden fields are included in the returned field list. Defaults to false.
    */
   includeHidden?: boolean;
 }

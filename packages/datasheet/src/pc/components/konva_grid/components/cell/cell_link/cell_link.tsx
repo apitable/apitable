@@ -72,11 +72,11 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const [closeIconDownId, setCloseIconDownId] = useState<null | string>(null);
   const { renderContent } = renderData;
 
-  function onClick(e: { evt: { button: MouseDownType; }; }) {
+  async function onClick(e: { evt: { button: MouseDownType; }; }) {
     if (e.evt.button === MouseDownType.Right) {
       return;
     }
-    operatingEnable && toggleEdit && toggleEdit();
+    operatingEnable && toggleEdit && await toggleEdit();
   }
 
   function deleteItem(e: KonvaEventObject<MouseEvent>, index?: number) {

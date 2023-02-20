@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFieldPermissionMap, IFieldRoleSetting, IReduxState } from '../../../../../../exports/store/interfaces';
+import { IFieldPermissionMap, IFieldRoleSetting, IReduxState } from 'exports/store/interfaces';
 import {
   LOAD_FIELD_PERMISSION_MAP, RESET_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_SETTING
-} from '../../../../../shared/store/action_constants';
-import { DatasheetApi } from '../../../../../../exports/api';
+} from 'modules/shared/store/action_constants';
+import { DatasheetApi } from 'exports/api';
 import { batchActions } from 'redux-batched-actions';
 
 export interface IUpdateFieldPermissionMapAction {

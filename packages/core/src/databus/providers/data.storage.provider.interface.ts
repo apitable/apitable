@@ -16,15 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType } from 'types';
-import { IResource } from './resource.interface';
+import { IDataLoader } from './data.loader.interface';
+import { IDataSaver } from './data.saver.interface';
 
-export class Widget implements IResource {
-  readonly type = ResourceType.Widget;
-
-  constructor(public readonly id: string, public readonly name: string) {}
-
-  public get revision(): number {
-    throw 'TODO';
-  }
-}
+/**
+ * A data storage provider is the combination of a data loader and a data saver.
+ * 
+   @see IDataLoader 
+   @see IDataSaver
+ */
+export interface IDataStorageProvider extends IDataLoader, IDataSaver {}

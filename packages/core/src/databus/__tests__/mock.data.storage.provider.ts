@@ -17,12 +17,11 @@
  */
 
 import { IResourceOpsCollect, resourceOpsToChangesets } from 'command_manager';
-import { IDataSaver, ISaveOpsOptions } from 'databus/data.saver.interface';
+import { IDataStorageProvider, ILoadDatasheetPackResult, ISaveOpsOptions } from '../providers';
 import { IBaseDatasheetPack, Selectors, StoreActions } from 'exports/store';
-import { IDataLoader } from '../data.loader.interface';
 import { mockDatasheetMap } from './mock.datasheets';
 
-export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
+export class MockDataStorageProvider implements IDataStorageProvider {
   datasheets!: Record<string, IBaseDatasheetPack>;
 
   constructor() {
@@ -33,11 +32,11 @@ export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
     this.datasheets = JSON.parse(JSON.stringify(mockDatasheetMap));
   }
 
-  loadDatasheetPack(dstId: string): Promise<IBaseDatasheetPack | null> {
+  loadDatasheetPack(dstId: string): Promise<ILoadDatasheetPackResult> {
     if (this.datasheets.hasOwnProperty(dstId)) {
-      return Promise.resolve(this.datasheets[dstId]!);
+      return Promise.resolve({ datasheetPack: this.datasheets[dstId]! });
     }
-    return Promise.resolve(null);
+    return Promise.resolve({ datasheetPack: null });
   }
 
   saveOps(ops: IResourceOpsCollect[], options: ISaveOpsOptions): Promise<any> {

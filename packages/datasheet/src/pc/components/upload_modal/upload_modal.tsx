@@ -59,13 +59,13 @@ export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> =
   const [visible, setVisible] = useState(_visible ?? true);
   const allowedDownload = useAllowDownloadAttachment(field.id);
 
-  function closeFn() {
+  async function closeFn(): Promise<void> {
     if (_setVisible) {
       _setVisible(false);
     } else {
       setVisible(false);
     }
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }
 
   const Footer = (

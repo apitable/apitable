@@ -35,7 +35,7 @@ import { WidgetPanelHeader } from './widget_panel_header';
 import WidgetEmptyLight from 'static/icon/datasheet/widget_empty_light.png';
 import WidgetEmptyDark from 'static/icon/datasheet/widget_empty_dark.png';
 
-const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
+const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void> }) => {
   const linkId = useSelector(Selectors.getLinkId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -89,8 +89,8 @@ export const WidgetPanel = () => {
   const { opening: isPanelOpening } = useSelector(state => {
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
-  const onClosePanel = () => {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
+  const onClosePanel = async() => {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
   };
 
   useManageWidgetMap();

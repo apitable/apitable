@@ -92,9 +92,9 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
         <Tooltip
           title={t(Strings.task_reminder_hover_cell_tooltip)}
         >
-          <span className={classNames(styles.quickAlarm)} onMouseDown={() => {
-            toggleEdit && toggleEdit();
-            resourceService.instance!.commandManager!.execute({
+          <span className={classNames(styles.quickAlarm)} onMouseDown={async() => {
+            toggleEdit && await toggleEdit();
+            resourceService.instance!.commandManager.execute({
               cmd: CollaCommandName.SetDateTimeCellAlarm,
               recordId: recordId!,
               fieldId: field.id,

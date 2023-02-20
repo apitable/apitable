@@ -49,7 +49,7 @@ export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
   isFocus && (widgetDom as HTMLDivElement).focus();
 };
 
-export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
+export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<void> }) => {
   const colors = useThemeColors();
   const triggerRef = useRef<any>(null);
   const [openPanelList, setOpenPanelList] = useState(false);

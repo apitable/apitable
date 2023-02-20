@@ -39,6 +39,7 @@ import {
   ViewType,
   IFieldPermissionMap,
   IFieldMap,
+  ICollaCommandOptions,
 } from '@apitable/core';
 import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { Switch, Tooltip } from 'antd';
@@ -192,7 +193,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
   const freeColumns = getFreeColumnsByViewType(columns, viewType, hideFieldType);
   const coverFields = getCoverFields(fieldMap);
   const [query, setQuery] = useState('');
-  const execute = resourceService.instance!.commandManager.execute.bind(resourceService.instance!.commandManager);
+  const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
   const hiddenProp = getHiddenProps(viewType, hideFieldType);
   const handleHideField = useHideField(activeView, hiddenProp);
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);

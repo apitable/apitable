@@ -108,11 +108,11 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = props 
     onChange && onChange(cellValue && (cellValue as IUnitIds).filter((_cv, idx) => idx !== index));
   }
 
-  function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) {
       return;
     }
-    isActive && !readonly && toggleEdit && toggleEdit();
+    isActive && !readonly && toggleEdit && await toggleEdit();
   }
 
   const showAddIcon = (isActive && !readonly) && (isMulti || (!isMulti && !cellValue));

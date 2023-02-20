@@ -128,11 +128,11 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
     return null;
   }
 
-  function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) {
       return;
     }
-    isActive && toggleEdit && toggleEdit();
+    isActive && toggleEdit && await toggleEdit();
   }
 
   function returnMulti(content: IMultiSelectedIds) {

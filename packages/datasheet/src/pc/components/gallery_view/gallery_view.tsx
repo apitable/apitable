@@ -301,7 +301,6 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
       return;
     }
     const { dragRecordId, dropRecordId, direction } = commitRef.current;
-    const commandManager = resourceService.instance!.commandManager;
     const data = [
       {
         recordId: dragRecordId,
@@ -309,7 +308,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
         direction,
       },
     ];
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       viewId,
       data,

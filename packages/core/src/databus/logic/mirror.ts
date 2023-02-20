@@ -25,6 +25,6 @@ export class Mirror implements IResource {
   constructor(public readonly id: string, public readonly name: string) {}
 
   public get revision(): number {
-    throw 'TODO';
+    throw new Error('TODO');
   }
 }

@@ -112,7 +112,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
 
     const newCellValue = [...cellValue];
     newCellValue.splice(recordIndex, 1);
-    resourceService?.instance?.commandManager?.execute({
+    resourceService.instance?.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: [
         {

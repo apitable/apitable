@@ -69,7 +69,7 @@ export async function initWorkerStore() {
       }
     });
   }
-  const wrappedStore = (await remoteStoreWrap(proxy)) as any;
+  const wrappedStore = remoteStoreWrap(proxy) as any;
   comlinkStore.worker = worker;
   comlinkStore.proxy = proxy;
   comlinkStore.store = wrappedStore;

@@ -19,7 +19,7 @@
 /**
  * https://www.notion.so/vikadata/9ac1f271807f4d99a30c1b5cae32437a
  */
-import { CollaCommandName, ExecuteResult, Field, ICellValue, IReduxState, Selectors, StoreActions, ViewType } from '@apitable/core';
+import { databus, ExecuteResult, Field, ICellValue, IRecordCellValue, IReduxState, Selectors, StoreActions, ViewType } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -38,7 +38,7 @@ interface IAppendRowsOption {
   count?: number;
 }
 
-export function appendRow(option: IAppendRowsOption = {}) {
+export async function appendRow(option: IAppendRowsOption = {}): Promise<databus.ICommandExecutionResult<string[]>> {
   const state = store.getState();
   const activeCell = Selectors.getActiveCell(state)!;
   const { 
@@ -52,24 +52,23 @@ export function appendRow(option: IAppendRowsOption = {}) {
   const datasheetId = Selectors.getActiveDatasheetId(state)!;
   const rowsMap = Selectors.getVisibleRowsIndexMap(state);
   const baseRecordIndex = rowsMap.has(recordId) ? rowsMap.get(recordId)! : -1;
-  const groupCellValues = getCellValuesForGroupRecord(recordId) as ICellValue[];
-  const executeData = {};
+  const groupCellValues = getCellValuesForGroupRecord(recordId);
+  const executeData: { recordValues?: IRecordCellValue[], groupCellValues?: ICellValue[] } = {};
   const isSideRecordOpen = state.space.isSideRecordOpen;
   if (isDuplicate) {
     const recordCellValue = getRecordCellValue(state, recordId);
     if (recordCellValue) {
-      executeData['cellValues'] = [recordCellValue];
+      executeData.recordValues = [recordCellValue];
     }
   }
   if (groupCellValues.length) {
-    executeData['groupCellValues'] = groupCellValues;
+    executeData.groupCellValues = groupCellValues;
   }
   if (recordData != null) {
-    const prevCellValues = executeData['cellValues'];
-    executeData['cellValues'] = prevCellValues == null ? [recordData] : [{ ...prevCellValues[0], ...recordData }];
+    const prevCellValues = executeData.recordValues;
+    executeData.recordValues = prevCellValues == null ? [recordData] : [{ ...prevCellValues[0], ...recordData }];
   }
 
-  const collaCommandManager = resourceService.instance!.commandManager;
   let index = findRowsIndexById(recordId);
   if (direction === Direction.Down) {
     index++;
@@ -78,13 +77,12 @@ export function appendRow(option: IAppendRowsOption = {}) {
   const expectIndex = direction === Direction.Up ? baseRecordIndex : baseRecordIndex + 1;
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, expectIndex));
 
-  const result = collaCommandManager.execute({
-    cmd: CollaCommandName.AddRecords,
-    count,
+  const result = await resourceService.instance!.currentResource!.addRecords({
     viewId: view.id,
     index,
+    count,
     ...executeData,
-  });
+  }, {});
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, null));
   if (
     result.result === ExecuteResult.Success
@@ -102,7 +100,7 @@ export function appendRow(option: IAppendRowsOption = {}) {
       }
       // expandRecordRoute(newRecordId);
     } else {
-      appendRowCallback(newRecordId);
+      appendRowCallback(newRecordId!);
     }
   }
   return result;
@@ -136,8 +134,8 @@ export const appendRowCallback = (newRecordId: string) => {
   }
 };
 
-export const prependRow = () => {
-  appendRow({ direction: Direction.Up });
+export const prependRow = async(): Promise<databus.ICommandExecutionResult<string[]>> => {
+  return await appendRow({ direction: Direction.Up });
 };
 
 export const getCellValuesForGroupRecord = (recordId?: string) => {

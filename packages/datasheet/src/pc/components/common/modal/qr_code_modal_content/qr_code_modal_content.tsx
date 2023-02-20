@@ -29,7 +29,7 @@ import { getEnvVariables } from 'pc/utils/env';
 
 interface IModalContentProps {
   content: string;
-  onOk: () => void;
+  onOk: () => void | Promise<void>;
   modalButtonType: string;
   okText?: string;
 }

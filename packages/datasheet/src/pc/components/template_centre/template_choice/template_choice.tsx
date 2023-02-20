@@ -18,9 +18,18 @@
 
 import { Typography } from '@apitable/components';
 import {
-  Api, ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
+  Api,
+  ConfigConstant,
+  getImageThumbSrc,
+  integrateCdnHost,
+  IReduxState,
+  Navigation,
+  Settings,
+  Strings,
+  t,
+  TEMPLATE_CENTER_ID,
+  api,
 } from '@apitable/core';
-import { ITemplateRecommendResponse } from '@apitable/core/dist/modules/shared/api/api.interface';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { take, takeRight } from 'lodash';
@@ -47,7 +56,7 @@ export const imgUrl = (token: string, imageHeight: number) => {
 
 export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> = props => {
   const { setUsingTemplate } = props;
-  const [_templateRecommendData, setTemplateRecommendData] = useState<ITemplateRecommendResponse>();
+  const [_templateRecommendData, setTemplateRecommendData] = useState<api.ITemplateRecommendResponse>();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { recommendData: templateRecommendData } = useContext(TemplateRecommendContext);
@@ -96,7 +105,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
     <div className={styles.templateChoiceWrapper}>
       <Row className={styles.templateChoice}>
         <Col span={24}>
-          {_templateRecommendData.top &&
+          {_templateRecommendData.top && (
             <>
               <div className={styles.topBannerWrapper} id={TEMPLATE_CENTER_ID.TOP_HOT_BANNER}>
                 {carouselItems.length === 1 ? (
@@ -113,14 +122,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                     usingTemplate={setUsingTemplate}
                   />
                 ) : (
-                  <Carousel
-                    showThumbs={false}
-                    showArrows={false}
-                    showStatus={false}
-                    autoPlay
-                    infiniteLoop
-                    swipeable
-                  >
+                  <Carousel showThumbs={false} showArrows={false} showStatus={false} autoPlay infiniteLoop swipeable>
                     {carouselItems.map(topItem => (
                       <TemplateItem
                         templateId={topItem.templateId}
@@ -140,27 +142,25 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                 )}
               </div>
               <div className={styles.recommendWrapper}>
-                {
-                  takeRight(_templateRecommendData.top, 2).map(template => (
-                    <div className={styles.recommendItem} key={template.image}>
-                      <TemplateItem
-                        height={160}
-                        templateId={template.templateId}
-                        img={imgUrl(template.image, 160)}
-                        onClick={openTemplateDetail}
-                        bannerDesc={{
-                          title: template.title,
-                          desc: template.desc,
-                        }}
-                        bannerType={ConfigConstant.BannerType.MIDDLE}
-                        usingTemplate={setUsingTemplate}
-                      />
-                    </div>
-                  ))
-                }
+                {takeRight(_templateRecommendData.top, 2).map(template => (
+                  <div className={styles.recommendItem} key={template.image}>
+                    <TemplateItem
+                      height={160}
+                      templateId={template.templateId}
+                      img={imgUrl(template.image, 160)}
+                      onClick={openTemplateDetail}
+                      bannerDesc={{
+                        title: template.title,
+                        desc: template.desc,
+                      }}
+                      bannerType={ConfigConstant.BannerType.MIDDLE}
+                      usingTemplate={setUsingTemplate}
+                    />
+                  </div>
+                ))}
               </div>
             </>
-          }
+          )}
           {_templateRecommendData.albumGroups?.map(albumGroup => (
             <Row key={albumGroup.name}>
               <Col span={24} className={styles.category}>
@@ -189,8 +189,8 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
               </Col>
             </Row>
           ))}
-          {
-            _templateRecommendData.templateGroups && _templateRecommendData.templateGroups.map(category => (
+          {_templateRecommendData.templateGroups &&
+            _templateRecommendData.templateGroups.map(category => (
               <Row key={category.name}>
                 <Col span={24} className={styles.category}>
                   <Row className={styles.categoryName}>
@@ -202,7 +202,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                         <div className={styles.templateItemWrapper} key={template.templateId}>
                           <TemplateItem
                             templateId={template.templateId}
-                            type='card'
+                            type="card"
                             nodeType={template.nodeType}
                             img={imgUrl(template.cover || defaultBanner, 160)}
                             name={template.templateName}
@@ -218,18 +218,16 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                   </div>
                 </Col>
               </Row>
-            ))
-          }
+            ))}
         </Col>
       </Row>
-      {
-        env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() &&
-        <Typography className={styles.notFoundTip} variant='body2' align='center'>
+      {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
+        <Typography className={styles.notFoundTip} variant="body2" align="center">
           <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`)}>
             {t(Strings.template_not_found)}
           </span>
         </Typography>
-      }
+      )}
     </div>
   );
 };

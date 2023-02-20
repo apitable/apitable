@@ -17,8 +17,7 @@
  */
 
 import { Typography, useThemeColors, Button, TextInput, Box } from '@apitable/components';
-import { Strings, t, isEmail, ConfigConstant, StatusCode } from '@apitable/core';
-import { ISignIn } from '@apitable/core/dist/modules/shared/api/api.interface';
+import { Strings, t, isEmail, ConfigConstant, StatusCode, api } from '@apitable/core';
 import { EmailSigninFilled, EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean, useMount } from 'ahooks';
 import { Form } from 'antd';
@@ -76,7 +75,7 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
         errorMsg.password = t(Strings.placeholder_input_password);
         return false;
       }
-  
+
       return true;
     };
     const checkUsername = () => {
@@ -84,7 +83,7 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
         errorMsg.username = t(Strings.email_placeholder);
         return false;
       }
-  
+
       if (!isEmail(data.username)) {
         errorMsg.username = t(Strings.email_err);
         return false;
@@ -99,12 +98,12 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const signIn = async(data?: string) => {
     clearStorage();
-    const loginData: ISignIn = {
+    const loginData: api.ISignIn = {
       username: username!,
       credential: password!,
       data,
       type: ConfigConstant.LoginTypes.PASSWORD,
-      mode: ConfigConstant.LoginMode.PASSWORD
+      mode: ConfigConstant.LoginMode.PASSWORD,
     };
     const result = await loginReq(loginData);
     if (!result) {
@@ -141,54 +140,51 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
     <div className={styles.loginWrap}>
       <Form onFinish={handleSubmit}>
         <div className={styles.inputWrap}>
-          <Typography className={styles.inputTitle} variant='body2' color={colors.textCommonPrimary}>Email</Typography>
+          <Typography className={styles.inputTitle} variant="body2" color={colors.textCommonPrimary}>
+            Email
+          </Typography>
           <WithTipWrapper tip={errorMsg.username || ''}>
             <TextInput
               className={styles.input}
               value={username}
               onChange={e => setUsername(e.target.value)}
-              prefix={<EmailSigninFilled color={colors.textCommonPrimary}/>}
-              placeholder='Please enter your email address'
+              prefix={<EmailSigninFilled color={colors.textCommonPrimary} />}
+              placeholder="Please enter your email address"
               error={Boolean(errorMsg.username)}
-              block/>
+              block
+            />
           </WithTipWrapper>
         </div>
         <div className={styles.inputWrap}>
-          <Typography className={styles.inputTitle} variant='body2' color={colors.textCommonPrimary}>Password</Typography>
+          <Typography className={styles.inputTitle} variant="body2" color={colors.textCommonPrimary}>
+            Password
+          </Typography>
           <WithTipWrapper tip={errorMsg.password || ''}>
             <TextInput
               type={isVisible ? 'text' : 'password'}
               value={password}
               className={styles.input}
               onChange={e => setPassword(e.target.value)}
-              prefix={<LockFilled color={colors.textCommonPrimary}/>}
-              suffix={<div
-                className={styles.suffixIcon}
-                onClick={() => toggle()}
-                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              >
-                {isVisible ? <EyeNormalOutlined color={colors.textCommonTertiary}/> : <EyeCloseOutlined color={colors.textCommonTertiary}/>}
-              </div>}
-              placeholder='Please enter your password'
+              prefix={<LockFilled color={colors.textCommonPrimary} />}
+              suffix={
+                <div className={styles.suffixIcon} onClick={() => toggle()} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                  {isVisible ? <EyeNormalOutlined color={colors.textCommonTertiary} /> : <EyeCloseOutlined color={colors.textCommonTertiary} />}
+                </div>
+              }
+              placeholder="Please enter your password"
               error={Boolean(errorMsg.password)}
-              block/>
+              block
+            />
           </WithTipWrapper>
         </div>
       </Form>
-      <Button
-        className={styles.loginBtn}
-        color='primary'
-        size='large'
-        block
-        loading={loading}
-        onClick={handleSubmit}
-      >Sign in</Button>
+      <Button className={styles.loginBtn} color="primary" size="large" block loading={loading} onClick={handleSubmit}>
+        Sign in
+      </Button>
       <Box textAlign={'center'}>
-        <Typography
-          className={styles.forgetPassword}
-          variant='body2'
-          color={colors.textCommonPrimary}
-          onClick={forgetPassword}>Forgot your password?</Typography>
+        <Typography className={styles.forgetPassword} variant="body2" color={colors.textCommonPrimary} onClick={forgetPassword}>
+          Forgot your password?
+        </Typography>
       </Box>
     </div>
   );

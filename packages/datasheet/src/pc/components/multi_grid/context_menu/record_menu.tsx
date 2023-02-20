@@ -17,7 +17,7 @@
  */
 
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
-import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
+import { CollaCommandName, databus, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
   DuplicateOutlined, ExpandRecordOutlined,
@@ -64,7 +64,7 @@ interface IRecordMenuProps {
   extraData?: any[];
 }
 
-export function copyRecord(recordId: string) {
+export function copyRecord(recordId: string): Promise<databus.ICommandExecutionResult<string[]>> {
   return appendRow({
     recordId,
     isDuplicate: true,
@@ -79,7 +79,6 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
   const isKanban = view.type === ViewType.Kanban;
-  const commandManager = resourceService.instance!.commandManager;
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -127,7 +126,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
       data.push(recordId);
     }
     // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
-    const { result } = commandManager.execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
     });

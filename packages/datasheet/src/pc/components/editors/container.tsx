@@ -384,8 +384,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     cellMove(CellDirection.Left);
   };
 
-  const appendNewRow = () => {
-    appendRow();
+  const appendNewRow = async() => {
+    await appendRow();
     const state = store.getState();
     setTimeout(() => {
       const activeCellUIIndex = Selectors.getCellUIIndex(state, activeCell!);
@@ -691,7 +691,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       !isEqual(alarm, formatCurAlarm) &&
       convertAlarmStructure
     ) {
-      resourceService.instance!.commandManager!.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetDateTimeCellAlarm,
         recordId: record.id,
         fieldId: field.id,

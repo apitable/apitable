@@ -214,8 +214,7 @@ const ToolbarBase = () => {
   const appendRecord = () => {
     const state = store.getState();
     const view = Selectors.getCurrentView(state)!;
-    const collaCommandManager = resourceService.instance!.commandManager;
-    const result = collaCommandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -362,11 +361,11 @@ const ToolbarBase = () => {
   }, [setIsFindOpen, sideBarVisible, toggleType, isFindOpen, size, offsetWidth]);
 
   // Mutually exclusive with the right-hand area.
-  const handleToggleRightBar = (toggleKey: ShortcutActionName) => {
+  const handleToggleRightBar = async(toggleKey: ShortcutActionName) => {
     // Close sidebar.
     if (isSideRecordOpen) {
       store.dispatch(StoreActions.toggleSideRecord(false));
-      closeAllExpandRecord();
+      await closeAllExpandRecord();
     }
 
     const panelMap = {
@@ -375,14 +374,14 @@ const ToolbarBase = () => {
       [ShortcutActionName.ToggleRobotPanel]: isRobotPanelOpen,
       [ShortcutActionName.ToggleTimeMachinePanel]: isTimeMachinePanelOpen,
     };
-    Object.keys(panelMap).forEach((key: string) => {
+    for (const key in panelMap) {
       if (panelMap[key] && key !== toggleKey) {
-        ShortcutActionManager.trigger(key as ShortcutActionName);
+        await ShortcutActionManager.trigger(key as ShortcutActionName);
       }
-    });
+    }
 
     onSetClickType && onSetClickType(SideBarClickType.ToolBar);
-    ShortcutActionManager.trigger(toggleKey);
+    await ShortcutActionManager.trigger(toggleKey);
   };
 
   const embedSetting = useMemo(() => {

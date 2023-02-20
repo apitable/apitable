@@ -25,7 +25,7 @@ export class Record {
   /**
    * Create a `Record` instance from an `IRecord` object.
    * 
-   * This constructor is not intended for public use.
+   * @deprecated This constructor is not intended for public use.
    */
   constructor(private readonly record: IRecord, options: IRecordOptions) {
     const { voTransformOptions } = options;
@@ -37,7 +37,7 @@ export class Record {
   }
 
   /**
-   * The comment list of the record. If no comments exists, an empty array is returned.
+   * The comment list of the record. If no comments exist, an empty array is returned.
    */
   get comments(): readonly IComments[] {
     return this.record.comments ?? [];

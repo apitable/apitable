@@ -16,10 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { databus } from '@apitable/core';
-import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
-import { IServerLoadDatasheetPackOptions } from './server.data.loader';
-
-export interface IServerDatasheetOptions extends databus.IDatasheetOptions, IFetchDataOptions, IServerLoadDatasheetPackOptions {
-  auth: IAuthHeader
-}
+export * as event from './event';
