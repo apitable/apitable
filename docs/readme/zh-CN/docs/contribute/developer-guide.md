@@ -10,7 +10,7 @@
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
-- [sdkman](https://sdkman.io/): 用于安装 `java`, Java SDK 8
+- [sdkman](https://sdkman.io/): 用于安装 `java`, Java SDK 8 (jdk 17 暂不支持)
 - [nvm](https://github.com/nvm-sh/nvm): 用于安装 `node`, NodeJS v16.15.0
 
 
@@ -92,10 +92,11 @@ APITable 由 4 个进程组成：
 3. socket-server
 4. web-server
 
-要启动本地开发环境，请运行这些命令：
+要启动本地开发环境，请运行这些命令 (注: windows 系统建议在 git bash terminal执行下面命令) ：
 
 ```bash
 # 在 Docker 中启动数据库
+# 因为网络问题可能会出现pull image error 的情况
 make dataenv 
 
 # 安装依赖关系
