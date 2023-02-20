@@ -237,7 +237,7 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+      "next/babel"
     ],
     "plugins": [
       [

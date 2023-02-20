@@ -19,6 +19,7 @@
 import { IFormProps } from '../exports/store';
 import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
+import { isEqual } from 'lodash';
 
 export class FormAction {
   // update own properties
@@ -31,12 +32,16 @@ export class FormAction {
     const { partialProps } = options;
     const actions: IJOTAction[] = [];
     for (const key in partialProps) {
-      actions.push({
-        n: OTActionName.ObjectReplace,
-        p: ['formProps', key],
-        oi: partialProps[key],
-        od: formProps[key],
-      });
+      const oi = partialProps[key];
+      const od = formProps[key]
+      if (!isEqual(oi, od)) {
+        actions.push({
+          n: OTActionName.ObjectReplace,
+          p: ['formProps', key],
+          oi,
+          od,
+        });
+      }
     }
     return actions;
   }
