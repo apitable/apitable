@@ -255,8 +255,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
         </TextButton>
       }
       {
-        !isFullscreen && !readonly && isEnoughToShowButton && !hideReadonlyEmbedItem &&
-        (!embedId || embedInfo.viewControl?.toolBar.addWidgetBtn) &&
+        !isFullscreen && !readonly && isEnoughToShowButton && !embedId &&
         <a href={t(Strings.intro_dashboard)} target='_blank' className={styles.shareDoc} rel='noreferrer'>
           {t(Strings.form_tour_desc)}
         </a>
