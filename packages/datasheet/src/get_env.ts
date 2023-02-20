@@ -203,5 +203,6 @@ export const getEnvVars = () => {
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
     IS_ENTERPRISE: process.env.IS_ENTERPRISE === 'true',
+    API_PANEL_MORE_URL: process.env.API_PANEL_MORE_URL,
   };
 };

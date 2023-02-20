@@ -121,6 +121,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     run: getSpaceList,
   } = useRequest(getSpaceListReq, { manual: true });
   const dispatch = useAppDispatch();
+
   const themeName = useSelector(state => state.theme);
   const { IS_APITABLE } = getEnvVariables();
   const LightLogo = IS_APITABLE ? apitableLogoLight : vikaLogoLight;
@@ -381,7 +382,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
           </ComponentWrapper>}
         </ComponentDisplay>
         {isIframe() && <div className={styles.brandContainer}>
-          {<Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20} alt="" />}
+          <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20} alt="" />
         </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <ShareMobile

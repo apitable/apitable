@@ -22,7 +22,7 @@ import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, StoreActions, 
 import {
   AdviseOutlined, BookOutlined, ClassroomOutlined, CodeFilled, CommunityOutlined, CourseOutlined, DemoOutlined, DownloadOutlined,
   EditDescribeOutlined, GuideOutlined, InformationLargeOutlined, InformationSmallOutlined, JoinOutlined, KeyboardShortcutsOutlined, RoadmapOutlined,
-  SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebsiteOutlined,
+  SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebOutlined,
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
@@ -156,7 +156,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       onClick: () => navigationToUrl(t(Strings.help_questions_url)),
     },
     {
-      icon: <WebsiteOutlined />,
+      icon: <WebOutlined />,
       text: t(Strings.official_website_without_abbr),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
       hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL

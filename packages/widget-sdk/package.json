@@ -37,9 +37,9 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
+    "@testing-library/react-hooks": "^7.0.1",
     "@apitable/components": "*",
     "@apitable/core": "*",
-    "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",

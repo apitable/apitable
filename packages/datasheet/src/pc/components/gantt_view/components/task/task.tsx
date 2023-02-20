@@ -507,7 +507,7 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
   const getTaskStroke = () => {
     if(isTransform || isDrawTargetTask) {
       if(isTaskLineDrawing) {
-        return targetTaskInfo?.dashEnabled ? colors.fc10 : colors.deepPurple[500];
+        return targetTaskInfo?.dashEnabled ? colors.fc10 : colors.borderBrandDefault;
       } 
       return colorMap.handlerColor;
       

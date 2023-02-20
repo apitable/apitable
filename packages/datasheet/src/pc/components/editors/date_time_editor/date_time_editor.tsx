@@ -104,7 +104,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   override state: IDateTimeEditorState = {
     dateValue: '',
-    displayDateStr: '',
+    displayDateStr: this.props.dataValue ? dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
     timeValue: '',
     dateOpen: false,
     timeOpen: false,

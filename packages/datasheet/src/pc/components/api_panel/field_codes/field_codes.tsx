@@ -25,9 +25,10 @@ import styles from './styles.module.less';
 import { store } from 'pc/store';
 import githubIcon from 'static/icon/common/github_octopus.png';
 import { Loading } from 'pc/components/common';
-import { LinkButton, ButtonGroup } from '@apitable/components';
+import { LinkButton } from '@apitable/components';
 import dynamic from 'next/dynamic';
 import { CodeLanguage, CodeType } from './enum';
+import { getEnvVariables } from 'pc/utils/env';
 
 const DocInnerHtml = dynamic(() => import('./doc_inner_html'), {
   ssr: false,
@@ -67,7 +68,7 @@ enum RecordType {
 }
 
 const API_BASE = 'https://api.vika.cn';
-const MORE_SDK_URL = 'https://github.com/apitable/awesome-apitable';
+const MORE_SDK_URL = getEnvVariables().API_PANEL_MORE_URL;
 const VARIABLE_REG = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
 const INVALID_FIELD_NAME_TIPS = `
 A field name exists that does not match the variable rules, please turn on "Use FieldId" or the code example below may not work! 
@@ -277,9 +278,10 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
   };
 
   const exampleConfig = getExampleConfig();
+
   return (
     <div className={styles.fieldCodes}>
-      <ButtonGroup className={styles.radioGroup}>
+      <div className={styles.radioGroup}>
         <LinkButton
           underline={false}
           component="button"
@@ -313,7 +315,7 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
         >
           More
         </LinkButton>
-      </ButtonGroup>
+      </div>
       <DocInnerHtml showApiToken={showApiToken} exampleConfig={exampleConfig} language={language} />
     </div>
   );

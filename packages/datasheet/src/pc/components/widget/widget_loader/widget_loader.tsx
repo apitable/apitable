@@ -41,10 +41,16 @@ const _ErrorBoundary: any = ErrorBoundary;
     // Register the widget dependency package to window in order for the widget to load properly.
     window['_React'] = React;
     window['_ReactDom'] = ReactDom;
-    window[`_@${prefix}/components`] = components;
-    window[`_@${prefix}/widget-sdk`] = widgetSdk;
-    window[`_@${prefix}/core`] = core;
-    window[`_@${prefix}/icons`] = icons;
+    window['_@apitable/components'] = components;
+    window['_@apitable/widget-sdk'] = widgetSdk;
+    window['_@apitable/core'] = core;
+    window['_@apitable/icons'] = icons;
+    if (prefix !== 'apitable') {
+      window[`_@${prefix}/components`] = components;
+      window[`_@${prefix}/widget-sdk`] = widgetSdk;
+      window[`_@${prefix}/core`] = core;
+      window[`_@${prefix}/icons`] = icons;
+    }
   }
 })();
 

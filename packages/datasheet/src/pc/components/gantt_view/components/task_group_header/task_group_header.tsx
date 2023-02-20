@@ -55,8 +55,8 @@ const getTaskGroupHeaderStyle = (depth: number, groupCount: number, colors: ILig
   const styleList = [
     {
       height: 8,
-      stroke: colors.warningColor,
-      background: rgbaToHex(colors.warningColor, 0.4)
+      stroke: colors.rainbowOrange3,
+      background: colors.rainbowOrange2
     },
     {
       height: 6,

@@ -95,4 +95,8 @@ public class UnitMemberVo {
 
     @ApiModelProperty(value = "Nick Name", example = "Zhang San", position = 12)
     private String nickName;
+
+    public String getOriginName() {
+        return originName != null ? originName : memberName;
+    }
 }

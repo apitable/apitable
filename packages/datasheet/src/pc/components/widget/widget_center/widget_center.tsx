@@ -18,7 +18,7 @@
 
 import { Box, Button, Skeleton, ThemeName, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { IMember, IWidgetPackage, Selectors, Strings, t, UnitItem, WidgetApi, WidgetReleaseType } from '@apitable/core';
-import { DefaultFilled, HandoverOutlined, InformationLargeOutlined, UnpublishOutlined, WarnFilled } from '@apitable/icons';
+import { EditDescribeOutlined, HandoverOutlined, InformationLargeOutlined, UnpublishOutlined, WarnFilled } from '@apitable/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
@@ -109,7 +109,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
     <div className={styles.tabItemTips}>
       {
         getEnvVariables().WIDGET_CENTER_OFFICIAL_TIP_VISIBLE && <>
-          <DefaultFilled size={16} color={colors.thirdLevelText} />
+          <EditDescribeOutlined size={16} color={colors.thirdLevelText} />
           <span>{introduction}</span>
         </>
       }
