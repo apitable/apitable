@@ -93,6 +93,8 @@ public class CloudMailProperties {
 
     public enum MailType {
 
+        SMTP,
+
         TENCENT,
 
         ALIYUN
