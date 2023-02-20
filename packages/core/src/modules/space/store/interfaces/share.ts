@@ -17,7 +17,6 @@
  */
 
 import * as actions from '../../../shared/store/action_constants';
-import { NodeType } from 'config/constant';
 
 export interface IShareNodeTree {
   nodeId: string;
@@ -33,15 +32,10 @@ export interface IShareInfo {
   allowSaved?: boolean;
   hasLogin?: boolean;
   isDeleted?: boolean;
-  isFolder?: boolean;
   lastModifiedAvatar?: string;
   lastModifiedBy?: string;
-  nodeTree?: any[]
   shareId?: string;
-  shareNodeIcon?: string;
-  shareNodeId?: string;
-  shareNodeName?: string;
-  shareNodeType?: NodeType;
+  shareNodeTree?: IShareNodeTree;
   spaceId?: string | null;
   spaceName?: string;
   allowCopyDataToExternal?: string;
