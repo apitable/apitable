@@ -376,7 +376,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
             {component}
           </ComponentWrapper>}
         </ComponentDisplay>
-        {isIframe() && <div className={styles.brandContainer}>
+        {isIframe() && !formId && <div className={styles.brandContainer}>
           <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20} alt="" />
         </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
