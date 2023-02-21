@@ -65,6 +65,7 @@ export const Dashboard = () => {
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
+  const [installedWidgetInDashboard, setInstalledWidgetInDashboard] = useState(false);
 
   const dashboardPack = useSelector(Selectors.getDashboardPack);
   const dashboardLayout = useSelector(Selectors.getDashboardLayout);
@@ -94,7 +95,11 @@ export const Dashboard = () => {
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
-  const installedWidgetInDashboard = Boolean(containerRef.current?.offsetWidth && dashboardLayout && dashboardLayout.length);
+
+  useEffect(() => {
+    setInstalledWidgetInDashboard(Boolean(dashboardLayout && dashboardLayout.length));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const decisionOpenRecommend = () => {
     if (hasOpenRecommend.current) {
@@ -382,7 +387,7 @@ export const Dashboard = () => {
                   sm: 12,
                   xs: 1,
                   xxs: 1,
-                // lg: 12, md: 8, sm: 4, xs: 4, xxs: 4,
+                  // lg: 12, md: 8, sm: 4, xs: 4, xxs: 4,
                 }}
                 breakpoints={{
                   lg: 992,
@@ -420,7 +425,7 @@ export const Dashboard = () => {
               >
                 {dashboardLayout!.map(item => {
                   const isDevMode = widgetMap?.[item.id]?.widget?.status !== WidgetPackageStatus.Ban &&
-                  devWidgetId === item.id && !hideReadonlyEmbedItem;
+                    devWidgetId === item.id && !hideReadonlyEmbedItem;
                   return (
                     <div key={item.id} className={classNames(widgetId === item.id && styles.isFullscreen)} data-widget-id={item.id} tabIndex={-1}>
                       <WidgetItem

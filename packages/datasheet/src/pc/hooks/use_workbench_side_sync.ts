@@ -91,8 +91,8 @@ export const useWorkbenchSideSync = () => {
   const diffOperation = (oldIds: string[], newNodes: INode[]) => {
     const newIds = newNodes.map(node => node.nodeId);
     const datasheetMapKeys = Selectors.getDatasheetIds(store.getState());
-    /* 
-     * The number of nodes requested is greater than the number of nodes returned 
+    /*
+     * The number of nodes requested is greater than the number of nodes returned
      * (because the request only returns the nodes currently entitled to access), the tree is deleted
      **/
     if (oldIds.length > newIds.length) {
@@ -157,6 +157,10 @@ export const useWorkbenchSideSync = () => {
       }
       case ConfigConstant.NodeType.MIRROR: {
         dispatch(StoreActions.updateMirror(nodeId, nodeData));
+        break;
+      }
+      case ConfigConstant.NodeType.DASHBOARD: {
+        dispatch(StoreActions.updateDashboard(nodeId, nodeData));
         break;
       }
     }
@@ -244,12 +248,15 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Handling synchronisation messages for update nodes
-  const updateNodeSync = (data: INodeChangeSocketData) => {
-    const { nodeId, ...rest } = data.data;
+  const updateNodeSync = async(data: INodeChangeSocketData) => {
+    const { nodeId } = data.data;
     if (!treeNodesMap[nodeId]) {
       return;
     }
-    updateNodeInfo(nodeId, treeNodesMap[nodeId].type, rest);
+    const res = await Api.getNodeInfo(nodeId);
+    const { data: nodeData } = res.data;
+    const nodeInfo = nodeData[0];
+    updateNodeInfo(nodeId, treeNodesMap[nodeId].type, nodeInfo);
   };
 
   // Handle synchronisation messages from shared nodes
@@ -272,7 +279,7 @@ export const useWorkbenchSideSync = () => {
     // The set of ids of the nodes that will be affected
     const idsArray: string[] = collectProperty(treeNodesMap, nodeId);
     /**
-     * Considering that deleting a node may affect the prevNodeId of the node after it, 
+     * Considering that deleting a node may affect the prevNodeId of the node after it,
      * you need to determine whether to update the information of a node after it
      */
     updateNextNode(nodeId);
@@ -318,7 +325,7 @@ export const useWorkbenchSideSync = () => {
     const datasheetMapKeys = Selectors.getDatasheetIds(store.getState());
     const { nodeId, parentId } = data.data;
     /**
-     * If neither the parent node nor the updated node exists and the workbenchSidebar does not exist in the table cache, 
+     * If neither the parent node nor the updated node exists and the workbenchSidebar does not exist in the table cache,
      * the subsequent processing is skipped
      */
     if (!treeNodesMap[parentId] && !treeNodesMap[nodeId] && datasheetMapKeys.includes(nodeId)) {
@@ -383,7 +390,7 @@ export const useWorkbenchSideSync = () => {
     if (dragNode && parentId === dragNode.parentId) {
       const parentNodeChildren = treeNodesMap[parentId].children;
       /**
-       * Update the children attribute of the parent node if the predecessor node at the target location exists, 
+       * Update the children attribute of the parent node if the predecessor node at the target location exists,
        * otherwise request the children node to update the children attribute later via parentId
        */
       if (parentNodeChildren.includes(preNodeId)) {

@@ -22,6 +22,7 @@ import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import SwipeOut from 'rc-swipeout';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -102,7 +103,9 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
             }
             if (!validator(value)) {
               Message.error({
-                content: t(Strings.view_name_length_err),
+                content: t(Strings.view_name_length_err, {
+                  maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+                })
               });
               return;
             }

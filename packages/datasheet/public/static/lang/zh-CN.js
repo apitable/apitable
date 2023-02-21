@@ -4563,7 +4563,7 @@ window.apitable_i18n =
   "view_lock_note": "“可管理”权限的成员解锁视图后才可修改和保存视图配置",
   "view_manual_save": "视图配置不协同",
   "view_mirror_count": "${count} 个镜像",
-  "view_name_length_err": "名称要求 1~30 字符以内",
+  "view_name_length_err": "名称要求 1~${maxCount} 字符以内",
   "view_name_repetition": "已存在该视图名称",
   "view_permission": "视图权限",
   "view_permission_description": "工作台权限",
