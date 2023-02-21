@@ -393,28 +393,6 @@
         SELECT #{nodeId} AS node_id
     </select>
 
-    <select id="selectParentNodesByOrder" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id) AS
-        ( SELECT vn.node_id
-        FROM ${tablePrefix}node vn
-        WHERE vn.pre_node_id IS NULL AND vn.space_id = #{spaceId} AND vn.is_rubbish = 0 AND vn.parent_id IN (
-        WITH RECURSIVE child (parent_id) AS
-        ( SELECT parent_id
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT vn.parent_id
-        FROM child AS c
-        JOIN ${tablePrefix}node vn ON vn.node_id = c.parent_id AND vn.is_rubbish = 0
-        )SELECT * FROM child
-        )
-        UNION ALL
-        SELECT vn.node_id
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )SELECT DISTINCT node_id FROM pre
-    </select>
-
     <select id="selectShareTreeByNodeId" resultType="com.apitable.workspace.vo.NodeShareTree">
         WITH RECURSIVE pre (node_id, node_name, icon, parent_id, pre_node_id, type, cover, extra) AS
         (SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
