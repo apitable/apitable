@@ -39,7 +39,7 @@ services:
 
   test-redis:
     container_name: test-redis
-    image: redis:5
+    image: redis:7.0.8
     networks:
       - apitable
     ports:
@@ -52,7 +52,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3-management
+    image: rabbitmq:3.11.9-management
     networks:
       - apitable
     ports:
