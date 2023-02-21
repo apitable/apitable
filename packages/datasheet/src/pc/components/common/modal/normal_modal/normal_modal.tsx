@@ -20,8 +20,7 @@ import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
-import * as React from 'react';
-import { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { Modal } from '../modal/modal';
 import styles from './style.module.less';
 
@@ -39,7 +38,7 @@ const config = {
   style: { minWidth: '400px' },
 };
 
-export const NormalModal: FC<React.PropsWithChildren<PropsWithChildren<INormalModalProps>>> = props => {
+export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = props => {
   const { title, className, subTitle, cancelText = t(Strings.cancel),
     okText = t(Strings.submit), ...rest } = props;
   return (

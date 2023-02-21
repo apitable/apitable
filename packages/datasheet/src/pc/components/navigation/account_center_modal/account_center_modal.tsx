@@ -181,7 +181,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           push={{
             distance: 0,
           }}
-          visible
+          open
           maskClosable
           closable={false}
           placement='bottom'

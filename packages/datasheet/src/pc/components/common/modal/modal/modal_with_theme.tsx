@@ -26,9 +26,7 @@ export const ModalWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
-      <div>
-        <AntdModal {...props} />
-      </div>
+      <AntdModal {...props} />
     </ThemeProvider>
   );
 };
