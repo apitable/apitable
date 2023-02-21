@@ -92,7 +92,7 @@ APITable 由 4 个进程组成：
 3. socket-server
 4. web-server
 
-要启动本地开发环境，请运行这些命令 (注: windows 系统建议在 git bash terminal执行下面命令) ：
+要启动本地开发环境，请运行这些命令：
 
 ```bash
 # 在 Docker 中启动数据库
