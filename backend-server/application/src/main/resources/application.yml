@@ -134,7 +134,7 @@ starter:
         apikey: ${SMS_YUNPIAN_APIKEY:}
   mail:
     enabled: ${MAIL_ENABLED:false}
-    type: ${MAIL_TYPE:}
+    type: ${MAIL_TYPE:smtp}
     region: ${MAIL_REGION:}
     from: ${MAIL_FROM:}
     reply: ${MAIL_REPLY:}

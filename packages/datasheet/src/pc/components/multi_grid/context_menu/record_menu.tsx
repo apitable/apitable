@@ -41,7 +41,7 @@ import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
 import * as React from 'react';
-import { KeyboardEvent, useRef } from 'react';
+import { KeyboardEvent, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { copy2clipBoard } from '../../../utils/dom';
@@ -76,6 +76,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
   const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
   const view = useSelector(state => Selectors.getCurrentView(state))!;
+  const isOrgChart = view.type === ViewType.OrgChart;
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
   const isKanban = view.type === ViewType.Kanban;
@@ -166,7 +167,12 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
     });
   }
 
-  const subOrUnsubText = React.useMemo((): string => {
+  const getSubOrUnsubText = useCallback((recordId: string): string => {
+    // Compatibility of views for Calendar, Kanban, Gallery and OrgChart views
+    if (isCalendar || isKanban || isGallery || isOrgChart) {
+      return subscriptions.includes(recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
+    }
+
     if (hasSelection) {
       const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
 
@@ -196,7 +202,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
     }
 
     return t(Strings.record_watch_single);
-  }, [subscriptions, selection, recordRanges, hasSelection]);
+  }, [isCalendar, isKanban, isGallery, isOrgChart, subscriptions, selection, recordRanges, hasSelection]);
 
   const onSubOrUnsub = (recordId: string) => {
     if (onlyOperateOneRecord) {
@@ -320,7 +326,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
       },
       {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
-        text: subOrUnsubText,
+        text: ({ props: { recordId }}: any) => getSubOrUnsubText(recordId),
         hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE || !!embedId,
         onClick: ({ props: { recordId }}: any) => onSubOrUnsub(recordId),
       },

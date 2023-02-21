@@ -40,7 +40,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3-management
+    image: rabbitmq:3.11.7-management
     ports:
       - '5672:5672'
     networks:

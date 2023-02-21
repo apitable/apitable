@@ -286,7 +286,7 @@ export const Dashboard = () => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_delete),
         onClick: deleteWidget,
-        hidden: isMobile || !manageable,
+        hidden: isMobile || (embedId ? embedInfo?.permissionType === PermissionType.READONLY : !manageable),
       },
     ],
   ];
