@@ -43,7 +43,6 @@ import {
   IWidgetPanel,
 } from '../exports/store/interfaces';
 import {
-  doFilter,
   getActiveViewGroupInfo,
   getCellValue,
   getFieldMap,
@@ -62,6 +61,7 @@ import { assertNever, getNewId, getUniqName, IDPrefix, NamePrefix } from 'utils'
 import { Field, OtherTypeUnitId, StatType } from './field';
 import { ICellValue } from './record';
 import { getViewClass } from './views';
+import { ViewFilterDerivate } from 'compute_manager/view_derivate';
 
 // TODO: all fields should be checked, not only the first one
 function validateFilterInfo(filterInfo?: IFilterInfo) {
@@ -94,6 +94,7 @@ function getDefaultNewRecordDataByGroup(groupInfos: IGroupInfo, groupCellValues?
 
 function getDefaultNewRecordDataByFilter(
   state: IReduxState,
+  datasheetId: string,
   filterInfo: IFilterInfo,
   fieldMap: { [id: string]: IField },
   userInfo?: IUserInfo,
@@ -184,7 +185,8 @@ function getDefaultNewRecordDataByFilter(
      * candidate value logic is 1, calc by the above.
      * and 1 cannot pass =1 and <0, default fill in this value does not meet user expectations.
      */
-    const pass = conditionGroup.every(condition => doFilter(state, condition, field, result));
+    const viewFilterDerivate = new ViewFilterDerivate(state, datasheetId);
+    const pass = conditionGroup.every(condition => viewFilterDerivate.doFilter(condition, field, result));
     if (pass) {
       // different fields of `And`, only need to assign the values that have values to them.
       recordData[fieldId] = result;
@@ -1300,7 +1302,7 @@ export class DatasheetActions {
       Object.assign(record.data, dataByGroup);
     }
 
-    const curFilterInfo = getFilterInfoExceptInvalid(state, view.filterInfo, snapshot.datasheetId);
+    const curFilterInfo = getFilterInfoExceptInvalid(state, snapshot.datasheetId, view.filterInfo);
     if (filterInfo && curFilterInfo) {
       filterInfo = {
         conjunction: curFilterInfo.conjunction,
@@ -1310,7 +1312,7 @@ export class DatasheetActions {
       filterInfo = curFilterInfo;
     }
     if (filterInfo) {
-      const dataByFilter = getDefaultNewRecordDataByFilter(state, filterInfo, fieldMap, userInfo);
+      const dataByFilter = getDefaultNewRecordDataByFilter(state, snapshot.datasheetId, filterInfo, fieldMap, userInfo);
       Object.assign(record.data, dataByFilter);
     }
 

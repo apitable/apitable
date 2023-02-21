@@ -41,7 +41,6 @@ import {
   TrackEvents,
   UndoManager,
 } from 'core';
-import { mainWidgetMessage } from 'iframe_message';
 import localForage from 'localforage';
 import { Store } from 'redux';
 import SocketIO from 'socket.io-client';
@@ -217,9 +216,7 @@ export class ResourceService implements IResourceService {
     this.opEventManager.handleEvents(events, true);
     changesets.forEach(changeset => {
       const { resourceType, operations, resourceId } = changeset;
-      if (resourceType === ResourceType.Datasheet || resourceType === ResourceType.Widget) {
-        mainWidgetMessage?.enable && mainWidgetMessage.syncOperations(operations, resourceType, resourceId);
-      }
+      // console.log('================= apply jot start ================');
       store.dispatch(StoreActions.applyJOTOperations(operations, resourceType, resourceId));
     });
     // To widget synchronization operations.

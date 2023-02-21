@@ -16,10 +16,10 @@ import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
-import { IWidgetLoaderRefs } from '../../widget_loader';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
+import { IWidgetBlockRefs } from './widget_block';
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;
@@ -32,7 +32,7 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
   toggleWidgetDevMode?: () => void;
   dragging: boolean;
   setDragging: Function;
-  widgetLoader: React.RefObject<IWidgetLoaderRefs>;
+  widgetLoader: React.RefObject<IWidgetBlockRefs>;
   refreshVersion: (delta?: number | undefined) => void;
   isFullScreenWidget: boolean;
   toggleFullScreenWidget: () => void;

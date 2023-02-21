@@ -183,7 +183,7 @@ export class ViewPropertyFilter {
     }
 
     const state: IReduxState = this._getState();
-    if (!state.labs.includes('view_manual_save') && !state.share.featureViewManualSave) {
+    if (!state.labs?.includes('view_manual_save') && !state.share?.featureViewManualSave) {
       // There is no uncoordinated view of the entire space station, so there is no need to check the data here
       return actions;
     }
@@ -271,7 +271,7 @@ export class ViewPropertyFilter {
   }
 
   static getReaderRolePermission(state: IReduxState, datasheetId: string, permission?: IPermissions) {
-    const spaceManualSaveViewIsOpen = state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
+    const spaceManualSaveViewIsOpen = state.labs?.includes('view_manual_save') || Boolean(state.share?.featureViewManualSave);
     const viewId = state.pageParams.viewId;
     if (!viewId || !spaceManualSaveViewIsOpen || !permission) {
       return permission;

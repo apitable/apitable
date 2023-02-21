@@ -56,7 +56,7 @@ export const GanttExport: FC<React.PropsWithChildren<IGanttExportProps>> = ({ da
     return {
       view,
       rowHeightLevel,
-      ganttLinearRows: Selectors.getGanttLinearRows(state),
+      ganttLinearRows: Selectors.getLinearRows(state)!,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
       ganttStyle: Selectors.getGanttStyle(state)!,
     };

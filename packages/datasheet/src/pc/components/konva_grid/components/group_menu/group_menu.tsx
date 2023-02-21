@@ -59,7 +59,7 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
     groupBreakpoint
   } = useSelector(state => {
     return {
-      viewId: Selectors.getActiveView(state)!,
+      viewId: Selectors.getActiveViewId(state)!,
       groupCollapseIds: Selectors.getGroupingCollapseIds(state),
       isSearching: Boolean(Selectors.getSearchKeyword(state)),
       groupInfo: Selectors.getActiveViewGroupInfo(state),

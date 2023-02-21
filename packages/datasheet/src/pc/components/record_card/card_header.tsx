@@ -62,14 +62,15 @@ interface ICardHeaderProps {
   width: number;
   showEmptyCover: boolean;
   showOneImage?: boolean;
+  datasheetId: string;
 }
 
 export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = props => {
-  const { coverFieldId, recordId, width, height, isCoverFit, showEmptyCover, showOneImage } = props;
+  const { coverFieldId, recordId, width, height, isCoverFit, showEmptyCover, showOneImage, datasheetId } = props;
 
   const { recordSnapshot, permissions } = useSelector(state => {
     return {
-      recordSnapshot: Selectors.getRecordSnapshot(state, recordId),
+      recordSnapshot: Selectors.getRecordSnapshot(state, datasheetId, recordId),
       permissions: Selectors.getPermissions(state),
     };
   }, shallowEqual);

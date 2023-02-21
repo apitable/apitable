@@ -44,7 +44,7 @@ export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = props 
   } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
-    const activeView = Selectors.getActiveView(state)!;
+    const activeView = Selectors.getActiveViewId(state)!;
     const views = datasheet?.snapshot.meta.views || [];
     const viewName = views.find(item => item.id === activeView)?.name;
     return {

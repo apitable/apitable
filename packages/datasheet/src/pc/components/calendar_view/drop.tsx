@@ -114,7 +114,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
         const rowsMap = Selectors.getVisibleRowsIndexMap(state);
         const isRecordInView = rowsMap.has(newRecordId);
         if (!isRecordInView) {
-          const newRecordSnapshot = Selectors.getRecordSnapshot(state, newRecordId);
+          const newRecordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, newRecordId);
           if (newRecordSnapshot) {
             dispatch(
               StoreActions.setActiveCell(datasheetId, {

@@ -167,7 +167,8 @@ export const findRowsIndexById = (recordId: string) => {
 };
 
 export const getRecordCellValue = (state: IReduxState, recordId: string) => {
-  const recordSnapshot = Selectors.getRecordSnapshot(state, recordId);
+  const datasheetId = Selectors.getActiveDatasheetId(state)!;
+  const recordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, recordId);
   if (recordSnapshot) {
     return recordSnapshot.recordMap[recordId]?.data;
   }

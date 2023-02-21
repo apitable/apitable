@@ -18,11 +18,12 @@
 
 import { Store } from 'redux';
 import {
-  DateFormat, ICollaborator, IFieldPermissionMap, ILabs, IPageParams, IPermissions, IReduxState, ISelection, IShareInfo, ISnapshot, IUnitInfo,
-  IViewRow, IWidget, TimeFormat, WidgetPackageStatus, WidgetReleaseType, IMirrorMap, IActiveRowInfo, IUserInfo
+  DateFormat, ICollaborator, IPermissions, IReduxState,
+  IViewRow, TimeFormat, WidgetPackageStatus, WidgetReleaseType
 } from 'core';
 import { ThemeName } from '@apitable/components';
 import { IResourceService } from '../resource/interface';
+import { IWidgetState } from './store';
 
 /** Cell row and column unique identifiers uuid */
 export interface ICell {
@@ -58,33 +59,6 @@ export declare type ICloudStorageValue = null | boolean | number | string | IClo
 
 export type ICloudStorageData = Record<string, ICloudStorageValue> | null;
 
-export interface IDatasheetClient {
-  collaborators: ICollaborator[] | undefined;
-  selection?: ISelection | null;
-  activeRowInfo?: IActiveRowInfo;
-}
-
-export type IDatasheetMainSimple = Partial<Omit<IDatasheetMain, 'snapshot'>>;
-
-export interface IDatasheetMain {
-  id: string;
-  datasheetId: string;
-  datasheetName: string;
-  permissions: IPermissions;
-  snapshot: ISnapshot;
-  fieldPermissionMap?: IFieldPermissionMap,
-  activeView?: string;
-  isPartOfData?: boolean;
-}
-
-export type IWidgetDatasheetState = {
-  connected?: boolean;
-  datasheet: IDatasheetMain;
-  client: IDatasheetClient
-};
-
-export type IDatasheetMap = { [key: string]: IWidgetDatasheetState | null };
-
 export interface IWidgetDashboardState {
   collaborators?: ICollaborator[];
   permissions: IPermissions;
@@ -94,26 +68,15 @@ export type ICalcCache = {[datasheetId: string]: {
   [viewId: string]: { cache: IViewRow[], expire?: boolean }
 }};
 
-export interface IWidgetState {
-  widget: IWidget | null;
-  errorCode: number | null;
-  datasheetMap: IDatasheetMap;
-  dashboard: IWidgetDashboardState | null;
-  unitInfo: IUnitInfo | null;
-  widgetConfig: IWidgetConfigIframe;
-  pageParams?: IPageParams,
-  labs: ILabs;
-  share: IShareInfo;
-  // view calculates cached data
-  calcCache?: ICalcCache;
-  mirrorMap?: IMirrorMap;
-  user: IUserInfo | null;
-}
-
 /**
  * @hidden
  */
 export type IWidgetConfigIframe = Pick<IWidgetConfig, 'isShowingSettings' | 'isFullscreen'> & { isDevMode?: boolean };
+
+/**
+ * @hidden
+ */
+export type IWidgetConfigIframePartial = Partial<IWidgetConfigIframe>;
 
 /**
  * @hidden
@@ -134,8 +97,6 @@ export interface IExpandRecordProps {
 
 /* Widget external configuration information */
 export interface IWidgetConfig {
-  /* Unique ID when the widget is mounted */
-  mountId: string;
   /* Is the widget being expanded as full screen */
   isFullscreen: boolean;
   /* Whether the widget settings panel is enabled or not */
@@ -160,10 +121,6 @@ export interface IWidgetContext {
   locale: string;
   /** system Theme */
   theme: ThemeName;
-  /** widget data service */
-  resourceService: IResourceService;
-  /** datasheet Store */
-  globalStore: Store<IReduxState>;
   /** widgets data source datasheet Store */
   widgetStore: Store<IWidgetState>;
   /** widget runtime environment */

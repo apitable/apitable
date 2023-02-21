@@ -715,7 +715,7 @@ const mapStateToProps = (state: IReduxState): IMultiGridStateProps => {
     view,
     snapshot: Selectors.getSnapshot(state)!,
     datasheetId: Selectors.getActiveDatasheetId(state)!,
-    viewId: Selectors.getActiveView(state)!,
+    viewId: Selectors.getActiveViewId(state)!,
     selection: Selectors.getSelectRanges(state),
     fillHandleStatus: Selectors.getFillHandleStatus(state),
     columnCount: Selectors.getVisibleColumnCount(state),

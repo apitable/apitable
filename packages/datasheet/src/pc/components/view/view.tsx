@@ -135,7 +135,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
                 return useKonva ? (
                   <KonvaGridView width={width} height={height} />
                 ) : (
-                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />
+                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />
                 );
               }
               case ViewType.Gallery:
@@ -149,7 +149,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
               case ViewType.OrgChart:
                 return <OrgChartView width={width} height={height - (isMobile ? 40 : 0)} isMobile={isMobile} />;
               default:
-                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />;
+                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />;
             }
           }}
         </AutoSizer>

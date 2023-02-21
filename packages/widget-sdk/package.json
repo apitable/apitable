@@ -23,7 +23,7 @@
   "scripts": {
     "copy:static": "copyfiles -f src/static/*.png dist/static",
     "start": "rm -rf ./dist && yarn copy:static && concurrently \"tsc -w\" \"tsc-alias -w\"",
-    "test": "jest",
+    "test": "jest --silent",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -37,9 +37,9 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
-    "@testing-library/react-hooks": "^7.0.1",
     "@apitable/components": "*",
     "@apitable/core": "*",
+    "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",
@@ -79,6 +79,7 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.0",
     "jest": "28.1.0",
+    "jest-environment-jsdom": "^28.1.1",
     "styled-components": "5.3.6",
     "ts-jest": "28.0.3",
     "tsc-alias": "^1.6.11",

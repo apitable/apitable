@@ -84,7 +84,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     columns,
     entityFieldMap,
     permissions,
-    currentSearchCell,
+    currentSearchRecordId,
     getCellValue,
     isSearching,
     fieldPermissionMap,
@@ -96,6 +96,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     const currSnapshot = Selectors.getSnapshot(state, dstId)!;
     const currView = Selectors.getCurrentView(state)!;
     const getCurrCellValue = (rId: string, fId: string) => Selectors.getCellValue(state, snapshot, rId, fId);
+
     return {
       calendarViewStatus: Selectors.getCalendarViewStatus(state, dstId)!,
       datasheetId: dstId,
@@ -105,15 +106,15 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
       view: currView,
       fieldMap: Selectors.getFieldMap(state, dstId)!,
       visibleRows: Selectors.getVisibleRows(state),
-      ignoreSearchRows: Selectors.getVisibleRowsBase(state, currSnapshot, currView, keyword),
+      ignoreSearchRows: Selectors.getVisibleRowsWithoutSearch(state),
       columns: Selectors.getCalendarVisibleColumns(state),
       entityFieldMap: Selectors.getFieldMapIgnorePermission(state)!,
       permissions: Selectors.getPermissions(state),
-      currentSearchCell: Selectors.getCurrentSearchItem(state),
+      currentSearchRecordId: Selectors.getCurrentSearchRecordId(state),
       isSearching: Boolean(Selectors.getSearchKeyword(state)),
       getCellValue: getCurrCellValue,
       fieldPermissionMap: Selectors.getFieldPermissionMap(state),
-      viewId: Selectors.getActiveView(state),
+      viewId: Selectors.getActiveViewId(state),
       cacheTheme: Selectors.getTheme(state),
       activeCell: Selectors.getActiveCell(state),
     };
@@ -340,18 +341,18 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   const isVisible = recordModal && recordModal[1];
 
   const defaultDate = useMemo(() => {
-    const searchStartDatetime = getCellValue(currentSearchCell as string, startFieldId);
-    const searchEndDatetime = getCellValue(currentSearchCell as string, endFieldId);
+    const searchStartDatetime = currentSearchRecordId && getCellValue(currentSearchRecordId, startFieldId);
+    const searchEndDatetime = currentSearchRecordId && getCellValue(currentSearchRecordId, endFieldId);
     const searchDatetime = searchStartDatetime || searchEndDatetime;
     return searchDatetime ? new Date(searchDatetime) : undefined;
-  }, [currentSearchCell, endFieldId, getCellValue, startFieldId]);
+  }, [currentSearchRecordId, endFieldId, getCellValue, startFieldId]);
 
   useEffect(() => {
     setTimeout(() => {
-      const taskElm = document.querySelector(`#calendar_task_${currentSearchCell}`);
+      const taskElm = document.querySelector(`#calendar_task_${currentSearchRecordId}`);
       taskElm?.scrollIntoView({ block: 'nearest' });
     }, 0);
-  }, [currentSearchCell]);
+  }, [currentSearchRecordId]);
 
   const [date, setDate] = useState<dayjs.Dayjs | null>(() => {
     return dayjs(new Date());
@@ -376,7 +377,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
       value={{
         setRecordModal,
         recordModal,
-        currentSearchCell,
+        currentSearchRecordId,
         fieldMap,
         columns,
         snapshot,

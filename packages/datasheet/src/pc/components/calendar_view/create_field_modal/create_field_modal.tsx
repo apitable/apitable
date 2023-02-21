@@ -48,7 +48,7 @@ export const CreateFieldModal = memo(() => {
   const { viewId, columnCount, exitFieldNames, permissions } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
-      viewId: Selectors.getActiveView(state)!,
+      viewId: Selectors.getActiveViewId(state)!,
       columnCount: Selectors.getColumnCount(state)!,
       exitFieldNames: Object.values(fieldMap).map(field => field.name),
       permissions: Selectors.getPermissions(state),

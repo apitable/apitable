@@ -747,8 +747,8 @@ __metadata:
     "@types/loadjs": ^4
     "@types/localforage": ^0.0.34
     "@types/mime-types": ^2.1.1
-    "@types/react": ^17.0.2
-    "@types/react-dom": 17.0.11
+    "@types/react": ^18.0.2
+    "@types/react-dom": ^18.0.2
     "@types/react-redux": ^7.1.9
     "@types/resize-observer-browser": ^0.1.5
     "@types/socket.io-client": ^1.4.36
@@ -763,6 +763,7 @@ __metadata:
     emoji-mart: ^3.0.0
     fundebug-javascript: ^2.1.2
     jest: 28.1.0
+    jest-environment-jsdom: ^28.1.1
     loadjs: ^4.2.0
     localforage: ^1.10.0
     lodash: ^4.17.21
@@ -12420,15 +12421,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:17.0.11":
-  version: 17.0.11
-  resolution: "@types/react-dom@npm:17.0.11"
-  dependencies:
-    "@types/react": "*"
-  checksum: 4d5730dffbef86c887cecad7e3cecda424ce6a64d0b5441c63b5b015d48219868660a2bb1aa15e897e565ad8867fa6b885d4358b04e1c4e589ba4c07c3fda55c
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:>=16.9.0, @types/react-dom@npm:^18.0.2":
   version: 18.0.10
   resolution: "@types/react-dom@npm:18.0.10"
@@ -12600,17 +12592,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17.0.2":
-  version: 17.0.53
-  resolution: "@types/react@npm:17.0.53"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: dacfde02c260fd98bed2eb775ed0c7ce1397be4c0844f907a50763b081a4008f81f57071889a16eb1350ddcf0927f3cf1a6541702c8ad03de3c70383ef931e3f
   languageName: node
   linkType: hard
 

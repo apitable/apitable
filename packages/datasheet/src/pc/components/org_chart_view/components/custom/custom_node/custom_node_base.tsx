@@ -59,6 +59,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
     viewId,
     rowsCount,
     horizontal,
+    datasheetId
   } = useContext(FlowContext);
 
   const [childId] = linkIds;
@@ -164,6 +165,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
             [styles.highlight]: currentSearchCell === id,
             [styles.hover]: quickAddRecId === id,
           })}
+          datasheetId={datasheetId}
           showEmptyCover={SHOW_EPMTY_COVER}
           coverFieldId={coverFieldId}
           showEmptyField={SHOW_EPMTY_FIELD}

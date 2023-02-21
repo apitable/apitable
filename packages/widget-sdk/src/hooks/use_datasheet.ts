@@ -21,11 +21,8 @@ import { IWidgetContext } from 'interface';
 import { WidgetContext } from '../context';
 import { useMeta } from './use_meta';
 import { Datasheet } from '../model';
-import { Selectors, StoreActions } from 'core';
-import { getWidgetDatasheetPack, refreshUsedDatasheetAction } from 'store';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { isIframe } from 'iframe_message/utils';
-import { widgetMessage } from 'iframe_message';
+import { getWidgetDatasheetPack } from 'store';
+import { widgetMessage } from 'message';
 
 /**
  * A hook for connecting a React component to your datasheet's schema.
@@ -66,25 +63,19 @@ import { widgetMessage } from 'iframe_message';
  * ```
  * 
  */
+
 export function useDatasheet(datasheetId?: string | undefined) {
   const context = useContext<IWidgetContext>(WidgetContext);
   const { datasheetId: metaDatasheetId } = useMeta();
   const _datasheetId = datasheetId || metaDatasheetId;
-  const dispatch = useDispatch();
-  const datasheet = useSelector(state => getWidgetDatasheetPack(state, _datasheetId));
-  const usedDatasheetMap = useSelector(state => state.datasheetMap, shallowEqual);
-  const datasheetObj = Selectors.getDatasheetPack(context.globalStore.getState(), datasheetId);
-  const iframe = isIframe();
-  if (iframe && datasheetId && (!datasheetObj || datasheetObj.datasheet?.isPartOfData)) {
-    widgetMessage.loadOtherDatasheetInit(datasheetId);
-  } else if (!iframe && datasheetId && (!datasheetObj || (!datasheetObj.loading && !datasheetObj.errorCode))) {
-    !usedDatasheetMap?.[datasheetId] && dispatch(refreshUsedDatasheetAction({ [datasheetId]: null }));
-    context.globalStore.dispatch(StoreActions.fetchDatasheet(datasheetId) as any);
+  const datasheetObj = getWidgetDatasheetPack(context.widgetStore.getState(), datasheetId);
+  if (datasheetId && (!datasheetObj || datasheetObj.datasheet?.isPartOfData)) {
+    widgetMessage.fetchDatasheet({ datasheetId });
   }
-  
+
   return useMemo(() => {
     if (!_datasheetId) return undefined;
     return new Datasheet(_datasheetId, context);
-  // eslint-disable-next-line
-  }, [_datasheetId, context, datasheet]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_datasheetId, context, datasheetObj]);
 }

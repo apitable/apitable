@@ -126,7 +126,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
     return null;
   });
-  const viewId = useSelector(state => Selectors.getActiveView(state))!;
+  const viewId = useSelector(state => Selectors.getActiveViewId(state))!;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const recordEditable = field ? Field.bindModel(field).recordEditable() : false;

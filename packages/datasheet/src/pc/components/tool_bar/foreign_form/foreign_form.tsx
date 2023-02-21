@@ -50,7 +50,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
-    const activeView = Selectors.getActiveView(state)!;
+    const activeView = Selectors.getActiveViewId(state)!;
     const views = datasheet?.snapshot.meta.views || [];
     const viewName = views.find((item) => item.id === activeView)?.name;
     return {

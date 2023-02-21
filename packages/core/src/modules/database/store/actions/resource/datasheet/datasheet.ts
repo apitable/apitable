@@ -44,6 +44,7 @@ import {
   ISetFieldInfoState,
   ISnapshot,
   ModalConfirmKey,
+  IViewDerivation,
 } from 'exports/store';
 import {
   ACTIVE_EXPORT_VIEW_ID,
@@ -104,6 +105,10 @@ import {
   UPDATE_DATASHEET_COMPUTED,
   UPDATE_DATASHEET_NAME,
   UPDATE_SNAPSHOT,
+  PATCH_VIEW_DERIVATION,
+  SET_VIEW_DERIVATION,
+  TRIGGER_VIEW_DERIVATION_COMPUTED,
+  DELETE_VIEW_DERIVATION,
 } from 'modules/shared/store/action_constants';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
 import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
@@ -847,3 +852,37 @@ export const resetExportViewId = (datasheetId: string) => {
     datasheetId,
   };
 };
+
+export const setViewDerivation = (datasheetId: string, payload: { viewId: string, viewDerivation: IViewDerivation}) => {
+  return {
+    datasheetId,
+    type: SET_VIEW_DERIVATION,
+    payload
+  };
+};
+
+// As opposed to set, patch means partial update
+export const patchViewDerivation = (datasheetId: string, payload: { viewId: string, viewDerivation: Partial<IViewDerivation>}) => {
+  return {
+    datasheetId,
+    type: PATCH_VIEW_DERIVATION,
+    payload
+  };
+};
+
+export const deleteViewDerivation = (datasheetId: string, viewId: string) => {
+  return {
+    datasheetId,
+    type: DELETE_VIEW_DERIVATION,
+    payload: { viewId }
+  };
+};
+
+export const triggerViewDerivationComputed = (datasheetId: string, viewId: string) => {
+  return {
+    datasheetId,
+    type: TRIGGER_VIEW_DERIVATION_COMPUTED,
+    payload: { datasheetId, viewId }
+  };
+};
+

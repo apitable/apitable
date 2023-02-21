@@ -223,3 +223,5 @@ export type ICollaCommandOptions = ISetRecordsOptions |
   ISetDateTimeCellAlarmOptions;
 
 export * from './datasheet';
+
+export * as FieldCmd from './common/field';

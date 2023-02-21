@@ -51,7 +51,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
     return Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   })!;
   const sortInfo = useSelector(Selectors.getActiveViewSortInfo);
-  const activityViewId = useSelector(Selectors.getActiveView)!;
+  const activityViewId = useSelector(Selectors.getActiveViewId)!;
   const sortFieldIds = sortInfo ? sortInfo.rules.map(item => item.fieldId) : [];
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

@@ -78,7 +78,7 @@ A field name exists that does not match the variable rules, please turn on "Use 
 export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props => {
   const { codeType, byFieldId, token, language, setLanguage, showApiToken } = props;
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const viewId = useSelector(Selectors.getActiveView)!;
+  const viewId = useSelector(Selectors.getActiveViewId)!;
   const columns = useSelector(Selectors.getVisibleColumns)!;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const rows = useSelector(state => Selectors.getVisibleRows(state))!;

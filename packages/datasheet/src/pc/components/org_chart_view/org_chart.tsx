@@ -77,7 +77,7 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
   const nodes = useStoreState(state => state.nodes);
   const [, , scale] = useStoreState(state => state.transform);
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchItem);
+  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
 
   const focusNode = (id: string) => {
     const node = nodes.find(n => n.id === id);

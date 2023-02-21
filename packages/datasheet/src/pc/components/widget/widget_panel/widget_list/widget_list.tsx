@@ -45,6 +45,7 @@ import { flatContextData } from 'pc/utils';
 import { useEffect, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useSelector } from 'react-redux';
+import { WidgetContextProvider } from '../../context';
 import { expandPublishHelp } from '../../widget_center/widget_create_modal';
 import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
@@ -219,61 +220,63 @@ export const WidgetList = () => {
   ];
 
   return (
-    <div className={styles.widgetList}>
-      <ResponsiveGridLayout
-        cols={{
-          lg: 1,
-          md: 1,
-          sm: 1,
-          xs: 1,
-          xxs: 1,
-        }}
-        layouts={{
-          lg: widgetList!.map(item => {
-            return { w: 1, h: item.height, x: 0, y: item.y ?? 0, minH: 6.2, i: item.id };
-          }),
-        }}
-        preventCollision={false}
-        rowHeight={16}
-        useCSSTransforms
-        onDrag={() => setDragging(true)}
-        onResizeStart={() => setDragging(true)}
-        onResizeStop={onResizeStop}
-        onDragStop={onDragStop}
-        isBounded={false}
-        draggableHandle={'.dragHandle'}
-        draggableCancel={'.dragHandleDisabled'}
-        isDroppable={manageable}
-        isResizable={manageable}
-        margin={[0, 24]}
-      >
-        {widgetList.map((item, index) => {
-          const widgetMapItem = widgetMap?.[item.id]?.widget;
-          const isDevMode = widgetMapItem?.status !== WidgetPackageStatus.Ban && devWidgetId === item.id;
-          return (
-            <div
-              key={item.id}
-              data-widget-id={item.id}
-              data-guide-id="WIDGET_ITEM_WRAPPER"
-              tabIndex={-1}
-              className={classNames(styles.widgetItemWrap, widgetId === item.id && styles.isFullscreen)}
-            >
-              <WidgetItem
-                index={index}
-                widgetId={item.id}
-                widgetPanelId={activeWidgetPanel.id}
-                readonly={readonly}
-                config={{ isDevMode, hideMoreOperate: isMobile }}
-                setDevWidgetId={setDevWidgetId}
-                dragging={dragging}
-                setDragging={setDragging}
-                isMobile={isMobile}
-              />
-            </div>
-          );
-        })}
-      </ResponsiveGridLayout>
-      <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
-    </div>
+    <WidgetContextProvider>
+      <div className={styles.widgetList}>
+        <ResponsiveGridLayout
+          cols={{
+            lg: 1,
+            md: 1,
+            sm: 1,
+            xs: 1,
+            xxs: 1,
+          }}
+          layouts={{
+            lg: widgetList!.map(item => {
+              return { w: 1, h: item.height, x: 0, y: item.y ?? 0, minH: 6.2, i: item.id };
+            }),
+          }}
+          preventCollision={false}
+          rowHeight={16}
+          useCSSTransforms
+          onDrag={() => setDragging(true)}
+          onResizeStart={() => setDragging(true)}
+          onResizeStop={onResizeStop}
+          onDragStop={onDragStop}
+          isBounded={false}
+          draggableHandle={'.dragHandle'}
+          draggableCancel={'.dragHandleDisabled'}
+          isDroppable={manageable}
+          isResizable={manageable}
+          margin={[0, 24]}
+        >
+          {widgetList.map((item, index) => {
+            const widgetMapItem = widgetMap?.[item.id]?.widget;
+            const isDevMode = widgetMapItem?.status !== WidgetPackageStatus.Ban && devWidgetId === item.id;
+            return (
+              <div
+                key={item.id}
+                data-widget-id={item.id}
+                data-guide-id="WIDGET_ITEM_WRAPPER"
+                tabIndex={-1}
+                className={classNames(styles.widgetItemWrap, widgetId === item.id && styles.isFullscreen)}
+              >
+                <WidgetItem
+                  index={index}
+                  widgetId={item.id}
+                  widgetPanelId={activeWidgetPanel.id}
+                  readonly={readonly}
+                  config={{ isDevMode, hideMoreOperate: isMobile }}
+                  setDevWidgetId={setDevWidgetId}
+                  dragging={dragging}
+                  setDragging={setDragging}
+                  isMobile={isMobile}
+                />
+              </div>
+            );
+          })}
+        </ResponsiveGridLayout>
+        <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
+      </div>
+    </WidgetContextProvider>
   );
 };
