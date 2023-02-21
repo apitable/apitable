@@ -24,7 +24,7 @@ services:
 
   test-redis:
     container_name: test-redis
-    image: redis:7.0.8
+    image: redis:5
     ports:
       - '6379:6379'
     networks:
@@ -40,7 +40,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3.11.7-management
+    image: rabbitmq:3-management
     ports:
       - '5672:5672'
     networks:

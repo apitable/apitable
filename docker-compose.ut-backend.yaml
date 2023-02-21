@@ -3,7 +3,7 @@ version: '3'
 services:
   test-mysql:
     container_name: test-mysql
-    image: mysql:8.0.28-oracle
+    image: mysql:8.0.32
     networks:
       - apitable
     ports:
@@ -39,7 +39,7 @@ services:
 
   test-redis:
     container_name: test-redis
-    image: redis:5.0.7-alpine
+    image: redis:5
     networks:
       - apitable
     ports:
