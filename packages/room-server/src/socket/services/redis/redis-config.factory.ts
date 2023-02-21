@@ -35,7 +35,7 @@ export const redisConfig = {
     return {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379', 10),
-      password: process.env.REDIS_PASSWORD,
+      password: process.env.REDIS_PASSWORD || 'apitable@com',
       db: parseInt(process.env.REDIS_DB || '0', 10),
       retryStrategy(times: number): number | void {
         if (times <= RedisConstants.RE_CONNECT_MAX_TIMES) {
