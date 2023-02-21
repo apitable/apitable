@@ -201,7 +201,7 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
         >
           {icon}
           <StyledMenuItemContent variant="body2" ellipsis>
-            {label}
+            {typeof label === 'function' ? label(getExtraInfo(extraInfo)): label}
           </StyledMenuItemContent>
           {extraElement && <StyledMenuItemExtra>{extraElement}</StyledMenuItemExtra>}
           {!extraElement && arrow && <StyledMenuItemArrow>{arrow}</StyledMenuItemArrow>}
