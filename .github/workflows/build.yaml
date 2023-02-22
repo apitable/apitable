@@ -12,9 +12,9 @@ on:
       - 'v*.*.*'
   pull_request:
     branches: [ develop ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+    # paths-ignore:
+    #   - '**.md'
+    #   - 'docs/**'
   workflow_dispatch:
 
 jobs:
