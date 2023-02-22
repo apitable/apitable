@@ -17,7 +17,7 @@
  */
 
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
-import { CollaCommandName, databus, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
+import { CollaCommandName, DatasheetApi, ExecuteResult, ICollaCommandExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
   DuplicateOutlined, ExpandRecordOutlined,
@@ -64,7 +64,7 @@ interface IRecordMenuProps {
   extraData?: any[];
 }
 
-export function copyRecord(recordId: string): Promise<databus.ICommandExecutionResult<string[]>> {
+export function copyRecord(recordId: string): Promise<ICollaCommandExecuteResult<string[]>> {
   return appendRow({
     recordId,
     isDuplicate: true,

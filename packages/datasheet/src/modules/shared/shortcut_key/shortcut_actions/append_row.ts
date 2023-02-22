@@ -19,7 +19,18 @@
 /**
  * https://www.notion.so/vikadata/9ac1f271807f4d99a30c1b5cae32437a
  */
-import { databus, ExecuteResult, Field, ICellValue, IRecordCellValue, IReduxState, Selectors, StoreActions, ViewType } from '@apitable/core';
+import {
+  CollaCommandName,
+  ExecuteResult,
+  Field,
+  ICellValue,
+  ICollaCommandExecuteResult,
+  IRecordCellValue,
+  IReduxState,
+  Selectors,
+  StoreActions,
+  ViewType,
+} from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -27,7 +38,7 @@ import { dispatch } from 'pc/worker/store';
 
 export enum Direction {
   Up = 'Up',
-  Down = 'Down'
+  Down = 'Down',
 }
 
 interface IAppendRowsOption {
@@ -38,22 +49,16 @@ interface IAppendRowsOption {
   count?: number;
 }
 
-export async function appendRow(option: IAppendRowsOption = {}): Promise<databus.ICommandExecutionResult<string[]>> {
+export function appendRow(option: IAppendRowsOption = {}): Promise<ICollaCommandExecuteResult<string[]>> {
   const state = store.getState();
   const activeCell = Selectors.getActiveCell(state)!;
-  const { 
-    recordId = activeCell?.recordId, 
-    direction = Direction.Down, 
-    isDuplicate, 
-    recordData, 
-    count = 1 
-  } = option;
+  const { recordId = activeCell?.recordId, direction = Direction.Down, isDuplicate, recordData, count = 1 } = option;
   const view = Selectors.getCurrentView(state)!;
   const datasheetId = Selectors.getActiveDatasheetId(state)!;
   const rowsMap = Selectors.getVisibleRowsIndexMap(state);
   const baseRecordIndex = rowsMap.has(recordId) ? rowsMap.get(recordId)! : -1;
   const groupCellValues = getCellValuesForGroupRecord(recordId);
-  const executeData: { recordValues?: IRecordCellValue[], groupCellValues?: ICellValue[] } = {};
+  const executeData: { recordValues?: IRecordCellValue[]; groupCellValues?: ICellValue[] } = {};
   const isSideRecordOpen = state.space.isSideRecordOpen;
   if (isDuplicate) {
     const recordCellValue = getRecordCellValue(state, recordId);
@@ -77,16 +82,15 @@ export async function appendRow(option: IAppendRowsOption = {}): Promise<databus
   const expectIndex = direction === Direction.Up ? baseRecordIndex : baseRecordIndex + 1;
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, expectIndex));
 
-  const result = await resourceService.instance!.currentResource!.addRecords({
+  const result = resourceService.instance!.commandManager.execute<string[]>({
+    cmd: CollaCommandName.AddRecords,
+    count,
     viewId: view.id,
     index,
-    count,
     ...executeData,
-  }, {});
+  });
   dispatch(StoreActions.setNewRecordExpectIndex(datasheetId, null));
-  if (
-    result.result === ExecuteResult.Success
-  ) {
+  if (result.result === ExecuteResult.Success) {
     const newRecordId = result.data && result.data[0];
     if (newRecordId) {
       dispatch(
@@ -103,7 +107,7 @@ export async function appendRow(option: IAppendRowsOption = {}): Promise<databus
       appendRowCallback(newRecordId!);
     }
   }
-  return result;
+  return Promise.resolve(result);
 }
 
 export const appendRowCallback = (newRecordId: string) => {
@@ -115,7 +119,7 @@ export const appendRowCallback = (newRecordId: string) => {
 
   // Used to handle shortcuts to add rows and automatically position the activeCell on top of the new record
   /**
-   *   The hoverRecordId should be updated after adding to ensure that successive rows 
+   *   The hoverRecordId should be updated after adding to ensure that successive rows
    *   (when using the Quick Add Row component) are always added on top of the latest row
    */
   // Only in grid view
@@ -134,7 +138,7 @@ export const appendRowCallback = (newRecordId: string) => {
   }
 };
 
-export const prependRow = async(): Promise<databus.ICommandExecutionResult<string[]>> => {
+export const prependRow = async(): Promise<ICollaCommandExecuteResult<string[]>> => {
   return await appendRow({ direction: Direction.Up });
 };
 
