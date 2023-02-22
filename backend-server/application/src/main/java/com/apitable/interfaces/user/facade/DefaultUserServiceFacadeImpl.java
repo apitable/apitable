@@ -18,10 +18,14 @@
 
 package com.apitable.interfaces.user.facade;
 
+import com.apitable.interfaces.auth.model.UserAuth;
 import com.apitable.interfaces.user.model.InvitationCode;
 import com.apitable.interfaces.user.model.RewardWizardAction;
 import com.apitable.interfaces.user.model.RewardedUser;
 
+/**
+ * default user service facade.
+ */
 public class DefaultUserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
@@ -51,6 +55,16 @@ public class DefaultUserServiceFacadeImpl implements UserServiceFacade {
     @Override
     public void rewardWizardAction(RewardWizardAction wizardAction) {
 
+    }
+
+    @Override
+    public boolean resetPassword(UserAuth userAuth) {
+        return false;
+    }
+
+    @Override
+    public boolean verifyEmail(UserAuth userAuth) {
+        return false;
     }
 
 }
