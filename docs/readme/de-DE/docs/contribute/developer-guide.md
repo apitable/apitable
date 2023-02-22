@@ -87,12 +87,11 @@ machen
 
 ## Entwicklungsumgebung starten
 
-APITable besteht aus 4 Prozessen:
+APITable besteht aus 3 Prozessen:
 
 1. backend-Server
 2. room-Server
-3. socket-Server
-4. web-server
+3. web-server
 
 Um die Entwicklungsumgebung lokal zu starten, führen Sie diese Befehle aus:
 
@@ -110,13 +109,9 @@ make run # 1
 # Starte Raum-Server
 make run # 2
 
-# und wechseln Sie dann zu einem neuen Terminal
-# Starte Socket-Server
-make run # geben Sie 3  
-
 # ein und wechseln Sie zu einem neuen Terminal
 # Start Webserver
-make run # geben Sie 4 ein #
+make run # geben Sie 3 ein #
 
 ```
 

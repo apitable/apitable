@@ -85,12 +85,11 @@ make
 
 ## 启动开发环境
 
-APITable 由 4 个进程组成：
+APITable 由 3 个进程组成：
 
 1. backend-server
 2. room-server
-3. socket-server
-4. web-server
+3. web-server
 
 要启动本地开发环境，请运行这些命令：
 
@@ -109,12 +108,8 @@ make run # 输入1
 make run # 输入2
 
 # 然后切换到新的终端
-# 启动 socket-server
-make run # 输入3  
-
-# 然后切换到新的终端
 # 启动 web-server
-make run # 输入4
+make run # 输入3
 ```
 
 ## 集成开发环境（IDE）
