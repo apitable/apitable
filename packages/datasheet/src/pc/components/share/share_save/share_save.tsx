@@ -49,7 +49,7 @@ interface IShareSave {
   shareSpace: IShareSpaceInfo;
 }
 
-export const ShareSave: React.FC<IShareSave> = props => {
+export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = props => {
   const { visible, setVisible, shareSpace } = props;
   const { shareId } = useSelector(state => state.pageParams);
   const dispatch = useDispatch();

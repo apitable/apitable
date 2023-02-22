@@ -36,7 +36,7 @@ interface IAddFirstNodeProps {
   reactFlowInstance: React.MutableRefObject<OnLoadParams<any> | undefined>;
 }
 
-export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
+export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = props => {
 
   const {
     mode,

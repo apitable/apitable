@@ -31,7 +31,7 @@ export interface IKanbanOptionProps {
   fieldMap: IFieldMap;
 }
 
-export const KanbanOption: React.FC<IKanbanOptionProps> = props => {
+export const KanbanOption: React.FC<React.PropsWithChildren<IKanbanOptionProps>> = props => {
   const { command, onClose, fieldMap } = props;
   const defaultName = getUniqName(t(Strings.view_filed), Object.keys(fieldMap).map(id => fieldMap[id].name));
   const { errTip, onChange, value } = useCheckRepeatName();

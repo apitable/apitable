@@ -22,7 +22,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { useContext } from 'react';
 import { RoleContext } from './context';
 
-export const Empty: React.FC<{ onClick: () => void }> = props => {
+export const Empty: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = props => {
   const colors = useThemeColors();
   const { manageable } = useContext(RoleContext);
   return (

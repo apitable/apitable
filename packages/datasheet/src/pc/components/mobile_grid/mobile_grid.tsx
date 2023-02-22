@@ -53,7 +53,7 @@ export interface IMobileGridProps {
   height: number;
 }
 
-export const MobileGrid: React.FC<IMobileGridProps> = ({
+export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = ({
   width,
   height,
 }) => {
@@ -184,7 +184,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
 
   }, [syncScroll]);
 
-  const onVerticalScroll = useCallback(e => {
+  const onVerticalScroll = useCallback((e: any) => {
     const target = e.currentTarget as HTMLDivElement;
     const scrollTop = target.scrollTop;
     if (

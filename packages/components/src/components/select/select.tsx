@@ -37,8 +37,11 @@ const _renderValue = (option: IOption) => {
   return option.label;
 };
 
-export const Select: FC<ISelectProps> & {
-  Option: React.FC<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>
+const _Highlighter: any = Highlighter;
+const _GlobalStyle: any = GlobalStyle;
+
+export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
+  Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
 } = (props) => {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
@@ -98,7 +101,7 @@ export const Select: FC<ISelectProps> & {
     >
       <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>
         {
-          !keyword ? null : <Highlighter
+          !keyword ? null : <_Highlighter
             highlightClassName={hightLightCls.toString()}
             highlightStyle={highlightStyle as any}
             searchWords={[keyword]}
@@ -180,7 +183,7 @@ export const Select: FC<ISelectProps> & {
   };
 
   return <>
-    <GlobalStyle />
+    <_GlobalStyle />
     <Trigger
       // getPopupContainer={() => containerRef.current!}
       popup={renderOptionList}

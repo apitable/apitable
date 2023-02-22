@@ -33,7 +33,7 @@ export interface ILoadingProps {
   style?: React.CSSProperties;
 }
 
-export const Loading: FC<ILoadingProps> = props => {
+export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = props => {
   const { showText = true, style, className } = props;
   const shareId = useSelector(state => state.pageParams.shareId);
   return (

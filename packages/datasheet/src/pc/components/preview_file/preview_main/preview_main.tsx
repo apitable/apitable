@@ -55,7 +55,7 @@ interface IPreviewMain {
   toggleIsFullScreen: () => void;
 }
 
-export const PreviewMain: React.FC<IPreviewMain> = props => {
+export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = props => {
   const {
     activeIndex,
     setActiveIndex,
@@ -105,7 +105,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   }, [activeIndex]);
 
   const handlePrev = useCallback(
-    e => {
+    (e: any) => {
       e.stopPropagation();
 
       if (activeIndex - 1 >= 0) {
@@ -117,7 +117,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   );
 
   const handleNext = useCallback(
-    e => {
+  (e: any) => {
       e.stopPropagation();
 
       if (activeIndex + 1 < files.length) {

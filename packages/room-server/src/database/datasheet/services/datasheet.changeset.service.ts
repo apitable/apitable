@@ -24,13 +24,13 @@ import { Injectable } from '@nestjs/common';
 import { Store } from 'redux';
 import { CommonException, OtException, ServerException } from '../../../shared/exception';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
-import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
 import { DatasheetChangesetEntity } from '../entities/datasheet.changeset.entity';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { DatasheetChangesetRepository } from '../repositories/datasheet.changeset.repository';
 import { CommandOptionsService } from 'database/command/services/command.options.service';
 import { CommandService } from 'database/command/services/command.service';
 import { UnitService } from 'unit/services/unit.service';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 @Injectable()
 export class DatasheetChangesetService {
@@ -116,14 +116,14 @@ export class DatasheetChangesetService {
     lastChangeset: ChangesetBaseDto | undefined,
     revisions: string[],
     filedIds: string[],
-  ): Promise<{ commentChangesets: ChangesetBaseDto[]; users: UnitBaseInfoDto[]; recordChangesets: ChangesetBaseDto[] }> {
+  ): Promise<{ commentChangesets: ChangesetBaseDto[]; users: UnitInfoDto[]; recordChangesets: ChangesetBaseDto[] }> {
     const entities: (DatasheetChangesetEntity & { isComment: string })[]
       = await this.datasheetChangesetRepository.selectDetailByDstIdAndRevisions(dstId, revisions);
     if (!entities.length) {
       return { commentChangesets: [], users: [], recordChangesets: [] };
     }
     const { recordModifyEntities, commentEntities, userIds } = this.groupChangesets(entities);
-    const userMap: Map<string, UnitBaseInfoDto> = await this.unitService.getUnitMemberInfoByUserIds(spaceId, Array.from(userIds), false);
+    const userMap: Map<string, UnitInfoDto> = await this.unitService.getUnitMemberInfoByUserIds(spaceId, Array.from(userIds), false);
     let recordChangesets: ChangesetBaseDto[] = [];
     // Merge non-comment changesets
     if (recordModifyEntities.length) {
@@ -153,7 +153,7 @@ export class DatasheetChangesetService {
     dstId: string,
     recordId: string,
     lastChangeset: ChangesetBaseDto | undefined,
-    userMap: Map<string, UnitBaseInfoDto>,
+    userMap: Map<string, UnitInfoDto>,
     fieldIds: string[],
     entities: (DatasheetChangesetEntity & { isComment: string })[],
   ): Map<string, ChangesetBaseDto> {
@@ -356,7 +356,7 @@ export class DatasheetChangesetService {
   private formatDstChangesetDto(
     dstId: string,
     entity: DatasheetChangesetEntity & { isComment: string },
-    userMap: Map<string, UnitBaseInfoDto>,
+    userMap: Map<string, UnitInfoDto>,
     operations: IOperation[],
   ) {
     const createdAt = Date.parse(entity.createdAt.toString());

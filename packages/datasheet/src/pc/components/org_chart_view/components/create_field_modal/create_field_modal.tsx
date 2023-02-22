@@ -35,7 +35,7 @@ interface ICreateFieldModalProps {
   onAdd: () => void;
 }
 
-export const CreateFieldModal: React.FC<ICreateFieldModalProps> = props => {
+export const CreateFieldModal: React.FC<React.PropsWithChildren<ICreateFieldModalProps>> = props => {
   const colors = useThemeColors();
   const { onAdd } = props;
   const { permissions: { manageable }} = useContext(FlowContext);

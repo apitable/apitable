@@ -35,7 +35,7 @@ interface IImportFileProps {
 }
 
 // The token returned after uploading a file
-export const ImportFile: FC<IImportFileProps> = ({ setMemberInvited, closeModal, secondVerify, setSecondVerify }) => {
+export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setMemberInvited, closeModal, secondVerify, setSecondVerify }) => {
   // Currently mounted subassemblies
   const [kid, setKid] = useState<IKidType>(KidType.BeforeUpload);
   // Callback message after selecting a file

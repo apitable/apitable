@@ -38,7 +38,7 @@ const CellPlaceHolder = (props: { rowHeight: number; }) => {
   return null;
 };
 
-export const CellLookUp: React.FC<ICellProps> = props => {
+export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props => {
   const { field, cellValue: originCellValue, rowHeight } = props;
   const cellValue = handleNullArray(originCellValue);
   const realField = (Field.bindModel(field) as LookUpField).getLookUpEntityField();

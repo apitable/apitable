@@ -98,7 +98,7 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
   return addNewRecord;
 }
 
-export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
+export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> = props => {
   const colors = useThemeColors();
   const { provided, groupId, height, setCollapse, isDragging, kanbanFieldId, dragId } = props;
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;

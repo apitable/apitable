@@ -33,7 +33,7 @@ interface IBeforeUpload {
   setErr: React.Dispatch<React.SetStateAction<string>>;
   setFile: (info: any) => void;
 }
-export const BeforeUpload: FC<IBeforeUpload> = ({ setFile, setKid, setErr, setPreviewList }) => {
+export const BeforeUpload: FC<React.PropsWithChildren<IBeforeUpload>> = ({ setFile, setKid, setErr, setPreviewList }) => {
   const downloadUrl = window.location.origin + Url.BASE_URL + Url.DOWNLOAD_MEMBER_FILE;
   const colors = useThemeColors();
   const showFileErr = () => {

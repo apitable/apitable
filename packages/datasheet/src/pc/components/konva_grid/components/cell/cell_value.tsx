@@ -67,7 +67,7 @@ export interface ICellValueProps {
   disabledDownload?: boolean;
 }
 
-export const CellValue: FC<ICellValueProps> = memo((props) => {
+export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((props) => {
   const {
     x,
     y,

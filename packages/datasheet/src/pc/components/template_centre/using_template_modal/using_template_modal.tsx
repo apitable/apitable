@@ -43,7 +43,7 @@ interface ISelectTreeNode {
   isLeaf: boolean;
 }
 
-export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
+export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalProps>> = props => {
   const { onCancel, templateId } = props;
   const [treeData, setTreeData] = useState<ISelectTreeNode[]>([]);
   const [nodeId, setNodeId] = useState('');

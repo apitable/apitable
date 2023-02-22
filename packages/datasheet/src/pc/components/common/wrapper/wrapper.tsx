@@ -30,7 +30,7 @@ interface IWrapper {
   className?: string;
 }
 
-export const Wrapper: FC<IWrapper> = ({ children, className, hiddenLogo = false }) => {
+export const Wrapper: FC<React.PropsWithChildren<IWrapper>> = ({ children, className, hiddenLogo = false }) => {
   const childrenWrapperRef = useRef<HTMLDivElement>(null);
   const scroll = useScroll(childrenWrapperRef);
   configResponsive({
@@ -51,7 +51,7 @@ export const Wrapper: FC<IWrapper> = ({ children, className, hiddenLogo = false 
   );
 };
 
-export const LoginCard: FC<{ className?: string }> = (props) => {
+export const LoginCard: FC<React.PropsWithChildren<{ className?: string }>> = (props) => {
   const { children, className } = props;
   return (
     <div className={classNames(styles.loginCard, className)}>

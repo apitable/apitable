@@ -1,7 +1,7 @@
 {
   "name": "@apitable/widget-sdk",
   "version": "0.18.0",
-  "description": "vika widget sdk",
+  "description": "apitable widget sdk",
   "engines": {
     "node": ">=8.x"
   },
@@ -39,6 +39,7 @@
   "dependencies": {
     "@apitable/components": "*",
     "@apitable/core": "*",
+    "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",
@@ -61,7 +62,6 @@
     "store2": "^2.12.0"
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^7.0.1",
     "@types/copyfiles": "^2",
     "@types/emoji-mart": "^3.0.8",
     "@types/jest": "^27.5.1",

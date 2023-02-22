@@ -42,7 +42,7 @@ interface IModalProps {
   pageNo: number;
 }
 
-export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, removeCallback }) => {
+export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModalVisible, pageNo, removeCallback }) => {
   const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',

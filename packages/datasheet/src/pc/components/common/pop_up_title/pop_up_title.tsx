@@ -49,7 +49,7 @@ interface IPopUpTitleProps extends Required<Pick<ITypographyProps, 'variant'>> {
   style?: React.CSSProperties
 }
 
-export const PopUpTitle: React.FC<IPopUpTitleProps> = (props) => {
+export const PopUpTitle: React.FC<React.PropsWithChildren<IPopUpTitleProps>> = (props) => {
   const colors = useThemeColors();
   const { rightContent, title, variant, infoUrl, className, style } = props;
   return <div className={classNames(className, styles.popUpTitle)} style={style}>

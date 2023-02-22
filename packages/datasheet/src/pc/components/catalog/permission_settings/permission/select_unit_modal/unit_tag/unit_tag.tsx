@@ -37,7 +37,7 @@ export interface IUnitTagProps {
   maxWidth?: number;
 }
 
-export const UnitTag: FC<IUnitTagProps> = props => {
+export const UnitTag: FC<React.PropsWithChildren<IUnitTagProps>> = props => {
   const { deletable = true, avatar, avatarColor, nickName, name, isTeam = false, onClose, unitId, isLeave, title, maxWidth } = props;
   return (
     <div className={classNames(styles.unitTag, props.className, { [styles.isLeave]: isLeave })}>

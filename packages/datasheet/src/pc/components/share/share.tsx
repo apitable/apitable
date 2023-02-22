@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
-import { findNode, integrateCdnHost, IShareInfo, Navigation, Selectors, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { useThemeColors, ThemeName } from '@apitable/components';
+import { ConfigConstant, findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
@@ -46,6 +46,13 @@ import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
 // @ts-ignore
 import { isEnterprise } from 'enterprise';
+import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
+import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
+import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
+import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
+import { getEnvVariables } from 'pc/utils/env';
+import Image from 'next/image';
+const _SplitPane: any = SplitPane;
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
 
@@ -95,7 +102,7 @@ const ComponentWrapper = ({
   );
 };
 
-const Share: React.FC<IShareProps> = ({ shareInfo }) => {
+const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const shareLoginFailed = getStorage(StorageName.ShareLoginFailed);
   const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
@@ -114,6 +121,10 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     run: getSpaceList,
   } = useRequest(getSpaceListReq, { manual: true });
   const dispatch = useAppDispatch();
+  const themeName = useSelector(state => state.theme);
+  const { IS_APITABLE } = getEnvVariables();
+  const LightLogo = IS_APITABLE ? apitableLogoLight : vikaLogoLight;
+  const DarkLogo = IS_APITABLE ? apitableLogoDark : vikaLogoDark;
 
   usePageParams();
 
@@ -157,22 +168,17 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
       setShareClose(true);
       return;
     }
-    const { shareNodeId, shareNodeName, shareNodeType, nodeTree, shareNodeIcon, ...shareSpaceInfo } = shareInfo;
-    setShareSpace(shareSpaceInfo as IShareSpaceInfo);
-    setNodeTree({
-      nodeId: shareNodeId,
-      nodeName: shareNodeName,
-      type: shareNodeType,
-      icon: shareNodeIcon,
-      children: nodeTree,
-    });
+    const { shareNodeTree, ...shareSpaceInfo } = shareInfo;
+    const isFolder = shareNodeTree.type === ConfigConstant.NodeType.FOLDER;
+    setShareSpace({ ...shareSpaceInfo, isFolder } as IShareSpaceInfo);
+    setNodeTree(shareNodeTree);
     // _dispatch(StoreActions.setPageParams({
     //   shareId: shareSpaceInfo.shareId
     // }));
-    if (shareInfo.isFolder && nodeTree.length === 0) {
+    if (isFolder && shareNodeTree.children.length === 0) {
       return;
     }
-    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId: shareNodeId, nodeName: shareNodeName, icon: shareNodeIcon }])));
+    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...shareNodeTree.children, shareNodeTree])));
     isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
     dispatch(
       StoreActions.setShareInfo({
@@ -188,7 +194,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     setTimeout(() => {
       console.log('share navigationTo');
       Router.push(Navigation.SHARE_SPACE, {
-        params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeId },
+        params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeTree.nodeId },
       });
     }, 0);
 
@@ -297,7 +303,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
-        <meta property='og:title' content={shareInfo?.shareNodeName || t(Strings.og_site_name_content)} />
+        <meta property='og:title' content={shareInfo?.shareNodeTree?.nodeName || t(Strings.og_site_name_content)} />
         <meta property='og:type' content='website' />
         <meta property='og:url' content={window.location.href} />
         <meta property='og:site_name' content={t(Strings.og_site_name_content)} />
@@ -315,7 +321,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
           {singleFormShare ? (
             <FormPanel loading={loading} />
           ) : !isIframeShowSharemenu ? (
-            <SplitPane
+            <_SplitPane
               split='vertical'
               minSize={320}
               defaultSize={defaultSize}
@@ -355,7 +361,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
               >
                 {component}
               </ComponentWrapper>
-            </SplitPane>
+            </_SplitPane>
           ) : <ComponentWrapper
             isIframeShowSharemenu={isIframeShowSharemenu}
             shareId={shareId}
@@ -370,7 +376,7 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
           </ComponentWrapper>}
         </ComponentDisplay>
         {isIframe() && <div className={styles.brandContainer}>
-          <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt='vika_brand' />
+          {<Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20} alt="" />}
         </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <ShareMobile

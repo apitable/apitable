@@ -77,7 +77,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
-  const updateFilter = useCallback((filter) => {
+  const updateFilter = useCallback((filter: any) => {
     setFilter(filter);
     // The updated value of the child component is passed to the parent component. 
     // The parent component knows the specific path of the child component and only needs to pass the value.

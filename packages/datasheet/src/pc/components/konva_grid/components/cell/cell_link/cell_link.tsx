@@ -38,7 +38,7 @@ import { IRenderContentBase } from '../interface';
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellLink: FC<ICellProps> = (props) => {
+export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,
@@ -135,7 +135,7 @@ export const CellLink: FC<ICellProps> = (props) => {
   const addBtnVisible = !realField.property.limitSingleRecord || renderContent == null;
 
   return (
-    <CellScrollContainer
+    (<CellScrollContainer
       x={x}
       y={y}
       columnWidth={columnWidth}
@@ -233,6 +233,6 @@ export const CellLink: FC<ICellProps> = (props) => {
           );
         })
       }
-    </CellScrollContainer>
+    </CellScrollContainer>)
   );
 };

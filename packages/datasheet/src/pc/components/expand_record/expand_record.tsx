@@ -201,7 +201,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   );
 };
 
-const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
+const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = props => {
   const { nodeId, viewId, recordIds, activeRecordId, recordType, modalClose } = props;
   const isIndependent = recordType === RecordType.Independent;
   const [realActiveRecordId, setRealActiveRecordId] = useState<string>();
@@ -385,7 +385,7 @@ const WrapperWithTheme = (props: any) => {
   );
 };
 
-const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props => {
+const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = props => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
   const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(

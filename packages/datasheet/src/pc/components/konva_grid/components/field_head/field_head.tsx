@@ -42,7 +42,7 @@ interface IFieldHeadProps {
   field: IField;
   columnIndex: number;
   iconVisible: boolean; // Show icon or not, show when mouse over, otherwise hide
-  permissionInfo?: (string | FC<IIconProps>)[] | null;
+  permissionInfo?: (string | FC<React.PropsWithChildren<IIconProps>>)[] | null;
   isSelected: boolean;
   isHighlight: boolean;
   editable: boolean;
@@ -57,7 +57,7 @@ const MoreStandOutlinedPath = MoreStandOutlined.toString();
 const EditDescribeFilledPath = EditGanttDescribeFilled.toString();
 const WarningTriangleNonzeroFilledPath = WarningTriangleNonzeroFilled.toString();
 
-export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
+export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((props) => {
   const {
     x = 0, y = 0, width, field, iconVisible, isSelected, height: headHeight,
     isHighlight, editable, stroke, permissionInfo, isFrozen, autoHeadHeight: _autoHeadHeight, viewType

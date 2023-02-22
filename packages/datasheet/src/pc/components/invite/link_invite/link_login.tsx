@@ -32,7 +32,7 @@ import { useInvitePageRefreshed } from '../use_invite';
 // import '../invite.common.less';
 import styles from './style.module.less';
 
-const LinkLogin: FC = () => {
+const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   useMount(() => {

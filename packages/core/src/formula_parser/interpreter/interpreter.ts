@@ -34,7 +34,7 @@ import { Field, ArrayValueField } from 'model';
 import { BasicValueType, FormulaFuncType } from 'types';
 import { plus, minus, times, divide } from 'utils';
 import { isNumber, isNull } from 'util';
-import { t, Strings } from '../../exports/i18n';
+import { t, Strings } from 'exports/i18n';
 import { isString } from 'lodash';
 
 export type ResolverFunction = (value: string, originValue?: boolean) => any;

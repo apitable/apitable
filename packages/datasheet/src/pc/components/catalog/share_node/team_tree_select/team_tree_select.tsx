@@ -38,7 +38,7 @@ export interface ITeamTreeSelectProps {
   onChange?: (checkedTeamId: string) => void;
 }
 
-export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }) => {
+export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> = ({ className, onChange }) => {
   const colors = useThemeColors();
   const [checkedTeamId, setCheckedTeamId] = useState('');
   const [checkedTeamName, setCheckedTeamName] = useState('');

@@ -17,7 +17,7 @@
  */
 
 import { FieldType, IField, ISelectField, IMultiSelectField } from 'types/field_types';
-import { IFilterCondition } from 'types/view_types';
+import type { IFilterCondition } from 'types/view_types';
 
 type ISelectFieldType = ISelectField | IMultiSelectField;
 

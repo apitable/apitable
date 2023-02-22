@@ -61,7 +61,7 @@ interface ISortableContainerProps {
   onDragUpdate?: (initial: DragUpdate, provided: ResponderProvided) => void;
 }
 
-const SortableContainer: React.FC<ISortableContainerProps> = ({ onDragUpdate, onSortEnd, children }) => {
+const SortableContainer: React.FC<React.PropsWithChildren<ISortableContainerProps>> = ({ onDragUpdate, onSortEnd, children }) => {
   return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
     <Droppable droppableId='droppable'>
       {(provided) => (
@@ -195,7 +195,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   );
 };
 
-export const FormatSelect: React.FC<IFormatSelect> = props => {
+export const FormatSelect: React.FC<React.PropsWithChildren<IFormatSelect>> = props => {
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>

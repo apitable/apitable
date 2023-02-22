@@ -36,7 +36,7 @@ interface IViewSwitcherProps {
   onClose: () => void;
 }
 
-export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
+export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProps>> = props => {
 
   const {
     viewCreatable,

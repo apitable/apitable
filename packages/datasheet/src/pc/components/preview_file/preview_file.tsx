@@ -43,7 +43,7 @@ interface IPreviewFileModal {
   onClose: () => void;
 }
 
-const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
+const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = props => {
   const { onClose } = props;
   const [isFullScreen, { toggle: toggleIsFullScreen }] = useToggle(false);
   const previewFile = useSelector(state => state.previewFile, shallowEqual);

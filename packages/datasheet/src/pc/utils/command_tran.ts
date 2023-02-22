@@ -30,6 +30,7 @@ export const CollaCommandTran = {
   [CollaCommandName.FillDataToCells]: t(Strings.command_paste_set_record),
   [CollaCommandName.MoveRow]: t(Strings.command_move_row),
   [CollaCommandName.DeleteRecords]: t(Strings.command_delete_record),
+  [CollaCommandName.FixConsistency]: t(Strings.command_fix_consistency),
   'UNDO:SetRecords': t(Strings.command_undo_set_record),
   'UNDO:AddRecords': t(Strings.command_undo_add_record),
   'UNDO:SetFieldAttr': t(Strings.command_undo_set_field_attr),

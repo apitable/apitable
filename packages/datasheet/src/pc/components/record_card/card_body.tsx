@@ -51,7 +51,7 @@ interface IGalleryCardBodyProps {
 
 const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currency, FieldType.Percent, FieldType.DateTime];
 
-export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
+export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> = props => {
   const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery } = props;
   const recordSnapshot = useSelector(state => Selectors.getRecordSnapshot(state, recordId), shallowEqual);
   const { screenIsAtMost } = useResponsive();

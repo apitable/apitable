@@ -69,7 +69,7 @@ const optionList = [
   },
 ];
 
-export const SettingPanel: React.FC<IToolBarBase> = (props) => {
+export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (props) => {
   const colors = useThemeColors();
   const { formProps, updateProps: _updateProps } = props;
   const { 

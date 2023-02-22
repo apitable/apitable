@@ -23,7 +23,7 @@ export interface IPortalProps {
   children?: React.ReactNode;
 }
 
-const Portal: React.FC<IPortalProps> = props => {
+const Portal: React.FC<React.PropsWithChildren<IPortalProps>> = props => {
   const { getContainer, children } = props;
 
   return getContainer

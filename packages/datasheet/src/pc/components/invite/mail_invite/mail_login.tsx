@@ -30,7 +30,7 @@ import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 
-const MailLogin: FC = () => {
+const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
   const { inviteEmailInfo } = useSelector(
     (state: IReduxState) => ({

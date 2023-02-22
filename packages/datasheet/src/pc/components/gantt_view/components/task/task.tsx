@@ -112,7 +112,7 @@ const moveRow = (viewId: string, dragTaskId: string, dropRecordId: string, direc
 
 const formatStr = 'YYYY/MM/DD';
 
-const Task: FC<ITaskProps> = (props) => {
+const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
   const {
     x,
     y,

@@ -280,6 +280,7 @@ export class RestService {
         params: {
           widgetIds,
           linkId,
+          userId: headers.userId
         },
       })
       .toPromise();

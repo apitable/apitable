@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue } from './field_types';
+import type { IAttachmentValue } from './field_types';
 
 export interface ISelectFieldBaseOpenValue {
   id: string;

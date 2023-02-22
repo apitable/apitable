@@ -50,7 +50,7 @@ export interface ITemplateCategoryDetailProps {
   setUsingTemplate: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TemplateCategoryDetail: FC<ITemplateCategoryDetailProps> = props => {
+export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategoryDetailProps>> = props => {
   const { setUsingTemplate, templateCategory } = props;
   const { templateListData } = useContext(TemplateListContext);
   const [templateList, setTemplateList] = useState<ITemplate[] | {

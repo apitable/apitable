@@ -33,7 +33,7 @@ import { FieldCode } from './field_codes/field_codes';
 import { FieldDocs } from './field_docs';
 import styles from './styles.module.less';
 
-export const ApiPanel: React.FC = () => {
+export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const isApiPanelOpen = useSelector(state => state.space.isApiPanelOpen);
   const apiToken = useSelector(state => state.user.info!.apiKey);

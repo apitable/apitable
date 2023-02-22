@@ -52,7 +52,7 @@ interface IExpandRecordMoreOptionProps {
 
 const MORE_BTN_CLASS_NAME = 'expand-record-more-btn';
 
-export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (props) => {
+export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRecordMoreOptionProps>> = (props) => {
   const { expandRecordId, modalClose, datasheetId, sourceViewId, fromCurrentDatasheet } = props;
   const colors = useThemeColors();
   const rowRemovable = useSelector(state => Selectors.getPermissions(state, datasheetId).rowRemovable);

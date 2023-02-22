@@ -23,12 +23,12 @@ import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useThemeColors } from '@apitable/components';
 import { ViewType } from '@apitable/core';
 
-export const View: React.FC<{ 
+export const View: React.FC<React.PropsWithChildren<{ 
   id: string,
   active?: boolean, 
   viewType: ViewType,
   onClick?(id: string): void
-}> = props => {
+}>> = props => {
   const { 
     children, 
     id, 

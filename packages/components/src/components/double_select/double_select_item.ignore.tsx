@@ -20,7 +20,7 @@ import { StyledLabel, StyledOptionWrapper, StyledSubLabel } from 'components/dou
 import React from 'react';
 import { IDoubleOptionsProps } from 'components/double_select/interface';
 
-export const DoubleSelectItem: React.FC<IDoubleOptionsProps> = (props) => {
+export const DoubleSelectItem: React.FC<React.PropsWithChildren<IDoubleOptionsProps>> = (props) => {
   const { option, currentIndex, selectedValue } = props;
 
   return <StyledOptionWrapper

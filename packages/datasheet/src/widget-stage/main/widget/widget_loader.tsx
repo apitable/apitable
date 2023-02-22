@@ -34,6 +34,8 @@ interface IErrorWidget {
   action?: () => void;
 }
 
+const _ErrorBoundary: any = ErrorBoundary;
+
 const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, actionText, action }: IErrorWidget) => (
   <div className={styles.errorWidgetWrap}>
     <div className={styles.title}>
@@ -47,9 +49,9 @@ const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, acti
   </div>
 );
 
-export const WidgetLoader: React.FC<{
+export const WidgetLoader: React.FC<React.PropsWithChildren<{
   expandDevConfig: () => void;
-}> = (props)=> {
+}>> = (props)=> {
   const { expandDevConfig } = props;
   const { id, datasheetId, widgetPackageId, releaseCodeBundle, status, widgetId, authorName, widgetPackageName } = useMeta();
   const [codeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`);
@@ -138,8 +140,8 @@ export const WidgetLoader: React.FC<{
   }
 
   return <>
-    <ErrorBoundary id={id} datasheetId={datasheetId} logError={!isDevMode}>
+    <_ErrorBoundary id={id} datasheetId={datasheetId} logError={!isDevMode}>
       <WidgetComponent />
-    </ErrorBoundary>
+    </_ErrorBoundary>
   </>;
 };

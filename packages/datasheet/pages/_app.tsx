@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t, IUserInfo, TIMEZONES } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -118,7 +118,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     }
     return LoadingStatus.None;
   });
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
@@ -306,6 +306,46 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     descMeta.content = t(Strings.client_meta_label_desc);
   }, []);
 
+  const curTimezone = userData?.timeZone;
+  const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
+    Api.updateUser({ timeZone }).then((res: any) => {
+      const { success } = res.data;
+      if (success) {
+        store.dispatch(StoreActions.setUserTimeZone(timeZone));
+        setUserData({
+          ...userData!,
+          timeZone,
+        })
+        cb?.();
+      }
+    })
+  }
+
+  useEffect(() => {
+    const checkTimeZoneChange = () => {
+      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!timeZone) return;
+      // set default timeZone
+      if (curTimezone === null) {
+        updateUserTimeZone(timeZone);
+      } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
+        updateUserTimeZone(timeZone, () => {
+          const currentTimeZoneData = TIMEZONES.find((tz: { utc: string; tzCode: string; }) => tz.tzCode === timeZone);
+          Modal.warning({
+            title: t(Strings.notify_time_zone_change_title),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
+          })
+        })
+      }
+    }
+    checkTimeZoneChange();
+    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [curTimezone]);
+
   return <>
     <Head>
       <title />
@@ -338,7 +378,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         `}
     </Script>
     {/*Baidu Statistics*/}
-    <Script id={'baiduAnalyse'}>
+    {!env.DISABLE_AWSC && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
@@ -348,7 +388,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             s.parentNode.insertBefore(hm, s);
           })();
         `}
-    </Script>
+    </Script>}
     <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
@@ -384,9 +424,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           })
         `}
     </Script>
-    <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-    <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-    <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+    {!env.DISABLE_AWSC &&
+      <>
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+        <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+      </>
+    }
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
         {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>

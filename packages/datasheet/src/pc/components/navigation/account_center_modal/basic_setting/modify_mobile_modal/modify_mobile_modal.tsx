@@ -56,7 +56,7 @@ const defaultState = {
   identifyingCode: '',
 };
 
-export const ModifyMobileModal: FC<IModifyMobileModalProps> = (props) => {
+export const ModifyMobileModal: FC<React.PropsWithChildren<IModifyMobileModalProps>> = (props) => {
   const [state, setState] = useSetState<{
     areaCode: string;
     account: string;

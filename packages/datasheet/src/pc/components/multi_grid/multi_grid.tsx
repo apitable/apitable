@@ -135,6 +135,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   getCacheScrollPosition = () => {
     const { viewId, datasheetId } = this.props;
+    // @ts-ignore
     const cacheScrollMap = this.context?.cacheScrollMap.current;
     if (!cacheScrollMap) {
       return;
@@ -177,8 +178,8 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
         scrollLeft: bottomRightReg.scrollLeft,
       },
       () => {
-        this.context.changeCacheScroll &&
-          this.context.changeCacheScroll(
+        // @ts-ignore
+        this.context.changeCacheScroll && this.context.changeCacheScroll(
             {
               scrollTop: this.state.scrollTop,
               scrollLeft: this.state.scrollLeft,
@@ -337,8 +338,8 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
         scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
       });
       gridRef.changeScroll(GridReg.BottomLeftReg, { scrollTop: bottomLeftRegTop + _scrollObj.columnSpeed, scrollLeft: 0 });
-      this.context.changeCacheScroll &&
-        this.context.changeCacheScroll(
+      // @ts-ignore
+      this.context.changeCacheScroll && this.context.changeCacheScroll(
           {
             scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
             scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,

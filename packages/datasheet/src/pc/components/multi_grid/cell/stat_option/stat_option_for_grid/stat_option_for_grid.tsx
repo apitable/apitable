@@ -26,7 +26,7 @@ import styles from '../styles.module.less';
 
 type StatOptionForGridBaseProps = GridChildComponentProps & { rightRegion: boolean };
 
-const StatOptionForGridBase: React.FC<StatOptionForGridBaseProps> = ({
+const StatOptionForGridBase: React.FC<React.PropsWithChildren<StatOptionForGridBaseProps>> = ({
   columnIndex, style, rightRegion,
 }) => {
   const fieldId = useSelector(state => {

@@ -34,7 +34,7 @@ interface IInviteTitleProps {
   desc?: string;
 }
 
-export const InviteTitle: FC<IInviteTitleProps> = props => {
+export const InviteTitle: FC<React.PropsWithChildren<IInviteTitleProps>> = props => {
   const { inviter, spaceName, titleMarginBottom = '24px', subTitleMarginBottom = '30px', invitee, desc, ...rest } = props;
   return (
     <div className={styles.inviteTitle} {...rest}>

@@ -37,6 +37,8 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
 import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -49,7 +51,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
-import { InstallPosition, installToDashboard, installToPanel, installWidget } from '../widget_center';
 import { Steps } from './steps';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise';
@@ -93,7 +94,7 @@ interface IWidgetCreateModalProps {
   closeModal?: (closeWidgetCenter?: boolean) => void;
 }
 
-const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
+const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
@@ -156,7 +157,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
   );
   const isValid = widgetName && selectTemplate;
   return (
-    <Modal
+    (<Modal
       title={<Title />}
       visible
       centered
@@ -222,7 +223,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
         </div>
         {templateDataLoading && <Loading style={{ backgroundColor: colors.defaultBg }} />}
       </div>
-    </Modal>
+    </Modal>)
   );
 };
 
@@ -270,7 +271,7 @@ const WidgetCretInvalidError = () => (
   </div>
 );
 
-const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) => {
+const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreateStepsProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
@@ -523,7 +524,7 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
   ));
 };
 
-const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
+const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevConfigProps>> = (props) => {
   const colors = useThemeColors();
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);

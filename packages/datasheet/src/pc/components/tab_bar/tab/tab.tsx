@@ -28,7 +28,7 @@ import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { TemplateUseButton } from 'pc/components/template_centre/template_use_button';
 // import { ToolHandleType } from 'pc/components/tool_bar/interface';
-import { changeView, useSideBarVisible } from 'pc/hooks';
+import { changeView, usePrevious, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import { useViewNameChecker } from 'pc/hooks/use_view_name_checker';
 import { resourceService } from 'pc/resource_service';
@@ -49,7 +49,7 @@ export interface ITabStateProps {
 
 export type ICustomViewProps = Pick<IViewProperty, 'name' | 'id' | 'type'>;
 
-export const Tab: FC<ITabStateProps> = memo(props => {
+export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const [editIndex, setEditIndex] = useState<null | number>(null);
   const [viewEditor, setViewEditor] = useState(false);
 
@@ -64,8 +64,9 @@ export const Tab: FC<ITabStateProps> = memo(props => {
   const role = datasheet?.role;
   const nodeFavorite = datasheet?.nodeFavorite;
   const views = datasheet?.snapshot.meta.views;
-  const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
-  const isOnlyView = embedId ? get(embedInfo, 'viewControl.viewId', false) : false;
+  const isShowViewbar = get(embedInfo, 'viewControl.tabBar', true);
+  const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
+  const isShowNodeInfoBar = get(embedInfo, 'viewControl.nodeInfoBar', true);
 
   const { sideBarVisible } = useSideBarVisible();
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
@@ -103,7 +104,12 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     return view.length > 0 ? view[0].name : '';
   }, [views, embedInfo, embedId]);
 
+  const previousEmbedOnlyViewName = usePrevious(embedOnlyViewName);
+
   useEffect(() => {
+    // Avoid initialization phase execution
+    if (!previousEmbedOnlyViewName || !embedOnlyViewName) return;
+    if (previousEmbedOnlyViewName === embedOnlyViewName) return;
     window.parent.postMessage({
       message: 'changeViewName', data: {
         roomId: datasheetId,
@@ -112,7 +118,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
       }
     }, '*');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [embedOnlyViewName]);
+  }, [embedOnlyViewName, previousEmbedOnlyViewName]);
 
   const handleInputBlur = (e: React.FocusEvent) => {
     const newViewName = (e.target as any).value;
@@ -172,54 +178,58 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     <div
       className={styles.nav}
     >
-      {isOnlyView ?
-        <div className={styles.embedTitle}>
-          {
-            viewEditor ? <>
-              <input
-                className={classNames(styles.inputBox, {
-                  [styles.error]: errMsg
-                })}
-                type='text'
-                defaultValue={embedOnlyViewName}
-                autoFocus
-                onBlur={handleInputBlur}
-                onKeyDown={handleInputEnter}
-                onDoubleClick={(e: any) => e.stopPropagation()}
-                onClick={(e: any) => e.stopPropagation()}
-                onMouseDown={stopPropagation}
-              />
-              {
-                errMsg && <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
-                  {errMsg}
-                </Typography>
-              }
+      {
+        isOnlyView ?
+          <div className={styles.embedTitle}>
+            {
+              viewEditor ? <>
+                <input
+                  className={classNames(styles.inputBox, {
+                    [styles.error]: errMsg
+                  })}
+                  type='text'
+                  defaultValue={embedOnlyViewName}
+                  autoFocus
+                  onBlur={handleInputBlur}
+                  onKeyDown={handleInputEnter}
+                  onDoubleClick={(e: any) => e.stopPropagation()}
+                  onClick={(e: any) => e.stopPropagation()}
+                  onMouseDown={stopPropagation}
+                />
+                {
+                  errMsg && <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
+                    {errMsg}
+                  </Typography>
+                }
 
-            </> : <p
-              onDoubleClick={() => setViewEditor(true)}
-            >
-              {embedOnlyViewName}
-            </p>
-          }
-        </div> : <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
-          {
-            datasheetName && (
-              <NodeInfoBar
-                data={{
-                  nodeId: datasheetId!,
-                  type: ConfigConstant.NodeType.DATASHEET,
-                  icon: datasheetIcon,
-                  name: datasheetName,
-                  role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
-                  favoriteEnabled: nodeFavorite,
-                  nameEditable: renamable,
-                  iconEditable: iconEditable,
-                }}
-                hiddenModule={{ favorite: Boolean(shareId || templateId) }}
-              />
-            )
-          }
-        </div>}
+              </> : <p
+                onDoubleClick={() => setViewEditor(true)}
+              >
+                {embedOnlyViewName}
+              </p>
+            }
+          </div> : (
+            isShowNodeInfoBar && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
+              {
+                datasheetName && (
+                  <NodeInfoBar
+                    data={{
+                      nodeId: datasheetId!,
+                      type: ConfigConstant.NodeType.DATASHEET,
+                      icon: datasheetIcon,
+                      name: datasheetName,
+                      role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
+                      favoriteEnabled: nodeFavorite,
+                      nameEditable: renamable,
+                      iconEditable: iconEditable,
+                    }}
+                    hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+                  />
+                )
+              }
+            </div>
+          )
+      }
       {isShowViewbar && !isOnlyView && <ViewBar
         editIndex={editIndex}
         setEditIndex={setEditIndex}

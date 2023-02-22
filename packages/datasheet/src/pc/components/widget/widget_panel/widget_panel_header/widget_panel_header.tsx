@@ -18,13 +18,14 @@
 
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { ChevronLeftOutlined, CloseLargeOutlined } from '@apitable/icons';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import RcTrigger from 'rc-trigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-import { expandWidgetCenter, InstallPosition } from '../../widget_center/widget_center';
+import { expandWidgetCenter } from '../../widget_center/widget_center';
 import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';

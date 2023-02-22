@@ -46,6 +46,8 @@ export class NodeBaseInfo {
   icon!: string;
   @ApiPropertyOptional()
   revision?: number;
+  @ApiProperty()
+  parentId!: string;
 }
 
 export class NodeDetailInfo extends FieldPermissionMap {

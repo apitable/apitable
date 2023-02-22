@@ -38,7 +38,7 @@ export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   return '';
 };
 
-export const MemberInfo: FC = () => {
+export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
   const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useSelector((state: IReduxState) => ({
     memberInfo: state.addressList.memberInfo,
     selectedMemberInfo: state.addressList.selectedTeamInfo,

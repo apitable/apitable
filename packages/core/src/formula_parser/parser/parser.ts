@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ILexer } from '../lexer/lexer';
+import type { ILexer } from '../lexer/lexer';
 import { Token, TokenType } from '../lexer/token';
 import {
   AstNode,
@@ -28,10 +28,10 @@ import {
   StringOperandNode,
   PureValueOperandNode,
 } from './ast';
-import { IFieldMap, IReduxState } from '../../exports/store';
+import type { IFieldMap, IReduxState } from 'exports/store';
 import { Functions } from 'formula_parser/functions';
-import { IField } from 'types';
-import { t, Strings } from '../../exports/i18n';
+import type { IField } from 'types';
+import { t, Strings } from 'exports/i18n';
 import { SelfRefError } from 'formula_parser/errors/self_ref.error';
 
 /**

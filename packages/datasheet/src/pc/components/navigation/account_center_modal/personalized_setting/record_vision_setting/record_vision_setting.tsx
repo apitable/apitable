@@ -34,7 +34,7 @@ const options = [
   }
 ];
 
-export const RecordVisionSetting: FC = () => {
+export const RecordVisionSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const value = useSelector(state => state.recordVision);
 
   const dispatch = useDispatch();

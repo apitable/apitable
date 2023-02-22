@@ -93,7 +93,7 @@ interface IFieldItem {
   activeFieldId?: string;
   index: number;
   currentIndex: number;
-  renderInlineNodeName: (dst: string) => void;
+  renderInlineNodeName: (dst: string) => React.ReactNode;
   warnText?: string;
   keyword: string;
 }

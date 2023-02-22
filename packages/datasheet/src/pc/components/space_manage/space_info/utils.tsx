@@ -30,7 +30,7 @@ import BronzeCardSkin from 'static/icon/space/img_bronze_skin.png';
 import cx from 'classnames';
 // import { showSeatsUpgrading, showLevelCompare, showLevelRenewing } from 'pc/components/subscription';
 import { BronzeFilled, SilverFilled, GoldFilled, EnterpriseFilled } from '@apitable/icons';
-import { ISpaceLevelInfo, ISpaceLevelType, Position } from './interface';
+import { ISpaceLevelInfo, ISpaceLevelInfoValue, ISpaceLevelType, Position } from './interface';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 
@@ -170,7 +170,7 @@ const LevelConfigMap = {
 const getSpaceConfig = (
   spaceLevel: keyof typeof LevelConfigMap,
   texts: { title: string, titleTip: string, tagText: string, buttonText: string },
-) => {
+): ISpaceLevelInfoValue => {
   const config = LevelConfigMap[spaceLevel];
   const { title, titleTip, tagText, buttonText } = texts;
   return {

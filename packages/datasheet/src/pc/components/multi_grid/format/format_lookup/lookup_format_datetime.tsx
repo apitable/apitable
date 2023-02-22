@@ -49,7 +49,7 @@ const optionData4Time = [
   { value: TimeFormat['HH:mm'], label: t(Strings.twenty_four_hour_clock) },
 ];
 
-export const LookUpFormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime) => {
+export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const { includeTime, dateFormat, autoFill, timeFormat } = (props.currentField.property.formatting as IDateTimeFieldProperty) || {};
 
   const handleDateFormatChange = (value: DateFormat) => {

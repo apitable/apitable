@@ -37,7 +37,7 @@ export interface ICellCreatedByProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel;
 }
 
-export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
+export const CellCreatedBy: React.FC<React.PropsWithChildren<ICellCreatedByProps>> = props => {
   const { field: currentField, isFromExpand, className, readonly, cellValue, rowHeightLevel } = props;
   const { userMap, userInfo: userData } = useSelector(state => ({
     userMap: Selectors.getUserMap(state),

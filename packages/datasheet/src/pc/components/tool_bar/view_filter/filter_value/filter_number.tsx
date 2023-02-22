@@ -28,7 +28,7 @@ import { NumberEditor } from '../../../editors/number_editor/number_editor';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
-export const FilterNumber: React.FC<Omit<IFilterNumberProps, 'execute'>> = props => {
+export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = props => {
   const { condition, onChange, field } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);

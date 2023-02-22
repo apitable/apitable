@@ -40,7 +40,7 @@ import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 const defaultSetting = { formSheetAccessible: false };
 
-export const EnableFieldPermissionPlus: React.FC<IEnablePermissionPlus> = (props) => {
+export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnablePermissionPlus>> = (props) => {
   const { field } = props;
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
   const [memberList, setMemberList] = useState<IFieldPermissionMember[]>([]);

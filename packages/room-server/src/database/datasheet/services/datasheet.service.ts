@@ -344,7 +344,7 @@ export class DatasheetService {
     return this.commandService.setPageParam({ datasheetId: dstIds[0]! }, store);
   }
 
-  getAllLinkDstIdFromFieldMap(fieldMap: IFieldMap): Set<string> {
+  private getAllLinkDstIdFromFieldMap(fieldMap: IFieldMap): Set<string> {
     const dstIds = new Set<string>();
     for (const fieldId in fieldMap) {
       const field = fieldMap[fieldId]!;

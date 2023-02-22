@@ -45,7 +45,7 @@ interface IImgBaseUploader {
   onChange: (file: any, type: IFileType) => void;
 }
 
-export const ImgBaseUploader: React.FC<IImgBaseUploader> = props => {
+export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>> = props => {
   const {
     formId,
     visible,

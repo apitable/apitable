@@ -28,7 +28,7 @@ import WidgetNoPermissionDark from 'static/icon/datasheet/dashboard_widget_permi
 import Image from 'next/image';
 import { ThemeName } from '@apitable/components';
 
-export const ErrorHandler: React.FC = props => {
+export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props => {
   let errorCode = useSelector(state => {
     const sourceId = state.widget?.snapshot.sourceId;
     const widgetState = state as any as IReduxState;

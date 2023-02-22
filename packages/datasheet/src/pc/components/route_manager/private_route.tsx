@@ -26,7 +26,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-export const PrivateRoute: FC = ({ children }) => {
+export const PrivateRoute: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const user = useSelector(state => Selectors.userStateSelector(state), shallowEqual);
   const dispatch = useDispatch();
   const spaceId = useSelector(state => state.space.activeId);

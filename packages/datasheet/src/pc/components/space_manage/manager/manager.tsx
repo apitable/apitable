@@ -23,7 +23,7 @@ import { Typography } from '@apitable/components';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 
-export const Manager: React.FC = () => {
+export const Manager: React.FC<React.PropsWithChildren<unknown>> = () => {
   return <div className={styles.managerContainer}>
     <Typography variant={'h1'}>{t(Strings.share_permisson_model_space_admin)}</Typography>
     <Typography className={styles.pageSubscribe} variant={'body2'}>{t(Strings.share_permisson_model_space_admin_tip)}</Typography>

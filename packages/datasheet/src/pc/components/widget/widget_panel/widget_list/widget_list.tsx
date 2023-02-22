@@ -50,7 +50,7 @@ import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
 import styles from './style.module.less';
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout: any = WidthProvider(Responsive);
 
 export const WIDGET_MENU = 'WIDGET_MENU';
 

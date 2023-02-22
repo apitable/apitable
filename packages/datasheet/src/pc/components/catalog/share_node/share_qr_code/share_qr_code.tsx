@@ -41,7 +41,7 @@ export interface IShareQrCodeProps {
   onClose: () => void;
 }
 
-export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClose }) => {
+export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ url, user, nodeName, onClose }) => {
   const colors = useThemeColors();
   useMount(() => {
     QRCode.toCanvas(url,

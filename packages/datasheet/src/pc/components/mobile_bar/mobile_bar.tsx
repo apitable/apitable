@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
 
-export const MobileBar: React.FC<{ title?: string }> = ({ title }) => {
+export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title }) => {
   const { datasheetId } = useSelector(state => state.pageParams);
   const colors = useThemeColors();
   const currentView = useSelector(state => Selectors.getCurrentView(state))!;

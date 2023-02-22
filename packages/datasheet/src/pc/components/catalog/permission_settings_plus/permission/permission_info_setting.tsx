@@ -30,7 +30,7 @@ import styles from './style.module.less';
 import { IRoleOption } from './unit_item/interface';
 import { PermissionSelectMobile } from './unit_item/permission_select_mobile';
 
-export const PermissionInfoSetting: React.FC<{
+export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
   isExtend?: boolean;
   members: IRoleMember[];
   defaultRole: IRoleOption[];
@@ -46,7 +46,7 @@ export const PermissionInfoSetting: React.FC<{
   toggleIsMemberDetail: () => void;
   batchEditRole?: (role: string) => void;
   batchDeleteRole?: () => void;
-}> = props => {
+}>> = props => {
   const {
     isExtend,
     members,

@@ -33,7 +33,7 @@ import { resourceService } from 'pc/resource_service';
 import { useStoreState } from '@apitable/react-flow';
 import { flatContextData } from 'pc/utils';
 
-export const EdgeContextMenu: FC = () => {
+export const EdgeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const {
     linkField,

@@ -40,12 +40,14 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     void batchSave(List<DatasheetEntity> entities);
 
     /**
+     * @param creator creator
      * @param spaceId space id
      * @param dstId datasheet id
      * @param dstName datasheet name
-     * @param creator creator
+     * @param viewName view name
      */
-    void create(String spaceId, String dstId, String dstName, Long creator);
+    void create(Long creator, String spaceId, String dstId, String dstName,
+        String viewName);
 
     /**
      * create datasheet

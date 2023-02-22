@@ -37,7 +37,7 @@ interface IViewFilter {
   field?: ILookUpField;
 }
 
-const ViewFilterBase: React.FC<IViewFilter> = props => {
+const ViewFilterBase: React.FC<React.PropsWithChildren<IViewFilter>> = props => {
   const colors = useThemeColors();
   const { datasheetId, filterInfo, setFilters, field } = props;
   const view = useSelector(state => Selectors.getCurrentView(state, datasheetId))! as IGridViewProperty;

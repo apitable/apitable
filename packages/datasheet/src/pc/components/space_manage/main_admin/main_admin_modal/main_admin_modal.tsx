@@ -35,7 +35,7 @@ interface IModalProps {
   cancelModal: () => void;
 }
 
-export const MainAdminModal: FC<IModalProps> = ({ cancelModal }) => {
+export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModal }) => {
   const [current, setCurrent] = useState(0);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const progressDot = (_dot: any, { status, index }: any) => {

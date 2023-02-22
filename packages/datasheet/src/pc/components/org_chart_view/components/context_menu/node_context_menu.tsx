@@ -42,7 +42,7 @@ import { FlowContext } from '../../context/flow_context';
 import { INode } from '../../interfaces';
 import { addRecord } from '../record_list';
 
-export const NodeContextMenu: FC = () => {
+export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const {
     linkField,

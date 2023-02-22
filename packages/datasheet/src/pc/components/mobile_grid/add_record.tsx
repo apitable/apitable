@@ -29,7 +29,7 @@ interface IAddRecordProps {
   size?: 'large' | 'default';
 }
 
-export const AddRecord: React.FC<IAddRecordProps> = props => {
+export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = props => {
   const colors = useThemeColors();
   const {
     recordId,

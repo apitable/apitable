@@ -27,7 +27,7 @@ import PrevIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg'
 import WorkbenchIcon from 'static/icon/workbench/workbench_tab_icon_workingtable_normal.svg';
 import styles from './style.module.less';
 
-const NoMatch: FC = () => {
+const NoMatch: FC<React.PropsWithChildren<unknown>> = () => {
   const router = useRouter();
   const colors = useThemeColors();
 

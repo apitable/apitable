@@ -41,7 +41,7 @@ interface IMenuProps {
   onMenuClick: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-export const Menu: FC<IMenuProps> = (({ menus, active, onMenuClick }) => {
+export const Menu: FC<React.PropsWithChildren<IMenuProps>> = (({ menus, active, onMenuClick }) => {
 
   const lastMenuGroupIdx = menus.length - 1;
 

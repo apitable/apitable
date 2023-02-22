@@ -39,7 +39,7 @@ interface IExFilterMemberProps extends IFilterMemberProps {
   hiddenClientOption?: boolean;
 }
 
-export const FilterMember: React.FC<IExFilterMemberProps> = props => {
+export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps>> = props => {
   const { field, condition, onChange, hiddenClientOption } = props;
   const [isMulti, setIsMulti] = useState(false);
   const fieldType = condition.fieldType;

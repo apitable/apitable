@@ -74,7 +74,7 @@ const getTaskGroupHeaderStyle = (depth: number, groupCount: number, colors: ILig
   })[depth];
 };
 
-const TaskGroupHeader: FC<ITaskGroupHeaderProps> = (props) => {
+const TaskGroupHeader: FC<React.PropsWithChildren<ITaskGroupHeaderProps>> = (props) => {
   const { y, row, instance, groupInfo, groupCount, pointPosition, setTooltipInfo } = props;
 
   const {

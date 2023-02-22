@@ -18,6 +18,7 @@
 
 import { UnitTeamEntity } from '../entities/unit.team.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
+import { UnitTeamBaseInfoDto } from '../dtos/unit.team.base.info.dto';
 
 /**
  * Operations on table `unit_team`
@@ -27,12 +28,17 @@ import { EntityRepository, In, Repository } from 'typeorm';
  */
 @EntityRepository(UnitTeamEntity)
 export class UnitTeamRepository extends Repository<UnitTeamEntity> {
-  selectTeamsByIdsIncludeDeleted(teamIds: number[]): Promise<UnitTeamEntity[]> {
-    return this.find({ select: ['id', 'teamName', 'groupId'], where: { id: In(teamIds) }});
+  public async selectTeamsByIdsIncludeDeleted(teamIds: number[]): Promise<UnitTeamBaseInfoDto[]> {
+    return await this.find({
+      select: ['id', 'teamName', 'isDeleted'],
+      where: {
+        id: In(teamIds)
+      }
+    }) as UnitTeamBaseInfoDto[];
   }
 
-  selectIdBySpaceIdAndName(spaceId: string, teamName: string): Promise<{ id: string } | undefined> {
-    return this.findOne({ select: ['id'], where: { teamName, spaceId, isDeleted: false }});
+  public async selectIdBySpaceIdAndName(spaceId: string, teamName: string): Promise<{ id: string } | undefined> {
+    return await this.findOne({ select: ['id'], where: { teamName, spaceId, isDeleted: false }});
   }
 
   selectCountBySpaceIdAndId(id: string, spaceId: string): Promise<number> {

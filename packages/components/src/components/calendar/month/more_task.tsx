@@ -53,23 +53,24 @@ export const MoreTask = (props: IMoreTask) => {
   );
   const tasksLength = moreTasks.length;
   const itemHeight = listHeight + 22 + (isMobile ? 8 : 4);
+  const _List = List as any;
   const moreList = (
     <MoreListDiv isMobile={isMobile}>
-      <List
+      <_List
         height={Math.min(500, tasksLength * itemHeight)}
         width="100%"
         itemCount={tasksLength}
         itemSize={itemHeight}
         className="moreList"
       >
-        {({ index, style }) => {
+        {({ index, style }: any) => {
           return (
             <ListItemStyled style={style}>
               <Task key={index} levelItem={moreTasks[index]} isMore />
             </ListItemStyled>
           );
         }}
-      </List>
+      </_List>
     </MoreListDiv>
   );
   if (isMobile && visible) {

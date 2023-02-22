@@ -29,7 +29,7 @@ const removeChinese = (params: string | null, length: number) => {
   return params?.substring(0, length);
 };
 
-const LinkInvite: FC = () => {
+const LinkInvite: FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const dispatch = useDispatch();
   const tokenParams = query.get('token');

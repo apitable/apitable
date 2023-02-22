@@ -16,10 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEventHandler, IDatasheetEvent, ILoadDatasheetPackOptions, Field } from '.';
-import { Store } from 'redux';
-import { IViewOptions, View } from './view';
-import { IResource } from './resource.interface';
 import {
   CollaCommandManager,
   ExecuteResult,
@@ -28,17 +24,22 @@ import {
   ICollaCommandExecuteSuccessResult,
   IResourceOpsCollect,
 } from 'command_manager';
-import { ResourceType } from 'types';
-import { IBaseDatasheetPack, IReduxState, ISnapshot, Selectors } from 'exports/store';
 import { ICollaCommandOptions } from 'commands';
+import { IBaseDatasheetPack, IReduxState, ISnapshot, IViewProperty, Selectors, ViewType } from 'exports/store';
+import { getViewClass } from 'model';
+import { Store } from 'redux';
+import { ResourceType } from 'types';
+import { DatasheetEventType, Field, IDatasheetEvent, IDatasheetEventHandler, ILoadDatasheetPackOptions } from '.';
 import { IDataSaver, ISaveOpsOptions } from './data.saver.interface';
+import { IResource } from './resource.interface';
+import { IViewOptions, View } from './view';
 
 export class Datasheet implements IResource {
-  private commandManager: CollaCommandManager;
-
   public readonly id: string;
   public readonly name: string;
   public readonly type: ResourceType = ResourceType.Datasheet;
+  private commandManager: CollaCommandManager;
+  private _eventHandlers: Map<DatasheetEventType, Set<IDatasheetEventHandler>> = new Map();
 
   /**
    * Create a `Datasheet` instance from a datasheet pack and a store.
@@ -127,7 +128,18 @@ export class Datasheet implements IResource {
     return Promise.resolve(new View(this, this.store, info));
   }
 
-  private _eventHandlers: Map<DatasheetEventType, Set<IDatasheetEventHandler>> = new Map();
+  /**
+   * generate default view property
+   * @param viewType view type
+   * @param activeViewId
+   */
+  public deriveDefaultViewProperty(viewType: ViewType, activeViewId: string | null | undefined): IViewProperty {
+    const defaultProperty = getViewClass(viewType).generateDefaultProperty(this.snapshot, activeViewId, this.store.getState());
+    if (!defaultProperty) {
+      throw Error(`Unexpected view type ${viewType}!`);
+    }
+    return defaultProperty;
+  }
 
   /**
    * Add an event handler to the datasheet.

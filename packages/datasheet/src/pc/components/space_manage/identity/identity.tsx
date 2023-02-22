@@ -28,7 +28,7 @@ interface IIdentityProps {
   style?: React.CSSProperties;
 }
 
-export const Identity: FC<IIdentityProps> = ({ type, className, style }) => {
+export const Identity: FC<React.PropsWithChildren<IIdentityProps>> = ({ type, className, style }) => {
 
   const classes = classNames(
     styles.memberTag, 

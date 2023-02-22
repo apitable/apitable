@@ -22,7 +22,7 @@ import styles from './style.module.less';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useSelector } from 'react-redux';
 
-export const SyncViewTip: React.FC<{ style?: React.CSSProperties; content?: string }> = ({ style, content }) => {
+export const SyncViewTip: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties; content?: string }>> = ({ style, content }) => {
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
   const { editable } = useSelector(Selectors.getPermissions);
   const snapshot = useSelector(Selectors.getSnapshot)!;

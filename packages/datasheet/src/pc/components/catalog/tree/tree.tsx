@@ -37,7 +37,7 @@ export interface ITreeProps {
   rightClick: (e: React.MouseEvent, id?: ConfigConstant.ContextMenuType) => void;
 }
 
-const TreeBase: FC<ITreeProps> = ({ rightClick }) => {
+const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
   const catalogTree = useSelector((state: IReduxState) => state.catalogTree);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));

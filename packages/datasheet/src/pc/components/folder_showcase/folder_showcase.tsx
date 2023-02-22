@@ -50,7 +50,6 @@ import { makeNodeIconComponent, NodeIcon } from '../catalog/node_context_menu';
 import { getNodeIcon } from '../catalog/tree/node_icon';
 import { ImageCropUpload, Message } from '../common';
 import { NodeInfoBar } from '../common/node_info_bar';
-// @ts-ignore
 import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
@@ -58,6 +57,8 @@ import { DingTalkDa } from './dingtalk_da';
 // @ts-ignore
 import { WeixinShareWrapper, inSocialApp } from 'enterprise';
 import styles from './style.module.less';
+
+const _ContextMenuTrigger: any = ContextMenuTrigger;
 
 export interface IFolderShowcaseProps {
   nodeInfo: {
@@ -85,7 +86,7 @@ const customTips = {
 
 const template = /(\/)?template(\/)?/;
 
-export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes, nodeInfo }) => {
+export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> = ({ readOnly, childNodes, nodeInfo }) => {
   const [childrenNodeIdList, setChildrenNodeIdList] = useState<IChildrenNode[]>([]);
   const [banners, setBanners] = useState<string[]>([]);
   const [isDescriptionModal, { toggle: toggleIsDescriptionModal }] = useToggle(false);
@@ -441,7 +442,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   <DingTalkDa suiteKey={socialInfo.dingTalkSuiteKey} corpId={socialInfo.dingTalkCorpId} bizAppId={folderId} />
                 )}
                 {(permissions.nodeAssignable || permissions.templateCreatable) && (
-                  <ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
+                  <_ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
                     <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                       <Button
                         id={FOLDER_SHOWCASE_ID.BTN_MORE}
@@ -457,7 +458,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                      <MoreIcon />
                      </div>
                      </ComponentDisplay> */}
-                  </ContextMenuTrigger>
+                  </_ContextMenuTrigger>
                 )}
               </div>
             </div>

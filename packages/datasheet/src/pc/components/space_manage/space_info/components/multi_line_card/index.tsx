@@ -48,7 +48,7 @@ const AniProgress = (props: ProgressProps) => {
   return <Progress {...props} percent={percent} />;
 };
 
-export const MultiLineCard: FC<IMultiLineCardProps> = (props) => {
+export const MultiLineCard: FC<React.PropsWithChildren<IMultiLineCardProps>> = (props) => {
   const {
     title,
     titleTip,

@@ -44,7 +44,7 @@ interface IFieldDescWithTitleProps {
 
 const DESC_MAX_LINES = 5;
 
-export const FieldDescWithTitle: FC<IFieldDescWithTitleProps> = ({
+export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleProps>> = ({
   datasheetId,
   readOnly,
   field,

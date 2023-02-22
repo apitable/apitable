@@ -33,7 +33,7 @@ interface IOptionTagProps {
   ellipsis?: boolean;
 }
 
-export const OptionTag: React.FC<IOptionTagProps> = (props) => {
+export const OptionTag: React.FC<React.PropsWithChildren<IOptionTagProps>> = (props) => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const { option, style = {}, className, ellipsis = true } = props;

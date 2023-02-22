@@ -63,7 +63,7 @@ const symbolAlignOptions = [
   { value: SymbolAlign.right, label: t(Strings.currency_field_symbol_align_right) },
 ];
 
-export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumberProps) => {
+export const FormateNumber: React.FC<React.PropsWithChildren<IFormateNumberProps>> = (props: IFormateNumberProps) => {
   const datasheetId = useSelector(state => props.datasheetId || Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor | null>(null);
   const { currentField, setCurrentField } = props;
@@ -78,9 +78,9 @@ export const FormateNumber: React.FC<IFormateNumberProps> = (props: IFormateNumb
 
     const { symbolAlign, symbol, commaStyle } = property as INumberFieldProperty;
 
-    const getOptions = (symbol?: {} | null, symbolAlign?: SymbolAlign, commaStyle?: string) => {
+    const getOptions = (symbol?: string, symbolAlign?: SymbolAlign, commaStyle?: string) => {
       return optionData.map(item => {
-        let label: React.ReactNode = item.label;
+        let label: React.ReactNode | Element = item.label;
         if (commaStyle) {
           label = (label as string).replace('1', `1${DefaultCommaStyle}000`);
         }

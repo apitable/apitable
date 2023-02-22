@@ -47,7 +47,7 @@ export interface IRowCheckedProps {
 
 const noop = () => { };
 
-export const RowChecked: React.FC<IRowCheckedProps> = props => {
+export const RowChecked: React.FC<React.PropsWithChildren<IRowCheckedProps>> = props => {
   const colors = useThemeColors();
   const {
     onCheck = noop,
@@ -80,7 +80,7 @@ export const CommentCount = ({ count, expand }: { count: number, expand(): void 
   </div>;
 };
 
-export const OperateColumn: React.FC<IOperateColumnOwnProperty> = React.memo(props => {
+export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnProperty>> = React.memo(props => {
   const { isHeader, recordId, commentCount, expand } = props;
   const colors = useThemeColors();
   const dispatch = useDispatch();

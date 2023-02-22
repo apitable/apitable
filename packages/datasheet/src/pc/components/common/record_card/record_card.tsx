@@ -41,7 +41,7 @@ export interface IRecordCardProps {
   className?: string;
 }
 
-export const RecordCard: React.FC<IRecordCardProps> = props => {
+export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = props => {
   const { record, columns, fieldMap, onClick, onDelete, datasheetId } = props;
   const [firstColumn, ...remainingColumns] = columns;
   const primaryField = fieldMap[firstColumn.fieldId];

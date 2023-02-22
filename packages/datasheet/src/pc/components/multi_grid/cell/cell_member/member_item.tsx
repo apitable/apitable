@@ -40,7 +40,7 @@ export function isUnitLeave(unit: IUnitValue | IUserValue) {
   return unit.type === MemberType.Member && !unit.isActive;
 }
 
-export const MemberItem: React.FC<IMemberItemProps> = props => {
+export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = props => {
   const { unitInfo, children, style, selected, showTeams } = props;
   const { unitId, avatar, avatarColor, nickName, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);

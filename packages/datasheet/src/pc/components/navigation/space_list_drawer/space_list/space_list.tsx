@@ -44,7 +44,7 @@ enum TabPaneKeys {
 
 const { TabPane } = Tabs;
 
-export const SpaceList: FC = () => {
+export const SpaceList: FC<React.PropsWithChildren<unknown>> = () => {
   /* Collection of space stations I manage */
   const [managableList, setManagableList] = useState<ISpaceInfo[]>([]);
   /* Collection of space stations I have joined (not including the collection of space stations I manage) */

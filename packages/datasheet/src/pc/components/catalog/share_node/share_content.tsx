@@ -45,7 +45,7 @@ export interface IShareContentProps {
   };
 }
 
-export const ShareContent: FC<IShareContentProps> = ({ data }) => {
+export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
 
   const dispatch = useDispatch();

@@ -25,7 +25,7 @@ import styles from './style.module.less';
 export interface IPreviewToolItem {
   visible?: boolean;
   component?: React.ReactNode | (() => React.ReactNode);
-  icon?: React.FC<IIconProps>;
+  icon?: React.FC<React.PropsWithChildren<IIconProps>>;
   onClick?: () => void;
   tip?: string | (() => string);
   group?: IPreviewToolItem[];
@@ -34,7 +34,7 @@ export interface IPreviewToolItem {
   divider?: boolean;
 }
 
-export const PreviewToolItem: React.FC<IPreviewToolItem> = props => {
+export const PreviewToolItem: React.FC<React.PropsWithChildren<IPreviewToolItem>> = props => {
   const {
     visible = true,
     component,

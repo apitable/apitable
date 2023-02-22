@@ -37,7 +37,7 @@ export interface IDelConfirmModalProps {
   isMobile: boolean;
 }
 
-export const DelConfirmModal: FC<IDelConfirmModalProps> = props => {
+export const DelConfirmModal: FC<React.PropsWithChildren<IDelConfirmModalProps>> = props => {
   const { setIsDelConfirmModal, setIsDelSpaceModal, isMobile } = props;
   const colors = useThemeColors();
 

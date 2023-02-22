@@ -47,7 +47,7 @@ export enum ShareTab {
   PublicLink = 'publiclink',
 }
 
-export const ShareNode: FC<IShareNodeProps> = ({
+export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({
   data,
   visible,
   onClose,

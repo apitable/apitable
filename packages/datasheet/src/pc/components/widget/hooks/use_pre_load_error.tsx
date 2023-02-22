@@ -65,7 +65,7 @@ export const usePreLoadError = (widget: IWidget | undefined): JSX.Element | unde
   }, [getError, widget]);
 };
 
-const PreLoadError: FC<{ errorCode: PreLoadErrorCode }> = ({ errorCode }) => {
+const PreLoadError: FC<React.PropsWithChildren<{ errorCode: PreLoadErrorCode }>> = ({ errorCode }) => {
   const ErrorCodeMap = {
     [PreLoadErrorCode.NotSupportDashboard]: {
       title: t(Strings.widget_install_error_title),

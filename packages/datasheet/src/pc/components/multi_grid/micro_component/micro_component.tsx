@@ -28,7 +28,7 @@ interface IMicroComponent {
   dragOption: IDragOption;
 }
 
-export const MicroComponent: React.FC<IMicroComponent> = props => {
+export const MicroComponent: React.FC<React.PropsWithChildren<IMicroComponent>> = props => {
   const { dragOption } = props;
   const { dragOffsetY, dragOffsetX } = dragOption;
   const { dragTarget } = useSelector(state => Selectors.getGridViewDragState(state));

@@ -44,7 +44,7 @@ interface ICommonViewSetProps {
   invalidTip?: string;
 }
 
-export const CommonViewSet: React.FC<ICommonViewSetProps> = props => {
+export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps>> = props => {
   const colors = useThemeColors();
   const { onDragEnd: propDragEnd, dragData, setField, existFieldIds, setRules, deleteItem, invalidFieldIds = [], invalidTip } = props;
   const [disableDrag, setDisableDrag] = useState(true);

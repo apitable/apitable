@@ -33,7 +33,7 @@ interface IModalProps {
   recordId?: string;
 }
 
-export const Modal: React.FC<IModalProps> = ({
+export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
   recordId,
 }) => {
 

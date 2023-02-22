@@ -96,7 +96,7 @@ interface IEditorContainerProp {
   modalClose: () => void;
 }
 
-export const EditorContainer: React.FC<IEditorContainerProp> = props => {
+export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerProp>> = props => {
   const {
     datasheetId, mirrorId, viewId, focusFieldId, setFocusFieldId, modalClose, expandRecordId, clickWithinField, showHiddenField, setShowHiddenField,
     disappearHiddenField

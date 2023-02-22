@@ -39,7 +39,7 @@ interface IReportReasonProps {
   onClose: () => void;
 }
 
-export const ReportReason: FC<IReportReasonProps> = ({ nodeId, onClose }) => {
+export const ReportReason: FC<React.PropsWithChildren<IReportReasonProps>> = ({ nodeId, onClose }) => {
   const [reason, setReason] = useState<string>('');
   const { run: createReport, loading } = useRequest((nodeId, reason) => Api.createReport(nodeId, reason).then(res => {
     const { success } = res.data;

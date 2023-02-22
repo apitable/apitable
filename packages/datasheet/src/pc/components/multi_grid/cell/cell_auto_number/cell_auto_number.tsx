@@ -31,7 +31,7 @@ export interface ICellAutoNumberProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel;
 }
 
-export const CellAutoNumber: React.FC<ICellAutoNumberProps> = props => {
+export const CellAutoNumber: React.FC<React.PropsWithChildren<ICellAutoNumberProps>> = props => {
   const { field, cellValue, isFromExpand, className, readonly, rowHeightLevel } = props;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [showTip, setShowTip] = useState(false);

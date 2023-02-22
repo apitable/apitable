@@ -17,7 +17,7 @@
  */
 
 import dayjs from 'dayjs';
-import { IDateTimeField, ITimestamp } from 'types/field_types';
+import type { IDateTimeField, ITimestamp } from 'types/field_types';
 import duration from 'dayjs/plugin/duration';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(duration);

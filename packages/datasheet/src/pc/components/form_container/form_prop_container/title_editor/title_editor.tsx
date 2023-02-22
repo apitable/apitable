@@ -29,7 +29,7 @@ import { useResponsive, useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
-export const TitleEditor: React.FC<IBasePropEditorProps> = props => {
+export const TitleEditor: React.FC<React.PropsWithChildren<IBasePropEditorProps>> = props => {
   const { mode, formId } = props;
   const title = useSelector(state => Selectors.getForm(state)!.name);
   const [value, setValue] = useState<string>(title || '');

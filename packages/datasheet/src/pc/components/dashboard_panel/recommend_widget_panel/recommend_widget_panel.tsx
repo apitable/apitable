@@ -48,7 +48,7 @@ interface IRecentInstalledItem {
   widgetPackageIcon: string;
 }
 
-export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props) => {
+export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWidgetPanelProps>> = (props) => {
   const { setVisibleRecommend, visibleRecommend, readonly, installedWidgetHandle } = props;
   const colors = useThemeColors();
   const [loading, setLoading] = useState(false);

@@ -67,7 +67,7 @@ function calcFileWidth(file: IAttachmentValue, ratioHeight: number) {
   return ratioHeight * ratio;
 }
 
-export const CellAttachment: React.FC<ICellAttachmentProps> = props => {
+export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentProps>> = props => {
   const {
     cellValue,
     isActive,

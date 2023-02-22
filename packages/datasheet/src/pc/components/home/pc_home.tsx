@@ -24,7 +24,7 @@ import { Login } from './components/login';
 import { NavBar } from './components/nav_bar';
 import styles from './style.module.less';
 
-export const PcHome: React.FC = () => {
+export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const linkIcons = [
     {

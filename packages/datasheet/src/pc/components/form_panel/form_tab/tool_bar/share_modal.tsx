@@ -41,7 +41,7 @@ interface IShareModalProps {
   onClose: () => void;
 }
 
-export const ShareModal: React.FC<IShareModalProps> = props => {
+export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = props => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
   const { formId, visible, onClose } = props;

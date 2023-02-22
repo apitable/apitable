@@ -45,7 +45,7 @@ interface IImageBoxProps {
   showOneImage?: boolean;
 }
 
-export const ImageBox: React.FC<IImageBoxProps> = ({
+export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
   images, showType = ImageShowType.Thumbnail, style, width, fileList, height, recordId, field, showOneImage,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

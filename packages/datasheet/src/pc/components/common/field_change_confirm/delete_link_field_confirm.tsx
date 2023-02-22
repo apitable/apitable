@@ -33,7 +33,7 @@ import UnlinkImg from 'static/icon/datasheet/datasheet_img_disassociate.png';
 import { TComponent } from '../t_component';
 import styles from './styles.module.less';
 
-const DeleteLinkField: React.FC<{ fieldId: string, datasheetId?: string, onClose: (confirm?: boolean) => void }> = props => {
+const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datasheetId?: string, onClose: (confirm?: boolean) => void }>> = props => {
   const { fieldId, datasheetId, onClose } = props;
   const datasheet = useSelector(state => Selectors.getDatasheet(state, datasheetId))!;
   const field = datasheet.snapshot.meta.fieldMap[fieldId] as ILinkField;

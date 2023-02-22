@@ -23,7 +23,7 @@ import { useMount } from 'ahooks';
 import { PermissionDesc } from './permission_desc';
 import { ScrollBar } from 'pc/components/scroll_bar';
 
-export const Workbench: FC = () => {
+export const Workbench: FC<React.PropsWithChildren<unknown>> = () => {
   useMount(() => {
     Player.doTrigger(Events.space_setting_workbench_shown);
   });

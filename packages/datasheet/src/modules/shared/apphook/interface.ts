@@ -16,9 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum ModalConfirmKey {
-  FixConsistency = 'fixConsistency',
-}
+import { ModalConfirmKey } from '@apitable/core';
 
 export interface IModalConfirmArgs {
   key: ModalConfirmKey;

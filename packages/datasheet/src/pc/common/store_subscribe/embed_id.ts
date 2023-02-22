@@ -27,6 +27,7 @@ store.subscribe(function embedIdChange() {
   const previousEmbedId = embedId;
   const state = store.getState();
   embedId = state.pageParams.embedId;
+
   if (!embedId || previousEmbedId === embedId) {
     return;
   }
@@ -36,18 +37,20 @@ store.subscribe(function embedIdChange() {
     const { success, data } = res.data;
     if (success) {
       // dispatch(StoreActions.setLoading(false));
-      const { 
+      const {
         embedInfo, spaceId
       } = data;
-      const {  
-        payload: embedSetting, 
+      const {
+        payload: embedSetting,
       } = embedInfo;
       store.dispatch(StoreActions.setEmbedInfo({ ...embedSetting, spaceId }));
+    } else {
+      resourceService.instance!.destroy();
     }
-    resourceService.instance!.destroy();
-    resourceService.instance!.init();
-
   });
+
+  resourceService.instance!.destroy();
+  resourceService.instance!.init();
 
   memberStash.loadMemberList(embedId);
 });

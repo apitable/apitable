@@ -32,7 +32,7 @@ interface IPopoverProps extends PopoverProps {
   noCheckDisplay?: boolean;
 }
 
-export const Tip: FC<IPopoverProps> = props => {
+export const Tip: FC<React.PropsWithChildren<IPopoverProps>> = props => {
   const { oneline = false, needArrow = false, visible,
     placement = 'bottom', noCheckDisplay, ...rest } = props;
   const myrefs = useRef<HTMLElement>();

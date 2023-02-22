@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeEntity } from 'node/entities/node.entity';
 import { NodeBaseInfo } from 'database/interfaces';
+import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
 import { EntityRepository, Repository } from 'typeorm';
 
@@ -133,9 +133,9 @@ export class NodeRepository extends Repository<NodeEntity> {
       .getRawOne();
   }
 
-  selectNodeNameAndIconByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+  selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
     return this.findOne({
-      select: ['nodeName', 'icon'],
+      select: ['nodeName', 'icon', 'parentId'],
       where: [{ nodeId, isRubbish: false }],
     }).then(result => {
       if (result) {
@@ -143,6 +143,7 @@ export class NodeRepository extends Repository<NodeEntity> {
           id: nodeId,
           nodeName: result.nodeName,
           icon: result.icon || '',
+          parentId: result.parentId
         };
       }
       return undefined;

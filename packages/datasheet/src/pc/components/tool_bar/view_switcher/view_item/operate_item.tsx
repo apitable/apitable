@@ -64,7 +64,7 @@ interface IOperateItemProps {
   suffixIcon?: JSX.Element;
 }
 
-export const OperateItem: React.FC<IOperateItemProps> = props => {
+export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> = props => {
   const { editing, allowSort, prefixIcon, isActive, onItemClick, operateData, id, inputData, suffixIcon } = props;
   const colors = useThemeColors();
 

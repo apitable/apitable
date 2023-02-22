@@ -31,7 +31,7 @@ interface IViewListBox {
   hideViewList: () => void;
 }
 
-export const ViewListBox: React.FC<IViewListBox> = props => {
+export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = props => {
   const colors = useThemeColors();
   const { hideViewList, displayState } = props;
   const snapshot = useSelector(state => Selectors.getSnapshot(state));

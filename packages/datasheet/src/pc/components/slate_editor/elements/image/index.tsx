@@ -65,7 +65,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
   const isFocusedInSelf = focusedElement && element._id === focusedElement._id;
   const hasImg = !!url;
 
-  const handleFileChange = useCallback((_file) => {
+  const handleFileChange = useCallback((_file: any) => {
     const file = _file as IPreviewFile;
     const successFunc = (url = file.preview) => {
       const nextData = {
@@ -90,7 +90,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     successFunc();
   }, [editor, elementData]);
 
-  const handleImagePickerError = useCallback((type) => {
+  const handleImagePickerError = useCallback((type: any) => {
     if (type === 'size') {
       message.error(i18nText.imageSizeError);
     } else {

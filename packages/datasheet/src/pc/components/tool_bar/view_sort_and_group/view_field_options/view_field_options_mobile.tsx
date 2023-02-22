@@ -38,7 +38,7 @@ interface IViewFieldOptionsMobile {
   fieldNotFound?: boolean;
 }
 
-export const ViewFieldOptionsMobile: React.FC<IViewFieldOptionsMobile> = props => {
+export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewFieldOptionsMobile>> = props => {
   const {
     existFieldIds,
     onChange,

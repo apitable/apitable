@@ -20,7 +20,7 @@ import React from 'react';
 
 export interface ISkeletonProps {
   count?: number;
-  wrapper?: React.FunctionComponent;
+  wrapper?: React.FunctionComponent<React.PropsWithChildren<unknown>>;
   width?: string;
   height?: string;
   circle?: boolean;

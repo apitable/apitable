@@ -38,7 +38,7 @@ const convertToPrintString = (v: any) => {
   return v;
 };
 
-const FieldDocsItem: React.FC<IFieldDocs> = props => {
+const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
   const colors = useThemeColors();
   const { fieldId, recordId } = props;
   const field = useSelector(state => Selectors.getField(state, fieldId));
@@ -86,7 +86,7 @@ const FieldDocsItem: React.FC<IFieldDocs> = props => {
   );
 };
 
-export const FieldDocs: React.FC = () => {
+export const FieldDocs: React.FC<React.PropsWithChildren<unknown>> = () => {
   const columns = useSelector(Selectors.getVisibleColumns);
   const firstRecordId = useSelector(state => {
     const firstRow = Selectors.getVisibleRows(state)[0];

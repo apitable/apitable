@@ -32,7 +32,7 @@ interface IConjunctionProps {
   changeFilter: (cb: ExecuteFilterFn) => void;
 }
 
-export const FilterConjunction: React.FC<IConjunctionProps> = props => {
+export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionProps>> = props => {
   const { conjunction, conditionIndex, changeFilter } = props;
 
   const { screenIsAtMost } = useResponsive();

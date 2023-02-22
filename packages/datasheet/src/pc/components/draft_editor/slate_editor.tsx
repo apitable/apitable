@@ -163,7 +163,7 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
   const [members, setMembers] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const renderElement = useCallback(props => <Element {...props} />, []);
+  const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const editor = useMemo(
     () => withLink(withMentions(withReact(withHistory(withLastSelection(createEditor() as ReactEditor))))),
     [],
@@ -184,7 +184,7 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
     }
   };
 
-  const insertMention = useCallback((editor, member) => {
+  const insertMention = useCallback((editor: any, member: any) => {
     if (!member) {
       return;
     }
@@ -244,7 +244,7 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
   };
 
   const onKeyDown = useCallback(
-    (event) => {
+    (event: any) => {
       if (visible) {
         switch (event.key) {
           case 'ArrowDown':

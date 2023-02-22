@@ -26,7 +26,7 @@ import { store } from 'pc/store';
 import { RecordCard } from 'pc/components/common';
 import { shallowEqual } from 'react-redux';
 
-const RowFunc: React.FC<ListChildComponentProps> = props => {
+const RowFunc: React.FC<React.PropsWithChildren<ListChildComponentProps>> = props => {
 
   const {
     index,

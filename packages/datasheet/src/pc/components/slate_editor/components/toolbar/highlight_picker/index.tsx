@@ -67,7 +67,7 @@ export const HighlightPicker = ({
     onChange(color);
   };
 
-  const handleVisibleChange = useCallback(next => {
+  const handleVisibleChange = useCallback((next: any) => {
     setVisible(disabled ? false : next);
     try {
       ReactEditor.focus(editor);

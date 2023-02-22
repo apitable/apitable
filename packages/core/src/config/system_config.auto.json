@@ -4347,8 +4347,7 @@
                 "steps": "[[107,108],[105,106]]",
                 "player": {
                     "action": [
-                        "recMKNK2u3tkA",
-                        "recRyoECYFqBv"
+                        "recMKNK2u3tkA"
                     ]
                 }
             },
@@ -6397,7 +6396,7 @@
                 ],
                 "next": "确定",
                 "nextId": "confirm",
-                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
                 "onClose": [
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]

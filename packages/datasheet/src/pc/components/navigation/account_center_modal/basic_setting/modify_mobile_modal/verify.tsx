@@ -46,7 +46,7 @@ export interface IVerifyProps {
   mode?: ConfigConstant.LoginMode;
 }
 
-export const Verify: FC<IVerifyProps> = ({
+export const Verify: FC<React.PropsWithChildren<IVerifyProps>> = ({
   onVerify,
   onInputChange,
   errMsg,

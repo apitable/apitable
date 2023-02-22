@@ -40,7 +40,7 @@ export interface IDeveloperConfigProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveItem }) => {
+export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfigProps>> = ({ setActiveItem }) => {
   const user = useSelector((state: IReduxState) => state.user.info);
   const colors = useThemeColors();
   const [identifyingCode, setIdentifyingCode] = useState('');

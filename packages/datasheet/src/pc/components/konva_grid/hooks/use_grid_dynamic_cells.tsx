@@ -389,7 +389,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     }
   }, [cellEditable, clearTooltipInfo, instance, rowHeight, setTooltipInfo, toggleEditing]);
 
-  const onMouseDown = useCallback((e: any, field, isActive) => {
+  const onMouseDown = useCallback((e: any, field: any, isActive: any) => {
     if (e.evt.button === MouseDownType.Right) return;
     if (![
       FieldType.MultiSelect,

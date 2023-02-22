@@ -49,7 +49,6 @@ export enum SyncRequestTypes {
  * Type of message to broadcast
  */
 export enum BroadcastTypes {
-
   /**
    * Other users in the room operated changeset
    * Because compared to the client, it is actively pushed by the server, so it starts with Server
@@ -119,27 +118,29 @@ export type IFieldPermissionMessage = {
 };
 
 // Front-end request data type
-export type IBaseClientVarsExtraData = {
-  baseRev?: number;
-  /**
-   * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
-   */
-  openType?: number;
-} | {
-  baseRev?: number;
-  /**
-   * With this field, ClientVars will bring back a snapshot of the specified tableId
-   */
-  tableId: string;
-  /**
-   * In the case of this field and block data, the backend will first return the first xxx rows of data of the specified view
-   */
-  viewId?: string;
-  /**
-   * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
-   */
-  openType?: number;
-};
+export type IBaseClientVarsExtraData =
+  | {
+      baseRev?: number;
+      /**
+       * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
+       */
+      openType?: number;
+    }
+  | {
+      baseRev?: number;
+      /**
+       * With this field, ClientVars will bring back a snapshot of the specified tableId
+       */
+      tableId: string;
+      /**
+       * In the case of this field and block data, the backend will first return the first xxx rows of data of the specified view
+       */
+      viewId?: string;
+      /**
+       * When openType = 1, let the backend distinguish the request, not show in the recently viewed document
+       */
+      openType?: number;
+    };
 
 export interface ICursorInfoRequestData {
   datasheetId: string;
@@ -195,7 +196,7 @@ export enum OtErrorCode {
   // message repeats
   MSG_ID_DUPLICATE = 4001,
   // commit version conflict
-  CONFLICT = 4002,
+  VERSION_CONFLICT = 4002,
   // Commit version overrun
   REVISION_OVER_LIMIT = 4003,
   // commit version error
@@ -209,5 +210,7 @@ export enum OtErrorCode {
   // The space capacity exceeds the limit
   SPACE_CAPACITY_OVER_LIMIT = 4008,
   // cell data format write error
-  DATA_FORMAT_ERROR = 4009
+  DATA_FORMAT_ERROR = 4009,
+  // operation conflict
+  OPERATION_CONFLICT = 4010,
 }

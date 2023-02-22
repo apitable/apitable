@@ -41,7 +41,7 @@ const customTips = {
   cropDesc: t(Strings.custom_upload_tip),
 };
 
-export const LogoImgUploader: React.FC<ILogoImgUploaderProps> = props => {
+export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderProps>> = props => {
   const colors = useThemeColors();
   const { formId, mode, logoUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);

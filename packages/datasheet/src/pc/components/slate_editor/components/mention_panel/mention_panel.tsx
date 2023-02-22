@@ -92,7 +92,7 @@ export const MentionPanel = () => {
   );
 
   const insertMention = useCallback(
-    mentionData => {
+    (mentionData: any) => {
       const selection = getValidSelection(editor);
       Transforms.select(editor, selection);
       // Need to delete one more @ character
@@ -105,7 +105,7 @@ export const MentionPanel = () => {
   );
 
   const handleMemberItemClick = useCallback(
-    data => {
+    (data: any) => {
       const memberId = data && data[0];
       const member = members.find(item => item.unitId === memberId);
       if (member) {

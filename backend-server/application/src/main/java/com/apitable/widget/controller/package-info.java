@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,22 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { UnitTagEntity } from '../entities/unit.tag.entity';
-import { EntityRepository, Repository } from 'typeorm';
-
 /**
- * Operations on table `unit_tag`
- * 
- * @author Zoe zheng
- * @date 2020/7/30 4:09 PM
+ * widget.
  */
-@EntityRepository(UnitTagEntity)
-export class UnitTagRepository extends Repository<UnitTagEntity> {
-  selectIdBySpaceIdAndName(spaceId: string, tagName: string): Promise<{ id: string } | undefined> {
-    return this.findOne({ select: ['id'], where: { tagName, spaceId }});
-  }
-
-  selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {
-    return this.count({ where: { id, spaceId, isDeleted: false }});
-  }
-}
+package com.apitable.widget.controller;

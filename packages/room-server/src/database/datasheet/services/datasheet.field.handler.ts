@@ -894,7 +894,7 @@ export class DatasheetFieldHandler {
     }
   }
 
-  async getSpaceIdByDstId(dstId: string): Promise<string> {
+  private async getSpaceIdByDstId(dstId: string): Promise<string> {
     const rawData = await this.datasheetRepository.selectSpaceIdByDstId(dstId);
     if (rawData?.spaceId) {
       return rawData.spaceId;

@@ -31,7 +31,7 @@ export interface INodeFavoriteStatusProps {
   enabled: boolean;
 }
 
-export const NodeFavoriteStatus: FC<INodeFavoriteStatusProps> = ({ nodeId, enabled }) => {
+export const NodeFavoriteStatus: FC<React.PropsWithChildren<INodeFavoriteStatusProps>> = ({ nodeId, enabled }) => {
   const { updateNodeFavoriteStatusReq } = useCatalogTreeRequest();
   const { run: updateNodeFavoriteStatus, loading } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);

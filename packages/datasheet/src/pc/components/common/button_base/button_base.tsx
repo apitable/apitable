@@ -26,7 +26,7 @@ import { ButtonPrefixCls } from './constants';
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const DEFAULT_ICON_SIZE = 16;
 
-export const ButtonBase: React.FC<IButtonBase> = (props) => {
+export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props) => {
   const {
     size, loading, htmlType = 'button', className, shape,
     block, border, icon, children, prefixCls, shadow, ...rest
@@ -49,7 +49,7 @@ export const ButtonBase: React.FC<IButtonBase> = (props) => {
     },
     className,
   );
-  const finalIcon = stylizeIcon({
+  const finalIcon: any = stylizeIcon({
     icon,
     defaultSize: DEFAULT_ICON_SIZE,
   });

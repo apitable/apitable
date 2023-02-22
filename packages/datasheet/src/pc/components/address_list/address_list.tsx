@@ -37,7 +37,9 @@ import { MemberInfo } from './member_info';
 import { MemberList } from './member_list';
 import styles from './style.module.less';
 
-export const AddressList: React.FC = () => {
+const _SplitPane: any = SplitPane;
+
+export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
   const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user } = useSelector(
     (state: IReduxState) => ({
@@ -124,12 +126,12 @@ export const AddressList: React.FC = () => {
   return (
     <div className={styles.addressList}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <SplitPane minSize={280} maxSize={800} defaultSize={280}>
+        <_SplitPane minSize={280} maxSize={800} defaultSize={280}>
           <div className={styles.splitLeft}>
             <CommonSide />
           </div>
           <div className={styles.splitRight}>{MainComponent()}</div>
-        </SplitPane>
+        </_SplitPane>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

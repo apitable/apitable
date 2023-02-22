@@ -45,7 +45,7 @@ const openUrl = (url: string) => {
   return `${window.location.origin}${url}`;
 };
 
-export const Welcome: FC = () => {
+export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [show, setShow] = useState(false);
   const { treeNodesMap, rootId } = useSelector(

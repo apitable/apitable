@@ -176,7 +176,7 @@ const getFreeColumnsByViewType = (columns: IViewColumn[], viewType: ViewType, hi
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 490;
 
-export const HiddenField: React.FC<IHiddenFieldProps> = props => {
+export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> = props => {
   const { type: hideFieldType = HideFieldType.Common, triggerInfo, mobileModalclose } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;

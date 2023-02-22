@@ -32,7 +32,7 @@ export interface IBaseModalProps {
   showButton?: boolean;
 }
 
-export const BaseModal: FC<IModalProps & IBaseModalProps> = props => {
+export const BaseModal: FC<React.PropsWithChildren<IModalProps & IBaseModalProps>> = props => {
   const { className, cancelButtonProps, okButtonProps, cancelText = t(Strings.cancel),
     okText = t(Strings.submit), showButton = true, ...rest } = props;
   const buttonConfig: any = showButton ? {

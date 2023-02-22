@@ -25,7 +25,7 @@ import { FC } from 'react';
 import NoAccessImage from 'static/icon/common/common_img_noaccess.png';
 import styles from './style.module.less';
 
-export const NoAccess: FC = () => {
+export const NoAccess: FC<React.PropsWithChildren<unknown>> = () => {
   const returnHome = () => {
     Router.redirect(Navigation.HOME);
   };

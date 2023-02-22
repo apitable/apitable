@@ -34,13 +34,13 @@ import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
 
-const SortableContainer = sortableContainer(({ children }: any) => {
+const SortableContainer: any = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({ children }: any) => <>{children}</>);
+const SortableItem: any = sortableElement(({ children }: any) => <>{children}</>);
 
-export const OptionList: React.FC<IOptionListProps> = (props) => {
+export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (props) => {
   const {
     listData: optionList, existValues, onAddHandle, multiMode, onClickItem,
     dragOption, setCurrentField, inputRef, monitorId, datasheetId, placeholder

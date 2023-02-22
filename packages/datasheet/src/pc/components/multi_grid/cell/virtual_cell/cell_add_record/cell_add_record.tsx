@@ -43,7 +43,7 @@ interface ICellAddRecord {
 
 const DEFAULT_ADD_RECORD_PATH = 'default';
 
-export const CellAddRecord: React.FC<ICellAddRecord> = React.memo(props => {
+export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = React.memo(props => {
   const colors = useThemeColors();
   const {
     actualColumnIndex, row, style, className, preRow,

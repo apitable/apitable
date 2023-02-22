@@ -46,7 +46,7 @@ interface IRecordCardProps {
   isGallery?: boolean;
 }
 
-const RecordCardBase: React.FC<IRecordCardProps> = props => {
+const RecordCardBase: React.FC<React.PropsWithChildren<IRecordCardProps>> = props => {
 
   const {
     recordId, 

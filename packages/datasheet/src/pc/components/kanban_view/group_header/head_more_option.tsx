@@ -25,7 +25,7 @@ import { flatContextData } from 'pc/utils';
 
 export const KANBAN_GROUP_MORE = 'KANBAN_GROUP_MORE';
 
-export const GroupHeadMenu: React.FC = () => {
+export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { rowCreatable, fieldPropertyEditable } = useSelector(Selectors.getPermissions);
   const colors = useThemeColors();
   return <ContextMenu

@@ -289,7 +289,7 @@ export interface IFormProps<T> {
   onSubmit?: (e: ISubmitEvent<T>, nativeEvent: React.FormEvent<HTMLFormElement>) => any;
   schema: JSONSchema7;
   showErrorList?: boolean;
-  tagName?: keyof JSX.IntrinsicElements | React.ComponentType;
+  tagName?: keyof JSX.IntrinsicElements | React.ComponentType<React.PropsWithChildren<unknown>>;
   target?: string;
   transformErrors?: (errors: AjvError[]) => AjvError[];
   uiSchema?: IUiSchema;

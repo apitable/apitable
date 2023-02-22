@@ -28,7 +28,7 @@ export interface IContextMenuTitleProps {
   node: INodesMapItem;
 }
 
-export const MobileNodeContextMenuTitle: FC<IContextMenuTitleProps> = ({ node }) => {
+export const MobileNodeContextMenuTitle: FC<React.PropsWithChildren<IContextMenuTitleProps>> = ({ node }) => {
   const colors = useThemeColors();
   return (
     <div>

@@ -43,7 +43,7 @@ interface ILinkJumpProps {
   hideOperateBox?: () => void;
 }
 
-export const LinkJump: FC<ILinkJumpProps> = (props) => {
+export const LinkJump: FC<React.PropsWithChildren<ILinkJumpProps>> = (props) => {
   const colors = useThemeColors();
   const { mode = JumpIconMode.Normal, children, foreignDatasheetId, foreignFieldId, viewId, hideOperateBox } = props;
   const { hasShareId, hasTemplateId, isEmbed } = useSelector(state => ({

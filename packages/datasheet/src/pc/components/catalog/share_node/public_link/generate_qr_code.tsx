@@ -29,7 +29,7 @@ export interface IGenerateQrCodeProps {
     id: string
 }
 
-export const GenerateQrCode: FC<IGenerateQrCodeProps> = ({ url, color, width = 128, id }) => {
+export const GenerateQrCode: FC<React.PropsWithChildren<IGenerateQrCodeProps>> = ({ url, color, width = 128, id }) => {
   useMount(() => {
     QRCode.toCanvas(url,
       {

@@ -54,7 +54,7 @@ export interface ISearchProps {
   closeSearch: () => void;
 }
 
-export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
+export const Search: FC<React.PropsWithChildren<ISearchProps>> = ({ className, closeSearch }) => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState('');
   const [groupData, setGroupData] = useState<{ name: string; data: ISearchNode[] }[]>([]);

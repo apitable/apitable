@@ -36,7 +36,7 @@ interface IRobotListItemCardProps {
   index: number;
 }
 
-export const RobotListItemCard: React.FC<IRobotListItemCardProps> = ({ index, robotCardInfo, onClick, readonly }) => {
+export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({ index, robotCardInfo, onClick, readonly }) => {
   const { name, nodeTypeList, robotId, isActive } = robotCardInfo;
   const theme = useTheme();
   const readonlyStyle: React.CSSProperties = readonly ? {

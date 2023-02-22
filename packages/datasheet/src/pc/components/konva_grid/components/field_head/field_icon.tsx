@@ -60,7 +60,7 @@ interface IFieldIconProps {
   fill?: string;
 }
 
-export const FieldIcon: FC<IFieldIconProps> = memo((props) => {
+export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((props) => {
   const { fieldType, x, y, width, height, fill } = props;
 
   switch (fieldType) {

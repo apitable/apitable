@@ -26,7 +26,7 @@ interface IHeaderProps {
   field: IField;
 }
 
-export const Header: FC<IHeaderProps> = props => {
+export const Header: FC<React.PropsWithChildren<IHeaderProps>> = props => {
   const colors = useThemeColors();
   const {
     field,

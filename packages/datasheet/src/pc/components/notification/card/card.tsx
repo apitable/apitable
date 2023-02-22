@@ -48,7 +48,7 @@ interface ICard {
   isProcessed?: boolean;
 }
 
-export const Card: FC<ICard> = ({ data, isProcessed }) => {
+export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) => {
   const lottieAnimate = useRef<AnimationItem>();
   const [show, setShow] = useState(true);
   const timerRef = useRef<any>(null);
@@ -145,7 +145,7 @@ export const Card: FC<ICard> = ({ data, isProcessed }) => {
     e.preventDefault();
   };
 
-  const BottomText: FC<{ type: string; notifyBody: INotifyBody }> = ({ type, notifyBody }): React.ReactElement => {
+  const BottomText: FC<React.PropsWithChildren<{ type: string; notifyBody: INotifyBody }>> = ({ type, notifyBody }): React.ReactElement => {
     let text = '';
     switch (type) {
       case NoticeTypesConstant.system: {

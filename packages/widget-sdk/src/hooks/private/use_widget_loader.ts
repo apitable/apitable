@@ -22,7 +22,7 @@ import { loadWidget, WidgetLoadError } from '../../initialize_widget';
 
 export function useWidgetComponent(
   codeUrl?: string, widgetPackageId?: string):
-  [React.FC | undefined, () => void, boolean, WidgetLoadError | undefined] {
+  [React.FC<React.PropsWithChildren<unknown>> | undefined, () => void, boolean, WidgetLoadError | undefined] {
   const componentRef = useRef<React.FC>();
   // if need to load the widget package.
   const validate = Boolean(codeUrl && widgetPackageId);

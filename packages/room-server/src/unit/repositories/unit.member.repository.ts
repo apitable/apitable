@@ -19,6 +19,8 @@
 import { omit } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { UnitMemberEntity } from '../entities/unit.member.entity';
+import { UnitMemberInfoDto } from '../dtos/unit.member.info.dto';
+import { UnitMemberBaseInfoDto } from '../dtos/unit.member.base.info.dto';
 
 /**
  * Operations on table `unit_member`
@@ -28,15 +30,15 @@ import { UnitMemberEntity } from '../entities/unit.member.entity';
  */
 @EntityRepository(UnitMemberEntity)
 export class UnitMemberRepository extends Repository<UnitMemberEntity> {
-  selectMembersByIdsIncludeDeleted(memberIds: number[]): Promise<UnitMemberEntity[]> {
-    return this.find({
+  public async selectMembersByIdsIncludeDeleted(memberIds: number[]): Promise<UnitMemberInfoDto[]> {
+    return await this.find({
       select: ['memberName', 'id', 'userId', 'mobile', 'spaceId', 'isActive', 'isDeleted', 'isSocialNameModified'],
       where: { id: In(memberIds) },
-    });
+    }) as UnitMemberInfoDto[];
   }
 
-  selectIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<{ id: string } | undefined> {
-    return this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false }});
+  public async selectIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<{ id: string } | undefined> {
+    return await this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false }});
   }
 
   selectSpaceIdsByUserId(userId: string): Promise<string[]> {
@@ -45,21 +47,15 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
     });
   }
 
-  selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<UnitMemberEntity | undefined> {
-    return this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
+  async selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<{ id: string } | undefined> {
+    return await this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
   }
 
-  selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {
-    return this.count({ where: { id, spaceId, isDeleted: false }});
-  }
-
-  async selectMembersBySpaceIdAndUserIds(
+  public async selectMembersBySpaceIdAndUserIds(
     spaceId: string,
     userIds: string[],
     excludeDeleted: boolean,
-  ): Promise<{
-    memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified?: boolean; unitId: string
-  }[]> {
+  ): Promise<UnitMemberBaseInfoDto[]> {
     const query = this.createQueryBuilder('vum')
       .leftJoin(`${this.manager.connection.options.entityPrefix}unit`, 'vu', 'vu.unit_ref_id = vum.id')
       .select('vum.member_name', 'memberName')

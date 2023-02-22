@@ -23,12 +23,13 @@ import { Form } from 'antd';
 import { useRequest } from 'pc/hooks';
 import { useSetState } from 'pc/hooks';
 import classNames from 'classnames';
-import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode } from '@apitable/core';
+import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode, Api } from '@apitable/core';
 import { TextInput, Button } from '@apitable/components';
 import { Message, PasswordInput, IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common';
 import styles from './style.module.less';
 import { useUserRequest } from 'pc/hooks';
 import { getVerifyData, VerifyTypes, IChangePasswordConfig } from '../utils';
+import { getEnvVariables } from 'pc/utils/env';
 
 export interface IModifyPasswordProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
@@ -40,7 +41,7 @@ const defaultData = {
   confirmPassword: ''
 };
 
-export const ModifyPassword: FC<IModifyPasswordProps> = props => {
+export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> = props => {
   const { setActiveItem } = props;
   const [data, setData] = useSetState<{
     identifyingCode: string;
@@ -62,7 +63,8 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
   const user = useSelector((state: IReduxState) => state.user.info)!;
   const { modifyPasswordReq } = useUserRequest();
   const { run: modifyPassword, loading } = useRequest(modifyPasswordReq, { manual: true });
-
+  const env = getEnvVariables();
+  
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, property: 'password' | 'confirmPassword') => {
     const value = e.target.value.trim();
     if (errMsg.passwordErrMsg) {
@@ -172,63 +174,79 @@ export const ModifyPassword: FC<IModifyPasswordProps> = props => {
   const btnDisabled = !(data.identifyingCode && data.password && data.confirmPassword &&
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);
 
+  const handRest = () => {
+    //@ts-ignore
+    Api?.apitableChangePasswordEmail().then(res => {
+      const { success, message } = res.data;
+      if (success) return;
+      Message.error({ content: message });
+      return null;
+    });
+  };
+  
   return (
     <div className={styles.modifyPasswordWrapper}>
       <div className={styles.title}>{user!.needPwd ? t(Strings.set_password) : t(Strings.change_password)}</div>
-      <div className={styles.form}>
-        <Form
-          className={'modifyPassword'}
-          autoComplete='off'
-        >
-          {CodeContent}
-          <div className={classNames([styles.item, styles.newPassword])}>
-            <div className={styles.label}>
-              {t(Strings.input_new_password)}:
-            </div>
-            <div className={styles.content}>
-              <WithTipWrapper tip={errMsg.passwordErrMsg}>
-                <PasswordInput
-                  value={data.password}
-                  onChange={e => { handlePasswordChange(e, 'password'); }}
-                  placeholder={t(Strings.password_rules)}
-                  autoComplete='new-password'
-                  error={Boolean(errMsg.passwordErrMsg)}
-                  block
-                />
-              </WithTipWrapper>
-            </div>
-          </div>
-          <div className={styles.item}>
-            <div className={styles.label}>
-              {t(Strings.input_confirmation_password)}:
-            </div>
-            <div className={styles.content}>
-              <WithTipWrapper tip={errMsg.passwordErrMsg}>
-                <PasswordInput
-                  value={data.confirmPassword}
-                  onChange={e => { handlePasswordChange(e, 'confirmPassword'); }}
-                  placeholder={t(Strings.placeholder_input_new_password_again)}
-                  autoComplete='new-password'
-                  error={Boolean(errMsg.passwordErrMsg)}
-                  block
-                />
-              </WithTipWrapper>
-            </div>
-          </div>
-          <Button
-            color='primary'
-            className={styles.saveBtn}
-            htmlType='submit'
-            size='large'
-            disabled={btnDisabled}
-            loading={loading}
-            onClick={handleSubmit}
-            block
+      { env.IS_APITABLE && env.IS_ENTERPRISE ? 
+        <div>
+          <Button color='primary' size='middle' onClick={handRest} >{t(Strings.reset_password_via_email)}</Button>
+        </div> 
+        :
+        <div className={styles.form}>
+          <Form
+            className={'modifyPassword'}
+            autoComplete='off'
           >
-            {t(Strings.save)}
-          </Button>
-        </Form>
-      </div>
+            {CodeContent}
+            <div className={classNames([styles.item, styles.newPassword])}>
+              <div className={styles.label}>
+                {t(Strings.input_new_password)}:
+              </div>
+              <div className={styles.content}>
+                <WithTipWrapper tip={errMsg.passwordErrMsg}>
+                  <PasswordInput
+                    value={data.password}
+                    onChange={e => { handlePasswordChange(e, 'password'); }}
+                    placeholder={t(Strings.password_rules)}
+                    autoComplete='new-password'
+                    error={Boolean(errMsg.passwordErrMsg)}
+                    block
+                  />
+                </WithTipWrapper>
+              </div>
+            </div>
+            <div className={styles.item}>
+              <div className={styles.label}>
+                {t(Strings.input_confirmation_password)}:
+              </div>
+              <div className={styles.content}>
+                <WithTipWrapper tip={errMsg.passwordErrMsg}>
+                  <PasswordInput
+                    value={data.confirmPassword}
+                    onChange={e => { handlePasswordChange(e, 'confirmPassword'); }}
+                    placeholder={t(Strings.placeholder_input_new_password_again)}
+                    autoComplete='new-password'
+                    error={Boolean(errMsg.passwordErrMsg)}
+                    block
+                  />
+                </WithTipWrapper>
+              </div>
+            </div>
+            <Button
+              color='primary'
+              className={styles.saveBtn}
+              htmlType='submit'
+              size='large'
+              disabled={btnDisabled}
+              loading={loading}
+              onClick={handleSubmit}
+              block
+            >
+              {t(Strings.save)}
+            </Button>
+          </Form>
+        </div>
+      }
     </div>
   );
 };

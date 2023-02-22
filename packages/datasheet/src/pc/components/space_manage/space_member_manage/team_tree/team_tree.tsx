@@ -47,6 +47,10 @@ import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg } from 'enterprise';
 import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';
 
+const _ContextMenu: any = ContextMenu;
+const _MenuItem: any = MenuItem;
+const _ContextMenuTrigger: any = ContextMenuTrigger;
+
 interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;
   setRightLoading: Dispatch<SetStateAction<boolean>>;
@@ -55,7 +59,7 @@ interface IModalProps {
 const { TreeNode, DirectoryTree } = Tree;
 const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
-export const TeamTree: FC<IModalProps> = props => {
+export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const dispatch = useAppDispatch();
   const {
     teamListInSpace,
@@ -109,7 +113,7 @@ export const TeamTree: FC<IModalProps> = props => {
         return (
           <TreeNode
             title={
-              <ContextMenuTrigger
+              <_ContextMenuTrigger
                 id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
                 holdToDisplay={-1}
                 ref={nodeRef}
@@ -135,7 +139,7 @@ export const TeamTree: FC<IModalProps> = props => {
                 }
                 {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
                 <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-              </ContextMenuTrigger>
+              </_ContextMenuTrigger>
             }
             key={item.teamId}
           >
@@ -148,7 +152,7 @@ export const TeamTree: FC<IModalProps> = props => {
       return (
         <TreeNode
           title={
-            <ContextMenuTrigger
+            <_ContextMenuTrigger
               id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
               holdToDisplay={-1}
               ref={nodeRef}
@@ -175,7 +179,7 @@ export const TeamTree: FC<IModalProps> = props => {
               }
               {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
               <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-            </ContextMenuTrigger>
+            </_ContextMenuTrigger>
           }
           key={item.teamId}
           isLeaf
@@ -403,14 +407,14 @@ export const TeamTree: FC<IModalProps> = props => {
       }
       {
         teamOperate && <>
-          <ContextMenu id={TEAM_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-            <MenuItem onClick={handleRenameClick}><RenameIcon />{t(Strings.rename_team)}</MenuItem>
-            <MenuItem onClick={handleDeleteClick}><DeleteIcon />{t(Strings.delete_team)}</MenuItem>
-          </ContextMenu>
-          <ContextMenu id={TEAM_ROOT_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-          </ContextMenu></>
+          <_ContextMenu id={TEAM_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</_MenuItem>
+            <_MenuItem onClick={handleRenameClick}><RenameIcon />{t(Strings.rename_team)}</_MenuItem>
+            <_MenuItem onClick={handleDeleteClick}><DeleteIcon />{t(Strings.delete_team)}</_MenuItem>
+          </_ContextMenu>
+          <_ContextMenu id={TEAM_ROOT_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</_MenuItem>
+          </_ContextMenu></>
       }
     </div>
   );

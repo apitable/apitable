@@ -69,7 +69,7 @@ enum NavKey {
   Template = 'template',
 }
 
-export const Navigation: FC = () => {
+export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [spaceListDrawerVisible, { toggle: toggleSpaceListDrawerVisible, set: setSpaceListDrawerVisible }] = useToggle(false);
   const [showCreateModal, setShowCreateModal] = useState(false);

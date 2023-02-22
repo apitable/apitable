@@ -68,7 +68,7 @@ interface ICalendarViewProps {
   width: number;
 }
 
-export const CalendarView: FC<ICalendarViewProps> = () => {
+export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState<string>('');
   const {

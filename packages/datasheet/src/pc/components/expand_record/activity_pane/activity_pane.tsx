@@ -43,7 +43,7 @@ import { CommentEditor } from './comment_editor';
 import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 import styles from './style.module.less';
 
-export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
+export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPaneProps>> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();

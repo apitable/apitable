@@ -33,7 +33,7 @@ interface IBulkDownloadProps {
   className?: string;
 }
 
-export const BulkDownload: FC<IBulkDownloadProps> = ({ files, className }) => {
+export const BulkDownload: FC<React.PropsWithChildren<IBulkDownloadProps>> = ({ files, className }) => {
   const [loading, setLoading] = useState(false);
 
   return (

@@ -54,6 +54,7 @@ export class ErrorBoundary extends React.Component<Props, { hasError: boolean }>
       return <h1>An unknown error has occurred, please refresh and retry</h1>; //Something went wrong.
     }
 
+    // @ts-ignore
     return this.props.children;
   }
 }

@@ -24,7 +24,7 @@ import styles from '../cell_checkbox/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { store } from 'pc/store';
 
-export const CellMultiCheckbox: React.FC<ICellComponentProps> = props => {
+export const CellMultiCheckbox: React.FC<React.PropsWithChildren<ICellComponentProps>> = props => {
   const { className, field: propsField, cellValue } = props;
   const field = Selectors.findRealField(store.getState(), propsField);
 

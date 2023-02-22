@@ -32,7 +32,7 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
 import { InformationSmallOutlined } from '@apitable/icons/dist/components';
 
-export const FieldPermission: React.FC<IFieldPermissionProps> = props => {
+export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = props => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
   const theme = useSelector(Selectors.getTheme);

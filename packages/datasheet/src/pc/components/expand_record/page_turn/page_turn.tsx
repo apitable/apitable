@@ -38,7 +38,7 @@ interface IPageTurnProps {
   isPlainButtons?: boolean;
 }
 
-export const PageTurn: React.FC<IPageTurnProps> = (props) => {
+export const PageTurn: React.FC<React.PropsWithChildren<IPageTurnProps>> = (props) => {
   const {
     preButtonTip,
     nextButtonTip,

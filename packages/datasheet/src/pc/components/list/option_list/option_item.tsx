@@ -42,7 +42,7 @@ interface IOptionItem {
   };
 }
 
-const OptionItemBase: React.FC<IOptionItem> = props => {
+const OptionItemBase: React.FC<React.PropsWithChildren<IOptionItem>> = props => {
   const { curOption, getRealIndexOfOptions, setCurrentField, dragOption, fieldEditable } = props;
   const colors = useThemeColors();
   const deleteItem = (optionId: string): ICollaCommandExecuteResult<{}> => {

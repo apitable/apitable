@@ -24,7 +24,7 @@ import { useThemeColors } from '@apitable/components';
 import styles from './styles.module.less';
 import { t, Strings } from '@apitable/core';
 
-export const Reconnecting: React.FC = () => {
+export const Reconnecting: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const reconnecting = useSelector(state => {
     return state.space.reconnecting;

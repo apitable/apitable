@@ -46,7 +46,7 @@ const triggerBase = {
   }
 };
 
-export const SubAdmin: FC = () => {
+export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const tableRef = useRef<HTMLDivElement>(null);

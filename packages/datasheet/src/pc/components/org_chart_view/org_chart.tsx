@@ -54,7 +54,7 @@ import { ScrollBar } from './components/scroll_bar';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
 
-export const OrgChart: FC = () => {
+export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
 
   const {
     initialElements,
@@ -231,16 +231,16 @@ export const OrgChart: FC = () => {
           defaultZoom={DEFAULT_ZOOM}
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
-          zoomOnPinch={isWindowsOS() ? false : true}
+          zoomOnPinch={!isWindowsOS()}
           zoomActivationKeyCode={isWindowsOS() ? KeyCode.Alt : KeyCode.Meta}
           nodeTypes={{
-            [NodeType.CustomNode]: CustomNode,
-            [NodeType.GhostNode]: GhostNode,
+            [NodeType.CustomNode]: CustomNode as any,
+            [NodeType.GhostNode]: GhostNode as any,
           }}
           edgeTypes={{
-            [NodeType.CustomEdge]: CustomEdge,
-            [NodeType.BezierEdge]: BezierEdge,
-            [NodeType.GhostEdge]: GhostEdge,
+            [NodeType.CustomEdge]: CustomEdge as any,
+            [NodeType.BezierEdge]: BezierEdge as any,
+            [NodeType.GhostEdge]: GhostEdge as any,
           }}
           onlyRenderVisibleElements
           panOnScrollSpeed={1}

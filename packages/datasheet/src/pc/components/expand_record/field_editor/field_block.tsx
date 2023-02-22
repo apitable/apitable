@@ -85,7 +85,7 @@ export interface IFieldBlockProps {
   showAlarm?: boolean;
 }
 
-export const FieldBlock: React.FC<IFieldBlockProps> = props => {
+export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = props => {
   const { commonProps: _commonProps, cellValue, isFocus, onMouseDown, showAlarm } = props;
 
   const { datasheetId, mirrorId, field, record, ref: editorRef } = _commonProps;

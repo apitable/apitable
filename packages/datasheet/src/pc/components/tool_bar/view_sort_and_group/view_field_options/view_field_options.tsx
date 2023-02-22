@@ -39,7 +39,7 @@ interface IViewFieldOptions {
   isAddNewOption?: boolean; // Whether the operation of the current option is to add a new option.
 }
 
-export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
+export const ViewFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOptions>> = memo(props => {
   const colors = useThemeColors();
   const { onChange, isAddNewOption, defaultFieldId, existFieldIds, invalidFieldIds = [], invalidTip, isCryptoField, fieldNotFound } = props;
   const currentViewAllField = useSelector(state => Selectors.getCurrentView(state))!.columns;

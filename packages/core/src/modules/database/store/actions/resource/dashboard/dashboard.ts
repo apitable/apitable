@@ -16,22 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DashboardApi } from '../../../../../../exports/api';
 import { StatusCode } from 'config';
 import { batchActions } from 'redux-batched-actions';
+import { DashboardApi } from '../../../../../../exports/api';
 import { ActionConstants } from '../../../../../../exports/store';
 import { deleteNode, fetchWidgetsByWidgetIds } from '../../../../../../exports/store/actions';
-import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from '../../../../../../exports/store/interfaces';
+import { ICollaborator, IDashboard, IDashboardClient, IReduxState } from '../../../../../../exports/store/interfaces';
 import { getDashboardPack, getInstalledWidgetInDashboard } from '../../../../../../exports/store/selectors';
+import { UPDATE_DASHBOARD_INFO, UPDATE_DASHBOARD_NAME } from '../../../../../shared/store/action_constants';
 import { receiveInstallationWidget } from '../widget';
-import {
-  UPDATE_DASHBOARD_NAME, UPDATE_DASHBOARD_INFO
-} from '../../../../../shared/store/action_constants';
 
 export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any) => void, overWrite = false) => {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
-    const { shareId, templateId } = state.pageParams;
+    const { shareId, templateId, embedId } = state.pageParams;
     const dashboardPack = getDashboardPack(state, dashboardId);
     const dashboardLoading = dashboardPack?.loading;
     const dashboard = dashboardPack?.dashboard;
@@ -39,13 +37,15 @@ export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any
     if (dashboardLoading) {
       return;
     }
-
     const fetchMethod = (() => {
       if (shareId) {
         return DashboardApi.fetchShareDashboardPack.bind(null, dashboardId, shareId);
       }
       if (templateId) {
         return DashboardApi.fetchTemplateDashboardPack.bind(null, dashboardId, templateId);
+      }
+      if (embedId) {
+        return DashboardApi.fetchEmbedDashboardPack.bind(null, dashboardId, embedId);
       }
       return DashboardApi.fetchDashboardPack.bind(null, dashboardId);
     })();
@@ -167,7 +167,7 @@ export const deactivateDashboardCollaborator = (payload: { socketId: string }, r
 
 export interface ISetDashboardClientAction {
   type: typeof ActionConstants.SET_DASHBOARD_CLIENT;
-  payload: Partial<IDashboardClient>
+  payload: Partial<IDashboardClient>;
 }
 
 export const updateDashboardName = (newName: string, dashboardId: string) => {

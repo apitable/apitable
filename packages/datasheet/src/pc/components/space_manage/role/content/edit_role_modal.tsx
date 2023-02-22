@@ -34,7 +34,7 @@ interface IEditRoleModalProps {
   onCancel?: () => void;
 }
 
-const EditRoleModal: React.FC<IEditRoleModalProps> = props => {
+const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = props => {
   const { value, title, existed = [], onChange, onCancel } = props;
   const [input, setInput] = useState<string>(value);
   const [error, setError] = useState<string>();

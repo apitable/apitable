@@ -55,7 +55,7 @@ const defaultErrMsg = {
   identifyingCodeErrMsg: '',
 };
 
-export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
+export const ModifyEmailModal: FC<React.PropsWithChildren<IModifyEmailModalProps>> = (props) => {
   const { setEmailModal, data } = props;
   const [newEmail, setNewEmail] = useState('');
   const [identifyingCode, setIdentifyingCode] = useState('');

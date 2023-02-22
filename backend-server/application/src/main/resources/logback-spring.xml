@@ -21,6 +21,7 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
     <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name" defaultValue="apitable"/>
+    <springProperty scope="context" name="LOGGER_MAX_HISTORY_DAYS" source="spring.logger.max-history-days" defaultValue="7"/>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
@@ -31,7 +32,8 @@
         <file>logs/${LOG_FILE_NAME}_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/backup/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>60</maxHistory>
+            <maxHistory>${LOGGER_MAX_HISTORY_DAYS}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -58,7 +60,8 @@
         <file>logs/${LOG_FILE_NAME}_total.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/backup/${LOG_FILE_NAME}-total-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>60</maxHistory>
+            <maxHistory>${LOGGER_MAX_HISTORY_DAYS}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>

@@ -29,7 +29,7 @@ import { useMount } from 'ahooks';
 import styles from '../styles.module.less';
 import classNames from 'classnames';
 
-export const CustomNode: FC<NodeProps<INodeData>> = memo((props) => {
+export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo((props) => {
   const { id, data, sourcePosition, targetPosition } = props;
 
   const { linkIds, parents } = data;

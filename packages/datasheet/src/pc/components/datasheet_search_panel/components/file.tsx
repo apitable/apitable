@@ -24,7 +24,7 @@ import { useThemeColors } from '@apitable/components';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { MirrorOutlined } from '@apitable/icons';
 
-const Budget: React.FC = props => {
+const Budget: React.FC<React.PropsWithChildren<unknown>> = props => {
   return (
     <div className={styles.budget}>
       {props.children}
@@ -32,14 +32,14 @@ const Budget: React.FC = props => {
   );
 };
 
-export const File: React.FC<{
+export const File: React.FC<React.PropsWithChildren<{
   disable?: { budget: string, message: string },
   active?: boolean,
   id: string,
   onClick?: (id: string) => void,
   richContent?: boolean,
   isMirror?: boolean
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { children, disable, id, onClick, richContent, active, isMirror } = props;
   return (

@@ -33,7 +33,7 @@ const options = [{
   value: 'en-US' 
 }];
 
-export const LanguageSetting: FC = () => {
+export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const lang = getLanguage();
 
   const [value, setValue] = useState<string>(lang);

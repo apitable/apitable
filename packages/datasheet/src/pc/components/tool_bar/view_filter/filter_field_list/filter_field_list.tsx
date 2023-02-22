@@ -59,7 +59,7 @@ interface IFilterFieldListProps {
   warnTextObj?: { string?: string };
 }
 
-const FilterFieldListBase: React.FC<IFilterFieldListProps> = props => {
+const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProps>> = props => {
   const { conditionIndex, changeFilter, condition, fieldMap, columns, warnTextObj, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);

@@ -144,7 +144,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   },
 ]);
 
-export const SpaceMenuTree: React.FC = () => {
+export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { spaceId, spaceResource, userInfo, appType } = useSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',

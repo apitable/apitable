@@ -58,7 +58,7 @@ interface IInfoCardProps {
 
 // const searchTag = '<span class="highLight">';
 
-export const InfoCard: FC<IInfoCardProps> = props => {
+export const InfoCard: FC<React.PropsWithChildren<IInfoCardProps>> = props => {
   const {
     title, originTitle = '', description, onClick, extra, triggerBase,
     inSearch = false, className, avatarProps, token, userId, memberId, email,

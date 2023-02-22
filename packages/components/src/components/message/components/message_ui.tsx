@@ -91,7 +91,7 @@ const TextWrapper = styled.span.attrs(applyDefaultTheme)`
     `;
   }}
 `;
-export const MessageUI: React.FC<IMessageUIProps> = ({
+export const MessageUI: React.FC<React.PropsWithChildren<IMessageUIProps>> = ({
   content,
   type,
   onDestroy,

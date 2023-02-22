@@ -34,7 +34,7 @@ interface ISearchInput extends InputProps {
   onClose?: () => void;
 }
 
-export const SearchInput: FC<ISearchInput> = props => {
+export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
   const inputRef = useRef<any>(null);
   const { change, onClose, className, keyword, ...rest } = props;
 

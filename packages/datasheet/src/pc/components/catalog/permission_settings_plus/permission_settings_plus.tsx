@@ -41,7 +41,7 @@ export interface IPermissionSettingsProps {
   onClose: () => void;
 }
 
-export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, visible, onClose }) => {
+export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSettingsProps>> = ({ data, visible, onClose }) => {
   const [permDescModalVisible, setPermDescModalVisible] = useState(false);
   const colors = useThemeColors();
 

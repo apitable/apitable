@@ -32,7 +32,7 @@ interface ICapacity {
   dataColor?: string;
 }
 
-export const Capacity: FC<ICapacity> = ({ maxValue, curValue, dataColor, strokeColor }) => {
+export const Capacity: FC<React.PropsWithChildren<ICapacity>> = ({ maxValue, curValue, dataColor, strokeColor }) => {
   const colors = useThemeColors();
   const loading = useMemo(() => {
     return typeof maxValue !== 'number' || typeof curValue !== 'number';

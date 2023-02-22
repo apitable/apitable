@@ -42,7 +42,7 @@ interface IViewIcon {
   onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
 }
 
-export const ViewIcon: React.FC<IViewIcon> = props => {
+export const ViewIcon: React.FC<React.PropsWithChildren<IViewIcon>> = props => {
   const colors = useThemeColors();
   const { viewType, width = 15, height = 15, fill = colors.thirdLevelText, onClick } = props;
 

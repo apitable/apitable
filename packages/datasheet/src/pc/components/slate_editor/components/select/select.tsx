@@ -183,7 +183,7 @@ export const Select = ({
     }
   });
 
-  const handleVisibleChange = useCallback((next) => {
+  const handleVisibleChange = useCallback((next: any) => {
     setVisible(disabled ? false : next);
     onVisibleChange?.(next);
   }, [disabled, onVisibleChange]);

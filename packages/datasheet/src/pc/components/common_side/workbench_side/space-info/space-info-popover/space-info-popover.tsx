@@ -32,7 +32,7 @@ import { CopyOutlined } from '@apitable/icons';
 import { copy2clipBoard } from 'pc/utils';
 import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
 
-export const SpaceInfoPopover: FC = () => {
+export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
   const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useSelector(state => ({
     spaceInfo: state.space.curSpaceInfo,
     spaceId: state.space.activeId || '',

@@ -46,7 +46,7 @@ interface IAvatarProps {
   isDefaultIcon?: boolean;
 }
 
-export const Avatar: FC<IAvatarProps> = memo((props) => {
+export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) => {
   const ratio = Math.max(window.devicePixelRatio, 2);
   const {
     x = 0,
