@@ -111,12 +111,8 @@ make run # enter 1
 make run # enter 2
 
 # y luego cambiar a un nuevo terminal
-# start socket-server
-make run # enter 3  
-
-# y luego cambiar a un nuevo terminal
 # start web-server
-make run # enter 4
+make run # enter 3
 
 ```
 
