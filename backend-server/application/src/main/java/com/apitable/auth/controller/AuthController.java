@@ -18,9 +18,11 @@
 
 package com.apitable.auth.controller;
 
+import cn.hutool.core.util.BooleanUtil;
 import com.apitable.auth.dto.UserLoginDTO;
 import com.apitable.auth.enums.LoginType;
 import com.apitable.auth.ro.LoginRo;
+import com.apitable.auth.ro.RegisterRO;
 import com.apitable.auth.service.IAuthService;
 import com.apitable.auth.vo.LogoutVO;
 import com.apitable.core.support.ResponseData;
@@ -49,6 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -83,6 +86,26 @@ public class AuthController {
 
     @Resource
     private AuthServiceFacade authServiceFacade;
+
+    @Value("${SKIP_REGISTER_VALIDATE:false}")
+    private Boolean skipRegisterValidate;
+
+    /**
+     * Register.
+     *
+     * @param data Request Parameters
+     * @return {@link ResponseData}
+     * @author Chambers
+     */
+    @PostResource(path = "/register", requiredLogin = false)
+    @ApiOperation(value = "register", notes = "serving for community edition")
+    public ResponseData<Void> register(@RequestBody @Valid final RegisterRO data) {
+        if (BooleanUtil.isFalse(skipRegisterValidate)) {
+            return ResponseData.error("Validate failure");
+        }
+        iAuthService.register(data.getUsername(), data.getCredential());
+        return ResponseData.success();
+    }
 
     /**
      * login router.
