@@ -24,7 +24,6 @@ import {
   ResourceType,
   Selectors,
   Strings,
-  SystemConfig,
   t,
   WidgetPackageStatus,
   WidgetReleaseType,
@@ -72,7 +71,6 @@ export const WidgetList = () => {
   const [devWidgetId, setDevWidgetId] = useLocalStorageState<string>('devWidgetId');
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const widgetMap = useSelector(state => state.widgetMap);
-  const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const readonly = !editable;
   // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);
@@ -171,7 +169,7 @@ export const WidgetList = () => {
       {
         icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_enter_dev),
-        hidden: readonly || !isShowWidget || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
+        hidden: readonly || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
         onClick: ({ props }: { props?: any }) => {
           props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
         },
@@ -179,7 +177,7 @@ export const WidgetList = () => {
       {
         icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_exit_dev),
-        hidden: readonly || !isShowWidget || isWidgetBan() || !isWidgetDev(),
+        hidden: readonly || isWidgetBan() || !isWidgetDev(),
         onClick: ({ props }: { props?: any }) => {
           props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
           TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.RELEASE_WIDGET_GUIDE);
@@ -194,7 +192,7 @@ export const WidgetList = () => {
       {
         icon: <InformationSmallOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_publish_help),
-        hidden: readonly || !isShowWidget || !isWidgetDev(),
+        hidden: readonly || !isWidgetDev(),
         onClick: () => {
           expandPublishHelp();
         },

@@ -315,11 +315,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         setUserData({
           ...userData!,
           timeZone,
-        })
+        });
         cb?.();
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
@@ -335,10 +335,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
             content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
-          })
-        })
+          });
+        });
       }
-    }
+    };
     checkTimeZoneChange();
     const interval = setInterval(checkTimeZoneChange, 30 * 1000);
     return () => {
@@ -445,7 +445,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         {
           ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
             <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
           </div>
         }
       </div>
