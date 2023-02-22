@@ -17,7 +17,7 @@
  */
 
 (function (para) {
-  if (process.env.SSR) {
+  if (process.env.SSR || !process.env.SENSORSDATA_TOKEN) {
     return false
   }
   let p = para.sdk_url, n = para.name, w = window, d = document, s = 'script', x = null, y = null;
@@ -44,7 +44,7 @@
   heatmap_url: '//s1.vika.cn/common/js/sensors/heatmap.min.js',
   name: 'sensors',
   is_track_single_page: true,
-  server_url: 'https://vika.datasink.sensorsdata.cn/sa?token=352bda0fb16d392b' + (!process.env.SSR && window.location.host.slice(-'vika.cn'.length) === 'vika.cn' ? '&project=production' : ''),
+  server_url: `https://vika.datasink.sensorsdata.cn/sa?token=${process.env.SENSORSDATA_TOKEN}` + (!process.env.SSR && window.location.host.slice(-'vika.cn'.length) === 'vika.cn' ? '&project=production' : ''),
   heatmap: {
     clickmap: 'default',
     scroll_notice_map: 'not_collect',

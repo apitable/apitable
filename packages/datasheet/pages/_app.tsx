@@ -365,7 +365,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    <Script strategy='lazyOnload' id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy="lazyOnload" id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -376,33 +376,33 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             }
           })
         `}
-    </Script>
+    </Script>}
     {/*Baidu Statistics*/}
-    {!env.DISABLE_AWSC && <Script id={'baiduAnalyse'}>
+    {env.BAIDU_ANALYSE_ID && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
             var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?39ab4bbbb01e48bee90b6b17a067b9f1";
+            hm.src = "https://hm.baidu.com/hm.js?${env.BAIDU_ANALYSE_ID}";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
           })();
         `}
     </Script>}
-    <Script id={'userAgent'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
             !(function(c,i,e,b){var h=i.createElement("script");
             var f=i.getElementsByTagName("script")[0];
             h.type="text/javascript";
             h.crossorigin=true;
-            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"dta_2_83919"}));
+            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"${env.DINGTALK_MONITOR_PLATFORM_ID}"}));
             c[b].installAll()};
             f.parentNode.insertBefore(h,f);
             h.src=e})(window,document,"https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js","__wpk");
           }
         `}
-    </Script>
+    </Script>}
     {/* script loading js */}
     <Script id={'loadingAnimation'} strategy='lazyOnload'>
       {`
@@ -428,9 +428,9 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <>
         <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
         <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-        <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
       </>
     }
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
         {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
