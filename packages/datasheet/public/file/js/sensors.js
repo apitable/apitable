@@ -17,7 +17,7 @@
  */
 
 (function (para) {
-  if (process.env.SSR || !process.env.SENSORSDATA_TOKEN) {
+  if (process.env.SSR) {
     return false
   }
   let p = para.sdk_url, n = para.name, w = window, d = document, s = 'script', x = null, y = null;
