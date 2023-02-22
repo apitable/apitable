@@ -165,3 +165,16 @@ grpc:
       security:
         clientAuthEnabled: false
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    enable-open-api: true
