@@ -65,7 +65,6 @@ export const Dashboard = () => {
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
-  const [installedWidgetInDashboard, setInstalledWidgetInDashboard] = useState(false);
 
   const dashboardPack = useSelector(Selectors.getDashboardPack);
   const dashboardLayout = useSelector(Selectors.getDashboardLayout);
@@ -94,11 +93,7 @@ export const Dashboard = () => {
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
-
-  useEffect(() => {
-    setInstalledWidgetInDashboard(Boolean(dashboardLayout && dashboardLayout.length));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const installedWidgetInDashboard = Boolean(dashboardLayout && dashboardLayout.length);
 
   const decisionOpenRecommend = () => {
     if (hasOpenRecommend.current) {
@@ -285,7 +280,7 @@ export const Dashboard = () => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_delete),
         onClick: deleteWidget,
-        hidden: isMobile || (embedId ? embedInfo?.permissionType === PermissionType.READONLY : !manageable),
+        hidden: isMobile || !manageable,
       },
     ],
   ];

@@ -182,7 +182,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
         isOnlyView ?
           <div className={styles.embedTitle}>
             {
-              viewEditor ? <>
+              viewEditor && editable ? <>
                 <input
                   className={classNames(styles.inputBox, {
                     [styles.error]: errMsg
