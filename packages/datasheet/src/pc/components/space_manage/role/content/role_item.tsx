@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MoreStandOutlined, MultiplemembersFilled } from '@apitable/icons';
+import { MoreStandOutlined, UserGroupFilled } from '@apitable/icons';
 import { Typography, useContextMenu } from '@apitable/components';
 import { useContext } from 'react';
 import classNames from 'classnames';
@@ -43,7 +43,7 @@ export const RoleItem: React.FC<React.PropsWithChildren<{
   
   return (
     <div className={classNames(styles.roleItem, selected && styles.roleItemSelected)} onClick={() => onClick && onClick(roleId)}>
-      {icon ? icon : <MultiplemembersFilled className={styles.roleItemIcon} size={16} />}
+      {icon ? icon : <UserGroupFilled className={styles.roleItemIcon} size={16} />}
       <Typography className={styles.roleItemContent} ellipsis variant="body3">
         {roleName}
       </Typography>

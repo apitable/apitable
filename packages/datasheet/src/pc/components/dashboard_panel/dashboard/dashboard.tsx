@@ -22,7 +22,7 @@ import {
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@apitable/icons';
+import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoOutlined, SettingOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
@@ -265,7 +265,7 @@ export const Dashboard = () => {
         hidden: readonly,
       },
       {
-        icon: <GotoLargeOutlined color={colors.thirdLevelText} />,
+        icon: <GotoOutlined color={colors.thirdLevelText} />,
         text: t(Strings.jump_link_url),
         onClick: jumpToDatasheet,
         hidden: embedId,

@@ -28,7 +28,7 @@ import {
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, InformationSmallOutlined, SettingOutlined } from '@apitable/icons';
+import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, QuestionCircleOutlined, SettingOutlined } from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
@@ -190,7 +190,7 @@ export const WidgetList = () => {
         onClick: renameWidget,
       },
       {
-        icon: <InformationSmallOutlined color={colors.thirdLevelText} />,
+        icon: <QuestionCircleOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_publish_help),
         hidden: readonly || !isWidgetDev(),
         onClick: () => {

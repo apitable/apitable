@@ -18,7 +18,7 @@
 
 import { LinkButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ErrorFilled } from '@apitable/icons';
+import { WarnCircleFilled } from '@apitable/icons';
 import * as React from 'react';
 import styles from './styles.module.less';
 
@@ -32,7 +32,7 @@ interface IErrorWidget {
 export const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, actionText, action }: IErrorWidget) => (
   <div className={styles.errorWidgetWrap}>
     <div className={styles.title}>
-      <ErrorFilled size={16} />
+      <WarnCircleFilled size={16} />
       <span>{title}</span>
     </div>
     <div className={styles.content}>{content}</div>

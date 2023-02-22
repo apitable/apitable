@@ -35,7 +35,7 @@ import {
   t,
   WithOptional,
 } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import { usePrevious } from 'ahooks';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import zhCN from 'antd/es/date-picker/locale/zh_CN';
@@ -504,7 +504,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
             </div>
             {showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>
-                <NotificationSmallOutlined color={lightColors.deepPurple[500]} size={14} />
+                <NotificationOutlined color={lightColors.deepPurple[500]} size={14} />
               </span>
             )}
           </div>

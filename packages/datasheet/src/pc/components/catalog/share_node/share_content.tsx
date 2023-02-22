@@ -18,7 +18,7 @@
 
 import { IOption, Skeleton, Typography } from '@apitable/components';
 import { Api, ConfigConstant, INodeRoleMap, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import cls from 'classnames';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
@@ -135,7 +135,7 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
           <span>{t(Strings.collaborate_and_share)}</span>
           <Tooltip title={t(Strings.support)} trigger={'hover'}>
             <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-              <InformationSmallOutlined currentColor />
+              <QuestionCircleOutlined currentColor />
             </a>
           </Tooltip>
         </Typography>

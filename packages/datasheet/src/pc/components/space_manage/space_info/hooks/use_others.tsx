@@ -20,8 +20,8 @@ import { useMemo } from 'react';
 import {
   FolderNormalFilled,
   LockFilled,
-  TitleRecycleClosedFilled,
-  AdministratorsFilled
+  DeleteFilled,
+  UserAdminFilled
 } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
@@ -55,7 +55,7 @@ export const useOthers = ({ spaceInfo, subscription }: IHooksParams): IMultiLine
         total: subscription?.maxAdminNums,
         used: spaceInfo?.adminNums,
         name: t(Strings.admins_per_space),
-        icon: <AdministratorsFilled color={colors.black[500]} />,
+        icon: <UserAdminFilled color={colors.black[500]} />,
         percent: calcPercent(spaceInfo?.adminNums, subscription?.maxAdminNums),
         showProgress: false,
       },
@@ -64,7 +64,7 @@ export const useOthers = ({ spaceInfo, subscription }: IHooksParams): IMultiLine
         total: 0,
         used: 0,
         name: t(Strings.trash),
-        icon: <TitleRecycleClosedFilled color={colors.black[500]} />,
+        icon: <DeleteFilled color={colors.black[500]} />,
         showProgress: false,
         customIntro: <span style={{ color: colors.fc2 }}>
           {t(Strings.dating_back_to)} <span style={{

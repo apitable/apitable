@@ -27,7 +27,7 @@ import { BulkDownload } from '../preview_file/preview_main/bulk_download';
 import { Memory } from './memory';
 import styles from './styles.module.less';
 import { UploadCore } from './upload_core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 
 interface IUploadAttachment {
@@ -95,7 +95,7 @@ export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> =
       onCancel={closeFn}
       destroyOnClose
       centered
-      closeIcon={<CloseMiddleOutlined currentColor />}
+      closeIcon={<CloseOutlined currentColor />}
       className={styles.uploadModal}
     >
       <div style={{ padding: '0 24px' }}>

@@ -24,14 +24,14 @@ import styles from './style.module.less';
 import { copy2clipBoard, getDownloadSrc, isSupportImage } from 'pc/utils';
 import { ITransFormInfo } from '../preview_file.interface';
 import {
-  CloseLargeOutlined,
-  ColumnUrlOutlined,
+  CloseOutlined,
+  LinkOutlined,
   DeleteOutlined,
   DownloadOutlined,
-  FullscreenOutlined,
+  ExpandOutlined,
   NewtabOutlined,
   RotateOutlined,
-  UnfullscreenOutlined,
+  NarrowOutlined,
 } from '@apitable/icons';
 import IconZoomIn from 'static/icon/datasheet/datasheet_icon_zoom_in.svg';
 import IconZoomOut from 'static/icon/datasheet/datasheet_icon_zoom_out.svg';
@@ -193,7 +193,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = props => {
       },
       {
         visible: !disabledDownload,
-        icon: ColumnUrlOutlined,
+        icon: LinkOutlined,
         tip: t(Strings.preview_copy_attach_url),
         onClick: () => {
           let addr = getDownloadSrc(fileInfo);
@@ -222,14 +222,14 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = props => {
     title: fileInfo.name,
     toolRight: [
       {
-        icon: isFullScreen ? UnfullscreenOutlined : FullscreenOutlined,
+        icon: isFullScreen ? NarrowOutlined : ExpandOutlined,
         tip: () => t(isFullScreen ? Strings.attachment_preview_exit_fullscreen : Strings.attachment_preview_fullscreen),
         onClick: () => toggleIsFullScreen(),
         className: styles.rightIcon,
         visible: !isRecordFullScreen && isSideRecordOpen && !document.querySelector('.centerExpandRecord'),
       },
       {
-        icon: CloseLargeOutlined,
+        icon: CloseOutlined,
         tip: t(Strings.close),
         onClick: onClose,
         className: classNames(styles.rightIcon, styles.iconClose),

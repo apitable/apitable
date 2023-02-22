@@ -17,7 +17,7 @@
  */
 
 import { Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { ButtonPlus, ContextmenuItem, MobileContextMenu, Modal } from 'pc/components/common';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
@@ -50,7 +50,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
         onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
       },
       {
-        icon: <InformationSmallOutlined />,
+        icon: <QuestionCircleOutlined />,
         text: t(Strings.help_center),
         onClick: () => navigationToUrl(`${window.location.origin}/help`),
       },

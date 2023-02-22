@@ -19,7 +19,7 @@
 // FIXME:THEME
 import { colors, ThemeName } from '@apitable/components';
 import { ISegment, SegmentType } from '@apitable/core';
-import { DepartmentNonzeroOutlined } from '@apitable/icons';
+import { UserGroupOutlined } from '@apitable/icons';
 import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { autoSizerCanvas } from 'pc/components/konva_components';
@@ -31,7 +31,7 @@ import {
 } from './interface';
 
 export const graphemeSplitter = new GraphemeSplitter();
-const DepartmentOutlinedPath = DepartmentNonzeroOutlined.toString();
+const DepartmentOutlinedPath = UserGroupOutlined.toString();
 
 const DEFAULT_FONT_FAMILY = `"Segoe UI", Roboto, "Helvetica Neue", Arial, 
 "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;

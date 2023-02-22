@@ -18,11 +18,11 @@
 
 import React, { FC, useCallback, useState, useEffect, Fragment } from 'react';
 import TreeViewContext, { Modules } from './tree_view_context';
-import { TriangleRight16Filled, LoadingFilled } from '@apitable/icons';
+import { TriangleRightFilled } from '@apitable/icons';
 import { TreeItem } from './tree_item';
 import { isEqual, isNull } from 'lodash';
 import styled, { createGlobalStyle } from 'styled-components';
-import { black, deepPurple } from 'colors';
+import { black } from 'colors';
 
 export type ExpandAction = false | 'click';
 export interface ITreeViewProps {
@@ -61,8 +61,8 @@ const TreeViewRoot = styled.ul`
 export const TreeView: FC<React.PropsWithChildren<ITreeViewProps>> = React.memo(
   ({
     module,
-    switcherIcon = <TriangleRight16Filled size={16} color={black[300]} />,
-    switcherLoadingIcon = <LoadingFilled size={16} color={deepPurple[500]} />,
+    switcherIcon = <TriangleRightFilled size={16} color={black[300]} />,
+    switcherLoadingIcon,
     expandedKeys = null,
     defaultExpandedKeys = null,
     selectedKeys = null,

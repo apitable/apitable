@@ -18,7 +18,7 @@
 
 import { Button, Skeleton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
-import { InformationLargeOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 
 import Image from 'next/image';
@@ -132,7 +132,7 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
         {t(Strings.view_form)}
         <Tooltip title={t(Strings.form_tour_desc)}>
           <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
-            <InformationLargeOutlined color={colors.fc3} />
+            <QuestionCircleOutlined color={colors.fc3} />
           </a>
         </Tooltip>
       </h4>

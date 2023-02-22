@@ -18,7 +18,7 @@
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@apitable/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined, EyeOpenOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { MobileGrid } from 'pc/components/mobile_grid';
@@ -167,7 +167,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
                 onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
               },
               {
-                icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.editing_field_desc),
                 onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
               },
@@ -189,7 +189,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
                 onClick: ({ props }: any) => props?.onCopyField && props.onCopyField(),
               },
               {
-                icon: <HideFilled color={colors.thirdLevelText} />,
+                icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.hide_fields),
                 hidden: ({ props }: any) => !props?.onHiddenField,
                 onClick: ({ props }: any) => props?.onHiddenField && props.onHiddenField(),

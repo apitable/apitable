@@ -39,7 +39,7 @@ import {
   UN_GROUP,
   ViewType,
 } from '@apitable/core';
-import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@apitable/icons';
+import { ApiOutlined, ChevronDownOutlined, HistoryFilled, RobotOutlined, SettingFilled, WidgetOutlined } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -490,7 +490,7 @@ const ToolbarBase = () => {
       component: (
         <ToolItem
           key='timeMachine'
-          icon={<RecoverOutlined size={16} />}
+          icon={<HistoryFilled size={16} />}
           text={t(Strings.time_machine)}
           onClick={() => handleToggleRightBar(ShortcutActionName.ToggleTimeMachinePanel)}
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isTimeMachinePanelOpen })}

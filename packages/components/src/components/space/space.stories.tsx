@@ -24,7 +24,7 @@ import { ISpaceProps } from './interface';
 import { Box, Button, Checkbox, Switch } from '../index';
 import { Radio } from '../radio/radio';
 import { LinkButton } from '../link_button';
-import { ColumnLinktableFilled } from '@apitable/icons';
+import { LinktableOutlined } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Space';
 
@@ -98,7 +98,7 @@ export const Split = Template.bind({});
 Split.args = {
   split: true,
   children: new Array(5).fill(null).map((_, index) => (
-    <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />} key={index}>Link href</LinkButton>
+    <LinkButton underline={false} prefixIcon={<LinktableOutlined currentColor />} key={index}>Link href</LinkButton>
   ))
 };
 

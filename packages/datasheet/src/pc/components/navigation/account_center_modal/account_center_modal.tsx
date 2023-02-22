@@ -18,7 +18,7 @@
 
 import { IconButton, useThemeColors } from '@apitable/components';
 import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@apitable/core';
-import { CloseLargeOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -138,7 +138,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           <IconSide width={20} height={20} fill={onClickNav ? colors.fc1 : colors.white} />
         </div>
         <span>{title}</span>
-        <IconButton icon={CloseLargeOutlined} onClick={onClose} size='large' />
+        <IconButton icon={CloseOutlined} onClick={onClose} size='large' />
       </div>
     );
   };

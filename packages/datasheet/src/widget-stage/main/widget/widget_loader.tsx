@@ -18,7 +18,7 @@
 
 import { colors, LinkButton, Loading } from '@apitable/components';
 import { Strings, t, WidgetPackageStatus } from '@apitable/core';
-import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
+import { WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
 import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage } from '@apitable/widget-sdk';
 import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
@@ -38,7 +38,7 @@ const _ErrorBoundary: any = ErrorBoundary;
 const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, actionText, action }: IErrorWidget) => (
   <div className={styles.errorWidgetWrap}>
     <div className={styles.title}>
-      <ErrorFilled size={16} />
+      <WarnCircleFilled size={16} />
       <span>{title}</span>
     </div>
     <div className={styles.content}>{content}</div>
@@ -84,7 +84,7 @@ export const WidgetLoader: React.FC<React.PropsWithChildren<{
         <div className={styles.title}>
           <span>{t(Strings.widget_loader_developing_title)}</span>
           <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
-            <InformationSmallOutlined size={16} color={colors.fc4}/>
+            <QuestionCircleOutlined size={16} color={colors.fc4}/>
           </a>
         </div>
         <div className={styles.tips}>{t(Strings.widget_loader_developing_content)}</div>

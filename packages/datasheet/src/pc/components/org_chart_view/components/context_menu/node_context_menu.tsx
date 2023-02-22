@@ -21,12 +21,12 @@ import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowUpOutlined,
 
-  ColumnUrlOutlined,
+  LinkOutlined,
   CopyOutlined, DeleteOutlined,
 
-  ExpandRecordOutlined, EyeCloseOutlined,
+  ExpandOutlined, EyeCloseOutlined,
 
-  EyeNormalOutlined
+  EyeOpenOutlined
 } from '@apitable/icons';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -163,7 +163,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             },
           },
           {
-            icon: <EyeNormalOutlined color={colors.thirdLevelText} />,
+            icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_expand_node),
             onClick: ({ props: { node }}: any) => {
               toggleNodeCollapse(node.id);
@@ -175,7 +175,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
         ],
         [
           {
-            icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
+            icon: <LinkOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_copy_record_url),
             onClick: ({ props: { node }}: any) => {
               copyLink(node.id);
@@ -223,7 +223,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             },
           },
           {
-            icon: <ExpandRecordOutlined color={colors.thirdLevelText} />,
+            icon: <ExpandOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_expand_record),
             onClick: ({ props: { node }}: any) => {
               expandRecordIdNavigate(node.id);

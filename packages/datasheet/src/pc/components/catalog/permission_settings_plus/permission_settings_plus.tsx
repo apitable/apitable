@@ -26,7 +26,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getNodeIcon } from '../tree/node_icon';
 import { PermissionModalHeader } from 'pc/components/field_permission/permission_modal_header';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { useThemeColors, Tooltip } from '@apitable/components';
 import classNames from 'classnames';
 
@@ -53,7 +53,7 @@ export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSetti
     return (
       <Tooltip content={t(Strings.instruction_of_node_permission)}>
         <span className={styles.helpBtn}>
-          <InformationSmallOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
+          <QuestionCircleOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
         </span>
       </Tooltip>
     );

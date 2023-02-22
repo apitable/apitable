@@ -21,7 +21,7 @@ import {
   ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@apitable/icons';
+import { AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled } from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -312,7 +312,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 key={ConfigConstant.Modules.FAVORITE}
                 header={
                   <div className={styles.groupName}>
-                    <FavoriteFilled color={colors.warningColor} />
+                    <StarFilled color={colors.warningColor} />
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.favorite)}
                     </Typography>
@@ -334,7 +334,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 key={ConfigConstant.Modules.CATALOG}
                 header={
                   <div className={styles.groupName}>
-                    <TitleWorkFilled color={colors.primaryColor} />
+                    <FolderNormalFilled color={colors.primaryColor} />
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.catalog)}
                     </Typography>

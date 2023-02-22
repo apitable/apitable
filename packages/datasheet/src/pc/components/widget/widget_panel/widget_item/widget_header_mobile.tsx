@@ -18,7 +18,7 @@
 
 import { IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@apitable/core';
-import { DragOutlined, MoreOutlined, NarrowRecordOutlined } from '@apitable/icons';
+import { DragOutlined, MoreOutlined, NarrowOutlined } from '@apitable/icons';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
@@ -106,7 +106,7 @@ export const WidgetHeaderMobile: React.FC<React.PropsWithChildren<IWidgetHeaderP
   if (isExpandWidget) {
     return (
       <div className={classNames(styles.widgetExpandHeaderMobile)}>
-        <NarrowRecordOutlined className={styles.closeIcon} color={colors.firstLevelText} onClick={() => closeWidgetRoute(widgetId)} />
+        <NarrowOutlined className={styles.closeIcon} color={colors.firstLevelText} onClick={() => closeWidgetRoute(widgetId)} />
         <h2>{widget?.snapshot.widgetName}</h2>
       </div>
     );

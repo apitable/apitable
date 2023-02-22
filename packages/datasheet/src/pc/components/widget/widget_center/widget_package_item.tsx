@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
-import { ColumnUrlOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
+import { LinkOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
@@ -171,7 +171,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'} />} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant='background' />
           </a>
         </Tooltip>}
       </div>

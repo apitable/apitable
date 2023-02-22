@@ -20,9 +20,9 @@
 import { Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
-  AdviseOutlined, BookOutlined, ClassroomOutlined, CodeFilled, CommunityOutlined, CourseOutlined, DemoOutlined, DownloadOutlined,
-  EditDescribeOutlined, GuideOutlined, InformationLargeOutlined, InformationSmallOutlined, JoinOutlined, KeyboardShortcutsOutlined, RoadmapOutlined,
-  SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebOutlined,
+  AdviseOutlined, BookOutlined, ClassOutlined, CodeFilled, CommunityOutlined, MortarboardOutlined, TimeOutlined, DownloadOutlined,
+  InfoCircleOutlined, BulbOutlined, QuestionCircleOutlined, PlanetOutlined, KeyboardOutlined, RoadmapOutlined,
+  SolutionOutlined, CommentOutlined, VikabyOutlined, WebOutlined,
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
@@ -87,7 +87,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
     },
     {
-      icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
+      icon: <ClassOutlined color={colors.thirdLevelText} size={16} />,
       text: t(Strings.help_video_tutorials),
       onClick: () => navigationToUrl(env.HELP_MENU_VIDEO_TUTORIALS_URL!),
       hidden: isMobile || !env.HELP_MENU_VIDEO_TUTORIALS_URL,
@@ -99,19 +99,19 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
     },
     {
-      icon: <JoinOutlined />,
+      icon: <PlanetOutlined />,
       text: t(Strings.join_the_community),
       onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL),
       hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
     },
     {
-      icon: <GuideOutlined />,
+      icon: <BulbOutlined />,
       text: t(Strings.function_guidance),
       onClick: startGuideClick,
       hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,
     },
     {
-      icon: <CourseOutlined />,
+      icon: <MortarboardOutlined />,
       text: t(Strings.quick_tour),
       onClick: () => navigationToUrl(t(Strings.help_quick_start_url)),
     },
@@ -122,7 +122,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isPrivateDeployment(),
     },
     {
-      icon: <DemoOutlined color={colors.thirdLevelText} size={16} />,
+      icon: <TimeOutlined color={colors.thirdLevelText} size={16} />,
       text: t(Strings.subscribe_demonstrate),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
       hidden: isMobile || !getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL,
@@ -141,7 +141,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: !env.HELP_MENU_USER_COMMUNITY_URL
     },
     {
-      icon: <InformationSmallOutlined />,
+      icon: <QuestionCircleOutlined />,
       text: t(Strings.help_center),
       onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
     },
@@ -151,7 +151,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       onClick: () => navigationToUrl(t(Strings.help_product_manual_url)),
     },
     {
-      icon: <EditDescribeOutlined />,
+      icon: <InfoCircleOutlined />,
       text: t(Strings.faq),
       onClick: () => navigationToUrl(t(Strings.help_questions_url)),
     },
@@ -174,14 +174,14 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
     },
     {
-      icon: <KeyboardShortcutsOutlined />,
+      icon: <KeyboardOutlined />,
       text: t(Strings.keybinding_show_keyboard_shortcuts_panel),
       id: NAV_ID.HELP_MENU_SHORTCUT_PANEL,
       onClick: openShortcutKeyPanel,
       hidden: isMobile,
     },
     {
-      icon: <ViewContactOutlined />,
+      icon: <CommentOutlined />,
       text: t(Strings.player_contact_us),
       onClick: () => {
         contactUs();
@@ -206,7 +206,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
         className={classnames(styles.helpBtn, className, { [styles.active]: visible, [styles.templateActived]: templateActived })}
         onClick={handleClick}
       >
-        <InformationLargeOutlined size={24} color={colors.secondLevelText} />
+        <QuestionCircleOutlined size={24} color={colors.secondLevelText} />
       </div>
     );
   };

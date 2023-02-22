@@ -18,7 +18,7 @@
 
 import { Button, useThemeColors, Typography } from '@apitable/components';
 import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus } from 'pc/components/common';
@@ -121,7 +121,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
           variant="fill"
           color={bgColor}
         >
-          <CloseSmallOutlined size={16} color={color} />
+          <CloseOutlined size={16} color={color} />
         </Button>
       );
     }

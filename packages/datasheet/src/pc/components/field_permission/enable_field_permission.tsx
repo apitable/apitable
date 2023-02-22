@@ -42,7 +42,7 @@ import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/compo
 import ArrowRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { useSelector } from 'react-redux';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
-import { MultiplemembersFilled } from '@apitable/icons';
+import { UserGroupFilled } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
@@ -211,7 +211,7 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
       {!readonly && <UnitPermissionSelect classNames={styles.permissionSelect} permissionList={permissionList} onSubmit={submitAddRole} />}
       <div className={styles.collaboratorTip}>
         <span className={styles.leftTip}>
-          <MultiplemembersFilled color={[colors.thirdLevelText, 'transparent']} />
+          <UserGroupFilled color={[colors.thirdLevelText, 'transparent']} />
           <Typography variant={'body4'} component={'span'} className={styles.customColor}>
             {t(Strings.field_permission_modal_tip)}
           </Typography>

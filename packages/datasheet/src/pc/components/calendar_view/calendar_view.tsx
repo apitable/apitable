@@ -23,7 +23,7 @@ import { Button, Calendar, Tooltip, useThemeColors } from '@apitable/components'
 import { Drag } from './drag';
 import { Drop } from './drop';
 import { RecordList } from './record_list';
-import { ClearOutlined, ListOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { ClearOutlined, ListOutlined, WarnCircleFilled } from '@apitable/icons';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
   BasicValueType,
@@ -463,7 +463,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
                 warnText={
                   <Tooltip content={t(Strings.calendar_error_record)}>
                     <span className='warning'>
-                      <WarningTriangleNonzeroFilled size={16} color={colors.warningColor} />
+                      <WarnCircleFilled size={16} color={colors.warningColor} />
                     </span>
                   </Tooltip>
                 }

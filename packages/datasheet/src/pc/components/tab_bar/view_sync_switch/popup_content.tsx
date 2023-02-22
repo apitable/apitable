@@ -20,7 +20,7 @@ import { IconButton, LinkButton, Message, Typography, useThemeColors } from '@ap
 import {
   CollaCommandName, ExecuteResult, ITemporaryView, ResourceType, Selectors, StoreActions, Strings, t, ViewPropertyFilter
 } from '@apitable/core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import styles from 'pc/components/tab_bar/view_sync_switch/style.module.less';
 import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
@@ -141,7 +141,7 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
     <IconButton
       size={'small'}
       className={styles.closeIcon}
-      icon={() => <CloseMiddleOutlined color={colors.thirdLevelText} />}
+      icon={() => <CloseOutlined color={colors.thirdLevelText} />}
       onClick={() => {onClose();}}
     />
     <Typography variant={'h7'} style={{ marginBottom: 8 }}>

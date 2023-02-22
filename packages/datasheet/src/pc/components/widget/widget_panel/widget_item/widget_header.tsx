@@ -1,7 +1,7 @@
 import { Divider, IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import {
-  CloseMiddleOutlined, DragOutlined, MoreOutlined, RefreshOutlined, SettingOutlined, WidgetExpandOutlined, WidgetNarrowOutlined,
+  CloseOutlined, DragOutlined, MoreOutlined, ReloadOutlined, SettingOutlined, ExpandOutlined, NarrowOutlined,
 } from '@apitable/icons';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
@@ -249,7 +249,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
           }}
         >
           <Tooltip title={t(Strings.widget_operate_refresh)} placement={tooltipPlacement}>
-            <IconButton icon={RefreshOutlined} size='small' />
+            <IconButton icon={ReloadOutlined} size='small' />
           </Tooltip>
         </span>
       )}
@@ -278,13 +278,13 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
             placement={tooltipPlacement}
           >
             <IconButton
-              icon={isFullScreenWidget ? WidgetNarrowOutlined : WidgetExpandOutlined}
+              icon={isFullScreenWidget ? NarrowOutlined : ExpandOutlined}
               style={{ marginRight: 8 }}
               onClick={() => toggleFullScreenWidget()}
             />
           </Tooltip>
           <IconButton
-            icon={CloseMiddleOutlined}
+            icon={CloseOutlined}
             size='small'
             onClick={() => {
               isFullScreenWidget && toggleFullScreenWidget();

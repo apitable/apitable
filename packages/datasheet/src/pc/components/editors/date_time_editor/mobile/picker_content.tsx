@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { DateRange, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -159,7 +159,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
       />
       {Boolean(alarm) && (
         <div className={style.alarm}>
-          <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
+          <NotificationOutlined color={colors.deepPurple[500]} size={14} />
           <span className={style.alarmTime}>
             {alarmRealTime}
           </span>
