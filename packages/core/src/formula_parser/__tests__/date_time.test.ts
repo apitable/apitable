@@ -394,6 +394,10 @@ describe('DateTime function test', () => {
     ).toEqual(95);
 
     expect(
+      evaluate('WORKDAY_DIFF({c}, "2023-02-28")', mergeContext({ a: 0, b: '456', c: new Date('2023/2/21 10:00:00').getTime(), d: ['opt1', 'opt2'] })),
+    ).toEqual(6);
+
+    expect(
       evaluate(
         'WORKDAY_DIFF({c}, "2020-10-18", "2020-7-13")',
         mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
