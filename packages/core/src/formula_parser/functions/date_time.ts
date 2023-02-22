@@ -82,6 +82,8 @@ enum WeekdayUnits {
   saturday,
 }
 
+type Tuple2Or3<T> = [T, T] | [T, T, T];
+
 const UnitMapBase = new Map([
   [Units.milliseconds, [Units.milliseconds, 'ms']],
   [Units.seconds, [Units.seconds, 's']],
@@ -107,6 +109,7 @@ const getPureUnit = (unitStr: string) => {
   }
   return UnitMapBase.get(unit)![1] as QUnitType;
 };
+
 export const getDayjs = (timeStamp: any) => {
   // TODO follow-up and lookup synchronous transformation (the timeStamp of string should not be passed in)
   if (timeStamp == null) {
@@ -126,6 +129,11 @@ export const getDayjs = (timeStamp: any) => {
   }
   return date;
 };
+
+const getStartOfDay = (timeStamp: string | number) => {
+  return getDayjs(timeStamp).hour(0).minute(0).second(0).millisecond(0);
+};
+
 // Convert the day of the week and the first letter of the month in the date string to uppercase,
 // This is compatible with the localization of dayjs
 const formatDateTimeStr = (dateStr: string | number) => {
@@ -531,9 +539,9 @@ export class WorkDayDiff extends DateFunc {
     return BasicValueType.Number;
   }
 
-  static override func(params: IFormulaParam<number | string>[]): number {
-    let startDate = getDayjs(params[0]!.value);
-    let endDate = getDayjs(params[1]!.value);
+  static override func(params: Tuple2Or3<IFormulaParam<number | string>>): number {
+    let startDate = getStartOfDay(params[0].value);
+    let endDate = getStartOfDay(params[1].value);
     const isMinus = startDate.valueOf() > endDate.valueOf(); // Whether with a negative sign
     isMinus && ([startDate, endDate] = [endDate, startDate]);
     const holidayStrList = params.length > 2 ? String(params[2]!.value).split(',') : [];
