@@ -24,6 +24,7 @@ import com.apitable.starter.mail.autoconfigure.CloudMailProperties.Tencent;
 import com.apitable.starter.mail.core.CloudMailSender;
 import com.apitable.starter.mail.core.TencentMailSender;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,6 +40,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(SesClient.class)
+@ConditionalOnBean(CloudMailAutoConfiguration.class)
 @ConditionalOnProperty(value = "starter.mail.type", havingValue = "tencent")
 public class TencentMailAutoConfiguration {
 

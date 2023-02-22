@@ -43,7 +43,7 @@
     <module name="LineLength">
         <property name="fileExtensions" value="java"/>
         <property name="max" value="100"/>
-        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|^* "/>
     </module>
 
     <module name="TreeWalker">
@@ -260,7 +260,7 @@
                       value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
                     PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
                     RECORD_COMPONENT_DEF"/>
-            <property name="allowedAbbreviations" value="VO, DTO"/>
+            <property name="allowedAbbreviations" value="VO, DTO, API"/>
         </module>
         <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="OverloadMethodsDeclarationOrder"/>

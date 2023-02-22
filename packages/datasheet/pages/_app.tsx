@@ -378,7 +378,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         `}
     </Script>
     {/*Baidu Statistics*/}
-    <Script id={'baiduAnalyse'}>
+    {!env.DISABLE_AWSC && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
@@ -388,7 +388,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             s.parentNode.insertBefore(hm, s);
           })();
         `}
-    </Script>
+    </Script>}
     <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {

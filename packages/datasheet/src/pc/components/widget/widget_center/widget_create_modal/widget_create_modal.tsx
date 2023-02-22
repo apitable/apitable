@@ -37,6 +37,8 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
 import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -49,7 +51,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
-import { InstallPosition, installToDashboard, installToPanel, installWidget } from '../widget_center';
 import { Steps } from './steps';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise';

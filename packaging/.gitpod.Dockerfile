@@ -1,6 +1,8 @@
 # hadolint ignore=DL3007
 FROM gitpod/workspace-full:latest
 
+COPY ../.sdkmanrc ./
+
 RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && sdk env install"
 
 # hadolint ignore=DL3059

@@ -1,9 +1,9 @@
-version: '3.4'
+version: '3.9'
 
 services:
   test-mysql:
     container_name: test-mysql
-    image: mysql:8.0.28-oracle
+    image: mysql:8.0.32
     ports:
       - '3306:3306'
     networks:
@@ -24,7 +24,7 @@ services:
 
   test-redis:
     container_name: test-redis
-    image: redis:5.0.7-alpine
+    image: redis:7.0.8
     ports:
       - '6379:6379'
     networks:
@@ -40,7 +40,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3-management
+    image: rabbitmq:3.11.7-management
     ports:
       - '5672:5672'
     networks:
