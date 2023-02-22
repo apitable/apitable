@@ -3,6 +3,44 @@
 
 
 
+## [v0.18.0-beta](https://github.com/apitable/apitable/releases/tag/v0.18.0-beta) (2023-02-22)
+
+
+### Features and enhancements
+
+* feat: fix existing unidir link & APITable support to reset password & timezone adjust ([#382](https://github.com/apitable/apitable/pull/382)) @mr-kelly 
+* feat: APITable support to reset password ([#401](https://github.com/apitable/apitable/pull/401)) @mr-kelly 
+
+### Bug fixes
+
+* fix: oss host env variable value ([#346](https://github.com/apitable/apitable/pull/346)) @ChambersChan 
+* fix: reset password page @laboonly 
+* fix: reset password page ([#385](https://github.com/apitable/apitable/pull/385)) @laboonly 
+* fix: disable cdn resource ([#384](https://github.com/apitable/apitable/pull/384)) @wangkailang 
+* fix: env control sensors.js ([#397](https://github.com/apitable/apitable/pull/397)) @wangkailang 
+* fix: use sensors env ([#402](https://github.com/apitable/apitable/pull/402)) @wangkailang 
+* fix: gitpod setup install error ([#404](https://github.com/apitable/apitable/pull/404)) @shawndenggh 
+* fix: the formula of IS_ERROR is incorrectly calculated ([#427](https://github.com/apitable/apitable/pull/427)) @Sky-FE 
+* fix: record menu subscription item displayed incorrectly ([#428](https://github.com/apitable/apitable/pull/428)) @Sky-FE 
+* fix: formula WORKDAY_DIFF calculation error ([#435](https://github.com/apitable/apitable/pull/435)) @Sky-FE 
+
+### What's more
+
+* chore(deps): bump @sideway/formula from 3.0.0 to 3.0.1 @dependabot[bot] 
+* release: v0.18.0-alpha ([#345](https://github.com/apitable/apitable/pull/345)) @mr-kelly 
+* refactor: merge forwarding about sokcet server ([#349](https://github.com/apitable/apitable/pull/349)) @ChambersChan 
+* chore: add all-in-one dockerfile and image build ([#355](https://github.com/apitable/apitable/pull/355)) @networkhermit 
+* chore: integrate semver to image build ([#358](https://github.com/apitable/apitable/pull/358)) @networkhermit 
+* unit module unit test ([#335](https://github.com/apitable/apitable/pull/335)) @wuyitaoBoomboommm 
+* chore(deps): bump @sideway/formula from 3.0.0 to 3.0.1 ([#340](https://github.com/apitable/apitable/pull/340)) @JaneSu 
+* chore: make LOGGER_MAX_HISTORY_DAYS an env variable and 7 by default ([#370](https://github.com/apitable/apitable/pull/370)) @yort-feng 
+* sync: hosted cloud ([#373](https://github.com/apitable/apitable/pull/373)) @mr-kelly 
+* docs: add all-in-one installation method ([#374](https://github.com/apitable/apitable/pull/374)) @networkhermit 
+* chore: set room server log file keep days to 7 by default ([#375](https://github.com/apitable/apitable/pull/375)) @yort-feng 
+* chore: modify mail configuration ([#418](https://github.com/apitable/apitable/pull/418)) @ChambersChan 
+* chore: replace share node tree ([#420](https://github.com/apitable/apitable/pull/420)) @ChambersChan 
+* chore: keep the default settings the same with devenv ([#426](https://github.com/apitable/apitable/pull/426)) @yort-feng 
+* docs: improve zh-HK translation ([#395](https://github.com/apitable/apitable/pull/395)) @KelvinAhKe 
 ## [v0.18.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.18.0-alpha) (2023-02-09)
 
 
@@ -35,7 +73,7 @@
 * sync: hosted cloud ([#316](https://github.com/apitable/apitable/pull/316)) @mr-kelly 
 * chore: replace the sql statement with ORM api.  ([#273](https://github.com/apitable/apitable/pull/273)) @wuyitaoBoomboommm 
 * chore: root README_ZH.md ([#287](https://github.com/apitable/apitable/pull/287)) @mr-kelly 
-*  chore: replace contact url @xukecheng 
+* chore: replace contact url @xukecheng 
 * chore: upgrade email copy right @xukecheng 
 * docs: add better uptime badge and clarify installation requirement ([#328](https://github.com/apitable/apitable/pull/328)) @networkhermit 
 * chore: replace logo to png @xukecheng 
