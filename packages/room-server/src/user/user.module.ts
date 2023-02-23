@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { UnitModule } from 'unit/unit.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './repositories/user.repository';
 import { UserService } from './services/user.service';
 
 @Module({
   imports: [
+    forwardRef(() => UnitModule),
     TypeOrmModule.forFeature([
       UserRepository,
     ]),
