@@ -18,17 +18,13 @@
 
 package com.apitable.workspace.vo;
 
-import java.util.List;
-
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
 
 /**
  * <p>
@@ -51,23 +47,6 @@ public class NodeShareInfoVO {
     @ApiModelProperty(value = "Shared node tree", position = 4)
     private NodeShareTree shareNodeTree;
 
-    @Deprecated
-    @ApiModelProperty(value = "Share node ID", example = "nod10", position = 4)
-    private String shareNodeId;
-
-    @Deprecated
-    @ApiModelProperty(value = "Share node type", example = "1", position = 4)
-    private Integer shareNodeType;
-
-    @Deprecated
-    @ApiModelProperty(value = "Share node name", example = "This is a node", position = 5)
-    private String shareNodeName;
-
-    @Deprecated
-    @ApiModelProperty(value = "Share node icon", example = ":smile", position = 6)
-    @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    private String shareNodeIcon;
-
     @ApiModelProperty(value = "Allow others to deposit", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowSaved;
@@ -76,32 +55,26 @@ public class NodeShareInfoVO {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEdit;
 
-    @ApiModelProperty(value = "Whether to allow others to apply for joining the space", example = "true", position = 7)
+    @ApiModelProperty(value = "Whether to allow others to apply for joining the space",
+        example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowApply;
 
-    @ApiModelProperty(value = "Whether to allow others to copy data outside the station", example = "true", position = 8)
+    @ApiModelProperty(value = "Whether to allow others to copy data outside the station",
+        example = "true", position = 8)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowCopyDataToExternal;
 
-    @ApiModelProperty(value = "Allow others to download attachments", example = "true", position = 9)
+    @ApiModelProperty(value = "Allow others to download attachments", example = "true",
+        position = 9)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowDownloadAttachment;
-
-    @Deprecated
-    @ApiModelProperty(value = "Folder or not", example = "false", position = 10)
-    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean isFolder;
-
-    @Deprecated
-    @ApiModelProperty(value = "Sub node tree. If the shared folder is a sub node tree, if the shared table is a number table, there is no sub node tree", position = 11)
-    @JsonSerialize(nullsUsing = NullArraySerializer.class)
-    private List<NodeShareTree> nodeTree;
 
     @ApiModelProperty(value = "Last Modified By", example = "Zhang San", position = 12)
     private String lastModifiedBy;
 
-    @ApiModelProperty(value = "Head portrait address", example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 13)
+    @ApiModelProperty(value = "Head portrait address",
+        example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 13)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String lastModifiedAvatar;
 
@@ -109,7 +82,8 @@ public class NodeShareInfoVO {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasLogin;
 
-    @ApiModelProperty(value = "Whether to open「View manual save」Experimental function", example = "true", position = 15)
+    @ApiModelProperty(value = "Whether to open「View manual save」Experimental function",
+        example = "true", position = 15)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean featureViewManualSave;
 

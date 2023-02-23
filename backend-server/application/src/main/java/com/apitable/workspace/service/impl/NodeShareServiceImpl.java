@@ -248,10 +248,6 @@ public class NodeShareServiceImpl implements INodeShareService {
         Boolean allowDownloadAttachment = feature.getAllowDownloadAttachment();
         nodeShareInfoVo.setAllowDownloadAttachment(Objects.isNull(allowDownloadAttachment) || allowDownloadAttachment);
         nodeShareInfoVo.setSpaceName(space.getName());
-        nodeShareInfoVo.setShareNodeId(setting.getNodeId());
-        nodeShareInfoVo.setShareNodeName(node.getNodeName());
-        nodeShareInfoVo.setShareNodeType(node.getType());
-        nodeShareInfoVo.setShareNodeIcon(node.getIcon());
         // laboratory feature
         // At present, there is only one, which directly queries a single one, and there are multiple requirements behind it. Expand it
         LabsApplicantEntity spaceLabs = iLabsApplicantService.getApplicantByApplicantAndFeatureKey(node.getSpaceId(), LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
@@ -273,7 +269,6 @@ public class NodeShareServiceImpl implements INodeShareService {
         // If it is a directory node, query the permissions of the sharer and exclude child nodes without permissions.
         List<String> nodeIds = CollUtil.newArrayList(node.getNodeId());
         boolean hasChildren = nodeMapper.selectHasChildren(node.getNodeId());
-        nodeShareInfoVo.setIsFolder(hasChildren);
         if (hasChildren) {
             List<String> subNodeIds = nodeMapper.selectSubNodesByOrder(node.getSpaceId(), node.getNodeId(), 0);
             if (CollUtil.isNotEmpty(subNodeIds)) {
@@ -294,7 +289,6 @@ public class NodeShareServiceImpl implements INodeShareService {
         // node switches to memory custom sort
         CollectionUtil.customSequenceSort(list, NodeShareTree::getNodeId, new ArrayList<>(filterNodeIds));
         List<NodeShareTree> treeList = new DefaultTreeBuildFactory<NodeShareTree>(node.getNodeId()).doTreeBuild(list);
-        nodeShareInfoVo.setNodeTree(treeList);
         NodeShareTree nodeTree = new NodeShareTree();
         nodeTree.setNodeId(node.getNodeId());
         nodeTree.setNodeName(node.getNodeName());
