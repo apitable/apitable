@@ -169,12 +169,12 @@ grpc:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
   api-docs:
     path: /v3/api-docs
+    enabled: false
 
 knife4j:
   enable: true
   setting:
     enable-open-api: true
+    language: en

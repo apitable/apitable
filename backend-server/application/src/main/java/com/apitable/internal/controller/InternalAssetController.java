@@ -18,40 +18,33 @@
 
 package com.apitable.internal.controller;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.service.IAssetCallbackService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.vo.AssetUploadCertificateVO;
 import com.apitable.asset.vo.AssetUploadResult;
+import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.core.support.ResponseData;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * Internal Server - Asset API
- * </p>
- *
- * @author Chambers
- * @date 2022/8/20
+ * Internal Server - Asset API.
  */
 @RestController
 @ApiResource(path = "/internal/asset")
-@Api(tags = "Internal Server - Asset API")
+@Tag(name = "Internal Server - Asset API")
 public class InternalAssetController {
 
     @Resource
@@ -60,23 +53,39 @@ public class InternalAssetController {
     @Resource
     private IAssetCallbackService iAssetCallbackService;
 
+    /**
+     * Get Upload PreSigned URL.
+     */
     @GetResource(path = "/upload/preSignedUrl", requiredPermission = false)
-    @ApiOperation(value = "Get Upload PreSigned URL")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "node custom id", required = true, dataTypeClass = String.class, paramType = "query", example = "dst123"),
-            @ApiImplicitParam(name = "count", value = "number to create (default 1, max 20)", dataTypeClass = String.class, paramType = "query", example = "2")
+    @Operation(summary = "Get Upload PreSigned URL")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node custom id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dst123"),
+        @Parameter(name = "count", description = "number to create (default 1, max 20)",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "2")
     })
-    public ResponseData<List<AssetUploadCertificateVO>> getSpaceCapacity(@RequestParam("nodeId") String nodeId, @RequestParam(name = "count", defaultValue = "1") Integer count) {
+    public ResponseData<List<AssetUploadCertificateVO>> getSpaceCapacity(
+        @RequestParam("nodeId") String nodeId,
+        @RequestParam(name = "count", defaultValue = "1") Integer count) {
         Long userId = SessionContext.getUserId();
-        return ResponseData.success(iAssetUploadTokenService.createSpaceAssetPreSignedUrl(userId, nodeId, AssetType.DATASHEET.getValue(), count));
+        return ResponseData.success(
+            iAssetUploadTokenService.createSpaceAssetPreSignedUrl(userId, nodeId,
+                AssetType.DATASHEET.getValue(), count));
     }
 
+    /**
+     * Get Asset Info.
+     */
     @GetResource(name = "Get Asset Info", path = "/get", requiredLogin = false)
-    @ApiOperation(value = "Get Asset Info", notes = "scene：Fusion server query the attachment field data before writing")
-    @ApiImplicitParam(name = "token", value = "resource key", required = true, dataTypeClass = String.class, paramType = "query", example = "space/2019/12/10/159")
+    @Operation(summary = "Get Asset Info", description = "scene：Fusion server query the "
+        + "attachment field data before writing")
+    @Parameter(name = "token", description = "resource key", required = true, schema = @Schema(type =
+        "string"), in = ParameterIn.QUERY, example = "space/2019/12/10/159")
     public ResponseData<AssetUploadResult> get(@RequestParam("token") String token) {
         // load asset upload result
-        List<AssetUploadResult> results = iAssetCallbackService.loadAssetUploadResult(AssetType.DATASHEET, Collections.singletonList(token));
+        List<AssetUploadResult> results =
+            iAssetCallbackService.loadAssetUploadResult(AssetType.DATASHEET,
+                Collections.singletonList(token));
         return ResponseData.success(results.stream().findFirst().orElse(null));
     }
 }

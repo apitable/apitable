@@ -39,8 +39,8 @@ import com.apitable.shared.config.properties.CookieProperties;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -49,7 +49,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Authorization interface.
  */
 @RestController
-@Api(tags = "Authorization related interface")
+@Tag(name = "Authorization related interface")
 @ApiResource(path = "/")
 @Slf4j
 public class AuthController {
@@ -92,9 +91,7 @@ public class AuthController {
      * @return {@link ResponseData}
      */
     @PostResource(name = "Login", path = "/signIn", requiredLogin = false)
-    @ApiOperation(value = "login",
-        notes = AUTH_DESC, consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "login", description = AUTH_DESC)
     public ResponseData<Void> login(@RequestBody @Valid final LoginRo data,
                                     final HttpServletRequest request) {
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(request,
@@ -170,7 +167,7 @@ public class AuthController {
     @PostResource(name = "sign out", path = "/signOut", requiredPermission = false, method = {
         RequestMethod.GET,
         RequestMethod.POST})
-    @ApiOperation(value = "sign out", notes = "log out of current user")
+    @Operation(summary = "sign out", description = "log out of current user")
     public ResponseData<LogoutVO> logout(final HttpServletRequest request,
                                          final HttpServletResponse response) {
         LogoutVO logoutVO = new LogoutVO();
@@ -194,7 +191,7 @@ public class AuthController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/resetPassword")
-    @ApiOperation(value = "reset password router", hidden = true)
+    @Operation(summary = "reset password router", hidden = true)
     public ResponseData<Void> resetPassword() {
         Long userId = SessionContext.getUserId();
         boolean result = authServiceFacade.resetPassword(new UserAuth(userId));

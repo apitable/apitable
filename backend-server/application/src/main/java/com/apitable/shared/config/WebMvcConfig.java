@@ -18,13 +18,11 @@
 
 package com.apitable.shared.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.apitable.shared.interceptor.I18nInterceptor;
 import com.apitable.shared.interceptor.ResourceInterceptor;
 import com.apitable.shared.util.page.PageParamHandlerMethodArgumentResolver;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -33,14 +31,10 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * <p>
- * MVC config
- * </p>
- *
- * @author Shawn Deng
+ * MVC config.
  */
 @Configuration(proxyBeanMethods = false)
-@Import({ ResourceInterceptor.class, I18nInterceptor.class })
+@Import({ResourceInterceptor.class, I18nInterceptor.class})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final ResourceInterceptor resourceInterceptor;
@@ -48,7 +42,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final I18nInterceptor i18nInterceptor;
 
     public WebMvcConfig(ResourceInterceptor resourceInterceptor,
-            I18nInterceptor i18nInterceptor) {
+        I18nInterceptor i18nInterceptor) {
         this.resourceInterceptor = resourceInterceptor;
         this.i18nInterceptor = i18nInterceptor;
     }
@@ -68,7 +62,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         excludes.add("/v3/api-docs");
         excludes.add("/v3/api-docs/**");
         registry.addInterceptor(resourceInterceptor)
-                .excludePathPatterns(excludes);
+            .excludePathPatterns(excludes);
         // add i18n interceptor
         registry.addInterceptor(i18nInterceptor).excludePathPatterns(excludes);
     }
@@ -79,9 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * adapter "/users" -> "/users/"
-     *
-     * @param configurer path configurer
+     * adapter "/users" -> "/users/".
      */
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
