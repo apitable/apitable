@@ -202,8 +202,7 @@ public class NotifyMailFactory {
       return;
     }
     if (mailTemplate == null) {
-      log.warn("Mail service not configured");
-      return;
+      throw new BusinessException("The SMTP server is not configured, so emails cannot be sent.");
     }
 
     MailText mailText = new MailText(subjectType, subjectDict).getTemplate();
@@ -285,8 +284,7 @@ public class NotifyMailFactory {
       return;
     }
     if (mailTemplate == null) {
-      log.info("Mail service not configured");
-      return;
+      throw new BusinessException("The SMTP server is not configured, so emails cannot be sent.");
     }
     EmailMessage emailMessage = new EmailMessage();
     emailMessage.setPersonal(personal);
