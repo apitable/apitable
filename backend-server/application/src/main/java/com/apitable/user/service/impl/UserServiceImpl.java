@@ -466,6 +466,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email) {
+        return this.createUserByEmail(email, null);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserEntity createUserByEmail(final String email, final String password) {
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .email(email)
@@ -473,6 +479,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
             .lastLoginTime(LocalDateTime.now())
             .build();
+        if (password != null) {
+            entity.setPassword(passwordService.encode(password));
+        }
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // Create user activity record

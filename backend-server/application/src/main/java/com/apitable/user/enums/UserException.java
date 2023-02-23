@@ -41,7 +41,7 @@ public enum UserException implements BaseException {
 
     REGISTER_EMAIL_ERROR(301, "The registered email format is incorrect"),
 
-    REGISTER_EMAIL_HAS_EXIST(301, "The registered email has been bound to another account"),
+    REGISTER_EMAIL_HAS_EXIST(301, "This email has been registered, please switch to sign in"),
 
     MOBILE_BOUND_EMAIL_DUPLICATE(332, "The mobile phone account is bound to a duplicate email address"),
 
