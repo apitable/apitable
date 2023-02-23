@@ -82,7 +82,7 @@ public interface IUserService extends IService<UserEntity> {
      * @return UserEntity
      */
     List<UserEntity> getByCodeAndMobilePhones(String code,
-        Collection<String> mobilePhones);
+                                              Collection<String> mobilePhones);
 
     /**
      * Get Users.
@@ -111,7 +111,7 @@ public interface IUserService extends IService<UserEntity> {
      * @return user id
      */
     Long createByExternalSystem(String externalId, String nickName,
-        String avatar, String email, String remark);
+                                String avatar, String email, String remark);
 
     /**
      * create user.
@@ -133,7 +133,7 @@ public interface IUserService extends IService<UserEntity> {
      * @return userId
      */
     Long create(String areaCode, String mobile, String nickName, String avatar,
-        String email, String spaceName);
+                String email, String spaceName);
 
     /**
      * Create an account by phone number.
@@ -145,7 +145,7 @@ public interface IUserService extends IService<UserEntity> {
      * @return user
      */
     UserEntity createUserByMobilePhone(String areaCode, String mobile,
-        String nickName, String avatar);
+                                       String nickName, String avatar);
 
     /**
      * Create an account by email.
@@ -343,7 +343,7 @@ public interface IUserService extends IService<UserEntity> {
      * @return {@link UserLangDTO}
      */
     List<UserLangDTO> getLangAndEmailByIds(List<Long> userIds,
-        String defaultLocale);
+                                           String defaultLocale);
 
     /**
      * Obtain user ID according to uuid.
