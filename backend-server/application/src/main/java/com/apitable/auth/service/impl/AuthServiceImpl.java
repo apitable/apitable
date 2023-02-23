@@ -79,6 +79,16 @@ public class AuthServiceImpl implements IAuthService {
     private PasswordService passwordService;
 
     @Override
+    public void register(final String username, final String password) {
+        // Check email format and if exists
+        ExceptionUtil.isTrue(Validator.isEmail(username), REGISTER_EMAIL_ERROR);
+        boolean exist = iUserService.checkByEmail(username);
+        ExceptionUtil.isFalse(exist, REGISTER_EMAIL_HAS_EXIST);
+        // Register User
+        this.registerUserUsingEmail(username, password);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Long loginUsingPassword(LoginRo loginRo) {
         // Get the user according to the username (email area code + mobile phone), if the username cannot be queried, an exception will be thrown automatically
@@ -184,7 +194,7 @@ public class AuthServiceImpl implements IAuthService {
             iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
             // Email automatic registration users do not provide third-party scan code login binding
-            userId = registerUserUsingEmail(email);
+            userId = registerUserUsingEmail(email, null);
             if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
                 // Cache, used to invite users to give away attachment capacity
                 this.handleCache(userId, loginRo.getSpaceId());
@@ -206,12 +216,14 @@ public class AuthServiceImpl implements IAuthService {
         return user.getId();
     }
 
-    public Long registerUserUsingEmail(String email) {
+    private Long registerUserUsingEmail(final String email, final String password) {
         // Create a new user based on the mailbox and activate the corresponding member
-        UserEntity user = iUserService.createUserByEmail(email);
-        // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
+        UserEntity user = iUserService.createUserByEmail(email, password);
+        // Query whether there is a space member corresponding to the mailbox, only new
+        // registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
-        createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
+        createOrActiveSpace(user,
+            inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }
 

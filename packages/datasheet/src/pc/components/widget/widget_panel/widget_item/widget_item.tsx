@@ -37,7 +37,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PngLinkdatasheetDark from 'static/icon/datasheet/chart/dashboard_widget_empty_dark.png';
 import PngLinkdatasheetLight from 'static/icon/datasheet/chart/dashboard_widget_empty_light.png';
@@ -73,7 +73,7 @@ declare global {
 export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = props => {
   const { widgetPanelId, widgetId, readonly, isMobile, config, setDevWidgetId, dragging, setDragging } = props;
 
-  const { folderId: folderIdForEmbed } = useContext(EmbedContext) as any || {};
+  const { folderId: folderIdForEmbed } = useContext(EmbedContext || createContext({})) as any || {};
 
   const widget = useSelector(state => Selectors.getWidget(state, widgetId));
   const widgetSnapshot = widget?.snapshot;
