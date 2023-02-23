@@ -21,6 +21,7 @@ import { IDataSaver, ISaveOpsOptions } from 'databus/data.saver.interface';
 import { IBaseDatasheetPack, Selectors, StoreActions } from 'exports/store';
 import { IDataLoader } from '../data.loader.interface';
 import { mockDatasheetMap } from './mock.datasheets';
+import { ResourceType } from '../../types';
 
 export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
   datasheets!: Record<string, IBaseDatasheetPack>;
@@ -46,6 +47,11 @@ export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
     changesets.forEach(cs => {
       store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
 
+      // Every time change happens, we should add the value of the Revision here.
+      // It should be noted that only the return result is the SUCCESS timing code.
+      if (cs.baseRevision !== undefined) {
+        store.dispatch(StoreActions.updateRevision(cs.baseRevision + 1, cs.resourceId, ResourceType.Datasheet));
+      }
       this.datasheets[cs.resourceId] = {
         datasheet: Selectors.getDatasheet(store.getState())!,
         snapshot: Selectors.getSnapshot(store.getState())!,
