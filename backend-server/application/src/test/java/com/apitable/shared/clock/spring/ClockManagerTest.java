@@ -18,19 +18,16 @@
 
 package com.apitable.shared.clock.spring;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import com.apitable.AbstractIntegrationTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
 import org.junit.jupiter.api.Test;
-
-import com.apitable.AbstractIntegrationTest;
-
 import org.springframework.test.context.TestPropertySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @TestPropertySource(properties = { "DEFAULT_TIME_ZONE=UTC" })
 public class ClockManagerTest extends AbstractIntegrationTest {
@@ -45,7 +42,7 @@ public class ClockManagerTest extends AbstractIntegrationTest {
         final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, ZoneOffset.UTC);
         getClock().setTime(initialCreateDate);
 
-        OffsetDateTime utcNow = ClockManager.me().getUTCNow();
+        OffsetDateTime utcNow = ClockManager.me().getUtcNow();
 
         assertThat(utcNow).isAfterOrEqualTo(initialCreateDate);
     }

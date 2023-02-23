@@ -76,6 +76,7 @@ import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceOpenedSheetCacheService;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.INotificationFactory;
@@ -1071,6 +1072,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return dtos.stream().peek(v -> {
             if (StrUtil.isBlank(v.getLocale())) {
                 v.setLocale(defaultLocale);
+            }
+            if (StrUtil.isBlank(v.getTimeZone())) {
+                v.setTimeZone(ClockManager.me().getDefaultTimeZone().toString());
             }
         }).collect(Collectors.toList());
     }

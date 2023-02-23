@@ -209,21 +209,4 @@ public class AuthController {
             cookieProperties.getDomainName());
         return ResponseData.success(logoutVO);
     }
-
-
-    /**
-     * reset password router.
-     *
-     * @return {@link ResponseData}
-     */
-    @PostResource(path = "/resetPassword")
-    @ApiOperation(value = "reset password router", hidden = true)
-    public ResponseData<Void> resetPassword() {
-        Long userId = SessionContext.getUserId();
-        boolean result = authServiceFacade.resetPassword(new UserAuth(userId));
-        if (result) {
-            return ResponseData.success();
-        }
-        return ResponseData.error();
-    }
 }

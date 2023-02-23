@@ -18,25 +18,23 @@
 
 package com.apitable.workspace.ro;
 
+import cn.hutool.core.util.StrUtil;
+import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
+import com.apitable.workspace.enums.NodeType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-import com.apitable.workspace.enums.NodeType;
-
 /**
- * Node Request Parameters
+ * Node Request Parameters.
  */
 @Data
 @Builder(toBuilder = true)
@@ -64,7 +62,14 @@ public class NodeOpRo {
 
     @ApiModelProperty(value = "Other information", position = 6)
     private NodeRelRo extra;
+    @ApiModelProperty(value = "Whether to detect duplicate node names", example = "true", position = 6)
+    private Boolean checkDuplicateName;
 
+    /**
+     * get node name.
+     *
+     * @return String
+     */
     public String getNodeName() {
         if (StrUtil.isNotBlank(nodeName)) {
             return nodeName;

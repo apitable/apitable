@@ -18,14 +18,13 @@
 
 package com.apitable.workspace.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
  * Node Exception
- * status code range（410-429）
+ * status code range（410-429）.
  *
  * @author Chambers
  */
@@ -55,7 +54,8 @@ public enum NodeException implements BaseException {
 
     DESCRIPTION_TOO_LONG(419, "description is too long"),
 
-    LINK_DATASHEET_COLUMN_EXCEED_LIMIT(420, "The fields of the associated table will exceed the 200-column limit, and the replication fails"),
+    LINK_DATASHEET_COLUMN_EXCEED_LIMIT(420,
+        "The fields of the associated table will exceed the 200-column limit, and the replication fails"),
 
     RUBBISH_NODE_NOT_EXIST(422, "the node does not exist in the recycle bin"),
 
@@ -63,7 +63,9 @@ public enum NodeException implements BaseException {
 
     COPY_NODE_LINK__FIELD_ERROR(424, "Replication node, replication of associated columns failed"),
 
-    DELETE_NODE_LINK__FIELD_ERROR(425, "Deleting a node, transforming the associated column failed");
+    DELETE_NODE_LINK__FIELD_ERROR(425,
+        "Deleting a node, transforming the associated column failed"),
+    DUPLICATE_NODE_NAME(426, "duplicate node name");
 
     private final Integer code;
 
