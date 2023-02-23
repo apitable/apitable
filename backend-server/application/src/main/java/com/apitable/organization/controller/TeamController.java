@@ -87,26 +87,10 @@ public class TeamController {
     private TeamMemberRelMapper teamMemberRelMapper;
 
     @Resource
-    private ISpaceService iSpaceService;
-
-    @Resource
     private IOrganizationService iOrganizationService;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
-
-    @GetResource(path = "/tree", name = "Search the space's teams")
-    @ApiOperation(value = "Search the space's teams", notes = "Search the space's teams. result is tree.", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    })
-    public ResponseData<List<TeamTreeVo>> getTeamTree() {
-        String spaceId = LoginContext.me().getSpaceId();
-        // Filtering statistics of the number of superior departments
-        List<TeamTreeVo> treeList = iTeamService.build(spaceId, 0L);
-        List<TeamTreeVo> treeRes = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
-        return ResponseData.success(treeRes);
-    }
 
     @GetResource(path = "/branch", name = "team branch")
     @ApiOperation(value = "team branch", notes = "team branch. result is tree", produces = MediaType.APPLICATION_JSON_VALUE)
