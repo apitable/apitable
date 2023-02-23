@@ -32,6 +32,14 @@ jobs:
           java-version: '8'
           distribution: 'corretto'
           cache: 'gradle'
+      - name: Install build-essential
+        run: sudo apt-get update -y && sudo apt-get install -y build-essential
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          profile: minimal
+          override: true
       - name: Test
         run: |
           make install

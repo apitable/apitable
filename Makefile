@@ -186,13 +186,19 @@ test-ut-room-docker:
 		-e RABBITMQ_HOST=test-rabbitmq \
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
+
+_generate_room_coverage:
+	cd packages/room-native-api
+	grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore "/*" -o target/coverage/tests.lcov
+
+_clean_room_coverage:
 	if [ -d "./packages/room-server/coverage" ]; then \
 		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \
 	fi
 	make _test_clean
-
-_clean_room_jest_coverage:
 	rm -fr ./packages/room-server/coverage || true
+	rm -fr ./packages/room-native-api/coverage || true
+	rm -fr ./packages/room-native-api/target/debug || true
 
 ###### 【backend server unit test】 ######
 
@@ -355,7 +361,7 @@ install: install-local
 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
-	yarn install && yarn build:dst:pre
+	yarn install && yarn build:pre
 	cd backend-server && ./gradlew build -x test --stacktrace
 
 .PHONY: install-docker
@@ -372,7 +378,7 @@ _install-docker-web-server:
 
 .PHONY: _install-docker-room-server
 _install-docker-room-server:
-	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
+	$(RUNNER) room-server sh -c "yarn install && yarn build:pre"
 
 
 .PHONY:
