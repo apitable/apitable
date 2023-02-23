@@ -18,7 +18,7 @@
 
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
-import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
+import { FileSearchOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
 import { isEnterprise, Log, Marketing } from 'enterprise';
@@ -73,7 +73,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   Log && {
     title: t(Strings.space_log_title),
     key: 'log',
-    icon: <AuditOutlined />,
+    icon: <FileSearchOutlined />,
     valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
     routeAddress: '/log',
   },
@@ -124,7 +124,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.permission_and_security),
     key: 'security',
-    icon: <ManagePowerOutlined />,
+    icon: <ShieldCheckOutlined />,
     valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.SECURITY)) && getEnvVariables().SPACE_SECURITY_PAGE_VISIBLE,
     routeAddress: '/security',
   },

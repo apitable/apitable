@@ -31,7 +31,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import { ButtonPlus } from 'pc/components/common';
@@ -180,7 +180,7 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = props 
                         variant="fill"
                         color={colors.defaultTag}
                       >
-                        <CloseSmallOutlined size={16} color={colors.fc2} />
+                        <CloseOutlined size={16} color={colors.fc2} />
                       </Button> :
                       <></>
                   }

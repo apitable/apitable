@@ -19,7 +19,7 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
-import { CloseSmallOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useProviderTheme } from 'hooks';
 
 export interface ITagProps {
@@ -72,7 +72,7 @@ const CloseWrapper = styled.div`
 export const Tag: FC<React.PropsWithChildren<ITagProps>> = React.forwardRef((props, ref) => {
   const theme = useProviderTheme();
   const { children, shape = 'square', type = 'fill', color = theme.color.fill0,
-    closable = false, closeIcon = <CloseSmallOutlined />, icon, onClose } = props;
+    closable = false, closeIcon = <CloseOutlined />, icon, onClose } = props;
 
   const closeHandler = (e: React.MouseEvent) => {
     onClose && onClose(e);

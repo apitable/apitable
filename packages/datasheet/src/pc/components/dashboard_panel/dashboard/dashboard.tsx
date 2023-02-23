@@ -18,11 +18,11 @@
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, Events, IWidget, Navigation, PermissionType, Player, Selectors, StoreActions, Strings, SystemConfig, t, WidgetApi,
+  CollaCommandName, Events, IWidget, Navigation, PermissionType, Player, Selectors, StoreActions, Strings, t, WidgetApi,
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@apitable/icons';
+import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoOutlined, SettingOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
@@ -65,7 +65,6 @@ export const Dashboard = () => {
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
-  const [installedWidgetInDashboard, setInstalledWidgetInDashboard] = useState(false);
 
   const dashboardPack = useSelector(Selectors.getDashboardPack);
   const dashboardLayout = useSelector(Selectors.getDashboardLayout);
@@ -73,7 +72,6 @@ export const Dashboard = () => {
   const { editable, manageable } = useSelector(Selectors.getDashboardPermission);
   const spaceId = useSelector(state => state.space.activeId);
   const widgetMap = useSelector(state => state.widgetMap);
-  const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   // Custom hooks start
@@ -95,11 +93,7 @@ export const Dashboard = () => {
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
-
-  useEffect(() => {
-    setInstalledWidgetInDashboard(Boolean(dashboardLayout && dashboardLayout.length));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const installedWidgetInDashboard = Boolean(dashboardLayout && dashboardLayout.length);
 
   const decisionOpenRecommend = () => {
     if (hasOpenRecommend.current) {
@@ -245,7 +239,7 @@ export const Dashboard = () => {
       {
         icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_enter_dev),
-        hidden: readonly || !isShowWidget || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
+        hidden: readonly || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
         onClick: ({ props }: { props?: any }) => {
           props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
         },
@@ -259,7 +253,7 @@ export const Dashboard = () => {
       {
         icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_exit_dev),
-        hidden: readonly || !isShowWidget || isWidgetBan() || !isWidgetDev(),
+        hidden: readonly || isWidgetBan() || !isWidgetDev(),
         onClick: ({ props }: { props?: any }) => {
           props?.toggleWidgetDevMode(devWidgetId, setDevWidgetId);
         },
@@ -271,7 +265,7 @@ export const Dashboard = () => {
         hidden: readonly,
       },
       {
-        icon: <GotoLargeOutlined color={colors.thirdLevelText} />,
+        icon: <GotoOutlined color={colors.thirdLevelText} />,
         text: t(Strings.jump_link_url),
         onClick: jumpToDatasheet,
         hidden: embedId,
@@ -286,7 +280,7 @@ export const Dashboard = () => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_delete),
         onClick: deleteWidget,
-        hidden: isMobile || (embedId ? embedInfo?.permissionType === PermissionType.READONLY : !manageable),
+        hidden: isMobile || !manageable,
       },
     ],
   ];

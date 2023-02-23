@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@apitable/icons';
+import { InfoCircleFilled, WarnCircleFilled, CheckCircleFilled, WarnFilled } from '@apitable/icons';
 import React from 'react';
 
 export const IconMap: any = {
-  default: DefaultFilled,
-  error: ErrorFilled,
+  default: InfoCircleFilled,
+  error: WarnCircleFilled,
   warning: WarnFilled,
-  success: SuccessFilled,
+  success: CheckCircleFilled,
 };
 
 /**

@@ -18,7 +18,7 @@
 
 import { colors, getNextShadeColor } from '@apitable/components';
 import { IField, KONVA_DATASHEET_ID, ThemeName } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
@@ -48,7 +48,7 @@ export function getOptionNameColor(id: string, field: IField) {
 }
 
 const AddOutlinedPath = AddOutlined.toString();
-const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
+const CloseSmallOutlinedPath = CloseOutlined.toString();
 
 export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {

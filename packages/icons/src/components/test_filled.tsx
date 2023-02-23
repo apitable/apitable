@@ -1,0 +1,36 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable max-len */
+import React from 'react';
+import { makeIcon, IIconProps } from '../utils/icon';
+
+export const TestFilled: React.FC<IIconProps> = makeIcon({
+  Path: ({ colors }) => <>
+    <path d="M11 5.68686V2.5H12.25C12.6642 2.5 13 2.16421 13 1.75C13 1.33579 12.6642 1 12.25 1H3.75002C3.33581 1 3.00002 1.33579 3.00002 1.75C3.00002 2.16421 3.33581 2.5 3.75002 2.5H5V5.68686L3.63242 9.2314C4.71548 9.19307 5.46544 9.09902 6.02286 8.97978C6.7392 8.82655 7.15957 8.6279 7.60776 8.40846L7.66521 8.3803C8.1221 8.15624 8.63308 7.90565 9.43218 7.72033C10.0099 7.58634 10.7247 7.48891 11.6776 7.44319L11 5.68686Z" fill={ colors[0] }/>
+    <path d="M12.2487 8.92328C11.0892 8.95318 10.3252 9.05303 9.77106 9.18155C9.14063 9.32775 8.75846 9.51502 8.31256 9.73351L8.26735 9.75566C7.77803 9.99523 7.22966 10.2556 6.33662 10.4466C5.55421 10.614 4.52666 10.7245 3.04798 10.7462L2.06263 13.3C1.74666 14.119 2.35105 15 3.22884 15H12.7712C13.6489 15 14.2533 14.119 13.9374 13.3L12.2487 8.92328ZM10.4336 11.25C10.4336 11.6642 10.0978 12 9.68362 12C9.26941 12 8.93362 11.6642 8.93362 11.25C8.93362 10.8358 9.26941 10.5 9.68362 10.5C10.0978 10.5 10.4336 10.8358 10.4336 11.25Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
+
+  </>,
+  name: 'test_filled',
+  defaultColors: ['#D9D9D9'],
+  colorful: false,
+  allPathData: ['M11 5.68686V2.5H12.25C12.6642 2.5 13 2.16421 13 1.75C13 1.33579 12.6642 1 12.25 1H3.75002C3.33581 1 3.00002 1.33579 3.00002 1.75C3.00002 2.16421 3.33581 2.5 3.75002 2.5H5V5.68686L3.63242 9.2314C4.71548 9.19307 5.46544 9.09902 6.02286 8.97978C6.7392 8.82655 7.15957 8.6279 7.60776 8.40846L7.66521 8.3803C8.1221 8.15624 8.63308 7.90565 9.43218 7.72033C10.0099 7.58634 10.7247 7.48891 11.6776 7.44319L11 5.68686Z', 'M12.2487 8.92328C11.0892 8.95318 10.3252 9.05303 9.77106 9.18155C9.14063 9.32775 8.75846 9.51502 8.31256 9.73351L8.26735 9.75566C7.77803 9.99523 7.22966 10.2556 6.33662 10.4466C5.55421 10.614 4.52666 10.7245 3.04798 10.7462L2.06263 13.3C1.74666 14.119 2.35105 15 3.22884 15H12.7712C13.6489 15 14.2533 14.119 13.9374 13.3L12.2487 8.92328ZM10.4336 11.25C10.4336 11.6642 10.0978 12 9.68362 12C9.26941 12 8.93362 11.6642 8.93362 11.25C8.93362 10.8358 9.26941 10.5 9.68362 10.5C10.0978 10.5 10.4336 10.8358 10.4336 11.25Z'],
+  width: '16',
+  height: '16',
+  viewBox: '0 0 16 16',
+});

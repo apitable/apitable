@@ -21,7 +21,7 @@ import {
   CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, StoreActions, Strings, t,
   WidgetApi, WidgetApiInterface,
 } from '@apitable/core';
-import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
@@ -150,7 +150,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
       <Typography variant={'h6'} component={'div'}>{t(Strings.create_widget)}</Typography>
       <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
         <a href={getEnvVariables().WIDGET_CREATE_WIDGET_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-          <InformationSmallOutlined color={colors.fc3} />
+          <QuestionCircleOutlined color={colors.fc3} />
         </a>
       </CommonTooltip>
     </div>
@@ -264,7 +264,7 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
 const WidgetCretInvalidError = () => (
   <div className={styles.widgetCretInvalidError}>
     <div className={styles.title}>
-      <ErrorFilled size={24} />
+      <WarnCircleFilled size={24} />
       <span>{t(Strings.widget_cret_invalid_error_title)}</span>
     </div>
     <div className={styles.content}>{parser(t(Strings.widget_cret_invalid_error_content))}</div>
@@ -436,7 +436,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
               <span className={styles.stepContentTitleMain}>{config?.[current].title}</span>
               <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
                 <a href={config?.[current].helpLink} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-                  <InformationSmallOutlined size={16} color={colors.thirdLevelText} />
+                  <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
                 </a>
               </CommonTooltip>
             </Typography>
@@ -569,7 +569,7 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
           <span className={styles.stepContentTitleMain}>{t(Strings.preview_widget)}</span>
           <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
             <a href={getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-              <InformationSmallOutlined size={16} color={colors.thirdLevelText} />
+              <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
             </a>
           </CommonTooltip>
         </Typography>
@@ -602,7 +602,7 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
         </div>
         <div className={classNames(styles.contentFooter, styles.configContentFooter)}>
           <Button color='primary' onClick={startDev} disabled={!devUrl}>{t(Strings.widget_start_dev)}</Button>
-          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<GuideOutlined />} onClick={() => {
+          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<BulbOutlined />} onClick={() => {
             expandWidgetCreateSteps({
               widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl,
             });
@@ -638,7 +638,7 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
             <span className={styles.stepContentTitleMain}>{t(Strings.widget_operate_publish_help)}</span>
             <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
               <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-                <InformationSmallOutlined size={16} color={colorVars.thirdLevelText} />
+                <QuestionCircleOutlined size={16} color={colorVars.thirdLevelText} />
               </a>
             </CommonTooltip>
           </Typography>

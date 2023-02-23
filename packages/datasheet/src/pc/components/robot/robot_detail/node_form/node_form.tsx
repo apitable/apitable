@@ -18,7 +18,7 @@
 
 import { Box, Button, ContextMenu, IconButton, Tooltip, Typography, useContextMenu, useTheme } from '@apitable/components';
 import { Strings, t, validateMagicForm } from '@apitable/core';
-import { DeleteOutlined, MoreStandOutlined, WarningTriangleFilled } from '@apitable/icons';
+import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
@@ -138,7 +138,7 @@ export const NodeForm = (props: any) => {
                     display="flex"
                     alignItems="center"
                   >
-                    <WarningTriangleFilled />
+                    <WarnCircleFilled />
                   </Box>
                 </Tooltip>
               </Box>

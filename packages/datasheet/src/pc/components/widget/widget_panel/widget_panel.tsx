@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Skeleton, ThemeName } from '@apitable/components';
 import { Events, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { CloseLargeOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
@@ -49,7 +49,7 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void
   const widgetEmpty = themeName === ThemeName.Light ? WidgetEmptyLight : WidgetEmptyDark;
   return (
     <div className={styles.emptyPanel}>
-      {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseLargeOutlined} />}
+      {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseOutlined} />}
       <span className={styles.ikon}>
         <Image src={widgetEmpty} alt="" width={240} height={180} />
       </span>

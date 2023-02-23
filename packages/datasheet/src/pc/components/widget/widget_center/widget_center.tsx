@@ -18,7 +18,7 @@
 
 import { Box, Button, Skeleton, ThemeName, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { IMember, IWidgetPackage, Selectors, Strings, t, UnitItem, WidgetApi, WidgetReleaseType } from '@apitable/core';
-import { EditDescribeOutlined, HandoverOutlined, InformationLargeOutlined, UnpublishOutlined, WarnFilled } from '@apitable/icons';
+import { InfoCircleFilled, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled } from '@apitable/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
@@ -95,7 +95,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
       <Typography variant={'h4'} component={'span'} ellipsis style={{ marginRight: '4px' }}>{t(Strings.widget_center)}</Typography>
       <Tooltip content={t(Strings.widget_center_help_tooltip)} placement='right-center'>
         <a href={getEnvVariables().WIDGET_CENTER_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-          <InformationLargeOutlined size={24} color={colors.fc3} />
+          <QuestionCircleOutlined size={24} color={colors.fc3} />
         </a>
       </Tooltip>
     </div>;
@@ -109,7 +109,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
     <div className={styles.tabItemTips}>
       {
         getEnvVariables().WIDGET_CENTER_OFFICIAL_TIP_VISIBLE && <>
-          <EditDescribeOutlined size={16} color={colors.thirdLevelText} />
+          <InfoCircleFilled size={16} color={colors.thirdLevelText} />
           <span>{introduction}</span>
         </>
       }
@@ -122,7 +122,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
 
   const menuData = [
     {
-      icon: <HandoverOutlined color={colors.thirdLevelText} />,
+      icon: <TransferOutlined color={colors.thirdLevelText} />,
       name: t(Strings.widget_center_menu_transfer),
       onClick: (props: any) => {
         curOperationProps.current = props;

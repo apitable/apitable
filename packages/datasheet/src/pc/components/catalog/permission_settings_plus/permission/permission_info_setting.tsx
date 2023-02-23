@@ -18,7 +18,7 @@
 
 import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { IRoleMember, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, MultiplemembersFilled } from '@apitable/icons';
+import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, UserGroupFilled } from '@apitable/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -70,7 +70,7 @@ export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
       <div className={styles.tipContainer}>
         {isExtend ? (
           <Box>
-            <MultiplemembersFilled className={styles.tipIcon} color={colors.textCommonTertiary} />
+            <UserGroupFilled className={styles.tipIcon} color={colors.textCommonTertiary} />
             <Typography variant="body3" className={styles.tip} color={colors.textCommonSecondary}>
               {extendTips}
             </Typography>

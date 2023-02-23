@@ -18,7 +18,7 @@
 
 import { Typography, useThemeColors, Button, TextInput, Box } from '@apitable/components';
 import { Strings, t, isEmail, ConfigConstant, StatusCode, api } from '@apitable/core';
-import { EmailSigninFilled, EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@apitable/icons';
+import { EmailOutlined, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean, useMount } from 'ahooks';
 import { Form } from 'antd';
 import { WithTipWrapper } from 'pc/components/common';
@@ -148,8 +148,8 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
               className={styles.input}
               value={username}
               onChange={e => setUsername(e.target.value)}
-              prefix={<EmailSigninFilled color={colors.textCommonPrimary} />}
-              placeholder="Please enter your email address"
+              prefix={<EmailOutlined color={colors.textCommonPrimary}/>}
+              placeholder='Please enter your email address'
               error={Boolean(errorMsg.username)}
               block
             />
@@ -165,13 +165,15 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
               value={password}
               className={styles.input}
               onChange={e => setPassword(e.target.value)}
-              prefix={<LockFilled color={colors.textCommonPrimary} />}
-              suffix={
-                <div className={styles.suffixIcon} onClick={() => toggle()} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  {isVisible ? <EyeNormalOutlined color={colors.textCommonTertiary} /> : <EyeCloseOutlined color={colors.textCommonTertiary} />}
-                </div>
-              }
-              placeholder="Please enter your password"
+              prefix={<LockFilled color={colors.textCommonPrimary}/>}
+              suffix={<div
+                className={styles.suffixIcon}
+                onClick={() => toggle()}
+                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              >
+                {isVisible ? <EyeOpenOutlined color={colors.textCommonTertiary}/> : <EyeCloseOutlined color={colors.textCommonTertiary}/>}
+              </div>}
+              placeholder='Please enter your password'
               error={Boolean(errorMsg.password)}
               block
             />

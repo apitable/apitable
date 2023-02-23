@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Skeleton, useThemeColors, ThemeName } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
-import { ChevronRightOutlined, CloseLargeOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, CloseOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
@@ -135,7 +135,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
             <IconButton
               onClick={() => { setVisibleRecommend(false); }}
               className={styles.closeIcon}
-              icon={() => <CloseLargeOutlined color={colors.thirdLevelText} />}
+              icon={() => <CloseOutlined color={colors.thirdLevelText} />}
             />
           </header>
           <div className={styles.operate}>

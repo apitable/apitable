@@ -24,7 +24,7 @@ import { IButtonGroupProps } from './interface';
 import { Button } from '../button';
 import { IconButton } from '../icon_button';
 import { LinkButton } from '../link_button';
-import { LockOutlined, ShareFilled, RankFilled, WebsiteOutlined } from '@apitable/icons';
+import { LockOutlined, ShareFilled, RankFilled, WebOutlined } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Button Group';
 
@@ -87,7 +87,7 @@ WithIcon.args = {
       <IconButton icon={LockOutlined}/>
       <IconButton icon={ShareFilled}/>
       <IconButton icon={RankFilled}/>
-      <IconButton icon={WebsiteOutlined}/>
+      <IconButton icon={WebOutlined}/>
     </>
   )
 };

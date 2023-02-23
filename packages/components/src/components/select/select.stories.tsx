@@ -22,7 +22,7 @@ import { Tooltip } from '../tooltip';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ISelectProps } from './interface';
-import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { StarOutlined, WarnCircleFilled } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Select';
 
@@ -110,8 +110,8 @@ export const SelectItemWithIcon = () => {
   return (
     <Select
       options={[
-        { label: 'The quick shall inherit the Earth', value: 'opt2', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
-        { label: 'Move fast and break things', value: 'opt3', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+        { label: 'The quick shall inherit the Earth', value: 'opt2', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+        { label: 'Move fast and break things', value: 'opt3', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
       ]}
       value={value}
       onSelected={(option) => {
@@ -180,7 +180,7 @@ export const DisabledSelectIconWithTip = () => {
           suffixIcon: (
             <Tooltip content={'option disabled reason'}>
               <span style={{ display: 'flex', alignItems: 'center' }}>
-                <WarningTriangleNonzeroFilled color="#FFAB00" />
+                <WarnCircleFilled color="#FFAB00" />
               </span>
             </Tooltip>
           ),
@@ -205,10 +205,10 @@ export const DisabledSelect = () => {
           // eslint-disable-next-line max-len
           label: 'The back still says the name of a different technology company, one that came before us,left as a reminder that if we fail, someday someone might replace us.',
           value: 'opt',
-          prefixIcon: <FavoriteOutlined />,
+          prefixIcon: <StarOutlined />,
           suffixIcon: <Tooltip content={'This icon also supports the display of additional information'}>
             <span style={{ display: 'flex', alignItems: 'center' }}>
-              <WarningTriangleNonzeroFilled color="#FFAB00" />
+              <WarnCircleFilled color="#FFAB00" />
             </span>
           </Tooltip>,
         },

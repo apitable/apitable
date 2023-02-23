@@ -18,7 +18,7 @@
 
 import { useState, Fragment, FC, useCallback, useContext } from 'react';
 import { Typography, Button, ListDeprecate, IconButton, useThemeColors } from '@apitable/components';
-import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { DragItem } from './drag_item';
 import { DropWrapper } from '../drop_wrapper';
 import styles from './styles.module.less';
@@ -154,7 +154,11 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
       >
         <div className={styles.header}>
           <Typography variant="h6">{t(Strings.org_chart_record_list)}</Typography>
-          <IconButton onClick={onClose} icon={CloseMiddleOutlined} size="small" />
+          <IconButton
+            onClick={onClose}
+            icon={CloseOutlined}
+            size="small"
+          />
         </div>
         <ListDeprecate
           className={styles.list}

@@ -23,15 +23,15 @@ import GalleryIcon from 'static/icon/datasheet/view/datasheet_icon_gallery.svg';
 import GridIcon from 'static/icon/datasheet/view/datasheet_icon_grid.svg';
 import KanbanIcon from 'static/icon/datasheet/view/datasheet_icon_kanban.svg';
 import CalendarIcon from 'static/icon/datasheet/view/datasheet_icon_calendar.svg';
-import { ViewGanttOutlined, ViewArchitectureFilled } from '@apitable/icons';
+import { GanttOutlined, ArchitectureOutlined } from '@apitable/icons';
 
 const viewIconMap = {
   [ViewType.Grid]: GridIcon,
   [ViewType.Gallery]: GalleryIcon,
   [ViewType.Kanban]: KanbanIcon,
   [ViewType.Calendar]: CalendarIcon,
-  [ViewType.Gantt]: ViewGanttOutlined,
-  [ViewType.OrgChart]: ViewArchitectureFilled,
+  [ViewType.Gantt]: GanttOutlined,
+  [ViewType.OrgChart]: ArchitectureOutlined,
 };
 
 interface IViewIcon {

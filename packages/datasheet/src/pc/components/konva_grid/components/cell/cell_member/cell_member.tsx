@@ -18,7 +18,7 @@
 
 import { getNextShadeColor } from '@apitable/components';
 import { KONVA_DATASHEET_ID, MemberType } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -40,7 +40,7 @@ import { IRenderContentBase } from '../interface';
 import { Avatar } from './avatar';
 
 const AddOutlinedPath = AddOutlined.toString();
-const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
+const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export const CellMember: FC<React.PropsWithChildren<ICellProps>> = props => {
   const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;

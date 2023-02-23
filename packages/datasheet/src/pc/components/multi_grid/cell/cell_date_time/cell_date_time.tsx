@@ -17,7 +17,7 @@
  */
 
 import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Tooltip } from 'pc/components/common';
@@ -81,7 +81,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
           title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
           <span className={styles.alarm} onClick={toggleEdit}>
-            <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
+            <NotificationOutlined color={colors.deepPurple[500]} size={14} />
             <span className={styles.alarmTime}>
               {alarmRealTime}
             </span>
@@ -108,7 +108,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
               },
             });
           }}>
-            <NotificationSmallOutlined color={colors.fc3} size={14} />
+            <NotificationOutlined color={colors.fc3} size={14} />
           </span>
         </Tooltip>
       )}

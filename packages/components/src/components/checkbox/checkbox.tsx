@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SelectOutlined } from '@apitable/icons';
+import { CheckOutlined } from '@apitable/icons';
 import { useKeyPress } from 'ahooks';
 import React, { useRef, useState, useEffect } from 'react';
 import { CheckboxIconWrapper, CheckboxWrapper } from './styled';
@@ -68,7 +68,7 @@ export const Checkbox: React.FC<React.PropsWithChildren<ICheckboxProps>> = props
         disabled={disabled}
       >
         {
-          checked && <SelectOutlined size={size * 0.75} color={blackBlue[50]} />
+          checked && <CheckOutlined size={size * 0.75} color={blackBlue[50]} />
         }
       </CheckboxIconWrapper>
       {children && <span style={{ paddingLeft: 4 }}>{children}</span>}

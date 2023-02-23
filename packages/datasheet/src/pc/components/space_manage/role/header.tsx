@@ -18,7 +18,7 @@
 
 import { Box, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { getEnvVariables } from 'pc/utils/env';
 
 export const Header = () => {
@@ -33,7 +33,7 @@ export const Header = () => {
           href={getEnvVariables().SPACE_ROLE_HELP_URL}
           rel="noreferrer"
         >
-          <InformationSmallOutlined color={colors.textCommonTertiary} size={16} />
+          <QuestionCircleOutlined color={colors.textCommonTertiary} size={16} />
         </a>
       </Box>
       <Typography variant="body3">

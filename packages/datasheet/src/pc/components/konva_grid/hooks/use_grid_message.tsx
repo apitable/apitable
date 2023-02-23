@@ -18,7 +18,7 @@
 
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { colors } from '@apitable/components';
-import { CloseSmallOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useDebounceEffect } from 'ahooks';
 import { Message } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
@@ -84,7 +84,7 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
             >
               {t(Strings.freeze_click_when_windows_too_narrow)}
             </a>
-            <CloseSmallOutlined
+            <CloseOutlined
               color={colors.secondLevelText}
               className={styles.closeBtn}
               onClick={() => Message.destroy()}

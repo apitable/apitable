@@ -20,7 +20,7 @@ import {
   Api, collectProperty, ConfigConstant, DEFAULT_PERMISSION, INode, INodeChangeSocketData, INodeMeta, IPermissions, IReduxState, ResourceType,
   Selectors, StatusCode, StoreActions, Strings, t
 } from '@apitable/core';
-import { ErrorFilled, WarnFilled } from '@apitable/icons';
+import { WarnCircleFilled, WarnFilled } from '@apitable/icons';
 import { has } from 'lodash';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -173,7 +173,7 @@ export const useWorkbenchSideSync = () => {
     const configObj = {
       delete: {
         content: t(Strings.delete_file_message_content) + `(${StatusCode.NODE_DELETED})`,
-        icon: ErrorFilled({ size: 24 }),
+        icon: WarnCircleFilled({ size: 24 }),
         modalButtonType: 'error'
       },
       noPermission: {

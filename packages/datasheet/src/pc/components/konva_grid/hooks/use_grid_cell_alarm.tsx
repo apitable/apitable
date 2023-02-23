@@ -17,7 +17,7 @@
  */
 
 import { AlarmUsersType, CellType, CollaCommandName, FieldType, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import { generateTargetName, getDayjs, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon } from 'pc/components/konva_components';
 import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
@@ -38,7 +38,7 @@ interface IUseCellAlarmProps {
   toggleEditing: () => Promise<boolean | void>;
 }
 
-const NotificationSmallOutlinedPath = NotificationSmallOutlined.toString();
+const NotificationSmallOutlinedPath = NotificationOutlined.toString();
 
 export const useCellAlarm = (props: IUseCellAlarmProps) => {
   const {

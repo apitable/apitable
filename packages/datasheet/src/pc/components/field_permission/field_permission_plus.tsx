@@ -26,7 +26,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
-import { InformationSmallOutlined } from '@apitable/icons/dist/components';
+import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
@@ -48,7 +48,7 @@ export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermiss
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
             <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon} rel="noreferrer">
-              <InformationSmallOutlined color={colors.thirdLevelText} className={styles.infoIcon} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} className={styles.infoIcon} />
             </a>
           </Tooltip>
         }

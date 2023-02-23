@@ -46,9 +46,11 @@ import com.apitable.base.service.ParamVerificationService;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
+import com.apitable.interfaces.auth.model.UserAuth;
 import com.apitable.interfaces.eventbus.facade.EventBusFacade;
 import com.apitable.interfaces.eventbus.model.UserInfoChangeEvent;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
+import com.apitable.interfaces.user.facade.UserServiceFacade;
 import com.apitable.organization.ro.CheckUserEmailRo;
 import com.apitable.organization.ro.UserLinkEmailRo;
 import com.apitable.organization.service.IMemberService;
@@ -194,6 +196,9 @@ public class UserController {
      */
     @Resource
     private IMemberService iMemberService;
+
+    @Resource
+    private UserServiceFacade userServiceFacade;
 
     /**
      * Get personal information.
@@ -365,7 +370,7 @@ public class UserController {
         + "only associate with invited mail when they have no other mail",
         consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> bindEmail(
+    public ResponseData<Void> linkInviteEmail(
         @RequestBody @Valid final UserLinkEmailRo data) {
         String email = data.getEmail();
         String spaceId = data.getSpaceId();
@@ -385,7 +390,7 @@ public class UserController {
     @ApiOperation(value = "Bind mail", notes = "Bind mail and modify mail",
         consumes = MediaType.APPLICATION_JSON_VALUE, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> verifyEmail(
+    public ResponseData<Void> bindEmail(
         @RequestBody @Valid final EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessorManage.me()
@@ -793,5 +798,37 @@ public class UserController {
         Long userId = SessionContext.getUserId();
         userActiveSpaceCacheService.delete(userId);
         return ResponseData.success();
+    }
+
+    /**
+     * reset password router.
+     *
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/resetPassword")
+    @ApiOperation(value = "reset password router", hidden = true)
+    public ResponseData<Void> resetPassword() {
+        Long userId = SessionContext.getUserId();
+        boolean result = userServiceFacade.resetPassword(new UserAuth(userId));
+        if (result) {
+            return ResponseData.success();
+        }
+        return ResponseData.error();
+    }
+
+    /**
+     * reset password router.
+     *
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/verifyEmail")
+    @ApiOperation(value = "verify user's email", hidden = true)
+    public ResponseData<Void> verifyEmail() {
+        Long userId = SessionContext.getUserId();
+        boolean result = userServiceFacade.verifyEmail(new UserAuth(userId));
+        if (result) {
+            return ResponseData.success();
+        }
+        return ResponseData.error();
     }
 }
