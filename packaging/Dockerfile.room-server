@@ -12,14 +12,12 @@ COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 
 COPY packages/core/package.json ./packages/core/
 
-COPY packages/room-native-api/package.json ./packages/room-native-api/
-
 COPY packages/room-server/package.json ./packages/room-server/
 
 RUN yarn workspaces focus @apitable/room-server root
 
 # stage builder
-FROM apitable/node-rust:v16.15.0 AS builder
+FROM apitable/node:v16.15.0 AS builder
 
 WORKDIR /app
 
@@ -33,8 +31,6 @@ COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
 COPY packages/i18n-lang ./packages/i18n-lang
 
 COPY packages/core ./packages/core
-
-COPY packages/room-native-api ./packages/room-native-api
 
 COPY packages/room-server ./packages/room-server
 
@@ -55,8 +51,7 @@ COPY --from=builder /app/packages/room-server/app-config.json /root/
 COPY --from=builder /app /app
 
 RUN npm install pm2@latest --global  \
-    && rm -fr packages/*/src \
-    && rm -fr packages/room-native-api/target
+    && rm -fr packages/*/src
 
 # (room|socket):http
 EXPOSE 3001

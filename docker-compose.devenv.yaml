@@ -67,7 +67,7 @@ services:
       - ENABLE_SOCKET=true
     networks:
       - apitable
-    command: sh -c "yarn install && yarn build:pre && yarn start:room-server"
+    command: sh -c "yarn install && yarn build:dst:pre && yarn start:room-server"
 
   protoc:
     image: apitable/protoc

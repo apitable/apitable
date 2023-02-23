@@ -44,12 +44,6 @@ import { ZipkinService } from 'shared/services/zipkin/zipkin.service';
  */
 async function bootstrap() {
   immer.setAutoFreeze(false);
-  try {
-    const nativeApi = await import('@apitable/room-native-api');
-    await nativeApi.init(isDevMode);
-  } catch (e) {
-    console.log('initialize native module failed:', e);
-  }
 
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   fastifyAdapter.register(fastifyMultipart);

@@ -40,9 +40,6 @@ export class HttpResponseInterceptor implements NestInterceptor {
       map((data: any) => {
         const response = context.switchToHttp().getResponse<FastifyReply>();
         response.header('Cache-Control', 'no-cache,no-store,must-revalidate');
-        if (data instanceof Buffer) {
-          return data;
-        }
         if (data?.code) {
           return data;
         }
