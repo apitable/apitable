@@ -93,29 +93,8 @@ export const Dashboard = () => {
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
-  const [containerRefLoaded, setContainerRefLoaded] = useState<boolean>();
 
   const installedWidgetInDashboard = Boolean(dashboardLayout && dashboardLayout.length);
-  console.log('dashboard containerRef == ', containerRef.current?.offsetWidth);
-
-  React.useLayoutEffect(() => {
-    if (!containerRef.current?.offsetWidth) {
-      return;
-    }
-    setContainerRefLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    const onWindowResize = () => {
-      if (!containerRef.current?.offsetWidth) {
-        return;
-      }
-      setContainerRefLoaded(true);
-    };
-    
-    window.addEventListener('resize', onWindowResize);
-    return () => window.removeEventListener('resize', onWindowResize);
-  }, []);
 
   const decisionOpenRecommend = () => {
     if (hasOpenRecommend.current) {
@@ -391,7 +370,7 @@ export const Dashboard = () => {
         }
         <WidgetContextProvider>
           <div className={styles.widgetArea} style={{ pointerEvents: 'auto', height: embedInfo ? '100%' : '' }}>
-            {installedWidgetInDashboard && containerRefLoaded && (
+            {installedWidgetInDashboard && (
               <ResponsiveGridLayout
                 isDroppable={!readonly}
                 isResizable={!readonly}

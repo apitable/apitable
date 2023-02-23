@@ -432,8 +432,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     }
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
-      <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
-        {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
+      <div className={'__next_main'}>
+        {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
           <Provider store={store}>
             <RouterProvider>
               <ThemeWrapper>
@@ -443,9 +443,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           </Provider>
         </div>}
         {
-          ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-            <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+          <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
+            {
+              ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+              </div>
+            }
           </div>
         }
       </div>
