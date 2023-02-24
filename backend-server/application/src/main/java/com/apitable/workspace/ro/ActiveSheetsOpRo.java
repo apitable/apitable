@@ -18,26 +18,25 @@
 
 package com.apitable.workspace.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Active node request parameters
+ * Active node request parameters.
  * </p>
  */
 @Data
-@ApiModel("Active node request parameters")
+@Schema(description = "Active node request parameters")
 public class ActiveSheetsOpRo {
 
-    @ApiModelProperty(value = "Active node id", example = "dst15", position = 1)
+    @Schema(description = "Active node id", example = "dst15")
     private String nodeId;
 
-    @ApiModelProperty(value = "View ID of active number table", example = "views135", position = 2)
+    @Schema(description = "View ID of active number table", example = "views135")
     private String viewId;
 
-    @ApiModelProperty(value = "Location (0: working directory; 1: star)", example = "1", position = 3)
+    @Schema(description = "Location (0: working directory; 1: star)", example = "1")
     private Integer position;
 
 }

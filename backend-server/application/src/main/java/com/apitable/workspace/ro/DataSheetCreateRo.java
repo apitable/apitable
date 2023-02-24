@@ -18,29 +18,32 @@
 
 package com.apitable.workspace.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Data table creation request parameter
+ * Data table creation request parameter.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-@ApiModel("Data table creation request parameter")
+@Schema(description = "Data table creation request parameter")
 public class DataSheetCreateRo {
 
-	@ApiModelProperty(value = "Meter Node Id",example = "nod16fq165m6c", position = 1)
-	private String nodeId;
+    @Schema(description = "Meter Node Id", example = "nod16fq165m6c")
+    private String nodeId;
 
-    @ApiModelProperty(value = "Number table name",example = "E-commerce project workbench", position = 2)
+    @Schema(description = "Number table name", example = "E-commerce project workbench")
     private String name;
 
-    @ApiModelProperty(value = "Space id",example = "spczJrh2i3tLW", position = 9)
+    @Schema(description = "Space id", example = "spczJrh2i3tLW")
     private String spaceId;
 
 }

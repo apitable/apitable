@@ -18,40 +18,38 @@
 
 package com.apitable.organization.vo;
 
+import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-
 /**
  * <p>
- *     role's info
+ * role's info.
  * </p>
  */
 @Data
 @Builder
-@ApiModel("role's info")
+@Schema(description = "role's info")
 public class RoleInfoVo {
 
-    @ApiModelProperty(value = "unit id", example = "1", position = 1)
+    @Schema(description = "unit id", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "role id", example = "1", position = 2)
+    @Schema(description = "role id", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
-    @ApiModelProperty(value = "role name", example = "Finance", position = 3)
+    @Schema(description = "role name", example = "Finance")
     private String roleName;
 
-    @ApiModelProperty(value = "role's member amount", example = "1", position = 4)
+    @Schema(description = "role's member amount", example = "1")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "the role's position in role list", example = "1", position = 5)
+    @Schema(description = "the role's position in role list", example = "1")
     private Integer position;
 }

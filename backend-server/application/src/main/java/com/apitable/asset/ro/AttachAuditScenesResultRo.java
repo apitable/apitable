@@ -18,35 +18,35 @@
 
 package com.apitable.asset.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- * Image audit result request parameters
+ * Image audit result request parameters.
  * </p>
  */
 @Data
-@ApiModel("Image audit result request parameters")
+@Schema(description = "Image audit result request parameters")
 public class AttachAuditScenesResultRo {
 
-	@ApiModelProperty(value = "The status code 0 is successful, 1 is waiting for processing, 2 is processing, 3 processing failed, and 4 notification submission failed.", position = 3, required = true)
-	@NotNull(message = "Processing queue name")
-	private String code;
+    @Schema(description = "The status code 0 is successful, 1 is waiting for processing, 2 is "
+        + "processing, 3 processing failed, and 4 notification submission failed.", required = true)
+    @NotNull(message = "Processing queue name")
+    private String code;
 
-	@ApiModelProperty(value = "Message Results", position = 2, required = true)
-	@NotNull(message = "Message Results")
-	private String message;
+    @Schema(description = "Message Results", required = true)
+    @NotNull(message = "Message Results")
+    private String message;
 
-	@ApiModelProperty(value = "The status code 0 is successful, 1 is waiting for processing, 2 is processing, 3 processing failed, and 4 notification submission failed.", position = 3, required = true)
-	@NotNull(message = "Processing queue name")
-	private AttachAuditScenesRo scenes;
+    @Schema(description = "The status code 0 is successful, 1 is waiting for processing, 2 is "
+        + "processing, 3 processing failed, and 4 notification submission failed.", required = true)
+    @NotNull(message = "Processing queue name")
+    private AttachAuditScenesRo scenes;
 
-	@ApiModelProperty(value = "Processing queue name", position = 2, required = true)
-	@NotNull(message = "Processing queue name")
-	private String suggestion;
+    @Schema(description = "Processing queue name", required = true)
+    @NotNull(message = "Processing queue name")
+    private String suggestion;
 
 }

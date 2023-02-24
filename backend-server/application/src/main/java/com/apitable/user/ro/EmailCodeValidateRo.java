@@ -18,31 +18,29 @@
 
 package com.apitable.user.ro;
 
+import com.apitable.shared.constants.PatternConstants;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Pattern.Flag;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.shared.constants.PatternConstants;
 
 /**
  * <p>
- * Mailbox verification code verification request parameters
+ * Mailbox verification code verification request parameters.
  * </p>
  */
 @Data
-@ApiModel("Mailbox verification code verification request parameters")
+@Schema(description = "Mailbox verification code verification request parameters")
 public class EmailCodeValidateRo {
 
-    @ApiModelProperty(value = "e-mail address", example = "xxxx@apitable.com", position = 1, required = true)
+    @Schema(description = "e-mail address", example = "xxxx@apitable.com", required = true)
     @NotBlank(message = "Email address cannot be empty")
-    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags = Flag.CASE_INSENSITIVE)
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags =
+        Flag.CASE_INSENSITIVE)
     private String email;
 
-    @ApiModelProperty(value = "Email verification code", example = "123456", position = 2, required = true)
+    @Schema(description = "Email verification code", example = "123456", required = true)
     @NotBlank(message = "The verification code cannot be empty")
     private String code;
 }

@@ -18,44 +18,43 @@
 
 package com.apitable.organization.vo;
 
+import com.apitable.core.support.tree.Tree;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.apitable.core.support.tree.Tree;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Department Tree View
+ * Department Tree View.
  * </p>
  */
 @Data
-@ApiModel("Department Tree View")
+@Schema(description = "Department Tree View")
 public class TeamTreeVo implements Tree {
 
-    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Department ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
+    @Schema(description = "Department name", example = "R&D Department")
     private String teamName;
 
-    @ApiModelProperty(value = "Parent ID, 0 if the parent is root", dataType = "java.lang.String", example = "0", position = 3)
+    @Schema(description = "Parent ID, 0 if the parent is root", type = "java.lang.String",
+        example = "0")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
-    @ApiModelProperty(value = "Number of department members", example = "3", position = 4)
+    @Schema(description = "Number of department members", example = "3")
     private Integer memberCount;
 
-    @ApiModelProperty(value = "Sort No", example = "1", position = 5)
+    @Schema(description = "Sort No", example = "1")
     private Integer sequence;
 
-    @ApiModelProperty(value = "Subsidiary department", position = 7)
+    @Schema(description = "Subsidiary department")
     private List<TeamTreeVo> children = new ArrayList<>();
 
     @JsonIgnore

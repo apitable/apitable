@@ -18,24 +18,23 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * Node Search Results
+ * Node Search Results.
  * </p>
  */
 @Data
-@ApiModel("Node Search Results")
+@Schema(description = "Node Search Results")
 @EqualsAndHashCode(callSuper = true)
 public class NodeSearchResult extends NodeInfoVo {
 
-    @ApiModelProperty(value = "Parent Path", example = "nod11", position = 15)
+    @Schema(description = "Parent Path", example = "nod11")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String superiorPath;
 }
