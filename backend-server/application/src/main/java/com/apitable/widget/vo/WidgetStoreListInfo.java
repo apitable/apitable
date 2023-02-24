@@ -18,97 +18,100 @@
 
 package com.apitable.widget.vo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Widget Store List Information View
+ * Widget Store List Information View.
  * </p>
  */
 @Data
-@ApiModel("Widget Store List Information View")
+@Schema(description = "Widget Store List Information View")
 public class WidgetStoreListInfo {
 
-    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 1)
+    @Schema(description = "Package ID", example = "wpkABC")
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "Widget package name", example = "Chart", position = 2)
+    @Schema(description = "Widget package name", example = "Chart")
     private String name;
 
-    @ApiModelProperty(value = "Widget package icon", example = "https://apitable.com/space/2020/12/23/aqa", position = 3)
+    @Schema(description = "Widget package icon", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String icon;
 
-    @ApiModelProperty(value = "Cover drawing of component package", example = "https://apitable.com/space/2020/12/23/aqa", position = 3)
+    @Schema(description = "Cover drawing of component package", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "DESCRIBE", example = "This is the description of a chart applet", position = 4)
+    @Schema(description = "DESCRIBE", example = "This is the description of a chart applet")
     private String description;
 
-    @ApiModelProperty(value = "Widget package version number", example = "1.0.0", position = 5)
+    @Schema(description = "Widget package version number", example = "1.0.0")
     private String version;
 
-    @ApiModelProperty(value = "Author Name", position = 6)
+    @Schema(description = "Author Name")
     private String authorName;
 
-    @ApiModelProperty(value = "Author icon", position = 7)
+    @Schema(description = "Author icon")
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "Author Email", position = 8)
+    @Schema(description = "Author Email")
     private String authorEmail;
 
-    @ApiModelProperty(value = "Author website address", position = 9)
+    @Schema(description = "Author website address")
     private String authorLink;
 
-    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 10)
+    @Schema(description = "Widget package type (0: third party, 1: official)")
     private Integer packageType;
 
-    @ApiModelProperty(value = "0: Publish to the component store in the space station, 1: Publish to the global app store", position = 11)
+    @Schema(description = "0: Publish to the component store in the space station, 1: Publish to "
+        + "the global app store")
     private Integer releaseType;
 
-    @ApiModelProperty(value = "Widget package status (0: to be approved; 1: not passed; 2: to be released; 3: online; 4: offline)", example = "3", position = 12)
+    @Schema(description = "Widget package status (0: to be approved; 1: not passed; 2: to be "
+        + "released; 3: online; 4: offline)", example = "3")
     private Integer status;
 
-    @ApiModelProperty(value = "Whether the applet is authorized by others (false: no, true: yes)", example = "false", position = 13)
+    @Schema(description = "Whether the applet is authorized by others (false: no, true: yes)",
+        example = "false")
     private Boolean isEmpower;
 
-    @ApiModelProperty(value = "Widget Owner UUID", position = 14)
+    @Schema(description = "Widget Owner UUID")
     private String ownerUuid;
 
-    @ApiModelProperty(value = "Widget Owner Member Id", position = 15)
+    @Schema(description = "Widget Owner Member Id")
     private String ownerMemberId;
 
-    @ApiModelProperty(value = "Widget Store List Extension Information", position = 16)
+    @Schema(description = "Widget Store List Extension Information")
     private WidgetStoreListExtraInfo extras;
 
     @JsonIgnore
-    @ApiModelProperty(value = "Installation environment code", example = "01", position = 17)
+    @Schema(description = "Installation environment code", example = "01")
     private String installEnvCode;
 
     @JsonIgnore
-    @ApiModelProperty(value = "Operating environment code", example = "01", position = 18)
+    @Schema(description = "Operating environment code", example = "01")
     private String runtimeEnvCode;
 
-    @ApiModelProperty(value = "Installation environment", example = "panel", position = 19)
+    @Schema(description = "Installation environment", example = "panel")
     private List<String> installEnv;
 
-    @ApiModelProperty(value = "Operating environment", example = "mobile", position = 20)
+    @Schema(description = "Operating environment", example = "mobile")
     private List<String> runtimeEnv;
 
     @Deprecated
-    @ApiModelProperty(value = "Permission - Obsolete, unified to resource for judgment", example = "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
+    @Schema(description = "Permission - Obsolete, unified to resource for judgment", example =
+        "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private List<String> permissions;
 

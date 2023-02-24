@@ -18,26 +18,30 @@
 
 package com.apitable.user.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * User LabsFeature Ro.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Laboratory function setting request object")
+@Schema(description = "Laboratory function setting request object")
 public class UserLabsFeatureRo {
 
-    @ApiModelProperty(value = "Space ID, if left blank, identify the user level function", dataType = "java.lang.String", example = "spc6e2CeZLBFN", position = 1)
+    @Schema(description = "Space ID, if left blank, identify the user level function", type =
+        "java.lang.String", example = "spc6e2CeZLBFN")
     private String spaceId;
 
-    @ApiModelProperty(value = "Unique identification of the laboratory function to be operated", dataType = "java.lang.String", example = "render_prompt", position = 2)
+    @Schema(description = "Unique identification of the laboratory function to be operated",
+        type = "java.lang.String", example = "render_prompt")
     private String key;
 
-    @ApiModelProperty(value = "Whether to open", dataType = "java.lang.Boolean", example = "true", position = 3)
+    @Schema(description = "Whether to open", type = "java.lang.Boolean", example = "true")
     private Boolean isEnabled;
 }

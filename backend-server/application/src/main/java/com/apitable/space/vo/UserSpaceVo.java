@@ -18,30 +18,29 @@
 
 package com.apitable.space.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.apitable.shared.support.serializer.NullArraySerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collection;
+import lombok.Data;
 
 /**
  * <p>
- * User's resource information in the specified space
+ * User's resource information in the specified space.
  * </p>
  */
 @Data
-@ApiModel("User's resource information view in the space")
+@Schema(description = "User's resource information view in the space")
 public class UserSpaceVo {
 
-    @ApiModelProperty(value = "Space name", example = "My Workspace", position = 1)
+    @Schema(description = "Space name", example = "My Workspace")
     private String spaceName;
 
-    @ApiModelProperty(value = "Primary administrator or not", example = "true", position = 2)
+    @Schema(description = "Primary administrator or not", example = "true")
     private Boolean mainAdmin;
 
-    @ApiModelProperty(value = "Permission", dataType = "List", example = "[\"MANAGE_TEAM\",\"MANAGE_MAIN_ADMIN\"]", position = 3)
+    @Schema(description = "Permission", type = "List", example = "[\"MANAGE_TEAM\","
+        + "\"MANAGE_MAIN_ADMIN\"]")
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private Collection<String> permissions;
 }

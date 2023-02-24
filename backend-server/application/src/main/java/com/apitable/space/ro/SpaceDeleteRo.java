@@ -18,25 +18,23 @@
 
 package com.apitable.space.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.base.enums.ValidateType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Space deletion request parameters
+ * Space deletion request parameters.
  * </p>
  */
 @Data
-@ApiModel("Space deletion request parameters")
+@Schema(description = "Space deletion request parameters")
 public class SpaceDeleteRo {
 
-    @ApiModelProperty(value = "Check type", example = "sms_code")
+    @Schema(description = "Check type", example = "sms_code")
     private ValidateType type;
 
-    @ApiModelProperty(value = "Phone/email verification code", example = "123456", position = 2)
+    @Schema(description = "Phone/email verification code", example = "123456")
     private String code;
 
 }

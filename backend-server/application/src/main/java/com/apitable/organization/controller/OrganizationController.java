@@ -18,28 +18,21 @@
 
 package com.apitable.organization.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
 import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.support.ResponseData;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.organization.dto.LoadSearchDTO;
+import com.apitable.organization.dto.MemberIsolatedInfo;
 import com.apitable.organization.dto.SearchMemberDTO;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
-import com.apitable.organization.dto.LoadSearchDTO;
-import com.apitable.organization.dto.MemberIsolatedInfo;
 import com.apitable.organization.ro.SearchUnitRo;
 import com.apitable.organization.service.IMemberSearchService;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.vo.OrganizationUnitVo;
@@ -56,27 +49,34 @@ import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.workspace.enums.IdRulePrefixEnum;
-import com.apitable.workspace.dto.NodeShareDTO;
-import com.apitable.organization.service.IMemberService;
-import com.apitable.space.service.ISpaceService;
-import com.apitable.template.service.ITemplateService;
-import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.SpaceException;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.template.service.ITemplateService;
+import com.apitable.workspace.dto.NodeShareDTO;
+import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.NodeException;
-import com.apitable.core.support.ResponseData;
-import com.apitable.core.util.ExceptionUtil;
-
-import org.springframework.http.MediaType;
+import com.apitable.workspace.mapper.NodeShareSettingMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static java.util.stream.Collectors.toList;
-
+/**
+ * Contact Organization Api.
+ */
 @RestController
-@Api(tags = "Contact Organization Api")
+@Tag(name = "Contact Organization Api")
 @ApiResource(path = "/org")
 @Slf4j
 public class OrganizationController {
@@ -111,15 +111,22 @@ public class OrganizationController {
     @Resource
     private IMemberSearchService iMemberSearchService;
 
+    /**
+     * Global search.
+     */
     @GetResource(path = "/search", name = "Global search")
-    @ApiOperation(value = "Global search", notes = "fuzzy search department or members", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design"),
-        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight")
+    @Operation(summary = "Global search", description = "fuzzy search department or members")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "keyword", description = "keyword", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
+        @Parameter(name = "className", description = "the highlight style", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
     public ResponseData<SearchResultVo> searchTeamInfo(@RequestParam("keyword") String keyword,
-            @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
+        @RequestParam(value = "className", required = false, defaultValue = "highLight")
+        String className) {
         String spaceId = LoginContext.me().getSpaceId();
         SearchResultVo result = new SearchResultVo();
         // fuzzy search department
@@ -127,27 +134,38 @@ public class OrganizationController {
         if (CollUtil.isNotEmpty(teams)) {
             CollUtil.filter(teams, (Editor<SearchTeamResultVo>) vo -> {
                 vo.setOriginName(vo.getTeamName());
-                vo.setTeamName(InformationUtil.keywordHighlight(vo.getTeamName(), keyword, className));
+                vo.setTeamName(
+                    InformationUtil.keywordHighlight(vo.getTeamName(), keyword, className));
                 return vo;
             });
             result.setTeams(teams);
         }
         // fuzzy search members
-        List<SearchMemberResultVo> searchMemberResultVos = iMemberSearchService.getByName(spaceId, keyword, className);
+        List<SearchMemberResultVo> searchMemberResultVos =
+            iMemberSearchService.getByName(spaceId, keyword, className);
         result.setMembers(searchMemberResultVos);
 
         return ResponseData.success(result);
     }
 
+    /**
+     * Search departments or members（it will be abandoned）.
+     */
     @GetResource(path = "/search/unit", name = "search for departments or members")
-    @ApiOperation(value = "Search departments or members（it will be abandoned）", notes = "fuzzy search unit", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design"),
-        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight")
+    @Operation(summary = "Search departments or members（it will be abandoned）", description =
+        "fuzzy search unit")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "keyword", description = "keyword", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
+        @Parameter(name = "className", description = "the highlight style", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
-    public ResponseData<List<OrganizationUnitVo>> searchSubTeamAndMembers(@RequestParam("keyword") String keyword,
-            @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
+    public ResponseData<List<OrganizationUnitVo>> searchSubTeamAndMembers(
+        @RequestParam("keyword") String keyword,
+        @RequestParam(value = "className", required = false, defaultValue = "highLight")
+        String className) {
         String spaceId = LoginContext.me().getSpaceId();
         List<OrganizationUnitVo> resList = new ArrayList<>();
         // fuzzy search department
@@ -169,13 +187,15 @@ public class OrganizationController {
             OrganizationUnitVo vo = new OrganizationUnitVo();
             vo.setId(member.getMemberId());
             vo.setOriginName(member.getMemberName());
-            vo.setName(InformationUtil.keywordHighlight(member.getMemberName(), keyword, className));
+            vo.setName(
+                InformationUtil.keywordHighlight(member.getMemberName(), keyword, className));
             vo.setType(2);
             vo.setAvatar(member.getAvatar());
             vo.setAvatarColor(member.getColor());
             vo.setNickName(member.getNickName());
             if (CollUtil.isNotEmpty(member.getTeam())) {
-                List<String> teamNames = CollUtil.getFieldValues(member.getTeam(), "teamName", String.class);
+                List<String> teamNames =
+                    CollUtil.getFieldValues(member.getTeam(), "teamName", String.class);
                 vo.setTeams(CollUtil.join(teamNames, "｜"));
             }
             vo.setIsActive(member.getIsActive());
@@ -184,17 +204,26 @@ public class OrganizationController {
         return ResponseData.success(resList);
     }
 
+    /**
+     * search organization resources.
+     */
     @GetResource(path = "/searchUnit", requiredLogin = false)
-    @ApiOperation(value = "search organization resources", notes = "Provide input word fuzzy search organization resources")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
-        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight"),
-        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design")
+    @Operation(summary = "search organization resources", description = "Provide input word fuzzy"
+        + " search organization resources")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
+            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "linkId", description = "link id: node share id | template id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG"),
+        @Parameter(name = "className", description = "the highlight style", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "keyword", description = "keyword", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design")
     })
     public ResponseData<UnitSearchResultVo> search(@RequestParam(name = "keyword") String keyword,
-            @RequestParam(value = "linkId", required = false) String linkId,
-            @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
+        @RequestParam(value = "linkId", required = false) String linkId,
+        @RequestParam(value = "className", required = false, defaultValue = "highLight")
+        String className) {
 
         String spaceId = this.getSpaceId(linkId);
         UnitSearchResultVo vo = iOrganizationService.findLikeUnitName(spaceId, keyword, className);
@@ -202,25 +231,35 @@ public class OrganizationController {
         return ResponseData.success(vo);
     }
 
+    /**
+     * Query the sub departments and members of department.
+     */
     @GetResource(path = "/getSubUnitList", requiredLogin = false)
-    @ApiOperation(value = "Query the sub departments and members of department", notes = "Query the sub departments and members of department. if team id lack, default is 0", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", defaultValue = "0", dataTypeClass = String.class, paramType = "query", example = "0"),
-        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
+    @Operation(summary = "Query the sub departments and members of department", description =
+        "Query the sub departments and members of department. if team id lack, default is 0")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
+            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "0"),
+        @Parameter(name = "linkId", description = "link id: node share id | template id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG")
     })
-    public ResponseData<SubUnitResultVo> getSubUnitList(@RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
-            @RequestParam(value = "linkId", required = false) String linkId) {
+    public ResponseData<SubUnitResultVo> getSubUnitList(
+        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
+        @RequestParam(value = "linkId", required = false) String linkId) {
         // get the link id's space
         String spaceId = this.getSpaceId(linkId);
         Long memberId = LoginContext.me().getMemberId();
         // determine whether the team id is 0
         if (teamId == 0) {
             // check whether members are isolated from contacts
-            MemberIsolatedInfo memberIsolatedInfo = iTeamService.checkMemberIsolatedBySpaceId(spaceId, memberId);
+            MemberIsolatedInfo memberIsolatedInfo =
+                iTeamService.checkMemberIsolatedBySpaceId(spaceId, memberId);
             if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
                 // Load the first-layer department in the member's department
-                SubUnitResultVo resultVo = iOrganizationService.loadMemberFirstTeams(spaceId, memberIsolatedInfo.getTeamIds());
+                SubUnitResultVo resultVo = iOrganizationService.loadMemberFirstTeams(spaceId,
+                    memberIsolatedInfo.getTeamIds());
                 return ResponseData.success(resultVo);
             }
         }
@@ -229,16 +268,28 @@ public class OrganizationController {
         return ResponseData.success(subUnitResultVo);
     }
 
+    /**
+     * Load/search departments and members.
+     */
     @GetResource(path = "/loadOrSearch", requiredLogin = false)
-    @ApiOperation(value = "Load/search departments and members", notes = "The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
-        @ApiImplicitParam(name = "keyword", value = "keyword", dataTypeClass = String.class, paramType = "query", example = "Lili"),
-        @ApiImplicitParam(name = "unitIds", value = "unitIds", dataTypeClass = String.class, paramType = "query", example = "1271,1272"),
-        @ApiImplicitParam(name = "filterIds", value = "specifies the organizational unit to filter", dataTypeClass = String.class, paramType = "query", example = "123,124"),
-        @ApiImplicitParam(name = "all", value = "whether to load all departments and members", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query"),
-        @ApiImplicitParam(name = "searchEmail", value = "whether to search for emails", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
+    @Operation(summary = "Load/search departments and members", description = "The most recently "
+        + "selected units are loaded by default when not keyword. The most recently added member "
+        + "of the same group are loaded when not selected. Load max 10")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
+            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = "linkId", description = "link id: node share id | template id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG"),
+        @Parameter(name = "keyword", description = "keyword", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "Lili"),
+        @Parameter(name = "unitIds", description = "unitIds", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "1271,1272"),
+        @Parameter(name = "filterIds", description = "specifies the organizational unit to "
+            + "filter", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "123,124"),
+        @Parameter(name = "all", description = "whether to load all departments and members",
+            schema = @Schema(type = "boolean"), in = ParameterIn.QUERY),
+        @Parameter(name = "searchEmail", description = "whether to search for emails",
+            schema = @Schema(type = "boolean"), in = ParameterIn.QUERY)
     })
     public ResponseData<List<UnitInfoVo>> loadOrSearch(@Valid LoadSearchDTO params) {
         // sharing node/template: un login users invoke processing
@@ -249,15 +300,13 @@ public class OrganizationController {
         if (StrUtil.isBlank(linkId)) {
             userId = SessionContext.getUserId();
             spaceId = LoginContext.me().getSpaceId();
-        }
-        else if (linkId.startsWith(IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
+        } else if (linkId.startsWith(IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
             // the sharing nodes
             NodeShareDTO nodeShare = nodeShareSettingMapper.selectDtoByShareId(linkId);
             ExceptionUtil.isNotNull(nodeShare, NodeException.SHARE_EXPIRE);
             spaceId = nodeShare.getSpaceId();
             sharer = nodeShare.getOperator();
-        }
-        else {
+        } else {
             // the template
             String templateSpaceId = iTemplateService.getSpaceId(linkId);
             // requirements are official templates, or user in the space
@@ -268,20 +317,32 @@ public class OrganizationController {
             }
             spaceId = templateSpaceId;
         }
-        List<UnitInfoVo> vos = iOrganizationService.loadOrSearchInfo(userId, spaceId, params, sharer);
-        List<UnitInfoVo> existUnitInfo = vos.stream().filter(unitInfoVo -> !unitInfoVo.getIsDeleted()).collect(toList());
+        List<UnitInfoVo> vos =
+            iOrganizationService.loadOrSearchInfo(userId, spaceId, params, sharer);
+        List<UnitInfoVo> existUnitInfo =
+            vos.stream().filter(unitInfoVo -> !unitInfoVo.getIsDeleted()).collect(toList());
         return ResponseData.success(existUnitInfo);
     }
 
+    /**
+     * accurately query departments and members.
+     */
     @PostResource(path = "/searchUnitInfoVo", requiredLogin = false)
-    @ApiOperation(value = "accurately query departments and members", notes = "scenario:field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @Operation(summary = "accurately query departments and members", description = "scenario"
+        + ":field conversion（If the amount of data is large, the content requested by GET will "
+        + "exceed the limit.）")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
+        @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<List<UnitInfoVo>> searchUnitInfoVo(@RequestBody @Valid SearchUnitRo ro) {
         String spaceId = this.getSpaceId(ro.getLinkId());
-        List<UnitInfoVo> vos = iOrganizationService.accurateSearch(spaceId, StrUtil.splitTrim(ro.getNames(), ','));
+        List<UnitInfoVo> vos =
+            iOrganizationService.accurateSearch(spaceId, StrUtil.splitTrim(ro.getNames(), ','));
         return ResponseData.success(vos);
     }
 
+    /**
+     * Get space id.
+     */
     private String getSpaceId(String linkId) {
         if (StrUtil.isBlank(linkId)) {
             return LoginContext.me().getSpaceId();

@@ -18,33 +18,30 @@
 
 package com.apitable.workspace.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
- * Bundle request parameters
+ * Bundle request parameters.
  * </p>
  */
 @Data
-@ApiModel("Bundle request parameters")
+@Schema(description = "Bundle request parameters")
 public class NodeBundleOpRo {
 
-    @ApiModelProperty(value = "Upload files", position = 1, required = true)
+    @Schema(description = "Upload files", required = true)
     @NotNull(message = "File cannot be empty")
     private MultipartFile file;
 
-    @ApiModelProperty(value = "Parent class node ID", example = "fodSf4PZBNwut", position = 2)
+    @Schema(description = "Parent class node ID", example = "fodSf4PZBNwut")
     private String parentId;
 
-    @ApiModelProperty(value = "Predecessor node ID", example = "nod10", position = 3)
+    @Schema(description = "Predecessor node ID", example = "nod10")
     private String preNodeId;
 
-    @ApiModelProperty(value = "Password", example = "***", position = 4)
+    @Schema(description = "Password", example = "***")
     private String password;
 }

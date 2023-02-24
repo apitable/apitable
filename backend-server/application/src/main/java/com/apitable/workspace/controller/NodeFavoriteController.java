@@ -18,65 +18,80 @@
 
 package com.apitable.workspace.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
+import com.apitable.core.support.ResponseData;
+import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.annotation.Notification;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
-import com.apitable.shared.component.notification.annotation.Notification;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.workspace.ro.MarkNodeMoveRo;
-import com.apitable.workspace.vo.FavoriteNodeInfo;
 import com.apitable.workspace.service.INodeFavoriteService;
-import com.apitable.core.support.ResponseData;
-
+import com.apitable.workspace.vo.FavoriteNodeInfo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Workbench - Node Favorite Api.
+ */
 @RestController
-@Api(tags = "Workbench - Node Favorite Api")
+@Tag(name = "Workbench - Node Favorite Api")
 @ApiResource(path = "/node/favorite")
 public class NodeFavoriteController {
 
     @Resource
     private INodeFavoriteService iNodeFavoriteService;
 
+    /**
+     * Get favorite nodes.
+     */
     @GetResource(path = "/list")
-    @ApiOperation(value = "Get favorite nodes")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @Operation(summary = "Get favorite nodes")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<List<FavoriteNodeInfo>> list() {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         return ResponseData.success(iNodeFavoriteService.getFavoriteNodeList(spaceId, memberId));
     }
 
+    /**
+     * Move favorite node.
+     */
     @PostResource(path = "/move")
-    @ApiOperation(value = "Move favorite node")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @Operation(summary = "Move favorite node")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<Void> move(@RequestBody @Valid MarkNodeMoveRo ro) {
         Long memberId = LoginContext.me().getMemberId();
         iNodeFavoriteService.move(memberId, ro.getNodeId(), ro.getPreNodeId());
         return ResponseData.success();
     }
 
+    /**
+     * Change favorite status.
+     */
     @Notification(templateId = NotificationTemplateId.NODE_FAVORITE)
     @PostResource(path = "/updateStatus/{nodeId}")
-    @ApiOperation(value = "Change favorite status")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl"),
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
+    @Operation(summary = "Change favorite status")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl"),
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> updateStatus(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();

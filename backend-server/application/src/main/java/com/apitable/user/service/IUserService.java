@@ -156,6 +156,15 @@ public interface IUserService extends IService<UserEntity> {
     UserEntity createUserByEmail(String email);
 
     /**
+     * Create an account by email.
+     *
+     * @param email email
+     * @param password password
+     * @return UserEntity
+     */
+    UserEntity createUserByEmail(String email, String password);
+
+    /**
      * initial new space for new user.
      *
      * @param user user entity

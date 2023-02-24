@@ -18,20 +18,19 @@
 
 package com.apitable.widget.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Widget Store List Extended Information View
+ * Widget Store List Extended Information View.
  * </p>
  */
 @Data
-@ApiModel("Widget Store List Extended Information View")
+@Schema(description = "Widget Store List Extended Information View")
 public class WidgetStoreListExtraInfo {
 
-    @ApiModelProperty(value = "Widget official website address", position = 1)
+    @Schema(description = "Widget official website address")
     private String website;
 
 }

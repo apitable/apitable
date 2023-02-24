@@ -21,11 +21,9 @@ package com.apitable.user.vo;
 import cn.hutool.json.JSONObject;
 import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * <p>
@@ -33,40 +31,40 @@ import java.time.LocalDateTime;
  * </p>
  */
 @Data
-@ApiModel("Integral Revenue&Expense Record View")
+@Schema(description = "Integral Revenue&Expense Record View")
 public class IntegralRecordVO {
 
     /**
      * Action ID.
      */
-    @ApiModelProperty(value = "Action ID",
+    @Schema(description = "Action ID",
         example = "invitation_reward")
     private String action;
 
     /**
      * Alter type.
      */
-    @ApiModelProperty(value = "Change Type (0: Revenue, 1: Expense)",
+    @Schema(description = "Change Type (0: Revenue, 1: Expense)",
         example = "0")
     private Integer alterType;
 
     /**
      * Alter Value.
      */
-    @ApiModelProperty(value = "Change value (unit: minutes)",
+    @Schema(description = "Change value (unit: minutes)",
         example = "1000")
     private String alterValue;
 
     /**
      * Parameter.
      */
-    @ApiModelProperty(value = "Parameter")
+    @Schema(description = "Parameter")
     private JSONObject params;
 
     /**
      * Create Time.
      */
-    @ApiModelProperty(value = "Change time(millisecond)",
+    @Schema(description = "Change time(millisecond)",
         example = "1573561644000")
     @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime createdAt;

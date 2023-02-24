@@ -18,29 +18,27 @@
 
 package com.apitable.organization.ro;
 
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- *      role member unit request parameter
+ * role member unit request parameter.
  * </p>
  */
 @Data
-@ApiModel("role member unit request parameter")
+@Schema(description = "role member unit request parameter")
 public class RoleMemberUnitRo {
 
-    @ApiModelProperty(value = "ID", dataType = "java.lang.String", required = true, example = "120322719823", position = 1)
+    @Schema(description = "ID", type = "java.lang.String", required = true, example =
+        "120322719823")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long id;
 
     @NotNull
-    @ApiModelProperty(value = "unit type，1 = team，3 = member", required = true, example = "1", position = 2)
+    @Schema(description = "unit type，1 = team，3 = member", required = true, example = "1")
     private Integer type;
 }

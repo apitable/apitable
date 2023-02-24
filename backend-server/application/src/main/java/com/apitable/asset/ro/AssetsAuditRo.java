@@ -18,19 +18,19 @@
 
 package com.apitable.asset.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-
 import javax.validation.constraints.NotBlank;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * AssetsAuditRo.
+ */
 @Data
-@ApiModel("Attachment manual review results request")
+@Schema(description = "Attachment manual review results request")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -39,11 +39,11 @@ public class AssetsAuditRo {
     private List<AssetsAuditOpRo> assetlist;
 
     @NotBlank
-    @ApiModelProperty(value = "audit user id", example = "0122454826077721", position = 1)
+    @Schema(description = "audit user id", example = "0122454826077721")
     private String auditorUserId;
 
     @NotBlank
-    @ApiModelProperty(value = "audit user name", example = "name", position = 2)
+    @Schema(description = "audit user name", example = "name")
     private String auditorName;
 
 }

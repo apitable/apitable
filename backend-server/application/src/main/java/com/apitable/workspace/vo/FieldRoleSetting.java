@@ -18,18 +18,20 @@
 
 package com.apitable.workspace.vo;
 
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-
+/**
+ * Field Role Setting.
+ */
 @Data
-@ApiModel("Attribute View of Digital Table Field Role Configuration")
+@Schema(description = "Attribute View of Digital Table Field Role Configuration")
 public class FieldRoleSetting {
 
-    @ApiModelProperty(value = "Enable Allow Collection Table Access", dataType = "java.lang.Boolean", example = "true", position = 1)
+    @Schema(description = "Enable Allow Collection Table Access", type = "java.lang.Boolean",
+        example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean formSheetAccessible;
 }

@@ -18,30 +18,29 @@
 
 package com.apitable.workspace.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Node Association Request Parameters
+ * Node Association Request Parameters.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Node Association Request Parameters")
+@Schema(description = "Node Association Request Parameters")
 public class NodeRelRo {
 
-    @ApiModelProperty(value = "Datasheet ID", position = 1)
+    @Schema(description = "Datasheet ID")
     private String datasheetId;
 
-    @ApiModelProperty(value = "View ID", position = 2)
+    @Schema(description = "View ID")
     private String viewId;
 
-    @ApiModelProperty(value = "View Name", position = 2)
+    @Schema(description = "View Name")
     private String viewName;
 
     public NodeRelRo(String viewId) {

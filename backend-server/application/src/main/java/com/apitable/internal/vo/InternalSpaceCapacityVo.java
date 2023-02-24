@@ -18,44 +18,44 @@
 
 package com.apitable.internal.vo;
 
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-
 /**
- * attachment capacity information view for spaces
+ * attachment capacity information view for spaces.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Attachment capacity information view for spaces")
+@Schema(description = "Attachment capacity information view for spaces")
 public class InternalSpaceCapacityVo {
 
-    @ApiModelProperty(value = "whether to allow over limiting", example = "false", position = 1)
+    @Schema(description = "whether to allow over limiting", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAllowOverLimit;
 
-    @ApiModelProperty(value = "used capacity unit byte", dataType = "java.lang.String", example = "1024", position = 1)
+    @Schema(description = "used capacity unit byte", type = "java.lang.String", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long usedCapacity;
 
-    @ApiModelProperty(value = "total capacity unit byte", dataType = "java.lang.String", example = "1024", position = 2)
+    @Schema(description = "total capacity unit byte", type = "java.lang.String", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long totalCapacity;
 
-    @ApiModelProperty(value = "current package capacity unit byte", dataType = "java.lang.String", example = "1024", position = 3)
+    @Schema(description = "current package capacity unit byte", type = "java.lang.String",
+        example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long currentBundleCapacity;
 
-    @ApiModelProperty(value = "gift unexpired capacity unit byte", dataType = "java.lang.String", example = "1024", position = 4)
+    @Schema(description = "gift unexpired capacity unit byte", type = "java.lang.String",
+        example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long unExpireGiftCapacity;
 }

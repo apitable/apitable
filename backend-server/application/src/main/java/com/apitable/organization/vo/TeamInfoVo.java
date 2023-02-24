@@ -18,56 +18,55 @@
 
 package com.apitable.organization.vo;
 
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-
 /**
  * <p>
- * Department information
+ * Department information.
  * </p>
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Department information")
+@Schema(description = "Department information")
 public class TeamInfoVo {
 
-    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Department ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
+    @Schema(description = "Department name", example = "R&D Department")
     private String teamName;
 
-    @ApiModelProperty(value = "Parent ID, 0 if the parent is root", dataType = "java.lang.String", example = "0", position = 3)
+    @Schema(description = "Parent ID, 0 if the parent is root", type = "java.lang.String",
+        example = "0")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
-    @ApiModelProperty(value = "Parent department name", example = "Scientific Research Center", position = 3)
+    @Schema(description = "Parent department name", example = "Scientific Research Center")
     private String parentTeamName;
 
-    @ApiModelProperty(value = "Number of department members", example = "3", position = 4)
+    @Schema(description = "Number of department members", example = "3")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "Number of activated department members", example = "3", position = 5)
+    @Schema(description = "Number of activated department members", example = "3")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer activateMemberCount;
 
-    @ApiModelProperty(value = "Sort No", example = "1", position = 6)
+    @Schema(description = "Sort No", example = "1")
     private Integer sequence;
 
-    @ApiModelProperty(value = "Whether there are sub departments", example = "true", position = 7)
+    @Schema(description = "Whether there are sub departments", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasChildren;
 }
