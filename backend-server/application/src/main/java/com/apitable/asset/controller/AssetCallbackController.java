@@ -18,10 +18,6 @@
 
 package com.apitable.asset.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.ro.AssetUploadNotifyRO;
 import com.apitable.asset.service.IAssetCallbackService;
@@ -30,9 +26,10 @@ import com.apitable.base.model.WidgetUploadNotifyRO;
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,23 +39,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Chambers
  */
 @RestController
-@Api(tags = "Basic module - accessory callback interface")
+@Tag(name = "Basic module - accessory callback interface")
 @ApiResource(path = "/asset")
 public class AssetCallbackController {
 
-    /**  */
     @Resource
     private IAssetCallbackService iAssetCallbackService;
 
     /**
-     * *
-     * @param body AssetUploadNotifyRO
-     * @return ResponseData<List<AssetUploadResult>>
+     * Resource upload completion notification callbac.
      */
     @PostResource(name = "Resource upload completion notification callback",
         path = "/upload/callback", requiredLogin = false)
-    @ApiOperation(value = "Resource upload completion notification callback",
-        notes = "After S3 completes the client upload, "
+    @Operation(summary = "Resource upload completion notification callback",
+        description = "After S3 completes the client upload, "
             + "it actively reaches the notification server")
     public ResponseData<List<AssetUploadResult>> notifyCallback(
         @RequestBody final AssetUploadNotifyRO body) {
@@ -68,13 +62,11 @@ public class AssetCallbackController {
     }
 
     /**
-     * *
-     * @param body WidgetUploadNotifyRO
-     * @return ResponseData<Void>
+     * widget upload callback.
      */
     @PostResource(name = "widget upload callback",
         path = "/widget/uploadCallback", requiredLogin = false)
-    @ApiOperation(value = "widget upload callback")
+    @Operation(summary = "widget upload callback")
     public ResponseData<Void> widgetCallback(
         @RequestBody final WidgetUploadNotifyRO body) {
         iAssetCallbackService.widgetCallback(body.getResourceKeys());
