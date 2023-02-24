@@ -40,11 +40,10 @@ export const CreateTeamModal: FC<React.PropsWithChildren<IModalProps>> = props =
     rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,
   }), shallowEqual);
   const teamId = rightClickTeamInfoInSpace.teamId ? rightClickTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID;
-  const [setStart] = useCreateSubTeam(inputContent, spaceId, teamId, user!);
+  const { createTeam } = useCreateSubTeam(inputContent, spaceId, teamId, user!);
 
   const validCreate = () => {
-    setStart(true);
-    setTimeout(() => {
+    createTeam().then(() => {
       props.setModalVisible(false);
     });
   };

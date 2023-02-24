@@ -54,25 +54,18 @@ export const useChangeLogo = (spaceId: string, cancel?: () => void) => {
   return { setLogo, logo };
 };
 // Adding sub-sectors
-export const useCreateSubTeam = (name: string, spaceId: string, superId: string, user: IUserInfo) => {
+export const useCreateSubTeam = (name: string, spaceId: string, superId: string, user: IUserInfo): { createTeam: () => Promise<void>; } => {
   const dispatch = useAppDispatch();
-  const [start, setStart] = useState(false);
-  useEffect(() => {
-    start && Api.createTeam(name, superId).then(res => {
-      const { success } = res.data;
-      if (success) {
-        dispatch(StoreActions.getTeamListDataInSpace(spaceId, user));
-        Message.success({ content: t(Strings.create_team_success) });
-      } else {
-        Message.error({ content: t(Strings.create_team_fail) });
-      }
-    });
-
-    return () => {
-      setStart(false);
-    };
-  }, [start, dispatch, name, spaceId, superId, user]);
-  return [setStart];
+  const createTeam = () => Api.createTeam(name, superId).then(res => {
+    const { success } = res.data;
+    if (success) {
+      dispatch(StoreActions.getTeamListDataInSpace(spaceId, user));
+      Message.success({ content: t(Strings.create_team_success) });
+    } else {
+      Message.error({ content: t(Strings.create_team_fail) });
+    }
+  });
+  return { createTeam };
 };
 
 // Edit member information
