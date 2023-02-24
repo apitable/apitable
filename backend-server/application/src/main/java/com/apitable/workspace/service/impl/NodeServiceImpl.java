@@ -410,8 +410,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth) {
         log.info("Query node tree ");
-        List<String> nodeIds = nodeMapper.selectSubNodesByOrder(spaceId, nodeId, depth);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(spaceId, nodeId, depth);
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, nodeIds);
+    }
+
+    @Override
+    public List<String> getNodeIdsInNodeTree(String spaceId, String nodeId, Integer depth) {
+        if (!nodeId.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())) {
+            return Collections.singletonList(nodeId);
+        }
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(nodeId);
+        List<String> parentIds = nodeIds;
+        while (!parentIds.isEmpty() && depth != 0) {
+            List<String> subNodeIds =
+                nodeMapper.selectNodeIdBySpaceIdAndParentIdIn(spaceId, parentIds);
+            if (subNodeIds.isEmpty()) {
+                break;
+            }
+            nodeIds.addAll(subNodeIds);
+            depth--;
+            parentIds = subNodeIds.stream()
+                .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
+                .collect(Collectors.toList());
+        }
+        return nodeIds;
     }
 
     @Override

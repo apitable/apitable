@@ -129,6 +129,19 @@
         AND is_rubbish = 0
     </select>
 
+    <select id="selectNodeIdBySpaceIdAndParentIdIn"
+            resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+        AND parent_id IN
+        <foreach item="item" index="index" collection="parentIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = 0
+    </select>
+
     <select id="selectSubNodeIds" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
@@ -355,42 +368,6 @@
         </foreach>
         AND vn.is_rubbish = 0
         GROUP BY vn.node_id
-    </select>
-
-    <select id="selectSubNodesByOrder" resultType="java.lang.String">
-        WITH RECURSIVE tree_view(node_id) AS (
-        SELECT vn.node_id
-        FROM ${tablePrefix}node vn
-        WHERE vn.space_id = #{spaceId} AND vn.pre_node_id IS NULL AND vn.is_rubbish = 0 AND vn.parent_id IN
-        (
-        WITH RECURSIVE tree (node_id, type, lvl) AS (
-        SELECT node_id,
-        type,
-        1 lvl
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT vn.node_id,
-        vn.type,
-        c.lvl + 1
-        FROM tree c
-        JOIN ${tablePrefix}node vn ON vn.parent_id = c.node_id AND vn.is_rubbish = 0
-        <if test="depth != 0">
-            WHERE c.lvl <![CDATA[<]]> #{depth}
-        </if>
-        )
-        SELECT node_id
-        FROM tree
-        WHERE type != 2
-        )
-        UNION ALL
-        SELECT vn.node_id
-        FROM tree_view p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )
-        SELECT node_id FROM tree_view GROUP BY node_id
-        UNION
-        SELECT #{nodeId} AS node_id
     </select>
 
     <select id="selectShareTreeByNodeId" resultType="com.apitable.workspace.vo.NodeShareTree">

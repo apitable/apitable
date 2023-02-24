@@ -152,14 +152,15 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     NodeInfoVo selectNodeInfoByNodeId(@Param("nodeId") String nodeId);
 
     /**
-     * the child node of the query node, their order.
+     * Query sub node id
      *
-     * @param spaceId space id
-     * @param nodeId node id
-     * @param depth recursive depth starting with 1
-     * @return NodeInfoTreeVo
+     * @param spaceId   space id
+     * @param parentIds parent node ids
+     * @return NodeIds
+     * @author Chambers
      */
-    List<String> selectSubNodesByOrder(@Param("spaceId") String spaceId, @Param("nodeId") String nodeId, @Param("depth") int depth);
+    List<String> selectNodeIdBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
+        @Param("parentIds") Collection<String> parentIds);
 
     /**
      * Query the ID of the direct child node

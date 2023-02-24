@@ -204,6 +204,17 @@ public interface INodeService extends IService<NodeEntity> {
     NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth);
 
     /**
+     * Get node ids in node tree.
+     *
+     * @param spaceId space id
+     * @param nodeId  node id
+     * @param depth   recursive depth starting with 1
+     * @return NodeInfoTreeVo
+     * @author Chambers
+     */
+    List<String> getNodeIdsInNodeTree(String spaceId, String nodeId, Integer depth);
+
+    /**
      * query child node information
      *
      * @param spaceId space id

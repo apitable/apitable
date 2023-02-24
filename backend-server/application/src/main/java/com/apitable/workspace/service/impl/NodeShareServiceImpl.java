@@ -270,7 +270,8 @@ public class NodeShareServiceImpl implements INodeShareService {
         List<String> nodeIds = CollUtil.newArrayList(node.getNodeId());
         boolean hasChildren = nodeMapper.selectHasChildren(node.getNodeId());
         if (hasChildren) {
-            List<String> subNodeIds = nodeMapper.selectSubNodesByOrder(node.getSpaceId(), node.getNodeId(), 0);
+            List<String> subNodeIds =
+                iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), node.getNodeId(), -1);
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 nodeIds.addAll(subNodeIds);
             }
