@@ -18,37 +18,34 @@
 
 package com.apitable.workspace.ro;
 
+import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
 
 /**
  * <p>
- * Batch Modify Node Role Request Parameters
+ * Batch Modify Node Role Request Parameters.
  * </p>
  */
 @Data
-@ApiModel("Batch Modify Org Unit Role Request Parameters")
+@Schema(description = "Batch Modify Org Unit Role Request Parameters")
 public class BatchModifyNodeRoleRo {
 
-	@NotBlank(message = "Node ID cannot be empty")
-	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
-	private String nodeId;
+    @NotBlank(message = "Node ID cannot be empty")
+    @Schema(description = "Node ID", example = "nod10")
+    private String nodeId;
 
-	@NotEmpty(message = "Organization unit cannot be empty")
-	@ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
-	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
-	private List<Long> unitIds;
+    @NotEmpty(message = "Organization unit cannot be empty")
+    @Schema(description = "Org Unit ID Set", type = "java.util.List", required = true, example =
+        "[\"1\",\"2\",\"3\"]")
+    @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
+    private List<Long> unitIds;
 
-	@ApiModelProperty(value = "Role", example = "readonly", position = 3, required = true)
-	@NotBlank(message = "Role cannot be empty")
-	private String role;
+    @Schema(description = "Role", example = "readonly", required = true)
+    @NotBlank(message = "Role cannot be empty")
+    private String role;
 }

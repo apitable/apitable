@@ -18,11 +18,14 @@
 
 package com.apitable.internal.vo;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * Url Aware Content Vo.
+ */
 @Data
-@ApiModel("URL Content Recognition Results")
+@Schema(description = "URL Content Recognition Results")
 public class UrlAwareContentVo {
 
     private Boolean isAware;

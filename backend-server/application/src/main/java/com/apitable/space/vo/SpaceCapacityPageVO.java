@@ -18,24 +18,26 @@
 
 package com.apitable.space.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * Space Capacity Page VO.
+ */
 @Data
-@ApiModel("Space Asset Capacity Detail")
+@Schema(description = "Space Asset Capacity Detail")
 public class SpaceCapacityPageVO {
 
-    @ApiModelProperty(value = "invited user info", position = 1)
+    @Schema(description = "invited user info")
     private InviteUserInfo inviteUserInfo;
 
-    @ApiModelProperty(value = "quota source", position = 2)
+    @Schema(description = "quota source")
     private String quotaSource;
 
-    @ApiModelProperty(value = "quota", position = 3)
+    @Schema(description = "quota")
     private String quota;
 
-    @ApiModelProperty(value = "expire date", position = 4)
+    @Schema(description = "expire date")
     private String expireDate;
 
 }

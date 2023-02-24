@@ -18,25 +18,24 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Field permission set
+ * Field permission set.
  * </p>
  */
 @Data
 public class FieldPermission {
 
-    @ApiModelProperty(value = "Viewable", example = "true")
+    @Schema(description = "Viewable", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean readable;
 
-    @ApiModelProperty(value = "Editable", example = "true")
+    @Schema(description = "Editable", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean editable;
 }

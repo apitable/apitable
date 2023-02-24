@@ -18,23 +18,23 @@
 
 package com.apitable.workspace.ro;
 
-import java.util.List;
-
-import javax.validation.constraints.NotEmpty;
-
+import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
-import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
-
+/**
+ * Batch Field Role Delete Ro.
+ */
 @Data
-@ApiModel("Batch data table field role deletion request parameter")
+@Schema(description = "Batch data table field role deletion request parameter")
 public class BatchFieldRoleDeleteRo {
 
     @NotEmpty(message = "Organization unit cannot be empty")
-    @ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
+    @Schema(description = "Org Unit ID Set", type = "java.util.List", required = true, example =
+        "[\"1\",\"2\",\"3\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 

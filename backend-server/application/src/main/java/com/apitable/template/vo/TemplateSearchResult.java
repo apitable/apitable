@@ -18,37 +18,34 @@
 
 package com.apitable.template.vo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.NullArraySerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Template Search Results
+ * Template Search Results.
  * </p>
  */
 @Data
-@ApiModel("Template Search Results")
+@Schema(description = "Template Search Results")
 public class TemplateSearchResult {
 
-    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1)
+    @Schema(description = "Template ID", example = "tplHTbkg7qbNJ")
     private String templateId;
 
-    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 2)
+    @Schema(description = "Template Name", example = "This is a template")
     private String templateName;
 
-    @ApiModelProperty(value = "Template classification code", example = "tpcCq88sqNqEv", position = 1)
+    @Schema(description = "Template classification code", example = "tpcCq88sqNqEv")
     private String categoryCode;
 
-    @ApiModelProperty(value = "Template Classification Name", example = "TV play", position = 2)
+    @Schema(description = "Template Classification Name", example = "TV play")
     private String categoryName;
 
-    @ApiModelProperty(value = "Label Name", example = "TV play", position = 2)
+    @Schema(description = "Label Name", example = "TV play")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> tags;
 

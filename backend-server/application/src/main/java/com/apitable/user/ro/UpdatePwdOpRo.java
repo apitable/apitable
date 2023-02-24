@@ -18,27 +18,25 @@
 
 package com.apitable.user.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.base.enums.ValidateType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Modify password request parameters
+ * Modify password request parameters.
  * </p>
  */
 @Data
-@ApiModel("Modify password request parameters")
+@Schema(description = "Modify password request parameters")
 public class UpdatePwdOpRo {
 
-    @ApiModelProperty(value = "Check Type", example = "sms_code")
+    @Schema(description = "Check Type", example = "sms_code")
     private ValidateType type;
 
-    @ApiModelProperty(value = "Phone number/Email Verification Code", example = "123456", position = 2)
+    @Schema(description = "Phone number/Email Verification Code", example = "123456")
     private String code;
 
-    @ApiModelProperty(value = "Password", example = "qwer1234", position = 3, required = true)
+    @Schema(description = "Password", example = "qwer1234", required = true)
     private String password;
 }

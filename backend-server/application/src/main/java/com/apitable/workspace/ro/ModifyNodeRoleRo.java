@@ -18,35 +18,33 @@
 
 package com.apitable.workspace.ro;
 
+import com.apitable.core.support.deserializer.StringToLongDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.core.support.deserializer.StringToLongDeserializer;
 
 /**
  * <p>
- * Modify node role request parameters
+ * Modify node role request parameters.
  * </p>
  */
 @Data
-@ApiModel("Modify Org Unit Role Request Parameters")
+@Schema(description = "Modify Org Unit Role Request Parameters")
 public class ModifyNodeRoleRo {
 
-	@NotBlank(message = "Node ID cannot be empty")
-	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
-	private String nodeId;
+    @NotBlank(message = "Node ID cannot be empty")
+    @Schema(description = "Node ID", example = "nod10")
+    private String nodeId;
 
-	@NotNull(message = "Organization unit cannot be empty")
-	@ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
-	@JsonDeserialize(using = StringToLongDeserializer.class)
-	private Long unitId;
+    @NotNull(message = "Organization unit cannot be empty")
+    @Schema(description = "Org Unit ID", type = "java.lang.String", required = true, example =
+        "761263712638")
+    @JsonDeserialize(using = StringToLongDeserializer.class)
+    private Long unitId;
 
-	@ApiModelProperty(value = "Role", example = "readonly", position = 3, required = true)
-	@NotBlank(message = "Role cannot be empty")
-	private String role;
+    @Schema(description = "Role", example = "readonly", required = true)
+    @NotBlank(message = "Role cannot be empty")
+    private String role;
 }

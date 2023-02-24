@@ -18,32 +18,32 @@
 
 package com.apitable.space.vo;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import cn.hutool.core.date.DatePattern;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
+import java.util.List;
+import lombok.Data;
 
+/**
+ * Space Subscribe Vo.
+ */
 @Data
-@ApiModel("Space Subscribe Info")
+@Schema(description = "Space Subscribe Info")
 public class SpaceSubscribeVo {
 
-    @ApiModelProperty(value = "version", example = "V1", position = 1)
+    @Schema(description = "version", example = "V1")
     private String version;
 
-    @ApiModelProperty(value = "produce name", example = "Bronze", position = 2)
+    @Schema(description = "produce name", example = "Bronze")
     private String product;
 
-    @ApiModelProperty(value = "whether on trial", example = "false", position = 2)
+    @Schema(description = "whether on trial", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean onTrial;
 
@@ -51,165 +51,165 @@ public class SpaceSubscribeVo {
 
     private String recurringInterval;
 
-    @ApiModelProperty(value = "plan name", example = "bronze_no_billing_period", position = 3)
+    @Schema(description = "plan name", example = "bronze_no_billing_period")
     private String plan;
 
-    @ApiModelProperty(value = "added plan names", dataType = "List", example = "[\"space_capacity_50G_v1\",\"api_usage_20000_v1\"]", position = 5)
+    @Schema(description = "added plan names", type = "List", example = "[\"space_capacity_50G_v1\",\"api_usage_20000_v1\"]")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> addOnPlans;
 
     private Long expireAt;
 
-    @ApiModelProperty(value = "subscription expiration time. if free, it is null.", example = "2019-01-01", position = 6)
+    @Schema(description = "subscription expiration time. if free, it is null.", example = "2019-01-01")
     @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate deadline;
 
-    @ApiModelProperty(value = "seat(unit: people)", example = "10", position = 7)
+    @Schema(description = "seat(unit: people)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxSeats;
 
-    @ApiModelProperty(value = "capacity(unit: MB)", example = "10", position = 8)
+    @Schema(description = "capacity(unit: MB)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxCapacitySizeInBytes;
 
-    @ApiModelProperty(value = "sheet number(unit: table)", example = "10", position = 9)
+    @Schema(description = "sheet number(unit: table)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxSheetNums;
 
-    @ApiModelProperty(value = "max rows per sheet(unit: row)", example = "10", position = 10)
+    @Schema(description = "max rows per sheet(unit: row)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRowsPerSheet;
 
-    @ApiModelProperty(value = "max rows in space(unit: row)", example = "10", position = 11)
+    @Schema(description = "max rows in space(unit: row)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRowsInSpace;
 
-    @ApiModelProperty(value = "api usage limit(unit: count)", example = "10", position = 12)
+    @Schema(description = "api usage limit(unit: count)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxApiCall;
 
-    @ApiModelProperty(value = "admin nums(unit: person)", example = "10", position = 13)
+    @Schema(description = "admin nums(unit: person)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxAdminNums;
 
-    @ApiModelProperty(value = "days of storage in trash(unit: day)", example = "10", position = 14)
+    @Schema(description = "days of storage in trash(unit: day)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRemainTrashDays;
 
-    @ApiModelProperty(value = "max gallery views in space(unit: view)", example = "10", position = 15)
+    @Schema(description = "max gallery views in space(unit: view)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxGalleryViewsInSpace;
 
-    @ApiModelProperty(value = "max kanban views in space(unit: view)", example = "10", position = 16)
+    @Schema(description = "max kanban views in space(unit: view)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxKanbanViewsInSpace;
 
-    @ApiModelProperty(value = "max form views in space(unit: form)", example = "10", position = 17)
+    @Schema(description = "max form views in space(unit: form)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxFormViewsInSpace;
 
-    @ApiModelProperty(value = "max gantt views in space(unit: view)", example = "10", position = 18)
+    @Schema(description = "max gantt views in space(unit: view)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxGanttViewsInSpace;
 
-    @ApiModelProperty(value = "max calendar views in space(unit: view)", example = "10", position = 19)
+    @Schema(description = "max calendar views in space(unit: view)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxCalendarViewsInSpace;
 
-    @ApiModelProperty(value = "max field permission nums(unit: unit)", example = "10", position = 20)
+    @Schema(description = "max field permission nums(unit: unit)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long fieldPermissionNums;
 
-    @ApiModelProperty(value = "max node permission nums(unit: unit)", example = "10", position = 20)
+    @Schema(description = "max node permission nums(unit: unit)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long nodePermissionNums;
 
-    @ApiModelProperty(value = "number of days the time machine retains data(unit: day)", example = "10", position = 12)
+    @Schema(description = "number of days the time machine retains data(unit: day)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRemainTimeMachineDays;
 
-    @ApiModelProperty(value = "whether it can be integrated dingtalk", example = "false", position = 12)
+    @Schema(description = "whether it can be integrated dingtalk", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean integrationDingtalk;
 
-    @ApiModelProperty(value = "whether it can be integrated feishu", example = "false", position = 12)
+    @Schema(description = "whether it can be integrated feishu", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean integrationFeishu;
 
-    @ApiModelProperty(value = "whether it can be integrated wecom", example = "false", position = 12)
+    @Schema(description = "whether it can be integrated wecom", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean integrationWeCom;
 
-    @ApiModelProperty(value = "whether it can be office preview", example = "false", position = 12)
+    @Schema(description = "whether it can be office preview", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean integrationOfficePreview;
 
-    @ApiModelProperty(value = "whether it has rainbow label", example = "false", position = 12)
+    @Schema(description = "whether it has rainbow label", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean rainbowLabel;
 
-    @ApiModelProperty(value = "whether it has global watermark", example = "false", position = 12)
+    @Schema(description = "whether it has global watermark", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean watermark;
 
-    @ApiModelProperty(value = "max days of remain record activity (unit: day)", example = "14", position = 13)
+    @Schema(description = "max days of remain record activity (unit: day)", example = "14")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRemainRecordActivityDays;
 
-    @ApiModelProperty(value = "whether space in the black space", position = 14)
+    @Schema(description = "whether space in the black space")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean blackSpace;
 
-    @ApiModelProperty(value = "Security Settings - ordinary members perform the invite operation", example = "false", position = 15)
+    @Schema(description = "Security Settings - ordinary members perform the invite operation", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingInviteMember;
 
-    @ApiModelProperty(value = "Security Settings - off station users apply to join the space", example = "false", position = 16)
+    @Schema(description = "Security Settings - off station users apply to join the space", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingApplyJoinSpace;
 
-    @ApiModelProperty(value = "Security Settings - create a public link", example = "false", position = 17)
+    @Schema(description = "Security Settings - create a public link", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingShare;
 
-    @ApiModelProperty(value = "Security Settings - export datasheet", example = "false", position = 18)
+    @Schema(description = "Security Settings - export datasheet", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingExport;
 
-    @ApiModelProperty(value = "Security Settings - read only users download attachments", example = "false", position = 19)
+    @Schema(description = "Security Settings - read only users download attachments", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingDownloadFile;
 
-    @ApiModelProperty(value = "Security Settings - read only users copy data off site", example = "false", position = 20)
+    @Schema(description = "Security Settings - read only users copy data off site", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingCopyCellData;
 
-    @ApiModelProperty(value = "Security Settings - display member's mobile phone number", example = "false", position = 21)
+    @Schema(description = "Security Settings - display member's mobile phone number", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingMobile;
 
-    @ApiModelProperty(value = "the maximum days for querying audit logs(unit: day)", example = "14", position = 22)
+    @Schema(description = "the maximum days for querying audit logs(unit: day)", example = "14")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxAuditQueryDays;
 
-    @ApiModelProperty(value = "complimentary unexpired capacity(unit：byte)", dataType = "java.lang.String", example = "1024", position = 23)
+    @Schema(description = "complimentary unexpired capacity(unit：byte)", type = "java.lang.String", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long unExpireGiftCapacity;
 
-    @ApiModelProperty(value = "capacity(unit：byte)", dataType = "java.lang.String", example = "1024", position = 24)
+    @Schema(description = "capacity(unit：byte)", type = "java.lang.String", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long subscriptionCapacity;
 
-    @ApiModelProperty(value = "Security Settings - hidden concact", example = "false", position = 25)
+    @Schema(description = "Security Settings - hidden concact", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingAddressListIsolation;
 
-    @ApiModelProperty(value = "Security Settings - prohibit members manage files in the root directory", example = "false", position = 26)
+    @Schema(description = "Security Settings - prohibit members manage files in the root directory", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean securitySettingCatalogManagement;
 
-    @ApiModelProperty(value = "max mirror nums(unit: mirror)", example = "5", position = 27)
+    @Schema(description = "max mirror nums(unit: mirror)", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMirrorNums;
 }
