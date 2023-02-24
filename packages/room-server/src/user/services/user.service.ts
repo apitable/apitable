@@ -27,7 +27,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { UserEntity } from '../entities/user.entity';
 import { UserBaseInfoDto } from '../dtos/user.dto';
 import { UnitInfoDto } from 'unit/dtos/unit.info.dto';
-import { map, isArray } from 'lodash';
+import { map } from 'lodash';
 
 @Injectable()
 export class UserService {
