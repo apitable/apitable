@@ -18,24 +18,23 @@
 
 package com.apitable.space.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Role Resource View
+ * Role Resource View.
  * </p>
  */
 @Data
-@ApiModel("Role Resource View")
+@Schema(description = "Role Resource View")
 public class RoleResourceVo {
 
-	@ApiModelProperty(value = "Group Name", example = "Address book management", position = 1)
-	private String groupName;
+    @Schema(description = "Group Name", example = "Address book management")
+    private String groupName;
 
-	@ApiModelProperty(value = "Resource list", example = "[\"Manage Members\",\"Administrative department\",\"Manage Labels\"]", position = 2)
-	private List<String> resourceNames;
+    @Schema(description = "Resource list", example = "[\"Manage Members\",\"Administrative "
+        + "department\",\"Manage Labels\"]")
+    private List<String> resourceNames;
 }

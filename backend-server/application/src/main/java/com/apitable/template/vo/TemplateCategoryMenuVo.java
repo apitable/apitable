@@ -18,31 +18,29 @@
 
 package com.apitable.template.vo;
 
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Template Center - Template Category Menu View
+ * Template Center - Template Category Menu View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Template Category Menu View")
+@Schema(description = "Template Category Menu View")
 public class TemplateCategoryMenuVo {
 
-    @ApiModelProperty(value = "Template classification code", example = "tpcCq88sqNqEv", position = 1)
+    @Schema(description = "Template classification code", example = "tpcCq88sqNqEv")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String categoryCode;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Template Classification Name", example = "TV play", position = 2)
+    @Schema(description = "Template Classification Name", example = "TV play")
     private String categoryName;
 }

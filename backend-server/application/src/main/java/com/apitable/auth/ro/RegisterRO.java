@@ -18,24 +18,23 @@
 
 package com.apitable.auth.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * Login Request Parameters
+ * Login Request Parameters.
  *
  * @author Chambers
  */
 @Data
-@ApiModel("Authorization Sign Up Request Parameters")
+@Schema(description = "Authorization Sign Up Request Parameters")
 public class RegisterRO {
 
-    @ApiModelProperty(value = "Username(email/telephone...)",
-        example = "xxxx@apitable.com", position = 1, required = true)
+    @Schema(description = "Username(email/telephone...)",
+        example = "xxxx@apitable.com", required = true)
     private String username;
 
-    @ApiModelProperty(value = "Credential(password/verify code...)",
-        example = "qwer1234 || 261527", position = 2, required = true)
+    @Schema(description = "Credential(password/verify code...)",
+        example = "qwer1234 || 261527", required = true)
     private String credential;
 }

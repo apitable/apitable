@@ -18,24 +18,23 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * Favorite node information
+ * Favorite node information.
  * </p>
  */
 @Data
-@ApiModel("Favorite node information")
+@Schema(description = "Favorite node information")
 @EqualsAndHashCode(callSuper = true)
 public class FavoriteNodeInfo extends NodeInfoVo {
 
-    @ApiModelProperty(value = "The predecessor node ID of the favorite node", example = "nod11", position = 15)
+    @Schema(description = "The predecessor node ID of the favorite node", example = "nod11")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String preFavoriteNodeId;
 }

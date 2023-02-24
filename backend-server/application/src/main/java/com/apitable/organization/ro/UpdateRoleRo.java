@@ -18,27 +18,25 @@
 
 package com.apitable.organization.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * <p>
- *     update role members request parameter
+ * update role members request parameter.
  * </p>
  *
  * @author tao
  */
 @Data
-@ApiModel("Update role members request")
+@Schema(description = "Update role members request")
 public class UpdateRoleRo {
 
     @NotBlank
     @Size(min = 1, max = 100, message = "The role name cannot exceed 100 characters")
-    @ApiModelProperty(value = "role name", required = true, example = "finance", position = 1)
+    @Schema(description = "role name", required = true, example = "finance")
     private String roleName;
 
 }

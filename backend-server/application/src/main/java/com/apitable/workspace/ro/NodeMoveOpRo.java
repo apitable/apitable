@@ -18,27 +18,27 @@
 
 package com.apitable.workspace.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 /**
- * Node move request parameters
+ * Node move request parameters.
  */
 @Data
-@ApiModel("Node move request parameters")
+@Schema(description = "Node move request parameters")
 public class NodeMoveOpRo {
 
-    @ApiModelProperty(value = "Node Id", example = "nod10", position = 1, required = true)
+    @Schema(description = "Node Id", example = "nod10", required = true)
     @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "Parent Node Id of the target location", example = "nod10", position = 2, required = true)
-	@NotBlank(message = "The parent node ID cannot be empty")
+    @Schema(description = "Parent Node Id of the target location", example = "nod10", required =
+        true)
+    @NotBlank(message = "The parent node ID cannot be empty")
     private String parentId;
 
-    @ApiModelProperty(value = "The previous node of the target position moves to the first position when it is empty", example = "nod10", position = 3)
+    @Schema(description = "The previous node of the target position moves to the first position "
+        + "when it is empty", example = "nod10")
     private String preNodeId;
 }

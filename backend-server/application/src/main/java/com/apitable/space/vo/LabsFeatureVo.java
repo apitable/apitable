@@ -18,33 +18,31 @@
 
 package com.apitable.space.vo;
 
-import java.util.List;
-
+import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullArraySerializer;
-
 /**
  * <p>
- * List of experimental functions
+ * List of experimental functions.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("List of experimental function information")
+@Schema(description = "List of experimental function information")
 public class LabsFeatureVo {
 
     private static final String FEATURES = "[\"RENDER_PROMPT\", \"ASYNC_COMPUTE\", \"ROBOT\"]";
 
-    @ApiModelProperty(value = "List of experimental functions", dataType = "java.util.List", example = FEATURES, position = 1)
+    @Schema(description = "List of experimental functions", type = "java.util.List", example =
+        FEATURES)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> keys;
 }

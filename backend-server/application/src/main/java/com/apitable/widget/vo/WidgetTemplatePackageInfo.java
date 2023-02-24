@@ -18,52 +18,53 @@
 
 package com.apitable.widget.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Template Widget Package Information View
+ * Template Widget Package Information View.
  * </p>
  */
 @Data
-@ApiModel("Template Widget Package Information View")
+@Schema(description = "Template Widget Package Information View")
 public class WidgetTemplatePackageInfo {
 
-    @ApiModelProperty(value = "Widget Package ID", example = "wpkABC", position = 1)
+    @Schema(description = "Widget Package ID", example = "wpkABC")
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "Widget package name", example = "Chart", position = 2)
+    @Schema(description = "Widget package name", example = "Chart")
     private String name;
 
-    @ApiModelProperty(value = "Widget package icon", example = "https://apitable.com/space/2020/12/23/aqa", position = 3)
+    @Schema(description = "Widget package icon", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String icon;
 
-    @ApiModelProperty(value = "Widget Package Cover", example = "https://apitable.com/space/2020/12/23/aqa", position = 4)
+    @Schema(description = "Widget Package Cover", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "Describe", example = "This is the description of a chart applet", position = 5)
+    @Schema(description = "Describe", example = "This is the description of a chart applet")
     private String description;
 
-    @ApiModelProperty(value = "Widget package version number", example = "1.0.0", position = 6)
+    @Schema(description = "Widget package version number", example = "1.0.0")
     private String version;
 
-    @ApiModelProperty(value = "Code Address", example = "https://apitable.com/code/2020/12/23/aqa", position = 7)
+    @Schema(description = "Code Address", example = "https://apitable.com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String releaseCodeBundle;
 
-    @ApiModelProperty(value = "Source code address", example = "https://apitable.com/code/2020/12/23/aqa", position = 8)
+    @Schema(description = "Source code address", example = "https://apitable"
+        + ".com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String sourceCodeBundle;
 
-    @ApiModelProperty(value = "Widget Package Extension Information", position = 9)
+    @Schema(description = "Widget Package Extension Information")
     private WidgetTemplatePackageExtraInfo extras;
 
 }

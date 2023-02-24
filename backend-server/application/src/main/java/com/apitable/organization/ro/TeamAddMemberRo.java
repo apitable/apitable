@@ -18,27 +18,26 @@
 
 package com.apitable.organization.ro;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Department Add Member Information Request Parameters
+ * Department Add Member Information Request Parameters.
  * </p>
  */
 @Data
-@ApiModel("Department Add Member Information Request Parameters")
+@Schema(description = "Department Add Member Information Request Parameters")
 public class TeamAddMemberRo {
 
-    @ApiModelProperty(value = "Department ID, not required. If it is the root department, it can not be transferred", dataType = "java.lang.String", required = true, example = "12032", position = 1)
+    @Schema(description = "Department ID, not required. If it is the root department, it can not "
+        + "be transferred", type = "java.lang.String", required = true, example = "12032")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "Department or member list", required = true, position = 2)
+    @Schema(description = "Department or member list", required = true)
     private List<OrgUnitRo> unitList;
 }
