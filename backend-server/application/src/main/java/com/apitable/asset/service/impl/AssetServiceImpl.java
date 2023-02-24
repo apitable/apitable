@@ -146,6 +146,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     public void checkBeforeUpload(String nodeId, String secret) {
+        if (!humanVerificationServiceFacade.isEnabled()) {
+            return;
+        }
         // get api key
         String apiKey = ApiHelper.getApiKey(HttpContextUtil.getRequest());
         // check whether the api key is valid
