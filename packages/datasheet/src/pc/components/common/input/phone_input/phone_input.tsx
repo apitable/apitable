@@ -85,8 +85,9 @@ export const PhoneInputBase: ForwardRefRenderFunction<any, IPhoneInputProps> = (
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    onChange && onChange(areaCode, value);
-    setPhone(value);
+    const newValue = value.replace(/\D/g, '');
+    onChange && onChange(areaCode, newValue);
+    setPhone(newValue);
   };
 
   const PhoneCodeSelect = () => {

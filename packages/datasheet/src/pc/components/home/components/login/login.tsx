@@ -136,6 +136,11 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
       okText: 'OK',
     });
   };
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
   return (
     <div className={styles.loginWrap}>
       <Form onFinish={handleSubmit}>
@@ -148,6 +153,7 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
               className={styles.input}
               value={username}
               onChange={e => setUsername(e.target.value)}
+              onKeyPress={handleKeyPress}
               prefix={<EmailOutlined color={colors.textCommonPrimary}/>}
               placeholder='Please enter your email address'
               error={Boolean(errorMsg.username)}
