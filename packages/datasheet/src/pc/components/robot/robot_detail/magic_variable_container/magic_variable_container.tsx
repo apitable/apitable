@@ -53,7 +53,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   useEffect(() => {
     setTimeout(() => {
       searchRef.current?.focus();
-    }, 0);
+    }, 100);
   }, []);
   useEffect(() => {
     if (searchValue) {
