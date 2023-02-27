@@ -425,7 +425,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> parentIds = nodeIds;
         while (!parentIds.isEmpty() && depth != 0) {
             List<NodeTreeDTO> subNode =
-                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds);
+                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds, null);
             if (subNode.isEmpty()) {
                 break;
             }
@@ -462,10 +462,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType) {
+    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId,
+        NodeType nodeType) {
         log.info("Query the list of child nodes ");
         // Get a direct child node
-        List<String> subNodeIds = nodeMapper.selectOrderSubNodeIds(nodeId, nodeType);
+        List<NodeTreeDTO> subNode =
+            nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId,
+                Collections.singleton(nodeId), null);
+        if (subNode.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<String> subNodeIds = this.sortNodeAtSameLevel(subNode);
         return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
     }
 

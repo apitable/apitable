@@ -157,11 +157,12 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param spaceId   space id
      * @param parentIds parent node ids
+     * @param nodeType  node type(no require)
      * @return List<NodeTreeDTO>
      * @author Chambers
      */
     List<NodeTreeDTO> selectNodeTreeDTOBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
-        @Param("parentIds") Collection<String> parentIds);
+        @Param("parentIds") Collection<String> parentIds, @Param("nodeType") NodeType nodeType);
 
     /**
      * Query the ID of the direct child node
@@ -178,15 +179,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return children node
      */
     List<SimpleSortableNodeInfo> selectSubNodeInfo(@Param("parentId") String parentId);
-
-    /**
-     * Query the ID of the direct child node
-     * Ordered nodes, performance consumption
-     *
-     * @param nodeId node id
-     * @return children node
-     */
-    List<String> selectOrderSubNodeIds(@Param("nodeId") String nodeId, @Param("nodeType") NodeType nodeType);
 
     /**
      * get the node sharing tree

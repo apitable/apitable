@@ -139,6 +139,9 @@
                  separator="," close=")">
             #{item}
         </foreach>
+        <if test="nodeType != null">
+            AND pre.type = #{nodeType.nodeType}
+        </if>
         AND is_rubbish = 0
     </select>
 
@@ -153,30 +156,6 @@
         SELECT node_id, pre_node_id
         FROM ${tablePrefix}node
         WHERE parent_id = #{parentId} and is_rubbish = 0
-    </select>
-
-    <select id="selectOrderSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id, pre_node_id, type) AS (
-        SELECT vn.node_id,
-        vn.pre_node_id,
-        vn.type
-        FROM ${tablePrefix}node vn
-        WHERE vn.parent_id = #{nodeId}
-        AND vn.pre_node_id IS NULL
-        AND vn.is_rubbish = 0
-        UNION ALL
-        SELECT vn.node_id,
-        vn.pre_node_id,
-        vn.type
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id
-        AND vn.is_rubbish = 0
-        )
-        SELECT node_id
-        FROM pre
-        <if test="nodeType != null">
-            WHERE pre.type = #{nodeType.nodeType}
-        </if>
     </select>
 
     <select id="selectAllSubNodeIds" resultType="java.lang.String">
