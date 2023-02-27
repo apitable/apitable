@@ -74,7 +74,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
       query.andWhere('vum.is_deleted = 0').andWhere('vu.is_deleted = 0');
     }
     if (!isNil(unitType)) {
-      query.andWhere('vum.unit_type = :unitType', { unitType });
+      query.andWhere('vu.unit_type = :unitType', { unitType });
     }
     const members = await query.getRawMany<{
       memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; 
