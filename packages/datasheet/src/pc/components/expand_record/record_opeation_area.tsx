@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';
-import { GotoLargeOutlined, CloseMiddleOutlined, FullscreenOutlined, UnfullscreenOutlined } from '@apitable/icons';
+import { GotoOutlined, CloseOutlined, ExpandOutlined, NarrowOutlined } from '@apitable/icons';
 import { IconButton, LinkButton } from '@apitable/components';
 
 import { RecordPageTurn } from './record_page_turn/record_page_turn';
@@ -56,7 +56,7 @@ export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperat
           <LinkButton
             underline={false}
             component="button"
-            prefixIcon={<GotoLargeOutlined color={colorVars.fc3} />}
+            prefixIcon={<GotoOutlined color={colorVars.fc3} />}
             color={colorVars.fc2}
             className={styles.sourceButton}
             onClick={gotoSourceDst}
@@ -81,12 +81,12 @@ export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperat
           icon={() => (
             isRecordFullScreen
               ?
-              <UnfullscreenOutlined        
+              <NarrowOutlined        
                 size={16}
                 color={colorVars.fc3}
               />
               :
-              <FullscreenOutlined
+              <ExpandOutlined
                 size={16}
                 color={colorVars.fc3}
               />
@@ -104,7 +104,7 @@ export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperat
         component="button"
         shape="square"
         icon={() => (
-          <CloseMiddleOutlined
+          <CloseOutlined
             size={16}
             color={colorVars.fc3}
           />

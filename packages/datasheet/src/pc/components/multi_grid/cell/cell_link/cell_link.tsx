@@ -209,7 +209,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
     );
   }
 
-  function dbClick() {
+  async function dbClick() {
     if (allowShowTip) {
       // Edit access to this datasheet, but no edit access to related datasheet
       setShowTip(true);
@@ -218,7 +218,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
       }, 3000);
       return;
     }
-    !readonly && toggleEdit && toggleEdit();
+    !readonly && toggleEdit && await toggleEdit();
   }
 
   const MainLayout = () => {

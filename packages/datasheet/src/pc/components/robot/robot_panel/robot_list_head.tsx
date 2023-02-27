@@ -18,7 +18,7 @@
 
 import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { AddOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useAddNewRobot, useShowRobot } from '../hooks';
@@ -119,7 +119,7 @@ export const RobotListHead = () => {
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
-              icon={InformationSmallOutlined} onClick={() => {
+              icon={QuestionCircleOutlined} onClick={() => {
                 window.open(t(Strings.robot_help_url));
               }} />
           </Box>
@@ -129,7 +129,7 @@ export const RobotListHead = () => {
       <IconButton
         shape="square"
         onClick={() => ShortcutActionManager.trigger(ShortcutActionName.ToggleRobotPanel)}
-        icon={CloseMiddleOutlined}
+        icon={CloseOutlined}
         style={{ position: 'absolute', right: 16 }}
       />
     </>

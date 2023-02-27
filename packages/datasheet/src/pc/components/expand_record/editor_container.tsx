@@ -18,7 +18,7 @@
 
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t, ViewType, IViewColumn } from '@apitable/core';
-import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
+import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
@@ -206,8 +206,8 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
           >
             <div className={styles.dropdown}>
               {showHiddenField
-                ? <TriangleDown16Filled color={colors.primaryColor} />
-                : <TriangleRight16Filled color={colors.thirdLevelText} />
+                ? <TriangleDownFilled color={colors.primaryColor} />
+                : <TriangleRightFilled color={colors.thirdLevelText} />
               }
               <h5 className={styles.typography}>
                 {!showHiddenField

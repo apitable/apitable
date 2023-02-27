@@ -18,7 +18,7 @@
 
 import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { ApiOutlined, BookOutlined, DebugOutlined } from '@apitable/icons';
+import { ApiOutlined, BookOutlined, AdjustmentOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
@@ -98,7 +98,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             }}
             variant='fill'
             color={colors.blackBlue[1000]}
-            prefixIcon={<DebugOutlined />}
+            prefixIcon={<AdjustmentOutlined />}
             className={styles.linkButton}
           >
             {t(Strings.request_in_api_panel)}

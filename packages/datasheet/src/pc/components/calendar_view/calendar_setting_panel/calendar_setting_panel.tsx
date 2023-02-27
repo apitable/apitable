@@ -21,7 +21,7 @@ import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
   getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, ISetCalendarStyle, IDPrefix, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { notify } from 'pc/components/common/notify';
@@ -207,11 +207,11 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
               rel='noopener noreferrer'
               className={styles.helpIcon}
             >
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseMiddleOutlined
+        <CloseOutlined
           className={styles.closeIcon}
           size={16}
           color={black[500]}
@@ -221,7 +221,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
       {
         getEnvVariables().CALENDAR_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
-            <ClassroomOutlined size={16} color={colors.primaryColor} />
+            <ClassOutlined size={16} color={colors.primaryColor} />
             <Typography variant='body3' color={colors.secondLevelText}>
               {t(Strings.calendar_play_guide_video_title)}
             </Typography>

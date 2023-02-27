@@ -22,5 +22,7 @@ import com.apitable.interfaces.security.model.NonRobotMetadata;
 
 public interface HumanVerificationServiceFacade {
 
+    boolean isEnabled();
+
     void verifyNonRobot(NonRobotMetadata metadata);
 }

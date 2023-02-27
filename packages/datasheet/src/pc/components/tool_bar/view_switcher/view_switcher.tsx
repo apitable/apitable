@@ -33,6 +33,7 @@ import { store } from 'pc/store';
 import { Modal } from 'pc/components/common';
 import { changeView, useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -67,8 +68,10 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
     const { value } = e.target;
     let errorMsg = '';
     // Determine if the length is between 1 and 30.
-    if (value.length < 1 || value.length > 30) {
-      errorMsg = t(Strings.view_name_length_err);
+    if (value.length < 1 || value.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      errorMsg = t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      });
     }
     setErrMsg(errorMsg);
     setEditingValue(value);
@@ -102,8 +105,10 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
 
     if (isExitSameName !== -1) {
       errorMsg = t(Strings.name_repeat);
-    } else if (!editingValue || editingValue.length > 30) {
-      errorMsg = t(Strings.view_name_length_err); // Name requirement within 1~30 characters.
+    } else if (!editingValue || editingValue.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      errorMsg = t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      }); // Name requirement within 1~30 characters.
     }
 
     if (errorMsg) {
@@ -291,8 +296,8 @@ export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherPropert
     if (!viewCreatable) {
       return;
     }
-    // The following two block bubble events are designed to prevent the upper level bubble 
-    // like component from triggering a reset of the edit state and the upper level component from putting away 
+    // The following two block bubble events are designed to prevent the upper level bubble
+    // like component from triggering a reset of the edit state and the upper level component from putting away
     // the current component when clicking Add View.
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();

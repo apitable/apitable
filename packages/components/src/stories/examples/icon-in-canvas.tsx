@@ -17,7 +17,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { TitleFavoriteFilled } from '@apitable/icons';
+import { StarFilled } from '@apitable/icons';
 
 export const IconUseInCanvas = () => {
   useEffect(()=>{
@@ -25,13 +25,13 @@ export const IconUseInCanvas = () => {
     if (canvas){
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = 'red';
-      const p = new Path2D(TitleFavoriteFilled.toString());
+      const p = new Path2D(StarFilled.toString());
       ctx.fill(p);
     }
   },[]);
   return (
     <div>
-      <TitleFavoriteFilled />   
+      <StarFilled />   
       <canvas id="canvas" height="50" style={{ backgroundColor: '#eee' }}/>
     </div>
   );

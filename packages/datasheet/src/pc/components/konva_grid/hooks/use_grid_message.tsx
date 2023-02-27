@@ -18,7 +18,7 @@
 
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { colors } from '@apitable/components';
-import { CloseSmallOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useDebounceEffect } from 'ahooks';
 import { Message } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
@@ -48,7 +48,6 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
       visibleColumns: Selectors.getVisibleColumns(state),
     };
   }, shallowEqual);
-  const commandManager = resourceService.instance!.commandManager;
   const firstFieldId = visibleColumns[0].fieldId;
 
   useDebounceEffect(() => {
@@ -60,7 +59,7 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
       const onClick = () => {
         const finalWidth = Math.floor(maxWidth * 0.8);
         executeCommandWithMirror(() => {
-          commandManager.execute({
+          resourceService.instance!.commandManager.execute({
             cmd: CollaCommandName.SetColumnsProperty,
             viewId: view.id,
             fieldId: firstFieldId,
@@ -85,7 +84,7 @@ export const useGridMessage = (props: IUseGridMessageProps) => {
             >
               {t(Strings.freeze_click_when_windows_too_narrow)}
             </a>
-            <CloseSmallOutlined
+            <CloseOutlined
               color={colors.secondLevelText}
               className={styles.closeBtn}
               onClick={() => Message.destroy()}

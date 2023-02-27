@@ -71,13 +71,13 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
     `;
   }}
   ${(props) => {
-    const { palette } = props.theme;
+    const { palette, color } = props.theme;
     const isSquare = props.shape === 'square';
     switch (props.variant) {
       case 'default':
         let defaultVariant = css`
-            color: ${props.active ? palette.primary : palette.text.third};
-            background: ${props.active ? palette.background.activeItem : 'unset'};
+            color: ${props.active ? color.textBrandDefault : palette.text.third};
+            background: ${props.active ? color.bgBrandLightDefault : 'unset'};
           `;
         if (!props.active && !props.disabled) {
           defaultVariant = [

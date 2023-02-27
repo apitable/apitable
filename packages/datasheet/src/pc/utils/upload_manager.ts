@@ -83,11 +83,10 @@ export class UploadManager {
   /**
    * @param {number} limit Limits the number of simultaneous requests
    * TODO: Consider doing a global limit on the number of cells, which is currently only done for the current cell
-   * @memberof UploadManager
    */
   constructor(
-    public limit: number,
-    public commandManager: CollaCommandManager,
+    private readonly limit: number,
+    private readonly commandManager: CollaCommandManager,
   ) {
     window.onbeforeunload = this.checkBeforePageUnMount;
   }

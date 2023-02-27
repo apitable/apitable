@@ -128,9 +128,8 @@ export const ExpandSelect: React.FC<React.PropsWithChildren<IExpandSelectProps>>
       _onChange(value);
       return;
     }
-    const commandManager = resourceService.instance!.commandManager;
     editable &&
-      commandManager.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data: [

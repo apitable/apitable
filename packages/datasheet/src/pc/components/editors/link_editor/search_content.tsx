@@ -19,7 +19,7 @@
 import { Button, LinkButton, useThemeColors, ThemeName } from '@apitable/components';
 import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
-  Strings, t, TextBaseField,
+  Strings, t, TextBaseField, ViewDerivateBase,
 } from '@apitable/core';
 import { Align, FixedSizeList } from 'react-window';
 import { useDebounce, useUpdateEffect } from 'ahooks';
@@ -84,7 +84,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   const foreignDataMap = useMemo(() => {
     if (hasLimitToView && !foreignDatasheet.isPartOfData) {
       return {
-        foreignRows: Selectors.getVisibleRowsBase(store.getState(), foreignDatasheet.snapshot, foreignView),
+        foreignRows: new ViewDerivateBase(store.getState(), foreignDatasheetId).getViewDerivation(foreignView).rowsWithoutSearch,
         foreignColumns: Selectors.getVisibleColumnsBase(foreignView),
       };
     }
@@ -97,7 +97,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       foreignRows,
       foreignColumns: Selectors.getVisibleColumns(store.getState(), foreignDatasheet.id)
     };
-  }, [hasLimitToView, foreignDatasheet, store, foreignView, formId]);
+  }, [hasLimitToView, foreignDatasheet, foreignView, formId, foreignDatasheetId]);
 
   const { foreignRows, foreignColumns } = foreignDataMap;
 

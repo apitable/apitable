@@ -46,7 +46,7 @@ export interface ICellProps {
   isActive?: boolean;
   editable?: boolean;
   style?: ShapeConfig;
-  toggleEdit?: () => void;
+  toggleEdit?: () => Promise<void>;
   onChange?: (value: ICellValue) => void;
   disabledDownload?: boolean;
 }
@@ -83,11 +83,9 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     cellValue,
     disabledDownload
   } = props;
-  const commandManager = resourceService.instance!.commandManager;
-
   const onChange = (value: ICellValue) => {
     editable &&
-    commandManager.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{
@@ -98,8 +96,8 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     });
   };
 
-  const toggleEdit = () => {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
+  const toggleEdit = async() => {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   };
 
   const cellProps: ICellProps = {

@@ -42,9 +42,9 @@ export function fieldChangeConfirm(props: {
   const fieldIds = fieldRanges ? fieldRanges.filter(fieldId => fieldId !== visibleColumns[0].fieldId) : [];
   const count = fieldIds.length;
 
-  const onConfirmClose = () => {
+  const onConfirmClose = async() => {
     if (!datasheetId) {
-      ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      await ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }
     onCancel && onCancel();
   };
@@ -70,8 +70,8 @@ export function fieldChangeConfirm(props: {
           message: t(Strings.delete_field_success),
           btnText: t(Strings.undo),
           key: NotifyKey.DeleteField,
-          btnFn: () => {
-            ShortcutActionManager.trigger(ShortcutActionName.Undo);
+          btnFn: async(): Promise<void> => {
+            await ShortcutActionManager.trigger(ShortcutActionName.Undo);
             notify.close(NotifyKey.DeleteField);
           },
         });

@@ -20,7 +20,7 @@ import { Button } from '@apitable/components';
 import {
   ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, AddressOutlined } from '@apitable/icons';
+import { AddOutlined, UserGroupOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
@@ -144,7 +144,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
           <Button
             size={btnSize}
             color={isSyncingMembers ? 'default' : 'primary'}
-            prefixIcon={<AddressOutlined />}
+            prefixIcon={<UserGroupOutlined />}
             id={ADDRESS_ID.INVITE_BTN}
             className={classNames({
               [styles.inviteBtnMobile!]: isMobile,

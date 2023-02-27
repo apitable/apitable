@@ -17,7 +17,7 @@
  */
 
 import {
-  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
+  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, ICollaCommandExecuteResult, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
   Selectors,
 } from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';
@@ -124,7 +124,7 @@ export const useGanttMouseEvent = ({
     if (transformerId !== taskId) return setTransformerId(taskId);
   };
 
-  const clickBlankHandler = () => {
+  const clickBlankHandler = (): Promise<ICollaCommandExecuteResult<string[]>> | void => {
     const task = getTaskData(pointRowIndex);
     if (task == null) return;
     const { type, startOffset, endOffset, recordId: taskRecordId } = task;
@@ -345,7 +345,7 @@ export const useGanttMouseEvent = ({
       return recordsData;
     }, []);
     
-    resourceService.instance!.commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
     });

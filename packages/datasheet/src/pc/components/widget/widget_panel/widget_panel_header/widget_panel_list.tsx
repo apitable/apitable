@@ -29,7 +29,7 @@ import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
 import styles from './style.module.less';
 import { useUnmount } from 'ahooks';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
@@ -166,7 +166,7 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
         {t(Strings.widget_panel)}（{widgetPanels.length}/3）
         <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
           <a href={t(Strings.intro_widget)} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
-            <InformationSmallOutlined color={colors.thirdLevelText} />
+            <QuestionCircleOutlined color={colors.thirdLevelText} />
           </a>
         </Tooltip>
       </h2>

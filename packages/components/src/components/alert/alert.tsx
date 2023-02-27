@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CloseLargeOutlined, DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@apitable/icons';
+import { CloseOutlined, InfoCircleFilled, WarnCircleFilled, CheckCircleFilled, WarnFilled } from '@apitable/icons';
 import { Box, IconButton, Typography } from 'components';
 import { useProviderTheme } from 'hooks';
 import React, { useState } from 'react';
@@ -37,10 +37,10 @@ export const Alert = (
   const [hidden, setHidden] = useState(false);
   const theme = useProviderTheme();
   const iconMap = {
-    default: DefaultFilled,
-    error: ErrorFilled,
+    default: InfoCircleFilled,
+    error: WarnCircleFilled,
     warning: WarnFilled,
-    success: SuccessFilled,
+    success: CheckCircleFilled,
   };
 
   const Icon = iconMap[type];
@@ -69,7 +69,7 @@ export const Alert = (
             <Typography variant="body3" color={theme.color.firstLevelText}> {content} </Typography>
           </div>
         </Box>
-        {closable && <IconButton size={'small'} onClick={handleClose} icon={CloseLargeOutlined} />}
+        {closable && <IconButton size={'small'} onClick={handleClose} icon={CloseOutlined} />}
       </AlertInnerComponent>
     </AlertWrapper>
   );

@@ -83,14 +83,14 @@ export const PrefixIconButton = Template.bind({});
 PrefixIconButton.args = {
   color: 'primary',
   variant: 'fill',
-  prefixIcon: iconComponents.WebsiteOutlined
+  prefixIcon: iconComponents.WebOutlined
 };
 
 export const SuffixIconButton = Template.bind({});
 SuffixIconButton.args = {
   color: 'primary',
   variant: 'fill',
-  suffixIcon: iconComponents.WebsiteOutlined
+  suffixIcon: iconComponents.WebOutlined
 };
 
 export const BlockButton = Template.bind({});

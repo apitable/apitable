@@ -18,7 +18,7 @@
 import { Router } from 'pc/components/route_manager/router';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 // @ts-ignore
@@ -181,7 +181,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         {!isMobile && (
           <Tooltip title={titleTip || t(Strings.grade_desc)} placement='top'>
             <span className={styles.infoIcon}>
-              <InformationSmallOutlined color={secondTextColor || strokeColor} />
+              <QuestionCircleOutlined color={secondTextColor || strokeColor} />
             </span>
           </Tooltip>
         )}

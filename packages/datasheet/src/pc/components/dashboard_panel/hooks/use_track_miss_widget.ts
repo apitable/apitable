@@ -31,7 +31,7 @@ export const useTrackMissWidgetAndDep = () => {
   const previousDashboardId = usePrevious(dashboardId)!;
 
   useUpdateEffect(() => {
-    if (previousDashboardId !== dashboardId) {
+    if (previousDashboardId && previousDashboardId !== dashboardId) {
       return;
     }
     if (shallowEqual(installedWidgetIds, previousInstalledIds)) {

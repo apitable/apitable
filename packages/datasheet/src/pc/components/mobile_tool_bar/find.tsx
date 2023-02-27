@@ -18,7 +18,7 @@
 
 import { StoreActions, Strings, t } from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { CancelFilled } from '@apitable/icons';
+import { CloseCircleFilled } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
@@ -99,7 +99,7 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
               inputRef.current?.focus();
             }}
           >
-            <CancelFilled size={14} />
+            <CloseCircleFilled size={14} />
           </div>
         }
         onCompositionStart={onChange}

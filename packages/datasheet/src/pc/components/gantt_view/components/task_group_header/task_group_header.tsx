@@ -18,7 +18,7 @@
 
 import { black, ILightOrDarkThemeColors, indigo } from '@apitable/components';
 import { ILinearRow, KONVA_DATASHEET_ID, StoreActions, Strings, t } from '@apitable/core';
-import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
+import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { DateTimeType, GanttCoordinate, getDayjs, IGanttGroupInfo, PointPosition } from 'pc/components/gantt_view';
 import { Icon, Rect } from 'pc/components/konva_components';
@@ -40,8 +40,8 @@ interface ITaskGroupHeaderProps {
 }
 
 // Icon Path
-const TriangleDown16FilledPath = TriangleDown16Filled.toString();
-const TriangleRight16FilledPath = TriangleRight16Filled.toString();
+const TriangleDown16FilledPath = TriangleDownFilled.toString();
+const TriangleRight16FilledPath = TriangleRightFilled.toString();
 
 // Constants
 const GRID_GROUP_TAB_HEIGHT = 48;
@@ -55,8 +55,8 @@ const getTaskGroupHeaderStyle = (depth: number, groupCount: number, colors: ILig
   const styleList = [
     {
       height: 8,
-      stroke: colors.warningColor,
-      background: rgbaToHex(colors.warningColor, 0.4)
+      stroke: colors.rainbowOrange3,
+      background: colors.rainbowOrange2
     },
     {
       height: 6,

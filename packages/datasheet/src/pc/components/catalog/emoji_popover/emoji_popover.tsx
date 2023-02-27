@@ -70,11 +70,11 @@ export const EmojiPopoverBase: FC<React.PropsWithChildren<PropsWithChildren<IEmo
       overlayClassName={styles.emojiPopover}
       content={<EmojiPicker nodeId={nodeId} />}
       trigger="click"
-      visible={visible}
+      open={visible}
       arrowPointAtCenter={false}
       mouseEnterDelay={0}
       mouseLeaveDelay={0}
-      onVisibleChange={visible => setVisible(visible)}
+      onOpenChange={visible => setVisible(visible)}
       destroyTooltipOnHide={{ keepParent: false }}
       align={{
         points: ['tl', 'bl'],

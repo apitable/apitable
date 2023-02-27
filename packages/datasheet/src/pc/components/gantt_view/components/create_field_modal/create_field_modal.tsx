@@ -45,7 +45,7 @@ export const CreateFieldModal = memo(() => {
   } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
-      viewId: Selectors.getActiveView(state)!,
+      viewId: Selectors.getActiveViewId(state)!,
       ganttStyle: Selectors.getGanttStyle(state)!,
       columnCount: Selectors.getColumnCount(state)!,
       exitFieldNames: Object.values(fieldMap).map(field => field.name),

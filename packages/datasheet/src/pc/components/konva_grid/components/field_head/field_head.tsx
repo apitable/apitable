@@ -17,7 +17,7 @@
  */
 
 import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
-import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { InfoCircleOutlined, IIconProps, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
@@ -54,8 +54,8 @@ interface IFieldHeadProps {
 
 // IconPath
 const MoreStandOutlinedPath = MoreStandOutlined.toString();
-const EditDescribeFilledPath = EditGanttDescribeFilled.toString();
-const WarningTriangleNonzeroFilledPath = WarningTriangleNonzeroFilled.toString();
+const EditDescribeFilledPath = InfoCircleOutlined.toString();
+const WarningTriangleNonzeroFilledPath = WarnCircleFilled.toString();
 
 export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((props) => {
   const {

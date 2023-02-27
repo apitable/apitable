@@ -92,15 +92,23 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
     if (mirrorId || activeNodeId) {
       return;
     }
+
     const routerTemplateId = get(router.query, 'template_id.0') as string;
+    const nodeId = datasheetId || activeNodeId || templateDirectory?.nodeTree.nodeId || '';
+
+    if (!nodeId) {
+      return;
+    }
+
     Router.replace(Navigation.TEMPLATE, {
       params: {
         spaceId,
         categoryId,
         templateId: templateId || routerTemplateId,
-        nodeId: datasheetId || activeNodeId || templateDirectory?.nodeTree.nodeId || '',
+        nodeId: nodeId
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mirrorId, categoryId, datasheetId, spaceId, templateDirectory, templateId, activeNodeId]);
 
   const getComponent = () => {

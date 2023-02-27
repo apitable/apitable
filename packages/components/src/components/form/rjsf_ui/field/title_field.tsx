@@ -19,7 +19,7 @@
 import React, { useState } from 'react';
 import { FieldProps } from '@rjsf/core';
 import styled, { css } from 'styled-components';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Tooltip } from 'components';
 
@@ -75,7 +75,7 @@ const DropIcon = styled(ChevronDownOutlined)`
   vertical-align: middle;
 `;
 
-const HelpIcon = styled(InformationSmallOutlined)`
+const HelpIcon = styled(QuestionCircleOutlined)`
   vertical-align: -0.125em;
 `;
 export interface IHelp {

@@ -31,7 +31,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@apitable/icons';
+import { AddOutlined, InfoCircleOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -209,7 +209,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
 
           {field.desc && !hideDesc && (
             <div className={styles.iconDisplayIcon} onMouseDown={stopPropagation}>
-              <span onClick={toggleCollapseDesc}>{showDesc ? <EditDescribeFilled /> : <EditDescribeOutlined />}</span>
+              <span onClick={toggleCollapseDesc}>{showDesc ? <InfoCircleOutlined /> : <InfoCircleOutlined />}</span>
             </div>
           )}
         </div>

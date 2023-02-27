@@ -63,6 +63,8 @@ public class NodeOpRo {
 
     @Schema(description = "Other information")
     private NodeRelRo extra;
+    @Schema(description = "Whether to detect duplicate node names", example = "true")
+    private Boolean checkDuplicateName;
 
     /**
      * Get Node Name.

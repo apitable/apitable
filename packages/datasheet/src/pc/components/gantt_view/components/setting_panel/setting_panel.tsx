@@ -23,7 +23,7 @@ import {
   LinkFieldSet, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
 import {
-  AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined,
 } from '@apitable/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
@@ -189,7 +189,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           value: columnFieldId,
           label: fieldMap[columnFieldId].name,
           disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
-          prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
+          prefixIcon: <LinktableOutlined color={colors.thirdLevelText} />,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });
@@ -403,18 +403,18 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           <Typography variant='body1'>{t(Strings.gantt_setting)}</Typography>
           <Tooltip content={t(Strings.gantt_setting_help_tips)}>
             <a href={t(Strings.gantt_setting_help_url)} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseMiddleOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
+        <CloseOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
       </header>
 
       {/* Video teaching button */}
       {
         getEnvVariables().GANTT_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
-            <ClassroomOutlined size={16} color={colors.primaryColor} />
+            <ClassOutlined size={16} color={colors.primaryColor} />
             <Typography variant='body3' color={colors.secondLevelText}>
               {t(Strings.play_guide_video_of_gantt_view)}
             </Typography>
@@ -478,7 +478,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           {
             env.GANTT_CONFIG_COLOR_HELP_URL && <Tooltip content={t(Strings.gantt_config_color_help)}>
               <a href={env.GANTT_CONFIG_COLOR_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-                <InformationSmallOutlined color={colors.thirdLevelText} />
+                <QuestionCircleOutlined color={colors.thirdLevelText} />
               </a>
             </Tooltip>
           }
@@ -589,7 +589,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
             <a href={getEnvVariables().GANTT_SET_TASK_RELATION_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>

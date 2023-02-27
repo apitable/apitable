@@ -50,7 +50,7 @@ export const PermissionModalHeader: React.FC<React.PropsWithChildren<IPermission
               name: (
                 <span className={styles.targetClx}>
                   {targetIcon}
-                  <Typography variant={'h6'} component={'span'} ellipsis style={{ flex: 1, maxWidth: isMobile ? 95 : 270 }}>
+                  <Typography variant={'h6'} component={'span'} ellipsis style={{ flex: 1, maxWidth: isMobile ? 95 : 180 }}>
                     {targetName}
                   </Typography>
                 </span>

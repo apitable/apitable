@@ -29,7 +29,7 @@ import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, WidgetNarrowOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
+import { AddFilled, AddOutlined, NarrowOutlined, ImportOutlined, ExpandOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -247,7 +247,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
         isEnoughToShowButton &&
         (!embedId || embedInfo.viewControl?.toolBar.fullScreenBtn) &&
         <TextButton
-          prefixIcon={isFullscreen ? <WidgetNarrowOutlined /> : <WidgetExpandOutlined />}
+          prefixIcon={isFullscreen ? <NarrowOutlined /> : <ExpandOutlined />}
           onClick={toggleFullscreen}
           className={styles.atcButton}
         >
@@ -255,8 +255,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
         </TextButton>
       }
       {
-        !isFullscreen && !readonly && isEnoughToShowButton && !hideReadonlyEmbedItem &&
-        (!embedId || embedInfo.viewControl?.toolBar.addWidgetBtn) &&
+        !isFullscreen && !readonly && isEnoughToShowButton && !embedId &&
         <a href={t(Strings.intro_dashboard)} target='_blank' className={styles.shareDoc} rel='noreferrer'>
           {t(Strings.form_tour_desc)}
         </a>

@@ -30,7 +30,7 @@ import {
   t,
 } from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { AttentionOutlined, EditDescribeOutlined } from '@apitable/icons';
+import { AttentionOutlined, InfoCircleOutlined } from '@apitable/icons';
 
 import { Popover } from 'pc/components/common/mobile/popover';
 import { Message } from 'pc/components/common';
@@ -173,7 +173,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       visible: !shareId && !templateId,
     },
     {
-      icon: <EditDescribeOutlined size={16} color={colors.white} />,
+      icon: <InfoCircleOutlined size={16} color={colors.white} />,
       name: nextState ? t(Strings.hidden_field_desc) : t(Strings.show_field_desc),
       onClick: toggleFieldsDesc,
       visible: true,

@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getViewTypeString, IViewProperty, Selectors } from 'core';
+import { getViewTypeString, IViewProperty } from 'core';
 import { IFilterInfo, IGroupInfo, ISortInfo, ViewType } from 'interface/view_types';
 import { Datasheet } from 'model';
-import { shallowEqual, useSelector } from 'react-redux';
-import { getWidgetDatasheet } from 'store';
+import { useViews } from './private/use_views';
 
 export interface IViewMeta {
   id: string;
@@ -94,19 +93,13 @@ export function useViewMeta(viewId: string | undefined): IViewMeta;
 export function useViewMeta(datasheet: Datasheet | undefined, viewId: string | undefined): IViewMeta;
 
 export function useViewMeta(param1: Datasheet | string | undefined, param2?: string | undefined) {
-  return useSelector(state => {
-    const hasDatasheet = param1 instanceof Datasheet;
-    const viewId = (hasDatasheet ? param2 : param1) as string | undefined;
-    const snapshot = getWidgetDatasheet(state, hasDatasheet ? (param1 as Datasheet).datasheetId : undefined)?.snapshot;
-    if (!snapshot) {
-      return undefined;
-    }
-
-    const view = Selectors.getViewById(snapshot, viewId!);
-    if (!view) {
-      return undefined;
-    }
-
-    return pickViewProperty(view);
-  }, shallowEqual);
+  const isDatasheet = param1 instanceof Datasheet;
+  const datasheetId = isDatasheet ? (param1 as Datasheet).datasheetId : undefined;
+  const viewId = (isDatasheet ? param2 : param1) as string | undefined;
+  const viewsData = useViews(datasheetId);
+  const view = viewsData.find(view => view.id === viewId);
+  if (!view) {
+    return undefined;
+  }
+  return pickViewProperty(view);
 }

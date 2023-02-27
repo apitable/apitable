@@ -62,9 +62,9 @@ export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNamePro
     <Tooltip
       title={nodeName}
       placement="left"
-      visible={showTip}
+      open={showTip}
       mouseEnterDelay={0.5}
-      onVisibleChange={handleShowTipChange}
+      onOpenChange={handleShowTipChange}
     >
       <div className={classNames(styles.datasheetInfo, className, iconEditable && styles.iconEditable)}>
         {prefix}

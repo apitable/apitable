@@ -82,8 +82,10 @@ export const mockDefaultRecord: IRecord = {
   recordMeta: {},
 };
 
-export const mockOperationOfAddDefaultRecords = (records: { id: string; rows: { view: number; index: number }[] }[]): IOperation => ({
-  actions: records.flatMap(({ id, rows }) => [
+export const mockOperationOfAddRecords = (
+  records: { id: string; rows: { view: number; index: number }[]; values?: IRecordCellValue }[],
+): IOperation => ({
+  actions: records.flatMap(({ id, rows, values }) => [
     ...rows.map(
       ({ view, index }) =>
         ({
@@ -99,7 +101,7 @@ export const mockOperationOfAddDefaultRecords = (records: { id: string; rows: { 
       oi: {
         commentCount: 0,
         comments: [],
-        data: {
+        data: values ?? {
           fld2: ['opt2', 'opt1'],
         },
         id,
@@ -109,7 +111,9 @@ export const mockOperationOfAddDefaultRecords = (records: { id: string; rows: { 
     },
   ]),
   cmd: 'AddRecords',
-  fieldTypeMap: {
-    fld2: 4,
-  },
+  fieldTypeMap: records.some(({ values }) => values && 'fld1' in values)
+    ? { fld1: 1, fld2: 4 }
+    : {
+      fld2: 4,
+    },
 });

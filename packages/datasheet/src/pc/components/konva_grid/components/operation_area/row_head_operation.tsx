@@ -18,7 +18,7 @@
 
 import { teal } from '@apitable/components';
 import { KONVA_DATASHEET_ID, RowHeight, Strings, t } from '@apitable/core';
-import { CommentBjEntireFilled, DragOutlined, ExpandRecordOutlined } from '@apitable/icons';
+import { CommentBjEntireFilled, DragOutlined, ExpandOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, IconType, Rect, Text } from 'pc/components/konva_components';
@@ -40,7 +40,7 @@ interface IRowHeadOperationProps {
 
 // Icon Path
 const DragOutlinedPath = DragOutlined.toString();
-const ExpandRecordOutlinedPath = ExpandRecordOutlined.toString();
+const ExpandRecordOutlinedPath = ExpandOutlined.toString();
 const CommentBjFilledPath = CommentBjEntireFilled.toString();
 
 const ICON_SIZE = 16;

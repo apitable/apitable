@@ -17,7 +17,7 @@
  */
 
 import { CellType, ConfigConstant, FieldType, IField, IFieldPermissionMap, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
-import { GanttLeftFilled, GanttRightFilled, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { ArrowLeftOutlined, ArrowRightOutlined, WarnCircleFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { getRecordName } from 'pc/components/expand_record';
 import {
@@ -44,9 +44,9 @@ import { useTooltip } from './use_gantt_tooltip';
 const GanttTask = dynamic(() => import('pc/components/gantt_view/group/gantt_task'), { ssr: false });
 
 // Icon Path
-const GanttLeftFilledPath = GanttLeftFilled.toString();
-const GanttRightFilledPath = GanttRightFilled.toString();
-const WarningTriangleFilledPath = WarningTriangleNonzeroFilled.toString();
+const GanttLeftFilledPath = ArrowLeftOutlined.toString();
+const GanttRightFilledPath = ArrowRightOutlined.toString();
+const WarningTriangleFilledPath = WarnCircleFilled.toString();
 
 const NotFillTargetNames = new Set([
   KONVA_DATASHEET_ID.GANTT_HEADER,

@@ -20,7 +20,7 @@ import { black, ILightOrDarkThemeColors } from '@apitable/components';
 import {
   Field, getFieldResultByStatType, Group as GroupClass, ILinearRow, KONVA_DATASHEET_ID, Selectors, StatType, Strings, t, ViewType
 } from '@apitable/core';
-import { TriangleDown16Filled } from '@apitable/icons';
+import { TriangleDownFilled } from '@apitable/icons';
 import { intersection } from 'lodash';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -30,7 +30,7 @@ import { getFieldStatType, hasLargeSelection } from 'pc/components/multi_grid/ce
 import { store } from 'pc/store';
 import { FC, memo, useCallback, useContext, useMemo, useState } from 'react';
 
-const TriangleDown16FilledPath = TriangleDown16Filled.toString();
+const TriangleDown16FilledPath = TriangleDownFilled.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 interface IStatProps {
   x?: number;

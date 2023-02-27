@@ -25,8 +25,8 @@ export const ThemeWrap = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const messageListener = (event: MessageEvent<any>) => {
       const { data } = event;
-      if (data?.type === 'vika_theme') {
-        switchTheme(data?.vika_theme);
+      if (data?.type === 'apitable_theme') {
+        switchTheme(data?.apitable_theme);
         setTheme(getTheme());
       }
     };

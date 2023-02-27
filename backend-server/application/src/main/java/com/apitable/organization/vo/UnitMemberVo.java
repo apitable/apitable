@@ -94,4 +94,8 @@ public class UnitMemberVo {
 
     @Schema(description = "Nick Name", example = "Zhang San")
     private String nickName;
+
+    public String getOriginName() {
+        return originName != null ? originName : memberName;
+    }
 }
