@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { omit } from 'lodash';
+import { omit, isNil } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { UnitMemberEntity } from '../entities/unit.member.entity';
 import { UnitMemberInfoDto } from '../dtos/unit.member.info.dto';
@@ -55,6 +55,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
     spaceId: string,
     userIds: string[],
     excludeDeleted: boolean,
+    unitType?: number
   ): Promise<UnitMemberBaseInfoDto[]> {
     const query = this.createQueryBuilder('vum')
       .leftJoin(`${this.manager.connection.options.entityPrefix}unit`, 'vu', 'vu.unit_ref_id = vum.id')
@@ -66,18 +67,23 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
       //  WeCom requires this field
       .addSelect('IFNULL(vum.is_social_name_modified, 2) > 0', 'isMemberNameModified')
       .addSelect('vu.id', 'unitId')
+      .addSelect('vu.unit_type', 'unitType')
       .where('vum.space_id = :spaceId', { spaceId })
-      .andWhere('vum.user_id IN (:...userIds)', { userIds })
-      .andWhere('vu.unit_type = 3');
+      .andWhere('vum.user_id IN (:...userIds)', { userIds });
     if (excludeDeleted) {
       query.andWhere('vum.is_deleted = 0').andWhere('vu.is_deleted = 0');
     }
+    if (!isNil(unitType)) {
+      query.andWhere('vum.unit_type = :unitType', { unitType });
+    }
     const members = await query.getRawMany<{
-      memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified: '0' | '1'; unitId: string
+      memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; 
+      isMemberNameModified: '0' | '1'; unitId: string; unitType: number
     }>();
     return members.reduce((pre, cur) => {
       const item: {
-        memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified?: boolean; unitId: string
+        memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; 
+        isMemberNameModified?: boolean; unitId: string; unitType: number
       } = omit(cur, 'isMemberNameModified');
       item.isMemberNameModified = Number(cur.isMemberNameModified) === 1;
       pre.push(item);

@@ -17,7 +17,7 @@
  */
 
 import { IUserValue, MemberType } from '@apitable/core';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { isEmpty } from 'lodash';
 import { PermissionException, ServerException } from 'shared/exception';
 import { UnitMemberRepository } from '../repositories/unit.member.repository';
@@ -28,9 +28,10 @@ import { UnitMemberBaseInfoVo } from '../vos/unit.member.vo';
 export class UnitMemberService {
   constructor(
     private readonly memberRepo: UnitMemberRepository,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
   ) {}
-
+   
   /**
    * Get member base infos by member ids
    *
@@ -94,12 +95,14 @@ export class UnitMemberService {
     spaceId: string,
     userIds: string[],
     excludeDeleted = true,
-  ): Promise<{ [userId: string]: UnitMemberBaseInfoVo }> {
-    const members = await this.memberRepo.selectMembersBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
+    unitType?: number,
+  ): Promise<{ [userId: string]: UnitMemberBaseInfoVo} | {}> {
+    const members = await this.memberRepo.selectMembersBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted, unitType);
     if (!members || !members.length) return {};
     return members.reduce<{
       [userId: string]: {
-        memberId: string, memberName: string; isActive: boolean; isDeleted: boolean; isMemberNameModified: boolean; unitId: string
+        memberId: string, memberName: string; isActive: boolean; isDeleted: boolean; 
+        isMemberNameModified: boolean; unitId: string; unitType: number;
       }
     }>((pre, cur) => {
       pre[cur.userId] = {
@@ -109,6 +112,7 @@ export class UnitMemberService {
         isActive: !!cur.isActive,
         isMemberNameModified: cur.isMemberNameModified!,
         unitId: cur.unitId,
+        unitType: cur.unitType,
       };
       return pre;
     }, {});

@@ -20,6 +20,7 @@ import { IResourceOpsCollect, resourceOpsToChangesets } from 'command_manager';
 import { IDataStorageProvider, ILoadDatasheetPackResult, ISaveOpsOptions } from '../providers';
 import { IBaseDatasheetPack, Selectors, StoreActions } from 'exports/store';
 import { mockDatasheetMap } from './mock.datasheets';
+import { ResourceType } from '../../types';
 
 export class MockDataStorageProvider implements IDataStorageProvider {
   datasheets!: Record<string, IBaseDatasheetPack>;
@@ -44,7 +45,9 @@ export class MockDataStorageProvider implements IDataStorageProvider {
     const changesets = resourceOpsToChangesets(ops, store.getState());
     changesets.forEach(cs => {
       store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
-
+      if (cs.baseRevision !== undefined) {
+        store.dispatch(StoreActions.updateRevision(cs.baseRevision + 1, cs.resourceId, ResourceType.Datasheet));
+      }
       this.datasheets[cs.resourceId] = {
         datasheet: Selectors.getDatasheet(store.getState())!,
         snapshot: Selectors.getSnapshot(store.getState())!,
