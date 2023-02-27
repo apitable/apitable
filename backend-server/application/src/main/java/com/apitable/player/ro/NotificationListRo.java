@@ -18,26 +18,26 @@
 
 package com.apitable.player.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Max;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/** 
-* <p> 
-* User notification list parameters
-* </p>
-*/
+/**
+ * <p>
+ * User notification list parameters.
+ * </p>
+ */
 @Data
-@ApiModel("User notification list parameters")
+@Schema(description = "User notification list parameters")
 public class NotificationListRo {
+
     @Max(1)
-    @ApiModelProperty(value = "Read 1 Read, 0 Unread, Default Unread", allowableValues = "range[0,1]",
-            dataType = "Integer",
+    @Schema(description = "Read 1 Read, 0 Unread, Default Unread", allowableValues = "range[0,1]",
+        type = "Integer",
         example = "1")
     private Integer isRead = 0;
 
-    @ApiModelProperty(value = "Notification type, default to system notification system", example = "system")
+    @Schema(description = "Notification type, default to system notification system", example =
+        "system")
     private String notifyType = "system";
 }

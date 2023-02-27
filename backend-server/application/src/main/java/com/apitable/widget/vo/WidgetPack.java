@@ -18,16 +18,14 @@
 
 package com.apitable.widget.vo;
 
-import java.util.List;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,76 +33,79 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Widget package information (alignment with front-end structure requirements)
+ * Widget package information (alignment with front-end structure requirements).
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Widget package information")
+@Schema(description = "Widget package information")
 public class WidgetPack {
 
-    @ApiModelProperty(value = "Widget ID", example = "wdt123", position = 1)
+    @Schema(description = "Widget ID", example = "wdt123")
     private String id;
 
-    @ApiModelProperty(value = "Widget version number", example = "0", position = 2)
+    @Schema(description = "Widget version number", example = "0")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long revision;
 
-    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 3)
+    @Schema(description = "Package ID", example = "wpkABC")
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "Widget package name", example = "Chart", position = 4)
+    @Schema(description = "Widget package name", example = "Chart")
     private String widgetPackageName;
 
-    @ApiModelProperty(value = "Widget package icon", example = "https://apitable.com/space/2020/12/23/aqa", position = 5)
+    @Schema(description = "Widget package icon", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String widgetPackageIcon;
 
-    @ApiModelProperty(value = "Widget package version number", example = "v1.0.0", position = 6)
+    @Schema(description = "Widget package version number", example = "v1.0.0")
     private String widgetPackageVersion;
 
-    @ApiModelProperty(value = "Widget snapshot information", position = 7)
+    @Schema(description = "Widget snapshot information")
     private WidgetSnapshot snapshot;
 
-    @ApiModelProperty(value = "Widget status (0: under development; 1: banned; 2: to be published; 3: published; 4: off the shelf)", position = 8)
+    @Schema(description = "Widget status (0: under development; 1: banned; 2: to be published; 3:"
+        + " published; 4: off the shelf)")
     private Integer status;
 
-    @ApiModelProperty(value = "Widget Author Name", position = 9)
+    @Schema(description = "Widget Author Name")
     private String authorName;
 
-    @ApiModelProperty(value = "Widget author Email", position = 10)
+    @Schema(description = "Widget author Email")
     private String authorEmail;
 
-    @ApiModelProperty(value = "Widget Author Icon", position = 11)
+    @Schema(description = "Widget Author Icon")
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "Widget Author Web Address", position = 12)
+    @Schema(description = "Widget Author Web Address")
     private String authorLink;
 
-    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 13)
+    @Schema(description = "Widget package type (0: third party, 1: official)")
     private Integer packageType;
 
-    @ApiModelProperty(value = "Widget publishing type (0: space station, 1: global)", position = 14)
+    @Schema(description = "Widget publishing type (0: space station, 1: global)")
     private Integer releaseType;
 
-    @ApiModelProperty(value = "Widget code address", example = "https://apitable.com/code/2020/12/23/aqa", position = 15)
+    @Schema(description = "Widget code address", example = "https://apitable"
+        + ".com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String releaseCodeBundle;
 
-    @ApiModelProperty(value = "Sandbox or not", position = 16)
+    @Schema(description = "Sandbox or not")
     private Boolean sandbox;
 
     @JsonInclude(Include.NON_EMPTY)
-    @ApiModelProperty(value = "Audit Applet Parent Applet Id", notes = "Dynamic key", position = 17)
+    @Schema(description = "Audit Applet Parent Applet Id")
     private String fatherWidgetPackageId;
 
-    @ApiModelProperty(value = "Installation environment type", example = "dashboard", position = 18)
+    @Schema(description = "Installation environment type", example = "dashboard")
     private List<String> installEnv;
 
-    @ApiModelProperty(value = "Operating environment type", example = "mobile", position = 19)
+    @Schema(description = "Operating environment type", example = "mobile")
     private List<String> runtimeEnv;
 
 }

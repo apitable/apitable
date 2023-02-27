@@ -18,23 +18,22 @@
 
 package com.apitable.client.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * Application version information
+ * Application version information.
  */
 @Data
-@ApiModel("Application version information")
+@Schema(description = "Application version information")
 public class ClientInfoVO {
 
-    @ApiModelProperty(value = "Client language set globally by the user", example = "zh-CN", position = 3)
+    @Schema(description = "Client language set globally by the user", example = "zh-CN")
     private String locale;
 
-    @ApiModelProperty(value = "User information", position = 5)
+    @Schema(description = "User information")
     private String userInfo;
 
-    @ApiModelProperty(value = "Novice guidance information", position = 6)
+    @Schema(description = "Novice guidance information")
     private String wizards;
 }

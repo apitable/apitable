@@ -18,28 +18,27 @@
 
 package com.apitable.base.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * widget upload token
- * @author tao
+ * widget upload token.
  */
 @Data
-@ApiModel("widget upload toke require")
+@Schema(description = "widget upload toke require")
 @Builder
 public class WidgetUploadTokenVo {
 
 
-    @ApiModelProperty(value = "resource key", example = "widget/wpkXxx/icon.png")
+    @Schema(description = "resource key", example = "widget/wpkXxx/icon.png")
     private String token;
 
-    @ApiModelProperty(value = "upload url", example = "https://bucket.s3.us-east-1.amazon.com/resourceKey?X-Amz-Algorithm=AWS4-HMAC-SHA256", position = 2)
+    @Schema(description = "upload url", example = "https://bucket.s3.us-east-1.amazon"
+        + ".com/resourceKey?X-Amz-Algorithm=AWS4-HMAC-SHA256")
     private String uploadUrl;
 
-    @ApiModelProperty(value = "upload request method", example = "POST", position = 3)
+    @Schema(description = "upload request method", example = "POST")
     private String uploadRequestMethod;
 
 }

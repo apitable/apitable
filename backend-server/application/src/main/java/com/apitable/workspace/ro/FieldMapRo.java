@@ -19,8 +19,7 @@
 package com.apitable.workspace.ro;
 
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,31 +27,33 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * DataSheet field request parameters
+ * DataSheet field request parameters.
  * </p>
  */
-@ApiModel("DataSheet field request parameters")
+@Schema(description = "DataSheet field request parameters")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class FieldMapRo {
 
-    @ApiModelProperty(value = "Field Custom Id", position = 2)
+    @Schema(description = "Field Custom Id")
     private String id;
 
-    @ApiModelProperty(value = "Field Name", position = 3)
+    @Schema(description = "Field Name")
     private String name;
 
-    @ApiModelProperty(value = "Describe", position = 4)
+    @Schema(description = "Describe")
     private String desc;
 
-    @ApiModelProperty(value = "Field Type 1-Text「Text」2-Number「NUMBER」 3-Single choice 「SINGLESELECT」4-Multiple choice「MULTISELECT」 5-Date「DATETIME」 6-Enclosure「ATTACHMENT」 7-Relation「LINK」", position = 5)
+    @Schema(description = "Field Type 1-Text「Text」2-Number「NUMBER」 3-Single choice "
+        + "「SINGLESELECT」4-Multiple choice「MULTISELECT」 5-Date「DATETIME」 6-Enclosure「ATTACHMENT」 "
+        + "7-Relation「LINK」")
     private Integer type;
 
-    @ApiModelProperty(value = "Attribute", position = 6)
+    @Schema(description = "Attribute")
     private JSONObject property;
 
-    @ApiModelProperty(value = "Set as required in the form", position = 7)
+    @Schema(description = "Set as required in the form")
     private Boolean required;
 }
