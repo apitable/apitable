@@ -20,8 +20,7 @@ package com.apitable.workspace.ro;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,55 +28,56 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * DataSheet View Parameters
+ * DataSheet View Parameters.
  * </p>
  */
-@ApiModel("DataSheet View Map Parameter")
+@Schema(description = "DataSheet View Map Parameter")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ViewMapRo {
 
-    @ApiModelProperty(value = "Custom View ID",position = 1)
+    @Schema(description = "Custom View ID")
     private String id;
 
-    @ApiModelProperty(value = "View Name", position = 2)
+    @Schema(description = "View Name")
     private String name;
 
-    @ApiModelProperty(value = "View「row」", position = 3)
+    @Schema(description = "View「row」")
     private JSONArray rows;
 
-    @ApiModelProperty(value = "View「columns」", position = 4)
+    @Schema(description = "View「columns」")
     private JSONArray columns;
 
-    @ApiModelProperty(value = "View Properties", position = 5)
+    @Schema(description = "View Properties")
     private String property;
 
-    @ApiModelProperty(value = "View Type 1-DataSheet「Grid」", position = 6)
+    @Schema(description = "View Type 1-DataSheet「Grid」")
     private Integer type;
 
-    @ApiModelProperty(value = "View Description", position = 7)
+    @Schema(description = "View Description")
     private String description;
 
-    @ApiModelProperty(value = "The number of frozen view columns, starting from the first column, is 1 by default", position = 7)
+    @Schema(description = "The number of frozen view columns, starting from the first column, is "
+        + "1 by default")
     private Integer frozenColumnCount;
 
-    @ApiModelProperty(value = "View Hide Options", position = 8)
+    @Schema(description = "View Hide Options")
     private Boolean hidden;
 
-    @ApiModelProperty(value = "Filter Items", position = 9)
+    @Schema(description = "Filter Items")
     private JSONObject filterInfo;
 
-    @ApiModelProperty(value = "Sort", position = 11)
+    @Schema(description = "Sort")
     private JSONArray sortInfo;
 
-    @ApiModelProperty(value = "Row height", position = 12)
+    @Schema(description = "Row height")
     private Integer rowHeightLevel;
 
-    @ApiModelProperty(value = "Group", position = 13)
+    @Schema(description = "Group")
     private JSONArray groupInfo;
 
-    @ApiModelProperty(value = "Album View Style", position = 14)
+    @Schema(description = "Album View Style")
     private JSONObject style;
 }

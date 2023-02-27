@@ -18,90 +18,110 @@
 
 package com.apitable.player.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.ResponseData;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.ro.NotificationListRo;
 import com.apitable.player.ro.NotificationPageRo;
 import com.apitable.player.ro.NotificationReadRo;
 import com.apitable.player.service.IPlayerNotificationService;
+import com.apitable.player.vo.NotificationDetailVo;
+import com.apitable.player.vo.NotificationStatisticsVo;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.PageConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.player.vo.NotificationDetailVo;
-import com.apitable.player.vo.NotificationStatisticsVo;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.ResponseData;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * Player System - Notification API
- * </p>
+ * Player System - Notification API.
  */
 @Slf4j
 @RestController
-@Api(tags = "Player System - Notification API")
+@Tag(name = "Player System - Notification API")
 @ApiResource(path = "/player/notification")
 public class NotificationController {
 
     @Resource
     private IPlayerNotificationService playerNotificationService;
 
+    /**
+     * Get Notification Page Info.
+     */
     @GetResource(path = "/page", requiredPermission = false)
-    @ApiOperation(value = "Get Notification Page Info", notes = PageConstants.PAGE_DESC)
-    public ResponseData<List<NotificationDetailVo>> page(@Valid NotificationPageRo notificationPageRo) {
+    @Operation(summary = "Get Notification Page Info", description = PageConstants.PAGE_DESC)
+    public ResponseData<List<NotificationDetailVo>> page(
+        @Valid NotificationPageRo notificationPageRo) {
         List<NotificationDetailVo> pageInfo =
-                playerNotificationService.pageList(notificationPageRo, LoginContext.me().getLoginUser());
+            playerNotificationService.pageList(notificationPageRo,
+                LoginContext.me().getLoginUser());
         return ResponseData.success(pageInfo);
     }
 
+    /**
+     * Mark Notification Rea.
+     */
     @PostResource(path = "/read", requiredPermission = false)
-    @ApiOperation(value = "Mark Notification Read")
+    @Operation(summary = "Mark Notification Read")
     public ResponseData<Boolean> read(@RequestBody NotificationReadRo notificationReadRo) {
         return ResponseData.success(
-                playerNotificationService.setNotificationIsRead(notificationReadRo.getId(), notificationReadRo.getIsAll()));
+            playerNotificationService.setNotificationIsRead(notificationReadRo.getId(),
+                notificationReadRo.getIsAll()));
     }
 
+    /**
+     * Delete Notification.
+     */
     @PostResource(path = "/delete", requiredPermission = false)
-    @ApiOperation(value = "Delete Notification")
+    @Operation(summary = "Delete Notification")
     public ResponseData<Boolean> delete(@RequestBody NotificationReadRo notificationReadRo) {
-        return ResponseData.success(playerNotificationService.setDeletedIsTrue(notificationReadRo.getId()));
+        return ResponseData.success(
+            playerNotificationService.setDeletedIsTrue(notificationReadRo.getId()));
     }
 
+    /**
+     * Create Notification.
+     */
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "Create Notification")
-    public ResponseData<Void> create(@Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
+    @Operation(summary = "Create Notification")
+    public ResponseData<Void> create(
+        @Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);
         if (bool) {
             return ResponseData.success();
-        }
-        else {
+        } else {
             throw new BusinessException("insert error");
         }
     }
 
+    /**
+     * Get Notification' Statistics.
+     */
     @GetResource(path = "/statistics", requiredPermission = false)
-    @ApiOperation(value = "Get Notification' Statistics")
+    @Operation(summary = "Get Notification' Statistics")
     public ResponseData<NotificationStatisticsVo> statistics() {
-        return ResponseData.success(playerNotificationService.statistic(SessionContext.getUserId()));
+        return ResponseData.success(
+            playerNotificationService.statistic(SessionContext.getUserId()));
     }
 
+    /**
+     * Get Notification Detail List.
+     */
     @GetResource(path = "/list", requiredPermission = false)
-    @ApiOperation(value = "Get Notification Detail List", notes = "Default: System Notification")
-    public ResponseData<List<NotificationDetailVo>> list(@Valid NotificationListRo notificationListRo) {
-        return ResponseData.success(playerNotificationService.list(notificationListRo, LoginContext.me().getLoginUser()));
+    @Operation(summary = "Get Notification Detail List", description = "Default: System "
+        + "Notification")
+    public ResponseData<List<NotificationDetailVo>> list(
+        @Valid NotificationListRo notificationListRo) {
+        return ResponseData.success(
+            playerNotificationService.list(notificationListRo, LoginContext.me().getLoginUser()));
     }
 }

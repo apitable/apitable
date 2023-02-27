@@ -19,6 +19,7 @@
 package com.apitable.internal.controller;
 
 import com.apitable.control.annotation.ThirdPartControl;
+import com.apitable.control.facede.ControlThirdPartServiceFacade;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.InternalPermissionRo;
 import com.apitable.internal.service.IPermissionService;
@@ -28,10 +29,12 @@ import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.DatasheetPermissionView;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,11 +46,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * internal node permission controller.
+ * Internal Service - Node Permission Interface.
  */
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "Internal Service - Node Permission Interface")
+@Tag(name = "Internal Service - Node Permission Interface")
 public class InternalNodePermissionController {
 
     @Resource
@@ -56,17 +59,15 @@ public class InternalNodePermissionController {
     private INodeService iNodeService;
 
     /**
-     * node permission.
-     *
-     * @param nodeId  node id
-     * @param shareId share id
-     * @return {@link DatasheetPermissionView}
+     * Get Node permission.
      */
     @GetResource(path = "/node/{nodeId}/permission", requiredPermission = false)
-    @ApiOperation(value = "Get Node permission")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "Node ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "shareId", value = "Share ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+    @Operation(summary = "Get Node permission")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "Node ID", required = true, schema = @Schema
+            (type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
+        @Parameter(name = "shareId", description = "Share ID", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "shrFPXT8qnyFJglX6elJi")
     })
     @ThirdPartControl()
     public ResponseData<DatasheetPermissionView> getNodePermission(
@@ -81,13 +82,10 @@ public class InternalNodePermissionController {
     }
 
     /**
-     * query multi node permissions.
-     *
-     * @param data data
-     * @return list of {@link DatasheetPermissionView}
+     * Get permission set for multiple nodes.
      */
     @PostResource(path = "/node/permission", requiredPermission = false)
-    @ApiOperation(value = "Get permission set for multiple nodes")
+    @Operation(summary = "Get permission set for multiple nodes")
     public ResponseData<List<DatasheetPermissionView>> getMultiNodePermissions(
         @RequestBody @Valid InternalPermissionRo data) {
         Long userId = SessionContext.getUserId();

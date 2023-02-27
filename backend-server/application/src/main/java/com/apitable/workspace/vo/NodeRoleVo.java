@@ -18,41 +18,39 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.organization.vo.UnitTagVo;
 import com.apitable.organization.vo.UnitTeamVo;
 import com.apitable.shared.support.serializer.NullArraySerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Node Role View
+ * Node Role View.
  * </p>
  */
 @Data
-@ApiModel("Node Role View")
+@Schema(description = "Node Role View")
 public class NodeRoleVo implements Serializable {
 
-	private static final long serialVersionUID = -3532750242987274847L;
+    private static final long serialVersionUID = -3532750242987274847L;
 
-	@ApiModelProperty(value = "Role", example = "manager", position = 1)
-	private String role;
+    @Schema(description = "Role", example = "manager")
+    private String role;
 
-	@ApiModelProperty(value = "Department List", position = 2)
-	@JsonSerialize(nullsUsing = NullArraySerializer.class)
-	private List<UnitTeamVo> teams;
+    @Schema(description = "Department List")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<UnitTeamVo> teams;
 
-	@ApiModelProperty(value = "Tag List", position = 3)
-	@JsonSerialize(nullsUsing = NullArraySerializer.class)
-	private List<UnitTagVo> tags;
+    @Schema(description = "Tag List")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<UnitTagVo> tags;
 
-	@ApiModelProperty(value = "Member List", position = 4)
-	@JsonSerialize(nullsUsing = NullArraySerializer.class)
-	private List<UnitMemberVo> members;
+    @Schema(description = "Member List")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<UnitMemberVo> members;
 }

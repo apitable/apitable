@@ -98,10 +98,12 @@ import com.apitable.workspace.vo.NodeSearchResult;
 import com.apitable.workspace.vo.ShowcaseVo;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
 import com.apitable.workspace.vo.ShowcaseVo.Social;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,7 +117,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -124,9 +125,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * node controller.
+ * Workbench - Node Api.
  */
-@Api(tags = "Workbench - Node Api")
+@Tag(name = "Workbench - Node Api")
 @RestController
 @ApiResource(path = "/node")
 @Slf4j
@@ -184,29 +185,27 @@ public class NodeController {
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     private static final String ROLE_DESC = "<br/>Role Type：<br/>"
-        +
-        "1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>"
-        +
-        "2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>"
-        +
-        "3.editor can only edit records and views of the data table, but not edit fields<br/>"
-        +
-        "4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>";
+        + "1.owner can add, edit, move, sort, delete, copy folders in the specified working "
+        + "directory。<br/>"
+        + "2.manager can add, edit, move, sort, delete, and copy folders in the specified working "
+        + "directory.<br/>"
+        + "3.editor can only edit records and views of the data table, but not edit fields<br/>"
+        + "4.readonly can only view the number table, you cannot make any edits and modifications, "
+        + "you can only assign read-only permissions to other members。<br/>";
 
     /**
-     * search.
-     *
-     * @param keyword   keyword
-     * @param className class name.
-     * @return NodeSearchResult
+     * Fuzzy search node.
      */
     @GetResource(path = "/search")
-    @ApiOperation(value = "Fuzzy search node", notes =
+    @Operation(summary = "Fuzzy search node", description =
         "Enter the search term to search for the node of the working directory." + ROLE_DESC)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "className", value = "highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight"),
-        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "datasheet")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "className", description = "highlight style", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "keyword", description = "keyword", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet")
     })
     public ResponseData<List<NodeSearchResult>> searchNode(
         @RequestParam(name = "keyword") String keyword,
@@ -221,17 +220,17 @@ public class NodeController {
     }
 
     /**
-     * node tree list.
-     *
-     * @param depth depth.
-     * @return NodeInfoTreeVo
+     * Query tree node.
      */
     @GetResource(path = "/tree")
-    @ApiOperation(value = "Query tree node", notes =
+    @Operation(summary = "Query tree node", description =
         "Query the node tree of workbench, restricted to two levels." + ROLE_DESC)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "depth", value = "tree depth, we can specify the query depth, maximum 2 layers depth.", dataTypeClass = Integer.class, paramType = "query", example = "2")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "depth", description = "tree depth, we can specify the query depth, "
+            + "maximum 2 layers depth.", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
+            example = "2")
     })
     public ResponseData<NodeInfoTreeVo> getTree(
         @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth) {
@@ -243,22 +242,21 @@ public class NodeController {
     }
 
     /**
-     * node list.
-     *
-     * @param type type.
-     * @param role role.
-     * @return NodeInfo
+     * Get nodes of the specified type.
      */
     @GetResource(path = "/list")
-    @ApiOperation(value = "Get nodes of the specified type", notes = "scenario: query an existing dashboard")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, paramType = "header", dataTypeClass = String.class, example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "type", value = "node type", required = true, dataTypeClass = Integer.class, paramType = "query", example = "2"),
-        @ApiImplicitParam(name = "role", value = "role（manageable by default）", dataTypeClass = String.class, paramType = "query", example = "manager")
+    @Operation(summary = "Get nodes of the specified type", description = "scenario: query an "
+        + "existing dashboard")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            in = ParameterIn.HEADER, schema = @Schema(type = "string"), example = "spczJrh2i3tLW"),
+        @Parameter(name = "type", description = "node type", required = true, schema =
+            @Schema(type = "integer"), in = ParameterIn.QUERY, example = "2"),
+        @Parameter(name = "role", description = "role（manageable by default）", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "manager")
     })
     public ResponseData<List<NodeInfo>> list(@RequestParam(value = "type") Integer type,
-                                             @RequestParam(value = "role", required = false, defaultValue = "manager")
-                                             String role) {
+        @RequestParam(value = "role", required = false, defaultValue = "manager") String role) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<String> nodeIds = iNodeService.getNodeIdBySpaceIdAndType(spaceId, type);
@@ -280,14 +278,13 @@ public class NodeController {
     }
 
     /**
-     * node info.
-     *
-     * @param nodeIds node ids
-     * @return NodeInfoVo
+     * Query nodes.
      */
     @GetResource(path = "/get", requiredPermission = false)
-    @ApiOperation(value = "Query nodes", notes = "obtain information about the node " + ROLE_DESC)
-    @ApiImplicitParam(name = "nodeIds", value = "node ids", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
+    @Operation(summary = "Query nodes", description = "obtain information about the node "
+        + ROLE_DESC)
+    @Parameter(name = "nodeIds", description = "node ids", required = true, schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
     public ResponseData<List<NodeInfoVo>> getByNodeId(
         @RequestParam("nodeIds") List<String> nodeIds) {
         // Obtain the space ID. The method includes determining whether the node exists.
@@ -298,28 +295,27 @@ public class NodeController {
     }
 
     /**
-     * folder showcase.
-     *
-     * @param nodeId  node id
-     * @param shareId share id
-     * @return ShowcaseVo
+     * Folder preview.
      */
     @GetResource(path = "/showcase", requiredLogin = false)
-    @ApiOperation(value = "Folder preview", notes = "Nodes that are not in the center of the template, make cross-space judgments.")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrRTGSy43DJ9")
+    @Operation(summary = "Folder preview", description = "Nodes that are not in the center of the"
+        + " template, make cross-space judgments.")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
+        @Parameter(name = "shareId", description = "share id", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "shrRTGSy43DJ9")
     })
     public ResponseData<ShowcaseVo> showcase(@RequestParam("nodeId") String nodeId,
-                                             @RequestParam(value = "shareId", required = false)
-                                             String shareId) {
+        @RequestParam(value = "shareId", required = false) String shareId) {
         // Obtain the node entity. The method includes determining whether the node exists.
         NodeEntity node = iNodeService.getByNodeId(nodeId);
         ControlRole role;
         boolean nodeFavorite = false;
         if (!node.getIsTemplate()) {
             if (StrUtil.isNotBlank(shareId)) {
-                // Open in node sharing to verify the sharing validity and whether the node has sharing.
+                // Open in node sharing to verify the sharing validity and whether the node has
+                // sharing.
                 String shareNodeId = nodeShareSettingMapper.selectNodeIdByShareId(shareId);
                 ExceptionUtil.isNotNull(shareNodeId, NodeException.SHARE_EXPIRE);
                 if (!nodeId.equals(shareNodeId)) {
@@ -333,8 +329,9 @@ public class NodeController {
                 Long memberId = LoginContext.me().getUserSpaceDto(node.getSpaceId()).getMemberId();
                 role = controlTemplate.fetchNodeRole(memberId, nodeId);
                 // query whether the node is favorite
-                nodeFavorite = SqlTool.retCount(
-                    nodeFavoriteMapper.countByMemberIdAndNodeId(memberId, nodeId)) > 0;
+                nodeFavorite =
+                    SqlTool.retCount(nodeFavoriteMapper.countByMemberIdAndNodeId(memberId, nodeId))
+                        > 0;
             }
         } else {
             role = ControlRoleManager.parseNodeRole(Node.TEMPLATE_VISITOR);
@@ -365,13 +362,11 @@ public class NodeController {
     }
 
     /**
-     * window.
-     *
-     * @param nodeId node id
-     * @return NodeInfoWindowVo
+     * Node info window.
      */
     @GetResource(path = "/window", requiredPermission = false)
-    @ApiOperation(value = "Node info window", notes = "Nodes that are not in the center of the template, make spatial judgments.")
+    @Operation(summary = "Node info window", description = "Nodes that are not in the center of "
+        + "the template, make spatial judgments.")
     public ResponseData<NodeInfoWindowVo> showNodeInfoWindow(
         @RequestParam("nodeId") String nodeId) {
         // The method includes determining whether the user is in this space.
@@ -387,15 +382,13 @@ public class NodeController {
     }
 
     /**
-     * parents info.
-     *
-     * @param nodeId node id
-     * @return NodePathVo
+     * Get parent nodes.
      */
     @GetResource(path = "/parents", requiredPermission = false)
-    @ApiOperation(value = "Get parent nodes", notes =
+    @Operation(summary = "Get parent nodes", description =
         "Gets a list of all parent nodes of the specified node " + ROLE_DESC)
-    @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9")
+    @Parameter(name = "nodeId", description = "node id", required = true, schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9")
     public ResponseData<List<NodePathVo>> getParentNodes(
         @RequestParam(name = "nodeId") String nodeId) {
         // The method includes determining whether a node exists.
@@ -407,19 +400,18 @@ public class NodeController {
     }
 
     /**
-     * children list.
-     *
-     * @param nodeId   node id
-     * @param nodeType node type
-     * @return NodeInfoVo
+     * Get child nodes.
      */
     @GetResource(path = "/children", requiredPermission = false)
-    @ApiOperation(value = "Get child nodes", notes =
-        "Obtain the list of child nodes of the specified node. The nodes are classified into folders or datasheet by type "
+    @Operation(summary = "Get child nodes", description =
+        "Obtain the list of child nodes of the specified node. The nodes are classified into "
+            + "folders or datasheet by type "
             + ROLE_DESC)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = "nodeType", value = "node type 1:folder,2:datasheet", dataTypeClass = Integer.class, paramType = "query", example = "1")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
+        @Parameter(name = "nodeType", description = "node type 1:folder,2:datasheet",
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<List<NodeInfoVo>> getNodeChildrenList(
         @RequestParam(name = "nodeId") String nodeId,
@@ -438,14 +430,12 @@ public class NodeController {
     }
 
     /**
-     * node position.
-     *
-     * @param nodeId node id
-     * @return NodeInfoTreeVo
+     * Position node.
      */
     @GetResource(path = "/position/{nodeId}", requiredPermission = false)
-    @ApiOperation(value = "Position node", notes = "node in must " + ROLE_DESC)
-    @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9")
+    @Operation(summary = "Position node", description = "node in must " + ROLE_DESC)
+    @Parameter(name = "nodeId", description = "node id", required = true, schema =
+        @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<NodeInfoTreeVo> position(@PathVariable("nodeId") String nodeId) {
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -459,16 +449,14 @@ public class NodeController {
     }
 
     /**
-     * create node.
-     *
-     * @param nodeOpRo parameters
-     * @return NodeInfoVo
+     * Create child node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "Create child node", notes = "create a new node under the node"
+    @Operation(summary = "Create child node", description = "create a new node under the node"
         + ROLE_DESC)
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> create(@RequestBody @Valid NodeOpRo nodeOpRo) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
@@ -482,7 +470,8 @@ public class NodeController {
         ControlRole role = controlTemplate.fetchNodeRole(memberId, nodeOpRo.getParentId());
         ExceptionUtil.isTrue(role.hasPermission(NodePermission.CREATE_NODE),
             PermissionException.NODE_OPERATION_DENIED);
-        // Check whether the source tables of form and mirror exist and whether they have the specified operation permissions.
+        // Check whether the source tables of form and mirror exist and whether they have the
+        // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
             nodeOpRo.getExtra());
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
@@ -496,27 +485,24 @@ public class NodeController {
     }
 
     /**
-     * update node.
-     *
-     * @param nodeId   node id
-     * @param nodeOpRo parameters
-     * @return NodeInfoVo
+     * Edit node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE)
     @PostResource(path = "/update/{nodeId}", requiredPermission = false)
-    @ApiOperation(value = "Edit node", notes = "node id must. name, icon is not required"
+    @Operation(summary = "Edit node", description = "node id must. name, icon is not required"
         + ROLE_DESC)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
-    public ResponseData<NodeInfoVo> update(@PathVariable("nodeId") String nodeId,
-                                           @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
+    public ResponseData<Void> update(@PathVariable("nodeId") String nodeId,
+        @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
         ExceptionUtil.isTrue(
             StrUtil.isNotBlank(nodeOpRo.getNodeName()) || ObjectUtil.isNotNull(nodeOpRo.getIcon())
-                || ObjectUtil.isNotNull(nodeOpRo.getCover())
-                || ObjectUtil.isNotNull(nodeOpRo.getShowRecordHistory()),
-            ParameterException.NO_ARG);
+                || ObjectUtil.isNotNull(nodeOpRo.getCover()) || ObjectUtil.isNotNull(
+                nodeOpRo.getShowRecordHistory()), ParameterException.NO_ARG);
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -533,15 +519,13 @@ public class NodeController {
     }
 
     /**
-     * update node description.
-     *
-     * @param opRo parameters
-     * @return void
+     * Update node description.
      */
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_DESC)
     @PostResource(path = "/updateDesc", requiredPermission = false)
-    @ApiOperation(value = "Update node description")
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Operation(summary = "Update node description")
+    @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<Void> updateDesc(@RequestBody @Valid NodeDescOpRo opRo) {
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(opRo.getNodeId());
@@ -561,17 +545,17 @@ public class NodeController {
     }
 
     /**
-     * move mode.
-     *
-     * @param nodeOpRo parameters
-     * @return NodeInfoVo
+     * Move node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_MOVE)
     @PostResource(path = "/move")
-    @ApiOperation(value = "Move node", notes = "Node ID and parent node ID are required, and pre Node Id is not required.")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Operation(summary = "Move node", description = "Node ID and parent node ID are required, and"
+        + " pre Node Id is not required.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
     public ResponseData<List<NodeInfoVo>> move(@RequestBody @Valid NodeMoveOpRo nodeOpRo) {
         Long memberId = LoginContext.me().getMemberId();
@@ -608,18 +592,18 @@ public class NodeController {
     }
 
     /**
-     * delete node.
-     *
-     * @param nodeId node id
-     * @return void
+     * Delete node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
     @PostResource(path = "/delete/{nodeId}", method = {RequestMethod.DELETE,
         RequestMethod.POST}, requiredPermission = false)
-    @ApiOperation(value = "Delete node", notes = "You can pass in an ID array and delete multiple nodes.")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Operation(summary = "Delete node", description = "You can pass in an ID array and delete "
+        + "multiple nodes.")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
     public ResponseData<Void> delete(@PathVariable("nodeId") String nodeId) {
         // The method includes determining whether a node exists.
@@ -640,15 +624,14 @@ public class NodeController {
     }
 
     /**
-     * copy node.
-     *
-     * @param nodeOpRo parameters
-     * @return NodeInfoVo
+     * Copy node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/copy", requiredPermission = false)
-    @ApiOperation(value = "Copy node", notes = "node id is required, whether to copy data is not required.")
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Operation(summary = "Copy node", description = "node id is required, whether to copy data is"
+        + " not required.")
+    @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> copy(@RequestBody @Valid NodeCopyOpRo nodeOpRo) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
@@ -681,23 +664,21 @@ public class NodeController {
     }
 
     /**
-     * export node.
-     *
-     * @param nodeId   node id
-     * @param saveData whether save data
-     * @param password password
+     * Export Bundle.
      */
     @GetResource(path = "/exportBundle", requiredPermission = false)
-    @ApiOperation(value = "Export Bundle")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "fod8mXUeiXyVo"),
-        @ApiImplicitParam(name = "saveData", value = "whether to retain data", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-        @ApiImplicitParam(name = "password", value = "encrypted password", dataTypeClass = String.class, paramType = "query", example = "qwer1234")
+    @Operation(summary = "Export Bundle")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "fod8mXUeiXyVo"),
+        @Parameter(name = "saveData", description = "whether to retain data", schema =
+            @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true"),
+        @Parameter(name = "password", description = "encrypted password", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "qwer1234")
     })
     public void exportBundle(@RequestParam("nodeId") String nodeId,
-                             @RequestParam(value = "saveData", required = false, defaultValue = "true")
-                             Boolean saveData,
-                             @RequestParam(value = "password", required = false) String password) {
+        @RequestParam(value = "saveData", required = false, defaultValue = "true") Boolean saveData,
+        @RequestParam(value = "password", required = false) String password) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -714,13 +695,12 @@ public class NodeController {
     }
 
     /**
-     * analyze bundle.
-     *
-     * @param opRo parameters
-     * @return Void
+     * Analyze Bundle.
      */
     @PostResource(path = "/analyzeBundle", requiredLogin = false)
-    @ApiOperation(value = "Analyze Bundle", notes = "The front node is saved in the first place of the parent node when it is not under the parent node. Save in the first place of the first level directory when it is not transmitted.", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Analyze Bundle", description = "The front node is saved in the first "
+        + "place of the parent node when it is not under the parent node. Save in the first place"
+        + " of the first level directory when it is not transmitted.")
     public ResponseData<Void> analyzeBundle(@Valid NodeBundleOpRo opRo) {
         String parentId = opRo.getParentId();
         Long userId = SessionContext.getUserId();
@@ -743,15 +723,11 @@ public class NodeController {
     }
 
     /**
-     * import excel.
-     *
-     * @param data data
-     * @return NodeInfoVo
-     * @throws IOException exception
+     * Import excel.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/import", requiredPermission = false)
-    @ApiOperation(value = "Import excel", notes = "all parameters must be")
+    @Operation(summary = "Import excel", description = "all parameters must be")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
             ActionException.FILE_EXCEED_LIMIT);
@@ -807,14 +783,13 @@ public class NodeController {
     }
 
     /**
-     * active node.
-     *
-     * @param opRo parameters
-     * @return Void
+     * Record active node.
      */
     @PostResource(name = "record active nodes", path = "/active", requiredPermission = false)
-    @ApiOperation(value = "Record active node", notes = "node id and view id are not required（do not pass means all closed）")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcBrtP3ulTXR")
+    @Operation(summary = "Record active node", description = "node id and view id are not "
+        + "required（do not pass means all closed）")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcBrtP3ulTXR")
     public ResponseData<Void> activeSheets(@RequestBody @Valid ActiveSheetsOpRo opRo) {
         Long userId = SessionContext.getUserId();
         String spaceId;
@@ -837,13 +812,10 @@ public class NodeController {
     }
 
     /**
-     * remind notification.
-     *
-     * @param ro parameters
-     * @return Void
+     * Remind notification.
      */
     @PostResource(name = "Remind notification", path = "/remind", requiredLogin = false)
-    @ApiOperation(value = "Remind notification")
+    @Operation(summary = "Remind notification")
     public ResponseData<Void> remind(@RequestBody @Valid RemindMemberRo ro) {
         Long userId = SessionContext.getUserIdWithoutException();
         // Obtain the space ID. The method includes determining whether the node exists.
@@ -863,12 +835,9 @@ public class NodeController {
 
     /**
      * Gets no permission member before remind.
-     *
-     * @param request request
-     * @return MemberBriefInfoVo
      */
     @PostResource(path = "/remind/units/noPermission", requiredPermission = false)
-    @ApiOperation(value = "Gets no permission member before remind")
+    @Operation(summary = "Gets no permission member before remind")
     public ResponseData<List<MemberBriefInfoVo>> postRemindUnitsNoPermission(
         @RequestBody @Validated RemindUnitsNoPermissionRo request) {
 
@@ -886,49 +855,47 @@ public class NodeController {
     }
 
     /**
-     * check for associated nodes.
-     *
-     * @param nodeId node id
-     * @param viewId view id
-     * @param type   node type
-     * @return NodeInfo
+     * Check for associated nodes.
      */
     @GetResource(path = "/checkRelNode", requiredPermission = false)
-    @ApiOperation(value = "check for associated nodes", notes = "permission of the associated node is not required. Scenario: Check whether the view associated mirror before deleting the table.")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstU8Agt2Je9J7AKsv"),
-        @ApiImplicitParam(name = "viewId", value = "view id（do not specify full return）", dataTypeClass = String.class, paramType = "query", example = "viwF1CqEW2GxY"),
-        @ApiImplicitParam(name = "type", value = "node type（do not specify full return，form:3/mirror:5）", dataTypeClass = Integer.class, paramType = "query", example = "5")
+    @Operation(summary = "check for associated nodes", description = "permission of the "
+        + "associated node is not required. Scenario: Check whether the view associated mirror "
+        + "before deleting the table.")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2Je9J7AKsv"),
+        @Parameter(name = "viewId", description = "view id（do not specify full return）",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "viwF1CqEW2GxY"),
+        @Parameter(name = "type", description = "node type（do not specify full "
+            + "return，form:3/mirror:5）", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
+            example = "5")
     })
     public ResponseData<List<NodeInfo>> checkRelNode(@RequestParam("nodeId") String nodeId,
-                                                     @RequestParam(value = "viewId", required = false)
-                                                     String viewId,
-                                                     @RequestParam(value = "type", required = false)
-                                                     Integer type) {
+        @RequestParam(value = "viewId", required = false) String viewId,
+        @RequestParam(value = "type", required = false) Integer type) {
         return ResponseData.success(
             iNodeRelService.getRelationNodeInfoByNodeId(nodeId, viewId, null, type));
     }
 
     /**
      * Get associated node.
-     *
-     * @param nodeId node id
-     * @param viewId view id
-     * @param type   node type
-     * @return NodeInfo
      */
     @GetResource(path = "/getRelNode", requiredPermission = false)
-    @ApiOperation(value = "Get associated node", notes = "This interface requires readable or above permissions of the associated node.Scenario: Open the display columns of form and mirror in the datasheet.")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstU8Agt2Je9J7AKsv"),
-        @ApiImplicitParam(name = "viewId", value = "view id（do not specify full return）", dataTypeClass = String.class, paramType = "query", example = "viwF1CqEW2GxY"),
-        @ApiImplicitParam(name = "type", value = "node type（do not specify full return，form:3/mirror:5）", dataTypeClass = Integer.class, paramType = "query", example = "5")
+    @Operation(summary = "Get associated node", description = "This interface requires readable "
+        + "or above permissions of the associated node.Scenario: Open the display columns of form"
+        + " and mirror in the datasheet.")
+    @Parameters({
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2Je9J7AKsv"),
+        @Parameter(name = "viewId", description = "view id（do not specify full return）",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "viwF1CqEW2GxY"),
+        @Parameter(name = "type", description = "node type（do not specify full "
+            + "return，form:3/mirror:5）", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
+            example = "5")
     })
     public ResponseData<List<NodeInfo>> getNodeRel(@RequestParam("nodeId") String nodeId,
-                                                   @RequestParam(value = "viewId", required = false)
-                                                   String viewId,
-                                                   @RequestParam(value = "type", required = false)
-                                                   Integer type) {
+        @RequestParam(value = "viewId", required = false) String viewId,
+        @RequestParam(value = "type", required = false) Integer type) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -942,13 +909,11 @@ public class NodeController {
     }
 
     /**
-     * member recent open node list.
-     *
-     * @return NodeSearchResult
+     * Member recent open node list.
      */
     @GetResource(path = "/recentList", requiredPermission = false)
-    @ApiOperation(value = "member recent open node list", notes = "member recent open node list")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "member recent open node list", description = "member recent open node list")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true, schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<NodeSearchResult>> recentList() {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();

@@ -95,3 +95,5 @@ jobs:
           VALIDATE_GROOVY: false
           VALIDATE_SQLFLUFF: false
           FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*
+          VALIDATE_GOOGLE_JAVA_FORMAT: false
+          JAVA_FILE_NAME: checkstyle.xml

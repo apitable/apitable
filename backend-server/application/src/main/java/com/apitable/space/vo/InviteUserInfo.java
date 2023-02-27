@@ -18,15 +18,17 @@
 
 package com.apitable.space.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
+/**
+ * Invite User Info.
+ */
 @Data
-@ApiModel("Invited User")
+@Schema(description = "Invited User")
 public class InviteUserInfo {
 
     private String userId;

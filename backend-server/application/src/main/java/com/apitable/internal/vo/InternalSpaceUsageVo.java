@@ -18,37 +18,35 @@
 
 package com.apitable.internal.vo;
 
+import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-
 /**
- * Space usage information view
+ * Space usage information view.
  */
 @Data
-@ApiModel("space usage information view")
+@Schema(description = "space usage information view")
 public class InternalSpaceUsageVo {
 
-    @ApiModelProperty(value = "The total number of rows in all tables of the space", example = "5", position = 1)
+    @Schema(description = "The total number of rows in all tables of the space", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long recordNums;
 
-    @ApiModelProperty(value = "total album views", example = "10", position = 2)
+    @Schema(description = "total album views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long galleryViewNums;
 
-    @ApiModelProperty(value = "total kanban views", example = "10", position = 3)
+    @Schema(description = "total kanban views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long kanbanViewNums;
 
-    @ApiModelProperty(value = "total gantt views", example = "10", position = 4)
+    @Schema(description = "total gantt views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long ganttViewNums;
 
-    @ApiModelProperty(value = "total number of calendar views", example = "10", position = 5)
+    @Schema(description = "total number of calendar views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long calendarViewNums;
 }

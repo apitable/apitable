@@ -269,7 +269,7 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 Welcome, and thank you for your interest in contributing to APITable!
 
-In addition to writing code, there are many ways for you to contribue.
+In addition to writing code, there are many ways for you to contribute.
 
 You can contribute as following:
 - Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
@@ -326,7 +326,7 @@ APITable use these common conventions:
 ### Future Features
 
 - Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
+- Embeddable 3rd party documentation components
 - SQL-like Domain-Specific Languages
 - As an IdP
 - Advanced automation robot

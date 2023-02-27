@@ -18,24 +18,22 @@
 
 package com.apitable.organization.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Add tag member request parameter
+ * Add tag member request parameter.
  * </p>
  */
 @Data
-@ApiModel("Add tag member request parameter")
+@Schema(description = "Add tag member request parameter")
 public class AddTagMemberRo {
 
-    @ApiModelProperty(value = "Tag ID", dataType = "long", example = "12032", position = 1)
+    @Schema(description = "Tag ID", type = "long", example = "12032")
     private Long tagId;
 
-    @ApiModelProperty(value = "Member ID List", dataType = "List", example = "[1,2,3,4]", position = 2)
+    @Schema(description = "Member ID List", type = "List", example = "[1,2,3,4]")
     private List<Long> memberIds;
 }

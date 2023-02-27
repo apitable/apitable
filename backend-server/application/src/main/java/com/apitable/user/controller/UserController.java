@@ -89,10 +89,12 @@ import com.apitable.user.service.IUserHistoryService;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserInfoVo;
 import com.apitable.workspace.service.INodeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -100,22 +102,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
  * user interface.
- * </p>
- *
- * @author Benson Cheung
  */
 @Slf4j
 @RestController
-@Api(tags = "Account Center Module_User Management Interface")
+@Tag(name = "Account Center Module_User Management Interface")
 @ApiResource(path = "/user")
 public class UserController {
 
@@ -211,18 +208,17 @@ public class UserController {
      */
     @GetResource(name = "get personal information", path = "/me",
         requiredPermission = false)
-    @ApiOperation(value = "get personal information", notes = "get personal "
-        + "information", produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "spaceId", value = "space id",
-            dataTypeClass = String.class, paramType = "query", example =
+    @Operation(summary = "get personal information", description = "get personal "
+        + "information")
+    @Parameters({
+        @Parameter(name = "spaceId", description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example =
             "spc8mXUeiXyVo"),
-        @ApiImplicitParam(name = "nodeId", value = "node id", dataTypeClass =
-            String.class, paramType = "query", example = "dstS94qPZFXjC1LKns"),
-        @ApiImplicitParam(name = "filter", value = "whether to filter space "
-            + "related information", defaultValue = "false", dataTypeClass =
-            Boolean.class, paramType = "query", example = "true")
+        @Parameter(name = "nodeId", description = "node id", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstS94qPZFXjC1LKns"),
+        @Parameter(name = "filter", description = "whether to filter space "
+            + "related information", schema = @Schema(type = "boolean"),
+            in = ParameterIn.QUERY, example = "true")
     })
     public ResponseData<UserInfoVo> userInfo(
         @RequestParam(name = "spaceId", required = false) final String spaceId,
@@ -328,7 +324,7 @@ public class UserController {
      */
     @GetResource(name = "Query whether user bind mail", path = "/email/bind",
         requiredPermission = false)
-    @ApiOperation(value = "Query whether users bind mail", notes = "Query "
+    @Operation(summary = "Query whether users bind mail", description = "Query "
         + "whether users bind mail")
     public ResponseData<Boolean> validBindEmail() {
         Long userId = SessionContext.getUserId();
@@ -345,8 +341,8 @@ public class UserController {
     @PostResource(name = "Query whether the user is consistent with the "
         + "specified mail", path = "/validate/email", requiredPermission =
         false)
-    @ApiOperation(value = "Query whether the user is consistent with the "
-        + "specified mail", notes = "Query whether the user is consistent "
+    @Operation(summary = "Query whether the user is consistent with the "
+        + "specified mail", description = "Query whether the user is consistent "
         + "with the specified mail. It can only be determined if the user has"
         + " bound the mail")
     public ResponseData<Boolean> validSameEmail(
@@ -366,11 +362,9 @@ public class UserController {
      */
     @PostResource(name = "Associate the invited mail", path = "/link"
         + "/inviteEmail", requiredPermission = false)
-    @ApiOperation(value = "Associate the invited mail", notes = "Users can "
-        + "only associate with invited mail when they have no other mail",
-        consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> linkInviteEmail(
+    @Operation(summary = "Associate the invited mail", description = "Users can "
+        + "only associate with invited mail when they have no other mail")
+    public ResponseData<Void> bindEmail(
         @RequestBody @Valid final UserLinkEmailRo data) {
         String email = data.getEmail();
         String spaceId = data.getSpaceId();
@@ -387,10 +381,8 @@ public class UserController {
      */
     @PostResource(name = "Bind mail", path = "/bindEmail",
         requiredPermission = false)
-    @ApiOperation(value = "Bind mail", notes = "Bind mail and modify mail",
-        consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> bindEmail(
+    @Operation(summary = "Bind mail", description = "Bind mail and modify mail")
+    public ResponseData<Void> verifyEmail(
         @RequestBody @Valid final EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessorManage.me()
@@ -413,9 +405,7 @@ public class UserController {
      */
     @PostResource(name = "Unbind mail", path = "/unbindEmail",
         requiredPermission = false)
-    @ApiOperation(value = "Unbind mail", notes = "Bind mail and modify mail",
-        consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Unbind mail", description = "Bind mail and modify mail")
     public ResponseData<Void> unbindEmail(
         @RequestBody @Valid final CodeValidateRo param) {
         LoginUserDto loginUser = LoginContext.me().getLoginUser();
@@ -438,9 +428,7 @@ public class UserController {
      */
     @PostResource(name = "Bind a new phone", path = "/bindPhone",
         requiredPermission = false)
-    @ApiOperation(value = "Bind a new phone", notes = "Bind a new phone",
-        consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Bind a new phone", description = "Bind a new phone")
     public ResponseData<Void> verifyPhone(
         @RequestBody @Valid final SmsCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getPhone(),
@@ -467,9 +455,8 @@ public class UserController {
      */
     @PostResource(name = "Unbind mobile phone", path = "/unbindPhone",
         requiredPermission = false)
-    @ApiOperation(value = "Unbind mobile phone", notes = "Unbind mobile "
-        + "phone", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Unbind mobile phone", description = "Unbind mobile "
+        + "phone")
     public ResponseData<Void> unbindPhone(
         @RequestBody @Valid final CodeValidateRo param) {
         LoginUserDto loginUser = LoginContext.me().getLoginUser();
@@ -493,10 +480,8 @@ public class UserController {
      */
     @PostResource(name = "Edit user information", path = "/update",
         requiredPermission = false)
-    @ApiOperation(value = "Edit user information", notes = "Request "
-        + "parameters cannot be all empty", consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Edit user information", description = "Request "
+        + "parameters cannot be all empty")
     public ResponseData<String> update(
         @RequestBody @Valid final UserOpRo param) {
         ExceptionUtil.isTrue(
@@ -532,11 +517,9 @@ public class UserController {
      */
     @PostResource(name = "Change Password", path = "/updatePwd",
         requiredPermission = false)
-    @ApiOperation(value = "Change Password", notes = "Scene: 1. Personal "
+    @Operation(summary = "Change Password", description = "Scene: 1. Personal "
         + "setting and password modification; 2. Initialize after login for "
-        + "accounts without password", consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+        + "accounts without password")
     public ResponseData<Void> updatePwd(
         @RequestBody final UpdatePwdOpRo param) {
         verificationService.verifyPassword(param.getPassword());
@@ -596,9 +579,7 @@ public class UserController {
      */
     @PostResource(name = "Retrieve password", path = "/retrievePwd",
         requiredLogin = false)
-    @ApiOperation(value = "Retrieve password", consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Retrieve password")
     public ResponseData<Void> retrievePwd(
         @RequestBody @Valid final RetrievePwdOpRo param) {
         // Verify password format
@@ -650,9 +631,8 @@ public class UserController {
      */
     @PostResource(name = "Apply for cancellation of user account", path =
         "/applyForClosing", requiredPermission = false)
-    @ApiOperation(value = "Apply for cancellation of user account", notes =
-        "Registered login user applies for account cancellation", produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Apply for cancellation of user account", description =
+        "Registered login user applies for account cancellation")
     public ResponseData<Void> applyForClosing() {
         // Get the current login user
         Long userId = SessionContext.getUserId();
@@ -678,10 +658,9 @@ public class UserController {
      */
     @GetResource(name = "Verify whether the account can be cancelled", path =
         "/checkForClosing", requiredPermission = false)
-    @ApiOperation(value = "Verify whether the account can be cancelled",
-        notes = "Unregistered users verify whether the account meets the "
-            + "cancellation conditions", produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Verify whether the account can be cancelled",
+        description = "Unregistered users verify whether the account meets the "
+            + "cancellation conditions")
     public ResponseData<Void> checkForClosing() {
         // Get the current login user
         Long userId = SessionContext.getUserId();
@@ -701,9 +680,8 @@ public class UserController {
      */
     @PostResource(name = "Apply for account restoration", path =
         "/cancelClosing", requiredPermission = false)
-    @ApiOperation(value = "Apply for account restoration", notes = "User "
-        + "recovery account has been applied for cancellation", produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Apply for account restoration", description = "User "
+        + "recovery account has been applied for cancellation")
     public ResponseData<Void> cancelClosing() {
         // Get the current login user
         Long userId = SessionContext.getUserId();
@@ -727,9 +705,8 @@ public class UserController {
      */
     @GetResource(name = "Get the enabled experimental functions", path =
         "/labs/features", requiredPermission = false)
-    @ApiOperation(value = "Get the enabled experimental functions", notes =
-        "Get the enabled experimental functions", produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get the enabled experimental functions", description =
+        "Get the enabled experimental functions")
     public ResponseData<LabsFeatureVo> getEnabledLabFeatures(
         @RequestParam final String spaceId) {
         Long userId = SessionContext.getUserId();
@@ -749,9 +726,8 @@ public class UserController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/labs/features", requiredPermission = false)
-    @ApiOperation(value = "Update the usage status of laboratory functions",
-        notes = "Update the usage status of laboratory functions", produces =
-        MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update the usage status of laboratory functions",
+        description = "Update the usage status of laboratory functions")
     public ResponseData<Void> updateLabsFeatureStatus(
         @RequestBody @Valid final UserLabsFeatureRo userLabsFeatureRo) {
         // Get the user ID of the current user
@@ -792,7 +768,7 @@ public class UserController {
      */
     @PostResource(path = "/delActiveSpaceCache", method = {
         RequestMethod.GET}, requiredPermission = false)
-    @ApiOperation(value = "Delete Active Space Cache")
+    @Operation(summary = "Delete Active Space Cache")
     public ResponseData<Void> delActiveSpaceCache() {
         // Fill in the invitation code and reward integral
         Long userId = SessionContext.getUserId();

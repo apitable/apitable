@@ -18,31 +18,32 @@
 
 package com.apitable.organization.ro;
 
+import com.apitable.core.support.deserializer.StringToLongDeserializer;
+import com.apitable.shared.constants.PatternConstants;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Pattern.Flag;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.shared.constants.PatternConstants;
-import com.apitable.core.support.deserializer.StringToLongDeserializer;
 
 /**
  * <p>
- * Invite Member Parameters
+ * Invite Member Parameters.
  * </p>
  */
 @Data
-@ApiModel("Invite Member Parameters")
+@Schema(description = "Invite Member Parameters")
 public class InviteMemberRo {
 
-    @ApiModelProperty(value = "Email address, strictly checked", example = "123456@qq.com", required = true, position = 1)
-    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags = Flag.CASE_INSENSITIVE)
+    @Schema(description = "Email address, strictly checked", example = "123456@qq.com", required
+        = true)
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags =
+        Flag.CASE_INSENSITIVE)
     private String email;
 
-    @ApiModelProperty(value = "Assign department ID, optional. If it is not transferred, it will be added under the root door of the space by default", dataType = "java.lang.String", example = "16272126", position = 2)
+    @Schema(description = "Assign department ID, optional. If it is not transferred, it will be "
+        + "added under the root door of the space by default", type = "java.lang.String",
+        example = "16272126")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 }
