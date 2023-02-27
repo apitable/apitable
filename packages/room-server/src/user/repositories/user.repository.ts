@@ -85,6 +85,7 @@ export class UserRepository extends Repository<UserEntity> {
       select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'],
       where: [{
         uuid: In(uuids),
+        isDeleted: false
       }]
     });
   }
