@@ -49,6 +49,7 @@ export class UserRepository extends Repository<UserEntity> {
   }
 
   /**
+   * @deprecated
    * TODO(Troy): stop using multiple joins query and break it in several small queries instead(refactor: multiple joins query is prohibited #2848)
    * TODO(Troy): use DTO instead of any
    * @param spaceId 
@@ -74,6 +75,19 @@ export class UserRepository extends Repository<UserEntity> {
     );
     await queryRunner.release();
     return users;
+  }
+
+  /**
+   * Query user info by user uuid array
+   */
+  public async selectUserBaseInfoByUuids(uuids: string[]): Promise<UserBaseInfoDto[]> {
+    return await this.find({
+      select: ['id', 'uuid', 'avatar', 'nikeName', 'color', 'isSocialNameModified'],
+      where: [{
+        uuid: In(uuids),
+        isDeleted: false
+      }]
+    });
   }
 
   /**

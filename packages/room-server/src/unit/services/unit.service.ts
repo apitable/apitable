@@ -17,7 +17,7 @@
  */
 
 import { MemberType } from '@apitable/core';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { UnitInfo } from 'database/interfaces';
 import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
@@ -37,6 +37,7 @@ export class UnitService {
     private readonly memberService: UnitMemberService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
   ) {}
 
@@ -168,7 +169,7 @@ export class UnitService {
     const users = excludeDeleted
       ? await this.userService.selectUserBaseInfoByIds(userIds as any[])
       : await this.userService.selectUserBaseInfoByIdsWithDeleted(userIds);
-    const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
+    const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted, UnitTypeEnum.MEMBER);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {
       const member = memberMap[user.id];
