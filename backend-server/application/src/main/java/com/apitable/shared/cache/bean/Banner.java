@@ -18,19 +18,17 @@
 
 package com.apitable.shared.cache.bean;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Template Center - Recommend Top Banner View
+ * Template Center - Recommend Top Banner View.
  * </p>
  *
  * @author Chambers
@@ -38,26 +36,27 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Banner View")
+@Schema(description = "Banner View")
 public class Banner {
 
-    @ApiModelProperty(value = "Template ID", example = "tplumddN5Cs5p", position = 1)
+    @Schema(description = "Template ID", example = "tplumddN5Cs5p")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String templateId;
 
-    @ApiModelProperty(value = "Banner Image", example = "https://xxx.com/cover001.jpg", position = 2)
+    @Schema(description = "Banner Image", example = "https://xxx.com/cover001.jpg")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String image;
 
-    @ApiModelProperty(value = "Title", example = "OKR Tracking", position = 3)
+    @Schema(description = "Title", example = "OKR Tracking")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String title;
 
-    @ApiModelProperty(value = "Description", example = "It is an useful tool to keep tracking everyone's OKRs on your team.", position = 4)
+    @Schema(description = "Description", example = "It is an useful tool to keep tracking "
+        + "everyone's OKRs on your team.")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String desc;
 
-    @ApiModelProperty(value = "Font Color", example = "#000000", position = 5)
+    @Schema(description = "Font Color", example = "#000000")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String color;
 }

@@ -18,19 +18,18 @@
 
 package com.apitable.user.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Developer Configuration Information View
+ * Developer Configuration Information View.
  * </p>
  */
 @Data
-@ApiModel("Developer Configuration Information View")
+@Schema(description = "Developer Configuration Information View")
 public class DeveloperInfoVo {
 
-    @ApiModelProperty(value = "Access Token", example = "Zhang San", position = 1)
+    @Schema(description = "Access Token", example = "Zhang San")
     private String apiKey;
 }

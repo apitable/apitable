@@ -18,15 +18,8 @@
 
 package com.apitable.asset.controller;
 
-import java.io.IOException;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
+import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.ro.AssetsAuditRo;
@@ -38,6 +31,8 @@ import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.vo.AssetUploadResult;
 import com.apitable.asset.vo.AssetsAuditVo;
 import com.apitable.auth.enums.AuthException;
+import com.apitable.core.support.ResponseData;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
@@ -49,22 +44,24 @@ import com.apitable.space.ro.SpaceAssetOpRo;
 import com.apitable.space.service.ISpaceAssetService;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.service.INodeService;
-import com.apitable.core.support.ResponseData;
-import com.apitable.core.util.ExceptionUtil;
-
-import org.springframework.http.MediaType;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
-import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
-
 /**
- * Attachment interface
+ * Attachment interface.
  */
 @RestController
-@Api(tags = "Basic module - Attachment Interface")
+@Tag(name = "Basic module - Attachment Interface")
 @ApiResource(path = "/base/attach")
 public class AssetController {
 
@@ -80,8 +77,12 @@ public class AssetController {
     @Resource
     private INodeService iNodeService;
 
+    /**
+     * Upload resources.
+     */
     @PostResource(name = "Upload resources", path = "/upload", requiredLogin = false)
-    @ApiOperation(value = "Upload resources", notes = "Upload resource files, any file type is unlimited", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload resources", description = "Upload resource files, any file type "
+        + "is unlimited")
     public ResponseData<AssetUploadResult> upload(@Valid AttachOpRo data) throws IOException {
         AssetType assetType = AssetType.of(data.getType());
         MultipartFile file = data.getFile();
@@ -91,26 +92,41 @@ public class AssetController {
             iAssetService.checkBeforeUpload(data.getNodeId(), data.getData());
         }
         if (AssetType.isSpaceAsset(assetType)) {
-            AssetUploadResult result = iAssetService.uploadFileInSpace(data.getNodeId(), file.getInputStream(), file.getOriginalFilename(), file.getSize(), file.getContentType(), assetType);
+            AssetUploadResult result =
+                iAssetService.uploadFileInSpace(data.getNodeId(), file.getInputStream(),
+                    file.getOriginalFilename(), file.getSize(), file.getContentType(), assetType);
             return ResponseData.success(result);
-        }
-        else {
+        } else {
             ExceptionUtil.isNotNull(userId, AuthException.UNAUTHORIZED);
-            AssetUploadResult result = iAssetService.uploadFile(file.getInputStream(), file.getSize(), file.getContentType());
+            AssetUploadResult result =
+                iAssetService.uploadFile(file.getInputStream(), file.getSize(),
+                    file.getContentType());
             return ResponseData.success(result);
         }
     }
 
-    @PostResource(name = "Image review result callback", path = "/auditCallback", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "Image review result callback", notes = "Accept the image review results stored in the OSS cloud, and carry out special treatment for illegal images and results requiring manual review", hidden = true)
+    /**
+     * Image review result callback.
+     */
+    @PostResource(name = "Image review result callback", path = "/auditCallback", requiredLogin =
+        false, requiredPermission = false)
+    @Operation(summary = "Image review result callback", description = "Accept the image review "
+        + "results stored in the OSS cloud, and carry out special treatment for illegal images "
+        + "and results requiring manual review", hidden = true)
     public ResponseData<Void> auditCallback(@RequestBody @Valid AttachAuditCallbackRo result) {
         iAssetAuditService.auditCallback(result);
         return ResponseData.success();
     }
 
-    @GetResource(name = "Paging query pictures that need manual review", path = "/readReviews", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "Paging query pictures that need manual review", notes = "Paging query pictures that need manual review")
-    @ApiImplicitParam(name = PAGE_PARAM, value = "Page params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+    /**
+     * Paging query pictures that need manual review.
+     */
+    @GetResource(name = "Paging query pictures that need manual review", path = "/readReviews",
+        requiredLogin = false, requiredPermission = false)
+    @Operation(summary = "Paging query pictures that need manual review", description = "Paging "
+        + "query pictures that need manual review")
+    @Parameter(name = PAGE_PARAM, description = "Page params", required = true, schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
     @SuppressWarnings("rawtypes")
     public ResponseData<PageInfo<AssetsAuditVo>> readReviews(@PageObjectParam Page page) {
         String auditorUserId = SessionContext.getDingtalkUserId();
@@ -118,8 +134,13 @@ public class AssetController {
         return ResponseData.success(PageHelper.build(iAssetAuditService.readReviews(page)));
     }
 
-    @PostResource(name = "Submit image review results", path = "/submitAuditResult", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "Submit image review results", notes = "Submit the image review results, enter the reviewer's name when submitting")
+    /**
+     * Submit image review results.
+     */
+    @PostResource(name = "Submit image review results", path = "/submitAuditResult",
+        requiredLogin = false, requiredPermission = false)
+    @Operation(summary = "Submit image review results", description = "Submit the image review "
+        + "results, enter the reviewer's name when submitting")
     public ResponseData<Void> submitAuditResult(@RequestBody @Valid AssetsAuditRo results) {
         // Query the DingTalk member information in the session
         String auditorUserId = SessionContext.getDingtalkUserId();
@@ -128,15 +149,24 @@ public class AssetController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "Image URL upload interface", path = "/urlUpload", requiredPermission = false)
-    @ApiOperation(value = "Image URL upload interface", notes = "Image URL upload interface")
+    /**
+     * Image URL upload interface.
+     */
+    @PostResource(name = "Image URL upload interface", path = "/urlUpload", requiredPermission =
+        false)
+    @Operation(summary = "Image URL upload interface", description = "Image URL upload interface")
     public ResponseData<AssetUploadResult> urlUpload(@Valid AttachUrlOpRo opRo) {
         AssetUploadResult result = iAssetService.urlUpload(opRo);
         return ResponseData.success(result);
     }
 
-    @PostResource(name = "Changes in the number of references to space attachment resources", path = "/cite", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "Changes in the number of references to space attachment resources", notes = "The same attachment needs to pass the token repeatedly")
+    /**
+     * Changes in the number of references to space attachment resources.
+     */
+    @PostResource(name = "Changes in the number of references to space attachment resources",
+        path = "/cite", requiredLogin = false, requiredPermission = false)
+    @Operation(summary = "Changes in the number of references to space attachment resources",
+        description = "The same attachment needs to pass the token repeatedly")
     public ResponseData<Void> cite(@RequestBody @Valid SpaceAssetOpRo opRo) {
         // Fill out the form anonymously
         String spaceId = iNodeService.getSpaceIdByNodeIdIncludeDeleted(opRo.getNodeId());

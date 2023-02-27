@@ -59,6 +59,8 @@ dependencies {
   implementation rootProject.ext.dependencies['jsoup']
   implementation rootProject.ext.dependencies['protobuf-java']
   implementation rootProject.ext.dependencies['io-grpc']
+  implementation rootProject.ext.dependencies['springdoc-openapi-ui']
+  implementation rootProject.ext.dependencies['knife4j-openapi3']
 
   runtimeOnly rootProject.ext.dependencies['mysql']
 

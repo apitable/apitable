@@ -16,26 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.space.vo;
+package com.apitable.auth.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * Working directory setting information view of a space.
- * </p>
+ * Login Request Parameters.
+ *
+ * @author Chambers
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Schema(description = "Working directory setting information view of a space")
-public class SpaceNodeVisibleStatusVo {
+@Schema(description = "Authorization Sign Up Request Parameters")
+public class RegisterRO {
 
-    @Schema(description = "Space ID", example = "spc10")
-    private boolean visibleStatus;
+    @Schema(description = "Username(email/telephone...)",
+        example = "xxxx@apitable.com", required = true)
+    private String username;
+
+    @Schema(description = "Credential(password/verify code...)",
+        example = "qwer1234 || 261527", required = true)
+    private String credential;
 }

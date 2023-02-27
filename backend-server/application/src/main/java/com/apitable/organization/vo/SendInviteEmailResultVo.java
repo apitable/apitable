@@ -18,28 +18,27 @@
 
 package com.apitable.organization.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Send Invitation Message Result View
+ * Send Invitation Message Result View.
  * </p>
  */
 @Data
-@ApiModel("Send Invitation Message Result View")
+@Schema(description = "Send Invitation Message Result View")
 public class SendInviteEmailResultVo {
 
-    @ApiModelProperty(value = "Total sent", example = "1", position = 1)
+    @Schema(description = "Total sent", example = "1")
     private int total;
 
-    @ApiModelProperty(value = "Number of successful sending", example = "1", position = 1)
+    @Schema(description = "Number of successful sending", example = "1")
     private int success;
 
-    @ApiModelProperty(value = "Number of sending failures", example = "1", position = 1)
+    @Schema(description = "Number of sending failures", example = "1")
     private int error;
 
-    @ApiModelProperty(value = "Whether the mailbox has been bound", example = "true", position = 4)
+    @Schema(description = "Whether the mailbox has been bound", example = "true")
     private Boolean isBound;
 }

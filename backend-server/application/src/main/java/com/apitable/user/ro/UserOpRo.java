@@ -18,17 +18,15 @@
 
 package com.apitable.user.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Size;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * User Action Request Parameters.
  */
 @Data
-@ApiModel("User Action Request Parameters")
+@Schema(description = "User Action Request Parameters")
 public class UserOpRo {
 
     /**
@@ -39,38 +37,38 @@ public class UserOpRo {
     /**
      * user avatar.
      */
-    @ApiModelProperty(value = "Avatar", example = "https://...")
+    @Schema(description = "Avatar", example = "https://...")
     private String avatar;
 
     /**
      * default avatar color number.
      */
-    @ApiModelProperty(value = "default avatar color", example = "1")
+    @Schema(description = "default avatar color", example = "1")
     private Integer avatarColor;
 
     /**
      * user nickName.
      */
-    @ApiModelProperty(value = "Nickname", example = "This is a nickname")
+    @Schema(description = "Nickname", example = "This is a nickname")
     @Size(max = maxSize, message = "Nickname length cannot exceed 32 bits")
     private String nickName;
 
     /**
      * is init.
      */
-    @ApiModelProperty(value = "Whether it is a registered initialization "
+    @Schema(description = "Whether it is a registered initialization "
         + "nickname", example = "true")
     private Boolean init;
 
     /**
      * locale.
      */
-    @ApiModelProperty(value = "Language", example = "zh-CN")
+    @Schema(description = "Language", example = "zh-CN")
     private String locale;
 
     /**
      * time zone.
      */
-    @ApiModelProperty(value = "Time Zone", example = "America/Toronto")
+    @Schema(description = "Time Zone", example = "America/Toronto")
     private String timeZone;
 }

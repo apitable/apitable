@@ -19,14 +19,17 @@
 package com.apitable.workspace.ro;
 
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * DataSheet Meta Operation Request Parameters
+ * DataSheet Meta Operation Request Parameters.
  */
-@ApiModel("DataSheet Meta Operation Request Parameters")
+@Schema(description = "DataSheet Meta Operation Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -34,10 +37,10 @@ import lombok.*;
 public class MetaOpRo {
 
 
-    @ApiModelProperty(value = "fieldMap and viewMap Data", example = "", position = 3)
+    @Schema(description = "fieldMap and viewMap Data", example = "")
     private JSONObject meta;
 
-    @ApiModelProperty(value = "Version No",example = "0", position = 4)
+    @Schema(description = "Version No", example = "0")
     private Long revision;
 
 }

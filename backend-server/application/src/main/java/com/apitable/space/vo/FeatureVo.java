@@ -18,8 +18,7 @@
 
 package com.apitable.space.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,25 +26,29 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Internal test function status value object
+ * Internal test function status value object.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Internal test function status")
+@Schema(description = "Internal test function status")
 public class FeatureVo {
 
-    @ApiModelProperty(value = "Unique identification of laboratory function", dataType = "java.lang.String", example = "robot", position = 1)
+    @Schema(description = "Unique identification of laboratory function", type = "java.lang"
+        + ".String", example = "robot")
     private String key;
 
-    @ApiModelProperty(value = "Laboratory function category", dataType = "java.lang.String", example = "review", position = 2)
+    @Schema(description = "Laboratory function category", type = "java.lang.String", example =
+        "review")
     private String type;
 
-    @ApiModelProperty(value = "Laboratory function application internal test form url", dataType = "java.lang.String", position = 3)
+    @Schema(description = "Laboratory function application internal test form url", type = "java"
+        + ".lang.String")
     private String url;
 
-    @ApiModelProperty(value = "Laboratory function opening status", dataType = "java.lang.Boolean", example = "true", position = 4)
+    @Schema(description = "Laboratory function opening status", type = "java.lang.Boolean",
+        example = "true")
     private Boolean open;
 }

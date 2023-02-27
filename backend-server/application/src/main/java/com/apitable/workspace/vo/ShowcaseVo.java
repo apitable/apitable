@@ -18,127 +18,135 @@
 
 package com.apitable.workspace.vo;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import static com.apitable.shared.constants.DateFormatConstants.TIME_NORM_PATTERN;
 
 import com.apitable.organization.vo.CreatedMemberInfoVo;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullObjectSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-
-import static com.apitable.shared.constants.DateFormatConstants.TIME_NORM_PATTERN;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Folder preview vo
+ * Folder preview vo.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Folder preview vo")
+@Schema(description = "Folder preview vo")
 public class ShowcaseVo {
 
-    @ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
+    @Schema(description = "Node ID", example = "nod10")
     private String nodeId;
 
-    @ApiModelProperty(value = "Node Name", example = "This is a node", position = 2)
+    @Schema(description = "Node Name", example = "This is a node")
     protected String nodeName;
 
-    @ApiModelProperty(value = "Node Type 0-ROOT（Root node） 1-folder（Folder） 2-file（Numerical table）", example = "1", position = 3)
+    @Schema(description = "Node Type 0-ROOT（Root node） 1-folder（Folder） 2-file（Numerical table）",
+        example = "1")
     private Integer type;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Node icon", example = "smile", position = 3)
+    @Schema(description = "Node icon", example = "smile")
     private String icon;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Cover", example = "http://...", position = 4)
+    @Schema(description = "Cover", example = "http://...")
     private String cover;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Describe", example = "This is a showcase", position = 5)
+    @Schema(description = "Describe", example = "This is a showcase")
     private String description;
 
-    @ApiModelProperty(value = "Role", example = "editor", position = 6)
+    @Schema(description = "Role", example = "editor")
     private String role;
 
-    @ApiModelProperty(value = "Node Permissions", position = 6)
+    @Schema(description = "Node Permissions")
     private NodePermissionView permissions;
 
-    @ApiModelProperty(value = "Whether the node is a star", position = 7)
+    @Schema(description = "Whether the node is a star")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean nodeFavorite;
 
-    @ApiModelProperty(value = "Node Creator Information", position = 8)
+    @Schema(description = "Node Creator Information")
     private CreatedMemberInfoVo createdMemberInfo;
 
-    @ApiModelProperty(value = "Node update time", example = "2021-05-04", position = 9)
+    @Schema(description = "Node update time", example = "2021-05-04")
     @JsonFormat(pattern = TIME_NORM_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedAt;
 
-    @ApiModelProperty(value = "Third party information", position = 10)
+    @Schema(description = "Third party information")
     private Social socialInfo;
 
-    @ApiModelProperty(value = "Other information", position = 11)
+    @Schema(description = "Other information")
     @JsonSerialize(nullsUsing = NullObjectSerializer.class)
     private NodeExtra extra;
 
+    /**
+     * Social.
+     */
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Deprecated
     public static class Social {
-        @ApiModelProperty(value = "DingTalk application status 0 means deactivated, 1 means enabled, 2 means deleted, and 3 means unpublished", position = 1)
+
+        @Schema(description = "DingTalk application status 0 means deactivated, 1 means enabled, "
+            + "2 means deleted, and 3 means unpublished")
         @JsonSerialize(nullsUsing = NullNumberSerializer.class)
         private Integer dingTalkDaStatus;
 
-        @ApiModelProperty(value = "DingTalk isv suiteKey", position = 2)
+        @Schema(description = "DingTalk isv suiteKey")
         private String dingTalkSuiteKey;
 
-        @ApiModelProperty(value = "DingTalk isv authorized Enterprise Id", position = 3)
+        @Schema(description = "DingTalk isv authorized Enterprise Id")
         private String dingTalkCorpId;
 
-        @ApiModelProperty(value = "Source template Id", position = 4)
+        @Schema(description = "Source template Id")
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
         private String sourceTemplateId;
 
-        @ApiModelProperty(value = "Whether to display the prompt of successful creation", position = 5)
+        @Schema(description = "Whether to display the prompt of successful creation")
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean showTips;
     }
 
+    /**
+     * NodeExtra.
+     */
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class NodeExtra {
-        @ApiModelProperty(value = "DingTalk application status 0 means deactivated, 1 means enabled, 2 means deleted, and 3 means unpublished", position = 1)
+
+        @Schema(description = "DingTalk application status 0 means deactivated, 1 means enabled, "
+            + "2 means deleted, and 3 means unpublished")
         @JsonSerialize(nullsUsing = NullNumberSerializer.class)
         private Integer dingTalkDaStatus;
 
-        @ApiModelProperty(value = "DingTalk isv suiteKey", position = 2)
+        @Schema(description = "DingTalk isv suiteKey")
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
         private String dingTalkSuiteKey;
 
-        @ApiModelProperty(value = "DingTalk isv authorized Enterprise Id", position = 3)
+        @Schema(description = "DingTalk isv authorized Enterprise Id")
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
         private String dingTalkCorpId;
 
-        @ApiModelProperty(value = "Source template Id", position = 4)
+        @Schema(description = "Source template Id")
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
         private String sourceTemplateId;
 
-        @ApiModelProperty(value = "Whether to display the prompt of successful creation", position = 5)
+        @Schema(description = "Whether to display the prompt of successful creation")
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean showTips;
     }
