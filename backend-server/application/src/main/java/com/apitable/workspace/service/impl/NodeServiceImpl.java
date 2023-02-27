@@ -18,6 +18,7 @@
 
 package com.apitable.workspace.service.impl;
 
+import com.apitable.workspace.dto.NodeTreeDTO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -423,14 +424,30 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         nodeIds.add(nodeId);
         List<String> parentIds = nodeIds;
         while (!parentIds.isEmpty() && depth != 0) {
-            List<String> subNodeIds =
-                nodeMapper.selectNodeIdBySpaceIdAndParentIdIn(spaceId, parentIds);
-            if (subNodeIds.isEmpty()) {
+            List<NodeTreeDTO> subNode =
+                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds);
+            if (subNode.isEmpty()) {
                 break;
             }
-            nodeIds.addAll(subNodeIds);
+            Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
+                subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
+            for (List<NodeTreeDTO> sub : parentIdToSubNodeMap.values()) {
+                Optional<NodeTreeDTO> first =
+                    sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
+                if (first.isPresent()) {
+                    String preNodeId = first.get().getNodeId();
+                    nodeIds.add(preNodeId);
+                    Map<String, String> preNodeIdToNodeIdMap = sub.stream()
+                        .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, NodeTreeDTO::getNodeId));
+                    while (preNodeIdToNodeIdMap.containsKey(preNodeId)) {
+                        preNodeId = preNodeIdToNodeIdMap.get(preNodeId);
+                        nodeIds.add(preNodeId);
+                    }
+                }
+            }
             depth--;
-            parentIds = subNodeIds.stream()
+            parentIds = subNode.stream()
+                .map(NodeTreeDTO::getNodeId)
                 .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
                 .collect(Collectors.toList());
         }

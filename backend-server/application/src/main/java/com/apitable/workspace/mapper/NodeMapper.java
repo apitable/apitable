@@ -18,6 +18,7 @@
 
 package com.apitable.workspace.mapper;
 
+import com.apitable.workspace.dto.NodeTreeDTO;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -152,14 +153,14 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     NodeInfoVo selectNodeInfoByNodeId(@Param("nodeId") String nodeId);
 
     /**
-     * Query sub node id
+     * Query node tree dto
      *
      * @param spaceId   space id
      * @param parentIds parent node ids
-     * @return NodeIds
+     * @return List<NodeTreeDTO>
      * @author Chambers
      */
-    List<String> selectNodeIdBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
+    List<NodeTreeDTO> selectNodeTreeDTOBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
         @Param("parentIds") Collection<String> parentIds);
 
     /**
