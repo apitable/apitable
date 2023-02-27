@@ -18,23 +18,18 @@
 
 package com.apitable.template.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.json.JSONUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
 import com.apitable.auth.enums.AuthException;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.core.support.ResponseData;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.interfaces.eventbus.facade.EventBusFacade;
 import com.apitable.interfaces.eventbus.model.TemplateSearchEvent;
 import com.apitable.interfaces.social.event.TemplateQuoteEvent;
@@ -75,25 +70,26 @@ import com.apitable.template.vo.TemplateVo;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfoVo;
-import com.apitable.core.support.ResponseData;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SpringContextHolder;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
-
 /**
- * <p>
- * Template Center - Template API
- * </p>
+ * Template Center - Template API.
  */
 @RestController
-@Api(tags = "Template Center - Template API")
+@Tag(name = "Template Center - Template API")
 @ApiResource(path = "/")
 public class TemplateController {
 
@@ -124,83 +120,126 @@ public class TemplateController {
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
+    /**
+     * Template Global Search.
+     */
     @GetResource(path = "/template/global/search", requiredLogin = false)
-    @ApiOperation(value = "Template Global Search")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "keyword", value = "Search Keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "plan"),
-            @ApiImplicitParam(name = "className", value = "Highlight Style Class Name", dataTypeClass = String.class, paramType = "query", example = "highLight")
+    @Operation(summary = "Template Global Search")
+    @Parameters({
+        @Parameter(name = "keyword", description = "Search Keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "plan"),
+        @Parameter(name = "className", description = "Highlight Style Class Name",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
-    public ResponseData<TemplateSearchResultVo> globalSearch(@RequestParam(name = "keyword") String keyword,
-            @RequestParam(value = "className", required = false, defaultValue = "keyword") String className) {
+    public ResponseData<TemplateSearchResultVo> globalSearch(
+        @RequestParam(name = "keyword") String keyword,
+        @RequestParam(value = "className", required = false, defaultValue = "keyword")
+        String className) {
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         // search template related content
         TemplateSearchDTO result = iTemplateService.globalSearchTemplate(lang, keyword, className);
         // sensors data track
         Long userId = SessionContext.getUserIdWithoutException();
-        ClientOriginInfo origin = InformationUtil.getClientOriginInfoInCurrentHttpContext(false, true);
-        eventBusFacade.onEvent(new TemplateSearchEvent(userId, keyword, result.getAlbumNames(), result.getTemplateNames(), result.getTagNames(), origin));
-        return ResponseData.success(new TemplateSearchResultVo(result.getAlbums(), result.getTemplates()));
+        ClientOriginInfo origin =
+            InformationUtil.getClientOriginInfoInCurrentHttpContext(false, true);
+        eventBusFacade.onEvent(new TemplateSearchEvent(userId, keyword, result.getAlbumNames(),
+            result.getTemplateNames(), result.getTagNames(), origin));
+        return ResponseData.success(
+            new TemplateSearchResultVo(result.getAlbums(), result.getTemplates()));
     }
 
+    /**
+     * Get Template Recommend Content.
+     */
     @GetResource(path = "/template/recommend", requiredLogin = false)
-    @ApiOperation(value = "Get Template Recommend Content")
+    @Operation(summary = "Get Template Recommend Content")
     public ResponseData<RecommendVo> recommend() {
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         RecommendVo vo = iTemplateService.getRecommend(lang);
         return ResponseData.success(vo);
     }
 
+    /**
+     * Get Template Category List.
+     */
     @GetResource(path = "/template/categoryList", requiredLogin = false)
-    @ApiOperation(value = "Get Template Category List")
+    @Operation(summary = "Get Template Category List")
     public ResponseData<List<TemplateCategoryMenuVo>> getCategoryList() {
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         List<TemplateCategoryMenuVo> list = iTemplateService.getTemplateCategoryList(lang);
         return ResponseData.success(list);
     }
 
+    /**
+     * Get The Template Category Content.
+     */
     @GetResource(path = "/template/categories/{categoryCode}", requiredLogin = false)
-    @ApiOperation(value = "Get The Template Category Content")
-    @ApiImplicitParam(name = "categoryCode", value = "Template Category Code", dataTypeClass = String.class, paramType = "path", example = "tpcEm7VDcbnnr")
-    public ResponseData<TemplateCategoryContentVo> getCategoryContent(@PathVariable("categoryCode") String categoryCode) {
+    @Operation(summary = "Get The Template Category Content")
+    @Parameter(name = "categoryCode", description = "Template Category Code", schema =
+        @Schema(type = "string"), in = ParameterIn.PATH, example = "tpcEm7VDcbnnr")
+    public ResponseData<TemplateCategoryContentVo> getCategoryContent(
+        @PathVariable("categoryCode") String categoryCode) {
         return ResponseData.success(iTemplateService.getTemplateCategoryContentVo(categoryCode));
     }
 
+    /**
+     * Get Space Templates.
+     */
     @GetResource(path = "/spaces/{spaceId}/templates", requiredPermission = false)
-    @ApiOperation(value = "Get Space Templates")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "Space Id", dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW")
-    public ResponseData<List<TemplateVo>> getSpaceTemplates(@PathVariable("spaceId") String spaceId) {
+    @Operation(summary = "Get Space Templates")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "Space Id", schema =
+        @Schema(type = "string"), in = ParameterIn.PATH, example = "spczJrh2i3tLW")
+    public ResponseData<List<TemplateVo>> getSpaceTemplates(
+        @PathVariable("spaceId") String spaceId) {
         // check if the user is in the space
         LoginContext.me().getUserSpaceDto(spaceId);
-        List<TemplateVo> vos = iTemplateService.getTemplateVoList(spaceId, null, null, Boolean.TRUE);
+        List<TemplateVo> vos =
+            iTemplateService.getTemplateVoList(spaceId, null, null, Boolean.TRUE);
         return ResponseData.success(vos);
     }
 
+    /**
+     * Get Template Directory Info.
+     */
     @GetResource(path = "/template/directory", requiredLogin = false)
-    @ApiOperation(value = "Get Template Directory Info")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "categoryCode", value = "Official Template Category Code", dataTypeClass = String.class, paramType = "query", example = "tpcEm7VDcbnnr"),
-            @ApiImplicitParam(name = "templateId", value = "Template Id", required = true, dataTypeClass = String.class, paramType = "query", example = "tplHTbkg7qbNJ"),
-            @ApiImplicitParam(name = "isPrivate", value = "Whether it is a private template in the space station", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
+    @Operation(summary = "Get Template Directory Info")
+    @Parameters({
+        @Parameter(name = "categoryCode", description = "Official Template Category Code",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "tpcEm7VDcbnnr"),
+        @Parameter(name = "templateId", description = "Template Id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "tplHTbkg7qbNJ"),
+        @Parameter(name = "isPrivate", description = "Whether it is a private template in the "
+            + "space station", schema = @Schema(type = "boolean"), in =
+            ParameterIn.QUERY, example = "true")
     })
-    public ResponseData<TemplateDirectoryVo> directory(@RequestParam("templateId") String templateId,
-            @RequestParam(name = "categoryCode", required = false) String categoryCode,
-            @RequestParam(value = "isPrivate", required = false, defaultValue = "false") Boolean isPrivate) {
+    public ResponseData<TemplateDirectoryVo> directory(
+        @RequestParam("templateId") String templateId,
+        @RequestParam(name = "categoryCode", required = false) String categoryCode,
+        @RequestParam(value = "isPrivate", required = false, defaultValue = "false")
+        Boolean isPrivate) {
         // Get the space id(the method includes judging whether the template exists)
         String spaceId = iTemplateService.getSpaceId(templateId);
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         // The requirement is the official template or the current space template
-        if (!constProperties.getTemplateSpace().contains(spaceId) || Boolean.TRUE.equals(isPrivate)) {
-            // Unofficial templates or view the current space template to verify whether the user is in the space
+        if (!constProperties.getTemplateSpace().contains(spaceId) || Boolean.TRUE.equals(
+            isPrivate)) {
+            // Unofficial templates or view the current space template to verify whether the user
+            // is in the space
             LoginContext.me().getUserSpaceDto(spaceId);
         }
-        TemplateDirectoryVo vo = iTemplateService.getDirectoryVo(categoryCode, templateId, isPrivate, lang);
+        TemplateDirectoryVo vo =
+            iTemplateService.getDirectoryVo(categoryCode, templateId, isPrivate, lang);
         return ResponseData.success(vo);
     }
 
+    /**
+     * Quote Template.
+     */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/template/quote", requiredPermission = false)
-    @ApiOperation(value = "Quote Template")
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @Operation(summary = "Quote Template")
+    @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> quote(@RequestBody @Valid QuoteTemplateRo ro) {
         Long userId = SessionContext.getUserId();
         // Get the space id(the method includes judging whether the node exists)
@@ -211,30 +250,47 @@ public class TemplateController {
         iNodeService.checkEnableOperateNodeBySpaceFeature(memberId, spaceId, ro.getParentId());
         // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getParentId(), NodePermission.CREATE_NODE,
-                status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+            status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         // Check if the template exists
         TemplateInfo info = templateMapper.selectInfoByTempId(ro.getTemplateId());
-        ExceptionUtil.isTrue(info != null && (spaceId.equals(info.getTypeId()) ||
-                constProperties.getTemplateSpace().equals(info.getTypeId())), TemplateException.TEMPLATE_INFO_ERROR);
+        ExceptionUtil.isTrue(info != null && (spaceId.equals(info.getTypeId())
+                || constProperties.getTemplateSpace().equals(info.getTypeId())),
+            TemplateException.TEMPLATE_INFO_ERROR);
         // Copy the node to the specified space directory
-        String nodeId = iNodeService.copyNodeToSpace(userId, spaceId, ro.getParentId(), info.getNodeId(),
-                NodeCopyOptions.builder().copyData(BooleanUtil.isTrue(ro.getData())).verifyNodeCount(true).sourceTemplateId(ro.getTemplateId()).build());
+        String nodeId =
+            iNodeService.copyNodeToSpace(userId, spaceId, ro.getParentId(), info.getNodeId(),
+                NodeCopyOptions.builder().copyData(BooleanUtil.isTrue(ro.getData()))
+                    .verifyNodeCount(true).sourceTemplateId(ro.getTemplateId()).build());
         // Cumulative template usage times
-        TaskManager.me().execute(() -> templateMapper.updateUsedTimesByTempId(ro.getTemplateId(), 1));
+        TaskManager.me()
+            .execute(() -> templateMapper.updateUsedTimesByTempId(ro.getTemplateId(), 1));
         // DingTalk template application creation
-        TaskManager.me().execute(() -> socialServiceFacade.eventCall(new TemplateQuoteEvent(spaceId, nodeId, ro.getTemplateId(), memberId)));
+        TaskManager.me().execute(() -> socialServiceFacade.eventCall(
+            new TemplateQuoteEvent(spaceId, nodeId, ro.getTemplateId(), memberId)));
         // Publish space audit event
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.QUOTE_TEMPLATE).userId(userId).spaceId(spaceId).nodeId(nodeId)
-                .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, ro.getTemplateId()).set(AuditConstants.TEMPLATE_NAME, info.getName()).set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.QUOTE_TEMPLATE).userId(userId)
+                .spaceId(spaceId).nodeId(nodeId)
+                .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, ro.getTemplateId())
+                    .set(AuditConstants.TEMPLATE_NAME, info.getName())
+                    .set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
-        return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, nodeId, ControlRoleManager.parseNodeRole(Node.MANAGER)));
+        return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, nodeId,
+            ControlRoleManager.parseNodeRole(Node.MANAGER)));
     }
 
+    /**
+     * Check if the template name already exists.
+     */
     @GetResource(path = "/template/validate")
-    @ApiOperation(value = "Check if the template name already exists", notes = "Called before creating a template, the same name will overwrite the old template, you need to confirm the operation again")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "Space Id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "name", value = "Template Name", required = true, dataTypeClass = String.class, paramType = "query", example = "this is a template")
+    @Operation(summary = "Check if the template name already exists", description = "Called "
+        + "before creating a template, the same name will overwrite the old template, you need to"
+        + " confirm the operation again")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "Space Id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = "name", description = "Template Name", required = true, schema
+            = @Schema(type = "string"), in = ParameterIn.QUERY, example = "this is a template")
     })
     public ResponseData<Boolean> validate(@RequestParam("name") String name) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -242,8 +298,13 @@ public class TemplateController {
         return ResponseData.success(exist);
     }
 
+    /**
+     * Create Template.
+     */
     @PostResource(path = "/template/create", requiredPermission = false)
-    @ApiOperation(value = "Create Template", notes = "Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.")
+    @Operation(summary = "Create Template", description = "Created nodes (including child "
+        + "descendant nodes) have administrative rights and are not associated with data tables "
+        + "other than nodes.")
     public ResponseData<String> create(@RequestBody @Valid CreateTemplateRo ro) {
         Long userId = SessionContext.getUserId();
         // Get the space id(the method includes judging whether the node exists)
@@ -253,22 +314,31 @@ public class TemplateController {
         Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getNodeId(), NodePermission.MANAGE_NODE,
-                status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+            status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         // Requirements for verifying various types of nodes
         iTemplateService.checkTemplateForeignNode(memberId, ro.getNodeId());
         String templateId = iTemplateService.create(userId, spaceId, ro);
         // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // Publish space audit event
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_TEMPLATE).userId(userId).spaceId(spaceId).nodeId(ro.getNodeId())
-                .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId).set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_TEMPLATE).userId(userId)
+                .spaceId(spaceId).nodeId(ro.getNodeId())
+                .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)
+                    .set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success(templateId);
     }
 
-    @PostResource(path = "/template/delete/{templateId}", method = RequestMethod.DELETE, requiredPermission = false)
-    @ApiOperation(value = "Delete Template", notes = "Deletion objects: main administrator, sub-admins with template permissions, creator of the template")
-    @ApiImplicitParam(name = "templateId", value = "Template ID", required = true, dataTypeClass = String.class, paramType = "path", example = "tplHTbkg7qbNJ")
+    /**
+     * Delete Template.
+     */
+    @PostResource(path = "/template/delete/{templateId}", method = RequestMethod.DELETE,
+        requiredPermission = false)
+    @Operation(summary = "Delete Template", description = "Deletion objects: main administrator, "
+        + "sub-admins with template permissions, creator of the template")
+    @Parameter(name = "templateId", description = "Template ID", required = true, schema
+        = @Schema(type = "string"), in = ParameterIn.PATH, example = "tplHTbkg7qbNJ")
     public ResponseData<Void> delete(@PathVariable("templateId") String templateId) {
         Long userId = SessionContext.getUserId();
         // Get the space id(the method includes judging whether the template exists)
@@ -277,8 +347,9 @@ public class TemplateController {
         // Check if user is in this space
         UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, spaceId);
         // Determine whether it is the main administrator, or a sub-admin with template permissions
-        boolean isManager = userSpaceDto.isMainAdmin() ||
-                (userSpaceDto.isAdmin() && userSpaceDto.getResourceCodes().contains("DELETE_TEMPLATE"));
+        boolean isManager = userSpaceDto.isMainAdmin()
+            || (userSpaceDto.isAdmin() && userSpaceDto.getResourceCodes()
+            .contains("DELETE_TEMPLATE"));
         if (!isManager) {
             // Templates can be overridden, the last modifier is the creator
             Long creator = templateMapper.selectUpdatersByTempId(templateId);
@@ -289,7 +360,9 @@ public class TemplateController {
         // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // Publish space audit event
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_TEMPLATE).userId(userId).spaceId(spaceId)
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_TEMPLATE).userId(userId)
+                .spaceId(spaceId)
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();

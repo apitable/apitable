@@ -19,26 +19,28 @@
 package com.apitable.workspace.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Create Datasheet Vo.
+ */
 @Data
-@ApiModel("Create DataSheet View")
+@Schema(description = "Create DataSheet View")
 @Builder
-public class CreateDatasheetVo  {
+public class CreateDatasheetVo {
 
-    @ApiModelProperty(value = "DataSheet ID", example = "dstfCEKoPjXSJ8jdSj", position = 1)
+    @Schema(description = "DataSheet ID", example = "dstfCEKoPjXSJ8jdSj")
     private String datasheetId;
 
-    @ApiModelProperty(value = "Folder ID", example = "fodn173Q0e8nC", position = 2)
+    @Schema(description = "Folder ID", example = "fodn173Q0e8nC")
     private String folderId;
 
-    @ApiModelProperty(value = "Previous node ID", example = "dstfCEKoPjXSJ8jdSj", position = 3)
+    @Schema(description = "Previous node ID", example = "dstfCEKoPjXSJ8jdSj")
     private String preNodeId;
 
-    @ApiModelProperty(value = "Create time", example = "24342423342", position = 3)
+    @Schema(description = "Create time", example = "24342423342")
     private Long createdAt;
 
     @JsonIgnoreProperties

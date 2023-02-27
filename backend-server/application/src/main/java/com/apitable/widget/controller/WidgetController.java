@@ -18,12 +18,7 @@
 
 package com.apitable.widget.controller;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.ParameterException;
@@ -31,8 +26,6 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.widget.ro.WidgetStoreListRo;
-import com.apitable.widget.vo.WidgetStoreListInfo;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
@@ -46,79 +39,67 @@ import com.apitable.widget.mapper.WidgetMapper;
 import com.apitable.widget.mapper.WidgetPackageMapper;
 import com.apitable.widget.ro.WidgetCopyRo;
 import com.apitable.widget.ro.WidgetCreateRo;
+import com.apitable.widget.ro.WidgetStoreListRo;
 import com.apitable.widget.service.IWidgetService;
 import com.apitable.widget.vo.WidgetInfo;
 import com.apitable.widget.vo.WidgetPack;
+import com.apitable.widget.vo.WidgetStoreListInfo;
 import com.apitable.widget.vo.WidgetTemplatePackageInfo;
 import com.apitable.workspace.service.INodeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
-
 /**
  * WidgetController.
  */
 @RestController
-@Api(tags = "Widget SDK - Widget Api")
+@Tag(name = "Widget SDK - Widget Api")
 @ApiResource(path = "/")
 public class WidgetController {
 
-    /**
-     *
-     */
     @Resource
     private ISpaceService iSpaceService;
-    /**
-     *
-     */
+
     @Resource
     private INodeService iNodeService;
-    /**
-     *
-     */
+
     @Resource
     private ControlTemplate controlTemplate;
-    /**
-     *
-     */
+
     @Resource
     private UserSpaceCacheService userSpaceCacheService;
-    /**
-     *
-     */
+
     @Resource
     private IWidgetService iWidgetService;
-    /**
-     *
-     */
+
     @Resource
     private WidgetPackageMapper widgetPackageMapper;
-    /**
-     *
-     */
+
     @Resource
     private WidgetMapper widgetMapper;
 
     /**
      * Get widget store.
-     *
-     * @param storeListRo {@link WidgetStoreListRo}
-     * @return {@link WidgetStoreListInfo}
      */
     @PostResource(path = "/widget/package/store/list",
         requiredPermission = false)
-    @ApiOperation(value = "Get widget store")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id",
-        required = true, dataTypeClass = String.class, paramType = "header",
+    @Operation(summary = "Get widget store")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+        required = true, schema = @Schema(type = "string"), in = ParameterIn.HEADER,
         example = "spczJrh2i3tLW")
     public ResponseData<List<WidgetStoreListInfo>> widgetStoreList(
         @RequestBody @Valid final WidgetStoreListRo storeListRo) {
@@ -134,25 +115,20 @@ public class WidgetController {
 
     /**
      * Get the space widgets.
-     *
-     * @param spaceId space id
-     * @param count   count
-     * @return {@link WidgetInfo}
      */
     @GetResource(path = "/space/{spaceId}/widget", requiredPermission = false)
-    @ApiOperation(value = "Get the space widgets",
-        notes = "get the widgets under the entire space")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "spaceId", value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "path",
+    @Operation(summary = "Get the space widgets",
+        description = "get the widgets under the entire space")
+    @Parameters({
+        @Parameter(name = "spaceId", description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH,
             example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "count", value = "load quantity",
-            dataTypeClass = Integer.class, paramType = "query", example = "10")
+        @Parameter(name = "count", description = "load quantity",
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "10")
     })
     public ResponseData<List<WidgetInfo>> findWidgetInfoBySpaceId(
         @PathVariable("spaceId") final String spaceId,
-        @RequestParam(value = "count", required = false, defaultValue = "10")
-        final Integer count) {
+        @RequestParam(value = "count", required = false, defaultValue = "10") final Integer count) {
         Long userId = SessionContext.getUserId();
         Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         List<WidgetInfo> infos = iWidgetService.getWidgetInfoList(spaceId,
@@ -162,14 +138,11 @@ public class WidgetController {
 
     /**
      * get the widget information of the node.
-     *
-     * @param nodeId node id
-     * @return {@link WidgetInfo}
      */
     @GetResource(path = "/node/{nodeId}/widget", requiredPermission = false)
-    @ApiOperation(value = "get the widget information of the node")
-    @ApiImplicitParam(name = "nodeId", value = "node id", required = true,
-        dataTypeClass = String.class, paramType = "path",
+    @Operation(summary = "get the widget information of the node")
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH,
         example = "dstJ2oRZxsh2yld4MA")
     public ResponseData<List<WidgetInfo>> findWidgetInfoByNodeId(
         @PathVariable("nodeId") final String nodeId) {
@@ -187,24 +160,20 @@ public class WidgetController {
 
     /**
      * Get the node widget package.
-     *
-     * @param nodeId node id
-     * @param linkId link id
-     * @return {@link WidgetPack}
      */
     @GetResource(path = "/node/{nodeId}/widgetPack", requiredLogin = false)
-    @ApiOperation(value = "Get the node widget package",
-        notes = "Node types are limited to dashboards and datasheet")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id",
-            dataTypeClass = String.class, paramType = "header",
+    @Operation(summary = "Get the node widget package",
+        description = "Node types are limited to dashboards and datasheet")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER,
             example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "nodeId", value = "node id", required = true,
-            dataTypeClass = String.class, paramType = "path",
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH,
             example = "dstJ2oRZxsh2yld4MA"),
-        @ApiImplicitParam(name = "linkId",
-            value = "association id：node share id、template id",
-            dataTypeClass = String.class, paramType = "query",
+        @Parameter(name = "linkId",
+            description = "association id：node share id、template id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY,
             example = "shr8T8vAfehg3yj3McmDG")
     })
     public ResponseData<List<WidgetPack>> findWidgetPackByNodeId(
@@ -235,22 +204,17 @@ public class WidgetController {
 
     /**
      * get widget info by widget id.
-     *
-     * @param widgetIds widget id list
-     * @param linkId    link id
-     * @param userId    user id
-     * @return {@link WidgetPack}
      */
     @GetResource(path = "/widget/get", requiredLogin = false)
-    @ApiOperation(value = "Get widget info",
-        notes = "get widget info by widget id")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "widgetIds", value = "widget ids",
-            required = true, dataTypeClass = String.class, paramType = "query",
+    @Operation(summary = "Get widget info",
+        description = "get widget info by widget id")
+    @Parameters({
+        @Parameter(name = "widgetIds", description = "widget ids",
+            required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY,
             example = "wdtlMDweJzTsbSJAFY,wdt923ZpvvRhD8kVLs"),
-        @ApiImplicitParam(name = "linkId",
-            value = "Association ID: node sharing ID and template ID",
-            dataTypeClass = String.class, paramType = "query",
+        @Parameter(name = "linkId",
+            description = "Association ID: node sharing ID and template ID",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY,
             example = "shr8T8vAfehg3yj3McmDG")
     })
     public ResponseData<List<WidgetPack>> findWidgetPackByWidgetIds(
@@ -277,13 +241,10 @@ public class WidgetController {
 
     /**
      * Create widget.
-     *
-     * @param widget {@link WidgetCreateRo}
-     * @return {@link WidgetPack>}
      */
     @PostResource(path = "/widget/create", requiredPermission = false)
-    @ApiOperation(value = "Create widget",
-        notes = "Scenario:1、dashboard new applet "
+    @Operation(summary = "Create widget",
+        description = "Scenario:1、dashboard new applet "
             + "2、datasheet widget panel new widget")
     public ResponseData<WidgetPack> createWidget(
         @RequestBody @Valid final WidgetCreateRo widget) {
@@ -303,13 +264,10 @@ public class WidgetController {
 
     /**
      * Copy widget.
-     *
-     * @param widgetRo {@link WidgetCopyRo}
-     * @return {@link WidgetPack}
      */
     @PostResource(path = "/widget/copy", requiredPermission = false)
-    @ApiOperation(value = "Copy widget",
-        notes = "Scenario: 1、dashboard import widget"
+    @Operation(summary = "Copy widget",
+        description = "Scenario: 1、dashboard import widget"
             + " 2、the widget panel sends applets to the dashboard")
     public ResponseData<List<WidgetPack>> copyWidget(
         @RequestBody @Valid final WidgetCopyRo widgetRo) {
@@ -332,14 +290,11 @@ public class WidgetController {
 
     /**
      * Get package teamplates.
-     *
-     * @return {@link WidgetTemplatePackageInfo}
      */
     @GetResource(path = "/widget/template/package/list",
         requiredPermission = false)
-    @ApiOperation(value = "Get package teamplates")
-    public ResponseData<List<WidgetTemplatePackageInfo>>
-    findTemplatePackageList() {
+    @Operation(summary = "Get package teamplates")
+    public ResponseData<List<WidgetTemplatePackageInfo>> findTemplatePackageList() {
         String userLocale = LocaleContextHolder.getLocale().toLanguageTag();
         List<WidgetTemplatePackageInfo> data =
             widgetPackageMapper.selectWidgetTemplatePackageList(userLocale);

@@ -112,22 +112,22 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
     if (recoverLoading) {
       return;
     }
-    const result = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return;
     }
 
     if (formIdReg.test(`/${nodeId}`)) {
-      const result = triggerUsageAlert('maxFormViewsInSpace',
-        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result = triggerUsageAlert?.('maxFormViewsInSpace',
+        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
       if (result) {
         return;
       }
     }
 
     if (mirrorIdReg.test(`/${nodeId}`)) {
-      const result = triggerUsageAlert('maxMirrorNums',
-        { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result = triggerUsageAlert?.('maxMirrorNums',
+        { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
       if (result) {
         return;
       }
@@ -160,12 +160,12 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
       loadMore();
       return;
     }
-    triggerUsageAlert(
+    triggerUsageAlert?.(
       'maxRemainTrashDays',
       // Here maxRemainTrashDays is obtained as the value in billing,
       // which is actually the maximum allowed, so in order to trigger the popup, you need +1.
       { usage: maxRemainTrashDays + 1, alwaysAlert: true },
-      SubscribeUsageTipType.Alert,
+      SubscribeUsageTipType?.Alert,
     );
   };
 
@@ -270,7 +270,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
                   noMore && <span className={styles.end}>{t(Strings.end)}</span>
                 }
                 {
-                  (product !== SubscribeGrade.Enterprise || (product === SubscribeGrade.Enterprise && !noMore)) && <div style={{ marginTop: 8 }}>
+                  (product !== SubscribeGrade?.Enterprise || (product === SubscribeGrade?.Enterprise && !noMore)) && <div style={{ marginTop: 8 }}>
                     {
                       moreLoading ?
                         <Button loading variant='jelly'>

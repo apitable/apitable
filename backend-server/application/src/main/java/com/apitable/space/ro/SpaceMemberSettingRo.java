@@ -18,28 +18,26 @@
 
 package com.apitable.space.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Space management - common members set request parameters
+ * Space management - common members set request parameters.
  * </p>
- *
  * The status field is consistent with the serialized object of the read library
  */
 @Data
-@ApiModel("Space management - common members set request parameters")
+@Schema(description = "Space management - common members set request parameters")
 public class SpaceMemberSettingRo {
 
-    @ApiModelProperty(value = "Invitable status of all staff", example = "true", position = 1)
+    @Schema(description = "Invitable status of all staff", example = "true")
     private Boolean invitable;
 
-    @ApiModelProperty(value = "Allow others to apply for space status", example = "false", position = 2)
+    @Schema(description = "Allow others to apply for space status", example = "false")
     private Boolean joinable;
 
-    @ApiModelProperty(value = "Display member's mobile number", example = "false", position = 3)
+    @Schema(description = "Display member's mobile number", example = "false")
     private Boolean mobileShowable;
 
 }

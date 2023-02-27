@@ -18,24 +18,23 @@
 
 package com.apitable.space.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Administrator permission information view
+ * Administrator permission information view.
  * </p>
  */
 @Data
-@ApiModel("Administrator permission information view")
+@Schema(description = "Administrator permission information view")
 public class SpaceRoleDetailVo {
 
-	@ApiModelProperty(value = "Administrator Name", example = "Zhang San", position = 1)
-	private String memberName;
+    @Schema(description = "Administrator Name", example = "Zhang San")
+    private String memberName;
 
-	@ApiModelProperty(value = "The permission code set owned by the administrator", dataType = "List", example = "[\"MANAGE_MEMBER\",\"MANAGE_TEAM\"]", position = 2)
-	private List<String> resources;
+    @Schema(description = "The permission code set owned by the administrator", type = "List",
+        example = "[\"MANAGE_MEMBER\",\"MANAGE_TEAM\"]")
+    private List<String> resources;
 }

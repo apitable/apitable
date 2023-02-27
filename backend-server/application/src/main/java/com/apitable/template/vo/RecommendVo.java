@@ -18,11 +18,9 @@
 
 package com.apitable.template.vo;
 
-import java.util.List;
-
 import com.apitable.shared.cache.bean.Banner;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -31,18 +29,15 @@ import lombok.Data;
  * @author Chambers
  */
 @Data
-@ApiModel("Recommend View")
+@Schema(description = "Recommend View")
 public class RecommendVo {
 
-    /** */
-    @ApiModelProperty(value = "Top Banner", position = 1)
+    @Schema(description = "Top Banner")
     private List<Banner> top;
 
-    /** */
-    @ApiModelProperty(value = "Custom Albums Groups", position = 2)
+    @Schema(description = "Custom Albums Groups")
     private List<AlbumGroupVo> albumGroups;
 
-    /** */
-    @ApiModelProperty(value = "Custom Template Groups", position = 2)
+    @Schema(description = "Custom Template Groups")
     private List<TemplateGroupVo> templateGroups;
 }

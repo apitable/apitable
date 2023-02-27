@@ -18,36 +18,33 @@
 
 package com.apitable.workspace.vo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Data Table Field Role Information View
+ * Data Table Field Role Information View.
  * </p>
  */
 @Data
-@ApiModel("Data Table Field Permission View")
+@Schema(description = "Data Table Field Permission View")
 public class FieldCollaboratorVO {
 
-    @ApiModelProperty(value = "Whether to open", example = "false", position = 1)
+    @Schema(description = "Whether to open", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean enabled;
 
-    @ApiModelProperty(value = "Role Member List", position = 3)
+    @Schema(description = "Role Member List")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<FieldRoleMemberVo> members;
 
-    @ApiModelProperty(value = "Role Org Unit List", position = 4)
+    @Schema(description = "Role Org Unit List")
     private List<FieldRole> roles;
 
-    @ApiModelProperty(value = "Data Table Field Role Configuration Attribute", position = 5)
+    @Schema(description = "Data Table Field Role Configuration Attribute")
     private FieldRoleSetting setting;
 }

@@ -89,12 +89,11 @@ make
 
 ## Start Development Environment
 
-APITable consists of 4 processes:
+APITable consists of 3 processes:
 
 1. backend-server
 2. room-server
-3. socket-server
-4. web-server
+3. web-server
 
 To start the development environment locally, run these commands:
 
@@ -113,12 +112,8 @@ make run # enter 1
 make run # enter 2
 
 # and then switch to a new terminal
-# start socket-server
-make run # enter 3  
-
-# and then switch to a new terminal
 # start web-server
-make run # enter 4
+make run # enter 3
 
 ```
 

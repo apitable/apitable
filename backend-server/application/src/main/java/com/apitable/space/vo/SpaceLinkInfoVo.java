@@ -18,47 +18,46 @@
 
 package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Space public invitation link information vo
+ * Space public invitation link information vo.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Space public invitation link information vo")
+@Schema(description = "Space public invitation link information vo")
 public class SpaceLinkInfoVo {
 
-    @ApiModelProperty(value = "Creator name", example = "Zhang San", position = 1)
+    @Schema(description = "Creator name", example = "Zhang San")
     private String memberName;
 
-    @ApiModelProperty(value = "Space name", example = "This is a space", position = 2)
+    @Schema(description = "Space name", example = "This is a space")
     private String spaceName;
 
-    @ApiModelProperty(value = "Space ID", example = "spc10", position = 3)
+    @Schema(description = "Space ID", example = "spc10")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String spaceId;
 
-    @ApiModelProperty(value = "Whether it is in login status, not logged in", example = "true", position = 4)
+    @Schema(description = "Whether it is in login status, not logged in", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isLogin;
 
-    @ApiModelProperty(value = "Whether it already exists in the space, and directly call the switching space interface in the existing space", example = "true", position = 5)
+    @Schema(description = "Whether it already exists in the space, and directly call the "
+        + "switching space interface in the existing space", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isExist;
 
-    @ApiModelProperty(value = "Inviter's personal invitation code", example = "test", position = 6)
+    @Schema(description = "Inviter's personal invitation code", example = "test")
     private String inviteCode;
 }

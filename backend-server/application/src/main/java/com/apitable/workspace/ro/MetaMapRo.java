@@ -20,28 +20,31 @@ package com.apitable.workspace.ro;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * DataSheet meta set parameter
+ * DataSheet meta set parameter.
  * </p>
  */
-@ApiModel("DataSheet meta set parameter")
+@Schema(description = "DataSheet meta set parameter")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class MetaMapRo {
 
-    @ApiModelProperty(value = "DataSheet field set", position = 2)
+    @Schema(description = "DataSheet field set")
     private JSONObject fieldMap;
 
-    @ApiModelProperty(value = "View array（Save viewId）", position = 3)
+    @Schema(description = "View array（Save viewId）")
     private JSONArray views;
 
-    @ApiModelProperty(value = "Component panel", position = 4)
+    @Schema(description = "Component panel")
     private JSONArray widgetPanels;
 }
