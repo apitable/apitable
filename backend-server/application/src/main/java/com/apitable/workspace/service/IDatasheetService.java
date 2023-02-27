@@ -101,6 +101,13 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap);
 
     /**
+     * @param dstIds    datasheet ids
+     * @author Chambers
+     * @return List<BaseNodeInfo>
+     */
+    List<BaseNodeInfo> getForeignDstIdsFilterSelf(List<String> dstIds);
+
+    /**
      * the id of the query number table and the id of the corresponding associated number table.
      *
      * @param dstIdList datasheet ids

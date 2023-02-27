@@ -761,7 +761,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getParentId()), ParameterException.INCORRECT_ARG);
         // When this node is a folder, it is prevented from moving into child and descendant nodes.
         if (nodeEntity.getType().equals(NodeType.FOLDER.getNodeType())) {
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeEntity.getNodeId());
+            List<String> subNodeIds =
+                this.getNodeIdsInNodeTree(nodeEntity.getSpaceId(), nodeEntity.getNodeId(), -1);
             ExceptionUtil.isFalse(CollUtil.isNotEmpty(subNodeIds) && subNodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
         }
         AuditSpaceAction action = AuditSpaceAction.MOVE_NODE;
@@ -957,18 +958,20 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<BaseNodeInfo> getForeignSheet(String nodeId) {
         log.info("Query the associated datasheet information of the node ");
-        // Whether it is a folder or a datasheet, if the datasheet is related, it needs to be fully queried.
-        NodeType nodeType = NodeType.toEnum(SqlTool.retCount(nodeMapper.selectNodeTypeByNodeId(nodeId)));
+        // Whether it is a folder or a datasheet,
+        // if the datasheet is related, it needs to be fully queried.
+        NodeEntity node = this.getByNodeId(nodeId);
+        NodeType nodeType = NodeType.toEnum(node.getType());
         ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
         List<BaseNodeInfo> nodes = new ArrayList<>();
         if (nodeType == NodeType.FOLDER) {
             // folder
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
+            List<String> subNodeIds =
+                this.getNodeIdsInNodeTree(node.getSpaceId(), nodeId, -1);
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 getForeignDstIdsFilterSelf(nodes, subNodeIds);
             }
-        }
-        else if (nodeType == NodeType.DATASHEET) {
+        } else if (nodeType == NodeType.DATASHEET) {
             // datasheet
             getForeignDstIdsFilterSelf(nodes, Collections.singletonList(nodeId));
         }
@@ -1516,32 +1519,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public boolean judgeAllSubNodeContainMemberFld(String nodeId) {
-        NodeType nodeType = this.getTypeByNodeId(nodeId);
-        ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
-        String keyword = "\"type\": 13";
-        if (nodeType == NodeType.FOLDER) {
-            // folder
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
-            if (CollUtil.isNotEmpty(subNodeIds)) {
-                return SqlTool.retCount(datasheetMetaMapper.countByMetaData(subNodeIds, keyword)) > 0;
-            }
-        }
-        else if (nodeType == NodeType.DATASHEET) {
-            // datasheet
-            return SqlTool.retCount(datasheetMetaMapper.countByMetaData(Collections.singletonList(nodeId), keyword)) > 0;
-        }
-        return false;
-    }
-
-    @Override
     public List<String> checkSubNodePermission(Long memberId, String nodeId, ControlRole role) {
         boolean hasChildren = nodeMapper.selectHasChildren(nodeId);
         if (!hasChildren) {
             return null;
         }
         // Check the node permissions of all children and descendants
-        List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
+        String spaceId = this.getSpaceIdByNodeId(nodeId);
+        List<String> subNodeIds = this.getNodeIdsInNodeTree(spaceId, nodeId, -1);
+
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, subNodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
         List<String> filterNodeIds = roleDict.entrySet().stream()

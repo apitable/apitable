@@ -22,6 +22,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetSnapshot;
@@ -116,5 +117,14 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     public DatasheetSnapshot getMetaByDstId(String dstId) {
         return datasheetMetaMapper.selectByDstId(dstId);
+    }
+
+    @Override
+    public boolean judgeContainMemberField(List<String> dstIds) {
+        if (dstIds.isEmpty()) {
+            return false;
+        }
+        String keyword = "\"type\": 13";
+        return SqlTool.retCount(datasheetMetaMapper.countByMetaData(dstIds, keyword)) > 0;
     }
 }

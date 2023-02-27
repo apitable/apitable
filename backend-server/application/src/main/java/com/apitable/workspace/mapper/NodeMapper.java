@@ -206,25 +206,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     boolean selectHasChildren(@Param("nodeId") String nodeId);
 
     /**
-     * find all child nodes
-     * Unordered, improve query performance
-     *
-     * @param nodeId node id
-     * @return children node
-     */
-    List<String> selectAllSubNodeIds(@Param("nodeId") String nodeId);
-
-    /**
-     * find all child nodes by type
-     * Unordered, improve query performance
-     *
-     * @param nodeId node id
-     * @param nodeType node type
-     * @return children node
-     */
-    List<String> selectAllSubNodeIdsByNodeType(@Param("nodeId") String nodeId, @Param("nodeType") Integer nodeType);
-
-    /**
      * Gets the list of node names of the same type under the parent node.
      *
      * @param parentId parent node id

@@ -18,6 +18,7 @@
 
 package com.apitable.template.service.impl;
 
+import com.apitable.workspace.entity.NodeEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -239,15 +240,14 @@ public class TemplateServiceImpl
         List<BaseNodeInfo> nodeInfos =
             nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
         Map<Integer, List<String>> nodeTypeToNodeIdsMap = nodeInfos.stream()
-                .collect(Collectors.groupingBy(BaseNodeInfo::getType,
-                    Collectors.mapping(BaseNodeInfo::getNodeId,
-                        Collectors.toList())));
+            .collect(Collectors.groupingBy(BaseNodeInfo::getType,
+                Collectors.mapping(BaseNodeInfo::getNodeId, Collectors.toList())));
         // If there is a number table,
         // check whether it is associated with an external number table
         if (nodeTypeToNodeIdsMap
             .containsKey(NodeType.DATASHEET.getNodeType())) {
             this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(
-                NodeType.DATASHEET.getNodeType()), true,
+                    NodeType.DATASHEET.getNodeType()), true,
                 TemplateException.FOLDER_NODE_LINK_FOREIGN_NODE);
             // Check Field Permissions
             for (String subNodeId : nodeTypeToNodeIdsMap
@@ -361,8 +361,8 @@ public class TemplateServiceImpl
             iFieldRoleService.getFieldPermissionMap(memberId, nodeId, null);
         if (MapUtil.isNotEmpty(fieldPermissionMap)) {
             FieldPermissionInfo info = fieldPermissionMap.values().stream()
-                    .filter(val -> !Boolean.TRUE.equals(val.getHasRole()))
-                    .findFirst().orElse(null);
+                .filter(val -> !Boolean.TRUE.equals(val.getHasRole()))
+                .findFirst().orElse(null);
             ExceptionUtil.isNull(info,
                 TemplateException.FIELD_PERMISSION_INSUFFICIENT);
         }
@@ -402,11 +402,11 @@ public class TemplateServiceImpl
         NodeType nodeType = iNodeService.getTypeByNodeId(ro.getNodeId());
         String nodeId = IdUtil.createNodeId(nodeType.getNodeType());
         NodeCopyOptions options = NodeCopyOptions.builder()
-                .copyData(BooleanUtil.isTrue(ro.getData()))
-                .nodeId(nodeId)
-                .template(true)
-                .retainRecordMeta(true)
-                .build();
+            .copyData(BooleanUtil.isTrue(ro.getData()))
+            .nodeId(nodeId)
+            .template(true)
+            .retainRecordMeta(true)
+            .build();
         // Overwrite with the same name, delete the old map node
         if (id != null) {
             TemplateInfo info = baseMapper.selectInfoById(id);
@@ -591,8 +591,8 @@ public class TemplateServiceImpl
     public List<TemplateCategoryMenuVo> getTemplateCategoryList(
         final String lang) {
         List<TemplatePropertyDto> properties =
-                templatePropertyService.getTemplatePropertiesWithLangAndOrder(
-                    TemplatePropertyType.CATEGORY, lang);
+            templatePropertyService.getTemplatePropertiesWithLangAndOrder(
+                TemplatePropertyType.CATEGORY, lang);
         List<TemplateCategoryMenuVo> categoryVos = new ArrayList<>();
         for (TemplatePropertyDto property : properties) {
             TemplateCategoryMenuVo vo = new TemplateCategoryMenuVo();
@@ -671,14 +671,14 @@ public class TemplateServiceImpl
                 iNodeDescService.getNodeIdToDescMap(nodeIds);
             templateDtoList.forEach(dto -> {
                 TemplateVo vo = TemplateVo.builder()
-                        .templateId(dto.getTemplateId())
-                        .templateName(dto.getName())
-                        .nodeId(dto.getNodeId())
-                        .nodeType(dto.getType())
-                        .cover(dto.getCover())
-                        .description(nodeIdToDescMap.get(dto.getNodeId()))
-                        .tags(tags.get(dto.getTemplateId()))
-                        .build();
+                    .templateId(dto.getTemplateId())
+                    .templateName(dto.getName())
+                    .nodeId(dto.getNodeId())
+                    .nodeType(dto.getType())
+                    .cover(dto.getCover())
+                    .description(nodeIdToDescMap.get(dto.getNodeId()))
+                    .tags(tags.get(dto.getTemplateId()))
+                    .build();
                 // The template belongs to the space station
                 // and shows the creator information
                 if (BooleanUtil.isTrue(isPrivate)) {
@@ -716,10 +716,10 @@ public class TemplateServiceImpl
         nodeTree.setType(templateDto.getType());
         nodeTree.setIcon(templateDto.getIcon());
         TemplateDirectoryVo vo = TemplateDirectoryVo.builder()
-                .templateId(templateId)
-                .templateName(templateDto.getName())
-                .nodeTree(nodeTree)
-                .build();
+            .templateId(templateId)
+            .templateName(templateDto.getName())
+            .nodeTree(nodeTree)
+            .build();
         if (templateDto.getType() == NodeType.FOLDER.getNodeType()) {
             List<NodeShareTree> treeByNodeIds =
                 nodeMapper.selectShareTreeByNodeId(templateDto.getTypeId(),
@@ -768,8 +768,7 @@ public class TemplateServiceImpl
             templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
         // Get template custom IDs of all online templates
         LinkedHashSet<String> templateIds =
-                templatePropertyService.getTemplateIdsByKeyWordAndLang(
-                    StrUtil.trim(keyword), lang);
+            templatePropertyService.getTemplateIdsByKeyWordAndLang(StrUtil.trim(keyword), lang);
         if (CollUtil.isEmpty(templateIds)) {
             return new ArrayList<>();
         }
@@ -882,10 +881,11 @@ public class TemplateServiceImpl
         List<String> nodeIds = new ArrayList<>();
         nodeIds.add(nodeId);
         // Determine the node type
-        NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
-        if (nodeType == NodeType.FOLDER) {
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        if (node.getType() == NodeType.FOLDER.getNodeType()) {
             // find all child nodes
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
+            List<String> subNodeIds =
+                iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), nodeId, -1);
             if (!subNodeIds.isEmpty()) {
                 nodeIds.addAll(subNodeIds);
             }

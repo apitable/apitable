@@ -73,4 +73,12 @@ public interface IDatasheetMetaService {
      * @return DatasheetSnapshot
      */
     DatasheetSnapshot getMetaByDstId(String dstId);
+
+    /**
+     * Determine whether the datasheets contain member fields.
+     *
+     * @param dstIds datasheet ids
+     * @return boolean
+     */
+    boolean judgeContainMemberField(List<String> dstIds);
 }

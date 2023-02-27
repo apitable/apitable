@@ -18,6 +18,9 @@
 
 package com.apitable.workspace.service.impl;
 
+import com.apitable.workspace.enums.IdRulePrefixEnum;
+import com.apitable.workspace.service.IDatasheetMetaService;
+import com.apitable.workspace.service.IDatasheetService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,6 +116,12 @@ public class NodeShareServiceImpl implements INodeShareService {
     private INodeService iNodeService;
 
     @Resource
+    private IDatasheetService iDatasheetService;
+
+    @Resource
+    private IDatasheetMetaService iDatasheetMetaService;
+
+    @Resource
     private ILabsApplicantService iLabsApplicantService;
 
     @Resource
@@ -156,14 +165,41 @@ public class NodeShareServiceImpl implements INodeShareService {
                 settingInfoVO.setOperatorHasPermission(roleDict.get(nodeId).isGreaterThanOrEqualTo(requireRole));
             }
         }
+        this.appendDatasheetInfo(settingInfoVO, nodeId);
+        return settingInfoVO;
+    }
+
+    private void appendDatasheetInfo(final NodeShareSettingInfoVO settingInfoVO,
+        final String nodeId) {
         // Query association table information
-        List<BaseNodeInfo> linkNodes = iNodeService.getForeignSheet(nodeId);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        NodeType nodeType = NodeType.toEnum(node.getType());
+        ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
+        List<String> dstIds;
+        switch (nodeType) {
+            case FOLDER:
+                List<String> subNodeIds =
+                    iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), nodeId, -1);
+                dstIds = subNodeIds.stream()
+                    .filter(i -> i.startsWith(IdRulePrefixEnum.DST.getIdRulePrefixEnum()))
+                    .collect(Collectors.toList());
+                break;
+            case DATASHEET:
+                dstIds = Collections.singletonList(nodeId);
+                break;
+            default:
+                return;
+        }
+        if (CollUtil.isEmpty(dstIds)) {
+            return;
+        }
+        List<BaseNodeInfo> linkNodes = iDatasheetService.getForeignDstIdsFilterSelf(dstIds);
         if (CollUtil.isNotEmpty(linkNodes)) {
-            settingInfoVO.setLinkNodes(CollUtil.getFieldValues(linkNodes, "nodeName", String.class));
+            List<String> nodeNames = CollUtil.getFieldValues(linkNodes, "nodeName", String.class);
+            settingInfoVO.setLinkNodes(nodeNames);
         }
         // Query whether the shared node (including child descendants) contains member fields
-        settingInfoVO.setContainMemberFld(iNodeService.judgeAllSubNodeContainMemberFld(nodeId));
-        return settingInfoVO;
+        settingInfoVO.setContainMemberFld(iDatasheetMetaService.judgeContainMemberField(dstIds));
     }
 
     @Override

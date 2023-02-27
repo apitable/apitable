@@ -158,39 +158,6 @@
         WHERE parent_id = #{parentId} and is_rubbish = 0
     </select>
 
-    <select id="selectAllSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE sub_ids (node_id) AS
-        (
-        SELECT node_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} and is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id
-        FROM sub_ids AS cp
-        JOIN ${tablePrefix}node AS c
-        ON cp.node_id = c.parent_id and c.is_rubbish = 0
-        )
-        SELECT distinct *
-        FROM sub_ids;
-    </select>
-
-    <select id="selectAllSubNodeIdsByNodeType" resultType="java.lang.String">
-        WITH RECURSIVE sub_ids (node_id, type) AS
-        (
-        SELECT node_id, type
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} and is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id, c.type
-        FROM sub_ids AS cp
-        JOIN ${tablePrefix}node AS c
-        ON cp.node_id = c.parent_id and c.is_rubbish = 0
-        )
-        SELECT distinct node_id
-        FROM sub_ids
-        WHERE type = #{nodeType}
-    </select>
-
     <select id="selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node

@@ -390,14 +390,6 @@ public interface INodeService extends IService<NodeEntity> {
     String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId);
 
     /**
-     * Determine whether the node and all child and descendant nodes contain member fields.
-     *
-     * @param nodeId node id
-     * @return boolean
-     */
-    boolean judgeAllSubNodeContainMemberFld(String nodeId);
-
-    /**
      * Verify the permissions of all child and descendant nodes
      *
      * @param memberId member id

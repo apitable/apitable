@@ -506,8 +506,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     if (conditions.size() > 0) {
                         filterInfo.set("conditions", conditions);
                         viewMapRo.setFilterInfo(filterInfo);
-                    }
-                    else {
+                    } else {
                         viewMapRo.setFilterInfo(null);
                     }
                 }
@@ -627,6 +626,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     @Override
+    public List<BaseNodeInfo> getForeignDstIdsFilterSelf(final List<String> nodeIds) {
+        Map<String, List<String>> dstIdToForeignIdsMap = this.getForeignDstIds(nodeIds, true);
+        if (MapUtil.isEmpty(dstIdToForeignIdsMap)) {
+            return new ArrayList<>();
+        }
+        List<String> filters = CollUtil.newArrayList();
+        Collection<List<String>> foreignDstIdLists = dstIdToForeignIdsMap.values();
+        for (List<String> foreignDstIdList : foreignDstIdLists) {
+            filters.addAll(foreignDstIdList);
+        }
+        return nodeMapper.selectBaseNodeInfoByNodeIds(filters);
+    }
+
+    @Override
     public Map<String, List<String>> getForeignDstIds(List<String> dstIdList, boolean filter) {
         log.info("Query the associated datasheet ID ");
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIdList);
@@ -645,8 +658,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                             if (!dstIdList.contains(property.getForeignDatasheetId())) {
                                 dstIds.add(property.getForeignDatasheetId());
                             }
-                        }
-                        else {
+                        } else {
                             dstIds.add(property.getForeignDatasheetId());
                         }
                     }
@@ -881,8 +893,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 remindUnitRecRo.getUnitIds().forEach(unitId -> {
                     if (unitIdToMemberIdMap.get(unitId) != null) {
                         toMemberIds.add(unitIdToMemberIdMap.get(unitId));
-                    }
-                    else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                    } else if (unitIdToMemberIdsMap.get(unitId) != null) {
                         toMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
                     }
                 });
@@ -913,8 +924,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     if (RemindType.MEMBER.getRemindType() == ro.getType()
                         && remindUnitRecRo.getRecordIds().size() == 1) {
                         templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
-                    }
-                    else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
+                    } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
                         templateId = NotificationTemplateId.USER_FIELD.getValue();
                     } else {
                         templateId =
@@ -968,8 +978,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             value.forEach((unitId) -> {
                 if (unitIdToMemberIdMap.get(unitId) != null) {
                     readyAddMemberIds.add(unitIdToMemberIdMap.get(unitId));
-                }
-                else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                } else if (unitIdToMemberIdsMap.get(unitId) != null) {
                     readyAddMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
                 }
             });
