@@ -18,28 +18,27 @@
 
 package com.apitable.space.ro;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- * Space public invitation link request parameters
+ * Space public invitation link request parameters.
  * </p>
  */
 @Data
-@ApiModel("Space public invitation link request parameters")
+@Schema(description = "Space public invitation link request parameters")
 public class SpaceLinkOpRo {
 
     @NotNull(message = "Department ID cannot be empty")
-    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1254", position = 1, required = true)
+    @Schema(description = "Department ID", type = "java.lang.String", example = "1254", required
+        = true)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "nodeId", dataType = "java.lang.String", example = "dst***", position = 2)
+    @Schema(description = "nodeId", type = "java.lang.String", example = "dst***")
     private String nodeId;
 }

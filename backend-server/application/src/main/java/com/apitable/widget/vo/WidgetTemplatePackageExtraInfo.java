@@ -18,27 +18,27 @@
 
 package com.apitable.widget.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Template Widget Package Information View
+ * Template Widget Package Information View.
  * </p>
  */
 @Data
-@ApiModel("Template Widget Package Extension Information View")
+@Schema(description = "Template Widget Package Extension Information View")
 public class WidgetTemplatePackageExtraInfo {
 
-    @ApiModelProperty(value = "Open source address", example = "https://apitable.com/code/2020/12/23/aqa", position = 1)
+    @Schema(description = "Open source address", example = "https://apitable"
+        + ".com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String widgetOpenSource;
 
-    @ApiModelProperty(value = "Template Extension Cover", example = "https://apitable.com/code/2020/12/23/aqa", position = 2)
+    @Schema(description = "Template Extension Cover", example = "https://apitable"
+        + ".com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String templateCover;
 

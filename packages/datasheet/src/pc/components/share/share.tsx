@@ -17,7 +17,7 @@
  */
 
 import { useThemeColors, ThemeName } from '@apitable/components';
-import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { ConfigConstant, findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
@@ -168,22 +168,17 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
       setShareClose(true);
       return;
     }
-    const { shareNodeId, shareNodeName, shareNodeType, nodeTree, shareNodeIcon, ...shareSpaceInfo } = shareInfo;
-    setShareSpace(shareSpaceInfo as IShareSpaceInfo);
-    setNodeTree({
-      nodeId: shareNodeId,
-      nodeName: shareNodeName,
-      type: shareNodeType,
-      icon: shareNodeIcon,
-      children: nodeTree,
-    });
+    const { shareNodeTree, ...shareSpaceInfo } = shareInfo;
+    const isFolder = shareNodeTree.type === ConfigConstant.NodeType.FOLDER;
+    setShareSpace({ ...shareSpaceInfo, isFolder } as IShareSpaceInfo);
+    setNodeTree(shareNodeTree);
     // _dispatch(StoreActions.setPageParams({
     //   shareId: shareSpaceInfo.shareId
     // }));
-    if (shareInfo.isFolder && nodeTree.length === 0) {
+    if (isFolder && shareNodeTree.children.length === 0) {
       return;
     }
-    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId: shareNodeId, nodeName: shareNodeName, icon: shareNodeIcon }])));
+    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...shareNodeTree.children, shareNodeTree])));
     isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
     dispatch(
       StoreActions.setShareInfo({
@@ -199,7 +194,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     setTimeout(() => {
       console.log('share navigationTo');
       Router.push(Navigation.SHARE_SPACE, {
-        params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeId },
+        params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeTree.nodeId },
       });
     }, 0);
 
@@ -308,7 +303,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
-        <meta property='og:title' content={shareInfo?.shareNodeName || t(Strings.og_site_name_content)} />
+        <meta property='og:title' content={shareInfo?.shareNodeTree?.nodeName || t(Strings.og_site_name_content)} />
         <meta property='og:type' content='website' />
         <meta property='og:url' content={window.location.href} />
         <meta property='og:site_name' content={t(Strings.og_site_name_content)} />

@@ -18,15 +18,12 @@
 
 package com.apitable.organization.vo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,48 +31,48 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Search Member Results View
+ * Search Member Results View.
  * </p>
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Search Member Results View")
+@Schema(description = "Search Member Results View")
 public class SearchMemberResultVo {
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "Member Name", example = "Zhang San", position = 2)
+    @Schema(description = "Member Name", example = "Zhang San")
     private String memberName;
 
-    @ApiModelProperty(value = "Member name (not highlighted)", example = "Zhang San", position = 2)
+    @Schema(description = "Member name (not highlighted)", example = "Zhang San")
     private String originName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Head portrait", example = "https://...", position = 3)
+    @Schema(description = "Head portrait", example = "https://...")
     private String avatar;
 
-    @ApiModelProperty(value = "Department", example = "Technical team", position = 4)
+    @Schema(description = "Department", example = "Technical team")
     private String team;
 
-    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 5)
+    @Schema(description = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 6)
+    @Schema(description = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "member is active", position = 7)
+    @Schema(description = "member is active")
     private Boolean isActive;
 
-    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 8)
+    @Schema(description = "team id and full hierarchy team path name")
     private List<MemberTeamPathInfo> teamData;
 
-    @ApiModelProperty(value = "default avatar color number", example = "1", position = 10)
+    @Schema(description = "default avatar color number", example = "1")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "Nick Name", example = "Zhang San", position = 11)
+    @Schema(description = "Nick Name", example = "Zhang San")
     private String nickName;
 }

@@ -18,39 +18,36 @@
 
 package com.apitable.base.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * <p>
- * widget file upload certificate ro
+ * widget file upload certificate ro.
  * </p>
  *
  * @author tao
  */
 @Data
-@ApiModel("widget file upload certificate ro")
+@Schema(description = "widget file upload certificate ro")
 public class WidgetAssetUploadCertificateRO {
 
-    @ApiModelProperty(value = "the file names， max: 20. when fileType asset, it need", position = 1)
+    @Schema(description = "the file names， max: 20. when fileType asset, it need")
     private List<String> filenames;
 
-    @ApiModelProperty(value = "file type：0：asset; 1：package; 2: public", position = 2)
+    @Schema(description = "file type：0：asset; 1：package; 2: public")
     @NotNull
     private Integer fileType;
 
-    @ApiModelProperty(value = "the amount of token, max: 20. when fileType no asset, it need", position = 3)
+    @Schema(description = "the amount of token, max: 20. when fileType no asset, it need")
     private Integer count;
 
-    @ApiModelProperty(value = "the package's version. when fileType package, it need", position = 4)
+    @Schema(description = "the package's version. when fileType package, it need")
     private String version;
 
-    @ApiModelProperty(value = "the file extend name. when fileType package, it optional, such as: .js", position = 5)
+    @Schema(description = "the file extend name. when fileType package, it optional, such as: .js")
     private List<String> fileExtName;
 
 }

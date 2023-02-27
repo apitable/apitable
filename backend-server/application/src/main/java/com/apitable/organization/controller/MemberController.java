@@ -18,18 +18,18 @@
 
 package com.apitable.organization.controller;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import static com.apitable.base.enums.ParameterException.NO_ARG;
+import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
+import static com.apitable.organization.enums.OrganizationException.DELETE_MEMBER_PARAM_ERROR;
+import static com.apitable.organization.enums.OrganizationException.DELETE_SPACE_ADMIN_ERROR;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_ACTIVE;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_FOUND;
+import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
+import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
+import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
+import static com.apitable.shared.constants.PageConstants.PAGE_DESC;
+import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
+import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
@@ -37,14 +37,9 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.ResponseData;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.interfaces.security.facade.BlackListServiceFacade;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
@@ -95,33 +90,38 @@ import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.mapper.UserMapper;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.ResponseData;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.apitable.base.enums.ParameterException.NO_ARG;
-import static com.apitable.organization.enums.OrganizationException.DELETE_MEMBER_PARAM_ERROR;
-import static com.apitable.organization.enums.OrganizationException.DELETE_SPACE_ADMIN_ERROR;
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_ACTIVE;
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_FOUND;
-import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
-import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
-import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
-import static com.apitable.shared.constants.PageConstants.PAGE_DESC;
-import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
-import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
-import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
-
+/**
+ * Contact Member Api.
+ */
 @RestController
-@Api(tags = "Contact Member Api")
+@Tag(name = "Contact Member Api")
 @ApiResource(path = "/org/member")
 @Slf4j
 public class MemberController {
@@ -171,34 +171,53 @@ public class MemberController {
     @Resource
     private InvitationServiceFacade invitationServiceFacade;
 
+    /**
+     * Fuzzy Search Members.
+     */
     @GetResource(path = "/search")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "className", value = "the highlighting style", dataTypeClass = String.class, paramType = "query", example = "highLight"),
-            @ApiImplicitParam(name = "filter", value = "whether to filter unadded members", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-            @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "Luck")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "className", description = "the highlighting style", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "filter", description = "whether to filter unadded members",
+            schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true"),
+        @Parameter(name = "keyword", description = "keyword", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "Luck")
     })
-    @ApiOperation(value = "Fuzzy Search Members", notes = "Fuzzy Search Members")
-    public ResponseData<List<SearchMemberVo>> getMembers(@RequestParam(name = "keyword") String keyword,
-            @RequestParam(value = "filter", required = false, defaultValue = "true") Boolean filter,
-            @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
+    @Operation(summary = "Fuzzy Search Members", description = "Fuzzy Search Members")
+    public ResponseData<List<SearchMemberVo>> getMembers(
+        @RequestParam(name = "keyword") String keyword,
+        @RequestParam(value = "filter", required = false, defaultValue = "true") Boolean filter,
+        @RequestParam(value = "className", required = false, defaultValue = "highLight")
+        String className) {
 
         if (CharSequenceUtil.isBlank(keyword)) {
             return ResponseData.success(Collections.emptyList());
         }
 
         String spaceId = LoginContext.me().getSpaceId();
-        List<SearchMemberVo> resultList = iMemberSearchService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter, className);
+        List<SearchMemberVo> resultList =
+            iMemberSearchService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter,
+                className);
         return ResponseData.success(resultList);
     }
 
+    /**
+     * Query the team's members.
+     */
     @GetResource(path = "/list")
-    @ApiOperation(value = "Query the team's members", notes = "Query all the members of the department, including the members of the sub department.if root team can lack teamId, teamId default 0.", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "teamId", value = "team id. if root team can lack teamId, teamId default 0.", dataTypeClass = String.class, paramType = "query", example = "0")
+    @Operation(summary = "Query the team's members", description = "Query all the members of the "
+        + "department, including the members of the sub department.if root team can lack teamId, "
+        + "teamId default 0.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id. if root team can lack teamId, teamId"
+            + " default 0.", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "0")
     })
-    public ResponseData<List<MemberInfoVo>> getMemberList(@RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
+    public ResponseData<List<MemberInfoVo>> getMemberList(
+        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         SpaceHolder.setGlobalFeature(feature);
@@ -221,23 +240,34 @@ public class MemberController {
         return ResponseData.success(resultList);
     }
 
+    /**
+     * Page query the team's member.
+     */
     @GetResource(path = "/page")
-    @ApiOperation(value = "Page query the team's member", notes = "Query all the members of the department, including the members of the sub department. The query must be paging not full query.\n" + PAGE_DESC, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "teamId", value = "team id. if root team can lack teamId, teamId default 0.", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "isActive", value = "whether to filter unadded members", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "page's parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+    @Operation(summary = "Page query the team's member", description =
+        "Query all the members of the department, including the members of the sub department. "
+            + "The query must be paging not full query.\n"
+            + PAGE_DESC)
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id. if root team can lack teamId, teamId"
+            + " default 0.", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "isActive", description = "whether to filter unadded members",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = PAGE_PARAM, description = "page's parameter", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
     })
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public ResponseData<PageInfo<MemberPageVo>> readPage(
-            @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
-            @RequestParam(name = "isActive", required = false) Integer isActive,
-            @PageObjectParam Page page) {
+        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
+        @RequestParam(name = "isActive", required = false) Integer isActive,
+        @PageObjectParam Page page) {
         String spaceId = LoginContext.me().getSpaceId();
         if (teamId == 0) {
             // query the members of the root department
-            IPage<MemberPageVo> pageResult = teamMapper.selectMembersByRootTeamId(page, spaceId, isActive);
+            IPage<MemberPageVo> pageResult =
+                teamMapper.selectMembersByRootTeamId(page, spaceId, isActive);
             if (ObjectUtil.isNotNull(pageResult)) {
                 // handle member's team name, get full hierarchy team names
                 iTeamService.handlePageMemberTeams(pageResult, spaceId);
@@ -245,7 +275,8 @@ public class MemberController {
             return ResponseData.success(PageHelper.build(pageResult));
         }
         List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
-        IPage<MemberPageVo> resultList = teamMapper.selectMemberPageByTeamId(page, teamIds, isActive);
+        IPage<MemberPageVo> resultList =
+            teamMapper.selectMemberPageByTeamId(page, teamIds, isActive);
         if (ObjectUtil.isNotNull(resultList)) {
             // handle member's team name, get full hierarchy team names
             iTeamService.handlePageMemberTeams(resultList, spaceId);
@@ -253,12 +284,18 @@ public class MemberController {
         return ResponseData.success(PageHelper.build(resultList));
     }
 
+    /**
+     * Check whether email in space.
+     */
     @Deprecated
     @GetResource(path = "/checkEmail")
-    @ApiOperation(value = "Check whether email in space", notes = "Check whether email in space", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "email", value = "email", dataTypeClass = String.class, required = true, paramType = "query", example = "xxx@admin.com")
+    @Operation(summary = "Check whether email in space", description = "Check whether email in "
+        + "space")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "email", description = "email", schema = @Schema(type = "string"),
+            required = true, in = ParameterIn.QUERY, example = "xxx@admin.com")
     })
     public ResponseData<Boolean> checkEmailInSpace(@RequestParam("email") String email) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -266,15 +303,22 @@ public class MemberController {
         return ResponseData.success(count > 0);
     }
 
+    /**
+     * Get member's detail info.
+     */
     @GetResource(path = "/read")
-    @ApiOperation(value = "Get member's detail info", notes = "Get member's detail info", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "memberId", value = "member id", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "uuid", value = "user uuid", dataTypeClass = String.class, paramType = "query", example = "1")
+    @Operation(summary = "Get member's detail info", description = "Get member's detail info")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "memberId", description = "member id", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "uuid", description = "user uuid", schema = @Schema(type = "string"),
+            in = ParameterIn.QUERY, example = "1")
     })
-    public ResponseData<MemberInfoVo> read(@RequestParam(value = "memberId", required = false) Long memberId,
-            @RequestParam(value = "uuid", required = false) String uuid) {
+    public ResponseData<MemberInfoVo> read(
+        @RequestParam(value = "memberId", required = false) Long memberId,
+        @RequestParam(value = "uuid", required = false) String uuid) {
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
         if (StrUtil.isNotBlank(uuid)) {
             String spaceId = LoginContext.me().getSpaceId();
@@ -292,9 +336,14 @@ public class MemberController {
         return ResponseData.success(memberInfoVo);
     }
 
+    /**
+     * Query the units which a user belongs in space.
+     */
     @GetResource(path = "/units")
-    @ApiOperation(value = "Query the units which a user belongs in space", notes = "Query the units which a user belongs, include self", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Query the units which a user belongs in space", description = "Query "
+        + "the units which a user belongs, include self")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> getUnits() {
         Long memberId = LoginContext.me().getMemberId();
         List<Long> unitIds = iMemberService.getUnitsByMember(memberId);
@@ -302,12 +351,16 @@ public class MemberController {
         return ResponseData.success(unitsVo);
     }
 
+    /**
+     * Send an email to invite members.
+     */
     @PostResource(path = "/sendInvite", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "Send an email to invite members",
-            notes = "Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Send an email to invite members",
+        description = "Send an email to invite. The email is automatically bound to the platform "
+            + "user. The invited member will be in the state to be activated, and will not take "
+            + "effect until the user self activates.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> inviteMember(@RequestBody @Valid InviteRo data) {
         // human verification
         humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(data.getData()));
@@ -322,8 +375,8 @@ public class MemberController {
         MemberUnitsVo unitsVo = MemberUnitsVo.builder().build();
         // get invited emails
         List<String> inviteEmails = inviteMembers.stream()
-                .map(InviteMemberRo::getEmail)
-                .filter(StrUtil::isNotBlank).collect(Collectors.toList());
+            .map(InviteMemberRo::getEmail)
+            .filter(StrUtil::isNotBlank).collect(Collectors.toList());
         if (CollUtil.isEmpty(inviteEmails)) {
             // without email, response success directly
             return ResponseData.success(unitsVo);
@@ -337,9 +390,16 @@ public class MemberController {
         return ResponseData.success(unitsVo);
     }
 
+    /**
+     * Again send an email to invite members.
+     */
     @PostResource(path = "/sendInviteSingle", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "Again send an email to invite members", notes = "If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Again send an email to invite members", description = "If a member is "
+        + "not activated, it can send an invitation again regardless of whether the invitation "
+        + "has expired. After the invitation is successfully sent, the invitation link sent last "
+        + "time will be invalid.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> inviteMemberSingle(@RequestBody @Valid InviteMemberAgainRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check black space
@@ -355,14 +415,20 @@ public class MemberController {
         ExceptionUtil.isNull(ops.get(), INVITE_TOO_OFTEN);
         ops.set("", 10, TimeUnit.MINUTES);
         Long userId = SessionContext.getUserId();
-        invitationServiceFacade.sendInvitationEmail(new InvitationMetadata(spaceId, userId, data.getEmail()));
+        invitationServiceFacade.sendInvitationEmail(
+            new InvitationMetadata(spaceId, userId, data.getEmail()));
         return ResponseData.success();
     }
 
+    /**
+     * Add member.
+     */
     @Notification(templateId = NotificationTemplateId.ASSIGNED_TO_GROUP)
     @PostResource(path = "/addMember", tags = "ADD_MEMBER")
-    @ApiOperation(value = "Add member", notes = "When adding new members, they can only be selected from within the organization structure and can be transferred by department", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Add member", description = "When adding new members, they can only be "
+        + "selected from within the organization structure and can be transferred by department")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> addMember(@RequestBody @Valid TeamAddMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -370,9 +436,14 @@ public class MemberController {
         return ResponseData.success();
     }
 
+    /**
+     * Edit self member information.
+     */
     @PostResource(path = "/update")
-    @ApiOperation(value = "Edit self member information", notes = "Edit self member information", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Edit self member information", description = "Edit self member "
+        + "information")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> update(@RequestBody @Valid UpdateMemberOpRo opRo) {
         Long memberId = LoginContext.me().getMemberId();
         String spaceId = LoginContext.me().getSpaceId();
@@ -381,9 +452,13 @@ public class MemberController {
         return ResponseData.success();
     }
 
+    /**
+     * Edit member info.
+     */
     @PostResource(path = "/updateInfo", tags = "UPDATE_MEMBER")
-    @ApiOperation(value = "Edit member info", notes = "Edit member info", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Edit member info", description = "Edit member info")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateInfo(@RequestBody @Valid UpdateMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -391,9 +466,13 @@ public class MemberController {
         return ResponseData.success();
     }
 
+    /**
+     * Update team.
+     */
     @PostResource(path = "/updateMemberTeam", tags = "UPDATE_MEMBER")
-    @ApiOperation(value = "Update team", notes = "assign members to departments", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Update team", description = "assign members to departments")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateMemberTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -403,9 +482,14 @@ public class MemberController {
         return ResponseData.success();
     }
 
-    @PostResource(path = "/delete", method = { RequestMethod.DELETE }, tags = "DELETE_MEMBER")
-    @ApiOperation(value = "Delete a Member", notes = "action provides two deletion modes，1.delete from organization 2. delete from team", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    /**
+     * Delete a Member.
+     */
+    @PostResource(path = "/delete", method = {RequestMethod.DELETE}, tags = "DELETE_MEMBER")
+    @Operation(summary = "Delete a Member", description = "action provides two deletion modes，1"
+        + ".delete from organization 2. delete from team")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> deleteMember(@RequestBody @Valid DeleteMemberRo data) {
         DeleteMemberType type = DeleteMemberType.getByValue(data.getAction());
         String spaceId = LoginContext.me().getSpaceId();
@@ -414,30 +498,45 @@ public class MemberController {
         MemberEntity member = iMemberService.getById(memberId);
         ExceptionUtil.isNotNull(member, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
-            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId,
+                SpaceUpdateOperate.UPDATE_MEMBER);
             // delete member from department
-            ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
-            iMemberService.batchDeleteMemberFromTeam(spaceId, Collections.singletonList(memberId), data.getTeamId());
-        }
-        else if (type == DeleteMemberType.FROM_SPACE) {
+            ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L),
+                DELETE_MEMBER_PARAM_ERROR);
+            iMemberService.batchDeleteMemberFromTeam(spaceId, Collections.singletonList(memberId),
+                data.getTeamId());
+        } else if (type == DeleteMemberType.FROM_SPACE) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
             // delete from space
             Long administrator = spaceMapper.selectSpaceMainAdmin(spaceId);
             // an administrator cannot be deleted
             ExceptionUtil.isFalse(memberId.equals(administrator), DELETE_SPACE_ADMIN_ERROR);
-            iMemberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(data.getMemberId()), true);
+            iMemberService.batchDeleteMemberFromSpace(spaceId,
+                Collections.singletonList(data.getMemberId()), true);
             // notice self
             Long userId = SessionContext.getUserId();
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, ListUtil.toList(memberId))));
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER, ListUtil.toList(memberId), userId, spaceId, null));
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVED_MEMBER_TO_MYSELF, ListUtil.toList(userId), 0L, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, ListUtil.toList(memberId))));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId,
+                    spaceId, Dict.create().set(INVOLVE_MEMBER_ID, ListUtil.toList(memberId))));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER,
+                    ListUtil.toList(memberId), userId, spaceId, null));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVED_MEMBER_TO_MYSELF,
+                    ListUtil.toList(userId), 0L, spaceId,
+                    Dict.create().set(INVOLVE_MEMBER_ID, ListUtil.toList(memberId))));
         }
         return ResponseData.success();
     }
 
-    @PostResource(path = "/deleteBatch", method = { RequestMethod.DELETE }, tags = "DELETE_MEMBER")
-    @ApiOperation(value = "Delete members", notes = "action provides two deletion modes，1.delete from organization 2. delete from team", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    /**
+     * Delete members.
+     */
+    @PostResource(path = "/deleteBatch", method = {RequestMethod.DELETE}, tags = "DELETE_MEMBER")
+    @Operation(summary = "Delete members", description = "action provides two deletion modes，1"
+        + ".delete from organization 2. delete from team")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> deleteBatchMember(@RequestBody @Valid DeleteBatchMemberRo data) {
         DeleteMemberType type = DeleteMemberType.getByValue(data.getAction());
         String spaceId = LoginContext.me().getSpaceId();
@@ -446,12 +545,13 @@ public class MemberController {
         List<MemberEntity> members = iMemberService.listByIds(memberIds);
         ExceptionUtil.isNotEmpty(members, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
-            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId,
+                SpaceUpdateOperate.UPDATE_MEMBER);
             //delete members from a department in batches
-            ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
+            ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L),
+                DELETE_MEMBER_PARAM_ERROR);
             iMemberService.batchDeleteMemberFromTeam(spaceId, data.getMemberId(), data.getTeamId());
-        }
-        else if (type == DeleteMemberType.FROM_SPACE) {
+        } else if (type == DeleteMemberType.FROM_SPACE) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
             // delete members in bulk from space
             Long administrator = spaceMapper.selectSpaceMainAdmin(spaceId);
@@ -460,15 +560,25 @@ public class MemberController {
             iMemberService.batchDeleteMemberFromSpace(spaceId, data.getMemberId(), true);
             // notice self
             Long userId = SessionContext.getUserId();
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, data.getMemberId())));
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER, data.getMemberId(), userId, spaceId, null));
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVED_MEMBER_TO_MYSELF, ListUtil.toList(userId), 0L, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, data.getMemberId())));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId,
+                    spaceId, Dict.create().set(INVOLVE_MEMBER_ID, data.getMemberId())));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER, data.getMemberId(),
+                    userId, spaceId, null));
+            TaskManager.me().execute(() -> NotificationManager.me()
+                .playerNotify(NotificationTemplateId.REMOVED_MEMBER_TO_MYSELF,
+                    ListUtil.toList(userId), 0L, spaceId,
+                    Dict.create().set(INVOLVE_MEMBER_ID, data.getMemberId())));
         }
         return ResponseData.success();
     }
 
+    /**
+     * Download contact template.
+     */
     @GetResource(path = "/downloadTemplate", requiredPermission = false)
-    @ApiOperation(value = "Download contact template", notes = "Download contact template")
+    @Operation(summary = "Download contact template", description = "Download contact template")
     public void downloadTemplate(HttpServletResponse response) {
         log.info("generate download template");
         try {
@@ -477,8 +587,10 @@ public class MemberController {
             // fileName is the name of the file that displays the download dialog box
             String name = "员工信息模板";
             String fileName = URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-            InputStream inputStream = this.getClass().getResourceAsStream("/excel/contact_example.xlsx");
+            response.setHeader("Content-disposition",
+                "attachment;filename*=utf-8''" + fileName + ".xlsx");
+            InputStream inputStream =
+                this.getClass().getResourceAsStream("/excel/contact_example.xlsx");
             OutputStream outputStream = response.getOutputStream();
             byte[] buffer = new byte[1024];
             int length;
@@ -492,17 +604,21 @@ public class MemberController {
             outputStream.flush();
             outputStream.close();
             inputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // reset response
             response.reset();
             throw new BusinessException("download template failure", e);
         }
     }
 
+    /**
+     * Upload employee sheet.
+     */
     @PostResource(path = "/uploadExcel", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "Upload employee sheet", notes = "Upload employee sheet，then parse it.")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Upload employee sheet", description = "Upload employee sheet，then parse"
+        + " it.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<UploadParseResultVO> uploadExcel(UploadMemberTemplateRo data) {
         // human verification
         humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(data.getData()));

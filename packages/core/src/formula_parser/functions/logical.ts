@@ -319,7 +319,7 @@ export class IsError extends LogicalFunc {
 
   static override func(params: [IFormulaParam<any>]): boolean {
     const value = params[0].value;
-    const isError = value instanceof FormulaBaseError || isNaN(value) || value === Infinity;
+    const isError = value instanceof FormulaBaseError || isNaN(value) || value === Infinity || value === -Infinity;
     return isError;
   }
 }

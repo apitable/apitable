@@ -18,29 +18,26 @@
 
 package com.apitable.organization.ro;
 
-import java.util.List;
-
-import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import lombok.Data;
 
 /**
  * <p>
- *     Remove role members request parameter
+ * Remove role members request parameter.
  * </p>
+ *
  * @author tao
  */
 @Data
-@ApiModel("Remove role members request")
+@Schema(description = "Remove role members request")
 public class DeleteRoleMemberRo {
 
     @NotEmpty
-    @ApiModelProperty(value = "role member's unit id", required = true, position = 2)
+    @Schema(description = "role member's unit id", required = true)
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 

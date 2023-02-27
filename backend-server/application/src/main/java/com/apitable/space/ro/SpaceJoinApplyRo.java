@@ -18,22 +18,20 @@
 
 package com.apitable.space.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * <p>
- * Request parameters of space joining application
+ * Request parameters of space joining application.
  * </p>
  */
 @Data
-@ApiModel("Request parameters of space joining application")
+@Schema(description = "Request parameters of space joining application")
 public class SpaceJoinApplyRo {
 
-    @ApiModelProperty(value = "Space ID", required = true, example = "spczdmQDfBAn5", position = 1)
+    @Schema(description = "Space ID", required = true, example = "spczdmQDfBAn5")
     @NotBlank(message = "Space ID cannot be empty")
     private String spaceId;
 }

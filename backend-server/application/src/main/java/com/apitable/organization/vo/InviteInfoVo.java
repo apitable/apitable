@@ -18,42 +18,40 @@
 
 package com.apitable.organization.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Invitation Information View
+ * Invitation Information View.
  * </p>
  */
 @Data
-@ApiModel("Invitation Information View")
+@Schema(description = "Invitation Information View")
 public class InviteInfoVo {
 
-    @ApiModelProperty(value = "Space ID", example = "spcyQkKp9XJEl", position = 1)
+    @Schema(description = "Space ID", example = "spcyQkKp9XJEl")
     private String spaceId;
 
-    @ApiModelProperty(value = "Space name", example = "Work space", position = 2)
+    @Schema(description = "Space name", example = "Work space")
     private String spaceName;
 
-    @ApiModelProperty(value = "Invite Users", example = "Zhang San", position = 3)
+    @Schema(description = "Invite Users", example = "Zhang San")
     private String inviter;
 
-    @ApiModelProperty(value = "Invited Email", example = "xxxx@apitable.com", position = 4)
+    @Schema(description = "Invited Email", example = "xxxx@apitable.com")
     private String inviteEmail;
 
-    @ApiModelProperty(value = "Whether it is in login status", example = "true", position = 5)
+    @Schema(description = "Whether it is in login status", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isLogin;
 
-    @ApiModelProperty(value = "Whether the invited mailbox has an account bound", example = "true", position = 6)
+    @Schema(description = "Whether the invited mailbox has an account bound", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isBound;
 
-    @ApiModelProperty(value = "Inviter's personal invitation code", example = "test", position = 7)
+    @Schema(description = "Inviter's personal invitation code", example = "test")
     private String inviteCode;
 }

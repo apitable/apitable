@@ -18,55 +18,52 @@
 
 package com.apitable.workspace.vo;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Node collaborator view
+ * Node collaborator view.
  * </p>
  */
 @Data
-@ApiModel("Node Role Information View")
+@Schema(description = "Node Role Information View")
 public class NodeCollaboratorsVo implements Serializable {
 
     private static final long serialVersionUID = 5137772572237877951L;
 
-    @ApiModelProperty(value = "Current node permission mode", example = "false", position = 1)
+    @Schema(description = "Current node permission mode", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean extend;
 
-    @ApiModelProperty(value = "Space administrator list", position = 2)
+    @Schema(description = "Space administrator list")
     private List<UnitMemberVo> admins;
 
-    @ApiModelProperty(value = "Person in charge", position = 3)
+    @Schema(description = "Person in charge")
     private UnitMemberVo owner;
 
-    @ApiModelProperty(value = "Own", position = 4)
+    @Schema(description = "Own")
     private UnitMemberVo self;
 
-    @ApiModelProperty(value = "Organization unit list of node role", position = 5)
+    @Schema(description = "Organization unit list of node role")
     private List<NodeRoleUnit> roleUnits;
 
-    @ApiModelProperty(value = "Node Role Member List", position = 6)
+    @Schema(description = "Node Role Member List")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeRoleMemberVo> members;
 
-    @ApiModelProperty(value = "Name of the parent node that inherits permissions", position = 7)
+    @Schema(description = "Name of the parent node that inherits permissions")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String extendNodeName;
 
-    @ApiModelProperty(value = "Whether the node belongs to the root directory", position = 8)
+    @Schema(description = "Whether the node belongs to the root directory")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean belongRootFolder;
 }
