@@ -63,7 +63,7 @@ public class NodeOpRo {
 
     @Schema(description = "Other information")
     private NodeRelRo extra;
-    @ApiModelProperty(value = "Whether to detect duplicate node names", example = "true", position = 6)
+    @Schema(description = "Whether to detect duplicate node names", example = "true")
     private Boolean checkDuplicateName;
 
     /**

@@ -364,7 +364,7 @@ public class UserController {
         + "/inviteEmail", requiredPermission = false)
     @Operation(summary = "Associate the invited mail", description = "Users can "
         + "only associate with invited mail when they have no other mail")
-    public ResponseData<Void> bindEmail(
+    public ResponseData<Void> linkInviteEmail(
         @RequestBody @Valid final UserLinkEmailRo data) {
         String email = data.getEmail();
         String spaceId = data.getSpaceId();
@@ -382,7 +382,7 @@ public class UserController {
     @PostResource(name = "Bind mail", path = "/bindEmail",
         requiredPermission = false)
     @Operation(summary = "Bind mail", description = "Bind mail and modify mail")
-    public ResponseData<Void> verifyEmail(
+    public ResponseData<Void> bindEmail(
         @RequestBody @Valid final EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessorManage.me()
@@ -782,7 +782,7 @@ public class UserController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/resetPassword")
-    @ApiOperation(value = "reset password router", hidden = true)
+    @Operation(summary = "reset password router")
     public ResponseData<Void> resetPassword() {
         Long userId = SessionContext.getUserId();
         boolean result = userServiceFacade.resetPassword(new UserAuth(userId));
@@ -798,7 +798,7 @@ public class UserController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/verifyEmail")
-    @ApiOperation(value = "verify user's email", hidden = true)
+    @Operation(summary = "verify user's email", hidden = true)
     public ResponseData<Void> verifyEmail() {
         Long userId = SessionContext.getUserId();
         boolean result = userServiceFacade.verifyEmail(new UserAuth(userId));

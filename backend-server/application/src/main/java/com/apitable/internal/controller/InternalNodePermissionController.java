@@ -19,7 +19,6 @@
 package com.apitable.internal.controller;
 
 import com.apitable.control.annotation.ThirdPartControl;
-import com.apitable.control.facede.ControlThirdPartServiceFacade;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.InternalPermissionRo;
 import com.apitable.internal.service.IPermissionService;

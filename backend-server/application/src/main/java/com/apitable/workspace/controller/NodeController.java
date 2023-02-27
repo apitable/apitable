@@ -492,13 +492,11 @@ public class NodeController {
     @Operation(summary = "Edit node", description = "node id must. name, icon is not required"
         + ROLE_DESC)
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
-        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
+        @Parameter(name = "nodeId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id", schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
-    public ResponseData<Void> update(@PathVariable("nodeId") String nodeId,
-        @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
+    public ResponseData<NodeInfoVo> update(@PathVariable("nodeId") String nodeId,
+                                           @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
         ExceptionUtil.isTrue(
             StrUtil.isNotBlank(nodeOpRo.getNodeName()) || ObjectUtil.isNotNull(nodeOpRo.getIcon())
                 || ObjectUtil.isNotNull(nodeOpRo.getCover()) || ObjectUtil.isNotNull(
