@@ -65,7 +65,7 @@ export function loadWidget(url: string, widgetPackageId: string, refresh?: boole
             return;
           }
           resolve(cp);
-          console.log(`widgetPackage: ${widgetPackageId} loaded`);
+          console.log('widgetPackage: %s loaded', widgetPackageId);
         });
       },
       error: async() => {

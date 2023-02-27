@@ -4563,7 +4563,7 @@ window.apitable_i18n =
   "view_lock_note": "This view is locked, please unlock it before you edit it and save the view settings",
   "view_manual_save": "Unsynchronized view",
   "view_mirror_count": "${count} mirror(s)",
-  "view_name_length_err": "The name must be between 1 and 30 characters in length",
+  "view_name_length_err": "The name must be between 1 and ${maxCount} characters in length",
   "view_name_repetition": "The view name already exists",
   "view_permission": "Permissions of view",
   "view_permission_description": "Permissions overview",

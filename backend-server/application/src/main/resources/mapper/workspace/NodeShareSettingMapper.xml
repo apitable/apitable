@@ -113,4 +113,10 @@
         FROM ${tablePrefix}node_share_setting
         WHERE share_id = #{shareId}
     </select>
+
+    <select id="selectIsEnabledByNodeId" resultType="java.lang.Boolean">
+        SELECT is_enabled
+        FROM ${tablePrefix}node_share_setting
+        WHERE node_id = #{nodeId}
+    </select>
 </mapper>

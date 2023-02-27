@@ -29,11 +29,12 @@ import {
   Strings,
   t
 } from 'core';
-import { cmdExecute } from 'iframe_message/utils';
+import { cmdExecute } from 'message/utils';
 import { IWidgetContext, IFormatType, FieldType, IPermissionResult, IPropertyInView } from 'interface';
 import { errMsg } from 'utils/private';
 import { Record } from './record';
-import { getNewId, IDPrefix } from '@apitable/core';
+import { getNewId, IDPrefix, IReduxState } from '@apitable/core';
+import { getSnapshot } from 'store';
 
 /**
  * @hidden
@@ -81,7 +82,8 @@ export class Field {
     private wCtx: IWidgetContext,
     public fieldData: IField
   ) {
-    this.fieldEntity = FieldCore.bindContext(fieldData, wCtx.globalStore.getState());
+    const state = wCtx.widgetStore.getState() as any as IReduxState;
+    this.fieldEntity = FieldCore.bindContext(fieldData, state);
   }
 
   /**
@@ -209,8 +211,8 @@ export class Field {
    * @returns
    */
   get isPrimary(): boolean {
-    const state = this.wCtx.globalStore.getState();
-    const snapshot = Selectors.getSnapshot(state, this.datasheetId);
+    const state = this.wCtx.widgetStore.getState();
+    const snapshot = getSnapshot(state, this.datasheetId);
     return Boolean(snapshot?.meta.views[0]!.columns[0]!.fieldId === this.fieldData.id);
   }
 
@@ -234,8 +236,8 @@ export class Field {
    * ```
    */
   getPropertyInView(viewId: string): IPropertyInView | null {
-    const state = this.wCtx.globalStore.getState();
-    const snapshot = Selectors.getSnapshot(state, this.datasheetId);
+    const state = this.wCtx.widgetStore.getState();
+    const snapshot = getSnapshot(state, this.datasheetId);
     const view = snapshot && Selectors.getViewById(snapshot, viewId);
     const viewField = view?.columns.find(column => column.fieldId === this.id);
     if (!viewField) {
@@ -273,7 +275,7 @@ export class Field {
           ...this.fieldData,
           desc
         }
-      }, this.wCtx.resourceService);
+      });
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }
@@ -338,7 +340,7 @@ export class Field {
           ...this.fieldData,
           property: updateProperty
         }
-      }, this.wCtx.resourceService);
+      });
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }
@@ -574,7 +576,7 @@ export class Field {
    */
   getFieldResultByStatType(statType: StatType, records: Record[]) {
     const recordIds = records.map(record => record.id);
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const snapshot = Selectors.getSnapshot(state, this.datasheetId)!;
     return getFieldResultByStatType(statType, recordIds, this.fieldData, snapshot, state);
   }

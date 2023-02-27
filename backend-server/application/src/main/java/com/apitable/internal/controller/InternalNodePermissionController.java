@@ -19,7 +19,6 @@
 package com.apitable.internal.controller;
 
 import com.apitable.control.annotation.ThirdPartControl;
-import com.apitable.control.facede.ControlThirdPartServiceFacade;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.InternalPermissionRo;
 import com.apitable.internal.service.IPermissionService;
@@ -55,10 +54,6 @@ public class InternalNodePermissionController {
 
     @Resource
     private IPermissionService iPermissionService;
-
-    @Resource
-    private ControlThirdPartServiceFacade controlThirdPartServiceFacade;
-
     @Resource
     private INodeService iNodeService;
 
@@ -81,9 +76,7 @@ public class InternalNodePermissionController {
         List<DatasheetPermissionView> views =
             iPermissionService.getDatasheetPermissionView(userId, Collections.singletonList(nodeId),
                 shareId);
-        DatasheetPermissionView view =
-            controlThirdPartServiceFacade.getNodePermission(views.stream().findFirst().orElse(null),
-                nodeId, userId);
+        DatasheetPermissionView view = views.stream().findFirst().orElse(null);
         return ResponseData.success(view);
     }
 

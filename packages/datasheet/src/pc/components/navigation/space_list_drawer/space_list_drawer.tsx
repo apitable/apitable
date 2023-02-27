@@ -57,7 +57,7 @@ export const SpaceListDrawer: FC<React.PropsWithChildren<ISpaceListDrawerProps>>
       width={isMobile ? '100%' : 336}
       placement={isMobile ? 'bottom' : 'left'}
       height={isMobile ? '90%' : '100%'}
-      visible={visible}
+      open={visible}
       destroyOnClose
       closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
       maskStyle={{ background: colors.lightMaskColor }}

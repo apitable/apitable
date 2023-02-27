@@ -191,7 +191,6 @@ export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingPro
   const [optionErrMsg, setOptionErrMsg] = useState('');
 
   const { hasOptSetting } = FieldTypeDescriptionMap[currentField.type];
-  const commandManager = resourceService.instance!.commandManager;
 
   const isComputedField = Field.bindModel(currentField).isComputed;
 
@@ -303,7 +302,7 @@ export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingPro
   };
 
   const modifyFieldType = (newField: IField) => {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       fieldId: currentField.id,
       data: {
@@ -329,7 +328,7 @@ export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingPro
   };
 
   function addField(newField: IField, colIndex?: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [
         {

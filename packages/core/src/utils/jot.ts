@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { IAnyAction } from 'engine';
+import { IAnyAction } from 'engine';
+import { isString } from 'lodash';
 
 export enum ActionType {
   AddRow = 'addRow',
@@ -24,12 +25,15 @@ export enum ActionType {
   AddRecord = 'addRecord',
   AddField = 'addField',
   DelRow = 'delRow',
+  MoveRow = 'moveRow',
   DelColumn = 'delColumn',
   UpdateColumn = 'updateColumn',
   DelRecord = 'delRecord',
   DelField = 'delField',
   UpdateField = 'updateField',
   UpdateRecord = 'updateRecord',
+  AddView = 'addView',
+  DelView = 'delView',
   SetViewProperty = 'setViewProperty',
   ModifyViewName = 'modifyViewName',
   InsertComment = 'insertComment',
@@ -53,6 +57,8 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
   const hasLi = 'li' in action;
   const hasLd = 'ld' in action;
   const hasNa = 'na' in action;
+  const hasLm = 'lm' in action;
+
   const path = action.p;
   const modifyType = action.p[0];
   let viewIndex, metaField, viewProperty, propertyIndex, fieldId, recordId, recordPropertyData, recordProperty;
@@ -83,6 +89,15 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
         type: ActionType.DelRow,
         context: { viewIndex, viewProperty, propertyIndex }
       };
+    } else if (hasLm) {
+      return {
+        type: ActionType.MoveRow,
+        context: {
+          viewIndex,
+          viewProperty,
+          propertyIndex,
+        }
+      };
     }
     // The changed path is meta -> views -> vIdx -> columns, changing the columns of a view
   } else if (viewProperty === 'columns') {
@@ -102,18 +117,39 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
         context: { viewIndex, viewProperty, propertyIndex, fieldId: action.ld.fieldId }
       };
     }
-    // Change the path to meta -> views -> vIdx -> name, change a view name
-  } else if (metaField === 'views' && viewProperty === 'name') {
-    return {
-      type: ActionType.ModifyViewName,
-      context: { viewIndex, viewProperty }
-    };
-  // Change the path to meta -> views -> vIdx -> xxx, change the view configuration, filtering, grouping, etc. of a view
-  } else if (metaField === 'views' && viewProperty) {
-    return {
-      type: ActionType.SetViewProperty,
-      context: { viewIndex, viewProperty }
-    };
+  // Change the path to meta -> views -> vIdx -> xxx, change the view
+  } else if (metaField === 'views') {
+    // add view
+    if (viewProperty == null && hasLi && !hasLd) {
+      return {
+        type: ActionType.AddView,
+        context: { viewIndex }
+      };
+    }
+
+    // delete view
+    if (viewProperty == null && !hasLi && hasLd) {
+      return {
+        type: ActionType.DelView,
+        context: { viewIndex }
+      };
+    }
+    if (viewProperty === 'name' && hasOD && hasOi) {
+      return {
+        type: ActionType.ModifyViewName,
+        context: { viewIndex, viewProperty }
+      };
+    }
+
+    if (isString(viewProperty)) {
+      return {
+        type: ActionType.SetViewProperty,
+        context: {
+          viewIndex,
+          viewProperty
+        }
+      };
+    }
   // The changed path is meta -> fieldMap -> fieldId, changing the field data
   } else if (fieldId) {
     // add field
@@ -191,3 +227,14 @@ export const parseAction = (action: IAnyAction): IParseActionRes => {
     context: {}
   };
 };
+
+export const effectResourceAction = (type: ActionType): boolean => {
+  return [
+    ActionType.AddField,
+    ActionType.AddRecord,
+    ActionType.DelField,
+    ActionType.DelRecord,
+    ActionType.UpdateRecord,
+    ActionType.UpdateField
+  ].includes(type);
+}; 

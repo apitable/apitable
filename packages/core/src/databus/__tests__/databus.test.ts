@@ -42,7 +42,10 @@ describe('record operations', () => {
     beforeAll(resetDataLoader);
 
     it('should return correct numbers of records', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       const view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -55,7 +58,10 @@ describe('record operations', () => {
     });
 
     it('should return correct records', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       const view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -129,7 +135,10 @@ describe('record operations', () => {
     beforeEach(resetDataLoader);
 
     it('should increment number of records after adding a record', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       let view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -150,7 +159,10 @@ describe('record operations', () => {
       expect(succeeded.result).toStrictEqual(ExecuteResult.Success);
 
       // TODO avoid redundant getDatasheet()
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -164,7 +176,10 @@ describe('record operations', () => {
     });
 
     test('add a record before first record', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       let view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -180,7 +195,10 @@ describe('record operations', () => {
 
       expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -199,7 +217,10 @@ describe('record operations', () => {
     });
 
     test('add a record in middle', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       let view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -215,7 +236,10 @@ describe('record operations', () => {
 
       expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -234,7 +258,10 @@ describe('record operations', () => {
     });
 
     test('add multiple records', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       let view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -250,7 +277,10 @@ describe('record operations', () => {
 
       expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -269,7 +299,10 @@ describe('record operations', () => {
     });
 
     test('add multiple records by count', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       let view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -285,7 +318,10 @@ describe('record operations', () => {
 
       expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),
@@ -309,7 +345,10 @@ describe('record operations', () => {
     });
 
     it('should be identical to addRecords via doCommand', async() => {
-      let dst1 = await db.getDatasheet('dst1', {});
+      let dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       const result = await dst1!.doCommand(
         {
@@ -326,7 +365,10 @@ describe('record operations', () => {
 
       expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-      dst1 = await db.getDatasheet('dst1', {});
+      dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
       const view1 = await dst1!.getView({
         getViewInfo: mockGetViewInfo('dst1', 'viw1'),

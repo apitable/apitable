@@ -18,7 +18,7 @@
 
 import { FC } from 'react';
 import { ITextInputProps, TextInput } from '@apitable/components';
-import { EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@apitable/icons';
+import { EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean } from 'ahooks';
 import styles from './style.module.less';
 
@@ -35,7 +35,7 @@ export const PasswordInput: FC<React.PropsWithChildren<ITextInputProps>> = props
           onClick={() => toggle()}
           style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
         >
-          {isVisible ? <EyeNormalOutlined /> : <EyeCloseOutlined />}
+          {isVisible ? <EyeOpenOutlined /> : <EyeCloseOutlined />}
         </div>
       }
       {...props}

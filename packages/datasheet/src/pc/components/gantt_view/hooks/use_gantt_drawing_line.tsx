@@ -58,7 +58,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     linkCycleEdges,
   } = useContext(KonvaGanttViewContext);
   const { snapshot, fieldPermissionMap, fieldMap, visibleRows } = useContext(KonvaGridViewContext);
-  const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
+  const { linkFieldId, startFieldId, endFieldId, autoTaskLayout = false } = ganttStyle;
   const state = store.getState();
   const { rowHeight, columnWidth } = instance;
   const arrowRef = useRef<any>();
@@ -237,7 +237,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
       if (ExecuteResult.Success === result.result) {
         
         const endTime = Selectors.getCellValue(state, snapshot, sourceRecordId, endFieldId);
-        if(!endTime) {
+        if(!endTime || !autoTaskLayout) {
           return;
         }
         const sourceRecordData = {

@@ -17,7 +17,6 @@
  */
 
 import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { DescriptionOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
@@ -230,7 +229,7 @@ function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
 }
 
 export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = props => {
-  const { activeNodeId, datasheetName, showIntroduction = true, className, showIcon = true, ...rest } = props;
+  const { activeNodeId, datasheetName, showIntroduction = true, className, ...rest } = props;
   const [visible, setVisible] = useState(false);
   const desc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);
   const curGuideWizardId = useSelector((state: IReduxState) => state.hooks?.curGuideWizardId);
@@ -257,7 +256,6 @@ export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModa
         props.onClick && props.onClick();
       }}
     >
-      {showIcon && <DescriptionOutlined size={16} />}
       {
         showIntroduction &&
         <div className={styles.text}>{desc && htmlElmentHasText(desc.render) ? sanitized(desc.render) : t(Strings.edit_node_desc)}</div>
@@ -273,8 +271,9 @@ export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModa
   );
 };
 
-
-export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile }: Pick<IRenderModalBase, 'datasheetName' | 'activeNodeId' | 'isMobile'>) => {
+export const expandNodeDescription = (
+  { datasheetName, activeNodeId, isMobile }: Pick<IRenderModalBase, 'datasheetName' | 'activeNodeId' | 'isMobile'>
+) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const root = createRoot(div);

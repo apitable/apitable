@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { EditOutlined, EyeNormalOutlined, LockNonzeroOutlined } from '@apitable/icons';
+import { EditOutlined, EyeOpenOutlined, LockOutlined } from '@apitable/icons';
 import { useSelector } from 'react-redux';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip, useThemeColors } from '@apitable/components';
@@ -49,7 +49,7 @@ export const FieldPermissionLock = (props: {
       isLockedField &&
       <Tooltip content={tooltip || t(Strings.field_permission_lock_tips)}>
         <span className={className} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', ...style }}>
-          <LockNonzeroOutlined color={color || colors.fourthLevelText} />
+          <LockOutlined color={color || colors.fourthLevelText} />
         </span>
       </Tooltip>
     }
@@ -60,7 +60,7 @@ export const getFieldLock = (permissionType: ConfigConstant.Role) => {
   switch (permissionType) {
     case ConfigConstant.Role.Manager: {
       return [
-        LockNonzeroOutlined,
+        LockOutlined,
         t(Strings.field_permission_manager_lock_tips)
       ];
     }
@@ -73,7 +73,7 @@ export const getFieldLock = (permissionType: ConfigConstant.Role) => {
     default:
     case ConfigConstant.Role.Reader: {
       return [
-        EyeNormalOutlined,
+        EyeOpenOutlined,
         t(Strings.field_permission_reader_lock_tips)
       ];
     }

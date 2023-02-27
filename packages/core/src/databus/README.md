@@ -4,20 +4,17 @@
 
 https://vikadata.feishu.cn/wiki/wikcna2cc6wLyxXPoZT4T6p5v4e
 
-The collaborative data stream processing and storage engine.
+The data processing layer for APITable, providing a collaboration engine and friendly interface.
 
 ## Basic Usage
 
 ```typescript
 // Create a DataBus instance.
 const databus = DataBus.create({
-  // The data loader is responsible for loading internal datasheet packs of datasheets.
-  // A data loader must implement the IDataLoader interface.
-  dataLoader: new MyDataLoader(),
-
-  // The data saver is responsible for saving the results of executing commands into some storage system.
-  // A data saver must implement the IDataSaver interface.
-  dataSaver: new MyDataSaver(),
+  // The data storage provider is responsible for loading internal datasheet packs of datasheets, as well as
+  // storing results of command execution into a storage system.
+  // A data storage provider must implement the IDataStorageProvider interface.
+  dataStorageProvider: new MyStorageProvider(),
 
   // The store provider is responsible for creating redux stores for datasheets.
   // A store provider must implement the IStoreProvider interface.
@@ -27,19 +24,19 @@ const databus = DataBus.create({
 // Get a database
 const database = databus.getDatabase();
 
-// Get a datasheet in the database
-const datasheet = await database.getDatasheet(datasheetId, options);
+// Add an event handler to the database
+database.addEventHandler(new MyEventHandler());
 
-// Add an event handler to this datasheet
-datasheet.addEventHandler(new MyEventHandler());
+// Get a datasheet in the database
+const datasheet = await database.getDatasheet(datasheetId, datasheetOptions);
 
 // Get a view in the datasheet.
-const view = await datasheet.getView(options);
+const view = await datasheet.getView(viewOptions);
 
-// Perform a command on the view.
-const result = await view.doCommand({
-  cmd: CollaCommandName.MoveRow,
-  ... // other fields for this command
+// Add 10 empty records to the datasheet. Other commands are also available in `View`s and `Datasheet`s.
+const result = await view.addRecords({
+  index: 0,
+  count: 10,
 });
 ```
 

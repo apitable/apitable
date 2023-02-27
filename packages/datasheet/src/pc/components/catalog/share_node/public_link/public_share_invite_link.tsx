@@ -18,7 +18,7 @@
 
 import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CheckOutlined, ColumnUrlOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { CheckOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
 import { Message, MobileSelect, Modal } from 'pc/components/common';
@@ -200,7 +200,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-            <InformationSmallOutlined currentColor />
+            <QuestionCircleOutlined currentColor />
           </a>
         </Tooltip>
       </div>
@@ -265,7 +265,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
             className={styles.inviteMoreMethod}
             underline={false}
             onClick={() => expandInviteModal()}
-            prefixIcon={<ColumnUrlOutlined currentColor />}
+            prefixIcon={<LinkOutlined currentColor />}
           >
             {t(Strings.invite_via_link)}
           </LinkButton>

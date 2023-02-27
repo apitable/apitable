@@ -24,12 +24,13 @@ import cn.hutool.core.map.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.BeetlKit;
 
-import com.apitable.shared.context.I18nContext;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
+import com.apitable.shared.context.I18nContext;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.server.ResponseStatusException;
 
 import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
 
@@ -54,6 +56,11 @@ import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERR
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Void> customResponseStatusException(ResponseStatusException exception) {
+        return ResponseEntity.status(exception.getRawStatusCode()).build();
+    }
 
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)

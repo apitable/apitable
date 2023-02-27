@@ -17,12 +17,12 @@
  */
 
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
-import { ICommandExecutionSuccessResult } from 'databus/datasheet';
+import { ICommandExecutionSuccessResult } from '../logic';
 import { ViewType } from 'exports/store';
-import { ResourceType } from 'types';
+import { ResourceType, SegmentType } from 'types';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { mockOperationOfAddDefaultRecords } from './mock.record';
 import { mockGetViewInfo } from './mock.view';
+import { mockOperationOfAddRecords } from './mock.record';
 
 const db = MockDataBus.getDatabase();
 
@@ -30,7 +30,10 @@ describe('view info', () => {
   beforeAll(resetDataLoader);
 
   test('basic view info', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -48,7 +51,10 @@ describe('view info', () => {
 
 describe('getFields', () => {
   it('should not include hidden fields by default', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -66,7 +72,10 @@ describe('getFields', () => {
   });
 
   it('should include hidden fields if includeHidden is true', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -88,7 +97,10 @@ describe('getFields', () => {
 
 describe('getRecords', () => {
   it('should return records in order of rows in the view', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -104,7 +116,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords limit number of records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -122,7 +137,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords > total number of records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -141,7 +159,10 @@ describe('getRecords', () => {
 
   describe('pagination', () => {
     test('pageNum = 1, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -162,7 +183,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 1, pageSize = 0', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -183,7 +207,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 1, pageSize = 0', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -204,7 +231,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 2, pageSize = 2', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -225,7 +255,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 2, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -246,7 +279,10 @@ describe('getRecords', () => {
     });
 
     test('pageNum = 3, pageSize = 3', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
+      const dst1 = await db.getDatasheet('dst1', {
+        loadOptions: {},
+        storeOptions: {},
+      });
       expect(dst1).toBeTruthy();
 
       const view2 = await dst1!.getView({
@@ -268,7 +304,10 @@ describe('getRecords', () => {
   });
 
   test('maxRecords = 4 and pagnation: pageNum = 2, pageSize = 3', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view2 = await dst1!.getView({
@@ -294,7 +333,10 @@ describe('addRecords', () => {
   beforeEach(resetDataLoader);
 
   test('add two records with count', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -320,51 +362,36 @@ describe('addRecords', () => {
 
     const recordIds = (result as ICollaCommandExecuteSuccessResult<string[]>).data!;
 
-    delete (result as ICollaCommandExecuteSuccessResult<string[]>).data;
-    (result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId = 'msg1';
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation = mockOperationOfAddRecords([
+      {
+        id: recordIds[0]!,
+        rows: [
+          { view: 0, index: 3 },
+          { view: 1, index: 5 },
+        ],
+      },
+      {
+        id: recordIds[1]!,
+        rows: [
+          { view: 0, index: 4 },
+          { view: 1, index: 5 },
+        ],
+      },
+    ]);
 
     expect(result).toStrictEqual({
       resourceId: 'dst1',
       resourceType: ResourceType.Datasheet,
       result: ExecuteResult.Success,
-      operation: mockOperationOfAddDefaultRecords([
-        {
-          id: recordIds[0]!,
-          rows: [
-            { view: 0, index: 3 },
-            { view: 1, index: 5 },
-          ],
-        },
-        {
-          id: recordIds[1]!,
-          rows: [
-            { view: 0, index: 4 },
-            { view: 1, index: 5 },
-          ],
-        },
-      ]),
+      operation,
       linkedActions: [],
       executeType: ExecuteType.Execute,
       resourceOpsCollects: [
         {
-          operations: [
-            mockOperationOfAddDefaultRecords([
-              {
-                id: recordIds[0]!,
-                rows: [
-                  { view: 0, index: 3 },
-                  { view: 1, index: 5 },
-                ],
-              },
-              {
-                id: recordIds[1]!,
-                rows: [
-                  { view: 0, index: 4 },
-                  { view: 1, index: 5 },
-                ],
-              },
-            ]),
-          ],
+          operations: [operation],
           resourceId: 'dst1',
           resourceType: 0,
         },
@@ -373,24 +400,100 @@ describe('addRecords', () => {
         {
           baseRevision: 12,
           messageId: 'msg1',
-          operations: [
-            mockOperationOfAddDefaultRecords([
-              {
-                id: recordIds[0]!,
-                rows: [
-                  { view: 0, index: 3 },
-                  { view: 1, index: 5 },
-                ],
-              },
-              {
-                id: recordIds[1]!,
-                rows: [
-                  { view: 0, index: 4 },
-                  { view: 1, index: 5 },
-                ],
-              },
-            ]),
-          ],
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+
+  test('add two records with recordValues', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const view1 = await dst1!.getView({
+      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
+    });
+    expect(view1).toBeTruthy();
+
+    const result = await view1!.addRecords(
+      {
+        index: 3,
+        recordValues: [
+          {
+            fld1: [{ type: SegmentType.Text, text: 'first' }],
+            fld2: ['opt2', 'opt1'],
+          },
+          {
+            fld1: [{ type: SegmentType.Text, text: 'second' }],
+            fld2: [],
+          },
+        ],
+      },
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data).toBeTruthy();
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data!.length).toBe(2);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    const recordIds = (result as ICollaCommandExecuteSuccessResult<string[]>).data!;
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation = mockOperationOfAddRecords([
+      {
+        id: recordIds[0]!,
+        rows: [
+          { view: 0, index: 3 },
+          { view: 1, index: 5 },
+        ],
+        values: {
+          fld1: [{ type: SegmentType.Text, text: 'first' }],
+          fld2: ['opt2', 'opt1'],
+        },
+      },
+      {
+        id: recordIds[1]!,
+        rows: [
+          { view: 0, index: 4 },
+          { view: 1, index: 5 },
+        ],
+        values: {
+          fld1: [{ type: SegmentType.Text, text: 'second' }],
+          fld2: [],
+        },
+      },
+    ]);
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
           resourceId: 'dst1',
           resourceType: 0,
         },

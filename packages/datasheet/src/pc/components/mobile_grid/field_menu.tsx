@@ -23,8 +23,8 @@ import {
   isSelectField, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState
 } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
-  FilterOutlined, HideFilled, LockOutlined
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
+  FilterOutlined, EyeOpenOutlined, LockOutlined
 } from '@apitable/icons';
 import { Message, MobileContextMenu } from 'pc/components/common';
 import { notifyWithUndo } from 'pc/components/common/notify';
@@ -85,7 +85,6 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
   const handleFilterField = useFilterField();
   const activeFieldSettings = useActiveFieldSetting();
   const deleteField = useDeleteField(field.id, datasheetId);
-  const commandManager = resourceService.instance!.commandManager;
   const embedId = useSelector(state => state.pageParams.embedId);
   /**
    * Give a warning when a field is deleted during collaboration.
@@ -119,7 +118,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
   const linkedFieldError = field.type === FieldType.Link && fieldError;
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -139,7 +138,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
   }
 
   function copyField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       copyCell: true,
       fieldId: field.id,
@@ -231,7 +230,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
         onClick: editField,
       },
       {
-        icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+        icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
         text: t(Strings.editing_field_desc),
         hidden: !descriptionEditable,
         onClick: openFieldDesc,
@@ -300,7 +299,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
     ],
     [
       {
-        icon: <HideFilled color={colors.thirdLevelText} />,
+        icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
         text: t(Strings.hide_fields),
         hidden: !editable || fieldIndex === 0 || Boolean(mirrorId),
         onClick: hiddenField,

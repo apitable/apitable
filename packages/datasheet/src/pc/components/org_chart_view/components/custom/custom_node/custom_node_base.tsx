@@ -59,6 +59,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
     viewId,
     rowsCount,
     horizontal,
+    datasheetId
   } = useContext(FlowContext);
 
   const [childId] = linkIds;
@@ -128,17 +129,17 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
 
   const [entered, setEntered] = useState(false);
 
-  const handleQuickAddClick = () => {
-    const newRecordId = addRecord(viewId, rowsCount, false);
+  const handleQuickAddClick = async() => {
+    const newRecordId = await addRecord(viewId, rowsCount, false);
     onChange([{
       recordId: id,
       fieldId: linkFieldId,
-      value: [...linkIds, newRecordId],
+      value: [...linkIds, newRecordId!],
     }]);
     if (nodeStateMap?.[id]?.collapsed) {
       toggleNodeCollapse(id);
     }
-    setQuickAddRecId(newRecordId);
+    setQuickAddRecId(newRecordId!);
     setEntered(false);
   };
 
@@ -164,6 +165,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
             [styles.highlight]: currentSearchCell === id,
             [styles.hover]: quickAddRecId === id,
           })}
+          datasheetId={datasheetId}
           showEmptyCover={SHOW_EPMTY_COVER}
           coverFieldId={coverFieldId}
           showEmptyField={SHOW_EPMTY_FIELD}

@@ -21,13 +21,21 @@ import { AxiosResponse } from 'axios';
 import { ConfigConstant, StatusCode } from 'config';
 import { Dispatch } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import { getFormLoading } from '../../../../../../exports/store/selectors';
+import { getFormLoading } from 'exports/store/selectors';
 import { receiveDataPack } from 'modules/database/store/actions/resource/datasheet';
-import * as actions from '../../../../../shared/store/action_constants';
-import { deleteNode } from '../../../../../space/store/actions/catalog_tree';
-import { Api } from '../../../../../../exports/api';
-import { DEFAULT_READ_ONLY_PERMISSION } from '../../../../../shared/store/constants';
-import { IFieldPermissionMap, IFormProps, IFormSnapshot, ISourceDatasheetInfo, INodeMeta, IReduxState, ICollaborator } from '../../../../../../exports/store/interfaces';
+import * as actions from 'modules/shared/store/action_constants';
+import { deleteNode } from 'modules/space/store/actions/catalog_tree';
+import { Api } from 'exports/api';
+import { DEFAULT_READ_ONLY_PERMISSION } from 'modules/shared/store/constants';
+import {
+  IFieldPermissionMap,
+  IFormProps,
+  IFormSnapshot,
+  ISourceDatasheetInfo,
+  INodeMeta,
+  IReduxState,
+  ICollaborator,
+} from 'exports/store/interfaces';
 
 export const DEFAULT_FORM_PROPS = {
   title: '',
@@ -55,24 +63,25 @@ export function fetchForm(formId: string, successFn?: (props?: any) => void) {
       requestMethod = () => fetchTemplateFormPack(templateId, formId);
     }
     dispatch(requestFormPack(formId));
-    return requestMethod(formId).then(response => {
-      return Promise.resolve({ formId, response, dispatch, shareId });
-    }).catch(e => {
-      if (state.catalogTree.treeNodesMap[formId]) {
-        dispatch(deleteNode({ nodeId: formId, parentId: state.catalogTree.treeNodesMap[formId]!.parentId }));
-      }
-      dispatch(formErrorCode(formId, StatusCode.COMMON_ERR));
-      throw e;
-    }).then((res: any) => {
-      successFn?.();
-      fetchDataSuccess(res);
-    });
+    return requestMethod(formId)
+      .then(response => {
+        return Promise.resolve({ formId, response, dispatch, shareId });
+      })
+      .catch(e => {
+        if (state.catalogTree.treeNodesMap[formId]) {
+          dispatch(deleteNode({ nodeId: formId, parentId: state.catalogTree.treeNodesMap[formId]!.parentId }));
+        }
+        dispatch(formErrorCode(formId, StatusCode.COMMON_ERR));
+        throw e;
+      })
+      .then((res: any) => {
+        successFn?.();
+        fetchDataSuccess(res);
+      });
   };
 }
 
-function fetchDataSuccess(
-  { formId, response, dispatch }: { formId: string, response: AxiosResponse, dispatch: Dispatch, shareId: string },
-) {
+function fetchDataSuccess({ formId, response, dispatch }: { formId: string; response: AxiosResponse; dispatch: Dispatch; shareId: string }) {
   const body = response.data;
   const data = body.data;
   if (body.success && data) {
@@ -93,10 +102,17 @@ export interface IResetFormAction {
   formId: string;
 }
 
-export function receiveFormData(
-  { form, snapshot, sourceInfo, fieldPermissionMap }:
-    { form: INodeMeta, sourceInfo: ISourceDatasheetInfo, snapshot: IFormSnapshot, fieldPermissionMap: IFieldPermissionMap },
-): any {
+export function receiveFormData({
+  form,
+  snapshot,
+  sourceInfo,
+  fieldPermissionMap,
+}: {
+  form: INodeMeta;
+  sourceInfo: ISourceDatasheetInfo;
+  snapshot: IFormSnapshot;
+  fieldPermissionMap: IFieldPermissionMap;
+}): any {
   const formId = form.id;
   const { meta, formProps } = snapshot;
   const currentView = meta.views.filter(view => {
@@ -123,14 +139,17 @@ export function receiveFormData(
       formId,
       payload: formState,
     },
-    receiveDataPack({
-      snapshot: { meta, recordMap: {}, datasheetId: sourceInfo.datasheetId },
-      datasheet: {
-        id: sourceInfo.datasheetId,
-        revision: sourceInfo.datasheetRevision,
-        permissions: DEFAULT_READ_ONLY_PERMISSION
-      } as INodeMeta
-    }, { isPartOfData: true })
+    receiveDataPack(
+      {
+        snapshot: { meta, recordMap: {}, datasheetId: sourceInfo.datasheetId },
+        datasheet: {
+          id: sourceInfo.datasheetId,
+          revision: sourceInfo.datasheetRevision,
+          permissions: DEFAULT_READ_ONLY_PERMISSION,
+        } as INodeMeta,
+      },
+      { isPartOfData: true },
+    ),
   ];
 }
 
@@ -165,10 +184,7 @@ export const updateFormProps = (formId: string, formProps: IFormProps) => {
   };
 };
 
-export const updateForm = (
-  formId: string,
-  form: Partial<INodeMeta>,
-) => {
+export const updateForm = (formId: string, form: Partial<INodeMeta>) => {
   return {
     type: actions.UPDATE_FORM,
     formId,
@@ -176,10 +192,7 @@ export const updateForm = (
   };
 };
 
-export async function fetchForeignFormList(
-  dstId: string,
-  viewId: string,
-) {
+export async function fetchForeignFormList(dstId: string, viewId: string) {
   try {
     const res = await Api.getRelateNodeByDstId(dstId, viewId, ConfigConstant.NodeType.FORM);
     return res.data.data;
@@ -203,9 +216,7 @@ export const activeFormCollaborator = (payload: ICollaborator, resourceId: strin
   };
 };
 
-export const resetForm = (
-  formId: string,
-) => {
+export const resetForm = (formId: string) => {
   return {
     type: actions.RESET_FORM,
     formId,

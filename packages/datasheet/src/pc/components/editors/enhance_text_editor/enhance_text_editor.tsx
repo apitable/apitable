@@ -99,10 +99,28 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   };
 
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
+    
     if (props.editing) {
       const value = event.target.value;
-      setValue(value);
-      propsOnChange && propsOnChange(getValidValue(value));
+      if(field.type === FieldType.Phone) {
+        const newValue = value
+          .replace(/[^+0-9]/g, '') 
+          .replace(/^([+])/, '$1') 
+          .replace(/\+{2,}/g, '+') 
+          .replace(/^([+][0-9]*){0,1}([0-9]*)/, '$1$2');
+
+        setValue(newValue);
+        propsOnChange && propsOnChange(getValidValue(newValue));
+      } else {
+        setValue(value);
+        propsOnChange && propsOnChange(getValidValue(value));
+      }
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === ' ' && field.type === FieldType.Email) {
+      event.preventDefault();
     }
   };
 
@@ -206,6 +224,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           disabled={disabled}
           value={value}
           onChange={updateValue}
+          onKeyPress={handleKeyPress}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{

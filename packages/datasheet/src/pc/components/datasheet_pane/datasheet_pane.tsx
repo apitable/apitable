@@ -205,7 +205,7 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   useEffect(() => {
     if (isApiPanelOpen) {
       dispatch(StoreActions.toggleSideRecord(false));
-      closeAllExpandRecord();
+      closeAllExpandRecord(); // async
     }
   }, [dispatch, isApiPanelOpen]);
 

@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { ManageOutlined } from '@apitable/icons';
+import { SettingOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
@@ -216,7 +216,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
     {
       routeAddress: '/management' + search,
-      icon: ManageOutlined,
+      icon: SettingOutlined,
       text: t(Strings.nav_space_settings),
       key: NavKey.SpaceManagement,
       domId: NAV_ID.ICON_SPACE_MANAGE,

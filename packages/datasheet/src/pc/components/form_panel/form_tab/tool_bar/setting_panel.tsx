@@ -22,7 +22,7 @@ import { Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { Checkbox } from 'antd';
 import { IToolBarBase } from './interface';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { Tooltip } from 'antd';
 import { useThemeColors } from '@apitable/components';
 
@@ -154,7 +154,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
                     title={item.tooltipText}
                   >
                     <div className={styles.iconWrap}>
-                      <InformationSmallOutlined size={16} color={colors.black[500]}/>
+                      <QuestionCircleOutlined size={16} color={colors.black[500]}/>
                     </div>
                   </Tooltip>
                   : null

@@ -18,7 +18,7 @@
 
 import { FC } from 'react';
 import styles from './style.module.less';
-import { UpgradeColorfulFilled } from '@apitable/icons';
+import { Star2Filled } from '@apitable/icons';
 import classNames from 'classnames';
 import { getLanguage, Strings, t } from '@apitable/core';
 
@@ -37,7 +37,7 @@ export const UpgradeBtn: FC<React.PropsWithChildren<IUpgradeBtnProps>> = ({ onCl
         className={styles.stickyUpgradeContent}
         onClick={onClick}
       >
-        <UpgradeColorfulFilled />
+        <Star2Filled />
         <span className={classNames(styles.stickyUpgradeText, { rotate: !isZhCN })}>
           {t(Strings.upgrade_pure)}
         </span>

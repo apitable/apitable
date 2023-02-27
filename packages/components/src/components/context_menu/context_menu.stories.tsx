@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import { AutosaveOutlined, LockNonzeroOutlined, CalenderRightOutlined } from '@apitable/icons';
+import { AutosaveOutlined, LockOutlined, ChevronRightOutlined } from '@apitable/icons';
 import { black } from 'colors';
 import { Switch } from '../switch';
 import { ContextMenu, useContextMenu } from './index';
@@ -253,7 +253,7 @@ export const IconContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
         }, {
           key: '1-2',
           label: 'first layer menu 2',
@@ -262,7 +262,7 @@ export const IconContextMenu = () => {
           key: '1-3',
           label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
         }]}
       />
     </div>
@@ -287,7 +287,7 @@ export const DisabledContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           disabled: true,
           disabledTip: 'disabled tips'
         }, {
@@ -298,7 +298,7 @@ export const DisabledContextMenu = () => {
           key: '1-3',
           label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           disabled: true,
           disabledTip: 'disabled tips'
         }]}
@@ -325,9 +325,9 @@ export const ExtraElementContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           disabled: true,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           extraElement: <Switch size={'small'} disabled checked />
         }, {
           key: '1-2',
@@ -338,7 +338,7 @@ export const ExtraElementContextMenu = () => {
           key: '1-3',
           label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           disabled: true,
         }]}
       />
@@ -364,7 +364,7 @@ export const HiddenContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           hidden: true,
@@ -377,7 +377,7 @@ export const HiddenContextMenu = () => {
           key: '1-3',
           label: 'first layer menu 3',
           icon: <AutosaveOutlined />,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           disabled: true,
           hidden: (args) => {
             return args.tabIndex === 1;
@@ -406,7 +406,7 @@ export const GroupContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '1',
@@ -435,7 +435,7 @@ export const GroupContextMenu = () => {
           key: '1-5',
           label: 'first layer menu 5',
           icon: <AutosaveOutlined />,
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           disabled: true,
           hidden: () => {
             return false;
@@ -467,25 +467,25 @@ export const EventMangerContextMenu = () => {
         overlay={[{
           key: '1-1',
           label: 'first layer menu 1',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           disabled: true,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '1',
         }, {
           key: '1-2',
           label: 'first layer menu 2',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-3',
           label: 'first layer menu 3',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
-          arrow: <CalenderRightOutlined color={black[500]} />,
+          arrow: <ChevronRightOutlined color={black[500]} />,
           children: [{
             key: '1-1-1',
             label: 'second layer menu 1',
@@ -514,21 +514,21 @@ export const EventMangerContextMenu = () => {
         }, {
           key: '1-4',
           label: 'first layer menu 4',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-5',
           label: 'first layer menu 5',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),
         }, {
           key: '1-6',
           label: 'first layer menu 6',
-          icon: <LockNonzeroOutlined />,
+          icon: <LockOutlined />,
           extraElement: <Switch size={'small'} disabled checked />,
           groupId: '2',
           onClick: (args) => console.log(args),

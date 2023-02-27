@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from '..';
-import { mockDatasheetMap, mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
+import { mockDatasheetMap } from './mock.datasheets';
 import { mockGetViewInfo } from './mock.view';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { ResourceType } from 'types';
+import { DateFormat, FieldType, ResourceType, SegmentType, TimeFormat } from 'types';
 import { CollaCommandName } from 'commands';
-import { ExecuteFailReason, ExecuteResult, ICollaCommandExecuteSuccessResult } from 'command_manager';
+import { ExecuteFailReason, ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
+import { ICommandExecutionSuccessResult } from 'databus/logic';
+import { mockOperationOfAddRecords } from './mock.record';
+import { IOperation, OTActionName } from 'engine';
 
 const db = MockDataBus.getDatabase();
 
@@ -30,7 +32,10 @@ beforeAll(resetDataLoader);
 
 describe('datasheet info', () => {
   test('basic datasheet info', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     expect(dst1!.id).toStrictEqual('dst1');
@@ -43,7 +48,10 @@ describe('datasheet info', () => {
 
 describe('get view', () => {
   it('should return View for existing view', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -55,7 +63,10 @@ describe('get view', () => {
   });
 
   it('should return null if view does not exist', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -70,7 +81,10 @@ describe('doCommand', () => {
   beforeEach(resetDataLoader);
 
   it('should return success if command execution succeeded', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -87,7 +101,10 @@ describe('doCommand', () => {
   });
 
   it('should fail if count != cellValues.length when adding records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -110,7 +127,10 @@ describe('doCommand', () => {
   });
 
   it('should return none when adding zero records', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const result = await dst1!.doCommand(
@@ -131,245 +151,684 @@ describe('doCommand', () => {
   });
 });
 
-describe('event handlers', () => {
+describe('addRecords', () => {
   beforeEach(resetDataLoader);
 
-  test('add an event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+  test('add two records with count in viw1', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
-    const result = dst1!.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
-      handle: () => Promise.resolve(),
-    });
-
-    expect(result).toBeTruthy();
-  });
-
-  test('add the same event listener twice', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
-    const listener = {
-      type: DatasheetEventType.CommandExecuted,
-      handle: () => Promise.resolve(),
-    };
-
-    dst1!.addEventHandler(listener);
-    const result = dst1!.addEventHandler(listener);
-
-    expect(result).toBeFalsy();
-  });
-
-  test('remove an event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
-    const listener = {
-      type: DatasheetEventType.CommandExecuted,
-      handle: () => Promise.resolve(),
-    };
-
-    dst1!.addEventHandler(listener);
-
-    const result = dst1!.removeEventHandler(listener);
-
-    expect(result).toBeTruthy();
-  });
-
-  test('remove the same event listener twice', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
-    const listener = {
-      type: DatasheetEventType.CommandExecuted,
-      handle: () => Promise.resolve(),
-    };
-
-    dst1!.addEventHandler(listener);
-
-    dst1!.removeEventHandler(listener);
-    const result = dst1!.removeEventHandler(listener);
-
-    expect(result).toBeFalsy();
-  });
-
-  test('remove a non-existent event listener', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-
-    const listener = {
-      type: DatasheetEventType.CommandExecuted,
-      handle: () => Promise.resolve(),
-    };
-
-    const result = dst1!.removeEventHandler(listener);
-
-    expect(result).toBeFalsy();
-  });
-
-  describe('fire event', () => {
-    test('fire an event with one event listeners', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
-      let result: any;
-      dst1!.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
-        handle(event) {
-          result = event;
-          return Promise.resolve();
-        },
-      });
-
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
-        resourceOpCollections: [],
-      };
-
-      await dst1!.fireEvent(event);
-
-      expect(result).toStrictEqual(event);
-    });
-
-    test('fire an event with two event listeners', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
-      let result1: any;
-      let result2: any;
-      dst1!.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
-        handle(event) {
-          result1 = event;
-          return Promise.resolve();
-        },
-      });
-      dst1!.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
-        handle(event) {
-          result2 = event;
-          return Promise.resolve();
-        },
-      });
-
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
-        resourceOpCollections: [],
-      };
-
-      await dst1!.fireEvent(event);
-
-      expect(result1).toStrictEqual(event);
-      expect(result2).toStrictEqual(event);
-    });
-
-    it('should not be invoked after being removed', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
-      let result: any = undefined;
-      const handler: IDatasheetEventHandler & { type: DatasheetEventType } = {
-        type: DatasheetEventType.CommandExecuted,
-        handle(event) {
-          result = event;
-          return Promise.resolve();
-        },
-      };
-      dst1!.addEventHandler(handler);
-
-      dst1!.removeEventHandler(handler);
-
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
-        resourceOpCollections: [],
-      };
-
-      await dst1!.fireEvent(event);
-
-      expect(result).toBeUndefined();
-    });
-
-    it('should not be invoked after the kind of handlers is removed', async() => {
-      const dst1 = await db.getDatasheet('dst1', {});
-      expect(dst1).toBeTruthy();
-      let result: any = undefined;
-      dst1!.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
-        handle(event) {
-          result = event;
-          return Promise.resolve();
-        },
-      });
-
-      dst1!.removeEventHandlers(DatasheetEventType.CommandExecuted);
-
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
-        resourceOpCollections: [],
-      };
-
-      await dst1!.fireEvent(event);
-
-      expect(result).toBeUndefined();
-    });
-  });
-
-  it('should receive success event if doCommand succeeded', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-    let event: any = undefined;
-    dst1!.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
-      handle(e) {
-        event = e;
-        return Promise.resolve();
-      },
-    });
-
-    const result = await dst1!.doCommand(
+    const result = await dst1!.addRecords(
       {
-        cmd: CollaCommandName.AddRecords,
         viewId: 'viw1',
         index: 3,
-        count: 1,
+        count: 2,
+      },
+      {},
+    );
+
+    // TODO these assertions are almost identical to those in view.test, refactor them out.
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data).toBeTruthy();
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data!.length).toBe(2);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    const recordIds = (result as ICollaCommandExecuteSuccessResult<string[]>).data!;
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation = mockOperationOfAddRecords([
+      {
+        id: recordIds[0]!,
+        rows: [
+          { view: 0, index: 3 },
+          { view: 1, index: 5 },
+        ],
+      },
+      {
+        id: recordIds[1]!,
+        rows: [
+          { view: 0, index: 4 },
+          { view: 1, index: 5 },
+        ],
+      },
+    ]);
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+
+  test('add two records with recordValues', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.addRecords(
+      {
+        viewId: 'viw1',
+        index: 3,
+        recordValues: [
+          {
+            fld1: [{ type: SegmentType.Text, text: 'first' }],
+            fld2: ['opt2', 'opt1'],
+          },
+          {
+            fld1: [{ type: SegmentType.Text, text: 'second' }],
+            fld2: [],
+          },
+        ],
+      },
+      {},
+    );
+
+    // TODO these assertions are almost identical to those in view.test, refactor them out.
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data).toBeTruthy();
+    expect((result as ICollaCommandExecuteSuccessResult<string[]>).data!.length).toBe(2);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    const recordIds = (result as ICollaCommandExecuteSuccessResult<string[]>).data!;
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation = mockOperationOfAddRecords([
+      {
+        id: recordIds[0]!,
+        rows: [
+          { view: 0, index: 3 },
+          { view: 1, index: 5 },
+        ],
+        values: {
+          fld1: [{ type: SegmentType.Text, text: 'first' }],
+          fld2: ['opt2', 'opt1'],
+        },
+      },
+      {
+        id: recordIds[1]!,
+        rows: [
+          { view: 0, index: 4 },
+          { view: 1, index: 5 },
+        ],
+        values: {
+          fld1: [{ type: SegmentType.Text, text: 'second' }],
+          fld2: [],
+        },
+      },
+    ]);
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('updateRecords', () => {
+  beforeEach(resetDataLoader);
+
+  test('update rec2:fld2', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.updateRecords(
+      [
+        {
+          recordId: 'rec2',
+          fieldId: 'fld2',
+          value: ['opt3', 'opt2'],
+        },
+      ],
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          n: OTActionName.ObjectReplace,
+          od: ['opt1'],
+          oi: ['opt3', 'opt2'],
+          p: ['recordMap', 'rec2', 'data', 'fld2'],
+        },
+      ],
+      cmd: CollaCommandName.SetRecords,
+      fieldTypeMap: {
+        fld2: 4,
+      },
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('deleteRecords', () => {
+  beforeEach(resetDataLoader);
+
+  test('delete rec2', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.deleteRecords(['rec2'], {});
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          ld: {
+            recordId: 'rec2',
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 0, 'rows', 1],
+        },
+        {
+          ld: {
+            recordId: 'rec2',
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 1, 'rows', 0],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: {
+            commentCount: 0,
+            data: {
+              fld1: [
+                {
+                  text: 'text 2',
+                  type: 1,
+                },
+              ],
+              fld2: ['opt1'],
+            },
+            id: 'rec2',
+          },
+          p: ['recordMap', 'rec2'],
+        },
+      ],
+      cmd: CollaCommandName.DeleteRecords,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('addFields', () => {
+  beforeEach(resetDataLoader);
+
+  test('add a datetime field', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.addFields(
+      [
+        {
+          index: 2,
+          data: {
+            name: 'field 3',
+            type: FieldType.DateTime,
+            property: {
+              dateFormat: DateFormat['YYYY-MM'],
+              timeFormat: TimeFormat['HH:mm'],
+              includeTime: false,
+              autoFill: false,
+            },
+          },
+        },
+      ],
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICollaCommandExecuteSuccessResult<string>).data).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<any>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<any>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId).toBeTruthy();
+
+    const fieldId = (result as ICollaCommandExecuteSuccessResult<string>).data!;
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          li: {
+            fieldId,
+            hidden: false,
+          },
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', 0, 'columns', 2],
+        },
+        {
+          li: {
+            fieldId,
+            hidden: true,
+          },
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', 1, 'columns', 2],
+        },
+        {
+          n: OTActionName.ObjectInsert,
+          oi: {
+            id: fieldId,
+            name: 'field 3',
+            property: {
+              autoFill: false,
+              dateFormat: 3,
+              includeTime: false,
+              timeFormat: 0,
+            },
+            type: 5,
+          },
+          p: ['meta', 'fieldMap', fieldId],
+        },
+      ],
+      cmd: CollaCommandName.AddFields,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('deleteFields', () => {
+  beforeEach(resetDataLoader);
+
+  test('delete fld2', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.deleteFields(
+      [
+        {
+          fieldId: 'fld2',
+        },
+      ],
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          n: OTActionName.ObjectDelete,
+          od: ['opt2', 'opt1'],
+          p: ['recordMap', 'rec1', 'data', 'fld2'],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: ['opt1'],
+          p: ['recordMap', 'rec2', 'data', 'fld2'],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: [],
+          p: ['recordMap', 'rec3', 'data', 'fld2'],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: ['opt3', 'opt2', 'opt1'],
+          p: ['recordMap', 'rec4', 'data', 'fld2'],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: ['opt3'],
+          p: ['recordMap', 'rec5', 'data', 'fld2'],
+        },
+        {
+          ld: {
+            fieldId: 'fld2',
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 0, 'columns', 1],
+        },
+        {
+          ld: {
+            fieldId: 'fld2',
+            hidden: true,
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 1, 'columns', 1],
+        },
+        {
+          n: OTActionName.ObjectDelete,
+          od: {
+            id: 'fld2',
+            name: 'field 2',
+            property: {
+              defaultValue: ['opt2', 'opt1'],
+              options: [
+                {
+                  color: 0,
+                  id: 'opt1',
+                  name: 'option 1',
+                },
+                {
+                  color: 1,
+                  id: 'opt2',
+                  name: 'option 2',
+                },
+                {
+                  color: 2,
+                  id: 'opt3',
+                  name: 'option 3',
+                },
+              ],
+            },
+            type: 4,
+          },
+          p: ['meta', 'fieldMap', 'fld2'],
+        },
+      ],
+      cmd: CollaCommandName.DeleteField,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('updateField', () => {
+  beforeEach(resetDataLoader);
+
+  test('delete fld2', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.updateField(
+      {
+        id: 'fld2',
+        name: 'FIELD 2',
+        type: FieldType.MultiSelect,
+        property: {
+          options: [
+            { id: 'opt1', name: 'OPTION 1', color: 3 },
+            { id: 'opt2', name: 'option 2', color: 6 },
+            { id: 'opt3', name: 'option 3', color: 4 },
+          ],
+          defaultValue: ['opt1'],
+        },
       },
       {},
     );
 
     expect(result.result).toStrictEqual(ExecuteResult.Success);
 
-    const recordId = (result as ICollaCommandExecuteSuccessResult<string[]>).data![0]!;
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
 
-    expect(event).toBeTruthy();
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
 
-    expect(event).toStrictEqual({
-      type: DatasheetEventType.CommandExecuted,
-      resourceOpCollections: mockOpsCollectOfAddOneDefaultRecord(recordId),
+    const operation: IOperation = {
+      actions: [
+        {
+          n: OTActionName.ObjectReplace,
+          od: {
+            id: 'fld2',
+            name: 'field 2',
+            property: {
+              defaultValue: ['opt2', 'opt1'],
+              options: [
+                {
+                  color: 0,
+                  id: 'opt1',
+                  name: 'option 1',
+                },
+                {
+                  color: 1,
+                  id: 'opt2',
+                  name: 'option 2',
+                },
+                {
+                  color: 2,
+                  id: 'opt3',
+                  name: 'option 3',
+                },
+              ],
+            },
+            type: 4,
+          },
+          oi: {
+            id: 'fld2',
+            name: 'FIELD 2',
+            property: {
+              defaultValue: ['opt1'],
+              options: [
+                {
+                  color: 3,
+                  id: 'opt1',
+                  name: 'OPTION 1',
+                },
+                {
+                  color: 6,
+                  id: 'opt2',
+                  name: 'option 2',
+                },
+                {
+                  color: 4,
+                  id: 'opt3',
+                  name: 'option 3',
+                },
+              ],
+            },
+            type: 4,
+          },
+          p: ['meta', 'fieldMap', 'fld2'],
+        },
+      ],
+      cmd: CollaCommandName.SetFieldAttr,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
     });
-  });
-
-  it('should not receive event if doCommand returns none', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
-    expect(dst1).toBeTruthy();
-    let event: any = undefined;
-    dst1!.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
-      handle(e) {
-        event = e;
-        return Promise.resolve();
-      },
-    });
-
-    const result = await dst1!.doCommand(
-      {
-        cmd: CollaCommandName.AddRecords,
-        viewId: 'viw1',
-        index: 3,
-        count: 0,
-      },
-      {},
-    );
-
-    expect(result.result).toStrictEqual(ExecuteResult.None);
-
-    expect(event).toBeUndefined();
   });
 });

@@ -145,7 +145,6 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     originPageX: 0,
     changeWidthFieldId: '',
   });
-  const commandManager = resourceService.instance!.commandManager;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const scrollValue = useCacheScroll();
 
@@ -320,7 +319,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
 
     executeCommandWithMirror(
       () => {
-        commandManager.execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetColumnsProperty,
           viewId: view.id,
           fieldId: getGlobalRef().changeWidthFieldId,
@@ -376,7 +375,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
 
     executeCommandWithMirror(
       () => {
-        commandManager!.execute({
+        resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.MoveColumn,
           viewId: view.id,
           data: prepareForMoveColumns,
@@ -422,7 +421,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
       return recordsData;
     }, []);
 
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
     });
@@ -497,7 +496,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     }
 
     const recordData = dependsGroup2ChangeData(data, overTargetId, { groupLevel, snapshot, view, fieldPermissionMap });
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       data: data.filter(item => item.overTargetId !== item.recordId),
       viewId: view.id,

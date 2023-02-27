@@ -60,7 +60,11 @@ export const CreateFieldModal: React.FC<React.PropsWithChildren<ICreateFieldModa
       <div className={styles.createFieldModal}>
         <div className={styles.banner}>
           <span className={styles.bannerImg}>
-            <Image src={manageable ? OrgChartCreationLink : OrgChartCreationNoPermission} alt={'banner'} />
+            <Image 
+              src={manageable ? OrgChartCreationLink : OrgChartCreationNoPermission} 
+              alt={'banner'} 
+              style={{ borderRadius: 4 }}
+            />
           </span>
         </div>
         <Typography variant="h7" align={'center'}>

@@ -19,7 +19,7 @@
 import { useContext, useRef, useState } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import { ExpandRecordOutlined } from '@apitable/icons';
+import { ExpandOutlined } from '@apitable/icons';
 import { Typography, IconButton } from '@apitable/components';
 import { FieldEditor } from 'pc/components/expand_record/field_editor';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -126,7 +126,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
         <Typography variant="h7">
           {t(Strings.set_record)}
         </Typography>
-        <IconButton icon={ExpandRecordOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
+        <IconButton icon={ExpandOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
       </header>
       <div className={styles.content}>
         <div ref={titleFieldRef}>

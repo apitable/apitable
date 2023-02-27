@@ -25,6 +25,7 @@ import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { resourceService } from 'pc/resource_service';
 import { changeView } from 'pc/hooks';
 import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -112,8 +113,10 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
       setErrMsg(t(Strings.name_repeat));
       return;
     }
-    if (inputValue.length < 1 || inputValue.length > 30) {
-      setErrMsg(t(Strings.view_name_length_err));
+    if (inputValue.length < 1 || inputValue.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      setErrMsg(t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      }));
       return;
     }
     setErrMsg('');
@@ -270,7 +273,7 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
 
   const activeView = viewList.filter(item => item !== null).filter((v) => v.id === activeViewId)[0];
 
-  // If the space station is not globally enabled for non-cooperative experiments, 
+  // If the space station is not globally enabled for non-cooperative experiments,
   // the view tab bar does not need to display icons and no adjustment is needed in terms of width
   // const getFixedWidth = () => {
   //   if (activeView?.lockInfo) {

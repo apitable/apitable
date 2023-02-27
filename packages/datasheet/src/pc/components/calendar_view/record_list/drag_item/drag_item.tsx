@@ -34,11 +34,11 @@ interface IDrag {
 
 const DragItemBase = ({ id, disabled }: IDrag) => {
   const {
-    fieldMap, calendarStyle, columns, currentSearchCell, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField,
+    fieldMap, calendarStyle, columns, currentSearchRecordId, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField,
   } = useContext(CalendarContext);
   const { startFieldId, endFieldId } = calendarStyle;
   const noRequiredField = (!startFieldId && !endFieldId) || (!isStartDateTimeField && !isEndDateTimeField);
-  const isCurrentSearchCell = currentSearchCell === id;
+  const isCurrentSearchCell = currentSearchRecordId === id;
   const isStartFieldDeleted = startFieldId && !isCryptoStartField && !fieldMap[startFieldId];
 
   const { show } = useContextMenu({

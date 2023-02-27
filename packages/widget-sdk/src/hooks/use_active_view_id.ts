@@ -17,17 +17,6 @@
  */
 
 import { useSelector } from 'react-redux';
-import { useMeta } from './use_meta';
-import { IWidgetState } from 'interface';
-import { getWidgetDatasheet, isCurrentDatasheetActive } from '../store/selector';
-
-const getActiveViewId = (state: IWidgetState, currentDatasheetId?: string) => {
-  if (!isCurrentDatasheetActive(state, currentDatasheetId)) {
-    return;
-  }
-
-  return getWidgetDatasheet(state, currentDatasheetId)?.activeView;
-};
 
 /**
  * Get the view ID of currently active view, return a value of string.
@@ -53,6 +42,5 @@ const getActiveViewId = (state: IWidgetState, currentDatasheetId?: string) => {
  * ```
  */
 export function useActiveViewId() {
-  const { datasheetId } = useMeta();
-  return useSelector(state => getActiveViewId(state, datasheetId));
+  return useSelector(state => state.pageParams?.viewId);
 }

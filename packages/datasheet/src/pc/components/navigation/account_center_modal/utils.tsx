@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { ConfigConstant, hiddenMobile, t, Strings } from '@apitable/core';
-import { PhonenumberFilled, EmailSigninFilled } from '@apitable/icons';
+import { TelephoneOutlined, EmailOutlined } from '@apitable/icons';
 import { store } from 'pc/store';
 
 export enum VerifyTypes {
@@ -67,7 +67,7 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
       let accountText = '';
       // The account number shown in the input box: cell phone number or email with *
       let label = t(Strings.phone_number);
-      let prefixIcon = <PhonenumberFilled size={16} />;
+      let prefixIcon = <TelephoneOutlined size={16} />;
       let smsType: ConfigConstant.SmsTypes | undefined = ConfigConstant.SmsTypes.MODIFY_PASSWORD;
       if (user?.mobile) {
         accountText = `${user?.areaCode} ${hiddenMobile(user!.mobile)}`;
@@ -75,7 +75,7 @@ export const getVerifyData: ({ key }: { key: VerifyTypes }) => IGetVerifyDataFun
         label = t(Strings.email);
         accountText = user.email;
         smsType = undefined;
-        prefixIcon = <EmailSigninFilled size={16} />;
+        prefixIcon = <EmailOutlined size={16} />;
       }
       return {
         codeMode,

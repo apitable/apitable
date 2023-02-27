@@ -502,3 +502,10 @@ export const SET_PREVIEW_FILE = 'SET_PREVIEW_FILE';
 export const SET_PREVIEW_FILE_CELL_ACTIVE = 'SET_PREVIEW_FILE_CELL_ACTIVE';
 export const SET_PREVIEW_DEFAULT_ACTIVE = 'SET_PREVIEW_DEFAULT_ACTIVE';
 
+/**
+ * View derivation
+ */
+export const SET_VIEW_DERIVATION = 'SET_VIEW_DERIVATION'; // Update view derivation
+export const DELETE_VIEW_DERIVATION = 'DELETE_VIEW_DERIVATION'; // Delete
+export const PATCH_VIEW_DERIVATION = 'PATCH_VIEW_DERIVATION'; // Update part of the view derivation.
+export const TRIGGER_VIEW_DERIVATION_COMPUTED = 'TRIGGER_VIEW_DERIVATION_COMPUTED'; // Calculating view-derived data triggers action

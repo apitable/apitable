@@ -28,11 +28,12 @@ import styles from './style.module.less';
 export const DashboardPanel = () => {
   const loading = useSelector(state => Boolean(Selectors.getDashboardLoading(state)));
   const dashboardErrCode = useSelector(Selectors.getDashboardErrCode);
+  const dashboardPack = useSelector(Selectors.getDashboardPack);
 
   const isNoPermission = dashboardErrCode === StatusCode.NODE_NOT_EXIST ||
     dashboardErrCode === StatusCode.NOT_PERMISSION || dashboardErrCode === StatusCode.NODE_DELETED;
 
-  if (loading) {
+  if (loading || !dashboardPack) {
     return <div className={styles.skeletonWrapper}>
       <Skeleton height="24px" />
       <Skeleton count={2} style={{ marginTop: '24px' }} height="80px" />

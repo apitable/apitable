@@ -17,7 +17,7 @@
  */
 
 import { Button, TextButton, useThemeColors } from '@apitable/components';
-import { SelectOutlined } from '@apitable/icons';
+import { CheckOutlined } from '@apitable/icons';
 import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
 import { Col, Row, Tabs, Upload } from 'antd';
 import { RowProps } from 'antd/lib/row';
@@ -394,7 +394,7 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
                               >
                                 {
                                   avatarColor === index &&
-                                  <SelectOutlined size={16} color={colors.textStaticPrimary} />
+                                  <CheckOutlined size={16} color={colors.textStaticPrimary} />
                                 }
                               </div>
                             </Col>

@@ -37,7 +37,7 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      
+
       svg {
         background-color: var(--rowSelectedBg);
         border-radius: 50%;
@@ -48,6 +48,12 @@
       padding: 0 24px 24px;
       border: none;
       user-select: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      .ant-drawer-close svg {
+        background-color: transparent;
+      }
     }
   }
 }

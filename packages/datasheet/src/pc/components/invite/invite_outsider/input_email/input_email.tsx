@@ -29,6 +29,7 @@ import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
 import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import styles from './style.module.less';
 import { InviteAlert } from '../components/invite-alert';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -169,19 +170,24 @@ export const InputEmail = forwardRef(({
   };
   return (
     <div className={styles.inputEmail}>
-      <div className={styles.inviteAlertWrapper}>
-        <InviteAlert />
-      </div>
+      {
+        getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE &&
+        <div className={styles.inviteAlertWrapper}>
+          <InviteAlert />
+        </div>
+      }
       {
         isInvited ?
           (
             <div className={styles.invitedRes}>
-              <span className={styles.successIcon}>
-                {err ? ResIcon.Warning : ResIcon.Success}
-              </span>
-              <div className={styles.text}>
-                <span>{!err && t(Strings.message_send_invitation_email_to_member, { invitedCount })}</span>
-                <span>{err || t(Strings.message_invite_member_to_validate)}</span>
+              <div className={styles.invitedContent}>
+                <span className={styles.successIcon}>
+                  {err ? ResIcon.Warning : ResIcon.Success}
+                </span>
+                <div className={styles.text}>
+                  <span>{!err && t(Strings.message_send_invitation_email_to_member, { invitedCount })}</span>
+                  <span>{err || t(Strings.message_invite_member_to_validate)}</span>
+                </div>
               </div>
               <div className={styles.btnWrapper}>
                 <TextButton

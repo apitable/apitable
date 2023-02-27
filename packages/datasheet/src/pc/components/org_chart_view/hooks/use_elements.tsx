@@ -26,12 +26,13 @@ import { getRecordName } from 'pc/components/expand_record';
 import styles from '../styles.module.less';
 import { IDegree, IEdge, IDegrees, IAdj, IGraphData, INode, INodeStateMap } from '../interfaces';
 import { useCreation } from 'ahooks';
+import { Edge } from '@apitable/react-flow';
 
 export const useElements = (props: {
   fieldMap: IFieldMap;
   getCardHeight: (recordId: string | null) => number;
   nodeStateMap: INodeStateMap;
-  rows: any,
+  rows: IViewRow[],
   datasheetId: string;
   linkFieldId: string;
   primaryFieldId: string;
@@ -145,7 +146,7 @@ export const useElements = (props: {
               targetHandle: id,
               type: NodeType.CustomEdge,
             };
-          }).filter(Boolean)
+          }).filter(Boolean) as Edge<any>[]
         );
         return graph;
       },

@@ -21,7 +21,7 @@ import {
   Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, 
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
-import { CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
 import { message } from 'antd';
 import dayjs from 'dayjs';
@@ -252,7 +252,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
-              icon={InformationSmallOutlined} onClick={() => {
+              icon={QuestionCircleOutlined} onClick={() => {
                 window.open(t(Strings.timemachine_help_url));
               }} />
           </Box>
@@ -261,7 +261,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         <IconButton
           shape="square"
           onClick={() => onClose(false)}
-          icon={CloseMiddleOutlined}
+          icon={CloseOutlined}
           style={{ position: 'absolute', right: 16 }}
         />
       </div>

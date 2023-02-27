@@ -62,14 +62,14 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
     hideMsgRef.current();
     if (!connected) {
       if (!templateId) {
-        hideMsgRef.current = Message.loading({ content: t(Strings.long_time_not_editor), duration: 0 });
+        hideMsgRef.current = Message.loading({ content: t(Strings.long_time_not_editor) });
       }
       setStatus(Network.Offline);
       return;
     }
     if (IOConnecting) {
       if (!templateId) {
-        hideMsgRef.current = Message.warning({ content: t(Strings.network_state_disconnection), duration: 0, maxCount: 1 });
+        hideMsgRef.current = Message.warning({ content: t(Strings.network_state_disconnection), maxCount: 1 });
       }
       setStatus(Network.Loading);
       return;

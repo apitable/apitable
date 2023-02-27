@@ -181,8 +181,8 @@ function toastCopyCut({ type, unit, select, count }: {
 
 export class Clipboard {
   constructor(
-    private commandManager: CollaCommandManager,
-    private uploadManager: UploadManager,
+    private readonly commandManager: CollaCommandManager,
+    private readonly uploadManager: UploadManager,
   ) { }
 
   cuttingRangeData?: {

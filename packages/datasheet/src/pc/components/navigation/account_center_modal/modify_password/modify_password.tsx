@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'antd';
@@ -174,13 +174,20 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
   const btnDisabled = !(data.identifyingCode && data.password && data.confirmPassword &&
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);
 
+  const [buttonLoading, setButtonLoading] = useState(false);
+
   const handRest = () => {
+    setButtonLoading(true);
     //@ts-ignore
     Api?.apitableChangePasswordEmail().then(res => {
+      setButtonLoading(false);
       const { success, message } = res.data;
-      if (success) return;
-      Message.error({ content: message });
-      return null;
+      if (!success) {
+        Message.success({ content: t(Strings.reset_password_via_emai_success) });
+      }else {
+        Message.error({ content: t(Strings.reset_password_via_emai_failed, { error_message: message }) });
+      }
+      return;
     });
   };
   
@@ -189,7 +196,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
       <div className={styles.title}>{user!.needPwd ? t(Strings.set_password) : t(Strings.change_password)}</div>
       { env.IS_APITABLE && env.IS_ENTERPRISE ? 
         <div>
-          <Button color='primary' size='middle' onClick={handRest} >{t(Strings.reset_password_via_email)}</Button>
+          <Button color='primary' size='middle' loading={buttonLoading} onClick={handRest} >{t(Strings.reset_password_via_email)}</Button>
         </div> 
         :
         <div className={styles.form}>

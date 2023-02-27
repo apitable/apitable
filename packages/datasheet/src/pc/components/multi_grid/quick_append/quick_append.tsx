@@ -38,8 +38,8 @@ export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> =
     hoverRecordId,
   } = props;
 
-  const addNewRecord = () => {
-    appendRow({ recordId: hoverRecordId, direction: Direction.Up });
+  const addNewRecord = async() => {
+    await appendRow({ recordId: hoverRecordId, direction: Direction.Up });
   };
   return (
     <div

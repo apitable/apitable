@@ -18,7 +18,7 @@
 
 import { Box, Typography, useTheme, IconButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ErrorFilled, RunFilled, SuccessFilled, ChevronDownOutlined } from '@apitable/icons';
+import { WarnCircleFilled, PauseFilled, CheckCircleFilled, ChevronDownOutlined } from '@apitable/icons';
 import { timeFormatter } from 'pc/utils';
 import { useState } from 'react';
 import { IRobotRunHistoryItem } from '../../interface';
@@ -52,9 +52,9 @@ export const RobotRunHistoryItem = ({ item }: IRobotRunHistoryItemProps) => {
     [RobotRunStatusEnums.ERROR]: theme.color.fc10,
   };
   const StatusIconMap = {
-    [RobotRunStatusEnums.RUNNING]: RunFilled,
-    [RobotRunStatusEnums.SUCCESS]: SuccessFilled,
-    [RobotRunStatusEnums.ERROR]: ErrorFilled,
+    [RobotRunStatusEnums.RUNNING]: PauseFilled,
+    [RobotRunStatusEnums.SUCCESS]: CheckCircleFilled,
+    [RobotRunStatusEnums.ERROR]: WarnCircleFilled,
   };
 
   const isRunning = item.status === RobotRunStatusEnums.RUNNING;

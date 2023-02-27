@@ -134,7 +134,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     return sortInfo && sortInfo.keepSort;
   });
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchItem);
+  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
 
   const [showSortBorder, setShowSortBorder] = useState(false);
   const { screenIsAtMost } = useResponsive();
@@ -144,7 +144,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     if (!searchRecordId) {
       return;
     }
-    const searchRecordIndex = rows.map(item => item.id).indexOf(searchRecordId as string);
+    const searchRecordIndex = rows.map(item => item.id).indexOf(searchRecordId);
     if (searchRecordIndex < 0) {
       return;
     }

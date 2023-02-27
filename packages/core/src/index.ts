@@ -39,6 +39,8 @@ export * from './exports/api';
 export * from './exports/store';
 export * from './modules/database/store/reducers/resource';
 
+export * as api from './modules/shared/api';
+
 import * as databus from './databus';
 
 export { databus };
