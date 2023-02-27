@@ -18,31 +18,26 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.dto.DatasheetSnapshot.View;
+import com.apitable.workspace.entity.DatasheetMetaEntity;
 import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.mapper.DatasheetMetaMapper;
 import com.apitable.workspace.ro.MetaOpRo;
 import com.apitable.workspace.service.IDatasheetMetaService;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.workspace.entity.DatasheetMetaEntity;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +69,9 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
         List<DatasheetMetaDTO> dtoList = new ArrayList<>();
         double size = 5.0;
         for (int i = 0; i < Math.ceil(dstIds.size() / size); i++) {
-            List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
+            List<String> split =
+                dstIds.stream().skip((long) (i * size)).limit((long) size)
+                    .collect(Collectors.toList());
             dtoList.addAll(datasheetMetaMapper.selectDtoByDstIds(split));
         }
         return dtoList;
@@ -83,13 +80,13 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     public void create(Long userId, String dstId, String metaData) {
         DatasheetMetaEntity metaEntity = DatasheetMetaEntity.builder()
-                .id(IdWorker.getId())
-                .dstId(dstId)
-                .metaData(metaData)
-                .revision(0L)
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
+            .id(IdWorker.getId())
+            .dstId(dstId)
+            .metaData(metaData)
+            .revision(0L)
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
         boolean flag = SqlHelper.retBool(datasheetMetaMapper.insertMeta(metaEntity));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
     }
@@ -97,45 +94,27 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     public void edit(Long userId, String dstId, MetaOpRo meta) {
         ExceptionUtil.isNotNull(this.getMetaByDstId(dstId), DatabaseException.QUERY_EMPTY_BY_ID);
-        boolean flag = SqlHelper.retBool(datasheetMetaMapper.updateByDstId(userId, StrUtil.toString(meta.getMeta()), dstId));
+        boolean flag = SqlHelper.retBool(
+            datasheetMetaMapper.updateByDstId(userId, StrUtil.toString(meta.getMeta()), dstId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void checkViewIfExist(String dstId, String viewId) {
-        log.info("Check whether the specified view of the datasheet exists.，dstId:{},viewId:{}", dstId, viewId);
+        log.info("Check whether the specified view of the datasheet exists.，dstId:{},viewId:{}",
+            dstId, viewId);
         DatasheetSnapshot snapshot = this.getMetaByDstId(dstId);
         ExceptionUtil.isNotNull(snapshot, DataSheetException.DATASHEET_NOT_EXIST);
         ExceptionUtil.isNotNull(snapshot.getMeta(), DataSheetException.DATASHEET_NOT_EXIST);
         ExceptionUtil.isNotEmpty(snapshot.getMeta().getViews(), DataSheetException.VIEW_NOT_EXIST);
-        List<String> viewIds = snapshot.getMeta().getViews().stream().map(View::getId).collect(Collectors.toList());
+        List<String> viewIds =
+            snapshot.getMeta().getViews().stream().map(View::getId).collect(Collectors.toList());
         ExceptionUtil.isTrue(viewIds.contains(viewId), DataSheetException.VIEW_NOT_EXIST);
     }
 
     @Override
     public DatasheetSnapshot getMetaByDstId(String dstId) {
         return datasheetMetaMapper.selectByDstId(dstId);
-    }
-
-    @Override
-    public void checkFieldIfExist(String dstId, String fieldId) {
-        DatasheetSnapshot snapshot = getMetaByDstId(dstId);
-        ExceptionUtil.isNotNull(snapshot, DataSheetException.DATASHEET_NOT_EXIST);
-        ExceptionUtil.isNotNull(snapshot.getMeta(), DataSheetException.DATASHEET_NOT_EXIST);
-        ExceptionUtil.isNotEmpty(snapshot.getMeta().getFieldMap(), DataSheetException.FIELD_NOT_EXIST);
-        ExceptionUtil.isTrue(snapshot.getMeta().getFieldMap().containsKey(fieldId), DataSheetException.FIELD_NOT_EXIST);
-    }
-
-    @Override
-    public JSONObject getFieldPropertyByDstIdAndFieldName(String dstId, String fieldName) {
-        DatasheetSnapshot dto = getMetaByDstId(dstId);
-        for (String fieldId : dto.getMeta().getFieldMap().keySet()) {
-            DatasheetSnapshot.Field field = dto.getMeta().getFieldMap().get(fieldId);
-            if (field.getName().equals(fieldName)) {
-                return field.getProperty();
-            }
-        }
-        return null;
     }
 }
