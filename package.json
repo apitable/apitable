@@ -22,6 +22,7 @@
     "build:core": "yarn workspace @apitable/core build",
     "build:i18n": "yarn workspace @apitable/i18n-lang build",
     "build:room-native-api": "yarn workspace @apitable/room-native-api build",
+    "build:room-native-api:arm64": "yarn workspace @apitable/room-native-api build:arm64",
     "build:datasheet": "yarn workspace @apitable/datasheet build",
     "build:widget-sdk": "yarn workspace @apitable/widget-sdk build",
     "build:room-server": "yarn workspace @apitable/room-server build",

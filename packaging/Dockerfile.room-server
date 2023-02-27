@@ -19,7 +19,7 @@ COPY packages/room-server/package.json ./packages/room-server/
 RUN yarn workspaces focus @apitable/room-server root
 
 # stage builder
-FROM apitable/node-rust:v16.15.0 AS builder
+FROM apitable/room-server-builder:v16.15.0 AS builder
 
 WORKDIR /app
 
@@ -39,6 +39,8 @@ COPY packages/room-native-api ./packages/room-native-api
 COPY packages/room-server ./packages/room-server
 
 RUN yarn build:sr
+
+RUN yarn build:room-native-api:arm64
 
 # stage runner
 FROM apitable/node:v16.15.0 AS runner

@@ -22,6 +22,7 @@
   "scripts": {
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release",
+    "build:arm64": "napi build --platform --release --target aarch64-unknown-linux-gnu --zig-link-only",
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
     "test:ut": "cargo test",
