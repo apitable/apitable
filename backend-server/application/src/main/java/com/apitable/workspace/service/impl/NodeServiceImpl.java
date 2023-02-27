@@ -432,24 +432,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
                 subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
             for (List<NodeTreeDTO> sub : parentIdToSubNodeMap.values()) {
-                Optional<NodeTreeDTO> first =
-                    sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
-                if (first.isPresent()) {
-                    String preNodeId = first.get().getNodeId();
-                    nodeIds.add(preNodeId);
-                    Map<String, String> preNodeIdToNodeIdMap = sub.stream()
-                        .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, NodeTreeDTO::getNodeId));
-                    while (preNodeIdToNodeIdMap.containsKey(preNodeId)) {
-                        preNodeId = preNodeIdToNodeIdMap.get(preNodeId);
-                        nodeIds.add(preNodeId);
-                    }
-                }
+                nodeIds.addAll(this.sortNodeAtSameLevel(sub));
             }
             depth--;
             parentIds = subNode.stream()
                 .map(NodeTreeDTO::getNodeId)
                 .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
                 .collect(Collectors.toList());
+        }
+        return nodeIds;
+    }
+
+    private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
+        Optional<NodeTreeDTO> first =
+            sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
+        if (!first.isPresent()) {
+            return sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        }
+        String preNodeId = first.get().getNodeId();
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(preNodeId);
+        Map<String, String> preNodeIdToNodeIdMap = sub.stream()
+            .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, NodeTreeDTO::getNodeId, (k1, k2) -> k2));
+        while (preNodeIdToNodeIdMap.containsKey(preNodeId)) {
+            preNodeId = preNodeIdToNodeIdMap.get(preNodeId);
+            nodeIds.add(preNodeId);
         }
         return nodeIds;
     }
