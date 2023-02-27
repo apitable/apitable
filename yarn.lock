@@ -291,6 +291,7 @@ __metadata:
     axios: 0.21.2
     color: ^3.1.3
     dayjs: ^1.11.7
+    fast-check: ^3.6.3
     fuse.js: ^6.4.1
     immer: 9.0.16
     jest: ^29.2.2
@@ -23238,6 +23239,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-check@npm:^3.6.3":
+  version: 3.6.3
+  resolution: "fast-check@npm:3.6.3"
+  dependencies:
+    pure-rand: ^6.0.0
+  checksum: c3732011ceef2c3a999678a932cf051946a484d564a73bac695066a255510b2e6a1102bd5cacc189919326ea5c7a515e0247b376416f348c3bc323ee4f4ec7c8
+  languageName: node
+  linkType: hard
+
 "fast-csv@npm:^3.4.0":
   version: 3.7.0
   resolution: "fast-csv@npm:3.7.0"
@@ -37216,6 +37226,13 @@ fsevents@^1.2.7:
   dependencies:
     escape-goat: ^2.0.0
   checksum: 49529e50372ffdb0cccf0efa0f3b3cb0a2c77805d0d9cc2725bd2a0f6bb414631e61c93a38561b26be1259550b7bb6c2cb92315aa09c8bf93f3bdcb49f2b2fb7
+  languageName: node
+  linkType: hard
+
+"pure-rand@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "pure-rand@npm:6.0.0"
+  checksum: ad1378d0a4859482d053a5264b2b485b445ece4bbc56f8959c233ea678b81ac2d613737925d496ded134eff5f29cc5546bf7492b6bce319ee27bebbad8a0c612
   languageName: node
   linkType: hard
 
