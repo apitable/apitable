@@ -20,7 +20,7 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
-  Strings, t,
+  Strings, t, PermissionType
 } from '@apitable/core';
 import { AttentionOutlined, CommentOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
@@ -410,6 +410,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
+  const embedInfo = useSelector(state => state.embedInfo);
+  const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -679,7 +681,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 sourceViewId={viewId}
                 fromCurrentDatasheet={fromCurrentDatasheet}
               />
-              {allowShowCommentPane && (
+              {allowShowCommentPane && isEmbedShowCommentPane && (
                 <CommentButton
                   active={commentPaneShow}
                   onClick={() => {
@@ -728,7 +730,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 )}
               </main>
             </div>
-            {commentPaneShow && (
+            {commentPaneShow && isEmbedShowCommentPane && (
               <ActivityPane
                 fromCurrentDatasheet={fromCurrentDatasheet}
                 datasheetId={datasheetId}
