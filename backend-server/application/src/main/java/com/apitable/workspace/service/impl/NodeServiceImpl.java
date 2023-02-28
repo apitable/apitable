@@ -437,15 +437,21 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth) {
-        if (!nodeId.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())) {
-            return Collections.singletonList(nodeId);
-        }
-        List<String> nodeIds = new ArrayList<>();
-        nodeIds.add(nodeId);
-        List<String> parentIds = nodeIds;
+        return this.getNodeIdsInNodeTree(nodeId, depth, false);
+    }
+
+    @Override
+    public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish) {
+        return this.getNodeIdsInNodeTree(Collections.singletonList(nodeId), depth, isRubbish);
+    }
+
+    public List<String> getNodeIdsInNodeTree(List<String> nodeIds, Integer depth, Boolean isRubbish) {
+        List<String> parentIds = nodeIds.stream()
+            .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
+            .collect(Collectors.toList());
         while (!parentIds.isEmpty() && depth != 0) {
             List<NodeTreeDTO> subNode =
-                nodeMapper.selectNodeTreeDTOByParentIdIn(parentIds);
+                nodeMapper.selectNodeTreeDTOByParentIdIn(parentIds, isRubbish);
             if (subNode.isEmpty()) {
                 break;
             }
@@ -496,7 +502,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         log.info("Query the list of child nodes ");
         // Get a direct child node
         List<NodeTreeDTO> subNode =
-            nodeMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId));
+            nodeMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId), false);
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }
@@ -883,7 +889,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             new HashSet<>(idList));
         // Obtain the node ID and the corresponding datasheet ID set of the node
         // and its child descendants.
-        List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(idList, false);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(idList, -1, false);
         // delete all nodes and child descendants
         if (CollUtil.isNotEmpty(nodeIds)) {
             this.nodeDeleteChangeset(nodeIds);
@@ -917,20 +923,20 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delTemplateRefNode(Long userId, String... nodeIds) {
+    public void delTemplateRefNode(Long userId, String nodeId) {
         log.info("Delete template mapping node ");
         // Obtain the node ID of the node and its child descendants.
-        List<String> subNodeIds =
-            nodeMapper.selectBatchAllSubNodeIds(Arrays.asList(nodeIds), false);
-        if (CollUtil.isNotEmpty(subNodeIds)) {
-            // delete node and datasheet information
-            boolean flag =
-                SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, subNodeIds, true));
-            ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-            iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, true);
-            // delete the spatial attachment resource of the node
-            iSpaceAssetService.updateIsDeletedByNodeIds(subNodeIds, true);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
+        if (CollUtil.isEmpty(nodeIds)) {
+            return;
         }
+        // delete node and datasheet information
+        boolean flag =
+            SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
+        ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+        iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
+        // delete the spatial attachment resource of the node
+        iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
     }
 
     @Override

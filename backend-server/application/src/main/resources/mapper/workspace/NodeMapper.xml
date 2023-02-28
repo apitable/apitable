@@ -56,20 +56,6 @@
         SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
     </select>
 
-    <select id="selectBatchAllSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE parent (node_id) AS
-        (SELECT node_id FROM ${tablePrefix}node
-        WHERE node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_rubbish = #{isRubbish} AND is_deleted = 0
-        UNION ALL
-        SELECT t.node_id
-        FROM parent p JOIN ${tablePrefix}node t ON p.node_id = t.parent_id AND t.is_rubbish = #{isRubbish} AND t.is_deleted = 0
-        )SELECT * FROM parent
-    </select>
-
     <select id="countByNodeIds" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}node
@@ -138,7 +124,7 @@
                  separator="," close=")">
             #{item}
         </foreach>
-        AND is_rubbish = 0
+        AND is_rubbish = #{isRubbish}
     </select>
 
     <select id="selectSubNodeIds" resultType="java.lang.String">

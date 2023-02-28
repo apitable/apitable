@@ -236,6 +236,17 @@ public interface INodeService extends IService<NodeEntity> {
     List<String> getNodeIdsInNodeTree(String nodeId, Integer depth);
 
     /**
+     * Get node ids in node tree.
+     *
+     * @param nodeId  node id
+     * @param depth   recursive depth starting with 1
+     * @param isRubbish rubbish status
+     * @return NodeInfoTreeVo
+     * @author Chambers
+     */
+    List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish);
+
+    /**
      * query child node information.
      *
      * @param spaceId  space id
@@ -356,9 +367,9 @@ public interface INodeService extends IService<NodeEntity> {
      * delete template mapping node
      *
      * @param userId  user id
-     * @param nodeIds nodeIds
+     * @param nodeId  nodeId
      */
-    void delTemplateRefNode(Long userId, String... nodeIds);
+    void delTemplateRefNode(Long userId, String nodeId);
 
     /**
      * copy.

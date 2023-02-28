@@ -179,11 +179,12 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * Query node tree dto
      *
      * @param parentIds parent node ids
+     * @param isRubbish rubbish status
      * @return List<NodeTreeDTO>
      * @author Chambers
      */
     List<NodeTreeDTO> selectNodeTreeDTOByParentIdIn(
-        @Param("parentIds") Collection<String> parentIds);
+        @Param("parentIds") Collection<String> parentIds, @Param("isRubbish") Boolean isRubbish);
 
     /**
      * Query the ID of the direct child node.
@@ -237,16 +238,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      */
     List<String> selectNameList(@Param("parentId") String parentId,
         @Param("nodeType") Integer nodeType, @Param("nodeId") String nodeId);
-
-    /**
-     * Obtain the node ID list of the node and its child descendants.
-     *
-     * @param nodeIds   node ids
-     * @param isRubbish whether in rubbish
-     * @return node ids
-     */
-    List<String> selectBatchAllSubNodeIds(@Param("nodeIds") List<String> nodeIds,
-        @Param("isRubbish") Boolean isRubbish);
 
     /**
      * Query the number of non-root nodes and non-logically deleted nodes.
