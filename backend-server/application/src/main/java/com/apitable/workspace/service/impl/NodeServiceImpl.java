@@ -492,7 +492,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // Get a direct child node
         List<NodeTreeDTO> subNode =
             nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId,
-                Collections.singleton(nodeId), null);
+                Collections.singleton(nodeId), nodeType);
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }

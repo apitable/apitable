@@ -172,7 +172,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         NodeOpRo op = new NodeOpRo().toBuilder()
                 .parentId(rootNodeId)
                 .type(NodeType.DATASHEET.getNodeType())
-                .nodeName("folder")
+                .nodeName("datasheet")
                 .build();
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
