@@ -3,6 +3,46 @@
 
 
 
+## [v0.18.0-rc](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc) (2023-02-28)
+
+
+### Features and enhancements
+
+* feat: register api ([#440](https://github.com/apitable/apitable/pull/440)) @ChambersChan 
+* feat: replace controller's swagger2 annotation with openapi annotation @LiuZijingBron 
+* feat: modify lint.yml @LiuZijingBron 
+* feat: modify .jscpd.json @LiuZijingBron 
+* feat: Add email template: task-due-remind ([#438](https://github.com/apitable/apitable/pull/438)) @wmEvie 
+
+### Bug fixes
+
+* fix: widget crash @JaneSu 
+* fix: widget crash ([#448](https://github.com/apitable/apitable/pull/448)) @JaneSu 
+* fix: parse date strings in the mobile calendar month picker according to standard format ([#449](https://github.com/apitable/apitable/pull/449)) @Sky-FE 
+* fix: trash error ([#455](https://github.com/apitable/apitable/pull/455)) @wangkailang 
+* fix: README spell ([#441](https://github.com/apitable/apitable/pull/441)) @0xflotus 
+* fix: robot error ([#458](https://github.com/apitable/apitable/pull/458)) @oolongTea007 
+
+### What's more
+
+* release: v0.18.0-beta ([#432](https://github.com/apitable/apitable/pull/432)) @yort-feng 
+* docs: remove start socket server introduce ([#436](https://github.com/apitable/apitable/pull/436)) @ChambersChan 
+* Add email template: task-due-remind @wmEvie 
+* chore: replace swagger2 with springdoc-openapi @LiuZijingBron 
+* Update subject.properties @wmEvie 
+* Merge branch 'develop' into chore-knife4j-swagger @LiuZijingBron 
+* chore: replace swagger2 with springdoc-openapi ([#439](https://github.com/apitable/apitable/pull/439)) @LiuZijingBron 
+* chore: replace model swagger2 annotation with openapi annotation @LiuZijingBron 
+* Merge branch 'develop' into chore-openapi-model @LiuZijingBron 
+* chore: replace model swagger2 annotation with openapi annotation ([#460](https://github.com/apitable/apitable/pull/460)) @LiuZijingBron 
+* docs: fix L10N readme href ([#456](https://github.com/apitable/apitable/pull/456)) @Jealee3000 
+* chroe: Remove task due remind template @wmEvie 
+* chroe: Remove task due reminder template ([#466](https://github.com/apitable/apitable/pull/466)) @wmEvie 
+* test: add property based tests to DataBus ([#140](https://github.com/apitable/apitable/pull/140)) (#467) @Exclamation-mark 
+* refactor: replace dynamic sql in getUserInfo ([#453](https://github.com/apitable/apitable/pull/453)) @Jealee3000 
+* sync: hosted cloud ([#470](https://github.com/apitable/apitable/pull/470)) @yort-feng 
+* chore: compatible widget icons ([#471](https://github.com/apitable/apitable/pull/471)) @Sky-FE 
+* Revert "refactor: replace dynamic sql in getUserInfo" ([#475](https://github.com/apitable/apitable/pull/475)) @yort-feng 
 ## [v0.18.0-beta](https://github.com/apitable/apitable/releases/tag/v0.18.0-beta) (2023-02-22)
 
 
