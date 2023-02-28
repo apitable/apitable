@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { Test, TestingModule } from '@nestjs/testing';
-import { UnitMemberService } from 'unit/services/unit.member.service';
-import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
+import { UnitMemberService } from './unit.member.service';
+import { UnitMemberRepository } from '../repositories/unit.member.repository';
 import { UserService } from 'user/services/user.service';
 import { UnitMemberInfoDto } from '../dtos/unit.member.info.dto';
 import { INamedUser } from '../../shared/interfaces';
@@ -76,7 +76,6 @@ describe('UnitMemberServiceTest', () => {
       isDeleted: false,
       isMemberNameModified: false,
       unitId: '2023',
-      unitType: 3,
     };
     jest.spyOn(unitMemberRepository, 'selectMembersByIdsIncludeDeleted')
       .mockImplementation((memberIds: number[]): Promise<UnitMemberInfoDto[]> => {
@@ -166,6 +165,5 @@ describe('UnitMemberServiceTest', () => {
     expect(baseInfoVos['2023']?.isDeleted).toEqual(false);
     expect(baseInfoVos['2023']?.isMemberNameModified).toEqual(false);
     expect(baseInfoVos['2023']?.unitId).toEqual('2023');
-    expect(baseInfoVos['2023']?.unitType).toEqual(3);
   });
 });

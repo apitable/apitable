@@ -23,5 +23,4 @@ export class UnitMemberBaseInfoDto {
   isDeleted!: boolean;
   isMemberNameModified?: boolean;
   unitId!: string;
-  unitType!: number;
 }
