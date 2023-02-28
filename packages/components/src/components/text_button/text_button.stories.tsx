@@ -53,7 +53,7 @@ export const Default = Template.bind({});
 
 export const PrefixIcon = Template.bind({});
 PrefixIcon.args = {
-  prefixIcon: <DownloadOutlined />
+  prefixIcon: <DownloadOutlined/>
 };
 
 export const SuffixIcon = Template.bind({});

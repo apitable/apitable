@@ -79,7 +79,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
     getCurrentGalleryViewStyle,
     getActiveDatasheetId,
     getPermissions,
-    getCurrentSearchItem,
+    getCurrentSearchRecordId,
     getActiveViewGroupInfo,
     getActiveViewSortInfo,
     getGalleryGroupedRows,
@@ -96,7 +96,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
     rowsIndexMap,
     activeView,
     galleryStyle,
-    currentSearchItem,
+    currentSearchRecordId,
     permissions,
     visibleFields,
     fieldMap,
@@ -123,7 +123,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
       activeView: getCurrentView(state)!,
       rowsIndexMap: getRowsIndexMap(state),
       permissions: getPermissions(state),
-      currentSearchItem: getCurrentSearchItem(state),
+      currentSearchRecordId: getCurrentSearchRecordId(state),
       groupInfo,
       keepSort: getActiveViewSortInfo(state)?.keepSort,
       groupRows: [[]] as string[][],
@@ -137,7 +137,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
       editable: datasheet?.permissions.editable,
     };
     if (isGrouped) {
-      res.groupRows = getGalleryGroupedRows(state);
+      res.groupRows = getGalleryGroupedRows(state)!;
     }
     return res;
   }, shallowEqual);
@@ -289,19 +289,18 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
   }, [cardWidth]);
 
   useEffect(() => {
-    if (currentSearchItem) {
+    if (currentSearchRecordId) {
       galleryViewRef &&
         galleryViewRef.current &&
-        galleryViewRef.current.scrollToItem(getSearchItemIndex(currentSearchItem as string, linearRows, _visibleRecords, columnCount, isGrouped));
+        galleryViewRef.current.scrollToItem(getSearchItemIndex(currentSearchRecordId, linearRows, _visibleRecords, columnCount, isGrouped));
     }
-  }, [currentSearchItem, _visibleRecords, columnCount, linearRows, isGrouped]);
+  }, [currentSearchRecordId, _visibleRecords, columnCount, linearRows, isGrouped]);
 
   const commitMove = () => {
     if (!commitRef.current) {
       return;
     }
     const { dragRecordId, dropRecordId, direction } = commitRef.current;
-    const commandManager = resourceService.instance!.commandManager;
     const data = [
       {
         recordId: dragRecordId,
@@ -309,7 +308,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
         direction,
       },
     ];
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       viewId,
       data,

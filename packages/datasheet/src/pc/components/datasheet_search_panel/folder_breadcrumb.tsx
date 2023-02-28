@@ -43,6 +43,7 @@ export const FolderBreadcrumb: React.FC<React.PropsWithChildren<IFolderBreadcrum
               <Breadcrumb.Item
                 key={breadItem.nodeId || breadItem.nodeName}
                 onClick={() => onNodeClick('Folder', breadItem.nodeId!)}
+                className={styles.folderBreadItem}
               >
                 {breadItem.nodeName}
               </Breadcrumb.Item>

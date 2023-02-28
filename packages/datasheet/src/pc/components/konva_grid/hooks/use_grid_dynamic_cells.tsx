@@ -365,16 +365,17 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     }
   }
 
-  const toggleEditing = useCallback(() => {
+  const toggleEditing: () => Promise<boolean | void> = useCallback((): Promise<boolean | void> => {
     return ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }, []);
 
-  const onDblClick = useCallback((e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number) => {
+  const onDblClick = useCallback(async(e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number): Promise<void> => {
     if (e.evt.button === MouseDownType.Right) return;
     const fieldType = field.type;
     if (DBL_CLICK_DISABLED_TYPES.has(fieldType)) return;
     if (!TOOLTIP_VISIBLE_SET.has(fieldType)) {
-      return toggleEditing();
+      await toggleEditing();
+      return;
     }
     if (cellEditable) {
       setTooltipInfo({
@@ -385,7 +386,8 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
         width: instance.getColumnWidth(columnIndex),
         height: rowHeight,
       });
-      return setTimeout(clearTooltipInfo, 2000);
+      setTimeout(clearTooltipInfo, 2000);
+      return;
     }
   }, [cellEditable, clearTooltipInfo, instance, rowHeight, setTooltipInfo, toggleEditing]);
 

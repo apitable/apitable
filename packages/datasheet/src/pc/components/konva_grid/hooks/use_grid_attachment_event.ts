@@ -54,7 +54,7 @@ export const useAttachmentEvent = (props: IAttachmentEvent) => {
       datasheetId,
       visibleColumns: Selectors.getVisibleColumns(state),
       fieldMap: Selectors.getFieldMap(state, datasheetId)!,
-      linearRows: Selectors.getLinearRows(state),
+      linearRows: Selectors.getLinearRows(state)!,
       snapshot: Selectors.getSnapshot(state)!,
     };
   }, shallowEqual);

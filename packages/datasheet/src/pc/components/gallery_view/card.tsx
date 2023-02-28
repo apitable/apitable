@@ -321,6 +321,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
       onContextMenu={onContextMenu}
     >
       <RecordCard
+        datasheetId={datasheetId}
         recordId={recordId}
         isCoverFit={galleryStyle.isCoverFit}
         isColNameVisible={getIsColNameVisible(galleryStyle.isColNameVisible)}

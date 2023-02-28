@@ -20,7 +20,7 @@ import { Button, Loading } from '@apitable/components';
 import {
   Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamListInSpace, StoreActions, Strings, t
 } from '@apitable/core';
-import { AddressOutlined } from '@apitable/icons';
+import { UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
@@ -308,7 +308,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
+          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined />}
           onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
@@ -345,7 +345,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={<AddressOutlined />}
+          prefixIcon={<UserGroupOutlined />}
           className={styles.inviteOutsiderBtn}
           onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
         >

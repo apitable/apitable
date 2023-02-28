@@ -32,7 +32,7 @@ import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark
 import { useSelector } from 'react-redux';
 interface IAddFirstNodeProps {
   mode: 'none' | 'add';
-  onAdd: () => string;
+  onAdd: () => Promise<string>;
   reactFlowInstance: React.MutableRefObject<OnLoadParams<any> | undefined>;
 }
 
@@ -104,8 +104,8 @@ export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = pro
             <Button
               prefixIcon={<AddOutlined />}
               color='primary'
-              onClick={() => {
-                const id = onAdd();
+              onClick={async() => {
+                const id = await onAdd();
                 const position = reactFlowInstance.current!.project({
                   x: bodySize.width / 2 - offsetLeft - CARD_WIDTH * scale / 2,
                   y: bodySize.height / 2 - offsetTop - getCardHeight(id) * scale / 2,

@@ -19,12 +19,11 @@
 import { computeCache } from 'compute_manager/compute_cache_manager';
 import { ExpCache } from 'formula_parser';
 import { IReduxState, ISnapshot, Selectors } from '../exports/store';
-import { getCurrentView, getFilterInfoBase, getFilterInfo, getFieldMap, getFieldMapIgnorePermission, getPureVisibleRows, getVisibleColumns
+import { getCurrentView, getFilterInfo, getFieldMap, getFieldMapIgnorePermission, getVisibleColumns
   , getCalendarVisibleColumns, getOrgChartVisibleColumns, getGanttVisibleColumns } from '../exports/store/selectors';
 import { cache, ICellValueData } from './cache';
 
 export { NO_CACHE } from './cache';
-export { visibleRowsBaseCacheManage } from './rows_cache';
 
 export const CacheManager = {
   calcDsCache: (state: IReduxState, snapshot: ISnapshot) => {
@@ -88,11 +87,9 @@ export const clearComputeCache = (dstId?: string) => {
  */
 export const clearCachedSelectors = ():void => {
   getCurrentView.clearCache();
-  getFilterInfoBase.clearCache();
   getFilterInfo.clearCache();
   getFieldMap.clearCache();
   getFieldMapIgnorePermission.clearCache();
-  getPureVisibleRows.clearCache();
   getVisibleColumns.clearCache();
   getCalendarVisibleColumns.clearCache();
   getOrgChartVisibleColumns.clearCache();

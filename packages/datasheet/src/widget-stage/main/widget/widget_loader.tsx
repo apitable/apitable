@@ -18,13 +18,12 @@
 
 import { colors, LinkButton, Loading } from '@apitable/components';
 import { Strings, t, WidgetPackageStatus } from '@apitable/core';
-import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
-import { ErrorBoundary, initWidgetCliSocket, IWidgetState, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage } from '@apitable/widget-sdk';
+import { WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
+import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage } from '@apitable/widget-sdk';
 import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { getEnvVariables } from 'pc/utils/env';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 interface IErrorWidget {
@@ -39,7 +38,7 @@ const _ErrorBoundary: any = ErrorBoundary;
 const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, actionText, action }: IErrorWidget) => (
   <div className={styles.errorWidgetWrap}>
     <div className={styles.title}>
-      <ErrorFilled size={16} />
+      <WarnCircleFilled size={16} />
       <span>{title}</span>
     </div>
     <div className={styles.content}>{content}</div>
@@ -51,19 +50,17 @@ const ErrorWidget = ({ title = t(Strings.widget_load_error_title), content, acti
 
 export const WidgetLoader: React.FC<React.PropsWithChildren<{
   expandDevConfig: () => void;
+  isDevMode: boolean;
 }>> = (props)=> {
-  const { expandDevConfig } = props;
+  const { expandDevConfig, isDevMode } = props;
   const { id, datasheetId, widgetPackageId, releaseCodeBundle, status, widgetId, authorName, widgetPackageName } = useMeta();
   const [codeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`);
-  const isDevMode = useSelector((state: IWidgetState) => {
-    return state.widgetConfig.isDevMode;
-  });
   const loadUrl = isDevMode ? codeUrl : releaseCodeBundle;
   const [WidgetComponent, refresh, loading, error] = useWidgetComponent(loadUrl, widgetPackageId);
 
   useEffect(() => {
-    widgetMessage.onRefreshWidget((res) => {
-      res.success && refresh();
+    widgetMessage.onRefreshWidget(() => {
+      refresh();
     });
   }, [refresh]);
 
@@ -87,7 +84,7 @@ export const WidgetLoader: React.FC<React.PropsWithChildren<{
         <div className={styles.title}>
           <span>{t(Strings.widget_loader_developing_title)}</span>
           <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
-            <InformationSmallOutlined size={16} color={colors.fc4}/>
+            <QuestionCircleOutlined size={16} color={colors.fc4}/>
           </a>
         </div>
         <div className={styles.tips}>{t(Strings.widget_loader_developing_content)}</div>

@@ -78,7 +78,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
     const statTypeFieldId = columns[actualColumnIndex].fieldId;
     return {
       statTypeFieldId,
-      viewId: Selectors.getActiveView(state),
+      viewId: Selectors.getActiveViewId(state),
       datasheetId: Selectors.getActiveDatasheetId(state)!,
       groupingCollapseIds: Selectors.getGroupingCollapseIds(state),
       field: Selectors.getSnapshot(state)!.meta.fieldMap[fieldId],

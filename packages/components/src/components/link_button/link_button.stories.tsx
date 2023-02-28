@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { Story } from '@storybook/react';
-import { DownloadOutlined, ColumnLinktableFilled } from '@apitable/icons';
+import { DownloadOutlined, LinktableOutlined } from '@apitable/icons';
 import { iconArg } from '../../stories/args';
 import { LinkButton } from './index';
 import { StoryType } from '../../stories/constants';
@@ -64,7 +64,7 @@ ButtonIcon.args = {
 
 export const LeftIcon = Template.bind({});
 LeftIcon.args = {
-  prefixIcon: <ColumnLinktableFilled currentColor />
+  prefixIcon: <LinktableOutlined currentColor />
 };
 
 export const RightIcon = Template.bind({});

@@ -132,7 +132,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       activeFieldOperateType: operate,
       selectField: Selectors.getSelectedField(state),
       selectRecord: Selectors.getSelectedRecord(state),
-      linearRows: Selectors.getLinearRows(state),
+      linearRows: Selectors.getLinearRows(state)!,
       recordMoveType: Selectors.getRecordMoveType(state),
       permissions: Selectors.getPermissions(state),
       selectRanges: Selectors.getSelectRanges(state),

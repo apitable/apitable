@@ -22,13 +22,13 @@ import { makeIcon, IIconProps } from '../utils/icon';
 
 export const UncheckedOutlined: React.FC<IIconProps> = makeIcon({
   Path: ({ colors }) => <>
-    <path d="M3 3V13H13V3H3ZM2 1C1.44772 1 1 1.44772 1 2V14C1 14.5523 1.44772 15 2 15H14C14.5523 15 15 14.5523 15 14V2C15 1.44772 14.5523 1 14 1H2Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
+    <path d="M2.75 1.5C2.05964 1.5 1.5 2.05964 1.5 2.75V13.25C1.5 13.9404 2.05964 14.5 2.75 14.5H13.25C13.9404 14.5 14.5 13.9404 14.5 13.25V2.75C14.5 2.05964 13.9404 1.5 13.25 1.5H2.75ZM3 13V3H13V13H3Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,
   name: 'unchecked_outlined',
-  defaultColors: ['#636363'],
+  defaultColors: ['#D9D9D9'],
   colorful: false,
-  allPathData: ['M3 3V13H13V3H3ZM2 1C1.44772 1 1 1.44772 1 2V14C1 14.5523 1.44772 15 2 15H14C14.5523 15 15 14.5523 15 14V2C15 1.44772 14.5523 1 14 1H2Z'],
+  allPathData: ['M2.75 1.5C2.05964 1.5 1.5 2.05964 1.5 2.75V13.25C1.5 13.9404 2.05964 14.5 2.75 14.5H13.25C13.9404 14.5 14.5 13.9404 14.5 13.25V2.75C14.5 2.05964 13.9404 1.5 13.25 1.5H2.75ZM3 13V3H13V13H3Z'],
   width: '16',
   height: '16',
   viewBox: '0 0 16 16',

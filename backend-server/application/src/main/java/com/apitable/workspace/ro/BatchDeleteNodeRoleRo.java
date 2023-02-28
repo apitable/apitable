@@ -18,31 +18,29 @@
 
 package com.apitable.workspace.ro;
 
-import java.util.List;
-
-import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import lombok.Data;
 
 /**
  * <p>
- * Batch Delete Node Role Request Parameters
+ * Batch Delete Node Role Request Parameters.
  * </p>
  */
 @Data
-@ApiModel("Batch Delete Node Role Request Parameters")
+@Schema(description = "Batch Delete Node Role Request Parameters")
 public class BatchDeleteNodeRoleRo {
 
-	@ApiModelProperty(value = "The node ID is not passed to represent the root node, that is, the working directory", example = "nod10", position = 1)
-	private String nodeId;
+    @Schema(description = "The node ID is not passed to represent the root node, that is, the "
+        + "working directory", example = "nod10")
+    private String nodeId;
 
     @NotEmpty(message = "Organization unit cannot be empty")
-    @ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
+    @Schema(description = "Org Unit ID Set", type = "java.util.List", required = true, example =
+        "[\"1\",\"2\",\"3\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 }

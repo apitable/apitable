@@ -67,7 +67,7 @@ export interface IContextMenuItemProps {
   /**
    * item text
    */
-  label: string;
+  label: string | (({ props }: any) => void);
 
   /**
    * child context menu

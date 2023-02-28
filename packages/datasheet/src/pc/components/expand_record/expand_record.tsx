@@ -20,7 +20,7 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
-  Strings, t,
+  Strings, t, PermissionType
 } from '@apitable/core';
 import { AttentionOutlined, CommentOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
@@ -128,7 +128,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   document.body.appendChild(container);
   const root = createRoot(container);
 
-  const modalClose = () => {
+  const modalClose = async(): Promise<void> => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
@@ -141,7 +141,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     if (recordType === RecordType.Datasheet) {
       expandRecordIdNavigate(undefined, true);
-      ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      await ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }
 
     const idx = recordModalCloseFns.indexOf(modalClose);
@@ -155,7 +155,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   recordModalCloseFns.unshift(modalClose);
 
-  const monitorBodyFocus = (e: KeyboardEvent) => {
+  const monitorBodyFocus = async(e: KeyboardEvent) => {
     if (!focusHolderRef.current) {
       return;
     }
@@ -165,7 +165,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     if (e.keyCode !== KeyCode.Esc) {
       return;
     }
-    modalClose();
+    await modalClose();
   };
 
   document.body.onkeydown = monitorBodyFocus;
@@ -227,10 +227,10 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
     if (independentDataLoading) {
       resourceService
         .instance!.switchResource({
-        to: nodeId,
-        resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
-        extra: { recordIds: recordIds },
-      })
+          to: nodeId,
+          resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
+          extra: { recordIds: recordIds },
+        })
         .catch(() => {
         })
         .then(() => {
@@ -260,8 +260,8 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
           customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.node_not_exist_content),
-            onOk: () => {
-              modalClose();
+            onOk: async() => {
+              await modalClose();
               customModal.destroy();
             },
             modalButtonType: 'warning',
@@ -272,8 +272,8 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
           customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.mirror_resource_dst_been_deleted),
-            onOk: () => {
-              modalClose();
+            onOk: async() => {
+              await modalClose();
               customModal.destroy();
             },
             modalButtonType: 'warning',
@@ -286,8 +286,8 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
         const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
           content: t(Strings.error_record_not_exist_now),
-          onOk: () => {
-            modalClose();
+          onOk: async() => {
+            await modalClose();
             customModal.destroy();
           },
           modalButtonType: 'error',
@@ -301,7 +301,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
   useEffect(() => {
     // browser history back check
     if (!isPathWithRecordId && !activeRecordId) {
-      modalClose();
+      modalClose(); // async
       return;
     }
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
@@ -410,6 +410,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
+  const embedInfo = useSelector(state => state.embedInfo);
+  const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -484,8 +486,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
 
   useEffect(() => {
     if (isSideRecordOpen && pageParamsRecordId) {
-      setTimeout(() => {
-        ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      setTimeout(async() => {
+        await ShortcutActionManager.trigger(ShortcutActionName.Focus);
       }, 50);
     }
   }, [isSideRecordOpen, pageParamsRecordId, activeId]);
@@ -679,7 +681,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 sourceViewId={viewId}
                 fromCurrentDatasheet={fromCurrentDatasheet}
               />
-              {allowShowCommentPane && (
+              {allowShowCommentPane && isEmbedShowCommentPane && (
                 <CommentButton
                   active={commentPaneShow}
                   onClick={() => {
@@ -728,7 +730,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 )}
               </main>
             </div>
-            {commentPaneShow && (
+            {commentPaneShow && isEmbedShowCommentPane && (
               <ActivityPane
                 fromCurrentDatasheet={fromCurrentDatasheet}
                 datasheetId={datasheetId}

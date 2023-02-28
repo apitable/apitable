@@ -18,7 +18,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { CheckedFilled, UncheckedOutlined } from '@apitable/icons';
+import { CheckboxFilled, UncheckedOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 
 import styles from './checkbox.module.less';
@@ -78,7 +78,7 @@ export const Checkbox = React.memo((props: ICheckboxProps) => {
     data-disabled={!!disabled}>
     {
       checked
-        ? <CheckedFilled
+        ? <CheckboxFilled
           size={size}
           color={disabled ? colors.fourthLevelText : undefined} />
         : <UncheckedOutlined

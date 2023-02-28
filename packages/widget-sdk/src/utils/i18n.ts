@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getLanguage } from 'iframe_message/utils';
+import { getLanguage } from './language';
 
 export interface IString {
   /** Chinese */
@@ -51,7 +51,6 @@ const ERROR_STR = '[ERROR STR]';
  */
 export function t(string: IString) {
   if (!string) {
-    console.log(1231231);
     return ERROR_STR;
   }
   const lang = getLanguage().replace(/-/g, '_');

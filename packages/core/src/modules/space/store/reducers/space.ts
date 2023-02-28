@@ -25,7 +25,7 @@ import {
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 
-const defaultSpace = {
+const defaultSpace: ISpace = {
   spaceList: [],
   curSpaceInfo: null,
   spaceFeatures: null,

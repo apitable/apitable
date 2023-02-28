@@ -39,9 +39,9 @@ import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
-  ColumnUrlOutlined,
+  LinkOutlined,
   CopyOutlined,
-  ExpandRecordOutlined,
+  ExpandOutlined,
 } from '@apitable/icons';
 
 import { notifyWithUndo } from '../notify';
@@ -206,7 +206,7 @@ export const Menu: React.FC<React.PropsWithChildren<unknown>> = () => {
       <Divider marginTop={4} marginBottom={4} className={styles.divider} />
       <div onClick={() => copyLink()}>
         <ContextmenuItem
-          icon={<ColumnUrlOutlined color={colors.thirdLevelText} />}
+          icon={<LinkOutlined color={colors.thirdLevelText} />}
           name={t(Strings.copy_card_link)}
         />
       </div>
@@ -218,7 +218,7 @@ export const Menu: React.FC<React.PropsWithChildren<unknown>> = () => {
       </div>
       <div onClick={expand}>
         <ContextmenuItem
-          icon={<ExpandRecordOutlined color={colors.thirdLevelText} />}
+          icon={<ExpandOutlined color={colors.thirdLevelText} />}
           name={t(Strings.gallery_view_expand_record)}
         />
       </div>

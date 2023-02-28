@@ -26,7 +26,7 @@ import {
 import { useSize } from 'ahooks';
 import { Select, TextInput, ITextInputProps, IOption } from '@apitable/components';
 import { SystemConfig, t, Strings, getLanguage } from '@apitable/core';
-import { PhonenumberFilled } from '@apitable/icons';
+import { TelephoneOutlined } from '@apitable/icons';
 import styles from './style.module.less';
 
 // Area code and city collection
@@ -85,8 +85,9 @@ export const PhoneInputBase: ForwardRefRenderFunction<any, IPhoneInputProps> = (
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    onChange && onChange(areaCode, value);
-    setPhone(value);
+    const newValue = value.replace(/\D/g, '');
+    onChange && onChange(areaCode, newValue);
+    setPhone(newValue);
   };
 
   const PhoneCodeSelect = () => {
@@ -115,7 +116,7 @@ export const PhoneInputBase: ForwardRefRenderFunction<any, IPhoneInputProps> = (
         <PhoneCodeSelect />
         <div className={styles.line} />
       </>}
-      prefix={<PhonenumberFilled />}
+      prefix={<TelephoneOutlined />}
       onChange={handlePhoneChange}
       {...rest}
     />

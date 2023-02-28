@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 import IconNext from 'static/icon/common/common_icon_pulldown_line.svg';
 import IconPrev from 'static/icon/common/common_icon_up_line.svg';
 import styles from './styles.module.less';
-import { CancelFilled, SearchOutlined } from '@apitable/icons';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { dispatch } from 'pc/worker/store';
@@ -192,7 +192,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
             }
           />
           <span className={styles.closeButton} onClick={close}>
-            <CancelFilled size={16} />
+            <CloseCircleFilled size={16} />
           </span>
         </div>
       }

@@ -18,7 +18,7 @@
 
 import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
 import { Dropdown, Menu  } from 'antd';
 import classNames from 'classnames';
@@ -160,7 +160,7 @@ export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPanePro
           </div>
           {closable && !isMobile && (
             <IconButton
-              icon={CloseMiddleOutlined}
+              icon={CloseOutlined}
               shape="square"
               onClick={() => {
                 onClose && onClose();

@@ -36,8 +36,8 @@ export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = pro
     size = 'default',
   } = props;
 
-  const onClick = () => {
-    const result = appendRow({ recordId });
+  const onClick = async() => {
+    const result = await appendRow({ recordId });
     if (result.result === ExecuteResult.Success) {
       const _recordId = result.data && result.data[0];
       expandRecordIdNavigate(_recordId);

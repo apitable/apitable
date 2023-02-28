@@ -35,7 +35,7 @@ export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = prop
   const colors = useThemeColors();
   const { hideViewList, displayState } = props;
   const snapshot = useSelector(state => Selectors.getSnapshot(state));
-  const activeViewId = useSelector(state => Selectors.getActiveView(state));
+  const activeViewId = useSelector(state => Selectors.getActiveViewId(state));
 
   const switchView = (id: string) => {
     if (activeViewId === id) {

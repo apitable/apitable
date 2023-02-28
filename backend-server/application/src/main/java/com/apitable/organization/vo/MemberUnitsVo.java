@@ -18,32 +18,31 @@
 
 package com.apitable.organization.vo;
 
-import java.util.List;
-
+import com.apitable.core.support.serializer.NumberListToStringListSerializer;
+import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.core.support.serializer.NumberListToStringListSerializer;
-
 /**
  * <p>
- * Organizational unit to which the member belongs
+ * Organizational unit to which the member belongs.
  * </p>
  */
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("Organizational unit to which the member belongs")
+@Schema(description = "Organizational unit to which the member belongs")
 public class MemberUnitsVo {
 
-    @ApiModelProperty(value = "Org Unit ID List", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 1)
-    @JsonSerialize(using = NumberListToStringListSerializer.class, nullsUsing = NullArraySerializer.class)
+    @Schema(description = "Org Unit ID List", type = "List", example = "[\"10101\",\"10102\","
+        + "\"10103\",\"10104\"]")
+    @JsonSerialize(using = NumberListToStringListSerializer.class, nullsUsing =
+        NullArraySerializer.class)
     private List<Long> unitIds;
 }

@@ -29,6 +29,7 @@ import { EditingNode } from './editing_node';
 import { Tooltip } from 'pc/components/common';
 import { INodesMapItem } from '@apitable/core';
 import { useMount } from 'ahooks';
+import { browserIsDesktop } from 'pc/utils/os';
 
 export interface IItemRender {
   id: string;
@@ -76,14 +77,6 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
     const isDesktop = await browserIsDesktop();
     setIsMobileDevice(!isDesktop);
   });
-
-  const browserIsDesktop = async() => {
-    if (process.env.SSR) {
-      return false;
-    }
-    const device = await import('current-device');
-    return device.default.desktop();
-  };
 
   return (
     <div

@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IDataLoader } from './data.loader.interface';
-import { IDataSaver } from './data.saver.interface';
-import { Database } from './database';
-import { IStoreProvider } from './store.provider.interface';
+import { Database } from './logic';
+import { IDataStorageProvider, IStoreProvider } from './providers';
 
 /**
- * The entry point of the DataBus mechanism.
+ * The entry point of the DataBus layer.
  */
 export class DataBus {
   private _database: Database;
@@ -35,12 +33,11 @@ export class DataBus {
    * Create a DataBus instance.
    */
   public static create(options: IDataBusInitOptions): DataBus {
-    const { dataLoader, dataSaver, storeProvider } = options;
+    const { dataStorageProvider, storeProvider } = options;
     const databus = new DataBus();
 
     const db = databus.getDatabase();
-    db.setDataLoader(dataLoader);
-    db.setDataSaver(dataSaver);
+    db.setDataStorageProvider(dataStorageProvider);
     db.setStoreProvider(storeProvider);
 
     return databus;
@@ -48,12 +45,12 @@ export class DataBus {
 
   /**
    * Get the database of a DataBus instance.
-   * 
+   *
    * Currently, only one database exists for a DataBus instance. In the future, there may be multiple databases
-   * for a DataBus instance. And the use case is:
-   * 
-   * - For frontend, there is only one user, so one database suffice.
-   * - For backend, the server creates many databases, one database corresponds to one user respectively.
+   * for a DataBus instance. And the use cases are:
+   *
+   * - For front end, there is only one user, so one database suffice.
+   * - For back end, the server creates many databases, one database corresponds to one user respectively.
    */
   public getDatabase(): Database {
     return this._database;
@@ -64,7 +61,6 @@ export class DataBus {
  * The options to intiailize a DataBus instance.
  */
 export interface IDataBusInitOptions {
-  dataLoader: IDataLoader;
-  dataSaver: IDataSaver;
+  dataStorageProvider: IDataStorageProvider;
   storeProvider: IStoreProvider;
 }

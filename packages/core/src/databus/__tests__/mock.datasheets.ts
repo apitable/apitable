@@ -18,7 +18,7 @@
 
 import { IResourceOpsCollect } from 'command_manager';
 import { OTActionName } from 'engine';
-import { IBaseDatasheetPack, ViewType } from 'exports/store';
+import { IBaseDatasheetPack, Role, ViewType } from 'exports/store';
 import { FieldType, SegmentType } from 'types';
 
 export const mockDatasheetMap: Record<string, IBaseDatasheetPack> = {
@@ -135,7 +135,30 @@ export const mockDatasheetMap: Record<string, IBaseDatasheetPack> = {
       permissions: {} as any,
       revision: 12,
     },
-    fieldPermissionMap: {},
+    fieldPermissionMap: {
+      fld1: {
+        role: Role.Editor,
+        setting: {
+          formSheetAccessible: true,
+        },
+        permission: {
+          editable: true,
+          readable: true,
+        },
+        manageable: true,
+      },
+      fld2: {
+        role: Role.Editor,
+        setting: {
+          formSheetAccessible: true,
+        },
+        permission: {
+          editable: true,
+          readable: true,
+        },
+        manageable: true,
+      },
+    },
   },
 };
 

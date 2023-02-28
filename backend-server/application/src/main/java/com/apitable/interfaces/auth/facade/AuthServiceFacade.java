@@ -42,12 +42,4 @@ public interface AuthServiceFacade {
      * @return {@link UserLogout}
      */
     UserLogout logout(UserAuth userAuth);
-
-    /**
-     * user reset password.
-     *
-     * @param userAuth {@link UserAuth}
-     * @return boolean
-     */
-    boolean resetPassword(UserAuth userAuth);
 }

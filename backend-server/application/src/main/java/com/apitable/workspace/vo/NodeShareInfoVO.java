@@ -22,72 +22,70 @@ import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Node share information view
+ * Node share information view.
  * </p>
  */
 @Data
-@ApiModel("Node share information view")
+@Schema(description = "Node share information view")
 public class NodeShareInfoVO {
 
-    @ApiModelProperty(value = "Share Unique ID", example = "shrKsX1map5RfYO", position = 1)
+    @Schema(description = "Share Unique ID", example = "shrKsX1map5RfYO")
     private String shareId;
 
-    @ApiModelProperty(value = "Space ID", example = "spceDumyiMKU2", position = 2)
+    @Schema(description = "Space ID", example = "spceDumyiMKU2")
     private String spaceId;
 
-    @ApiModelProperty(value = "Space name", example = "space", position = 3)
+    @Schema(description = "Space name", example = "space")
     private String spaceName;
 
-    @ApiModelProperty(value = "Shared node tree", position = 4)
+    @Schema(description = "Shared node tree")
     private NodeShareTree shareNodeTree;
 
-    @ApiModelProperty(value = "Allow others to deposit", example = "true", position = 7)
+    @Schema(description = "Allow others to deposit", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowSaved;
 
-    @ApiModelProperty(value = "Allow others to edit", example = "true", position = 7)
+    @Schema(description = "Allow others to edit", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEdit;
 
-    @ApiModelProperty(value = "Whether to allow others to apply for joining the space",
-        example = "true", position = 7)
+    @Schema(description = "Whether to allow others to apply for joining the space",
+        example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowApply;
 
-    @ApiModelProperty(value = "Whether to allow others to copy data outside the station",
-        example = "true", position = 8)
+    @Schema(description = "Whether to allow others to copy data outside the station",
+        example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowCopyDataToExternal;
 
-    @ApiModelProperty(value = "Allow others to download attachments", example = "true",
-        position = 9)
+    @Schema(description = "Allow others to download attachments", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowDownloadAttachment;
 
-    @ApiModelProperty(value = "Last Modified By", example = "Zhang San", position = 12)
+    @Schema(description = "Last Modified By", example = "Zhang San")
     private String lastModifiedBy;
 
-    @ApiModelProperty(value = "Head portrait address",
-        example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 13)
+    @Schema(description = "Head portrait address",
+        example = "http://wwww.apitable.com/2019/11/12/17123187253.png")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String lastModifiedAvatar;
 
-    @ApiModelProperty(value = "Login or not", example = "false", position = 14)
+    @Schema(description = "Login or not", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasLogin;
 
-    @ApiModelProperty(value = "Whether to open「View manual save」Experimental function",
-        example = "true", position = 15)
+    @Schema(description = "Whether to open「View manual save」Experimental function",
+        example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean featureViewManualSave;
 
-    @ApiModelProperty(value = "is deleted", example = "true", position = 16)
+    @Schema(description = "is deleted", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isDeleted;
 }

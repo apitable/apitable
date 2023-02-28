@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { Story } from '@storybook/react';
-import { WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { WarnCircleFilled } from '@apitable/icons';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { StoryType } from '../../stories/constants';
@@ -281,7 +281,7 @@ WarningTask.args = {
   warnText: (
     <Tooltip content="End date is earlier than start date">
       <span className="warning">
-        <WarningTriangleNonzeroFilled size={14} color="#FFAB00"/>
+        <WarnCircleFilled size={14} color="#FFAB00"/>
       </span>
     </Tooltip>
   )

@@ -18,44 +18,44 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Node Member View
+ * Node Member View.
  * </p>
  */
 @Data
-@ApiModel("Field Member View")
+@Schema(description = "Field Member View")
 public class FieldRoleMemberVo {
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "Member Name", example = "R&D Department ｜ Zhang San", position = 2)
+    @Schema(description = "Member Name", example = "R&D Department ｜ Zhang San")
     private String memberName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Member avatar", example = "https://apitable.com/image.png", position = 3)
+    @Schema(description = "Member avatar", example = "https://apitable.com/image.png")
     private String avatar;
 
-    @ApiModelProperty(value = "Member's Department", example = "Operation Department | Product Department | R&D Department", position = 4)
+    @Schema(description = "Member's Department", example = "Operation Department | Product "
+        + "Department | R&D Department")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String teams;
 
-    @ApiModelProperty(value = "Role", example = "manager", position = 5)
+    @Schema(description = "Role", example = "manager")
     private String role;
 
-    @ApiModelProperty(value = "When an organization unit is a member, indicate whether it is an administrator", example = "false", position = 6)
+    @Schema(description = "When an organization unit is a member, indicate whether it is an "
+        + "administrator", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAdmin;
 }

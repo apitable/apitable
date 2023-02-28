@@ -63,7 +63,7 @@ const ExpandRecordModalBase: FC<React.PropsWithChildren<IExpandRecordModal>> = p
   const renderCenterModal = () => {
     return (
       <Modal
-        visible
+        open
         wrapClassName={classNames(props.wrapClassName, 'centerExpandRecord', EXPAND_RECORD_CLS)}
         onCancel={props.onCancel}
         closeIcon={null}

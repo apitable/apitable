@@ -30,7 +30,7 @@ import { isInContainer } from 'pc/utils';
 
 export const ViewSwitcherHorizontal: React.FC<React.PropsWithChildren<unknown>> = () => {
   const snapshot = useSelector(state => Selectors.getSnapshot(state));
-  const activeViewId = useSelector(state => Selectors.getActiveView(state));
+  const activeViewId = useSelector(state => Selectors.getActiveViewId(state));
   const colors = useThemeColors();
   const containerRef = useRef<HTMLDivElement>(null);
 

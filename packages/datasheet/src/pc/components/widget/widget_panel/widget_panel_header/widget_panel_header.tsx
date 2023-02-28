@@ -17,7 +17,7 @@
  */
 
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined, CloseLargeOutlined } from '@apitable/icons';
+import { ChevronLeftOutlined, CloseOutlined } from '@apitable/icons';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import RcTrigger from 'rc-trigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -49,7 +49,7 @@ export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
   isFocus && (widgetDom as HTMLDivElement).focus();
 };
 
-export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
+export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<void> }) => {
   const colors = useThemeColors();
   const triggerRef = useRef<any>(null);
   const [openPanelList, setOpenPanelList] = useState(false);
@@ -133,7 +133,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
             </span>
           </span>
         </RcTrigger>
-        <IconButton onClick={props.onClosePanel} icon={CloseLargeOutlined} />
+        <IconButton onClick={props.onClosePanel} icon={CloseOutlined} />
       </ComponentDisplay>
       {/** Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

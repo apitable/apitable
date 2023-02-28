@@ -61,8 +61,8 @@ export const StyledLinkButton = styled.div.attrs(applyDefaultTheme) <ILinkButton
     return;
   }};
   ${(props) => {
-    const { deepPurple } = props.theme.color;
-    const color = props.color || deepPurple[500];
+    const { textLinkDefault } = props.theme.color;
+    const color = props.color || textLinkDefault;
     let { hover, active } = getActionColor(color);
     if (props.disabled) {
       hover = color;

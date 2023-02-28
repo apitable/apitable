@@ -22,8 +22,8 @@ import {
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
 } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
-  FilterOutlined, FreezeOutlined, GroupOutlined, HideFilled, LockOutlined
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
+  FilterOutlined, FreezeOutlined, GroupOutlined, EyeOpenOutlined, LockOutlined
 } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
@@ -80,7 +80,6 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
   const isGanttView = view.type === ViewType.Gantt;
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
 
-  const commandManager = resourceService.instance!.commandManager;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     permissions,
@@ -130,7 +129,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
   }, [canGroup, field]);
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -307,7 +306,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         id: 'modify_field',
       },
       {
-        icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+        icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
         text: t(Strings.editing_field_desc),
         hidden: !descriptionEditable || hasChosenMulti,
         onClick: toOpenFieldDesc,
@@ -408,7 +407,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
     ],
     [
       {
-        icon: <HideFilled color={colors.thirdLevelText} />,
+        icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
         text: hasChosenMulti ? t(Strings.hidden_n_fields, { count: chosenCount }) : t(Strings.hide_one_field),
         hidden: !editable || fieldIndex === 0 || Boolean(mirrorId),
         onClick: hiddenField,

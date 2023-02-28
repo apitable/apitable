@@ -27,7 +27,7 @@ import { Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { LinkButton, useThemeColors } from '@apitable/components';
 import { copy2clipBoard } from 'pc/utils';
-import { ColumnUrlOutlined } from '@apitable/icons';
+import { LinkOutlined } from '@apitable/icons';
 
 interface IMoreToolProps {
   readonly: boolean;
@@ -75,7 +75,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
         <LinkButton
           underline={false}
           className={style.moreToolBtn}
-          prefixIcon={<ColumnUrlOutlined size={16} color={colors.defaultBg} />}
+          prefixIcon={<LinkOutlined size={16} color={colors.defaultBg} />}
           onClick={() => {
             copy2clipBoard(downloadSrc, () => {
               Message.success({ content: t(Strings.preview_copy_attach_url_succeed) });

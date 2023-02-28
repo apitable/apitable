@@ -18,80 +18,79 @@
 
 package com.apitable.space.vo;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ChinaLocalDateTimeToUtcSerializer;
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Administrator View
+ * Administrator View.
  * </p>
  */
 @Data
-@ApiModel("Administrator View")
+@Schema(description = "Administrator View")
 public class SpaceRoleVo {
 
-    @ApiModelProperty(value = "Role ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Role ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 2)
+    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Head portrait address", example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 3)
+    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
+        + ".com/2019/11/12/17123187253.png")
     private String avatar;
 
-    @ApiModelProperty(value = "Member Name", example = "Zhang San", position = 4)
+    @Schema(description = "Member Name", example = "Zhang San")
     private String memberName;
 
-    @ApiModelProperty(value = "DEPARTMENT", example = "Technology Department/R&D Department", position = 5)
+    @Schema(description = "DEPARTMENT", example = "Technology Department/R&D Department")
     private String team;
 
-    @ApiModelProperty(value = "Phone number", example = "13610102020", position = 6)
+    @Schema(description = "Phone number", example = "13610102020")
     private String mobile;
 
-    @ApiModelProperty(value = "Whether activated", example = "true", position = 7)
+    @Schema(description = "Whether activated", example = "true")
     private Boolean isActive;
 
     @JsonIgnore
     private String tempResourceGroupCodes;
 
-    @ApiModelProperty(value = "Resource group code list", example = "[\"MANAGE_SECURITY\",\"MANAGE_TEAM\"]", position = 8)
+    @Schema(description = "Resource group code list", example = "[\"MANAGE_SECURITY\","
+        + "\"MANAGE_TEAM\"]")
     private List<String> resourceGroupCodes;
 
     @Deprecated
-    @ApiModelProperty(value = "Permission range (old)", position = 9)
+    @Schema(description = "Permission range (old)")
     private List<RoleResourceVo> resourceScope;
 
-    @ApiModelProperty(value = "Creation time", example = "2020-03-18T15:29:59.000", position = 10)
+    @Schema(description = "Creation time", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "Creation time", example = "2020-03-18T15:29:59.000", position = 11)
+    @Schema(description = "Creation time", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 12)
+    @Schema(description = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 13)
+    @Schema(description = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "default avatar color number", example = "1", position = 14)
+    @Schema(description = "default avatar color number", example = "1")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "Nick Name", example = "Zhang San", position = 15)
+    @Schema(description = "Nick Name", example = "Zhang San")
     private String nickName;
 }

@@ -57,13 +57,12 @@ export interface ICellValueComponent {
  */
 const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = props => {
   const { field, recordId, cellValue, className, isActive, datasheetId, readonly, rowHeightLevel, cellTextClassName, showAlarm } = props;
-  const commandManager = resourceService.instance!.commandManager;
   const cellEditable = useSelector(state => {
     return Selectors.getPermissions(state, datasheetId, field.id).cellEditable;
   });
 
   function onChange(value: ICellValue) {
-    !readonly && commandManager.execute({
+    !readonly && resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
       data: [{
@@ -74,8 +73,8 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = pr
     });
   }
 
-  function toggleEdit() {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
+  async function toggleEdit() {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }
 
   const cellProps = {

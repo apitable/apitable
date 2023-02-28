@@ -27,5 +27,6 @@ export {
   getViewTypeString, APIMetaViewType, Api, cellValueToImageSrc, IDatasheetPack, IDashboard, IUnitInfo, INumberFieldProperty, datasheet, Role, widget,
   ICollaCommandOptions, ICollaCommandExecuteResult, ILabs, IPageParams, IShareInfo, IDatasheetState, IViewRow, IMirrorMap, IMirrorPack,
   IOpenFieldProperty, IUpdateOpenFieldProperty, IEffectOption, IUpdateOpenMagicLinkFieldProperty, Conversion, IOpenCreatedByFieldProperty,
-  getFieldClass, getFieldTypeByString, IAddOpenFieldProperty, IUser, IActiveRowInfo, WhyRecordMoveType, IDashboardPack, IUserInfo
+  getFieldClass, getFieldTypeByString, IAddOpenFieldProperty, IUser, IActiveRowInfo, WhyRecordMoveType, IDashboardPack, IUserInfo, ActionConstants,
+  DEFAULT_PERMISSION
 } from '@apitable/core';

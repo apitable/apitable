@@ -18,21 +18,19 @@
 
 package com.apitable.base.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * widget upload meta
- * @author tao
+ * widget upload meta.
  */
 @Data
-@ApiModel("widget upload meta")
+@Schema(description = "widget upload meta")
 @Builder
 public class WidgetUploadMetaVo {
 
-    @ApiModelProperty(value = "cdn", position = 1)
+    @Schema(description = "cdn")
     private String endpoint;
 
 }

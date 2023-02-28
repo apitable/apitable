@@ -97,8 +97,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
     if (isEndDateTimeField) {
       cellValue[endFieldId] = dateValue;
     }
-    const collaCommandManager = resourceService.instance!.commandManager;
-    const result = collaCommandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -115,7 +114,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
         const rowsMap = Selectors.getVisibleRowsIndexMap(state);
         const isRecordInView = rowsMap.has(newRecordId);
         if (!isRecordInView) {
-          const newRecordSnapshot = Selectors.getRecordSnapshot(state, newRecordId);
+          const newRecordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, newRecordId);
           if (newRecordSnapshot) {
             dispatch(
               StoreActions.setActiveCell(datasheetId, {

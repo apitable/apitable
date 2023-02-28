@@ -18,7 +18,7 @@
 
 package com.apitable.asset.ro;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 
@@ -28,7 +28,7 @@ import lombok.Data;
  * @author Pengap
  */
 @Data
-@ApiModel("Asset upload callback Body")
+@Schema(description = "Asset upload callback Body")
 public class AssetUploadCallbackBody {
 
     /**
@@ -37,9 +37,8 @@ public class AssetUploadCallbackBody {
     private String key;
 
     /**
-     * The HTTPETag after the file is uploaded successfully.
-     * * If the resource ID is not specified when uploading,
-     * * the Etag will be used as the resource ID.
+     * The HTTPETag after the file is uploaded successfully. * If the resource ID is not specified
+     * when uploading, * the Etag will be used as the resource ID.
      */
     private String hash;
 
@@ -73,19 +72,29 @@ public class AssetUploadCallbackBody {
      */
     private Integer imageHeight;
 
-    /** */
+    /**
+     * upload asset id.
+     */
     private Long uploadAssetId;
 
-    /** */
+    /**
+     * space id.
+     */
     private String spaceId;
 
-    /** */
+    /**
+     * node id.
+     */
     private String nodeId;
 
-    /** */
+    /**
+     * bucket type.
+     */
     private String bucketType;
 
-    /** */
+    /**
+     * asset type.
+     */
     private Integer assetType;
 
 }

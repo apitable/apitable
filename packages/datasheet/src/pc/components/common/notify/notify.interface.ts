@@ -37,7 +37,7 @@ export enum NotifyKey {
 
 export interface ICustomNotifyConfig {
   btnText: string;
-  btnFn(): void;
+  btnFn(): void | Promise<void>;
   key: NotifyKey;
   dom?: HTMLElement | null;
 }

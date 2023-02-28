@@ -1,4 +1,5 @@
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -19,8 +20,10 @@ export const useViewNameChecker = () => {
       return false;
     }
 
-    if (newViewName.length < 1 || newViewName.length > 30) {
-      setErrMsg(t(Strings.view_name_length_err));
+    if (newViewName.length < 1 || newViewName.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      setErrMsg(t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      }));
       return false;
     }
 

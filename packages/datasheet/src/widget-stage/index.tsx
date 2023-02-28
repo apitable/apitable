@@ -37,10 +37,16 @@ import { ThemeWrap } from './theme_wrap';
     const prefix = getEnvVariables().WIDGET_REPO_PREFIX;
     window['_React'] = React;
     window['_ReactDom'] = ReactDOM;
-    window[`_@${prefix}/components`] = components;
-    window[`_@${prefix}/widget-sdk`] = widgetSdk;
-    window[`_@${prefix}/core`] = core;
-    window[`_@${prefix}/icons`] = icons;
+    window['_@apitable/components'] = components;
+    window['_@apitable/widget-sdk'] = widgetSdk;
+    window['_@apitable/core'] = core;
+    window['_@apitable/icons'] = icons;
+    if (prefix !== 'apitable') {
+      window[`_@${prefix}/components`] = components;
+      window[`_@${prefix}/widget-sdk`] = widgetSdk;
+      window[`_@${prefix}/core`] = core;
+      window[`_@${prefix}/icons`] = icons;
+    }
   }
 })();
 

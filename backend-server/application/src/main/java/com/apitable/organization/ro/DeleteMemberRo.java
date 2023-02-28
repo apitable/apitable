@@ -18,29 +18,31 @@
 
 package com.apitable.organization.ro;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Delete Member Request Parameter
+ * Delete Member Request Parameter.
  * </p>
  */
 @Data
-@ApiModel("Delete Member Request Parameter")
+@Schema(description = "Delete Member Request Parameter")
 public class DeleteMemberRo {
 
-    @ApiModelProperty(value = "Delete action (0: delete this department, 1: delete from the organization structure completely)", example = "0", position = 1)
+    @Schema(description = "Delete action (0: delete this department, 1: delete from the "
+        + "organization structure completely)", example = "0")
     private int action;
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", required = true, position = 2)
+    @Schema(description = "Member ID", type = "java.lang.String", example = "1", required = true)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "Department ID, if it is the root department, can not be transferred. It is deleted from the root door by default, consistent with the principle of removing members from the space", dataType = "java.lang.String", example = "1", required = true, position = 3)
+    @Schema(description = "Department ID, if it is the root department, can not be transferred. "
+        + "It is deleted from the root door by default, consistent with the principle of removing"
+        + " members from the space", type = "java.lang.String", example = "1", required = true)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 }

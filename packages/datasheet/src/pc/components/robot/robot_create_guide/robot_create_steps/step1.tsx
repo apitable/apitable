@@ -65,6 +65,9 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
         <Avatar
           icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
           size='l'
+          style={{
+            background: 'none'
+          }}
         />
         <Typography>
           {t(Strings.robot_create_wizard_step_1_desc)}

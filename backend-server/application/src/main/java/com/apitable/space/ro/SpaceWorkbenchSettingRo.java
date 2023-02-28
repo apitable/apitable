@@ -18,24 +18,22 @@
 
 package com.apitable.space.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Space Management - Workbench Set Request Parameters
+ * Space Management - Workbench Set Request Parameters.
  * </p>
- *
  * The status field is consistent with the serialized object of the read library
  */
 @Data
-@ApiModel("Space Management - Workbench Set Request Parameters")
+@Schema(description = "Space Management - Workbench Set Request Parameters")
 public class SpaceWorkbenchSettingRo {
 
-    @ApiModelProperty(value = "All members of the node can be exported", example = "true", position = 1)
+    @Schema(description = "All members of the node can be exported", example = "true")
     private Boolean nodeExportable;
 
-    @ApiModelProperty(value = "Global Watermark On Status", example = "true", position = 1)
+    @Schema(description = "Global Watermark On Status", example = "true")
     private Boolean watermarkEnable;
 }

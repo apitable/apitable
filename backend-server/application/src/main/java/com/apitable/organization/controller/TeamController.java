@@ -28,6 +28,7 @@ import static com.apitable.organization.enums.OrganizationException.UPDATE_TEAM_
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
+import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -49,25 +50,29 @@ import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.space.enums.SpaceUpdateOperate;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Contacts Team Api.
+ */
 @RestController
-@Api(tags = "Contacts Team Api")
+@Tag(name = "Contacts Team Api")
 @ApiResource(path = "/org/team")
 public class TeamController {
 
@@ -86,11 +91,29 @@ public class TeamController {
     @Resource
     private SocialServiceFacade socialServiceFacade;
 
+    /**
+     * Search the space's teams.
+     */
+    @GetResource(path = "/tree", name = "Search the space's teams")
+    @Operation(summary = "Search the space's teams",
+        description = "Search the space's teams. result is tree.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+    public ResponseData<List<TeamTreeVo>> getTeamTree() {
+        String spaceId = LoginContext.me().getSpaceId();
+        // Filtering statistics of the number of superior departments
+        List<TeamTreeVo> treeList = iTeamService.build(spaceId, 0L);
+        List<TeamTreeVo> treeRes = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
+        return ResponseData.success(treeRes);
+    }
+
+    /**
+     * Team branch.
+     */
     @GetResource(path = "/branch", name = "team branch")
-    @ApiOperation(value = "team branch", notes = "team branch. result is tree",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-        dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "team branch", description = "team branch. result is tree")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<TeamTreeVo>> getTeamBranch() {
         // get the member's space
         String spaceId = LoginContext.me().getSpaceId();
@@ -100,15 +123,17 @@ public class TeamController {
         return ResponseData.success(defaultTreeRes);
     }
 
+    /**
+     * Query direct sub departments.
+     */
     @GetResource(path = "/subTeams", name = "Query direct sub departments")
-    @ApiOperation(value = "Query direct sub departments",
-        notes = "query sub team by team id. if team id lack, default root team.",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", defaultValue = "0",
-            dataTypeClass = String.class, paramType = "query", example = "1")
+    @Operation(summary = "Query direct sub departments",
+        description = "query sub team by team id. if team id lack, default root team.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id", schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<List<TeamInfoVo>> getSubTeams(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -124,11 +149,13 @@ public class TeamController {
                 List<Long> loadFirstTeamIds = iOrganizationService.loadMemberFirstTeamIds(spaceId,
                     memberIsolatedInfo.getTeamIds());
                 teamInfos = teamMapper.selectTeamInfoByTeamIds(spaceId, loadFirstTeamIds);
-            } else {
+            }
+            else {
                 teamId = teamMapper.selectRootIdBySpaceId(spaceId);
                 teamInfos = teamMapper.selectRootSubTeams(spaceId, teamId);
             }
-        } else {
+        }
+        else {
             teamInfos = teamMapper.selectSubTeamsByParentId(spaceId, teamId);
         }
         if (CollUtil.isEmpty(teamInfos)) {
@@ -144,18 +171,19 @@ public class TeamController {
         return ResponseData.success(teamInfos);
     }
 
+    /**
+     * Query team's sub teams and members.
+     */
     @GetResource(path = "/getSubTeamsAndMembers", name = "Query team's sub teams and members")
-    @ApiOperation(value = "Query team's sub teams and members",
-        notes = "Query team's sub teams and members, query sub team by team id. "
-            + "if team id lack, default root team.",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "spaceId", value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "query", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", defaultValue = "0",
-            dataTypeClass = String.class, paramType = "query", example = "1")
+    @Operation(summary = "Query team's sub teams and members", description = "Query team's sub "
+        + "teams and members, query sub team by team id. if team id lack, default root team.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "spaceId", description = "space id", required = true, schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id", schema =
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<List<OrganizationUnitVo>> getSubTeamsAndMember(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -186,8 +214,8 @@ public class TeamController {
         memberList.forEach(member -> {
             OrganizationUnitVo vo = new OrganizationUnitVo();
             vo.setId(member.getMemberId());
-            vo.setName(StrUtil.isNotEmpty(member.getMemberName()) ? member.getMemberName() :
-                member.getEmail());
+            vo.setName(StrUtil.isNotEmpty(member.getMemberName()) ? member.getMemberName()
+                : member.getEmail());
             vo.setType(2);
             vo.setAvatar(member.getAvatar());
             vo.setTeams(member.getTeams());
@@ -197,15 +225,17 @@ public class TeamController {
         return ResponseData.success(resList);
     }
 
+    /**
+     * Query the team's members.
+     */
     @GetResource(path = "/members")
-    @ApiOperation(value = "Query the team's members",
-        notes = "Query the team's members, no include sub team's",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", dataTypeClass = String.class,
-            paramType = "query", example = "0")
+    @Operation(summary = "Query the team's members",
+        description = "Query the team's members, no include sub team's")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "0")
     })
     public ResponseData<List<MemberPageVo>> getTeamMembers(
         @RequestParam(name = "teamId") Long teamId) {
@@ -218,15 +248,17 @@ public class TeamController {
         return ResponseData.success(resultList);
     }
 
+    /**
+     * Query team information.
+     */
     @GetResource(path = "/read", name = "Querying team information")
-    @ApiOperation(value = "Query team information",
-        notes = "Query department information. if team id lack, default root team",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", dataTypeClass = String.class,
-            defaultValue = "0", paramType = "query", example = "1")
+    @Operation(summary = "Query team information",
+        description = "Query department information. if team id lack, default root team")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<TeamInfoVo> readTeamInfo(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -235,11 +267,13 @@ public class TeamController {
         return ResponseData.success(teamInfo);
     }
 
+    /**
+     * Create team.
+     */
     @PostResource(path = "/create", name = "Create team", tags = "CREATE_TEAM")
-    @ApiOperation(value = "Create team", notes = "Create team",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-        dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Create team", description = "Create team")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> createTeam(@RequestBody @Valid CreateTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.ADD_TEAM);
@@ -253,12 +287,14 @@ public class TeamController {
         return ResponseData.success();
     }
 
+    /**
+     * Update team info.
+     */
     @PostResource(path = "/update", name = "Update team info", tags = "UPDATE_TEAM")
-    @ApiOperation(value = "Update team info",
-        notes = "Update team info. If modify team level, default sort in the end of parent team.",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-        dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @Operation(summary = "Update team info", description = "Update team info. If modify team "
+        + "level, default sort in the end of parent team.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_TEAM);
@@ -288,16 +324,18 @@ public class TeamController {
         return ResponseData.success();
     }
 
-    @PostResource(path = "/delete/{teamId}", method = { RequestMethod.DELETE },
-        name = "Delete team", tags = "DELETE_TEAM")
-    @ApiOperation(value = "Delete team",
-        notes = "Delete team. If team has members, it can be deleted.",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true,
-            dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "team id", required = true,
-            dataTypeClass = String.class, paramType = "path", example = "1")
+    /**
+     * Delete team.
+     */
+    @PostResource(path = "/delete/{teamId}", method = {
+        RequestMethod.DELETE }, name = "Delete team", tags = "DELETE_TEAM")
+    @Operation(summary = "Delete team",
+        description = "Delete team. If team has members, it can be deleted.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "1")
     })
     public ResponseData<Void> deleteTeam(@PathVariable("teamId") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();

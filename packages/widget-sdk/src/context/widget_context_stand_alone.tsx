@@ -60,9 +60,8 @@ export const WidgetStandAloneProvider: React.FC<React.PropsWithChildren<IWidgetS
       toggleSettings={toggleSetting}
       toggleFullscreen={toggleExpand}
       expandRecord={noop}
-      resourceService={resourceService}
-      globalStore={globalStore}
       className={className}
+      widgetStore={globalStore as any}
       style={style}
     >
       {children}

@@ -19,7 +19,7 @@
 import SuccessIcon from 'static/icon/common/common_icon_success.svg';
 import InfoIcon from 'static/icon/common/common_icon_default.svg';
 import { colorVars } from '@apitable/components';
-import { WarnFilled, ErrorFilled } from '@apitable/icons';
+import { WarnFilled, WarnCircleFilled } from '@apitable/icons';
 // const modulesFiles = require.context('./modules', true, /.js$/)
 
 enum StatusType {
@@ -47,11 +47,11 @@ export const StatusIconFunc = (props: IStatusIconFuncProps) => {
     case StatusType.Success:
       return <SuccessIcon width={width} height={height} fill={fillColor || colorVars.successColor } />;
     case StatusType.Error:
-      return ErrorFilled({ size: width });
+      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Danger:
-      return ErrorFilled({ size: width });
+      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Warning:
-      return WarnFilled({ size: width });
+      return WarnFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

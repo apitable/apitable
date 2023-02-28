@@ -167,7 +167,7 @@ export const getRenderData = (props: {
 
   const nodesMap: INodesMap = {};
 
-  const DEFAULT_DADA = {
+  const DEFAULT_DATA = {
     initialElements: [],
     unhandledNodes: [],
     handlingCount: 0,
@@ -183,12 +183,12 @@ export const getRenderData = (props: {
   };
 
   if (data.nodes.length === 0) {
-    return DEFAULT_DADA;
+    return DEFAULT_DATA;
   }
 
   if (!fieldVisible) {
     return {
-      ...DEFAULT_DADA,
+      ...DEFAULT_DATA,
       unhandledNodes: data.nodes,
     };
   }

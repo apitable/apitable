@@ -18,8 +18,8 @@
 
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CloudStorage } from '@apitable/widget-sdk';
 import { resourceService } from 'pc/resource_service';
+import { CollaCommandName, ResourceType } from '@apitable/core';
 
 /**
  * Widget data storage.
@@ -40,9 +40,16 @@ export function useCloudStorage<S>(key: string, widgetId: string): [S, Dispatch<
     if (!resourceService.instance) {
       return ['', () => {}];
     }
-    const storage = new CloudStorage(cloudStorageData, resourceService.instance, widgetId);
-    const value = storage.get(key) as any;
-    const setValue = (v: any) => storage.set(key, v);
+    const value = cloudStorageData?.[key] as any;
+    const setValue = (v: any) => {
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetGlobalStorage,
+        key,
+        value: v,
+        resourceType: ResourceType.Widget,
+        resourceId: widgetId,
+      });
+    };
     return [value || _initValue, setValue];
   }, [cloudStorageData, widgetId, key, _initValue]);
 }

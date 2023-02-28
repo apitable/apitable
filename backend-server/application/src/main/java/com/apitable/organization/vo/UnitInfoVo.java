@@ -18,80 +18,79 @@
 
 package com.apitable.organization.vo;
 
-import java.util.List;
-
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Organization Unit Information View
+ * Organization Unit Information View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Organization Unit Information View")
+@Schema(description = "Organization Unit Information View")
 public class UnitInfoVo {
 
-    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Org Unit ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "Classification: 1-department, 3-member", example = "1", position = 2)
+    @Schema(description = "Classification: 1-department, 3-member", example = "1")
     private Integer type;
 
-    @ApiModelProperty(value = "Organization unit association ID (may be team ID or member ID according to the type)", dataType = "java.lang.String", example = "1", position = 2)
+    @Schema(description = "Organization unit association ID (may be team ID or member ID "
+        + "according to the type)", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitRefId;
 
-    @ApiModelProperty(value = "Department/Member Name", example = "R&D Department｜Zhang San", position = 3)
+    @Schema(description = "Department/Member Name", example = "R&D Department｜Zhang San")
     private String name;
 
-    @ApiModelProperty(value = "User ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 4)
+    @Schema(description = "User ID (the actual return is uuid)", type = "java.lang.String",
+        example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
     @Deprecated
-    @ApiModelProperty(value = "User UUID corresponding to the member", hidden = true)
+    @Schema(description = "User UUID corresponding to the member", hidden = true)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
-    @ApiModelProperty(value = "Member avatar", example = "http://www.apitable.com/image.png", position = 5)
+    @Schema(description = "Member avatar", example = "http://www.apitable.com/image.png")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 
-    @ApiModelProperty(value = "Whether the member has been activated", example = "true", position = 6)
+    @Schema(description = "Whether the member has been activated", example = "true")
     private Boolean isActive;
 
-    @ApiModelProperty(value = "Whether the organization unit is deleted", example = "false", position = 7)
+    @Schema(description = "Whether the organization unit is deleted", example = "false")
     private Boolean isDeleted;
 
-    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 8)
+    @Schema(description = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 9)
+    @Schema(description = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "email", example = "test@apitable.com", position = 10)
+    @Schema(description = "email", example = "test@apitable.com")
     private String email;
 
-    @ApiModelProperty(value = "team id and full hierarchy team path name", position = 11)
+    @Schema(description = "team id and full hierarchy team path name")
     private List<MemberTeamPathInfo> teamData;
 
-    @ApiModelProperty(value = "default avatar color number", position = 12)
+    @Schema(description = "default avatar color number")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "nick name", position = 13)
+    @Schema(description = "nick name")
     private String nickName;
 }

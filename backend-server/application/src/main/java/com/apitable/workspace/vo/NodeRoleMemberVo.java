@@ -18,46 +18,45 @@
 
 package com.apitable.workspace.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * Node Member View
+ * Node Member View.
  * </p>
  */
 @Data
-@ApiModel("Node Member View")
+@Schema(description = "Node Member View")
 public class NodeRoleMemberVo {
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "Member Name", example = "R&D Department ｜ Zhang San", position = 1)
+    @Schema(description = "Member Name", example = "R&D Department ｜ Zhang San")
     private String memberName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Member avatar", example = "http://www.apitable.com/image.png", position = 2)
+    @Schema(description = "Member avatar", example = "http://www.apitable.com/image.png")
     private String avatar;
 
-    @ApiModelProperty(value = "Member's Department", example = "Operation Department | Product Department | R&D Department", position = 3)
+    @Schema(description = "Member's Department", example = "Operation Department | Product "
+        + "Department | R&D Department")
     private String teams;
 
-    @ApiModelProperty(value = "Role", example = "manager", position = 4)
+    @Schema(description = "Role", example = "manager")
     private String role;
 
-    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 5)
+    @Schema(description = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 6)
+    @Schema(description = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
     @JsonIgnore
@@ -66,9 +65,9 @@ public class NodeRoleMemberVo {
     @JsonIgnore
     private Boolean isAdmin;
 
-    @ApiModelProperty(value = "default avatar color number", example = "1", position = 7)
+    @Schema(description = "default avatar color number", example = "1")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "Nick Name", example = "Zhang San", position = 8)
+    @Schema(description = "Nick Name", example = "Zhang San")
     private String nickName;
 }
