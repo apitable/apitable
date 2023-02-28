@@ -123,7 +123,7 @@ export const WidgetHeaderMobile: React.FC<React.PropsWithChildren<IWidgetHeaderP
     >
       {!config.hideDrag && (
         <span className={classNames(styles.dragHandle, styles.operateButton)}>
-          <DragOutlined size={14} color={colors.thirdLevelText} />
+          <DragOutlined size={10} color={colors.thirdLevelText} />
         </span>
       )}
       <span className={styles.widgetName}>

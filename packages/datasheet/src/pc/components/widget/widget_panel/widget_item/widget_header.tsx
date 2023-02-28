@@ -161,7 +161,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
     >
       {!config.hideDrag && (
         <span className={classNames(styles.dragHandle, styles.operateButton)}>
-          <DragOutlined size={14} color={colors.thirdLevelText} />
+          <DragOutlined size={10} color={colors.thirdLevelText} />
         </span>
       )}
       <span className={styles.widgetName}>

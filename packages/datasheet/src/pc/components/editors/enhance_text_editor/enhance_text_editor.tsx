@@ -109,7 +109,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
 
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));
-      } else if(field.type === FieldType.Email) {
+      } if(field.type === FieldType.Email) {
         const newValue = value.replace(/\s/g, '');
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));

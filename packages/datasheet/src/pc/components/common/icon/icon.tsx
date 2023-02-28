@@ -45,11 +45,11 @@ export const StatusIconFunc = (props: IStatusIconFuncProps) => {
     case StatusType.Success:
       return CheckCircleFilled({ size: width, color: fillColor || colorVars.successColor });
     case StatusType.Error:
-      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
+      return WarnCircleFilled({ size: width });
     case StatusType.Danger:
-      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
+      return WarnCircleFilled({ size: width });
     case StatusType.Warning:
-      return WarnFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
+      return WarnFilled({ size: width });
     default:
       return null;
   }

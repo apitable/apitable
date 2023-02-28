@@ -256,6 +256,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
           shape={'circle'}
           data={EditDescribeFilledPath}
           fill={colors.primaryColor}
+          background={colors.rc01}
           backgroundWidth={GRID_ICON_SMALL_SIZE}
           backgroundHeight={GRID_ICON_SMALL_SIZE}
           opacity={0.2}

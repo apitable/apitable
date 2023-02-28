@@ -64,7 +64,7 @@ export { TimeOutlined } from './time_outlined';
 export { ChartDountFilled } from './chart_dount_filled';
 export { ChartColumnStackFilled } from './chart_column_stack_filled';
 export { ChartBarPercentFilled } from './chart_bar_percent_filled';
-export { ChartScatterPlotnormalFilled, ChartScatterPlotnormalFilled as ChartScatterplotNormalFilled } from './chart_scatter_plotnormal_filled';
+export { ChartScatterPlotnormalFilled } from './chart_scatter_plotnormal_filled';
 export { ChartBarNormalFilled } from './chart_bar_normal_filled';
 export { ChartBarStackFilled } from './chart_bar_stack_filled';
 export { ChartPieFilled } from './chart_pie_filled';
