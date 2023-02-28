@@ -178,12 +178,11 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     /**
      * Query node tree dto
      *
-     * @param spaceId   space id
      * @param parentIds parent node ids
      * @return List<NodeTreeDTO>
      * @author Chambers
      */
-    List<NodeTreeDTO> selectNodeTreeDTOBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
+    List<NodeTreeDTO> selectNodeTreeDTOByParentIdIn(
         @Param("parentIds") Collection<String> parentIds);
 
     /**

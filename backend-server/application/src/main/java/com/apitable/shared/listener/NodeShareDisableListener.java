@@ -79,7 +79,7 @@ public class NodeShareDisableListener implements ApplicationListener<NodeShareDi
                 continue;
             }
             List<String> subNodeIds =
-                iNodeService.getNodeIdsInNodeTree(shareDTO.getSpaceId(), shareDTO.getNodeId(), -1);
+                iNodeService.getNodeIdsInNodeTree(shareDTO.getNodeId(), -1);
             for (String subNodeId : subNodeIds) {
                 MultiValueMapUtils.accumulatedValueIfAbsent(nodeIdToShareIdsMap, subNodeId,
                     shareDTO.getShareId());

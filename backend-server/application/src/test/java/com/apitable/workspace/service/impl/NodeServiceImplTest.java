@@ -167,7 +167,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         // second level datasheet id
         op.setType(NodeType.DATASHEET.getNodeType());
         iNodeService.createNode(userSpace.getUserId(), spaceId, op);
-        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(spaceId, rootNodeId, 2);
+        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 2);
         assertThat(nodeIds.size()).isEqualTo(4);
     }
 

@@ -129,12 +129,11 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectNodeTreeDTOBySpaceIdAndParentIdIn"
+    <select id="selectNodeTreeDTOByParentIdIn"
             resultType="com.apitable.workspace.dto.NodeTreeDTO">
         SELECT node_id, `type`, parent_id, pre_node_id
         FROM ${tablePrefix}node
-        WHERE space_id = #{spaceId}
-        AND parent_id IN
+        WHERE parent_id IN
         <foreach item="item" index="index" collection="parentIds" open="("
                  separator="," close=")">
             #{item}

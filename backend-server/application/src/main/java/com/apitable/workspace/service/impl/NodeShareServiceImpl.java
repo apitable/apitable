@@ -172,14 +172,13 @@ public class NodeShareServiceImpl implements INodeShareService {
     private void appendDatasheetInfo(final NodeShareSettingInfoVO settingInfoVO,
         final String nodeId) {
         // Query association table information
-        NodeEntity node = iNodeService.getByNodeId(nodeId);
-        NodeType nodeType = NodeType.toEnum(node.getType());
+        NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
         List<String> dstIds;
         switch (nodeType) {
             case FOLDER:
                 List<String> subNodeIds =
-                    iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), nodeId, -1);
+                    iNodeService.getNodeIdsInNodeTree(nodeId, -1);
                 dstIds = subNodeIds.stream()
                     .filter(i -> i.startsWith(IdRulePrefixEnum.DST.getIdRulePrefixEnum()))
                     .collect(Collectors.toList());
@@ -307,7 +306,7 @@ public class NodeShareServiceImpl implements INodeShareService {
         boolean hasChildren = nodeMapper.selectHasChildren(node.getNodeId());
         if (hasChildren) {
             List<String> subNodeIds =
-                iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), node.getNodeId(), -1);
+                iNodeService.getNodeIdsInNodeTree(node.getNodeId(), -1);
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 nodeIds.addAll(subNodeIds);
             }

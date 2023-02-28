@@ -431,12 +431,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth) {
         log.info("Query node tree ");
-        List<String> nodeIds = this.getNodeIdsInNodeTree(spaceId, nodeId, depth);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(nodeId, depth);
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, nodeIds);
     }
 
     @Override
-    public List<String> getNodeIdsInNodeTree(String spaceId, String nodeId, Integer depth) {
+    public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth) {
         if (!nodeId.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())) {
             return Collections.singletonList(nodeId);
         }
@@ -445,7 +445,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> parentIds = nodeIds;
         while (!parentIds.isEmpty() && depth != 0) {
             List<NodeTreeDTO> subNode =
-                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds);
+                nodeMapper.selectNodeTreeDTOByParentIdIn(parentIds);
             if (subNode.isEmpty()) {
                 break;
             }
@@ -496,8 +496,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         log.info("Query the list of child nodes ");
         // Get a direct child node
         List<NodeTreeDTO> subNode =
-            nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId,
-                Collections.singleton(nodeId));
+            nodeMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId));
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }
@@ -801,7 +800,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // When this node is a folder, it is prevented from moving into child and descendant nodes.
         if (nodeEntity.getType().equals(NodeType.FOLDER.getNodeType())) {
             List<String> nodeIds =
-                this.getNodeIdsInNodeTree(nodeEntity.getSpaceId(), nodeEntity.getNodeId(), -1);
+                this.getNodeIdsInNodeTree(nodeEntity.getNodeId(), -1);
             ExceptionUtil.isFalse(CollUtil.isNotEmpty(nodeIds)
                 && nodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
         }
@@ -1628,8 +1627,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return null;
         }
         // Check the node permissions of all children and descendants
-        String spaceId = this.getSpaceIdByNodeId(nodeId);
-        List<String> subNodeIds = this.getNodeIdsInNodeTree(spaceId, nodeId, -1);
+        List<String> subNodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
         subNodeIds.remove(nodeId);
 
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, subNodeIds);

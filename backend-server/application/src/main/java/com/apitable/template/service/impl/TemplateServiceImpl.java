@@ -872,9 +872,7 @@ public class TemplateServiceImpl
         // Query the node ID of the template map
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TemplateException.TEMPLATE_INFO_ERROR);
-
-        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
-        return iNodeService.getNodeIdsInNodeTree(spaceId, nodeId, -1);
+        return iNodeService.getNodeIdsInNodeTree(nodeId, -1);
     }
 
     private void complementCategoryInfo(
