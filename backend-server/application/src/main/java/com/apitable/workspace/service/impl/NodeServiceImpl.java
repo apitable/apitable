@@ -155,11 +155,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -344,6 +346,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             if (baseNodeInfo.getType().equals(NodeType.ROOT.getNodeType())) {
                 return CollUtil.reverse(nodeIds);
             }
+            if (nodeIds.contains(baseNodeInfo.getParentId())) {
+                throw new BusinessException("Data Exception!");
+            }
             nodeIds.add(nodeId);
             nodeId = baseNodeInfo.getParentId();
         }
@@ -464,6 +469,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     public List<String> getNodeIdsInNodeTree(List<String> nodeIds, Integer depth, Boolean isRubbish) {
+        Set<String> nodeIdSet = new LinkedHashSet<>(nodeIds);
         List<String> parentIds = nodeIds.stream()
             .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
             .collect(Collectors.toList());
@@ -473,18 +479,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             if (subNode.isEmpty()) {
                 break;
             }
+            parentIds = subNode.stream()
+                .map(NodeTreeDTO::getNodeId)
+                .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())
+                    && !nodeIdSet.contains(i))
+                .collect(Collectors.toList());
             Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
                 subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
             for (List<NodeTreeDTO> sub : parentIdToSubNodeMap.values()) {
-                nodeIds.addAll(this.sortNodeAtSameLevel(sub));
+                nodeIdSet.addAll(this.sortNodeAtSameLevel(sub));
             }
             depth--;
-            parentIds = subNode.stream()
-                .map(NodeTreeDTO::getNodeId)
-                .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
-                .collect(Collectors.toList());
         }
-        return nodeIds;
+        return new ArrayList<>(nodeIdSet);
     }
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
