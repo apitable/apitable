@@ -26,7 +26,6 @@ import { Router } from 'pc/components/route_manager/router';
 import * as React from 'react';
 import { ReactText } from 'react';
 import { useSelector } from 'react-redux';
-import PullDownIcon from 'static/icon/common/common_icon_pulldown.svg';
 import EditPngLight from 'static/icon/datasheet/share/share_space_edit_light.png';
 import EditPngDark from 'static/icon/datasheet/share/share_space_edit_dark.png';
 import SavePng from 'static/icon/datasheet/share/datasheet_img_share_save.png';
@@ -35,6 +34,7 @@ import { ShareSave } from '../share_save';
 import { OperationCard } from './operation_card';
 import styles from './style.module.less';
 import { getEnvVariables } from 'pc/utils/env';
+import { TriangleDownFilled } from '@apitable/icons';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -98,7 +98,7 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
       onSelect={onSelect}
       switcherIcon={
         <span>
-          <PullDownIcon fill={colors.staticWhite0} />
+          <TriangleDownFilled color={colors.staticWhite0} />
         </span>
       }
       selectedKeys={[activedNodeId]}

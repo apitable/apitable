@@ -27,9 +27,8 @@ import { useNetwork } from 'pc/hooks/use_network';
 import RcTrigger from 'rc-trigger';
 import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, NarrowOutlined, ImportOutlined, ExpandOutlined } from '@apitable/icons';
+import { AddFilled, AddOutlined, NarrowOutlined, ImportOutlined, ExpandOutlined, ListOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -163,7 +162,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
           backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
         }}
       >
-        <IconSide width={20} height={20} fill={colors.defaultBg} />
+        <ListOutlined size={20} color={colors.defaultBg} />
       </div>
       <InlineNodeName className={styles.nodeName} nodeId={dashboardId} nodeIcon={dashboardIcon} nodeName={dashboardName} />
       <span className={styles.ghost} />

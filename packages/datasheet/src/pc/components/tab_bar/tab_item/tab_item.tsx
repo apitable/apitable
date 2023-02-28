@@ -21,13 +21,13 @@ import classNames from 'classnames';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { FC, useEffect, useRef } from 'react';
 import * as React from 'react';
-import IconDot from 'static/icon/common/common_icon_more.svg';
 import { ICustomViewProps } from '../tab/tab';
 import styles from './style.module.less';
 import { stopPropagation } from '../../../utils/dom';
 import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@apitable/components';
 import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
+import { MoreOutlined } from '@apitable/icons';
 
 export interface ITabbarItemProps {
   currentViewId: string;
@@ -176,7 +176,7 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
         </Tooltip>
       ) : (
         <div ref={nameRef} className={styles.sheetName} data-nid={currentViewId} data-index={idx}>
-          <ViewIcon width={16} height={16} viewType={type} onClick={() => { return; }} />
+          <ViewIcon size={16} viewType={type} />
           <Tooltip title={name} textEllipsis>
             <span
               className={styles.name}
@@ -200,7 +200,7 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
             }}
           >
             <div className={styles.circle}>
-              <IconDot width={12} height={12} fill={colors.thirdLevelText} />
+              <MoreOutlined size={12} color={colors.thirdLevelText} />
             </div>
           </div>
         </div>

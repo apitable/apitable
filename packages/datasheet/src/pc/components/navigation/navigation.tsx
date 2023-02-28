@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { SettingOutlined } from '@apitable/icons';
+import { ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SettingOutlined, UserGroupOutlined, WorkbenchOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
@@ -44,11 +44,6 @@ import { isMobileApp, isHiddenIntercom } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import HomeDown from 'static/icon/common/common_icon_pulldown_line.svg';
-import NotificationIcon from 'static/icon/datasheet/datasheet_icon_notification.svg';
-import AddressIcon from 'static/icon/workbench/workbench_tab_icon_address_normal.svg';
-import TemplateIcon from 'static/icon/workbench/workbench_tab_icon_template_normal.svg';
-import WorkplaceIcon from 'static/icon/workbench/workbench_tab_icon_workingtable_normal.svg';
 import AnimationJson from 'static/json/notification_new.json';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Popup } from '../common/mobile/popup';
@@ -59,7 +54,6 @@ import { NavigationContext } from './navigation_context';
 import { SpaceListDrawer } from './space_list_drawer';
 import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
-// import { NavigationItem } from './navigation_item';
 import { User } from './user';
 import { useIntercom } from 'react-use-intercom';
 enum NavKey {
@@ -194,22 +188,21 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const navList = Player.applyFilters(Events.get_nav_list, [
     {
       routeAddress: '/workbench' + search,
-      icon: WorkplaceIcon,
+      icon: WorkbenchOutlined,
       text: t(Strings.nav_workbench),
       key: NavKey.Workbench,
       domId: NAV_ID.ICON_WORKBENCH,
     },
     {
       routeAddress: '/org' + search,
-      icon: AddressIcon,
+      icon: UserGroupOutlined,
       text: t(Strings.nav_team),
       key: NavKey.Org,
       domId: NAV_ID.ICON_ADDRESS,
     },
     {
       routeAddress: '/template' + search,
-      icon: TemplateIcon,
-      // icon: <NavigationItem animationData={TemplateAnimationJSON} style={{ width: '24px', height: '24px' }} />,
+      icon: PlanetOutlined,
       text: t(Strings.nav_templates),
       key: NavKey.Template,
       domId: NAV_ID.ICON_TEMPLATE,
@@ -232,7 +225,9 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
           [styles.navActiveItem]: notice,
         })}
       >
-        <NotificationIcon className={classNames(styles.notice, styles.navIcon)} style={{ visibility: noticeIcon ? 'visible' : 'hidden' }} />
+        <span style={{ visibility: noticeIcon ? 'visible' : 'hidden' }}>
+          <NotificationOutlined className={classNames(styles.notice, styles.navIcon)} />
+        </span>
       </Badge>
     );
     return (
@@ -320,7 +315,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
           <div className={styles.spaceDown}>
             <Tooltip title={t(Strings.workspace_list)} placement="bottom">
               <div>
-                <HomeDown className={styles.spaceIcon} />
+                <ChevronDownOutlined className={styles.spaceIcon} />
               </div>
             </Tooltip>
           </div>
@@ -336,7 +331,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
 
             let NavIcon = item.icon;
             if (typeof item.icon === 'string') {
-              NavIcon = WorkplaceIcon;
+              NavIcon = WorkbenchOutlined;
             }
             const isActive = router.pathname.split('/')[1] === item.key;
             const NavItem = (): React.ReactElement => (

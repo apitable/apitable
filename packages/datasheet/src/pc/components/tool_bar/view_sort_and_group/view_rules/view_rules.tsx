@@ -21,11 +21,10 @@ import classNames from 'classnames';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import CheckedIcon from 'static/icon/datasheet/column/datasheet_icon_checkbox.svg';
-import CheckIcon from 'static/icon/datasheet/datasheet_icon_checkbox_normal.svg';
 import IconArrowGray from 'static/icon/datasheet/datasheet_icon_toward_right_gray.svg';
 import styles from './style.module.less';
 import { Tooltip } from 'pc/components/common/tooltip';
+import { CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
 
 interface IViewRules {
   index: number;
@@ -86,18 +85,18 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
     return (
       <>
         <div className={ascClass} onClick={e => { changeDescType(e, false); }}>
-          <CheckIcon width={15} height={15} fill={ascIconColor} />
+          <CheckboxOutlined size={15} color={ascIconColor} />
           <div className={styles.iconArrow}>
             {renderCorrectIcon(ascClass)}
           </div>
-          <CheckedIcon width={15} height={15} fill={ascIconColor} />
+          <CheckboxFilled size={15} color={ascIconColor} />
         </div>
         <div className={descClass} onClick={e => { changeDescType(e, true); }}>
-          <CheckedIcon width={15} height={15} fill={descIconColor} />
+          <CheckboxFilled size={15} color={descIconColor} />
           <div className={styles.iconArrow}>
             {renderCorrectIcon(descClass)}
           </div>
-          <CheckIcon width={15} height={15} fill={descIconColor} />
+          <CheckboxOutlined size={15} color={descIconColor} />
         </div>
       </>
     );

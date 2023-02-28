@@ -18,6 +18,7 @@
 
 import { Button, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
+import { AddOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import { Modal, Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
@@ -31,8 +32,6 @@ import * as React from 'react';
 import { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import IconArrowLeft from 'static/icon/common/common_icon_left_line.svg';
 import { useCommand } from '../hooks/use_command';
 import { KanbanMember } from './kanban_member';
 import { KanbanOption } from './kanban_option/kanban_option';
@@ -62,7 +61,7 @@ const SettingHead: React.FC<React.PropsWithChildren<ISettingHeadProps>> = ({ rou
           className={styles.back}
           onClick={() => { setRoute(KanbanRoute.Init); }}
         >
-          <IconArrowLeft width={16} height={16} />
+          <ChevronLeftOutlined size={16} />
           {t(Strings.back)}
         </div>
       }
@@ -190,11 +189,11 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
             fieldCreatable &&
             <>
               <div className={styles.fieldItem} onClick={() => setRoute(KanbanRoute.Option)}>
-                <IconAdd className={styles.addIcon} />
+                <AddOutlined className={styles.addIcon} />
                 {t(Strings.kanban_setting_create_option)}
               </div>
               <div className={styles.fieldItem} onClick={() => setRoute(KanbanRoute.Member)}>
-                <IconAdd className={styles.addIcon} />
+                <AddOutlined className={styles.addIcon} />
                 {t(Strings.kanban_setting_create_member)}
               </div>
             </>

@@ -72,7 +72,7 @@ export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSetti
               <PermissionModalHeader
                 typeName={t(Strings.file)}
                 targetName={data.name}
-                targetIcon={getNodeIcon(data.icon, data.type)}
+                targetIcon={getNodeIcon(data.icon, data.type, { normalColor: colors.textCommonTertiary })}
                 docIcon={<Title />}
               />
             }

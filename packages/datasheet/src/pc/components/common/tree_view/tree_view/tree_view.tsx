@@ -17,11 +17,11 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
+import { TriangleRightFilled } from '@apitable/icons';
 import { isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import DefaultSwitcherIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
 
@@ -58,7 +58,7 @@ export interface ITreeViewRef {
 export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeViewProps> = ({
   module,
   className,
-  switcherIcon = <DefaultSwitcherIcon />,
+  switcherIcon = <TriangleRightFilled />,
   expandedKeys = [],
   selectedKeys = [],
   treeData,

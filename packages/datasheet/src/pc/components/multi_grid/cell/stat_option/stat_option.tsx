@@ -36,9 +36,9 @@ import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconArrow from 'static/icon/common/common_icon_pulldown.svg';
 import styles from './styles.module.less';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { TriangleDownFilled } from '@apitable/icons';
 
 interface IStatOption {
   fieldId: string;
@@ -240,10 +240,10 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
         <div style={{ marginRight: '4px' }}>
           {statText}
         </div>
-        <div style={{ width: '8px' }}>
-          <IconArrow
-            fill={colors.fourthLevelText} width={8} height={6}
-            style={{ display: statType ? 'inline-block' : '' }}
+        <div style={{ width: '8px', display: statType ? 'inline-block' : '' }}>
+          <TriangleDownFilled
+            size={8}
+            color={colors.fourthLevelText}
           />
         </div>
       </div>

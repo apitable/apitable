@@ -18,6 +18,7 @@
 
 import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
+import { UserAdminFilled, UserAdminOutlined } from '@apitable/icons';
 import { Space } from 'antd';
 import classnames from 'classnames';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';
@@ -26,8 +27,6 @@ import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'enterprise';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import MainAdminIcon from 'static/icon/workbench/administrators.svg';
-import DocumentAdmin from 'static/icon/workbench/document_manager.svg';
 import { IRoleOption, IUnitItemProps } from './interface';
 import styles from './style.module.less';
 
@@ -80,14 +79,14 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => 
                 <Tooltip
                   title={t(Strings.space_admin)}
                 >
-                  <div className={styles.role}><MainAdminIcon width={16} height={16} fill={colors.primaryColor} /></div>
+                  <div className={styles.role}><UserAdminFilled size={16} color={colors.primaryColor} /></div>
                 </Tooltip>
                 }
                 {isOwner &&
                 <Tooltip
                   title={identity?.permissionOpenerTip || t(Strings.share_permisson_model_node_owner)}
                 >
-                  <div className={styles.role}><DocumentAdmin width={16} height={16} fill={colors.successColor} /></div>
+                  <div className={styles.role}><UserAdminOutlined size={16} color={colors.successColor} /></div>
                 </Tooltip>
                 }
               </Space>

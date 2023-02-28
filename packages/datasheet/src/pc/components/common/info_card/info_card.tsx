@@ -26,8 +26,8 @@ import { OmittedMiddleText } from './omitted_middle_text';
 import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigger';
 import { TriggerProps } from 'rc-trigger';
 import { MemberType } from '@apitable/core';
-import MemberIcon from 'static/icon/space/space_icon_account.svg';
 import { getThemeColors } from '@apitable/components';
+import { UserOutlined } from '@apitable/icons';
 
 interface ITriggerBase {
   action: TriggerProps['action'];
@@ -95,7 +95,7 @@ export const InfoCard: FC<React.PropsWithChildren<IInfoCardProps>> = props => {
             </div>
           </UserCardTrigger> :
           <Avatar
-            defaultIcon={isSelf ? <MemberIcon width={16} height={16} fill={colors.defaultBg} /> : undefined}
+            defaultIcon={isSelf ? <UserOutlined size={16} color={colors.defaultBg} /> : undefined}
             {...avatarProps}
           />
         }

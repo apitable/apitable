@@ -23,14 +23,13 @@ import { useState } from 'react';
 import * as React from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options_mobile';
 import { ViewRules } from '../view_rules';
 import { ButtonPlus } from 'pc/components/common';
 import { Col, Row } from 'antd';
-import { DragOutlined } from '@apitable/icons';
+import { DeleteOutlined, DragOutlined } from '@apitable/icons';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 
 interface ICommonViewSetProps {
@@ -72,7 +71,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.iconDrag} onMouseOver={onMouseOver}>
-            <DragOutlined size={10} color={colors.fourthLevelText} />
+            <DragOutlined size={14} color={colors.fourthLevelText} />
           </div>
           {/* option list */}
           <ViewFieldOptions
@@ -94,7 +93,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
             onClick={() => deleteItem(index)}
             size="x-small"
             style={{ color: colors.fourthLevelText, marginLeft: 10 }}
-            icon={<IconDelete width={15} height={15} fill={colors.fourthLevelText} />}
+            icon={<DeleteOutlined size={15} color={colors.fourthLevelText} />}
           />
         </ComponentDisplay>
 
@@ -102,7 +101,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
           <Row align="middle" gutter={[0, 8]} style={{ width: '100%' }} onTouchMove={onMouseOver}>
             <Col span={1}>
               <div className={styles.iconDrag}>
-                <DragOutlined size={10} color={colors.thirdLevelText} />
+                <DragOutlined size={14} color={colors.thirdLevelText} />
               </div>
             </Col>
             <Col span={9}>
@@ -136,7 +135,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
                   onClick={() => deleteItem(index)}
                   size="x-small"
                   style={{ color: colors.fourthLevelText }}
-                  icon={<IconDelete width={15} height={15} fill={colors.fourthLevelText} />}
+                  icon={<DeleteOutlined size={15} color={colors.fourthLevelText} />}
                 />
               </div>
             </Col>

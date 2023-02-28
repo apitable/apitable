@@ -21,9 +21,9 @@ import { Tree } from 'antd';
 import { useSelector } from 'react-redux';
 import { ITeamList, IReduxState } from '@apitable/core';
 import styles from './style.module.less';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { AntTreeNodeSelectedEvent } from 'antd/lib/tree';
 import { Tooltip } from 'pc/components/common';
+import { TriangleRightFilled } from '@apitable/icons';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -76,7 +76,7 @@ export const AddressTreeMenu: FC<React.PropsWithChildren<IAddressTreeMenu>> = pr
           onSelect={teamClick}
           expandAction={false}
           selectedKeys={[teamId]}
-          switcherIcon={<div><PullDownIcon /></div>}
+          switcherIcon={<div><TriangleRightFilled /></div>}
           showIcon={false}
         >
           {renderTreeNode(listData)}

@@ -26,16 +26,11 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { copy2clipBoard } from 'pc/utils';
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import HistoryIcon from 'static/icon/common/common_icon_history.svg';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
-import RetractIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
+import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
 
 const { TreeNode } = TreeSelect;
-
 
 export const LinkInvite = () => {
   const colors = useThemeColors();
@@ -160,7 +155,7 @@ export const LinkInvite = () => {
             <ButtonGroup withSeparate>
               <Tooltip title={t(Strings.copy_link)} placement="top">
                 <Button onClick={() => copy2clipBoard(`${item.token} ${inviteText}`)}>
-                  <CopyIcon fill={colors.secondLevelText} />
+                  <CopyOutlined color={colors.secondLevelText} />
                 </Button>
               </Tooltip>
               <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -176,7 +171,7 @@ export const LinkInvite = () => {
                   onVisibleChange={v => popconfirmVisibleChange(item.token, v)}
                 >
                   <Button>
-                    <DeleteIcon fill={colors.secondLevelText} />
+                    <DeleteOutlined color={colors.secondLevelText} />
                   </Button>
                 </Popconfirm>
               </ComponentDisplay>
@@ -191,7 +186,7 @@ export const LinkInvite = () => {
                     });
                   }}
                 >
-                  <DeleteIcon fill={colors.secondLevelText} />
+                  <DeleteOutlined color={colors.secondLevelText} />
                 </Button>
               </ComponentDisplay>
             </ButtonGroup>
@@ -213,9 +208,9 @@ export const LinkInvite = () => {
               value={value === '' ? undefined : value}
               placeholder={t(Strings.placeholder_choose_group)}
               onChange={value => onChange(value)}
-              suffixIcon={<PulldownIcon />}
+              suffixIcon={<ChevronDownOutlined />}
               treeIcon
-              switcherIcon={<RetractIcon />}
+              switcherIcon={<TriangleRightFilled />}
               showSearch={false}
               dropdownClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
@@ -232,7 +227,7 @@ export const LinkInvite = () => {
       {linkList.length > 0 && (
         <>
           <div className={styles.historyTitle}>
-            <HistoryIcon />
+            <TimeOutlined />
             {t(Strings.invitation_link_old)}
           </div>
           <div className={styles.linkWrapper}>{renderLinkList()}</div>

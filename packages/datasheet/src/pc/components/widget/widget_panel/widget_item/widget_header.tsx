@@ -12,7 +12,6 @@ import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
@@ -125,7 +124,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
     }
     expandWidgetRoute(widgetId);
   };
-  const ReactIconExpand = () => <IconExpand width={16} height={16} fill={colors.thirdLevelText} />;
+  const ReactIconExpand = () => <ExpandOutlined size={16} color={colors.thirdLevelText} />;
   const ReactMoreOutlined = () => <MoreOutlined size={16} color={colors.thirdLevelText} className={styles.rotateIcon} />;
 
   const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation='vertical' />;

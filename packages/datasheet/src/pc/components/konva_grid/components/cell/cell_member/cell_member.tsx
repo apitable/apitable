@@ -138,7 +138,9 @@ export const CellMember: FC<React.PropsWithChildren<ICellProps>> = props => {
                     y={4}
                     data={CloseSmallOutlinedPath}
                     fill={colors.fc2}
-                    size={16}
+                    scaleX={0.75}
+                    scaleY={0.75}
+                    transformsEnabled={'all'}
                     background={iconBg}
                     backgroundHeight={16}
                     backgroundWidth={16}

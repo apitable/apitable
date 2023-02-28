@@ -34,10 +34,8 @@ import { useNotificationCreate, useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
-import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
-import ExitIcon from 'static/icon/space/space_icon_quitspace.svg';
-import ManagerIcon from 'static/icon/workbench/workbench_tab_icon_manage_normal.svg';
 import styles from './style.module.less';
+import { LogoutOutlined, MoreStandOutlined, SettingOutlined } from '@apitable/icons';
 
 export interface ISpaceListItemProps {
   spaceInfo: ISpaceInfo;
@@ -134,7 +132,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
       </div>
       {managable ? (
         <ButtonPlus.Icon
-          icon={<ManagerIcon width={16} height={16} />}
+          icon={<SettingOutlined size={16} />}
           onClick={jumpSpaceManagement}
           className={classnames(styles.moreBtn, { [styles.visible]: isMobile })}
         />
@@ -150,12 +148,12 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
             onVisibleChange={visibleChangeHandler}
             content={
               <div className={styles.container} onClick={closeMenuHandler}>
-                <ContextmenuItem icon={<ExitIcon />} name={t(Strings.quit_space)} onClick={quitSpace} />
+                <ContextmenuItem icon={<LogoutOutlined />} name={t(Strings.quit_space)} onClick={quitSpace} />
               </div>
             }
           >
             <ButtonPlus.Icon
-              icon={<MoreIcon width={16} height={16} fill={colors.thirdLevelText} />}
+              icon={<MoreStandOutlined size={16} color={colors.thirdLevelText} />}
               onClick={openMoreOperationHandler}
               className={classnames(styles.moreBtn, visible && styles.visible)}
             />

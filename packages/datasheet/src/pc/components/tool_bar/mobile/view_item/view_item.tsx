@@ -179,7 +179,7 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
         )}
         <ViewIcon
           viewType={view.type}
-          fill={fillColor}
+          color={fillColor}
         />
         <span
           className={style.text}

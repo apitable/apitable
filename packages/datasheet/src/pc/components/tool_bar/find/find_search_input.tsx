@@ -24,10 +24,8 @@ import { KeyCode } from 'pc/utils';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconNext from 'static/icon/common/common_icon_pulldown_line.svg';
-import IconPrev from 'static/icon/common/common_icon_up_line.svg';
 import styles from './styles.module.less';
-import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
+import { ChevronDownOutlined, ChevronUpOutlined, CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { dispatch } from 'pc/worker/store';
@@ -174,7 +172,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
                 title={t(Strings.find_prev)}
                 placement="top"
               >
-                <span><IconPrev width={16} height={16} fill={colors.secondLevelText} /></span>
+                <span><ChevronUpOutlined size={16} color={colors.secondLevelText} /></span>
               </Tooltip>
             }
           />
@@ -187,7 +185,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
                 title={t(Strings.find_next)}
                 placement="top"
               >
-                <span><IconNext width={16} height={16} fill={colors.secondLevelText} /></span>
+                <span><ChevronDownOutlined size={16} color={colors.secondLevelText} /></span>
               </Tooltip>
             }
           />

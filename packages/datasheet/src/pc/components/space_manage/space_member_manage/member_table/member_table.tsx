@@ -29,11 +29,11 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, ReactText, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconCheck from 'static/icon/common/common_icon_select.svg';
 import { EditMemberModal } from '../modal';
 import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
+import { CheckOutlined } from '@apitable/icons';
 
 interface IMemberTable {
   searchMemberRes: IMemberInfoInSpace[];
@@ -187,7 +187,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
           renderItem={(item: any, index) => (
             <div onClick={item.onClick} className={styles.listItem} key={index}>
               {item.title}
-              {item.isSelected && <IconCheck width={16} height={16} fill={lightColors.primaryColor} />}
+              {item.isSelected && <CheckOutlined size={16} color={lightColors.primaryColor} />}
             </div>
           )}
         />

@@ -25,15 +25,13 @@ import {
 import styles from './style.module.less';
 import { stopPropagation } from 'pc/utils';
 import { Slider, Switch } from 'antd';
-import GalleryIcon from 'static/icon/datasheet/gallery/datasheet_icon_tiling_big.svg';
-import GalleryListIcon from 'static/icon/datasheet/gallery/datasheet_icon_list_big.svg';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';
+import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
 
 const MAX_COLUMN_COUNT = 6;
 const MIN_COLUMN_COUNT = 1;
@@ -112,10 +110,9 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
             <span className={styles.title}>{t(Strings.select_layout)}</span>
             <div className={styles.layoutIconWrapper}>
               <div className={styles.iconAndDesc}>
-                <GalleryIcon
-                  width={28}
-                  height={28}
-                  fill={layoutColor}
+                <GalleryOutlined
+                  size={28}
+                  color={layoutColor}
                 />
                 <span
                   className={styles.title}
@@ -127,12 +124,10 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
 
               <div className={styles.iconAndDesc}>
                 <Tooltip title={t(Strings.this_feature_is_not_yet_available)} placement="top">
-                  <span>
-                    <GalleryListIcon
-                      width={28}
-                      height={28}
-                      fill={listLayoutColor}
-                      style={{ cursor: 'not-allowed' }}
+                  <span style={{ cursor: 'not-allowed' }}>
+                    <ListOutlined
+                      size={28}
+                      color={listLayoutColor}
                     />
                   </span>
                 </Tooltip>
@@ -180,10 +175,9 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
                     })}
                   />
                 </div>
-                <AddIcon
-                  fill={activeView.style.cardCount < 6 ? colors.primaryColor : colors.thirdLevelText}
-                  width={16}
-                  height={16}
+                <AddOutlined
+                  color={activeView.style.cardCount < 6 ? colors.primaryColor : colors.thirdLevelText}
+                  size={16}
                   onClick={addCardCount}
                   className={styles.addCardCountIcon}
                 />

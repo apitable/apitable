@@ -34,7 +34,6 @@ import { resourceService } from 'pc/resource_service';
 import { useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
@@ -45,6 +44,7 @@ import { SyncViewTip } from '../sync_view_tip';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { useResponsive } from 'pc/hooks';
+import { AddOutlined } from '@apitable/icons';
 
 interface IViewFilter {
   triggerInfo?: IUseListenTriggerInfo;
@@ -172,7 +172,7 @@ const ViewFilterBase = (props: IViewFilter) => {
       </div>
       <div className={styles.addNewButton} onClick={commandForAddViewFilter}>
         <div className={styles.iconAdd}>
-          <IconAdd width={16} height={16} fill={colors.thirdLevelText} />
+          <AddOutlined size={16} color={colors.thirdLevelText} />
         </div>
         {t(Strings.add_filter)}
       </div>

@@ -23,13 +23,10 @@ import { useEmailInviteInModal } from 'pc/hooks';
 import { forwardRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
-import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import styles from './style.module.less';
 import { InviteAlert } from '../components/invite-alert';
 import { getEnvVariables } from 'pc/utils/env';
+import { AddOutlined, CheckOutlined, DeleteOutlined, WarnOutlined } from '@apitable/icons';
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -49,8 +46,8 @@ const InitialInputData = {
   err: '',
 };
 const ResIcon = {
-  Success: <SuccessIcon />,
-  Warning: <WarnIcon />,
+  Success: <CheckOutlined />,
+  Warning: <WarnOutlined />,
 };
 export const InputEmail = forwardRef(({
   cancel, setMemberInvited, shareId,
@@ -95,7 +92,7 @@ export const InputEmail = forwardRef(({
             (
               <Tooltip title={t(Strings.delete)} placement="top">
                 <div className={styles.removeIcon} onClick={() => removeMemberItem(key)}>
-                  <DeleteIcon />
+                  <DeleteOutlined />
                 </div>
               </Tooltip>
             )
@@ -206,7 +203,7 @@ export const InputEmail = forwardRef(({
                 <div>
                   <Button
                     onClick={addMemberItem}
-                    prefixIcon={<AddIcon width={16} height={16} fill="currentColor" />}
+                    prefixIcon={<AddOutlined size={16} color="currentColor" />}
                     className={styles.add}
                   >
                     {t(Strings.button_add)}

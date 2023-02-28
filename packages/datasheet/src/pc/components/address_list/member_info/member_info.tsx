@@ -23,13 +23,13 @@ import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isId
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
-import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { useAddressRequest } from 'pc/hooks';
 import { Input } from 'antd';
 import { useToggle } from 'ahooks';
 import { Identity } from 'pc/components/space_manage/identity';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
+import { EditOutlined } from '@apitable/icons';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';
@@ -130,7 +130,7 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
             <span>{displayMemberName}</span>
             {
               editIcon && !isIdassPrivateDeployment() &&
-              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditIcon fill='currentColor' /></ButtonPlus.Icon>
+              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditOutlined color='currentColor' /></ButtonPlus.Icon>
             }
           </div>
           {inEditName &&

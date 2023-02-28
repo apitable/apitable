@@ -19,14 +19,11 @@
 import * as React from 'react';
 import { Tooltip } from 'antd';
 import { IconButton, colorVars } from '@apitable/components';
-
-import IconNext from 'static/icon/datasheet/activity/datasheet_icon_activity_under.svg';
-import IconPre from 'static/icon/datasheet/activity/datasheet_icon_activity_up.svg';
-
 import styles from '../style.module.less';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@apitable/icons';
 
-const ReactIconNext = () => <IconNext width={16} height={16} fill={'white'} />;
-const ReactIconPre = () => <IconPre width={16} height={16} fill={'white'} />;
+const ReactIconNext = () => <ArrowDownOutlined size={16} color={'white'} />;
+const ReactIconPre = () => <ArrowUpOutlined size={16} color={'white'} />;
 
 interface IPageTurnProps {
   preButtonTip: string;
@@ -66,7 +63,7 @@ export const PageTurn: React.FC<React.PropsWithChildren<IPageTurnProps>> = (prop
                 margin: '0 4px',
                 pointerEvents: disablePre ? 'auto' : 'none',
               }}
-              icon={() => <IconPre width={16} height={16} fill={colorVars.fc3} />}
+              icon={() => <ArrowUpOutlined size={16} color={colorVars.fc3} />}
             />
           </span>
         </Tooltip>
@@ -84,7 +81,7 @@ export const PageTurn: React.FC<React.PropsWithChildren<IPageTurnProps>> = (prop
                 margin: '0 4px',
                 pointerEvents: disableNext ? 'auto' : 'none',
               }}
-              icon={() => <IconNext width={16} height={16} fill={colorVars.fc3} />}
+              icon={() => <ArrowDownOutlined size={16} color={colorVars.fc3} />}
             />
           </span>
         </Tooltip>

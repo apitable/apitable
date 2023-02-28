@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SuccessIcon from 'static/icon/common/common_icon_success.svg';
-import InfoIcon from 'static/icon/common/common_icon_default.svg';
 import { colorVars } from '@apitable/components';
-import { WarnFilled, WarnCircleFilled } from '@apitable/icons';
+import { WarnFilled, WarnCircleFilled, CheckCircleFilled, InfoCircleFilled } from '@apitable/icons';
 // const modulesFiles = require.context('./modules', true, /.js$/)
 
 enum StatusType {
@@ -38,14 +36,14 @@ interface IStatusIconFuncProps {
   height?: number;
 }
 export const StatusIconFunc = (props: IStatusIconFuncProps) => {
-  const { type, fillColor, width = 24, height = 24 } = props;
+  const { type, fillColor, width = 24 } = props;
   switch (type) {
     case StatusType.Info:
-      return <InfoIcon width={width} height={height} fill={fillColor || colorVars.primaryColor} />;
+      return InfoCircleFilled({ size: width, color: fillColor || colorVars.primaryColor });
     case StatusType.Primary:
-      return <InfoIcon width={width} height={height} fill={fillColor || colorVars.primaryColor} />;
+      return InfoCircleFilled({ size: width, color: fillColor || colorVars.primaryColor });
     case StatusType.Success:
-      return <SuccessIcon width={width} height={height} fill={fillColor || colorVars.successColor } />;
+      return CheckCircleFilled({ size: width, color: fillColor || colorVars.successColor });
     case StatusType.Error:
       return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Danger:

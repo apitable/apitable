@@ -20,7 +20,7 @@ import { Button } from '@apitable/components';
 import {
   ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, UserGroupOutlined } from '@apitable/icons';
+import { AddOutlined, SearchOutlined, UserGroupOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
@@ -39,7 +39,6 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
 
@@ -173,7 +172,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
               setInSearch(true);
             }}
           >
-            <SearchIcon />
+            <SearchOutlined />
           </span>
         </div>
       </ComponentDisplay>
@@ -182,7 +181,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
           <div className={styles.searchInputWrapper}>
             <Input
               className={styles.searchInput}
-              prefix={<SearchIcon />}
+              prefix={<SearchOutlined />}
               size='small'
               placeholder={t(Strings.search)}
               onClick={() => setInSearch(true)}

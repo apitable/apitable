@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
-import { DragOutlined } from '@apitable/icons';
+import { DeleteOutlined, DragOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
@@ -27,7 +27,6 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from '../styles.module.less';
 
 export interface IFormatSelectItem {
@@ -110,7 +109,7 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
           />
         </div>
         <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>
-          <IconDelete width={15} height={15} fill={colors.fourthLevelText} />
+          <DeleteOutlined size={15} color={colors.fourthLevelText} />
         </div>
       </div>
     )}
