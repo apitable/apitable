@@ -112,7 +112,7 @@ export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps
               recordId,
             })}
             x={6}
-            y={iconOffsetY + 4}
+            y={iconOffsetY}
             data={DragOutlinedPath}
             fill={isChecked ? colors.defaultBg : colors.thirdLevelText}
             onMouseEnter={onDragMouseEnter}

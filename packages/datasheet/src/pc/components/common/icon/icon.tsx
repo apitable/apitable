@@ -49,7 +49,7 @@ export const StatusIconFunc = (props: IStatusIconFuncProps) => {
     case StatusType.Danger:
       return WarnCircleFilled({ size: width });
     case StatusType.Warning:
-      return WarnFilled({ size: width });
+      return WarnFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

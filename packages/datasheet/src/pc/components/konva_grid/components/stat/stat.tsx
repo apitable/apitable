@@ -199,11 +199,11 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
           />
           <Icon
             x={finalWidth - 20}
-            y={(height - GRID_ICON_COMMON_SIZE) / 2 + 1}
+            y={(height - GRID_ICON_COMMON_SIZE) / 2 + 3}
             data={TriangleDown16FilledPath}
             fill={black[300]}
-            scaleX={0.8}
-            scaleY={0.8}
+            scaleX={0.6}
+            scaleY={0.6}
             transformsEnabled={'all'}
             listening={false}
           />
