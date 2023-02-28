@@ -32,6 +32,8 @@ public class NodeTreeDTO {
 
     private String nodeId;
 
+    private Integer type;
+
     private String parentId;
 
     private String preNodeId;

@@ -23,7 +23,6 @@ import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.dto.SimpleNodeInfo;
 import com.apitable.workspace.dto.UrlNodeInfoDTO;
 import com.apitable.workspace.entity.NodeEntity;
-import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
@@ -181,12 +180,11 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param spaceId   space id
      * @param parentIds parent node ids
-     * @param nodeType  node type(no require)
      * @return List<NodeTreeDTO>
      * @author Chambers
      */
     List<NodeTreeDTO> selectNodeTreeDTOBySpaceIdAndParentIdIn(@Param("spaceId") String spaceId,
-        @Param("parentIds") Collection<String> parentIds, @Param("nodeType") NodeType nodeType);
+        @Param("parentIds") Collection<String> parentIds);
 
     /**
      * Query the ID of the direct child node.

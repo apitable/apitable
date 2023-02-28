@@ -445,7 +445,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> parentIds = nodeIds;
         while (!parentIds.isEmpty() && depth != 0) {
             List<NodeTreeDTO> subNode =
-                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds, null);
+                nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId, parentIds);
             if (subNode.isEmpty()) {
                 break;
             }
@@ -464,6 +464,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
+        return this.sortNodeAtSameLevel(sub, null);
+    }
+
+    private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
         Optional<NodeTreeDTO> first =
             sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
         if (!first.isPresent()) {
@@ -471,12 +475,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         String preNodeId = first.get().getNodeId();
         List<String> nodeIds = new ArrayList<>();
-        nodeIds.add(preNodeId);
-        Map<String, String> preNodeIdToNodeIdMap = sub.stream()
-            .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, NodeTreeDTO::getNodeId, (k1, k2) -> k2));
-        while (preNodeIdToNodeIdMap.containsKey(preNodeId)) {
-            preNodeId = preNodeIdToNodeIdMap.get(preNodeId);
+        if (nodeType == null || first.get().getType() == nodeType.getNodeType()) {
             nodeIds.add(preNodeId);
+        }
+        Map<String, NodeTreeDTO> preNodeIdToNodeMap = sub.stream()
+            .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, i -> i, (k1, k2) -> k2));
+        while (preNodeIdToNodeMap.containsKey(preNodeId)) {
+            NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
+            preNodeId = nodeTreeDTO.getPreNodeId();
+            if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
+                nodeIds.add(preNodeId);
+            }
         }
         return nodeIds;
     }
@@ -488,11 +497,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // Get a direct child node
         List<NodeTreeDTO> subNode =
             nodeMapper.selectNodeTreeDTOBySpaceIdAndParentIdIn(spaceId,
-                Collections.singleton(nodeId), nodeType);
+                Collections.singleton(nodeId));
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }
-        List<String> subNodeIds = this.sortNodeAtSameLevel(subNode);
+        List<String> subNodeIds = this.sortNodeAtSameLevel(subNode, nodeType);
         return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
     }
 
@@ -791,10 +800,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             ParameterException.INCORRECT_ARG);
         // When this node is a folder, it is prevented from moving into child and descendant nodes.
         if (nodeEntity.getType().equals(NodeType.FOLDER.getNodeType())) {
-            List<String> subNodeIds =
+            List<String> nodeIds =
                 this.getNodeIdsInNodeTree(nodeEntity.getSpaceId(), nodeEntity.getNodeId(), -1);
-            ExceptionUtil.isFalse(CollUtil.isNotEmpty(subNodeIds)
-                && subNodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
+            ExceptionUtil.isFalse(CollUtil.isNotEmpty(nodeIds)
+                && nodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
         }
         AuditSpaceAction action = AuditSpaceAction.MOVE_NODE;
         JSONObject info = JSONUtil.createObj();
@@ -1621,6 +1630,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // Check the node permissions of all children and descendants
         String spaceId = this.getSpaceIdByNodeId(nodeId);
         List<String> subNodeIds = this.getNodeIdsInNodeTree(spaceId, nodeId, -1);
+        subNodeIds.remove(nodeId);
 
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, subNodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(),

@@ -18,43 +18,29 @@
 
 package com.apitable.template.service.impl;
 
-import com.apitable.workspace.entity.NodeEntity;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.workspace.enums.NodeException.NOT_ALLOW;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.SystemConfigType;
 import com.apitable.base.model.SystemConfigDTO;
 import com.apitable.base.service.ISystemConfigService;
-import com.apitable.shared.component.LanguageManager;
-import com.apitable.widget.service.IWidgetService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.tree.DefaultTreeBuildFactory;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.cache.bean.RecommendConfig;
 import com.apitable.shared.cache.bean.RecommendConfig.AlbumGroup;
 import com.apitable.shared.cache.bean.RecommendConfig.TemplateGroup;
 import com.apitable.shared.cache.service.TemplateConfigCacheService;
+import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.CollectionUtil;
@@ -83,6 +69,7 @@ import com.apitable.template.vo.TemplateDirectoryVo;
 import com.apitable.template.vo.TemplateGroupVo;
 import com.apitable.template.vo.TemplateSearchResult;
 import com.apitable.template.vo.TemplateVo;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -94,16 +81,24 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.NodeShareTree;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.tree.DefaultTreeBuildFactory;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.workspace.enums.NodeException.NOT_ALLOW;
 
 /**
  * Template Service Implement Class.
@@ -878,19 +873,8 @@ public class TemplateServiceImpl
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TemplateException.TEMPLATE_INFO_ERROR);
 
-        List<String> nodeIds = new ArrayList<>();
-        nodeIds.add(nodeId);
-        // Determine the node type
-        NodeEntity node = iNodeService.getByNodeId(nodeId);
-        if (node.getType() == NodeType.FOLDER.getNodeType()) {
-            // find all child nodes
-            List<String> subNodeIds =
-                iNodeService.getNodeIdsInNodeTree(node.getSpaceId(), nodeId, -1);
-            if (!subNodeIds.isEmpty()) {
-                nodeIds.addAll(subNodeIds);
-            }
-        }
-        return nodeIds;
+        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
+        return iNodeService.getNodeIdsInNodeTree(spaceId, nodeId, -1);
     }
 
     private void complementCategoryInfo(
