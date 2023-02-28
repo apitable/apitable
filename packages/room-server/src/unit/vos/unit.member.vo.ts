@@ -22,5 +22,4 @@ export class UnitMemberBaseInfoVo {
   isDeleted!: boolean;
   isMemberNameModified!: boolean;
   unitId!: string;
-  unitType!: number;
 }

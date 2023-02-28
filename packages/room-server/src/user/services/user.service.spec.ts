@@ -27,8 +27,7 @@ import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { UserEntity } from 'user/entities/user.entity';
 import { UserRepository } from 'user/repositories/user.repository';
-import { UserService } from 'user/services/user.service';
-import { UnitMemberService } from 'unit/services/unit.member.service';
+import { UserService } from './user.service';
 
 describe('user service', () => {
   let app: NestFastifyApplication;
@@ -36,7 +35,6 @@ describe('user service', () => {
   let userService: UserService;
   let restService: RestService;
   let envConfigService: EnvConfigService;
-  let unitMemberService: UnitMemberService;
   let userRepo: UserRepository;
   const knownSpaceId = 'spczdmBAQWF';
   const knownUuid = '734efa2b1a1349a29ce2b45f0955f43c';
@@ -54,26 +52,7 @@ describe('user service', () => {
           expandVariables: true,
         }),
       ],
-      providers: [
-        UserRepository,
-        UserService,
-        {
-          provide: EnvConfigService,
-          useValue: {
-            getRoomConfig: jest.fn(),
-          },
-        },
-        {
-          provide: RestService,
-          useValue: { hasLogin: jest.fn(), fetchMe: jest.fn() },
-        },
-        {
-          provide: UnitMemberService,
-          useValue: {
-            getMembersBaseInfoBySpaceIdAndUserIds: jest.fn(),
-          },
-        },
-      ],
+      providers: [UserService, EnvConfigService, { provide: RestService, useValue: { hasLogin: jest.fn(), fetchMe: jest.fn() }}, UserRepository],
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
@@ -84,46 +63,20 @@ describe('user service', () => {
   });
 
   beforeEach(() => {
-    userRepo = module.get<UserRepository>(UserRepository);
     userService = module.get<UserService>(UserService);
     restService = module.get<RestService>(RestService);
     envConfigService = module.get<EnvConfigService>(EnvConfigService);
-    unitMemberService = module.get<UnitMemberService>(UnitMemberService);
-    jest.spyOn(envConfigService, 'getRoomConfig')
-      .mockReturnValue({
-        host: 'host',
-        bucket: 'bucket',
-      });
-    jest.spyOn(userRepo, 'selectUserBaseInfoByUuids').mockImplementation(async(uuids: string[]) => {
-      if (uuids.includes(knownUuid)) {
-        const userEntity = new UserEntity();
-        userEntity.avatar = 'space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf';
-        userEntity.id = knownUserId.toString();
-        userEntity.nikeName = 'test000';
-        userEntity.color = 0;
-        userEntity.uuid = knownUuid;
-        userEntity.isSocialNameModified = 1;
-        return await Promise.resolve([userEntity]);
-      }
-      return await Promise.resolve([]);
-    });
-    jest.spyOn(unitMemberService, 'getMembersBaseInfoBySpaceIdAndUserIds').mockResolvedValue(async(spaceId: string, uuids: string[]) => {
+    userRepo = module.get<UserRepository>(UserRepository);
+
+    jest.spyOn(userRepo, 'selectUserInfoBySpaceIdAndUuids').mockImplementation(async(spaceId: string, uuids: string[]) => {
       if (spaceId === knownSpaceId) {
         if (uuids.includes(knownUuid)) {
-          return await Promise.resolve({
-            knownUserId: {
-              memberId: knownUserId.toString(),
-              memberName: 'memberName',
-              isActive: true,
-              isDeleted: false,
-              isMemberNameModified: false,
-              unitId: '2023',
-              unitType: 3,
-            },
-          });
+          return await Promise.resolve([{ userId: knownUuid, uuid: knownUuid, avatarColor: null, nickName: 'test000', 
+            unitId: 1567455154058297346n, isDeleted: false, type: 1, name: 'test000', avatar: 'space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf', 
+            isMemberNameModified: true, isNickNameModified: true }]);
         }
       }
-      return await Promise.resolve({});
+      return await Promise.resolve([]);
     });
 
     jest.spyOn(userRepo, 'selectUserBaseInfoByIds').mockImplementation(async(userIds: number[]) => {
@@ -148,17 +101,20 @@ describe('user service', () => {
 
     jest.spyOn(restService, 'fetchMe').mockImplementation(async(headers: IAuthHeader) => {
       if (headers && headers.cookie?.includes(loggedSession)) {
-        const userBaseInfo: IUserBaseInfo = { userId: knownUserId.toString(), uuid: knownUuid };
+        const userBaseInfo: IUserBaseInfo = { userId: knownUserId.toString(),
+          uuid: knownUuid };
         return await Promise.resolve(userBaseInfo);
       }
       throw new ServerException(CommonException.UNAUTHORIZED);
     });
+
   });
 
   describe('test getUserInfo', () => {
-    it('should unitId is undefined with an unknown spaceId', async() => {
+
+    it('should return empty array with an unknown spaceId', async() => {
       const result = await userService.getUserInfo('spc123456', [knownUuid]);
-      expect(result[0]?.unitId).toBeUndefined();
+      expect(result).toHaveLength(0);
     });
 
     it('should return empty array with an unknown uuid', async() => {
@@ -179,9 +135,11 @@ describe('user service', () => {
       expect(userDto).toBeDefined();
       expect(userDto?.avatar).toContain(oss.host);
     });
+
   });
 
   describe('test getUserBaseInfoMapByUserIds', () => {
+
     it('should return empty map with an unknown userId', async() => {
       const result = await userService.getUserBaseInfoMapByUserIds([123456]);
       expect(result).toEqual(new Map());
@@ -192,9 +150,11 @@ describe('user service', () => {
       expect(result.keys()).toContain(knownUserId.toString());
       expect(result.get(knownUserId.toString())).toHaveProperty(['isSocialNameModified']);
     });
+
   });
 
   describe('test getMeNullable', () => {
+
     it('should return {} with invalid cookies', async() => {
       const result = await userService.getMeNullable('');
       expect(result).toEqual({});
@@ -204,9 +164,11 @@ describe('user service', () => {
       const result = await userService.getMeNullable(loggedInCookie);
       expect(result.userId).toEqual(knownUserId.toString());
     });
+
   });
 
   describe('test getMe', () => {
+
     it('should throw exception with invalid cookie', async() => {
       // const res = async() => {
       //   await userService.getMe({ cookie: '' });
@@ -223,9 +185,11 @@ describe('user service', () => {
       const result = await userService.getMe({ cookie: loggedInCookie });
       expect(result.userId).toEqual(knownUserId.toString());
     });
+
   });
 
   describe('test session', () => {
+
     it('should return false with invalid cookie', async() => {
       const result = await userService.session('');
       expect(result).toBeFalsy();
@@ -235,14 +199,17 @@ describe('user service', () => {
       const result = await userService.session(loggedInCookie);
       expect(result).toBeTruthy();
     });
+
   });
 
   /**
    * API tests already implemented
    */
   describe('test getUserInfoBySpaceId', () => {
+
     it('should be defined', () => {
       expect(userService.getUserInfoBySpaceId).toBeDefined();
     });
+
   });
 });

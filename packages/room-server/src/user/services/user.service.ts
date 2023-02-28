@@ -16,27 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EnvConfigKey } from 'shared/common';
 import { IAuthHeader, INamedUser, IOssConfig, IUserBaseInfo } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
-import { UnitMemberService } from 'unit/services/unit.member.service';
 import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 import { UserEntity } from '../entities/user.entity';
 import { UserBaseInfoDto } from '../dtos/user.dto';
-import { UnitInfoDto } from 'unit/dtos/unit.info.dto';
-import { map } from 'lodash';
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepo: UserRepository,
     private readonly envConfigService: EnvConfigService,
     private readonly restService: RestService,
-    @Inject(forwardRef(() => UnitMemberService))
-    private readonly unitMemberService: UnitMemberService,
+    private readonly userRepo: UserRepository,
+
   ) {}
 
   /**
@@ -46,26 +42,15 @@ export class UserService {
     if (uuids.length === 0) {
       return await Promise.resolve([]);
     }
-    const users: any[] = await this.userRepo.selectUserBaseInfoByUuids(uuids);
-    const userIds: string[] = map(users, String('id'));
-    const memberMap = await this.unitMemberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds);
+    const users: any[] = await this.userRepo.selectUserInfoBySpaceIdAndUuids(spaceId, uuids);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return users.reduce<UnitInfoDto[]>((pre, cur) => {
-      const member = memberMap[cur.id];
-      pre.push({
-        userId: cur.uuid!,
-        uuid: cur.uuid!,
-        avatarColor: cur.color!,
-        nickName: cur.nikeName!,
-        unitId: member?.unitId!,
-        isDeleted: member?.isDeleted!,
-        type: member?.unitType!,
-        name: member ? member.memberName : cur.nikeName!,
-        avatar: cur.avatar && !cur.avatar.startsWith('http') ? oss.host + '/' + cur.avatar : cur.avatar,
-        isActive: member?.isActive!,
-        isNickNameModified: cur.isSocialNameModified !== 0,
-        isMemberNameModified: member?.isMemberNameModified!,
-      });
+    return users.reduce<UnitInfo[]>((pre, cur) => {
+      if (cur.avatar && !cur.avatar.startsWith('http')) {
+        cur.avatar = oss.host + '/' + cur.avatar;
+      }
+      cur.isMemberNameModified = Number(cur.isMemberNameModified) === 1;
+      cur.isNickNameModified = Number(cur.isNickNameModified) === 1;
+      pre.push(cur);
       return pre;
     }, []);
   }
