@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { Test, TestingModule } from '@nestjs/testing';
-import { UnitTeamService } from 'unit/services/unit.team.service';
-import { UnitTeamRepository } from 'unit/repositories/unit.team.repository';
+import { UnitTeamService } from './unit.team.service';
+import { UnitTeamRepository } from '../repositories/unit.team.repository';
 import { UnitTeamBaseInfoDto } from '../dtos/unit.team.base.info.dto';
 import { MemberType } from '@apitable/core';
 
