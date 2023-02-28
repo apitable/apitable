@@ -717,8 +717,7 @@ public class TemplateServiceImpl
             .build();
         if (templateDto.getType() == NodeType.FOLDER.getNodeType()) {
             List<NodeShareTree> treeByNodeIds =
-                nodeMapper.selectShareTreeByNodeId(templateDto.getTypeId(),
-                    templateDto.getNodeId());
+                iNodeService.getSubNodes(templateDto.getNodeId());
             if (CollUtil.isNotEmpty(treeByNodeIds)) {
                 List<NodeShareTree> treeList =
                     new DefaultTreeBuildFactory<NodeShareTree>(

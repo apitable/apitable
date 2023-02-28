@@ -436,6 +436,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<NodeShareTree> getSubNodes(String nodeId) {
+        List<String> subNodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
+        subNodeIds.remove(nodeId);
+        if (subNodeIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return nodeMapper.selectShareTree(subNodeIds);
+    }
+
+    @Override
     public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth) {
         return this.getNodeIdsInNodeTree(nodeId, depth, false);
     }
@@ -1138,7 +1148,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private void copyFolderProcess(Long userId, String spaceId, String originSpaceId,
                                    String folderId,
                                    Map<String, String> newNodeMap, NodeCopyOptions options) {
-        List<NodeShareTree> subTrees = nodeMapper.selectShareTreeByNodeId(originSpaceId, folderId);
+        List<NodeShareTree> subTrees = this.getSubNodes(folderId);
         if (CollUtil.isEmpty(subTrees)) {
             return;
         }

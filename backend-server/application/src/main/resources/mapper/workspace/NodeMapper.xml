@@ -298,38 +298,6 @@
         GROUP BY vn.node_id
     </select>
 
-    <select id="selectShareTreeByNodeId" resultType="com.apitable.workspace.vo.NodeShareTree">
-        WITH RECURSIVE pre (node_id, node_name, icon, parent_id, pre_node_id, type, cover, extra) AS
-        (SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
-        FROM ${tablePrefix}node vn
-        WHERE vn.space_id = #{spaceId}
-        AND vn.pre_node_id IS NULL
-        AND vn.is_rubbish = 0
-        AND vn.parent_id IN (
-        WITH RECURSIVE sub_ids (node_id, parent_id) AS (
-        SELECT node_id,
-        parent_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        c.parent_id
-        FROM sub_ids AS cp JOIN ${tablePrefix}node AS c ON cp.node_id = c.parent_id AND c.is_rubbish = 0
-        )
-        SELECT parent_id
-        FROM sub_ids
-        GROUP BY parent_id
-        )
-        GROUP BY vn.node_id
-        UNION ALL
-        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )
-        SELECT *
-        FROM pre
-    </select>
-
     <select id="selectShareTree" resultType="com.apitable.workspace.vo.NodeShareTree">
         SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover
         FROM ${tablePrefix}node vn

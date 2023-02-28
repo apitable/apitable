@@ -203,16 +203,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<SimpleSortableNodeInfo> selectSubNodeInfo(@Param("parentId") String parentId);
 
     /**
-     * get the node sharing tree.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return NodeShareTree
-     */
-    List<NodeShareTree> selectShareTreeByNodeId(@Param("spaceId") String spaceId,
-        @Param("nodeId") String nodeId);
-
-    /**
      * share tree view according to node ids query.
      *
      * @param nodeIds node ids

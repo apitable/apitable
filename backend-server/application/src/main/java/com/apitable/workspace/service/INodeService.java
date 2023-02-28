@@ -45,6 +45,7 @@ import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeInfoWindowVo;
 import com.apitable.workspace.vo.NodePathVo;
 import com.apitable.workspace.vo.NodeSearchResult;
+import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.io.IOException;
@@ -54,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * node service.
@@ -224,6 +226,15 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfoTreeVo
      */
     NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth);
+
+    /**
+     * Get sub nodes.
+     *
+     * @param nodeId node id
+     * @return List<NodeShareTree>
+     * @author Chambers
+     */
+    List<NodeShareTree> getSubNodes(String nodeId);
 
     /**
      * Get node ids in node tree.
