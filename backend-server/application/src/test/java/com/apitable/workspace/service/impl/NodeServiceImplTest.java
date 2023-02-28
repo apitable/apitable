@@ -151,6 +151,27 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testGetPathParentNode() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        List<String> rootPathParentNode = iNodeService.getPathParentNode(rootNodeId);
+        assertThat(rootPathParentNode).isEmpty();
+
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<String> pathParentNodes = iNodeService.getPathParentNode(secondLevelFolderId);
+        assertThat(pathParentNodes.size()).isEqualTo(2);
+    }
+
+    @Test
     void testGetNodeIdsInNodeTreeWithAssignDepth() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String spaceId = userSpace.getSpaceId();

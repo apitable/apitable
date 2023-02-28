@@ -338,7 +338,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<String> getPathParentNode(String nodeId) {
         log.info("Query the node path of node [{}]", nodeId);
-        return nodeMapper.selectParentNodePath(nodeId);
+        List<String> nodeIds = new ArrayList<>();
+        while (true) {
+            NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
+            if (baseNodeInfo.getType().equals(NodeType.ROOT.getNodeType())) {
+                return CollUtil.reverse(nodeIds);
+            }
+            nodeIds.add(nodeId);
+            nodeId = baseNodeInfo.getParentId();
+        }
     }
 
     @Override
@@ -535,7 +543,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // ---- b
         // ------ c
         // At this time, when obtaining node c, it should return [c, b, a]
-        List<String> parentNodeIds = nodeMapper.selectParentNodePath(nodeId);
+        List<String> parentNodeIds = this.getPathParentNode(nodeId);
         // No parent node should report an error,
         // but the location node does not need to return empty directly.
         if (parentNodeIds.isEmpty()) {

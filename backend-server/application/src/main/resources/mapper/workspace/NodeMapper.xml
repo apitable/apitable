@@ -314,27 +314,6 @@
         WHERE vn.node_id = #{nodeId}
     </select>
 
-    <select id="selectParentNodePath" resultType="java.lang.String">
-        WITH RECURSIVE parent_view (node_id, parent_id, lvl) AS (
-        SELECT n.node_id,
-        n.parent_id,
-        0 lvl
-        FROM ${tablePrefix}node n
-        WHERE n.node_id = #{nodeId}
-        AND n.is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        c.parent_id,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        )
-        SELECT node_id
-        FROM parent_view
-        WHERE parent_id != '0'
-        ORDER BY lvl DESC
-    </select>
-
     <select id="selectParentNodeListByNodeId" resultType="com.apitable.workspace.vo.NodePathVo">
         WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS (
         SELECT n.node_id,

@@ -286,14 +286,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<NodeEntity> selectByNodeIds(@Param("nodeIds") Collection<String> nodeIds);
 
     /**
-     * query the node path from bottom to top, include itself.
-     *
-     * @param nodeId node id
-     * @return node path list
-     */
-    List<String> selectParentNodePath(@Param("nodeId") String nodeId);
-
-    /**
      * all parent node paths of the query node
      * contains own nodes
      * node must be a folder.
