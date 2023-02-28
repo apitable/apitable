@@ -53,7 +53,8 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
     secondPassword: ''
   });
   const { LOGIN_DEFAULT_ACCOUNT_TYPE } = getEnvVariables();
-  const [mode, setMode] = React.useState(LOGIN_DEFAULT_ACCOUNT_TYPE || ConfigConstant.LoginMode.PHONE);
+  const [mode, setMode] = React.useState(LOGIN_DEFAULT_ACCOUNT_TYPE?.includes(ConfigConstant.LoginMode.PHONE) ?
+    (initMode?.() || ConfigConstant.LoginMode.PHONE) : LOGIN_DEFAULT_ACCOUNT_TYPE);
   const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
@@ -120,7 +121,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
     Router.push(Navigation.LOGIN);
   };
 
-  const onModeChange = (mode: React.SetStateAction<string>) => {
+  const onModeChange = (mode: string) => {
     setMode(mode);
   };
   const btnDisable = !(state.account && state.identifyingCode && state.password && state.secondPassword);
@@ -138,10 +139,9 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
                   smsType={ConfigConstant.SmsTypes.MODIFY_PASSWORD}
                   emailType={ConfigConstant.EmailCodeType.COMMON}
                   onModeChange={onModeChange}
-                  defaultIdentifyingCodeMode={initMode?.()}
                   error={{ accountErrMsg: errMsg.accountErrMsg, identifyingCodeErrMsg: errMsg.identifyingCodeErrMsg }}
                   onChange={handleIdentifyingCodeChange}
-                  mode={LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes}
+                  mode={mode}
                 />
               }
               <Typography variant='body2' className={styles.gap}>{t(Strings.input_new_password)}</Typography>
