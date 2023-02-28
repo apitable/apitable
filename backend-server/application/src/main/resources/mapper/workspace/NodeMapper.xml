@@ -140,7 +140,7 @@
             #{item}
         </foreach>
         <if test="nodeType != null">
-            AND pre.type = #{nodeType.nodeType}
+            AND type = #{nodeType.nodeType}
         </if>
         AND is_rubbish = 0
     </select>
