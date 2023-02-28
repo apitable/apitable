@@ -47,11 +47,11 @@ export const StatusIconFunc = (props: IStatusIconFuncProps) => {
     case StatusType.Success:
       return <SuccessIcon width={width} height={height} fill={fillColor || colorVars.successColor } />;
     case StatusType.Error:
-      return WarnCircleFilled({ size: width });
+      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Danger:
-      return WarnCircleFilled({ size: width });
+      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Warning:
-      return WarnFilled({ size: width });
+      return WarnFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

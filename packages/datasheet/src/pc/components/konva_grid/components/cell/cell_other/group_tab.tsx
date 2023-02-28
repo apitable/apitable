@@ -86,6 +86,9 @@ export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props
         name={KONVA_DATASHEET_ID.GRID_GROUP_TOGGLE_BUTTON}
         x={16}
         y={(height - GRID_ICON_COMMON_SIZE) / 2}
+        scaleX={0.8}
+        scaleY={0.8}
+        transformsEnabled={'all'}
         data={isCollapse ? TriangleRight16FilledPath : TriangleDown16FilledPath}
         onClick={clickExpandToggle}
       />
