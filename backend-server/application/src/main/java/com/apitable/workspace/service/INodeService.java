@@ -18,20 +18,19 @@
 
 package com.apitable.workspace.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.annotation.Nullable;
-
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.control.infrastructure.role.ControlRole;
+import com.apitable.workspace.dto.CreateNodeDto;
+import com.apitable.workspace.dto.NodeCopyEffectDTO;
+import com.apitable.workspace.dto.NodeCopyOptions;
+import com.apitable.workspace.dto.NodeData;
+import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.entity.DatasheetMetaEntity;
+import com.apitable.workspace.entity.DatasheetRecordEntity;
+import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.listener.ExcelSheetsDataListener;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.ImportExcelOpRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
@@ -39,7 +38,6 @@ import com.apitable.workspace.ro.NodeMoveOpRo;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeRelRo;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
-import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
@@ -47,17 +45,15 @@ import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeInfoWindowVo;
 import com.apitable.workspace.vo.NodePathVo;
 import com.apitable.workspace.vo.NodeSearchResult;
-import com.apitable.workspace.listener.ExcelSheetsDataListener;
-import com.apitable.workspace.dto.NodeData;
-import com.apitable.workspace.dto.CreateNodeDto;
-import com.apitable.workspace.dto.NodeCopyEffectDTO;
-import com.apitable.workspace.dto.NodeCopyOptions;
-import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
-import com.apitable.workspace.entity.DatasheetEntity;
-import com.apitable.workspace.entity.DatasheetMetaEntity;
-import com.apitable.workspace.entity.DatasheetRecordEntity;
-import com.apitable.workspace.entity.NodeEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.annotation.Nullable;
 
 /**
  * node service.
@@ -179,14 +175,6 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfoVos
      */
     List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId, List<String> nodeIds);
-
-    /**
-     * The query node includes the associated nodes of all the following nodes.
-     *
-     * @param nodeId node id
-     * @return BaseNodeInfo
-     */
-    List<BaseNodeInfo> getForeignSheet(String nodeId);
 
     /**
      * whether node exist on the specific space.
