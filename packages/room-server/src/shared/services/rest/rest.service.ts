@@ -17,6 +17,7 @@
  */
 
 import {
+  api,
   IDatasheetFieldPermission,
   IFieldPermissionMap,
   IFieldPermissionRoleListData,
@@ -25,12 +26,17 @@ import {
   ISpaceInfo,
   ISpacePermissionManage,
   IUnitValue,
-  IUserInfo,
-  api
+  IUserInfo
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from 'database/interfaces';
+import {
+  InternalCreateDatasheetVo,
+  InternalSpaceInfoVo,
+  InternalSpaceSubscriptionView,
+  InternalSpaceUsageView,
+  WidgetMap
+} from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
 import { keyBy } from 'lodash';
@@ -81,6 +87,8 @@ export class RestService {
   // List user infos with the given column permission
   private LIST_FIELD_ROLES = 'datasheet/%(dstId)s/field/%(fieldId)s/listRole';
   private UNIT_LOAD_OR_SEARCH = 'internal/org/loadOrSearch';
+
+  private SPACE_INFO = 'internal/space/%(spaceId)s';
 
   constructor(private readonly httpService: HttpService, @InjectLogger() private readonly logger: Logger) {
     // Intercept request
@@ -559,6 +567,13 @@ export class RestService {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),
         params,
       }),
+    );
+    return response.data;
+  }
+
+  async getSpaceInfo(spaceId: string): Promise<InternalSpaceInfoVo> {
+    const response = await lastValueFrom(
+      this.httpService.get(sprintf(this.SPACE_INFO, { spaceId })),
     );
     return response.data;
   }
