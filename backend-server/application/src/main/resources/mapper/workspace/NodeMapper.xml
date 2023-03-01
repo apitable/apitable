@@ -314,25 +314,6 @@
         WHERE vn.node_id = #{nodeId}
     </select>
 
-    <select id="selectParentNodeByNodeIds" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        WITH RECURSIVE parent_view (node_id, node_name, parent_id) AS (
-        SELECT n.node_id, n.node_name, n.parent_id
-        FROM ${tablePrefix}node n
-        WHERE n.space_id = #{spaceId} AND n.node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND n.is_rubbish = 0
-        UNION
-        SELECT c.node_id, c.node_name, c.parent_id
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        )
-        SELECT node_id, node_name, parent_id
-        FROM parent_view
-        WHERE parent_id != '0'
-    </select>
-
     <update id="updateInfoByNodeId">
         UPDATE ${tablePrefix}node
         SET pre_node_id = #{preNodeId},
@@ -482,13 +463,27 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
+    <select id="selectNodeBaseInfoByNodeId"
+            resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
+        SELECT node_id, parent_id, `type`, node_name, icon
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+          AND is_rubbish = 0
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeBaseInfosByNodeIds"
+            resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
         SELECT node_id, parent_id, `type`, node_name, icon
         FROM ${tablePrefix}node
         WHERE node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
+        <if test="ignoreRubbish == null or !ignoreRubbish">
+            AND is_rubbish = 0
+        </if>
     </select>
 
     <select id="selectRubbishUpdatedAtByNodeId" resultType="java.time.LocalDateTime">
@@ -526,12 +521,6 @@
         </foreach>
         AND vn.parent_id = '-1' AND vn.is_rubbish = 1 AND vn.is_deleted = 0
         ORDER BY vn.updated_at DESC
-    </select>
-
-    <select id="selectNodeBaseInfoByNodeId" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        SELECT node_id, parent_id, `type`, node_name, icon
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
     </select>
 
     <update id="updateExtraShowRecordHistoryByNodeId">

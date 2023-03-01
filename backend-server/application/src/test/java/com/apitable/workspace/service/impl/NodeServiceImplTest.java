@@ -18,8 +18,11 @@
 
 package com.apitable.workspace.service.impl;
 
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodePathVo;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -193,6 +196,42 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         assertThat(nodePathVo.getNodeId()).isEqualTo(rootNodeId);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         assertThat(nodePathVo.getNodeName()).isEqualTo(spaceName);
+    }
+
+    @Test
+    void testGetRootNodeIdBySpaceId() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        List<NodeBaseInfoDTO> parentPathNodes = iNodeService.getParentPathNodes(spaceId,
+            Collections.singletonList(rootNodeId));
+        assertThat(parentPathNodes.size()).isEqualTo(0);
+        // first level folder id
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("node")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        String firstLevelFolderId2 = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<NodeBaseInfoDTO> secondLevelParentPathNodes = iNodeService.getParentPathNodes(spaceId,
+            Collections.singletonList(secondLevelFolderId));
+        assertThat(secondLevelParentPathNodes.size()).isEqualTo(2);
+        // third level folder id
+        op.setParentId(secondLevelFolderId);
+        String thirdLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(firstLevelFolderId2);
+        nodeIds.add(thirdLevelFolderId);
+        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(spaceId, nodeIds);
+        assertThat(parentPathNodes1.size()).isEqualTo(4);
+        // The upper and lower level nodes exist at the same time
+        nodeIds.add(firstLevelFolderId);
+        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(spaceId, nodeIds);
+        assertThat(parentPathNodes2.size()).isEqualTo(4);
     }
 
     @Test

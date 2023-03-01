@@ -190,7 +190,8 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             // delete all roles of the node
             iNodeRoleService.deleteByNodeId(userId, subNodeIds);
             // Clear the field permissions of the deleted grid datasheet
-            List<NodeBaseInfoDTO> baseNodeInfos = nodeMapper.selectBaseNodeInfoByNodeIdsIncludeDelete(subNodeIds);
+            List<NodeBaseInfoDTO> baseNodeInfos =
+                nodeMapper.selectNodeBaseInfosByNodeIds(subNodeIds, true);
             baseNodeInfos.stream().filter(info -> NodeType.toEnum(info.getType()).equals(NodeType.DATASHEET))
                     .forEach(info -> {
                         List<String> controlIds = iControlService.getControlIdByControlIdPrefixAndType(info.getNodeId(),

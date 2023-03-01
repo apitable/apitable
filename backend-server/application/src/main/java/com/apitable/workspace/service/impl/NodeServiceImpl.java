@@ -377,6 +377,29 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<NodeBaseInfoDTO> getParentPathNodes(String spaceId, List<String> nodIds) {
+        Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
+        String rootNodeId = this.getRootNodeIdBySpaceId(spaceId);
+        List<String> parentIds = new ArrayList<>(nodIds);
+        parentIds.remove(rootNodeId);
+        while (!parentIds.isEmpty()) {
+            List<NodeBaseInfoDTO> nodes =
+                nodeMapper.selectNodeBaseInfosByNodeIds(parentIds, false);
+            parentIds = new ArrayList<>();
+            for (NodeBaseInfoDTO node : nodes) {
+                if (nodeIdToNodeMap.containsKey(node.getNodeId())) {
+                    continue;
+                }
+                if (!node.getParentId().equals(rootNodeId)) {
+                    parentIds.add(node.getParentId());
+                }
+                nodeIdToNodeMap.put(node.getNodeId(), node);
+            }
+        }
+        return new ArrayList<>(nodeIdToNodeMap.values());
+    }
+
+    @Override
     public List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds) {
         log.info("Node information view of batch query [{}]", nodeIds);
         return nodeMapper.selectInfoByNodeIds(nodeIds);
@@ -1809,8 +1832,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
      */
     private Map<String, String> getSuperiorPathByParentIds(String spaceId, List<String> parentIds) {
         // gets all parent nodes other than the non root node
-        List<NodeBaseInfoDTO> parentNodes =
-            nodeMapper.selectParentNodeByNodeIds(spaceId, parentIds);
+        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(spaceId, parentIds);
         if (CollUtil.isEmpty(parentNodes)) {
             return null;
         }

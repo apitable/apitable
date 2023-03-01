@@ -22,6 +22,7 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.workspace.dto.CreateNodeDto;
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeData;
@@ -168,6 +169,17 @@ public interface INodeService extends IService<NodeEntity> {
      * @return parent path
      */
     List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
+
+    /**
+     * gets the node parent path.
+     * * don't contains root node
+     *
+     * @param spaceId   space id
+     * @param nodeIds   node ids
+     * @return List<NodeBaseInfoDTO>
+     * @author Chambers
+     */
+    List<NodeBaseInfoDTO> getParentPathNodes(String spaceId, List<String> nodeIds);
 
     /**
      * get multi node info.

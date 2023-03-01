@@ -285,17 +285,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<NodeEntity> selectByNodeIds(@Param("nodeIds") Collection<String> nodeIds);
 
     /**
-     * all parent node paths of the query node
-     * Contains its own node, but does not include the root node.
-     *
-     * @param spaceId space id
-     * @param nodeIds node ids
-     * @return BaseNodeInfoDto
-     */
-    List<NodeBaseInfoDTO> selectParentNodeByNodeIds(@Param("spaceId") String spaceId,
-        @Param("list") List<String> nodeIds);
-
-    /**
      * update node.
      *
      * @param nodeId    node id
@@ -435,13 +424,22 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<Boolean> selectIsTemplateByNodeId(@Param("nodeIds") List<String> nodeIds);
 
     /**
-     * select icon, name.
+     * query node base info.
+     *
+     * @param nodeId node id
+     * @return BaseNodeInfoDTO
+     */
+    NodeBaseInfoDTO selectNodeBaseInfoByNodeId(@Param("nodeId") String nodeId);
+
+    /**
+     * Batch query node base info.
      *
      * @param nodeIds node ids
+     * @param ignoreRubbish ignore rubbish status(no require.default:false)
      * @return BaseNodeInfoDto
      */
-    List<NodeBaseInfoDTO> selectBaseNodeInfoByNodeIdsIncludeDelete(
-        @Param("nodeIds") List<String> nodeIds);
+    List<NodeBaseInfoDTO> selectNodeBaseInfosByNodeIds(@Param("nodeIds") Collection<String> nodeIds,
+        @Param("ignoreRubbish") Boolean ignoreRubbish);
 
     /**
      * Query the modification time of the recovery compartment node.
@@ -473,14 +471,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      */
     List<RubbishNodeVo> selectRubbishNodeInfo(@Param("spaceId") String spaceId,
         @Param("nodeIds") List<String> nodeIds, @Param("retainDay") Long retainDay);
-
-    /**
-     * query node base info.
-     *
-     * @param nodeId node id
-     * @return BaseNodeInfoDTO
-     */
-    NodeBaseInfoDTO selectNodeBaseInfoByNodeId(@Param("nodeId") String nodeId);
 
     /**
      * update node extra.
