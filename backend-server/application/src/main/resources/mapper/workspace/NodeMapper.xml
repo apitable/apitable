@@ -507,7 +507,7 @@
     </select>
 
     <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        SELECT node_id, node_name, icon, type
+        SELECT node_id, parent_id, `type`, node_name, icon
         FROM ${tablePrefix}node
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
@@ -553,7 +553,7 @@
     </select>
 
     <select id="selectNodeBaseInfoByNodeId" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        SELECT node_id, node_name, icon
+        SELECT node_id, parent_id, `type`, node_name, icon
         FROM ${tablePrefix}node
         WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
     </select>

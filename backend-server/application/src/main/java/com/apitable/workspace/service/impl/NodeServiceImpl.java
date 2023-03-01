@@ -513,7 +513,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, i -> i, (k1, k2) -> k2));
         while (preNodeIdToNodeMap.containsKey(preNodeId)) {
             NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
-            preNodeId = nodeTreeDTO.getPreNodeId();
+            preNodeId = nodeTreeDTO.getNodeId();
             if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
                 nodeIds.add(preNodeId);
             }

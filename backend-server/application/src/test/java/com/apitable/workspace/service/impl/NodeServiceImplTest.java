@@ -205,7 +205,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .build();
         String thirdFolderId = iNodeService.createNode(userId, spaceId, op);
         String firstFolderId = iNodeService.createNode(userId, spaceId, op);
-        op.setPreNodeId(thirdFolderId);
+        op.setPreNodeId(firstFolderId);
         String secondFolderId = iNodeService.createNode(userId, spaceId, op);
 
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
