@@ -117,7 +117,6 @@ describe('Test', () => {
           isDeleted: false,
           isMemberNameModified: false,
           unitId: '2023',
-          unitType: 3
         }
       });
     jest.spyOn(unitRepository, 'selectUnitInfosBySpaceIdAndUnitIds')
