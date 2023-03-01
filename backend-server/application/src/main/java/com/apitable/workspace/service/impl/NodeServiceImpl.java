@@ -340,17 +340,39 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<String> getPathParentNode(String nodeId) {
         log.info("Query the node path of node [{}]", nodeId);
-        List<String> nodeIds = new ArrayList<>();
+        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        return parentPathNodes.stream()
+            .filter(i -> !i.getType().equals(NodeType.ROOT.getNodeType()))
+            .map(NodeBaseInfoDTO::getNodeId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
+        log.info("Get the node parent path ");
+        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        return parentPathNodes.stream()
+            .map(i -> {
+                if (i.getType().equals(NodeType.ROOT.getNodeType())) {
+                    String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+                    return new NodePathVo(i.getNodeId(), spaceName);
+                }
+                return new NodePathVo(i.getNodeId(), i.getNodeName());
+            })
+            .collect(Collectors.toList());
+    }
+
+    private List<NodeBaseInfoDTO> getParentPathNodes(String nodeId) {
+        List<NodeBaseInfoDTO> nodes = new ArrayList<>();
         while (true) {
             NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
+            nodes.add(baseNodeInfo);
+            nodeId = baseNodeInfo.getParentId();
             if (baseNodeInfo.getType().equals(NodeType.ROOT.getNodeType())) {
-                return CollUtil.reverse(nodeIds);
+                return CollUtil.reverse(nodes);
             }
-            if (nodeIds.contains(baseNodeInfo.getParentId())) {
+            if (nodes.stream().anyMatch(i -> i.getNodeId().equals(baseNodeInfo.getParentId()))) {
                 throw new BusinessException("Data Exception!");
             }
-            nodeIds.add(nodeId);
-            nodeId = baseNodeInfo.getParentId();
         }
     }
 
@@ -533,12 +555,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         List<String> subNodeIds = this.sortNodeAtSameLevel(subNode, nodeType);
         return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
-    }
-
-    @Override
-    public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
-        log.info("Get the node parent path ");
-        return nodeMapper.selectParentNodeListByNodeId(spaceId, nodeId);
     }
 
     @Override

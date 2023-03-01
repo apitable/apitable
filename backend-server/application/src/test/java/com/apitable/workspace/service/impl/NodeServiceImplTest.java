@@ -19,6 +19,7 @@
 package com.apitable.workspace.service.impl;
 
 import com.apitable.workspace.vo.NodeInfoTreeVo;
+import com.apitable.workspace.vo.NodePathVo;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -169,6 +170,29 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
         List<String> pathParentNodes = iNodeService.getPathParentNode(secondLevelFolderId);
         assertThat(pathParentNodes.size()).isEqualTo(2);
+    }
+
+    @Test
+    void testGetParentPathByNodeId() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<NodePathVo> parentPathNodes = iNodeService.getParentPathByNodeId(spaceId, secondLevelFolderId);
+        assertThat(parentPathNodes.size()).isEqualTo(3);
+
+        NodePathVo nodePathVo = parentPathNodes.get(0);
+        assertThat(nodePathVo.getNodeId()).isEqualTo(rootNodeId);
+        String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+        assertThat(nodePathVo.getNodeName()).isEqualTo(spaceName);
     }
 
     @Test

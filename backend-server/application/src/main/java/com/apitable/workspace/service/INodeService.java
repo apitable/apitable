@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * node service.
@@ -159,6 +158,16 @@ public interface INodeService extends IService<NodeEntity> {
      * @return node path
      */
     List<String> getPathParentNode(String nodeId);
+
+    /**
+     * gets the node parent path
+     * contains root node.
+     *
+     * @param spaceId space id
+     * @param nodeId node id
+     * @return parent path
+     */
+    List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
 
     /**
      * get multi node info.
@@ -268,16 +277,6 @@ public interface INodeService extends IService<NodeEntity> {
      */
     List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId,
         NodeType nodeType);
-
-    /**
-     * gets the node parent path
-     * contains root node.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return parent path
-     */
-    List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
 
     /**
      * get node position.

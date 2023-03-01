@@ -314,30 +314,6 @@
         WHERE vn.node_id = #{nodeId}
     </select>
 
-    <select id="selectParentNodeListByNodeId" resultType="com.apitable.workspace.vo.NodePathVo">
-        WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS (
-        SELECT n.node_id,
-        IF(n.parent_id = '0', s.NAME, n.node_name) node_name,
-        n.parent_id,
-        0 lvl
-        FROM ${tablePrefix}node n
-        JOIN ${tablePrefix}space as s ON s.space_id = n.space_id
-        WHERE n.node_id = #{nodeId} AND n.space_id = #{spaceId} AND n.is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        IF(c.parent_id = '0', s.NAME, c.node_name) node_name,
-        c.parent_id,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        JOIN ${tablePrefix}space AS s ON s.space_id = c.space_id
-        )
-        SELECT node_id,
-        node_name
-        FROM parent_view
-        ORDER BY lvl DESC
-    </select>
-
     <select id="selectParentNodeByNodeIds" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
         WITH RECURSIVE parent_view (node_id, node_name, parent_id) AS (
         SELECT n.node_id, n.node_name, n.parent_id

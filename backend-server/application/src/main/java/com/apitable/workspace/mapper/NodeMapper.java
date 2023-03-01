@@ -27,7 +27,6 @@ import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
-import com.apitable.workspace.vo.NodePathVo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.RubbishNodeVo;
 import com.apitable.workspace.vo.SimpleSortableNodeInfo;
@@ -284,18 +283,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return nodes
      */
     List<NodeEntity> selectByNodeIds(@Param("nodeIds") Collection<String> nodeIds);
-
-    /**
-     * all parent node paths of the query node
-     * contains own nodes
-     * node must be a folder.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return node path list
-     */
-    List<NodePathVo> selectParentNodeListByNodeId(@Param("spaceId") String spaceId,
-        @Param("nodeId") String nodeId);
 
     /**
      * all parent node paths of the query node
