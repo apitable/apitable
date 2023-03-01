@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 import DeleteIcon from 'static/icon/space/space_img_delete.png';
 import { DelSuccess } from '../del_success/del.success';
 import styles from './style.module.less';
-import { UndoOutlined } from '@apitable/icons';
+import { UndoFilled } from '@apitable/icons';
 
 export const RecoverSpace = () => {
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
@@ -129,7 +129,7 @@ export const RecoverSpace = () => {
             {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
           </div>
           <div className={styles.subTip}>{t(Strings.tip_del_success)}</div>
-          <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoOutlined color='currentColor' />}>
+          <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoFilled color='currentColor' />}>
             {t(Strings.restore_space)}
           </Button>
           <TextButton color='danger' block onClick={delNow} size='large'>
@@ -144,7 +144,7 @@ export const RecoverSpace = () => {
   return (
     <div className={styles.recoverSpace}>
       <div className={styles.wrapper}>
-        <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoOutlined color='currentColor' />}>
+        <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoFilled color='currentColor' />}>
           {t(Strings.restore_space)}
         </Button>
         <div className={styles.tip}>

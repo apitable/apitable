@@ -103,7 +103,7 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
         {!isMobile && (
           <Tooltip title={tipTitle} trigger='hover' placement='top'>
             <span className={styles.infoIcon}>
-              <QuestionCircleOutlined className={styles.infoIconInDesc} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIconInDesc} />
             </span>
           </Tooltip>
         )}

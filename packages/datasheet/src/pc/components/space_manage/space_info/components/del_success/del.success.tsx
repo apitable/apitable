@@ -17,7 +17,7 @@
  */
 
 import { Navigation, Strings, t } from '@apitable/core';
-import { CheckCircleFilled } from '@apitable/icons';
+import { CheckCircleFilled, CloseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Modal } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
@@ -55,6 +55,7 @@ export const DelSuccess: FC<React.PropsWithChildren<IResModal>> = ({ tip }) => {
       bodyStyle={{ padding: '24px' }}
       centered
       onCancel={onCancel}
+      closeIcon={<CloseOutlined />}
     >
       <div className={styles.delSuccess}>
         <CheckCircleFilled size={70} color='#52C41A' />

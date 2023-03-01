@@ -169,7 +169,9 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
           />
         ) : (
           <>
-            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={<AddOutlined color='currentColor' />}>
+            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={
+              <AddOutlined size={12} color='currentColor' className={styles.addBtnIcon} />
+            }>
               {t(Strings.add_member)}
             </Button>
             <div className={styles.selectedWrapper}>

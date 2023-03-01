@@ -109,7 +109,7 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
           />
         </div>
         <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>
-          <DeleteOutlined size={15} color={colors.fourthLevelText} />
+          <DeleteOutlined size={16} color={colors.fourthLevelText} />
         </div>
       </div>
     )}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ContextMenu, Skeleton, useContextMenu } from '@apitable/components';
+import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
   Player, Settings, StoreActions, Strings, t,
@@ -54,7 +54,7 @@ import { DingTalkDa } from './dingtalk_da';
 // @ts-ignore
 import { WeixinShareWrapper, inSocialApp } from 'enterprise';
 import styles from './style.module.less';
-import { MoreOutlined, ShareFilled, EditOutlined } from '@apitable/icons';
+import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
@@ -110,6 +110,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
 
   const pathname = location.pathname;
   const isMatchTemplate = template.test(pathname);
+  const colors = useThemeColors();
 
   useUnmount(() => {
     if (!isMatchTemplate) {
@@ -386,7 +387,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                   <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
                   {permissions.descriptionEditable && (
                     <div className={styles.editBtn}>
-                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<EditOutlined />} />
+                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<EditOutlined color={colors.textCommonPrimary} />} />
                     </div>
                   )}
                 </div>
@@ -431,7 +432,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                     shape='round'
                     size='small'
                     onClick={() => setShareNodeId(nodeInfo.id)}
-                    prefixIcon={<ShareFilled color='currentColor' />}
+                    prefixIcon={<ShareOutlined color='currentColor' />}
                   >
                     {t(Strings.share)}
                   </Button>

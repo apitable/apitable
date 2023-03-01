@@ -41,7 +41,7 @@ import {
 } from '@apitable/core';
 import { 
   ApiOutlined, ChevronDownOutlined, HistoryFilled, RobotOutlined, SettingFilled, 
-  WidgetOutlined, AddCircleFilled, GroupOutlined, RankOutlined, SettingOutlined, ShareOutlined, GalleryOutlined, FilterOutlined, EyeOpenOutlined 
+  WidgetOutlined, AddCircleOutlined, GroupOutlined, RankOutlined, SettingOutlined, ShareOutlined, GalleryOutlined, FilterOutlined, EyeOpenOutlined 
 } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
@@ -513,7 +513,7 @@ const ToolbarBase = () => {
             disabled={!permissions.rowCreatable}
             className={styles.toolbarItem}
             onClick={appendRecord}
-            icon={<AddCircleFilled size={16} color={colors.secondLevelText} className={styles.toolIcon} />}
+            icon={<AddCircleOutlined size={16} color={colors.secondLevelText} className={styles.toolIcon} />}
             text={isGanttView ? t(Strings.gantt_add_record) : t(Strings.insert_record)}
             id={'toolInsertRecord'}
           />

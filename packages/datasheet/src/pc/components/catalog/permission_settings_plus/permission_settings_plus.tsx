@@ -53,7 +53,7 @@ export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSetti
     return (
       <Tooltip content={t(Strings.instruction_of_node_permission)}>
         <span className={styles.helpBtn}>
-          <QuestionCircleOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
+          <QuestionCircleOutlined color={colors.textCommonTertiary} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
         </span>
       </Tooltip>
     );

@@ -17,7 +17,7 @@
  */
 
 import { colorVars } from '@apitable/components';
-import { WarnFilled, WarnCircleFilled, CheckCircleFilled, InfoCircleFilled } from '@apitable/icons';
+import { WarnCircleFilled, CheckCircleFilled, InfoCircleFilled } from '@apitable/icons';
 // const modulesFiles = require.context('./modules', true, /.js$/)
 
 enum StatusType {
@@ -36,7 +36,7 @@ interface IStatusIconFuncProps {
   height?: number;
 }
 export const StatusIconFunc = (props: IStatusIconFuncProps) => {
-  const { type, fillColor, width = 24 } = props;
+  const { type, fillColor, width = 20 } = props;
   switch (type) {
     case StatusType.Info:
       return InfoCircleFilled({ size: width, color: fillColor || colorVars.primaryColor });
@@ -49,7 +49,7 @@ export const StatusIconFunc = (props: IStatusIconFuncProps) => {
     case StatusType.Danger:
       return WarnCircleFilled({ size: width });
     case StatusType.Warning:
-      return WarnFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
+      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

@@ -299,7 +299,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined />}
+          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined size={16} />}
           onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
@@ -336,7 +336,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={<UserGroupOutlined />}
+          prefixIcon={<UserGroupOutlined size={16} />}
           className={styles.inviteOutsiderBtn}
           onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
         >
@@ -364,7 +364,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
             teamListInSpace.length > 0 &&
             <DirectoryTree
               onSelect={onSelect}
-              switcherIcon={<div><TriangleRightFilled /></div>}
+              switcherIcon={<div><TriangleRightFilled size={12} /></div>}
               selectedKeys={[selectKey]}
               showIcon={false}
               expandAction={false}

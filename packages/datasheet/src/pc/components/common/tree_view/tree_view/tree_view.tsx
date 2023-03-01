@@ -58,7 +58,7 @@ export interface ITreeViewRef {
 export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeViewProps> = ({
   module,
   className,
-  switcherIcon = <TriangleRightFilled />,
+  switcherIcon = <TriangleRightFilled size={12} />,
   expandedKeys = [],
   selectedKeys = [],
   treeData,

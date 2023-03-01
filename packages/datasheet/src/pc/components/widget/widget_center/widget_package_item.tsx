@@ -131,7 +131,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     return <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
       <Button
         color='primary'
-        prefixIcon={<AddOutlined size={16} color={'white'} />}
+        prefixIcon={<AddOutlined size={12} color={'white'} />}
         onClick={onClickInstall}
         loading={installing}
         disabled={getDisabledStatus()}

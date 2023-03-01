@@ -345,7 +345,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 }
                 extra={
                   rootManageable ? (
-                    <IconButton style={{ marginRight: 10 }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
+                    <IconButton style={{ margin: '4px 10px 0 0' }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
                   ) : null
                 }
                 showArrow={false}

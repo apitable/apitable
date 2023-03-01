@@ -34,7 +34,7 @@ import { WrapperTooltip } from './wrapper_tooltip';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
-  return <AddOutlined size={16} color={colors.thirdLevelText} />;
+  return <AddOutlined size={16} color={colors.black[500]} />;
 };
 
 export const installedWidgetHandle = (widgetId: string, isFocus = true) => {

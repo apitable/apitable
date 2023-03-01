@@ -98,7 +98,7 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
       onSelect={onSelect}
       switcherIcon={
         <span>
-          <TriangleDownFilled color={colors.staticWhite0} />
+          <TriangleDownFilled color={colors.staticWhite0} size={12} />
         </span>
       }
       selectedKeys={[activedNodeId]}

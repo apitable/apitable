@@ -79,7 +79,7 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
       {!editing && (
         <div className={styles.iconType}>
           {React.cloneElement(prefixIcon, {
-            fill: isActive ? colors.primaryColor : colors.thirdLevelText,
+            color: isActive ? colors.primaryColor : colors.thirdLevelText,
           })}
         </div>
       )}

@@ -76,18 +76,18 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
         <ButtonGroup style={{ display: 'flex' }}>
           <Tooltip title={t(Strings.copy_link)} placement='top'>
             <Button onClick={copyLinkHandler}>
-              <CopyOutlined color={colors.secondLevelText} />
+              <CopyOutlined color={colors.secondLevelText} className={styles.iconOffset} />
             </Button>
           </Tooltip>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Tooltip title={t(Strings.preview)} placement='top'>
               <Button onClick={previewHandler}>
-                <NewtabOutlined color={colors.secondLevelText} />
+                <NewtabOutlined color={colors.secondLevelText} className={styles.iconOffset} />
               </Button>
             </Tooltip>
             <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
               <Button onClick={() => setShareCodeVisible(true)}>
-                <QrcodeOutlined color={colors.secondLevelText} />
+                <QrcodeOutlined color={colors.secondLevelText} className={styles.iconOffset} />
               </Button>
             </Tooltip>
           </ComponentDisplay>

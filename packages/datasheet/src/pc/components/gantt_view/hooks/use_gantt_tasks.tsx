@@ -311,13 +311,14 @@ export const useTask = (props: IUseTaskProps) => {
             name={name}
             scaleX={0.75}
             scaleY={0.75}
-            size={12}
             transformsEnabled={'all'}
             x={isLeft ? 10 : containerWidth - 30}
             y={y + (rowHeight - GANTT_SMALL_ICON_SIZE) / 2}
             data={iconPath}
             fill={colors.white}
             background={background}
+            backgroundWidth={16}
+            backgroundHeight={16}
             cornerRadius={2}
           />
         );

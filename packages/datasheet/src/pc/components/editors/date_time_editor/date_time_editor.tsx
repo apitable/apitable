@@ -504,7 +504,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
             </div>
             {showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>
-                <NotificationOutlined color={lightColors.deepPurple[500]} size={14} />
+                <NotificationOutlined color={lightColors.deepPurple[500]} size={16} />
               </span>
             )}
           </div>

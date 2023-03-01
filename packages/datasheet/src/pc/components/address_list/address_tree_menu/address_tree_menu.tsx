@@ -76,7 +76,7 @@ export const AddressTreeMenu: FC<React.PropsWithChildren<IAddressTreeMenu>> = pr
           onSelect={teamClick}
           expandAction={false}
           selectedKeys={[teamId]}
-          switcherIcon={<div><TriangleRightFilled /></div>}
+          switcherIcon={<div><TriangleRightFilled size={12} /></div>}
           showIcon={false}
         >
           {renderTreeNode(listData)}

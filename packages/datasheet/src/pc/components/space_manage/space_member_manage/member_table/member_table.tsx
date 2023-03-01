@@ -33,7 +33,7 @@ import { EditMemberModal } from '../modal';
 import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
-import { CheckOutlined } from '@apitable/icons';
+import { CheckOutlined, FilterOutlined } from '@apitable/icons';
 
 interface IMemberTable {
   searchMemberRes: IMemberInfoInSpace[];
@@ -192,6 +192,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
           )}
         />
       ),
+      filterIcon: <FilterOutlined />
     },
     {
       title: t(Strings.team),

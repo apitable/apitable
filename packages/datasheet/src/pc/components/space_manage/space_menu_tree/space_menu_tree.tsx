@@ -217,7 +217,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
           onSelect={onSelect}
           switcherIcon={
             <div>
-              <TriangleRightFilled />
+              <TriangleRightFilled size={12} />
             </div>
           }
           // defaultSelectedKeys={[SPACE_INFO_KEY]}

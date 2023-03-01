@@ -17,7 +17,7 @@
  */
 
 import { FC, useEffect, useState } from 'react';
-import { VerificationCodeFilled } from '@apitable/icons';
+import { ShieldCheckOutlined } from '@apitable/icons';
 import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
 import { Button, ITextInputProps, TextInput } from '@apitable/components';
 import { useBoolean, useMount, useInterval } from 'ahooks';
@@ -160,7 +160,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
       <div className={styles.identifyingCodeInput}>
         <TextInput
           maxLength={6}
-          prefix={<VerificationCodeFilled />}
+          prefix={<ShieldCheckOutlined />}
           placeholder={t(Strings.placeholder_enter_your_verification_code)}
           className={styles.input}
           block

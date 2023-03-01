@@ -210,7 +210,7 @@ export const LinkInvite = () => {
               onChange={value => onChange(value)}
               suffixIcon={<ChevronDownOutlined />}
               treeIcon
-              switcherIcon={<TriangleRightFilled />}
+              switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
               dropdownClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}

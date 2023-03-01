@@ -21,10 +21,9 @@ import classNames from 'classnames';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconArrowGray from 'static/icon/datasheet/datasheet_icon_toward_right_gray.svg';
 import styles from './style.module.less';
 import { Tooltip } from 'pc/components/common/tooltip';
-import { CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
+import { ArrowRightOutlined, CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
 
 interface IViewRules {
   index: number;
@@ -47,9 +46,9 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
   // Returns the appropriate icon based on active.
   function renderCorrectIcon(className: string) {
     if (/active/.test(className)) {
-      return <IconArrowGray fill={colors.staticWhite0} />;
+      return <ArrowRightOutlined color={colors.staticWhite0} />;
     }
-    return <IconArrowGray fill={colors.thirdLevelText} />;
+    return <ArrowRightOutlined color={colors.thirdLevelText} />;
 
   }
   function changeDescType(_e: React.MouseEvent, type: boolean) {

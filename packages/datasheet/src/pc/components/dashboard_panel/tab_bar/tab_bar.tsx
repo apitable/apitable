@@ -217,7 +217,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
           <WrapperTooltip wrapper={Boolean(reachInstalledLimit)} tip={t(Strings.reach_limit_installed_widget)}>
             <TextButton
               className={styles.atcButton}
-              prefixIcon={<AddFilled size={16} color={[colors.primaryColor, 'white']} />}
+              prefixIcon={<AddFilled size={16} color={openTrigger ? colors.primaryColor : colors.secondLevelText} />}
               onClick={() => { setOpenTrigger(true); }}
               style={{
                 color: openTrigger ? colors.primaryColor : colors.secondLevelText,

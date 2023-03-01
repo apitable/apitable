@@ -71,7 +71,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.iconDrag} onMouseOver={onMouseOver}>
-            <DragOutlined size={14} color={colors.fourthLevelText} />
+            <DragOutlined size={16} color={colors.fourthLevelText} />
           </div>
           {/* option list */}
           <ViewFieldOptions
@@ -135,7 +135,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
                   onClick={() => deleteItem(index)}
                   size="x-small"
                   style={{ color: colors.fourthLevelText }}
-                  icon={<DeleteOutlined size={15} color={colors.fourthLevelText} />}
+                  icon={<DeleteOutlined size={16} color={colors.fourthLevelText} />}
                 />
               </div>
             </Col>

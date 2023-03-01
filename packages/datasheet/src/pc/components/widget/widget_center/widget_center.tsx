@@ -18,7 +18,7 @@
 
 import { Box, Button, Skeleton, ThemeName, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { IMember, IWidgetPackage, Selectors, Strings, t, UnitItem, WidgetApi, WidgetReleaseType } from '@apitable/core';
-import { InfoCircleFilled, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled, AddOutlined } from '@apitable/icons';
+import { InfoCircleOutlined, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled, AddOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
@@ -108,7 +108,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
     <div className={styles.tabItemTips}>
       {
         getEnvVariables().WIDGET_CENTER_OFFICIAL_TIP_VISIBLE && <>
-          <InfoCircleFilled size={16} color={colors.thirdLevelText} />
+          <InfoCircleOutlined size={16} color={colors.textCommonTertiary} />
           <span>{introduction}</span>
         </>
       }

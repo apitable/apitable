@@ -130,7 +130,9 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
             <span>{displayMemberName}</span>
             {
               editIcon && !isIdassPrivateDeployment() &&
-              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditOutlined color='currentColor' /></ButtonPlus.Icon>
+              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}>
+                <EditOutlined size={12} color='currentColor' />
+              </ButtonPlus.Icon>
             }
           </div>
           {inEditName &&

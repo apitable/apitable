@@ -84,7 +84,7 @@ export const NodeTree: FC<React.PropsWithChildren<INodeTreeProps>> = props => {
       onSelect={onSelect}
       switcherIcon={
         <span>
-          <TriangleDownFilled />
+          <TriangleDownFilled size={12} />
         </span>
       }
       selectedKeys={[nodeId]}

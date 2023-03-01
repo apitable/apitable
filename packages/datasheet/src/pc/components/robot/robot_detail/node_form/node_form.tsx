@@ -138,7 +138,7 @@ export const NodeForm = (props: any) => {
                     display="flex"
                     alignItems="center"
                   >
-                    <WarnCircleFilled />
+                    <WarnCircleFilled color={theme.color.textWarnDefault} />
                   </Box>
                 </Tooltip>
               </Box>

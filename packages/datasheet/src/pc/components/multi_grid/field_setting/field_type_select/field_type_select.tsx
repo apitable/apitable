@@ -141,7 +141,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
             href={getFieldHelpLink()} 
             target="_blank" 
             rel="noopener noreferrer" 
-            style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.2em', marginLeft: 8 }}
+            style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.25em', marginLeft: 8 }}
           >
             <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
           </a>
