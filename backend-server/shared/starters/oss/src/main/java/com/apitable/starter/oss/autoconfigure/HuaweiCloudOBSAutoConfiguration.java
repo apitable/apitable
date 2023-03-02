@@ -13,17 +13,17 @@ import com.obs.services.*;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ObsClient.class)
-@ConditionalOnProperty(value = "starter.oss.type", havingValue = "huaweicloud")
+@ConditionalOnProperty(value = "starter.oss.type", havingValue = "huawei-cloud")
 public class HuaweiCloudOBSAutoConfiguration extends  OssConnectionConfiguration{
 
-  public HuaweiCloudOBSAutoConfiguration(OssProperties properties) {
-    super(properties);
-  }
+    public HuaweiCloudOBSAutoConfiguration(OssProperties properties) {
+        super(properties);
+    }
 
-  @Bean
-  @ConditionalOnMissingBean(OssClientRequestFactory.class)
-  OssClientRequestFactory ossClientRequestFactory() {
+    @Bean
+    @ConditionalOnMissingBean(OssClientRequestFactory.class)
+    OssClientRequestFactory ossClientRequestFactory() {
       HuaweiCloud huaweicloud = getProperties().getHuaweicloud();
-      return new HuaweiCloudOssClientRequestFactory( huaweicloud.getAccessKey(), huaweicloud.getSecretKey(), huaweicloud.getEndPoint());
-  }
+      return new HuaweiCloudOssClientRequestFactory( huaweicloud.getAccessKey(), huaweicloud.getSecretKey(), huaweicloud.getEndpoint());
+    }
 }
