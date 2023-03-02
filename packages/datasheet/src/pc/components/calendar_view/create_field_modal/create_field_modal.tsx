@@ -30,6 +30,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { notify } from 'pc/components/common/notify';
@@ -41,7 +42,6 @@ import { useSelector } from 'react-redux';
 import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
 import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 
 export const CreateFieldModal = memo(() => {
@@ -139,7 +139,7 @@ export const CreateFieldModal = memo(() => {
           className={styles.createBtn}
           onClick={handleClick}
           disabled={!manageable}
-          prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+          prefixIcon={<AddOutlined size={16} color={'white'} />}
         >
           {t(Strings.calendar_init_fields_button)}
         </Button>

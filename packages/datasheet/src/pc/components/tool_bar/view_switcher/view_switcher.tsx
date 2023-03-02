@@ -38,7 +38,6 @@ import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 import { ViewIcon } from './view_icon';
 import { ViewItem } from './view_item';
@@ -49,6 +48,7 @@ import { useViewAction } from './action';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 import { useUnmount } from 'ahooks';
+import { AddOutlined } from '@apitable/icons';
 
 interface IViewSwitcherProperty {
   close: (e: React.MouseEvent) => void;
@@ -169,7 +169,7 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
             <ViewIcon viewType={ViewType.Grid} />
             <span>{t(Strings.grid_view)}</span>
           </div>
-          <AddIcon fill={colors.thirdLevelText} />
+          <AddOutlined color={colors.thirdLevelText} />
         </Button>
         <Button
           className={styles.viewType}
@@ -180,10 +180,10 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
           disabled={isViewCountOverLimit}
         >
           <div className={classNames('flex item-center', styles.text)}>
-            <ViewIcon viewType={ViewType.Gallery} fill={colors.primaryColor} />
+            <ViewIcon viewType={ViewType.Gallery} color={colors.primaryColor} />
             <span>{t(Strings.gallery_view)}</span>
           </div>
-          <AddIcon fill={colors.thirdLevelText} />
+          <AddOutlined color={colors.thirdLevelText} />
         </Button>
         {!isMobile && (
           <Button
@@ -195,10 +195,10 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Kanban} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Kanban} color={colors.primaryColor} />
               <span>{t(Strings.kanban_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -211,10 +211,10 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Gantt} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Gantt} color={colors.primaryColor} />
               <span>{t(Strings.gantt_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -227,10 +227,10 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Calendar} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Calendar} color={colors.primaryColor} />
               <span>{t(Strings.calendar_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -243,10 +243,10 @@ export const AddNewViewList: React.FC<React.PropsWithChildren<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.OrgChart} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.OrgChart} color={colors.primaryColor} />
               <span>{t(Strings.org_chart_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
       </div>

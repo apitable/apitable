@@ -79,13 +79,13 @@ public class AuthServiceImpl implements IAuthService {
     private PasswordService passwordService;
 
     @Override
-    public void register(final String username, final String password) {
+    public Long register(final String username, final String password) {
         // Check email format and if exists
         ExceptionUtil.isTrue(Validator.isEmail(username), REGISTER_EMAIL_ERROR);
         boolean exist = iUserService.checkByEmail(username);
         ExceptionUtil.isFalse(exist, REGISTER_EMAIL_HAS_EXIST);
         // Register User
-        this.registerUserUsingEmail(username, password);
+        return this.registerUserUsingEmail(username, password);
     }
 
     @Override

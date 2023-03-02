@@ -18,7 +18,7 @@
 
 import { Button, Skeleton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
-import { QuestionCircleOutlined } from '@apitable/icons';
+import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 
 import Image from 'next/image';
@@ -26,9 +26,7 @@ import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { FC } from 'react';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import EmptyState from 'static/icon/datasheet/form/emptystate.png';
-import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 import styles from './style.module.less';
 
 export interface IFormNodeItem {
@@ -112,10 +110,9 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
             className={styles.formItem}
             onClick={() => onJump(form.nodeId)}
           >
-            <FormIcon
-              width={16}
-              height={16}
-              fill={colors.thirdLevelText}
+            <FormOutlined
+              size={16}
+              color={colors.thirdLevelText}
             />
             <span className={styles.formName}>
               {form.nodeName}
@@ -155,7 +152,7 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
               size='middle'
               onClick={addForm}
             >
-              {!isEmpty && <IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.addIcon} />}
+              {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </Button>
           ) : (
@@ -165,7 +162,7 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
               style={{ height: '100%' }}
               onClick={addForm}
             >
-              {!isEmpty && <IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.addIcon} />}
+              {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </TextButton>
           )}

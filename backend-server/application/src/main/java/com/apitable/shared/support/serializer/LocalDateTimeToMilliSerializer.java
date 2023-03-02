@@ -18,22 +18,48 @@
 
 package com.apitable.shared.support.serializer;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
+import cn.hutool.core.util.ObjectUtil;
+import com.apitable.shared.cache.bean.LoginUserDto;
+import com.apitable.shared.config.ServerConfig;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.context.SessionContext;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import javax.annotation.Resource;
 
 /**
- * LocalDateTime to timestamp（mills）
+ * LocalDateTime to timestamp（mills）.
+ *
  * @author Shawn Deng
  */
 public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime> {
 
+    @Resource
+    private ServerConfig serverConfig;
+
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeNumber(value.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider)
+        throws IOException {
+        // Get user timeZone
+        Long userId = SessionContext.getUserIdWithoutException();
+        String userTimeZone;
+        if (userId != null) {
+            LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
+            userTimeZone = ObjectUtil.isNotEmpty(loginUserDto) ? loginUserDto.getTimeZone()
+                : serverConfig.getTimeZoneId().toString();
+        } else {
+            userTimeZone = serverConfig.getTimeZoneId().toString();
+        }
+        // server config timeZone time
+        ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, serverConfig.getTimeZoneId());
+        // target timeZone time
+        ZonedDateTime targetZonedDateTime =
+            originalZonedDateTime.withZoneSameInstant(ZoneId.of(userTimeZone));
+        gen.writeNumber(targetZonedDateTime.toInstant().toEpochMilli());
     }
 }

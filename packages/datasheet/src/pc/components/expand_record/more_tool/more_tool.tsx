@@ -30,7 +30,7 @@ import {
   t,
 } from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { AttentionOutlined, InfoCircleOutlined } from '@apitable/icons';
+import { AttentionOutlined, DeleteOutlined, InfoCircleOutlined, LinkOutlined, MoreStandOutlined } from '@apitable/icons';
 
 import { Popover } from 'pc/components/common/mobile/popover';
 import { Message } from 'pc/components/common';
@@ -41,9 +41,6 @@ import { resourceService } from 'pc/resource_service';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { copy2clipBoard } from 'pc/utils';
 
-import IconMore from 'static/icon/common/common_icon_more_stand.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
 import style from './style.module.less';
 import EditorTitleContext from '../editor_title_context';
 
@@ -179,13 +176,13 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       visible: true,
     },
     {
-      icon: <IconURL width={16} height={16} fill={colors.white} />,
+      icon: <LinkOutlined size={16} color={colors.white} />,
       name: t(Strings.copy_url_line),
       onClick: copyLink2clipBoard,
       visible: !embedId,
     },
     {
-      icon: <DeleteIcon width={16} height={16} fill={colors.white} />,
+      icon: <DeleteOutlined size={16} color={colors.white} />,
       name: t(Strings.delete_row),
       onClick: deleteRecord,
       visible: rowRemovable,
@@ -226,7 +223,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       onPopupVisibleChange={visible => setVisible(visible)}
     >
       <IconButton
-        icon={() => <IconMore width={16} height={16} fill={colors.black[50]} />}
+        icon={() => <MoreStandOutlined size={16} color={colors.black[50]} />}
         shape="square"
         className={style.trigger}
       />

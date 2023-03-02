@@ -17,14 +17,13 @@
  */
 
 import { Button, Skeleton, Typography, useThemeColors, ThemeName } from '@apitable/components';
-import { ChevronRightOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
 import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useContext, useMemo } from 'react';
-import InfoIcon from 'static/icon/common/common_icon_information.svg';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
 import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
@@ -104,7 +103,7 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
         {!isMobile && (
           <Tooltip title={tipTitle} trigger='hover' placement='top'>
             <span className={styles.infoIcon}>
-              <InfoIcon className={styles.infoIconInDesc} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIconInDesc} />
             </span>
           </Tooltip>
         )}

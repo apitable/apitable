@@ -19,10 +19,10 @@
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import * as React from 'react';
 import styles from './styles.module.less';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors } from '@apitable/components';
 import { ExecuteResult } from '@apitable/core';
 import { expandRecordIdNavigate } from '../expand_record';
+import { AddOutlined } from '@apitable/icons';
 
 interface IAddRecordProps {
   recordId?: string;
@@ -57,7 +57,7 @@ export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = pro
       }}
     >
       <div className={styles.btnWrapper}>
-        <AddIcon width={innerSize} height={innerSize} fill={colors.black[50]} />
+        <AddOutlined size={innerSize} color={colors.black[50]} />
       </div>
     </div>
   );

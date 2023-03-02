@@ -18,6 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@apitable/core';
+import { CloseOutlined, Star2Filled, UserAddOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ButtonPlus, Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -27,9 +28,6 @@ import { useRequest, useResponsive, useSpaceRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
-import JoinIcon from 'static/icon/datasheet/share/datasheet_icon_share_join.svg';
-import ShareStarIcon from 'static/icon/datasheet/share/datasheet_icon_share_star.svg';
 import styles from './style.module.less';
 
 export interface IApplicationJoinSpaceAlertProps {
@@ -54,7 +52,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
         <ButtonPlus.Font
           className={classnames(styles.joinBtn, minimized && !isMobile && styles.fadeIn)}
           onClick={() => applicationJoinHandler()}
-          icon={<JoinIcon width={24} height={24} fill={colors.secondLevelText} />}
+          icon={<UserAddOutlined size={24} color={colors.secondLevelText} />}
           size='small'
           shadow
         />,
@@ -102,7 +100,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
           <Button
             color='warning'
             size={isMobile ? 'small' : 'middle'}
-            prefixIcon={!isMobile && <ShareStarIcon fill='#FFEB3A' />}
+            prefixIcon={!isMobile && <Star2Filled color='#FFEB3A' />}
             className={styles.applicationBtn}
             onClick={applicationJoinHandler}
             shape={isMobile ? 'round' : undefined}
@@ -110,7 +108,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
             {t(Strings.apply_join_space)}
           </Button>
           <div className={styles.closeBtn} onClick={closeHandler}>
-            <CloseIcon />
+            <CloseOutlined />
           </div>
         </div>
       )}

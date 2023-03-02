@@ -22,6 +22,7 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.internal.service.InternalSpaceService;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
+import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.organization.service.IMemberService;
@@ -106,5 +107,15 @@ public class InternalSpaceController {
         Long userId = SessionContext.getUserId();
         iMemberService.checkUserIfInSpace(userId, spaceId);
         return ResponseData.success(internalSpaceService.getSpaceEntitlementApiUsageVo(spaceId));
+    }
+
+    /**
+     * get space info.
+     */
+    @GetResource(path = "/space/{spaceId}", requiredPermission = false, requiredLogin = false)
+    @Operation(summary = "get space information")
+    public ResponseData<InternalSpaceInfoVo> labs(@PathVariable("spaceId") String spaceId) {
+        iSpaceService.checkExist(spaceId);
+        return ResponseData.success(internalSpaceService.getSpaceInfo(spaceId));
     }
 }

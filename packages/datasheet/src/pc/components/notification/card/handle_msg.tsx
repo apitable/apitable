@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import NotificationIcon from 'static/icon/datasheet/datasheet_icon_notification.svg';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
 import { Button, IconButton, useThemeColors } from '@apitable/components';
@@ -27,6 +26,7 @@ import AnimationJson from 'static/json/notification_motion_white(1).json';
 import { useHover, useMount } from 'ahooks';
 import { AnimationItem } from 'lottie-web/index';
 import { isAskForJoiningMsg, JoinMsgApplyStatus } from './utils';
+import { NotificationOutlined } from '@apitable/icons';
 
 interface ICard {
   data: INoticeDetail;
@@ -94,7 +94,7 @@ export const HandleMsg = (props: ICard) => {
           <IconButton
             size="small"
             onClick={onProcess}
-            icon={() => <NotificationIcon fill={colors.thirdLevelText} width="16" height="16" />}
+            icon={() => <NotificationOutlined color={colors.thirdLevelText} size={16} />}
             className={styles.handleBtnInMobile}
           />
         </ComponentDisplay>

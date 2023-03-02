@@ -36,11 +36,18 @@ export const Alert = (
 
   const [hidden, setHidden] = useState(false);
   const theme = useProviderTheme();
+  const colors = theme.color;
   const iconMap = {
     default: InfoCircleFilled,
     error: WarnCircleFilled,
     warning: WarnFilled,
     success: CheckCircleFilled,
+  };
+  const colorMap = {
+    default: colors.textBrandDefault,
+    error: colors.textDangerDefault,
+    warning: colors.textWarnDefault,
+    success: colors.textSuccessDefault,
   };
 
   const Icon = iconMap[type];
@@ -57,7 +64,7 @@ export const Alert = (
   return (
     <AlertWrapper title={title} type={type} style={style} className={className}>
       <AlertInnerComponent>
-        <Icon size={iconSize} />
+        <Icon size={iconSize} color={colorMap[type]} />
         <Box
           display="flex" flexDirection="column"
           justifyContent="center" alignItems="flex-start"

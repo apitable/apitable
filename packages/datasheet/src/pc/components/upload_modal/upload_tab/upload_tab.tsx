@@ -26,9 +26,6 @@ import { useThemeColors } from '@apitable/components';
 import { initNoTraceVerification, UploadManager } from 'pc/utils';
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
-import IconDrag from 'static/icon/datasheet/datasheet_icon_attachment_local.svg';
-import IconPaste from 'static/icon/datasheet/datasheet_icon_attachment_paste.svg';
 import { IUploadFileList } from '../upload_core';
 import { UploadPaste } from '../upload_paste/upload_paste';
 import { IUploadZoneItem, UploadZone } from '../upload_zone';
@@ -36,6 +33,7 @@ import styles from './styles.module.less';
 import { useMount } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { uniqBy } from 'lodash';
+import { FileAddOutlined, LinkOutlined, PasteOutlined } from '@apitable/icons';
 
 export enum UploadTabType {
   Drag = 'Drag',
@@ -46,19 +44,19 @@ export enum UploadTabType {
 const tabConfig = {
   [UploadTabType.Drag]: {
     open: true,
-    icon: IconDrag,
+    icon: FileAddOutlined,
     tip: t(Strings.local_drag_upload),
     index: 1,
   },
   [UploadTabType.Paste]: {
     open: true,
-    icon: IconPaste,
+    icon: PasteOutlined,
     tip: t(Strings.paste_upload),
     index: 2,
   },
   [UploadTabType.Link]: {
     open: false,
-    icon: IconURL,
+    icon: LinkOutlined,
     tip: '',
     index: 3,
   },
@@ -150,7 +148,7 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = pro
                     tabInfoRef.current?.focus();
                   }}
                 >
-                  <Icon width={16} height={16} fill={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText} />
+                  <Icon size={16} color={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText} />
                 </span>
               </Tooltip>
             );

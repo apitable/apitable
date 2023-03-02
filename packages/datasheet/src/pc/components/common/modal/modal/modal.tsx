@@ -30,10 +30,10 @@ import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/u
 import { store } from 'pc/store';
 import React, { FC, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
 // @ts-ignore
 import { getBillingInfo, isSocialDingTalk } from 'enterprise';
+import { CloseOutlined } from '@apitable/icons';
 
 const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const {
@@ -59,7 +59,7 @@ const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
     <Provider store={store}>
       <ModalWithTheme
         className={classNames(styles.modalBase, className)}
-        closeIcon={closeIcon || <CloseIcon />}
+        closeIcon={closeIcon || <CloseOutlined />}
         footer={footer === undefined ? <FooterBtnInModal {...FooterBtnConfig} className={footerBtnCls} /> : footer}
         onCancel={onCancel}
         {...rest}

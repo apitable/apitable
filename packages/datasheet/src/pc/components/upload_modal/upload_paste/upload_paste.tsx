@@ -28,13 +28,13 @@ import {
 } from 'react';
 
 import * as React from 'react';
-import IconPaste from 'static/icon/datasheet/datasheet_icon_pasteattachment.svg';
 import { ICommonTabRef } from '../upload_tab';
 import styles from './styles.module.less';
 import { IUploadZoneItem } from 'pc/components/upload_modal/upload_zone';
 import { isImage, Strings, t, IAttachmentValue } from '@apitable/core';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { CopyOutlined } from '@apitable/icons';
 
 interface IUploadPasteBaseProps {
   recordId: string;
@@ -96,7 +96,7 @@ export const UploadPasteBase: ForwardRefRenderFunction<ICommonTabRef, IUploadPas
         onBlur={() => { setTip(t(Strings.click_upload_tip)); }}
         ref={inputRef}
       />
-      <IconPaste fill={colors.fourthLevelText} />
+      <CopyOutlined color={colors.fourthLevelText} />
       {tip}
     </div >
   );

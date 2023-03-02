@@ -19,10 +19,10 @@
 import * as React from 'react';
 import { Drawer } from 'antd';
 import { DrawerProps } from 'antd/lib/drawer';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import { useThemeColors } from '@apitable/components';
 import style from './style.module.less';
 import classNames from 'classnames';
+import { CloseOutlined } from '@apitable/icons';
 
 export const Popup: React.FC<React.PropsWithChildren<DrawerProps>> = props => {
   const colors = useThemeColors();
@@ -30,7 +30,7 @@ export const Popup: React.FC<React.PropsWithChildren<DrawerProps>> = props => {
     <Drawer
       closeIcon={(
         <div className={style.closeIconWrapper}>
-          <CloseIcon fill={colors.secondLevelText} width={16} height={16} />
+          <CloseOutlined color={colors.secondLevelText} size={16} />
         </div>
       )}
       push={{ distance: 0 }}

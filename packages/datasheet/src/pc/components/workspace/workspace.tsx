@@ -18,7 +18,7 @@
 
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
+import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 // @ts-ignore
@@ -346,7 +346,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
                     }}
                     data-test-id='sidebar-toggle-btn'
                   >
-                    {!sideBarVisible ? <ExpandOutlined /> : <CollapseOutlined />}
+                    {!sideBarVisible ? <CollapseOpenOutlined /> : <CollapseOutlined />}
                   </div>
                 </Tooltip>
               </div>

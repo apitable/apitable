@@ -24,8 +24,6 @@ import { Message } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
 import QRCode from 'qrcode';
 import { FC } from 'react';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import DownloadIcon from 'static/icon/datasheet/datasheet_icon_download.svg';
 import QrCodePng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_bj.png';
 import GapBgPngLight from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_light.png';
 import GapBgPngDark from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_dark.png';
@@ -34,6 +32,7 @@ import DuckPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_top.png
 import MainBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_up.png';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
+import { CloseOutlined, DownloadOutlined } from '@apitable/icons';
 export interface IShareQrCodeProps {
   url: string;
   user: string;
@@ -100,7 +99,7 @@ export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ ur
           </div>
         }
         <div className={styles.mainContainer} style={{ position:'relative', backgroundImage: `url(${MainBgPng.src})` }}>
-          <IconButton id="closeBtn" icon={() => <CloseIcon />} className={styles.closeBtn} onClick={onClose} />
+          <IconButton id="closeBtn" icon={() => <CloseOutlined />} className={styles.closeBtn} onClick={onClose} />
           <div className={styles.user}>{t(Strings.who_shares, { userName: user })}</div>
           <div className={styles.nodeName}>《{nodeName}》</div>
           <div className={styles.qrcode}>
@@ -120,7 +119,7 @@ export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ ur
               color="primary"
               shape="round"
               onClick={downloadImage}
-              prefixIcon={<DownloadIcon width="16" height="16" fill="currentColor" />}
+              prefixIcon={<DownloadOutlined size="16" color="currentColor" />}
               block
             >
               {t(Strings.download_image)}

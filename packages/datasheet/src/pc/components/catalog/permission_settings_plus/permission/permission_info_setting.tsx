@@ -18,7 +18,7 @@
 
 import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { IRoleMember, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, UserGroupFilled } from '@apitable/icons';
+import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, UserGroupOutlined } from '@apitable/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -70,7 +70,7 @@ export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
       <div className={styles.tipContainer}>
         {isExtend ? (
           <Box>
-            <UserGroupFilled className={styles.tipIcon} color={colors.textCommonTertiary} />
+            <UserGroupOutlined className={styles.tipIcon} color={colors.textCommonTertiary} />
             <Typography variant="body3" className={styles.tip} color={colors.textCommonSecondary}>
               {extendTips}
             </Typography>
@@ -174,7 +174,13 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
       visible={batchSelectVisible}
       onVisibleChange={setBatchSelectVisible}
     >
-      <TextButton size="small" suffixIcon={batchSelectVisible ? <ChevronUpOutlined /> : <ChevronDownOutlined />}>
+      <TextButton 
+        size="small" 
+        suffixIcon={batchSelectVisible ? <ChevronUpOutlined size={12} /> : <ChevronDownOutlined size={12} />}
+        style={{
+          fontSize: 13
+        }}
+      >
         {t(Strings.batch_edit_permission)}
       </TextButton>
     </Dropdown>

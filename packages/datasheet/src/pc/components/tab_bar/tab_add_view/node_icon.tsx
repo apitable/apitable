@@ -18,30 +18,28 @@
 
 import * as React from 'react';
 import { ConfigConstant } from '@apitable/core';
+import { FormOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
-import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 
 const nodeIconMap = {
-  [ConfigConstant.NodeType.FORM]: FormIcon,
+  [ConfigConstant.NodeType.FORM]: FormOutlined,
 };
 
 interface INodeIcon {
   nodeType: ConfigConstant.NodeType;
-  width?: number;
-  height?: number;
-  fill?: string;
+  size?: number;
+  color?: string;
   onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
 }
 
 export const NodeIcon: React.FC<React.PropsWithChildren<INodeIcon>> = props => {
   const colors = useThemeColors();
-  const { nodeType, width = 15, height = 15, fill = colors.thirdLevelText, onClick } = props;
+  const { nodeType, size = 15, color = colors.thirdLevelText, onClick } = props;
 
   if (nodeType && nodeIconMap[nodeType]) {
     return React.createElement(nodeIconMap[nodeType], {
-      width,
-      height,
-      fill,
+      size,
+      color,
       onClick,
     });
   } 

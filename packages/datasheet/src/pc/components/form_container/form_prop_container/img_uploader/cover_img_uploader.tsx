@@ -18,6 +18,7 @@
 
 import { IconButton } from '@apitable/components';
 import { CutMethod, getImageThumbSrc, integrateCdnHost, isGif, Settings, Strings, t } from '@apitable/core';
+import { EditOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { ICropShape, IPreviewShape } from 'pc/components/common';
@@ -26,7 +27,6 @@ import { useResponsive } from 'pc/hooks';
 import { getCellValueThumbSrc } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
-import BannerEditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { IBasePropEditorProps, IModeEnum } from '../interface';
 import { IFileType, ImgBaseUploader } from './img_base_uploader';
 import styles from './style.module.less';
@@ -90,7 +90,7 @@ export const CoverImgUploader: React.FC<React.PropsWithChildren<ICoverImgUploade
 
         {mode === IModeEnum.Edit && (
           <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-            <IconButton onClick={() => setModalShow(true)} size="large" variant="background" icon={() => <BannerEditIcon />} />
+            <IconButton onClick={() => setModalShow(true)} size="large" variant="background" icon={() => <EditOutlined />} />
           </div>
         )}
       </div>

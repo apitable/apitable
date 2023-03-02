@@ -61,7 +61,7 @@ const TreeViewRoot = styled.ul`
 export const TreeView: FC<React.PropsWithChildren<ITreeViewProps>> = React.memo(
   ({
     module,
-    switcherIcon = <TriangleRightFilled size={16} color={black[300]} />,
+    switcherIcon = <TriangleRightFilled size={12} color={black[300]} />,
     switcherLoadingIcon,
     expandedKeys = null,
     defaultExpandedKeys = null,

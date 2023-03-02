@@ -18,6 +18,7 @@
 
 import { colorVars, useThemeColors } from '@apitable/components';
 import { ISelectFieldOption, Strings, t } from '@apitable/core';
+import { DeleteOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
@@ -27,7 +28,6 @@ import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
@@ -136,7 +136,7 @@ export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>
               value={newName}
             />
             <div className={styles.deleteIconWrap}>
-              <DeleteIcon width={16} height={16} fill={colors.thirdLevelText} onClick={onDelete} />
+              <DeleteOutlined size={16} color={colors.thirdLevelText} onClick={onDelete} />
             </div>
           </div>
           <div className={styles.divider} />

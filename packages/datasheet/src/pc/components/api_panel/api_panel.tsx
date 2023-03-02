@@ -18,13 +18,12 @@
 
 import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { ApiOutlined, BookOutlined, AdjustmentOutlined } from '@apitable/icons';
+import { ApiOutlined, BookOutlined, AdjustmentOutlined, CloseOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconDelete from 'static/icon/common/common_icon_close_small.svg';
 import { Message } from '../common';
 import { InlineNodeName } from '../common/inline_node_name';
 import { AccountCenterModal } from '../navigation/account_center_modal';
@@ -109,7 +108,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
         <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
 
-      <IconDelete className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} width={24} height={24} fill='white' />
+      <CloseOutlined className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} size={24} color='white' />
 
       <div className={styles.operationArea}>
         <div className={styles.switchApiToken}>

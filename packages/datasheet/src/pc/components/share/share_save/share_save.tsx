@@ -29,12 +29,12 @@ import { Router } from 'pc/components/route_manager/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import IconNoSpaceLight from 'static/icon/datasheet/space_img_empty_light.png';
 import IconNoSpaceDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
 import { getEnvVariables } from 'pc/utils/env';
+import { CloseOutlined } from '@apitable/icons';
 
 enum ModalType {
   Login = 'Login',
@@ -263,7 +263,7 @@ export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = props =>
       footer={null}
       width={640}
       title={modalType === ModalType.Create || t(Strings.save_document)}
-      closeIcon={<IconButton icon={() => <CloseIcon />} />}
+      closeIcon={<IconButton icon={() => <CloseOutlined />} />}
       bodyStyle={{ paddingTop: '0' }}
       onCancel={onCancel}
       className={classnames(modalType === ModalType.SpaceList && styles.spaceListContainer)}

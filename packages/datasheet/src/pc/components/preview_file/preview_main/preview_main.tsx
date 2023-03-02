@@ -28,7 +28,6 @@ import { Header } from '../mobile/header';
 import { PreviewDisplayList } from '../preview_display_list';
 import { ToolBar } from '../tool_bar';
 import styles from './style.module.less';
-import IconRotate from 'static/icon/datasheet/datasheet_icon_rotate.svg';
 import { Swiper } from './swiper';
 import { ITransFormInfo } from '../preview_file.interface';
 import { Message } from 'pc/components/common';
@@ -39,6 +38,7 @@ import { useKeyPress } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { isFocusingInput } from './util';
 import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
+import { RotateOutlined } from '@apitable/icons';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -117,7 +117,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = prop
   );
 
   const handleNext = useCallback(
-  (e: any) => {
+    (e: any) => {
       e.stopPropagation();
 
       if (activeIndex + 1 < files.length) {
@@ -222,7 +222,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = prop
         />
         {isImage({ name: activeFile.name, type: activeFile.mimeType }) && isSupportImage(activeFile.mimeType) && (
           <div onClick={onRotate} className={styles.rotate}>
-            <IconRotate fill={colors.defaultBg} width={16} height={16} />
+            <RotateOutlined color={colors.defaultBg} size={16} />
           </div>
         )}
       </ComponentDisplay>

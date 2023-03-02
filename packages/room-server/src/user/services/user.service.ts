@@ -32,6 +32,7 @@ export class UserService {
     private readonly envConfigService: EnvConfigService,
     private readonly restService: RestService,
     private readonly userRepo: UserRepository,
+
   ) {}
 
   /**
