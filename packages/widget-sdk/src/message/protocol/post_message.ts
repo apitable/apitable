@@ -34,14 +34,17 @@ export class PostMessage extends Protocol {
   
   emit(type: MessageType, data: IResponse, key?: string, messageId?: string, allowTimeout: boolean = false) {
     return new Promise((resolve, reject) => {
-      if (key && this.contentWindows[key]) {
-        const { window: messageWindow, origin } = this.contentWindows[key]!;
-        messageWindow.postMessage({
-          messageId,
-          response: data,
-          type
-        }, origin);
-        messageId && messageMap.push(messageId, resolve, reject, allowTimeout);
+      if (key) {
+        if (this.contentWindows[key]) {
+          const { window: messageWindow, origin } = this.contentWindows[key]!;
+          messageWindow.postMessage({
+            messageId,
+            response: data,
+            type
+          }, origin);
+          messageId && messageMap.push(messageId, resolve, reject, allowTimeout);
+          return;
+        }
         return;
       }
       Object.keys(this.contentWindows).forEach(key => {
