@@ -25,6 +25,7 @@ import { useRequest } from 'pc/hooks';
 import styles from './style.module.less';
 import { useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
+import { Message } from 'pc/components/common';
 
 export interface IIdentifyingCodeInputProps extends ITextInputProps {
   mode?: ConfigConstant.LoginMode;
@@ -137,6 +138,9 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
         break;
       case StatusCode.SECONDARY_VALIDATION:
       case StatusCode.NVC_FAIL:
+        break;
+      case StatusCode.COMMON_ERR:
+        Message.error({ content: message });
         break;
       default:
         setErrMsg({ accountErrMsg: message });

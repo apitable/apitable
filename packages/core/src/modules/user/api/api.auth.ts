@@ -85,6 +85,18 @@ export function signUp(token?: string, inviteCode?: string) {
 }
 
 /**
+ * APITable CE Register
+ * 
+ */
+
+export function register(username: string, credential: string) {
+  return axios.post(Url.REGISTER, {
+    username,
+    credential
+  });
+}
+
+/**
  * 
  * Get phone verification code
  * 

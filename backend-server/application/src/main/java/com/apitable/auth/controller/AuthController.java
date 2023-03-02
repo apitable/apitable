@@ -103,7 +103,8 @@ public class AuthController {
         if (BooleanUtil.isFalse(skipRegisterValidate)) {
             return ResponseData.error("Validate failure");
         }
-        iAuthService.register(data.getUsername(), data.getCredential());
+        Long userId = iAuthService.register(data.getUsername(), data.getCredential());
+        SessionContext.setUserId(userId);
         return ResponseData.success();
     }
 

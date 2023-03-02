@@ -474,7 +474,7 @@
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
         },
         "widget_cli_miumum_version": {
-            "value": "0.0.12"
+            "value": "0.0.1"
         },
         "widget_custom_widget_empty_img": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
@@ -687,9 +687,7 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -702,9 +700,7 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -716,9 +712,7 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -731,9 +725,7 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -746,9 +738,7 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -761,9 +751,7 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -776,9 +764,7 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -791,9 +777,7 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -806,9 +790,7 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -821,9 +803,7 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -836,9 +816,7 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -851,9 +829,7 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -866,9 +842,7 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -881,9 +855,7 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -896,9 +868,7 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -911,9 +881,7 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -926,9 +894,7 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -941,9 +907,7 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -956,9 +920,7 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -971,9 +933,7 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -986,9 +946,7 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1001,9 +959,7 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1016,9 +972,7 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1031,9 +985,7 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1046,9 +998,7 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1061,9 +1011,7 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1076,9 +1024,7 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1091,9 +1037,7 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1106,9 +1050,7 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1121,9 +1063,7 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1136,9 +1076,7 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1151,9 +1089,7 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1166,9 +1102,7 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1181,9 +1115,7 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1196,9 +1128,7 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1211,9 +1141,7 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1226,9 +1154,7 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1241,9 +1167,7 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1368,9 +1292,7 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [
-                "new_datasheet"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1428,9 +1350,7 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [
-                "permission_setting"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -3256,6 +3176,18 @@
             },
             {
                 "actions": [
+                    "open_guide_wizard(106)"
+                ],
+                "rules": [
+                    "device_IS_pc"
+                ],
+                "id": "datasheet_create_mirror_tip,[device_IS_pc],[open_guide_wizard(106)]",
+                "event": [
+                    "datasheet_create_mirror_tip"
+                ]
+            },
+            {
+                "actions": [
                     "open_guide_wizard(30)"
                 ],
                 "rules": [
@@ -3592,6 +3524,15 @@
             "datasheet_add_new_view": {
                 "module": "datasheet",
                 "name": "add_new_view"
+            },
+            "datasheet_create_mirror_tip": {
+                "module": "datasheet",
+                "name": "create_mirror_tip",
+                "guide": {
+                    "step": [
+                        "recixOMO4Roib"
+                    ]
+                }
             },
             "datasheet_dashboard_panel_shown": {
                 "module": "datasheet",
@@ -4034,6 +3975,11 @@
                 "id": "open_guide_next_step({\"clearAllPrevUi\":true})",
                 "command": "open_guide_next_step",
                 "commandArgs": "{\"clearAllPrevUi\":true}"
+            },
+            {
+                "id": "open_guide_wizard(106)",
+                "command": "open_guide_wizard",
+                "commandArgs": "106"
             },
             {
                 "id": "open_guide_wizard(18)",
@@ -4848,6 +4794,18 @@
                         "recRyoECYFqBv"
                     ]
                 }
+            },
+            "106": {
+                "repeat": true,
+                "manualActions": [
+                    "open_guide_wizard(106)"
+                ],
+                "steps": "[[168]]",
+                "player": {
+                    "action": [
+                        "recO09HUv27dd"
+                    ]
+                }
             }
         },
         "step": {
@@ -4887,7 +4845,7 @@
                 ],
                 "next": "确定",
                 "nextId": "confirm",
-                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过维格表解决哪些问题？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"工作规划\",\n        \"客户服务\",\n        \"项目管理\",\n        \"采购供应\",\n        \"内容生产\",\n        \"电商运营\",\n        \"活动策划\",\n        \"人力资源\",\n        \"行政管理\",\n        \"财务管理\",\n        \"网络直播\",\n        \"高校管理\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"管理者\",\n        \"项目经理\",\n        \"产品经理\",\n        \"设计师\",\n        \"研发、工程师\",\n        \"运营、编辑\",\n        \"销售、客服\",\n        \"人事、行政\",\n        \"财务、会计\",\n        \"律师、法务\",\n        \"市场\",\n        \"教师\",\n        \"学生\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的公司名称是？\",\n      \"type\": \"input\",\n      \"submit\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"请留下你的邮箱/手机/微信号，以便我们及时提供帮助。\",\n      \"type\": \"input\",\n      \"submit\": true\n    },\n    {\n      \"key\": 5,\n      \"title\": \"感谢你的填写，请加一下客服号以备不时之需\",\n      \"platform\": {\n        \"website\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n        \"dingtalk\": \"https://s1.vika.cn/space/2022/02/09/5dfcfc63236d48c78e938969bceb2d06\",\n        \"wecom\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n        \"feishu\": \"https://u.vika.cn/z9ygm\"\n      },\n      \"type\": \"contactUs\",\n      \"next\": true\n    }\n  ]\n}\n",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过维格表解决哪些问题？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"工作规划\",\n        \"客户服务\",\n        \"项目管理\",\n        \"采购供应\",\n        \"内容生产\",\n        \"电商运营\",\n        \"活动策划\",\n        \"人力资源\",\n        \"行政管理\",\n        \"财务管理\",\n        \"网络直播\",\n        \"高校管理\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"管理者\",\n        \"项目经理\",\n        \"产品经理\",\n        \"设计师\",\n        \"研发、工程师\",\n        \"运营、编辑\",\n        \"销售、客服\",\n        \"人事、行政\",\n        \"财务、会计\",\n        \"律师、法务\",\n        \"市场\",\n        \"教师\",\n        \"学生\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的公司名称是？\",\n      \"type\": \"input\",\n      \"submit\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"请留下你的邮箱/手机/微信号，以便我们及时提供帮助。\",\n      \"type\": \"input\",\n      \"submit\": true\n    },\n    {\n      \"key\": 5,\n      \"title\": \"感谢你的填写，请加一下客服号以备不时之需\",\n      \"platform\": {\n        \"website\": \"https://s1.vika.cn/space/2023/03/02/b34e3205a9154463be16f497524f1327\",\n        \"dingtalk\": \"https://s1.vika.cn/space/2023/03/02/4b16cef6602a4586a21d6346bf25d300\",\n        \"wecom\": \"https://s1.vika.cn/space/2023/03/02/60119b1b69b64aa887bd1be6a2928bec\",\n        \"feishu\": \"https://u.vika.cn/z9ygm\"\n      },\n      \"type\": \"contactUs\",\n      \"next\": true\n    }\n  ]\n}\n",
                 "onClose": [
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
@@ -5900,7 +5858,7 @@
                 ],
                 "next": "已完成添加",
                 "nextId": "player_contact_us_confirm_btn",
-                "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServiceOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"LikeOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"QuestionCircleOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+                "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -6400,6 +6358,19 @@
                 "onClose": [
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
+            },
+            "168": {
+                "uiConfigId": "player_step_ui_config_168",
+                "uiType": "customTemplate",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "我知道了",
+                "nextId": "i_knew_it",
+                "byEvent": [
+                    "datasheet_create_mirror_tip"
+                ],
+                "uiConfig": "{\n\"templateKey\":\"createMirrorTip\"\n}"
             }
         }
     },
@@ -7215,9 +7186,7 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "be_invited_to_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7226,9 +7195,7 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "complete_bind_email"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7236,26 +7203,20 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_email"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_phone"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [
-                    "fission_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7263,9 +7224,7 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7282,9 +7241,7 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "official_invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7293,27 +7250,21 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "redemption_code"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [
-                    "wallet_activity_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7321,9 +7272,7 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_video_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"

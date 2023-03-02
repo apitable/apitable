@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InviteImage from 'static/icon/common/common_img_invite.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
+import { HomeWrapper } from 'pc/components/home/home_wrapper';
 
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const inviteCode = query.get('inviteCode') || undefined;
   const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
+  const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0, IS_ENTERPRISE } = getEnvVariables();
 
   const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
     onSuccess: res => {
@@ -48,7 +50,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
         dispatch(StoreActions.updateInviteLinkInfo(null));
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
-        const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0 } = getEnvVariables();
+        
         if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
           const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
           location.href = `${LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL}${redirectUri}`;
@@ -85,28 +87,51 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   }
 
   return (
-    <Wrapper>
-      <div className='invite-children-center'>
-        <span style={{ marginBottom: '24px' }}>
-          <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
-        </span>
-        <InviteTitle
-          inviter={inviteLinkInfo.data.memberName}
-          spaceName={inviteLinkInfo.data.spaceName}
-          titleMarginBottom='40px'
-        />
-        <Button
-          onClick={confirmBtn}
-          color='primary'
-          size='large'
-          style={{ width: '220px' }}
-          loading={loading}
-          disabled={loading}
-        >
-          {t(Strings.confirm_join)}
-        </Button>
-      </div>
-    </Wrapper>
+    IS_ENTERPRISE ?
+      <Wrapper>
+        <div className='invite-children-center'>
+          <span style={{ marginBottom: '24px' }}>
+            <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
+          </span>
+          <InviteTitle
+            inviter={inviteLinkInfo.data.memberName}
+            spaceName={inviteLinkInfo.data.spaceName}
+            titleMarginBottom='40px'
+          />
+          <Button
+            onClick={confirmBtn}
+            color='primary'
+            size='large'
+            style={{ width: '220px' }}
+            loading={loading}
+            disabled={loading}
+          >
+            {t(Strings.confirm_join)}
+          </Button>
+        </div>
+      </Wrapper> :
+      <HomeWrapper>
+        <div className='invite-children-center'>
+          <span style={{ marginBottom: '24px' }}>
+            <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
+          </span>
+          <InviteTitle
+            inviter={inviteLinkInfo.data.memberName}
+            spaceName={inviteLinkInfo.data.spaceName}
+            titleMarginBottom='40px'
+          />
+          <Button
+            onClick={confirmBtn}
+            color='primary'
+            size='large'
+            style={{ width: '220px' }}
+            loading={loading}
+            disabled={loading}
+          >
+            {t(Strings.confirm_join)}
+          </Button>
+        </div>
+      </HomeWrapper>
   );
 };
 
