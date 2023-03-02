@@ -21,11 +21,11 @@ import * as React from 'react';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { IMemberInfoInSpace, Strings, t, Api, ISpaceBasicInfo } from '@apitable/core';
 import { TextButton } from '@apitable/components';
-import DescribeIcon from 'static/icon/datasheet/rightclick/datasheet_icon_edit_describe.svg';
 import styles from './style.module.less';
 import { Identity } from '../../identity';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+import { InfoCircleOutlined } from '@apitable/icons';
 
 export const Reinvite: FC<React.PropsWithChildren<{record: IMemberInfoInSpace}>> = ({ record }) => {
   const reSendEmail = (record: IMemberInfoInSpace) => {
@@ -49,7 +49,7 @@ export const Reinvite: FC<React.PropsWithChildren<{record: IMemberInfoInSpace}>>
       onOk={() => reSendEmail(record)}
       trigger="click"
     >
-      <DescribeIcon />
+      <InfoCircleOutlined />
     </Popconfirm>
   );
 };

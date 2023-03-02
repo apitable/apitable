@@ -17,7 +17,7 @@
  */
 
 import axios from 'axios';
-import * as actions from '../../../shared/store/action_constants';
+import * as actions from 'modules/shared/store/action_constants';
 
 export function setPageParams(payload: { [path: string]: string | undefined }) {
   if (payload.spaceId) {

@@ -19,21 +19,37 @@
 package com.apitable.internal.service;
 
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
+import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 
+/**
+ * internal space service.
+ */
 public interface InternalSpaceService {
 
     /**
-     * get space entitlement view
+     * get space entitlement view.
+     *
      * @param spaceId space id
      * @return InternalSpaceSubscriptionVo
      */
     InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId);
 
     /**
-     * get space api usage in entitlement
+     * get space api usage in entitlement.
+     *
      * @param spaceId space id
      * @return InternalSpaceApiUsageVo
      */
     InternalSpaceApiUsageVo getSpaceEntitlementApiUsageVo(String spaceId);
+
+    /**
+     * get space info.
+     *
+     * @param spaceId space id
+     * @return {@link InternalSpaceInfoVo}
+     */
+    InternalSpaceInfoVo getSpaceInfo(String spaceId);
+
+
 }

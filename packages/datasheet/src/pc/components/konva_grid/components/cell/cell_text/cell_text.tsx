@@ -17,7 +17,7 @@
  */
 
 import { FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, Field, ISegment } from '@apitable/core';
-import { ColumnEmailNonzeroFilled, ColumnPhoneFilled, ColumnUrlOutlined } from '@apitable/icons';
+import { EmailOutlined, TelephoneOutlined, LinkOutlined } from '@apitable/icons';
 import { Icon, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
@@ -28,9 +28,9 @@ import { generateTargetName } from 'pc/components/gantt_view';
 import { IRenderContentBase } from '../interface';
 
 // IconPath
-const ColumnEmailNonzeroFilledPath = ColumnEmailNonzeroFilled.toString();
-const ColumnUrlOutlinedPath = ColumnUrlOutlined.toString();
-const ColumnPhoneFilledPath = ColumnPhoneFilled.toString();
+const ColumnEmailNonzeroFilledPath = EmailOutlined.toString();
+const ColumnUrlOutlinedPath = LinkOutlined.toString();
+const ColumnPhoneFilledPath = TelephoneOutlined.toString();
 
 const enhanceTextIconMap = {
   [FieldType.URL]: ColumnUrlOutlinedPath,

@@ -44,9 +44,9 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
 import styles from './style.module.less';
+import { CloseCircleFilled } from '@apitable/icons';
 
 export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
@@ -196,7 +196,7 @@ export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => 
             size='small'
             onBlur={() => bindSearchQuery(keywords)}
             onKeyDown={onSearchInputKeyDown}
-            suffix={keywords && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
+            suffix={keywords && <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn} /></span>}
           />
         </div>
         <div className={styles.listContainer}>

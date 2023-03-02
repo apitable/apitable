@@ -112,7 +112,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
 
     const newCellValue = [...cellValue];
     newCellValue.splice(recordIndex, 1);
-    resourceService?.instance?.commandManager?.execute({
+    resourceService.instance?.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: [
         {
@@ -133,7 +133,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
   const shadowProps =
     cacheTheme === 'light'
       ? {
-        stroke: rgbaToHex(colors.borderCommonDefault, 1),
+        stroke: rgbaToHex(colors.lineColor, 1),
         strokeWidth: 1,
         shadowColor: rgbaToHex(colors.shadowBg, 0.12),
         shadowBlur: 12,
@@ -142,7 +142,7 @@ export const useTaskLineSetting = (props: ITaskLineSettingProps) => {
         shadowEnabled: true,
       }
       : {
-        stroke: rgbaToHex(colors.borderCommonDefault, 1),
+        stroke: rgbaToHex(colors.lineColor, 1),
         strokeWidth: 1,
         shadowColor: '#000000',
         shadowOpacity: 0.12,

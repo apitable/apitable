@@ -18,14 +18,12 @@
 
 import { TextInput } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { InputProps } from 'antd/lib/input';
 import classnames from 'classnames';
 import { KeyCode } from 'pc/utils';
 import * as React from 'react';
 import { FC, useRef } from 'react';
-
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import styles from './style.module.less';
 
 interface ISearchInput extends InputProps {
@@ -49,7 +47,7 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
     }
   };
 
-  const clearKeyword = (e: React.MouseEvent<SVGSVGElement>) => {
+  const clearKeyword = (e: React.MouseEvent) => {
     myStopPropagation(e);
     if (props.keyword === '') {
       onClose && onClose();
@@ -67,7 +65,7 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
   return (
     <TextInput
       block
-      prefix={<SearchIcon onClick={myStopPropagation} />}
+      prefix={<SearchOutlined />}
       ref={inputRef}
       className={classnames(className, styles.searchInput)}
       value={props.keyword}
@@ -75,7 +73,7 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
       onClick={myStopPropagation}
       onChange={handleChange}
       onKeyDown={onKeyDown}
-      suffix={props.keyword && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
+      suffix={props.keyword && <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn} /></span>}
       {...rest as any}
     />
   );

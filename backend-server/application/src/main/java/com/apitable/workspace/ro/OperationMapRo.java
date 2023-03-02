@@ -19,25 +19,27 @@
 package com.apitable.workspace.ro;
 
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * DataSheet Snapshot OP Operation Request Parameters
+ * DataSheet Snapshot OP Operation Request Parameters.
  */
-@ApiModel("DataSheet Snapshot OP Operation Request Parameters")
+@Schema(description = "DataSheet Snapshot OP Operation Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class OperationMapRo {
 
-    @ApiModelProperty(value = "Operation instruction", position = 1)
-    private  String cmd;
+    @Schema(description = "Operation instruction")
+    private String cmd;
 
-    @ApiModelProperty(value = "DataSheet record set", position = 2)
+    @Schema(description = "DataSheet record set")
     private List<JSONObject> actions;
 }

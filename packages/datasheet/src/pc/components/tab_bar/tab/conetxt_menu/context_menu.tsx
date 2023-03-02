@@ -21,7 +21,7 @@ import {
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
-import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@apitable/icons';
+import { AutosaveOutlined, ChevronRightOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import dynamic from 'next/dynamic';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
@@ -279,7 +279,7 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
     ],
     [
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
@@ -295,7 +295,7 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_LOCK,
       },
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} checked />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
@@ -335,21 +335,21 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         text: t(Strings.view_export_to_excel),
         hidden: !permissions.exportable || isMobileApp(),
         id: DATASHEET_ID.VIEW_EXPORT,
-        arrow: <CalenderRightOutlined size={10} color={black[500]} />,
+        arrow: <ChevronRightOutlined size={10} color={black[500]} />,
         children: [{
-          icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
           text: t(Strings.csv),
           onClick: exportTypeCsv,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_CSV,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
           text: t(Strings.excel),
           onClick: exportTypeXlsx,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_EXCEL,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
           text: t(Strings.png),
           onClick: exportTypeImage,
           'data-sensors-click': true,

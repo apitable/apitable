@@ -23,7 +23,7 @@ import { Message } from 'pc/components/common';
 import { Selectors, Strings, t } from '@apitable/core';
 import {
   ChevronLeftOutlined,
-  DeleteOutlined, EditDescribeOutlined, EditOutlined, HistoryOutlined, InformationSmallOutlined, MoreStandOutlined
+  DeleteOutlined, InfoCircleOutlined, EditOutlined, HistoryOutlined, QuestionCircleOutlined, MoreStandOutlined
 } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useSelector } from 'react-redux';
@@ -76,7 +76,7 @@ export const RobotDetailHead = () => {
       },
       {
         text: t(Strings.robot_edit_desc),
-        icon: <EditDescribeOutlined />,
+        icon: <InfoCircleOutlined />,
         onClick: () => {
           setIsEditingRobotDesc(true);
         }
@@ -109,7 +109,7 @@ export const RobotDetailHead = () => {
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
-              icon={InformationSmallOutlined} onClick={() => {
+              icon={QuestionCircleOutlined} onClick={() => {
                 window.open(t(Strings.robot_config_help_url));
               }} />
           </Box>

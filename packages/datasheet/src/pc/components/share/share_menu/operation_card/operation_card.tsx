@@ -21,9 +21,9 @@ import { AutoTestID } from '@apitable/core';
 import classnames from 'classnames';
 import Image, { StaticImageData } from 'next/image';
 import { FC, useState } from 'react';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
 import { isIframe } from 'pc/utils/env';
+import { CloseOutlined } from '@apitable/icons';
 
 export interface IOperationCardProps {
   img: StaticImageData;
@@ -38,7 +38,7 @@ export const OperationCard: FC<React.PropsWithChildren<IOperationCardProps>> = (
   return (
     <div className={classnames(isCompact && styles.toggleAnimation)}>
       { !isIframe() && (<div className={classnames(styles.operationCard, styles.loose)}>
-        <IconButton icon={() => <CloseIcon fill="currentColor" />} className={styles.closeBtn} onClick={() => setIsCompact(true)} />
+        <IconButton icon={() => <CloseOutlined color="currentColor" />} className={styles.closeBtn} onClick={() => setIsCompact(true)} />
         <div className={styles.paint}>
           <Image src={img} alt="" width={80} height={80} />
         </div>

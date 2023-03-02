@@ -17,21 +17,18 @@
  */
 
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
-import {
-  ConfigConstant, IWidgetPackage, PermissionType, ResourceType, Selectors, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType
-} from '@apitable/core';
-import { ColumnUrlOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
-import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
+import { AddOutlined, LinkOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
 import * as React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
@@ -51,7 +48,6 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const spacePermission = useSelector(state => state.spacePermissionManage.spaceResource?.permissions || []);
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const toInstallWidget = async(widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
@@ -128,10 +124,6 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
       return true;
     }
 
-    if (Object.keys(embedInfo).length) {
-      return embedInfo.permissionType === PermissionType.READONLY;
-    }
-
     return !manageable;
   };
 
@@ -139,7 +131,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     return <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
       <Button
         color='primary'
-        prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+        prefixIcon={<AddOutlined size={12} color={'white'} />}
         onClick={onClickInstall}
         loading={installing}
         disabled={getDisabledStatus()}
@@ -178,7 +170,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         </div>
         {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={() => <ColumnUrlOutlined color={'#696969'} />} variant='background' />
+            <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant='background' />
           </a>
         </Tooltip>}
       </div>

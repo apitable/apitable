@@ -26,7 +26,7 @@ const ThemeStyle = styled.div`
     padding: 8px 16px;
     border-radius: 4px;
     ${props => css`
-      background: ${props.theme === 'light' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)'}
+      background: ${props.theme === 'light' ? 'rgb(255, 255, 255)' : '#1F1F1F'}
     `}
   }
   .storyItem {

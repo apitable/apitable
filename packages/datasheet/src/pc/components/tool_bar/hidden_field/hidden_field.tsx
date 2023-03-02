@@ -39,8 +39,9 @@ import {
   ViewType,
   IFieldPermissionMap,
   IFieldMap,
+  ICollaCommandOptions,
 } from '@apitable/core';
-import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { DisabledOutlined, DragOutlined, ImageOutlined, InfoCircleOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { Switch, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';
@@ -61,8 +62,6 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import CoverIcon from 'static/icon/datasheet/gallery/datasheet_icon_cover.svg';
-import NoCoverIcon from 'static/icon/datasheet/gallery/datasheet_icon_cover_dis.svg';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './style.module.less';
 
@@ -192,7 +191,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
   const freeColumns = getFreeColumnsByViewType(columns, viewType, hideFieldType);
   const coverFields = getCoverFields(fieldMap);
   const [query, setQuery] = useState('');
-  const execute = resourceService.instance!.commandManager.execute.bind(resourceService.instance!.commandManager);
+  const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
   const hiddenProp = getHiddenProps(viewType, hideFieldType);
   const handleHideField = useHideField(activeView, hiddenProp);
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
@@ -526,7 +525,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                 rel="noopener noreferrer"
                 className={styles.helpIcon}
               >
-                <InformationSmallOutlined color={colors.thirdLevelText} />
+                <QuestionCircleOutlined color={colors.thirdLevelText} />
               </a>
             )}
           </div>
@@ -554,7 +553,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                   <Option value={NO_COVER_FIELD_ID} currentIndex={0}>
                     <div className={styles.coverOption}>
                       <div className={styles.optionIcon}>
-                        <NoCoverIcon fill={colors.thirdLevelText} width={15} height={15} />
+                        <DisabledOutlined color={colors.thirdLevelText} size={15} />
                       </div>
                       <div className={styles.coverOptionTitle}>{t(Strings.no_cover)}</div>
                     </div>
@@ -563,7 +562,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                     <Option key={coverField.id} value={coverField.id} currentIndex={index + 1}>
                       <div className={styles.coverOption}>
                         <div className={styles.optionIcon}>
-                          <CoverIcon fill={colors.thirdLevelText} width={15} height={15} />
+                          <ImageOutlined color={colors.thirdLevelText} size={15} />
                         </div>
                         <div className={styles.coverOptionTitle}>{coverField.name}</div>
                       </div>
@@ -578,7 +577,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                 {activeView.type === ViewType.Calendar && (
                   <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
                     <span className={styles.tip}>
-                      <EditDescribeOutlined />
+                      <InfoCircleOutlined />
                     </span>
                   </Tooltip>
                 )}

@@ -18,27 +18,24 @@
 
 package com.apitable.workspace.vo;
 
-import java.util.List;
-
+import com.apitable.core.support.tree.Tree;
+import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.core.support.tree.Tree;
-
 /**
- * Node Tree View
+ * Node Tree View.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("Node Tree View")
+@Schema(description = "Node Tree View")
 public class NodeInfoTreeVo extends NodeInfoVo implements Tree {
 
-    @ApiModelProperty(value = "Child Node List", position = 15)
+    @Schema(description = "Child Node List")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeInfoTreeVo> children;
 

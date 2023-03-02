@@ -41,8 +41,16 @@ import { subscriptions } from '../../modules/database/store/reducers/subscriptio
 import { recordVision } from '../../modules/database/store/reducers/record_vision_mode';
 import { previewFile } from '../../modules/database/store/reducers/preview_file';
 import { embedInfo } from '../../modules/embed/store/reducers/embed';
+import { collaborators } from '../../modules/database/store/reducers/resource/datasheet/collaborators';
 
 import { IReduxState } from './interfaces';
+
+export {
+  mirrorMap,
+  pageParams,
+  unitInfo,
+  collaborators,
+};
 
 export const onlyResourceReducers = combineReducers<Partial<IReduxState>>({
   isStateRoot: () => true,

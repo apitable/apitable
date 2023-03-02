@@ -18,11 +18,8 @@
 
 import { Strings, t } from '@apitable/core';
 import { LinkButton, colorVars } from '@apitable/components';
-
-import IconNext from 'static/icon/datasheet/activity/datasheet_icon_activity_under.svg';
-import IconPre from 'static/icon/datasheet/activity/datasheet_icon_activity_up.svg';
-
 import styles from './style.module.less';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@apitable/icons';
 
 interface IPageTurnProps {
   onClickPre(): void;
@@ -41,7 +38,7 @@ export const PageTurnMobile = ({
     <LinkButton
       underline={false}
       component="button"
-      prefixIcon={<IconPre width={16} height={16} fill={colorVars.fc1} />}
+      prefixIcon={<ArrowUpOutlined size={16} color={colorVars.fc1} />}
       color={colorVars.fc1}
       disabled={!disablePre}
       className={styles.button}
@@ -52,7 +49,7 @@ export const PageTurnMobile = ({
     <LinkButton
       underline={false}
       component="button"
-      prefixIcon={<IconNext width={16} height={16} fill={colorVars.fc1} />}
+      prefixIcon={<ArrowDownOutlined size={16} color={colorVars.fc1} />}
       color={colorVars.fc1}
       disabled={!disableNext}
       className={styles.button}

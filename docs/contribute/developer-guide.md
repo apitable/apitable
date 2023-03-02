@@ -10,8 +10,6 @@ Make sure you have the following dependencies and programming languages installe
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
 
 
 ### Programming Language
@@ -28,6 +26,8 @@ curl -s "https://get.sdkman.io" | bash
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # install java development kit
 sdk env install
+# install rust toolchain
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS

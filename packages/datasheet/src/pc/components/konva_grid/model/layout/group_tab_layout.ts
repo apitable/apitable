@@ -17,7 +17,7 @@
  */
 
 import { ILinearRow, RowHeightLevel, Strings, t, IField } from '@apitable/core';
-import { LockNonzeroOutlined } from '@apitable/icons';
+import { LockOutlined } from '@apitable/icons';
 import { GridLayout } from './layout';
 import { colors, ThemeName } from '@apitable/components';
 import { cellHelper } from '../../utils';
@@ -33,7 +33,7 @@ interface ICell {
   cacheTheme: ThemeName;
 }
 
-const LockNonzeroOutlinedPath = LockNonzeroOutlined.toString();
+const LockNonzeroOutlinedPath = LockOutlined.toString();
 
 export class GroupTabLayout extends GridLayout {
   protected override renderAddFieldBlank(row: ILinearRow) {

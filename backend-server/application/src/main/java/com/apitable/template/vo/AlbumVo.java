@@ -18,39 +18,37 @@
 
 package com.apitable.template.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Template Center - Albums View
+ * Template Center - Albums View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Template Center - Albums View")
+@Schema(description = "Template Center - Albums View")
 public class AlbumVo {
 
-    @ApiModelProperty(value = "Albums ID", example = "albxx", position = 1)
+    @Schema(description = "Albums ID", example = "albxx")
     private String albumId;
 
-    @ApiModelProperty(value = "Albums Name", example = "Metaverse", position = 2)
+    @Schema(description = "Albums Name", example = "Metaverse")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String name;
 
-    @ApiModelProperty(value = "Albums Cover", example = "https://xxx.com/cover001.jpg", position = 3)
+    @Schema(description = "Albums Cover", example = "https://xxx.com/cover001.jpg")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "Albums Description", example = "This is a description about album.", position = 4)
+    @Schema(description = "Albums Description", example = "This is a description about album.")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String description;
 }

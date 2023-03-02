@@ -45,7 +45,7 @@ store.subscribe(() => {
   const previousDatasheetActiveViewId = datasheetActiveViewId;
   viewId = state.pageParams.viewId;
   mirrorId = state.pageParams.mirrorId;
-  datasheetActiveViewId = Selectors.getActiveView(state);
+  datasheetActiveViewId = Selectors.getActiveViewId(state);
 
   // Wait until the datasheet is loaded before starting the later checks
   if (!snapshot || !datasheetActiveViewId) {

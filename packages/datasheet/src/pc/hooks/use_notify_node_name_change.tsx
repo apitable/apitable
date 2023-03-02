@@ -1,8 +1,10 @@
-import { Api, IReduxState } from '@apitable/core';
+import { Api, ConfigConstant, INodeMeta, IReduxState, StoreActions } from '@apitable/core';
+import { useDispatch } from 'pc/hooks/use_dispatch';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 export const useNotifyNOdeNameChange = () => {
+  const dispatch = useDispatch();
   const nodeId = useSelector(state => {
     return state.pageParams.nodeId;
   });
@@ -13,6 +15,24 @@ export const useNotifyNOdeNameChange = () => {
       socketData: state.catalogTree.socketData,
       spaceId: state.space.activeId,
     }), shallowEqual);
+
+  // Updating data sources, e.g. directory tree count tables, form data sources
+  const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<Omit<INodeMeta, 'name'> &
+    { nodeName?: string, showRecordHistory?: ConfigConstant.ShowRecordHistory }>) => {
+    dispatch(StoreActions.updateTreeNodesMap(nodeId, data));
+    const { nodeName: name, ...info } = data;
+    const nodeData = name ? { ...info, name } : info;
+    switch (nodeType) {
+      case ConfigConstant.NodeType.DATASHEET: {
+        dispatch(StoreActions.updateDatasheet(nodeId, nodeData));
+        break;
+      }
+      case ConfigConstant.NodeType.DASHBOARD: {
+        dispatch(StoreActions.updateDashboard(nodeId, nodeData));
+        break;
+      }
+    }
+  };
 
   useEffect(() => {
     if (!socketData) return;
@@ -29,6 +49,8 @@ export const useNotifyNOdeNameChange = () => {
       const nodeInfo = data[0];
 
       if (nodeInfo.nodeName === treeNodesMap[nodeId].nodeName) return;
+
+      updateNodeInfo(nodeId, treeNodesMap[nodeId].type, nodeInfo);
 
       window.parent.postMessage({
         message: 'changeNodeName', data: {

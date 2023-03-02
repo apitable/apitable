@@ -19,7 +19,7 @@
 import { usePlatform } from 'pc/hooks/use_platform';
 import { DependencyList, EffectCallback, useEffect } from 'react';
 
-export const useFocusEffect = (focusFn: EffectCallback, deps?: DependencyList) => {
+export const useFocusEffect = (focusFn: EffectCallback, deps: DependencyList = []) => {
   const { mobile } = usePlatform();
   
   useEffect(() => { 

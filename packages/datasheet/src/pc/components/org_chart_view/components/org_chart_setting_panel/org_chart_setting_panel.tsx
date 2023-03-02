@@ -21,7 +21,7 @@ import {
   CollaCommandName, ConfigConstant, FieldType, ILinkField, IOrgChartViewProperty, OrgChartStyleKeyType, Selectors, Strings, t,
 } from '@apitable/core';
 import {
-  AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined,
 } from '@apitable/icons';
 import { Tooltip } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -74,7 +74,7 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
           value: column.fieldId,
           label: fieldMap[column.fieldId].name,
           disabled: (fieldMap[column.fieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
-          prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
+          prefixIcon: <LinktableOutlined color={colors.thirdLevelText} />,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });
@@ -134,20 +134,20 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
               rel='noopener noreferrer'
               className={styles.helpIcon}
             >
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
         <IconButton
           onClick={onClose}
-          icon={CloseMiddleOutlined}
+          icon={CloseOutlined}
           size='small'
         />
       </header>
       {
         getEnvVariables().ARCHITECTURE_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
-            <ClassroomOutlined size={16} color={colors.primaryColor} />
+            <ClassOutlined size={16} color={colors.primaryColor} />
             <Typography variant='body3' color={colors.secondLevelText}>
               {t(Strings.org_chart_play_guide_video_title)}
             </Typography>

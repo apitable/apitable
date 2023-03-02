@@ -18,6 +18,7 @@
 
 import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
+import { DeleteOutlined, MoreOutlined, PlanetOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { ButtonBase } from 'pc/components/common/button_base/button_base';
@@ -26,9 +27,6 @@ import { Tag } from 'pc/components/common/tag/tag';
 import { MyTrigger } from 'pc/components/multi_grid/format/trigger';
 import React, { useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import MoreIcon from 'static/icon/common/common_icon_more.svg';
-import TemplateIcon from 'static/icon/datasheet/rightclick/template.svg';
 import AvatarBgIcon from 'static/icon/template/template_img_cardbg.svg';
 import styles from './style.module.less';
 
@@ -170,12 +168,12 @@ export const TemplateItem: React.FC<React.PropsWithChildren<ITemplateItemProps>>
     return (
       <div className={styles.moreContextMenu}>
         <div className={styles.contextMenuItem} onClick={useTemplate}>
-          <TemplateIcon className={styles.icon} />
+          <PlanetOutlined className={styles.icon} />
           <div className={styles.name}>{t(Strings.use_the_template)}</div>
         </div>
         {deletable && (
           <div className={styles.contextMenuItem} onClick={delTemplate}>
-            <DeleteIcon className={styles.icon} />
+            <DeleteOutlined className={styles.icon} />
             <div className={styles.name}>{t(Strings.delete)}</div>
           </div>
         )}
@@ -213,7 +211,7 @@ export const TemplateItem: React.FC<React.PropsWithChildren<ITemplateItemProps>>
                 adjustY: true,
               },
             }}
-            trigger={<ButtonBase size="x-small" shape="circle" shadow icon={<MoreIcon fill={colors.secondLevelText}/>}
+            trigger={<ButtonBase size="x-small" shape="circle" shadow icon={<MoreOutlined color={colors.secondLevelText}/>}
               className={styles.moreBtn}/>}
           />
         </ComponentDisplay>

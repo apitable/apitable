@@ -18,48 +18,47 @@
 
 package com.apitable.widget.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Widget Information View
+ * Widget Information View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Widget Information View")
+@Schema(description = "Widget Information View")
 public class WidgetInfo {
 
-    @ApiModelProperty(value = "Widget ID", example = "wdt123", position = 1)
+    @Schema(description = "Widget ID", example = "wdt123")
     private String widgetId;
 
-    @ApiModelProperty(value = "Widget Name", example = "Widget instance name", position = 2)
+    @Schema(description = "Widget Name", example = "Widget instance name")
     private String widgetName;
 
-    @ApiModelProperty(value = "Cover drawing of component package", example = "https://apitable.com/space/2020/12/23/aqa", position = 3)
+    @Schema(description = "Cover drawing of component package", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String widgetPackageCover;
 
-    @ApiModelProperty(value = "Data source table ID", example = "dst123", position = 4)
+    @Schema(description = "Data source table ID", example = "dst123")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String datasheetId;
 
-    @ApiModelProperty(value = "Data source data table name", example = "wpkABC", position = 5)
+    @Schema(description = "Data source data table name", example = "wpkABC")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String datasheetName;
 
-    @ApiModelProperty(value = "Package Icon", example = "https://apitable.com/space/2020/12/23/aqa", position = 6)
+    @Schema(description = "Package Icon", example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String widgetPackageIcon;
 }

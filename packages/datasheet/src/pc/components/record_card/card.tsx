@@ -63,18 +63,22 @@ const RecordCardBase: React.FC<React.PropsWithChildren<IRecordCardProps>> = prop
     bodyClassName = '',
     isVirtual = false,
     isGallery = false,
+    datasheetId
   } = props;
   const colors = useThemeColors();
   const visibleFields = useSelector(Selectors.getVisibleColumns);
-  const currentSearchItem = useSelector(Selectors.getCurrentSearchItem);
+  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
   let isCurrentSearchItem = false;
-  if (currentSearchItem) {
-    const searchRecordId = currentSearchItem;
+  if (searchRecordId) {
     isCurrentSearchItem = searchRecordId === recordId;
   }
   const currentSearchItemStyle = isCurrentSearchItem ? {
     border: `1px solid ${colors.primaryColor}`,
   } : {};
+
+  if (!datasheetId) {
+    return null;
+  }
   
   return (
     <div
@@ -87,6 +91,7 @@ const RecordCardBase: React.FC<React.PropsWithChildren<IRecordCardProps>> = prop
       className={className}
     >
       <CardHeader
+        datasheetId={datasheetId}
         showOneImage={showOneImage}
         showEmptyCover={showEmptyCover}
         recordId={recordId}
@@ -96,6 +101,7 @@ const RecordCardBase: React.FC<React.PropsWithChildren<IRecordCardProps>> = prop
         coverFieldId={coverFieldId}
       />
       <CardBody
+        datasheetId={datasheetId}
         recordId={recordId}
         visibleFields={props.visibleFields || visibleFields}
         showEmptyField={showEmptyField}

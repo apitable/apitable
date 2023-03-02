@@ -32,7 +32,7 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { checkTypeSwitch, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getFilteredRecords, getSnapshot } from '../../exports/store/selectors';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot } from '../../exports/store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
   INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType
@@ -46,6 +46,7 @@ import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
+import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -571,7 +572,10 @@ export class LookUpField extends ArrayValueField {
 
     if (openFilter) {
       // magic reference filter
-      recordIDs = getFilteredRecords(this.state, foreignSnapshot, recordIDs, filterInfo);
+      recordIDs = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
+        linkFieldRecordIds: recordIDs,
+        filterInfo,
+      });
     }
 
     return recordIDs && recordIDs.length ? recordIDs.map((recordId: string) => {

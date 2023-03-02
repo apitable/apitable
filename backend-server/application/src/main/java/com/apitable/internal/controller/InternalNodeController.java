@@ -18,46 +18,44 @@
 
 package com.apitable.internal.controller;
 
-import java.sql.Timestamp;
-
-import javax.annotation.Resource;
+import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-import com.apitable.shared.component.scanner.annotation.ApiResource;
-import com.apitable.shared.component.scanner.annotation.GetResource;
-import com.apitable.shared.component.notification.annotation.Notification;
-import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
-import com.apitable.shared.component.notification.NotificationTemplateId;
-import com.apitable.shared.constants.ParamsConstants;
-import com.apitable.shared.context.LoginContext;
-import com.apitable.shared.context.SessionContext;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
-import com.apitable.shared.holder.SpaceHolder;
-import com.apitable.workspace.ro.CreateDatasheetRo;
-import com.apitable.workspace.vo.CreateDatasheetVo;
-import com.apitable.workspace.vo.NodeFromSpaceVo;
-import com.apitable.workspace.service.INodeService;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.annotation.Notification;
+import com.apitable.shared.component.scanner.annotation.ApiResource;
+import com.apitable.shared.component.scanner.annotation.GetResource;
+import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.shared.constants.ParamsConstants;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.workspace.entity.NodeEntity;
-
-import org.springframework.http.MediaType;
+import com.apitable.workspace.ro.CreateDatasheetRo;
+import com.apitable.workspace.service.INodeService;
+import com.apitable.workspace.vo.CreateDatasheetVo;
+import com.apitable.workspace.vo.NodeFromSpaceVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.sql.Timestamp;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
-
+/**
+ * Internal Service - Node Interface.
+ */
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "Internal Service - Node Interface")
+@Tag(name = "Internal Service - Node Interface")
 public class InternalNodeController {
 
     @Resource
@@ -69,10 +67,15 @@ public class InternalNodeController {
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
-    @PostResource(name = "create a table node", path = "/spaces/{spaceId}/datasheets", requiredPermission = false)
-    @ApiOperation(value = "create a table node", notes = "create a table node", produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * Create a table node.
+     */
+    @PostResource(name = "create a table node", path = "/spaces/{spaceId}/datasheets",
+        requiredPermission = false)
+    @Operation(summary = "create a table node", description = "create a table node")
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
-    public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId, @RequestBody CreateDatasheetRo ro) {
+    public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId,
+        @RequestBody CreateDatasheetRo ro) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
@@ -92,27 +95,31 @@ public class InternalNodeController {
         NodeEntity nodeEntity = nodeService.getByNodeId(nodeId);
         long createdAt = Timestamp.valueOf(nodeEntity.getCreatedAt()).getTime();
         CreateDatasheetVo vo = CreateDatasheetVo.builder()
-                .nodeId(nodeId)
-                .parentId(nodeEntity.getParentId())
-                .datasheetId(nodeId)
-                .createdAt(createdAt)
-                .preNodeId(nodeEntity.getPreNodeId())
-                .folderId(nodeEntity.getParentId()).build();
+            .nodeId(nodeId)
+            .parentId(nodeEntity.getParentId())
+            .datasheetId(nodeId)
+            .createdAt(createdAt)
+            .preNodeId(nodeEntity.getPreNodeId())
+            .folderId(nodeEntity.getParentId()).build();
         return ResponseData.success(vo);
     }
 
-    @PostResource(name = "delete node", path = "/spaces/{spaceId}/nodes/{nodeId}/delete", requiredPermission = false)
-    @ApiOperation(value = "delete node", notes = "delete node", produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * Delete node.
+     */
+    @PostResource(name = "delete node", path = "/spaces/{spaceId}/nodes/{nodeId}/delete",
+        requiredPermission = false)
+    @Operation(summary = "delete node", description = "delete node")
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
-    public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId
-            , @PathVariable("nodeId") String nodeId) {
+    public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId,
+        @PathVariable("nodeId") String nodeId) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
         // Check whether there is specified operation permission under the node
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.REMOVE_NODE,
-                status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+            status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         // root node cannot be deleted
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(nodeId.equals(rootNodeId), NODE_OPERATION_DENIED);
@@ -122,9 +129,16 @@ public class InternalNodeController {
         return ResponseData.success();
     }
 
-    @GetResource(name = "get the space station id to which the node belongs", path = "/spaces/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "get the space station id to which the node belongs", notes = "get the space station id to which the node belongs", hidden = true)
-    public ResponseData<NodeFromSpaceVo> nodeFromSpace(@RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest, @PathVariable("nodeId") String nodeId) {
+    /**
+     * Get the space station id to which the node belongs.
+     */
+    @GetResource(name = "get the space station id to which the node belongs", path = "/spaces"
+        + "/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
+    @Operation(summary = "get the space station id to which the node belongs", description = "get"
+        + " the space station id to which the node belongs", hidden = true)
+    public ResponseData<NodeFromSpaceVo> nodeFromSpace(
+        @RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest,
+        @PathVariable("nodeId") String nodeId) {
         if (!"yes".equals(internalRequest)) {
             return ResponseData.success(null);
         }

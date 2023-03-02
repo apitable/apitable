@@ -21,7 +21,7 @@ import {
   JOTApply, NO_CACHE, OPEventNameEnums, ResourceType, Selectors,
   StoreActions, WhyRecordMoveType
 } from '@apitable/core';
-import { mainWidgetMessage, ResourceService } from '@apitable/widget-sdk';
+import { ResourceService } from '@apitable/widget-sdk';
 import produce, { current } from 'immer';
 import { debounce, difference } from 'lodash';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -49,7 +49,6 @@ const makeVEvent = (datasheetId: string, fieldId: string, recordId: string) => {
 
 const debounceRefreshSnapshot = debounce((datasheetId) => {
   dispatch(StoreActions.refreshSnapshot(datasheetId));
-  mainWidgetMessage.refreshSnapshot(datasheetId);
 }, 500);
 
 const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recordId?: string) => {
@@ -265,7 +264,7 @@ export const initEventListen = (resourceService: ResourceService) => {
       const isRecordNotInView = !rowsMap.has(newRecordId);
       const newRecordIndex = rowsMap.get(newRecordId);
       const isRecordIndexMove = expectIndex !== newRecordIndex;
-      const newRecordSnapshot = Selectors.getRecordSnapshot(_state, newRecordId);
+      const newRecordSnapshot = Selectors.getRecordSnapshot(_state, datasheetId, newRecordId);
       if (!newRecordSnapshot) {
         return;
       }
@@ -304,7 +303,7 @@ export const initEventListen = (resourceService: ResourceService) => {
     const state = store.getState();
     const viewId = Selectors.getActiveViewId(state)!;
     const newRecordId = recordId;
-    const newRecordSnapshot = Selectors.getRecordSnapshot(state, newRecordId);
+    const newRecordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, newRecordId);
     if (!newRecordSnapshot) {
       return;
     }

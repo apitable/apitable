@@ -34,13 +34,11 @@ import {
 import classNames from 'classnames';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import IconEmail from 'static/icon/datasheet/column/datasheet_icon_email.svg';
-import IconPhone from 'static/icon/datasheet/column/datasheet_icon_phone.svg';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
 import { ICellComponentProps } from '../cell_value/interface';
 import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
 import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 
 // Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = (text: string | null) => text && /.+@.+/.test(text);
@@ -67,9 +65,9 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
   };
   const getEnhanceTypeIcon = (type: FieldType) => {
     const typeIconMap = {
-      [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,
-      [FieldType.Email]: <IconEmail fill={colors.thirdLevelText} />,
-      [FieldType.Phone]: <IconPhone fill={colors.thirdLevelText} />,
+      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span

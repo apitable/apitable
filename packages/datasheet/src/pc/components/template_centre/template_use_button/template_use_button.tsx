@@ -20,17 +20,15 @@ import { Button } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 // @ts-ignore
-import { LoginModal } from 'enterprise';
+import { LoginModal, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconArrowRight from 'static/icon/datasheet/rightclick/datasheet_icon_insert_right.svg';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { ArrowRightOutlined } from '@apitable/icons';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;
@@ -130,7 +128,7 @@ export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseBut
             size="middle"
           >
             {t(Strings.apply_template)}
-            {showIcon && <IconArrowRight fill='white' />}
+            {showIcon && <ArrowRightOutlined color='white' />}
           </Button>
         }
 

@@ -19,6 +19,7 @@
 import * as React from 'react';
 import omit from 'lodash/omit';
 import styles from './style.module.less';
+import { colorVars } from '@apitable/components';
 
 // import { useThemeColors } from '@apitable/components';
 
@@ -142,6 +143,7 @@ export const LeafRender = (props: ILeafRenderProps) => {
   if (highlight != null) {
     const color = typeof highlight === 'string' ? highlight : HIGHLIGHT_COLORS.show[Number(highlight)];
     style.backgroundColor = color;
+    style.color = colorVars.textReverseDefault;
     style.padding = '4px 0';
     hasBg = true;
   }

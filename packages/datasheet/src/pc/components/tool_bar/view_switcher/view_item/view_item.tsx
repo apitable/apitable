@@ -79,7 +79,7 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
     <OperateItem
       allowSort={viewMovable}
       editing={isEditingId === currentViewId}
-      prefixIcon={<ViewIcon viewType={viewType} width={16} height={16} fill={viewIconFill} onClick={stopPropagation} />}
+      prefixIcon={<span onClick={stopPropagation}><ViewIcon viewType={viewType} size={16} color={viewIconFill} /></span>}
       isActive={props.activityViewId === currentViewId}
       onItemClick={clickView}
       id={currentViewId}

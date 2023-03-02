@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Skeleton, ThemeName } from '@apitable/components';
 import { Events, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { CloseLargeOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
@@ -26,7 +26,6 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { useResponsive } from 'pc/hooks';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { useManageWidgetMap } from '../hooks';
 import { expandWidgetCenter } from '../widget_center/widget_center';
 import styles from './style.module.less';
@@ -35,7 +34,7 @@ import { WidgetPanelHeader } from './widget_panel_header';
 import WidgetEmptyLight from 'static/icon/datasheet/widget_empty_light.png';
 import WidgetEmptyDark from 'static/icon/datasheet/widget_empty_dark.png';
 
-const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
+const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void> }) => {
   const linkId = useSelector(Selectors.getLinkId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -49,7 +48,7 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
   const widgetEmpty = themeName === ThemeName.Light ? WidgetEmptyLight : WidgetEmptyDark;
   return (
     <div className={styles.emptyPanel}>
-      {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseLargeOutlined} />}
+      {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseOutlined} />}
       <span className={styles.ikon}>
         <Image src={widgetEmpty} alt="" width={240} height={180} />
       </span>
@@ -60,7 +59,7 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
           size={'middle'}
           color={'primary'}
           className={styles.buttonWrapper}
-          prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+          prefixIcon={<AddOutlined size={16} color={'white'} />}
           onClick={addNewPanel}
           disabled={Boolean(linkId)}
         >
@@ -89,8 +88,8 @@ export const WidgetPanel = () => {
   const { opening: isPanelOpening } = useSelector(state => {
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
-  const onClosePanel = () => {
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
+  const onClosePanel = async() => {
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
   };
 
   useManageWidgetMap();

@@ -18,7 +18,7 @@
 
 import { colorVars, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CloseMiddleOutlined, DefaultFilled } from '@apitable/icons';
+import { CloseOutlined, InfoCircleFilled } from '@apitable/icons';
 import { createRoot } from 'react-dom/client';
 import styles from './style.module.less';
 
@@ -40,13 +40,13 @@ export const showViewManualSaveInMobile = () => {
   root.render((
     <div className={styles.mobileTip}>
       <span className={styles.infoIcon}>
-        <DefaultFilled />
+        <InfoCircleFilled />
       </span>
       <Typography variant={'body2'}>
         {t(Strings.mbile_manual_setting_tip)}
       </Typography>
       <span onClick={modalClose}>
-        <CloseMiddleOutlined color={colorVars.primaryColor} />
+        <CloseOutlined color={colorVars.primaryColor} />
       </span>
     </div>
   ));

@@ -22,7 +22,7 @@ import {
   IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors,
   StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, InfoCircleOutlined, EditOutlined } from '@apitable/icons';
 import * as Sentry from '@sentry/nextjs';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
@@ -807,7 +807,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
                   onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
-                  icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                  icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.editing_field_desc),
                   onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },

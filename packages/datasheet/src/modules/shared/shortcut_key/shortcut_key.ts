@@ -152,7 +152,7 @@ export class ShortcutContext {
 export class ShortcutActionManager {
   private constructor() {}
 
-  static actionMap = new Map<ShortcutActionName, () => boolean | void>([
+  static actionMap = new Map<ShortcutActionName, () => boolean | void | Promise<boolean | void>>([
     [
       ShortcutActionName.None,
       () => {
@@ -206,7 +206,7 @@ export class ShortcutActionManager {
       },
     ],
     [ShortcutActionName.Clear, clear],
-    [ShortcutActionName.PrependRow, prependRow],
+    [ShortcutActionName.PrependRow, () => prependRow().then(() => true)],
     [
       ShortcutActionName.ToggleApiPanel,
       () => {
@@ -228,9 +228,9 @@ export class ShortcutActionManager {
     this.actionMap.delete(key);
   }
 
-  static trigger(key: ShortcutActionName): boolean | void {
+  static async trigger(key: ShortcutActionName): Promise<boolean | void> {
     const fn = this.actionMap.get(key);
-    const result = fn ? fn() : false;
+    const result = fn ? await fn() : false;
     return result;
   }
 }
@@ -261,7 +261,6 @@ const getUndoManager = () => {
 export function clear() {
   const state = store.getState();
   const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!);
-  const commandManager = resourceService.instance!.commandManager;
   const uploadManager = resourceService.instance!.uploadManager;
   const data: ISetRecordOptions[] = [];
   const cellMatrixFromRange = Selectors.getCellMatrixFromSelection(state);
@@ -296,13 +295,13 @@ export function clear() {
       }),
       btnText: t(Strings.undo),
       key: NotifyKey.ClearRecordData,
-      btnFn() {
-        ShortcutActionManager.trigger(ShortcutActionName.Undo);
+      async btnFn(): Promise<void> {
+        await ShortcutActionManager.trigger(ShortcutActionName.Undo);
         notify.close(NotifyKey.ClearRecordData);
       },
     });
 
-  commandManager.execute({
+  resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.SetRecords,
     data,
   });

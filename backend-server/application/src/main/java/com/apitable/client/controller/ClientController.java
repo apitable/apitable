@@ -18,18 +18,10 @@
 
 package com.apitable.client.controller;
 
-import javax.annotation.Resource;
-
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.service.ISystemConfigService;
 import com.apitable.client.model.ClientInfoVO;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.context.SessionContext;
@@ -38,19 +30,26 @@ import com.apitable.space.service.ISpaceService;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserInfoVo;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
-import com.apitable.core.util.HttpContextUtil;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * Client Version Controller
+ * Client Version Controller.
  * </p>
  */
 @RestController
-@Api(tags = "Client interface")
+@Tag(name = "Client interface")
 @ApiResource(path = "/client")
 @Slf4j
 public class ClientController {
@@ -67,10 +66,17 @@ public class ClientController {
     @Resource
     private ISystemConfigService iSystemConfigService;
 
-    @GetResource(name = "Get application version information", path = "/info", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "Get application version information", notes = "Get the application client version rendering information")
-    @ApiImplicitParam(name = "pipeline", value = "Construction serial number", dataTypeClass = String.class, paramType = "query", example = "4818")
-    public ClientInfoVO getTemplateInfo(@RequestParam(name = "spaceId", required = false) String spaceId) {
+    /**
+     * Get application version information.
+     */
+    @GetResource(name = "Get application version information", path = "/info", requiredLogin =
+        false, requiredPermission = false)
+    @Operation(summary = "Get application version information", description = "Get the "
+        + "application client version rendering information")
+    @Parameter(name = "pipeline", description = "Construction serial number",
+        schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "4818")
+    public ClientInfoVO getTemplateInfo(
+        @RequestParam(name = "spaceId", required = false) String spaceId) {
         // If the Request Param is not empty, it will actively switch to the space
         this.userSwitchSpace(SessionContext.getUserIdWithoutException(), spaceId);
         ClientInfoVO info = new ClientInfoVO();
@@ -78,17 +84,16 @@ public class ClientController {
         if (null != userInfoVo) {
             try {
                 info.setUserInfo(objectMapper.writeValueAsString(userInfoVo));
-            }
-            catch (JsonProcessingException e) {
+            } catch (JsonProcessingException e) {
                 log.error("Serialization of user information of application client failed", e);
                 info.setUserInfo(StrUtil.NULL);
             }
-        }
-        else {
+        } else {
             info.setUserInfo(StrUtil.NULL);
         }
         info.setLocale(LocaleContextHolder.getLocale().toLanguageTag());
-        info.setWizards(StrUtil.toString(iSystemConfigService.getWizardConfig(I18nTypes.ZH_CN.getName())));
+        info.setWizards(
+            StrUtil.toString(iSystemConfigService.getWizardConfig(I18nTypes.ZH_CN.getName())));
         return info;
     }
 
@@ -99,8 +104,7 @@ public class ClientController {
         UserInfoVo userInfoVo;
         try {
             userInfoVo = iUserService.getCurrentUserInfo(SessionContext.getUserId(), null, false);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("Failed to get UserInfo from Session.", e);
             return null;
         }
@@ -108,24 +112,24 @@ public class ClientController {
     }
 
     /**
-     * User switching space station
-     *
-     * @param userId   User ID
-     * @param spaceId  Switch the ID of the space station
+     * User switching space station.
      */
     private void userSwitchSpace(Long userId, String spaceId) {
         try {
-            // User id is not equal to null, space id is not equal to null and not equal to 'undefined', space id must start with 'spc'
-            boolean isPass = null != userId && StrUtil.isNotBlank(spaceId) &&
-                    !StrUtil.isNullOrUndefined(spaceId) &&
-                    StrUtil.startWithIgnoreEquals(spaceId, IdRulePrefixEnum.SPC.getIdRulePrefixEnum());
+            // User id is not equal to null, space id is not equal to null and not equal to
+            // 'undefined', space id must start with 'spc'
+            boolean isPass =
+                null != userId && StrUtil.isNotBlank(spaceId) && !StrUtil.isNullOrUndefined(spaceId)
+                    && StrUtil.startWithIgnoreEquals(spaceId,
+                    IdRulePrefixEnum.SPC.getIdRulePrefixEnum());
             if (isPass) {
                 iSpaceService.switchSpace(userId, spaceId);
             }
-        }
-        catch (Exception e) {
-            log.error("When rendering the template, the user switches the space station abnormally", e);
-            // Do not cause the template to fail to render normally due to the abnormal switching of the space station
+        } catch (Exception e) {
+            log.error("When rendering the template, the user switches the space station abnormally",
+                e);
+            // Do not cause the template to fail to render normally due to the abnormal switching
+            // of the space station
         }
     }
 }

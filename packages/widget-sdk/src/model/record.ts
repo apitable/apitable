@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CacheManager, getFieldTypeString } from '@apitable/core';
+import { CacheManager, getFieldTypeString, IReduxState } from '@apitable/core';
 import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
-import { isIframe } from 'iframe_message/utils';
 import { IWidgetContext } from 'interface';
-import { getActiveView, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
+import { getActiveViewId, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
 import { showField } from './field';
 
 /**
@@ -39,7 +38,7 @@ export class Record {
   ) { }
 
   private getRecordData() {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const datasheetId = this.datasheetId;
     const record = Selectors.getRecord(state, this.recordId, datasheetId);
     return record;
@@ -65,7 +64,7 @@ export class Record {
    * ```
    */
   getCellValue(fieldId: string): any {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const field = Selectors.getField(state, fieldId, this.datasheetId)!;
     const cellValue = this._getCellValue(fieldId);
     return Field.bindContext(field, state).cellValueToOpenValue(cellValue);
@@ -76,7 +75,7 @@ export class Record {
    */
   _getCellValue(fieldId: string): any {
     const state = this.wCtx.widgetStore.getState();
-    const globalState = this.wCtx.globalStore.getState();
+    const globalState = state as any as IReduxState;
     const snapshot = getSnapshot(state, this.datasheetId)!;
 
     const field = Selectors.getField(globalState, fieldId, this.datasheetId)!;
@@ -84,14 +83,13 @@ export class Record {
     if (!showField(getFieldTypeString(field.type))) {
       return null;
     }
-
-    if (isIframe()) {
-      CacheManager.removeCellCacheByRecord(this.datasheetId, this.recordId);
-    }
+    
     // getCellValue determines the column permission. Return null if no permission
     if (this.getFieldRole(fieldId) === ConfigConstant.Role.None) {
       return null;
     }
+    // remove cell value cache.
+    CacheManager.removeCellCacheByRecord(this.datasheetId, this.recordId);
     return Selectors.getCellValue(globalState, snapshot, this.recordId, fieldId);
   }
 
@@ -108,7 +106,7 @@ export class Record {
    * ```
    */
   getCellValueString(fieldId: string): string | null {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const datasheetId = this.datasheetId;
     const field = Selectors.getField(state, fieldId, this.datasheetId)!;
     const cellValue = this._getCellValue(fieldId);
@@ -125,7 +123,7 @@ export class Record {
    * 
    */
   url(viewId?: string) {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const proto = window.location.protocol;
     const host = window.location.host;
     viewId = viewId ? viewId : Selectors.getActiveViewId(state, this.datasheetId)!;
@@ -152,7 +150,7 @@ export class Record {
    */
   get title(): string | null {
     const state = this.wCtx.widgetStore.getState();
-    const viewId = getActiveView(state);
+    const viewId = getActiveViewId(state);
     const view = getView(state, viewId!, this.datasheetId)!;
     const primaryFieldId = view.columns[0]!.fieldId;
     return this.getCellValue(primaryFieldId) || t(Strings.record_unnamed);

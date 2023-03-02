@@ -19,7 +19,7 @@
 import { Remote } from 'comlink';
 import { Store, AnyAction, Dispatch } from 'redux';
 import { store as localStore } from '../../store';
-import { DispatchToStore } from '@apitable/core';
+import { DispatchToStore, IReduxState } from '@apitable/core';
 
 export * from './store_worker';
 
@@ -36,7 +36,7 @@ export const dispatch = (action: any): any => {
 // The wrapping of the store within the worker, a bit of a proxy, this part of the code is running in the main thread
 // You can do some sorting of the action in the following dispatch, 
 // and the action that will not cause recalculation can be dispatched directly to the store of the main thread
-export function remoteStoreWrap(remoteStore: Remote<Store<any>> | null) {
+export function remoteStoreWrap(remoteStore: Remote<Store<IReduxState>> | null) {
   // When the browser does not support worker, there is no remoteStore
   if (!remoteStore) {
     _dispatch = (action: any) => {
@@ -73,16 +73,4 @@ export function remoteStoreWrap(remoteStore: Remote<Store<any>> | null) {
     ...localStore,
     dispatch
   };
-
-  // return {
-  //   getState: () => latestState,
-  //   subscribe: (listener: Function) => {
-  //     subscribers.add(listener);
-  //     return () => subscribers.delete(listener);
-  //   },
-  //   replaceReducer: () => {
-  //     throw new Error('Can’t transfer a function');
-  //   },
-  //   dispatch,
-  // };
 }

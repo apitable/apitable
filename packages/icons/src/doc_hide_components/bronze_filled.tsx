@@ -22,17 +22,17 @@ import { makeIcon, IIconProps } from '../utils/icon';
 
 export const BronzeFilled: React.FC<IIconProps> = makeIcon({
   Path: ({ colors }) => <>
-    <circle cx="16" cy="16" r="11.5" fill={ colors[1] } stroke={ colors[0] }/>
-    <path d="M16 11L15 10V14H16V11Z" fill={ colors[0] }/>
-    <path d="M15 10H11V14V18V22L15 18L19 14L23 10H19L15 14V10Z" fill={ colors[2] } fillRule="evenodd" clipRule="evenodd"/>
-    <path d="M23 11V10L11 22V23L23 11Z" fill={ colors[0] }/>
+    <path d="M32 55C44.7025 55 55 44.7025 55 32C55 19.2975 44.7025 9 32 9C19.2975 9 9 19.2975 9 32C9 44.7025 19.2975 55 32 55Z" fill={ colors[1] } stroke={ colors[0] } strokeWidth="2"/>
+    <path d="M32 22L30 20V28H32V22Z" fill={ colors[0] }/>
+    <path d="M30 20H22V28V36V44L30 36L38 28L46 20H38L30 28V20Z" fill={ colors[2] } fillRule="evenodd" clipRule="evenodd"/>
+    <path d="M46 22V20L22 44V46L46 22Z" fill={ colors[0] }/>
 
   </>,
   name: 'bronze_filled',
   defaultColors: ['#C18769', '#EFC8AC', 'white'],
   colorful: true,
-  allPathData: ['M16 11L15 10V14H16V11Z', 'M15 10H11V14V18V22L15 18L19 14L23 10H19L15 14V10Z', 'M23 11V10L11 22V23L23 11Z'],
-  width: '32',
-  height: '32',
-  viewBox: '0 0 32 32',
+  allPathData: ['M32 55C44.7025 55 55 44.7025 55 32C55 19.2975 44.7025 9 32 9C19.2975 9 9 19.2975 9 32C9 44.7025 19.2975 55 32 55Z', 'M32 22L30 20V28H32V22Z', 'M30 20H22V28V36V44L30 36L38 28L46 20H38L30 28V20Z', 'M46 22V20L22 44V46L46 22Z'],
+  width: '64',
+  height: '64',
+  viewBox: '0 0 64 64',
 });

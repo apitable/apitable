@@ -18,24 +18,22 @@
 
 package com.apitable.user.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.base.enums.ValidateType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Refresh developer access token request parameters
+ * Refresh developer access token request parameters.
  * </p>
  */
 @Data
-@ApiModel("Refresh developer access token request parameters")
+@Schema(description = "Refresh developer access token request parameters")
 public class RefreshApiKeyRo {
 
-    @ApiModelProperty(value = "Check type", example = "sms_code")
+    @Schema(description = "Check type", example = "sms_code")
     private ValidateType type;
 
-    @ApiModelProperty(value = "Verification Code", example = "125484", position = 1)
+    @Schema(description = "Verification Code", example = "125484")
     private String code;
 }

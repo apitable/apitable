@@ -38,11 +38,11 @@ import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
 import { FilterValue } from './filter_value';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from './style.module.less';
 import { ExecuteFilterFn } from './interface';
 import { isEqual } from 'lodash';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
+import { DeleteOutlined } from '@apitable/icons';
 
 interface IConditionList {
   filterInfo?: IFilterInfo;
@@ -121,7 +121,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
               )}
               <IconButton
                 onClick={deleteFilter.bind(null, index)}
-                icon={() => <IconDelete width={15} height={15} fill={colorVars.thirdLevelText} />}
+                icon={() => <DeleteOutlined size={15} color={colorVars.thirdLevelText} />}
               />
             </ComponentDisplay>
 
@@ -158,7 +158,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                 >
                   <IconButton
                     onClick={deleteFilter.bind(null, index)}
-                    icon={() => <IconDelete width={15} height={15} fill={colorVars.thirdLevelText} />}
+                    icon={() => <DeleteOutlined size={15} color={colorVars.thirdLevelText} />}
                   />
                 </Col>
               </Row>

@@ -16,145 +16,133 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState, Selectors, StoreActions } from 'core';
-import { IWidgetDatasheetState, IWidgetState } from 'interface';
-import { shallowEqual } from 'react-redux';
-import { createStore, Store, Unsubscribe } from 'redux';
-import { SET_MIRROR_MAP, SET_SHARE_INFO, SET_USER_INFO, UPDATE_DASHBOARD, UPDATE_UNIT_INFO } from './constant';
-import { refreshUsedDatasheetAction } from './slice/datasheetMap/action';
-import { iframeWidgetDashboardSelector, widgetDatasheetSelector } from './slice/datasheetMap/selector';
-import { rootReducers, setErrorCodeAction } from './slice/root';
-import { refreshWidgetAction } from './slice/widget/action';
-
-/**
- * Init widgetState.
- */
-const initRootWidgetState = (state: IReduxState, id: string): IWidgetState => {
-  const widget = Selectors.getWidget(state, id) || null;
-  let datasheet: IWidgetDatasheetState | null = null;
-  const datasheetId = widget?.snapshot.datasheetId;
-  if (datasheetId) {
-    datasheet = widgetDatasheetSelector(state, datasheetId);
+import { IReduxState, Selectors, ICollaborator, ResourceType } from 'core';
+import { IWidgetDatasheetState, IWidgetPermission, IWidgetState, IDatasheetMap } from 'interface';
+import { DEFAULT_WIDGET_PERMISSION } from './slice/permission/reducer';
+ 
+export const getWidgetErrorCode = (state: IReduxState, widgetId: string) => {
+  const widgetSnapshot = Selectors.getWidgetSnapshot(state, widgetId);
+  if (!widgetSnapshot) {
+    return;
   }
-  const errorCode = Selectors.getDatasheetErrorCode(state, datasheetId) || null;
-  const sourceId = widget?.snapshot.sourceId;
-  const mirror = sourceId?.startsWith('mir') && Selectors.getMirrorPack(state, sourceId);
-  const dashboardPack = Selectors.getDashboardPack(state);
-  return {
-    widget,
-    datasheetMap: datasheetId ? { [datasheetId]: datasheet } : {},
-    errorCode,
-    unitInfo: state.unitInfo,
-    dashboard: iframeWidgetDashboardSelector(dashboardPack),
-    widgetConfig: {
-      isShowingSettings: false,
-      isFullscreen: false
-    },
-    pageParams: state.pageParams,
-    labs: state.labs,
-    share: state.share,
-    mirrorMap: mirror ? { [sourceId!]: mirror } : {},
-    user: state.user.info
-  };
+  const datasheetId = widgetSnapshot.datasheetId;
+  const sourceId = widgetSnapshot.sourceId;
+  return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
 };
-
+ 
 /**
- *
- * @param props
- * globalStore is the global store in the main application.
- * widgetData widget
- * Create a store environment exclusive to the widget by binding the datasheetId.
- * TODO: You need to consider the case where there is no datasheetId, 
- * such as a pure widget, or a widget that has not yet selected a datasheet in the dashboard
- */
-export const connectWidgetStore = (props: {
-  id: string;
-  globalStore: Store<IReduxState>;
-}): { unSubscribe: Unsubscribe, widgetStore: Store<IWidgetState> } => {
-  const { id, globalStore } = props;
-  const widgetStore = createStore(rootReducers, initRootWidgetState(globalStore.getState(), id));
-  /**
-   * TODO: If there is no need to use the data from the datasheet, the monitoring here can be done without.
-   * Listen to the changes of the whole store and 
-   * check if the data related to the datasheet bound to the widget has been updated, see IWidgetDatasheetState.
-   * Data flow: globalStore changes ---> datasheetId filtering ---> widgetStore changes.
-   */
-  const unSubscribe = globalStore.subscribe(() => {
-    const globalState = globalStore.getState();
-    const newWidget = Selectors.getWidget(globalState, id);
-    const datasheetId = newWidget?.snapshot.datasheetId;
-    const newErrorCode = Selectors.getDatasheetErrorCode(globalState, datasheetId);
+  * init widgetState;
+  * @param state 
+  * @param widgetId 
+  */
+export const initRootWidgetState = (state: IReduxState, widgetId: string, opt?: { foreignDatasheetIds?: string[]}): IWidgetState => {
+  const widget = Selectors.getWidget(state, widgetId)!;
+  const datasheetId = widget.snapshot.datasheetId!;
+  const mirrorId = widget.snapshot?.sourceId;
+ 
+  const bindDatasheet = widgetDatasheetSelector(state, datasheetId);
+  const mirrorPack = mirrorId ? Selectors.getMirrorPack(state, mirrorId) : undefined;
+  const datasheetMap: IDatasheetMap = bindDatasheet ? { [datasheetId]: bindDatasheet } : {};
 
-    const widgetState = widgetStore.getState();
-    if (newWidget && !shallowEqual(newWidget, widgetState.widget)) {
-      widgetStore.dispatch(refreshWidgetAction(newWidget));
-    }
-    if (newErrorCode && newErrorCode !== widgetState.errorCode) {
-      widgetStore.dispatch(setErrorCodeAction(newErrorCode));
-    }
-    // Check if the datasheetMap has changed.
-    const updateUsedDatasheetMap = {};
-    Object.keys(widgetState.datasheetMap).forEach(datasheetId => {
-      const widgetUsedDatasheet = widgetDatasheetSelector(globalState, datasheetId);
-      const dstMap: any = widgetState.datasheetMap[datasheetId] || {};
-      if (
-        widgetUsedDatasheet
-        && !shallowEqual(widgetState.datasheetMap[datasheetId]?.client, widgetUsedDatasheet.client)) {
-        dstMap.client = widgetUsedDatasheet.client;
-        updateUsedDatasheetMap[datasheetId] = dstMap;
-      }
-      if (
-        widgetUsedDatasheet
-        && !shallowEqual(widgetState.datasheetMap[datasheetId]?.datasheet, widgetUsedDatasheet.datasheet)) {
-        dstMap.datasheet = widgetUsedDatasheet.datasheet;
-        updateUsedDatasheetMap[datasheetId] = dstMap;
-      }
-    });
-
-    if (Object.keys(updateUsedDatasheetMap).length) {
-      widgetStore.dispatch(refreshUsedDatasheetAction(updateUsedDatasheetMap));
-    }
-
-    if (!shallowEqual(globalState.labs, widgetState.labs)) {
-      widgetStore.dispatch(StoreActions.setLabs(globalState.labs));
-    }
-
-    if (!shallowEqual(globalState.unitInfo, widgetState.unitInfo)) {
-      widgetStore.dispatch({ type: UPDATE_UNIT_INFO, payload: globalState.unitInfo });
-    }
-
-    if (!shallowEqual(globalState.pageParams, widgetState.pageParams)) {
-      widgetStore.dispatch({ type: 'UPDATE_PAGE_PARAMS', payload: globalState.pageParams });
-    }
-
-    if (!shallowEqual(globalState.share, widgetState.share)) {
-      widgetStore.dispatch({ type: SET_SHARE_INFO, payload: globalState.share });
-    }
-
-    if (
-      newWidget?.snapshot.sourceId?.startsWith('mir') &&
-      !shallowEqual(globalState.mirrorMap[newWidget?.snapshot.sourceId], widgetState.mirrorMap?.[newWidget?.snapshot.sourceId!])
-    ) {
-      const mirror = globalState.mirrorMap[newWidget?.snapshot.sourceId!];
-      widgetStore.dispatch({ type: SET_MIRROR_MAP, payload: { [newWidget?.snapshot.sourceId!]: mirror }});
-    }
-
-    const permissions = Selectors.getDashboard(globalState)?.permissions;
-    if (!shallowEqual(permissions, widgetState.dashboard?.permissions)) {
-      widgetStore.dispatch({ type: UPDATE_DASHBOARD, payload: { permissions }});
-    }
-    const collaborators = Selectors.getDashboardClient(globalState)?.collaborators;
-    if (!shallowEqual(collaborators, widgetState.dashboard?.collaborators)) {
-      widgetStore.dispatch({ type: UPDATE_DASHBOARD, payload: { collaborators }});
-    }
-
-    if (!shallowEqual(globalState.user.info, widgetState.user)) {
-      widgetStore.dispatch({ type: SET_USER_INFO, payload: globalState.user.info });
+  const foreignDatasheetIds = opt?.foreignDatasheetIds || [];
+  foreignDatasheetIds.forEach(dstId => {
+    const datasheet = widgetDatasheetSelector(state, dstId);
+    if (datasheet) {
+      datasheetMap[dstId] = datasheet;
     }
   });
-
+ 
   return {
-    unSubscribe,
-    widgetStore,
+    widget,
+    datasheetMap,
+    unitInfo: state.unitInfo,
+    pageParams: state.pageParams,
+    mirrorMap: mirrorPack ? { [mirrorId!]: mirrorPack } : undefined,
+    user: state.user.info,
+    errorCode: getWidgetErrorCode(state, widgetId) || null,
+    permission: aggregationWidgetPermission(state, widgetId),
+    collaborators: aggregationWidgetCollaborators(state)
   };
 };
+ 
+/**
+  * Aggregate widget permissions.
+  * @param state 
+  * @param widgetId 
+  */
+export const aggregationWidgetPermission = (state: IReduxState, widgetId: string): IWidgetPermission => {
+  const widget = Selectors.getWidget(state, widgetId);
+  if (!widget) {
+    return DEFAULT_WIDGET_PERMISSION;
+  }
+  const datasheetId = widget.snapshot.datasheetId;
+  const sourceId = widget.snapshot.datasheetId;
+  const mirrorId = sourceId?.startsWith('mir') ? widget.snapshot?.sourceId : undefined;
+  const datasheetPermission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
+  // If in the dashboard, node permissions are required.
+  const onDashboard = Boolean(state.pageParams.dashboardId);
+  return {
+    storage: {
+      editable: onDashboard ? Selectors.getDashboardPermission(state).editable : datasheetPermission.editable
+    },
+    datasheet: datasheetPermission
+  };
+};
+ 
+/**
+  * Aggregate widget collaborators.
+  * Change according to the node you are currently at.
+  * @param state 
+  */
+export const aggregationWidgetCollaborators = (state: IReduxState): ICollaborator[] => {
+  const { dashboardId, datasheetId, mirrorId } = state.pageParams;
+  const resourceId = dashboardId || mirrorId || datasheetId;
+  let resourceType: ResourceType;
+  if (dashboardId) {
+    resourceType = ResourceType.Dashboard;
+  } else if (mirrorId) {
+    resourceType = ResourceType.Mirror;
+  } else if (datasheetId) {
+    resourceType = ResourceType.Datasheet;
+  } else {
+    return [];
+  }
+  return Selectors.getResourceCollaborator(state, resourceId!, resourceType) || [];
+};
+ 
+/**
+  * Get the datasheet state required by the widget in one go.
+  */
+export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string, foreign?: boolean): IWidgetDatasheetState | null => {
+  const datasheetPack = state.datasheetMap[datasheetId];
+  if (!datasheetPack) {
+    return null;
+  }
+  const datasheet = datasheetPack.datasheet;
+  if (!datasheet) {
+    return null;
+  }
+  //  Part of the data is approximately equal to no data, can not be calculated, logarithmic table filter will report an error.
+  if (!foreign && datasheet.isPartOfData) {
+    return null;
+  }
+  const { snapshot, permissions, name, description } = datasheet;
+  const { selection, viewDerivation } = datasheetPack.client!;
+  return {
+    connected: true,
+    datasheet: {
+      id: datasheetId,
+      description,
+      datasheetName: name,
+      datasheetId,
+      permissions,
+      snapshot,
+      fieldPermissionMap: datasheetPack.fieldPermissionMap,
+    },
+    client: {
+      selection,
+      viewDerivation
+    }
+  };
+};
+ 

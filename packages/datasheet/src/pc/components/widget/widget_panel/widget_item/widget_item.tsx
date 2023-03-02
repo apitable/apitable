@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading, ThemeName } from '@apitable/components';
+import { ThemeName } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { mainWidgetMessage, RuntimeEnv } from '@apitable/widget-sdk';
+import { RuntimeEnv } from '@apitable/widget-sdk';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
@@ -35,7 +35,6 @@ import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getTestFunctionAvailable } from 'pc/utils/storage';
 import * as React from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -44,11 +43,11 @@ import PngLinkdatasheetLight from 'static/icon/datasheet/chart/dashboard_widget_
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useDevLoadCheck, useFullScreen } from '../../hooks';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
-import { ErrorWidget, IWidgetLoaderRefs } from '../../widget_loader';
+import { ErrorWidget } from '../../error_widget';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
-import { WidgetBlock } from './widget_block';
-import { WidgetIframe } from './widget_iframe';
+import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
+import { useManageWidgetRenderTask } from '../../context';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -92,13 +91,12 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
   const [isSettingOpened, { toggle: toggleSettingOpened }] = useToggle(false);
   // Widget full screen button, different from fullScreen in widget-sdk.
   const [isFullScreenWidget, toggleFullScreenWidget] = useFullScreen(widgetId);
-  const widgetLoader = useRef<IWidgetLoaderRefs>(null);
+  const widgetLoader = useRef<IWidgetBlockRefs>(null);
+
+  useManageWidgetRenderTask(widgetId);
 
   // Whether to enable sandbox (enable to use iframe to render).
-  const isTestFunctionAvailable = getTestFunctionAvailable('widgetIframe');
-  const [devSandbox, devSandboxLoading, error, refreshVersion] = useDevLoadCheck(widgetId, config?.isDevMode);
-  const sandbox = config?.isDevMode ? devSandbox : widget?.sandbox;
-  const sandboxLoad = widget?.snapshot && !devSandboxLoading;
+  const [, , error, refreshVersion] = useDevLoadCheck(widgetId, config?.isDevMode);
   const isCiLowVersion = error === WidgetLoadError.CliLowVersion;
 
   const PreLoadError = usePreLoadError(widget);
@@ -227,11 +225,10 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
               </div>
             ) : (
               PreLoadError ||
-              (sandboxLoad ? (
-                isCiLowVersion ? (
-                  <ErrorWidget content={t(Strings.widget_cli_upgrade_tip)} />
-                ) : mainWidgetMessage.enable && (isTestFunctionAvailable || sandbox) ? (
-                  <WidgetIframe
+              (
+                isCiLowVersion ? 
+                  <ErrorWidget content={t(Strings.widget_cli_upgrade_tip)} /> :
+                  <WidgetBlock
                     widgetId={widgetId}
                     widgetPackageId={widget.widgetPackageId}
                     ref={widgetLoader}
@@ -247,26 +244,7 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
                     key={props.index}
                     runtimeEnv={runtimeEnv}
                   />
-                ) : (
-                  <WidgetBlock
-                    widgetId={widgetId}
-                    nodeId={widgetBindDatasheetId!}
-                    isExpandWidget={isExpandWidget}
-                    isSettingOpened={isSettingOpened}
-                    toggleSetting={toggleSetting}
-                    toggleFullscreen={toggleFullscreen}
-                    expandRecord={expandRecordInCenter}
-                    widgetLoader={widgetLoader}
-                    isDevMode={config?.isDevMode}
-                    setDevWidgetId={setDevWidgetId}
-                    runtimeEnv={runtimeEnv}
-                  />
-                )
-              ) : (
-                <div>
-                  <Loading />
-                </div>
-              ))
+              )
             ))}
         </div>
         {searchPanelVisible && !readonly && (

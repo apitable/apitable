@@ -111,7 +111,11 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
+  public async getRecords(
+    @Param() param: RecordParamRo,
+    @Query(QueryPipe) query: RecordQueryRo,
+    @Req() request: FastifyRequest,
+  ): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
     return ApiResponse.success(pageVo);
   }
@@ -151,15 +155,20 @@ export class FusionApiController {
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
   public async getPresignedUrl(@Query() query: AssetUploadQueryRo, @Req() req: FastifyRequest): Promise<AssetView> {
-    // check space capacity
+    await this.checkSpaceCapacity(req);
+    const datasheet = req[DATASHEET_HTTP_DECORATE];
+    const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
+    return ApiResponse.success({ results });
+  }
+
+  private async checkSpaceCapacity(req: FastifyRequest) {
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
     if (spaceCapacityOverLimit) {
       const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
       return Promise.reject(error);
     }
-    const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
-    return ApiResponse.success({ results });
+    return;
   }
 
   @Post('/datasheets/:datasheetId/attachments')
@@ -183,13 +192,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   // TODO: Waiting for nestjs official inheritance multi and fastify
   public async addAttachment(@Param() param: RecordParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
-    // check space capacity
-    const datasheet = req[DATASHEET_HTTP_DECORATE];
-    const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
-    if (spaceCapacityOverLimit) {
-      const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
-      return Promise.reject(error);
-    }
+    await this.checkSpaceCapacity(req);
     const service = this.attachService;
     const i18nService = this.i18n;
     const newFiles: IFileInterface[] = [];
@@ -249,7 +252,7 @@ export class FusionApiController {
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
-  public async updateRecord(
+  public async updateRecords(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
     @Body(FieldPipe) body: RecordUpdateRo,
@@ -275,13 +278,12 @@ export class FusionApiController {
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
-  public async updateRecordOfPut(
+  public updateRecordsByPut(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
     @Body(FieldPipe) body: RecordUpdateRo,
   ): Promise<RecordListVo> {
-    const listVo = await this.fusionApiService.updateRecords(param.datasheetId, body, query.viewId!);
-    return ApiResponse.success(listVo);
+    return this.updateRecords(param, query, body);
   }
 
   @Delete('/datasheets/:datasheetId/records')
@@ -292,7 +294,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async deleteRecord(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
+  public async deleteRecords(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
     if (!query.recordIds) {
       throw ApiException.tipError(ApiTipConstant.api_params_empty_error, { property: 'recordIds' });
     }
@@ -314,13 +316,12 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async datasheetFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
+  public async getFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
     const fields = await this.fusionApiService.getFieldList(param.datasheetId, query);
-    return ApiResponse.success({
-      fields: fields.map(field =>
-        field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
-      ),
-    });
+    const fieldDtos = fields.map(field =>
+      field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
+    );
+    return ApiResponse.success({ fields: fieldDtos });
   }
 
   @Get('/datasheets/:datasheetId/views')
@@ -331,7 +332,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async datasheetViews(@Param() param: RecordParamRo): Promise<ViewListVo> {
+  public async getViews(@Param() param: RecordParamRo): Promise<ViewListVo> {
     const metaViews = await this.fusionApiService.getViewList(param.datasheetId);
     if (metaViews) {
       return ApiResponse.success({ views: metaViews });
@@ -346,7 +347,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async spaceList() {
+  public async getSpaces() {
     // This interface does not count API usage for now
     const spaceList = await this.fusionApiService.getSpaceList();
     return ApiResponse.success({
@@ -458,7 +459,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async nodeList(@Param() param: NodeListParamRo) {
+  public async getNodes(@Param() param: NodeListParamRo) {
     const { spaceId } = param;
     const nodeList = await this.fusionApiService.getNodeList(spaceId);
     return ApiResponse.success({
@@ -477,10 +478,8 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async _nodeDetail(@Param() param: OldNodeDetailParamRo) {
-    const { nodeId } = param;
-    const nodeInfo = await this.fusionApiService.getNodeDetail(nodeId);
-    return ApiResponse.success(nodeInfo);
+  public _nodeDetail(@Param() param: OldNodeDetailParamRo) {
+    return this.nodeDetail(param);
   }
 
   @Get('/nodes/:nodeId')

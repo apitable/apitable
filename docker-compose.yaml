@@ -234,4 +234,5 @@ services:
 
 networks:
   apitable:
+    name: apitable_default
     driver: bridge

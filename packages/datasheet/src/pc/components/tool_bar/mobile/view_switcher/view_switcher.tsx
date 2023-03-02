@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getEnvVariables } from 'pc/utils/env';
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import style from '../style.module.less';
@@ -183,11 +184,13 @@ export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProps>>
         }
         if (!validator(value)) {
           Message.error({
-            content: t(Strings.view_name_length_err),
+            content: t(Strings.view_name_length_err, {
+              maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+            }),
           });
           return;
         }
-        
+
         onChange(ActionType.Rename, { ..._view, name: value });
       },
     });

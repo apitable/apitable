@@ -22,11 +22,10 @@ import { IRoleOption, IUnitInfo } from 'pc/components/catalog/permission_setting
 import styles from './style.module.less';
 import classNames from 'classnames';
 import classnames from 'classnames';
-import { CheckOutlined, WarnFilled } from '@apitable/icons';
+import { CheckOutlined, ChevronDownOutlined, WarnFilled } from '@apitable/icons';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header/wrapper_tooltip';
 
 const Option = Select.Option!;
@@ -102,7 +101,7 @@ export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelec
             triggerComponent={
               <div className={styles.mobileRoleSelect}>
                 {ConfigConstant.permissionText[role!]}
-                {<PulldownIcon className={styles.arrowIcon} width={16} height={16} fill={colors.fourthLevelText} />}
+                {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
               </div>
             }
             renderList={({ setVisible }) => {

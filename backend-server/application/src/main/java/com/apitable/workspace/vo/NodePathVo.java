@@ -18,22 +18,21 @@
 
 package com.apitable.workspace.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Node Path View
+ * Node Path View.
  * </p>
  */
 @Data
-@ApiModel("Node Path View")
+@Schema(description = "Node Path View")
 public class NodePathVo {
 
-	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
+    @Schema(description = "Node ID", example = "nod10")
     private String nodeId;
 
-	@ApiModelProperty(value = "Node Name", example = "This is a node", position = 2)
-	private String nodeName;
+    @Schema(description = "Node Name", example = "This is a node")
+    private String nodeName;
 }

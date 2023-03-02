@@ -20,11 +20,8 @@ import { Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import { RenameInput } from 'pc/components/common/rename_input';
 import * as React from 'react';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
-import RenameIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import styles from './style.module.less';
-import { DragOutlined } from '@apitable/icons';
+import { CopyOutlined, DeleteOutlined, DragOutlined, EditOutlined } from '@apitable/icons';
 import { stopPropagation, useThemeColors } from '@apitable/components';
 import { useResponsive } from 'pc/hooks/use_responsive';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -81,11 +78,9 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
       )}
       {!editing && (
         <div className={styles.iconType}>
-          {/* {prefixIcon} */}
           {React.cloneElement(prefixIcon, {
-            fill: isActive ? colors.primaryColor : colors.thirdLevelText,
+            color: isActive ? colors.primaryColor : colors.thirdLevelText,
           })}
-          {/* <ViewIcon viewType={viewType} width={16} height={16} fill={viewIconFill} onClick={stopPropagation} /> */}
         </div>
       )}
       <div style={isActive ? { color: colors.primaryColor } : {}} className={styles.text}>
@@ -120,10 +115,10 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
         >
           {!isMobile ? (
             <Tooltip title={t(Strings.duplicate)} placement="bottom">
-              <CopyIcon width={16} height={16} fill={operateIconColor} />
+              <CopyOutlined size={16} color={operateIconColor} />
             </Tooltip>
           ) : (
-            <CopyIcon width={16} height={16} fill={operateIconColor} />
+            <CopyOutlined size={16} color={operateIconColor} />
           )}
         </div>
       )}
@@ -137,10 +132,10 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
         >
           {!isMobile ? (
             <Tooltip title={t(Strings.rename)} placement="bottom">
-              <RenameIcon width={16} height={16} fill={operateIconColor} />
+              <EditOutlined size={16} color={operateIconColor} />
             </Tooltip>
           ) : (
-            <RenameIcon width={16} height={16} fill={operateIconColor} />
+            <EditOutlined size={16} color={operateIconColor} />
           )}
         </div>
       )}
@@ -154,10 +149,10 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
         >
           {!isMobile ? (
             <Tooltip title={t(Strings.delete)} placement="bottom">
-              <DeleteIcon width={16} height={16} fill={operateIconColor} />
+              <DeleteOutlined size={16} color={operateIconColor} />
             </Tooltip>
           ) : (
-            <DeleteIcon width={16} height={16} fill={operateIconColor} />
+            <DeleteOutlined size={16} color={operateIconColor} />
           )}
         </div>
       )}

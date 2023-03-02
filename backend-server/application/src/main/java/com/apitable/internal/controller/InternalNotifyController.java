@@ -18,44 +18,42 @@
 
 package com.apitable.internal.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.ResponseData;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.ResponseData;
-
-import org.springframework.http.MediaType;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Internal Service - Notification Interface
+ * Internal Service - Notification Interface.
  */
 @RestController
 @ApiResource(path = "/internal/notification")
-@Api(tags = "Internal Service - Notification Interface")
+@Tag(name = "Internal Service - Notification Interface")
 public class InternalNotifyController {
 
     @Resource
     private IPlayerNotificationService playerNotificationService;
 
+    /**
+     * Send a message.
+     */
     @PostResource(name = "send a message", path = "/create", requiredLogin = false)
-    @ApiOperation(value = "send a message", notes = "send a message", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> create(@Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
+    @Operation(summary = "send a message", description = "send a message")
+    public ResponseData<Void> create(
+        @Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);
         if (bool) {
             return ResponseData.success();
-        }
-        else {
+        } else {
             throw new BusinessException("insert error");
         }
     }

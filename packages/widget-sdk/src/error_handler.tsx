@@ -23,9 +23,8 @@ import { Selectors, StatusCode, Strings, t } from 'core';
 import { getWidgetDatasheet } from 'store';
 import { IReduxState } from '@apitable/core';
 import { useMeta } from 'hooks';
-import WidgetNoPermissionLight from 'static/icon/datasheet/dashboard_widget_permission_light.png';
-import WidgetNoPermissionDark from 'static/icon/datasheet/dashboard_widget_permission_dark.png';
-import Image from 'next/image';
+import WidgetNoPermissionLight from './static/dashboard_widget_permission_light.png';
+import WidgetNoPermissionDark from './static/dashboard_widget_permission_dark.png';
 import { ThemeName } from '@apitable/components';
 
 export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props => {
@@ -112,7 +111,7 @@ export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props =>
         height: '120px',
         margin: '0 auto',
       }}>
-        <Image src={widgetNoPermission} alt='' width={160} height={120} style={{ margin: '0 auto' }} />
+        <img src={widgetNoPermission} alt='' width={160} height={120} style={{ margin: '0 auto' }} />
       </div>
       
       <p

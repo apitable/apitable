@@ -18,58 +18,56 @@
 
 package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
- * Space View
+ * Space View.
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("Space List View")
+@Schema(description = "Space List View")
 public class SpaceVO {
 
-    @ApiModelProperty(value = "Space ID", example = "spc10", position = 1)
+    @Schema(description = "Space ID", example = "spc10")
     private String spaceId;
 
-    @ApiModelProperty(value = "Name", example = "This is a space", position = 2)
+    @Schema(description = "Name", example = "This is a space")
     private String name;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Icon", example = "https://...", position = 3)
+    @Schema(description = "Icon", example = "https://...")
     private String logo;
 
-    @ApiModelProperty(value = "Whether there are red dots", example = "false", position = 4)
+    @Schema(description = "Whether there are red dots", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean point;
 
-    @ApiModelProperty(value = "Whether it is the main administrator of the space", example = "false", position = 5)
+    @Schema(description = "Whether it is the main administrator of the space", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean admin;
 
-    @ApiModelProperty(value = "Whether it is in pre deletion status", example = "false", position = 7)
+    @Schema(description = "Whether it is in pre deletion status", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean preDeleted;
 
-    @ApiModelProperty(value = "Maximum total number of subscription plan members", position = 8)
+    @Schema(description = "Maximum total number of subscription plan members")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxSeat;
 
-    @ApiModelProperty(value = "Space domain name", position = 9)
+    @Schema(description = "Space domain name")
     private String spaceDomain;
 
-    @ApiModelProperty(value = "Third party integration binding information", position = 10)
+    @Schema(description = "Third party integration binding information")
     private SpaceSocialConfig social;
 }

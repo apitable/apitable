@@ -19,7 +19,7 @@
 import { Tooltip } from 'antd';
 import { t, Strings } from '@apitable/core';
 import { Typography, IconButton, useThemeColors } from '@apitable/components';
-import { LabelSmallOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { get } from 'lodash';
 import cls from 'classnames';
 import styles from './style.module.less';
@@ -86,7 +86,7 @@ export const ReplyComment = (props: IReplyComment) => {
       </Tooltip>
       {Boolean(handleClose) && (
         <IconButton
-          icon={LabelSmallOutlined}
+          icon={CloseOutlined}
           size="small"
           style={{
             width: '18px',

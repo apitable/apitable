@@ -20,27 +20,27 @@ package com.apitable.organization.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Department View
+ * Department View.
  * </p>
  */
 @Data
-@ApiModel("Department View")
+@Schema(description = "Department View")
 public class TeamVo {
 
-    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Department ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
+    @Schema(description = "Department name", example = "R&D Department")
     private String teamName;
 
-    public TeamVo() {}
+    public TeamVo() {
+    }
 
     public TeamVo(Long teamId, String teamName) {
         this.teamId = teamId;

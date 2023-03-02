@@ -1,12 +1,11 @@
 package com.apitable.shared.config;
 
-import com.apitable.AbstractIntegrationTest;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.apitable.AbstractIntegrationTest;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class ServerConfigTest extends AbstractIntegrationTest {
 

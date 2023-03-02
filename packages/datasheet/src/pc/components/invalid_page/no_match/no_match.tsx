@@ -18,13 +18,12 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
+import { UndoOutlined, WorkbenchOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import TipIcon from 'static/icon/common/common_img_404.png';
-import PrevIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg';
-import WorkbenchIcon from 'static/icon/workbench/workbench_tab_icon_workingtable_normal.svg';
 import styles from './style.module.less';
 
 const NoMatch: FC<React.PropsWithChildren<unknown>> = () => {
@@ -50,7 +49,7 @@ const NoMatch: FC<React.PropsWithChildren<unknown>> = () => {
           <Button
             variant='fill'
             color='primary'
-            prefixIcon={<WorkbenchIcon width={15} height={15} fill={colors.black[50]} />}
+            prefixIcon={<WorkbenchOutlined size={15} color={colors.black[50]} />}
             onClick={goWorkbench}
             block
           >
@@ -61,7 +60,7 @@ const NoMatch: FC<React.PropsWithChildren<unknown>> = () => {
           className={styles.prevBtn}
           onClick={handlePrev}
         >
-          <PrevIcon width={15} height={15} fill={colors.primaryColor} />
+          <UndoOutlined size={15} color={colors.primaryColor} />
           {t(Strings.back_prev_step)}
         </div>
       </div>

@@ -22,7 +22,7 @@ import { FixedSizeList as List } from 'react-window';
 import { LinkButton } from '../../link_button';
 import { Typography } from '../../typography';
 import { IconButton } from '../../icon_button';
-import { NarrowRecordOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { NarrowOutlined, CloseOutlined } from '@apitable/icons';
 import { MoreDiv, MoreListDiv, MoreHeader, DrawerStyled, ListItemStyled } from './styled';
 import { CalendarContext } from '../calendar_context';
 import { DETAIL_WEEKS, MAX_LEVEL } from '../constants';
@@ -76,7 +76,7 @@ export const MoreTask = (props: IMoreTask) => {
   if (isMobile && visible) {
     return (
       <DrawerStyled
-        closeIcon={<IconButton icon={CloseMiddleOutlined} />}
+        closeIcon={<IconButton icon={CloseOutlined} />}
         push={{ distance: 0 }}
         visible={visible}
         placement="bottom"
@@ -107,7 +107,7 @@ export const MoreTask = (props: IMoreTask) => {
         <MoreDiv>
           <header>
             {title}
-            <IconButton icon={NarrowRecordOutlined} onClick={() => setVisible(false)} />
+            <IconButton icon={NarrowOutlined} onClick={() => setVisible(false)} />
           </header>
           {moreList}
         </MoreDiv>

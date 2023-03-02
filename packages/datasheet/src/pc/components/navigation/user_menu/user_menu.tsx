@@ -18,7 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, CopyOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, CopyOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
@@ -43,9 +43,6 @@ import * as React from 'react';
 import { FC, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import Vikaji from 'static/icon/common/vikaji.png';
-import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
-import AccountIcon from 'static/icon/space/space_icon_account.svg';
-import ExitIcon from 'static/icon/space/space_icon_logout.svg';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
@@ -288,7 +285,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
             />
           </Spin>
           <div className={styles.svgWrap}>
-            <EditIcon fill={colors.black[50]} />
+            <EditOutlined color={colors.black[50]} />
           </div>
         </div>
         {
@@ -329,7 +326,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
             </Tooltip>
             {!isIdassPrivateDeployment() && (
               <button className={styles.editNameButton}>
-                <EditIcon fill={colors.black[50]} />
+                <EditOutlined color={colors.black[50]} />
               </button>
             )}
             {inEditName && (
@@ -419,12 +416,12 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={styles.userMenuBottom}>
           <div className={styles.userMenuItem} onClick={openUserCenter}>
-            <AccountIcon className={styles.icon} />
+            <UserOutlined className={styles.icon} />
             <div className={styles.name}>{t(Strings.user_center)}</div>
           </div>
           {!inSocialApp?.() && (
             <div className={styles.userMenuItem} onClick={signOut}>
-              <ExitIcon className={styles.icon} />
+              <LogoutOutlined className={styles.icon} />
               <div className={styles.name}>{t(Strings.logout)}</div>
             </div>
           )}

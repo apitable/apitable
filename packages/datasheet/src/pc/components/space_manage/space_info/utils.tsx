@@ -69,12 +69,14 @@ const bronzeAndFree = {
   expirationColor: undefined,
   logo: <BronzeFilled size={24} />,
   getLabel: (text: string) => {
-    return <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
-    <span className={styles.icon}>
-      <BronzeFilled size={16} />
-    </span>
-    <span className={styles.text}>{text}</span>
-  </span>;
+    return (
+      <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
+        <span className={styles.icon}>
+          <BronzeFilled size={16} />
+        </span>
+        <span className={styles.text}>{text}</span>
+      </span>
+    );
   }
 };
 

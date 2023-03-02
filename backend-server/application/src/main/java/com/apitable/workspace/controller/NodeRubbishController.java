@@ -18,53 +18,54 @@
 
 package com.apitable.workspace.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
-import com.apitable.shared.component.scanner.annotation.ApiResource;
-import com.apitable.shared.component.scanner.annotation.GetResource;
-import com.apitable.shared.component.notification.annotation.Notification;
-import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
-import com.apitable.shared.component.notification.NotificationTemplateId;
-import com.apitable.shared.constants.ParamsConstants;
-import com.apitable.shared.context.LoginContext;
-import com.apitable.shared.context.SessionContext;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
-import com.apitable.space.enums.AuditSpaceAction;
-import com.apitable.shared.listener.event.AuditSpaceEvent;
-import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.apitable.workspace.ro.NodeRecoverRo;
-import com.apitable.workspace.vo.NodeInfoVo;
-import com.apitable.workspace.vo.RubbishNodeVo;
-import com.apitable.workspace.service.INodeRubbishService;
-import com.apitable.workspace.service.INodeService;
-import com.apitable.workspace.enums.PermissionException;
-import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
-
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.annotation.Notification;
+import com.apitable.shared.component.scanner.annotation.ApiResource;
+import com.apitable.shared.component.scanner.annotation.GetResource;
+import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.shared.constants.ParamsConstants;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.listener.event.AuditSpaceEvent;
+import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.space.enums.AuditSpaceAction;
+import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.ro.NodeRecoverRo;
+import com.apitable.workspace.service.INodeRubbishService;
+import com.apitable.workspace.service.INodeService;
+import com.apitable.workspace.vo.NodeInfoVo;
+import com.apitable.workspace.vo.RubbishNodeVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Workbench - Node Rubbish Api.
+ */
 @RestController
-@Api(tags = "Workbench - Node Rubbish Api")
+@Tag(name = "Workbench - Node Rubbish Api")
 @ApiResource(path = "/node/rubbish")
 public class NodeRubbishController {
 
@@ -80,27 +81,45 @@ public class NodeRubbishController {
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
+    /**
+     * Get node in rubbish.
+     */
     @GetResource(path = "/list")
-    @ApiOperation(value = "Get node in rubbish", notes = "If the last node id is passed in, the service status code 422 is returned.It means that the node is no longer in the recovery compartment, the positioning fails, and the last node can be requested again.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "isOverLimit", value = "whether to request an overrun node（default FALSE）", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-            @ApiImplicitParam(name = "size", value = "expected load quantity（May be because the total number or permissions are not enough）", dataTypeClass = Integer.class, paramType = "query", example = "15"),
-            @ApiImplicitParam(name = "lastNodeId", value = "id of the last node in the loaded list", dataTypeClass = String.class, paramType = "query", example = "dstM5qG7")
+    @Operation(summary = "Get node in rubbish", description = "If the last node id is passed in, "
+        + "the service status code 422 is returned.It means that the node is no longer in the "
+        + "recovery compartment, the positioning fails, and the last node can be requested again.")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = "isOverLimit", description = "whether to request an overrun "
+            + "node（default FALSE）", schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example
+            = "true"),
+        @Parameter(name = "size", description = "expected load quantity（May be because the total"
+            + " number or permissions are not enough）", schema = @Schema(type = "integer"), in
+            = ParameterIn.QUERY, example = "15"),
+        @Parameter(name = "lastNodeId", description = "id of the last node in the loaded list",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstM5qG7")
     })
-    public ResponseData<List<RubbishNodeVo>> list(@RequestParam(value = "size", defaultValue = "20") @Valid @Min(5) @Max(100) Integer size,
-            @RequestParam(value = "isOverLimit", defaultValue = "false") Boolean isOverLimit,
-            @RequestParam(value = "lastNodeId", required = false) String lastNodeId) {
+    public ResponseData<List<RubbishNodeVo>> list(
+        @RequestParam(value = "size", defaultValue = "20") @Valid @Min(5) @Max(100) Integer size,
+        @RequestParam(value = "isOverLimit", defaultValue = "false") Boolean isOverLimit,
+        @RequestParam(value = "lastNodeId", required = false) String lastNodeId) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
-        List<RubbishNodeVo> nodeVos = iNodeRubbishService.getRubbishNodeList(spaceId, memberId, size, lastNodeId, isOverLimit);
+        List<RubbishNodeVo> nodeVos =
+            iNodeRubbishService.getRubbishNodeList(spaceId, memberId, size, lastNodeId,
+                isOverLimit);
         return ResponseData.success(nodeVos);
     }
 
+    /**
+     * Recover node.
+     */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/recover")
-    @ApiOperation(value = "Recover node")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @Operation(summary = "Recover node")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<NodeInfoVo> recover(@RequestBody @Valid NodeRecoverRo ro) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
@@ -111,10 +130,10 @@ public class NodeRubbishController {
             // check if the node exists
             iNodeService.checkNodeIfExist(spaceId, parentId);
             // Verify that the parent node has the specified operation permissions
-            controlTemplate.checkNodePermission(memberId, ro.getParentId(), NodePermission.CREATE_NODE,
-                    status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        }
-        else {
+            controlTemplate.checkNodePermission(memberId, ro.getParentId(),
+                NodePermission.CREATE_NODE,
+                status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        } else {
             parentId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         }
         Long userId = SessionContext.getUserId();
@@ -122,16 +141,24 @@ public class NodeRubbishController {
         // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // publish space audit events
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.RECOVER_RUBBISH_NODE).userId(userId).nodeId(ro.getNodeId()).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.RECOVER_RUBBISH_NODE).userId(userId)
+                .nodeId(ro.getNodeId()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
-        return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, ro.getNodeId(), ControlRoleManager.parseNodeRole(Node.MANAGER)));
+        return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, ro.getNodeId(),
+            ControlRoleManager.parseNodeRole(Node.MANAGER)));
     }
 
-    @PostResource(path = "/delete/{nodeId}", method = { RequestMethod.DELETE, RequestMethod.POST })
-    @ApiOperation(value = "Delete node in rubbish")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
+    /**
+     * Delete node in rubbish.
+     */
+    @PostResource(path = "/delete/{nodeId}", method = {RequestMethod.DELETE, RequestMethod.POST})
+    @Operation(summary = "Delete node in rubbish")
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = "nodeId", description = "node id", required = true, schema =
+            @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> delete(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -144,7 +171,9 @@ public class NodeRubbishController {
         // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // publish space audit events
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_RUBBISH_NODE).userId(userId).nodeId(nodeId).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_RUBBISH_NODE).userId(userId)
+                .nodeId(nodeId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }

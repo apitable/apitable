@@ -47,14 +47,13 @@ export type IResourceOpsCollect = {
 
 export interface ICollaCommandManagerListener {
   handleCommandExecuted?(resourceOpsCollects: IResourceOpsCollect[]): void;
-  getRoomId?(): string;
   handleCommandExecuteError?(error: IError, type?: 'message' | 'modal' | 'subscribeUsage'): void;
 }
 
 export class CollaCommandManager {
-  private _commands: { [name: string]: CollaCommand } = {};
-  private cellFormatChecker!: CellFormatChecker;
-  private linkIntegrityChecker!: LinkIntegrityChecker;
+  private readonly _commands: { [name: string]: CollaCommand } = {};
+  private readonly cellFormatChecker!: CellFormatChecker;
+  private readonly linkIntegrityChecker!: LinkIntegrityChecker;
 
   addUndoStack?(cmd: CollaCommandName, commandResult: ICollaCommandDefExecuteSuccessResult, executeType: ExecuteType): void;
 
@@ -86,10 +85,9 @@ export class CollaCommandManager {
   }
 
   /**
-   * @desc passes the final generated op into the callback function that executes the op
-   * @param datasheetOpsCollects
+   * passes the final generated op into the callback function that executes the op
    */
-  didExecutedHook(datasheetOpsCollects: IResourceOpsCollect[]): void {
+  private didExecutedHook(datasheetOpsCollects: IResourceOpsCollect[]): void {
     this._listener.handleCommandExecuted && this._listener.handleCommandExecuted(datasheetOpsCollects);
   }
 

@@ -46,6 +46,7 @@ interface ICardProps {
 export const Card: React.FC<React.PropsWithChildren<ICardProps>> = props => {
   const { provided, row, style, isDragging, cardHeight, groupId, className } = props;
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
+  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const activeView = useSelector(state => Selectors.getCurrentView(state)) as IKanbanViewProperty;
   const rowsIndexMap = useSelector(Selectors.getRowsIndexMap);
   const { screenIsAtMost } = useResponsive();
@@ -95,6 +96,7 @@ export const Card: React.FC<React.PropsWithChildren<ICardProps>> = props => {
       }}
     >
       <RecordCard
+        datasheetId={datasheetId}
         showEmptyCover={false}
         coverFieldId={activeView.style.coverFieldId}
         showEmptyField={false}

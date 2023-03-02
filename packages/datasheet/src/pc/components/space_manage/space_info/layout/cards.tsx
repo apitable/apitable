@@ -22,6 +22,7 @@ import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { useMemo } from 'react';
 import { CapacityWithRewardCard, Card, Info, LevelCard, MultiLineCard } from '../components';
+import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
 import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
 import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView } from '../hooks';
 import { ILayoutProps } from '../interface';
@@ -72,7 +73,7 @@ export const useCards = (props: ILayoutProps) => {
           {...props}
           desc={isSocial ? undefined : t(Strings.space_setting_social_ad_decs)}
           linkText={(isSocial || !SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : t(Strings.space_setting_social_ad_btn)}
-          linkUrl={(isSocial || !SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : SPACE_OVERVIEW_SOCIAL_AD_URL!}
+          linkUrl={(isSocial || !SPACE_OVERVIEW_SOCIAL_AD_URL) ? undefined : buildSpaceCertSheetUrl(spaceId)}
         />;
       },
       LevelCard: (props: ICardProps) => (

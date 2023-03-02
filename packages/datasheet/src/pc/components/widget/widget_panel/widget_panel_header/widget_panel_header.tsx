@@ -17,14 +17,12 @@
  */
 
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined, CloseLargeOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronDownOutlined, ChevronLeftOutlined, CloseOutlined } from '@apitable/icons';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import RcTrigger from 'rc-trigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { expandWidgetCenter } from '../../widget_center/widget_center';
 import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
@@ -36,7 +34,7 @@ import { WrapperTooltip } from './wrapper_tooltip';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
-  return <IconAdd width={16} height={16} fill={colors.thirdLevelText} />;
+  return <AddOutlined size={16} color={colors.black[500]} />;
 };
 
 export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
@@ -49,7 +47,7 @@ export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
   isFocus && (widgetDom as HTMLDivElement).focus();
 };
 
-export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
+export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<void> }) => {
   const colors = useThemeColors();
   const triggerRef = useRef<any>(null);
   const [openPanelList, setOpenPanelList] = useState(false);
@@ -127,13 +125,14 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
             <span
               style={{
                 transform: openPanelList ? 'rotate(180deg)' : '',
+                verticalAlign: '-0.125em'
               }}
             >
-              <IconArrow width={16} height={16} style={{ verticalAlign: '-0.125em' }} fill={colors.thirdLevelText} />
+              <ChevronDownOutlined size={16} color={colors.thirdLevelText} />
             </span>
           </span>
         </RcTrigger>
-        <IconButton onClick={props.onClosePanel} icon={CloseLargeOutlined} />
+        <IconButton onClick={props.onClosePanel} icon={CloseOutlined} />
       </ComponentDisplay>
       {/** Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -153,9 +152,10 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void }) => {
             <span
               style={{
                 transform: openPanelList ? 'rotate(180deg)' : '',
+                verticalAlign: '-0.125em'
               }}
             >
-              <IconArrow width={16} height={16} style={{ verticalAlign: '-0.125em' }} fill={colors.thirdLevelText} />
+              <ChevronDownOutlined size={16} color={colors.thirdLevelText} />
             </span>
           </span>
         </div>
