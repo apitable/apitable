@@ -208,5 +208,6 @@ export const getEnvVars = () => {
     IS_ENTERPRISE: process.env.IS_ENTERPRISE === 'true',
     API_PANEL_MORE_URL: process.env.API_PANEL_MORE_URL,
     VIEW_NAME_MAX_COUNT: process.env.VIEW_NAME_MAX_COUNT,
+    DISABLED_QINIU_COMPRESSION_PARAMS: process.env.DISABLED_QINIU_COMPRESSION_PARAMS === 'true',
   };
 };
