@@ -235,7 +235,7 @@ export { QrcodeFilled } from './qrcode_filled';
 export { RowhightMediumFilled } from './rowhight_medium_filled';
 export { NotificationFilled } from './notification_filled';
 export { TelephoneFilled } from './telephone_filled';
-export { TelephoneOutlined } from './telephone_outlined';
+export { TelephoneOutlined, TelephoneOutlined as ColumnPhoneFilled } from './telephone_outlined';
 export { HomeOutlined } from './home_outlined';
 export { EmojiFilled } from './emoji_filled';
 export { SatelliteFilled } from './satellite_filled';
