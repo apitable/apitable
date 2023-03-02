@@ -159,7 +159,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
               {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE &&
                 <div className={styles.cardTool} onClick={openPermissionModal}>
                   <div className={styles.settingPermissionBtn}>
-                    <SettingOutlined />
+                    <SettingOutlined color={colors.textCommonPrimary} />
                   </div>
                   <span>{t(Strings.permission)}</span>
                 </div>

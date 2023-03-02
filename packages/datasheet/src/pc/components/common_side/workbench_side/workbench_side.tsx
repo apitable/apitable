@@ -21,7 +21,9 @@ import {
   ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import { AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled } from '@apitable/icons';
+import { 
+  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteFilled, PlanetOutlined 
+} from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -46,10 +48,6 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import InviteIcon from 'static/icon/common/common_icon_invite.svg';
-import ArrowIcon from 'static/icon/common/common_icon_up_line.svg';
-import TrashIcon from 'static/icon/workbench/catalogue/recycle_closed.svg';
-import TemplateIcon from 'static/icon/workbench/catalogue/template.svg';
 import { Catalog } from '../../catalog';
 import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
@@ -316,7 +314,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.favorite)}
                     </Typography>
-                    <ArrowIcon
+                    <ChevronUpOutlined
                       className={classnames(styles.arrow, {
                         [styles.active]: activeKey.includes(ConfigConstant.Modules.FAVORITE),
                       })}
@@ -338,7 +336,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.catalog)}
                     </Typography>
-                    <ArrowIcon
+                    <ChevronUpOutlined
                       className={classnames(styles.arrow, {
                         [styles.active]: activeKey.includes(ConfigConstant.Modules.CATALOG),
                       })}
@@ -347,7 +345,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 }
                 extra={
                   rootManageable ? (
-                    <IconButton style={{ marginRight: 10 }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
+                    <IconButton style={{ margin: '4px 10px 0 0' }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
                   ) : null
                 }
                 showArrow={false}
@@ -363,19 +361,19 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
               <div className={styles.groupItem} onClick={jumpTrash} data-sensors-click id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
-                <TrashIcon fill={colors.rc04} />
+                <DeleteFilled color={colors.rc04} />
               </div>
             </Tooltip>
           )}
           <Tooltip title={t(Strings.workbench_side_space_template)}>
             <div className={styles.groupItem} onClick={jumpSpaceTemplate} data-sensors-click id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
-              <TemplateIcon fill={colors.rc02} />
+              <PlanetOutlined color={colors.rc02} />
             </div>
           </Tooltip>
           {inviteStatus && !isIdassPrivateDeployment() && (
             <Tooltip title={t(Strings.invite_friends)}>
               <div className={styles.groupItem} onClick={() => expandInviteModal()}>
-                <InviteIcon fill={colors.primaryColor} />
+                <UserAddOutlined color={colors.primaryColor} />
               </div>
             </Tooltip>
           )}

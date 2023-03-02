@@ -17,11 +17,11 @@
  */
 
 import { Navigation, Strings, t } from '@apitable/core';
+import { CheckCircleFilled, CloseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Modal } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
 import { FC, useState } from 'react';
-import SuccessIcon from 'static/icon/common/common_icon_tips.svg';
 import styles from './style.module.less';
 
 interface IResModal {
@@ -55,9 +55,10 @@ export const DelSuccess: FC<React.PropsWithChildren<IResModal>> = ({ tip }) => {
       bodyStyle={{ padding: '24px' }}
       centered
       onCancel={onCancel}
+      closeIcon={<CloseOutlined />}
     >
       <div className={styles.delSuccess}>
-        <SuccessIcon width={70} height={70} fill='#52C41A' />
+        <CheckCircleFilled size={70} color='#52C41A' />
         <div className={styles.title}>{t(Strings.delete_succeed)}</div>
         <div className={styles.tip}>{tip}</div>
       </div>

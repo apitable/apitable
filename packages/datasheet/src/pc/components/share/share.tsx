@@ -31,8 +31,6 @@ import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/st
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import Openup from 'static/icon/workbench/openup.svg';
-import Packup from 'static/icon/workbench/packup.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
@@ -52,6 +50,7 @@ import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
 import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
 import { getEnvVariables } from 'pc/utils/env';
 import Image from 'next/image';
+import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 const _SplitPane: any = SplitPane;
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
@@ -346,7 +345,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
                   offset={[0, 0]}
                 >
                   <div className={closeBtnClass} style={closeBtnStyles} onClick={handleClick}>
-                    {!sideBarVisible ? <Openup width={16} height={16} /> : <Packup width={16} height={16} />}
+                    {!sideBarVisible ? <Collapse2OpenOutlined size={16} /> : <Collapse2Outlined size={16} />}
                   </div>
                 </Tooltip>
               </div>

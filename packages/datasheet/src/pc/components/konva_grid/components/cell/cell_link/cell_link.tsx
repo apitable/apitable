@@ -206,7 +206,9 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
                   y={2}
                   data={CloseSmallOutlinedPath}
                   fill={colors.secondLevelText}
-                  size={16}
+                  scaleX={0.75}
+                  scaleY={0.75}
+                  transformsEnabled={'all'}
                   background={iconBg}
                   backgroundHeight={16}
                   backgroundWidth={16}

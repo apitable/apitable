@@ -20,10 +20,10 @@ import styles from './styles.module.less';
 import { Typography, useThemeColors } from '@apitable/components';
 import { TComponent } from 'pc/components/common/t_component';
 import { t, Strings } from '@apitable/core';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import * as React from 'react';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { CloseOutlined } from '@apitable/icons';
 
 interface IPermissionModalHeaderProps {
   typeName: string;
@@ -61,7 +61,7 @@ export const PermissionModalHeader: React.FC<React.PropsWithChildren<IPermission
         </Typography>
         {docIcon}
       </div>
-      {onModalClose && <CloseIcon fill={colors.fourthLevelText} onClick={onModalClose} width={24} height={24} />}
+      {onModalClose && <CloseOutlined color={colors.fourthLevelText} onClick={onModalClose} size={24} />}
     </div>
   );
 };

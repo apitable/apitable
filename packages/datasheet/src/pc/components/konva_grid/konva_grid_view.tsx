@@ -190,7 +190,9 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(p
       visibleRecordIds: Selectors.getVisibleRowIds(state),
       collaboratorCursorMap: Selectors.collaboratorCursorSelector(state),
       groupBreakpoint: Selectors.getGroupBreakpoint(state),
-      isManualSaveView: state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave),
+      isManualSaveView: state.labs.includes('view_manual_save') ||
+        Boolean(state.share.featureViewManualSave) ||
+        Boolean(state.embedInfo.viewManualSave),
       exportViewId: Selectors.getDatasheetClient(state)?.exportViewId,
     };
   }, shallowEqual);
@@ -272,7 +274,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(p
       const { name, desc } = field;
       const columnWidth = columnIndicesMap[index];
       const textWidth = Math.max(
-        columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE), 
+        columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE),
         FIELD_HEAD_TEXT_MIN_WIDTH
       );
       const { lastLineWidth, height } = textSizer.current.measureText(name, textWidth);
@@ -288,7 +290,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(p
 
       const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
       if (
-        fieldPermissionMap && fieldRole && 
+        fieldPermissionMap && fieldRole &&
         getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole)
       ) {
         realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Permission] + FIELD_HEAD_ICON_GAP_SIZE);

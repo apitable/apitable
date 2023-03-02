@@ -28,10 +28,10 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import UnlinkImg from 'static/icon/datasheet/datasheet_img_disassociate.png';
 import { TComponent } from '../t_component';
 import styles from './styles.module.less';
+import { CloseOutlined } from '@apitable/icons';
 
 const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datasheetId?: string, onClose: (confirm?: boolean) => void }>> = props => {
   const { fieldId, datasheetId, onClose } = props;
@@ -61,7 +61,7 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datas
   return (
     <div className={styles.deleteConfirmContainer}>
       <h1 className={styles.title}>{t(Strings.delete_field)}</h1>
-      <CloseIcon className={styles.close} onClick={() => onClose()} />
+      <CloseOutlined className={styles.close} onClick={() => onClose()} />
       <div className={styles.unLinkImg}>
         <Image src={UnlinkImg} alt={t(Strings.delete_field)} />
       </div>

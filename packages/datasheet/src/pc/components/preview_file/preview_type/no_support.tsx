@@ -25,11 +25,11 @@ import { FileType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC } from 'react';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import { directDownload } from '../tool_bar';
 import styles from './style.module.less';
 // @ts-ignore
 import { Marketing } from 'enterprise';
+import { DownloadOutlined } from '@apitable/icons';
 
 interface INoSupportProps {
   icon?: React.ReactNode;
@@ -121,7 +121,7 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => 
           !disabledDownload && (
           <div className={styles.download} onClick={handleDownload}>
             <Button color='primary' block>
-              <IconDownload fill='currentColor' />
+              <DownloadOutlined color='currentColor' />
               <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
             </Button>
           </div>

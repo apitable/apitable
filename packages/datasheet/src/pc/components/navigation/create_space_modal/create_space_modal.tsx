@@ -33,8 +33,8 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import styles from './style.module.less';
+import { CloseOutlined } from '@apitable/icons';
 
 export interface ICreateSpaceModalProps {
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -147,7 +147,7 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
         height={566}
         className={cls(styles.createSpaceWrapper, { [styles.createSpaceWrapperMobile]: isMobile })}
         headerStyle={{ borderBottom: 'none' }}
-        closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
+        closeIcon={<CloseOutlined size={16} color={colors.thirdLevelText} />}
       >
         {renderContent()}
       </Drawer>

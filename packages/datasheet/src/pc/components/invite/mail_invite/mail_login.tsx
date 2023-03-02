@@ -29,6 +29,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
+import { PcHome } from 'pc/components/home/pc_home';
 
 const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
@@ -46,28 +48,31 @@ const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
     whenPageRefreshed();
   });
 
+  const { IS_ENTERPRISE } = getEnvVariables();
+  
   return (
-    <Wrapper>
-      <div className={classNames('invite-children-center', styles.linkInviteLogin)}>
-        {inviteEmailInfo && (
-          <InviteTitle
-            inviter={inviteEmailInfo.data.inviter}
-            spaceName={inviteEmailInfo.data.spaceName}
-            desc={t(Strings.login_with_qq_or_phone_for_invited_email, {
-              inviteEmail: inviteEmailInfo.data.inviteEmail,
-            })}
-            titleMarginBottom={isMobile ? '16px' : '40px'}
-            subTitleMarginBottom={isMobile ? '24px' : '0'}
-          />
-        )}
-        <div className={styles.loginContent}>
-          {
-            LoginWithoutOther &&
+    !IS_ENTERPRISE ? <PcHome />:
+      <Wrapper>
+        <div className={classNames('invite-children-center', styles.linkInviteLogin)}>
+          {inviteEmailInfo && (
+            <InviteTitle
+              inviter={inviteEmailInfo.data.inviter}
+              spaceName={inviteEmailInfo.data.spaceName}
+              desc={t(Strings.login_with_qq_or_phone_for_invited_email, {
+                inviteEmail: inviteEmailInfo.data.inviteEmail,
+              })}
+              titleMarginBottom={isMobile ? '16px' : '40px'}
+              subTitleMarginBottom={isMobile ? '24px' : '0'}
+            />
+          )}
+          <div className={styles.loginContent}>
+            {
+              LoginWithoutOther &&
             <LoginWithoutOther defaultEmail={inviteEmailInfo ? inviteEmailInfo.data.inviteEmail : ''} submitText={t(Strings.login)} />
-          }
+            }
+          </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
   );
 };
 export default MailLogin;

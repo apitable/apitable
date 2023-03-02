@@ -22,7 +22,7 @@ import { Selectors, t, Strings } from '@apitable/core';
 import styles from './style.module.less';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import classNames from 'classnames';
-import IconCheck from 'static/icon/account/account_icon_checkbox_select.svg';
+import { CheckCircleFilled } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { changeView } from 'pc/hooks';
 
@@ -70,7 +70,7 @@ export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = prop
                 <span>
                   {item.name}
                 </span>
-                {item.id === activeViewId && <IconCheck fill={colors.primaryColor} />}
+                {item.id === activeViewId && <CheckCircleFilled color={colors.primaryColor} />}
               </div>
             );
           })

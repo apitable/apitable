@@ -24,12 +24,12 @@ import styles from './styles.module.less';
 import { AutoLayout } from '../../field_setting/auto_layout';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
-import IconEdit from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { TextButton, useThemeColors } from '@apitable/components';
 import RcTrigger from 'rc-trigger';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { useClickAway } from 'ahooks';
+import { EditOutlined } from '@apitable/icons';
 
 interface ICollectTypeSelectProps {
   field: ILastModifiedTimeField | ILastModifiedByField;
@@ -129,7 +129,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
         </div>
         <div className={styles.editField}>
           <TextButton className={styles.editBtn} onClick={() => onChange(CollectType.SpecifiedFields)}>
-            <IconEdit width={16} height={16} fill={colors.thirdLevelText} />
+            <EditOutlined size={16} color={colors.thirdLevelText} />
             <span className={styles.editText}>{t(Strings.edit_selected_field)}</span>
           </TextButton>
         </div>

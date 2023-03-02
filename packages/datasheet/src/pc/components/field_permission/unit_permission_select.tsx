@@ -26,15 +26,13 @@ import { ConfigConstant, Selectors, Strings, t, IUnitIds } from '@apitable/core'
 import { Divider } from 'antd';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { stopPropagation } from 'pc/utils';
-import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import { DoubleSelect, Typography, Button, useThemeColors, IDoubleOptions } from '@apitable/components';
 import { IUnitPermissionSelectProps } from './interface';
 import classnames from 'classnames';
 import { useClickAway } from 'ahooks';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { MobileSelect } from 'pc/components/common';
-import { AddOutlined, CheckOutlined } from '@apitable/icons';
+import { AddOutlined, CheckOutlined, ChevronDownOutlined, CloseOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message/message';
 
 export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermissionSelectProps>> = props => {
@@ -129,9 +127,12 @@ export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermiss
         <div className={styles.unitValue} onClick={openMemberList} tabIndex={-1}>
           <div className={styles.placeholder}>
             <AddOutlined color={colors.thirdLevelText} />
-            {!unitValue.length && <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all' }}>
-              {t(Strings.add_member_or_unit)}
-            </Typography>}
+            {
+              !unitValue.length && 
+              <Typography variant="body3" color={colors.thirdLevelText} style={{ lineHeight: 1.1, wordBreak: 'keep-all', marginLeft: 8 }}>
+                {t(Strings.add_member_or_unit)}
+              </Typography>
+            }
           </div>
           {unitValue.map((unitId) => {
             const unitInfo = unitMap[unitId];
@@ -145,7 +146,7 @@ export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermiss
                   onMouseDown={stopPropagation}
                   style={{ cursor: 'pointer' }}
                 >
-                  <IconClose width={8} height={8} fill={colors.secondLevelText} />
+                  <CloseOutlined size={8} color={colors.secondLevelText} />
                 </div>
               </MemberItem>
             );
@@ -175,7 +176,7 @@ export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermiss
                 triggerComponent={
                   <div className={styles.mobileRoleSelect}>
                     {ConfigConstant.permissionText[permissionValue.value!]}
-                    {<PulldownIcon className={styles.arrowIcon} width={16} height={16} fill={colors.fourthLevelText} />}
+                    {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
                   </div>
                 }
                 renderList={({ setVisible }) => {

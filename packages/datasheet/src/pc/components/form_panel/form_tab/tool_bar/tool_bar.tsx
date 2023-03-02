@@ -27,11 +27,10 @@ import styles from './style.module.less';
 import { SettingPanel } from './setting_panel';
 import { ShareModal } from './share_modal';
 import { ToolItem } from '../../../tool_bar/tool_item';
-import SettingIcon from 'static/icon/datasheet/gallery/datasheet_icon_setting.svg';
-import ShareIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_share_normal.svg';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { resourceService } from 'pc/resource_service';
+import { SettingOutlined, ShareOutlined } from '@apitable/icons';
 interface IToolBarProps {
   nodeShared: boolean;
   showLabel?: boolean;
@@ -91,7 +90,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
             text={t(Strings.form_tab_setting)}
             id={DATASHEET_ID.FORM_CONTAINER_SETTING}
             icon={
-              <SettingIcon width={16} height={16} fill={isPanelShow ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />
+              <SettingOutlined size={16} color={isPanelShow ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />
             }
             onClick={() => setPanelShow(true)}
             showLabel={showLabel}
@@ -99,7 +98,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
         </Trigger>
       )}
       <ToolItem
-        icon={<ShareIcon width={16} height={16} fill={nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
+        icon={<ShareOutlined size={16} color={nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
         text={t(Strings.form_tab_share)}
         isActive={nodeShared}
         className={styles.toolbarItem}

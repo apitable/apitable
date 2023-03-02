@@ -32,7 +32,6 @@ import { FC, useCallback, useRef, useState } from 'react';
 // @ts-ignore
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import SelectedIcon from 'static/icon/common/common_icon_select.svg';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
@@ -422,7 +421,7 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
                                   </span>
                                   {officialImgToken === imgToken && (
                                     <div className={styles.checked}>
-                                      <SelectedIcon />
+                                      <CheckOutlined />
                                     </div>
                                   )}
                                 </div>

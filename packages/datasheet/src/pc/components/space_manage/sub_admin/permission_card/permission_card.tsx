@@ -17,7 +17,6 @@
  */
 
 import { FC } from 'react';
-import InfoIcon from 'static/icon/common/common_icon_information.svg';
 import { Checkbox } from 'antd';
 import { Strings, t, IReduxState } from '@apitable/core';
 import styles from './style.module.less';
@@ -25,6 +24,7 @@ import { Tooltip } from 'pc/components/common';
 import { useSelector } from 'react-redux';
 // @ts-ignore
 import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IPermissionCardProps {
   defaultChecked?: string[];
@@ -115,7 +115,7 @@ export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> =
             <span>{item.title}</span>
             <Tooltip title={item.desc} placement="top" trigger="click" showTipAnyway>
               <span>
-                <InfoIcon />
+                <QuestionCircleOutlined />
               </span>
             </Tooltip>
           </div>

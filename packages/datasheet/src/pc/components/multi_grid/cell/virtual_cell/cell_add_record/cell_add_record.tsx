@@ -21,12 +21,12 @@ import classNames from 'classnames';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../../styles.module.less';
 import { OPERATE_BUTTON_CLASS, ButtonOperateType } from 'pc/utils';
 import { PRIMARY_COLOR_BORDER, GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
 import { useShowKeepSortBorder } from '../../hooks/use_show_keep_sort_border';
 import { useSelector } from 'react-redux';
+import { AddOutlined } from '@apitable/icons';
 
 interface ICellAddRecord {
   row: ILinearRowAdd;
@@ -110,7 +110,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
       >
         {
           !rightRegion && actualColumnIndex === 0 && createAble && 
-          <IconAdd fill={colors.thirdLevelText} width={12} height={12} />
+          <AddOutlined color={colors.thirdLevelText} size={12} />
         }
       </div>
     </div>

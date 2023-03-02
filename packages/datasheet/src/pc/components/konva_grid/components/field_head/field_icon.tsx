@@ -19,7 +19,7 @@
 import { FC, memo } from 'react';
 import { FieldType } from '@apitable/core';
 import { 
-  AttachmentOutlined, AutonumberOutlined, CheckboxOutlined, UserAddOutlined, TimeFilled,
+  AttachmentOutlined, AutonumberOutlined, CheckboxOutlined, UserAddOutlined, TimeOutlined,
   CurrencyCnyOutlined, FormulaOutlined, UserEditOutlined, HistoryFilled,
   LongtextOutlined, LookupOutlined, UserOutlined, PercentOutlined, TelephoneOutlined, StarOutlined,
   SelectMultipleOutlined, SelectSingleOutlined, LinkOutlined, NumberOutlined, EmailOutlined,
@@ -41,7 +41,7 @@ const ColumnPhoneFilledPath = TelephoneOutlined.toString();
 const ColumnAutonumberFilledPath = AutonumberOutlined.toString();
 const ColumnCheckboxFilledPath = CheckboxOutlined.toString();
 const ColumnCreatedbyFilledPath = UserAddOutlined.toString();
-const ColumnCreatedtimeFilledPath = TimeFilled.toString();
+const ColumnCreatedtimeFilledPath = TimeOutlined.toString();
 const ColumnCurrencyFilledPath = CurrencyCnyOutlined.toString();
 const ColumnFormulaFilledPath = FormulaOutlined.toString();
 const ColumnLastmodifiedbyFilledPath = UserEditOutlined.toString();

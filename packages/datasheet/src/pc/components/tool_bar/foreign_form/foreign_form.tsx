@@ -25,9 +25,9 @@ import { useThemeColors } from '@apitable/components';
 import Trigger from 'rc-trigger';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
-import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 import { TComponent } from 'pc/components/common/t_component';
 import { useEffect } from 'react';
+import { FormOutlined } from '@apitable/icons';
 
 interface IForeignFormProps {
   className: string;
@@ -125,10 +125,9 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
               t(Strings.view_form)
           }
           icon={
-            <FormIcon
-              width={16}
-              height={16}
-              fill={panelVisible ? colors.primaryColor : colors.secondLevelText}
+            <FormOutlined
+              size={16}
+              color={panelVisible ? colors.primaryColor : colors.secondLevelText}
               className={styles.toolIcon}
             />
           }

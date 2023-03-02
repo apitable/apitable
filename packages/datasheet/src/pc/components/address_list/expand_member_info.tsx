@@ -17,11 +17,11 @@
  */
 
 import { Strings, t } from '@apitable/core';
+import { ChevronLeftOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { store } from 'pc/store';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import IconBack from 'static/icon/datasheet/datasheet_icon_calender_left.svg';
 import { MemberInfo } from './member_info';
 import styles from './style.module.less';
 
@@ -57,7 +57,7 @@ export const expandMemberInfo = () => {
                 closable={false}
               >
                 <div className={styles.mobileBack} onClick={close}>
-                  <IconBack fill='currentColor' />
+                  <ChevronLeftOutlined color='currentColor' />
                   <span>{t(Strings.back)}</span>
                 </div>
                 <MemberInfo />

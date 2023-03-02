@@ -18,26 +18,27 @@
 
 package com.apitable;
 
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import java.io.InputStream;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.sql.DataSource;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.DatabaseMetaDataCallback;
+import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -60,42 +61,39 @@ public class UnitTestUtil {
         }
     }
 
-    public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables, String tablePrefix) {
-        String catalog = getDbName(jdbcTemplate);
-        logger.info("prepare db for unit test, schema: {}", catalog);
-        // Here is in the ci environment, clean up all table data in the database in My SQL in ci, it will not be executed in local development, because test is specified
-        List<String> tableNames = getTableNames(jdbcTemplate, catalog, tablePrefix);
-        tableNames.removeIf(tableName -> tableName.equals(tablePrefix + ASSET_TABLE_NAME));
+    public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables,
+                               String tablePrefix) {
+        // String catalog = getDbName(jdbcTemplate);
+        // logger.info("prepare db for unit test, schema: {}", catalog);
+        // Here is in the ci environment, clean up all table data in the database in My SQL in ci,
+        // it will not be executed in local development, because test is specified
+        DataSource dataSource = jdbcTemplate.getDataSource();
+        if (dataSource == null) {
+            throw new RuntimeException("can't connect to database");
+        }
+        GetTableNames getTableNames = new GetTableNames();
+        List<String> tableNames;
+        try {
+            tableNames =
+                JdbcUtils.extractDatabaseMetaData(dataSource, getTableNames);
+        } catch (MetaDataAccessException e) {
+            throw new RuntimeException("extract table names fail", e);
+        }
+        tableNames.removeIf(tableName -> tableName.equals(tablePrefix + ASSET_TABLE_NAME)
+            || tableName.contains(LIQUIBASE_TABLE_PREFIX));
         List<String> rows = getAssetTableExcludeRows();
         if (!rows.isEmpty()) {
             String whereClause = StrUtil.format("file_url not in({})",
-                    CollUtil.join(rows, ",", "'", "'"));
-            JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, tablePrefix + ASSET_TABLE_NAME, whereClause);
+                CollUtil.join(rows, ",", "'", "'"));
+            JdbcTestUtils.deleteFromTableWhere(jdbcTemplate,
+                tablePrefix + ASSET_TABLE_NAME,
+                whereClause);
         }
-        List<String> excludeTablesWithTablePrefix = excludeTables.stream().map(excludeTable -> tablePrefix + excludeTable).collect(Collectors.toList());
+        List<String> excludeTablesWithTablePrefix =
+            excludeTables.stream().map(excludeTable -> tablePrefix + excludeTable)
+                .collect(Collectors.toList());
         filterTableNames(tableNames, excludeTablesWithTablePrefix);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ArrayUtil.toArray(tableNames, String.class));
-    }
-
-    public static String getDbName(JdbcTemplate jdbcTemplate) {
-        DataSource dataSource = jdbcTemplate.getDataSource();
-        if (dataSource == null) {
-            throw new RuntimeException("please confirm datasource url");
-        }
-        try (Connection connection = dataSource.getConnection()) {
-            return connection.getCatalog();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException("connect db is not work", e);
-        }
-    }
-
-    private static List<String> getTableNames(JdbcTemplate jdbcTemplate, String database, String tablePrefix) {
-        final String sql = StrUtil.format(
-                "SELECT table_name FROM information_schema.tables WHERE table_name not like '{}%' AND table_schema = '{}'"
-                , tablePrefix + LIQUIBASE_TABLE_PREFIX, database);
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
-        return mapList.stream().map(m -> m.get("table_name").toString()).collect(Collectors.toList());
     }
 
     private static List<String> getAssetTableExcludeRows() {
@@ -109,5 +107,22 @@ public class UnitTestUtil {
         logger.info("Exclude table: {}", excludeTables);
         tableNames.removeIf(excludeTables::contains);
         logger.info("Table cleaned after exclusion: {}", tableNames);
+    }
+
+    private static class GetTableNames implements DatabaseMetaDataCallback<List<String>> {
+
+        @Override
+        @NotNull
+        public List<String> processMetaData(DatabaseMetaData dbmd) throws SQLException {
+            ResultSet tables = dbmd.getTables(null, null, "%", new String[] {"TABLE"});
+            List<String> tableNames = new ArrayList<>();
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                if (!tableName.equals("sys_config")) {
+                    tableNames.add(tableName);
+                }
+            }
+            return tableNames;
+        }
     }
 }

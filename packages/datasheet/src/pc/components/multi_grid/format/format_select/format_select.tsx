@@ -20,6 +20,7 @@ import { Divider, Typography, useThemeColors } from '@apitable/components';
 import {
   Field, IField, ISelectField, ISelectFieldProperty, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
 } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import produce from 'immer';
 import { omit } from 'lodash';
@@ -31,7 +32,6 @@ import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
@@ -159,7 +159,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
         </SortableContainer>
       </div>
       <div style={btnStyle} className={styles.addNewItem} onClick={addNewItem}>
-        <IconAdd width={15} height={15} fill={colors.thirdLevelText} />
+        <AddOutlined size={15} color={colors.thirdLevelText} />
         {t(Strings.add_an_option)}
       </div>
       {options.length > 0 && (

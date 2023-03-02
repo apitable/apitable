@@ -18,7 +18,7 @@
 
 import { IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@apitable/core';
-import { DragOutlined, MoreOutlined, NarrowOutlined } from '@apitable/icons';
+import { DragOutlined, ExpandOutlined, MoreOutlined, NarrowOutlined } from '@apitable/icons';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
@@ -27,7 +27,6 @@ import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
@@ -92,7 +91,7 @@ export const WidgetHeaderMobile: React.FC<React.PropsWithChildren<IWidgetHeaderP
     }
     expandWidgetRoute(widgetId);
   };
-  const ReactIconExpand = () => <IconExpand width={16} height={16} fill={colors.thirdLevelText} />;
+  const ReactIconExpand = () => <ExpandOutlined size={16} color={colors.thirdLevelText} />;
   const ReactMoreOutlined = () => <MoreOutlined size={16} color={colors.thirdLevelText} className={styles.rotateIcon} />;
 
   const nameMouseUp = (e: React.SyntheticEvent) => {

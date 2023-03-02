@@ -18,7 +18,7 @@
 
 import { Button, ButtonGroup, useThemeColors } from '@apitable/components';
 import { IUserInfo, Navigation, Strings, t } from '@apitable/core';
-import { NewtabOutlined } from '@apitable/icons';
+import { CopyOutlined, NewtabOutlined, QrcodeOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -27,8 +27,6 @@ import { Router } from 'pc/components/route_manager/router';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
-import ShareQrCodeIcon from 'static/icon/datasheet/datasheet_icon_share_qrcode.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
 import { ShareQrCode } from '../share_qr_code';
 import styles from './style.module.less';
 
@@ -78,18 +76,18 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
         <ButtonGroup style={{ display: 'flex' }}>
           <Tooltip title={t(Strings.copy_link)} placement='top'>
             <Button onClick={copyLinkHandler}>
-              <CopyIcon fill={colors.secondLevelText} />
+              <CopyOutlined color={colors.secondLevelText} className={styles.iconOffset} />
             </Button>
           </Tooltip>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Tooltip title={t(Strings.preview)} placement='top'>
               <Button onClick={previewHandler}>
-                <NewtabOutlined color={colors.secondLevelText} />
+                <NewtabOutlined color={colors.secondLevelText} className={styles.iconOffset} />
               </Button>
             </Tooltip>
             <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
               <Button onClick={() => setShareCodeVisible(true)}>
-                <ShareQrCodeIcon fill={colors.secondLevelText} />
+                <QrcodeOutlined color={colors.secondLevelText} className={styles.iconOffset} />
               </Button>
             </Tooltip>
           </ComponentDisplay>

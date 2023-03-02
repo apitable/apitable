@@ -22,7 +22,7 @@ import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
   Strings, t, PermissionType
 } from '@apitable/core';
-import { AttentionOutlined, CommentOutlined } from '@apitable/icons';
+import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { expandRecordManager } from 'modules/database/expand_record_manager';
@@ -51,7 +51,6 @@ import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
-import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
@@ -761,7 +760,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.mobileRecordHeader}>
             <div className={styles.toggleRecordBtnWrapper} onClick={modalClose}>
-              <IconButton icon={() => <IconNarrow width={16} height={16} fill={colors.black[50]} />} />
+              <IconButton icon={() => <NarrowOutlined size={16} color={colors.black[50]} />} />
             </div>
             <span className={styles.recordName}>{title}</span>
             <div className={styles.toCommentBtnWrapper}>

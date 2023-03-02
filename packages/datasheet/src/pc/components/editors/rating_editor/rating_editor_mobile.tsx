@@ -22,7 +22,6 @@ import { memo } from 'react';
 import * as React from 'react';
 import style from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { useThemeColors } from '@apitable/components';
 import { useState } from 'react';
 import { RateItem } from './rate_item';
@@ -30,6 +29,7 @@ import { t } from '@apitable/core';
 import { Strings } from '@apitable/core';
 import { Popup } from 'pc/components/common/mobile/popup';
 import classNames from 'classnames';
+import { ChevronDownOutlined } from '@apitable/icons';
 
 export interface IRatingEditorMobileProps {
   editable: boolean;
@@ -66,7 +66,7 @@ const RatingEditorMobileBase: React.FC<React.PropsWithChildren<IRatingEditorMobi
           character={<Emoji emoji={emoji} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />}
           max={max}
         />
-        {editable && <IconArrow width={16} height={16} fill={colors.fourthLevelText} />}
+        {editable && <ChevronDownOutlined size={16} color={colors.fourthLevelText} />}
       </div>
       {visible && editable && <Popup
         title={t(Strings.please_choose)}

@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
@@ -31,7 +31,6 @@ import { loadRecords } from 'pc/utils/load_records';
 import * as React from 'react';
 import { useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import styles from '../cell_options/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
@@ -133,7 +132,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
     if (isActive && !readonly) {
       return (
         <div className={styles.iconDelete} onClick={e => deleteItem(e, index)}>
-          <IconClose width={8} height={8} fill={colors.secondLevelText} />
+          <CloseOutlined size={8} color={colors.secondLevelText} />
         </div>
       );
     }

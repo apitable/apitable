@@ -36,12 +36,12 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
 import { RecordList } from './record_list';
 import style from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 interface ISearchContentProps {
   field: ILinkField;
@@ -353,7 +353,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
                       className={classNames(style.addRecordBtn, 'textButton')}
                       onClick={addNewRecord}
                       color="primary"
-                      prefixIcon={<IconAdd fill={colors.black[50]} width="14px" height="14px" />}
+                      prefixIcon={<AddOutlined color={colors.black[50]} size={14} />}
                     >
                       {<TComponent
                         tkey={t(Strings.add_new_record_by_name)}
@@ -378,7 +378,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
             underline={false}
             onClick={addNewRecord}
             color={colors.fc2}
-            prefixIcon={<IconAdd fill="currentColor" />}
+            prefixIcon={<AddOutlined color="currentColor" />}
             disabled={!foreignDatasheetEditable}
             block
           >

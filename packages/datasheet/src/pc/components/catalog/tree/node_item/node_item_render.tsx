@@ -21,13 +21,10 @@ import styles from './style.module.less';
 import { NodeIcon } from '../node_icon';
 import classnames from 'classnames';
 import { Space } from 'antd';
-import ShareIcon from 'static/icon/common/common_icon_share.svg';
-import LockIcon from 'static/icon/workbench/workbench_icon_lock.svg';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
 import { EditingNode } from './editing_node';
 import { Tooltip } from 'pc/components/common';
 import { INodesMapItem } from '@apitable/core';
+import { AddOutlined, MoreStandOutlined, LockFilled, ShareFilled } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { browserIsDesktop } from 'pc/utils/os';
 
@@ -111,12 +108,12 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
         !editing &&
         <>
           <Space className={styles.state} align="center" size={node.nodePermitSet ? 8 : 0}>
-            {node.nodeShared && <ShareIcon />}
-            {node.nodePermitSet && <LockIcon />}
+            {node.nodeShared && <ShareFilled />}
+            {node.nodePermitSet && <LockFilled />}
           </Space>
           <Space className={styles.operation} align="center">
-            {childCreatable && <AddIcon fill="currentColor" onClick={onNodeAdd} />}
-            <MoreIcon onClick={onClickMore} />
+            {childCreatable && <span onClick={onNodeAdd}><AddOutlined color="currentColor" /></span>}
+            <span onClick={onClickMore}><MoreStandOutlined /></span>
           </Space>
         </>
       }
