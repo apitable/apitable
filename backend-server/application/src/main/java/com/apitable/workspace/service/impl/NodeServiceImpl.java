@@ -512,7 +512,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         return this.getNodeIdsInNodeTree(Collections.singletonList(nodeId), depth, isRubbish);
     }
 
-    public List<String> getNodeIdsInNodeTree(List<String> nodeIds, Integer depth, Boolean isRubbish) {
+    private List<String> getNodeIdsInNodeTree(List<String> nodeIds, Integer depth, Boolean isRubbish) {
         Set<String> nodeIdSet = new LinkedHashSet<>(nodeIds);
         List<String> parentIds = nodeIds.stream()
             .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
@@ -538,7 +538,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         return new ArrayList<>(nodeIdSet);
     }
 
-    private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
+    @Override
+    public List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
         return this.sortNodeAtSameLevel(sub, null);
     }
 

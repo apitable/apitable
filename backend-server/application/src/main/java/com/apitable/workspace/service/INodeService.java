@@ -26,6 +26,7 @@ import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeData;
+import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.DatasheetMetaEntity;
 import com.apitable.workspace.entity.DatasheetRecordEntity;
@@ -276,6 +277,15 @@ public interface INodeService extends IService<NodeEntity> {
      * @author Chambers
      */
     List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish);
+
+    /**
+     * Sort node.
+     *
+     * @param sub sub
+     * @return List<String>
+     * @author Chambers
+     */
+    List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub);
 
     /**
      * query child node information.
