@@ -174,12 +174,11 @@ public interface INodeService extends IService<NodeEntity> {
      * gets the node parent path.
      * * don't contains root node
      *
-     * @param spaceId   space id
      * @param nodeIds   node ids
      * @return List<NodeBaseInfoDTO>
      * @author Chambers
      */
-    List<NodeBaseInfoDTO> getParentPathNodes(String spaceId, List<String> nodeIds);
+    List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds);
 
     /**
      * get multi node info.

@@ -199,12 +199,12 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void testGetRootNodeIdBySpaceId() {
+    void testGetParentPathNodes() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String spaceId = userSpace.getSpaceId();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
-        List<NodeBaseInfoDTO> parentPathNodes = iNodeService.getParentPathNodes(spaceId,
-            Collections.singletonList(rootNodeId));
+        List<NodeBaseInfoDTO> parentPathNodes =
+            iNodeService.getParentPathNodes(Collections.singletonList(rootNodeId));
         assertThat(parentPathNodes.size()).isEqualTo(0);
         // first level folder id
         NodeOpRo op = new NodeOpRo().toBuilder()
@@ -217,8 +217,8 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         // second level folder id
         op.setParentId(firstLevelFolderId);
         String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
-        List<NodeBaseInfoDTO> secondLevelParentPathNodes = iNodeService.getParentPathNodes(spaceId,
-            Collections.singletonList(secondLevelFolderId));
+        List<NodeBaseInfoDTO> secondLevelParentPathNodes =
+            iNodeService.getParentPathNodes(Collections.singletonList(secondLevelFolderId));
         assertThat(secondLevelParentPathNodes.size()).isEqualTo(2);
         // third level folder id
         op.setParentId(secondLevelFolderId);
@@ -226,11 +226,11 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         List<String> nodeIds = new ArrayList<>();
         nodeIds.add(firstLevelFolderId2);
         nodeIds.add(thirdLevelFolderId);
-        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(spaceId, nodeIds);
+        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(nodeIds);
         assertThat(parentPathNodes1.size()).isEqualTo(4);
         // The upper and lower level nodes exist at the same time
         nodeIds.add(firstLevelFolderId);
-        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(spaceId, nodeIds);
+        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(nodeIds);
         assertThat(parentPathNodes2.size()).isEqualTo(4);
     }
 

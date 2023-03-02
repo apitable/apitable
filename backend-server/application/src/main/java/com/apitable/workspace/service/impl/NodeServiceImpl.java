@@ -377,20 +377,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<NodeBaseInfoDTO> getParentPathNodes(String spaceId, List<String> nodIds) {
+    public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds) {
         Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
-        String rootNodeId = this.getRootNodeIdBySpaceId(spaceId);
-        List<String> parentIds = new ArrayList<>(nodIds);
-        parentIds.remove(rootNodeId);
+        Set<String> parentIds = new HashSet<>(nodeIds);
         while (!parentIds.isEmpty()) {
             List<NodeBaseInfoDTO> nodes =
                 nodeMapper.selectNodeBaseInfosByNodeIds(parentIds, false);
-            parentIds = new ArrayList<>();
+            parentIds = new HashSet<>();
             for (NodeBaseInfoDTO node : nodes) {
-                if (nodeIdToNodeMap.containsKey(node.getNodeId())) {
+                if (nodeIdToNodeMap.containsKey(node.getNodeId())
+                    || node.getType().equals(NodeType.ROOT.getNodeType())) {
                     continue;
                 }
-                if (!node.getParentId().equals(rootNodeId)) {
+                if (!nodeIdToNodeMap.containsKey(node.getParentId())) {
                     parentIds.add(node.getParentId());
                 }
                 nodeIdToNodeMap.put(node.getNodeId(), node);
@@ -483,7 +482,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // fuzzy search results
         List<String> nodeIds = nodeMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
-        return formatNodeSearchResults(spaceId, nodeInfos);
+        return formatNodeSearchResults(nodeInfos);
     }
 
     @Override
@@ -947,7 +946,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // get the superior path
         List<String> parentIds =
             list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
-        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
+        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         // give delete node role
         iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId,
             new HashSet<>(idList));
@@ -1830,9 +1829,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     /**
      * Get the superior path, split by "/", do not retain the root node.
      */
-    private Map<String, String> getSuperiorPathByParentIds(String spaceId, List<String> parentIds) {
+    private Map<String, String> getSuperiorPathByParentIds(List<String> parentIds) {
         // gets all parent nodes other than the non root node
-        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(spaceId, parentIds);
+        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(parentIds);
         if (CollUtil.isEmpty(parentNodes)) {
             return null;
         }
@@ -2072,7 +2071,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> nodeIds =
             multiDatasourceAdapterTemplate.getRecentlyVisitNodeIds(memberId, NodeType.FOLDER);
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
-        return formatNodeSearchResults(spaceId, nodeInfos);
+        return formatNodeSearchResults(nodeInfos);
     }
 
     @Override
@@ -2091,8 +2090,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             baseMapper.selectCountByParentIdAndNodeName(parentNodeId, nodeName)) > 0;
     }
 
-    private List<NodeSearchResult> formatNodeSearchResults(String spaceId,
-                                                           List<NodeInfoVo> nodeInfoList) {
+    private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {
         if (CollUtil.isEmpty(nodeInfoList)) {
             return new ArrayList<>();
         }
@@ -2100,7 +2098,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<NodeSearchResult> results = new ArrayList<>(nodeInfoList.size());
         List<String> parentIds =
             nodeInfoList.stream().map(NodeInfoVo::getParentId).collect(Collectors.toList());
-        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
+        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         nodeInfoList.forEach(info -> {
             NodeSearchResult result = new NodeSearchResult();
             BeanUtil.copyProperties(info, result);
