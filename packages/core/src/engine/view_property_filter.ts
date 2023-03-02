@@ -142,7 +142,7 @@ export class ViewPropertyFilter {
     }
 
     if (this._fromServer && path.includes('autoSave') && action['oi']) {
-      // Receive op from the server, if it is checked that there is a modification to autoSave, 
+      // Receive op from the server, if it is checked that there is a modification to autoSave,
       // and it is turned on, you need to pull the latest view data from the server to overwrite the local
       ViewPropertyFilter.resetViewProperty(state, {
         datasheetId: this._datasheetId,
@@ -154,7 +154,7 @@ export class ViewPropertyFilter {
     }
 
     if (path.includes('columns')) {
-      // If the li and ld operations are performed at the same time, 
+      // If the li and ld operations are performed at the same time,
       // it means that the original content is being replaced, which belongs to LR and needs to be filtered out
       // Such as hiding columns, modifying column widths, etc.
       if (action['li'] && action['ld']) {
@@ -183,13 +183,13 @@ export class ViewPropertyFilter {
     }
 
     const state: IReduxState = this._getState();
-    if (!state.labs?.includes('view_manual_save') && !state.share?.featureViewManualSave) {
+    if (!state.labs?.includes('view_manual_save') && !state.share?.featureViewManualSave && !state.embedInfo?.viewManualSave) {
       // There is no uncoordinated view of the entire space station, so there is no need to check the data here
       return actions;
     }
 
     if (commandName && [CollaCommandName.ManualSaveView, CollaCommandName.SetViewAutoSave].includes(commandName)) {
-      // Manually save the view data. In order to avoid the impact of the field's absence on the view configuration, 
+      // Manually save the view data. In order to avoid the impact of the field's absence on the view configuration,
       // it is necessary to check the field's existence and filter the abnormal configuration.
       // This filtering scheme is only used to submit data from the client to the server, otherwise this method is not called
       return actions.filter((action) => this._filterFieldExist(action));
@@ -229,7 +229,7 @@ export class ViewPropertyFilter {
       const revision = Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet);
 
       if (data['revision'] < revision!) {
-        // The version of the database is smaller than the local version, it may be that the op is being processed 
+        // The version of the database is smaller than the local version, it may be that the op is being processed
         // at the same time as the request, so resend the request
         return await this.requestViewDate(datasheetId, viewId, shareId);
       }
@@ -271,7 +271,9 @@ export class ViewPropertyFilter {
   }
 
   static getReaderRolePermission(state: IReduxState, datasheetId: string, permission?: IPermissions) {
-    const spaceManualSaveViewIsOpen = state.labs?.includes('view_manual_save') || Boolean(state.share?.featureViewManualSave);
+    const spaceManualSaveViewIsOpen = state.labs?.includes('view_manual_save') ||
+      Boolean(state.share?.featureViewManualSave) ||
+      Boolean(state.embedInfo?.viewManualSave);
     const viewId = state.pageParams.viewId;
     if (!viewId || !spaceManualSaveViewIsOpen || !permission) {
       return permission;
