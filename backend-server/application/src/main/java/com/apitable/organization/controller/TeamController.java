@@ -149,13 +149,11 @@ public class TeamController {
                 List<Long> loadFirstTeamIds = iOrganizationService.loadMemberFirstTeamIds(spaceId,
                     memberIsolatedInfo.getTeamIds());
                 teamInfos = teamMapper.selectTeamInfoByTeamIds(spaceId, loadFirstTeamIds);
-            }
-            else {
+            } else {
                 teamId = teamMapper.selectRootIdBySpaceId(spaceId);
                 teamInfos = teamMapper.selectRootSubTeams(spaceId, teamId);
             }
-        }
-        else {
+        } else {
             teamInfos = teamMapper.selectSubTeamsByParentId(spaceId, teamId);
         }
         if (CollUtil.isEmpty(teamInfos)) {

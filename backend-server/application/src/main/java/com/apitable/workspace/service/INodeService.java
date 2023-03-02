@@ -162,8 +162,8 @@ public interface INodeService extends IService<NodeEntity> {
     List<String> getPathParentNode(String nodeId);
 
     /**
-     * gets the node parent path
-     * contains root node.
+     * gets the node parent path.
+     * * contains root node
      *
      * @param spaceId space id
      * @param nodeId node id
@@ -398,7 +398,7 @@ public interface INodeService extends IService<NodeEntity> {
      * delete template mapping node
      *
      * @param userId  user id
-     * @param nodeId  nodeId
+     * @param nodeId  node id
      */
     void delTemplateRefNode(Long userId, String nodeId);
 

@@ -415,7 +415,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<Boolean> selectIsTemplateByNodeId(@Param("nodeIds") List<String> nodeIds);
 
     /**
-     * Query node information with permission status
+     * Query node information with permission.
      *
      * @param nodeId    nodeId
      * @return SimpleNodeInfo

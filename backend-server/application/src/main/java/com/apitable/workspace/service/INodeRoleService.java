@@ -190,7 +190,7 @@ public interface INodeRoleService {
     Map<String, Set<Long>> getRoleToUnitIds(boolean isParent, String spaceId, String nodeId);
 
     /**
-     * Get node information with permission status
+     * Get node information with permission status.
      *
      * @param nodeIds   node ids
      * @return List<SimpleNodeInfo>
