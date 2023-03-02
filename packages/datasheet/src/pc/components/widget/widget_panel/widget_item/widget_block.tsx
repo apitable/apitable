@@ -76,7 +76,8 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
   const nodeConnected = useSelector(state => {
-    const bindDatasheetLoaded = Boolean(Selectors.getDatasheetPack(state, nodeId));
+    const datasheet = Selectors.getDatasheet(state, nodeId);
+    const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
     // The initialization of the widget must be done after the datasheet loaded.
     if (!bindDatasheetLoaded) {
       return false;
