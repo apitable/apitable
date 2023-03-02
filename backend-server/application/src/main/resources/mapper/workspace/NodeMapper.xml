@@ -415,38 +415,6 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.apitable.workspace.dto.SimpleNodeInfo">
-        WITH RECURSIVE parent_view ( node_id, parent_id, extend, lvl ) AS (
-        SELECT
-        n.node_id,
-        n.parent_id,
-        IF(vc.id IS NULL, 1, 0) extend,
-        0 lvl
-        FROM ${tablePrefix}node n
-        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = n.node_id AND vc.is_deleted = 0
-        WHERE n.node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND n.is_rubbish = 0
-        UNION ALL
-        SELECT
-        c.node_id,
-        c.parent_id,
-        IF(vc.id IS NULL, 1, 0) extend,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        <if test="!includeRoot">
-            AND c.parent_id != '0'
-        </if>
-        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = c.node_id AND vc.is_deleted = 0
-        )
-        SELECT DISTINCTROW node_id, parent_id, extend
-        FROM parent_view
-        ORDER BY lvl DESC
-    </select>
-
     <select id="selectSpaceIdByNodeIdIncludeDeleted" resultType="java.lang.String">
         SELECT space_id
         FROM ${tablePrefix}node
@@ -461,6 +429,19 @@
             #{item}
         </foreach>
         AND is_rubbish = 0
+    </select>
+
+    <select id="selectNodeInfoWithPermissionStatus"
+            resultType="com.apitable.workspace.dto.SimpleNodeInfo">
+        SELECT n.node_id,
+               n.parent_id,
+               n.type,
+               IF(c.id IS NULL, 1, 0) extend
+        FROM ${tablePrefix}node n
+                     LEFT JOIN ${tablePrefix}control c
+                ON c.control_id = n.node_id AND c.is_deleted = 0
+        WHERE n.node_id = #{nodeId}
+          AND n.is_rubbish = 0
     </select>
 
     <select id="selectNodeBaseInfoByNodeId"

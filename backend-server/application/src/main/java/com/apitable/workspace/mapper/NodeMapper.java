@@ -398,15 +398,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<String> selectNodeIdByPreNodeIdIn(@Param("list") List<String> preNodeIdList);
 
     /**
-     * query node parent id list.
-     *
-     * @param nodeIds node ids
-     * @return NodeTrees
-     */
-    List<SimpleNodeInfo> selectAllParentNodeIdsByNodeIds(@Param("nodeIds") List<String> nodeIds,
-        @Param("includeRoot") boolean includeRoot);
-
-    /**
      * update node ban status.
      *
      * @param nodeId node id
@@ -422,6 +413,15 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return Boolean
      */
     List<Boolean> selectIsTemplateByNodeId(@Param("nodeIds") List<String> nodeIds);
+
+    /**
+     * Query node information with permission status
+     *
+     * @param nodeId    nodeId
+     * @return SimpleNodeInfo
+     * @author Chambers
+     */
+    SimpleNodeInfo selectNodeInfoWithPermissionStatus(@Param("nodeId") String nodeId);
 
     /**
      * query node base info.
