@@ -8,7 +8,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.HttpURLConnection;
+import java.util.function.Consumer;
 
+import com.apitable.starter.oss.core.OssStatObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +95,17 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
         }
         return null;
     }
+    @Override
+    public OssStatObject getStatObject(String bucketName, String key) {
+        ObjectMetadata metadata = obsClient.getObjectMetadata(bucketName, key);
+        return new OssStatObject(key, metadata.getContentMd5(), metadata.getContentLength(), metadata.getContentType());
+    }
+
+    @Override
+    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+        ObsObject object = obsClient.getObject(bucketName, key);
+        function.accept(object.getObjectContent());
+    }
 
     @Override
     public void refreshCdn(String bucketName, String[] url) {
@@ -161,12 +174,12 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
         Long topLimit = 5120 * 1024 * 1024L;
 
         int remainedLength = in.available();
-        if(remainedLength > topLimit)
-        {
-            String msg = "OBS SDK does not support file size over 5GB";
-            LOGGER.error(msg);
-            throw new RuntimeException(msg);
-        }
+//        if(remainedLength > topLimit)
+//        {
+//            String msg = "OBS SDK does not support file size over 5GB";
+//            LOGGER.error(msg);
+//            throw new RuntimeException(msg);
+//        }
         Integer partNumber = 1;
         UploadPartRequest request = new UploadPartRequest(bucketName, path);
         request.setUploadId(multipartState.getUploadId());
