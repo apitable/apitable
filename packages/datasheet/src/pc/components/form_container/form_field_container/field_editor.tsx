@@ -42,7 +42,6 @@ import { DateTimeEditor } from 'pc/components/editors/date_time_editor';
 import { RatingEditor } from 'pc/components/editors/rating_editor';
 import { EnhanceTextEditor } from 'pc/components/editors/enhance_text_editor';
 import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { FormContext } from '../form_context';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -52,6 +51,7 @@ import { ExpandFormula } from 'pc/components/expand_record/expand_formula';
 import { ComputedFieldWrapper } from './computed_field_wrapper';
 import { ExpandSelect } from 'pc/components/expand_record/expand_select';
 import { ExpandNumber } from 'pc/components/expand_record/expand_number';
+import { AddOutlined } from '@apitable/icons';
 export interface ICommonProps {
   style: React.CSSProperties;
   datasheetId: string;
@@ -155,7 +155,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const disabledStatusButton = (
     <Button className={styles.addBtn} size="small">
       <span className={styles.inner}>
-        {<IconAdd fill="currentColor" className={styles.addIcon} />}
+        {<AddOutlined color="currentColor" className={styles.addIcon} />}
         {t(Strings.add)}
       </span>
     </Button>

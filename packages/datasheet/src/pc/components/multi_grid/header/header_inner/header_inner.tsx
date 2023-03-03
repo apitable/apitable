@@ -18,6 +18,7 @@
 
 import { colorVars, useContextMenu, useThemeColors } from '@apitable/components';
 import { DATASHEET_ID, Field, FieldOperateType, IField, Selectors, Strings, t } from '@apitable/core';
+import { MoreOutlined, WarnCircleFilled, InfoCircleOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLockEnhance } from 'pc/components/field_permission';
@@ -25,9 +26,6 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { ButtonOperateType, FIELD_DOT, OPACITY_LINE_CLASS, OPERATE_BUTTON_CLASS } from 'pc/utils';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconDot from 'static/icon/common/common_icon_more.svg';
-import WarnIcon from 'static/icon/common/common_icon_warning_triangle.svg';
-import IconFieldDesc from 'static/icon/datasheet/datasheet_icon_edit_describe.svg';
 import { stopPropagation } from '../../../../utils/dom';
 import styles from '../styles.module.less';
 
@@ -50,7 +48,7 @@ export function renderComputeFieldError(field: IField, errText: string, isMobile
         placement={isMobile ? 'topLeft' : 'top'}
         overlayClassName={styles.errorTip}
       >
-        <WarnIcon fill={colorVars.warningColor} width={15} height={13} className={styles.warningIcon} />
+        <WarnCircleFilled color={colorVars.warningColor} size={15} className={styles.warningIcon} />
       </Tooltip>
     );
   }
@@ -115,7 +113,7 @@ export const HeaderInner: React.FC<React.PropsWithChildren<IHeadInnerProps>> = p
               title={<pre className={styles.tipPre}>{compatible(field.desc || t(Strings.field_desc))}</pre>}
               placement="top"
             >
-              <IconFieldDesc />
+              <InfoCircleOutlined />
             </Tooltip>
           </div>
         }
@@ -123,10 +121,7 @@ export const HeaderInner: React.FC<React.PropsWithChildren<IHeadInnerProps>> = p
       {
         !mirrorId &&
         editable &&
-        <IconDot
-          width={16}
-          height={16}
-          fill={isSelected ? colors.primaryColor : colors.fourthLevelText}
+        <span
           className={dotOperateClass}
           style={{
             display: isHoverCurrentField ? 'flex' : ''
@@ -134,7 +129,12 @@ export const HeaderInner: React.FC<React.PropsWithChildren<IHeadInnerProps>> = p
           data-column-index={curColumnIndex}
           data-field-id={field.id}
           onClick={(e: unknown) => show(e as React.MouseEvent<HTMLElement>, { id: DATASHEET_ID.FIELD_CONTEXT, props: { fieldId: field.id }})}
-        />
+        >
+          <MoreOutlined
+            size={16}
+            color={isSelected ? colors.primaryColor : colors.fourthLevelText}
+          />
+        </span>
       }
       {
         columnWidthEditable && <div className={classNames(styles.opacityLine, OPACITY_LINE_CLASS)} />

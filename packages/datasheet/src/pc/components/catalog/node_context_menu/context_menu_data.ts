@@ -150,13 +150,13 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     id: WORKBENCH_SIDE_ID.NODE_EXPORT,
     arrow: makeNodeIconComponent(NodeIcon.Arrow, { size: 10, color: black[500] }),
     children: [{
-      icon: makeNodeIconComponent(NodeIcon.Excel),
+      // icon: makeNodeIconComponent(NodeIcon.Excel),
       text: t(Strings.excel),
       'data-sensors-click': true,
       id: WORKBENCH_SIDE_ID.OPERATE_ITEM_EXPORT_NODE_EXCEL,
       onClick: excelClick,
     }, {
-      icon: makeNodeIconComponent(NodeIcon.Csv),
+      // icon: makeNodeIconComponent(NodeIcon.Csv),
       text: t(Strings.csv),
       'data-sensors-click': true,
       id: WORKBENCH_SIDE_ID.OPERATE_ITEM_EXPORT_NODE_CSV,

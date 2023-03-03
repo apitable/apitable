@@ -27,12 +27,12 @@ import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { colorVars } from '@apitable/components';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 const SortableContainer: any = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;
@@ -161,7 +161,7 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
           className={classNames(styles.addNewItem)}
           onClick={_onAddHandle}
         >
-          <IconAdd width={10} height={10} fill={colorVars.thirdLevelText} />
+          <AddOutlined size={10} color={colorVars.thirdLevelText} />
           <span>
             {t(Strings.add)}
           </span>

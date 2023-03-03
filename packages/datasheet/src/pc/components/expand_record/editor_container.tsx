@@ -32,7 +32,7 @@ interface IFieldEditorContainer {
   fields: IViewColumn[];
   visible: boolean;
   focusFieldId: string | null;
-  clickWithinField:  React.MutableRefObject<boolean | undefined>;
+  clickWithinField: React.MutableRefObject<boolean | undefined>;
   datasheetId: string;
   expandRecordId: string;
   setFocusFieldId: (focusFieldId: any) => void;
@@ -79,7 +79,7 @@ const FieldEditorContainer = (props: IFieldEditorContainer) => {
         );
       })}
     </>
-  )
+  );
 };
 
 interface IEditorContainerProp {
@@ -206,8 +206,8 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
           >
             <div className={styles.dropdown}>
               {showHiddenField
-                ? <TriangleDownFilled color={colors.primaryColor} />
-                : <TriangleRightFilled color={colors.thirdLevelText} />
+                ? <TriangleDownFilled size={12} color={colors.primaryColor} />
+                : <TriangleRightFilled size={12} color={colors.thirdLevelText} />
               }
               <h5 className={styles.typography}>
                 {!showHiddenField

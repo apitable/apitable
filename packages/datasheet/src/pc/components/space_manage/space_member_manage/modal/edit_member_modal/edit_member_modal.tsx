@@ -25,8 +25,6 @@ import { useEditMember } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useState, FC, ChangeEvent } from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
 import { ChangeMemberTeam } from '../change_member_team';
 import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
@@ -34,6 +32,7 @@ import { isPrimaryOrOwnFunc } from '../../utils';
 import { Tooltip } from 'pc/components/common';
 // @ts-ignore
 import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
+import { AddOutlined, CloseCircleOutlined } from '@apitable/icons';
 
 interface IModalProps {
   cancelModalVisible: () => void;
@@ -168,7 +167,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
           </Tooltip>
           {teamList.length > 0 && !isSocialFeiShu?.(spaceInfo) && (
             <span className={styles.teamRemoveIcon} onClick={() => removeTeam(item.teamId)}>
-              <CloseIcon />
+              <CloseCircleOutlined />
             </span>
           )}
         </span>
@@ -250,7 +249,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
           <div className={styles.deptItem}>
             {getTeamRemoveList()}
             {!isSocialFeiShu?.(spaceInfo) && (
-              <Button onClick={toChangeTeamModal} size="small" className={styles.addBtn} prefixIcon={<AddIcon fill="currentColor" />}>
+              <Button onClick={toChangeTeamModal} size="small" className={styles.addBtn} prefixIcon={<AddOutlined color="currentColor" />}>
                 {t(Strings.add)}
               </Button>
             )}

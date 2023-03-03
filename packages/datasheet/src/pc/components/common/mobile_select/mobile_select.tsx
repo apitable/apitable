@@ -20,13 +20,12 @@ import { SelectValue } from 'antd/lib/select';
 import { useThemeColors } from '@apitable/components';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
-import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import IconChecked from 'static/icon/common/common_icon_select.svg';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Popup } from '../mobile/popup';
 import { IMobileSelectProps } from './interface';
+import { CheckOutlined, ChevronDownOutlined } from '@apitable/icons';
 
 const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = props => {
   const {
@@ -63,11 +62,10 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
           style={style}
         >
           <span>{optionData?.find(item => item.value === defaultValue)?.label}</span>
-          <ArrowIcon
+          <ChevronDownOutlined
             className={styles.arrow}
-            width={16}
-            height={16}
-            fill={colors.fourthLevelText}
+            size={16}
+            color={colors.fourthLevelText}
           />
         </div>
       )}
@@ -122,7 +120,7 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
                         </span>
                         {item.suffixIcon}
                       </div>
-                      {isChecked && <IconChecked fill={colors.primaryColor} style={{ marginRight: 8 }} />}
+                      {isChecked && <span style={{ marginRight: 8 }}><CheckOutlined color={colors.primaryColor} /></span>}
                     </div>
                   );
                 }

@@ -29,9 +29,9 @@ import { useResponsive } from 'pc/hooks';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
+import { AddOutlined } from '@apitable/icons';
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -179,7 +179,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
       </DragDropContext>
 
       <div className={styles.addNewItem} onClick={addNewItem}>
-        <IconAdd width={15} height={15} fill={colors.thirdLevelText} />
+        <AddOutlined size={15} color={colors.thirdLevelText} />
         {t(Strings.add_an_option)}
       </div>
     </>

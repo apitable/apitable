@@ -17,16 +17,13 @@
  */
 
 import { Strings, t } from '@apitable/core';
-import { QuestionCircleOutlined } from '@apitable/icons';
+import { AdviseOutlined, AlarmOutlined, QuestionCircleOutlined, QuestionOutlined } from '@apitable/icons';
 import { ButtonPlus, ContextmenuItem, MobileContextMenu, Modal } from 'pc/components/common';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { FC, useState } from 'react';
-import FeedbackIcon from 'static/icon/common/common_icon_feedback.svg';
 import JoinCommunityIcon from 'static/icon/common/group.svg';
-import ReportIcon from 'static/icon/datasheet/datasheet_icon_prosecute.svg';
-import AdviseIcon from 'static/icon/workbench/workbench_icon_advise.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { ReportReason } from './report_reason';
 import styles from './style.module.less';
@@ -45,7 +42,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
   const menuData: any[] = [
     [
       {
-        icon: <AdviseIcon />,
+        icon: <AdviseOutlined />,
         text: t(Strings.vomit_a_slot),
         onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
       },
@@ -55,7 +52,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
         onClick: () => navigationToUrl(`${window.location.origin}/help`),
       },
       {
-        icon: <ReportIcon />,
+        icon: <AlarmOutlined />,
         text: t(Strings.inform),
         onClick: () => setReasonModalVisible(true),
       },
@@ -95,13 +92,13 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
           onPopupVisibleChange={visible => setMenuVisible(visible)}
           zIndex={1000}
         >
-          <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<FeedbackIcon />} size="small" shadow />
+          <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<QuestionOutlined />} size="small" shadow />
         </RcTrigger>
         {reasonModalVisible && <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />}
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileContextMenu title={t(Strings.help)} visible={menuVisible} height="50%" data={menuData} onClose={() => setMenuVisible(false)} />
-        <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<FeedbackIcon />} size="small" shadow />
+        <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<QuestionOutlined />} size="small" shadow />
         {reasonModalVisible && (
           <Modal className={styles.reasonModal} onCancel={() => setReasonModalVisible(false)} centered footer={null} visible>
             <ReportReason nodeId={nodeId} onClose={() => setReasonModalVisible(false)} />

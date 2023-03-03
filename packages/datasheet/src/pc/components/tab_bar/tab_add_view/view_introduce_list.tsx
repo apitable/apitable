@@ -164,7 +164,7 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
                 id={getViewAnalyticsId(viewType)}
                 data-test-id={getViewAnalyticsId(viewType)}
               >
-                <ViewIcon viewType={viewType} fill={colors.primaryColor} width={16} height={16} />
+                <ViewIcon viewType={viewType} color={colors.primaryColor} size={16} />
                 <span>{getViewClass(viewType).getViewIntroduce()!.title}</span>
                 <AddOutlined color={colors.thirdLevelText} />
               </section>
@@ -190,7 +190,7 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
                   id={DATASHEET_ID.VIEW_CREATOR_FORM}
                   onClick={e => addNewNode(e as any as React.MouseEvent, nodeType)}
                 >
-                  <NodeIcon nodeType={nodeType} fill={colors.primaryColor} width={16} height={16} />
+                  <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16} />
                   <span>{FormView.getViewIntroduce()!.title}</span>
                   <AddOutlined color={colors.thirdLevelText} />
                 </section>

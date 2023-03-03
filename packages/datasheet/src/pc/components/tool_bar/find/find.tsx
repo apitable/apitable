@@ -26,12 +26,12 @@ import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.svg';
 import { ToolItem } from '../tool_item';
 import { FindSearchInput } from './find_search_input';
 import styles from './styles.module.less';
 import { dispatch } from 'pc/worker/store';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { SearchOutlined } from '@apitable/icons';
 interface ISearchInputRef {
   select(): void
 }
@@ -201,8 +201,8 @@ export const Find = (props: IFindProps) => {
             [styles.active]: isFindOpen,
           })}
           onClick={toggleFinder}
-          icon={<SearchIcon width={16} height={16}
-            fill={isFindOpen ? colors.primaryColor : colors.secondLevelText} />}
+          icon={<SearchOutlined size={16}
+            color={isFindOpen ? colors.primaryColor : colors.secondLevelText} />}
           text={t(Strings.find)}
         />
       </div>

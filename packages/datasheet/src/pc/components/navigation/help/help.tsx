@@ -22,7 +22,7 @@ import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, StoreActions, 
 import {
   AdviseOutlined, BookOutlined, ClassOutlined, CodeFilled, CommunityOutlined, MortarboardOutlined, TimeOutlined, DownloadOutlined,
   InfoCircleOutlined, BulbOutlined, QuestionCircleOutlined, PlanetOutlined, KeyboardOutlined, RoadmapOutlined,
-  SolutionOutlined, CommentOutlined, VikabyOutlined, WebOutlined,
+  CommentOutlined, VikabyOutlined, WebOutlined, CompassOutlined
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
@@ -81,7 +81,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   };
   const menuData = [
     {
-      icon: <SolutionOutlined color={colors.thirdLevelText} size={16} />,
+      icon: <BulbOutlined color={colors.thirdLevelText} size={16} />,
       text: t(Strings.solution),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
       hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
@@ -105,7 +105,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
     },
     {
-      icon: <BulbOutlined />,
+      icon: <CompassOutlined />,
       text: t(Strings.function_guidance),
       onClick: startGuideClick,
       hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,

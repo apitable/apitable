@@ -25,9 +25,9 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import DescIcon from 'static/icon/datasheet/datasheet_icon_skip.svg';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
+import { GotoOutlined } from '@apitable/icons';
 
 export enum JumpIconMode {
   Badge,
@@ -77,7 +77,7 @@ export const LinkJump: FC<React.PropsWithChildren<ILinkJumpProps>> = (props) => 
         onClick={handleClick}
       >
         <sup>
-          <DescIcon fill={colors.primaryColor} width={10} height={10} />
+          <GotoOutlined color={colors.primaryColor} size={10} />
         </sup>
       </span>
     </Tooltip>

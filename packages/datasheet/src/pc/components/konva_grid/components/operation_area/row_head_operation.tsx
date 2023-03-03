@@ -18,7 +18,7 @@
 
 import { teal } from '@apitable/components';
 import { KONVA_DATASHEET_ID, RowHeight, Strings, t } from '@apitable/core';
-import { CommentBjEntireFilled, DragOutlined, ExpandOutlined } from '@apitable/icons';
+import { DragOutlined, ExpandOutlined, CommentBgFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, IconType, Rect, Text } from 'pc/components/konva_components';
@@ -41,7 +41,7 @@ interface IRowHeadOperationProps {
 // Icon Path
 const DragOutlinedPath = DragOutlined.toString();
 const ExpandRecordOutlinedPath = ExpandOutlined.toString();
-const CommentBjFilledPath = CommentBjEntireFilled.toString();
+const CommentBjFilledPath = CommentBgFilled.toString();
 
 const ICON_SIZE = 16;
 
@@ -114,7 +114,7 @@ export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps
             x={6}
             y={iconOffsetY}
             data={DragOutlinedPath}
-            fill={isChecked ? colors.defaultBg : colors.thirdLevelText}
+            fill={isChecked ? colors.textStaticTertiary : colors.thirdLevelText}
             onMouseEnter={onDragMouseEnter}
             onMouseOut={clearTooltipInfo}
           />
@@ -151,12 +151,17 @@ export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps
                 /> :
                 <>
                   <Icon
+                    x={-3}
+                    y={-4}
                     name={generateTargetName({
                       targetName: KONVA_DATASHEET_ID.GRID_ROW_EXPAND_RECORD,
                       recordId,
                     })}
+                    scaleX={0.375}
+                    scaleY={0.375}
+                    transformsEnabled={'all'}
                     data={CommentBjFilledPath}
-                    fill={teal[50]}
+                    fill={colors.rainbowTeal1}
                   />
                   <Text
                     x={-2}

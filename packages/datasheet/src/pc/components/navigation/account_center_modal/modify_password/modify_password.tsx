@@ -123,7 +123,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
 
-    const value = e.target.value.trim();
+    const value = e.target.value.replace(/\s/g, '');
     setData({ identifyingCode: value });
   }, [setErrMsg, errMsg.identifyingCodeErrMsg, setData]);
 
@@ -163,13 +163,14 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
                   errMsg.accountErrMsg ||
                   errMsg.identifyingCodeErrMsg
                 )}
+                value={data.identifyingCode}
               />
             </WithTipWrapper>
           </div>
         </div>
       </>
     );
-  }, [user, setErrMsg, errMsg.identifyingCodeErrMsg, errMsg.accountErrMsg, handleIdentifyingCodeChange]);
+  }, [user, setErrMsg, errMsg.identifyingCodeErrMsg, errMsg.accountErrMsg, handleIdentifyingCodeChange, data]);
 
   const btnDisabled = !(data.identifyingCode && data.password && data.confirmPassword &&
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);

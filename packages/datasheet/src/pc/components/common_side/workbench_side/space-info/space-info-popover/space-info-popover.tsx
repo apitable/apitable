@@ -24,7 +24,7 @@ import { Avatar, Tooltip } from 'pc/components/common';
 import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
 import { shallowEqual, useSelector } from 'react-redux';
 import { t, Strings } from '@apitable/core';
-import { Typography } from '@apitable/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { Message } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise';
@@ -46,6 +46,8 @@ export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
 
   const basicCert = !!spaceFeatures && spaceFeatures.certification === 'basic';
   const isSocialEnabled = !!spaceInfo && isSocialPlatformEnabled?.(spaceInfo);
+
+  const colors = useThemeColors();
 
   if (!spaceInfo || !userInfo) return null;
 
@@ -94,7 +96,7 @@ export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
         <span className={styles.label}>{t(Strings.space_id)}：</span>
         { spaceId }
         <span onClick={() => copy2clipBoard(spaceId, () => Message.success({ content: t(Strings.copy_success) }))}>
-          <CopyOutlined className={styles.copy} />
+          <CopyOutlined size={16} color={colors.textCommonPrimary} className={styles.copy} />
         </span>
       </Typography>
     </div>

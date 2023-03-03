@@ -84,7 +84,7 @@ export const WidgetLoader: React.FC<React.PropsWithChildren<{
         <div className={styles.title}>
           <span>{t(Strings.widget_loader_developing_title)}</span>
           <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
-            <QuestionCircleOutlined size={16} color={colors.fc4}/>
+            <QuestionCircleOutlined size={16} color={colors.textCommonTertiary}/>
           </a>
         </div>
         <div className={styles.tips}>{t(Strings.widget_loader_developing_content)}</div>

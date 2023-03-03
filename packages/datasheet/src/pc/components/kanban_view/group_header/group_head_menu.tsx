@@ -42,7 +42,6 @@ import { store } from 'pc/store';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconDot from 'static/icon/common/common_icon_more.svg';
 import { useClickAway } from 'ahooks';
 
 import { useContextMenu, useThemeColors } from '@apitable/components';
@@ -52,6 +51,7 @@ import { MemberFieldHead } from './member_field_head';
 import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
 import { IGroupHeaderProps } from './interface';
+import { MoreOutlined } from '@apitable/icons';
 
 interface ICollapseWrapper {
   isCollapse?: boolean;
@@ -345,7 +345,7 @@ export const GroupHeader: React.FC<React.PropsWithChildren<IGroupHeaderProps>> =
       </CollapseWrapper>
       {(!collapse || !collapse.includes(groupId)) && (
         <span className={styles.more} onClick={showMore}>
-          <IconDot className={styles.dot} fill={colors.thirdLevelText} />
+          <MoreOutlined className={styles.dot} color={colors.thirdLevelText} />
         </span>
       )}
     </div>

@@ -74,7 +74,9 @@ export function useToolbarMenuCardOpen(type: ToolHandleType) {
 export const useDisabledOperateWithMirror = () => {
   return useSelector(state => {
     const mirrorId = state.pageParams.mirrorId;
-    const spaceManualSaveViewIsOpen = state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
+    const spaceManualSaveViewIsOpen = state.labs.includes('view_manual_save') ||
+      Boolean(state.share.featureViewManualSave) ||
+      Boolean(state.embedInfo?.viewManualSave);
     if (!mirrorId) {
       return false;
     }

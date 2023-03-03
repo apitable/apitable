@@ -18,6 +18,7 @@
 
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { CheckOutlined, ImportOutlined, WarnOutlined } from '@apitable/icons';
 import { Progress, Upload } from 'antd';
 import { Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
@@ -26,9 +27,6 @@ import { usePercent } from 'pc/hooks/use_percent';
 import { byte2Mb } from 'pc/utils';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import FailIcon from 'static/icon/common/common_tip_default_small.svg';
-import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
-import UploadIcon from 'static/icon/workbench/workbench_tip_upload.svg';
 import styles from './style.module.less';
 
 const { Dragger } = Upload;
@@ -147,7 +145,7 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({
     return (
       <div className={styles.fail}>
         <div className={styles.failProgress}>
-          <FailIcon width={40} height={40} fill={colors.errorColor} />
+          <WarnOutlined size={40} color={colors.errorColor} />
         </div>
         <div className={styles.status}>{t(Strings.import_failed)}</div>
         <div className={styles.tip}>{errMsg}</div>
@@ -165,7 +163,7 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({
     return (
       <div className={styles.success}>
         <div className={styles.successProgress}>
-          <SuccessIcon width={40} height={40} fill={colors.primaryColor} />
+          <CheckOutlined size={40} color={colors.primaryColor} />
         </div>
         <div className={styles.fileName}>{file!.name}</div>
       </div>
@@ -227,7 +225,7 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({
             accept='.xlsx,.xls,.csv'
           >
             <div>
-              <UploadIcon width={50} height={50} fill={colors.fourthLevelText} />
+              <ImportOutlined size={50} color={colors.fourthLevelText} />
             </div>
             <div className={styles.tip}>{t(Strings.invite_ousider_import_file_tip1)}</div>
             <div className={styles.format}>{t(Strings.invite_ousider_import_file_tip3)}</div>

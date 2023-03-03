@@ -20,13 +20,13 @@ import { FC } from 'react';
 import { Drawer } from 'antd';
 import styles from './style.module.less';
 import { SpaceList } from './space_list/space_list';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import { useThemeColors } from '@apitable/components';
 import { useResponsive } from 'pc/hooks';
 import classnames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { t, Strings, Player, Events } from '@apitable/core';
 import { useEffect } from 'react';
+import { CloseOutlined } from '@apitable/icons';
 
 export interface ISpaceListDrawerProps {
   visible: boolean;
@@ -59,7 +59,7 @@ export const SpaceListDrawer: FC<React.PropsWithChildren<ISpaceListDrawerProps>>
       height={isMobile ? '90%' : '100%'}
       open={visible}
       destroyOnClose
-      closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
+      closeIcon={<CloseOutlined size={16} color={colors.thirdLevelText} />}
       maskStyle={{ background: colors.lightMaskColor }}
       onClose={() => onClose(false)}
     >

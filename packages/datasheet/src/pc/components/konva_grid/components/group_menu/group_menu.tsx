@@ -21,7 +21,7 @@ import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Group, ILinearRow, KONVA_DATASHEET_ID, Selectors, setComplement, StoreActions, Strings, t } from '@apitable/core';
 import { ContextMenu, useContextMenu } from '@apitable/components';
-import { CopyOutlined } from '@apitable/icons';
+import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
 import { MouseDownType } from 'pc/components/selection_wrapper';
@@ -29,11 +29,6 @@ import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
-
-import IconPullDown from 'static/icon/datasheet/rightclick/rightclick_icon_pulldown.svg';
-import IconPullDownAll from 'static/icon/datasheet/rightclick/rightclick_icon_pulldown_all.svg';
-import IconRetract from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
-import IconRetractAll from 'static/icon/datasheet/rightclick/rightclick_icon_retract_all.svg';
 import { KonvaGridContext } from '../..';
 
 interface IStatMenuProps {
@@ -170,25 +165,25 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
     [
       {
         text: t(Strings.expand_subgroup),
-        icon: <IconPullDown width={15} height={15} fill={colors.thirdLevelText} />,
+        icon: <TriangleDownFilled size={15} color={colors.thirdLevelText} />,
         hidden: !childGroupTabKey.some(item => groupingCollapseIdsMap.has(item)),
         onClick: () => groupCommand(ExpandType.Pull),
       },
       {
         text: t(Strings.collapse_subgroup),
-        icon: <IconRetract width={15} height={15} fill={colors.thirdLevelText} />,
+        icon: <TriangleRightFilled size={15} color={colors.thirdLevelText} />,
         hidden: !childGroupTabKey.some(item => !groupingCollapseIdsMap.has(item)),
         onClick: () => groupCommand(ExpandType.Retract),
       },
       {
         text: t(Strings.expand_all_group),
-        icon: <IconPullDownAll width={15} height={15} fill={colors.thirdLevelText} />,
+        icon: <ConicalDownFilled size={15} color={colors.thirdLevelText} />,
         hidden: !allGroupTabIds.some(item => groupingCollapseIdsMap.has(item)),
         onClick: () => groupCommand(ExpandType.PullAll),
       },
       {
         text: t(Strings.collapse_all_group),
-        icon: <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />,
+        icon: <ConicalRightFilled size={15} color={colors.thirdLevelText} />,
         hidden: !setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length,
         onClick: () => groupCommand(ExpandType.RetractAll),
       },

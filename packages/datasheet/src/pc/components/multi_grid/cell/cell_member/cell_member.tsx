@@ -180,7 +180,7 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = props 
                         variant="fill"
                         color={colors.defaultTag}
                       >
-                        <CloseOutlined size={16} color={colors.fc2} />
+                        <CloseOutlined size={12} color={colors.fc2} />
                       </Button> :
                       <></>
                   }

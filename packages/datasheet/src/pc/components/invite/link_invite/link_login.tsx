@@ -26,9 +26,9 @@ import { LoginToggle } from 'enterprise';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { InviteTitle } from '../components';
-
+import { PcHome } from 'pc/components/home/pc_home';
 import { useInvitePageRefreshed } from '../use_invite';
-
+import { getEnvVariables } from 'pc/utils/env';
 // import '../invite.common.less';
 import styles from './style.module.less';
 
@@ -39,22 +39,25 @@ const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
     whenPageRefreshed();
   });
 
+  const { IS_ENTERPRISE } = getEnvVariables();
+
   if (!inviteLinkInfo) return null;
   return (
-    <Wrapper>
-      <div className={classNames(styles.linkLogin, 'invite-children-center')}>
-        {
-          <InviteTitle
-            inviter={inviteLinkInfo.data.memberName}
-            spaceName={inviteLinkInfo.data.spaceName}
-            titleMarginBottom="40px"
-          />
-        }
-        <div className={styles.loginContent}>
-          {LoginToggle && <LoginToggle />}
+    !IS_ENTERPRISE ? <PcHome />:
+      <Wrapper>
+        <div className={classNames(styles.linkLogin, 'invite-children-center')}>
+          {
+            <InviteTitle
+              inviter={inviteLinkInfo.data.memberName}
+              spaceName={inviteLinkInfo.data.spaceName}
+              titleMarginBottom="40px"
+            />
+          }
+          <div className={styles.loginContent}>
+            {LoginToggle && <LoginToggle />}
+          </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
   );
 };
 

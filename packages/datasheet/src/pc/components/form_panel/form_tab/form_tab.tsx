@@ -18,6 +18,7 @@
 
 import { LinkButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
+import { ListOutlined } from '@apitable/icons';
 import { useSize } from 'ahooks';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
@@ -30,7 +31,6 @@ import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { memo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
 
@@ -107,7 +107,7 @@ const FormTabBase = () => {
     >
       {isMobile && (
         <div className={styles.sidebar} onClick={() => setSideBarVisible(true)}>
-          <IconSide width={20} height={20} fill={colors.defaultBg} />
+          <ListOutlined size={20} color={colors.defaultBg} />
         </div>
       )}
       {!isMobile && (
@@ -146,7 +146,7 @@ const FormTabBase = () => {
                 <Tooltip title={t(Strings.form_to_datasheet_view)}>
                   <span className={styles.viewInfo} onClick={jumpHandler}>
                     <span className={styles.viewIcon}>
-                      <ViewIcon width={16} height={16} viewType={viewType} fill={colors.primaryColor} />
+                      <ViewIcon size={16} viewType={viewType} color={colors.primaryColor} />
                     </span>
                     <span className={styles.viewName}>{viewName}</span>
                   </span>

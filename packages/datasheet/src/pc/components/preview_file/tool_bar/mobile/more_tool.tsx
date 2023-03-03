@@ -18,16 +18,13 @@
 
 import { useState } from 'react';
 import * as React from 'react';
-import IconMore from 'static/icon/common/common_icon_more_stand.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import style from './style.module.less';
 import { Popover } from 'pc/components/common/mobile/popover';
 import { Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { LinkButton, useThemeColors } from '@apitable/components';
 import { copy2clipBoard } from 'pc/utils';
-import { LinkOutlined } from '@apitable/icons';
+import { DeleteOutlined, DownloadOutlined, LinkOutlined, MoreStandOutlined } from '@apitable/icons';
 
 interface IMoreToolProps {
   readonly: boolean;
@@ -62,7 +59,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
           <LinkButton
             underline={false}
             className={style.moreToolBtn}
-            prefixIcon={<IconDownload width={16} height={16} fill={colors.defaultBg} />}
+            prefixIcon={<DownloadOutlined size={16} color={colors.defaultBg} />}
           >
             <span className={style.toolName}>{t(Strings.download)}</span>
           </LinkButton>
@@ -99,7 +96,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
         <LinkButton
           underline={false}
           className={style.moreToolBtn}
-          prefixIcon={<DeleteIcon width={16} height={16} fill={colors.defaultBg} />}
+          prefixIcon={<DeleteOutlined size={16} color={colors.defaultBg} />}
           disabled={readonly}
         >
           <span className={style.toolName}>{t(Strings.delete)}</span>
@@ -120,7 +117,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       <div
         className={style.trigger}
       >
-        <IconMore width={16} height={16} fill={colors.defaultBg} />
+        <MoreStandOutlined size={16} color={colors.defaultBg} />
       </div>
     </Popover>
   );

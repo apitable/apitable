@@ -33,10 +33,10 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { ReactChild, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import LevelRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { SelectUnitSource } from '.';
 import { SearchResult } from '../search_result';
 import styles from './style.module.less';
+import { ChevronRightOutlined } from '@apitable/icons';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -326,7 +326,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
             stopPropagation(e);
             onClickTeamItem(item);
           }}
-          icon={<LevelRightIcon width={16} height={16} fill={colors.fourthLevelText} />}
+          icon={<ChevronRightOutlined size={16} color={colors.fourthLevelText} />}
         />
       )}
     </div>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ContextMenu, Skeleton, useContextMenu } from '@apitable/components';
+import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
   Player, Settings, StoreActions, Strings, t,
@@ -42,9 +42,6 @@ import * as React from 'react';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { useDispatch, useSelector } from 'react-redux';
-import MoreIcon from 'static/icon/common/common_icon_more.svg';
-import ShareIcon from 'static/icon/common/common_icon_share.svg';
-import BannerEditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { GenerateTemplate } from '../catalog/generate_template';
 import { makeNodeIconComponent, NodeIcon } from '../catalog/node_context_menu';
 import { getNodeIcon } from '../catalog/tree/node_icon';
@@ -57,6 +54,7 @@ import { DingTalkDa } from './dingtalk_da';
 // @ts-ignore
 import { WeixinShareWrapper, inSocialApp } from 'enterprise';
 import styles from './style.module.less';
+import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
@@ -112,6 +110,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
 
   const pathname = location.pathname;
   const isMatchTemplate = template.test(pathname);
+  const colors = useThemeColors();
 
   useUnmount(() => {
     if (!isMatchTemplate) {
@@ -388,7 +387,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                   <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
                   {permissions.descriptionEditable && (
                     <div className={styles.editBtn}>
-                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
+                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<EditOutlined color={colors.textCommonPrimary} />} />
                     </div>
                   )}
                 </div>
@@ -433,7 +432,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                     shape='round'
                     size='small'
                     onClick={() => setShareNodeId(nodeInfo.id)}
-                    prefixIcon={<ShareIcon fill='currentColor' />}
+                    prefixIcon={<ShareOutlined color='currentColor' />}
                   >
                     {t(Strings.share)}
                   </Button>
@@ -450,12 +449,12 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                         size='small'
                         onClick={openMoreContextMenu}
                         shape='round'
-                        prefixIcon={<MoreIcon fill='currentColor' />}
+                        prefixIcon={<MoreOutlined color='currentColor' />}
                       />
                     </ComponentDisplay>
                     {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
                      <div className={styles.disabledBtn}>
-                     <MoreIcon />
+                     <MoreOutlined />
                      </div>
                      </ComponentDisplay> */}
                   </_ContextMenuTrigger>

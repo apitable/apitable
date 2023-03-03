@@ -28,11 +28,11 @@ import { useThemeColors } from '@apitable/components';
 import { FIELD_HEAD_CLASS, OPERATE_HEAD_CLASS, OPERATE_BUTTON_CLASS, ButtonOperateType, GHOST_RECORD_ID } from 'pc/utils';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { getAddFieldWidth } from '../cell/virtual_cell/cell_add_field/cell_add_field';
 import { OperateColumn } from '../operate_column';
 import { HeaderInner } from './header_inner';
 import styles from './styles.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 const HeaderStyle: React.CSSProperties = {
   display: 'flex',
@@ -111,7 +111,7 @@ const HeaderFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & { r
           id={DATASHEET_ID.ADD_COLUMN_BTN}
         >
           {
-            fieldCreatable && <IconAdd width={15} height={15} fill={colors.thirdLevelText} />
+            fieldCreatable && <AddOutlined size={15} color={colors.thirdLevelText} />
           }
         </div>
       </div>

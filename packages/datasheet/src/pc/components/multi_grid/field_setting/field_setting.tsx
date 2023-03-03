@@ -42,13 +42,13 @@ import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import { stopPropagation } from '../../../utils/dom';
 import { FieldFormat } from '../format';
 import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
@@ -489,7 +489,7 @@ export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingPro
               }
             >
               <span className={styles.requiredTip}>
-                <HelpIcon fill='currentColor' />
+                <QuestionCircleOutlined color='currentColor' />
               </span>
             </Tooltip>
           </div>

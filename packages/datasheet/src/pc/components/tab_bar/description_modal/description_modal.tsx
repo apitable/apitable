@@ -17,6 +17,7 @@
  */
 
 import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { CloseCircleOutlined, CloseOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
@@ -29,8 +30,6 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import IconClose from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
 import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
 
@@ -148,7 +147,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = pro
       width={'90%'}
       style={{ ...modalStyle, maxWidth: 640 }}
       title={mobileTitle()}
-      closeIcon={isMobile ? <></> : <CloseIcon style={{}} />}
+      closeIcon={isMobile ? <></> : <CloseOutlined />}
       onCancel={onCancel}
       bodyStyle={{ padding: '0 0 24px 0' }}
       keyboard
@@ -168,7 +167,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = pro
       {
         isMobile &&
         <div className={styles.mobileCloseButton} onClick={onCancel}>
-          <IconClose width={32} height={32} />
+          <CloseCircleOutlined size={32} />
         </div>
       }
     </Modal>

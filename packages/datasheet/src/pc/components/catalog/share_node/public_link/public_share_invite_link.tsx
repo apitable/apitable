@@ -18,7 +18,7 @@
 
 import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CheckOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { CheckOutlined, ChevronDownOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
 import { Message, MobileSelect, Modal } from 'pc/components/common';
@@ -29,7 +29,6 @@ import { useCatalogTreeRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
 import { expandInviteModal } from 'pc/components/invite/invite_outsider';
@@ -214,7 +213,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
                   triggerComponent={
                     <div className={styles.mobileRoleSelect}>
                       {Permission.filter(item => item.value === value)[0].label}
-                      {<PulldownIcon className={styles.arrowIcon} width={16} height={16} fill={colors.fourthLevelText} />}
+                      {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
                     </div>
                   }
                   renderList={({ setVisible }) => {

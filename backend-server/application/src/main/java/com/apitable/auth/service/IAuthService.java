@@ -31,8 +31,9 @@ public interface IAuthService {
      *
      * @param username  username
      * @param password  password
+     * @return user id
      */
-    void register(String username, String password);
+    Long register(String username, String password);
 
     /**
      * Password login, only log in existing users, no need to automatically register an account.

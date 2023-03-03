@@ -18,6 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { isImage, RowHeightLevel, Strings, t } from '@apitable/core';
+import { DeleteOutlined, ReloadOutlined } from '@apitable/icons';
 import { Progress } from 'antd';
 import Image from 'next/image';
 import { usePlatform } from 'pc/hooks/use_platform';
@@ -25,8 +26,6 @@ import { resourceService } from 'pc/resource_service';
 import { byte2Mb, NO_SUPPORT_IMG_MIME_TYPE, renderFileIconUrl, UploadManager, UploadStatus } from 'pc/utils';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
-import IconReUpdate from 'static/icon/common/common_icon_refresh.svg';
 import { IUploadFileItemProps } from '../upload_core/upload_core.interface';
 import styles from './styles.module.less';
 
@@ -163,7 +162,7 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
       {
         !isCell && uploadStatus === UploadStatus.Fail &&
         <div className={styles.iconDelete} onClick={deleteFileItem}>
-          <IconDelete fill={colors.defaultBg} />
+          <DeleteOutlined color={colors.defaultBg} />
         </div>
       }
       {
@@ -218,10 +217,9 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
         {
           uploadStatus === UploadStatus.Fail &&
           <div onClick={retryUpload} className={styles.retryUpload}>
-            <IconReUpdate
-              fill={colors.defaultBg}
-              width={retryIconSize}
-              height={retryIconSize}
+            <ReloadOutlined
+              color={colors.defaultBg}
+              size={retryIconSize}
             />
           </div>
         }

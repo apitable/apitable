@@ -18,6 +18,7 @@
 
 import { Button, Skeleton } from '@apitable/components';
 import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
@@ -322,6 +323,7 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
           destroyOnClose
           footer={null}
           centered
+          closeIcon={<CloseOutlined />}
         >
           {content}
         </Modal>

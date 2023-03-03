@@ -33,12 +33,11 @@ import { getElementDataset, KeyCode, nodeConfigData } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import { Node } from './node';
 import styles from './style.module.less';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 
 export type ISearchNode = INode & { superiorPath: string };
 
@@ -183,11 +182,11 @@ export const Search: FC<React.PropsWithChildren<ISearchProps>> = ({ className, c
           value={keyword}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          prefix={<SearchIcon />}
+          prefix={<SearchOutlined />}
           suffix={
             keyword && (
               <div onClick={clearKeyword} className={styles.closeBtn}>
-                <CloseIcon width={15} height={15} fill={colors.thirdLevelText} />
+                <CloseCircleFilled size={15} color={colors.thirdLevelText} />
               </div>
             )
           }

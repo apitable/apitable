@@ -23,13 +23,11 @@ import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/oper
 import { resourceService } from 'pc/resource_service';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import IconWidget from 'static/icon/datasheet/viewtoolbar/widget.svg';
 import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
 import styles from './style.module.less';
 import { useUnmount } from 'ahooks';
-import { QuestionCircleOutlined } from '@apitable/icons';
+import { AddOutlined, QuestionCircleOutlined, WidgetOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
@@ -190,7 +188,7 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
                           allowSort={editable && !isMobile}
                           editing={editPanelId === item.id}
                           isActive={activeWidgetPanel.id === item.id}
-                          prefixIcon={<IconWidget width={16} height={16} />}
+                          prefixIcon={<WidgetOutlined size={16} />}
                           onItemClick={() => {
                             panelItemClick(index);
                           }}
@@ -256,7 +254,7 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
             onClick={addNewPanel}
           >
             <span className={styles.addIcon}>
-              <IconAdd fill="currentColor" width={16} height={16} />
+              <AddOutlined color="currentColor" size={16} />
             </span>
             <span className={styles.text}>{t(Strings.add_widget_panel)}</span>
           </div>

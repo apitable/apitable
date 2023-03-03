@@ -30,9 +30,6 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
-import RecoverIcon from 'static/icon/datasheet/rightclick/recover.svg';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { UnitTag } from '../catalog/permission_settings/permission/select_unit_modal/unit_tag';
@@ -41,6 +38,7 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
+import { QuestionCircleOutlined, MoreStandOutlined, HistoryOutlined } from '@apitable/icons';
 
 export interface ITrashItem {
   nodeId: string;
@@ -149,7 +147,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
 
   const data = [
     {
-      icon: <RecoverIcon />,
+      icon: <HistoryOutlined />,
       text: t(Strings.recover_node),
       onClick: recoverHandler,
     },
@@ -175,15 +173,19 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.title}>
           {t(Strings.trash)}
           <Tooltip title={t(Strings.form_tour_desc)} trigger='hover' placement='right'>
-            <a href={getEnvVariables().TRASH_HELP_URL} rel='noopener noreferrer' target='_blank'>
-              <HelpIcon
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: 8,
-                  display: 'inline-block',
-                  fontSize: 24,
-                }}
-                fill={colors.thirdLevelText}
+            <a 
+              href={getEnvVariables().TRASH_HELP_URL} 
+              rel='noopener noreferrer' 
+              target='_blank'
+              style={{
+                cursor: 'pointer',
+                marginLeft: 8,
+                display: 'inline-block',
+                fontSize: 24,
+              }}
+            >
+              <QuestionCircleOutlined
+                color={colors.thirdLevelText}
               />
             </a>
           </Tooltip>
@@ -260,7 +262,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
                       <div className={styles.path}>{delPath || spaceName}</div>
                     </Tooltip>
                     <TrashContextMenu nodeId={nodeId} data={data}>
-                      <ButtonPlus.Icon icon={<MoreIcon />} />
+                      <ButtonPlus.Icon icon={<MoreStandOutlined />} />
                     </TrashContextMenu>
                   </div>
                 );

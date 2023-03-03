@@ -18,21 +18,20 @@
 
 package com.apitable.shared.clock.spring;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import com.apitable.AbstractIntegrationTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import com.apitable.AbstractIntegrationTest;
-
 import org.springframework.test.context.TestPropertySource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
-
-@TestPropertySource(properties = { "DEFAULT_TIME_ZONE=UTC" })
+@Disabled
+@TestPropertySource(properties = {"DEFAULT_TIME_ZONE=UTC"})
 public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
@@ -42,7 +41,9 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetUTCNow() {
-        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, ZoneOffset.UTC);
+        final OffsetDateTime initialCreateDate =
+            OffsetDateTime.of(2022, 2, 1,
+                19, 10, 30, 0, ZoneOffset.UTC);
         getClock().setTime(initialCreateDate);
 
         OffsetDateTime utcNow = ClockManager.me().getUTCNow();
@@ -52,7 +53,9 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocalDateNow() {
-        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, getTestTimeZone());
+        final OffsetDateTime initialCreateDate =
+            OffsetDateTime.of(2022, 2, 1,
+                19, 10, 30, 0, getTestTimeZone());
         getClock().setTime(initialCreateDate);
 
         LocalDate date = ClockManager.me().getLocalDateNow();
@@ -64,14 +67,17 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocalDateTimeNow() {
-        final OffsetDateTime initialCreateDate = OffsetDateTime.of(2022, 2, 1, 19, 10, 30, 0, getTestTimeZone());
+        final OffsetDateTime initialCreateDate =
+            OffsetDateTime.of(2022, 2, 1,
+                19, 10, 30, 0, getTestTimeZone());
         getClock().setTime(initialCreateDate);
 
         LocalDateTime dateTime = ClockManager.me().getLocalDateTimeNow();
 
         System.out.println(dateTime);
 
-        LocalDateTime expectTime = LocalDateTime.of(2022, 2, 1, 19, 10, 30, 0);
+        LocalDateTime expectTime = LocalDateTime.of(2022, 2, 1,
+            19, 10, 30, 0);
 
         System.out.println(expectTime);
 

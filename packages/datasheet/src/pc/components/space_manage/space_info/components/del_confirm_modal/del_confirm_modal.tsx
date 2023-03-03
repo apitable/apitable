@@ -18,6 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -27,7 +28,6 @@ import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import DeleteIcon from 'static/icon/space/space_img_delete.png';
 import styles from './style.module.less';
 
@@ -125,7 +125,7 @@ export const DelConfirmModal: FC<React.PropsWithChildren<IDelConfirmModalProps>>
         headerStyle={{ borderBottom: 'none' }}
         height={588}
         onClose={handleCancel}
-        closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
+        closeIcon={<CloseOutlined size={16} color={colors.thirdLevelText} />}
       >
         {renderContent()}
       </Popup>

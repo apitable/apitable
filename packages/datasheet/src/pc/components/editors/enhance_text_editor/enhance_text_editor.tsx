@@ -25,14 +25,12 @@ import {
   ChangeEvent, default as React,
   forwardRef, memo, useImperativeHandle, useRef, useState,
 } from 'react';
-import IconEmail from 'static/icon/datasheet/column/datasheet_icon_email.svg';
-import IconPhone from 'static/icon/datasheet/column/datasheet_icon_phone.svg';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
@@ -111,6 +109,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
 
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));
+      } else if(field.type === FieldType.Email) {
+        const newValue = value.replace(/\s/g, '');
+        setValue(newValue);
+        propsOnChange && propsOnChange(getValidValue(newValue));
       } else {
         setValue(value);
         propsOnChange && propsOnChange(getValidValue(value));
@@ -167,9 +169,9 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getEnhanceTypeIcon = (type: string | number) => {
     if (!value) return null;
     const typeIconMap = {
-      [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,
-      [FieldType.Email]: <IconEmail fill={colors.thirdLevelText} />,
-      [FieldType.Phone]: <IconPhone fill={colors.thirdLevelText} />,
+      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span

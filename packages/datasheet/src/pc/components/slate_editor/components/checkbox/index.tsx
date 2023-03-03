@@ -32,7 +32,7 @@ interface ICheckboxProps {
 
 export const Checkbox = React.memo((props: ICheckboxProps) => {
   const colors = useThemeColors();
-  const { checked: propsChecked, disabled, onChange, size = 14 } = props;
+  const { checked: propsChecked, disabled, onChange, size = 16 } = props;
   const [checked, setChecked] = useState(propsChecked);
   const [hover, setHover] = useState(false);
   const onChangeRef = useRef(onChange);
@@ -80,7 +80,7 @@ export const Checkbox = React.memo((props: ICheckboxProps) => {
       checked
         ? <CheckboxFilled
           size={size}
-          color={disabled ? colors.fourthLevelText : undefined} />
+          color={disabled ? colors.fourthLevelText : colors.textBrandDefault} />
         : <UncheckedOutlined
           size={size}
           color={

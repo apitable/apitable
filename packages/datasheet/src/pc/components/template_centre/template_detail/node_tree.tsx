@@ -18,6 +18,7 @@
 
 import { ILightOrDarkThemeColors, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@apitable/core';
+import { TriangleDownFilled } from '@apitable/icons';
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -26,7 +27,6 @@ import { INodeTree } from 'pc/components/share/interface';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { FC, ReactText } from 'react';
 import { useSelector } from 'react-redux';
-import PullDownIcon from 'static/icon/common/common_icon_pulldown.svg';
 
 const { DirectoryTree, TreeNode } = Tree;
 
@@ -84,7 +84,7 @@ export const NodeTree: FC<React.PropsWithChildren<INodeTreeProps>> = props => {
       onSelect={onSelect}
       switcherIcon={
         <span>
-          <PullDownIcon />
+          <TriangleDownFilled size={12} />
         </span>
       }
       selectedKeys={[nodeId]}

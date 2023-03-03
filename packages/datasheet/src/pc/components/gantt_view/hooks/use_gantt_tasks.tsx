@@ -29,6 +29,7 @@ import {
   getStartOfDate,
   IScrollState,
   PointPosition,
+  GANTT_SMALL_ICON_SIZE,
 } from 'pc/components/gantt_view';
 import Task from 'pc/components/gantt_view/components/task/task';
 import TaskGroupHeader from 'pc/components/gantt_view/components/task_group_header/task_group_header';
@@ -308,11 +309,16 @@ export const useTask = (props: IUseTaskProps) => {
           <Icon
             key={key}
             name={name}
+            scaleX={0.75}
+            scaleY={0.75}
+            transformsEnabled={'all'}
             x={isLeft ? 10 : containerWidth - 30}
-            y={y + (rowHeight - GANTT_COMMON_ICON_SIZE) / 2}
+            y={y + (rowHeight - GANTT_SMALL_ICON_SIZE) / 2}
             data={iconPath}
             fill={colors.white}
             background={background}
+            backgroundWidth={16}
+            backgroundHeight={16}
             cornerRadius={2}
           />
         );
