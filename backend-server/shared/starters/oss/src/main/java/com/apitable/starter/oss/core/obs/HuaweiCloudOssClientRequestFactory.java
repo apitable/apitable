@@ -24,7 +24,7 @@ import com.apitable.starter.oss.core.OssClientRequestFactory;
 import com.obs.services.ObsClient;
 
 /**
- * aws s3 Client Request Construction Factory
+ * obs Client Request Construction Factory
  */
 public class HuaweiCloudOssClientRequestFactory implements OssClientRequestFactory {
 
