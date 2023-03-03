@@ -51,7 +51,7 @@ const checkNullOperator = (operator: FOperator) => {
   return operator === FOperator.IsNotEmpty || operator === FOperator.IsEmpty || operator === FOperator.IsRepeat;
 };
 
-export const FilterOperate: React.FC<IFilterOperateProps> = props => {
+export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps>> = props => {
   const { conditionIndex, conditions, changeFilter, condition, field, fieldMap } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();

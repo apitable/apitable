@@ -43,7 +43,7 @@ interface IGanttExportProps {
   dateUnitType: DateUnitType;
 }
 
-export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
+export const GanttExport: FC<React.PropsWithChildren<IGanttExportProps>> = ({ dateUnitType }) => {
   const {
     view,
     rowHeight,
@@ -56,7 +56,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
     return {
       view,
       rowHeightLevel,
-      ganttLinearRows: Selectors.getGanttLinearRows(state),
+      ganttLinearRows: Selectors.getLinearRows(state)!,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
       ganttStyle: Selectors.getGanttStyle(state)!,
     };
@@ -64,7 +64,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
   const {
     snapshot,
     linearRows,
-    visibleColumns: gridVisibleColumns
+    visibleColumns: gridVisibleColumns,
   } = useContext(KonvaGridViewContext);
   const { ganttVisibleColumns } = useContext(KonvaGanttViewContext);
   const rowCount = linearRows.length;
@@ -73,8 +73,8 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
 
   const ganttInstance = useCreation<GanttCoordinate>(() => {
     const state = store.getState();
-    let start = null;
-    let end = null;
+    let start: number | null = null;
+    let end: number | null = null;
     ganttLinearRows.forEach(row => {
       const { recordId, type } = row;
       if (type !== CellType.Record) return;
@@ -105,7 +105,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
       dateUnitType,
       rowHeightLevel,
       rowInitSize: getGanttHeaderHeight(dateUnitType),
-      rowIndicesMap: getRowIndicesMap(linearRows, rowHeight),
+      rowIndicesMap: getRowIndicesMap(linearRows, rowHeight, ViewType.Gantt),
       workDays,
       onlyCalcWorkDay,
       columnThreshold,

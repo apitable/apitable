@@ -41,7 +41,7 @@ export function getCollaboratorAvatar(colla: ICollaborator) {
     colla.avatar;
 }
 
-export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resourceId: string }> = (props) => {
+export const CollaboratorStatus: React.FC<React.PropsWithChildren<{ resourceType: ResourceType, resourceId: string, style?: React.CSSProperties }>> = (props) => {
   const collaborators = useSelector(state => {
     let collaborators = Selectors.getResourceCollaborator(state, props.resourceId, props.resourceType);
 
@@ -65,7 +65,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
 
     return [...collaborators, ...anonymous.sort(sortByCreateTime)];
   }, isEqual);
-  
+
   const unitMap = useSelector(Selectors.getUnitMap);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
@@ -88,7 +88,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
   const isOverMax: boolean = collaborators.length > MAX_SHOW_NUMBER;
 
   return (
-    <div className={styles.statusbar}>
+    <div className={styles.statusbar} style={props.style}>
       <div className={styles.collaboratorsAvatars}>
         {showCollaborators.reverse().map((collaborator) => {
           const unit = find(values(unitMap), { userId: collaborator.userId });

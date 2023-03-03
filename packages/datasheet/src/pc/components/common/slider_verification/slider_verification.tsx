@@ -21,11 +21,22 @@ import { useMount } from 'ahooks';
 import { FC } from 'react';
 import styles from './style.module.less';
 import { Modal, Typography, colorVars } from '@apitable/components';
+import { getEnvVariables } from 'pc/utils/env';
 
-export const SliderVerification: FC = props => {
+export const SliderVerification: FC<React.PropsWithChildren> = () => {
 
   useMount(() => {
-    window['nvc']?.getNC({ renderTo: ConfigConstant.CaptchaIds.DEFAULT });
+    const env = getEnvVariables();
+    if (!env.DISABLE_AWSC) {
+      window['nvc']?.getNC({
+        renderTo: ConfigConstant.CaptchaIds.DEFAULT,
+        upLang: {
+          cn: {
+            SLIDE: t(Strings.slider_verification_tips)
+          }
+        }
+      });
+    }
   });
 
   return (

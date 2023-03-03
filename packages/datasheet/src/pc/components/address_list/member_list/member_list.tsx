@@ -37,7 +37,7 @@ export interface IMemberList {
   // setSMemberId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const MemberList: FC<IMemberList> = props => {
+export const MemberList: FC<React.PropsWithChildren<IMemberList>> = props => {
   const { memberList } = props;
   const dispatch = useDispatch();
   const curMemberId = useSelector(state => state.pageParams.memberId);

@@ -40,6 +40,7 @@ const showTitle = (cellValue: ICellValue, field: IField) => {
 
 interface IGalleryCardBodyProps {
   visibleFields: IViewColumn[];
+  datasheetId: string;
   recordId: string;
   showEmptyField: boolean;
   multiTextMaxLine: number;
@@ -51,9 +52,9 @@ interface IGalleryCardBodyProps {
 
 const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currency, FieldType.Percent, FieldType.DateTime];
 
-export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
-  const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery } = props;
-  const recordSnapshot = useSelector(state => Selectors.getRecordSnapshot(state, recordId), shallowEqual);
+export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> = props => {
+  const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery, datasheetId } = props;
+  const recordSnapshot = useSelector(state => Selectors.getRecordSnapshot(state, datasheetId, recordId), shallowEqual);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const colors = useThemeColors();
@@ -64,15 +65,15 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
     <div
       onClick={() => expandRecordIdNavigate(recordId)}
       className={classNames(styles.cardBody, className, {
-        [styles.virtual]: isVirtual,
-        [styles.virtualGallery]: isGallery,
-        [styles.colName]: isColNameVisible,
+        [styles.virtual!]: isVirtual,
+        [styles.virtualGallery!]: isGallery,
+        [styles.colName!]: isColNameVisible,
       })}
       style={{ background: colors.defaultBg }}
     >
       {visibleFields.map((item, index) => {
         const cellValue = Selectors.getCellValue(store.getState(), recordSnapshot, recordId, item.fieldId);
-        const field = fieldMap[item.fieldId];
+        const field = fieldMap[item.fieldId]!;
         if (index === 0) {
           return (
             <div key={recordId} className={classNames(styles.cellTitle, styles.cellValue, 'ellipsis')}>
@@ -128,12 +129,12 @@ export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
                   cellValue={cellValue}
                   className={classNames(
                     {
-                      [styles.checkboxCell]: Field.bindModel(field).valueType === BasicValueType.Boolean,
-                      [styles.ratingCell]: fieldType === FieldType.Rating,
-                      [styles.multiSelectFieldCell]: isMultiSelectTypeField,
-                      [styles.singleCell]: isVirtual && SINGLE_TEXT_TYPE.includes(fieldType),
-                      [styles.isColNameHidden]: !isColNameVisible,
-                      [styles.cardCell]: true,
+                      [styles.checkboxCell!]: Field.bindModel(field).valueType === BasicValueType.Boolean,
+                      [styles.ratingCell!]: fieldType === FieldType.Rating,
+                      [styles.multiSelectFieldCell!]: isMultiSelectTypeField,
+                      [styles.singleCell!]: isVirtual && SINGLE_TEXT_TYPE.includes(fieldType),
+                      [styles.isColNameHidden!]: !isColNameVisible,
+                      [styles.cardCell!]: true,
                     },
                     styles.cellValue,
                   )}

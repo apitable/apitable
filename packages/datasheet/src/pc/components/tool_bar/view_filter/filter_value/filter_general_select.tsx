@@ -31,7 +31,6 @@ import Trigger from 'rc-trigger';
 import { useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { CellOptions } from '../../../multi_grid/cell/cell_options/cell_options';
 import styles from './style.module.less';
 
@@ -46,12 +45,12 @@ interface IFilterGeneralSelectProps {
   listData: (IUnitValue | IUserValue)[] | ISelectFieldOption[];
 }
 
-export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props => {
+export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = props => {
   const colors = useThemeColors();
   const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData } = props;
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
-  let TriggerComponent;
+  let TriggerComponent: any;
 
   switch (field.type) {
     case FieldType.Member:
@@ -121,7 +120,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
             {!cellValue && placeholder ? (
               <div className={styles.placeholder}>{placeholder}</div>
             ) : (
-              <DisplayComponent cellValue={cellValue} field={field} />
+              <DisplayComponent cellValue={cellValue as any} field={field as any} />
             )}
             <div className={styles.iconArrow}>
               <ChevronDownOutlined color={colors.black[500]} />
@@ -132,9 +131,9 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <div className={classNames(styles.displayBox, styles.option)} onClick={() => setVisible(!visible)}>
-          <DisplayComponent cellValue={cellValue} field={field} />
+          <DisplayComponent cellValue={cellValue as any} field={field as any} />
           <div className={styles.iconArrow}>
-            <IconArrow width={16} height={16} fill={colors.fourthLevelText} />
+            <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
           </div>
         </div>
         <Popup

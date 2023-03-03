@@ -35,7 +35,7 @@ import {
   t,
   WithOptional,
 } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import { usePrevious } from 'ahooks';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import zhCN from 'antd/es/date-picker/locale/zh_CN';
@@ -102,9 +102,9 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     bottom: ['tl', 'bl'],
   };
 
-  state: IDateTimeEditorState = {
+  override state: IDateTimeEditorState = {
     dateValue: '',
-    displayDateStr: '',
+    displayDateStr: this.props.dataValue ? dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
     timeValue: '',
     dateOpen: false,
     timeOpen: false,
@@ -180,7 +180,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     }
   };
 
-  componentDidUpdate(cur: IDateTimeEditorProps) {
+  override componentDidUpdate(cur: IDateTimeEditorProps) {
     if (this.props.editing !== cur.editing) {
       this.setState({
         isIllegal: false,
@@ -370,7 +370,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   };
 
-  render() {
+  override render() {
     const lang = {
       'zh-CN': zhCN,
       'en-US': enUS,
@@ -504,7 +504,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
             </div>
             {showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>
-                <NotificationSmallOutlined color={lightColors.deepPurple[500]} size={14} />
+                <NotificationOutlined color={lightColors.deepPurple[500]} size={16} />
               </span>
             )}
           </div>

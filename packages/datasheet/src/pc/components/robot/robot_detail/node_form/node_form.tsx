@@ -18,7 +18,7 @@
 
 import { Box, Button, ContextMenu, IconButton, Tooltip, Typography, useContextMenu, useTheme } from '@apitable/components';
 import { Strings, t, validateMagicForm } from '@apitable/core';
-import { DeleteOutlined, MoreStandOutlined, WarningTriangleFilled } from '@apitable/icons';
+import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
@@ -122,7 +122,7 @@ export const NodeForm = (props: any) => {
                 height={24}
               />
             </span>
-            <Typography variant="h7">
+            <Typography variant="h7" ellipsis>
               {title}
             </Typography>
             {
@@ -138,7 +138,7 @@ export const NodeForm = (props: any) => {
                     display="flex"
                     alignItems="center"
                   >
-                    <WarningTriangleFilled />
+                    <WarnCircleFilled color={theme.color.textWarnDefault} />
                   </Box>
                 </Tooltip>
               </Box>

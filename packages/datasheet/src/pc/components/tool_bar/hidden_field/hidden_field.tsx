@@ -16,7 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Checkbox, IUseListenTriggerInfo, Select, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
+import { Button, Checkbox, ISelectValue,
+  IUseListenTriggerInfo,
+  Select,
+  Typography,
+  useListenVisualHeight,
+  useThemeColors,
+} from '@apitable/components';
 import {
   CalendarStyleKeyType,
   CollaCommandName,
@@ -31,8 +37,11 @@ import {
   Strings,
   t,
   ViewType,
+  IFieldPermissionMap,
+  IFieldMap,
+  ICollaCommandOptions,
 } from '@apitable/core';
-import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { DisabledOutlined, DragOutlined, ImageOutlined, InfoCircleOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { Switch, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';
@@ -53,8 +62,6 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import CoverIcon from 'static/icon/datasheet/gallery/datasheet_icon_cover.svg';
-import NoCoverIcon from 'static/icon/datasheet/gallery/datasheet_icon_cover_dis.svg';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './style.module.less';
 
@@ -62,6 +69,20 @@ interface IHiddenFieldProps {
   type?: HideFieldType;
   triggerInfo?: IUseListenTriggerInfo;
   mobileModalclose?: (visible: boolean) => void;
+}
+
+interface IFieldItem {
+  item: IViewColumn;
+  index: number;
+  disabledDrag: boolean;
+  keyword: string;
+  fieldPermissionMap?: IFieldPermissionMap;
+  fieldMap: IFieldMap;
+  onChange: (fieldId: string, checked: boolean) => void;
+  isMobile: boolean;
+  hiddenProp: string;
+  setActiveField: (fieldId: string, isHidden: boolean, modalClose: (bool: boolean) => void) => void;
+  modalClose: (bool: boolean) => void;
 }
 
 const { Option } = Select;
@@ -73,13 +94,12 @@ const FieldItem = ({
   keyword,
   fieldPermissionMap,
   fieldMap,
-  handleFieldItemToggle,
   onChange,
   isMobile,
   hiddenProp,
   setActiveField,
   modalClose,
-}) => {
+}: IFieldItem) => {
   const colors = useThemeColors();
   const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
   const { name, type } = fieldMap[item.fieldId];
@@ -99,17 +119,17 @@ const FieldItem = ({
           onClick={() => setActiveField(item.fieldId, item[hiddenProp]!, modalClose)}
           tabIndex={index}
         >
-          {!disabledDrag && <DragOutlined size={10} color={isMobile ? colors.thirdLevelText : colors.fourthLevelText} />}
+          {!disabledDrag && <DragOutlined size={10} color={isMobile ? colors.thirdLevelText : colors.fourthLevelText}/>}
           <div className={styles.fieldIconAndTitle}>
             <div className={styles.iconType}>{getFieldTypeIcon(type)}</div>
             <div className={styles.fieldName}>
-              <HighlightWords keyword={keyword} words={name} />
+              <HighlightWords keyword={keyword} words={name}/>
             </div>
           </div>
-          {fieldRole && <FieldPermissionLock isLock />}
+          {fieldRole && <FieldPermissionLock isLock/>}
           <Switch
             checked={!item[hiddenProp]}
-            onClick={(checked, e) => {
+            onClick={(_checked, e) => {
               e.stopPropagation();
               onChange(item.fieldId, item[hiddenProp]!);
             }}
@@ -155,7 +175,7 @@ const getFreeColumnsByViewType = (columns: IViewColumn[], viewType: ViewType, hi
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 490;
 
-export const HiddenField: React.FC<IHiddenFieldProps> = props => {
+export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> = props => {
   const { type: hideFieldType = HideFieldType.Common, triggerInfo, mobileModalclose } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
@@ -171,7 +191,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
   const freeColumns = getFreeColumnsByViewType(columns, viewType, hideFieldType);
   const coverFields = getCoverFields(fieldMap);
   const [query, setQuery] = useState('');
-  const execute = resourceService.instance!.commandManager.execute.bind(resourceService.instance!.commandManager);
+  const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
   const hiddenProp = getHiddenProps(viewType, hideFieldType);
   const handleHideField = useHideField(activeView, hiddenProp);
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
@@ -220,17 +240,11 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
     handleHideField([fieldId], !checked);
   }
 
-  function handleFieldItemToggle(fieldId: string, checked: boolean) {
-    if (isMobile && isGanttView) {
-      onChange(fieldId, checked);
-    }
-  }
-
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
   const viewManualSave = useSelector(state => state.labs.includes('view_manual_save'));
   const autoSave = Boolean(activeView.autoSave);
 
-  function setActiveField(fieldId: string, ishidden: boolean, modalClose) {
+  function setActiveField(fieldId: string, ishidden: boolean, modalClose: (bool: boolean) => void) {
     if (!(isGridView || isGanttView) || isExclusive) {
       return;
     }
@@ -421,21 +435,21 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
     }
   };
   // Whether to show the cover.
-  const changeCoverField = value => {
+  const changeCoverField = (value?: ISelectValue | null) => {
     if (activeView.type === ViewType.Gallery) {
       executeCommandWithMirror(
         () => {
           execute({
             cmd: CollaCommandName.SetGalleryStyle,
             viewId: activeView.id,
-            styleKey: GalleryStyleKeyType.CoverFieldId,
-            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+            styleKey: GalleryStyleKeyType.CoverFieldId as any,
+            styleValue: (value === NO_COVER_FIELD_ID ? undefined : value) as any,
           });
         },
         {
           style: {
             ...activeView.style,
-            [GalleryStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+            [GalleryStyleKeyType.CoverFieldId as any]: value === NO_COVER_FIELD_ID ? undefined : value,
           },
         },
       );
@@ -446,14 +460,14 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
           execute({
             cmd: CollaCommandName.SetOrgChartStyle,
             viewId: activeView.id,
-            styleKey: OrgChartStyleKeyType.CoverFieldId,
-            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+            styleKey: OrgChartStyleKeyType.CoverFieldId as any,
+            styleValue: (value === NO_COVER_FIELD_ID ? undefined : value) as any,
           });
         },
         {
           style: {
             ...activeView.style,
-            [OrgChartStyleKeyType.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+            [OrgChartStyleKeyType.CoverFieldId as string]: value === NO_COVER_FIELD_ID ? undefined : value,
           },
         },
       );
@@ -464,14 +478,14 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
           execute({
             cmd: CollaCommandName.SetKanbanStyle,
             viewId: activeView.id,
-            styleKey: KanbanStyleKey.CoverFieldId,
-            styleValue: value === NO_COVER_FIELD_ID ? undefined : value,
+            styleKey: KanbanStyleKey.CoverFieldId as any,
+            styleValue: (value === NO_COVER_FIELD_ID ? undefined : value) as any,
           });
         },
         {
           style: {
             ...activeView.style,
-            [KanbanStyleKey.CoverFieldId]: value === NO_COVER_FIELD_ID ? undefined : value,
+            [KanbanStyleKey.CoverFieldId as any]: value === NO_COVER_FIELD_ID ? undefined : value,
           },
         },
       );
@@ -511,7 +525,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
                 rel="noopener noreferrer"
                 className={styles.helpIcon}
               >
-                <InformationSmallOutlined color={colors.thirdLevelText} />
+                <QuestionCircleOutlined color={colors.thirdLevelText} />
               </a>
             )}
           </div>
@@ -539,7 +553,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
                   <Option value={NO_COVER_FIELD_ID} currentIndex={0}>
                     <div className={styles.coverOption}>
                       <div className={styles.optionIcon}>
-                        <NoCoverIcon fill={colors.thirdLevelText} width={15} height={15} />
+                        <DisabledOutlined color={colors.thirdLevelText} size={15} />
                       </div>
                       <div className={styles.coverOptionTitle}>{t(Strings.no_cover)}</div>
                     </div>
@@ -548,7 +562,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
                     <Option key={coverField.id} value={coverField.id} currentIndex={index + 1}>
                       <div className={styles.coverOption}>
                         <div className={styles.optionIcon}>
-                          <CoverIcon fill={colors.thirdLevelText} width={15} height={15} />
+                          <ImageOutlined color={colors.thirdLevelText} size={15} />
                         </div>
                         <div className={styles.coverOptionTitle}>{coverField.name}</div>
                       </div>
@@ -563,7 +577,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
                 {activeView.type === ViewType.Calendar && (
                   <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
                     <span className={styles.tip}>
-                      <EditDescribeOutlined />
+                      <InfoCircleOutlined />
                     </span>
                   </Tooltip>
                 )}
@@ -608,12 +622,11 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
                       disabledDrag={Boolean(query.length)}
                       fieldPermissionMap={fieldPermissionMap}
                       fieldMap={fieldMap}
-                      handleFieldItemToggle={handleFieldItemToggle}
                       onChange={onChange}
                       isMobile={isMobile}
                       hiddenProp={hiddenProp}
                       setActiveField={setActiveField}
-                      modalClose={mobileModalclose}
+                      modalClose={mobileModalclose!}
                     />
                   ))}
                   {provided.placeholder}

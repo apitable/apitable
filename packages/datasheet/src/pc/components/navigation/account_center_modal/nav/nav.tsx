@@ -34,7 +34,7 @@ export interface INavProps {
   navlist: INavItem[];
 }
 
-export const Nav: FC<INavProps> = props => {
+export const Nav: FC<React.PropsWithChildren<INavProps>> = props => {
   const { activeItem, setActiveItem, navlist } = props;
 
   const handleClick = (e: React.MouseEvent) => {

@@ -43,7 +43,7 @@ export interface ISelectionProps extends IMultiGridProps {
   selection: IRange[]; // IRange[] | ICurrentOperate[];
 }
 
-export const attachSelection = WrappedComponent => {
+export const attachSelection = (WrappedComponent: any) => {
   return class extends React.Component<ISelectionProps> {
     gridRef = React.createRef<HTMLElement>();
     wrappedComponentRef = React.createRef<MultiGridsBase>();
@@ -151,11 +151,11 @@ export const attachSelection = WrappedComponent => {
       this.isDown = false;
     };
 
-    componentDidMount() {
+    override componentDidMount() {
       document.addEventListener('mouseup', this.onContextMenu);
     }
 
-    componentWillUnmount() {
+    override componentWillUnmount() {
       document.removeEventListener('mouseup', this.onContextMenu);
     }
 
@@ -203,7 +203,7 @@ export const attachSelection = WrappedComponent => {
       }
     }
 
-    render() {
+    override render() {
       const props = { ...this.props, refs: this.gridRef };
       return (
         <WrappedComponent

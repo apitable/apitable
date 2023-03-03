@@ -38,7 +38,7 @@ interface INodeInfoProps {
   onClose?: () => void;
 }
 
-const NodeInfoModal: React.FC<INodeInfoProps> = props => {
+const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = props => {
   const { onClose, nodeId } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

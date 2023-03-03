@@ -17,13 +17,14 @@
  */
 
 import { isOperandNullValue, removeArrayOperandItemByIndex, isOperand } from '@apitable/core';
+import { JSONSchema7 } from 'json-schema';
 import { /* useEffect,  */useState } from 'react';
 import { IFieldProps, IRegistry } from '../../../interface';
 import {
   allowAdditionalItems, getDefaultFormState, getDefaultRegistry, getUiOptions, getWidget, isFilesArray,
   isFixedItems, isMultiSelect, optionsList,
   retrieveSchema,
-  toIdSchema
+  toIdSchema,
 } from '../../../utils';
 import { DefaultFixedArrayFieldTemplate } from './DefaultFixedArrayFieldTemplate';
 import { DefaultNormalArrayFieldTemplate } from './DefaultNormalArrayFieldTemplate';
@@ -79,7 +80,7 @@ const ArrayField = (props: IFieldProps) => {
   //   return items.title || items.description || "Item";
   // }
 
-  const isItemRequired = (itemSchema) => {
+  const isItemRequired = (itemSchema: { type: string | string[]; }) => {
     if (Array.isArray(itemSchema.type)) {
       // While we don't yet support composite/nullable jsonschema types, it's
       // future-proof to check for requirement against these.
@@ -89,7 +90,7 @@ const ArrayField = (props: IFieldProps) => {
     return itemSchema.type !== 'null';
   };
 
-  const canAddItem = (formItems) => {
+  const canAddItem = (formItems: string | any[]) => {
     const { schema, uiSchema } = props;
     let { addable } = getUiOptions(uiSchema)!;
     if (addable !== false) {
@@ -114,7 +115,7 @@ const ArrayField = (props: IFieldProps) => {
     return getDefaultFormState(itemSchema, undefined, rootSchema);
   };
 
-  const onAddClick = event => {
+  const onAddClick = (event: MouseEvent) => {
     if (event) {
       event.preventDefault();
     }
@@ -131,13 +132,13 @@ const ArrayField = (props: IFieldProps) => {
         operands: [...state.keyedFormData.value.operands, {
           key: generateRowId(),
         }],
-      }
+      },
     };
     setState(
       {
         keyedFormData: newKeyedFormData,
         updatedKeyedFormData: true,
-      }
+      },
     );
     // const newOperands = newKeyedFormData.value.operands.map((v, i, arr) => (i === arr.length - 1 ? {} : v));
     // FIXME
@@ -151,8 +152,8 @@ const ArrayField = (props: IFieldProps) => {
     onChange(keyedToPlainFormData(newKeyedFormData));
   };
 
-  const onAddIndexClick = index => {
-    return event => {
+  const onAddIndexClick = (index: number) => {
+    return (event: { preventDefault: () => void; }) => {
       if (event) {
         event.preventDefault();
       }
@@ -168,14 +169,14 @@ const ArrayField = (props: IFieldProps) => {
         {
           keyedFormData: newKeyedFormData,
           updatedKeyedFormData: true,
-        }
+        },
       );
       onChange(keyedToPlainFormData(newKeyedFormData));
     };
   };
 
-  const onDropIndexClick = index => {
-    return event => {
+  const onDropIndexClick = (index: number) => {
+    return (event: { preventDefault: () => void; }) => {
       if (event) {
         event.preventDefault();
       }
@@ -202,15 +203,15 @@ const ArrayField = (props: IFieldProps) => {
         {
           keyedFormData: newKeyedFormData,
           updatedKeyedFormData: true,
-        }
+        },
       );
       onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema);
       // onChange(newKeyedFormData, newErrorSchema);
     };
   };
 
-  const onReorderClick = (index, newIndex) => {
-    return event => {
+  const onReorderClick = (index: string, newIndex: string) => {
+    return (event: { preventDefault: () => void; target: { blur: () => void; }; }) => {
       if (event) {
         event.preventDefault();
         event.target.blur();
@@ -232,6 +233,7 @@ const ArrayField = (props: IFieldProps) => {
       }
 
       const { keyedFormData } = state;
+
       function reOrderArray() {
         // Copy item
         const _newKeyedFormData = keyedFormData.slice();
@@ -242,25 +244,26 @@ const ArrayField = (props: IFieldProps) => {
 
         return _newKeyedFormData;
       }
+
       const newKeyedFormData = reOrderArray();
       setState({
         keyedFormData: newKeyedFormData,
-        updatedKeyedFormData: state.updatedKeyedFormData
+        updatedKeyedFormData: state.updatedKeyedFormData,
       });
       onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema);
     };
   };
 
-  const onChangeForIndex = index => {
-    return (value, errorSchema) => {
+  const onChangeForIndex = (index: string | number) => {
+    return (value: any, errorSchema: any) => {
       const { formData, onChange } = props;
       // console.log(formData);
       const emptyArray = {
         type: 'Expression',
         value: {
           operator: 'newArray',
-          operands: []
-        }
+          operands: [],
+        },
       };
       const transArray = isOperand(formData) ? formData : emptyArray;
       const jsonValue = typeof value === 'undefined' ? null : value;
@@ -284,12 +287,12 @@ const ArrayField = (props: IFieldProps) => {
         props.errorSchema && {
           ...props.errorSchema,
           [index]: errorSchema,
-        }
+        },
       );
     };
   };
 
-  const onSelectChange = value => {
+  const onSelectChange = (value: any) => {
     props.onChange(value);
   };
 
@@ -318,7 +321,7 @@ const ArrayField = (props: IFieldProps) => {
     const formData = state.keyedFormData;
     const arrayProps = {
       canAdd: true, //canAddItem(formData),
-      items: state.keyedFormData.value.operands.map((keyedItem, index) => {
+      items: state.keyedFormData.value.operands.map((keyedItem: any, index: number) => {
         // const { key, item } = keyedItem;
         const itemSchema = retrieveSchema(schema.items as any, rootSchema, keyedItem);
         const item = keyedItem;
@@ -329,7 +332,7 @@ const ArrayField = (props: IFieldProps) => {
           itemIdPrefix,
           rootSchema,
           item,
-          idPrefix
+          idPrefix,
         );
         return renderArrayFieldItem({
           rawErrors, // FIXME: ???
@@ -484,7 +487,7 @@ const ArrayField = (props: IFieldProps) => {
     let items = props.formData;
     const { ArrayFieldTemplate, rootSchema, fields, formContext } = registry as IRegistry;
     const { TitleField } = fields;
-    const itemSchemas = (schema.items as any).map((item, index) =>
+    const itemSchemas = (schema.items as any).map((item: JSONSchema7, index: number) =>
       retrieveSchema(item, rootSchema, formData[index])
     );
     const additionalSchema = allowAdditionalItems(schema)
@@ -504,7 +507,7 @@ const ArrayField = (props: IFieldProps) => {
       disabled,
       idSchema,
       formData,
-      items: state.keyedFormData.map((keyedItem, index) => {
+      items: state.keyedFormData.map((keyedItem: { key: any; item: any; }, index: number) => {
         const { key, item } = keyedItem;
         const additional = index >= itemSchemas.length;
         const itemSchema = additional
@@ -576,7 +579,7 @@ const ArrayField = (props: IFieldProps) => {
     onBlur,
     onFocus,
     rawErrors,
-  }) => {
+  }: any) => {
     // console.log('ArrayField.renderArrayFieldItem.formData', itemData);
     const {
       disabled,

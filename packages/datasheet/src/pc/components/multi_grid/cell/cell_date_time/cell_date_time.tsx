@@ -17,7 +17,7 @@
  */
 
 import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { NotificationOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Tooltip } from 'pc/components/common';
@@ -36,7 +36,7 @@ interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
 }
 
-export const CellDateTime: React.FC<ICellDateTime> = props => {
+export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = props => {
   const colors = useThemeColors();
   const { className, field, recordId, cellValue, toggleEdit, showAlarm } = props;
   const { snapshot, user, dstId } = useSelector(state => {
@@ -81,7 +81,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
           title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
           <span className={styles.alarm} onClick={toggleEdit}>
-            <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
+            <NotificationOutlined color={colors.deepPurple[500]} size={14} />
             <span className={styles.alarmTime}>
               {alarmRealTime}
             </span>
@@ -92,9 +92,9 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
         <Tooltip
           title={t(Strings.task_reminder_hover_cell_tooltip)}
         >
-          <span className={classNames(styles.quickAlarm)} onMouseDown={() => {
-            toggleEdit && toggleEdit();
-            resourceService.instance!.commandManager!.execute({
+          <span className={classNames(styles.quickAlarm)} onMouseDown={async() => {
+            toggleEdit && await toggleEdit();
+            resourceService.instance!.commandManager.execute({
               cmd: CollaCommandName.SetDateTimeCellAlarm,
               recordId: recordId!,
               fieldId: field.id,
@@ -108,7 +108,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
               },
             });
           }}>
-            <NotificationSmallOutlined color={colors.fc3} size={14} />
+            <NotificationOutlined color={colors.fc3} size={14} />
           </span>
         </Tooltip>
       )}

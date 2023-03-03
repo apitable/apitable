@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAPIMetaFieldProperty } from 'types/field_api_property_types';
-import { APIMetaFieldType } from './field_api_enums';
+import type { IAPIMetaFieldProperty } from 'types/field_api_property_types';
+import type { APIMetaFieldType } from './field_api_enums';
 
 /**
   * Field related

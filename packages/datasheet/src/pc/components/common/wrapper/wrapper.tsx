@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useThemeMode } from '@apitable/components';
 import { configResponsive, useResponsive, useScroll } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -29,18 +30,19 @@ interface IWrapper {
   className?: string;
 }
 
-export const Wrapper: FC<IWrapper> = ({ children, className, hiddenLogo = false }) => {
+export const Wrapper: FC<React.PropsWithChildren<IWrapper>> = ({ children, className, hiddenLogo = false }) => {
   const childrenWrapperRef = useRef<HTMLDivElement>(null);
   const scroll = useScroll(childrenWrapperRef);
   configResponsive({
     large: 1023.98
   });
   const responsive = useResponsive();
+  const theme = useThemeMode();
   return (
     <div className={classNames(styles.wrapper, className)} style={{ position: 'relative' }}>
       <Image src={BgPng} objectFit={'cover'} layout={'fill'} />
       <div className={classNames(styles.logoWrapper, { [styles.shadow]: scroll?.top })}>
-        {!hiddenLogo && <Logo size={responsive.large ? 'large' : 'small'} />}
+        {!hiddenLogo && <Logo theme={theme} size={responsive.large ? 'large' : 'small'} />}
       </div>
       <div ref={childrenWrapperRef} className={styles.childrenWrapper}>
         {children}
@@ -49,7 +51,7 @@ export const Wrapper: FC<IWrapper> = ({ children, className, hiddenLogo = false 
   );
 };
 
-export const LoginCard: FC<{ className?: string }> = (props) => {
+export const LoginCard: FC<React.PropsWithChildren<{ className?: string }>> = (props) => {
   const { children, className } = props;
   return (
     <div className={classNames(styles.loginCard, className)}>

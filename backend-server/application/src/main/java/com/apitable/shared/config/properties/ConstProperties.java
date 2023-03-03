@@ -31,9 +31,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import static com.apitable.shared.config.properties.ConstProperties.PREFIX_CONST;
 
 /**
- * <p>
- * server constants properties
- * </p>
+ * server constants properties.
  *
  * @author Chambers
  */
@@ -41,94 +39,83 @@ import static com.apitable.shared.config.properties.ConstProperties.PREFIX_CONST
 @ConfigurationProperties(prefix = PREFIX_CONST)
 public class ConstProperties {
 
+    /** */
     public static final String PREFIX_CONST = "const";
 
+    /** */
     private String languageTag = "zh-CN";
 
+    /** */
     private String serverDomain;
 
+    /** */
     private String callbackDomain;
 
+    /** */
     private String workbenchUrl = "/workbench";
 
     /**
-     * Whether to create a picture audit record
+     * Whether to create a picture audit record.
      */
     private boolean ossImageAuditCreatable = false;
 
     /**
-     * OSS bucket configuration
+     * OSS bucket configuration.
      */
     private Map<BucketKey, OssBucketInfo> ossBuckets;
 
     /**
-     * api document avoid validate token
-     */
-    private String loginToken = "BornForFuture";
-
-    /**
-     * Official default avatar list
-     * @deprecated open-source
-     */
-    @Deprecated
-    private String defaultAvatarList;
-
-    /**
-     * Template space, the templates created in this space will become official templates,
-     * and there is no upper limit for the number of templates
+     * Template space, the templates created in this space
+     * * will become official templates,
+     * and there is no upper limit for the number of templates.
      */
     private String templateSpace = "";
 
     /**
-     * Template ID referenced by new space by default
+     * Template ID referenced by new space by default.
      */
     private String quoteTemplateId = "tpll8mltwrZMT";
 
     /**
-     * English template ID referenced by default in new space
+     * English template ID referenced by default in new space.
      */
     private String quoteEnTemplateId = "tpll8mltwrZMT";
 
     /**
-     * wechat-mp reply template id
-     * @deprecated open-source
-     */
-    @Deprecated
-    private String qrCodeReplyId;
-
-    /**
-     * dingtalk subscription information table id
+     * dingtalk subscription information table id.
      */
     private String dingTalkOrderDatasheet;
 
+    /**
+     * *
+     * @return OssBucketInfo
+     */
     public OssBucketInfo getOssBucketByAsset() {
-        return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_ASSETS_LTD, new OssBucketInfo());
+        return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)
+            .getOrDefault(BucketKey.VK_ASSETS_LTD, new OssBucketInfo());
     }
 
-    public OssBucketInfo getOssBucketByPublicAsset() {
-        return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_PUBLIC_ASSETS_LTD, new OssBucketInfo());
-    }
-
+    /**
+     * *
+     * @return String
+     */
     public String defaultServerDomain() {
-        return ReUtil.replaceAll(serverDomain, "http://|https://", StrUtil.EMPTY);
+        return ReUtil.replaceAll(serverDomain, "http://|https://",
+            StrUtil.EMPTY);
     }
 
     public enum BucketKey {
-        // old resource bucket
-        // It will be temporarily reserved during the transformation of the front-end direct transmission, and will be invalid when the transformation is completed.
-        @Deprecated
+        /** */
         VK_ASSETS_LTD,
-        // new open bucket
-        VK_PUBLIC_ASSETS_LTD,
     }
 
     @Data
     public static class OssBucketInfo {
-
+        /** */
         private String resourceUrl = "";
-
+        /** */
         private String bucketName;
-
+        /** */
         private String type;
     }
 }

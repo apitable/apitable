@@ -30,7 +30,7 @@ import { stopPropagation } from '@apitable/components';
 import { MIN_SCALE } from '../../preview_main/constant';
 import classNames from 'classnames';
 
-export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
+export const PreviewImage: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
   const { file, transformInfo, setTransformInfo, disabledDownload } = props;
   const { rotate, scale, translatePosition } = transformInfo;
 
@@ -89,10 +89,10 @@ export const PreviewImage: React.FC<IPreviewTypeBase> = props => {
 
   const transformWebpIfNeeded =
     isWebp(fileLikeProps) &&
-    (browser.satisfies({
+    (browser?.satisfies({
       safari: '<14',
     }) ||
-      browser.is('iOS'));
+      browser?.is('iOS'));
 
   const isRotated = rotate % 180 !== 0;
 

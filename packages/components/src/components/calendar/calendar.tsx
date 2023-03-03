@@ -32,7 +32,7 @@ import { configResponsive, useResponsive } from 'ahooks';
 import { useTouch, Direction } from '../../hooks/use-touch';
 import format from 'date-fns/format';
 
-export const Calendar:FC<ICalendar> = props => {
+export const Calendar:FC<React.PropsWithChildren<ICalendar>> = props => {
   const { lang = 'zh', defaultDate, monthPicker, ...rest } = props;
   configResponsive({
     middle: 768,
@@ -47,7 +47,7 @@ export const Calendar:FC<ICalendar> = props => {
       const currStep = differenceInMonths(date2Month(defaultDate), date2Month(new Date()));
       setStep(currStep);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [defaultDate2Month]);
   const { year, month } = useMemo(() =>
     getPanelData(step),

@@ -22,7 +22,7 @@ import styles from './style.module.less';
 import { IScrollBarProps, ScrollBarDirection, IScrollBarVertical } from './scroll_bar.interface';
 import { isMobile } from 'react-device-detect';
 
-export const ScrollBarVertical: React.FC<IScrollBarProps & IScrollBarVertical> = props => {
+export const ScrollBarVertical: React.FC<React.PropsWithChildren<IScrollBarProps & IScrollBarVertical>> = props => {
   const { gridVisibleLength, dataTotalLength, scrollAreaLength, scrollTop } = props;
   const { scrollbarRef, slideRef, minScrollBarSize, handleMouseDown, calcSlideOffset } =
     useScrollBar({ ...props, scrollBarOffset: scrollTop, direction: ScrollBarDirection.Vertical });

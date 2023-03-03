@@ -18,7 +18,7 @@
 
 import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@apitable/core';
-import { InformationLargeOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { Col, Row, Switch } from 'antd';
 import produce from 'immer';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -43,7 +43,7 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewSort: React.FC<IViewSetting> = props => {
+export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
   const activeViewGroupInfo = useSelector(Selectors.getActiveViewGroupInfo);
@@ -51,7 +51,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
     return Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   })!;
   const sortInfo = useSelector(Selectors.getActiveViewSortInfo);
-  const activityViewId = useSelector(Selectors.getActiveView)!;
+  const activityViewId = useSelector(Selectors.getActiveViewId)!;
   const sortFieldIds = sortInfo ? sortInfo.rules.map(item => item.fieldId) : [];
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -119,7 +119,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
         })!,
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [sortInfo],
   );
 
@@ -187,7 +187,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant={'h7'}>{t(Strings.set_sort)}</Typography>
             <a href={t(Strings.sort_help_url)} target='_blank' rel='noopener noreferrer'>
-              <InformationLargeOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </div>
         )}

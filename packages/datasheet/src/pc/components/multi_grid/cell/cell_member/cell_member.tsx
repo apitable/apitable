@@ -18,17 +18,28 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import {
-  Api, IMemberField, IReduxState, IUnitIds, MemberField, MemberType, OtherTypeUnitId, RowHeightLevel, Selectors, StoreActions, Strings, t
+  Api,
+  IMemberField,
+  IReduxState,
+  IUnitIds, IUnitValue, IUserValue,
+  MemberField,
+  MemberType,
+  OtherTypeUnitId,
+  RowHeightLevel,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
 } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import { ButtonPlus } from 'pc/components/common';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
-import { useEffect, useMemo } from 'react';
 import * as React from 'react';
+import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
@@ -43,7 +54,7 @@ interface ICellMember extends ICellComponentProps {
   deletable?: boolean
 }
 
-export const CellMember: React.FC<ICellMember> = props => {
+export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = props => {
   const {
     cellValue: cellValueIncludeOldData, field: propsField, isActive, onChange, toggleEdit, readonly, className, rowHeightLevel, deletable = true,
   } = props;
@@ -94,14 +105,14 @@ export const CellMember: React.FC<ICellMember> = props => {
 
   function deleteItem(e: React.MouseEvent, index?: number) {
     stopPropagation(e);
-    onChange && onChange(cellValue && (cellValue as IUnitIds).filter((cv, idx) => idx !== index));
+    onChange && onChange(cellValue && (cellValue as IUnitIds).filter((_cv, idx) => idx !== index));
   }
 
-  function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) {
       return;
     }
-    isActive && !readonly && toggleEdit && toggleEdit();
+    isActive && !readonly && toggleEdit && await toggleEdit();
   }
 
   const showAddIcon = (isActive && !readonly) && (isMulti || (!isMulti && !cellValue));
@@ -130,22 +141,21 @@ export const CellMember: React.FC<ICellMember> = props => {
         {
           cellValue ? (cellValue as IUnitIds)
             .map((item, index) => {
-              let unitInfo;
+              let unitInfo: IUnitValue | IUserValue;
 
               // The current user flag appears when filtering only
               if (item === OtherTypeUnitId.Self) {
                 const { uuid, unitId, memberName, nickName } = userInfo;
-                const currentUnit = {
+                unitInfo = {
                   type: MemberType.Member,
                   userId: uuid,
                   unitId,
                   avatar: '',
                   name: `${t(Strings.add_sort_current_user)}（${memberName || nickName}）`,
                   isActive: true,
-                  isDelete: false,
+                  isDeleted: false,
                   isSelf: true,
                 };
-                unitInfo = currentUnit;
               } else {
                 if (!unitMap || !unitMap[item]) {
                   return <></>;
@@ -170,7 +180,7 @@ export const CellMember: React.FC<ICellMember> = props => {
                         variant="fill"
                         color={colors.defaultTag}
                       >
-                        <CloseSmallOutlined size={16} color={colors.fc2} />
+                        <CloseOutlined size={12} color={colors.fc2} />
                       </Button> :
                       <></>
                   }

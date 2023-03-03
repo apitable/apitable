@@ -58,7 +58,7 @@ const editorMap = {
   [FieldType.SingleText]: EditorType.Text,
 };
 
-export const getFieldEditorType = (field: IField) => {
+export const getFieldEditorType = (field: IField): EditorType => {
   const { basicValueType, valueType, isComputed } = Field.bindModel(field);
   if (isComputed) {
     if (field.type === FieldType.LookUp) {

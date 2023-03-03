@@ -21,7 +21,7 @@ import {
   Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, 
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
-import { CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
 import { message } from 'antd';
 import dayjs from 'dayjs';
@@ -45,7 +45,7 @@ import { getForeignDatasheetIdsByOp } from './utils';
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 
-export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({ onClose }) => {
+export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const curDatasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [curPreview, setCurPreview] = useState<number>();
@@ -70,7 +70,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
   const [rollbackIng, setRollbackIng] = useState(false);
   const dispatch = useAppDispatch();
 
-  const fetchChangesets = (lastRevision) => {
+  const fetchChangesets = (lastRevision: number) => {
     setFetching(true);
     const startRevision = lastRevision - 99 > 0 ? lastRevision - 99 : 1;
     DatasheetApi.fetchChangesets<IChangesetPack>(datasheetId, ResourceType.Datasheet, startRevision, lastRevision + 1)
@@ -128,7 +128,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     });
   };
 
-  const executeRollback = useCallback((operations) => {
+  const executeRollback = useCallback((operations: any) => {
     try {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.Rollback,
@@ -147,7 +147,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     dispatch(StoreActions.resetDatasheet(PREVIEW_DATASHEET_ID));
   }, [datasheetId, dispatch]);
 
-  const executePreview = useCallback((operations, index) => {
+  const executePreview = useCallback((operations: any, index: any) => {
     const cloneDatasheet = fastCloneDeep(curDatasheet)!;
     const actions = getRollbackActions(operations, store.getState(), cloneDatasheet.snapshot);
     console.log('---------preview actions', actions);
@@ -163,7 +163,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
     // Proactively setting editable to false bypasses conflict detection and avoids pop-ups that automatically restore modal boxes
     const previewSnapshot = cloneDatasheet.snapshot;
     try {
-      dispatch(StoreActions.receiveDataPack({ snapshot: previewSnapshot, datasheet: cloneDatasheet }, false));
+      dispatch(StoreActions.receiveDataPack({ snapshot: previewSnapshot, datasheet: cloneDatasheet }, { isPartOfData: false }));
     } catch (error) {
       console.log(error);
       Modal.error({
@@ -252,7 +252,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
-              icon={InformationSmallOutlined} onClick={() => {
+              icon={QuestionCircleOutlined} onClick={() => {
                 window.open(t(Strings.timemachine_help_url));
               }} />
           </Box>
@@ -261,7 +261,7 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
         <IconButton
           shape="square"
           onClick={() => onClose(false)}
-          icon={CloseMiddleOutlined}
+          icon={CloseOutlined}
           style={{ position: 'absolute', right: 16 }}
         />
       </div>

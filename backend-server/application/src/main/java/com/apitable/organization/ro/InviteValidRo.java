@@ -18,25 +18,24 @@
 
 package com.apitable.organization.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * <p>
- * Invitation link verification parameters
+ * Invitation link verification parameters.
  * </p>
  */
 @Data
-@ApiModel("Invitation link verification parameters")
+@Schema(description = "Invitation link verification parameters")
 public class InviteValidRo {
 
     @NotBlank
-    @ApiModelProperty(value = "Invite link one-time token", example = "b10e5e36cd7249bdaeab3e424308deed", position = 1)
+    @Schema(description = "Invite link one-time token", example =
+        "b10e5e36cd7249bdaeab3e424308deed")
     private String token;
 
-    @ApiModelProperty(value = "nodeId", example = "dst****", position = 2)
+    @Schema(description = "nodeId", example = "dst****")
     private String nodeId;
 }

@@ -21,8 +21,6 @@ import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
 // @ts-ignore
 import { isSocialDingTalk, showOrderModalAfterPay, showVikaby } from 'enterprise';
-import { Method } from 'pc/components/route_manager/const';
-import { IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
@@ -106,7 +104,7 @@ export const PublishController = (props: INoticeDetail) => {
 
     const channelArr = channel.split(',');
     if (channelArr.length) {
-      channelArr.forEach((uiKey) => {
+      channelArr.forEach((uiKey: string) => {
         const ui = uiKey.trim();
         switch (ui) {
           case NotifyChannel.BANNER_ALERT:
@@ -139,12 +137,7 @@ export const PublishController = (props: INoticeDetail) => {
   }
 };
 
-export const navigationToConfigUrl = (configUrl: string, option?: {
-  clearQuery?: boolean | undefined;
-  method?: Method | undefined;
-  spaceId?: string | undefined;
-  query?: IQuery | undefined;
-}) => {
+export const navigationToConfigUrl = (configUrl: string) => {
   if (configUrl.startsWith('/')) {
     const url = new URL(configUrl, window.location.origin);
     navigationToUrl(url.href);

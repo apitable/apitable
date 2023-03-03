@@ -32,8 +32,6 @@ import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@apitable/components';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import * as React from 'react';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import styles from '../styles.module.less';
 import settingStyles from '../../field_setting/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -46,6 +44,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useClickAway } from 'ahooks';
 import omit from 'lodash/omit';
+import { QuestionCircleOutlined, ChevronRightOutlined } from '@apitable/icons';
 
 interface IFieldTypeSelectProps {
   currentField: IField;
@@ -62,7 +61,7 @@ function isSelectField(field: IField) {
   return Field.bindModel(field) instanceof SelectField;
 }
 
-export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
+export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectProps>> = props => {
   const { setCurrentField, currentField, activeFieldId, activeFieldIndex, snapshot, datasheetId, isMobile, showAdvancedFields } = props;
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
@@ -115,7 +114,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
         };
       });
       setVisible(false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line
     },
     [currentField.type],
   );
@@ -138,8 +137,13 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
       <div className={styles.sectionTitle}>
         {t(Strings.field_type)}
         <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
-          <a href={getFieldHelpLink()} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
-            <HelpIcon style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 8 }} fill={colors.thirdLevelText} />
+          <a 
+            href={getFieldHelpLink()} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.25em', marginLeft: 8 }}
+          >
+            <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
           </a>
         </Tooltip>
       </div>
@@ -147,7 +151,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
         <div className={settingStyles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
         <div className={styles.text}>{FieldTypeDescriptionMap[currentField.type].title}</div>
         <div className={styles.arrow}>
-          <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+          <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
         </div>
       </div>
       {visible && (
@@ -167,7 +171,13 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {visible && (
-              <Popup open={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
+              <Popup
+                title={t(Strings.select_one_field)}
+                open={visible}
+                onClose={() => setVisible(false)}
+                height="90%"
+                bodyStyle={{ padding: 0 }}
+              >
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

@@ -54,7 +54,7 @@ export interface ICellFuncOwnProps {
   rightRegion: boolean;
 }
 
-const CellFunc: React.FC<GridChildComponentProps & ICellFuncOwnProps> =
+const CellFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & ICellFuncOwnProps>> =
   ({ rowIndex, data, columnIndex, style: _style, rightRegion }) => {
     const {
       isGroupEmptyContent, datasheetId, rowHeightLevel,

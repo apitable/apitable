@@ -126,7 +126,7 @@ const notificationVerification = (props: IUnitProps) => {
   );
 };
 
-export const NotificationVerificationModal: React.FC<IUnitProps> = props => {
+export const NotificationVerificationModal: React.FC<React.PropsWithChildren<IUnitProps>> = props => {
   const { members, setPermission, manageable, closeModal } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -181,7 +181,7 @@ export const NotificationVerificationModal: React.FC<IUnitProps> = props => {
   );
 };
 
-const MessageContent = ({ members }) => {
+const MessageContent = ({ members }: { members:  IApi.INoPermissionMemberResponseData[] }) => {
   const memberList = members.slice(0, 3);
   return (
     <>

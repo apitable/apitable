@@ -31,7 +31,7 @@ import { CellUrl } from './cell_url';
 import { CellEmail } from './cell_email';
 import { CellLink } from './cell_link';
 import { CellEnhanceText } from './cell_enhance_text';
-import { Field, getFieldTypeString, LookUpField } from '../../core';
+import { Field, getFieldTypeString, IReduxState, LookUpField } from '../../core';
 import { CellMultiText } from './cell_multi_text';
 
 /**
@@ -119,13 +119,13 @@ export const CellValue = (props: {
   const activeField = useField(fieldId);
   let type = activeField?.type;
   let property = activeField?.fieldData?.property;
-  const state = context.globalStore.getState();
+  const state = context.widgetStore.getState();
   if (!activeField ||!type || !state) {
     return null;
   }
   let cellValue = cellValueData || activeRecord.getCellValue(fieldId);
   if (type === FieldType.MagicLookUp) {
-    const realField = (Field.bindModel(activeField.fieldData, state) as LookUpField).getLookUpEntityField();
+    const realField = (Field.bindModel(activeField.fieldData, state as any as IReduxState) as LookUpField).getLookUpEntityField();
     const realType = realField?.type;
     if (!realType) {
       return null;

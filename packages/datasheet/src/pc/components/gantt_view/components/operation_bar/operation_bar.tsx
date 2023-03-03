@@ -35,7 +35,7 @@ const TAB_BAR_HEIGHT = 40;
 const INNER_PADDING = 24;
 const TEXT_MARGIN_LEFT = 24;
 
-export const OperationBar: FC<IOperationBarProps> = memo((props) => {
+export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = memo((props) => {
   const { instance, scrollLeft, columnStartIndex: _columnStartIndex, columnStopIndex } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;

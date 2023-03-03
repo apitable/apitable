@@ -32,7 +32,7 @@ interface IChooseAccountTypeProps {
   setAccountType: React.Dispatch<React.SetStateAction<AccountType | undefined>>;
 }
 
-export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
+export const ChooseAccountType: FC<React.PropsWithChildren<IChooseAccountTypeProps>> = props => {
   const { accountType, setAccountType } = props;
   const colors = useThemeColors();
 

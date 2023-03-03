@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
-export const FilterRating: React.FC<Omit<IFilterNumberProps, 'execute'>> = props => {
+export const FilterRating: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = props => {
   const { condition, onChange, field } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
@@ -35,7 +35,7 @@ export const FilterRating: React.FC<Omit<IFilterNumberProps, 'execute'>> = props
 
   useEffect(() => {
     numberRef.current!.onStartEdit(condition.value ? Number(condition.value[0]) : null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const { run: commandNumberFn } = useDebounceFn((value: number | null) => {

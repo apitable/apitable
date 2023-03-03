@@ -17,6 +17,7 @@
  */
 
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
+import { useMount } from 'ahooks';
 import { ConfigProvider, message } from 'antd';
 import axios from 'axios';
 import { releaseProxy } from 'comlink';
@@ -30,9 +31,10 @@ import { useBlackSpace } from 'pc/hooks/use_black_space';
 import { useViewTypeTrack } from 'pc/hooks/use_view_type_track';
 import { ResourceContext, resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getCookie, isTouchDevice } from 'pc/utils';
+import { getCookie } from 'pc/utils';
 import { dndH5Manager, dndTouchManager } from 'pc/utils/dnd_manager';
 import { getEnvVariables } from 'pc/utils/env';
+import { browserIsDesktop } from 'pc/utils/os';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { comlinkStore } from 'pc/worker';
 import * as React from 'react';
@@ -57,9 +59,15 @@ export const antdConfig = {
   renderEmpty: customizeRenderEmpty,
 };
 
-const RouterProvider = ({ children }) => {
+const RouterProvider = ({ children }: any) => {
   const cacheScrollMap = useRef({});
   const dispatch = useDispatch();
+  const [isDesktopDevice, setIsDesktopDevice] = React.useState<boolean>();
+
+  useMount(async() => {
+    const isDesktop = await browserIsDesktop();
+    setIsDesktopDevice(isDesktop);
+  });
 
   // Logging panel presentation mode - initializing redux from localStorage
   useEffect(() => {
@@ -70,7 +78,7 @@ const RouterProvider = ({ children }) => {
   // so the behavior of the a tag is handled together with the proxy in navigationToUrl
   useEffect(() => {
     const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
-    const clickHandler = e => {
+    const clickHandler = (e: any) => {
       const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)`);
       const paths = ['/user', '/login', '/org', '/workbench', '/notify', '/management', '/invite', '/template', '/share'];
       let element = e.target;
@@ -94,7 +102,7 @@ const RouterProvider = ({ children }) => {
       comlinkStore.proxy?.[releaseProxy]();
       comlinkStore.worker?.terminate();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   // Links for the http protocol are automatically redirected to https
@@ -158,10 +166,12 @@ const RouterProvider = ({ children }) => {
     cacheScrollMap.current = next;
   };
 
+  const dndManager = isDesktopDevice ? dndH5Manager : dndTouchManager;
+
   return (
     <ConfigProvider {...antdConfig}>
       <ResourceContext.Provider value={resourceService.instance}>
-        <DndProvider manager={isTouchDevice() ? dndTouchManager : dndH5Manager}>
+        <DndProvider manager={dndManager}>
           <ScrollContext.Provider
             value={{
               cacheScrollMap,

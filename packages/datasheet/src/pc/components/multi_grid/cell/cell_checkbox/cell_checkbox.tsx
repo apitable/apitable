@@ -29,7 +29,7 @@ interface ICellCheckbox extends ICellComponentProps {
   field: ICheckboxField | IFormulaField | ILookUpField;
 }
 
-export const CellCheckbox: React.FC<ICellCheckbox> = props => {
+export const CellCheckbox: React.FC<React.PropsWithChildren<ICellCheckbox>> = props => {
   const { className, field, cellValue, isActive, onChange } = props;
   
   const icon = field.type === FieldType.Checkbox ? field.property.icon :

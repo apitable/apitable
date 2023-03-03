@@ -30,7 +30,7 @@ type IEnabledViewLockProps = {
   view: IViewProperty;
 } & Omit<IViewLockProps, 'viewId'>;
 
-export const EnabledViewLock: React.FC<IEnabledViewLockProps> = props => {
+export const EnabledViewLock: React.FC<React.PropsWithChildren<IEnabledViewLockProps>> = props => {
   const { view, onModalClose, unlockHandle } = props;
   const dispatch = useDispatch();
   const unitMap = useSelector(Selectors.getUnitMap)!;

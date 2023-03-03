@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: apitable
+    env: docker
+    plan: pro plus
+    dockerfilePath: ./packaging/Dockerfile.render
+    dockerContext: ./packaging
+    envVars:
+      - key: PORT
+        value: 80
+    disk:
+      name: apitable-data
+      mountPath: /apitable
+      sizeGB: 50

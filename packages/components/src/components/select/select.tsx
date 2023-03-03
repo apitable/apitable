@@ -37,8 +37,11 @@ const _renderValue = (option: IOption) => {
   return option.label;
 };
 
-export const Select: FC<ISelectProps> & {
-  Option: React.FC<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>
+const _Highlighter: any = Highlighter;
+const _GlobalStyle: any = GlobalStyle;
+
+export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
+  Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
 } = (props) => {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
@@ -59,7 +62,7 @@ export const Select: FC<ISelectProps> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
-  const inputOnChange = (e: React.ChangeEvent, keyword: string) => {
+  const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
     setKeyword(keyword);
   };
 
@@ -70,7 +73,7 @@ export const Select: FC<ISelectProps> & {
       return;
     }
     setVisible(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [value, toggleVisible, defaultVisible, isInit]);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ export const Select: FC<ISelectProps> & {
       const size = (triggerRef.current.getRootDomNode() as HTMLElement).getBoundingClientRect();
       setTriggerInfo({ triggerSize: size, triggerOffset: OFFSET, adjust: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [triggerRef]);
 
   useClickAway(() => {
@@ -98,7 +101,7 @@ export const Select: FC<ISelectProps> & {
     >
       <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>
         {
-          !keyword ? null : <Highlighter
+          !keyword ? null : <_Highlighter
             highlightClassName={hightLightCls.toString()}
             highlightStyle={highlightStyle as any}
             searchWords={[keyword]}
@@ -141,7 +144,7 @@ export const Select: FC<ISelectProps> & {
       >
         {
           dropdownRender || <ListDeprecate
-            onClick={(e, index) => {
+            onClick={(_e, index) => {
               setVisible(false);
               onSelected && onSelected(afterFilterOptions[index]!, index);
             }}
@@ -167,7 +170,7 @@ export const Select: FC<ISelectProps> & {
     );
   };
 
-  const triggerClick = (e: React.MouseEvent) => {
+  const triggerClick = () => {
     if (disabled) {
       return;
     }
@@ -180,7 +183,7 @@ export const Select: FC<ISelectProps> & {
   };
 
   return <>
-    <GlobalStyle />
+    <_GlobalStyle />
     <Trigger
       // getPopupContainer={() => containerRef.current!}
       popup={renderOptionList}
@@ -191,7 +194,7 @@ export const Select: FC<ISelectProps> & {
       popupStyle={{
         width: 'max-content',
         position: 'absolute',
-        zIndex: 1000, // Same level as antd modal
+        zIndex: 1200, // Same level as antd modal
       }}
       ref={triggerRef}
       popupVisible={visible}

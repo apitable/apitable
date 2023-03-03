@@ -22,6 +22,8 @@ export const isProdMode = Object.is(environment, 'production');
 export const enableSwagger = Object.is(process.env.ENABLE_SWAGGER, 'true');
 export const serviceDomain = process.env.SERVER_DOMAIN;
 export const currentAppInstanceId = process.env.NODE_APP_INSTANCE || 0;
+export const disableHSTS = Object.is(process.env.STRICT_TRANSPORT_SECURITY, 'false');
+
 // whether or not enable cache for Fusion API
 export const isApiCacheEnabled = Object.is(process.env.API_CACHEABLE, 'true');
 
@@ -31,7 +33,11 @@ export const enableScheduler = Object.is(process.env.ENABLE_SCHED, 'true');
 // whether or not enable queue worker. (individual instances in worker queue mode to handle messages)
 export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'true');
 
-export const disableHSTS = Object.is(process.env.STRICT_TRANSPORT_SECURITY, 'false');
+// whether or not enable socket. (data collaboration middleware)
+export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
+
+// project root directory
+export const PROJECT_DIR = __dirname;
 
 export default {
   isDevMode,

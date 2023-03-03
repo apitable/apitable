@@ -17,11 +17,11 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
+import { TriangleRightFilled } from '@apitable/icons';
 import { isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import DefaultSwitcherIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
 
@@ -58,7 +58,7 @@ export interface ITreeViewRef {
 export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeViewProps> = ({
   module,
   className,
-  switcherIcon = <DefaultSwitcherIcon />,
+  switcherIcon = <TriangleRightFilled size={12} />,
   expandedKeys = [],
   selectedKeys = [],
   treeData,
@@ -93,7 +93,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   useEffect(() => {
     const difference = xor(expandedKeys, expandedIdsRef.current);
     difference.forEach(nodeId => toggleExpansion(nodeId, true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [expandedKeys]);
 
   useEffect(() => {
@@ -151,7 +151,7 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     });
   };
 
-  const renderTreeItem = (child, index: number, level = '0') => {
+  const renderTreeItem = (child: any, index: number, level = '0') => {
     const pos = `${level}-${index}`;
     const cloneProps = {
       pos,
@@ -160,13 +160,13 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     return React.cloneElement(child, cloneProps);
   };
 
-  const singleSelectHandler = (e, nodeId: string) => {
+  const singleSelectHandler = (e: React.MouseEvent, nodeId: string) => {
     const newSelected = [nodeId];
     onSelect && onSelect(e, nodeId);
     selectedIdsRef.current = newSelected;
   };
 
-  const renderTree = (children, parentNode = null, level = '0') => {
+  const renderTree = (children: any[], parentNode = null, level = '0') => {
     return children.map((node, index) => {
       if (node.children && node.children.length) {
         return <TreeItem
@@ -204,15 +204,15 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
     onKeyDown && onKeyDown(e);
   };
 
-  const dragStart = treeNode => {
+  const dragStart = (treeNode: { id: React.SetStateAction<string>; }) => {
     setDragNodesId(treeNode.id);
   };
 
-  const dragOver = treeNode => {
+  const dragOver = (treeNode: { id: any; }) => {
     onDragOver && onDragOver({ dragNodeId, targetNodeId: treeNode.id, ...treeNode });
   };
 
-  const drop = treeNode => {
+  const drop = (treeNode: any) => {
     onDrop && onDrop(treeNode);
     resetState();
   };

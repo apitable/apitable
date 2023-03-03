@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 
 const { TextArea } = Input;
 
-export const DisabledViewLock: React.FC<Omit<IViewLockProps, 'unlockHandle'>> = ({ viewId, onModalClose }) => {
+export const DisabledViewLock: React.FC<React.PropsWithChildren<Omit<IViewLockProps, 'unlockHandle'>>> = ({ viewId, onModalClose }) => {
   const areaRef = useRef(null);
   const unitId = useSelector(state => state.user.info?.unitId)!;
 

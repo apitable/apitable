@@ -38,7 +38,7 @@ interface IFormatFormulaProps {
   datasheetId?: string;
 }
 
-export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormulaProps) => {
+export const FormatFormula: React.FC<React.PropsWithChildren<IFormatFormulaProps>> = (props: IFormatFormulaProps) => {
   const { from, currentField, setCurrentField, datasheetId: propDatasheetId } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
   const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state, propDatasheetId));
@@ -84,7 +84,7 @@ export const FormatFormula: React.FC<IFormatFormulaProps> = (props: IFormatFormu
         field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [from]);
 
   return (

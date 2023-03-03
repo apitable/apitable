@@ -19,7 +19,7 @@
 import React, { useState } from 'react';
 import { FieldProps } from '@rjsf/core';
 import styled, { css } from 'styled-components';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Tooltip } from 'components';
 
@@ -75,7 +75,7 @@ const DropIcon = styled(ChevronDownOutlined)`
   vertical-align: middle;
 `;
 
-const HelpIcon = styled(InformationSmallOutlined)`
+const HelpIcon = styled(QuestionCircleOutlined)`
   vertical-align: -0.125em;
 `;
 export interface IHelp {
@@ -105,8 +105,8 @@ export const TitleField = (props: Pick<FieldProps, 'id' | 'title' | 'required'> 
   onChange?: (collapse: boolean) => void;
 }) => {
   const { title, id, help, hasCollapse, defaultCollapse = false, onChange } = props;
-  const [, level] = (id || '').split('-');
-  const TitleComponent = titleLevel[Math.min(parseInt(level, 10) || 0, 2)];
+  const [, level] = (id || '').split('-') as [string, string];
+  const TitleComponent = titleLevel[Math.min(parseInt(level, 10) || 0, 2)]!;
   const [collapse, setCollapse] = useState<boolean>(defaultCollapse);
 
   const switchCollapse = () => {

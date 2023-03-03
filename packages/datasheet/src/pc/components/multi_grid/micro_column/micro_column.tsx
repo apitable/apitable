@@ -46,7 +46,7 @@ interface IMicroColumnStateProps {
   fieldIndexMap: Map<string, number>;
 }
 
-const MicroColumnBase: React.FC = () => {
+const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const {
     snapshot,
@@ -66,7 +66,7 @@ const MicroColumnBase: React.FC = () => {
         fieldRanges: Selectors.getFieldRanges(state),
         fieldIndexMap: Selectors.getVisibleColumnsMap(state),
         visibleColumns: getVisibleColumns(state),
-        linearRows: Selectors.getLinearRows(state),
+        linearRows: Selectors.getLinearRows(state) || [],
         datasheetId: Selectors.getActiveDatasheetId(state)!,
         rowHeight: Selectors.getRowHeightFromLevel(rowHeightLevel),
       };

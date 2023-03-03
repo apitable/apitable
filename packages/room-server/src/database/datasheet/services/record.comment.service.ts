@@ -89,7 +89,7 @@ export class RecordCommentService {
     return new ServerException(CommonException.SERVER_ERROR);
   }
 
-  async deleteCommentBySelf(commentCreatedBy: string, uuid?: string) {
+  private async deleteCommentBySelf(commentCreatedBy: string, uuid?: string) {
     const memberInfos = await this.unitService.getUnitMemberInfoByIds([commentCreatedBy]);
     const firstMemberInfo = memberInfos && memberInfos[0];
     return firstMemberInfo && firstMemberInfo.userId === uuid;

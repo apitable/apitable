@@ -18,11 +18,15 @@
 
 import { ISpaceBasicInfo, ISpaceFeatures } from '@apitable/core';
 import { CSSProperties } from 'react';
+import { StaticImageData } from 'next/image';
 
 export enum LevelType {
   Bronze = 'bronze',
   Silver = 'silver',
   Gold = 'gold',
+  Free = 'free',
+  Plus = 'plus',
+  Pro = 'pro',
   Enterprise = 'enterprise',
   DingtalkBase = 'dingtalk_base',
   DingtalkStandard = 'dingtalk_standard',
@@ -42,7 +46,8 @@ export const needHideUnLimitedSpaceLevel = {
 
 export type ISpaceLevelType = 'bronze' | 'silver' | 'gold' | 'enterprise' | 'dingtalk_base' | 'dingtalk_enterprise' | 'dingtalk_standard'
   | 'wecom_base' | 'wecom_standard' | 'wecom_enterprise' | 'private_cloud'
-  | 'feishu_base' | 'feishu_enterprise' | 'feishu_standard' | 'atlas' | 'dingtalk_profession' | 'feishu_profession' | 'wecom_profession';
+  | 'feishu_base' | 'feishu_enterprise' | 'feishu_standard' | 'atlas' | 'dingtalk_profession' | 'feishu_profession' | 'wecom_profession' | 'free'
+  | 'plus' | 'pro';
 
 export interface ISpaceLevelTagInfo {
   label: React.ReactNode,
@@ -59,8 +64,8 @@ export interface ILevelCard {
   titleColor: string,
   buttonText: string,
   onClick: () => void,
-  cardBg: React.ReactNode,
-  cardSkin: React.ReactNode,
+  cardBg: StaticImageData,
+  cardSkin: StaticImageData,
   skinStyle: CSSProperties,
   cardTagPosition: Position,
   buttonStyle?: CSSProperties,

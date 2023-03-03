@@ -43,7 +43,7 @@ else
     # Not found
 	RUNNER := $(_DEVENV) run --rm --user $$UID:$$GID
 endif
-BUILDER := docker buildx bake -f docker-compose.build.yaml
+BUILDER := docker buildx bake
 
 ttt:
 	echo $(OS_NAME)
@@ -98,7 +98,6 @@ build: ## build
 
 build-local:
 	make _build-java
-	make _build-core
 	make _build-room
 	make _build-web
 
@@ -107,7 +106,7 @@ _build-web:
 	yarn build:dst
 
 _build-java:
-	cd backend-server && ./gradlew build -x test
+	cd backend-server && ./gradlew build -x test --stacktrace
 
 _build-core: ## build core
 	yarn workspaces focus @apitable/core @apitable/i18n-lang root
@@ -117,7 +116,6 @@ _build-core: ## build core
 _build-room: ## build room server
 	yarn workspaces focus @apitable/room-server root
 	yarn build:sr
-	yarn build:room-server
 
 ################################ test
 
@@ -188,13 +186,25 @@ test-ut-room-docker:
 		-e RABBITMQ_HOST=test-rabbitmq \
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
+
+_generate_room_coverage:
+	cd packages/room-native-api
+	grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore "/*" -o target/coverage/tests.lcov
+
+_clean_room_coverage:
 	if [ -d "./packages/room-server/coverage" ]; then \
 		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \
 	fi
+	if [ -d "./packages/room-native-api/coverage" ]; then \
+		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-native-api/coverage; \
+	fi
+	if [ -d "./packages/room-native-api/target" ]; then \
+		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-native-api/target; \
+	fi
 	make _test_clean
-
-_clean_room_jest_coverage:
 	rm -fr ./packages/room-server/coverage || true
+	rm -fr ./packages/room-native-api/coverage || true
+	rm -fr ./packages/room-native-api/target || true
 
 ###### 【backend server unit test】 ######
 
@@ -225,16 +235,12 @@ test-ut-backend:
 ###### 【backend server unit test】 ######
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
-	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin ;\
-	$(BUILDER) --push
+	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin || true;\
+	$(BUILDER) $(target) --push
 
 .PHONY: build
 build-docker: ## build all containers
-	$(BUILDER)
-
-.PHONY: _build-socket-server
-_build-docker-socket-server:
-	$(BUILDER) socket-server
+	$(BUILDER) $(target) --load
 
 .PHONY: _build-init-db
 _build-docker-init-db:
@@ -249,8 +255,7 @@ define RUN_LOCAL_TXT
 Which service do you want to start run?
   1) backend-server
   2) room-server
-  3) socket-server
-  4) web-server
+  3) web-server
 endef
 export RUN_LOCAL_TXT
 
@@ -276,8 +281,7 @@ run-local: ## run services with local programming language envinroment
 	@read -p "ENTER THE NUMBER: " SERVICE ;\
  	if [ "$$SERVICE" = "1" ]; then make _run-local-backend-server; fi ;\
  	if [ "$$SERVICE" = "2" ]; then make _run-local-room-server; fi ;\
- 	if [ "$$SERVICE" = "3" ]; then make _run-local-socket-server ;fi ;\
- 	if [ "$$SERVICE" = "4" ]; then make _run-local-web-server; fi
+ 	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi
 
 .PHONY: run-perf
 run-perf: ## run services with local programming language envinroment for performance profiling
@@ -309,15 +313,7 @@ _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	rm -rf packages/datasheet/web_build;\
-	yarn build:dst:pre;\
 	yarn sd
-
-_run-local-socket-server:
-	source scripts/export-env.sh $$ENV_FILE;\
-	source scripts/export-env.sh $$DEVENV_FILE;\
-	cd packages/socket-server ;\
-	yarn run start:dev
-
 
 define DEVENV_TXT
 Which devenv do you want to start run?
@@ -325,7 +321,6 @@ Which devenv do you want to start run?
   1) backend-server
   2) room-server
   3) web-server
-  4) socket-server
 endef
 export DEVENV_TXT
 
@@ -336,8 +331,7 @@ devenv: ## debug all devenv services with docker compose up -d
  	if [ "$$DEVENV_NUMBER" = "0" ]; then make devenv-up; fi ;\
  	if [ "$$DEVENV_NUMBER" = "1" ]; then make devenv-backend-server; fi ;\
  	if [ "$$DEVENV_NUMBER" = "2" ]; then make devenv-room-server; fi ;\
- 	if [ "$$DEVENV_NUMBER" = "3" ]; then make devenv-web-server; fi ;\
- 	if [ "$$DEVENV_NUMBER" = "4" ]; then make devenv-socket-server; fi
+ 	if [ "$$DEVENV_NUMBER" = "3" ]; then make devenv-web-server; fi
 
 
 .PHONY: devenv-up
@@ -346,7 +340,7 @@ devenv-up:
 
 .PHONY: devenv-down
 devenv-down: ## debug all devenv services with docker compose up -d
-	$(_DEVENV) down -v
+	$(_DEVENV) down -v --remove-orphans
 
 devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
@@ -367,32 +361,22 @@ devenv-room-server:
 	$(RUNNER) room-server yarn start:room-server
 
 
-.PHONY: devenv-socket-server
-devenv-socket-server:
-	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
-
-
 .PHONY: install
 install: install-local
 	@echo 'Install Finished'
 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
-	yarn install && yarn build:dst:pre
-	cd packages/socket-server && yarn
-	cd backend-server && ./gradlew build -x test
+	yarn install && yarn build:pre
+	cd backend-server && ./gradlew build -x test --stacktrace
 
 .PHONY: install-docker
-install-docker: _install-docker-web-server _install-docker-backend-server _install-docker-socket-server _install-docker-room-server ## install all dependencies with docker devenv
+install-docker: _install-docker-web-server _install-docker-backend-server _install-docker-room-server ## install all dependencies with docker devenv
 	@echo 'Install Finished'
 
 .PHONY: _install-docker-backend-server
 _install-docker-backend-server:
 	$(RUNNER) backend-server ./gradlew build -x test
-
-.PHONY: _install-docker-socket-server
-_install-docker-socket-server:
-	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
 
 .PHONY: _install-docker-web-server
 _install-docker-web-server:
@@ -400,7 +384,7 @@ _install-docker-web-server:
 
 .PHONY: _install-docker-room-server
 _install-docker-room-server:
-	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
+	$(RUNNER) room-server sh -c "yarn install && yarn build:pre"
 
 
 .PHONY:
@@ -425,7 +409,7 @@ major: # bump version number patch
 
 ### data environement
 .PHONY: dataenv
-dataenv:
+dataenv: _check_env
 	make dataenv-up
 
 DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
@@ -442,7 +426,7 @@ _dataenv-volumes: ## create data folder with current user permissions
 		$$DATA_PATH/.data/rabbitmq \
 
 dataenv-down:
-	$(_DATAENV) down -v
+	$(_DATAENV) down -v --remove-orphans
 
 dataenv-ps:
 	$(_DATAENV) ps
@@ -459,7 +443,7 @@ up: _dataenv-volumes ## startup the application
 
 .PHONY: down
 down: ## shutdown the application
-	docker compose down -v
+	docker compose down -v --remove-orphans
 
 .PHONY:ps
 ps: ## docker compose ps
@@ -484,13 +468,6 @@ db-apply: ## init-db update database structure (use .env)
 	cd init-db ;\
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
 	docker run --rm --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
-
-
-db-apply-ee: ## init-db enterprise  database structure (use .env)
-	cp -rf ../enterprise/init-db init-db/src/main/resources/db/enterprise;\
-	cd init-db ;\
-	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
-	docker run --rm --network apitable_apitable --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
 
 changelog: ## make changelog with github api
 	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\

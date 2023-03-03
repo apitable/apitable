@@ -37,7 +37,7 @@ import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
 
-export const FilterValue: React.FC<IFilterValueProps> = props => {
+export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
@@ -60,7 +60,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
 
   useMemo(() => {
     setValue(condition.value ? condition.value[0] : '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [field]);
 
   const { isComputed, hasError } = Field.bindModel(field);
@@ -79,13 +79,13 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
     if (fakeField) field = fakeField as IField;
   }
 
-  const inputChange = e => {
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue(value);
     debounceInput(value);
   };
 
-  const submitFilterValue = selectValue => {
+  const submitFilterValue = (selectValue: any) => {
     // The filter component of the toolbar is go here.
     changeFilter && changeFilter(value => {
       // Check that if the selectValue is the same as the old value, do not update the store.

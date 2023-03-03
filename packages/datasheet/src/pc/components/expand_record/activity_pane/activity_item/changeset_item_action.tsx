@@ -48,7 +48,7 @@ interface IActionItem {
   index: number;
 }
 
-const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
+const FieldSwitchTitle: React.FC<React.PropsWithChildren<{ od: any; oi: any }>> = ({ od, oi }) => {
   const colors = useThemeColors();
   return (
     <div className={styles.changesetAction}>
@@ -62,12 +62,12 @@ const FieldSwitchTitle: React.FC<{ od: any; oi: any }> = ({ od, oi }) => {
   );
 };
 
-const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
+const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAction>> = (props) => {
   const { actions, datasheetId, cacheFieldOptions, revision } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-  const ActionItem: React.FC<IActionItem> = ({ action, index }) => {
+  const ActionItem: React.FC<React.PropsWithChildren<IActionItem>> = ({ action, index }) => {
     let { od, oi } = action as any;
     const { p } = action as any;
 
@@ -160,7 +160,7 @@ const ChangesetItemActionBase: React.FC<IChangesetItemAction> = (props) => {
         (typeof od[0] === 'object' ? has(od, '0.id') : Boolean(od[0]));
       let diff = shouldDiff ? intersectionWith(oi, od, isEqual) : null;
       if (diff) {
-        const compare = item => typeof item === 'object' ? item.id : item;
+        const compare = (item: { id: any; }) => typeof item === 'object' ? item.id : item;
         oi = xorBy(oi, diff, compare);
         od = xorBy(od, diff, compare);
         if (oi.length === 0) {

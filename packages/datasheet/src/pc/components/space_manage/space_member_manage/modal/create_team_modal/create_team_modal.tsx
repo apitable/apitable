@@ -27,7 +27,7 @@ import { useCreateSubTeam } from 'pc/hooks';
 interface IModalProps {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const CreateTeamModal: FC<IModalProps> = props => {
+export const CreateTeamModal: FC<React.PropsWithChildren<IModalProps>> = props => {
   const [inputContent, setInputContent] = useState('');
   const [err, setErr] = useState('');
   const {
@@ -40,11 +40,10 @@ export const CreateTeamModal: FC<IModalProps> = props => {
     rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,
   }), shallowEqual);
   const teamId = rightClickTeamInfoInSpace.teamId ? rightClickTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID;
-  const [setStart] = useCreateSubTeam(inputContent, spaceId, teamId, user!);
+  const { createTeam } = useCreateSubTeam(inputContent, spaceId, teamId, user!);
 
   const validCreate = () => {
-    setStart(true);
-    setTimeout(() => {
+    createTeam().then(() => {
       props.setModalVisible(false);
     });
   };

@@ -23,9 +23,9 @@ import { Record } from '../model/record';
 import { WidgetContext } from '../context';
 import { useMeta } from './use_meta';
 import { Datasheet } from 'model';
-import { getViewById, getVisibleRowsCalcCache, getWidgetDatasheet } from 'store';
-import { isIframe } from 'iframe_message/utils';
-import { Selectors } from '@apitable/core';
+import { getWidgetDatasheet } from 'store';
+import { IReduxState, Selectors } from '@apitable/core';
+import { useReferenceCount } from 'view_computed';
 
 /**
  * Gets all the records under a given view in the datasheet. 
@@ -85,32 +85,23 @@ export function useRecords(datasheet: Datasheet | undefined, viewId: string | un
  */
 export function useRecords(param1: Datasheet | string | undefined, param2?: IRecordQuery | string, param3?: IRecordQuery) {
   const context = useContext<IWidgetContext>(WidgetContext);
-  const hasDatasheet = param1 instanceof Datasheet;
-  const viewId = hasDatasheet ? param2 as string : param1 as string;
-  const query = hasDatasheet ? param3 as IRecordQuery : param2 as IRecordQuery;
+  const isDatasheet = param1 instanceof Datasheet;
+  const viewId = isDatasheet ? param2 as string : param1 as string;
+  const query = isDatasheet ? param3 as IRecordQuery : param2 as IRecordQuery;
   const { datasheetId: metaDatasheetId } = useMeta();
-  const datasheetId = hasDatasheet ? (param1 as Datasheet).datasheetId : metaDatasheetId;
+  const datasheetId = isDatasheet ? (param1 as Datasheet).datasheetId : metaDatasheetId;
+  useReferenceCount(datasheetId, viewId);
 
   const visibleRows = useSelector(state => {
     const snapshot = getWidgetDatasheet(state, datasheetId)?.snapshot;
-    if (!datasheetId || !snapshot || !viewId || isIframe()) {
+    if (!datasheetId || !snapshot || !viewId) {
       return null;
     }
-    const globalState = context.globalStore.getState();
-    const view = getViewById(state, datasheetId, viewId)!;
-    return Selectors.getVisibleRowsBase(globalState, snapshot, view);
-  });
-
-  const iframeVisibleRows = useSelector(state => {
-    const datasheet = getWidgetDatasheet(state, datasheetId);
-    if (!datasheetId || !viewId || !isIframe() || datasheet?.isPartOfData) {
-      return null;
-    }
-    return getVisibleRowsCalcCache(state, datasheetId, viewId);
+    return Selectors.getVisibleRowsWithoutSearch(state as any as IReduxState, datasheetId, viewId);
   });
 
   return useMemo(() => {
-    let _visibleRows = isIframe() ? iframeVisibleRows : visibleRows;
+    let _visibleRows = visibleRows;
     if (!datasheetId || !_visibleRows) return [];
     if (query && 'ids' in query) {
       if (!query.ids) {
@@ -120,5 +111,5 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
       _visibleRows = _visibleRows.filter(row => idSet.has(row.recordId));
     }
     return _visibleRows.map(row => new Record(datasheetId, context, row.recordId));
-  }, [datasheetId, visibleRows, iframeVisibleRows, query, context]);
+  }, [datasheetId, visibleRows, query, context]);
 }

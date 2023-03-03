@@ -25,7 +25,7 @@ import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { INVITE_TOKEN_LENGTH } from '../constant';
 
-const MailInvite: FC = () => {
+const MailInvite: FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const dispatch = useDispatch();
   const tokenParams = query.get('inviteToken');

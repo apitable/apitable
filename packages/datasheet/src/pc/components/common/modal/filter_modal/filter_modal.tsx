@@ -35,7 +35,7 @@ interface IFilterModalProps extends IModalProps {
   field?: ILookUpField;
 }
 
-export const FilterModal: FC<IFilterModalProps> = props => {
+export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props => {
   const { title, handleCancel, datasheetId, handleOk, field } = props;
   const [filterInfo, setFilters] = React.useState(props.filterInfo || {
     conditions: [] as IFilterCondition[],

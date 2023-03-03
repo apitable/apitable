@@ -49,7 +49,7 @@ type IChangesetItem = IActivityPaneProps & {
   setChooseComment: (item: IChooseComment) => void;
 };
 
-const ChangesetItemBase: React.FC<IChangesetItem> = props => {
+const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = props => {
   const { expandRecordId, changeset, cacheFieldOptions, datasheetId, setChooseComment, unit } = props;
   const { operations, userId, createdAt, revision } = changeset;
 
@@ -231,7 +231,7 @@ const ChangesetItemBase: React.FC<IChangesetItem> = props => {
                       <IconButton onClick={handleReply} icon={CommentOutlined} shape="square" className={cls('replyIcon', styles.icon)} />
                       {allowDeleteComment && (
                         <IconButton
-                          onClick={e => {
+                          onClick={() => {
                             const commentItem = {
                               comment: get(changeset, 'operations.0.actions.0.li'),
                               expandRecordId,

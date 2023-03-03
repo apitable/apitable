@@ -23,7 +23,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { Skeleton } from '@apitable/components';
 import { Space } from 'antd';
 
-export const TabBar: FC<{ loading: boolean }> = ({ loading }) => {
+export const TabBar: FC<React.PropsWithChildren<{ loading: boolean }>> = ({ loading }) => {
   return (
     <div className={styles.tabBarWrapper}>
       { 
@@ -33,7 +33,7 @@ export const TabBar: FC<{ loading: boolean }> = ({ loading }) => {
           </Space>
         ) : (
           <AutoSizer style={{ width: '100%', height: '100%' }}>
-            {({ width }) => <FormTab />}
+            {() => <FormTab />}
           </AutoSizer>
         )
       }

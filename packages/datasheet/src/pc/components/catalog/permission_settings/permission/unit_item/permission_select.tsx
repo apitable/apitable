@@ -22,11 +22,10 @@ import { IRoleOption, IUnitInfo } from 'pc/components/catalog/permission_setting
 import styles from './style.module.less';
 import classNames from 'classnames';
 import classnames from 'classnames';
-import { CheckOutlined, WarnFilled } from '@apitable/icons';
+import { CheckOutlined, ChevronDownOutlined, WarnFilled } from '@apitable/icons';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header/wrapper_tooltip';
 
 const Option = Select.Option!;
@@ -41,7 +40,7 @@ interface IPermissionSelectProps {
   roleInvalid?: boolean;
 }
 
-export const PermissionSelect: React.FC<IPermissionSelectProps> = props => {
+export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelectProps>> = props => {
   const { roleOptions, role, onChange, unit, allowRemove = true, onRemove, roleInvalid } = props;
   const colors = useThemeColors();
   return (
@@ -50,7 +49,7 @@ export const PermissionSelect: React.FC<IPermissionSelectProps> = props => {
         <div className={styles.selectWrapper}>
           <Select
             value={role}
-            onSelected={(option, index) => {
+            onSelected={(option) => {
               if (option.value === 'remove') {
                 onRemove?.(unit.id);
                 return;
@@ -102,7 +101,7 @@ export const PermissionSelect: React.FC<IPermissionSelectProps> = props => {
             triggerComponent={
               <div className={styles.mobileRoleSelect}>
                 {ConfigConstant.permissionText[role!]}
-                {<PulldownIcon className={styles.arrowIcon} width={16} height={16} fill={colors.fourthLevelText} />}
+                {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
               </div>
             }
             renderList={({ setVisible }) => {

@@ -28,7 +28,7 @@ store.subscribe(() => {
     preTheme = theme;
     const iframeList = Array.from(document.getElementsByTagName('iframe'));
     iframeList.forEach(v => {
-      v.contentWindow?.postMessage({ type: 'vika_theme', vika_theme: theme }, '*');
+      v.contentWindow?.postMessage({ type: 'apitable_theme', apitable_theme: theme }, '*');
     });
   }
 });

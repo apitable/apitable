@@ -28,7 +28,7 @@ interface IMemory {
   cellValue: IAttachmentValue[];
 }
 
-export const Memory: React.FC<IMemory> = props => {
+export const Memory: React.FC<React.PropsWithChildren<IMemory>> = props => {
   const { cellValue } = props;
   const [usedMemory, setUsedMemory] = useState(0);
   const [totalMemory, setTotalMemory] = useState(0);
@@ -39,7 +39,7 @@ export const Memory: React.FC<IMemory> = props => {
       setUsedMemory(usedCapacity);
       setTotalMemory(currentBundleCapacity === -1 ? Number.POSITIVE_INFINITY : currentBundleCapacity);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue]);
 
   const usePercent = Math.ceil((usedMemory / totalMemory) * 100);

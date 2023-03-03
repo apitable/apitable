@@ -21,17 +21,15 @@ import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
 import { useEditSubAdmin, useNotificationCreate } from 'pc/hooks';
 import { generateUserInfo } from 'pc/utils';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { PermissionCard } from '../permission_card';
 import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+import { AddOutlined } from '@apitable/icons';
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),
@@ -52,7 +50,7 @@ export enum ModalType {
   Add = 'add',
 }
 
-export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
+export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
   const { subAdminList, userInfo } = useSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
@@ -100,7 +98,7 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
     }
     if (source === ModalType.Edit) {
       setSubmitBtnLoading(true);
-      setEditStart(true);
+      setEditStart?.(true);
       return;
     }
     handCancel();
@@ -171,7 +169,9 @@ export const AddAdminModal: FC<IModalProps> = ({ cancelModal, editOrReadSubMainI
           />
         ) : (
           <>
-            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={<AddIcon fill='currentColor' />}>
+            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={
+              <AddOutlined size={12} color='currentColor' className={styles.addBtnIcon} />
+            }>
               {t(Strings.add_member)}
             </Button>
             <div className={styles.selectedWrapper}>

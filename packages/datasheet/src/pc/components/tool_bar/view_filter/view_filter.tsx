@@ -34,8 +34,7 @@ import { resourceService } from 'pc/resource_service';
 import { useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors, useListenVisualHeight } from '@apitable/components';
+import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import classNames from 'classnames';
@@ -45,10 +44,15 @@ import { SyncViewTip } from '../sync_view_tip';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { useResponsive } from 'pc/hooks';
+import { AddOutlined } from '@apitable/icons';
+
+interface IViewFilter {
+  triggerInfo?: IUseListenTriggerInfo;
+}
 
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = 260;
-const ViewFilterBase = props => {
+const ViewFilterBase = (props: IViewFilter) => {
   const { triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
@@ -113,7 +117,7 @@ const ViewFilterBase = props => {
   // Mark if a new filter has been added, scrolling directly to the bottom in the commandForAddViewFilter function is not valid.
   const added = useRef<boolean>(false);
 
-  function commandForAddViewFilter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function commandForAddViewFilter(_e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const firstColumns = fieldMap[columns[0].fieldId];
     const exitIds = activeViewFilter ? activeViewFilter.conditions.map(item => item.conditionId) : [];
     const acceptFilterOperators = Field.bindModel(firstColumns).acceptFilterOperators;
@@ -150,7 +154,7 @@ const ViewFilterBase = props => {
     }
     filterCommand({
       conjunction: activeViewFilter!.conjunction,
-      conditions: activeViewFilter!.conditions.filter((item, index) => {
+      conditions: activeViewFilter!.conditions.filter((_item, index) => {
         return index !== idx;
       }),
     });
@@ -168,7 +172,7 @@ const ViewFilterBase = props => {
       </div>
       <div className={styles.addNewButton} onClick={commandForAddViewFilter}>
         <div className={styles.iconAdd}>
-          <IconAdd width={16} height={16} fill={colors.thirdLevelText} />
+          <AddOutlined size={16} color={colors.thirdLevelText} />
         </div>
         {t(Strings.add_filter)}
       </div>

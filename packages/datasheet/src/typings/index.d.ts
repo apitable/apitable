@@ -17,7 +17,10 @@
  */
 
 import { ThemeName } from '@apitable/components';
-import { IReduxState, IUserInfo, IWizardsConfig } from '@apitable/core';
+import { IReduxState, IUserInfo,
+  // @ts-ignore
+  IWizardsConfig
+} from '@apitable/core';
 import { getEnvVars } from 'get_env';
 import 'react-redux';
 import { Object } from 'ts-toolbelt';

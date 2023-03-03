@@ -21,7 +21,7 @@ import {
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
-import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@apitable/icons';
+import { AutosaveOutlined, ChevronRightOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import dynamic from 'next/dynamic';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
@@ -53,7 +53,7 @@ interface IContextMenuProps {
   setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-export const ContextMenu: React.FC<IContextMenuProps> = props => {
+export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> = props => {
   const {
     activeViewId,
     viewList,
@@ -108,13 +108,13 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     deleteView(currentViewId);
   };
 
-  const handleRenameItem = (args) => {
+  const handleRenameItem = (args: any) => {
     const { props: { tabIndex }} = args;
     setEditIndex(tabIndex);
     return;
   };
 
-  const handleForDeleteView = async(args) => {
+  const handleForDeleteView = async(args: any) => {
     const { props: { tabIndex }} = args;
     let content = t(Strings.del_view_content, {
       view_name: viewList[tabIndex].name,
@@ -146,7 +146,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     });
   };
 
-  const exportTypeCsv = (args) => {
+  const exportTypeCsv = (args: any) => {
     const { props: { tabIndex }} = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_CSV,
@@ -154,7 +154,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     );
   };
 
-  const exportTypeXlsx = (args) => {
+  const exportTypeXlsx = (args: any) => {
     const { props: { tabIndex }} = args;
     exportDatasheet(
       activeNodeId!, ConfigConstant.EXPORT_TYPE_XLSX,
@@ -162,7 +162,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     );
   };
 
-  const exportTypeImage = (args) => {
+  const exportTypeImage = (args: any) => {
     const { props: { tabIndex }} = args;
     const viewId = Selectors.getViewsList(store.getState())[tabIndex].id;
     if (currentViewId !== viewId) return;
@@ -186,7 +186,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     }, 200);
   };
 
-  const duplicateView = (args) => {
+  const duplicateView = (args: any) => {
     const { props: { tabIndex }} = args;
     const view = viewList[tabIndex] as IViewProperty;
     const snapshot = Selectors.getSnapshot(store.getState());
@@ -235,7 +235,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     }, nodeName);
   };
 
-  const openViewLock = (args) => {
+  const openViewLock = (args: any) => {
     const { props: { tabIndex }} = args;
     expandViewLock(viewList[tabIndex].id);
   };
@@ -279,11 +279,11 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     ],
     [
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
-        hidden: (arg) => {
+        hidden: (arg: any) => {
           if (!permissions.manageable) {
             return true;
           }
@@ -295,11 +295,11 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_LOCK,
       },
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} checked />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
-        hidden: (arg) => {
+        hidden: (arg: any) => {
           if (!permissions.manageable) {
             return true;
           }
@@ -335,21 +335,21 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         text: t(Strings.view_export_to_excel),
         hidden: !permissions.exportable || isMobileApp(),
         id: DATASHEET_ID.VIEW_EXPORT,
-        arrow: <CalenderRightOutlined size={10} color={black[500]} />,
+        arrow: <ChevronRightOutlined size={10} color={black[500]} />,
         children: [{
-          icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
           text: t(Strings.csv),
           onClick: exportTypeCsv,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_CSV,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
           text: t(Strings.excel),
           onClick: exportTypeXlsx,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_EXCEL,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
           text: t(Strings.png),
           onClick: exportTypeImage,
           'data-sensors-click': true,
@@ -368,7 +368,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         hidden: !permissions.viewRemovable,
         'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_DELETE,
-        disabled: (arg) => {
+        disabled: (arg: any) => {
           const { props: { tabIndex }} = arg;
           const view = viewList[tabIndex];
           setShowDeleteTip(Boolean(view.lockInfo));

@@ -23,7 +23,7 @@ import { FC, memo } from 'react';
 
 const LineComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/line'), { ssr: false });
 
-export const Line: FC<ShapeConfig> = memo((props) => {
+export const Line: FC<React.PropsWithChildren<ShapeConfig>> = memo((props) => {
   const colors = useThemeColors();
   const {
     x,

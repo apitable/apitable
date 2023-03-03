@@ -18,27 +18,26 @@
 
 package com.apitable.organization.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Space Station Data Creator View
+ * Space Station Data Creator View.
  * </p>
  */
 @Data
-@ApiModel("Data Creator View")
+@Schema(description = "Data Creator View")
 public class CreatedMemberInfoVo {
 
-    @ApiModelProperty(value = "Node Creator - Name", position = 8)
+    @Schema(description = "Node Creator - Name")
     private String memberName;
 
-    @ApiModelProperty(value = "Node Creator - avatar", example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 9)
+    @Schema(description = "Node Creator - avatar", example = "http://wwww.apitable"
+        + ".com/2019/11/12/17123187253.png")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 

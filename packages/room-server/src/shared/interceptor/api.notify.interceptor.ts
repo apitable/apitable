@@ -92,7 +92,7 @@ export class ApiNotifyInterceptor implements NestInterceptor {
             toUnitId: unitIds,
             fromUserId: request[USER_HTTP_DECORATE].id,
           };
-          return this.queueSenderService.sendMessage('vikadata.api.notification.exchange', 'notification.message', message);
+          return this.queueSenderService.sendMessage('apitable.notification.exchange', 'notification.message', message);
         }
       }
     }

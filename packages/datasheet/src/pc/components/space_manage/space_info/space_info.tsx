@@ -105,7 +105,6 @@ export const SpaceInfo = () => {
         data.desc = data.descEn || data.desc;
         data.linkText = data.linkTextEn || data.linkText;
       }
-      console.log(setAd);
       setAd(data);
     });
   }, []);

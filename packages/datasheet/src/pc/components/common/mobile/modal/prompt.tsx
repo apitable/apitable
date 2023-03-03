@@ -32,7 +32,7 @@ interface IPromptInnerProps {
 
 const prefixCls = 'adm-modal';
 
-const PromptInner: React.FC<IPromptInnerProps & { close(): void }> = ({
+const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(): void }>> = ({
   title,
   callbackOrActions,
   defaultValue,

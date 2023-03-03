@@ -1,9 +1,9 @@
-version: '3.4'
+version: '3.9'
 
 services:
   test-mysql:
     container_name: test-mysql
-    image: mysql:8.0.28-oracle
+    image: mysql:8.0.32
     ports:
       - '3306:3306'
     networks:
@@ -24,7 +24,7 @@ services:
 
   test-redis:
     container_name: test-redis
-    image: redis:5.0.7-alpine
+    image: redis:7.0.8
     ports:
       - '6379:6379'
     networks:
@@ -40,7 +40,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3-management
+    image: rabbitmq:3.11.9-management
     ports:
       - '5672:5672'
     networks:
@@ -87,6 +87,8 @@ services:
       target: builder
     volumes:
       - ./packages/room-server/coverage:/app/packages/room-server/coverage
+      - ./packages/room-native-api/coverage:/app/packages/room-native-api/coverage
+      - ./packages/room-native-api/target:/app/packages/room-native-api/target
     environment:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql
@@ -106,6 +108,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - INSTANCE_COUNT=1
       - APPLICATION_NAME=NEST_REST_SERVER
+      - ENABLE_SOCKET=false
       - NODE_OPTIONS=--max-old-space-size=4096
       - OSS_HOST=https://s1.vika.cn
       - OSS_BUCKET=QNY1

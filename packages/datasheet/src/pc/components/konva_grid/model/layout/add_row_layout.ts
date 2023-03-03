@@ -24,8 +24,16 @@ import { colors } from '@apitable/components';
 
 const AddOutlinedPath = AddOutlined.toString();
 
+interface ICell {
+  row: any;
+  isHoverColumn: boolean
+  width: number;
+  isHoverRow: boolean;
+  rowCreatable: boolean;
+}
+
 export class AddRowLayout extends GridLayout {
-  renderAddFieldBlank(row: ILinearRow) {
+  override renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;
     const width = this.addBtnWidth;
@@ -44,7 +52,7 @@ export class AddRowLayout extends GridLayout {
     width,
     isHoverRow,
     rowCreatable
-  }) {
+  }: Pick<ICell, 'width' | 'isHoverRow' | 'rowCreatable'>) {
     const x = this.x;
     const y = this.y;
     const rowHeight = this.rowHeight;
@@ -69,7 +77,7 @@ export class AddRowLayout extends GridLayout {
     isHoverRow,
     isHoverColumn,
     rowCreatable, 
-  }) {
+  }: Pick<ICell, 'row' | 'isHoverRow' | 'isHoverColumn' | 'rowCreatable'>) {
     if (!this.isFirst) return;
     const { depth } = row;
     const y = this.y;
@@ -120,7 +128,7 @@ export class AddRowLayout extends GridLayout {
     row,
     rowCreatable,
     isHoverRow
-  }) {
+  }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverRow'>) {
     if (!this.isLast) return;
     const { depth } = row;
     const x = this.x;
@@ -152,7 +160,7 @@ export class AddRowLayout extends GridLayout {
   private renderCommonCell({
     rowCreatable,
     isHoverRow
-  }) {
+  }: Pick<ICell, 'rowCreatable' | 'isHoverRow'>) {
     if (this.isFirst || this.isLast) return;
     this.renderCell({
       width: this.columnWidth,
@@ -166,7 +174,7 @@ export class AddRowLayout extends GridLayout {
     rowCreatable,
     isHoverColumn,
     isHoverRow
-  }) {
+  }: Pick<ICell, 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
     if (this.isFirst || !rowCreatable || !isHoverColumn || !isHoverRow) return;
     const x = this.x;
     const y = this.y;
@@ -196,7 +204,7 @@ export class AddRowLayout extends GridLayout {
     rowCreatable,
     isHoverRow,
     isHoverColumn
-  }) {
+  }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
     this.renderFirstCell({
       row, 
       rowCreatable, 

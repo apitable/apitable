@@ -18,72 +18,70 @@
 
 package com.apitable.template.vo;
 
-import java.util.List;
-
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullArraySerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Template View
+ * Template View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Template View")
+@Schema(description = "Template View")
 public class TemplateVo {
 
-    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1)
+    @Schema(description = "Template ID", example = "tplHTbkg7qbNJ")
     private String templateId;
 
-    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 2)
+    @Schema(description = "Template Name", example = "This is a template")
     private String templateName;
 
-    @ApiModelProperty(value = "Node Id of template mapping", example = "nod10", position = 3)
+    @Schema(description = "Node Id of template mapping", example = "nod10")
     private String nodeId;
 
-    @ApiModelProperty(value = "Node Type", example = "1", position = 4)
+    @Schema(description = "Node Type", example = "1")
     private Integer nodeType;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Cover", example = "http://...", position = 5)
+    @Schema(description = "Cover", example = "http://...")
     private String cover;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Describe", example = "This is a showcase", position = 6)
+    @Schema(description = "Describe", example = "This is a showcase")
     private String description;
 
-    @ApiModelProperty(value = "Creator user ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 6)
+    @Schema(description = "Creator user ID (the actual return is uuid)", type = "java.lang"
+        + ".String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
-    @ApiModelProperty(value = "Creator User UUID", dataType = "java.lang.String", example = "1", position = 6)
+    @Schema(description = "Creator User UUID", type = "java.lang.String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Creator's avatar", example = "public/2020/...", position = 7)
+    @Schema(description = "Creator's avatar", example = "public/2020/...")
     private String avatar;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Creator nickname", example = "Zhang San", position = 8)
+    @Schema(description = "Creator nickname", example = "Zhang San")
     private String nickName;
 
-    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 9)
+    @Schema(description = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "Template label", example = "[\"aaa\", \"bbb\"]", position = 10)
+    @Schema(description = "Template label", example = "[\"aaa\", \"bbb\"]")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> tags;
 

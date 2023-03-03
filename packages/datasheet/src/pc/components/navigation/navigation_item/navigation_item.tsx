@@ -31,7 +31,7 @@ export interface INavigationItemProps {
   onClick?: () => void;
 }
 
-export const NavigationItem: FC<INavigationItemProps> = ({
+export const NavigationItem: FC<React.PropsWithChildren<INavigationItemProps>> = ({
   animationData,
   loop,
   id,

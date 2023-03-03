@@ -34,7 +34,7 @@ import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 
-export const TemplatePreview: FC = () => {
+export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use
   const [usingTemplate, setUsingTemplate] = useState('');
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -50,7 +50,7 @@ export const TemplatePreview: FC = () => {
   const templateCategory = useSelector((state: IReduxState) => state.templateCentre.category);
   useEffect(() => {
     if (usingTemplate && !spaceId && !userInfo) {
-      setOpenLoginModal(true);
+      Router.redirect(Navigation.LOGIN);
       return;
     }
     // Current user is logged in
@@ -58,7 +58,7 @@ export const TemplatePreview: FC = () => {
       Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
       return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [usingTemplate]);
 
   const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {

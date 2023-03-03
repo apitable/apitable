@@ -18,7 +18,7 @@
 
 import { getLanguage, Navigation, Strings, t, Api } from '@apitable/core';
 import { Button, Typography, Loading } from '@apitable/components';
-import { DescriptionOutlined, ShareOutlined } from '@apitable/icons';
+import { ChevronLeftOutlined, DescriptionOutlined, ShareOutlined } from '@apitable/icons';
 import MarkdownIt from 'markdown-it';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message/message';
@@ -29,7 +29,6 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import BackIcon from 'static/icon/common/common_icon_left_line.svg';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
 import styles from './style.module.less';
@@ -112,7 +111,7 @@ const AlbumDetail = () => {
     <div className={styles.albumDetail}>
       <header className={styles.albumHeader}>
         <div className={styles.goBack} onClick={goBack}>
-          <BackIcon fill='currentColor' />
+          <ChevronLeftOutlined color='currentColor' />
           <span className={styles.albumName}>
             {album.name}
           </span>

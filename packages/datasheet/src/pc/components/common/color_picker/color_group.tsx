@@ -34,7 +34,7 @@ export interface IColorGroupProps {
   style?: React.CSSProperties;
 }
 
-export const ColorGroup: FC<IColorGroupProps> = props => {
+export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = props => {
   const { colorGroup, option, onChange, style } = props;
   const [colorIdx, setColorIdx] = useState<number>();
   const colors = useThemeColors();

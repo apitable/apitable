@@ -32,7 +32,7 @@ export const Radio = React.forwardRef(({
   ...restProps
 }: IRadio, ref: React.Ref<HTMLLabelElement>) => {
   const context = React.useContext(RadioGroupContext);
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent) => {
     onChange?.(e);
     context?.onChange?.(e);
   };
@@ -48,7 +48,7 @@ export const Radio = React.forwardRef(({
     value
   };
   return (
-    <RadioLabelStyled className={cls({
+    <RadioLabelStyled ref={ref} className={cls({
       'radio-label-btn': isBtn,
       'radio-label-btn-checked': isBtn && isChecked,
       'radio-label-btn-disabled': isBtn && disabled,

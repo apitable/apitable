@@ -61,14 +61,13 @@ interface IKanbanViewProps {
   width: number;
 }
 
-export const KanbanView: React.FC<IKanbanViewProps> = props => {
+export const KanbanView: React.FC<React.PropsWithChildren<IKanbanViewProps>> = props => {
   const { width, height } = props;
   const groupIds = useSelector(Selectors.getKanbanGroupMapIds) || [];
   const view = useSelector(Selectors.getCurrentView) as IKanbanViewProperty;
   const hiddenGroupMap = view.style.hiddenGroupMap || {};
   const visibleGroupIds = groupIds.filter(id => !hiddenGroupMap[id]);
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const commandManager = resourceService.instance!.commandManager;
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId);
   const { viewId, datasheetId } = useSelector(state => state.pageParams);
   const field = useSelector(state => Selectors.getField(state, kanbanFieldId || ''));
@@ -101,12 +100,12 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   useEffect(() => {
     const collapse = getStorage(StorageName.KanbanCollapse);
     setCollapse(collapse && collapse[storageId] ? collapse[storageId] : []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [storageId]);
 
   useEffect(() => {
     setStorage(StorageName.KanbanCollapse, { [storageId]: collapse });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [collapse]);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -186,7 +185,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
       direction,
     };
 
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       data: [moveData],
       viewId: viewId!,
@@ -379,7 +378,7 @@ export const KanbanView: React.FC<IKanbanViewProps> = props => {
   );
 };
 
-export const FancyTooltip: React.FC<{ left: number }> = ({ left }) => {
+export const FancyTooltip: React.FC<React.PropsWithChildren<{ left: number }>> = ({ left }) => {
   const shareId = useSelector(state => state.pageParams.shareId);
 
   return ReactDOM.createPortal(

@@ -33,7 +33,7 @@ interface ISelectUnitRightProps {
   spaceInfo?: ISpaceInfo | ISpaceBasicInfo | null;
 }
 
-export const SelectUnitRight: React.FC<ISelectUnitRightProps> = props => {
+export const SelectUnitRight: React.FC<React.PropsWithChildren<ISelectUnitRightProps>> = props => {
   const { source, checkedList, cancelCheck, spaceInfo: wecomSpaceInfo = null } = props;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || wecomSpaceInfo;
   return (

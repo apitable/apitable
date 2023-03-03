@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t, IUserInfo, TIMEZONES } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import elementClosest from 'element-closest';
 import 'enterprise/style.less';
 import ErrorPage from 'error_page';
+import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -81,7 +82,7 @@ const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
-  const resourceService = initResourceService(comlinkStore.store);
+  const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
 
@@ -99,7 +100,7 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp(props: AppProps) {
+function MyApp(props: AppProps & { envVars: string }) {
   const router = useRouter();
   const isWidget = router.asPath.includes('widget-stage');
   if (isWidget) {
@@ -108,19 +109,20 @@ function MyApp(props: AppProps) {
   return MyAppMain(props);
 }
 
-function MyAppMain({ Component, pageProps }: AppProps) {
+function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: string }) {
   const router = useRouter();
+  const env = JSON.parse(envVars);
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
       return LoadingStatus.Complete;
     }
     return LoadingStatus.None;
   });
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const handleStart = (url) => {
+    const handleStart = () => {
       if (loading !== LoadingStatus.None) {
         return;
       }
@@ -148,7 +150,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       // ldsEle?.parentNode?.removeChild(ldsEle);
 
     };
-    const handleComplete = (url) => {
+    const handleComplete = () => {
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -168,7 +170,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   useEffect(() => {
@@ -257,7 +259,10 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
+      window.__initialization_data__.wizards = defaultsDeep({
+        guide: SystemConfig.guide,
+        player: SystemConfig.player,
+      }, JSON.parse(res.data.wizards));
 
     };
     getUser().then(() => {
@@ -269,7 +274,9 @@ function MyAppMain({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
+    // @ts-ignore
     import('element-scroll-polyfill');
+    // @ts-ignore
     import('polyfill-object.fromentries');
     elementClosest(window);
   }, []);
@@ -293,16 +300,61 @@ function MyAppMain({ Component, pageProps }: AppProps) {
     })();
   }, []);
 
+  useEffect(() => {
+    document.title = t(Strings.system_configuration_product_name);
+    const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    descMeta.content = t(Strings.client_meta_label_desc);
+  }, []);
+
+  const curTimezone = userData?.timeZone;
+  const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
+    Api.updateUser({ timeZone }).then((res: any) => {
+      const { success } = res.data;
+      if (success) {
+        store.dispatch(StoreActions.setUserTimeZone(timeZone));
+        setUserData({
+          ...userData!,
+          timeZone,
+        });
+        cb?.();
+      }
+    });
+  };
+
+  useEffect(() => {
+    const checkTimeZoneChange = () => {
+      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!timeZone) return;
+      // set default timeZone
+      if (curTimezone === null) {
+        updateUserTimeZone(timeZone);
+      } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
+        updateUserTimeZone(timeZone, () => {
+          const currentTimeZoneData = TIMEZONES.find((tz: { utc: string; tzCode: string; }) => tz.tzCode === timeZone);
+          Modal.warning({
+            title: t(Strings.notify_time_zone_change_title),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
+          });
+        });
+      }
+    };
+    checkTimeZoneChange();
+    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [curTimezone]);
+
   return <>
     <Head>
-      <title>{t(Strings.system_configuration_product_name)}</title>
-      <meta name='description' content={t(Strings.client_meta_label_desc)} />
+      <title />
+      <meta name='description' content='' />
       <meta
         name='keywords'
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
-      <meta property='og:image' content='/logo.png' />
       <meta name='renderer' content='webkit' />
       <meta
         name='viewport'
@@ -313,7 +365,7 @@ function MyAppMain({ Component, pageProps }: AppProps) {
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    <Script strategy='lazyOnload' id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy="lazyOnload" id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -324,33 +376,33 @@ function MyAppMain({ Component, pageProps }: AppProps) {
             }
           })
         `}
-    </Script>
+    </Script>}
     {/*Baidu Statistics*/}
-    <Script id={'baiduAnalyse'}>
+    {env.BAIDU_ANALYSE_ID && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
             var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?39ab4bbbb01e48bee90b6b17a067b9f1";
+            hm.src = "https://hm.baidu.com/hm.js?${env.BAIDU_ANALYSE_ID}";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
           })();
         `}
-    </Script>
-    <Script id={'userAgent'}>
+    </Script>}
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
             !(function(c,i,e,b){var h=i.createElement("script");
             var f=i.getElementsByTagName("script")[0];
             h.type="text/javascript";
             h.crossorigin=true;
-            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"dta_2_83919"}));
+            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"${env.DINGTALK_MONITOR_PLATFORM_ID}"}));
             c[b].installAll()};
             f.parentNode.insertBefore(h,f);
             h.src=e})(window,document,"https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js","__wpk");
           }
         `}
-    </Script>
+    </Script>}
     {/* script loading js */}
     <Script id={'loadingAnimation'} strategy='lazyOnload'>
       {`
@@ -372,12 +424,16 @@ function MyAppMain({ Component, pageProps }: AppProps) {
           })
         `}
     </Script>
-    <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-    <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-    <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
+    {!env.DISABLE_AWSC &&
+      <>
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+      </>
+    }
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
-      <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
-        {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
+      <div className={'__next_main'}>
+        {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
           <Provider store={store}>
             <RouterProvider>
               <ThemeWrapper>
@@ -387,14 +443,31 @@ function MyAppMain({ Component, pageProps }: AppProps) {
           </Provider>
         </div>}
         {
-          ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-            <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+          <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
+            {
+              ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+              </div>
+            }
           </div>
         }
       </div>
     </Sentry.ErrorBoundary>}
-
+    {
+      env.GOOGLE_ANALYTICS_ID &&
+      <>
+        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${env.GOOGLE_ANALYTICS_ID}`} />
+        <Script id={'googleTag'}>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', window.__initialization_data__.envVars.GOOGLE_ANALYTICS_ID);
+          `}
+        </Script>
+      </>
+    }
   </>;
 }
 

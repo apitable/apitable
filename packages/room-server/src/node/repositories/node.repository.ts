@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeEntity } from 'node/entities/node.entity';
 import { NodeBaseInfo } from 'database/interfaces';
+import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
 import { EntityRepository, Repository } from 'typeorm';
 
@@ -59,6 +59,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the children node list of a given node
    */
   async selectAllSubNodeIds(nodeId: string): Promise<string[]> {
+    // todo(itou): replace dynamic sql
     const raws = await this.query(
       `
           WITH RECURSIVE sub_ids (node_id) AS
@@ -90,6 +91,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Example: for a path of 3 nodes, the returned array is `[nodeId, parentId, grandparentId, great-grandparentId]`
    */
   async selectParentPathByNodeId(nodeId: string): Promise<string[]> {
+    // todo(itou): replace dynamic sql
     // Query the path with recursive SQL, the result set includes the given node.
     const raws = await this.query(
       `
@@ -131,9 +133,9 @@ export class NodeRepository extends Repository<NodeEntity> {
       .getRawOne();
   }
 
-  selectNodeNameAndIconByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+  selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
     return this.findOne({
-      select: ['nodeName', 'icon'],
+      select: ['nodeName', 'icon', 'parentId'],
       where: [{ nodeId, isRubbish: false }],
     }).then(result => {
       if (result) {
@@ -141,6 +143,7 @@ export class NodeRepository extends Repository<NodeEntity> {
           id: nodeId,
           nodeName: result.nodeName,
           icon: result.icon || '',
+          parentId: result.parentId
         };
       }
       return undefined;

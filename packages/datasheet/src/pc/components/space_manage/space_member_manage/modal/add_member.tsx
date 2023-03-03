@@ -26,7 +26,7 @@ import { useMemberManage } from 'pc/hooks';
 interface IAddMember {
   onCancel: () => void;
 }
-export const AddMember: FC<IAddMember> = ({ onCancel }) => {
+export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel }) => {
   const {
     selectedTeamInfoInSpace,
     spaceId,
@@ -47,7 +47,7 @@ export const AddMember: FC<IAddMember> = ({ onCancel }) => {
       const { success, data } = res.data;
       const arr: string[] = [selectedTeamInfoInSpace.teamId];
       if (success && data.length) {
-        data.forEach(item => {
+        data.forEach((item: { memberId: string; }) => {
           arr.push(item.memberId);
         });
       }

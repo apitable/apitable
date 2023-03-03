@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Player, SystemConfig } from '@apitable/core';
+import {
+  Player, SystemConfig,
+  // @ts-ignore
+  IWizardsConfig
+} from '@apitable/core';
 import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // @ts-ignore
 import { updatePlayerConfig, getPlayerHooks } from 'enterprise';
+
 // const Triggers = SystemConfig.player.trigger;
 
 /**
@@ -33,7 +38,7 @@ export function init() {
   // Get configuration file
   const HooksConfig = window.__initialization_data__.wizards;
 
-  let config;
+  let config: IWizardsConfig | undefined;
   /**
    * Here it is better to distinguish the environment, local debugging is convenient to read the information directly from the configuration table, 
    * if not distinguish the environment, the impact on debugging will be greater
@@ -52,7 +57,7 @@ export function init() {
   const triggers = config.player.trigger;
   // pendingBindEvents = {eventId: triggerId[]}, event and trigger are in a one-to-many relationship
   const pendingBindEvents: { [key: string]: string[] } = {};
-  triggers.forEach(trigger => {
+  triggers.forEach((trigger: any) => {
     // Whether to abandon
     if (trigger.suspended) return;
     const curTriggerId = trigger.id;
@@ -69,18 +74,18 @@ export function init() {
     Player.bindTrigger(Events[eventId], args => {
       // Filter out triggers that don't match rule
       const validTriggers = allTriggerIds.filter(triggerId => {
-        const curTrigger = triggers.find(item => item.id === triggerId);
+        const curTrigger = triggers.find((item: any) => item.id === triggerId);
         return curTrigger &&
           isEventStateMatch(args, curTrigger.eventState) &&
-          isTimeRulePassed(curTrigger.startTime, curTrigger.endTime) &&
-          isRulesPassed(config.player.rule, curTrigger.rules);
+          isTimeRulePassed((curTrigger as any).startTime, (curTrigger as any).endTime) &&
+          isRulesPassed(config?.player.rule, curTrigger.rules);
       });
       // Iterate through multiple triggers and execute the corresponding actions
       validTriggers.forEach(triggerId => {
-        const trigger = triggers.find(item => item.id === triggerId);
+        const trigger = triggers.find((item: any) => item.id === triggerId);
         if (!trigger) return;
         const actions = trigger.actions || [];
-        startActions(config, actions);
+        startActions(config!, actions);
       });
     });
   });
@@ -91,12 +96,12 @@ export function init() {
   Steps && Object.keys(Steps).forEach(stepId => {
     const curStepInfo = Steps[stepId];
     if (!curStepInfo.hasOwnProperty('byEvent')) return;
-    const byEventId = curStepInfo.byEvent[0];
+    const byEventId = curStepInfo.byEvent![0];
     if (pendingBindEventsInSteps.includes(byEventId)) return;
     pendingBindEventsInSteps.push(byEventId);
   });
   pendingBindEventsInSteps.forEach(eventId => {
-    Player.bindTrigger(Events[eventId], args => {
+    Player.bindTrigger(Events[eventId], () => {
       const hooks = getPlayerHooks?.() || {};
       const { curGuideWizardId, triggeredGuideInfo } = hooks;
       // Whether the user is currently in certain wizards, determine whether the user has previously triggered
@@ -105,7 +110,7 @@ export function init() {
       const curStepInfo = triggeredGuideInfo[curGuideWizardId];
       if ((typeof curStepInfo.steps !== 'object') || curStepInfo.steps.length === curStepInfo.triggeredSteps.length) return;
       const nextStepIds = curStepInfo.steps[curStepInfo.triggeredSteps.length];
-      const hasByEvents = nextStepIds.find(stepId => {
+      const hasByEvents = nextStepIds.find((stepId: string) => {
         const stepInfo = Steps[stepId];
         return stepInfo && 'byEvent' in stepInfo && stepInfo.byEvent && stepInfo.byEvent[0] === eventId;
       });

@@ -35,7 +35,12 @@ interface IMirrorListInner {
   loading: boolean;
 }
 
-const BlankInner = ({ createMirrorNode, mirrorCreatable }) => {
+interface IBlankInner {
+  mirrorCreatable: boolean;
+  createMirrorNode: () => void;
+}
+
+const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
   return (
     <div className={styles.blackInner}>
       <div className={styles.imgBox}>
@@ -49,7 +54,7 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }) => {
   );
 };
 
-export const MirrorListInner: React.FC<IMirrorListInner> = props => {
+export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>> = props => {
   const colors = useThemeColors();
   const { mirrorList, loading } = props;
   const { datasheetId, viewId } = useSelector(state => state.pageParams)!;

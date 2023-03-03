@@ -18,25 +18,25 @@
 
 package com.apitable.asset.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- * Image audit result request parameters
+ * Image audit result request parameters.
  * </p>
  */
 @Data
-@ApiModel("Image audit result request parameters")
+@Schema(description = "Image audit result request parameters")
 public class AttachAuditPulpResultRo {
 
-	@ApiModelProperty(value = "Suggestion is the corresponding control suggestion of various audit types, Values include:[“block”,”review”,”pass”]", position = 1, required = true)
-	@NotNull(message = "Suggestion is the corresponding control suggestion of various audit types, Values include:[“block”,”review”,”pass”]")
-	private String suggestion;
+    @Schema(description = "Suggestion is the corresponding control suggestion of various audit "
+        + "types, Values include:[“block”,”review”,”pass”]", required = true)
+    @NotNull(message = "Suggestion is the corresponding control suggestion of various audit "
+        + "types, Values include:[“block”,”review”,”pass”]")
+    private String suggestion;
 
-	private AttachAuditResultRo result;
+    private AttachAuditResultRo result;
 
 }

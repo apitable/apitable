@@ -25,7 +25,7 @@ import styles from './styles.module.less';
 import { FlowContext } from '../../context/flow_context';
 import { useUpdateEffect } from 'ahooks';
 
-export const DragLayer: FC = () => {
+export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
 
   const [translateX, translateY, scale] = useStoreState(state => state.transform);
 
@@ -71,6 +71,7 @@ export const DragLayer: FC = () => {
     offsetTop,
     columns,
     orgChartViewStatus,
+    datasheetId
   } = useContext(FlowContext);
 
   const {
@@ -156,6 +157,7 @@ export const DragLayer: FC = () => {
         }}
       >
         <RecordCard
+          datasheetId={datasheetId}
           className={styles.draggingCard}
           showEmptyCover={SHOW_EPMTY_COVER}
           coverFieldId={coverFieldId}

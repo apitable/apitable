@@ -18,57 +18,65 @@
 
 package com.apitable.template.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
+import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.context.LoginContext;
+import com.apitable.template.service.ITemplateAlbumService;
 import com.apitable.template.vo.AlbumContentVo;
 import com.apitable.template.vo.AlbumVo;
-import com.apitable.template.service.ITemplateAlbumService;
-import com.apitable.core.support.ResponseData;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * Template Center - Template Album API
- * </p>
+ * Template Center - Template Album API.
  */
 @RestController
-@Api(tags = "Template Center - Template Album API")
+@Tag(name = "Template Center - Template Album API")
 @ApiResource(path = "/")
 public class TemplateAlbumController {
 
     @Resource
     private ITemplateAlbumService iTemplateAlbumService;
 
+    /**
+     * Get The Template Album Content.
+     */
     @GetResource(path = "/template/albums/{albumId}", requiredLogin = false)
-    @ApiOperation(value = "Get The Template Album Content")
-    @ApiImplicitParam(name = "albumId", value = "Template Album ID", dataTypeClass = String.class, paramType = "path", example = "albnafuwa2snc")
+    @Operation(summary = "Get The Template Album Content")
+    @Parameter(name = "albumId", description = "Template Album ID", schema = @Schema(type = "string"),
+        in = ParameterIn.PATH, example = "albnafuwa2snc")
     public ResponseData<AlbumContentVo> getAlbumContent(@PathVariable("albumId") String albumId) {
         return ResponseData.success(iTemplateAlbumService.getAlbumContentVo(albumId));
     }
 
+    /**
+     * Get Recommended Template Albums.
+     */
     @GetResource(path = "/template/albums/recommend", requiredLogin = false)
-    @ApiOperation(value = "Get Recommended Template Albums")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "excludeAlbumId", value = "Exclude Album", dataTypeClass = String.class, paramType = "query", example = "albnafuwa2snc"),
-            @ApiImplicitParam(name = "maxCount", value = "Max Count of Load(The number of response result may be smaller than this)", dataTypeClass = Integer.class, paramType = "query", example = "5")
+    @Operation(summary = "Get Recommended Template Albums")
+    @Parameters({
+        @Parameter(name = "excludeAlbumId", description = "Exclude Album", schema =
+            @Schema(type = "string"), in = ParameterIn.QUERY, example = "albnafuwa2snc"),
+        @Parameter(name = "maxCount", description = "Max Count of Load(The number of response "
+            + "result may be smaller than this)", schema = @Schema(type = "integer"), in =
+            ParameterIn.QUERY, example = "5")
     })
-    public ResponseData<List<AlbumVo>> getRecommendedAlbums(@RequestParam(value = "excludeAlbumId", required = false) String excludeAlbumId,
-            @RequestParam(value = "maxCount", required = false, defaultValue = "5") Integer maxCount) {
+    public ResponseData<List<AlbumVo>> getRecommendedAlbums(
+        @RequestParam(value = "excludeAlbumId", required = false) String excludeAlbumId,
+        @RequestParam(value = "maxCount", required = false, defaultValue = "5") Integer maxCount) {
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
-        return ResponseData.success(iTemplateAlbumService.getRecommendedAlbums(lang, maxCount, excludeAlbumId));
+        return ResponseData.success(
+            iTemplateAlbumService.getRecommendedAlbums(lang, maxCount, excludeAlbumId));
     }
 
 }

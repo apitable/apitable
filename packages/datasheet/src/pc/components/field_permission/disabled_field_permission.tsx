@@ -28,7 +28,7 @@ import permissionImage from 'static/icon/datasheet/datasheet_img_field_permissio
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise';
 
-export const DisabledFieldPermission: React.FC<IDisabledPermission> = (props) => {
+export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabledPermission>> = (props) => {
   const { setPermissionStatus, field } = props;
   const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
   const views = useSelector(Selectors.getViewsList);

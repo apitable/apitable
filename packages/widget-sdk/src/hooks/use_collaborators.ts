@@ -17,23 +17,8 @@
  */
 
 import { useSelector } from 'react-redux';
-import { Selectors, IReduxState } from 'core';
-import { IWidgetState } from 'interface';
 import { useMemo } from 'react';
 import { uniqBy } from 'lodash';
-
-const getCurrentCollaborators = (state: IWidgetState) => {
-  if (state.pageParams?.dashboardId) {
-    return state.dashboard?.collaborators;
-  }
-  if (state.pageParams?.mirrorId) {
-    return Selectors.getMirrorCollaborator(state as any as IReduxState, state.pageParams.mirrorId);
-  }
-  if (state.pageParams?.datasheetId) {
-    return Selectors.collaboratorSocketSelector(state as any as IReduxState);
-  }
-  return [];
-};
 
 /**
  * Get information(including yourself) about collaborators of the environment where the widget is currently running, 
@@ -64,7 +49,7 @@ const getCurrentCollaborators = (state: IWidgetState) => {
  */
 export function useCollaborators() {
   const collaborators = useSelector(state => {
-    return getCurrentCollaborators(state);
+    return state.collaborators;
   });
   return useMemo(() => {
     return uniqBy(collaborators, 'userId').map(collaborator => ({

@@ -26,7 +26,7 @@ export interface ILoadingProps {
   tip?: string;
 }
 
-export const Loading: FC<ILoadingProps> = props => {
+export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = props => {
   const {
     tip,
   } = props;

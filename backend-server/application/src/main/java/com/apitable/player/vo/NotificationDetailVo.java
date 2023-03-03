@@ -19,122 +19,215 @@
 package com.apitable.player.vo;
 
 import cn.hutool.json.JSONObject;
+import com.apitable.shared.constants.NotificationConstants;
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
+import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
-import com.apitable.shared.constants.NotificationConstants;
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * User message notification list
+ * User message notification list.
  * </p>
  */
 @Data
 @Builder(toBuilder = true)
-@ApiModel("User message notification list")
+@Schema(description = "User message notification list")
 public class NotificationDetailVo {
-    @ApiModelProperty(value = "Message ID", example = "1261273764218")
+
+    /**
+     * Message ID.
+     */
+    @Schema(description = "Message ID", example = "1261273764218")
     private String id;
 
-    @ApiModelProperty(value = "Read 1 Read, 0 Unread", example = "1")
+    /**
+     * is read.
+     */
+    @Schema(description = "Read 1 Read, 0 Unread", example = "1")
     private Integer isRead;
 
-    @ApiModelProperty(value = "Notification Type", example = "system")
+    /**
+     * Notification Type.
+     */
+    @Schema(description = "Notification Type", example = "system")
     private String notifyType;
 
-    @ApiModelProperty(value = "Creation time", example = "2020-03-18 15:29:59")
-    private String createdAt;
+    /**
+     * Creation time.
+     */
+    @Schema(description = "Creation time", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
+    private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "Update time", example = "2020-03-18 15:29:59")
-    private String updatedAt;
+    /**
+     * Update time.
+     */
+    @Schema(description = "Update time", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
+    private LocalDateTime updatedAt;
 
+    /**
+     * Notified user ID.
+     */
     @Deprecated
-    @ApiModelProperty(value = "Notified user ID", example = "1261273764218")
+    @Schema(description = "Notified user ID", example = "1261273764218")
     private String toUserId;
 
-    @ApiModelProperty(value = "Notified user uuid", example = "aaaabb")
+    /**
+     * Notified user uuid.
+     */
+    @Schema(description = "Notified user uuid", example = "aaaabb")
     private String toUuid;
 
-    @ApiModelProperty(value = "Send notification to users")
+    /**
+     * Send notification to users.
+     */
+    @Schema(description = "Send notification to users")
     private PlayerBaseVo fromUser;
 
-    @ApiModelProperty(value = "Notice content")
+    /**
+     * Notice content.
+     */
+    @Schema(description = "Notice content")
     private NotifyBody notifyBody;
 
+    /**
+     * Number of notification lines of the da.
+     */
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    @ApiModelProperty(value = "Number of notification lines of the day")
+    @Schema(description = "Number of notification lines of the day")
     private Integer rowNo;
 
-    @ApiModelProperty(value = "Notification template ID")
+    /**
+     * Notification template ID.
+     */
+    @Schema(description = "Notification template ID")
     private String templateId;
 
+    /**
+     * NotifyBody.
+     */
     @Data
     @Builder
-    @ApiModel("Notice content")
+    @Schema(description = "Notice content")
     public static class NotifyBody {
-        @ApiModelProperty(value = "Send notification to users", example = "Zoe has @ you 3 times in customizing the table")
+
+        /**
+         * Send notification to users.
+         */
+        @Schema(description = "Send notification to users")
         @Deprecated
         private String template;
 
-        @ApiModelProperty(value = "Send notification to users", example = "Space Message")
+        /**
+         * Send notification to user.
+         */
+        @Schema(description = "Send notification to users")
         private String title;
 
-        @ApiModelProperty(value = "Node Information")
+        /**
+         * Node Information.
+         */
+        @Schema(description = "Node Information")
         private Node node;
 
-        @ApiModelProperty(value = "spatial information ")
+        /**
+         * spatial information.
+         */
+        @Schema(description = "spatial information ")
         private Space space;
 
-        @ApiModelProperty(value = "Notify additional fields" + NotificationConstants.BODY_EXTRAS_DESC,
-                example = NotificationConstants.BODY_EXTRAS_EXAMPLE)
+        /**
+         * Notify additional fields.
+         */
+        @Schema(description = "Notify additional fields"
+            + NotificationConstants.BODY_EXTRAS_DESC,
+            example = NotificationConstants.BODY_EXTRAS_EXAMPLE)
         private JSONObject extras;
 
-        @ApiModelProperty(value = "Notify Jump")
+        /**
+         * Notify Jump.
+         */
+        @Schema(description = "Notify Jump")
         private Intent intent;
 
     }
 
+    /**
+     * Intent.
+     */
     @Data
     @Builder
-    @ApiModel("Notify Jump")
+    @Schema(description = "Notify Jump")
     public static class Intent {
-        @ApiModelProperty(value = "Jump link", example = "https://apitable.com")
+
+        /**
+         * Jump link.
+         */
+        @Schema(description = "Jump link", example = "https://apitable.com")
         private String url;
     }
 
+    /**
+     * Node.
+     */
     @Data
     @Builder
-    @ApiModel("node")
+    @Schema(description = "node")
     public static class Node {
-        @ApiModelProperty(value = "Node ID")
+
+        /**
+         * Node ID.
+         */
+        @Schema(description = "Node ID")
         private String nodeId;
 
-        @ApiModelProperty(value = "Node Information")
+        /**
+         * Node Information.
+         */
+        @Schema(description = "Node Information")
         private String nodeName;
 
+        /**
+         * Node icon.
+         */
         @JsonSerialize(nullsUsing = NullStringSerializer.class)
-        @ApiModelProperty(value = "Node icon")
+        @Schema(description = "Node icon")
         private String icon;
     }
 
+    /**
+     * Space.
+     */
     @Data
     @Builder
-    @ApiModel("space")
+    @Schema(description = "space")
     public static class Space {
-        @ApiModelProperty(value = "Space ID")
+
+        /**
+         * Space ID.
+         */
+        @Schema(description = "Space ID")
         private String spaceId;
 
-        @ApiModelProperty(value = "Space name")
+        /**
+         * Space name.
+         */
+        @Schema(description = "Space name")
         private String spaceName;
 
-        @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-        @ApiModelProperty(value = "Space avatar")
+        /**
+         * Space avatar.
+         */
+        @JsonSerialize(nullsUsing = NullStringSerializer.class,
+            using = ImageSerializer.class)
+        @Schema(description = "Space avatar")
         private String logo;
     }
 

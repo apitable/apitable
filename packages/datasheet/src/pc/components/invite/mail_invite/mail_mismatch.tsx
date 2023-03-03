@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 
-const MailMismatch: FC = () => {
+const MailMismatch: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
   const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
 

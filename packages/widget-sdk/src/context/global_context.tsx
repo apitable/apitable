@@ -23,6 +23,8 @@ import { Provider } from 'react-redux';
 import { useUnmount } from 'ahooks';
 import { injectStore } from 'core';
 
+const _Provider: any = Provider;
+
 export const GlobalContext = React.createContext<IGlobalContext>(null!);
 
 /**
@@ -32,7 +34,7 @@ export const GlobalContext = React.createContext<IGlobalContext>(null!);
  * When using the GlobalContextProvider,
  * just make sure that the globalContextProvider exists in the parent component above the widgetStandAloneProvider.
  */
-export const GlobalContextProvider: React.FC = ({ children }) => {
+export const GlobalContextProvider: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const [globalContext] = useState<IGlobalContext>(() => {
     const gtx = initGlobalContext();
     injectStore(gtx.globalStore);
@@ -46,10 +48,10 @@ export const GlobalContextProvider: React.FC = ({ children }) => {
   });
 
   return (
-    <Provider store={globalContext.globalStore}>
+    <_Provider store={globalContext.globalStore}>
       <GlobalContext.Provider value={globalContext}>
         {children}
       </GlobalContext.Provider>
-    </Provider>
+    </_Provider>
   );
 };

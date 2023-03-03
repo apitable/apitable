@@ -26,7 +26,7 @@ import { SchemaPropertyList } from './magic_variable_list';
 
 interface ISchemaMapProps {
   nodeOutputSchemaList: INodeOutputSchema[];
-  insertMagicVariable: (data) => void;
+  insertMagicVariable: (data: IExpression) => void;
   setOpen: (open: boolean) => void;
   isJSONField: boolean;
 }
@@ -53,14 +53,14 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   useEffect(() => {
     setTimeout(() => {
       searchRef.current?.focus();
-    }, 0);
+    }, 100);
   }, []);
   useEffect(() => {
     if (searchValue) {
       setSearchValue('');
       // searchRef.current?.focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [schemaExpressionList]);
 
   const goPrev = useCallback((_deepIndex?: number) => {
@@ -147,7 +147,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
         goNext(listItem);
       }
     },
-    onArrowLeftPress: (index) => {
+    onArrowLeftPress: () => {
       goPrev();
     },
     onEscapePress: () => {

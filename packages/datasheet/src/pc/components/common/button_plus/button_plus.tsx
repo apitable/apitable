@@ -23,7 +23,7 @@ import { IButtonBase } from '../button_base/button_base.interface';
 import { ButtonPrefixCls } from '../button_base/constants';
 import { IButtonGroup } from './button_plus.interface';
 
-const IconButton: FC<IButtonBase> = props => {
+const IconButton: FC<React.PropsWithChildren<IButtonBase>> = props => {
   const { size = 'x-small', shape = 'circle', border = false, className, prefixCls, ...rest } = props;
   const classKey = prefixCls || ButtonPrefixCls.Btn;
   const cla = classNames([`${classKey}-plus-icon`], className);
@@ -37,7 +37,7 @@ const IconButton: FC<IButtonBase> = props => {
   return <ButtonBase {...data} />;
 };
 
-const FontButton: FC<IButtonBase> = props => {
+const FontButton: FC<React.PropsWithChildren<IButtonBase>> = props => {
   const { size = 'middle', shape = 'round', border = false, className, prefixCls, ...rest } = props;
   const classKey = prefixCls || ButtonPrefixCls.Btn;
   const cla = classNames([`${classKey}-plus-font`], className);
@@ -51,7 +51,7 @@ const FontButton: FC<IButtonBase> = props => {
   return <ButtonBase {...data} />;
 };
 
-const TranslucentButton: FC<IButtonBase> = props => {
+const TranslucentButton: FC<React.PropsWithChildren<IButtonBase>> = props => {
   const { size = 'middle', shape = 'square', border = true, style, className, prefixCls, ...rest } = props;
   const classKey = prefixCls || ButtonPrefixCls.Btn;
   const cla = classNames([`${classKey}-plus-translucent`], className);
@@ -67,7 +67,7 @@ const TranslucentButton: FC<IButtonBase> = props => {
   return <ButtonBase {...data} />;
 };
 
-const ButtonGroup: FC<IButtonGroup> = (props) => {
+const ButtonGroup: FC<React.PropsWithChildren<IButtonGroup>> = (props) => {
   const { children, className, style } = props;
 
   return <div

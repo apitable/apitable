@@ -17,6 +17,7 @@
  */
 
 import { useEffect, useRef, useCallback, useMemo } from 'react';
+// @ts-ignore
 import { Scroller } from 'scroller';
 import { IScrollCoordsProps } from './use_scroller';
 
@@ -78,7 +79,7 @@ export const useMobileScroller = (props: IUseScrollerProps) => {
     }
   }, []);
 
-  const onTouchEnd = useCallback((e) => {
+  const onTouchEnd = useCallback((e: any) => {
     if (scrollerRef.current) {
       if (horizontalBarRef.current && verticalBarRef.current) {
         scrollTo({ 

@@ -55,6 +55,7 @@ export * from '../../modules/org/store/interface/tool_bar';
 export * from '../../modules/database/store/interfaces/kanban';
 export * from '../../modules/database/store/interfaces/common';
 export * from '../../modules/database/store/interfaces/resource';
+export * from '../../modules/database/store/interfaces/apphook';
 export * from '../../modules/space/store/interfaces/share';
 export * from '../../modules/org/store/interface/unit_info';
 export * from '../../modules/database/store/interfaces/params';

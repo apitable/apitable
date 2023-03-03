@@ -18,6 +18,7 @@
 
 import { Button, TextButton } from '@apitable/components';
 import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@apitable/core';
+import { NotificationCheckOutlined } from '@apitable/icons';
 import { useMount, useSize } from 'ahooks';
 import { Tabs } from 'antd';
 import { Loading } from 'pc/components/common';
@@ -27,7 +28,6 @@ import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import ToReadIcon from 'static/icon/workbench/notification/workbench_icon_notification_read.svg';
 import { Card } from './card';
 import { NoData } from './no_data';
 import styles from './style.module.less';
@@ -47,7 +47,7 @@ interface ITabKey {
 type ITabKeyType = keyof ITabKey;
 const DOM_WRAP_CLS = styles.notification;
 
-export const Notification: FC = () => {
+export const Notification: FC<React.PropsWithChildren<unknown>> = () => {
   const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useSelector(
     (state: IReduxState) => ({
       unReadCount: state.notification.unReadCount,
@@ -103,8 +103,8 @@ export const Notification: FC = () => {
     };
   }, [dispatch]);
 
-  const onTabActiveChange = active => {
-    setTabActiveKey(active);
+  const onTabActiveChange = (active: string) => {
+    setTabActiveKey(active as TabKey);
   };
   // Click to see the new tweeted messages
   const toNewMsg = () => {
@@ -125,7 +125,7 @@ export const Notification: FC = () => {
     getMoreRead(true, rowNo);
   };
   // Determine if the list of read messages has been rendered
-  const noticeListRended = (e, tabKey: string) => {
+  const noticeListRended = (e: any, tabKey: string) => {
     const lastNotice = tabKey === TabKey.Unprocessed ? unReadNoticeList[unReadNoticeList.length - 1] : readNoticeList[readNoticeList.length - 1];
     if (e.key === lastNotice.id) {
       tabKey === TabKey.Unprocessed ? setUnReadedListRendered(true) : setReadedListRendered(true);
@@ -166,7 +166,7 @@ export const Notification: FC = () => {
             allToReadBtnLoading ? (
               <Loading />
             ) : (
-              <TextButton onClick={allToRead} prefixIcon={<ToReadIcon fill="currentColor" />}>
+              <TextButton onClick={allToRead} prefixIcon={<NotificationCheckOutlined color="currentColor" />}>
                 {t(Strings.mark_all_as_processed)}
               </TextButton>
             )
@@ -175,7 +175,7 @@ export const Notification: FC = () => {
               color="primary"
               onClick={allToRead}
               loading={allToReadBtnLoading}
-              prefixIcon={<ToReadIcon fill="currentColor" width={16} height={16} />}
+              prefixIcon={<NotificationCheckOutlined color="currentColor" size={16} />}
               variant="jelly"
             >
               {t(Strings.mark_all_as_processed)}

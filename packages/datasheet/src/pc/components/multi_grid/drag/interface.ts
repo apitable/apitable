@@ -29,7 +29,7 @@ export interface IDragProps {
   checkInGrid?: (e: MouseEvent) => boolean;
   checkIsOpacityLine?: (e: MouseEvent) => boolean;
   getClickCellId?: (e: MouseEvent) => { fieldId?: string | null; recordId?: string | null };
-  getElementRect?: (e, type: MoveType) => IElementRectProps;
+  getElementRect?: (e: MouseEvent, type: MoveType) => IElementRectProps;
 }
 
 export interface INeedChangeColumnsWidthRef {

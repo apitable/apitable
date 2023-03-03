@@ -162,9 +162,13 @@
 
 .shareContent {
   border-radius: 8px;
-  padding: 18px 24px 8px;
-  box-shadow: var(--shadowCommonHigh);
-  background-color: var(--bgCommonHigh);
+  padding: 24px 24px 0px;
+  box-shadow: var(--shadowCommonHighest);
+  background-color: var(--bgCommonHighest);
+
+  &.loading {
+    padding-bottom: 36px;
+  }
 
   .shareFloor {
     .displayAlignCenter();
@@ -216,7 +220,7 @@
       content: '';
       width: 1px;
       height: 16px;
-      background-color: var(--borderCommon);
+      background-color: var(--borderCommonDefault);
       display: block;
       position: absolute;
       top: 50%;

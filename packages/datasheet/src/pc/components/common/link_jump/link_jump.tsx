@@ -25,9 +25,9 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import DescIcon from 'static/icon/datasheet/datasheet_icon_skip.svg';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
+import { GotoOutlined } from '@apitable/icons';
 
 export enum JumpIconMode {
   Badge,
@@ -43,7 +43,7 @@ interface ILinkJumpProps {
   hideOperateBox?: () => void;
 }
 
-export const LinkJump: FC<ILinkJumpProps> = (props) => {
+export const LinkJump: FC<React.PropsWithChildren<ILinkJumpProps>> = (props) => {
   const colors = useThemeColors();
   const { mode = JumpIconMode.Normal, children, foreignDatasheetId, foreignFieldId, viewId, hideOperateBox } = props;
   const { hasShareId, hasTemplateId, isEmbed } = useSelector(state => ({
@@ -57,7 +57,7 @@ export const LinkJump: FC<ILinkJumpProps> = (props) => {
     return <>{children}</>;
   }
 
-  const handleClick = e => {
+  const handleClick = (e: React.SyntheticEvent) => {
     stopPropagation(e);
     if (!foreignFieldId) {
       const url = new URL(window.location.href);
@@ -77,7 +77,7 @@ export const LinkJump: FC<ILinkJumpProps> = (props) => {
         onClick={handleClick}
       >
         <sup>
-          <DescIcon fill={colors.primaryColor} width={10} height={10} />
+          <GotoOutlined color={colors.primaryColor} size={10} />
         </sup>
       </span>
     </Tooltip>

@@ -37,7 +37,7 @@ export interface IErrorMsg {
   identifyingCodeErrMsg: string;
 }
 
-export const Step: React.FC = () => {
+export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { step, setStep, userData } = useContext(StepContext);
   const colors = useThemeColors();
 
@@ -102,7 +102,7 @@ export const Step: React.FC = () => {
       default:
         return null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [step, verifyAccountType, errMsg, confirmText]);
 
   const Footer = useMemo(() => {
@@ -198,7 +198,7 @@ export const Step: React.FC = () => {
       default:
         return null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [step, verifyAccountType, confirmText, identifyingCode, loading, errMsg]);
 
   if (step === StepStatus.None || step === StepStatus.Done) {

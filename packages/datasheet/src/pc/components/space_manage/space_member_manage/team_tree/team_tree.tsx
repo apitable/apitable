@@ -20,13 +20,10 @@ import { Button, Loading } from '@apitable/components';
 import {
   Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamListInSpace, StoreActions, Strings, t
 } from '@apitable/core';
-import { AddressOutlined } from '@apitable/icons';
+import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
-// import AdjustLevel from 'static/icon/space/space_icon_adjustlevel.svg';
-// @ts-ignore
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom, socialPlatPreOperate } from 'enterprise';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -35,16 +32,15 @@ import * as React from 'react';
 import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
 import { shallowEqual, useSelector } from 'react-redux';
-import AddContentIcon from 'static/icon/common/common_icon_add_content.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import MoreIcon from 'static/icon/common/common_icon_more.svg';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import RenameIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { CreateTeamModal, RenameTeamModal } from '../modal';
 // @ts-ignore
-import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg } from 'enterprise';
+import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
+import { socialPlatPreOperateCheck } from '../utils';
+
+const _ContextMenu: any = ContextMenu;
+const _MenuItem: any = MenuItem;
+const _ContextMenuTrigger: any = ContextMenuTrigger;
 
 interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;
@@ -54,7 +50,7 @@ interface IModalProps {
 const { TreeNode, DirectoryTree } = Tree;
 const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
-export const TeamTree: FC<IModalProps> = props => {
+export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const dispatch = useAppDispatch();
   const {
     teamListInSpace,
@@ -108,7 +104,7 @@ export const TeamTree: FC<IModalProps> = props => {
         return (
           <TreeNode
             title={
-              <ContextMenuTrigger
+              <_ContextMenuTrigger
                 id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
                 holdToDisplay={-1}
                 ref={nodeRef}
@@ -129,12 +125,12 @@ export const TeamTree: FC<IModalProps> = props => {
                     onClick={e => moreClick(e, nodeRef)}
                     style={{ visibility: 'visible' }}
                   >
-                    <AddContentIcon />
+                    <AddOutlined />
                   </span>
                 }
                 {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-                <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-              </ContextMenuTrigger>
+                <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+              </_ContextMenuTrigger>
             }
             key={item.teamId}
           >
@@ -147,7 +143,7 @@ export const TeamTree: FC<IModalProps> = props => {
       return (
         <TreeNode
           title={
-            <ContextMenuTrigger
+            <_ContextMenuTrigger
               id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
               holdToDisplay={-1}
               ref={nodeRef}
@@ -169,12 +165,12 @@ export const TeamTree: FC<IModalProps> = props => {
                   onClick={e => moreClick(e, nodeRef)}
                   style={{ visibility: 'visible' }}
                 >
-                  <AddContentIcon />
+                  <AddOutlined />
                 </span>
               }
               {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-              <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-            </ContextMenuTrigger>
+              <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+            </_ContextMenuTrigger>
           }
           key={item.teamId}
           isLeaf
@@ -196,21 +192,23 @@ export const TeamTree: FC<IModalProps> = props => {
       dispatch(StoreActions.updateRightClickTeamInfoInSpace(info));
     }
   };
-  const handleAddDeptClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+
+  const handleAddDeptClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setCreateDeptModalVisible(true);
-    });
+    }, spaceInfo);
   };
 
-  const handleRenameClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+  const handleRenameClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       setRenameDeptModalVisible(true);
-    });
+    }, spaceInfo);
   };
-  const handleDeleteClick = (e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
-    socialPlatPreOperate?.(spaceInfo, () => {
+
+  const handleDeleteClick = (_e: React.MouseEvent, data: ISelectedTeamInfoInSpace) => {
+    socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       if (data) {
         Api.readTeam(data.teamId).then(res => {
@@ -219,13 +217,12 @@ export const TeamTree: FC<IModalProps> = props => {
             if (data.hasChildren || data.memberCount > 0) {
               rejectDeleteTeam();
             } else {
-              confrimDeleteTeam(data.teamId);
+              confirmDeleteTeam(data.teamId);
             }
           }
         });
       }
-    });
-
+    }, spaceInfo);
   };
   const rejectDeleteTeam = () => {
     Modal.warning({
@@ -233,7 +230,7 @@ export const TeamTree: FC<IModalProps> = props => {
       content: t(Strings.warning_exists_sub_team_or_member),
     });
   };
-  const confrimDeleteTeam = (teamId: string) => {
+  const confirmDeleteTeam = (teamId: string) => {
     const confirmDelTeamOk = () => {
       if (user) {
         Api.deleteTeam(teamId).then(res => {
@@ -255,7 +252,7 @@ export const TeamTree: FC<IModalProps> = props => {
       maskClosable: true,
     });
   };
-  const onSelect = (keys: ReactText[], { node }) => {
+  const onSelect = (_keys: ReactText[], { node }: any) => {
     props.setSearchMemberRes([]);
     if (node.props.title) {
       const { teamId } = (node.props.title as React.ReactElement).props;
@@ -297,51 +294,49 @@ export const TeamTree: FC<IModalProps> = props => {
   };
 
   const operateButtonCom = React.useMemo(() => {
-    if(isIdassPrivateDeployment()) {
+    const getButton = (props: { onClick: () => void }) => {
+      const { onClick } = props;
       return (
         <Button
           color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && freshIdaasOrg?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
+          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined size={16} />}
+          onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
         >
           {t(Strings.fresh_dingtalk_org)}
         </Button>
       );
+    };
+    if(isIdassPrivateDeployment()) {
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && freshIdaasOrg?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (isBindDingtalk || isBindWecom) {
       const refreshMethods = {
         [ConfigConstant.SocialType.DINGTALK]: freshDingtalkOrg,
         [ConfigConstant.SocialType.WECOM]: freshWecomOrg
       };
-      return (
-        <Button
-          color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
-          onClick={() => {
-            setRefreshBtnLoading(true);
-            spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
-              setRefreshBtnLoading(false);
-            });
-          }}
-          className={styles.inviteOutsiderBtn}
-          disabled={refreshBtnLoading}
-        >
-          {t(Strings.fresh_dingtalk_org)}
-        </Button>
-      );
+      return getButton({
+        onClick: () => {
+          setRefreshBtnLoading(true);
+          spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
+            setRefreshBtnLoading(false);
+          });
+        }
+      });
     }
     if (spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER)) {
       return (
         <Button
           color="primary"
-          prefixIcon={<AddressOutlined />}
+          prefixIcon={<UserGroupOutlined size={16} />}
           className={styles.inviteOutsiderBtn}
           onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
         >
@@ -360,7 +355,7 @@ export const TeamTree: FC<IModalProps> = props => {
         <div onClick={(e) => {
           stopPropagation(e);
           setInSearch(true);
-        }}><SearchIcon /></div>
+        }}><SearchOutlined /></div>
       </div>
       <div className={styles.originContent} style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }}>
         {operateButtonCom}
@@ -369,7 +364,7 @@ export const TeamTree: FC<IModalProps> = props => {
             teamListInSpace.length > 0 &&
             <DirectoryTree
               onSelect={onSelect}
-              switcherIcon={<div><PullDownIcon /></div>}
+              switcherIcon={<div><TriangleRightFilled size={12} /></div>}
               selectedKeys={[selectKey]}
               showIcon={false}
               expandAction={false}
@@ -402,15 +397,15 @@ export const TeamTree: FC<IModalProps> = props => {
         />
       }
       {
-        teamOperate && socialPlatPreOperate && <>
-          <ContextMenu id={TEAM_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-            <MenuItem onClick={handleRenameClick}><RenameIcon />{t(Strings.rename_team)}</MenuItem>
-            <MenuItem onClick={handleDeleteClick}><DeleteIcon />{t(Strings.delete_team)}</MenuItem>
-          </ContextMenu>
-          <ContextMenu id={TEAM_ROOT_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-          </ContextMenu></>
+        teamOperate && <>
+          <_ContextMenu id={TEAM_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
+            <_MenuItem onClick={handleRenameClick}><EditOutlined />{t(Strings.rename_team)}</_MenuItem>
+            <_MenuItem onClick={handleDeleteClick}><DeleteOutlined />{t(Strings.delete_team)}</_MenuItem>
+          </_ContextMenu>
+          <_ContextMenu id={TEAM_ROOT_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
+          </_ContextMenu></>
       }
     </div>
   );

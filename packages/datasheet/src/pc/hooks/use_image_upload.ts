@@ -18,6 +18,7 @@
 
 import { getImageThumbSrc, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
+import { joinPath } from 'pc/components/route_manager/helper';
 import { shallowEqual, useSelector } from 'react-redux';
 import { UploadManager } from '../utils/upload_manager';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
@@ -50,7 +51,7 @@ export const useImageUpload = () => {
       const { bucket, token } = imgData;
       const host = getEnvVariables()[bucket];
       return Promise.resolve({
-        imgUrl: getImageThumbSrc(host + token, isSvgOrGif ? undefined : { format: 'jpg', quality: 100 })
+        imgUrl: getImageThumbSrc(joinPath([host, token]), isSvgOrGif ? undefined : { format: 'jpg', quality: 100 })
       });
     });
   };

@@ -38,7 +38,7 @@ interface ICellScrollContainerProps {
 
 const SCROLL_BAR_PADDING = 3;
 
-export const CellScrollContainer: FC<ICellScrollContainerProps> = (props) => {
+export const CellScrollContainer: FC<React.PropsWithChildren<ICellScrollContainerProps>> = (props) => {
   const { x, y, columnWidth, rowHeight, fieldId, recordId, renderData, children, ...rest } = props;
   const { setActiveCellBound, cellScrollState, setCellScrollState, resetCellScroll, theme } = useContext(KonvaGridContext);
   const { renderContent, isOverflow = false, height: totalHeight = 1 } = renderData;
@@ -63,7 +63,7 @@ export const CellScrollContainer: FC<ICellScrollContainerProps> = (props) => {
       totalHeight
     });
     resetCellScroll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [setActiveCellBound, height, setCellScrollState, fieldId, recordId, isOverflow, totalHeight]);
 
   const ratio = (height - 2 * SCROLL_BAR_PADDING) / totalHeight;

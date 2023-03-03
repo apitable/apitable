@@ -45,12 +45,12 @@ const shellDebugMap = {
 
 export const DEBUG_BUTTON_CLASS_NAME = 'markdown-it-code-button-debug';
 
-const DocInnerHtml: React.FC<IDocInnerHtmlProps> = props => {
+const DocInnerHtml: React.FC<React.PropsWithChildren<IDocInnerHtmlProps>> = props => {
   const { language, exampleConfig, showApiToken } = props;
   const docHtml = getDoc(language, exampleConfig);
   const apiToken = useSelector(state => state.user.info!.apiKey);
 
-  const preTriggerToDebug = e => {
+  const preTriggerToDebug = (e: any) => {
     const debugButtonList = document.getElementsByClassName(DEBUG_BUTTON_CLASS_NAME);
     if (debugButtonList.length === 0 || [...debugButtonList].every(debugButton => !debugButton.contains(e.target))) {
       return;

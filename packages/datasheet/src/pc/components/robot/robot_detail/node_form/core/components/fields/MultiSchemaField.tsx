@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { JSONSchema7 } from 'json-schema';
 import { useState } from 'react';
 import {
   getDefaultFormState,
   getMatchingOption, getUiOptions,
   getWidget,
   guessType,
-  retrieveSchema
+  retrieveSchema,
 } from '../../utils';
 
-const AnyOfField = (props) => {
-  const _getMatchingOption = (formData, options) => {
+const AnyOfField = (props: any) => {
+  const _getMatchingOption = (formData: any, options: JSONSchema7[]) => {
     const { rootSchema } = props.registry;
 
     const option = getMatchingOption(formData, options, rootSchema);
@@ -62,7 +63,7 @@ const AnyOfField = (props) => {
   //   }
   // }
 
-  const onOptionChange = option => {
+  const onOptionChange = (option: string) => {
     const selectedOption = parseInt(option, 10);
     const { formData, onChange, options, registry } = props;
     const { rootSchema } = registry;
@@ -136,7 +137,7 @@ const AnyOfField = (props) => {
       : Object.assign({}, option, { type: baseType });
   }
 
-  const enumOptions = options.map((option, index) => ({
+  const enumOptions = options.map((option: any, index: number) => ({
     label: option.title || `Option ${index + 1}`,
     value: index,
   }));

@@ -56,11 +56,11 @@ store.subscribe(function TemplateChange() {
       return;
     }
 
-    fillColumns(fieldMap, mirror.temporaryView.columns, mirrorId);
+    fillColumns(fieldMap, mirror.temporaryView.columns!, mirrorId);
   }
 });
 
-function fillColumns(fieldMap, columns, mirrorId) {
+function fillColumns(fieldMap: IFieldMap, columns: IViewColumn[], mirrorId: string) {
   const fieldMapKeys = Object.keys(fieldMap);
   const columnsIds = (columns as IViewColumn[]).map(column => {return column.fieldId;});
   const deleteIds = difference(columnsIds, fieldMapKeys);

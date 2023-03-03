@@ -39,9 +39,9 @@ import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
-  ColumnUrlOutlined,
+  LinkOutlined,
   CopyOutlined,
-  ExpandRecordOutlined,
+  ExpandOutlined,
 } from '@apitable/icons';
 
 import { notifyWithUndo } from '../notify';
@@ -69,7 +69,7 @@ export const MenuContext = React.createContext<IMenuContext>({
   insertDirection: 'horizontal',
 });
 
-export const Menu: React.FC = () => {
+export const Menu: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { contextState, setContextState, insertDirection } = useContext(MenuContext);
   const colors = useThemeColors();
   const { recordId, x, y, onAddRecord } = contextState;
@@ -122,7 +122,7 @@ export const Menu: React.FC = () => {
 
   function copyLink() {
     const url = new URL(window.location.href);
-    url.pathname = path.join(url.pathname, recordId);
+    url.pathname = path.join(url.pathname, recordId!);
 
     copy2clipBoard(url.toString(), () => {
       Message.success({ content: t(Strings.link_copy_success) });
@@ -206,7 +206,7 @@ export const Menu: React.FC = () => {
       <Divider marginTop={4} marginBottom={4} className={styles.divider} />
       <div onClick={() => copyLink()}>
         <ContextmenuItem
-          icon={<ColumnUrlOutlined color={colors.thirdLevelText} />}
+          icon={<LinkOutlined color={colors.thirdLevelText} />}
           name={t(Strings.copy_card_link)}
         />
       </div>
@@ -218,7 +218,7 @@ export const Menu: React.FC = () => {
       </div>
       <div onClick={expand}>
         <ContextmenuItem
-          icon={<ExpandRecordOutlined color={colors.thirdLevelText} />}
+          icon={<ExpandOutlined color={colors.thirdLevelText} />}
           name={t(Strings.gallery_view_expand_record)}
         />
       </div>

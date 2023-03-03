@@ -47,7 +47,7 @@ export interface IExpandSelectProps extends IBaseEditorProps {
   isMemberField?: boolean;
 }
 
-export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((props, selfRef) => {
+export const ExpandSelect: React.FC<React.PropsWithChildren<IExpandSelectProps>> = React.forwardRef((props, selfRef) => {
   const { linkId, unitMap, recordId, onChange: _onChange, onClose, ...commonProps } = props;
   const { field, cellValue, editable, datasheetId, isFocus, isMemberField } = commonProps;
   const editorRef = useRef<IEditor>(null);
@@ -73,7 +73,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     if (!editing && onClose) {
       onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [editing]);
 
   useLayoutEffect(() => {
@@ -97,7 +97,7 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
     if (!isFocus) {
       setEditing(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isFocus]);
 
   useImperativeHandle(
@@ -128,9 +128,8 @@ export const ExpandSelect: React.FC<IExpandSelectProps> = React.forwardRef((prop
       _onChange(value);
       return;
     }
-    const commandManager = resourceService.instance!.commandManager;
     editable &&
-      commandManager.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data: [

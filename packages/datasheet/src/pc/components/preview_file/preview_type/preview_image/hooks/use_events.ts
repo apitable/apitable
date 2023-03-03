@@ -87,7 +87,7 @@ export const useEvents = (props: IImageEventsProps) => {
         translatePosition: revisedState as any,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [setTransformInfo, transformInfo],
   );
 
@@ -130,7 +130,7 @@ export const useEvents = (props: IImageEventsProps) => {
     }
   };
 
-  const handleMouseUp = (event: MouseEvent) => {
+  const handleMouseUp = () => {
     setMoving(false);
   };
 
@@ -158,7 +158,7 @@ export const useEvents = (props: IImageEventsProps) => {
     } else {
       setOverflow(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [scale, isRotated]);
 
   return {

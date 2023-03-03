@@ -27,6 +27,7 @@ export * from './context';
 export * from './error_boundary';
 export * from './interface';
 export * from './utils';
-export * from './iframe_message';
 export * from './utils/private';
+export * from './message';
+
 export { initializeWidget } from './initialize_widget';

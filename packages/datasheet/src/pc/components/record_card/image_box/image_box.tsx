@@ -45,7 +45,7 @@ interface IImageBoxProps {
   showOneImage?: boolean;
 }
 
-export const ImageBox: React.FC<IImageBoxProps> = ({
+export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
   images, showType = ImageShowType.Thumbnail, style, width, fileList, height, recordId, field, showOneImage,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -113,7 +113,7 @@ export const ImageBox: React.FC<IImageBoxProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className={styles.indexMarqueeWrapper} style={{ width: marqueeWrapperWidth }}>
                   {
-                    showImages.map((imgSrc, index) =>
+                    showImages.map((_imgSrc, index) =>
                       <div
                         key={index}
                         onMouseOver={() => setCurrentIndex(index)}

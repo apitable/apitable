@@ -441,10 +441,10 @@ export function createSimpleKeybinding(keybinding: number): SimpleKeybinding {
   const ctrlCmd = (keybinding & BinaryKeybindingsMask.CtrlCmd ? true : false);
   const winCtrl = (keybinding & BinaryKeybindingsMask.WinCtrl ? true : false);
 
-  const ctrlKey = (browser.is('macOS') ? winCtrl : ctrlCmd);
+  const ctrlKey = (browser?.is('macOS') ? winCtrl : ctrlCmd);
   const shiftKey = (keybinding & BinaryKeybindingsMask.Shift ? true : false);
   const altKey = (keybinding & BinaryKeybindingsMask.Alt ? true : false);
-  const metaKey = (browser.is('macOS') ? ctrlCmd : winCtrl);
+  const metaKey = (browser?.is('macOS') ? ctrlCmd : winCtrl);
   const keyCode = (keybinding & BinaryKeybindingsMask.KeyCode);
 
   return new SimpleKeybinding(ctrlKey, shiftKey, altKey, metaKey, keyCode);

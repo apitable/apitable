@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AxiosResponse } from 'axios';
-import { DefaultStatusMessage } from 'config/constant';
+import type { AxiosResponse } from 'axios';
+import type { DefaultStatusMessage } from 'config/constant';
 import { Object } from 'ts-toolbelt';
 
 /**

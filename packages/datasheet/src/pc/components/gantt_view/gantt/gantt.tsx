@@ -45,7 +45,7 @@ export interface IGanttProps {
   drawingLine?: any;
 }
 
-const Gantt: FC<IGanttProps> = memo((props) => {
+const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
   const {
     ganttInstance,
     gridInstance,

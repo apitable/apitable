@@ -19,9 +19,9 @@
 /**
   * API Meta open interface definition
   */
-import { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from './field_api_enums';
-import { IAPIMetaField } from './field_api_types';
-import { BasicValueType, RollUpFuncType } from './field_types';
+import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from './field_api_enums';
+import type { IAPIMetaField } from './field_api_types';
+import type { BasicValueType, RollUpFuncType } from './field_types';
 /**
   * Field properties
   */

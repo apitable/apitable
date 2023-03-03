@@ -18,22 +18,21 @@
 
 package com.apitable.space.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- * Request parameters of space replacement master administrator
+ * Request parameters of space replacement master administrator.
  * </p>
  */
 @Data
-@ApiModel("Request parameters of space replacement master administrator")
+@Schema(description = "Request parameters of space replacement master administrator")
 public class SpaceMainAdminChangeOpRo {
 
-    @ApiModelProperty(value = "Member ID of the new master administrator", example = "123456", position = 2, required = true)
+    @Schema(description = "Member ID of the new master administrator", example = "123456",
+        required = true)
     @NotNull(message = "The member ID of the new master administrator cannot be empty")
     private Long memberId;
 }

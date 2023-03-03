@@ -63,10 +63,10 @@ const optionTimeFormatData = [
   { value: TimeFormat['HH:mm'], label: t(Strings.twenty_four_hour_clock) },
 ];
 
-export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime) => {
+export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const { currentField, setCurrentField } = props;
   const [isModalShow, setModalShow] = useState(false);
-  const handleDateFormatChange = ({ value }) => {
+  const handleDateFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,
       property: {
@@ -76,7 +76,7 @@ export const FormatDateTime: React.FC<IFormatDateTime> = (props: IFormatDateTime
     });
   };
 
-  const handleTimeFormatChange = ({ value }) => {
+  const handleTimeFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,
       property: {

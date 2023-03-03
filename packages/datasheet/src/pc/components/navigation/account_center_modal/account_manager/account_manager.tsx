@@ -39,7 +39,7 @@ import WeChatPng from 'static/icon/signin/signin_img_wechat.png';
 import { ModeItem } from './mode_item';
 import styles from './style.module.less';
 
-export const AccountManager: FC = () => {
+export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   // Control the display of the Wechat QR code modal box
   const [wechatVisible, setWechatVisible] = useState(false);
   const userInfo = useSelector(state => state.user.info);
@@ -86,7 +86,7 @@ export const AccountManager: FC = () => {
     return () => {
       window.removeEventListener('storage', storageChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

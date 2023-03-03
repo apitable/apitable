@@ -23,6 +23,11 @@ import com.apitable.interfaces.security.model.NonRobotMetadata;
 public class DefaultHumanVerificationServiceFacadeImpl implements HumanVerificationServiceFacade {
 
     @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
     public void verifyNonRobot(NonRobotMetadata metadata) {
 
     }

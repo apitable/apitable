@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getCustomConfig } from 'config';
 import { isEmpty, find } from 'lodash';
 import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
@@ -72,7 +73,7 @@ export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
       const { viewId, key, value } = recordOption;
 
       // character is too long or not filled
-      if (key === 'name' && (value.length > 30 || value.length < 1)) {
+      if (key === 'name' && (value.length > (getCustomConfig().VIEW_NAME_MAX_COUNT || 30) || value.length < 1)) {
         return collected;
       }
 

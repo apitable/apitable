@@ -20,7 +20,7 @@ export const imageCache = (() => {
   const imageMap: { [name: string]: any } = {};
   const imgPromises: any = [];
 
-  function loadImage(name, src) {
+  function loadImage(name: string, src: string) {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
@@ -48,17 +48,17 @@ export const imageCache = (() => {
     }));
   }
 
-  function loadImageMap(urlMap) {
+  function loadImageMap(urlMap: { [x: string]: string; }) {
     Object.keys(urlMap).forEach(key => {
       loadImage(key, urlMap[key]);
     });
   }
   
-  function imageMapOnload(callback) {
+  function imageMapOnload(callback: any) {
     Promise.all(imgPromises).then(callback);
   }
 
-  function getImage(name) {
+  function getImage(name: string) {
     const imgInfo = imageMap[name];
 
     if (imgInfo == null) {

@@ -22,6 +22,7 @@ import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-go';
+// @ts-ignore
 import Clipboard from 'clipboard';
 import { Strings, t } from '@apitable/core';
 import { copyOutlinedStr, debugOutlinedStr } from '../icons';
@@ -54,7 +55,7 @@ const displayDebuggerButton = (str: string, lang: string) => {
 };
 
 const md = new MarkdownIt({
-  highlight: (str, lang, ...d) => {
+  highlight: (str, lang) => {
     if (lang) {
       const langObject = Prism.languages[lang];
       // Online commissioning
@@ -78,14 +79,14 @@ const md = new MarkdownIt({
     }
     return `<pre class="language-${lang}"><code>` + md.utils.escapeHtml(str) + '</code></pre>';
   },
-});
+}) as any;
 
 // Remember old renderer, if overridden, or proxy to default renderer
-const defaultRender = md.renderer.rules.link_open || function render(tokens, idx, options, env, self) {
+const defaultRender = md.renderer.rules.link_open || function render(tokens: any, idx: any, options: any, _env: any, self: any) {
   return self.renderToken(tokens, idx, options);
 };
 
-md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+md.renderer.rules.link_open = (tokens: any[], idx:  number, options: any, env: any, self: any) => {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
   if (aIndex < 0) {

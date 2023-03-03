@@ -1,0 +1,45 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import { FC } from 'react';
+import { Select, Typography } from '@apitable/components';
+import { TIMEZONES, t, Strings } from '@apitable/core';
+import styles from './style.module.less';
+import { useSelector } from 'react-redux';
+
+const options = TIMEZONES.map((tz: { utc: string; tzCode: string; }) => ({
+  label: `UTC${tz.utc}(${tz.tzCode})`,
+  value: tz.tzCode,
+}));
+
+export const TimezoneSetting: FC = () => {
+  const timeZone = useSelector(state => state.user.info?.timeZone!);
+
+  return (
+    <div className={styles.timezoneSetting}>
+      <Typography variant="h7" className={styles.title}>{t(Strings.user_setting_time_zone_title)}</Typography>
+      <Select
+        options={options}
+        value={timeZone}
+        disabled
+        dropdownMatchSelectWidth
+        triggerStyle={{ width: 300 }}
+      />
+    </div >
+  );
+};

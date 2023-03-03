@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography } from '@apitable/components';
+import { Button, Typography, ThemeName } from '@apitable/components';
 import {
   CalendarStyleKeyType,
   CollaCommandName,
@@ -30,6 +30,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { notify } from 'pc/components/common/notify';
@@ -38,22 +39,24 @@ import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
 import { resourceService } from 'pc/resource_service';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
-import GanttCreationDate from 'static/icon/account/gantt_creation.png';
+import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
+import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 
 export const CreateFieldModal = memo(() => {
   const { viewId, columnCount, exitFieldNames, permissions } = useSelector(state => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
-      viewId: Selectors.getActiveView(state)!,
+      viewId: Selectors.getActiveViewId(state)!,
       columnCount: Selectors.getColumnCount(state)!,
       exitFieldNames: Object.values(fieldMap).map(field => field.name),
       permissions: Selectors.getPermissions(state),
     };
   });
   const manageable = permissions.manageable;
+  const themeName = useSelector(state => state.theme);
+  const GanttCreationDate = themeName === ThemeName.Light ? GanttCreationDateLight : GanttCreationDateDark;
 
   const generateField = (fieldId: string, name: string) => {
     return {
@@ -136,7 +139,7 @@ export const CreateFieldModal = memo(() => {
           className={styles.createBtn}
           onClick={handleClick}
           disabled={!manageable}
-          prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+          prefixIcon={<AddOutlined size={16} color={'white'} />}
         >
           {t(Strings.calendar_init_fields_button)}
         </Button>

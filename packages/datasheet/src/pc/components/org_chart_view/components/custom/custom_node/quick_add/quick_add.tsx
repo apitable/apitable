@@ -32,7 +32,7 @@ interface IQuickAddProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export const QuickAdd: FC<IQuickAddProps> = ({
+export const QuickAdd: FC<React.PropsWithChildren<IQuickAddProps>> = ({
   entered,
   id,
   style,

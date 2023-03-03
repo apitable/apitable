@@ -62,7 +62,7 @@ const triggerBase = {
   }
 };
 
-export const UnitItem: FC<IUnitItemProps> = props => {
+export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
   const colors = useThemeColors();
   const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, 
     disabled, onChange, onRemove, isDetail, teamData, memberId } = props;
@@ -196,19 +196,21 @@ export const UnitItem: FC<IUnitItemProps> = props => {
           onVisibleChange={setMenuVisible}
           disabled={disabled}
           overlay={
-            <Menu>
-              {roleOptions.map(v => (
-                <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} item={v} />
-              ))}
-              <MenuItem
-                className={styles.delete}
-                item={{ label: t(Strings.remove_role), value: 'remove' }}
-                option={{ labelColor: colors.textDangerDefault }}
-                onClick={() => removeRole(unit.id)}
-              >
-                {t(Strings.remove_role)}
-              </MenuItem>
-            </Menu>
+            <div style={{ maxWidth: '240px' }}>
+              <Menu>
+                {roleOptions.map(v => (
+                  <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} item={v} />
+                ))}
+                <MenuItem
+                  className={styles.delete}
+                  item={{ label: t(Strings.remove_role), value: 'remove' }}
+                  option={{ labelColor: colors.textDangerDefault }}
+                  onClick={() => removeRole(unit.id)}
+                >
+                  {t(Strings.remove_role)}
+                </MenuItem>
+              </Menu>
+            </div>
           }
         >
           {itemContent}

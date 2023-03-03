@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IAttachmentValue, isImage, IUserInfo } from '@apitable/core';
+import { Api, IAttachmentValue, isImage, IUserInfo, IReduxState } from '@apitable/core';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -28,7 +28,6 @@ import { Header } from '../mobile/header';
 import { PreviewDisplayList } from '../preview_display_list';
 import { ToolBar } from '../tool_bar';
 import styles from './style.module.less';
-import IconRotate from 'static/icon/datasheet/datasheet_icon_rotate.svg';
 import { Swiper } from './swiper';
 import { ITransFormInfo } from '../preview_file.interface';
 import { Message } from 'pc/components/common';
@@ -39,6 +38,7 @@ import { useKeyPress } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { isFocusingInput } from './util';
 import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
+import { RotateOutlined } from '@apitable/icons';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -55,7 +55,7 @@ interface IPreviewMain {
   toggleIsFullScreen: () => void;
 }
 
-export const PreviewMain: React.FC<IPreviewMain> = props => {
+export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = props => {
   const {
     activeIndex,
     setActiveIndex,
@@ -72,7 +72,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   } = props;
   const colors = useThemeColors();
   const { screenIsAtMost, clientWidth: _clientWidth } = useResponsive();
-  const rightPaneWidth = useSelector(state => state.rightPane.width);
+  const rightPaneWidth = useSelector((state: IReduxState) => state.rightPane.width);
   const isMobile = screenIsAtMost(ScreenSize.md);
   const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 
@@ -83,7 +83,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
 
   const [transformInfo, setTransformInfo] = useFrameSetState<ITransFormInfo>(initTransformInfo);
 
-  const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name));
+  const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name) as string);
   const isPdf = mime.lookup(activeFile.name) === 'application/pdf';
 
   const fetchPreviewUrl = async() => {
@@ -101,11 +101,11 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   useEffect(() => {
     setOfficePreviewUrl(null);
     fetchPreviewUrl();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeIndex]);
 
   const handlePrev = useCallback(
-    e => {
+    (e: any) => {
       e.stopPropagation();
 
       if (activeIndex - 1 >= 0) {
@@ -117,7 +117,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
   );
 
   const handleNext = useCallback(
-    e => {
+    (e: any) => {
       e.stopPropagation();
 
       if (activeIndex + 1 < files.length) {
@@ -222,7 +222,7 @@ export const PreviewMain: React.FC<IPreviewMain> = props => {
         />
         {isImage({ name: activeFile.name, type: activeFile.mimeType }) && isSupportImage(activeFile.mimeType) && (
           <div onClick={onRotate} className={styles.rotate}>
-            <IconRotate fill={colors.defaultBg} width={16} height={16} />
+            <RotateOutlined color={colors.defaultBg} size={16} />
           </div>
         )}
       </ComponentDisplay>

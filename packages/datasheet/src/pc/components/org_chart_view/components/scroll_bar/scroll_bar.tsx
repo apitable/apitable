@@ -28,7 +28,7 @@ export interface IScrollBarProps {
   type: ScrollBarType;
 }
 
-export const ScrollBar: FC<IScrollBarProps> = ({
+export const ScrollBar: FC<React.PropsWithChildren<IScrollBarProps>> = ({
   type,
 }) => {
 

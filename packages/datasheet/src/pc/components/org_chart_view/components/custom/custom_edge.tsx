@@ -20,7 +20,7 @@ import { useThemeColors } from '@apitable/components';
 import { FC, memo } from 'react';
 import { EdgeProps, getSmoothStepPath } from '@apitable/react-flow';
 
-export const CustomEdge: FC<EdgeProps> = memo(({
+export const CustomEdge: FC<React.PropsWithChildren<EdgeProps>> = memo(({
   id,
   sourceX,
   sourceY,

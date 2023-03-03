@@ -35,7 +35,7 @@ export interface ITooltipProps {
  * @param textEllipsis： Similar to the default, mainly for text, shown when part of the text is hidden, otherwise not shown
  * @param showTipAnyway： Displayed on whatever device
  */
-export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
+export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProps>> = ({
   showTipAnyway = false,
   textEllipsis = false,
   offset = [0, -3],
@@ -55,7 +55,7 @@ export const Tooltip: FC<ITooltipProps & AntdTooltipProps> = ({
       return;
     }
     setShowPopover(myrefs.current.scrollWidth > myrefs.current.clientWidth);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [myrefs.current, overflowWidth]);
 
   if (

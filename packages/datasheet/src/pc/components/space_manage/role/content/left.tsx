@@ -47,12 +47,12 @@ export const addRole = (roleName: string, cb: () => void) => {
   });
 };
 
-export const Left: React.FC<{
+export const Left: React.FC<React.PropsWithChildren<{
   roleList: IRoleItem[];
   refreshRoleList: () => void;
   activeRoleId?: string;
   setActiveRoleId: (roleId: string) => void;
-}> = props => {
+}>> = props => {
   const { roleList, refreshRoleList, activeRoleId, setActiveRoleId } = props;
   const { manageable, setActiveRoleName, refreshMemberList } = useContext(RoleContext);
   const [search, setSearch] = useState<string>('');
@@ -120,7 +120,7 @@ export const Left: React.FC<{
       {
         icon: <EditOutlined/>,
         text: t(Strings.role_context_item_rename),
-        onClick: ({ onEdit, roleName, role }) => {
+        onClick: ({ onEdit, roleName, role }: any) => {
           expandEditRoleModal({
             value: roleName,
             title: t(Strings.rename_role_title),
@@ -132,7 +132,7 @@ export const Left: React.FC<{
       {
         icon: <DeleteOutlined/>,
         text: t(Strings.role_context_item_delete),
-        onClick: ({ onDelete, role }) => {
+        onClick: ({ onDelete, role }: any) => {
           onDelete?.(role);
         },
       }
@@ -186,11 +186,11 @@ export const Left: React.FC<{
   );
 };
 
-const RoleListSearchContent: React.FC<{
+const RoleListSearchContent: React.FC<React.PropsWithChildren<{
   list: IRoleItem[];
   activeRoleId?: string;
   onClick?: (roleId: string) => void;
-}> = props => {
+}>> = props => {
   const { activeRoleId, list, onClick } = props;
   if (list.length === 0) {
     return <SearchEmpty />;

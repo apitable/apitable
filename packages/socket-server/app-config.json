@@ -1,6 +1,0 @@
-{
-  "logdir": "/app/packages/socket-server/logs",
-  "error_log": ["/app/packages/socket-server/logs/error.log", "/app/packages/socket-server/logs/exception.log"],
-  "packages": ["/app/package.json", "/app/packages/socket-server/package.json"],
-  "disks": ["/app/packages/socket-server"]
-}

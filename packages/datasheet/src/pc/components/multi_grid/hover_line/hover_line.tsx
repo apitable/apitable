@@ -29,17 +29,17 @@ interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;
   dragOption: IDragOption;
   setDirection: React.Dispatch<React.SetStateAction<DropDirectionType>>;
-  getFieldId?: (e) => string | null | undefined;
-  getRecordId?: (e) => string | null | undefined;
-  getElementRect?: (e, type: MoveType) => IElementRectProps;
-  checkIsOpacityLine?: (e) => boolean;
+  getFieldId?: (e: any) => string | null | undefined;
+  getRecordId?: (e: any) => string | null | undefined;
+  getElementRect?: (e: any, type: MoveType) => IElementRectProps;
+  checkIsOpacityLine?: (e: any) => boolean;
 }
 
 type IHoverLine = IHoverLineOwnProps & Pick<IDragProps, 'width' | 'height' | 'rowHeight'>;
 
 type IPosition = { x: number; y: number } | null;
 
-export const HoverLine: React.FC<IHoverLine> = props => {
+export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = props => {
   const {
     isChangeColumnsWidth,
     setDirection,
@@ -151,7 +151,7 @@ export const HoverLine: React.FC<IHoverLine> = props => {
   const containerRect = useMemo(() => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
     return containerDom!.getBoundingClientRect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [width]);
 
   if ((!Object.keys(dragTarget).length && !isChangeColumnsWidth) || !position) {

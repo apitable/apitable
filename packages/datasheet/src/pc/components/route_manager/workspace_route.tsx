@@ -29,7 +29,7 @@ import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
 import { Welcome } from '../workspace/welcome';
 
-const WorkspaceRoute: FC = () => {
+const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useSelector(state => Selectors.getNodeId(state));
   const activeNodeError = useSelector(state => state.catalogTree.activeNodeError);
   const { datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => {

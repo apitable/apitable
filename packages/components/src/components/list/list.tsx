@@ -34,7 +34,7 @@ export const List = React.forwardRef(({
       typeof d === 'string' ? <ListItem key={index}>{d}</ListItem> : <ListItem key={index} {...d}/>;
   };
   return (
-    <ListStyled {...resetProps}>
+    <ListStyled {...resetProps} ref={ref}>
       {Boolean(header) && <ListHeaderStyled>{header}</ListHeaderStyled>}
       {data ? data.map(renderInnerItem): children}
       {Boolean(footer) && <ListFooterStyled>{footer}</ListFooterStyled>}

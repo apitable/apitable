@@ -31,14 +31,14 @@ import { CellAttachment } from '../cell_attachment';
 import { CellMultiSelect } from '../cell_multi_select';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 
-const CellPlaceHolder = props => {
+const CellPlaceHolder = (props: { rowHeight: number; }) => {
   const { rowHeight } = props;
   const { setActiveCellBound } = useContext(KonvaGridContext);
   useMemo(() => setActiveCellBound({ height: rowHeight }), [rowHeight, setActiveCellBound]);
   return null;
 };
 
-export const CellLookUp: React.FC<ICellProps> = props => {
+export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props => {
   const { field, cellValue: originCellValue, rowHeight } = props;
   const cellValue = handleNullArray(originCellValue);
   const realField = (Field.bindModel(field) as LookUpField).getLookUpEntityField();

@@ -18,32 +18,32 @@
 
 package com.apitable.widget.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * <p>
- * Get the widget store list parameter
+ * Get the widget store list parameter.
  * </p>
  */
 @Data
-@ApiModel("Widget Store List Please Parameter")
+@Schema(description = "Widget Store List Please Parameter")
 public class WidgetStoreListRo {
 
-    @ApiModelProperty(value = "Whether to filter unpublished widget (true: filter, false: not filter)", example = "false", position = 1)
+    @Schema(description = "Whether to filter unpublished widget (true: filter, false: not filter)",
+        example = "false")
     private Boolean filter;
 
     @NotNull
-    @ApiModelProperty(value = "Get widget type (0: space station, 1: global, 10: to be approved)", example = "1", position = 2)
+    @Schema(description = "Get widget type (0: space station, 1: global, 10: to be approved)",
+        example = "1")
     private Integer type;
 
-    @ApiModelProperty(value = "Specify the return language", example = "en-US", position = 3, hidden = true)
+    @Schema(description = "Specify the return language", example = "en-US", hidden = true)
     private String language;
 
-    @ApiModelProperty(value = "Global widget search keywords to be audited", position = 4)
+    @Schema(description = "Global widget search keywords to be audited")
     private String previewSearchKeyword;
 
 }

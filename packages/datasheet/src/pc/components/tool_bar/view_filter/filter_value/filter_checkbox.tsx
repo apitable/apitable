@@ -26,14 +26,14 @@ import { useSelector } from 'react-redux';
 import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
 
-export const FilterCheckbox: React.FC<Omit<IFilterCheckboxProps, 'execute'>> = props => {
+export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckboxProps, 'execute'>>> = props => {
   const { condition, onChange, field } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const checkboxRef = useRef<IEditor>(null);
 
   useEffect(() => {
     checkboxRef.current!.onStartEdit(condition.value != null ? condition.value : null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const debounceCommandNumberFn = debounce((value: boolean) => {

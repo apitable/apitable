@@ -18,9 +18,6 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NodeRepository } from 'node/repositories/node.repository';
-import { UserRepository } from 'user/repositories/user.repository';
-import { UserService } from 'user/services/user.service';
 import { RobotActionController } from './controller/action.controller';
 import { RobotActionTypeController } from './controller/action.type.controller';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
@@ -43,6 +40,11 @@ import { FormSubmittedListener } from './events/listeners/form.submitted.listene
 import { TriggerEventHelper } from './events/helpers/trigger.event.helper';
 import { RecordCreatedListener } from './events/listeners/record.created.listener';
 import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
+import { RobotServiceService } from './services/robot.service.service';
+import { NodeModule } from 'node/node.module';
+import { UserModule } from 'user/user.module';
+import { RobotActionService } from './services/robot.action.service';
+import { RobotRobotService } from './services/robot.robot.service';
 
 @Module({
   imports: [
@@ -54,10 +56,9 @@ import { RecordUpdatedListener } from './events/listeners/record.updated.listene
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
       AutomationActionTypeRepository,
-      // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
-      UserRepository,
-      NodeRepository,
     ]),
+    NodeModule,
+    UserModule,
     RobotServiceDynamicModule.forRoot(),
   ],
   controllers: [
@@ -73,11 +74,13 @@ import { RecordUpdatedListener } from './events/listeners/record.updated.listene
     AutomationService,
     RobotTriggerService,
     RobotTriggerTypeService,
-    UserService,
+    RobotServiceService,
     FormSubmittedListener,
     TriggerEventHelper,
     RecordCreatedListener,
     RecordUpdatedListener,
+    RobotActionService,
+    RobotRobotService,
   ],
   exports: [
     AutomationService,

@@ -43,6 +43,7 @@ import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.clock.spring.ClockManager;
+import com.apitable.shared.config.ServerConfig;
 import com.apitable.shared.config.initializers.EnterpriseEnvironmentInitializers;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
@@ -74,11 +75,6 @@ import org.springframework.test.context.TestPropertySource;
 }, properties = { "TEST_ENABLED=true" })
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
-    /**
-     * using east 8 timezone for testing
-     */
-    protected static final ZoneOffset testTimeZone = ZoneOffset.ofHours(8);
-
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
@@ -87,6 +83,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    protected ServerConfig serverConfig;
 
     @Autowired
     protected IAuthService iAuthService;
@@ -169,6 +168,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     protected MockClock getClock() {
         return ClockManager.me().getMockClock();
+    }
+
+    protected ZoneOffset getTestTimeZone() {
+        return serverConfig.getTimeZone();
     }
 
     protected UserEntity createUserRandom() {

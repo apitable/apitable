@@ -35,7 +35,7 @@ MessageTypes.forEach(type =>
   }
 );
 
-export type IMessage = React.FC<IFuncMessageBase> & 
+export type IMessage = React.FC<React.PropsWithChildren<IFuncMessageBase>> & 
   Record<
     IMessageType,
     (props: IFuncMessageBase) => void

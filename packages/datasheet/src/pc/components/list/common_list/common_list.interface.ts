@@ -42,7 +42,7 @@ export interface ICommonListProps {
 
   /**
    * @description A reference bound to the Input component to focus
-   * @type {React.RefObject<IInputRef>}
+   * @type {React.RefObject<HTMLInputElement>}
    */
   inputRef?: React.RefObject<HTMLInputElement>;
 
@@ -96,7 +96,7 @@ export interface ICommonListProps {
   monitorId?: string
 
   /**
-   * @description Originally, this parameter was controlled internally by the component, but in draft, you need to maintain the editor's own index, 
+   * @description Originally, this parameter was controlled internally by the component, but in draft, you need to maintain the editor's own index,
    * so you need to pass it in like the component's internal
    * @type {number}
    */
@@ -134,12 +134,12 @@ export interface IOptionItemProps extends HTMLAttributes<HTMLDivElement> {
   isChecked?: boolean
 
   /**
-   * @description In the option sorting will need to wrap a layer of other components, but for internal bad handling, 
+   * @description In the option sorting will need to wrap a layer of other components, but for internal bad handling,
    * so you can pass in a wrapped function through this property
    * @param {*} children
    * @returns {ReactNode}
    */
-  wrapperComponent?(children): ReactNode
+  wrapperComponent?(children: ReactElement): ReactNode
 
   disabled?: boolean;
 }

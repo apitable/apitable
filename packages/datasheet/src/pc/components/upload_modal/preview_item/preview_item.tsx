@@ -17,15 +17,14 @@
  */
 
 import { Tooltip, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IAttachmentValue, IField, Selectors } from '@apitable/core';
+import { ConfigConstant, IAttachmentValue, IAttacheField, Selectors } from '@apitable/core';
+import { DeleteOutlined, DownloadOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import styles from './styles.module.less';
 
 interface IPreviewItemProps {
@@ -35,14 +34,14 @@ interface IPreviewItemProps {
   cellValue: IAttachmentValue[];
   index: number;
   recordId: string;
-  field: IField;
+  field: IAttacheField;
   // The caller needs to synthesize the final readonly incoming,
   // no additional 'permissions' are introduced here to determine permissions
   readonly?: boolean;
   style?: React.CSSProperties;
-  onSave: (cellValue: IAttachmentValue[]) => void;
-  setPreviewIndex(index: number): void;
-  setPreviewVisible(visible: boolean): void;
+  onSave?: (cellValue: IAttachmentValue[]) => void;
+  setPreviewIndex?: (index: number) => void;
+  setPreviewVisible?: (visible: boolean) => void;
 }
 
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
@@ -53,13 +52,13 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
   });
   const role = useSelector(state => Selectors.getDatasheet(state, datasheetId))?.role;
   const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state));
-  const fieldRole = useSelector(state => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
+  const fieldRole = useSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
   if (allowDownloadAttachment) return true;
   if (!fieldRole) return !(role === ConfigConstant.Role.Reader);
   return fieldRole === ConfigConstant.Role.Editor;
 };
 
-export const PreviewItem: React.FC<IPreviewItemProps> = props => {
+export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> = props => {
   const { name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId } = props;
   const file = cellValue.find(item => item.id === id);
   const fieldId = field.id;
@@ -99,12 +98,12 @@ export const PreviewItem: React.FC<IPreviewItemProps> = props => {
         <div className={styles.toolBar}>
           {allowDownload && (
             <div className={styles.iconDownload} onClick={() => download(file!)}>
-              <IconDownload fill={colors.black[50]} />
+              <DownloadOutlined color={colors.black[50]} />
             </div>
           )}
           {!readonly && (
             <div className={styles.iconDelete} onClick={() => onChange(deleteFile(id))}>
-              <IconDelete fill={colors.black[50]} />
+              <DeleteOutlined color={colors.black[50]} />
             </div>
           )}
         </div>

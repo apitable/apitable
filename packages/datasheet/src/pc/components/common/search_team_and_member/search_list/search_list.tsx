@@ -54,7 +54,7 @@ const triggerBase = {
   }
 };
 
-export const SearchList: FC<ISearchListProps> = props => {
+export const SearchList: FC<React.PropsWithChildren<ISearchListProps>> = props => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   return (
     <div className={styles.searchList}>

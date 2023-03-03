@@ -32,7 +32,7 @@ interface IDescEditorProps extends IBasePropEditorProps {
   descData: any | undefined;
 }
 
-export const DescEditor: React.FC<IDescEditorProps> = (props) => {
+export const DescEditor: React.FC<React.PropsWithChildren<IDescEditorProps>> = (props) => {
   const { mode, descData, updateProps } = props;
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState();
@@ -65,7 +65,7 @@ export const DescEditor: React.FC<IDescEditorProps> = (props) => {
     return <></>;
   }
 
-  const contentChangeHandler = (content) => {
+  const contentChangeHandler = (content: React.SetStateAction<undefined>) => {
     // Storage state
     setContent(content);
   };

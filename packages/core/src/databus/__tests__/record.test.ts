@@ -26,7 +26,10 @@ beforeAll(resetDataLoader);
 
 describe('record info', () => {
   test('basic record info', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({
@@ -79,7 +82,10 @@ describe('record info', () => {
 
 describe('getViewInfo', () => {
   test('verbatim', async() => {
-    const dst1 = await db.getDatasheet('dst1', {});
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
     expect(dst1).toBeTruthy();
 
     const view1 = await dst1!.getView({

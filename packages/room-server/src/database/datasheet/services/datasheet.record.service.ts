@@ -22,49 +22,42 @@ import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
-import { In, SelectQueryBuilder } from 'typeorm';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
-import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
+import { In } from 'typeorm';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 
 @Injectable()
 export class DatasheetRecordService {
+  private nativeModule: typeof import('@apitable/room-native-api') | undefined | null;
+
   constructor(
     private readonly recordRepo: DatasheetRecordRepository,
     private readonly recordCommentService: RecordCommentService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
   ) {}
 
-  async insertBatch(entities: DatasheetRecordEntity[]) {
-    await this.recordRepo
-      .createQueryBuilder()
-      .insert()
-      .into(DatasheetRecordEntity)
-      .values(entities)
-      .execute();
-  }
-
-  async getByRecordIdsAndIsDeleted(dstId: string, recordIds: string[], isDeleted: boolean): Promise<string[]> {
-    const raw = await this.recordRepo
-      .createQueryBuilder()
-      .select('record_id', 'recordId')
-      .where('record_id IN(:...recordIds)', { recordIds })
-      .andWhere('dst_id = :dstId', { dstId })
-      .andWhere('is_deleted = :isDeleted', { isDeleted })
-      .getRawMany();
-    return raw.reduce<string[]>((pre, cur) => {
-      pre.push(cur.recordId);
-      return pre;
-    }, []);
+  private async getNativeModule(): Promise<typeof import('@apitable/room-native-api') | null> {
+    if (this.nativeModule === undefined) {
+      try {
+        this.nativeModule = await import('@apitable/room-native-api');
+      } catch (_e) {
+        this.nativeModule = null;
+      }
+    }
+    return this.nativeModule;
   }
 
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
+    if (await this.getNativeModule()) {
+      return (await this.getNativeModule())!.getRecords(dstId, undefined, false) as Promise<RecordMap>;
+    }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
@@ -74,57 +67,15 @@ export class DatasheetRecordService {
   }
 
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    if (await this.getNativeModule()) {
+      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted) as Promise<RecordMap>;
+    }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
     });
     const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
     return this.formatRecordMap(records, commentCountMap, recordIds);
-  }
-
-  async getRelatedRecordCells(datasheetId: string, recordIds: string[], fieldKeyNames: string[], isDeleted = false): Promise<RecordMap> {
-    const raw = await this.getSelectQueryBuilder(datasheetId, recordIds, fieldKeyNames, isDeleted).getRawMany();
-    const records = raw.reduce<any[]>((pre, cur) => {
-      const data = {};
-      for (const fieldKeyName of fieldKeyNames) {
-        data[fieldKeyName] = cur[fieldKeyName];
-      }
-      const record = { recordId: cur.recordId, data, recordMeta: { fieldUpdatedMap: cur.fieldUpdatedMap }};
-      pre.push(record);
-      return pre;
-    }, []);
-    return this.formatRecordMapWithRelatedCellsOnly(records);
-  }
-
-  private getSelectQueryBuilder(
-    datasheetId: string,
-    recordIds: string[],
-    fieldKeyNames: string[],
-    isDeleted = false,
-  ): SelectQueryBuilder<DatasheetRecordEntity> {
-    const selectQueryBuilder = this.recordRepo.createQueryBuilder().select('record_id', 'recordId');
-    for (const fieldKeyName of fieldKeyNames) {
-      const jsonExtractFieldKeyName = `JSON_EXTRACT(data, '$.${fieldKeyName}')`;
-      selectQueryBuilder.addSelect(jsonExtractFieldKeyName, fieldKeyName);
-    }
-    selectQueryBuilder.addSelect("JSON_EXTRACT(field_updated_info, '$.fieldUpdatedMap')", 'fieldUpdatedMap');
-    selectQueryBuilder
-      .where('record_id IN(:...recordIds)', { recordIds })
-      .andWhere('dst_id = :datasheetId', { datasheetId })
-      .andWhere('is_deleted = :isDeleted', { isDeleted });
-    return selectQueryBuilder;
-  }
-
-  private formatRecordMapWithRelatedCellsOnly(records: DatasheetRecordEntity[]) {
-    return records.reduce<RecordMap>((pre, cur) => {
-      pre[cur.recordId!] = {
-        id: cur.recordId!,
-        data: cur.data || {},
-        recordMeta: cur.recordMeta,
-        commentCount: undefined as any,
-      };
-      return pre;
-    }, {});
   }
 
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
@@ -207,7 +158,7 @@ export class DatasheetRecordService {
     fieldIds: string[],
   ): Promise<RecordHistoryDto | null> {
     let changesets: ChangesetBaseDto[] = [];
-    const units: UnitBaseInfoDto[] = [];
+    const units: UnitInfoDto[] = [];
     let emojis: CommentEmojiDto = {};
     const revisions = await this.getRecordRevisionHistoryAsc(dstId, recordId, query.type, showRecordHistory, query.limitDays);
     const maxRevisionIndex =
@@ -297,7 +248,7 @@ export class DatasheetRecordService {
    * @author Zoe Zheng
    * @date 2021/4/12 11:48 AM
    */
-  async getRecordRevisionHistoryAsc(
+  private async getRecordRevisionHistoryAsc(
     dstId: string,
     recordId: string,
     type: RecordHistoryTypeEnum,
@@ -349,5 +300,9 @@ export class DatasheetRecordService {
     }
 
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]!) || '';
+  }
+
+  async selectIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<string[] | null> {
+    return await this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 }

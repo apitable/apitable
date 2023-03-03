@@ -18,13 +18,12 @@
 
 import { useThemeColors } from '@apitable/components';
 import { DateRange, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import style from './style.module.less';
 
 interface IPickerContentProps {
@@ -50,7 +49,7 @@ interface ICustomChildren {
   arrowIcon?: JSX.Element | null;
 }
 
-export const CustomChildren: React.FC<ICustomChildren> = props => {
+export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> = props => {
   const {
     onClick,
     children,
@@ -75,13 +74,13 @@ export const CustomChildren: React.FC<ICustomChildren> = props => {
         {children}
       </span>
       {
-        arrowIcon !== undefined ? arrowIcon : <IconArrow width={16} height={16} fill={colors.fourthLevelText} />
+        arrowIcon !== undefined ? arrowIcon : <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
       }
     </div>
   );
 };
 
-const PickerContentBase: FC<IPickerContentProps> = (props) => {
+const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (props) => {
   const colors = useThemeColors();
   const {
     value,
@@ -159,7 +158,7 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
       />
       {Boolean(alarm) && (
         <div className={style.alarm}>
-          <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
+          <NotificationOutlined color={colors.deepPurple[500]} size={14} />
           <span className={style.alarmTime}>
             {alarmRealTime}
           </span>

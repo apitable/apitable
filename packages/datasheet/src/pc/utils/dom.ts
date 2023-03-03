@@ -133,7 +133,7 @@ export function getElementDataset(element: HTMLElement | null | undefined, key: 
   return element.dataset[key];
 }
 
-export function stopPropagation(e) {
+export function stopPropagation(e: React.SyntheticEvent) {
   e.stopPropagation();
   e.nativeEvent.stopImmediatePropagation();
 }
@@ -267,7 +267,7 @@ export const getChildListByContainerSelector = (container: HTMLElement, selector
   return Array.from(childNodes) as HTMLElement[];
 };
 
-export const isInContainer = (el, container) => {
+export const isInContainer = (el: Element, container: any) => {
   if (!el || !container) return false;
 
   const elRect = el.getBoundingClientRect();

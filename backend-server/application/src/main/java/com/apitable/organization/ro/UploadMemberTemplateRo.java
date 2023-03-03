@@ -18,26 +18,26 @@
 
 package com.apitable.organization.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>
- * Upload Employee Template Request Parameters
+ * Upload Employee Template Request Parameters.
  * </p>
  */
 @Data
-@ApiModel("Upload Employee Template Request Parameters")
+@Schema(description = "Upload Employee Template Request Parameters")
 public class UploadMemberTemplateRo {
 
     @NotNull(message = "The import file cannot be empty")
-    @ApiModelProperty(value = "Import File", position = 2, required = true)
+    @Schema(description = "Import File", required = true)
     private MultipartFile file;
 
-    @ApiModelProperty(value = "Password login for human-machine verification, and the front end obtains the value of get NVC Val function (human-machine verification will be performed when not logged in)", example = "FutureIsComing", position = 3)
+    @Schema(description = "Password login for human-machine verification, and the front end "
+        + "obtains the value of get NVC Val function (human-machine verification will be "
+        + "performed when not logged in)", example = "FutureIsComing")
     private String data;
 }

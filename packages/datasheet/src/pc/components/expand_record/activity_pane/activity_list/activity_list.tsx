@@ -23,7 +23,7 @@ import cls from 'classnames';
 import { ActivitySelectType } from 'pc/utils';
 import { ActivityContext } from '../activity_context';
 
-export const ActivityList: FC<IActivityListProps> = props => {
+export const ActivityList: FC<React.PropsWithChildren<IActivityListProps>> = props => {
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [empty, setEmpty] = useState(true);
@@ -33,9 +33,9 @@ export const ActivityList: FC<IActivityListProps> = props => {
   return (
     <div className={styles.activityContainer} ref={containerRef}>
       <div className={cls(styles.activityList, {
-        [styles.isReply]: Boolean(replyText),
-        [styles.empty]: empty,
-        [styles.allowComment]: props.selectType !== ActivitySelectType.Changeset
+        [styles.isReply!]: Boolean(replyText),
+        [styles.empty!]: empty,
+        [styles.allowComment!]: props.selectType !== ActivitySelectType.Changeset
       })} ref={listRef}>
         <ActivityListItems
           {...props}

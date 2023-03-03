@@ -33,10 +33,10 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { ReactChild, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import LevelRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { SelectUnitSource } from '.';
 import { SearchResult } from '../search_result';
 import styles from './style.module.less';
+import { ChevronRightOutlined } from '@apitable/icons';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -68,7 +68,7 @@ const triggerBase = {
   }
 };
 
-export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
+export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftProps>> = props => {
   const colors = useThemeColors();
   const {
     isSingleSelect,
@@ -104,7 +104,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
   let linkId = useSelector(Selectors.getLinkId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
-
+  const embedId = useSelector(state => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
@@ -130,7 +130,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     search(keyword, linkId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [keyword, linkId, isRole]);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return;
     }
     setUnits(unitsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [unitsData, source]);
 
   const isDisabled = useCallback(
@@ -210,7 +210,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setBreadCrumbData([...breadCrumbData, { name: unit.teamName, teamId: unit.teamId }]);
   };
 
-  const onChangeChecked = (e: CheckboxChangeEvent, unit: UnitItem) => {
+  const onChangeChecked = (_e: CheckboxChangeEvent, unit: UnitItem) => {
     const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
     if (idx !== -1) {
       setCheckedList(checkedList.filter(item => item.unitId !== unit.unitId));
@@ -261,7 +261,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       } as any;
     }
 
-    const title = spaceInfo
+    const title = (spaceInfo || embedId )
       ? (getSocialWecomUnitName?.({
         name: _item.originName || _item.memberName,
         isModified: _item.isMemberNameModified,
@@ -326,7 +326,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
             stopPropagation(e);
             onClickTeamItem(item);
           }}
-          icon={<LevelRightIcon width={16} height={16} fill={colors.fourthLevelText} />}
+          icon={<ChevronRightOutlined size={16} color={colors.fourthLevelText} />}
         />
       )}
     </div>
@@ -442,7 +442,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {
             if (isExist) {
-              isExist = eachUnits.findIndex(item => item.unitId === listItem.unitId) === -1;
+              isExist = eachUnits.findIndex((item: { unitId: string; }) => item.unitId === listItem.unitId) === -1;
             }
           });
           return isExist;

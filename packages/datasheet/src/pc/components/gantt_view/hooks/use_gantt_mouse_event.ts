@@ -17,7 +17,7 @@
  */
 
 import {
-  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
+  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, ICollaCommandExecuteResult, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
   Selectors,
 } from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';
@@ -116,7 +116,7 @@ export const useGanttMouseEvent = ({
     return null;
   };
 
-  const onTransformerAttach = (e: KonvaEventObject<MouseEvent>) => {
+  const onTransformerAttach = () => {
     if (![KONVA_DATASHEET_ID.GANTT_TASK, KONVA_DATASHEET_ID.GANTT_LINE_POINT].includes(pointTargetName)) return setTransformerId('');
     const task = getTaskData(pointRowIndex);
     if (task == null) return setTransformerId('');
@@ -124,7 +124,7 @@ export const useGanttMouseEvent = ({
     if (transformerId !== taskId) return setTransformerId(taskId);
   };
 
-  const clickBlankHandler = () => {
+  const clickBlankHandler = (): Promise<ICollaCommandExecuteResult<string[]>> | void => {
     const task = getTaskData(pointRowIndex);
     if (task == null) return;
     const { type, startOffset, endOffset, recordId: taskRecordId } = task;
@@ -273,7 +273,7 @@ export const useGanttMouseEvent = ({
     }
   };
 
-  const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
+  const onMouseUp = () => {
     const { x, visible } = dragSplitterInfo;
 
     setIsTaskLineDrawing(false);
@@ -308,18 +308,18 @@ export const useGanttMouseEvent = ({
   };
 
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {
-    onTransformerAttach(e);
+    onTransformerAttach();
     onHighlightSplitterMove(e);
   };
 
-  const onDragStart = (e: KonvaEventObject<DragEvent>) => {
+  const onDragStart = () => {
     if (pointTargetName === KONVA_DATASHEET_ID.GANTT_TASK) {
       const pointRecordId = linearRows[pointRowIndex]?.recordId;
       setDragTaskId(pointRecordId);
     }
   };
 
-  const onDragMove = (e: KonvaEventObject<DragEvent>) => {
+  const onDragMove = () => {
     //
   };
 
@@ -345,13 +345,13 @@ export const useGanttMouseEvent = ({
       return recordsData;
     }, []);
     
-    resourceService.instance!.commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
     });
   }
 
-  const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+  const onDragEnd = () => {
     if (dragTaskId) {
       if (sortInfo?.keepSort && groupInfo) {
         setCellValueByKeepSort();
@@ -444,7 +444,7 @@ export const useGanttMouseEvent = ({
     }
   };
 
-  const mouseUp = useCallback((e) => {
+  const mouseUp = useCallback((e: any) => {
     if (getParentNodeByClass(e.target as HTMLElement, 'vikaGanttView')) return;
     scrollHandler.stopScroll();
     setDragTaskId(null);

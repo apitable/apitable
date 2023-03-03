@@ -18,15 +18,16 @@
 
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
+import { EditOutlined } from '@apitable/icons';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Spin } from 'antd';
+import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
 import styles from './style.module.less';
 
@@ -81,7 +82,10 @@ export const ChangeLogo = () => {
     );
   };
   return (
-    <div className={styles.logoWrap} style={{ backgroundImage: `url(${AvatarBgImg})` }}>
+    <div className={styles.logoWrap}>
+      <div className={styles.bgWrap}>
+        <Image src={AvatarBgImg} alt='' layout={'fill'} objectFit={'contain'}/>
+      </div>
       <div className={styles.logoContainer}>
         <div className={styles.logo}>
           <Spin
@@ -101,7 +105,7 @@ export const ChangeLogo = () => {
             confirm={data => confirmChangeLogo(data)}
           >
             <div className={styles.editIcon}>
-              <EditIcon fill={colors.staticWhite0} />
+              <EditOutlined color={colors.staticWhite0} />
             </div>
           </ImageCropUpload>
         }

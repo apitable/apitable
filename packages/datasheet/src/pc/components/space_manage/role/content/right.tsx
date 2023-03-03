@@ -67,7 +67,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
     getMemberList(activeRoleId);
   }, [activeRoleId, getMemberList]);
 
-  const onChangePage = (page, pageSize) => getMemberList(activeRoleId, { page, pageSize });
+  const onChangePage = (page: number, pageSize?: number) => getMemberList(activeRoleId, { page, pageSize: pageSize! });
 
   const addMember = (unitList: UnitItem[]) => {
     if (unitList.length === 0) {

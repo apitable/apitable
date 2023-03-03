@@ -19,7 +19,6 @@
 import { defaultEventListenerOptions, IEventListenerOptions, OPEventNameEnums } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { ResourceRobotTriggerDto } from '../../dtos/resource.robot.trigger.dto';
 import { AutomationService } from '../../services/automation.service';
 import { RobotTriggerService } from '../../services/robot.trigger.service';
 import { InjectLogger } from 'shared/common';
@@ -28,6 +27,7 @@ import { EventTypeEnums } from '../domains/event.type.enums';
 import { IShouldFireRobot, TriggerEventHelper } from '../helpers/trigger.event.helper';
 import { isHandleEvent } from '../helpers/listener.helper';
 import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.submitted.event';
+import { ResourceRobotTriggerDto } from '../../dtos/trigger.dto';
 
 @Injectable()
 export class FormSubmittedListener {
@@ -56,7 +56,7 @@ export class FormSubmittedListener {
     if (triggers.length === 0) {
       return;
     }
-    const shouldFireRobots = this._getRenderTriggers(triggers, eventContext);
+    const shouldFireRobots = this.getRenderTriggers(triggers, eventContext);
     this.logger.info('formSubmittedListener', {
       formId: eventContext.formId,
       recordId: eventContext.recordId,
@@ -67,7 +67,7 @@ export class FormSubmittedListener {
     });
   }
 
-  private _getRenderTriggers(triggers: ResourceRobotTriggerDto[], eventContext: FormSubmittedEventContext): IShouldFireRobot[] {
+  public getRenderTriggers(triggers: ResourceRobotTriggerDto[], eventContext: FormSubmittedEventContext): IShouldFireRobot[] {
     return triggers.filter(item => Boolean(item.input))
       .reduce((prev, item) => {
         const triggerInput = this.triggerEventHelper.renderInput(item.input!);

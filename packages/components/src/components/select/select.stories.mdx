@@ -1,7 +1,7 @@
 import { Select } from './index';
 import { Canvas } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
-import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { StarOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Tooltip } from '../tooltip';
 
 <Meta title="en/components/Select" />
@@ -110,8 +110,8 @@ When the selected option has an icon, the icon will be displayed by default.
 <ThemeToggle lang="en">
     <Select
         options={[
-            { label: 'test label 1', value: 'opt1', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
-            { label: 'test label 2', value: 'opt2', prefixIcon: <FavoriteOutlined />, suffixIcon: <FavoriteOutlined /> },
+            { label: 'test label 1', value: 'opt1', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+            { label: 'test label 2', value: 'opt2', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
         ]}
         value="opt1"
         dropdownMatchSelectWidth={false}
@@ -185,7 +185,7 @@ Status prompt, just pass the content in `suffixIconTip`.
                 suffixIcon: (
                     <Tooltip content={'disabled description'}>
                       <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <WarningTriangleNonzeroFilled color="#FFAB00" />
+                        <WarnCircleFilled color="#FFAB00" />
                       </span>
                     </Tooltip>
                 ),
@@ -209,11 +209,11 @@ Status prompt, just pass the content in `suffixIconTip`.
             {
                 label: 'label 1',
                 value: 'opt',
-                prefixIcon: <FavoriteOutlined />,
+                prefixIcon: <StarOutlined />,
                 suffixIcon: (
                     <Tooltip content={'disabled description'}>
                         <span style={{ display: 'flex', alignItems: 'center' }}>
-                          <WarningTriangleNonzeroFilled color="#FFAB00" />
+                          <WarnCircleFilled color="#FFAB00" />
                         </span>
                     </Tooltip>
                 ),

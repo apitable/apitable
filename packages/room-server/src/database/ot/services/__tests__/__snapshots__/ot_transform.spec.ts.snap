@@ -1,0 +1,537 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits od-or 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-3",
+            "rec1-2",
+          ],
+          "oi": Array [
+            "rec1-2",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits oi- server actions cancelled out 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "oi": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+            "rec1-4",
+            "rec1-5",
+            "rec1-6",
+            "rec1-7",
+            "rec1-8",
+            "rec1-9",
+            "rec1-10",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits oi-oi 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-2",
+          ],
+          "oi": Array [
+            "rec1-2",
+            "rec1-1",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits oi-oi server has many actions 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+            "rec1-12",
+            "rec1-15",
+            "rec1-16",
+            "rec1-18",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+            "rec1-12",
+            "rec1-15",
+            "rec1-16",
+            "rec1-18",
+            "rec1-4",
+            "rec1-5",
+            "rec1-6",
+            "rec1-7",
+            "rec1-8",
+            "rec1-9",
+            "rec1-10",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or- server action field type changes cancelled out 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+            "rec1-4",
+            "rec1-5",
+            "rec1-6",
+            "rec1-7",
+            "rec1-8",
+            "rec1-9",
+            "rec1-10",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-3",
+            "rec1-5",
+            "rec1-17",
+            "rec1-12",
+            "rec1-14",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or- server actions cancelled out 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+            "rec1-4",
+            "rec1-5",
+            "rec1-6",
+            "rec1-7",
+            "rec1-8",
+            "rec1-9",
+            "rec1-10",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-3",
+            "rec1-5",
+            "rec1-18",
+            "rec1-8",
+            "rec1-10",
+            "rec1-6",
+            "rec1-12",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or-od 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OI",
+          "oi": Array [
+            "rec1-3",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or-or 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+            "rec1-2",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-2",
+            "rec1-3",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or-or client irrelevant cell edit, server link field type change 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "opt1",
+            "opt2",
+          ],
+          "oi": Array [
+            "opt3",
+            "opt1",
+            "opt2",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-2",
+          ],
+        },
+        Object {
+          "n": "OR",
+          "od": Array [
+            "opt2",
+          ],
+          "oi": Array [
+            "opt1",
+            "opt2",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-11",
+            "data",
+            "fld2-2",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits or-or server has many actions 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+            "rec1-3",
+            "rec1-4",
+            "rec1-7",
+            "rec1-18",
+            "rec1-9",
+            "rec1-10",
+            "rec1-17",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-3",
+            "rec1-10",
+            "rec1-18",
+            "rec1-17",
+            "rec1-12",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits transform irrelevant link cell edit 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "rec1-1",
+          ],
+          "oi": Array [
+            "rec1-1",
+            "rec1-3",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-11",
+            "data",
+            "fld2-1",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "opt1",
+            "opt2",
+          ],
+          "oi": Array [
+            "opt3",
+            "opt1",
+            "opt2",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-10",
+            "data",
+            "fld2-2",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;
+
+exports[`transformLocalChangeset transform simulaneous magic-link cell edits transform irrelevant non-link cell edit 1`] = `
+Object {
+  "messageId": "msg1",
+  "operations": Array [
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OR",
+          "od": Array [
+            "opt1",
+            "opt2",
+          ],
+          "oi": Array [
+            "opt3",
+            "opt1",
+            "opt2",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-11",
+            "data",
+            "fld2-2",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OI",
+          "oi": Array [
+            "opt2",
+            "opt3",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-12",
+            "data",
+            "fld2-2",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+    Object {
+      "actions": Array [
+        Object {
+          "n": "OD",
+          "od": Array [
+            "opt3",
+          ],
+          "p": Array [
+            "recordMap",
+            "rec2-13",
+            "data",
+            "fld2-2",
+          ],
+        },
+      ],
+      "cmd": "SetRecords",
+      "mainLinkDstId": undefined,
+    },
+  ],
+  "resourceId": "dst2",
+  "resourceType": 0,
+  "revision": 11,
+}
+`;

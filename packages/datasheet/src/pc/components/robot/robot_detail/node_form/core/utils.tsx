@@ -18,6 +18,7 @@
 
 import { data2Operand, EmptyNullOperand, getObjectOperandProperty, isArrayOperand, isObjectOperand, mergeOperand } from '@apitable/core';
 import { JSONSchema7 } from 'json-schema';
+// @ts-ignore
 import mergeAllOf from 'json-schema-merge-allof';
 import jsonpointer from 'jsonpointer';
 import _get from 'lodash/get';
@@ -132,7 +133,7 @@ export function getWidget(schema: JSONSchema7, widget: IWidget | string, registe
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-export function hasWidget(schema, widget, registeredWidgets = {}) {
+export function hasWidget(schema: JSONSchema7, widget: string, registeredWidgets = {}) {
   try {
     getWidget(schema, widget, registeredWidgets);
     return true;
@@ -154,17 +155,17 @@ export function hasWidget(schema, widget, registeredWidgets = {}) {
  * @param includeUndefinedValues
  */
 function computeDefaults(
-  _schema,
-  parentDefaults,
-  rootSchema,
+  _schema: any,
+  parentDefaults: { [x: string]: any; },
+  rootSchema: any,
   rawFormData = {},
   includeUndefinedValues = false,
-) {
+): any {
   let schema = isObject(_schema) ? _schema : {};
   const formData = rawFormData;
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
-  if (isObject(defaults) && isObject(schema.default)) {
+  if (isObject(defaults) && isObject(schema?.default)) {
     // For object defaults, only override parent defaults that are defined in
     // schema.default.
     defaults = mergeObjects(defaults, schema.default);
@@ -179,7 +180,7 @@ function computeDefaults(
     const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
     return computeDefaults(resolvedSchema, defaults, rootSchema, formData, includeUndefinedValues);
   } else if (isFixedItems(schema)) {
-    defaults = schema.items.map((itemSchema, idx) =>
+    defaults = schema.items.map((itemSchema: any, idx: number) =>
       computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues),
     );
   } else if ('oneOf' in schema) {
@@ -283,7 +284,7 @@ export function getDefaultFormState(_schema: any, formData: any, rootSchema = {}
  *   - when the array is not set in form data, the default is copied over
  * - scalars are overwritten/set by form data
  */
-export function mergeDefaultsWithFormData(defaults, formData) {
+export function mergeDefaultsWithFormData(defaults: any[], formData: any): any {
   if (Array.isArray(formData)) {
     if (!Array.isArray(defaults)) {
       defaults = [];
@@ -346,7 +347,7 @@ export function getDisplayLabel(schema: JSONSchema7, uiSchema: IUiSchema, rootSc
   return displayLabel;
 }
 
-export function asNumber(value) {
+export function asNumber(value: string | null) {
   if (value === '') {
     return undefined;
   }
@@ -375,22 +376,22 @@ export function asNumber(value) {
   return valid ? n : value;
 }
 
-export function orderProperties(properties, order) {
+export function orderProperties(properties: any[], order?: any[]) {
   if (!Array.isArray(order)) {
     return properties;
   }
 
-  const arrayToHash = arr =>
+  const arrayToHash = (arr: any[]) =>
     arr.reduce((prev, curr) => {
       prev[curr] = true;
       return prev;
     }, {});
-  const errorPropList = arr => (arr.length > 1 ? `properties '${arr.join("', '")}'` : `property '${arr[0]}'`);
+  const errorPropList = (arr: any[]) => (arr.length > 1 ? `properties '${arr.join('\', \'')}'` : `property '${arr[0]}'`);
   const propertyHash = arrayToHash(properties);
   const orderFiltered = order.filter(prop => prop === '*' || propertyHash[prop]);
   const orderHash = arrayToHash(orderFiltered);
 
-  const rest = properties.filter(prop => !orderHash[prop]);
+  const rest = properties.filter((prop: string) => !orderHash[prop]);
   const restIndex = orderFiltered.indexOf('*');
   if (restIndex === -1) {
     if (rest.length) {
@@ -411,11 +412,11 @@ export function orderProperties(properties, order) {
  * This function checks if the given schema matches a single
  * constant value.
  */
-export function isConstant(schema) {
+export function isConstant(schema: any) {
   return (Array.isArray(schema.enum) && schema.enum.length === 1) || schema.hasOwnProperty('const');
 }
 
-export function toConstant(schema) {
+export function toConstant(schema: any) {
   if (Array.isArray(schema.enum) && schema.enum.length === 1) {
     return schema.enum[0];
   } else if (schema.hasOwnProperty('const')) {
@@ -445,7 +446,7 @@ export function isMultiSelect(schema: JSONSchema7, rootSchema: IRegistry['defini
   return isSelect(schema.items as JSONSchema7, rootSchema);
 }
 
-export function isFilesArray(schema, uiSchema, rootSchema = {}) {
+export function isFilesArray(schema: any, uiSchema: any, rootSchema = {}) {
   if (uiSchema['ui:widget'] === 'files') {
     return true;
   } else if (schema.items) {
@@ -455,26 +456,26 @@ export function isFilesArray(schema, uiSchema, rootSchema = {}) {
   return false;
 }
 
-export function isFixedItems(schema) {
-  return Array.isArray(schema.items) && schema.items.length > 0 && schema.items.every(item => isObject(item));
+export function isFixedItems(schema: JSONSchema7) {
+  return Array.isArray(schema.items) && schema.items.length > 0 && schema.items.every(item => isObject(item as any));
 }
 
-export function allowAdditionalItems(schema) {
+export function allowAdditionalItems(schema: JSONSchema7) {
   if (schema.additionalItems === true) {
     console.warn('additionalItems=true is currently not supported');
   }
-  return isObject(schema.additionalItems);
+  return isObject(schema.additionalItems as any);
 }
 
-export function optionsList(schema) {
+export function optionsList(schema: any) {
   if (schema.enum) {
-    return schema.enum.map((value, i) => {
+    return schema.enum.map((value: any, i: number) => {
       const label = (schema.enumNames && schema.enumNames[i]) || String(value);
       return { label, value };
     });
   }
   const altSchemas = schema.oneOf || schema.anyOf;
-  return altSchemas.map((schema, i) => {
+  return altSchemas.map((schema: any) => {
     const value = toConstant(schema);
     const label = schema.title || String(value);
     return {
@@ -485,7 +486,7 @@ export function optionsList(schema) {
   });
 }
 
-export function findSchemaDefinition($ref, rootSchema = {}) {
+export function findSchemaDefinition($ref: string, rootSchema = {}): any {
   const origRef = $ref;
   if ($ref.startsWith('#')) {
     // Decode URI fragment representation.
@@ -505,7 +506,7 @@ export function findSchemaDefinition($ref, rootSchema = {}) {
 
 // In the case where we have to implicitly create a schema, it is useful to know what type to use
 //  based on the data we are defining
-export const guessType = function guessType(value) {
+export const guessType = function guessType(value: any) {
   if (Array.isArray(value)) {
     return 'array';
   } else if (typeof value === 'string') {
@@ -524,7 +525,7 @@ export const guessType = function guessType(value) {
 };
 
 // This function will create new "properties" items for each key in our formData
-export function stubExistingAdditionalProperties(schema, rootSchema = {}, formData = {}) {
+export function stubExistingAdditionalProperties(schema: any, rootSchema = {}, formData = {}) {
   // Clone the schema so we don't ruin the consumer's original
   schema = {
     ...schema,
@@ -555,7 +556,7 @@ export function stubExistingAdditionalProperties(schema, rootSchema = {}, formDa
   return schema;
 }
 
-export function resolveSchema(schema, rootSchema = {}, formData = {}) {
+export function resolveSchema(schema: any, rootSchema = {}, formData = {}): any {
   if (schema.hasOwnProperty('$ref')) {
     return resolveReference(schema, rootSchema, formData);
   } else if (schema.hasOwnProperty('dependencies')) {
@@ -564,16 +565,16 @@ export function resolveSchema(schema, rootSchema = {}, formData = {}) {
   } else if (schema.hasOwnProperty('allOf')) {
     return {
       ...schema,
-      allOf: schema.allOf.map(allOfSubschema => retrieveSchema(allOfSubschema, rootSchema, formData)),
+      allOf: schema.allOf.map((allOfSubschema: JSONSchema7) => retrieveSchema(allOfSubschema, rootSchema, formData)),
     };
   }
   // No $ref or dependencies attribute found, returning the original schema.
   return schema;
 }
 
-function resolveReference(schema, rootSchema, formData) {
+function resolveReference(schema: JSONSchema7, rootSchema: {} | undefined, formData: object | undefined) {
   // Retrieve the referenced schema definition.
-  const $refSchema = findSchemaDefinition(schema.$ref, rootSchema);
+  const $refSchema = findSchemaDefinition(schema.$ref!, rootSchema);
   // Drop the $ref property of the source schema.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { $ref, ...localSchema } = schema;
@@ -607,7 +608,7 @@ export function retrieveSchema(schema: JSONSchema7, rootSchema: object = {}, for
   return resolvedSchema;
 }
 
-function resolveDependencies(schema: JSONSchema7, rootSchema, formData: any) {
+function resolveDependencies(schema: JSONSchema7, rootSchema: any, formData: any) {
   // Drop the dependencies from the source schema.
   const { dependencies = {}, ...restResolvedSchema } = schema;
   let resolvedSchema = restResolvedSchema;
@@ -619,7 +620,7 @@ function resolveDependencies(schema: JSONSchema7, rootSchema, formData: any) {
   return processDependencies(dependencies, resolvedSchema, rootSchema, formData);
 }
 
-function processDependencies(dependencies, resolvedSchema, rootSchema, formData) {
+function processDependencies(dependencies: { [x: string]: any; }, resolvedSchema: any, rootSchema: object | undefined, formData: object | undefined): any {
   // Process dependencies updating the local schema properties as appropriate.
   for (const dependencyKey in dependencies) {
     // Skip this dependency if its trigger property is not present.
@@ -641,7 +642,7 @@ function processDependencies(dependencies, resolvedSchema, rootSchema, formData)
   return resolvedSchema;
 }
 
-function withDependentProperties(schema, additionallyRequired) {
+function withDependentProperties(schema: any, additionallyRequired: any[]) {
   if (!additionallyRequired) {
     return schema;
   }
@@ -649,7 +650,7 @@ function withDependentProperties(schema, additionallyRequired) {
   return { ...schema, required: required };
 }
 
-function withDependentSchema(schema, rootSchema, formData, dependencyKey, dependencyValue) {
+function withDependentSchema(schema: any, rootSchema: object | undefined, formData: object | undefined, dependencyKey: string, dependencyValue: JSONSchema7) {
   const { oneOf, ...dependentSchema } = retrieveSchema(dependencyValue, rootSchema, formData);
   schema = mergeSchemas(schema, dependentSchema);
   // Since it does not contain oneOf, we return the original schema.
@@ -663,7 +664,7 @@ function withDependentSchema(schema, rootSchema, formData, dependencyKey, depend
   return withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, resolvedOneOf);
 }
 
-function withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, oneOf) {
+function withExactlyOneSubschema(schema: any, rootSchema: object | undefined, formData: object | undefined, dependencyKey: string, oneOf: any[]) {
   const validSubschemas = oneOf.filter((subschema: any) => {
     if (!subschema.properties) {
       return false;
@@ -729,7 +730,7 @@ function isArguments(object: any) {
   return Object.prototype.toString.call(object) === '[object Arguments]';
 }
 
-export function deepEquals(a: any, b: any) {
+export function deepEquals(a: any, b: any): any {
   if (a === b) {
     return true;
   }

@@ -29,9 +29,9 @@ export const RadioGroup = React.forwardRef(({
   onChange,
   options,
   ...restProps
-}: IRadioGroup, ref: React.Ref<HTMLLabelElement>) => {
+}: IRadioGroup, ref: React.Ref<HTMLDivElement>) => {
   const [value, setValue] = React.useState(() => restProps.value);
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<any>) => {
     const targetValue = event.target.value;
     setValue(targetValue);
     if (onChange) {
@@ -40,7 +40,7 @@ export const RadioGroup = React.forwardRef(({
   };
   return (
     <RadioGroupContext.Provider value={{ name, disabled, onChange: handleChange, value, isBtn: restProps.isBtn }}>
-      <RadioGroupStyled {...restProps}>
+      <RadioGroupStyled {...restProps} ref={ref}>
         {options ? options.map((option, idx) => {
           const { label, ...restOption } = option;
           return (

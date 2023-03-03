@@ -33,7 +33,10 @@ export class GrpcSocketClientModuleOption implements ClientsModuleOptionsFactory
       options: {
         url: process.env.SOCKET_GRPC_URL,
         package: [protobufPackage],
-        protoPath: [join(__dirname, '../generated/serving/SocketServingService.proto'), join(__dirname, '../generated/common/Core.proto')],
+        protoPath: [
+          join(__dirname, '../generated/serving/SocketServingService.proto'),
+          join(__dirname, '../generated/common/Core.proto')
+        ],
         // 100M
         maxSendMessageLength: GRPC_MAX_PACKAGE_SIZE,
         maxReceiveMessageLength: GRPC_MAX_PACKAGE_SIZE,

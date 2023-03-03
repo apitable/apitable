@@ -24,11 +24,11 @@ import { useRef } from 'react';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors } from '@apitable/components';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 interface IViewFilter {
   datasheetId: string;
@@ -37,7 +37,7 @@ interface IViewFilter {
   field?: ILookUpField;
 }
 
-const ViewFilterBase: React.FC<IViewFilter> = props => {
+const ViewFilterBase: React.FC<React.PropsWithChildren<IViewFilter>> = props => {
   const colors = useThemeColors();
   const { datasheetId, filterInfo, setFilters, field } = props;
   const view = useSelector(state => Selectors.getCurrentView(state, datasheetId))! as IGridViewProperty;
@@ -52,7 +52,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
   // Mark if a new filter has been added, scrolling to the bottom directly in the addViewFilter function is not valid.
   const added = useRef<boolean>(false);
 
-  function addViewFilter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function addViewFilter() {
     const firstColumns = fieldMap[columns[0].fieldId];
     const exitIds = filterInfo ? filterInfo.conditions.map(item => item.conditionId) : [];
     const acceptFilterOperators = Field.bindModel(firstColumns).acceptFilterOperators;
@@ -82,7 +82,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
   function deleteFilter(idx: number) {
     setFilters({
       conjunction: filterInfo!.conjunction,
-      conditions: filterInfo!.conditions.filter((item, index) => {
+      conditions: filterInfo!.conditions.filter((_item, index) => {
         return index !== idx;
       }),
     });
@@ -100,7 +100,7 @@ const ViewFilterBase: React.FC<IViewFilter> = props => {
       />
       <div className={styles.addNewButton} onClick={addViewFilter}>
         <div className={styles.iconAdd}>
-          <IconAdd width={16} height={16} fill={colors.thirdLevelText} />
+          <AddOutlined size={16} color={colors.thirdLevelText} />
         </div>
         {t(Strings.add_filter)}
       </div>

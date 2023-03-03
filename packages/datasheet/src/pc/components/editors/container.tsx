@@ -126,7 +126,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
     return null;
   });
-  const viewId = useSelector(state => Selectors.getActiveView(state))!;
+  const viewId = useSelector(state => Selectors.getActiveViewId(state))!;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const recordEditable = field ? Field.bindModel(field).recordEditable() : false;
@@ -291,7 +291,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     if (selection?.ranges || selection?.recordRanges) {
       focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [selection]);
 
   useEffect(() => {
@@ -384,8 +384,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     cellMove(CellDirection.Left);
   };
 
-  const appendNewRow = () => {
-    appendRow();
+  const appendNewRow = async() => {
+    await appendRow();
     const state = store.getState();
     setTimeout(() => {
       const activeCellUIIndex = Selectors.getCellUIIndex(state, activeCell!);
@@ -654,7 +654,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
               {
                 recordId: record.id,
                 fieldId: field.id,
-                value: value.map(v => ({
+                value: value.map((v: any) => ({
                   ...v,
                   type: SegmentType.Url,
                   title: meta?.title,
@@ -691,7 +691,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       !isEqual(alarm, formatCurAlarm) &&
       convertAlarmStructure
     ) {
-      resourceService.instance!.commandManager!.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetDateTimeCellAlarm,
         recordId: record.id,
         fieldId: field.id,
@@ -729,14 +729,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useMemo(
     calcEditorRect,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [editing, activeCell, editorX, editorY, field],
   );
   useEffect(() => {
     setTimeout(() => {
       calcEditorRect();
     }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue, record]);
 
   useEffect(() => {

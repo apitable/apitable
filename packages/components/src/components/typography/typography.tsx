@@ -37,7 +37,7 @@ const defaultVariantMapping: { [key: string]: string } = {
   body3: 'p',
   body4: 'p',
 };
-export const Typography: FC<ITypographyProps> = (props) => {
+export const Typography: FC<React.PropsWithChildren<ITypographyProps>> = (props) => {
   const {
     className,
     component,
@@ -79,7 +79,7 @@ export const Typography: FC<ITypographyProps> = (props) => {
     return ['string', 'number'].includes(typeof children);
   }
 
-  const textNode = <TypographyBase className={classNames('typography', className)} ref={typographyRef} as={tag} rows={rows} children={children}
+  const textNode = <TypographyBase className={classNames('typography', className)} ref={typographyRef} as={tag as any} rows={rows} children={children}
     cssTextOverflow={cssTextOverflow} cssLineClamp={cssLineClamp} {...more} />;
 
   if ((typeof ellipsis !== 'boolean' && ellipsis.tooltip) || isWithTooltip) {

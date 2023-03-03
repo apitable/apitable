@@ -45,14 +45,14 @@ const ContextMenuBase: React.ForwardRefRenderFunction<{}, IContextMenuProps> = (
   const [visible, setVisible] = useState(false);
   const currentProps = useRef(null);
   useImperativeHandle(ref, () => ({
-    show: (e: React.MouseEvent, props) => {
+    show: (e: React.MouseEvent, props: null) => {
       currentProps.current = props;
       setPos({ top: e.clientY + 10, left: e.clientX + 10 });
       setVisible(true);
     }
   }));
 
-  useClickAway((e) => {
+  useClickAway(() => {
     setVisible(false);
   }, currentRef);
 

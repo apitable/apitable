@@ -20,8 +20,7 @@ import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
-import * as React from 'react';
-import { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { Modal } from '../modal/modal';
 import styles from './style.module.less';
 

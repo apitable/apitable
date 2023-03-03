@@ -28,7 +28,7 @@ interface IShallowLine {
   scrollLeft: number;
 }
 
-export const ShallowLine: React.FC<IShallowLine> = React.memo(props => {
+export const ShallowLine: React.FC<React.PropsWithChildren<IShallowLine>> = React.memo(props => {
   const { frozenColumns, groupOffset, scrollLeft } = props;
   const frozenColumnWidth = useMemo(() => {
     return frozenColumns.reduce((pre, cur) => pre + Selectors.getColumnWidth(cur), 0);

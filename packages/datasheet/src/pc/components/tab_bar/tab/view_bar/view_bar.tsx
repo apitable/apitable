@@ -25,6 +25,7 @@ import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { resourceService } from 'pc/resource_service';
 import { changeView } from 'pc/hooks';
 import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -53,7 +54,7 @@ const VIEW_PADDING_WIDTH = 20;
 const MIN_VIEW_WIDTH = VIEW_SYNC_ICON_FIXED_WIDTH + VIEW_ICON_WIDTH + VIEW_PADDING_WIDTH;
 const EDITING_WIDTH = 160;
 
-export const ViewBar: React.FC<IViewBarProps> = props => {
+export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props => {
   const { views, editIndex, setEditIndex, switchView, extra, className } = props;
   const [viewList, setViewList] = useState(views);
   const datasheetLoading = useSelector(state => Selectors.getDatasheetLoading(state));
@@ -112,8 +113,10 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
       setErrMsg(t(Strings.name_repeat));
       return;
     }
-    if (inputValue.length < 1 || inputValue.length > 30) {
-      setErrMsg(t(Strings.view_name_length_err));
+    if (inputValue.length < 1 || inputValue.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      setErrMsg(t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      }));
       return;
     }
     setErrMsg('');
@@ -188,7 +191,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     changeView(prevViewId);
   };
 
-  const moveView = (viewId, newIndex) => {
+  const moveView = (viewId: string, newIndex: number) => {
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveViews,
       data: [
@@ -220,7 +223,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     if (to === -1) {
       return;
     }
-    const viewId = viewList.filter((v, i) => i === from)[0].id;
+    const viewId = viewList.filter((_v, i) => i === from)[0].id;
     setViewList(pre => {
       const list = pre.slice(0);
       moveArrayElement(list, from, to);
@@ -270,7 +273,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
 
   const activeView = viewList.filter(item => item !== null).filter((v) => v.id === activeViewId)[0];
 
-  // If the space station is not globally enabled for non-cooperative experiments, 
+  // If the space station is not globally enabled for non-cooperative experiments,
   // the view tab bar does not need to display icons and no adjustment is needed in terms of width
   // const getFixedWidth = () => {
   //   if (activeView?.lockInfo) {
@@ -289,8 +292,8 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
   // };
 
   // const fixedWidth = getFixedWidth();
-  const getShowViewStatus = (item) => {
-    return item.lockInfo || item.autoSave || operateViewIds?.includes(item.id);
+  const getShowViewStatus = (item: IViewProperty) => {
+    return !!item.lockInfo || item.autoSave || operateViewIds?.includes(item.id);
   };
 
   let contextMenuId = activeViewId;

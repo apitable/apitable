@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Alert } from '@apitable/components';
+import { Alert, ThemeName } from '@apitable/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
@@ -25,7 +25,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import OrgImage from 'static/icon/organization/organization_img_default.png';
+import OrgImageLight from 'static/icon/organization/contacts_empty_light.png';
+import OrgImageDark from 'static/icon/organization/contacts_empty_dark.png';
 import { ComponentDisplay } from '../common/component_display';
 import { ScreenSize } from '../common/component_display/enum';
 import { CommonSide } from '../common_side';
@@ -36,7 +37,9 @@ import { MemberInfo } from './member_info';
 import { MemberList } from './member_list';
 import styles from './style.module.less';
 
-export const AddressList: React.FC = () => {
+const _SplitPane: any = SplitPane;
+
+export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
   const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user } = useSelector(
     (state: IReduxState) => ({
@@ -54,6 +57,8 @@ export const AddressList: React.FC = () => {
   // const [isMainAdmin, setIsMainAdmin] = useState(false);
   // const [permissionList, setPermissionList] = useState<string[]>([]);
   const contactSyncing = isSocialDingTalk?.(spaceInfo) && isContactSyncing?.(spaceInfo);
+  const themeName = useSelector(state => state.theme);
+  const OrgImage = themeName === ThemeName.Light ? OrgImageLight : OrgImageDark;
 
   useEffect(() => {
     dispatch(StoreActions.getTeamListData(user!));
@@ -66,7 +71,7 @@ export const AddressList: React.FC = () => {
   // Get permission
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [spaceId, dispatch, user!.isAdmin, user!.isMainAdmin]);
 
   const MainComponent = () => (
@@ -121,12 +126,12 @@ export const AddressList: React.FC = () => {
   return (
     <div className={styles.addressList}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <SplitPane minSize={280} maxSize={800} defaultSize={280}>
+        <_SplitPane minSize={280} maxSize={800} defaultSize={280}>
           <div className={styles.splitLeft}>
             <CommonSide />
           </div>
           <div className={styles.splitRight}>{MainComponent()}</div>
-        </SplitPane>
+        </_SplitPane>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

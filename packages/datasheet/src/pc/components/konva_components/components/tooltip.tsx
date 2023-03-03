@@ -30,14 +30,14 @@ interface IToolTipProps extends ShapeConfig {
   background?: string | null;
 }
 
-export const ToolTip: FC<IToolTipProps> = (props) => {
+export const ToolTip: FC<React.PropsWithChildren<IToolTipProps>> = (props) => {
   const colors = useThemeColors();
   const {
     x,
     y,
     text,
-    background = colors.black[200],
-    fill = colors.firstLevelText,
+    background = colors.tooltipBg,
+    fill = colors.defaultBg,
     padding = 10,
     cornerRadius = 4,
     pointerDirection = '',

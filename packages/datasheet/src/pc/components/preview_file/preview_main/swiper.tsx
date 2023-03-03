@@ -45,7 +45,7 @@ interface ITouchPosition {
   pageX: number;
 }
 
-export const Swiper: FC<ISwiperProps> = props => {
+export const Swiper: FC<React.PropsWithChildren<ISwiperProps>> = props => {
   const {
     transformInfo,
     activeIndex,

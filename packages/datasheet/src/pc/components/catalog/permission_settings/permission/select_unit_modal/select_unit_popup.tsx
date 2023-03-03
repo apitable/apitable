@@ -20,11 +20,11 @@ import { FC } from 'react';
 import { ISelectUnitLeftProps, SelectUnitLeft } from './select_unit_left';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
-import InviteIcon from 'static/icon/space/space_icon_invite.svg';
 import { expandInviteModal } from 'pc/components/invite';
 import { Button } from '@apitable/components';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useSelector } from 'react-redux';
+import { UserAddOutlined } from '@apitable/icons';
 
 interface ISelectPopupProps extends ISelectUnitLeftProps {
   onCancel(): void;
@@ -33,7 +33,7 @@ interface ISelectPopupProps extends ISelectUnitLeftProps {
   showTab?: boolean;
 }
 
-export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
+export const SelectUnitPopup: FC<React.PropsWithChildren<ISelectPopupProps>> = props => {
   const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, onCancel, onOk, linkId, showTab } = props;
 
   const formId = useSelector(state => state.pageParams.formId);
@@ -52,7 +52,7 @@ export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
               expandInviteModal();
             }}
           >
-            <InviteIcon />
+            <UserAddOutlined />
             {t(Strings.invite_member)}
           </span>
         )}

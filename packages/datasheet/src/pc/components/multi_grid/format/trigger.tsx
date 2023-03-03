@@ -32,7 +32,7 @@ interface ITriggerProps extends Partial<RcTriggerProps> {
   setShowPopup(value: boolean): void;
 }
 
-export const MyTrigger: React.FC<ITriggerProps> = memo((props: ITriggerProps) => {
+export const MyTrigger: React.FC<React.PropsWithChildren<ITriggerProps>> = memo((props: ITriggerProps) => {
   const { showPopup, setShowPopup, trigger, popup, popupVisibleCheck, action = ['click'], ...rest } = props;
   const triggerSelfRef = useRef<any>(null);
   const triggerRef = useRef(null);

@@ -17,8 +17,27 @@
  */
 
 import {
-  ApiTipConstant, CellFormatEnum, CollaCommandName, databus, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta,
-  INode, IRecord, IRecordMap, IReduxState, ISortedField, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors,
+  ISetRecordOptions,
+  ApiTipConstant,
+  CellFormatEnum,
+  databus,
+  getEmojiIconNativeString,
+  ICellValue,
+  IField,
+  IFieldMap,
+  IMeta,
+  INode,
+  IRecord,
+  IRecordMap,
+  IReduxState,
+  ISortedField,
+  ISpaceInfo,
+  IViewColumn,
+  IViewProperty,
+  IViewRow,
+  Selectors,
+  CollaCommandName,
+  ICollaCommandOptions,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
@@ -29,7 +48,7 @@ import { OrderEnum } from 'shared/enums';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
 import { ApiException } from 'shared/exception';
 import { getAPINodeType } from 'shared/helpers/fusion.helper';
-import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IViewInfoOptions } from 'shared/interfaces';
+import { IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IViewInfoOptions } from 'shared/interfaces';
 import { IAPIFolderNode, IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { Logger } from 'winston';
@@ -44,23 +63,8 @@ import { RecordQueryRo } from '../ros/record.query.ro';
 export class FusionApiTransformer implements IFieldTransformInterface {
   constructor(@InjectLogger() private readonly logger: Logger) {}
 
-  getUpdateFieldCommandOptions(dstId: string, field: IField, _meta: IMeta): ICollaCommandOptions {
-    return {
-      cmd: CollaCommandName.SetFieldAttr,
-      datasheetId: dstId,
-      fieldId: field.id,
-      data: field,
-    };
-  }
-
   getAddRecordCommandOptions(dstId: string, records: FieldCreateRo[], meta: IMeta): ICollaCommandOptions {
-    const cellValues = records.reduce<ICellValueMap[]>((pre, cur) => {
-      // Looping the map here is for getting the default value
-      Object.keys(cur.fields);
-      // Already converted Command with defaultValue inside
-      pre.push(cur.fields);
-      return pre;
-    }, []);
+    const cellValues = records.map(record => record.fields);
     return {
       cmd: CollaCommandName.AddRecords,
       datasheetId: dstId,
@@ -72,30 +76,14 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     };
   }
 
-  getUpdateRecordCommandOptions(dstId: string, records: FieldUpdateRo[], _meta: IMeta): ICollaCommandOptions {
-    const data = records.reduce<{
-      recordId: string;
-      fieldId: string;
-      field?: IField; // [Optional], pass in field information. Applies to addRecords on fields that have not yet been applied to a snapshot
-      value: ICellValue;
-    }[]>((pre, cur) => {
-      Object.keys(cur.fields).forEach(fieldId => {
-        pre.push({ recordId: cur.recordId, fieldId, value: cur.fields[fieldId]! });
-      });
-      return pre;
-    }, []);
-    return {
-      cmd: CollaCommandName.SetRecords,
-      datasheetId: dstId,
-      data,
-    };
-  }
-
-  getDeleteRecordCommandOptions(recordIds: string[]): ICollaCommandOptions {
-    return {
-      cmd: CollaCommandName.DeleteRecords,
-      data: recordIds,
-    };
+  getUpdateCellOptions(records: FieldUpdateRo[]): ISetRecordOptions[] {
+    return records.flatMap(record =>
+      Object.keys(record.fields).map(fieldId => ({
+        recordId: record.recordId,
+        fieldId,
+        value: record.fields[fieldId]!,
+      })),
+    );
   }
 
   public nodeDetailVoTransform(nodeItem: INode): IAPINodeDetail {

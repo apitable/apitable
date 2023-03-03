@@ -40,7 +40,7 @@ export interface IDownloadQrCodeProps {
   isMobile: boolean;
 }
 
-export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
+export const DownloadQrCode: FC<React.PropsWithChildren<IDownloadQrCodeProps>> = ({
   nodeId,
   width,
   isMobile,
@@ -66,7 +66,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
 
   useEffect(() => {
     fetchLink();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   if (loading) {
@@ -100,7 +100,7 @@ export const DownloadQrCode: FC<IDownloadQrCodeProps> = ({
       link.href = dataUrl;
       link.click();
     }).catch(error => {
-      Message.error({ content: 'generation image failed' });
+      Message.error({ content: `generation image failed ${error}` });
     });
   };
 

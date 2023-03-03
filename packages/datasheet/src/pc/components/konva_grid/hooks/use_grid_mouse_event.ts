@@ -18,7 +18,14 @@
 
 import { Message } from '@apitable/components';
 import {
-  CellType, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, KONVA_DATASHEET_ID, Range, RowHeightLevel, Selectors, StoreActions, Strings, t
+  CellType, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, ILinkField,
+  KONVA_DATASHEET_ID,
+  Range,
+  RowHeightLevel,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
 } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { KonvaEventObject } from 'konva/lib/Node';
@@ -30,7 +37,7 @@ import { expandRecord, expandRecordIdNavigate } from 'pc/components/expand_recor
 import { AreaType, getDetailByTargetName, PointPosition } from 'pc/components/gantt_view';
 import {
   cellHelper, GRID_BOTTOM_STAT_HEIGHT, GRID_DEFAULT_HORIZONTAL_SPACING, GRID_DEFAULT_VERTICAL_SPACING, GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH,
-  GRID_SCROLL_BASE_SPEED, GridCoordinate, IRenderStyleProps, KonvaGridContext, KonvaGridViewContext, useAttachEvent
+  GRID_SCROLL_BASE_SPEED, GridCoordinate, IRenderStyleProps, KonvaGridContext, KonvaGridViewContext, useAttachEvent,
 } from 'pc/components/konva_grid';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { resourceService } from 'pc/resource_service';
@@ -38,7 +45,7 @@ import { store } from 'pc/store';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { batchActions } from 'redux-batched-actions';
 
-const openDialog = (groupTab, tabCanvasX, tabCanvasY, data, groupField) => {
+const openDialog = (groupTab: any, tabCanvasX: number, tabCanvasY: number, data: any, groupField: ILinkField) => {
   const { width, height, canvasX, canvasY } = groupTab;
   if (
     tabCanvasX >= canvasX &&
@@ -183,7 +190,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (expandRecordUICell && (expandRecordUICell.rowIndex < rowStartIndex || expandRecordUICell.rowIndex > rowStopIndex)) {
       scrollToItem(expandRecordUICell);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [routeRecordId, datasheetId]);
 
   // The current user is editing, but the "column" or "row" where the edited cell is located is hidden or deleted
@@ -239,11 +246,11 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   /**
    * Add row operation
    */
-  const addRow = (recordId: string, areaType: AreaType) => {
+  const addRow = async(recordId: string, areaType: AreaType) => {
     if (areaType === AreaType.None || !permissions.rowCreatable) return;
     const rowCount = visibleRows.length;
     const finalRecordId = groupInfo.length ? recordId : (rowCount > 0 ? visibleRows[rowCount - 1].recordId : '');
-    appendRow({ recordId: finalRecordId });
+    await appendRow({ recordId: finalRecordId });
   };
 
   /**

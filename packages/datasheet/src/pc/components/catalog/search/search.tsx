@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
+import { useThemeColors, ThemeName } from '@apitable/components';
 import { Api, INode, Navigation, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import type { InputRef } from 'antd';
@@ -33,11 +33,11 @@ import { getElementDataset, KeyCode, nodeConfigData } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import EmptyResultIcon from 'static/icon/common/common_img_search_default.png';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { Node } from './node';
 import styles from './style.module.less';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 
 export type ISearchNode = INode & { superiorPath: string };
 
@@ -53,7 +53,7 @@ export interface ISearchProps {
   closeSearch: () => void;
 }
 
-export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
+export const Search: FC<React.PropsWithChildren<ISearchProps>> = ({ className, closeSearch }) => {
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState('');
   const [groupData, setGroupData] = useState<{ name: string; data: ISearchNode[] }[]>([]);
@@ -71,7 +71,8 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
+  const themeName = useSelector(state => state.theme);
+  const EmptyResultIcon = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   const findNodeByIndex = (index: number) => {
     for (const group of groupData) {
       if (group.data.length > index) {
@@ -118,7 +119,7 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
     if (reqToken) {
       reqToken();
     }
-    Api.findNode(val, c => (reqToken = c))
+    Api.findNode(val, (c: () => void) => (reqToken = c))
       .then(res => {
         const { data, success } = res.data;
         if (success) {
@@ -181,11 +182,11 @@ export const Search: FC<ISearchProps> = ({ className, closeSearch }) => {
           value={keyword}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          prefix={<SearchIcon />}
+          prefix={<SearchOutlined />}
           suffix={
             keyword && (
               <div onClick={clearKeyword} className={styles.closeBtn}>
-                <CloseIcon width={15} height={15} fill={colors.thirdLevelText} />
+                <CloseCircleFilled size={15} color={colors.thirdLevelText} />
               </div>
             )
           }

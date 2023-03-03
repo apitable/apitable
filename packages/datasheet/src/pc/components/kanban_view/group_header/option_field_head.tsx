@@ -28,7 +28,7 @@ import { useEffect, useRef, useState } from 'react';
 import { IHeadOptionProps } from './interface';
 import styles from './styles.module.less';
 
-export const OptionFieldHead: React.FC<IHeadOptionProps> = props => {
+export const OptionFieldHead: React.FC<React.PropsWithChildren<IHeadOptionProps>> = props => {
   const colors = useThemeColors();
   const { cellValue, field, editing, setEditing, onCommand, isAdd, readOnly } = props;
   const [fieldClone, setFieldClone] = useState(field);

@@ -18,19 +18,18 @@
 
 package com.apitable.workspace.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Node Transfer Result View
+ * Node Transfer Result View.
  * </p>
  */
 @Data
-@ApiModel("Node Transfer Result View")
+@Schema(description = "Node Transfer Result View")
 public class StoreNodeInfoVO {
 
-    @ApiModelProperty(value = "New Node ID", example = "nod2818jsak", position = 1)
+    @Schema(description = "New Node ID", example = "nod2818jsak")
     private String nodeId;
 }

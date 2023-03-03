@@ -43,7 +43,7 @@ interface IPreviewFileModal {
   onClose: () => void;
 }
 
-const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
+const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = props => {
   const { onClose } = props;
   const [isFullScreen, { toggle: toggleIsFullScreen }] = useToggle(false);
   const previewFile = useSelector(state => state.previewFile, shallowEqual);
@@ -111,7 +111,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
     if (readonly) {
       return;
     }
-    const filteredCellValue = cellValue.filter(item => item.id !== cellValue[activeIndex].id);
+    const filteredCellValue = cellValue.filter((item: any) => item.id !== cellValue[activeIndex].id);
     onChange(filteredCellValue);
     const lastIndex = filteredCellValue.length - 1;
     if (activeIndex > lastIndex) {
@@ -132,7 +132,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
       containerRef.current!.focus();
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [cellValue, activeIndex]);
 
   // activeIndex prevents out-of-range

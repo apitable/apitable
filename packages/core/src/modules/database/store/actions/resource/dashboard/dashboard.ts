@@ -16,22 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DashboardApi } from '../../../../../../exports/api';
+import { DashboardApi } from 'exports/api';
 import { StatusCode } from 'config';
 import { batchActions } from 'redux-batched-actions';
-import { ActionConstants } from '../../../../../../exports/store';
-import { deleteNode, fetchWidgetsByWidgetIds } from '../../../../../../exports/store/actions';
-import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from '../../../../../../exports/store/interfaces';
-import { getDashboardPack, getInstalledWidgetInDashboard } from '../../../../../../exports/store/selectors';
+import { ActionConstants } from 'exports/store';
+import { deleteNode, fetchWidgetsByWidgetIds } from 'exports/store/actions';
+import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from 'exports/store/interfaces';
+import { getDashboardPack, getInstalledWidgetInDashboard } from 'exports/store/selectors';
 import { receiveInstallationWidget } from '../widget';
-import {
-  UPDATE_DASHBOARD_NAME, UPDATE_DASHBOARD_INFO
-} from '../../../../../shared/store/action_constants';
+import { UPDATE_DASHBOARD_NAME, UPDATE_DASHBOARD_INFO } from 'modules/shared/store/action_constants';
 
 export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any) => void, overWrite = false) => {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
-    const { shareId, templateId } = state.pageParams;
+    const { shareId, templateId, embedId } = state.pageParams;
     const dashboardPack = getDashboardPack(state, dashboardId);
     const dashboardLoading = dashboardPack?.loading;
     const dashboard = dashboardPack?.dashboard;
@@ -39,13 +37,15 @@ export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any
     if (dashboardLoading) {
       return;
     }
-
     const fetchMethod = (() => {
       if (shareId) {
         return DashboardApi.fetchShareDashboardPack.bind(null, dashboardId, shareId);
       }
       if (templateId) {
         return DashboardApi.fetchTemplateDashboardPack.bind(null, dashboardId, templateId);
+      }
+      if (embedId) {
+        return DashboardApi.fetchEmbedDashboardPack.bind(null, dashboardId, embedId);
       }
       return DashboardApi.fetchDashboardPack.bind(null, dashboardId);
     })();
@@ -59,18 +59,21 @@ export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any
       return;
     }
     dispatch(setDashboardLoading(true, dashboardId));
-    return fetchMethod().then((response: any) => {
-      return Promise.resolve({ dispatch, getState, response, dashboardId });
-    }).catch((err: any) => {
-      if (state.catalogTree.treeNodesMap[dashboardId]) {
-        dispatch(deleteNode({ nodeId: dashboardId, parentId: state.catalogTree.treeNodesMap[dashboardId]!.parentId }));
-      }
-      dispatch(setDashboardErrorCode(dashboardId, StatusCode.COMMON_ERR));
-      throw err;
-    }).then((props: any) => {
-      fetchSuccess(props);
-      props.response.data.success && successFn?.(props);
-    });
+    return fetchMethod()
+      .then((response: any) => {
+        return Promise.resolve({ dispatch, getState, response, dashboardId });
+      })
+      .catch((err: any) => {
+        if (state.catalogTree.treeNodesMap[dashboardId]) {
+          dispatch(deleteNode({ nodeId: dashboardId, parentId: state.catalogTree.treeNodesMap[dashboardId]!.parentId }));
+        }
+        dispatch(setDashboardErrorCode(dashboardId, StatusCode.COMMON_ERR));
+        throw err;
+      })
+      .then((props: any) => {
+        fetchSuccess(props);
+        props.response.data.success && successFn?.(props);
+      });
   };
 };
 
@@ -82,18 +85,23 @@ export const setDashboardErrorCode = (dashboardId: string, code: number | null) 
   };
 };
 
-export const fetchSuccess = ({ dispatch, response, dashboardId }: { dispatch: any, getState: () => IReduxState, response: any, dashboardId: string }) => {
+export const fetchSuccess = ({
+  dispatch,
+  response,
+  dashboardId,
+}: {
+  dispatch: any;
+  getState: () => IReduxState;
+  response: any;
+  dashboardId: string;
+}) => {
   const { data, success, code } = response.data;
   if (success) {
-    const _batchActions: any[] = [
-      setDashboard(data.dashboard, data.dashboard.id),
-    ];
+    const _batchActions: any[] = [setDashboard(data.dashboard, data.dashboard.id)];
 
     if (Object.keys(data.widgetMap)) {
       for (const key in data.widgetMap) {
-        _batchActions.push(
-          receiveInstallationWidget(key, data.widgetMap[key])
-        );
+        _batchActions.push(receiveInstallationWidget(key, data.widgetMap[key]));
       }
     }
     dispatch(batchActions(_batchActions));
@@ -167,7 +175,7 @@ export const deactivateDashboardCollaborator = (payload: { socketId: string }, r
 
 export interface ISetDashboardClientAction {
   type: typeof ActionConstants.SET_DASHBOARD_CLIENT;
-  payload: Partial<IDashboardClient>
+  payload: Partial<IDashboardClient>;
 }
 
 export const updateDashboardName = (newName: string, dashboardId: string) => {
@@ -188,6 +196,6 @@ export const updateDashboard = (dashboardId: string, data: Partial<IDashboard>) 
 
 export interface IUpdateDashboardName {
   type: typeof ActionConstants.UPDATE_DASHBOARD_NAME;
-  dashboardId: string,
-  payload: string,
+  dashboardId: string;
+  payload: string;
 }

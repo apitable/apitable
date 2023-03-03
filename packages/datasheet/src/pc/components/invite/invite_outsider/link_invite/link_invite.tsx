@@ -24,23 +24,15 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { copy2clipBoard } from 'pc/utils';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import HistoryIcon from 'static/icon/common/common_icon_history.svg';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
-import RetractIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
+import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
 
 const { TreeNode } = TreeSelect;
 
-export interface ILinkInviteProps {
-  shareId?: string;
-}
-
-export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
+export const LinkInvite = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const { linkList, userInfo, teamList } = useSelector(
@@ -97,7 +89,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
           </TreeNode>
         );
       }
-      return <TreeNode {...config} isLeaf={userInfo!.isAdmin && item.children?.length ? false : true} key={item.teamId} />;
+      return <TreeNode {...config} isLeaf={!(userInfo!.isAdmin && item.children?.length)} key={item.teamId} />;
     });
   };
 
@@ -163,7 +155,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
             <ButtonGroup withSeparate>
               <Tooltip title={t(Strings.copy_link)} placement="top">
                 <Button onClick={() => copy2clipBoard(`${item.token} ${inviteText}`)}>
-                  <CopyIcon fill={colors.secondLevelText} />
+                  <CopyOutlined color={colors.secondLevelText} />
                 </Button>
               </Tooltip>
               <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -179,7 +171,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
                   onVisibleChange={v => popconfirmVisibleChange(item.token, v)}
                 >
                   <Button>
-                    <DeleteIcon fill={colors.secondLevelText} />
+                    <DeleteOutlined color={colors.secondLevelText} />
                   </Button>
                 </Popconfirm>
               </ComponentDisplay>
@@ -194,7 +186,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
                     });
                   }}
                 >
-                  <DeleteIcon fill={colors.secondLevelText} />
+                  <DeleteOutlined color={colors.secondLevelText} />
                 </Button>
               </ComponentDisplay>
             </ButtonGroup>
@@ -216,9 +208,9 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
               value={value === '' ? undefined : value}
               placeholder={t(Strings.placeholder_choose_group)}
               onChange={value => onChange(value)}
-              suffixIcon={<PulldownIcon />}
+              suffixIcon={<ChevronDownOutlined />}
               treeIcon
-              switcherIcon={<RetractIcon />}
+              switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
               dropdownClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
@@ -235,7 +227,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
       {linkList.length > 0 && (
         <>
           <div className={styles.historyTitle}>
-            <HistoryIcon />
+            <TimeOutlined />
             {t(Strings.invitation_link_old)}
           </div>
           <div className={styles.linkWrapper}>{renderLinkList()}</div>

@@ -18,7 +18,7 @@
 
 import styles from './style.module.less';
 
-export const NavBar: React.FC<{gap?: number}> = (props) => {
+export const NavBar: React.FC<React.PropsWithChildren<{gap?: number}>> = (props) => {
   const { gap = 32 } = props;
   const linkList = [
     {

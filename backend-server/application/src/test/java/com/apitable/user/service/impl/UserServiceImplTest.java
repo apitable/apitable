@@ -18,18 +18,17 @@
 
 package com.apitable.user.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import cn.hutool.core.collection.CollectionUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.ro.UserOpRo;
-import org.junit.jupiter.api.Test;
-
-import javax.annotation.Resource;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.annotation.Resource;
+import org.junit.jupiter.api.Test;
 
 public class UserServiceImplTest extends AbstractIntegrationTest {
 
@@ -37,7 +36,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
     private UserMapper userMapper;
 
     @Test
-    public void testEditUserAvatar(){
+    public void testEditUserAvatar() {
         MockUserSpace userSpace = createSingleUserAndSpace();
 
         UserOpRo param = new UserOpRo();
@@ -45,12 +44,14 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         param.setAvatarColor(null);
 
         iUserService.edit(userSpace.getUserId(), param);
-        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
-        assertThat(users.get(0).getAvatar()).isEqualTo("public/2023/01/04/11c74fbfc96541b3a2ffd3ee8217dcc0");
+        List<UserEntity> users =
+            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        assertThat(users.get(0).getAvatar()).isEqualTo(
+            "public/2023/01/04/11c74fbfc96541b3a2ffd3ee8217dcc0");
     }
 
     @Test
-    public void testEditUserAvtarColor(){
+    public void testEditUserAvtarColor() {
         MockUserSpace userSpace = createSingleUserAndSpace();
 
         UserOpRo param = new UserOpRo();
@@ -58,12 +59,13 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         param.setAvatarColor(5);
 
         iUserService.edit(userSpace.getUserId(), param);
-        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        List<UserEntity> users =
+            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getAvatar()).isNull();
     }
 
     @Test
-    public void testEditUserNickName(){
+    public void testEditUserNickName() {
         MockUserSpace userSpace = createSingleUserAndSpace();
 
         UserOpRo param = new UserOpRo();
@@ -71,7 +73,30 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         param.setNickName("testName");
 
         iUserService.edit(userSpace.getUserId(), param);
-        List<UserEntity> users = userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+        List<UserEntity> users =
+            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getNickName()).isEqualTo("testName");
+    }
+
+    @Test
+    public void testEditUserTimeZone() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        UserOpRo param = new UserOpRo();
+        param.setTimeZone("Asia/Shanghai");
+
+        iUserService.edit(userSpace.getUserId(), param);
+        UserEntity user = userMapper.selectById(userSpace.getUserId());
+        assertThat(user.getTimeZone()).isEqualTo("Asia/Shanghai");
+    }
+
+    @Test
+    public void testEditPassword() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+
+        iUserService.updatePwd(userSpace.getUserId(), "123456");
+
+        UserEntity userEntity = iUserService.getById(userSpace.getUserId());
+        assertThat(userEntity.getPassword()).isNotBlank();
     }
 }

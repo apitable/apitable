@@ -23,13 +23,13 @@ import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isId
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
-import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { useAddressRequest } from 'pc/hooks';
 import { Input } from 'antd';
 import { useToggle } from 'ahooks';
 import { Identity } from 'pc/components/space_manage/identity';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
+import { EditOutlined } from '@apitable/icons';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';
@@ -38,7 +38,7 @@ export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   return '';
 };
 
-export const MemberInfo: FC = () => {
+export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
   const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useSelector((state: IReduxState) => ({
     memberInfo: state.addressList.memberInfo,
     selectedMemberInfo: state.addressList.selectedTeamInfo,
@@ -54,7 +54,7 @@ export const MemberInfo: FC = () => {
   const editNameClick = () => {
     setInEditName(true);
   };
-  const onPressEnter = e => {
+  const onPressEnter = (e: any) => {
     if (nameLengthErr) {
       return;
     }
@@ -70,7 +70,7 @@ export const MemberInfo: FC = () => {
       editMemberName({ memberId: memberInfo.memberId, memberName: e.target.value, teamIds });
     }
   };
-  const inputChange = e => {
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > ConfigConstant.MEMBER_NAME_LENGTH) {
       !nameLengthErr && setNameLengthErr(true);
     } else {
@@ -130,7 +130,9 @@ export const MemberInfo: FC = () => {
             <span>{displayMemberName}</span>
             {
               editIcon && !isIdassPrivateDeployment() &&
-              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}><EditIcon fill='currentColor' /></ButtonPlus.Icon>
+              <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}>
+                <EditOutlined size={12} color='currentColor' />
+              </ButtonPlus.Icon>
             }
           </div>
           {inEditName &&

@@ -19,13 +19,13 @@
 import { ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
-import { DatasheetWidgetRepository } from '../../datasheet/repositories/datasheet.widget.repository';
 import { Logger } from 'winston';
 import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';
 import { DatasheetFieldHandler } from 'database/datasheet/services/datasheet.field.handler';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
+import { DatasheetWidgetService } from 'database/datasheet/services/datasheet.widget.service';
 
 /**
  * @author Chambers
@@ -37,12 +37,19 @@ export class ResourceChangeHandler {
     @InjectLogger() private readonly logger: Logger,
     private readonly roomResourceRelService: RoomResourceRelService,
     private readonly nodeService: NodeService,
-    private readonly datasheetWidgetRepository: DatasheetWidgetRepository,
+    private readonly datasheetWidgetService: DatasheetWidgetService,
     private readonly datasheetFieldHandler: DatasheetFieldHandler,
-  ) { }
+  ) {}
 
   async handleResourceChange(roomId: string, values: any[]) {
-    this.logger.info(`HandleResourceChange. roomId: ${roomId} values: ${values}`);
+    this.logger.info(
+      `HandleResourceChange. roomId: ${roomId} values: ${JSON.stringify(
+        values.map(value => ({
+          resourceId: value.commonData.resourceId,
+          dstId: value.commonData.dstId,
+        })),
+      )}`,
+    );
     const isDsbRoom = roomId.startsWith(ResourceIdPrefix.Dashboard);
     for (const { effectMap, commonData, resultSet } of values) {
       const { dstId, resourceId, resourceType } = commonData;
@@ -56,7 +63,7 @@ export class ResourceChangeHandler {
         case ResourceType.Form:
           break;
         case ResourceType.Widget:
-          // When setting the referenced datasheet of a blank widget in dashboard, this datasheet should be 
+          // When setting the referenced datasheet of a blank widget in dashboard, this datasheet should be
           // joined in room
           if (isDsbRoom && resultSet.updateWidgetDepDatasheetId) {
             await this.roomResourceRelService.createOrUpdateRel(dstId, [resultSet.updateWidgetDepDatasheetId]);
@@ -87,7 +94,7 @@ export class ResourceChangeHandler {
     if (resultSet.toCreateForeignDatasheetIdMap.size) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.computeLinkFieldReference(dstId, meta, resultSet.toCreateForeignDatasheetIdMap);
-      if (dstIds?.length) { 
+      if (dstIds?.length) {
         addResourceIds.push(...dstIds);
       }
     }
@@ -95,7 +102,7 @@ export class ResourceChangeHandler {
     if (resultSet.toDeleteForeignDatasheetIdMap.size) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.deleteLinkFieldReference(dstId, meta, resultSet.toDeleteForeignDatasheetIdMap);
-      if (dstIds?.length) { 
+      if (dstIds?.length) {
         delResourceIds.push(...dstIds);
       }
     }
@@ -106,7 +113,7 @@ export class ResourceChangeHandler {
     if (resultSet.toDeleteLookUpProperties.length > 0) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.removeLookUpReference(dstId, meta, resultSet.toDeleteLookUpProperties);
-      if (dstIds?.length) { 
+      if (dstIds?.length) {
         delResourceIds.push(...dstIds);
       }
     }
@@ -114,21 +121,19 @@ export class ResourceChangeHandler {
     if (resultSet.toCreateLookUpProperties.length > 0) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.computeLookUpReference(dstId, meta, resultSet.toCreateLookUpProperties);
-      if (dstIds?.length) { 
+      if (dstIds?.length) {
         addResourceIds.push(...dstIds);
       }
     }
 
     // Obtain related node resource (form, mirror, etc) of the datasheet
     const relNodeIds = await this.nodeService.getRelNodeIds(dstId);
-    
+
     // Create or update Room - Resource bijection
     if (addResourceIds.length) {
       await this.roomResourceRelService.createOrUpdateRel(dstId, addResourceIds);
       // Update related node resource asynchronously
-      relNodeIds.forEach(nodeId => 
-        this.roomResourceRelService.createOrUpdateRel(nodeId, addResourceIds)
-      );
+      relNodeIds.forEach(nodeId => this.roomResourceRelService.createOrUpdateRel(nodeId, addResourceIds));
     }
     // Break Room - Resource bijection
     if (delResourceIds.length) {
@@ -138,9 +143,7 @@ export class ResourceChangeHandler {
       }
       await this.roomResourceRelService.removeRel(dstId, delResourceIds);
       // Update related node resource asynchronously
-      relNodeIds.forEach(nodeId => 
-        this.roomResourceRelService.removeRel(nodeId, delResourceIds)
-      );
+      relNodeIds.forEach(nodeId => this.roomResourceRelService.removeRel(nodeId, delResourceIds));
     }
   }
 
@@ -150,7 +153,7 @@ export class ResourceChangeHandler {
     // New widget
     if (resultSet.addWidgetIds.length) {
       addResourceIds.push(...resultSet.addWidgetIds);
-      const dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(addResourceIds);
+      const dstIds = await this.datasheetWidgetService.selectDstIdsByWidgetIds(addResourceIds);
       if (dstIds?.length) {
         addResourceIds.push(...dstIds);
       }
@@ -158,10 +161,10 @@ export class ResourceChangeHandler {
     // Delete widget
     if (resultSet.deleteWidgetIds.length) {
       delResourceIds.push(...resultSet.deleteWidgetIds);
-      let dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(delResourceIds);
+      let dstIds = await this.datasheetWidgetService.selectDstIdsByWidgetIds(delResourceIds);
       if (dstIds?.length) {
         // Delete data source of undeleted widget
-        const reservedDstIds = await this.datasheetWidgetRepository.selectDstIdsByNodeId(dashboardId);
+        const reservedDstIds = await this.datasheetWidgetService.selectDstIdsByNodeId(dashboardId);
         if (reservedDstIds?.length) {
           dstIds = difference<string>(dstIds, reservedDstIds);
         }

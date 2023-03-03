@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { Typography, ITypographyProps, useThemeColors } from '@apitable/components';
-import { InformationLargeOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import styles from './style.module.less';
 import classNames from 'classnames';
 
@@ -49,7 +49,7 @@ interface IPopUpTitleProps extends Required<Pick<ITypographyProps, 'variant'>> {
   style?: React.CSSProperties
 }
 
-export const PopUpTitle: React.FC<IPopUpTitleProps> = (props) => {
+export const PopUpTitle: React.FC<React.PropsWithChildren<IPopUpTitleProps>> = (props) => {
   const colors = useThemeColors();
   const { rightContent, title, variant, infoUrl, className, style } = props;
   return <div className={classNames(className, styles.popUpTitle)} style={style}>
@@ -64,7 +64,7 @@ export const PopUpTitle: React.FC<IPopUpTitleProps> = (props) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <InformationLargeOutlined color={colors.thirdLevelText} />
+          <QuestionCircleOutlined color={colors.thirdLevelText} />
         </a>
       }
 

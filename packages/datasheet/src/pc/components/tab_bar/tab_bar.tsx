@@ -25,7 +25,7 @@ import { Space } from 'antd';
 import { Skeleton } from '@apitable/components';
 // import { useSelector } from 'react-redux';
 
-export const TabBar: FC<{ loading: boolean }> = ({ loading }) => {
+export const TabBar: FC<React.PropsWithChildren<{ loading: boolean }>> = ({ loading }) => {
   // const currentView = useSelector(Selectors.getCurrentView)!;
   return (
     <div

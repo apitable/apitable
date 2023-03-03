@@ -81,7 +81,7 @@ interface IFunctionItem {
 const FunctionsArray = Array.from(Functions)
   .map(item => item[1])
   .filter(item => item.name !== 'ISERROR');
-export const FormulaModal: React.FC<IFormulaModal> = props => {
+export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = props => {
   const colors = useThemeColors();
   const { field, expression: initExpression, onClose, onSave, datasheetId } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
@@ -122,7 +122,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     const tExp = expressionTransform(initExpression.trim(), { fieldMap, fieldPermissionMap }, 'name');
     parse(tExp);
     return tExp;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
   const [expression, setExpression] = useState<string>(transformedExp);
   const [cursorOffset, setCursorOffset] = useState<number>(expression.length);
@@ -132,7 +132,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     formulaColorantEleRef.current = document.getElementById(FORMULA_COLORANT_ELEMENT)!;
     formulaInputEleRef.current.innerText = expression;
     formulaInputEleRef.current.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -344,7 +344,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
     if (activeToken) {
       setCurrentIndex(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [activeToken]);
 
   const { type: suggestType, id: suggestId, name: suggestName } = getSuggestItem(currentIndex);
@@ -383,7 +383,7 @@ export const FormulaModal: React.FC<IFormulaModal> = props => {
           {filteredFields.length > 0 && (
             <div className={styles.listGroup}>
               <h3>{t(Strings.field)}</h3>
-              {(filteredFields as any).map((result, index) => {
+              {(filteredFields as any).map((result: { item: IField }, index: number) => {
                 const fld = result.item;
                 const active = suggestId === fld.id && suggestType === 'field';
                 return (

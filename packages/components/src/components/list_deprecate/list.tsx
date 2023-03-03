@@ -24,7 +24,7 @@ import { ListSearch } from './list_search.ignore';
 import { FootWrapper, ResultSpan, StyledListItem, StyledListWrapper, WrapperDiv } from './styled';
 import { useListInteractive } from './use_list_interactive';
 
-export const ListDeprecate: React.FC<IListDeprecateProps> & { Item: React.FC<IListItemProps> } = (props) => {
+export const ListDeprecate: React.FC<React.PropsWithChildren<IListDeprecateProps>> & { Item: React.FC<React.PropsWithChildren<IListItemProps>> } = (props) => {
   const {
     children, noDataTip = 'empty data', activeIndex: DraftActiveIndex,
     footerComponent, onClick, className,
@@ -176,7 +176,7 @@ export const ListDeprecate: React.FC<IListDeprecateProps> & { Item: React.FC<ILi
 };
 
 // FIXME: line color
-const Item: React.FC<any> = (props) => {
+const Item: React.FC<React.PropsWithChildren<any>> = (props) => {
   const { currentIndex, children, className, ...rest } = props;
 
   return <StyledListItem

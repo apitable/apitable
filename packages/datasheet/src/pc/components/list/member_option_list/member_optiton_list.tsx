@@ -30,6 +30,8 @@ import {
   Strings,
   t,
   UnitItem,
+  Selectors,
+  PermissionType
 } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
@@ -38,6 +40,7 @@ import Fuse from 'fuse.js';
 import { memberStash } from 'modules/space/member_stash/member_stash';
 import { expandInviteModal } from 'pc/components/invite';
 import { CommonList } from 'pc/components/list/common_list';
+import { getEnvVariables } from 'pc/utils/env';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,7 +63,7 @@ const triggerBase = {
   }
 };
 
-export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }> = props => {
+export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }>> = props => {
   const {
     linkId, unitMap, listData, onClickItem, showSearchInput,
     showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,
@@ -74,8 +77,9 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { formId } = useSelector(state => state.pageParams);
+  const { formId, embedId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const refreshMemberList = useCallback(() => {
     // listData is not passed in, use stash directly
@@ -92,7 +96,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
 
   const loadOrSearchMember = async(keyword?: string) => {
     if (!showSearchInput && listData != null) {
-      // If remote search is not enabled, the raw data needs to be read from the external incoming complete data, 
+      // If remote search is not enabled, the raw data needs to be read from the external incoming complete data,
       // not the data cached within the component
       const fuse = new Fuse(listData, { keys: ['name'] });
       if (keyword) {
@@ -103,7 +107,12 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     if (!keyword?.length) {
       return initList;
     }
-    const res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    let res;
+    if (embedId) {
+      res = await Api.loadOrSearchEmbed(embedId, { filterIds: '', keyword, linkId, searchEmail });
+    } else {
+      res = await Api.loadOrSearch({ filterIds: '', keyword, linkId, searchEmail });
+    }
     const data: IUnitValue[] = res.data.data;
     if (uniqId === 'userId') {
       return data.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
@@ -254,14 +263,14 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
             </span>;
           }
         }
-        onSearchChange={(e, keyword) => {
+        onSearchChange={(_e, keyword) => {
           run(keyword);
         }}
         // The share page is not allowed to appear View More, the organization in the space station will be leaked
-        footerComponent={showMoreTipButton && !shareId ? () => {
+        footerComponent={showMoreTipButton && !shareId && !(embedId && embedInfo.permissionType !== PermissionType.PRIVATEEDIT) ? () => {
           return <div
             className={styles.seeMore}
-            onMouseUp={e => {
+            onMouseUp={() => {
               expandUnitModal({
                 source: SelectUnitSource.Member,
                 onSubmit: values => handleSubmit(values),
@@ -281,7 +290,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
       >
         {
           memberList.map((item, index) => {
-            const { 
+            const {
               userId, uuid, name, nickName, isMemberNameModified, teamData, avatar, avatarColor,
               unitRefId, type, isDeleted, isActive, desc,
             } = item;
@@ -300,10 +309,10 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                   e.preventDefault();
                 }}
                 className={styles.memberOptionItemWrapper}
-              > 
-                <InfoCard 
+              >
+                <InfoCard
                   title={title}
-                  description={teamData ? teamData[0]?.fullHierarchyTeamName : ''}
+                  description={(teamData && getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE) ? teamData[0]?.fullHierarchyTeamName : ''}
                   avatarProps={{
                     id: unitId || '',
                     title: nickName || name,

@@ -21,7 +21,7 @@ import { ChangesetBaseDto } from 'database/datasheet/dtos/changeset.base.dto';
 import { CommentDto } from 'database/datasheet/dtos/comment.dto';
 import { CommentReplyDto } from 'database/datasheet/dtos/comment.reply.dto';
 import { CommentEmojiDto } from './comment.emoji.dto';
-import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 export class RecordHistoryDto {
   @ApiProperty({
@@ -34,7 +34,7 @@ export class RecordHistoryDto {
     type: [CommentDto],
     description: 'comment involved units\'s list',
   })
-  units!: UnitBaseInfoDto[];
+  units!: UnitInfoDto[];
 
   @ApiProperty({
     type: [CommentEmojiDto],

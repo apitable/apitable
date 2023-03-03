@@ -33,7 +33,7 @@ interface ITaskContentProps {
   bgColor: string;
 }
 
-const TaskContent: FC<ITaskContentProps> = (props) => {
+const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
   const { recordId, instance, color, bgColor } = props;
   const { rowHeight, rowHeightLevel } = instance;
   const { unitTitleMap, cacheTheme } = useContext(KonvaGridViewContext);
@@ -88,7 +88,7 @@ const TaskContent: FC<ITaskContentProps> = (props) => {
           bgColor,
         },
         viewType: ViewType.Gantt,
-        callback: ({ width }) => curOffset += width,
+        callback: ({ width }: { width: number }) => curOffset += width,
         unitTitleMap,
         cacheTheme
       };

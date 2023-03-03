@@ -18,25 +18,23 @@
 
 package com.apitable.organization.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Search Results View
+ * Search Results View.
  * </p>
  */
 @Data
-@ApiModel("Search Results View")
+@Schema(description = "Search Results View")
 public class SearchResultVo {
 
-    @ApiModelProperty(value = "Department List", position = 1)
+    @Schema(description = "Department List")
     private List<SearchTeamResultVo> teams = new ArrayList<>();
 
-    @ApiModelProperty(value = "Member List", position = 2)
+    @Schema(description = "Member List")
     private List<SearchMemberResultVo> members = new ArrayList<>();
 }
