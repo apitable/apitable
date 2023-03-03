@@ -1,1698 +1,1489 @@
+export interface ITimeZone {
+  value: string;
+  abbr: string;
+  offset: number;
+  isdst: boolean;
+  text: string;
+  utc: string[];
+}
+
+export interface IUtcOption {
+  abbr: string;
+  offset: number;
+  label: string;
+  value: string;
+}
+
+export const getTimeZoneOffsetByUtc = (utc: string) => {
+  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
+  return currentTimeZoneData?.offset;
+}
+
+export const getTimeZoneAbbrByUtc = (utc: string) => {
+  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
+  return currentTimeZoneData?.abbr;
+}
+
+export const getUtcOptionList = () => {
+  let list: IUtcOption[] = [];
+
+  for(let i = 0; i < TIMEZONES.length; i++) {
+    const { abbr, offset, utc } = TIMEZONES[i]!;
+    list = list.concat(utc.map((tz: string) => {
+      return {
+        abbr,
+        offset,
+        label: `UTC${offset > 0  ? '+' : ''}${offset}(${tz})`,
+        value: tz,
+      }
+    }))
+  }
+
+  return list;
+}
+
+export const getClientTimeZone = () => {
+  // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(clientTimeZone))!;
+  const { offset } = currentTimeZoneData;
+  return `UTC${offset > 0  ? '+' : ''}${offset}(${clientTimeZone})`;
+}
+
+
+// https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
 export const TIMEZONES = [
   {
-    tzCode:'Pacific/Midway',
-    utc:'-11:00'
-  },
-  {
-    tzCode:'Pacific/Niue',
-    utc:'-11:00'
-  },
-  {
-    tzCode:'Pacific/Pago_Pago',
-    utc:'-11:00'
-  },
-  {
-    tzCode:'America/Adak',
-    utc:'-10:00'
-  },
-  {
-    tzCode:'Pacific/Honolulu',
-    utc:'-10:00'
-  },
-  {
-    tzCode:'Pacific/Rarotonga',
-    utc:'-10:00'
-  },
-  {
-    tzCode:'Pacific/Tahiti',
-    utc:'-10:00'
-  },
-  {
-    tzCode:'Pacific/Marquesas',
-    utc:'-09:30'
-  },
-  {
-    tzCode:'America/Anchorage',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Juneau',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Metlakatla',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Nome',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Sitka',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Yakutat',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'Pacific/Gambier',
-    utc:'-09:00'
-  },
-  {
-    tzCode:'America/Los_Angeles',
-    utc:'-08:00'
-  },
-  {
-    tzCode:'America/Tijuana',
-    utc:'-08:00'
-  },
-  {
-    tzCode:'America/Vancouver',
-    utc:'-08:00'
-  },
-  {
-    tzCode:'Pacific/Pitcairn',
-    utc:'-08:00'
-  },
-  {
-    tzCode:'America/Boise',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Cambridge_Bay',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Chihuahua',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Creston',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Dawson',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Dawson_Creek',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Denver',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Edmonton',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Fort_Nelson',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Hermosillo',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Inuvik',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Mazatlan',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Ojinaga',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Phoenix',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Whitehorse',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Yellowknife',
-    utc:'-07:00'
-  },
-  {
-    tzCode:'America/Bahia_Banderas',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Belize',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Chicago',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Costa_Rica',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/El_Salvador',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Guatemala',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Indiana/Knox',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Indiana/Tell_City',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Managua',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Matamoros',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Menominee',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Merida',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Mexico_City',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Monterrey',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/North_Dakota/Beulah',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/North_Dakota/Center',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/North_Dakota/New_Salem',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Rainy_River',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Rankin_Inlet',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Regina',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Resolute',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Swift_Current',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Tegucigalpa',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Winnipeg',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'Pacific/Easter',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'Pacific/Galapagos',
-    utc:'-06:00'
-  },
-  {
-    tzCode:'America/Atikokan',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Bogota',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Cancun',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Cayman',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Detroit',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Eirunepe',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Grand_Turk',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Guayaquil',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Havana',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Indianapolis',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Marengo',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Petersburg',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Vevay',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Vincennes',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Indiana/Winamac',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Iqaluit',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Jamaica',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Kentucky/Louisville',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Kentucky/Monticello',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Lima',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Nassau',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/New_York',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Nipigon',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Panama',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Pangnirtung',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Port-au-Prince',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Rio_Branco',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Thunder_Bay',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/Toronto',
-    utc:'-05:00'
-  },
-  {
-    tzCode:'America/AnguillaSandy Hill',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Antigua',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Aruba',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Asuncion',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Barbados',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Blanc-Sablon',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Boa_Vista',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Campo_Grande',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Caracas',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Cuiaba',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Curacao',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Dominica',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Glace_Bay',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Goose_Bay',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Grenada',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Guadeloupe',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Guyana',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Halifax',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Kralendijk',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/La_Paz',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Lower_Princes',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Manaus',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Marigot',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Martinique',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Moncton',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Montserrat',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Porto_Velho',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Port_of_Spain',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Puerto_Rico',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Santiago',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Santo_Domingo',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Barthelemy',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Kitts',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Lucia',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Thomas',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Vincent',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Thule',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/Tortola',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'Atlantic/Bermuda',
-    utc:'-04:00'
-  },
-  {
-    tzCode:'America/St_Johns',
-    utc:'-03:30'
-  },
-  {
-    tzCode:'America/Araguaina',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Buenos_Aires',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Catamarca',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Cordoba',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Jujuy',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/La_Rioja',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Mendoza',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Rio_Gallegos',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Salta',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/San_Juan',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/San_Luis',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Tucuman',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Argentina/Ushuaia',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Bahia',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Belem',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Cayenne',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Fortaleza',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Godthab',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Maceio',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Miquelon',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Montevideo',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Paramaribo',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Punta_Arenas',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Recife',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Santarem',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Sao_Paulo',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'Antarctica/Palmer',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'Antarctica/Rothera',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'Atlantic/Stanley',
-    utc:'-03:00'
-  },
-  {
-    tzCode:'America/Noronha',
-    utc:'-02:00'
-  },
-  {
-    tzCode:'Atlantic/South_Georgia',
-    utc:'-02:00'
-  },
-  {
-    tzCode:'America/Scoresbysund',
-    utc:'-01:00'
-  },
-  {
-    tzCode:'Atlantic/Azores',
-    utc:'-01:00'
-  },
-  {
-    tzCode:'Atlantic/Cape_Verde',
-    utc:'-01:00'
-  },
-  {
-    tzCode:'Africa/Abidjan',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Accra',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Bamako',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Banjul',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Bissau',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Casablanca',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Conakry',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Dakar',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/El_Aaiun',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Freetown',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Lome',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Monrovia',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Nouakchott',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Ouagadougou',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Sao_Tome',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'America/Danmarkshavn',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Antarctica/Troll',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Atlantic/Canary',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Atlantic/Faroe',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Atlantic/Madeira',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Atlantic/Reykjavik',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Atlantic/St_Helena',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/Dublin',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/Guernsey',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/Isle_of_Man',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/Jersey',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/Lisbon',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Europe/London',
-    utc:'+00:00'
-  },
-  {
-    tzCode:'Africa/Algiers',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Bangui',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Brazzaville',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Ceuta',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Douala',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Kinshasa',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Lagos',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Libreville',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Luanda',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Malabo',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Ndjamena',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Niamey',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Porto-Novo',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Tunis',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Windhoek',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Arctic/Longyearbyen',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Amsterdam',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Andorra',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Belgrade',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Berlin',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Bratislava',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Brussels',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Budapest',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Copenhagen',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Gibraltar',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Ljubljana',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Luxembourg',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Madrid',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Malta',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Monaco',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Oslo',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Paris',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Podgorica',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Prague',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Rome',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/San_Marino',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Sarajevo',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Skopje',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Stockholm',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Tirane',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Vaduz',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Vatican',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Vienna',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Warsaw',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Zagreb',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Europe/Zurich',
-    utc:'+01:00'
-  },
-  {
-    tzCode:'Africa/Blantyre',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Bujumbura',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Cairo',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Gaborone',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Harare',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Johannesburg',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Juba',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Khartoum',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Kigali',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Lubumbashi',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Lusaka',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Maputo',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Maseru',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Mbabane',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Tripoli',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Amman',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Beirut',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Damascus',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Famagusta',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Gaza',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Hebron',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Jerusalem',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Asia/Nicosia',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Athens',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Bucharest',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Chisinau',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Helsinki',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Kaliningrad',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Kiev',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Mariehamn',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Riga',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Sofia',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Tallinn',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Uzhgorod',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Vilnius',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Europe/Zaporozhye',
-    utc:'+02:00'
-  },
-  {
-    tzCode:'Africa/Addis_Ababa',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Asmara',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Dar_es_Salaam',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Djibouti',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Kampala',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Mogadishu',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Africa/Nairobi',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Antarctica/Syowa',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Aden',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Baghdad',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Bahrain',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Kuwait',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Qatar',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Riyadh',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Istanbul',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Kirov',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Minsk',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Moscow',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Simferopol',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Europe/Volgograd',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Indian/Antananarivo',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Indian/Comoro',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Indian/Mayotte',
-    utc:'+03:00'
-  },
-  {
-    tzCode:'Asia/Tehran',
-    utc:'+03:30'
-  },
-  {
-    tzCode:'Asia/Baku',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Asia/Dubai',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Asia/Muscat',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Asia/Tbilisi',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Asia/Yerevan',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Europe/Astrakhan',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Europe/Samara',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Europe/Saratov',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Europe/Ulyanovsk',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Indian/Mahe',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Indian/Mauritius',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Indian/Reunion',
-    utc:'+04:00'
-  },
-  {
-    tzCode:'Asia/Kabul',
-    utc:'+04:30'
-  },
-  {
-    tzCode:'Antarctica/Mawson',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Aqtau',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Aqtobe',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Ashgabat',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Atyrau',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Dushanbe',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Karachi',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Oral',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Qyzylorda',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Samarkand',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Tashkent',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Yekaterinburg',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Indian/Kerguelen',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Indian/Maldives',
-    utc:'+05:00'
-  },
-  {
-    tzCode:'Asia/Colombo',
-    utc:'+05:30'
-  },
-  {
-    tzCode:'Asia/Kolkata',
-    utc:'+05:30'
-  },
-  {
-    tzCode:'Asia/Kathmandu',
-    utc:'+05:45'
-  },
-  {
-    tzCode:'Antarctica/Vostok',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Almaty',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Bishkek',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Dhaka',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Omsk',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Qostanay',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Thimphu',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Urumqi',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Indian/Chagos',
-    utc:'+06:00'
-  },
-  {
-    tzCode:'Asia/Yangon',
-    utc:'+06:30'
-  },
-  {
-    tzCode:'Indian/Cocos',
-    utc:'+06:30'
-  },
-  {
-    tzCode:'Antarctica/Davis',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Bangkok',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Barnaul',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Hovd',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Ho_Chi_Minh',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Jakarta',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Krasnoyarsk',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Novokuznetsk',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Novosibirsk',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Phnom_Penh',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Pontianak',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Tomsk',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Vientiane',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Indian/Christmas',
-    utc:'+07:00'
-  },
-  {
-    tzCode:'Asia/Brunei',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Choibalsan',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Hong_Kong',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Irkutsk',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Kuala_Lumpur',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Kuching',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Macau',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Makassar',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Manila',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Shanghai',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Singapore',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Taipei',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Asia/Ulaanbaatar',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Australia/Perth',
-    utc:'+08:00'
-  },
-  {
-    tzCode:'Australia/Eucla',
-    utc:'+08:45'
-  },
-  {
-    tzCode:'Asia/Chita',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Dili',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Jayapura',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Khandyga',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Pyongyang',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Seoul',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Tokyo',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Asia/Yakutsk',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Pacific/Palau',
-    utc:'+09:00'
-  },
-  {
-    tzCode:'Australia/Adelaide',
-    utc:'+09:30'
-  },
-  {
-    tzCode:'Australia/Broken_Hill',
-    utc:'+09:30'
-  },
-  {
-    tzCode:'Australia/Darwin',
-    utc:'+09:30'
-  },
-  {
-    tzCode:'Antarctica/DumontDUrville',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Antarctica/Macquarie',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Asia/Ust-Nera',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Asia/Vladivostok',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Brisbane',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Currie',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Hobart',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Lindeman',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Melbourne',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Sydney',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Pacific/Chuuk',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Pacific/GuamVillage',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Pacific/Port_Moresby',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Pacific/Saipan',
-    utc:'+10:00'
-  },
-  {
-    tzCode:'Australia/Lord_Howe',
-    utc:'+10:30'
-  },
-  {
-    tzCode:'Antarctica/Casey',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Asia/Magadan',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Asia/Sakhalin',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Asia/Srednekolymsk',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Bougainville',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Efate',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Guadalcanal',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Kosrae',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Norfolk',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Noumea',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Pacific/Pohnpei',
-    utc:'+11:00'
-  },
-  {
-    tzCode:'Antarctica/McMurdo',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Asia/Anadyr',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Asia/Kamchatka',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Auckland',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Fiji',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Funafuti',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Kwajalein',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Majuro',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Nauru',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Tarawa',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Wake',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Wallis',
-    utc:'+12:00'
-  },
-  {
-    tzCode:'Pacific/Chatham',
-    utc:'+12:45'
-  },
-  {
-    tzCode:'Pacific/Apia',
-    utc:'+13:00'
-  },
-  {
-    tzCode:'Pacific/Enderbury',
-    utc:'+13:00'
-  },
-  {
-    tzCode:'Pacific/Fakaofo',
-    utc:'+13:00'
-  },
-  {
-    tzCode:'Pacific/Tongatapu',
-    utc:'+13:00'
-  },
+    value: 'Dateline Standard Time',
+    abbr: 'DST',
+    offset: -12,
+    isdst: false,
+    text: '(UTC-12:00) International Date Line West',
+    utc: [
+      'Etc/GMT+12'
+    ]
+  },
+  {
+    value: 'UTC-11',
+    abbr: 'U',
+    offset: -11,
+    isdst: false,
+    text: '(UTC-11:00) Coordinated Universal Time-11',
+    utc: [
+      'Etc/GMT+11',
+      'Pacific/Midway',
+      'Pacific/Niue',
+      'Pacific/Pago_Pago'
+    ]
+  },
+  {
+    value: 'Hawaiian Standard Time',
+    abbr: 'HST',
+    offset: -10,
+    isdst: false,
+    text: '(UTC-10:00) Hawaii',
+    utc: [
+      'Etc/GMT+10',
+      'Pacific/Honolulu',
+      'Pacific/Johnston',
+      'Pacific/Rarotonga',
+      'Pacific/Tahiti'
+    ]
+  },
+  {
+    value: 'Alaskan Standard Time',
+    abbr: 'AKDT',
+    offset: -8,
+    isdst: true,
+    text: '(UTC-09:00) Alaska',
+    utc: [
+      'America/Anchorage',
+      'America/Juneau',
+      'America/Nome',
+      'America/Sitka',
+      'America/Yakutat'
+    ]
+  },
+  {
+    value: 'Pacific Standard Time (Mexico)',
+    abbr: 'PDT',
+    offset: -7,
+    isdst: true,
+    text: '(UTC-08:00) Baja California',
+    utc: [
+      'America/Santa_Isabel'
+    ]
+  },
+  {
+    value: 'Pacific Daylight Time',
+    abbr: 'PDT',
+    offset: -7,
+    isdst: true,
+    text: '(UTC-07:00) Pacific Daylight Time (US & Canada)',
+    utc: [
+      'America/Los_Angeles',
+      'America/Tijuana',
+      'America/Vancouver'
+    ]
+  },
+  {
+    value: 'Pacific Standard Time',
+    abbr: 'PST',
+    offset: -8,
+    isdst: false,
+    text: '(UTC-08:00) Pacific Standard Time (US & Canada)',
+    utc: [
+      'America/Los_Angeles',
+      'America/Tijuana',
+      'America/Vancouver',
+      'PST8PDT'
+    ]
+  },
+  {
+    value: 'US Mountain Standard Time',
+    abbr: 'UMST',
+    offset: -7,
+    isdst: false,
+    text: '(UTC-07:00) Arizona',
+    utc: [
+      'America/Creston',
+      'America/Dawson',
+      'America/Dawson_Creek',
+      'America/Hermosillo',
+      'America/Phoenix',
+      'America/Whitehorse',
+      'Etc/GMT+7'
+    ]
+  },
   {
-    tzCode:'Pacific/Kiritimati',
-    utc:'+14:00'
+    value: 'Mountain Standard Time (Mexico)',
+    abbr: 'MDT',
+    offset: -6,
+    isdst: true,
+    text: '(UTC-07:00) Chihuahua, La Paz, Mazatlan',
+    utc: [
+      'America/Chihuahua',
+      'America/Mazatlan'
+    ]
+  },
+  {
+    value: 'Mountain Standard Time',
+    abbr: 'MDT',
+    offset: -6,
+    isdst: true,
+    text: '(UTC-07:00) Mountain Time (US & Canada)',
+    utc: [
+      'America/Boise',
+      'America/Cambridge_Bay',
+      'America/Denver',
+      'America/Edmonton',
+      'America/Inuvik',
+      'America/Ojinaga',
+      'America/Yellowknife',
+      'MST7MDT'
+    ]
+  },
+  {
+    value: 'Central America Standard Time',
+    abbr: 'CAST',
+    offset: -6,
+    isdst: false,
+    text: '(UTC-06:00) Central America',
+    utc: [
+      'America/Belize',
+      'America/Costa_Rica',
+      'America/El_Salvador',
+      'America/Guatemala',
+      'America/Managua',
+      'America/Tegucigalpa',
+      'Etc/GMT+6',
+      'Pacific/Galapagos'
+    ]
+  },
+  {
+    value: 'Central Standard Time',
+    abbr: 'CDT',
+    offset: -5,
+    isdst: true,
+    text: '(UTC-06:00) Central Time (US & Canada)',
+    utc: [
+      'America/Chicago',
+      'America/Indiana/Knox',
+      'America/Indiana/Tell_City',
+      'America/Matamoros',
+      'America/Menominee',
+      'America/North_Dakota/Beulah',
+      'America/North_Dakota/Center',
+      'America/North_Dakota/New_Salem',
+      'America/Rainy_River',
+      'America/Rankin_Inlet',
+      'America/Resolute',
+      'America/Winnipeg',
+      'CST6CDT'
+    ]
+  },
+  {
+    value: 'Central Standard Time (Mexico)',
+    abbr: 'CDT',
+    offset: -5,
+    isdst: true,
+    text: '(UTC-06:00) Guadalajara, Mexico City, Monterrey',
+    utc: [
+      'America/Bahia_Banderas',
+      'America/Cancun',
+      'America/Merida',
+      'America/Mexico_City',
+      'America/Monterrey'
+    ]
+  },
+  {
+    value: 'Canada Central Standard Time',
+    abbr: 'CCST',
+    offset: -6,
+    isdst: false,
+    text: '(UTC-06:00) Saskatchewan',
+    utc: [
+      'America/Regina',
+      'America/Swift_Current'
+    ]
+  },
+  {
+    value: 'SA Pacific Standard Time',
+    abbr: 'SPST',
+    offset: -5,
+    isdst: false,
+    text: '(UTC-05:00) Bogota, Lima, Quito',
+    utc: [
+      'America/Bogota',
+      'America/Cayman',
+      'America/Coral_Harbour',
+      'America/Eirunepe',
+      'America/Guayaquil',
+      'America/Jamaica',
+      'America/Lima',
+      'America/Panama',
+      'America/Rio_Branco',
+      'Etc/GMT+5'
+    ]
+  },
+  {
+    value: 'Eastern Standard Time',
+    abbr: 'EST',
+    offset: -5,
+    isdst: false,
+    text: '(UTC-05:00) Eastern Time (US & Canada)',
+    utc: [
+      'America/Detroit',
+      'America/Havana',
+      'America/Indiana/Petersburg',
+      'America/Indiana/Vincennes',
+      'America/Indiana/Winamac',
+      'America/Iqaluit',
+      'America/Kentucky/Monticello',
+      'America/Louisville',
+      'America/Montreal',
+      'America/Nassau',
+      'America/New_York',
+      'America/Nipigon',
+      'America/Pangnirtung',
+      'America/Port-au-Prince',
+      'America/Thunder_Bay',
+      'America/Toronto'
+    ]
+  },
+  {
+    value: 'Eastern Daylight Time',
+    abbr: 'EDT',
+    offset: -4,
+    isdst: true,
+    text: '(UTC-04:00) Eastern Daylight Time (US & Canada)',
+    utc: [
+      'America/Detroit',
+      'America/Havana',
+      'America/Indiana/Petersburg',
+      'America/Indiana/Vincennes',
+      'America/Indiana/Winamac',
+      'America/Iqaluit',
+      'America/Kentucky/Monticello',
+      'America/Louisville',
+      'America/Montreal',
+      'America/Nassau',
+      'America/New_York',
+      'America/Nipigon',
+      'America/Pangnirtung',
+      'America/Port-au-Prince',
+      'America/Thunder_Bay',
+      'America/Toronto'
+    ]
+  },
+  {
+    value: 'US Eastern Standard Time',
+    abbr: 'UEDT',
+    offset: -5,
+    isdst: false,
+    text: '(UTC-05:00) Indiana (East)',
+    utc: [
+      'America/Indiana/Marengo',
+      'America/Indiana/Vevay',
+      'America/Indianapolis'
+    ]
+  },
+  {
+    value: 'Venezuela Standard Time',
+    abbr: 'VST',
+    offset: -4.5,
+    isdst: false,
+    text: '(UTC-04:30) Caracas',
+    utc: [
+      'America/Caracas'
+    ]
+  },
+  {
+    value: 'Paraguay Standard Time',
+    abbr: 'PYT',
+    offset: -4,
+    isdst: false,
+    text: '(UTC-04:00) Asuncion',
+    utc: [
+      'America/Asuncion'
+    ]
+  },
+  {
+    value: 'Atlantic Standard Time',
+    abbr: 'ADT',
+    offset: -3,
+    isdst: true,
+    text: '(UTC-04:00) Atlantic Time (Canada)',
+    utc: [
+      'America/Glace_Bay',
+      'America/Goose_Bay',
+      'America/Halifax',
+      'America/Moncton',
+      'America/Thule',
+      'Atlantic/Bermuda'
+    ]
+  },
+  {
+    value: 'Central Brazilian Standard Time',
+    abbr: 'CBST',
+    offset: -4,
+    isdst: false,
+    text: '(UTC-04:00) Cuiaba',
+    utc: [
+      'America/Campo_Grande',
+      'America/Cuiaba'
+    ]
+  },
+  {
+    value: 'SA Western Standard Time',
+    abbr: 'SWST',
+    offset: -4,
+    isdst: false,
+    text: '(UTC-04:00) Georgetown, La Paz, Manaus, San Juan',
+    utc: [
+      'America/Anguilla',
+      'America/Antigua',
+      'America/Aruba',
+      'America/Barbados',
+      'America/Blanc-Sablon',
+      'America/Boa_Vista',
+      'America/Curacao',
+      'America/Dominica',
+      'America/Grand_Turk',
+      'America/Grenada',
+      'America/Guadeloupe',
+      'America/Guyana',
+      'America/Kralendijk',
+      'America/La_Paz',
+      'America/Lower_Princes',
+      'America/Manaus',
+      'America/Marigot',
+      'America/Martinique',
+      'America/Montserrat',
+      'America/Port_of_Spain',
+      'America/Porto_Velho',
+      'America/Puerto_Rico',
+      'America/Santo_Domingo',
+      'America/St_Barthelemy',
+      'America/St_Kitts',
+      'America/St_Lucia',
+      'America/St_Thomas',
+      'America/St_Vincent',
+      'America/Tortola',
+      'Etc/GMT+4'
+    ]
+  },
+  {
+    value: 'Pacific SA Standard Time',
+    abbr: 'PSST',
+    offset: -4,
+    isdst: false,
+    text: '(UTC-04:00) Santiago',
+    utc: [
+      'America/Santiago',
+      'Antarctica/Palmer'
+    ]
+  },
+  {
+    value: 'Newfoundland Standard Time',
+    abbr: 'NDT',
+    offset: -2.5,
+    isdst: true,
+    text: '(UTC-03:30) Newfoundland',
+    utc: [
+      'America/St_Johns'
+    ]
+  },
+  {
+    value: 'E. South America Standard Time',
+    abbr: 'ESAST',
+    offset: -3,
+    isdst: false,
+    text: '(UTC-03:00) Brasilia',
+    utc: [
+      'America/Sao_Paulo'
+    ]
+  },
+  {
+    value: 'Argentina Standard Time',
+    abbr: 'AST',
+    offset: -3,
+    isdst: false,
+    text: '(UTC-03:00) Buenos Aires',
+    utc: [
+      'America/Argentina/La_Rioja',
+      'America/Argentina/Rio_Gallegos',
+      'America/Argentina/Salta',
+      'America/Argentina/San_Juan',
+      'America/Argentina/San_Luis',
+      'America/Argentina/Tucuman',
+      'America/Argentina/Ushuaia',
+      'America/Buenos_Aires',
+      'America/Catamarca',
+      'America/Cordoba',
+      'America/Jujuy',
+      'America/Mendoza'
+    ]
+  },
+  {
+    value: 'SA Eastern Standard Time',
+    abbr: 'SEST',
+    offset: -3,
+    isdst: false,
+    text: '(UTC-03:00) Cayenne, Fortaleza',
+    utc: [
+      'America/Araguaina',
+      'America/Belem',
+      'America/Cayenne',
+      'America/Fortaleza',
+      'America/Maceio',
+      'America/Paramaribo',
+      'America/Recife',
+      'America/Santarem',
+      'Antarctica/Rothera',
+      'Atlantic/Stanley',
+      'Etc/GMT+3'
+    ]
+  },
+  {
+    value: 'Greenland Standard Time',
+    abbr: 'GDT',
+    offset: -3,
+    isdst: true,
+    text: '(UTC-03:00) Greenland',
+    utc: [
+      'America/Godthab'
+    ]
+  },
+  {
+    value: 'Montevideo Standard Time',
+    abbr: 'MST',
+    offset: -3,
+    isdst: false,
+    text: '(UTC-03:00) Montevideo',
+    utc: [
+      'America/Montevideo'
+    ]
+  },
+  {
+    value: 'Bahia Standard Time',
+    abbr: 'BST',
+    offset: -3,
+    isdst: false,
+    text: '(UTC-03:00) Salvador',
+    utc: [
+      'America/Bahia'
+    ]
+  },
+  {
+    value: 'UTC-02',
+    abbr: 'U',
+    offset: -2,
+    isdst: false,
+    text: '(UTC-02:00) Coordinated Universal Time-02',
+    utc: [
+      'America/Noronha',
+      'Atlantic/South_Georgia',
+      'Etc/GMT+2'
+    ]
+  },
+  {
+    value: 'Mid-Atlantic Standard Time',
+    abbr: 'MDT',
+    offset: -1,
+    isdst: true,
+    text: '(UTC-02:00) Mid-Atlantic - Old',
+    utc: []
+  },
+  {
+    value: 'Azores Standard Time',
+    abbr: 'ADT',
+    offset: 0,
+    isdst: true,
+    text: '(UTC-01:00) Azores',
+    utc: [
+      'America/Scoresbysund',
+      'Atlantic/Azores'
+    ]
+  },
+  {
+    value: 'Cape Verde Standard Time',
+    abbr: 'CVST',
+    offset: -1,
+    isdst: false,
+    text: '(UTC-01:00) Cape Verde Is.',
+    utc: [
+      'Atlantic/Cape_Verde',
+      'Etc/GMT+1'
+    ]
+  },
+  {
+    value: 'Morocco Standard Time',
+    abbr: 'MDT',
+    offset: 1,
+    isdst: true,
+    text: '(UTC) Casablanca',
+    utc: [
+      'Africa/Casablanca',
+      'Africa/El_Aaiun'
+    ]
+  },
+  {
+    value: 'UTC',
+    abbr: 'UTC',
+    offset: 0,
+    isdst: false,
+    text: '(UTC) Coordinated Universal Time',
+    utc: [
+      'America/Danmarkshavn',
+      'Etc/GMT'
+    ]
+  },
+  {
+    value: 'GMT Standard Time',
+    abbr: 'GMT',
+    offset: 0,
+    isdst: false,
+    text: '(UTC) Edinburgh, London',
+    utc: [
+      'Europe/Isle_of_Man',
+      'Europe/Guernsey',
+      'Europe/Jersey',
+      'Europe/London'
+    ]
+  },
+  {
+    value: 'British Summer Time',
+    abbr: 'BST',
+    offset: 1,
+    isdst: true,
+    text: '(UTC+01:00) Edinburgh, London',
+    utc: [
+      'Europe/Isle_of_Man',
+      'Europe/Guernsey',
+      'Europe/Jersey',
+      'Europe/London'
+    ]
+  },
+  {
+    value: 'GMT Standard Time',
+    abbr: 'GDT',
+    offset: 1,
+    isdst: true,
+    text: '(UTC) Dublin, Lisbon',
+    utc: [
+      'Atlantic/Canary',
+      'Atlantic/Faeroe',
+      'Atlantic/Madeira',
+      'Europe/Dublin',
+      'Europe/Lisbon'
+    ]
+  },
+  {
+    value: 'Greenwich Standard Time',
+    abbr: 'GST',
+    offset: 0,
+    isdst: false,
+    text: '(UTC) Monrovia, Reykjavik',
+    utc: [
+      'Africa/Abidjan',
+      'Africa/Accra',
+      'Africa/Bamako',
+      'Africa/Banjul',
+      'Africa/Bissau',
+      'Africa/Conakry',
+      'Africa/Dakar',
+      'Africa/Freetown',
+      'Africa/Lome',
+      'Africa/Monrovia',
+      'Africa/Nouakchott',
+      'Africa/Ouagadougou',
+      'Africa/Sao_Tome',
+      'Atlantic/Reykjavik',
+      'Atlantic/St_Helena'
+    ]
+  },
+  {
+    value: 'W. Europe Standard Time',
+    abbr: 'WEDT',
+    offset: 2,
+    isdst: true,
+    text: '(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
+    utc: [
+      'Arctic/Longyearbyen',
+      'Europe/Amsterdam',
+      'Europe/Andorra',
+      'Europe/Berlin',
+      'Europe/Busingen',
+      'Europe/Gibraltar',
+      'Europe/Luxembourg',
+      'Europe/Malta',
+      'Europe/Monaco',
+      'Europe/Oslo',
+      'Europe/Rome',
+      'Europe/San_Marino',
+      'Europe/Stockholm',
+      'Europe/Vaduz',
+      'Europe/Vatican',
+      'Europe/Vienna',
+      'Europe/Zurich'
+    ]
+  },
+  {
+    value: 'Central Europe Standard Time',
+    abbr: 'CEDT',
+    offset: 2,
+    isdst: true,
+    text: '(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague',
+    utc: [
+      'Europe/Belgrade',
+      'Europe/Bratislava',
+      'Europe/Budapest',
+      'Europe/Ljubljana',
+      'Europe/Podgorica',
+      'Europe/Prague',
+      'Europe/Tirane'
+    ]
+  },
+  {
+    value: 'Romance Standard Time',
+    abbr: 'RDT',
+    offset: 2,
+    isdst: true,
+    text: '(UTC+01:00) Brussels, Copenhagen, Madrid, Paris',
+    utc: [
+      'Africa/Ceuta',
+      'Europe/Brussels',
+      'Europe/Copenhagen',
+      'Europe/Madrid',
+      'Europe/Paris'
+    ]
+  },
+  {
+    value: 'Central European Standard Time',
+    abbr: 'CEDT',
+    offset: 2,
+    isdst: true,
+    text: '(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb',
+    utc: [
+      'Europe/Sarajevo',
+      'Europe/Skopje',
+      'Europe/Warsaw',
+      'Europe/Zagreb'
+    ]
+  },
+  {
+    value: 'W. Central Africa Standard Time',
+    abbr: 'WCAST',
+    offset: 1,
+    isdst: false,
+    text: '(UTC+01:00) West Central Africa',
+    utc: [
+      'Africa/Algiers',
+      'Africa/Bangui',
+      'Africa/Brazzaville',
+      'Africa/Douala',
+      'Africa/Kinshasa',
+      'Africa/Lagos',
+      'Africa/Libreville',
+      'Africa/Luanda',
+      'Africa/Malabo',
+      'Africa/Ndjamena',
+      'Africa/Niamey',
+      'Africa/Porto-Novo',
+      'Africa/Tunis',
+      'Etc/GMT-1'
+    ]
+  },
+  {
+    value: 'Namibia Standard Time',
+    abbr: 'NST',
+    offset: 1,
+    isdst: false,
+    text: '(UTC+01:00) Windhoek',
+    utc: [
+      'Africa/Windhoek'
+    ]
+  },
+  {
+    value: 'GTB Standard Time',
+    abbr: 'GDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) Athens, Bucharest',
+    utc: [
+      'Asia/Nicosia',
+      'Europe/Athens',
+      'Europe/Bucharest',
+      'Europe/Chisinau'
+    ]
+  },
+  {
+    value: 'Middle East Standard Time',
+    abbr: 'MEDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) Beirut',
+    utc: [
+      'Asia/Beirut'
+    ]
+  },
+  {
+    value: 'Egypt Standard Time',
+    abbr: 'EST',
+    offset: 2,
+    isdst: false,
+    text: '(UTC+02:00) Cairo',
+    utc: [
+      'Africa/Cairo'
+    ]
+  },
+  {
+    value: 'Syria Standard Time',
+    abbr: 'SDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) Damascus',
+    utc: [
+      'Asia/Damascus'
+    ]
+  },
+  {
+    value: 'E. Europe Standard Time',
+    abbr: 'EEDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) E. Europe',
+    utc: [
+      'Asia/Nicosia',
+      'Europe/Athens',
+      'Europe/Bucharest',
+      'Europe/Chisinau',
+      'Europe/Helsinki',
+      'Europe/Kiev',
+      'Europe/Mariehamn',
+      'Europe/Nicosia',
+      'Europe/Riga',
+      'Europe/Sofia',
+      'Europe/Tallinn',
+      'Europe/Uzhgorod',
+      'Europe/Vilnius',
+      'Europe/Zaporozhye'
+
+    ]
+  },
+  {
+    value: 'South Africa Standard Time',
+    abbr: 'SAST',
+    offset: 2,
+    isdst: false,
+    text: '(UTC+02:00) Harare, Pretoria',
+    utc: [
+      'Africa/Blantyre',
+      'Africa/Bujumbura',
+      'Africa/Gaborone',
+      'Africa/Harare',
+      'Africa/Johannesburg',
+      'Africa/Kigali',
+      'Africa/Lubumbashi',
+      'Africa/Lusaka',
+      'Africa/Maputo',
+      'Africa/Maseru',
+      'Africa/Mbabane',
+      'Etc/GMT-2'
+    ]
+  },
+  {
+    value: 'FLE Standard Time',
+    abbr: 'FDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius',
+    utc: [
+      'Europe/Helsinki',
+      'Europe/Kiev',
+      'Europe/Mariehamn',
+      'Europe/Riga',
+      'Europe/Sofia',
+      'Europe/Tallinn',
+      'Europe/Uzhgorod',
+      'Europe/Vilnius',
+      'Europe/Zaporozhye'
+    ]
+  },
+  {
+    value: 'Turkey Standard Time',
+    abbr: 'TDT',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Istanbul',
+    utc: [
+      'Europe/Istanbul'
+    ]
+  },
+  {
+    value: 'Israel Standard Time',
+    abbr: 'JDT',
+    offset: 3,
+    isdst: true,
+    text: '(UTC+02:00) Jerusalem',
+    utc: [
+      'Asia/Jerusalem'
+    ]
+  },
+  {
+    value: 'Libya Standard Time',
+    abbr: 'LST',
+    offset: 2,
+    isdst: false,
+    text: '(UTC+02:00) Tripoli',
+    utc: [
+      'Africa/Tripoli'
+    ]
+  },
+  {
+    value: 'Jordan Standard Time',
+    abbr: 'JST',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Amman',
+    utc: [
+      'Asia/Amman'
+    ]
+  },
+  {
+    value: 'Arabic Standard Time',
+    abbr: 'AST',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Baghdad',
+    utc: [
+      'Asia/Baghdad'
+    ]
+  },
+  {
+    value: 'Kaliningrad Standard Time',
+    abbr: 'KST',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+02:00) Kaliningrad',
+    utc: [
+      'Europe/Kaliningrad'
+    ]
+  },
+  {
+    value: 'Arab Standard Time',
+    abbr: 'AST',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Kuwait, Riyadh',
+    utc: [
+      'Asia/Aden',
+      'Asia/Bahrain',
+      'Asia/Kuwait',
+      'Asia/Qatar',
+      'Asia/Riyadh'
+    ]
+  },
+  {
+    value: 'E. Africa Standard Time',
+    abbr: 'EAST',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Nairobi',
+    utc: [
+      'Africa/Addis_Ababa',
+      'Africa/Asmera',
+      'Africa/Dar_es_Salaam',
+      'Africa/Djibouti',
+      'Africa/Juba',
+      'Africa/Kampala',
+      'Africa/Khartoum',
+      'Africa/Mogadishu',
+      'Africa/Nairobi',
+      'Antarctica/Syowa',
+      'Etc/GMT-3',
+      'Indian/Antananarivo',
+      'Indian/Comoro',
+      'Indian/Mayotte'
+    ]
+  },
+  {
+    value: 'Moscow Standard Time',
+    abbr: 'MSK',
+    offset: 3,
+    isdst: false,
+    text: '(UTC+03:00) Moscow, St. Petersburg, Volgograd, Minsk',
+    utc: [
+      'Europe/Kirov',
+      'Europe/Moscow',
+      'Europe/Simferopol',
+      'Europe/Volgograd',
+      'Europe/Minsk'
+    ]
+  },
+  {
+    value: 'Samara Time',
+    abbr: 'SAMT',
+    offset: 4,
+    isdst: false,
+    text: '(UTC+04:00) Samara, Ulyanovsk, Saratov',
+    utc: [
+      'Europe/Astrakhan',
+      'Europe/Samara',
+      'Europe/Ulyanovsk'
+    ]
+  },
+  {
+    value: 'Iran Standard Time',
+    abbr: 'IDT',
+    offset: 4.5,
+    isdst: true,
+    text: '(UTC+03:30) Tehran',
+    utc: [
+      'Asia/Tehran'
+    ]
+  },
+  {
+    value: 'Arabian Standard Time',
+    abbr: 'AST',
+    offset: 4,
+    isdst: false,
+    text: '(UTC+04:00) Abu Dhabi, Muscat',
+    utc: [
+      'Asia/Dubai',
+      'Asia/Muscat',
+      'Etc/GMT-4'
+    ]
+  },
+  {
+    value: 'Azerbaijan Standard Time',
+    abbr: 'ADT',
+    offset: 5,
+    isdst: true,
+    text: '(UTC+04:00) Baku',
+    utc: [
+      'Asia/Baku'
+    ]
+  },
+  {
+    value: 'Mauritius Standard Time',
+    abbr: 'MST',
+    offset: 4,
+    isdst: false,
+    text: '(UTC+04:00) Port Louis',
+    utc: [
+      'Indian/Mahe',
+      'Indian/Mauritius',
+      'Indian/Reunion'
+    ]
+  },
+  {
+    value: 'Georgian Standard Time',
+    abbr: 'GET',
+    offset: 4,
+    isdst: false,
+    text: '(UTC+04:00) Tbilisi',
+    utc: [
+      'Asia/Tbilisi'
+    ]
+  },
+  {
+    value: 'Caucasus Standard Time',
+    abbr: 'CST',
+    offset: 4,
+    isdst: false,
+    text: '(UTC+04:00) Yerevan',
+    utc: [
+      'Asia/Yerevan'
+    ]
+  },
+  {
+    value: 'Afghanistan Standard Time',
+    abbr: 'AST',
+    offset: 4.5,
+    isdst: false,
+    text: '(UTC+04:30) Kabul',
+    utc: [
+      'Asia/Kabul'
+    ]
+  },
+  {
+    value: 'West Asia Standard Time',
+    abbr: 'WAST',
+    offset: 5,
+    isdst: false,
+    text: '(UTC+05:00) Ashgabat, Tashkent',
+    utc: [
+      'Antarctica/Mawson',
+      'Asia/Aqtau',
+      'Asia/Aqtobe',
+      'Asia/Ashgabat',
+      'Asia/Dushanbe',
+      'Asia/Oral',
+      'Asia/Samarkand',
+      'Asia/Tashkent',
+      'Etc/GMT-5',
+      'Indian/Kerguelen',
+      'Indian/Maldives'
+    ]
+  },
+  {
+    value: 'Yekaterinburg Time',
+    abbr: 'YEKT',
+    offset: 5,
+    isdst: false,
+    text: '(UTC+05:00) Yekaterinburg',
+    utc: [
+      'Asia/Yekaterinburg'
+    ]
+  },
+  {
+    value: 'Pakistan Standard Time',
+    abbr: 'PKT',
+    offset: 5,
+    isdst: false,
+    text: '(UTC+05:00) Islamabad, Karachi',
+    utc: [
+      'Asia/Karachi'
+    ]
+  },
+  {
+    value: 'India Standard Time',
+    abbr: 'IST',
+    offset: 5.5,
+    isdst: false,
+    text: '(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi',
+    utc: [
+      'Asia/Kolkata',
+      'Asia/Calcutta'
+    ]
+  },
+  {
+    value: 'Sri Lanka Standard Time',
+    abbr: 'SLST',
+    offset: 5.5,
+    isdst: false,
+    text: '(UTC+05:30) Sri Jayawardenepura',
+    utc: [
+      'Asia/Colombo'
+    ]
+  },
+  {
+    value: 'Nepal Standard Time',
+    abbr: 'NST',
+    offset: 5.75,
+    isdst: false,
+    text: '(UTC+05:45) Kathmandu',
+    utc: [
+      'Asia/Kathmandu'
+    ]
+  },
+  {
+    value: 'Central Asia Standard Time',
+    abbr: 'CAST',
+    offset: 6,
+    isdst: false,
+    text: '(UTC+06:00) Nur-Sultan (Astana)',
+    utc: [
+      'Antarctica/Vostok',
+      'Asia/Almaty',
+      'Asia/Bishkek',
+      'Asia/Qyzylorda',
+      'Asia/Urumqi',
+      'Etc/GMT-6',
+      'Indian/Chagos'
+    ]
+  },
+  {
+    value: 'Bangladesh Standard Time',
+    abbr: 'BST',
+    offset: 6,
+    isdst: false,
+    text: '(UTC+06:00) Dhaka',
+    utc: [
+      'Asia/Dhaka',
+      'Asia/Thimphu'
+    ]
+  },
+  {
+    value: 'Myanmar Standard Time',
+    abbr: 'MST',
+    offset: 6.5,
+    isdst: false,
+    text: '(UTC+06:30) Yangon (Rangoon)',
+    utc: [
+      'Asia/Rangoon',
+      'Indian/Cocos'
+    ]
+  },
+  {
+    value: 'SE Asia Standard Time',
+    abbr: 'SAST',
+    offset: 7,
+    isdst: false,
+    text: '(UTC+07:00) Bangkok, Hanoi, Jakarta',
+    utc: [
+      'Antarctica/Davis',
+      'Asia/Bangkok',
+      'Asia/Hovd',
+      'Asia/Jakarta',
+      'Asia/Phnom_Penh',
+      'Asia/Pontianak',
+      'Asia/Saigon',
+      'Asia/Vientiane',
+      'Etc/GMT-7',
+      'Indian/Christmas'
+    ]
+  },
+  {
+    value: 'N. Central Asia Standard Time',
+    abbr: 'NCAST',
+    offset: 7,
+    isdst: false,
+    text: '(UTC+07:00) Novosibirsk',
+    utc: [
+      'Asia/Novokuznetsk',
+      'Asia/Novosibirsk',
+      'Asia/Omsk'
+    ]
+  },
+  {
+    value: 'China Standard Time',
+    abbr: 'CST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi',
+    utc: [
+      'Asia/Hong_Kong',
+      'Asia/Macau',
+      'Asia/Shanghai'
+    ]
+  },
+  {
+    value: 'North Asia Standard Time',
+    abbr: 'NAST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Krasnoyarsk',
+    utc: [
+      'Asia/Krasnoyarsk'
+    ]
+  },
+  {
+    value: 'Singapore Standard Time',
+    abbr: 'MPST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Kuala Lumpur, Singapore',
+    utc: [
+      'Asia/Brunei',
+      'Asia/Kuala_Lumpur',
+      'Asia/Kuching',
+      'Asia/Makassar',
+      'Asia/Manila',
+      'Asia/Singapore',
+      'Etc/GMT-8'
+    ]
+  },
+  {
+    value: 'W. Australia Standard Time',
+    abbr: 'WAST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Perth',
+    utc: [
+      'Antarctica/Casey',
+      'Australia/Perth'
+    ]
+  },
+  {
+    value: 'Taipei Standard Time',
+    abbr: 'TST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Taipei',
+    utc: [
+      'Asia/Taipei'
+    ]
+  },
+  {
+    value: 'Ulaanbaatar Standard Time',
+    abbr: 'UST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Ulaanbaatar',
+    utc: [
+      'Asia/Choibalsan',
+      'Asia/Ulaanbaatar'
+    ]
+  },
+  {
+    value: 'North Asia East Standard Time',
+    abbr: 'NAEST',
+    offset: 8,
+    isdst: false,
+    text: '(UTC+08:00) Irkutsk',
+    utc: [
+      'Asia/Irkutsk'
+    ]
+  },
+  {
+    value: 'Japan Standard Time',
+    abbr: 'JST',
+    offset: 9,
+    isdst: false,
+    text: '(UTC+09:00) Osaka, Sapporo, Tokyo',
+    utc: [
+      'Asia/Dili',
+      'Asia/Jayapura',
+      'Asia/Tokyo',
+      'Etc/GMT-9',
+      'Pacific/Palau'
+    ]
+  },
+  {
+    value: 'Korea Standard Time',
+    abbr: 'KST',
+    offset: 9,
+    isdst: false,
+    text: '(UTC+09:00) Seoul',
+    utc: [
+      'Asia/Pyongyang',
+      'Asia/Seoul'
+    ]
+  },
+  {
+    value: 'Cen. Australia Standard Time',
+    abbr: 'CAST',
+    offset: 9.5,
+    isdst: false,
+    text: '(UTC+09:30) Adelaide',
+    utc: [
+      'Australia/Adelaide',
+      'Australia/Broken_Hill'
+    ]
+  },
+  {
+    value: 'AUS Central Standard Time',
+    abbr: 'ACST',
+    offset: 9.5,
+    isdst: false,
+    text: '(UTC+09:30) Darwin',
+    utc: [
+      'Australia/Darwin'
+    ]
+  },
+  {
+    value: 'E. Australia Standard Time',
+    abbr: 'EAST',
+    offset: 10,
+    isdst: false,
+    text: '(UTC+10:00) Brisbane',
+    utc: [
+      'Australia/Brisbane',
+      'Australia/Lindeman'
+    ]
+  },
+  {
+    value: 'AUS Eastern Standard Time',
+    abbr: 'AEST',
+    offset: 10,
+    isdst: false,
+    text: '(UTC+10:00) Canberra, Melbourne, Sydney',
+    utc: [
+      'Australia/Melbourne',
+      'Australia/Sydney'
+    ]
+  },
+  {
+    value: 'West Pacific Standard Time',
+    abbr: 'WPST',
+    offset: 10,
+    isdst: false,
+    text: '(UTC+10:00) Guam, Port Moresby',
+    utc: [
+      'Antarctica/DumontDUrville',
+      'Etc/GMT-10',
+      'Pacific/Guam',
+      'Pacific/Port_Moresby',
+      'Pacific/Saipan',
+      'Pacific/Truk'
+    ]
+  },
+  {
+    value: 'Tasmania Standard Time',
+    abbr: 'TST',
+    offset: 10,
+    isdst: false,
+    text: '(UTC+10:00) Hobart',
+    utc: [
+      'Australia/Currie',
+      'Australia/Hobart'
+    ]
+  },
+  {
+    value: 'Yakutsk Standard Time',
+    abbr: 'YST',
+    offset: 9,
+    isdst: false,
+    text: '(UTC+09:00) Yakutsk',
+    utc: [
+      'Asia/Chita',
+      'Asia/Khandyga',
+      'Asia/Yakutsk'
+    ]
+  },
+  {
+    value: 'Central Pacific Standard Time',
+    abbr: 'CPST',
+    offset: 11,
+    isdst: false,
+    text: '(UTC+11:00) Solomon Is., New Caledonia',
+    utc: [
+      'Antarctica/Macquarie',
+      'Etc/GMT-11',
+      'Pacific/Efate',
+      'Pacific/Guadalcanal',
+      'Pacific/Kosrae',
+      'Pacific/Noumea',
+      'Pacific/Ponape'
+    ]
+  },
+  {
+    value: 'Vladivostok Standard Time',
+    abbr: 'VST',
+    offset: 11,
+    isdst: false,
+    text: '(UTC+11:00) Vladivostok',
+    utc: [
+      'Asia/Sakhalin',
+      'Asia/Ust-Nera',
+      'Asia/Vladivostok'
+    ]
+  },
+  {
+    value: 'New Zealand Standard Time',
+    abbr: 'NZST',
+    offset: 12,
+    isdst: false,
+    text: '(UTC+12:00) Auckland, Wellington',
+    utc: [
+      'Antarctica/McMurdo',
+      'Pacific/Auckland'
+    ]
+  },
+  {
+    value: 'UTC+12',
+    abbr: 'U',
+    offset: 12,
+    isdst: false,
+    text: '(UTC+12:00) Coordinated Universal Time+12',
+    utc: [
+      'Etc/GMT-12',
+      'Pacific/Funafuti',
+      'Pacific/Kwajalein',
+      'Pacific/Majuro',
+      'Pacific/Nauru',
+      'Pacific/Tarawa',
+      'Pacific/Wake',
+      'Pacific/Wallis'
+    ]
+  },
+  {
+    value: 'Fiji Standard Time',
+    abbr: 'FST',
+    offset: 12,
+    isdst: false,
+    text: '(UTC+12:00) Fiji',
+    utc: [
+      'Pacific/Fiji'
+    ]
+  },
+  {
+    value: 'Magadan Standard Time',
+    abbr: 'MST',
+    offset: 12,
+    isdst: false,
+    text: '(UTC+12:00) Magadan',
+    utc: [
+      'Asia/Anadyr',
+      'Asia/Kamchatka',
+      'Asia/Magadan',
+      'Asia/Srednekolymsk'
+    ]
+  },
+  {
+    value: 'Kamchatka Standard Time',
+    abbr: 'KDT',
+    offset: 13,
+    isdst: true,
+    text: '(UTC+12:00) Petropavlovsk-Kamchatsky - Old',
+    utc: [
+      'Asia/Kamchatka'
+    ]
+  },
+  {
+    value: 'Tonga Standard Time',
+    abbr: 'TST',
+    offset: 13,
+    isdst: false,
+    text: "(UTC+13:00) Nuku'alofa",
+    utc: [
+      'Etc/GMT-13',
+      'Pacific/Enderbury',
+      'Pacific/Fakaofo',
+      'Pacific/Tongatapu'
+    ]
+  },
+  {
+    value: 'Samoa Standard Time',
+    abbr: 'SST',
+    offset: 13,
+    isdst: false,
+    text: '(UTC+13:00) Samoa',
+    utc: [
+      'Pacific/Apia'
+    ]
   }
-];
+]

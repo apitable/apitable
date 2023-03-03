@@ -54,12 +54,18 @@
 }
 
 .timeInput {
-  width: 33%;
+  width: 42px !important;
+  input {
+    padding-right: 0 !important;
+  }
+}
+
+.abbr {
+  color: var(--fc4);
 }
 
 .dateEditor {
   position: relative;
-  box-sizing: border-box;
   box-sizing: border-box;
   border-radius: 1px;
   display: flex;
@@ -102,11 +108,12 @@
   .dateContent {
     display: flex;
     flex: auto;
+    align-items: center;
   }
   .limitDateWidth {
     :global {
       .cp-calendar-picker {
-        max-width: 88px;
+        max-width: 90px;
       }
     }
   }
