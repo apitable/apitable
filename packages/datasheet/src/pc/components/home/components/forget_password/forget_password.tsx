@@ -1,7 +1,7 @@
 
-import { Typography, useThemeColors, Button, TextInput, TextButton } from '@apitable/components';
+import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
 import { Strings, t, ConfigConstant } from '@apitable/core';
-import { EmailOutlined, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
+import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { Form } from 'antd';
 import { WithTipWrapper } from 'pc/components/common';
 import { IdentifyingCodeInput } from 'pc/components/common/input';
@@ -20,6 +20,8 @@ interface IForgetPasswordErrorMsg {
 
 interface ISignUpProps {
   switchClick?: (actionType: ActionType) => void;
+  email: string;
+  setEmail: (email: string) => void;
 }
 
 const defaultData = {
@@ -29,9 +31,9 @@ const defaultData = {
 };
 
 export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
-  const { switchClick = () => {} } = props;
+  const { switchClick = () => {}, email, setEmail } = props;
   const colors = useThemeColors();
-  const [account, setAccount] = useState<string>('');
+  const [account, setAccount] = useState<string>(email);
   const [password, setPassword] = useState<string>('');
   const [isVisible, { toggle }] = useBoolean(false);
   const [identifyingCode, setIdentifyingCode] = useState<string>('');
@@ -39,6 +41,7 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
 
   const [errMsg, setErrMsg] = useSetState<IForgetPasswordErrorMsg>(defaultData);
+  console.log('email', email);
   const handleSubmit = async() => {
     if(!preCheckOnSubmit({ password, identifyingCode })) {
       return;
@@ -61,6 +64,14 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
     } else {
       Message.error({ content: message });
     }
+  };
+
+  const handleAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (errMsg.accountErrMsg) {
+      setErrMsg({ accountErrMsg: '' });
+    }
+    setAccount(e.target.value.replace(/\s/g, ''));
+    setEmail(e.target.value.replace(/\s/g, ''));
   };
   
   const handleIdentifyingCodeChange = (
@@ -117,8 +128,8 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
             <TextInput
               className={styles.input}
               value={account}
-              onChange={e => setAccount(e.target.value.replace(/\s/g, ''))}
-              prefix={<EmailOutlined color={colors.textCommonPrimary} />}
+              onChange={handleAccountChange}
+              prefix={<EmailFilled color={colors.textCommonPrimary} />}
               placeholder={t(Strings.email_placeholder)}
               error={Boolean(errMsg.accountErrMsg)}
               block
@@ -165,7 +176,9 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
       </Button>
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_forget_password_text)}</p>
-        <TextButton color="primary" onClick={() => switchClick(ActionType.SignIn)}>{t(Strings.apitable_sign_in)}</TextButton>
+        <LinkButton underline={false} component='button' 
+          onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_in)}
+        </LinkButton>
       </div>
     </div>
   );
