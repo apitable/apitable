@@ -1,5 +1,7 @@
 import { Button, Typography } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
+// @ts-ignore
+import { addWizardNumberAndApiRun } from 'enterprise';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import React from 'react';
 import styles from './style.module.less';
@@ -29,7 +31,10 @@ export const MirrorFeatureWarn: React.FC<{ onModalClose: () => void }> = ({ onMo
         <Typography variant={'body2'}>
           {t(Strings.create_mirror_guide_content)}
         </Typography>
-        <Button variant='fill' color='primary' onClick={() => onModalClose()}>
+        <Button variant='fill' color='primary' onClick={() => {
+          addWizardNumberAndApiRun?.(ConfigConstant.WizardIdConstant.CREATE_MIRROR_TIP);
+          onModalClose();
+        }}>
           {t(Strings.i_knew_it)}
         </Button>
       </div>
