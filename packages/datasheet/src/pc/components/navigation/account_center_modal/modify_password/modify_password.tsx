@@ -46,7 +46,6 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
   const [data, setData] = useSetState<{
     identifyingCode: string;
     password: string;
-    confirmPassword: string;
   }>(defaultData);
 
   const [errMsg, setErrMsg] = useSetState<{
@@ -65,19 +64,13 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
   const { run: modifyPassword, loading } = useRequest(modifyPasswordReq, { manual: true });
   const env = getEnvVariables();
   
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, property: 'password' | 'confirmPassword') => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
     if (errMsg.passwordErrMsg) {
       setErrMsg({ passwordErrMsg: '' });
     }
-    if (
-      (data.password && property === 'confirmPassword' && data.password !== value)
-      || (data.confirmPassword && property === 'password' && data.confirmPassword != value)
-    ) {
-      setErrMsg({ passwordErrMsg: t(Strings.password_not_identical_err) });
-    }
 
-    setData({ [property]: value });
+    setData({ password: value });
   };
 
   const handleSubmit = async() => {
@@ -172,7 +165,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
     );
   }, [user, setErrMsg, errMsg.identifyingCodeErrMsg, errMsg.accountErrMsg, handleIdentifyingCodeChange, data]);
 
-  const btnDisabled = !(data.identifyingCode && data.password && data.confirmPassword &&
+  const btnDisabled = !(data.identifyingCode && data.password &&
     !errMsg.accountErrMsg && !errMsg.identifyingCodeErrMsg && !errMsg.passwordErrMsg);
 
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -214,25 +207,8 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
                 <WithTipWrapper tip={errMsg.passwordErrMsg}>
                   <PasswordInput
                     value={data.password}
-                    onChange={e => { handlePasswordChange(e, 'password'); }}
+                    onChange={handlePasswordChange}
                     placeholder={t(Strings.password_rules)}
-                    autoComplete='new-password'
-                    error={Boolean(errMsg.passwordErrMsg)}
-                    block
-                  />
-                </WithTipWrapper>
-              </div>
-            </div>
-            <div className={styles.item}>
-              <div className={styles.label}>
-                {t(Strings.input_confirmation_password)}:
-              </div>
-              <div className={styles.content}>
-                <WithTipWrapper tip={errMsg.passwordErrMsg}>
-                  <PasswordInput
-                    value={data.confirmPassword}
-                    onChange={e => { handlePasswordChange(e, 'confirmPassword'); }}
-                    placeholder={t(Strings.placeholder_input_new_password_again)}
                     autoComplete='new-password'
                     error={Boolean(errMsg.passwordErrMsg)}
                     block
