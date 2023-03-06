@@ -542,14 +542,18 @@ export class CellHelper extends KonvaDrawer {
   private renderCellDateTime(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, field, columnWidth, style, callback } = renderProps;
     const cellString = Field.bindModel(field).cellValueToString(cellValue);
-    const [date, time, timeRule] = cellString ? cellString.split(' ') : [];
+    const [date, time, timeRule, abbr] = cellString ? cellString.split(' ') : [];
     let cellText = date;
 
     if (time != null) {
       cellText = `${date} ${time}`;
     }
     if (timeRule != null) {
-      cellText = `${date} ${time} ${timeRule}`;
+      if (abbr != null) {
+        cellText = `${date} ${time} ${timeRule} ${abbr}`;
+      } else {
+        cellText = `${date} ${time} ${timeRule}`;
+      }
     }
 
     if (cellText == null) return DEFAULT_RENDER_DATA;

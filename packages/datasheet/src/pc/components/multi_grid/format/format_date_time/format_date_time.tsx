@@ -264,6 +264,19 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               onChange={value => handleTimeFormatChange({ value })}
               style={selectTriggerStyle}
             />
+            <MobileSelect
+              defaultValue={timeZone}
+              onChange={value => handleTimeZoneChange({ value })}
+              optionData={[{
+                label: t(Strings.follow_system_time_zone),
+                value: '',
+              }, ...getUtcOptionList()]}
+            />
+            <div className={styles.showTimeZone}>
+              <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
+                {t(Strings.field_display_time_zone)}
+              </Checkbox>
+            </div>
           </ComponentDisplay>
         </section>
       )}
