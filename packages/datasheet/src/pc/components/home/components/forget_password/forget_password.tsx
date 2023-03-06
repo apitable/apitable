@@ -41,7 +41,6 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
 
   const [errMsg, setErrMsg] = useSetState<IForgetPasswordErrorMsg>(defaultData);
-  console.log('email', email);
   const handleSubmit = async() => {
     if(!preCheckOnSubmit({ password, identifyingCode })) {
       return;
