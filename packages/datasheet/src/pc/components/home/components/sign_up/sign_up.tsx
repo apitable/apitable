@@ -1,6 +1,6 @@
-import { Typography, useThemeColors, Button, TextInput, TextButton } from '@apitable/components';
+import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
 import { Strings, t, isEmail, IReduxState } from '@apitable/core';
-import { EmailOutlined, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
+import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean } from 'ahooks';
 import { Form } from 'antd';
 import { WithTipWrapper, Message } from 'pc/components/common';
@@ -17,16 +17,18 @@ interface ILoginErrorMsg {
 
 interface ISignUpProps {
   switchClick?: (actionType: ActionType) => void;
+  email: string;
+  setEmail: (email: string) => void;
 }
 
 export const SignUp: React.FC<ISignUpProps> = (props) => {
-  const { switchClick = () => {} } = props;
+  const { switchClick = () => {}, email, setEmail } = props;
   const colors = useThemeColors();
   const { registerReq } = useUserRequest();
   const { run: signUpReq, loading } = useRequest(registerReq, { manual: true });
 
   const [errorMsg, setErrorMsg] = useState<ILoginErrorMsg>({});
-  const [username, setUsername] = useState<string>();
+  const [username, setUsername] = useState<string>(email);
   const [password, setPassword] = useState<string>();
   const [confirmPassword, setConfirmPassword] = useState<string>();
 
@@ -98,6 +100,11 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
     return verifyUsername && verifyPassword;
   };
 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
+    setUsername(e.target.value.replace(/\s/g, ''));
+    setEmail(e.target.value.replace(/\s/g, ''));
+  };
+
   const signUp = async() => {
  
     const result = await signUpReq(username!, password!);
@@ -123,8 +130,8 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
             <TextInput
               className={styles.input}
               value={username}
-              onChange={e => setUsername(e.target.value.replace(/\s/g, ''))}
-              prefix={<EmailOutlined color={colors.textCommonPrimary} />}
+              onChange={handleUsernameChange}
+              prefix={<EmailFilled color={colors.textCommonPrimary} />}
               placeholder="Please enter your email address"
               error={Boolean(errorMsg.username)}
               block
@@ -184,7 +191,9 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
       </Button>
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_sign_up_text)}</p>
-        <TextButton color="primary" onClick={() => switchClick(ActionType.SignIn)}>{t(Strings.apitable_sign_in)}</TextButton>
+        <LinkButton underline={false} component='button' 
+          onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_in)}
+        </LinkButton>
       </div>
       
     </div>
