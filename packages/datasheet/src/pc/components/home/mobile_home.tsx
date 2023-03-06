@@ -18,7 +18,7 @@
 
 import { useState } from 'react';
 import { Space } from '@apitable/components';
-import { integrateCdnHost, IReduxState } from '@apitable/core';
+import { integrateCdnHost, IReduxState, t, Strings } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
 import { Login } from './components/login';
