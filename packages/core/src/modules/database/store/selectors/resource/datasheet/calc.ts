@@ -185,28 +185,26 @@ export const getCurrentViewBase = (
   }
   return view;
 };
-export const getCurrentView = createCachedSelector<
-  IReduxState,
+export const getCurrentView = createCachedSelector<IReduxState,
   string | undefined | void,
   ISnapshot | undefined,
   string | undefined,
   string | undefined,
   IFieldPermissionMap | undefined,
   IMirror | undefined | null,
-  IViewProperty | undefined
->(
-  [
-    getSnapshot,
-    getActiveViewId,
-    (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
-    getFieldPermissionMap,
-    (state: IReduxState) => getMirror(state),
-  ],
-  getCurrentViewBase,
-)({
+  IViewProperty | undefined>(
+    [
+      getSnapshot,
+      getActiveViewId,
+      (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
+      getFieldPermissionMap,
+      (state: IReduxState) => getMirror(state),
+    ],
+    getCurrentViewBase,
+  )({
   // keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
-  keySelector: defaultKeySelector,
-});
+    keySelector: defaultKeySelector,
+  });
 
 export const getViewByIdWithDefault = (state: IReduxState, datasheetId: string, viewId?: string) => {
   const snapshot = getSnapshot(state, datasheetId);
@@ -326,26 +324,22 @@ export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, f
   return _fieldMap;
 };
 
-export const getFieldMap = createCachedSelector<
-  IReduxState,
+export const getFieldMap = createCachedSelector<IReduxState,
   string | undefined | void,
   undefined | IDatasheetState | null,
   IFieldPermissionMap | undefined,
-  IFieldMap | null | undefined
->(
-  [getDatasheet, getFieldPermissionMap],
-  getFieldMapBase,
-)(defaultKeySelector);
+  IFieldMap | null | undefined>(
+    [getDatasheet, getFieldPermissionMap],
+    getFieldMapBase,
+  )(defaultKeySelector);
 
-export const getFieldMapIgnorePermission = createCachedSelector<
-  IReduxState,
+export const getFieldMapIgnorePermission = createCachedSelector<IReduxState,
   string | undefined | void,
   IDatasheetState | undefined | null,
-  IFieldMap | null | undefined
->(
-  [getDatasheet],
-  getFieldMapBase,
-)(defaultKeySelector);
+  IFieldMap | null | undefined>(
+    [getDatasheet],
+    getFieldMapBase,
+  )(defaultKeySelector);
 
 export const getColumnIndexMap = createSelector<IReduxState, string | undefined, IViewProperty | undefined, { [id: string]: number }>(
   [getCurrentView],
@@ -361,24 +355,22 @@ export const getColumnIndexMap = createSelector<IReduxState, string | undefined,
   },
 );
 
-export const getVisibleColumns = createCachedSelector<
-  IReduxState,
+export const getVisibleColumns = createCachedSelector<IReduxState,
   string | undefined | void,
   IViewProperty | undefined,
   IFieldPermissionMap | undefined,
-  IViewColumn[]
->([getCurrentView, getFieldPermissionMap], (view?: IViewProperty, fieldPermissionMap?) => {
+  IViewColumn[]>([getCurrentView, getFieldPermissionMap], (view?: IViewProperty, fieldPermissionMap?) => {
   // ignore the first column as hidden
-  return view
-    ? view.columns.filter((item, i) => {
-      const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
-      if (fieldRole === Role.None) {
-        return false;
-      }
-      return !(item.hidden && i !== 0);
-    })
-    : [];
-})(defaultKeySelector);
+    return view
+      ? view.columns.filter((item, i) => {
+        const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
+        if (fieldRole === Role.None) {
+          return false;
+        }
+        return !(item.hidden && i !== 0);
+      })
+      : [];
+  })(defaultKeySelector);
 
 export const getVisibleColumnsMap = createSelector([getVisibleColumns], columns => {
   return new Map(columns.map((item, index) => [item.fieldId, index]));
@@ -519,8 +511,7 @@ const getIntegratePermissionWithFieldBase = (
   };
 };
 
-const getIntegratePermissionWithField = createCachedSelector<
-  IReduxState,
+const getIntegratePermissionWithField = createCachedSelector<IReduxState,
   {
     permission: IPermissions;
     datasheetId?: string;
@@ -529,13 +520,12 @@ const getIntegratePermissionWithField = createCachedSelector<
     fieldPermissionMap?: IFieldPermissionMap;
   },
   IPermissions,
-  IPermissions
->(getIntegratePermissionWithFieldBase, permission => {
-  return permission;
-})({
-  keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
-  selectorCreator: createDeepEqualSelector,
-});
+  IPermissions>(getIntegratePermissionWithFieldBase, permission => {
+    return permission;
+  })({
+    keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
+    selectorCreator: createDeepEqualSelector,
+  });
 
 export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId?: string, sourceMirrorId?: string): IPermissions => {
   const datasheet = getDatasheet(state, datasheetId);

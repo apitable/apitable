@@ -209,6 +209,7 @@ export enum UIType {
     Slideout = 'slideout',
     TaskList = 'taskList',
     BillingStrip = 'billingStrip',
+    CustomTemplate = 'customTemplate',
 }
 
 export interface Wizard {
@@ -562,6 +563,7 @@ export interface Events {
     datasheet_field_setting_shown: AddressShown;
     datasheet_gantt_view_shown: AddressShown;
     datasheet_grid_view_shown: DatasheetFieldSettingHidden;
+    datasheet_create_mirror_tip: DatasheetFieldSettingHidden;
     datasheet_org_has_link_field: AddressShown;
     datasheet_org_view_add_first_node: AddressShown;
     datasheet_org_view_drag_to_unhandled_list: AddressShown;
