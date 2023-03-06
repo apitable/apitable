@@ -81,7 +81,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
           title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
           <span className={styles.alarm} onClick={toggleEdit}>
-            <NotificationOutlined color={colors.deepPurple[500]} size={14} />
+            <NotificationOutlined color={colors.deepPurple[500]} size={16} />
             <span className={styles.alarmTime}>
               {alarmRealTime}
             </span>
@@ -108,7 +108,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
               },
             });
           }}>
-            <NotificationOutlined color={colors.fc3} size={14} />
+            <NotificationOutlined color={colors.fc3} size={16} />
           </span>
         </Tooltip>
       )}

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors, Button, TextInput, Box, TextButton } from '@apitable/components';
+import { Typography, useThemeColors, Button, TextInput, Box, LinkButton } from '@apitable/components';
 import { Strings, t, isEmail, ConfigConstant, StatusCode, api, IReduxState } from '@apitable/core';
-import { EmailOutlined, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
+import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean, useMount } from 'ahooks';
 import { Form } from 'antd';
 import { WithTipWrapper } from 'pc/components/common';
@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
+
 interface ILoginErrorMsg {
   username?: string;
   password?: string;
@@ -36,17 +37,19 @@ interface ILoginErrorMsg {
 
 interface ILoginProps {
   switchClick?: (actionType: ActionType) => void;
+  email: string;
+  setEmail: (email: string) => void;
 }
 
 export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => {
-  const { switchClick = () => {} } = props;
+  const { switchClick = () => {}, email = '', setEmail } = props;
   const colors = useThemeColors();
   const { loginOrRegisterReq } = useUserRequest();
   const { run: loginReq, loading } = useRequest(loginOrRegisterReq, { manual: true });
   const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
-
+  
   const [errorMsg, setErrorMsg] = useState<ILoginErrorMsg>({});
-  const [username, setUsername] = useState<string>();
+  const [username, setUsername] = useState<string>(email);
   const [password, setPassword] = useState<string>();
   
   const [isVisible, { toggle }] = useBoolean(false);
@@ -57,6 +60,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
       setUsername(inviteEmailInfo.data.inviteEmail);
       setEmailDisable(true);
     }
+   
   }, [inviteEmailInfo]);
 
   useMount(() => {
@@ -79,6 +83,11 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
       return;
     }
     execNoTraceVerification(signIn);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
+    setUsername(e.target.value.replace(/\s/g, ''));
+    setEmail(e.target.value.replace(/\s/g, ''));
   };
 
   const preCheckOnSubmit = (data: { username?: string; password?: string; }) => {
@@ -158,9 +167,9 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
             <TextInput
               className={styles.input}
               value={username}
-              onChange={e => setUsername(e.target.value.replace(/\s/g, ''))}
+              onChange={handleEmailChange}
               onKeyPress={handleKeyPress}
-              prefix={<EmailOutlined color={colors.textCommonPrimary}/>}
+              prefix={<EmailFilled color={colors.textCommonPrimary}/>}
               placeholder={t(Strings.email_placeholder)}
               error={Boolean(errorMsg.username)}
               block
@@ -209,7 +218,9 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
       </Button>
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_no_account)}</p>
-        <TextButton color="primary" onClick={() => switchClick(ActionType.SignUp)}>{t(Strings.apitable_sign_up)}</TextButton>
+        <LinkButton underline={false} component='button' 
+          onClick={() => switchClick(ActionType.SignUp)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_up)}
+        </LinkButton>
       </div>
       
     </div>

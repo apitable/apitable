@@ -55,8 +55,6 @@
       padding: 9px 69px 60px 52px;
       box-sizing: content-box;
       .title {
-        font-family: 'PingFang SC';
-        font-style: normal;
         font-weight: bold;
         font-size: 24px;
         line-height: 36px;
@@ -103,6 +101,23 @@
   }
 }
 
+.invite {
+  text-align: center;
+  h4 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    margin: 0 0 16px;
+  }
+  p {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    color: var(--textBrandDefault);
+    margin: 0 0 48px;
+  }
+}
+
 .mobileHome {
   height: 100%;
   display: flex;
@@ -115,8 +130,16 @@
     }
   }
   .content {
-    padding: 50px 0;
+    padding: 20px 0;
     flex: 1;
+  }
+  .title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 36px;
+    text-align: left;
+    color: var(--textCommonSecondary);
+    margin: 24px 0;
   }
   .footer {
     display: flex;
@@ -125,23 +148,3 @@
   }
 }
 
-.invite {
-  text-align: center;
-  h4 {
-    font-family: 'PingFang SC';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 30px;
-    margin: 0 0 16px;
-  }
-  p {
-    font-family: 'PingFang SC';
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 30px;
-    color: var(--textBrandDefault);
-    margin: 0 0 48px;
-  }
-}

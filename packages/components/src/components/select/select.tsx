@@ -32,6 +32,7 @@ import { IOption, ISelectProps } from './interface';
 import {
   GlobalStyle, hightLightCls, OptionOutside, StyledArrowIcon, StyledListContainer, StyledSelectedContainer, StyledSelectTrigger
 } from './styled';
+import debounce from 'lodash/debounce';
 
 const _renderValue = (option: IOption) => {
   return option.label;
@@ -62,8 +63,10 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
+  const setKeywordDebounce = debounce(setKeyword, 300);
+
   const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
-    setKeyword(keyword);
+    setKeywordDebounce(keyword);
   };
 
   useEffect(() => {
@@ -96,7 +99,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
     return <OptionOutside
       currentIndex={index}
       id={item.value as string}
-      key={item.value as string}
+      key={`${item.value as string}-${index}`}
       {...item}
     >
       <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>

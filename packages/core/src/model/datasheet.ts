@@ -295,7 +295,7 @@ export class DatasheetActions {
    */
   static modifyView2Action(
     snapshot: ISnapshot,
-    payload: { viewId: string; key: 'name' | 'description' | 'columns'; value: string | IViewColumn[] },
+    payload: { viewId: string; key: 'name' | 'description' | 'columns' | 'displayHiddenColumnWithinMirror'; value: string | IViewColumn[] | boolean },
   ): IJOTAction[] | null {
     const views = snapshot.meta.views;
     const { viewId, key, value } = payload;
@@ -1806,7 +1806,7 @@ export class DatasheetActions {
       if (localView[key] === serverView[key]) {
         continue;
       }
-      if (localView[key] && serverView[key]) {
+      if (localView.hasOwnProperty(key) && serverView.hasOwnProperty(key)) {
         action.push({
           n: OTActionName.ObjectReplace,
           p: ['meta', 'views', viewIndex, key],
@@ -1814,14 +1814,14 @@ export class DatasheetActions {
           od: serverView[key],
         });
       }
-      if (localView[key] && !serverView[key]) {
+      if (localView.hasOwnProperty(key) && !serverView.hasOwnProperty(key)) {
         action.push({
           n: OTActionName.ObjectInsert,
           p: ['meta', 'views', viewIndex, key],
           oi: localView[key],
         });
       }
-      if (!localView[key] && serverView[key]) {
+      if (!localView.hasOwnProperty(key) && serverView.hasOwnProperty(key)) {
         action.push({
           n: OTActionName.ObjectDelete,
           p: ['meta', 'views', viewIndex, key],

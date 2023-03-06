@@ -18,41 +18,6 @@
 
 package com.apitable.shared.component.notification;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.interfaces.notification.facade.MailFacade;
-import com.apitable.shared.config.properties.EmailSendProperties;
-import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
-import com.apitable.starter.mail.autoconfigure.EmailMessage;
-import com.apitable.starter.mail.autoconfigure.MailTemplate;
-import com.apitable.starter.mail.core.CloudEmailMessage;
-import com.apitable.starter.mail.core.CloudMailSender;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD_LIMITED;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD_SOON_LIMITED;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_CAPACITY_FULL;
@@ -91,6 +56,38 @@ import static com.apitable.shared.constants.MailPropConstants.SUBJECT_WIDGET_UNP
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_NOTIFY;
 import static java.util.stream.Collectors.toList;
 
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.interfaces.notification.facade.MailFacade;
+import com.apitable.shared.config.properties.EmailSendProperties;
+import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
+import com.apitable.starter.mail.autoconfigure.EmailMessage;
+import com.apitable.starter.mail.autoconfigure.MailTemplate;
+import com.apitable.starter.mail.core.CloudEmailMessage;
+import com.apitable.starter.mail.core.CloudMailSender;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * Notification Mail Factory.
  *
@@ -100,445 +97,459 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class NotifyMailFactory {
 
-  /** */
-  @Resource
-  private BeetlTemplate beetlTemplate;
+    /** */
+    @Resource
+    private BeetlTemplate beetlTemplate;
 
-  /** */
-  @Resource
-  private EmailSendProperties emailSendProperties;
+    /** */
+    @Resource
+    private EmailSendProperties emailSendProperties;
 
-  /** */
-  @Resource
-  private MailFacade mailFacade;
+    /** */
+    @Resource
+    private MailFacade mailFacade;
 
-  /** */
-  @Autowired(required = false)
-  private CloudMailSender cloudMailSender;
+    /** */
+    @Autowired(required = false)
+    private CloudMailSender cloudMailSender;
 
-  /** */
-  @Autowired(required = false)
-  private MailTemplate mailTemplate;
-
-  /**
-   * @return NotifyMailFactory
-   */
-  public static NotifyMailFactory me() {
-    return SpringContextHolder.getBean(NotifyMailFactory.class);
-  }
-
-  /**
-   * @param subjectType subjectType
-   * @param subjectDict subjectDict
-   * @param dict dict
-   * @param tos tos
-   */
-  public void sendMail(
-      final String subjectType,
-      final Dict subjectDict,
-      final Dict dict,
-      final List<MailWithLang> tos) {
-    if (ObjectUtil.isNotNull(tos)) {
-      Map<String, List<MailWithLang>> tosGroupByLang =
-          tos.stream()
-              .peek(
-                  to -> {
-                    if (ObjectUtil.isNull(to.getLocale())) {
-                      to.setLocale(StrUtil.EMPTY);
-                    }
-                  })
-              .collect(Collectors.groupingBy(MailWithLang::getLocale));
-      tosGroupByLang.forEach(
-          (lang, mailWithLanguages) -> {
-            final List<String> emails =
-                mailWithLanguages.stream()
-                    .map(MailWithLang::getTo).collect(Collectors.toList());
-            sendMail(lang, subjectType, subjectDict, dict, emails);
-          });
-    }
-  }
-
-  /**
-   * @param lang lang
-   * @param subjectType subjectType
-   * @param dict dict
-   * @param to to
-   */
-  public void sendMail(
-      final String lang,
-      final String subjectType,
-      final Dict dict,
-      final List<String> to
-  ) {
-    this.sendMail(lang, subjectType, null, dict, to);
-  }
-
-  /**
-   * @param language language
-   * @param subjectType subjectType
-   * @param subjectDict subjectDict
-   * @param dict dict
-   * @param to to
-   */
-  public void sendMail(
-      final String language,
-      final String subjectType,
-      final Dict subjectDict,
-      final Dict dict,
-      final List<String> to) {
-    String lang =
-        StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
-    // load subject.properties
-    Properties properties = loadSubjectProperties(lang);
-    String subject =
-        StrUtil.format(properties.getProperty(subjectType), subjectDict);
-
-    if (StrUtil.isBlank(subject)) {
-      log.warn("Lost mail subject.");
-      return;
-    }
-    if (cloudMailSender != null) {
-      cloudMailSend(subject, lang, subjectType, dict, to);
-      return;
-    }
-    if (mailTemplate == null) {
-      throw new BusinessException("The SMTP server is not configured, so emails cannot be sent.");
-    }
-
-    MailText mailText = new MailText(subjectType, subjectDict).getTemplate();
-    String htmlTemplateName = mailText.getHtmlTemplateName();
-    String textTemplateName = mailText.getTextTemplateName();
-    if (StrUtil.hasBlank(htmlTemplateName, textTemplateName)) {
-      log.warn("Lost parameters，please check param(htmlBtl, textBtl).");
-      return;
-    }
-    String htmlTemplatePath = mailFacade.loadTemplateResourcePath(lang,
-        htmlTemplateName);
-    String textTemplatePath = mailFacade.loadTemplateResourcePath(lang,
-        textTemplateName);
-    primevalMailSend(
-        subject,
-        beetlTemplate.render(htmlTemplatePath, dict),
-        beetlTemplate.render(textTemplatePath, dict),
-        to);
-  }
-
-  private Properties loadSubjectProperties(final String locale) {
-    try {
-        return mailFacade.getSubjectProperties(locale);
-    } catch (IOException e) {
-        log.error("load subject error", e);
-        throw new BusinessException("Fail to Send Email");
-    }
-  }
-
-  /**
-   * @param subject subject
-   * @param textBtl textBtl
-   */
-  public void notify(final String subject, final String textBtl) {
-    this.notify(
-        emailSendProperties.getPersonal(),
-        subject,
-        null,
-        null,
-        textBtl,
-        Collections.singletonList("devops@apitable.com"));
-  }
-
-  /**
-   * *
-   *
-   * @param personal personal
-   * @param subject subject
-   * @param subjectType subjectType
-   * @param dict dict
-   * @param textBtl textBtl
-   * @param to to
-   */
-  public void notify(
-      final String personal,
-      final String subject,
-      final String subjectType,
-      final Dict dict,
-      final String textBtl,
-      final List<String> to
-  ) {
-    if (cloudMailSender != null) {
-      CloudEmailMessage message = new CloudEmailMessage();
-      message.setSubject(subject);
-      message.setPersonal(personal);
-      message.setTo(to);
-      JSONObject obj = JSONUtil.createObj();
-      if (subjectType != null) {
-        message.setTemplateId(
-            mailFacade.getCloudMailTemplateId(null, subjectType));
-        obj.putAll(dict);
-      } else {
-        message.setTemplateId(
-            mailFacade.getCloudMailTemplateId(null, SUBJECT_WARN_NOTIFY));
-        obj.putOpt("content", textBtl);
-      }
-      message.setTemplateData(obj.toString());
-      cloudMailSender.send(message);
-      return;
-    }
-    if (mailTemplate == null) {
-      throw new BusinessException("The SMTP server is not configured, so emails cannot be sent.");
-    }
-    EmailMessage emailMessage = new EmailMessage();
-    emailMessage.setPersonal(personal);
-    emailMessage.setSubject(subject);
-    emailMessage.setTo(to);
-    if (subjectType != null) {
-      return;
-    }
-    if (textBtl != null) {
-      emailMessage.setPlainText(textBtl);
-    }
-    mailTemplate.send(emailMessage);
-  }
-
-  private void cloudMailSend(
-      final String subject,
-      final String lang,
-      final String subjectType,
-      final Dict dict,
-      final List<String> to
-  ) {
-    CloudEmailMessage message = new CloudEmailMessage();
-    message.setSubject(subject);
-    message.setPersonal(emailSendProperties.getPersonal());
-    message.setTo(to);
-    message.setTemplateId(mailFacade.getCloudMailTemplateId(lang, subjectType));
-    JSONObject obj = JSONUtil.createObj();
-    obj.putAll(dict);
-    message.setTemplateData(obj.toString());
-    cloudMailSender.send(message);
-  }
-
-  private void primevalMailSend(
-      final String subject,
-      final String htmlBody,
-      final String plainText,
-      final List<String> to
-  ) {
-    EmailMessage[] messages = new EmailMessage[to.size()];
-    for (int i = 0; i < to.size(); i++) {
-      EmailMessage emailMessage = new EmailMessage();
-      emailMessage.setPersonal(emailSendProperties.getPersonal());
-      emailMessage.setSubject(subject);
-      emailMessage.setTo(Collections.singletonList(to.get(i)));
-      emailMessage.setPlainText(plainText);
-      emailMessage.setHtmlText(htmlBody);
-      messages[i] = emailMessage;
-    }
-    mailTemplate.send(messages);
-  }
-
-  @Data
-  @NoArgsConstructor
-  public static class MailWithLang {
-    /** * */
-    private String locale;
-
-    /** * */
-    private String to;
+    /** */
+    @Autowired(required = false)
+    private MailTemplate mailTemplate;
 
     /**
-     *
-     * @param targetLocale targetLocale
-     * @param email email
+     * @return NotifyMailFactory
      */
-    public MailWithLang(final String targetLocale, final String email) {
-      this.locale = targetLocale;
-      this.to = email;
+    public static NotifyMailFactory me() {
+        return SpringContextHolder.getBean(NotifyMailFactory.class);
+    }
+
+    /**
+     * @param subjectType subjectType
+     * @param subjectDict subjectDict
+     * @param dict dict
+     * @param tos tos
+     */
+    public void sendMail(
+        final String subjectType,
+        final Dict subjectDict,
+        final Dict dict,
+        final List<MailWithLang> tos) {
+        if (ObjectUtil.isNotNull(tos)) {
+            Map<String, List<MailWithLang>> tosGroupByLang =
+                tos.stream()
+                    .peek(
+                        to -> {
+                            if (ObjectUtil.isNull(to.getLocale())) {
+                                to.setLocale(StrUtil.EMPTY);
+                            }
+                        })
+                    .collect(Collectors.groupingBy(MailWithLang::getLocale));
+            tosGroupByLang.forEach(
+                (lang, mailWithLanguages) -> {
+                    final List<String> emails =
+                        mailWithLanguages.stream()
+                            .map(MailWithLang::getTo).collect(Collectors.toList());
+                    sendMail(lang, subjectType, subjectDict, dict, emails);
+                });
+        }
+    }
+
+    /**
+     * @param lang lang
+     * @param subjectType subjectType
+     * @param dict dict
+     * @param to to
+     */
+    public void sendMail(
+        final String lang,
+        final String subjectType,
+        final Dict dict,
+        final List<String> to
+    ) {
+        this.sendMail(lang, subjectType, null, dict, to);
+    }
+
+    /**
+     * @param language language
+     * @param subjectType subjectType
+     * @param subjectDict subjectDict
+     * @param dict dict
+     * @param to to
+     */
+    public void sendMail(
+        final String language,
+        final String subjectType,
+        final Dict subjectDict,
+        final Dict dict,
+        final List<String> to) {
+        String lang =
+            StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
+        // load subject.properties
+        Properties properties = loadSubjectProperties(lang);
+        String subject =
+            StrUtil.format(properties.getProperty(subjectType), subjectDict);
+
+        if (StrUtil.isBlank(subject)) {
+            log.warn("Lost mail subject.");
+            return;
+        }
+        if (cloudMailSender != null) {
+            cloudMailSend(subject, lang, subjectType, dict, to);
+            return;
+        }
+        if (mailTemplate == null) {
+            throw new BusinessException(
+                "The SMTP server is not configured, so emails cannot be sent.");
+        }
+
+        MailText mailText = new MailText(subjectType, subjectDict).getTemplate();
+        String htmlTemplateName = mailText.getHtmlTemplateName();
+        String textTemplateName = mailText.getTextTemplateName();
+        if (StrUtil.hasBlank(htmlTemplateName, textTemplateName)) {
+            log.warn("Lost parameters，please check param(htmlBtl, textBtl).");
+            return;
+        }
+        String htmlTemplatePath = mailFacade.loadTemplateResourcePath(lang,
+            htmlTemplateName);
+        String textTemplatePath = mailFacade.loadTemplateResourcePath(lang,
+            textTemplateName);
+        primevalMailSend(
+            subject,
+            beetlTemplate.render(htmlTemplatePath, dict),
+            beetlTemplate.render(textTemplatePath, dict),
+            to);
+    }
+
+    private Properties loadSubjectProperties(final String locale) {
+        try {
+            return mailFacade.getSubjectProperties(locale);
+        } catch (IOException e) {
+            log.error("load subject error", e);
+            throw new BusinessException("Fail to Send Email");
+        }
+    }
+
+    /**
+     * @param subject subject
+     * @param textBtl textBtl
+     */
+    public void notify(final String subject, final String textBtl) {
+        this.notify(
+            emailSendProperties.getPersonal(),
+            subject,
+            null,
+            null,
+            textBtl,
+            Collections.singletonList("devops@apitable.com"));
     }
 
     /**
      * *
      *
-     * @param data data
-     * @param mapper mapper
-     * @param <T> T
-     * @return List<MailWithLang>
+     * @param personal personal
+     * @param subject subject
+     * @param subjectType subjectType
+     * @param dict dict
+     * @param textBtl textBtl
+     * @param to to
      */
-    public static <T> List<MailWithLang> convert(
-        final List<T> data,
-        final Function<? super T, ? extends MailWithLang> mapper
+    public void notify(
+        final String personal,
+        final String subject,
+        final String subjectType,
+        final Dict dict,
+        final String textBtl,
+        final List<String> to
     ) {
-      return Optional.ofNullable(data).orElseGet(ArrayList::new).stream()
-          .map(mapper)
-          .collect(toList());
+        if (cloudMailSender != null) {
+            CloudEmailMessage message = new CloudEmailMessage();
+            message.setSubject(subject);
+            message.setPersonal(personal);
+            message.setTo(to);
+            JSONObject obj = JSONUtil.createObj();
+            if (subjectType != null) {
+                message.setTemplateId(
+                    mailFacade.getCloudMailTemplateId(null, subjectType));
+                obj.putAll(dict);
+            } else {
+                message.setTemplateId(
+                    mailFacade.getCloudMailTemplateId(null, SUBJECT_WARN_NOTIFY));
+                obj.putOpt("content", textBtl);
+            }
+            message.setTemplateData(obj.toString());
+            cloudMailSender.send(message);
+            return;
+        }
+        if (mailTemplate == null) {
+            throw new BusinessException(
+                "The SMTP server is not configured, so emails cannot be sent.");
+        }
+        EmailMessage emailMessage = new EmailMessage();
+        emailMessage.setPersonal(personal);
+        emailMessage.setSubject(subject);
+        emailMessage.setTo(to);
+        if (subjectType != null) {
+            return;
+        }
+        if (textBtl != null) {
+            emailMessage.setPlainText(textBtl);
+        }
+        try {
+            mailTemplate.send(emailMessage);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
-  }
 
-  static final class MailText {
-
-    /** * */
-    @Getter private String htmlTemplateName;
-
-    /** * */
-    @Getter private String textTemplateName;
-
-    /** * */
-    @Getter private final String subjectType;
-
-    /** * */
-    @Getter private final Dict subjectDict;
-
-    MailText(final String type, final Dict dict) {
-      this.subjectType = type;
-      this.subjectDict = dict;
+    private void cloudMailSend(
+        final String subject,
+        final String lang,
+        final String subjectType,
+        final Dict dict,
+        final List<String> to
+    ) {
+        CloudEmailMessage message = new CloudEmailMessage();
+        message.setSubject(subject);
+        message.setPersonal(emailSendProperties.getPersonal());
+        message.setTo(to);
+        message.setTemplateId(mailFacade.getCloudMailTemplateId(lang, subjectType));
+        JSONObject obj = JSONUtil.createObj();
+        obj.putAll(dict);
+        message.setTemplateData(obj.toString());
+        cloudMailSender.send(message);
     }
 
-    public MailText getTemplate() {
-      // switch email template
-      switch (this.subjectType) {
-        case SUBJECT_INVITE_NOTIFY:
-          this.htmlTemplateName = "invite-email-html.btl";
-          this.textTemplateName = "invite-email-text.btl";
-          break;
-        case SUBJECT_REMOVE_MEMBER:
-          this.htmlTemplateName = "remove-member-html.btl";
-          this.textTemplateName = "remove-member-text.btl";
-          break;
-        case SUBJECT_DATASHEET_REMIND:
-          this.htmlTemplateName = "remind-member-html.btl";
-          this.textTemplateName = "remind-member-text.btl";
-          break;
-        case SUBJECT_SPACE_APPLY:
-          this.htmlTemplateName = "space-apply-html.btl";
-          this.textTemplateName = "space-apply-text.btl";
-          break;
-        case SUBJECT_RECORD_COMMENT:
-          this.htmlTemplateName = "remind-comment-html.btl";
-          this.textTemplateName = "remind-comment-text.btl";
-          break;
-        case SUBJECT_WIDGET_UNPUBLISH_NOTIFY:
-          this.htmlTemplateName = "widget-unpublish-notify-html.btl";
-          this.textTemplateName = "widget-unpublish-notify-text.btl";
-          break;
-        case SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY:
-          this.htmlTemplateName = "widget-unpublish-global-notify-html.btl";
-          this.textTemplateName = "widget-unpublish-global-notify-text.btl";
-          break;
-        case SUBJECT_WIDGET_TRANSFER_NOTIFY:
-          this.htmlTemplateName = "widget-transfer-notify-html.btl";
-          this.textTemplateName = "widget-transfer-notify-text.btl";
-          break;
-        case SUBJECT_CHANGE_ADMIN:
-          this.htmlTemplateName = "admin-notify-html.btl";
-          this.textTemplateName = "admin-notify-text.btl";
-          break;
-        case SUBJECT_VERIFY_CODE:
-          this.htmlTemplateName = "verification-code-html.btl";
-          this.textTemplateName = "verification-code-text.btl";
-          break;
-        case SUBJECT_REGISTER:
-          this.htmlTemplateName = "register-email-html.btl";
-          this.textTemplateName = "register-email-text.btl";
-          break;
-        case SUBJECT_CAPACITY_FULL:
-          this.htmlTemplateName = "capacity-full-html.btl";
-          this.textTemplateName = "capacity-full-text.btl";
-          break;
-        case SUBJECT_PAI_SUCCESS:
-          this.htmlTemplateName = "pay-success-html.btl";
-          this.textTemplateName = "pay-success-text.btl";
-          break;
-        case SUBJECT_ADD_RECORD_SOON_LIMITED:
-          this.htmlTemplateName = "add-record-reaching-limited-html.btl";
-          this.textTemplateName = "add-record-reaching-limited-text.btl";
-          break;
-        case SUBJECT_ADD_RECORD_LIMITED:
-          this.htmlTemplateName = "add-record-reached-limited-html.btl";
-          this.textTemplateName = "add-record-reached-limited-text.btl";
-          break;
-        case SUBJECT_WIDGET_SUBMIT_SUCCESS:
-          this.htmlTemplateName = "widget-submit-success-html.btl";
-          this.textTemplateName = "widget-submit-success-text.btl";
-          break;
-        case SUBJECT_WIDGET_SUBMIT_FAIL:
-          this.htmlTemplateName = "widget-submit-fail-html.btl";
-          this.textTemplateName = "widget-submit-fail-text.btl";
-          break;
-        case SUBJECT_WIDGET_QUALIFICATION_AUTH_SUCCESS:
-          this.htmlTemplateName = "widget-qualification-auth-success-html.btl";
-          this.textTemplateName = "widget-qualification-auth-success-text.btl";
-          break;
-        case SUBJECT_WIDGET_QUALIFICATION_AUTH_FAIL:
-          this.htmlTemplateName = "widget-qualification-auth-fail-html.btl";
-          this.textTemplateName = "widget-qualification-auth-fail-text.btl";
-          break;
-        case SUBJECT_TASK_REMINDER:
-          htmlTemplateName = "task-reminder-html.btl";
-          textTemplateName = "task-reminder-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED:
-          htmlTemplateName = "subscribed-record-cell-updated-html.btl";
-          textTemplateName = "subscribed-record-cell-updated-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_RECORD_COMMENTED:
-          htmlTemplateName = "subscribed-record-commented-html.btl";
-          textTemplateName = "subscribed-record-commented-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_DATASHEET_LIMIT:
-          htmlTemplateName = "subscribed-datasheet-limit-html.btl";
-          textTemplateName = "subscribed-datasheet-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_DATASHEET_RECORD_LIMIT:
-          htmlTemplateName = "subscribed-datasheet-record-html.btl";
-          textTemplateName = "subscribed-datasheet-record-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_CAPACITY_LIMIT:
-          htmlTemplateName = "subscribed-capacity-html.btl";
-          textTemplateName = "subscribed-capacity-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_SEATS_LIMIT:
-          htmlTemplateName = "subscribed-seats-limit-html.btl";
-          textTemplateName = "subscribed-seats-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_RECORD_LIMIT:
-          htmlTemplateName = "subscribed-record-limit-html.btl";
-          textTemplateName = "subscribed-record-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_API_LIMIT:
-          htmlTemplateName = "subscribed-api-limit-html.btl";
-          textTemplateName = "subscribed-api-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_CALENDAR_LIMIT:
-          htmlTemplateName = "subscribed-calendar-limit-html.btl";
-          textTemplateName = "subscribed-calendar-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_FORM_LIMIT:
-          htmlTemplateName = "subscribed-form-limit-html.btl";
-          textTemplateName = "subscribed-form-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_MIRROR_LIMIT:
-          htmlTemplateName = "subscribed-mirror-limit-html.btl";
-          textTemplateName = "subscribed-mirror-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_GANNT_LIMIT:
-          htmlTemplateName = "subscribed-gannt-limit-html.btl";
-          textTemplateName = "subscribed-gannt-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_FIELD_PERMISSION_LIMIT:
-          htmlTemplateName = "subscribed-field-permission-limit-html.btl";
-          textTemplateName = "subscribed-field-permission-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT:
-          htmlTemplateName = "subscribed-file-permission-limit-html.btl";
-          textTemplateName = "subscribed-file-permission-limit-text.btl";
-          break;
-        case SUBJECT_SUBSCRIBED_ADMIN_LIMIT:
-          htmlTemplateName = "subscribed-admin-limit-html.btl";
-          textTemplateName = "subscribed-admin-limit-text.btl";
-          break;
-        default:
-          break;
-      }
-      return this;
+    private void primevalMailSend(
+        final String subject,
+        final String htmlBody,
+        final String plainText,
+        final List<String> to
+    ) {
+        EmailMessage[] messages = new EmailMessage[to.size()];
+        for (int i = 0; i < to.size(); i++) {
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.setPersonal(emailSendProperties.getPersonal());
+            emailMessage.setSubject(subject);
+            emailMessage.setTo(Collections.singletonList(to.get(i)));
+            emailMessage.setPlainText(plainText);
+            emailMessage.setHtmlText(htmlBody);
+            messages[i] = emailMessage;
+        }
+        try {
+            mailTemplate.send(messages);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
-  }
+
+    @Data
+    @NoArgsConstructor
+    public static class MailWithLang {
+        /** * */
+        private String locale;
+
+        /** * */
+        private String to;
+
+        /**
+         *
+         * @param targetLocale targetLocale
+         * @param email email
+         */
+        public MailWithLang(final String targetLocale, final String email) {
+            this.locale = targetLocale;
+            this.to = email;
+        }
+
+        /**
+         * *
+         *
+         * @param data data
+         * @param mapper mapper
+         * @param <T> T
+         * @return List<MailWithLang>
+         */
+        public static <T> List<MailWithLang> convert(
+            final List<T> data,
+            final Function<? super T, ? extends MailWithLang> mapper
+        ) {
+            return Optional.ofNullable(data).orElseGet(ArrayList::new).stream()
+                .map(mapper)
+                .collect(toList());
+        }
+    }
+
+    static final class MailText {
+
+        /** * */
+        @Getter
+        private String htmlTemplateName;
+
+        /** * */
+        @Getter
+        private String textTemplateName;
+
+        /** * */
+        @Getter
+        private final String subjectType;
+
+        /** * */
+        @Getter
+        private final Dict subjectDict;
+
+        MailText(final String type, final Dict dict) {
+            this.subjectType = type;
+            this.subjectDict = dict;
+        }
+
+        public MailText getTemplate() {
+            // switch email template
+            switch (this.subjectType) {
+                case SUBJECT_INVITE_NOTIFY:
+                    this.htmlTemplateName = "invite-email-html.btl";
+                    this.textTemplateName = "invite-email-text.btl";
+                    break;
+                case SUBJECT_REMOVE_MEMBER:
+                    this.htmlTemplateName = "remove-member-html.btl";
+                    this.textTemplateName = "remove-member-text.btl";
+                    break;
+                case SUBJECT_DATASHEET_REMIND:
+                    this.htmlTemplateName = "remind-member-html.btl";
+                    this.textTemplateName = "remind-member-text.btl";
+                    break;
+                case SUBJECT_SPACE_APPLY:
+                    this.htmlTemplateName = "space-apply-html.btl";
+                    this.textTemplateName = "space-apply-text.btl";
+                    break;
+                case SUBJECT_RECORD_COMMENT:
+                    this.htmlTemplateName = "remind-comment-html.btl";
+                    this.textTemplateName = "remind-comment-text.btl";
+                    break;
+                case SUBJECT_WIDGET_UNPUBLISH_NOTIFY:
+                    this.htmlTemplateName = "widget-unpublish-notify-html.btl";
+                    this.textTemplateName = "widget-unpublish-notify-text.btl";
+                    break;
+                case SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY:
+                    this.htmlTemplateName = "widget-unpublish-global-notify-html.btl";
+                    this.textTemplateName = "widget-unpublish-global-notify-text.btl";
+                    break;
+                case SUBJECT_WIDGET_TRANSFER_NOTIFY:
+                    this.htmlTemplateName = "widget-transfer-notify-html.btl";
+                    this.textTemplateName = "widget-transfer-notify-text.btl";
+                    break;
+                case SUBJECT_CHANGE_ADMIN:
+                    this.htmlTemplateName = "admin-notify-html.btl";
+                    this.textTemplateName = "admin-notify-text.btl";
+                    break;
+                case SUBJECT_VERIFY_CODE:
+                    this.htmlTemplateName = "verification-code-html.btl";
+                    this.textTemplateName = "verification-code-text.btl";
+                    break;
+                case SUBJECT_REGISTER:
+                    this.htmlTemplateName = "register-email-html.btl";
+                    this.textTemplateName = "register-email-text.btl";
+                    break;
+                case SUBJECT_CAPACITY_FULL:
+                    this.htmlTemplateName = "capacity-full-html.btl";
+                    this.textTemplateName = "capacity-full-text.btl";
+                    break;
+                case SUBJECT_PAI_SUCCESS:
+                    this.htmlTemplateName = "pay-success-html.btl";
+                    this.textTemplateName = "pay-success-text.btl";
+                    break;
+                case SUBJECT_ADD_RECORD_SOON_LIMITED:
+                    this.htmlTemplateName = "add-record-reaching-limited-html.btl";
+                    this.textTemplateName = "add-record-reaching-limited-text.btl";
+                    break;
+                case SUBJECT_ADD_RECORD_LIMITED:
+                    this.htmlTemplateName = "add-record-reached-limited-html.btl";
+                    this.textTemplateName = "add-record-reached-limited-text.btl";
+                    break;
+                case SUBJECT_WIDGET_SUBMIT_SUCCESS:
+                    this.htmlTemplateName = "widget-submit-success-html.btl";
+                    this.textTemplateName = "widget-submit-success-text.btl";
+                    break;
+                case SUBJECT_WIDGET_SUBMIT_FAIL:
+                    this.htmlTemplateName = "widget-submit-fail-html.btl";
+                    this.textTemplateName = "widget-submit-fail-text.btl";
+                    break;
+                case SUBJECT_WIDGET_QUALIFICATION_AUTH_SUCCESS:
+                    this.htmlTemplateName = "widget-qualification-auth-success-html.btl";
+                    this.textTemplateName = "widget-qualification-auth-success-text.btl";
+                    break;
+                case SUBJECT_WIDGET_QUALIFICATION_AUTH_FAIL:
+                    this.htmlTemplateName = "widget-qualification-auth-fail-html.btl";
+                    this.textTemplateName = "widget-qualification-auth-fail-text.btl";
+                    break;
+                case SUBJECT_TASK_REMINDER:
+                    htmlTemplateName = "task-reminder-html.btl";
+                    textTemplateName = "task-reminder-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED:
+                    htmlTemplateName = "subscribed-record-cell-updated-html.btl";
+                    textTemplateName = "subscribed-record-cell-updated-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_RECORD_COMMENTED:
+                    htmlTemplateName = "subscribed-record-commented-html.btl";
+                    textTemplateName = "subscribed-record-commented-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_DATASHEET_LIMIT:
+                    htmlTemplateName = "subscribed-datasheet-limit-html.btl";
+                    textTemplateName = "subscribed-datasheet-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_DATASHEET_RECORD_LIMIT:
+                    htmlTemplateName = "subscribed-datasheet-record-html.btl";
+                    textTemplateName = "subscribed-datasheet-record-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_CAPACITY_LIMIT:
+                    htmlTemplateName = "subscribed-capacity-html.btl";
+                    textTemplateName = "subscribed-capacity-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_SEATS_LIMIT:
+                    htmlTemplateName = "subscribed-seats-limit-html.btl";
+                    textTemplateName = "subscribed-seats-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_RECORD_LIMIT:
+                    htmlTemplateName = "subscribed-record-limit-html.btl";
+                    textTemplateName = "subscribed-record-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_API_LIMIT:
+                    htmlTemplateName = "subscribed-api-limit-html.btl";
+                    textTemplateName = "subscribed-api-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_CALENDAR_LIMIT:
+                    htmlTemplateName = "subscribed-calendar-limit-html.btl";
+                    textTemplateName = "subscribed-calendar-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FORM_LIMIT:
+                    htmlTemplateName = "subscribed-form-limit-html.btl";
+                    textTemplateName = "subscribed-form-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_MIRROR_LIMIT:
+                    htmlTemplateName = "subscribed-mirror-limit-html.btl";
+                    textTemplateName = "subscribed-mirror-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_GANNT_LIMIT:
+                    htmlTemplateName = "subscribed-gannt-limit-html.btl";
+                    textTemplateName = "subscribed-gannt-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FIELD_PERMISSION_LIMIT:
+                    htmlTemplateName = "subscribed-field-permission-limit-html.btl";
+                    textTemplateName = "subscribed-field-permission-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT:
+                    htmlTemplateName = "subscribed-file-permission-limit-html.btl";
+                    textTemplateName = "subscribed-file-permission-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_ADMIN_LIMIT:
+                    htmlTemplateName = "subscribed-admin-limit-html.btl";
+                    textTemplateName = "subscribed-admin-limit-text.btl";
+                    break;
+                default:
+                    break;
+            }
+            return this;
+        }
+    }
 }
