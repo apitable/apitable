@@ -39,10 +39,9 @@ import {
 } from '@apitable/core';
 import { UnitItem } from 'pc/components/catalog/permission_settings/permission/unit_item';
 import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/components';
-import ArrowRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { useSelector } from 'react-redux';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
-import { UserGroupFilled } from '@apitable/icons';
+import { ChevronRightOutlined, UserGroupFilled } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
@@ -221,7 +220,7 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
             <Typography variant={'body4'} component={'span'} className={styles.customColor}>
               {t(Strings.view_by_person)}
             </Typography>
-            <ArrowRightIcon fill={colors.thirdLevelText} />
+            <ChevronRightOutlined color={colors.thirdLevelText} />
           </LinkButton>
         )}
       </div>

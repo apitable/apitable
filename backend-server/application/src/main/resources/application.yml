@@ -167,14 +167,5 @@ grpc:
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
   api-docs:
-    path: /v3/api-docs
-    enabled: false
-
-knife4j:
-  enable: true
-  setting:
-    enable-open-api: true
-    language: en
+    enabled: ${API_DOCS_ENABLED:true}

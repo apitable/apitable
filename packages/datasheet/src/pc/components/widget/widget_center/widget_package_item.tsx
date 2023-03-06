@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
-import { LinkOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
+import { AddOutlined, LinkOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
@@ -29,7 +29,6 @@ import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/inter
 import * as React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
@@ -132,7 +131,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     return <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
       <Button
         color='primary'
-        prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+        prefixIcon={<AddOutlined size={12} color={'white'} />}
         onClick={onClickInstall}
         loading={installing}
         disabled={getDisabledStatus()}

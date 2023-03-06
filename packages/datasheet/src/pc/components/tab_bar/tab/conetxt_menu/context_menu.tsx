@@ -337,19 +337,19 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         id: DATASHEET_ID.VIEW_EXPORT,
         arrow: <ChevronRightOutlined size={10} color={black[500]} />,
         children: [{
-          icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
           text: t(Strings.csv),
           onClick: exportTypeCsv,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_CSV,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
           text: t(Strings.excel),
           onClick: exportTypeXlsx,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_EXCEL,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
           text: t(Strings.png),
           onClick: exportTypeImage,
           'data-sensors-click': true,

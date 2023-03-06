@@ -58,7 +58,7 @@ export const ViewSwitcherHorizontal: React.FC<React.PropsWithChildren<unknown>> 
             })}
             onClick={() => changeView(item.id)}
           >
-            <ViewIcon viewType={item.type} fill={fillColor} />
+            <ViewIcon viewType={item.type} color={fillColor} />
             <span className={styles.viewItemName}>
               {item.name}
             </span>

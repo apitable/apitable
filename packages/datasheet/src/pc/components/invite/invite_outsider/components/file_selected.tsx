@@ -18,12 +18,12 @@
 
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { DeleteOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { ButtonPlus } from 'pc/components/common';
 import { execNoTraceVerification } from 'pc/utils';
 import { FC, useState } from 'react';
 // import FileSvg from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
 import { IErrorInfo } from '../interface';
 import { Records } from './records';
@@ -58,7 +58,7 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
       <div className={styles.fileImg}>
         <Image src={ExcelPng} />
         <ButtonPlus.Font
-          icon={<DeleteIcon style={{ margin: '4px' }} fill={colors.thirdLevelText} />}
+          icon={<DeleteOutlined color={colors.thirdLevelText} />}
           onClick={init}
           size="small"
         />

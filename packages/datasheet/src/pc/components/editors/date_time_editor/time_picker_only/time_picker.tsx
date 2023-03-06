@@ -51,6 +51,7 @@ interface ITimePickerProps {
   hourStep?: number;
   secondStep?: number;
   open?: boolean;
+  timeZone?: string;
 }
 
 interface ITimePickerState {
@@ -101,7 +102,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     this.props.onOpenChange?.(open);
     if (open) {
       if (!this.state.value) {
-        this.setValue(dayjs().format('HH:mm'));
+        const date = this.props.timeZone ? dayjs.tz(dayjs(), this.props.timeZone) : dayjs();
+        this.setValue(date.format('HH:mm'));
       }
       this.saveInputRef.focus();
     }

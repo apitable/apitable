@@ -17,7 +17,6 @@
  */
 
 import { IField, IRatingField, Strings, t } from '@apitable/core';
-import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { SelectValue } from 'antd/lib/select';
 import { Emoji } from 'pc/components/common';
 import { Select, Button, useThemeColors } from '@apitable/components';
@@ -29,6 +28,7 @@ import classNames from 'classnames';
 import { EmojiPicker } from 'pc/components/common/emoji_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
+import { ChevronDownOutlined } from '@apitable/icons';
 
 interface IFormateRatingProps {
   currentField: IRatingField;
@@ -65,7 +65,7 @@ export const FormateRating: React.FC<React.PropsWithChildren<IFormateRatingProps
       <div className={styles.horizontalItem}>
         <div className={styles.horizontalItemTitle}>{t(Strings.icon_setting)}</div>
         <EmojiPicker onSelect={onSelect}>
-          <Button style={btnStyle} className={styles.emojiBtn} suffixIcon={<ArrowIcon width={16} height={16} fill={colors.fourthLevelText} />}>
+          <Button style={btnStyle} className={styles.emojiBtn} suffixIcon={<ChevronDownOutlined size={16} color={colors.fourthLevelText} />}>
             <Emoji emoji={props.currentField.property.icon} set="apple" size={EMOJI_SIZE} />
           </Button>
         </EmojiPicker>

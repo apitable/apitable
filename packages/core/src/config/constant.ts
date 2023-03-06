@@ -462,6 +462,8 @@ export enum WizardIdConstant {
   // node permissions
   PERMISSION_SETTING_EXTEND = 95, // Open permission settings, inherit state
   PERMISSION_SETTING_OPENED = 96, // Open permission settings, non-inherited state
+
+  CREATE_MIRROR_TIP = 106
 }
 
 export const DASHBOARD_MAX_WIDGET_COUNT = 30;

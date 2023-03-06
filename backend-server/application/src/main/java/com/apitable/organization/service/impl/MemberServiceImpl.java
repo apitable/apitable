@@ -532,6 +532,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
       log.error("Send invitation email {} fail, Cause: {}", email, e);
       // record fail
       spaceInviteRecordMapper.insert(record.setSendStatus(false).setStatusDesc("Fail"));
+      throw new BusinessException(e.getMessage());
     }
   }
 

@@ -37,6 +37,8 @@ export class DateTimeField extends DateTimeBaseField {
     timeFormat: Joi.valid(...enumToArray(TimeFormat)).required(),
     includeTime: Joi.boolean().required(),
     autoFill: Joi.boolean().required(),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
 
   static cellValueSchema = Joi.number().custom((value, helpers) => {
@@ -96,6 +98,14 @@ export class DateTimeField extends DateTimeBaseField {
     return DateTimeField.openWriteValueSchema.validate(owv);
   }
 
+  get includeTimeZone() {
+    return this.field.property?.includeTimeZone;
+  }
+
+  get timeZone() {
+    return this.field.property.timeZone;
+  }
+
   override get openFieldProperty(): IOpenDateTimeFieldProperty {
     const { autoFill, includeTime, dateFormat, timeFormat } = this.field.property;
     return {
@@ -111,6 +121,8 @@ export class DateTimeField extends DateTimeBaseField {
     timeFormat: Joi.valid(...enumKeyToArray(TimeFormat)),
     includeTime: Joi.boolean(),
     autoFill: Joi.boolean(),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
 
   override validateUpdateOpenProperty(updateProperty: IUpdateOpenDateTimeFieldProperty) {

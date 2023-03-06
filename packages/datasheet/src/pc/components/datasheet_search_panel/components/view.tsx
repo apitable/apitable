@@ -45,7 +45,7 @@ export const View: React.FC<React.PropsWithChildren<{
         })}
         onClick={() => onClick && onClick(id)}
       >
-        <ViewIcon viewType={viewType} fill={active ? colors.primaryColor : colors.fourthLevelText} />
+        <ViewIcon viewType={viewType} color={active ? colors.primaryColor : colors.fourthLevelText} />
         <span className={classNames(styles.text, styles.rightText)}>{children}</span>
       </div>
     </div>

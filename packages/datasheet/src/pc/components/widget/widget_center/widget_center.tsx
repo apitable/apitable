@@ -18,7 +18,7 @@
 
 import { Box, Button, Skeleton, ThemeName, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { IMember, IWidgetPackage, Selectors, Strings, t, UnitItem, WidgetApi, WidgetReleaseType } from '@apitable/core';
-import { InfoCircleFilled, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled } from '@apitable/icons';
+import { InfoCircleOutlined, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled, AddOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
@@ -36,7 +36,6 @@ import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
 import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
 
@@ -109,7 +108,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
     <div className={styles.tabItemTips}>
       {
         getEnvVariables().WIDGET_CENTER_OFFICIAL_TIP_VISIBLE && <>
-          <InfoCircleFilled size={16} color={colors.thirdLevelText} />
+          <InfoCircleOutlined size={16} color={colors.textCommonTertiary} />
           <span>{introduction}</span>
         </>
       }
@@ -285,7 +284,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
                           block
                         >
                           <div className={styles.buttonWrap}>
-                            <IconAdd width={16} height={16} fill={'white'} />
+                            <AddOutlined size={16} color={'white'} />
                             {t(Strings.create_widget)}
                           </div>
                         </Button>

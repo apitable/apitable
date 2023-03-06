@@ -21,6 +21,7 @@ import { FC, useRef, useState, useEffect } from 'react';
 import * as React from 'react';
 import { AnimationItem } from 'lottie-web/index';
 import { isMobile } from 'react-device-detect';
+import { getEnvVariables } from 'pc/utils/env';
 
 export interface INavigationItemProps {
   animationData: any;
@@ -56,9 +57,11 @@ export const NavigationItem: FC<React.PropsWithChildren<INavigationItemProps>> =
   });
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    (window as any).sensors.quick('trackHeatMap', event.target, {
-      activity_entry: id,
-    });
+    if (getEnvVariables().SENSORSDATA_TOKEN) {
+      window.sensors?.quick('trackHeatMap', event.target, {
+        activity_entry: id,
+      });
+    }
     onClick && onClick();
   };
 

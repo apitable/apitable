@@ -32,8 +32,8 @@ import { useSelector } from 'react-redux';
 import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
 import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import GanttCreationNoDate from 'static/icon/account/gantt_creation_nodate.png';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 export const CreateFieldModal = memo(() => {
   const {
@@ -145,7 +145,7 @@ export const CreateFieldModal = memo(() => {
           onClick={onClick}
           size={'middle'}
           disabled={!manageable}
-          prefixIcon={<IconAdd width={16} height={16} fill={'white'} />}
+          prefixIcon={<AddOutlined size={16} color={'white'} />}
         >
           {t(Strings.gantt_init_fields_button)}
         </Button>

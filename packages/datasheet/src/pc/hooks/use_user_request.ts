@@ -32,6 +32,7 @@ import { isLocalSite } from 'pc/utils/catalog';
 import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { getEnvVariables } from 'pc/utils/env';
+import { ActionType } from 'pc/components/home/pc_home';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
@@ -273,6 +274,34 @@ export const useUserRequest = () => {
     });
   };
 
+  const registerReq = (username: string, credential: string) => {    
+    return Api.register(username, credential).then((res) => {
+      const { success } = res.data;
+      if (success) {
+        dispatch(StoreActions.setLoading(true));
+
+        const urlParams = getSearchParams();
+        // Send a friend invitation code for a reward
+        if (urlParams.has('inviteLinkToken')) {
+          join();
+          return res.data;
+        }
+        if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
+          Router.redirect(Navigation.WORKBENCH, {
+            params: { spaceId: inviteEmailInfo.data.spaceId },
+            clearQuery: true,
+          });
+          return res.data;
+        }
+        Router.redirect(Navigation.WORKBENCH, {
+          query: { reference },
+        });
+        return res.data;
+      }
+      return res.data;
+    });
+  };
+
   /**
    * Logout
    */
@@ -284,6 +313,7 @@ export const useUserRequest = () => {
           window.location.href = data.redirectUri;
         } else {
           window.location.href = '/login';
+          localStorage.setItem('loginAction', ActionType.SignIn);
         }
       }
     });
@@ -525,5 +555,6 @@ export const useUserRequest = () => {
     updateLangReq,
     submitInviteCodeReq,
     updateAvatarColor,
+    registerReq
   };
 };

@@ -20,7 +20,7 @@ import { useMemo } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
 import { Typography, ContextMenu, Button, TextButton } from '@apitable/components';
-import { SettingOutlined, InfoFilled, DeleteOutlined } from '@apitable/icons';
+import { SettingOutlined, SpaceInfoFilled, DeleteOutlined } from '@apitable/icons';
 import { DELETE_SPACE_CONTEXT_MENU_ID, SpaceLevelInfo } from '../../utils';
 import { ChangeLogo } from '../change_logo/change_logo';
 import { ChangeName } from '../change_name/change_name';
@@ -110,7 +110,7 @@ export const Info = (props: IInfoProps) => {
     />
     <div>
       <Typography variant="h7" className={styles.spaceTitle}>
-        <InfoFilled/>{t(Strings.space_info)}
+        <SpaceInfoFilled />{t(Strings.space_info)}
       </Typography>
       <ChangeLogo />
       <ChangeName />

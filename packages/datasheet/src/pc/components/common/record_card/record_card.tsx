@@ -17,6 +17,7 @@
  */
 
 import { Field, FieldType, IField, IRecord, IReduxState, IViewColumn, Selectors, Strings, t } from '@apitable/core';
+import { SubtractCircleOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';
@@ -26,7 +27,6 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import ReduceIcon from 'static/icon/datasheet/datasheet_icon_relation_reduce.svg';
 import NoImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import { ScreenSize } from '../component_display';
 import styles from './style.module.less';
@@ -159,7 +159,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = p
 
   return (
     <div className={styles.recordCardWrapper}>
-      {onDelete && <ReduceIcon className={styles.deleteLinkRecord} onClick={() => onDelete(record.id)} />}
+      {onDelete && <SubtractCircleOutlined className={styles.deleteLinkRecord} onClick={() => onDelete(record.id)} />}
       <div className={classNames(styles.recordCard, props.className)} onClick={() => onClick && onClick(record.id)}>
         {record ? (
           <>

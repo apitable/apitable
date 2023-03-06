@@ -29,12 +29,10 @@ import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import RefreshIcon from 'static/icon/common/common_icon_fresh.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
 import { getMaskToken, getVerifyData, IRefreshConfigConfig, VerifyTypes } from '../utils';
 import styles from './style.module.less';
 import { getEnvVariables } from 'pc/utils/env';
+import { AddOutlined, CopyOutlined, ReloadOutlined } from '@apitable/icons';
 
 export interface IDeveloperConfigProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
@@ -173,8 +171,8 @@ export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfig
             >
               {
                 !user!.apiKey ?
-                  <AddIcon fill={colors.thirdLevelText} width={15} height={15}/> :
-                  <RefreshIcon fill={colors.thirdLevelText} width={15} height={15}/>
+                  <AddOutlined color={colors.thirdLevelText} size={15} /> :
+                  <ReloadOutlined color={colors.thirdLevelText} size={15} />
               }
             </Button>
           </Tooltip>}
@@ -182,7 +180,7 @@ export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfig
             <Button
               onClick={copyToken}
             >
-              <CopyIcon fill={colors.thirdLevelText} width={15} height={15} />
+              <CopyOutlined color={colors.thirdLevelText} size={15} />
             </Button>
           </Tooltip>
         </ButtonGroup>

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { UserGroupOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
@@ -26,12 +27,13 @@ const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_ti
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const Path = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/path'), { ssr: false });
 
+const UserGroupOutlinedPath = UserGroupOutlined.toString();
+
 export enum IconType {
   Unchecked = 'Unchecked',
   Checked = 'Checked',
   TeamAvatar = 'TeamAvatar',
   MemberAvatar = 'MemberAvatar',
-  GanttLeftButton = 'GanttLeftButton',
 }
 
 const dataMap = {
@@ -44,26 +46,12 @@ const dataMap = {
     c-0.1,0.1-0.3,0.2-0.5,0.2c-0.2,0-0.4-0.1-0.5-0.2L3.5,7.4c-0.3-0.3-0.3-0.8,0-1.1s0.8-0.3,1.1,0l2.3,2.3l3.7-3.7
     c0.3-0.3,0.8-0.3,1.1,0C11.9,5.2,11.9,5.7,11.6,6z
   `,
-  [IconType.TeamAvatar]: `
-    M22.9,16c1.1-0.8,1.9-2.1,1.9-3.6c0-2.4-2-4.4-4.3-4.4c-0.4,0-0.8,0.3-0.8,0.8s0.3,0.8,0.8,0.8
-    c1.6,0,2.8,1.3,2.8,2.9s-1.3,2.9-2.8,2.9c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3,0c-0.4,0-0.8,0.3-0.8,0.8s0.3,0.8,0.8,0.8
-    c2.7,0,4.8,2.2,4.8,4.8c0,0.2,0,0.3,0,0.5c0,0.4,0.3,0.8,0.7,0.8c0,0,0.1,0,0.1,0c0.4,0,0.7-0.3,0.7-0.7c0-0.2,0-0.4,0-0.7
-    C26.3,19.1,24.9,17,22.9,16z
-    M16.5,16.6c1.3-0.9,2.2-2.5,2.2-4.2c0-2.8-2.3-5.1-5.1-5.1s-5.1,2.3-5.1,5.1c0,1.7,0.9,3.3,2.2,4.2
-		c-2.9,1.2-5,4-5,7.4c0,0.4,0.3,0.8,0.8,0.8s0.8-0.3,0.8-0.8c0-3.6,2.9-6.5,6.5-6.5c3.6,0,6.4,2.9,6.4,6.5c0,0.4,0.3,0.8,0.8,0.8
-		s0.8-0.3,0.8-0.8C21.5,20.7,19.5,17.8,16.5,16.6z M10,12.4c0-2,1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6S15.6,16,13.6,16S10,14.4,10,12.4z
-  `,
+  [IconType.TeamAvatar]: UserGroupOutlinedPath,
   [IconType.MemberAvatar]: `
     M11,8.2c0.7-0.8,1.2-1.8,1.2-2.9c0-2.3-1.9-4.2-4.2-4.2C5.7,1.1,3.8,3,3.8,5.3c0,1.1,0.5,2.2,1.2,2.9
     c-2.3,1.1-3.8,3.5-3.8,6.2c0,0.6,0.4,1,1,1s1-0.4,1-1c0-2.7,2.2-4.9,4.9-4.9c0,0,0,0,0,0s0,0,0,0c2.7,0,4.9,2.2,4.9,4.9
     c0,0.6,0.4,1,1,1s1-0.4,1-1C14.9,11.7,13.3,9.4,11,8.2z M5.8,5.3c0-1.2,1-2.2,2.2-2.2c1.2,0,2.2,1,2.2,2.2c0,1.2-1,2.2-2.2,2.2
     C6.8,7.5,5.8,6.5,5.8,5.3z
-  `,
-  [IconType.GanttLeftButton]: `
-    M12 2C13.1046 2 14 2.89543 14 4V12C14 13.1046 13.1046 14 12 14H4C2.89543 14 2 13.1046 2 12V4C2 2.89543 2.89543 
-    2 4 2H12ZM3.58565 7.53151L7.02518 4.77988C7.41804 4.4656 8 4.7453 8 5.2484V7.00003L12 7.00003C12.5523 7.00003 13 7.44774 
-    13 8.00003C13 8.55231 12.5523 9.00003 12 9.00003L8 9.00003V10.7517C8 11.2548 7.41804 11.5345 7.02518 11.2202L3.58565 
-    8.46855C3.28541 8.22835 3.28541 7.7717 3.58565 7.53151Z
   `,
 };
 

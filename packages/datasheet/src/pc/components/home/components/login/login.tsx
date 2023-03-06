@@ -16,35 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors, Button, TextInput, Box } from '@apitable/components';
-import { Strings, t, isEmail, ConfigConstant, StatusCode, api } from '@apitable/core';
-import { EmailOutlined, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
+import { Typography, useThemeColors, Button, TextInput, Box, LinkButton } from '@apitable/components';
+import { Strings, t, isEmail, ConfigConstant, StatusCode, api, IReduxState } from '@apitable/core';
+import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean, useMount } from 'ahooks';
 import { Form } from 'antd';
 import { WithTipWrapper } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { clearStorage } from 'pc/utils/storage';
 import { useEffect, useState } from 'react';
-
+import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
+import { useSelector } from 'react-redux';
 
 interface ILoginErrorMsg {
   username?: string;
   password?: string;
 }
-export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
+
+interface ILoginProps {
+  switchClick?: (actionType: ActionType) => void;
+  email: string;
+  setEmail: (email: string) => void;
+}
+
+export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => {
+  const { switchClick = () => {}, email = '', setEmail } = props;
   const colors = useThemeColors();
   const { loginOrRegisterReq } = useUserRequest();
   const { run: loginReq, loading } = useRequest(loginOrRegisterReq, { manual: true });
   const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
-
+  
   const [errorMsg, setErrorMsg] = useState<ILoginErrorMsg>({});
-  const [username, setUsername] = useState<string>();
+  const [username, setUsername] = useState<string>(email);
   const [password, setPassword] = useState<string>();
-
+  
   const [isVisible, { toggle }] = useBoolean(false);
+  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const [emailDisable, setEmailDisable] = useState<boolean>(false);
+  useEffect(() => {
+    if(inviteEmailInfo) {
+      setUsername(inviteEmailInfo.data.inviteEmail);
+      setEmailDisable(true);
+    }
+   
+  }, [inviteEmailInfo]);
 
   useMount(() => {
     initNoTraceVerification(setNoTraceVerification, ConfigConstant.CaptchaIds.LOGIN);
@@ -66,6 +83,11 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
       return;
     }
     execNoTraceVerification(signIn);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
+    setUsername(e.target.value.replace(/\s/g, ''));
+    setEmail(e.target.value.replace(/\s/g, ''));
   };
 
   const preCheckOnSubmit = (data: { username?: string; password?: string; }) => {
@@ -128,14 +150,7 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
         setErrorMsg({ username: message });
     }
   };
-
-  const forgetPassword = () => {
-    Modal.info({
-      title: 'Tips',
-      content: 'Please contact the administrator to change your password for you',
-      okText: 'OK',
-    });
-  };
+ 
   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === ' ') {
       event.preventDefault();
@@ -146,24 +161,25 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
       <Form onFinish={handleSubmit}>
         <div className={styles.inputWrap}>
           <Typography className={styles.inputTitle} variant="body2" color={colors.textCommonPrimary}>
-            Email
+            {t(Strings.field_title_email)}
           </Typography>
           <WithTipWrapper tip={errorMsg.username || ''}>
             <TextInput
               className={styles.input}
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={handleEmailChange}
               onKeyPress={handleKeyPress}
-              prefix={<EmailOutlined color={colors.textCommonPrimary}/>}
-              placeholder='Please enter your email address'
+              prefix={<EmailFilled color={colors.textCommonPrimary}/>}
+              placeholder={t(Strings.email_placeholder)}
               error={Boolean(errorMsg.username)}
               block
+              disabled={emailDisable}
             />
           </WithTipWrapper>
         </div>
         <div className={styles.inputWrap}>
           <Typography className={styles.inputTitle} variant="body2" color={colors.textCommonPrimary}>
-            Password
+            {t(Strings.label_password)}
           </Typography>
           <WithTipWrapper tip={errorMsg.password || ''}>
             <TextInput
@@ -179,21 +195,34 @@ export const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
               >
                 {isVisible ? <EyeOpenOutlined color={colors.textCommonTertiary}/> : <EyeCloseOutlined color={colors.textCommonTertiary}/>}
               </div>}
-              placeholder='Please enter your password'
+              placeholder={t(Strings.placeholder_input_password)}
               error={Boolean(errorMsg.password)}
               block
             />
           </WithTipWrapper>
         </div>
+        <Box textAlign={'right'}>
+          <Typography 
+            className={styles.forgetPassword} 
+            variant="body2" 
+            color={colors.textCommonPrimary} 
+            onClick={() => switchClick(ActionType.ForgetPassword)}
+          >
+            {t(Strings.apitable_forget_password_button)}
+          </Typography>
+        </Box>
       </Form>
+     
       <Button className={styles.loginBtn} color="primary" size="large" block loading={loading} onClick={handleSubmit}>
-        Sign in
+        {t(Strings.apitable_sign_in)}
       </Button>
-      <Box textAlign={'center'}>
-        <Typography className={styles.forgetPassword} variant="body2" color={colors.textCommonPrimary} onClick={forgetPassword}>
-          Forgot your password?
-        </Typography>
-      </Box>
+      <div className={styles.switchContent}>
+        <p>{t(Strings.apitable_no_account)}</p>
+        <LinkButton underline={false} component='button' 
+          onClick={() => switchClick(ActionType.SignUp)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_up)}
+        </LinkButton>
+      </div>
+      
     </div>
   );
 };

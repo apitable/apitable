@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { AddOutlined } from '@apitable/icons';
 import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from './styles.module.less';
 
 interface IQuickAppendProps {
@@ -56,7 +56,7 @@ export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> =
         className={styles.quickAppendToolsWrap}
       >
         <div className={styles.iconAddWrap}>
-          <IconAdd />
+          <AddOutlined />
         </div>
         <div
           className={styles.quickAppendLine}

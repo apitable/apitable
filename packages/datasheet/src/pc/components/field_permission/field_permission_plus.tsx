@@ -21,7 +21,7 @@ import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable
 import { Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import styles from 'pc/components/field_permission/styles.module.less';
-import { black, Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
+import { Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -44,7 +44,7 @@ export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermiss
       <PermissionModalHeader
         typeName={t(Strings.column)}
         targetName={field.name}
-        targetIcon={getFieldTypeIcon(field.type, black['500'])}
+        targetIcon={getFieldTypeIcon(field.type, colors.textCommonTertiary)}
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
             <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon} rel="noreferrer">

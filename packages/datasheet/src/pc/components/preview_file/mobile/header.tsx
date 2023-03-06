@@ -19,8 +19,8 @@
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { MoreTool } from '../tool_bar/mobile/more_tool';
-import IconClose from 'static/icon/common/common_icon_close_small.svg';
 import styles from './style.module.less';
+import { CloseOutlined } from '@apitable/icons';
 
 interface IHeader {
   fileName: string;
@@ -45,7 +45,7 @@ export const Header: React.FC<React.PropsWithChildren<IHeader>> = props => {
     <header className={styles.previewHeader}>
       <div className={styles.headerLeft}>
         <div className={styles.toolClose} onClick={onClose}>
-          <IconClose fill={colors.defaultBg} width={16} height={16} />
+          <CloseOutlined color={colors.defaultBg} size={16} />
         </div>
       </div>
       <span className={styles.fileName}>{fileName}</span>

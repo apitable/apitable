@@ -18,7 +18,7 @@
 
 import { StoreActions, Strings, t } from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { CloseCircleFilled } from '@apitable/icons';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
@@ -26,7 +26,6 @@ import { useDispatch } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.svg';
 import styles from './style.module.less';
 
 interface IFind {
@@ -86,7 +85,7 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
         className={styles.search}
         size='small'
         autoFocus
-        prefix={<SearchIcon width={16} height={16} fill={colors.fc3} />}
+        prefix={<SearchOutlined size={16} color={colors.fc3} />}
         onChange={onChange}
         value={keyword}
         ref={inputRef}
@@ -137,7 +136,7 @@ export const Find: React.FC<React.PropsWithChildren<IFind>> = ({
       <IconButton
         onClick={() => setVisible(true)}
         className={styles.find}
-        icon={() => <SearchIcon width={16} height={16} fill={colors.fc2} />}
+        icon={() => <SearchOutlined size={16} color={colors.fc2} />}
       />
       {visible &&
         <Search

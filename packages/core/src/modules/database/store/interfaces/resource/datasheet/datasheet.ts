@@ -398,7 +398,7 @@ export interface IViewDerivation {
   groupBreakpoint?: { [key: string]: number[] };
 
   /**
-   * Guide the table view to draw the structured data of the table, 
+   * Guide the table view to draw the structured data of the table,
    * with the hierarchical structure reflected by depth.
    * [
    *    Blank 0
@@ -639,6 +639,12 @@ export interface IViewPropertyBase {
   filterInfo?: IFilterInfo;
   sortInfo?: ISortInfo;
   lockInfo?: IViewLockInfo;
+
+  /**
+   * @desc The hidden fields of the original table can be optionally displayed in the mirrored table.
+   * @default false
+   */
+  displayHiddenColumnWithinMirror?: boolean;
 }
 
 export interface IGridViewColumn extends IViewColumn {

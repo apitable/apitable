@@ -21,14 +21,13 @@ import { Tooltip } from 'antd';
 import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import RedoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_redo.svg';
-import UndoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg';
 import styles from '../style.module.less';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { IconButton, useThemeColors } from '@apitable/components';
+import { RedoOutlined, UndoOutlined } from '@apitable/icons';
 
 export const Undo: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ className }) => {
   const colors = useThemeColors();
@@ -52,8 +51,8 @@ export const Undo: React.FC<React.PropsWithChildren<{ className?: string }>> = (
       redoLength: resourceService.instance!.undoManager?.getStockLength('redo'),
     };
   }, shallowEqual);
-  const ReactUndoIcon = () => <UndoIcon width={16} height={16} fill={colors.secondLevelText} className={styles.toolIcon} />;
-  const ReactRedoIcon = () => <RedoIcon width={16} height={16} fill={colors.secondLevelText} className={styles.toolIcon} />;
+  const ReactUndoIcon = () => <UndoOutlined size={16} color={colors.secondLevelText} className={styles.toolIcon} />;
+  const ReactRedoIcon = () => <RedoOutlined size={16} color={colors.secondLevelText} className={styles.toolIcon} />;
   return (
     <div className={className}>
       <Tooltip title={`${t(Strings.undo)} ${getShortcutKeyString(ShortcutActionName.Undo)}`}>

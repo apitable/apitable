@@ -20,7 +20,7 @@ import { useCallback, useContext, useRef, useState } from 'react';
 import * as React from 'react';
 import RcTrigger from 'rc-trigger';
 import { Tooltip } from 'antd';
-import { HighlightFilled } from '@apitable/icons';
+import { HighlightOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
@@ -92,7 +92,7 @@ export const HighlightPicker = ({
         ref={triggerRef}
         onMouseDownCapture={handleMouseDown}
       >
-        <HighlightFilled color={highlightColor} />
+        <HighlightOutlined color={highlightColor} />
       </div>
     </Tooltip>
   );

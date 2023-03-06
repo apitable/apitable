@@ -43,16 +43,12 @@ import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconArrow from 'static/icon/common/common_icon_pulldown.svg';
-import IconPullDown from 'static/icon/datasheet/rightclick/rightclick_icon_pulldown.svg';
-import IconPullDownAll from 'static/icon/datasheet/rightclick/rightclick_icon_pulldown_all.svg';
-import IconRetract from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
-import IconRetractAll from 'static/icon/datasheet/rightclick/rightclick_icon_retract_all.svg';
 import { StatOption } from '../../../stat_option';
 import styles from '../../../styles.module.less';
 import { GROUP_HEIGHT } from '../constant';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { dispatch } from 'pc/worker/store';
+import { ConicalDownFilled, ConicalRightFilled, TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 
 interface IGroupTab {
   row: ILinearRowGroupTab;
@@ -132,16 +128,14 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
 
   function partOfToggle() {
     return (
-      <div className={styles.icon} onClick={clickExpandToggle}>
-        <IconArrow
-          fill={colors.thirdLevelText}
-          width={10}
-          height={8}
-          style={{
-            transition: 'all 0.3s',
-            transform: groupingCollapseIdsMap.has(pathKey) ? 'rotate(-90deg)' : 'rotate(0)',
-            marginRight: '8px',
-          }}
+      <div className={styles.icon} onClick={clickExpandToggle} style={{
+        transition: 'all 0.3s',
+        transform: groupingCollapseIdsMap.has(pathKey) ? 'rotate(-90deg)' : 'rotate(0)',
+        marginRight: '8px',
+      }}>
+        <TriangleDownFilled
+          color={colors.thirdLevelText}
+          size={10}
         />
       </div>
     );
@@ -257,7 +251,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
             }}
           >
             <div className={styles.icon}>
-              <IconPullDown width={15} height={15} fill={colors.thirdLevelText} />
+              <TriangleDownFilled size={15} color={colors.thirdLevelText} />
             </div>
             {t(Strings.expand_subgroup)}
           </li>
@@ -271,7 +265,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
             }}
           >
             <div className={styles.icon}>
-              <IconRetract width={15} height={15} fill={colors.thirdLevelText} />
+              <TriangleRightFilled size={15} color={colors.thirdLevelText} />
             </div>
             {t(Strings.collapse_subgroup)}
           </li>
@@ -285,7 +279,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
             }}
           >
             <div className={styles.icon}>
-              <IconPullDownAll width={15} height={15} fill={colors.thirdLevelText} />
+              <ConicalDownFilled size={15} color={colors.thirdLevelText} />
             </div>
             {t(Strings.expand_all_group)}
           </li>
@@ -300,7 +294,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = props => {
               }}
             >
               <div className={styles.icon}>
-                <IconRetractAll width={15} height={15} fill={colors.thirdLevelText} />
+                <ConicalRightFilled size={15} color={colors.thirdLevelText} />
               </div>
               {t(Strings.collapse_all_group)}
             </li>

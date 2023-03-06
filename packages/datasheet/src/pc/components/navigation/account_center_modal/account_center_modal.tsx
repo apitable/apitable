@@ -18,18 +18,17 @@
 
 import { IconButton, useThemeColors } from '@apitable/components';
 import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@apitable/core';
-import { CloseOutlined } from '@apitable/icons';
+import { CloseOutlined, ListOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 // @ts-ignore
-import { isSocialWecom } from 'enterprise';
+import { isSocialWecom, AccountWallet } from 'enterprise';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import { AccountManager } from './account_manager';
 import { BasicSetting } from './basic_setting';
 import { DeveloperConfiguration } from './developer_configuration';
@@ -40,8 +39,6 @@ import styles from './style.module.less';
 import { TestFunction } from './test_function';
 import { useResponsive } from 'pc/hooks';
 import { compact } from 'lodash';
-// @ts-ignore
-import { AccountWallet } from 'enterprise';
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',
@@ -135,7 +132,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
         }}
       >
         <div onClick={onClickNav} className={styles.side}>
-          <IconSide width={20} height={20} fill={onClickNav ? colors.fc1 : colors.white} />
+          <ListOutlined size={20} color={onClickNav ? colors.fc1 : colors.white} />
         </div>
         <span>{title}</span>
         <IconButton icon={CloseOutlined} onClick={onClose} size='large' />

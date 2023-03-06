@@ -18,14 +18,13 @@
 
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IAttachmentValue, IAttacheField, Selectors } from '@apitable/core';
+import { DeleteOutlined, DownloadOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import styles from './styles.module.less';
 
 interface IPreviewItemProps {
@@ -99,12 +98,12 @@ export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> =
         <div className={styles.toolBar}>
           {allowDownload && (
             <div className={styles.iconDownload} onClick={() => download(file!)}>
-              <IconDownload fill={colors.black[50]} />
+              <DownloadOutlined color={colors.black[50]} />
             </div>
           )}
           {!readonly && (
             <div className={styles.iconDelete} onClick={() => onChange(deleteFile(id))}>
-              <IconDelete fill={colors.black[50]} />
+              <DeleteOutlined color={colors.black[50]} />
             </div>
           )}
         </div>

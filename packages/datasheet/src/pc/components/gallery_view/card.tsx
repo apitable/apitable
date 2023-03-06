@@ -29,8 +29,6 @@ import { CSSProperties, useEffect } from 'react';
 import * as React from 'react';
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import IconArrow from 'static/icon/common/common_icon_pulldown.svg';
 import { RecordCard } from '../record_card/card';
 import { GalleryGroupItemType, ItemTypes } from './constant';
 import { GroupCardTitle } from './group_card_title';
@@ -39,6 +37,7 @@ import styles from './style.module.less';
 import { getAddValue, getGroupTitlePaddingTip } from './utils';
 import { StorageName, setStorage } from 'pc/utils/storage/storage';
 import { useDebounceFn } from 'ahooks';
+import { AddOutlined, TriangleDownFilled } from '@apitable/icons';
 
 interface IGalleryItemCardBase {
   columnIndex: number;
@@ -243,15 +242,17 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
         }}
         className={styles.cardGroupTitle}
       >
-        <div className={styles.icon} onClick={() => changeGroupCollapseState(recordId)}>
-          <IconArrow
-            fill={colors.thirdLevelText}
-            width={10}
-            height={8}
-            style={{
-              transition: 'all 0.3s',
-              transform: groupingCollapseIds && groupingCollapseIds.includes(recordId) ? 'rotate(-90deg)' : 'rotate(0)',
-            }}
+        <div 
+          className={styles.icon} 
+          style={{
+            transition: 'all 0.3s',
+            transform: groupingCollapseIds && groupingCollapseIds.includes(recordId) ? 'rotate(-90deg)' : 'rotate(0)',
+          }}
+          onClick={() => changeGroupCollapseState(recordId)}
+        >
+          <TriangleDownFilled
+            color={colors.thirdLevelText}
+            size={10}
           />
         </div>
         <GroupCardTitle recordId={recordId} />
@@ -300,7 +301,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
             height: cardHeight - 16,
           }}
         >
-          <TextButton prefixIcon={<AddIcon width={14} height={14} fill="currentColor" />} size={'small'}>
+          <TextButton prefixIcon={<AddOutlined size={14} color="currentColor" />} size={'small'}>
             {t(Strings.add_record)}
           </TextButton>
         </div>

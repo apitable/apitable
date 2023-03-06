@@ -18,10 +18,6 @@
 
 import { useEffect } from 'react';
 import * as React from 'react';
-import IconMore from 'static/icon/common/common_icon_more_stand.svg';
-import RedoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_redo.svg';
-import UndoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg';
-import WorkingDirIcon from 'static/icon/workbench/catalogue/work.svg';
 import styles from './style.module.less';
 import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -34,6 +30,7 @@ import { NotifyKey } from '../common/notify/notify.interface';
 import { Popover } from '../common/mobile/popover';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { stopPropagation } from 'pc/utils';
+import { FolderNormalFilled, MoreStandOutlined, RedoOutlined, UndoOutlined } from '@apitable/icons';
 
 export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
@@ -93,7 +90,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
           disabled={!undoLength}
           className={styles.moreToolBtn}
         >
-          <UndoIcon width={16} height={16} fill={!undoLength ? colors.secondLevelText : colors.black[50]} />
+          <UndoOutlined size={16} color={!undoLength ? colors.secondLevelText : colors.black[50]} />
           <span className={classNames({ [styles.toolName]: undoLength })}>{t(Strings.undo)}</span>
         </LinkButton>
       </div>
@@ -106,7 +103,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
           disabled={!redoLength}
           className={styles.moreToolBtn}
         >
-          <RedoIcon width={16} height={16} fill={!redoLength ? colors.secondLevelText : colors.black[50]} />
+          <RedoOutlined size={16} color={!redoLength ? colors.secondLevelText : colors.black[50]} />
           <span className={classNames({ [styles.toolName]: redoLength })}>{t(Strings.redo)}</span>
         </LinkButton>
       </div>
@@ -124,7 +121,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
           underline={false}
           className={styles.moreToolBtn}
         >
-          <WorkingDirIcon width={16} height={16} fill={colors.black[50]} />
+          <FolderNormalFilled size={16} color={colors.black[50]} />
           <span className={styles.toolName}>{t(Strings.file_summary)}</span>
         </LinkButton>
       </div>
@@ -151,7 +148,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <Popover content={content}>
       <IconButton
-        icon={() => <IconMore width={16} height={16} fill={colors.secondLevelText} />}
+        icon={() => <MoreStandOutlined size={16} color={colors.secondLevelText} />}
         className={styles.trigger}
       />
     </Popover>

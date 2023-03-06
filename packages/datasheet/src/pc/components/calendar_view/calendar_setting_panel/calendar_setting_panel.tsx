@@ -21,7 +21,7 @@ import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
   getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, ISetCalendarStyle, IDPrefix, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { notify } from 'pc/components/common/notify';
@@ -293,6 +293,12 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.must_one_date)}</span>}
+        {startFieldId && endFieldId && fieldMap[startFieldId].property.timeZone !== fieldMap[endFieldId].property.timeZone && (
+          <div className={styles.timeZoneTip}>
+            <WarnCircleOutlined />
+            <span>{t(Strings.time_zone_inconsistent_tips)}</span>
+          </div>
+        )}
       </div>
       {false && <div className={styles.color}>
         <div className={styles.outer}>
