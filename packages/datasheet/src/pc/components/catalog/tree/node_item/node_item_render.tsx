@@ -112,8 +112,10 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
             {node.nodePermitSet && <LockFilled />}
           </Space>
           <Space className={styles.operation} align="center">
-            {childCreatable && <span onClick={onNodeAdd}><AddOutlined color="currentColor" /></span>}
-            <span onClick={onClickMore}><MoreStandOutlined /></span>
+            {childCreatable && <span onClick={onNodeAdd} style={{ display: 'flex', alignItems: 'center' }}>
+              <AddOutlined color="currentColor" />
+            </span>}
+            <span onClick={onClickMore} style={{ display: 'flex', alignItems: 'center' }}><MoreStandOutlined /></span>
           </Space>
         </>
       }

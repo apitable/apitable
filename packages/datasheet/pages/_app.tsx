@@ -17,7 +17,18 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t, IUserInfo, TIMEZONES } from '@apitable/core';
+import {
+  Api,
+  integrateCdnHost,
+  Navigation,
+  StatusCode,
+  StoreActions,
+  Strings,
+  SystemConfig,
+  t,
+  IUserInfo,
+  getTimeZoneOffsetByUtc,
+} from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -60,7 +71,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
-import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
@@ -325,16 +335,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     const checkTimeZoneChange = () => {
       // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const offset = getTimeZoneOffsetByUtc(timeZone)!;
       if (!timeZone) return;
       // set default timeZone
       if (curTimezone === null) {
         updateUserTimeZone(timeZone);
       } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
         updateUserTimeZone(timeZone, () => {
-          const currentTimeZoneData = TIMEZONES.find((tz: { utc: string; tzCode: string; }) => tz.tzCode === timeZone);
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
-            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0  ? '+' : ''}${offset}(${timeZone})` }),
           });
         });
       }

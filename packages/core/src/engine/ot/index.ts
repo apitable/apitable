@@ -31,7 +31,7 @@ export const jot: IJot = {
   apply(json, actions) {
     try {
       return json0.apply(json, actions);
-    } catch (e) {
+    } catch (e: any) {
       if ((e as Error).message === 'invalid / missing instruction in op') {
         throw new Error(t(Strings.missing_instruction_op_error), { cause: e });
       } else {

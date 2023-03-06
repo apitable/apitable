@@ -114,6 +114,7 @@ export class OrgChartView extends View {
       columns: this.defaultColumns(srcView),
       rows: this.defaultRows(srcView),
       style: this.defaultStyle(snapshot, srcView),
+      displayHiddenColumnWithinMirror: false
     };
   }
 

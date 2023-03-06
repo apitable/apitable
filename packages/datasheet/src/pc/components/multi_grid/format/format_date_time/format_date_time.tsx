@@ -20,13 +20,12 @@ import {
   DateFormat,
   TimeFormat,
   IDateTimeBaseField,
-  IField,
   t,
   Strings,
   FieldType,
   CollectType,
   ILastModifiedTimeFieldProperty,
-  ILastModifiedTimeField,
+  ILastModifiedTimeField, getUtcOptionList, getClientTimeZone, IDateTimeBaseFieldProperty,
 } from '@apitable/core';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import * as React from 'react';
@@ -39,11 +38,12 @@ import { FieldSelectModal } from './field_select_modal';
 import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { Select } from '@apitable/components';
+import { Checkbox, Select, colorVars } from '@apitable/components';
+import { omit } from 'lodash';
 
 interface IFormatDateTime {
   currentField: IDateTimeBaseField;
-  setCurrentField: Dispatch<SetStateAction<IField>>;
+  setCurrentField: Dispatch<SetStateAction<IDateTimeBaseField>>;
 }
 
 const optionDateFormatData = [
@@ -72,7 +72,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       property: {
         ...currentField.property,
         dateFormat: value,
-      } as any,
+      },
     });
   };
 
@@ -82,7 +82,23 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       property: {
         ...currentField.property,
         timeFormat: value,
-      } as any,
+      },
+    });
+  };
+
+  const handleTimeZoneChange = ({ value }: any) => {
+    let property: IDateTimeBaseFieldProperty;
+    if (value) {
+      property = {
+        ...currentField.property,
+        timeZone: value,
+      };
+    } else {
+      property = omit(currentField.property, 'timeZone');
+    }
+    setCurrentField({
+      ...currentField,
+      property,
     });
   };
 
@@ -92,7 +108,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       property: {
         ...currentField.property,
         includeTime: checked,
-      } as any,
+      },
     });
   };
 
@@ -102,7 +118,17 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       property: {
         ...currentField.property,
         autoFill: checked,
-      } as any,
+      },
+    });
+  };
+
+  const handleIncludeTimeZoneChange = (checked: boolean) => {
+    setCurrentField({
+      ...currentField,
+      property: {
+        ...currentField.property,
+        includeTimeZone: checked,
+      },
     });
   };
 
@@ -157,7 +183,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
     }
   }, [handleCollectTypeChange, currentField]);
 
-  const { includeTime, dateFormat, timeFormat } = currentField.property;
+  const { includeTime, dateFormat, timeFormat, includeTimeZone, timeZone = '' } = currentField.property;
 
   const selectTriggerStyle: React.CSSProperties = {
     height: 40,
@@ -193,14 +219,6 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
           <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
         </div>
       </section>
-      {currentField.type === FieldType.DateTime && (
-        <section className={settingStyles.section}>
-          <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-            {t(Strings.autofill_createtime)}
-            <Switch size="small" checked={currentField.property.autoFill} onChange={handleFillChange} />
-          </div>
-        </section>
-      )}
       {includeTime && <Divider />}
       {includeTime && (
         <section className={settingStyles.section}>
@@ -213,6 +231,30 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               onSelected={handleTimeFormatChange}
               options={optionTimeFormatData}
             />
+            <Select
+              triggerCls={styles.timeZoneSelect}
+              dropdownMatchSelectWidth={false}
+              value={timeZone}
+              onSelected={handleTimeZoneChange}
+              renderValue={option => {
+                if (!option.value) {
+                  return `${option.label} ${getClientTimeZone()}`
+                }
+                return option.label;
+              }}
+              options={[{
+                label: t(Strings.follow_system_time_zone),
+                value: '',
+              }, ...getUtcOptionList()]}
+              openSearch
+              searchPlaceholder={t(Strings.search)}
+              highlightStyle={{ backgroundColor: colorVars.primaryColor, color: colorVars.black[50] }}
+            />
+            <div className={styles.showTimeZone}>
+              <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
+                {t(Strings.field_display_time_zone)}
+              </Checkbox>
+            </div>
           </ComponentDisplay>
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -223,6 +265,14 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               style={selectTriggerStyle}
             />
           </ComponentDisplay>
+        </section>
+      )}
+      {currentField.type === FieldType.DateTime && (
+        <section className={settingStyles.section}>
+          <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+            {t(Strings.autofill_createtime)}
+            <Switch size="small" checked={currentField.property.autoFill} onChange={handleFillChange} />
+          </div>
         </section>
       )}
       {isModalShow && <FieldSelectModal field={currentField} onCancel={handleModalDataCancel} onOk={handleModalDataChange} />}

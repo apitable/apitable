@@ -94,7 +94,7 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
           })}
           {...provided.dragHandleProps}
         >
-          <DragOutlined size={10} color={colors.thirdLevelText} />
+          <DragOutlined size={16} color={colors.thirdLevelText} />
         </div>
         <div onClick={stopPropagation} ref={colorPickerRef}>
           <ColorPicker onChange={onOptionChange} option={item} mask />

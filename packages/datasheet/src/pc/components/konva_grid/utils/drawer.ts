@@ -24,6 +24,7 @@ import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { autoSizerCanvas } from 'pc/components/konva_components';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { getTextWidth, textDataCache } from './get_text_width';
 import { imageCache } from './image_cache';
 import {
@@ -261,7 +262,7 @@ export class KonvaDrawer {
       });
     };
 
-    if(fillStyle) this.setStyle({ fillStyle });
+    if (fillStyle) this.setStyle({ fillStyle });
     this.ctx.textAlign = textAlign;
 
     const cacheKey = `${fontStyle}-${maxRow}-${maxWidth || 0}-${fieldType}-${text}`;
@@ -301,7 +302,7 @@ export class KonvaDrawer {
       });
     }
 
-    for (let n = 0; n < textLength; n ++) {
+    for (let n = 0; n < textLength; n++) {
       const curText = arrText[n];
       const isLineBreak = ['\n', '\r'].includes(curText);
       const singleText = isLineBreak ? '' : curText;
@@ -361,7 +362,7 @@ export class KonvaDrawer {
             showText = '';
             break;
           }
-          rowCount ++;
+          rowCount++;
           offsetY += lineHeight;
         }
         continue;
@@ -386,7 +387,7 @@ export class KonvaDrawer {
           showText = '';
           break;
         }
-        rowCount ++;
+        rowCount++;
         offsetY += lineHeight;
         continue;
       }
@@ -589,11 +590,12 @@ export class KonvaDrawer {
 
     if (title == null || id == null) return null;
     const ratio = Math.max(window.devicePixelRatio, 2);
-    const avatarSrc = isGzip && url ? `${url}?imageView2/1/w/${size * ratio}/q/100!` : (url || '');
+    const avatarSrc = isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` :
+      (url || '');
     const avatarName = getFirstWordFromString(title);
     const avatarBg = (
-      avatarSrc ? 
-        colors.defaultBg : 
+      avatarSrc ?
+        colors.defaultBg :
         (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
     );
     switch (type) {
@@ -607,14 +609,14 @@ export class KonvaDrawer {
             fill: getAvatarRandomColor(id),
             radius: 4
           });
-          const scale = size === AvatarSize.Size16 ? 0.5 : 0.6;
+          // const scale = size === AvatarSize.Size16 ? 0.5 : 0.6;
           return this.path({
-            x,
-            y,
+            x: x + 2,
+            y: y + 2,
             data: DepartmentOutlinedPath,
             size,
-            scaleX: scale,
-            scaleY: scale,
+            // scaleX: scale,
+            // scaleY: scale,
             fill: colors.defaultBg,
           });
         }

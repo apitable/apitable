@@ -16,13 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, Typography, useThemeColors } from '@apitable/components';
-import { ConfigConstant, integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@apitable/core';
+import { Button, Checkbox, Skeleton, Typography, useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName, ConfigConstant, Events, ICollaCommandOptions, integrateCdnHost, Navigation, Player, Selectors, Settings, Strings, t
+} from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { PopUpTitle } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
+import { resourceService } from 'pc/resource_service';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { IMirrorItem } from './interface';
@@ -44,7 +48,7 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
   return (
     <div className={styles.blackInner}>
       <div className={styles.imgBox}>
-        <Image src={integrateCdnHost(Settings.view_mirror_list_empty_img.value)} alt="" width={160} height={120} />
+        <Image src={integrateCdnHost(Settings.view_mirror_list_empty_img.value)} alt='' width={160} height={120} />
       </div>
       <span className={styles.emptyText}>{t(Strings.black_mirror_list_tip)}</span>
       <Button color={'primary'} onClick={createMirrorNode} disabled={!mirrorCreatable}>
@@ -71,6 +75,7 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
     const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions || {};
     return manageable && folderManageable;
   });
+  const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
 
   const { addTreeNode } = useCatalog();
 
@@ -84,22 +89,56 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
       },
       `${view!.name}${t(Strings.key_of_adjective)}${t(Strings.mirror)}`,
     );
+    Player.doTrigger(Events.datasheet_create_mirror_tip);
   };
 
   const linkTo = (id: string) => {
-    Router.push(Navigation.WORKBENCH,{
+    Router.push(Navigation.WORKBENCH, {
       params: {
         nodeId: id,
       },
     });
   };
 
+  const switchShowHiddenFieldWithinMirror = (checked: boolean) => {
+    executeCommandWithMirror(
+      () => {
+        execute({
+          cmd: CollaCommandName.ModifyViews,
+          data: [{
+            viewId: view!.id,
+            key: 'displayHiddenColumnWithinMirror',
+            value: checked
+          }]
+        });
+      },
+      {},
+    );
+  };
+
   return (
     <div className={styles.mirrorListInner}>
-      <PopUpTitle variant={'h7'} title={t(Strings.mirror)} infoUrl={t(Strings.mirror_help_url)} className={styles.boxTop} />
+      <PopUpTitle
+        variant={'h7'}
+        title={t(Strings.mirror)}
+        infoUrl={t(Strings.mirror_help_url)}
+        className={styles.boxTop}
+        rightContent={
+          <div className={styles.switchCoverFit}>
+            <Checkbox
+              checked={typeof view!.displayHiddenColumnWithinMirror === 'boolean' ? view!.displayHiddenColumnWithinMirror : true}
+              onChange={switchShowHiddenFieldWithinMirror}
+              size={14}
+            />
+            <span style={{ paddingLeft: 4 }}>
+              {t(Strings.mirror_show_hidden_checkbox)}
+            </span>
+          </div>
+        }
+      />
       {loading ? (
         <div className={styles.skeletonWrapper} style={{ width: 368, height: 200 }}>
-          <Skeleton count={2} height="24px" />
+          <Skeleton count={2} height='24px' />
         </div>
       ) : mirrorList.length ? (
         <div>

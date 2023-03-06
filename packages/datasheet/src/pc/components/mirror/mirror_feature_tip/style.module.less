@@ -1,0 +1,39 @@
+.container {
+  .paint {
+    height: 240px;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .textArea {
+    padding: 16px 24px 24px;
+
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    button {
+      display: block;
+      margin: 0 auto;
+      margin-top: 16px;
+      width: 200px;
+      height: 40px;
+    }
+  }
+}
+
+.modalWrapper {
+  :global {
+    .ant-modal-close-x {
+      display: none;
+    }
+
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+}

@@ -23,7 +23,7 @@ import {
   LinkFieldSet, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
 import {
-  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, ChevronDownOutlined
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, WarnCircleOutlined, ChevronDownOutlined
 } from '@apitable/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
@@ -467,6 +467,12 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
+        {startFieldId && endFieldId && fieldMap[startFieldId].property.timeZone !== fieldMap[endFieldId].property.timeZone && (
+          <div className={styles.timeZoneTip}>
+            <WarnCircleOutlined />
+            <span>{t(Strings.time_zone_inconsistent_tips)}</span>
+          </div>
+        )}
       </div>
 
       {/* Set taskbar colour */}

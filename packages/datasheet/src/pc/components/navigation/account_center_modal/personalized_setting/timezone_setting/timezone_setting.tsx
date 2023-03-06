@@ -18,14 +18,11 @@
 
 import { FC } from 'react';
 import { Select, Typography } from '@apitable/components';
-import { TIMEZONES, t, Strings } from '@apitable/core';
+import { t, Strings, getUtcOptionList } from '@apitable/core';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 
-const options = TIMEZONES.map((tz: { utc: string; tzCode: string; }) => ({
-  label: `UTC${tz.utc}(${tz.tzCode})`,
-  value: tz.tzCode,
-}));
+const options = getUtcOptionList();
 
 export const TimezoneSetting: FC = () => {
   const timeZone = useSelector(state => state.user.info?.timeZone!);
