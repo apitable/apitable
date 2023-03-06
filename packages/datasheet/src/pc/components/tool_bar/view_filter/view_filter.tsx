@@ -19,7 +19,7 @@
 import { IUseListenTriggerInfo, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, Field, FilterConjunction as CoreFilterConjunction, FilterDuration, getNewId, IDPrefix, IFilterInfo,
-  IGridViewProperty, Selectors, Strings, t,
+  IGridViewProperty, Selectors, Strings, t
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';

@@ -25,7 +25,7 @@ import {
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
-import { clearWizardsData, inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
+import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
 import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';

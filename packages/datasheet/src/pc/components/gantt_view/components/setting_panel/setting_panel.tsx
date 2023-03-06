@@ -23,7 +23,7 @@ import {
   LinkFieldSet, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
 import {
-  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, WarnCircleOutlined
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, WarnCircleOutlined, ChevronDownOutlined
 } from '@apitable/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
@@ -565,6 +565,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
             tokenSeparators={[',']}
             defaultValue={workDays}
             size={'middle'}
+            suffixIcon={<ChevronDownOutlined color={colors.black[500]} />}
           >
             {weekOptions.map(item => {
               return (

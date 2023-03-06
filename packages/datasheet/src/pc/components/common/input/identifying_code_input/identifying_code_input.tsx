@@ -164,7 +164,11 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
       <div className={styles.identifyingCodeInput}>
         <TextInput
           maxLength={6}
+<<<<<<< HEAD
           prefix={<ShieldCheckFilled />}
+=======
+          prefix={<ShieldCheckOutlined />}
+>>>>>>> 51da85b486d032c23c678907f4c75255f1e865a4
           placeholder={t(Strings.placeholder_enter_your_verification_code)}
           className={styles.input}
           block

@@ -687,9 +687,7 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -702,9 +700,7 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -716,9 +712,7 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -731,9 +725,7 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -746,9 +738,7 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -761,9 +751,7 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -776,9 +764,7 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -791,9 +777,7 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -806,9 +790,7 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -821,9 +803,7 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -836,9 +816,7 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -851,9 +829,7 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -866,9 +842,7 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -881,9 +855,7 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -896,9 +868,7 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -911,9 +881,7 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -926,9 +894,7 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -941,9 +907,7 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -956,9 +920,7 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -971,9 +933,7 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -986,9 +946,7 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1001,9 +959,7 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1016,9 +972,7 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1031,9 +985,7 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1046,9 +998,7 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1061,9 +1011,7 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1076,9 +1024,7 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1091,9 +1037,7 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1106,9 +1050,7 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1121,9 +1063,7 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1136,9 +1076,7 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1151,9 +1089,7 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1166,9 +1102,7 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1181,9 +1115,7 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1196,9 +1128,7 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1211,9 +1141,7 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1226,9 +1154,7 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1241,9 +1167,7 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1368,9 +1292,7 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [
-                "new_datasheet"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1428,9 +1350,7 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [
-                "permission_setting"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -5937,7 +5857,11 @@
                 ],
                 "next": "已完成添加",
                 "nextId": "player_contact_us_confirm_btn",
+<<<<<<< HEAD
                 "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"你好\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+=======
+                "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+>>>>>>> 51da85b486d032c23c678907f4c75255f1e865a4
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -7265,9 +7189,7 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "be_invited_to_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7276,9 +7198,7 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "complete_bind_email"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7286,26 +7206,20 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_email"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_phone"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [
-                    "fission_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7313,9 +7227,7 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7332,9 +7244,7 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "official_invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7343,27 +7253,21 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "redemption_code"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [
-                    "wallet_activity_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7371,9 +7275,7 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_video_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"
