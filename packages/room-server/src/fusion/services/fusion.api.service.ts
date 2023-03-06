@@ -428,6 +428,7 @@ export class FusionApiService {
    */
   public async updateRecords(dstId: string, body: RecordUpdateRo, viewId: string): Promise<ListVo> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
+    const updateRecordsProfiler = this.logger.startTimer();
     await this.fusionApiRecordService.validateRecordExists(dstId, body.getRecordIds(), ApiTipConstant.api_param_record_not_exists);
 
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
@@ -447,6 +448,7 @@ export class FusionApiService {
     });
     const auth = { token: this.request.headers.authorization };
 
+    const permissionValidationProfiler = this.logger.startTimer();
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
@@ -467,6 +469,7 @@ export class FusionApiService {
       auth,
       prependOps: updateFieldOperations,
     } as IServerSaveOptions);
+    permissionValidationProfiler.done({ message: `update ${dstId}'s records permission validation profiler, result: ${result.result}` });
 
     // No change required
     if (result.result === ExecuteResult.None) {
@@ -488,8 +491,10 @@ export class FusionApiService {
       }
 
       const records = await view.getRecords({});
+      const recordViewObjects = this.getRecordViewObjects(records);
+      updateRecordsProfiler.done({ message: `update ${dstId}'s records profiler, records count: ${records.length}` });
       return {
-        records: this.getRecordViewObjects(records),
+        records: recordViewObjects,
       };
     }
 
@@ -511,7 +516,9 @@ export class FusionApiService {
 
     CacheManager.clear();
 
-    return this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
+    const recordViewObjects = this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
+    updateRecordsProfiler.done({ message: `update ${dstId}'s records profiler, records count: ${rows.length}` });
+    return recordViewObjects;
   }
 
   private async getNewRecordListVo(
