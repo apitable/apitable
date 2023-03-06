@@ -70,10 +70,10 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   return (
     <Tooltip title={active ? t(Strings.put_away_record_comments) : t(Strings.view_record_comments)}>
       <IconButton
-        component="button"
-        shape="square"
+        component='button'
+        shape='square'
         className={active ? styles.activeIcon : styles.icon}
-        icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3}/>}
+        icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
         onClick={() => onClick()}
       />
     </Tooltip>
@@ -97,11 +97,11 @@ const SubscribeButton = ({ active, onSubOrUnsub }: { active: boolean; onSubOrUns
   return (
     <Tooltip title={active ? t(Strings.cancel_watch_record_button_tooltips) : t(Strings.watch_record_button_tooltips)}>
       <IconButton
-        component="button"
-        shape="square"
+        component='button'
+        shape='square'
         disabled={updating}
         className={active ? styles.activeIcon : styles.icon}
-        icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3}/>}
+        icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
         onClick={() => _onSubOrUnsub()}
       />
     </Tooltip>
@@ -498,6 +498,9 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     if (hasMirrorId && hasShareId) {
       return false;
     }
+    if (hasMirrorId && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
+      return false;
+    }
     const list = getStorage(StorageName.ShowHiddenFieldInExpand) || [];
     return list.includes(`${datasheetId},${view.id}`);
   });
@@ -507,10 +510,19 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
       if (hasMirrorId && hasShareId) {
         return;
       }
+      if (hasMirrorId && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
+        return;
+      }
       setShowHiddenField(state);
     },
-    [hasMirrorId, hasShareId],
+    [hasMirrorId, hasShareId, view.displayHiddenColumnWithinMirror],
   );
+
+  useEffect(() => {
+    if (hasMirrorId && !view.displayHiddenColumnWithinMirror) {
+      setShowHiddenField(false);
+    }
+  }, [view.displayHiddenColumnWithinMirror, hasMirrorId]);
 
   useUpdateEffect(() => {
     setFocusFieldId(activeId);
