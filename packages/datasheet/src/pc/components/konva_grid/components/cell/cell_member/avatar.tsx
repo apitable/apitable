@@ -66,7 +66,9 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
   const colors = theme.color;
   if (title == null || id == null) return null;
 
-  const avatarSrc = isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${src}?imageView2/1/w/${size * ratio}/q/100!` : (src || '');
+  const avatarSrc = isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? 
+    `${src}?imageView2/1/w/${size * ratio}/q/100!` : 
+    (src || '');
   const firstWord = getFirstWordFromString(title.trim());
   const avatarBg = (
     avatarSrc ?
@@ -81,13 +83,12 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
           return (
             <Icon
               type={IconType.TeamAvatar}
-              size={size}
-              scaleX={0.6}
-              scaleY={0.6}
+              size={size - 4}
+              backgroundWidth={size}
+              backgroundHeight={size}
               fill={colors.defaultBg}
               cornerRadius={4}
               background={getAvatarRandomColor(id)}
-              transformsEnabled={'all'}
             />
           );
         }

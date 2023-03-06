@@ -61,7 +61,7 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
   //   }, 0);
   // }
   const finalIcon = icon ||
-    (type ? <div className={styles.statusIcon}>{StatusIconFunc({ type, width: 24, height: 24 })}</div> : null);
+    (type ? <div className={styles.statusIcon}>{StatusIconFunc({ type })}</div> : null);
 
   const finalOnOk = () => {
     onOk && onOk();

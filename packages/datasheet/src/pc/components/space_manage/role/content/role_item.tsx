@@ -48,15 +48,18 @@ export const RoleItem: React.FC<React.PropsWithChildren<{
         {roleName}
       </Typography>
       {showMore && (
-        <div onClick={e => {
-          show(e, {
-            roleName,
-            role,
-            onEdit,
-            onDelete
-          });
-          e.stopPropagation();
-        }}>
+        <div 
+          onClick={e => {
+            show(e, {
+              roleName,
+              role,
+              onEdit,
+              onDelete
+            });
+            e.stopPropagation();
+          }}
+          style={{ display: 'flex' }}
+        >
           <MoreStandOutlined className={styles.roleItemIcon} size={16} />
         </div>
       )}

@@ -609,14 +609,14 @@ export class KonvaDrawer {
             fill: getAvatarRandomColor(id),
             radius: 4
           });
-          const scale = size === AvatarSize.Size16 ? 0.5 : 0.6;
+          // const scale = size === AvatarSize.Size16 ? 0.5 : 0.6;
           return this.path({
-            x,
-            y,
+            x: x + 2,
+            y: y + 2,
             data: DepartmentOutlinedPath,
             size,
-            scaleX: scale,
-            scaleY: scale,
+            // scaleX: scale,
+            // scaleY: scale,
             fill: colors.defaultBg,
           });
         }

@@ -89,13 +89,12 @@ const AvatarHoc = (Component: any) => {
           shape="square"
           src={src}
           style={{
-            ...style,
             backgroundColor: getAvatarRandomColor(id),
             border: !src && '0px',
             ...style,
           }}
         >
-          {!src && <UserGroupOutlined size={size * 0.75} color={colors.textCommonPrimary} />}
+          {!src && <UserGroupOutlined size={size * 0.625} color={colors.textCommonPrimary} />}
         </Component>
       );
     }
