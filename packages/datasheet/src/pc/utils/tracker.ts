@@ -18,34 +18,33 @@
 
 import { TrackEvents } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
+import { ISensors } from '../../typings';
 
-declare const sensors: {
-  login(userId: string, cb?: () => void):any;
-  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void):any;
-  setProfile(props: { [key: string]: any }, cb?: () => void):any;
-  setOnceProfile(props: { [key: string]: any }, cb?: () => void):any;
-  quick(key: string, target: Element, props?: { [key: string]: any }, cb?: () => void):any
-};
+let sensors: ISensors | undefined;
+
+if (typeof window !== "undefined") {
+  sensors = window.sensors;
+}
 
 export const tracker = {
   login(userId: string, cb?: () => void) {
-    if (!getEnvVariables().SENSORSDATA_TOKEN) return;
+    if (!getEnvVariables().SENSORSDATA_TOKEN || !sensors) return;
     return sensors.login(userId, cb);
   },
   track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void) {
-    if (!getEnvVariables().SENSORSDATA_TOKEN) return;
+    if (!getEnvVariables().SENSORSDATA_TOKEN || !sensors) return;
     return sensors.track(eventName, props, cb);
   },
   setProfile(props: { [key: string]: any }, cb?: () => void) {
-    if (!getEnvVariables().SENSORSDATA_TOKEN) return;
+    if (!getEnvVariables().SENSORSDATA_TOKEN || !sensors) return;
     return sensors.setProfile(props, cb);
   },
   setOnceProfile(props: { [key: string]: any }, cb?: () => void) {
-    if (!getEnvVariables().SENSORSDATA_TOKEN) return;
+    if (!getEnvVariables().SENSORSDATA_TOKEN || !sensors) return;
     return sensors.setOnceProfile(props, cb);
   },
   quick(key: string, target: Element, props?: { [key: string]: any }, cb?: () => void) {
-    if (!getEnvVariables().SENSORSDATA_TOKEN) return;
+    if (!getEnvVariables().SENSORSDATA_TOKEN || !sensors) return;
     return sensors.quick(key, target, props, cb);
   },
 };

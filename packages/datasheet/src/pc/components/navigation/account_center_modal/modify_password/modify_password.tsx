@@ -176,7 +176,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
     Api?.apitableChangePasswordEmail().then(res => {
       setButtonLoading(false);
       const { success, message } = res.data;
-      if (!success) {
+      if (success) {
         Message.success({ content: t(Strings.reset_password_via_emai_success) });
       }else {
         Message.error({ content: t(Strings.reset_password_via_emai_failed, { error_message: message }) });

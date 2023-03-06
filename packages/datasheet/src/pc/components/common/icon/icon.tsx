@@ -31,25 +31,24 @@ enum StatusType {
 
 interface IStatusIconFuncProps {
   type: string,
+  size?: number;
   fillColor?: string;
-  width?: number;
-  height?: number;
 }
 export const StatusIconFunc = (props: IStatusIconFuncProps) => {
-  const { type, fillColor, width = 20 } = props;
+  const { type, fillColor, size = 20 } = props;
   switch (type) {
     case StatusType.Info:
-      return InfoCircleFilled({ size: width, color: fillColor || colorVars.primaryColor });
+      return InfoCircleFilled({ size, color: fillColor || colorVars.primaryColor });
     case StatusType.Primary:
-      return InfoCircleFilled({ size: width, color: fillColor || colorVars.primaryColor });
+      return InfoCircleFilled({ size, color: fillColor || colorVars.primaryColor });
     case StatusType.Success:
-      return CheckCircleFilled({ size: width, color: fillColor || colorVars.successColor });
+      return CheckCircleFilled({ size, color: fillColor || colorVars.successColor });
     case StatusType.Error:
-      return WarnCircleFilled({ size: width });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Danger:
-      return WarnCircleFilled({ size: width });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Warning:
-      return WarnCircleFilled({ size: width, color: fillColor || colorVars.textWarnDefault });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

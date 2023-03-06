@@ -29,14 +29,24 @@ import { isNullValue } from 'model/utils';
 import { IReduxState } from '../../exports/store';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
 import {
-  BasicValueType, DateFormat, FieldType, ICreatedTimeField, IDateTimeBaseFieldProperty, IDateTimeField, ILastModifiedTimeField, IStandardValue,
-  ITimestamp, TimeFormat
+  BasicValueType,
+  DateFormat,
+  FieldType,
+  ICreatedTimeField,
+  IDateTimeBaseFieldProperty,
+  IDateTimeField,
+  IDateTimeFieldProperty,
+  ILastModifiedTimeField,
+  IStandardValue,
+  ITimestamp,
+  TimeFormat,
 } from 'types/field_types';
 import { FilterDuration, FOperator, IFilterCondition, IFilterDateTime } from 'types/view_types';
 import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'utils';
 import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
+import { getTimeZoneAbbrByUtc } from '../../config';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -101,19 +111,13 @@ dayjs.extend(utc);
 dayjs.extend(patchDayjsTimezone(timezone));
 declare const window: any;
 
-export interface IOptionalDateTimeFieldProperty {
-  // date format
-  dateFormat?: DateFormat;
-  // time format
-  timeFormat?: TimeFormat;
-  // whether includes time
-  includeTime?: boolean;
-}
+export type IOptionalDateTimeFieldProperty = Partial<IDateTimeFieldProperty>;
 
 const defaultProps = {
   dateFormat: DateFormat['YYYY/MM/DD'],
   timeFormat: TimeFormat['HH:mm'],
   includeTime: false,
+  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
 };
 
 export const getDateTimeFormat = (props: IOptionalDateTimeFieldProperty) => {
@@ -145,6 +149,14 @@ export const dateTimeFormat = (
   if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
     const date = dayjs(Number(timestamp));
     return date.format(format);
+  }
+  if (props.includeTimeZone) {
+    const timeZone = props.timeZone || defaultProps.timeZone;
+    const abbr = getTimeZoneAbbrByUtc(timeZone)!;
+    return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
+  }
+  if (!props.includeTimeZone && props.timeZone) {
+    return dayjs(Number(timestamp)).tz(props.timeZone).format(format);
   }
   return dayjs(Number(timestamp)).format(format);
 };

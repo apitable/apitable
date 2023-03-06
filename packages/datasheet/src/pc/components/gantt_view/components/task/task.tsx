@@ -17,7 +17,17 @@
  */
 
 import { lightColors } from '@apitable/components';
-import { CollaCommandName, DropDirectionType, FieldType, GanttColorType, GanttRowHeight, KONVA_DATASHEET_ID, Strings, t } from '@apitable/core';
+import {
+  CollaCommandName,
+  DropDirectionType,
+  FieldType,
+  GanttColorType,
+  GanttRowHeight,
+  getTimeZoneAbbrByUtc,
+  KONVA_DATASHEET_ID,
+  Strings,
+  t,
+} from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Context } from 'konva/lib/Context';
 import { KonvaEventObject } from 'konva/lib/Node';
@@ -145,7 +155,7 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
   const {
     workDays, onlyCalcWorkDay,
     unitWidth, rowHeight, columnWidth, columnThreshold,
-    containerWidth: ganttWidth,
+    containerWidth: ganttWidth
   } = instance;
   const taskHeight = rowHeight;
   const threshold = unitWidth / 2;
@@ -170,7 +180,7 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
     distanceToBoundaryLeft: 0,
     distanceToBoundaryRight: 0,
   });
-  const { colorOption } = ganttStyle;
+  const { colorOption, startFieldId } = ganttStyle;
   const {
     x: _x, y: _y, width, isOperating, transformType,
     distanceToTaskLeft, distanceToBoundaryLeft, distanceToTaskTop, distanceToBoundaryRight
@@ -232,23 +242,29 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
       let text = '';
       const unitStartIndex = instance.getUnitIndex(taskX);
       const unitStopIndex = instance.getUnitIndex(taskX + taskWidth) - 1;
-      const startTime = instance.getDateFromStartDate(unitStartIndex);
-      const endTime = instance.getDateFromStartDate(unitStopIndex);
+      let startTime = instance.getDateFromStartDate(unitStartIndex);
+      let endTime = instance.getDateFromStartDate(unitStopIndex);
+      const startFieldTimeZone = fieldMap[startFieldId].property.timeZone;
       const totalCount = onlyCalcWorkDay ? getDiffCountByWorkdays(startTime, endTime, workDays) : getDiffCount(startTime, endTime) + 1;
-      const totalText = onlyCalcWorkDay ?
+      let totalText = onlyCalcWorkDay ?
         t(Strings.gantt_task_total_workdays, { count: totalCount }) :
         t(Strings.gantt_task_total_date, { count: totalCount });
+      if (startFieldTimeZone) {
+        startTime = startTime.tz(startFieldTimeZone);
+        endTime = endTime.tz(startFieldTimeZone);
+        totalText = ` (${getTimeZoneAbbrByUtc(startFieldTimeZone)})，${totalText}`;
+      }
       switch (tipType) {
         case TipType.Left: {
-          text = `${startTime.format(formatStr)}，${totalText}`;
+          text = `${startTime.format(formatStr)}${totalText}`;
           break;
         }
         case TipType.Right: {
-          text = `${endTime.format(formatStr)}，${totalText}`;
+          text = `${endTime.format(formatStr)}${totalText}`;
           break;
         }
         case TipType.All: {
-          text = `${startTime.format(formatStr)} - ${endTime.format(formatStr)}，${totalText}`;
+          text = `${startTime.format(formatStr)} - ${endTime.format(formatStr)}${totalText}`;
         }
       }
       setTooltipInfo({

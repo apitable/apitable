@@ -36,8 +36,9 @@ export const getView = createCachedSelector(
     (state: IWidgetState, _viewId: string, datasheetId: string) => getViews(state, datasheetId),
     getFieldPermissionMap,
     (_state: IWidgetState, viewId: string) => viewId,
+    (state: IWidgetState) => state.pageParams?.mirrorId && state.mirrorMap?.[state.pageParams.mirrorId]?.mirror
   ],
-  (views, fieldPermissionMap, viewId) => {
+  (views, fieldPermissionMap, viewId, mirror) => {
     if (!views) {
       return;
     }
@@ -47,12 +48,28 @@ export const getView = createCachedSelector(
       return;
     }
 
+    let columns = view.columns.filter(column => {
+      const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
+      return fieldRole !== ConfigConstant.Role.None;
+    });
+
+    if (typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror && mirror) {
+      const originViewHiddenColumnIds = columns.filter(item => item.hidden).map(item => item.fieldId) || [];
+      const mirrorColumns = mirror.temporaryView?.columns;
+      const mirrorFilterColumns = mirrorColumns?.filter(item => {
+        return !originViewHiddenColumnIds.includes(item.fieldId);
+      });
+
+      if (!mirrorFilterColumns) {
+        // If mirrorFilterColumns does not exist, it means that the user has not configured a trial view in the mirror.
+        // In this case, only the hidden columns in the original view need to be filtered.
+        columns = view.columns.filter(col => !col.hidden);
+      }
+    }
+
     return {
       ...view,
-      columns: view.columns.filter(column => {
-        const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
-        return fieldRole !== ConfigConstant.Role.None;
-      })
+      columns
     };
   }
 )((state, viewId?: string, datasheetId?: string) => viewId || getViews(state, datasheetId)?.[0]?.id);
@@ -71,8 +88,8 @@ export const getFieldMap = createSelector(
     for (const fieldId in fieldMap) {
       const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, fieldId);
       if (fieldRole === Role.None) {
-      // room-server currently don't do data filter for no permission fields,
-      // so do it in selector
+        // room-server currently don't do data filter for no permission fields,
+        // so do it in selector
         continue;
       }
       _fieldMap[fieldId] = fieldMap[fieldId];
@@ -135,7 +152,7 @@ export const getViewById = (state: IWidgetState, datasheetId: string, viewId: st
   return Selectors.getTemporaryView(snapshot, viewId, datasheetId);
 };
 
-export const getVisibleColumns= (state: IWidgetState, datasheetId: string, viewId: string) => {
+export const getVisibleColumns = (state: IWidgetState, datasheetId: string, viewId: string) => {
   const columns = getViewById(state, datasheetId, viewId)?.columns;
   if (!columns) {
     return [];

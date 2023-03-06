@@ -158,10 +158,7 @@ export const TextButtonBase = styled.button.attrs(applyDefaultTheme) <ITextButto
 export const IconSpanStyled = styled.span<{ existIcon: boolean; position: string }>`
   display: flex;
   justify-content: center;
-  svg {
-    width: 14px;
-    height: 14px;
-  }
+  
   ${props => {
     if (!props.existIcon) {
       return;

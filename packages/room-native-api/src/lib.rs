@@ -3,6 +3,7 @@
 
 use datasheet::database::InitDbOptions;
 use futures::TryFutureExt;
+use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use std::env;
 
 mod datasheet;
@@ -20,8 +21,14 @@ pub fn init(env: Env, is_dev_mode: bool) -> napi::Result<()> {
   let opts = InitDbOptions {
     url: format!(
       "mysql://{user}:{password}@{host}:{port}/{database}",
-      user = env::var("MYSQL_USERNAME").unwrap_or("root".to_owned()),
-      password = env::var("MYSQL_PASSWORD").unwrap_or("qwe123456".to_owned()),
+      user = utf8_percent_encode(
+        &env::var("MYSQL_USERNAME").unwrap_or("root".to_owned()),
+        NON_ALPHANUMERIC
+      ),
+      password = utf8_percent_encode(
+        &env::var("MYSQL_PASSWORD").unwrap_or("qwe123456".to_owned()),
+        NON_ALPHANUMERIC
+      ),
       host = env::var("MYSQL_HOST").unwrap_or("localhost".to_owned()),
       port = env::var("MYSQL_PORT").unwrap_or("3306".to_owned()),
       database = env::var("MYSQL_DATABASE").unwrap_or("vikadata".to_owned()),

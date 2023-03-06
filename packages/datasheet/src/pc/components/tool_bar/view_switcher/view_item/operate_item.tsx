@@ -73,7 +73,7 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
     <div className={styles.operateItem}>
       {allowSort && (
         <div className={styles.iconMove}>
-          <DragOutlined size={10} color={colors.secondLevelText} />
+          <DragOutlined size={14} color={colors.secondLevelText} />
         </div>
       )}
       {!editing && (

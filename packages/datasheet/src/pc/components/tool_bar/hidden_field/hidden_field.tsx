@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Checkbox, ISelectValue,
+import {
+  Button, Checkbox, ISelectValue,
   IUseListenTriggerInfo,
   Select,
   Typography,
@@ -119,14 +120,14 @@ const FieldItem = ({
           onClick={() => setActiveField(item.fieldId, item[hiddenProp]!, modalClose)}
           tabIndex={index}
         >
-          {!disabledDrag && <DragOutlined size={10} color={isMobile ? colors.thirdLevelText : colors.fourthLevelText}/>}
+          {!disabledDrag && <DragOutlined size={10} color={isMobile ? colors.thirdLevelText : colors.fourthLevelText} />}
           <div className={styles.fieldIconAndTitle}>
             <div className={styles.iconType}>{getFieldTypeIcon(type)}</div>
             <div className={styles.fieldName}>
-              <HighlightWords keyword={keyword} words={name}/>
+              <HighlightWords keyword={keyword} words={name} />
             </div>
           </div>
-          {fieldRole && <FieldPermissionLock isLock/>}
+          {fieldRole && <FieldPermissionLock isLock />}
           <Switch
             checked={!item[hiddenProp]}
             onClick={(_checked, e) => {
@@ -178,7 +179,7 @@ const MAX_HEIGHT = 490;
 export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> = props => {
   const { type: hideFieldType = HideFieldType.Common, triggerInfo, mobileModalclose } = props;
   const colors = useThemeColors();
-  const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
+  const { datasheetId, mirrorId } = useSelector(state => state.pageParams)!;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const activeView = useSelector(state => Selectors.getCurrentView(state))!;
   const viewType = activeView.type;
@@ -230,7 +231,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
         columns: getMoveColumnsResult({
           viewId: activeView.id,
           data,
-          datasheetId,
+          datasheetId: datasheetId!,
         }),
       },
     );
@@ -257,7 +258,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
     }
     const firstRecord = visibleRows[0];
     const lastRecord = visibleRows[visibleRows.length - 1];
-    dispatch(StoreActions.setFieldRanges(datasheetId, [fieldId]));
+    dispatch(StoreActions.setFieldRanges(datasheetId!, [fieldId]));
     dispatch(
       StoreActions.setSelection({
         start: {
@@ -350,6 +351,22 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
       );
       return;
     }
+  };
+
+  const switchShowHiddenFieldWithinMirror = (checked: boolean) => {
+    executeCommandWithMirror(
+      () => {
+        execute({
+          cmd: CollaCommandName.ModifyViews,
+          data: [{
+            viewId: activeView.id,
+            key: 'displayHiddenColumnWithinMirror',
+            value: checked
+          }]
+        });
+      },
+      {},
+    );
   };
 
   // Whether to show hidden column names
@@ -511,7 +528,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
       <div className={styles.header}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <div className={styles.title}>
-            <Typography variant="h7">
+            <Typography variant='h7'>
               {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type)
                 ? t(Strings.set_gallery_card_style)
                 : isExclusive && isGanttView
@@ -521,15 +538,15 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
             {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type) && (
               <a
                 href={activeView.type === ViewType.Gallery ? t(Strings.gallery_style_setting_url) : t(Strings.kanban_style_setting_url)}
-                target="_blank"
-                rel="noopener noreferrer"
+                target='_blank'
+                rel='noopener noreferrer'
                 className={styles.helpIcon}
               >
                 <QuestionCircleOutlined color={colors.thirdLevelText} />
               </a>
             )}
           </div>
-          <SyncViewTip style={{ padding: '2px 0px 0px' }} content={t(Strings.view_sync_property_tip_short)} />
+          <SyncViewTip style={{ padding: '2px 0px 0px', marginBottom: 16 }} content={t(Strings.view_sync_property_tip_short)} />
         </ComponentDisplay>
 
         {activeView.type !== ViewType.Grid && activeView.type !== ViewType.Gantt && (
@@ -538,10 +555,6 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
               <>
                 <div className={styles.coverSetting} style={{ margin: '0 0 8px' }}>
                   <span className={styles.label}>{t(Strings.cover_field)}</span>
-                  <div className={styles.switchCoverFit}>
-                    <span style={{ paddingRight: 4 }}>{t(Strings.gallery_img_stretch)}</span>
-                    <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} />
-                  </div>
                 </div>
                 <Select
                   value={getDefaultCoverValue() || ''}
@@ -569,37 +582,61 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                     </Option>
                   ))}
                 </Select>
+                <div className={styles.switchCoverFit} style={{ marginTop: 8 }}>
+                  <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} />
+                  <span style={{ paddingLeft: 4 }}>{t(Strings.gallery_img_stretch)}</span>
+                </div>
               </>
             )}
-            <div className={styles.coverSetting} style={{ margin: '24px 0 4px' }}>
-              <span className={styles.label}>
-                {t(Strings.view_filed)}
-                {activeView.type === ViewType.Calendar && (
-                  <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
-                    <span className={styles.tip}>
-                      <InfoCircleOutlined />
-                    </span>
-                  </Tooltip>
-                )}
-              </span>
+            <div className={styles.label} style={{ marginTop: 16 }}>
+              {t(Strings.view_field)}
+              {activeView.type === ViewType.Calendar && (
+                <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
+                  <span className={styles.tip}>
+                    <InfoCircleOutlined />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
+            <div className={styles.coverSetting} style={{ margin: '8px 0 4px' }}>
               <div className={styles.switchCoverFit}>
-                <span style={{ paddingRight: 4 }}>{t(Strings.show_name)}</span>
-                <Checkbox checked={getIsColNameVisible(activeView.style.isColNameVisible)} onChange={switchColNameVisible} size={14} />
+                <Checkbox
+                  checked={getIsColNameVisible(activeView.style.isColNameVisible)}
+                  onChange={switchColNameVisible}
+                  size={14}
+                />
+                <span style={{ paddingLeft: 4 }}>{t(Strings.show_name)}</span>
               </div>
             </div>
           </>
         )}
+
+        {/* Config: Do not display hidden fields in mirror? */}
+        {
+          !mirrorId && !isExclusive && <div className={styles.switchCoverFit}>
+            <Checkbox
+              checked={typeof activeView.displayHiddenColumnWithinMirror === 'boolean' ? activeView.displayHiddenColumnWithinMirror : true}
+              onChange={switchShowHiddenFieldWithinMirror}
+              size={14}
+            />
+            <span style={{ paddingLeft: 4 }}>
+              {t(Strings.mirror_show_hidden_checkbox)}
+            </span>
+          </div>
+        }
+
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           <LineSearchInput
             placeholder={t(Strings.search)}
             value={query}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+            style={{ marginTop: 8 }}
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.searchWrapper}>
             <LineSearchInput
-              size="small"
+              size='small'
               placeholder={t(Strings.search)}
               value={query}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
@@ -610,9 +647,9 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
       <div className={styles.fields}>
         {filterFreeColumns.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="fieldList" direction="vertical">
+            <Droppable droppableId='fieldList' direction='vertical'>
               {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps} id="hiddenCard">
+                <div ref={provided.innerRef} {...provided.droppableProps} id='hiddenCard'>
                   {filterFreeColumns.map((item, index) => (
                     <FieldItem
                       item={item}
@@ -641,10 +678,10 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
         )}
       </div>
       <div className={styles.opAll}>
-        <Button size="small" onClick={() => hideOrShowAllField(ActionType.Hide)}>
+        <Button size='small' onClick={() => hideOrShowAllField(ActionType.Hide)}>
           {t(Strings.hide_all_fields)}
         </Button>
-        <Button size="small" onClick={() => hideOrShowAllField(ActionType.Show)}>
+        <Button size='small' onClick={() => hideOrShowAllField(ActionType.Show)}>
           {t(Strings.show_all_fields)}
         </Button>
       </div>
