@@ -377,7 +377,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds) {
+    public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
         Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
         Set<String> parentIds = new HashSet<>(nodeIds);
         while (!parentIds.isEmpty()) {
@@ -386,7 +386,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             parentIds = new HashSet<>();
             for (NodeBaseInfoDTO node : nodes) {
                 if (nodeIdToNodeMap.containsKey(node.getNodeId())
-                    || node.getType().equals(NodeType.ROOT.getNodeType())) {
+                    || (!includeRootNode && node.getType().equals(NodeType.ROOT.getNodeType()))) {
                     continue;
                 }
                 if (!nodeIdToNodeMap.containsKey(node.getParentId())) {
@@ -1832,7 +1832,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
      */
     private Map<String, String> getSuperiorPathByParentIds(List<String> parentIds) {
         // gets all parent nodes other than the non root node
-        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(parentIds);
+        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(parentIds, false);
         if (CollUtil.isEmpty(parentNodes)) {
             return null;
         }

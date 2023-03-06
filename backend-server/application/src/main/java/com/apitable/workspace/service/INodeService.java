@@ -173,13 +173,13 @@ public interface INodeService extends IService<NodeEntity> {
 
     /**
      * gets the node parent path.
-     * * don't contains root node
      *
      * @param nodeIds   node ids
+     * @param includeRootNode   include root node
      * @return List<NodeBaseInfoDTO>
      * @author Chambers
      */
-    List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds);
+    List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode);
 
     /**
      * get multi node info.

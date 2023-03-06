@@ -204,7 +204,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         String spaceId = userSpace.getSpaceId();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         List<NodeBaseInfoDTO> parentPathNodes =
-            iNodeService.getParentPathNodes(Collections.singletonList(rootNodeId));
+            iNodeService.getParentPathNodes(Collections.singletonList(rootNodeId), false);
         assertThat(parentPathNodes.size()).isEqualTo(0);
         // first level folder id
         NodeOpRo op = new NodeOpRo().toBuilder()
@@ -218,7 +218,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         op.setParentId(firstLevelFolderId);
         String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
         List<NodeBaseInfoDTO> secondLevelParentPathNodes =
-            iNodeService.getParentPathNodes(Collections.singletonList(secondLevelFolderId));
+            iNodeService.getParentPathNodes(Collections.singletonList(secondLevelFolderId), false);
         assertThat(secondLevelParentPathNodes.size()).isEqualTo(2);
         // third level folder id
         op.setParentId(secondLevelFolderId);
@@ -226,12 +226,12 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         List<String> nodeIds = new ArrayList<>();
         nodeIds.add(firstLevelFolderId2);
         nodeIds.add(thirdLevelFolderId);
-        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(nodeIds);
-        assertThat(parentPathNodes1.size()).isEqualTo(4);
+        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(nodeIds, true);
+        assertThat(parentPathNodes1.size()).isEqualTo(5);
         // The upper and lower level nodes exist at the same time
         nodeIds.add(firstLevelFolderId);
-        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(nodeIds);
-        assertThat(parentPathNodes2.size()).isEqualTo(4);
+        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(nodeIds, true);
+        assertThat(parentPathNodes2.size()).isEqualTo(5);
     }
 
     @Test

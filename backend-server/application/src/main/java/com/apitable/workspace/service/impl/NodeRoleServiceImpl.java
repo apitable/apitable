@@ -572,7 +572,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<SimpleNodeInfo> getNodeInfoWithPermissionStatus(List<String> nodeIds) {
-        List<NodeBaseInfoDTO> parentNodes = iNodeService.getParentPathNodes(nodeIds);
+        List<NodeBaseInfoDTO> parentNodes = iNodeService.getParentPathNodes(nodeIds, true);
         if (CollUtil.isEmpty(parentNodes)) {
             return new ArrayList<>();
         }
