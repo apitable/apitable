@@ -21,13 +21,13 @@ import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@api
 import { CheckOutlined, ChevronDownOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
-import { Message, MobileSelect, Modal } from 'pc/components/common';
+import { Message, MobileSelect, Modal, Popconfirm } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 // @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
@@ -40,6 +40,7 @@ export interface IPublicShareLinkProps {
 }
 
 export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isMobile }) => {
+  const [deleting, setDeleting] = useState(false);
   const dispatch = useDispatch();
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
@@ -136,13 +137,8 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
         Message.error({ content: t(Strings.close_share_tip, { status: t(Strings.fail) }) });
       }
     });
-
-    Modal.confirm({
-      title: t(Strings.close_share_link),
-      content: t(Strings.link_failed_after_close_share_link),
-      onOk,
-      type: 'warning'
-    });
+    setDeleting(false);
+    onOk();
   };
 
   /**
@@ -153,7 +149,8 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       handleUpdateShare({ onlyRead: true });
       return;
     }
-    handleCloseShare();
+
+    setDeleting(true);
   };
 
   const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
@@ -195,7 +192,16 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   return (
     <>
       <div className={styles.shareToggle}>
-        <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+        <Popconfirm
+          visible={deleting}
+          overlayClassName={styles.deleteNode}
+          title={t(Strings.link_failed_after_close_share_link)}
+          onCancel={() => {setDeleting(false);}}
+          onOk={handleCloseShare}
+          type='danger'
+        >
+          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+        </Popconfirm>
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
