@@ -38,7 +38,7 @@ public class OssProperties {
 
     private Aliyun aliyun;
 
-    private HuaweiCloud huaweicloud;
+    private HuaweiCloud huaweiCloud;
 
     private Minio minio;
 
@@ -106,12 +106,12 @@ public class OssProperties {
         this.aliyun = aliyun;
     }
 
-    public HuaweiCloud getHuaweicloud() {
-        return huaweicloud;
+    public HuaweiCloud getHuaweiCloud() {
+        return huaweiCloud;
     }
 
-    public void setHuaweicloud(HuaweiCloud huaweicloud) {
-        this.huaweicloud = huaweicloud;
+    public void setHuaweiCloud(HuaweiCloud huaweicloud) {
+        this.huaweiCloud = huaweicloud;
     }
 
     public Minio getMinio() {

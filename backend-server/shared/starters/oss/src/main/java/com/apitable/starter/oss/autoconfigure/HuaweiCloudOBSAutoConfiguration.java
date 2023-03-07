@@ -23,7 +23,7 @@ public class HuaweiCloudOBSAutoConfiguration extends  OssConnectionConfiguration
     @Bean
     @ConditionalOnMissingBean(OssClientRequestFactory.class)
     OssClientRequestFactory ossClientRequestFactory() {
-      HuaweiCloud huaweicloud = getProperties().getHuaweicloud();
+      HuaweiCloud huaweicloud = getProperties().getHuaweiCloud();
       return new HuaweiCloudOssClientRequestFactory( huaweicloud.getAccessKey(), huaweicloud.getSecretKey(), huaweicloud.getEndpoint());
     }
 }

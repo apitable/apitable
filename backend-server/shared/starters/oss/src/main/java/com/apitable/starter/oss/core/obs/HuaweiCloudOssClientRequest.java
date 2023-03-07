@@ -37,13 +37,15 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 
+/**
+ * HuaweiCloud OBS
+ */
 public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HuaweiCloudOssClientRequest.class);
   
     private final ObsClient obsClient;
     private boolean autoCreateBucket = false;
-    private MultipartState multipartState;
 
     public HuaweiCloudOssClientRequest(ObsClient obsClient) {
         this.obsClient = obsClient;
@@ -61,7 +63,6 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
                 obsClient.createBucket(bucketName);
                 // if creation failed, throw exception
                 obsClient.getBucketLocation(bucketName);
-                isExist = true;
             }
             else {
                 throw new UnsupportedOperationException("obs bucket does not exist");
@@ -130,6 +131,10 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
         }
     }
 
+    /**
+     * dealwith obsexception
+     * @param e obsexception
+     */
     private void catchObsError(ObsException e) {
         LOGGER.error("ObsException:", e);
         throw new RuntimeException("ObsException:", e);
@@ -141,21 +146,33 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String path, String mimeType, String digest)
-        throws IOException {
-            try {
-                isBucketExist(bucketName);
-                initiateMultipartUploadContext(bucketName, path, mimeType, digest);
-                multipartUpload(bucketName, path, in);
-                completeMultipartUpload(bucketName, path);
-            } catch (Exception e){
-                abortMultipartUpload(bucketName, path);
-            }
+    public void uploadStreamForObject(String bucketName, InputStream in, String path, String mimeType, String digest) throws IOException {
+        final MultipartState multipartState = new MultipartState();
+        try {
+            // check bucket
+            isBucketExist(bucketName);
+            // init multipartupload
+            initiateMultipartUploadContext(bucketName, path, mimeType, digest, multipartState);
+            // start multipartupload
+            multipartUpload(bucketName, path, in, multipartState);
+            // complete multipartupload
+            completeMultipartUpload(bucketName, path, multipartState);
+        } catch (Exception e){
+            // abort multipartupload
+            abortMultipartUpload(bucketName, path, multipartState);
+        }
     }
 
-    private void initiateMultipartUploadContext(String bucketName, String path, String mimeType, String digest) {
+    /**
+     * initiate multipart upload
+     * @param bucketName obs bucket name
+     * @param path file's store path on obs
+     * @param mimeType file mimetype
+     * @param digest file md5
+     * @param multipartState instance of MultipartState that stores multipart upload state
+     */
+    private void initiateMultipartUploadContext(String bucketName, String path, String mimeType, String digest, MultipartState multipartState) {
         InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(bucketName, path);
-        multipartState = new MultipartState();
         ObjectMetadata metadata = new ObjectMetadata();
         if(StrUtil.isNotBlank(digest)) {
             metadata.setEtag(digest);
@@ -165,27 +182,32 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
         }
         request.setMetadata(metadata);
         InitiateMultipartUploadResult result = obsClient.initiateMultipartUpload(request);
+        // mark upload flag and get uploadId which will be used in upload process and complete process
         multipartState.setUploadId(result.getUploadId());
     }
-    
-    private void multipartUpload(String bucketName, String path, InputStream in) throws IOException{
-        Long defaultPartSize = 10 * 1024 * 1024L;
-        // limit upload file size
-        Long topLimit = 5120 * 1024 * 1024L;
 
+    /**
+     * start multipart upload
+     * @param bucketName obs bucket name
+     * @param path file's store path on obs
+     * @param in file stream
+     * @param multipartState instance of MultipartState that stores multipart upload state
+     * @throws IOException ioexception
+     */
+    private void multipartUpload(String bucketName, String path, InputStream in, MultipartState multipartState) throws IOException{
+        long defaultPartSize = 10 * 1024 * 1024L;
+        //TODO: limit upload file size
+        long topLimit = 5120 * 1024 * 1024L;
         int remainedLength = in.available();
-//        if(remainedLength > topLimit)
-//        {
-//            String msg = "OBS SDK does not support file size over 5GB";
-//            LOGGER.error(msg);
-//            throw new RuntimeException(msg);
-//        }
-        Integer partNumber = 1;
+
+        int partNumber = 1;
         UploadPartRequest request = new UploadPartRequest(bucketName, path);
         request.setUploadId(multipartState.getUploadId());
+        // auto check the multipart md5
         request.setAttachMd5(true);
         request.setInput(in);
         request.setPartNumber(partNumber);
+        // don't close the inputstream by default
         request.setAutoClose(false);
         do{
             long partSize = defaultPartSize < remainedLength ? defaultPartSize : remainedLength;
@@ -193,7 +215,7 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
             request.setPartNumber(partNumber);
             try {
                 UploadPartResult result = obsClient.uploadPart(request);
-                multipartState.addPartETag(new PartEtag(result.getEtag(), result.getPartNumber()));
+                multipartState.addPartEtag(new PartEtag(result.getEtag(), result.getPartNumber()));
             }
             catch(ObsException e){
                 catchObsError(e);
@@ -203,19 +225,32 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
             partNumber++;
         }
         while(remainedLength > 0);
+        // close stream after upload
         in.close();
     }
 
-    private void completeMultipartUpload(String bucketName, String path) {
+    /**
+     * complete upload to merge all the multipart
+     * @param bucketName obs bucket name
+     * @param path obs storage key
+     * @param multipartState instance of MultipartState that stores multipart upload state
+     */
+    private void completeMultipartUpload(String bucketName, String path, MultipartState multipartState) {
         try{
-            CompleteMultipartUploadRequest request = new CompleteMultipartUploadRequest(bucketName, path, multipartState.getUploadId(), multipartState.getPartETags());
+            CompleteMultipartUploadRequest request = new CompleteMultipartUploadRequest(bucketName, path, multipartState.getUploadId(), multipartState.getPartEtags());
             obsClient.completeMultipartUpload(request);
         } catch (ObsException e) {
             catchObsError(e);
         }
     }
 
-    private void abortMultipartUpload(String bucketName, String path) {
+    /**
+     * abort the multipart which have been uploaded
+     * @param bucketName obs bucket name
+     * @param path obs storage key
+     * @param multipartState instance of MultipartState that stores multipart upload state
+     */
+    private void abortMultipartUpload(String bucketName, String path, MultipartState multipartState) {
         try{
             AbortMultipartUploadRequest request = new AbortMultipartUploadRequest(bucketName, path, multipartState.getUploadId());
             obsClient.abortMultipartUpload(request);
@@ -225,22 +260,22 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
     }
 
     public static class MultipartState implements Serializable {
-        private String _uploadId;
-        private Long _filePosition;
-        private final List<PartEtag> _partETags;
-        private Long _partSize;
-        private StorageClassEnum _storageClassEnum;
-        private Long _contentLength;
-        private Long _timestamp;
+        private String uploadId;
+        private Long filePosition;
+        private final List<PartEtag> partETags;
+        private Long partSize;
+        private StorageClassEnum storageClassEnum;
+        private Long contentLength;
+        private Long timestamp;
     
         public MultipartState() {
-            _uploadId = "";
-            _filePosition = 0L;
-            _partETags = new ArrayList<>();
-            _partSize = 0L;
-            _storageClassEnum = StorageClassEnum.STANDARD;
-            _contentLength = 0L;
-            _timestamp = System.currentTimeMillis();
+            uploadId = "";
+            filePosition = 0L;
+            partETags = new ArrayList<>();
+            partSize = 0L;
+            storageClassEnum = StorageClassEnum.STANDARD;
+            contentLength = 0L;
+            timestamp = System.currentTimeMillis();
         }
     
         public static MultipartState newMultipartState(String json) throws JsonProcessingException {
@@ -249,59 +284,59 @@ public class HuaweiCloudOssClientRequest  extends AbstractOssClientRequest{
         }
     
         public String getUploadId() {
-            return _uploadId;
+            return uploadId;
         }
     
         public void setUploadId(String id) {
-            _uploadId = id;
+            uploadId = id;
         }
     
         public Long getFilePosition() {
-            return _filePosition;
+            return filePosition;
         }
     
         public void setFilePosition(Long pos) {
-            _filePosition = pos;
+            filePosition = pos;
         }
     
-        public List<PartEtag> getPartETags() {
-            return _partETags;
+        public List<PartEtag> getPartEtags() {
+            return partETags;
         }
     
-        public void addPartETag(PartEtag tag) {
-            _partETags.add(tag);
+        public void addPartEtag(PartEtag tag) {
+            this.partETags.add(tag);
         }
     
         public Long getPartSize() {
-            return _partSize;
+            return partSize;
         }
     
         public void setPartSize(Long size) {
-            _partSize = size;
+            partSize = size;
         }
     
         public StorageClassEnum getStorageClass() {
-            return _storageClassEnum;
+            return storageClassEnum;
         }
     
         public void setStorageClass(StorageClassEnum storageClassEnum) {
-            _storageClassEnum = storageClassEnum;
+            this.storageClassEnum = storageClassEnum;
         }
     
         public Long getContentLength() {
-            return _contentLength;
+            return contentLength;
         }
     
         public void setContentLength(Long length) {
-            _contentLength = length;
+            contentLength = length;
         }
     
         public Long getTimestamp() {
-            return _timestamp;
+            return timestamp;
         }
     
         public void setTimestamp(Long timestamp) {
-            _timestamp = timestamp;
+            this.timestamp = timestamp;
         }
     }
 }
