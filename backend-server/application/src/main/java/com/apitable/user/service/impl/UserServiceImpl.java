@@ -551,6 +551,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
         loginUserCacheService.delete(userId);
+        userServiceFacade.onUserChangeEmailAction(userId, email);
     }
 
     @Override
@@ -637,6 +638,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         if (StrUtil.isNotBlank(param.getAvatar())) {
             waitDeleteOldAvatar = userEntity.getAvatar();
             userMapper.updateUserAvatarInfo(userId, param.getAvatar(), null);
+            userServiceFacade.onUserChangeAvatarAction(userId, param.getAvatar());
         }
         if (ObjectUtil.isNotNull(param.getAvatarColor())) {
             userMapper.updateUserAvatarInfo(userId, null,
@@ -686,10 +688,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             });
             user.setNickName(param.getNickName())
                 .setIsSocialNameModified(SocialNameModified.YES.getValue());
-            if (BooleanUtil.isTrue(param.getInit())) {
-                userServiceFacade.onUserChangeNicknameAction(userId,
-                    param.getNickName());
-            }
+            userServiceFacade.onUserChangeNicknameAction(userId,
+                param.getNickName(), param.getInit());
         } else {
             user.setNickName(userEntity.getNickName());
         }
@@ -1129,5 +1129,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     public String getEmailByUserId(final Long userId) {
         return userMapper.selectEmailById(userId);
+    }
+
+    @Override
+    public void closePausedUser(int limitDays) {
+        LocalDateTime endAt =
+            ClockManager.me().getLocalDateTimeNow().minusDays(limitDays);
+        LocalDateTime startAt =
+            endAt.minusDays(limitDays * 2L);
+        // After obtaining the specified cooling-off period, there has been an operation to
+        // cancel the application within 30 days before.
+        List<Long> userIds = iUserHistoryService
+            .getUserIdsByCreatedAtAndUserOperationType(startAt, endAt,
+                UserOperationType.APPLY_FOR_CLOSING);
+        log.info("Number of accounts with cooling-off:{}:{}:{}", startAt, endAt, userIds.size());
+        userIds.forEach(userId -> {
+            try {
+                closeAccount(baseMapper.selectById(userId));
+            } catch (Exception e) {
+                log.error("CloseUserError:{}", userId, e);
+            }
+        });
     }
 }
