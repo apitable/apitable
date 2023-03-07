@@ -71,6 +71,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
+import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
@@ -344,7 +345,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         updateUserTimeZone(timeZone, () => {
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
-            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0  ? '+' : ''}${offset}(${timeZone})` }),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
           });
         });
       }

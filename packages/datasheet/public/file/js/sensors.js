@@ -44,7 +44,7 @@
   heatmap_url: '//s1.vika.cn/common/js/sensors/heatmap.min.js',
   name: 'sensors',
   is_track_single_page: true,
-  server_url: `https://vika.datasink.sensorsdata.cn/sa?token=${window.__initialization_data__.envVars.SENSORSDATA_TOKEN}` + (!process.env.SSR && window.location.host.slice(-'vika.cn'.length) === 'vika.cn' ? '&project=production' : ''),
+  server_url: `https://vika.datasink.sensorsdata.cn/sa?token=352bda0fb16d392b` + (!process.env.SSR && window.location.host.slice(-'vika.cn'.length) === 'vika.cn' ? '&project=production' : ''),
   heatmap: {
     clickmap: 'default',
     scroll_notice_map: 'not_collect',

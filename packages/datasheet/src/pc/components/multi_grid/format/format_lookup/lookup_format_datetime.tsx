@@ -36,6 +36,7 @@ import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { Checkbox, colorVars, Select } from '@apitable/components';
+import { omit } from 'lodash';
 
 interface IFormatDateTime {
   currentField: IField;
@@ -102,12 +103,13 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
   };
 
   const handleIncludeTimeChange = (checked: boolean) => {
+    const omitFormatting = omit(formatting, ['timeZone', 'includeTimeZone']);
     props.setCurrentField({
       ...props.currentField,
       property: {
         ...props.currentField.property,
         formatting: {
-          ...formatting,
+          ...omitFormatting,
           includeTime: checked
         },
       },

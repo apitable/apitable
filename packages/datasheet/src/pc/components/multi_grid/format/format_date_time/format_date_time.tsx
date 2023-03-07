@@ -37,9 +37,10 @@ import { CollectTypeSelect } from './collect_type_select';
 import { FieldSelectModal } from './field_select_modal';
 import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
+import { MobileSelect, Tooltip } from 'pc/components/common';
 import { Checkbox, Select, colorVars } from '@apitable/components';
 import { omit } from 'lodash';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IFormatDateTime {
   currentField: IDateTimeBaseField;
@@ -103,10 +104,11 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
   };
 
   const handleIncludeTimeChange = (checked: boolean) => {
+    const omitProperty = omit(currentField.property, ['timeZone', 'includeTimeZone']);
     setCurrentField({
       ...currentField,
       property: {
-        ...currentField.property,
+        ...omitProperty,
         includeTime: checked,
       },
     });
@@ -222,7 +224,14 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       {includeTime && <Divider />}
       {includeTime && (
         <section className={settingStyles.section}>
-          <div className={settingStyles.sectionTitle}>{t(Strings.time_format)}</div>
+          <div className={settingStyles.sectionTitle}>
+            {t(Strings.field_incluede_time_and_time_zone_title)}
+            <Tooltip title={t(Strings.date_setting_time_zone_tooltips)} trigger={'hover'}>
+              <span className={settingStyles.sectionTitleTip}>
+                <QuestionCircleOutlined size={16} />
+              </span>
+            </Tooltip>
+          </div>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Select
               triggerCls={styles.customSelect}
