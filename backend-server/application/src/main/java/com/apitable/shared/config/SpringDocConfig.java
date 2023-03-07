@@ -13,14 +13,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
+    private static final String DEFAULT_GROUP_NAME = " ";
+
     /**
      * OpenAPI config.
      */
     @Bean
     public OpenAPI openAPI() {
         Contact contact = new Contact()
-            .name("Cloud Backend")
-            .url(System.getenv("SERVER_DOMAIN"));
+            .name("Cloud Backend");
         return new OpenAPI().info(new Info()
             .title("Api Document")
             .description("Backend_Server Api Document")
@@ -35,7 +36,7 @@ public class SpringDocConfig {
     @Bean
     public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
-            .group(System.getenv("MYSQL_DATABASE"))
+            .group(DEFAULT_GROUP_NAME)
             .pathsToMatch("/**")
             .build();
     }
