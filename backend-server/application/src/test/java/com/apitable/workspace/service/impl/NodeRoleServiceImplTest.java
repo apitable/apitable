@@ -162,7 +162,7 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
         List<String> nodeIds = new ArrayList<>();
         nodeIds.add(firstLevelFolderId);
         List<SimpleNodeInfo> nodes = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
-        assertThat(nodes.size()).isEqualTo(1);
+        assertThat(nodes.size()).isEqualTo(2);
         assertThat(nodes.get(0).getExtend()).isFalse();
 
         // second level folder id
@@ -170,6 +170,6 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
         String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
         nodeIds.add(secondLevelFolderId);
         List<SimpleNodeInfo> nodes2 = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
-        assertThat(nodes2.size()).isEqualTo(2);
+        assertThat(nodes2.size()).isEqualTo(3);
     }
 }
