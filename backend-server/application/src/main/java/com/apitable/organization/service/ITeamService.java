@@ -18,33 +18,21 @@
 
 package com.apitable.organization.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-
+import com.apitable.organization.dto.MemberIsolatedInfo;
+import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.MemberPageVo;
+import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.UnitTeamVo;
-import com.apitable.organization.dto.MemberIsolatedInfo;
-import com.apitable.organization.vo.MemberTeamPathInfo;
-import com.apitable.organization.entity.TeamEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public interface ITeamService extends IService<TeamEntity> {
-
-    /**
-     * query the member's team includes all parent team.
-     *
-     * @param spaceId space id
-     * @param memberId member id
-     * @return team ids
-     */
-    Set<Long> getTeamIdsByMemberId(String spaceId, Long memberId);
 
     /**
      * Check whether the team has members or teams
@@ -204,12 +192,6 @@ public interface ITeamService extends IService<TeamEntity> {
     void deleteTeam(Collection<Long> teamIds);
 
     /**
-     * @param spaceId space id
-     * @param teamId team id
-     */
-    void deleteSubTeam(String spaceId, Long teamId);
-
-    /**
      * Count the number of people in the team in the space. the team's members include sub teams'.
      *
      * @param spaceId space id
@@ -228,7 +210,8 @@ public interface ITeamService extends IService<TeamEntity> {
     List<TeamTreeVo> buildTree(String spaceId, List<Long> teamIds);
 
     /**
-     * Count the number of people in the team and it's sub team in the space. the team's members include sub teams'.
+     * Count the number of people in the team and it's sub team in the space.
+     * the team's members include sub teams'.
      *
      * @param teamId team id
      * @return team id - the member amount
@@ -293,11 +276,12 @@ public interface ITeamService extends IService<TeamEntity> {
     /**
      * get member's each team's full hierarchy team name
      *
-     * @paarm memberTeamMap member and team rel map
+     * @param memberTeamMap member and team rel map
      * @param spaceId space id
      * @return map
      */
-    Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap, String spaceId);
+    Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap,
+        String spaceId);
 
     /**
      * batch handle team name, get full hierarchy team names and teamId
@@ -306,5 +290,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param spaceId space id
      * @return map member's team path names
      */
-    Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds, String spaceId);
+    Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds,
+        String spaceId);
 }

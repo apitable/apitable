@@ -384,14 +384,6 @@
         </foreach>
     </select>
 
-    <select id="selectAllBySpaceId" resultType="com.apitable.organization.entity.TeamEntity">
-        SELECT *
-        FROM ${tablePrefix}unit_team
-        WHERE space_id = #{spaceId}
-          and is_deleted = 0
-        ORDER BY parent_id
-    </select>
-
     <select id="selectTeamIdsLikeName" resultType="java.lang.Long">
         SELECT vout.id
         FROM ${tablePrefix}unit_team vout
