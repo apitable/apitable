@@ -167,9 +167,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
       {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} />}
       {cardSkin && (
-        <span className={styles.skin} style={skinStyle}>
-          <Image src={cardSkin} alt='skin' width={68} height={82} />
-        </span>
+        <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle} />
       )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
         {tagText}
