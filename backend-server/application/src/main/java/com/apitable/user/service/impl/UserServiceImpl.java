@@ -76,6 +76,7 @@ import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceOpenedSheetCacheService;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.INotificationFactory;
@@ -219,7 +220,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public boolean checkByCodeAndMobile(final String code,
-                                        final String mobile) {
+        final String mobile) {
         String areaCode = StrUtil.prependIfMissing(code, "+");
         UserEntity userEntity = baseMapper.selectByMobile(mobile);
         if (userEntity == null) {
@@ -236,7 +237,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public UserEntity getByCodeAndMobilePhone(final String code,
-                                              final String mobilePhone) {
+        final String mobilePhone) {
         String areaCode = StrUtil.prependIfMissing(code, "+");
         UserEntity userEntity = baseMapper.selectByMobile(mobilePhone);
         if (userEntity == null) {
@@ -514,7 +515,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void bindMemberByEmail(final Long userId, final String spaceId,
-                                  final String email) {
+        final String email) {
         log.info("Bind member email");
         // Determine whether the email is unbound and invited
         MemberEntity member =
@@ -571,7 +572,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMobileByUserId(final Long userId, final String code,
-                                     final String mobile) {
+        final String mobile) {
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setCode(code);
@@ -620,7 +621,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // Update the last login time
         UserEntity update = new UserEntity();
         update.setId(userId);
-        update.setLastLoginTime(LocalDateTime.now());
+        update.setLastLoginTime(ClockManager.me().getLocalDateTimeNow());
         boolean flag = updateById(update);
         ExceptionUtil.isTrue(flag, SIGN_IN_ERROR);
     }
@@ -720,7 +721,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public UserInfoVo getCurrentUserInfo(final Long userId,
-                                         final String spaceId, final Boolean filter) {
+        final String spaceId, final Boolean filter) {
         log.info("Get user information and space content");
         // Query the user's basic information
         // Whether the invitation code has been used for rewards
@@ -886,8 +887,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     /**
-     * Encapsulate Notification to notify the master administrator
-     * * that the member has applied for logoff.
+     * Encapsulate Notification to notify the master administrator * that the member has applied for
+     * logoff.
      *
      * @param user   User
      * @param spaces Space List
@@ -978,7 +979,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     private boolean inactiveMemberProcess(final Long userId,
-                                          final List<MemberDTO> inactiveMembers) {
+        final List<MemberDTO> inactiveMembers) {
         if (CollUtil.isEmpty(inactiveMembers)) {
             return false;
         }
@@ -1023,7 +1024,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public List<UserLangDTO> getLangByEmails(final String expectedLang,
-                                             final List<String> emails) {
+        final List<String> emails) {
         // Maybe have performance problems, the segmented query is used.
         List<UserLangDTO> userLangs = new ArrayList<>(emails.size());
         int page =
@@ -1091,8 +1092,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     /**
-     * Query users by username.
-     * User's name can be email or area code+mobile phone number
+     * Query users by username. User's name can be email or area code+mobile phone number
      *
      * @param areaCode Area code
      * @param username User name
