@@ -29,7 +29,7 @@ import {
   ICollaCommandExecuteSuccessResult,
 } from 'command_manager';
 import { IField, ResourceType } from 'types';
-import { IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, ViewType } from 'exports/store';
+import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, ViewType } from 'exports/store';
 import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, ISetRecordOptions } from 'commands';
 import { getViewClass } from 'model';
 
@@ -70,6 +70,10 @@ export class Datasheet implements IResource {
    */
   public get snapshot(): ISnapshot {
     return Selectors.getSnapshot(this.store.getState(), this.id)!;
+  }
+
+  public set setRecordMap(recordMap: IRecordMap) {
+    Selectors.getSnapshot(this.store.getState(), this.id)!.recordMap = recordMap;
   }
 
   /**
