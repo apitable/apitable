@@ -108,7 +108,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
     public void testClosePausedAccount() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
-        getClock().addDays(1);
+        getClock().addDays(2);
         iUserService.closePausedUser(1);
         UserEntity result = iUserService.getById(userSpace.getUserId());
         assertThat(result).isNull();
