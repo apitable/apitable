@@ -168,7 +168,7 @@ mod tests {
       ]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false, true).await);
 
     assert_eq!(
       record_map,
@@ -245,7 +245,8 @@ mod tests {
       get_records(
         "dst1".to_owned(),
         Some(vec!["rec1".to_owned(), "rec2".to_owned(), "rec3".to_owned(),]),
-        false
+        false,
+        true
       )
       .await
     );
@@ -342,7 +343,7 @@ mod tests {
       .append_query_results::<MockRow, _, _>([vec![]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true, true).await);
 
     assert_eq!(
       record_map,
