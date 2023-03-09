@@ -652,6 +652,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param nodeName node name
      * @return Integer
      */
-    Integer selectCountByParentIdAndNodeName(@Param("parentId") String parentId,
+    String selectNodeIdByParentIdAndNodeName(@Param("parentId") String parentId,
                                              @Param("nodeName") String nodeName);
 }
