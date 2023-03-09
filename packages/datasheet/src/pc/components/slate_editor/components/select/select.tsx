@@ -17,17 +17,15 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { ChevronDownOutlined } from '@apitable/icons';
+import { ChevronDownOutlined, CheckOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import cx from 'classnames';
-import dynamic from 'next/dynamic';
 import { getElementDataset } from 'pc/utils';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style.module.less';
 
-const CheckOutlined = dynamic(() => import('@ant-design/icons/CheckOutlined'), { ssr: false });
 type TSelectValue = string;
 
 interface IOption {

@@ -21,9 +21,9 @@ import {
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
+import { LoadingOutlined } from '@apitable/icons';
 import { AutosaveOutlined, ChevronRightOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
-import dynamic from 'next/dynamic';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
@@ -40,8 +40,6 @@ import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise';
-
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 interface IContextMenuProps {
   activeViewId: string | undefined;
@@ -168,7 +166,7 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
     if (currentViewId !== viewId) return;
     ModalComponent.success({
       icon: null,
-      title: <Spin style={{ width: '100%' }} indicator={<LoadingOutlined size={16} color={deepPurple[500]} />} />,
+      title: <Spin style={{ width: '100%' }} indicator={<LoadingOutlined className="circle-loading" size={16} color={deepPurple[500]} />} />,
       content: t(Strings.export),
       width: 180,
       style: {
