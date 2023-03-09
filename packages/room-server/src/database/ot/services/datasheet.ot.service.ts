@@ -766,6 +766,12 @@ export class DatasheetOtService {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             return;
+          case 'displayHiddenColumnWithinMirror':
+            // ====== View displayHiddenColumnWithinMirror ======
+            if (!permission.editable || view?.lockInfo) {
+              throw new ServerException(PermissionException.OPERATION_DENIED);
+            }
+            return;
           case 'filterInfo':
             // ====== View filters ======
             if (!permission.viewFilterable || view?.lockInfo) {
