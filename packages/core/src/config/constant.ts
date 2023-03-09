@@ -466,8 +466,6 @@ export enum WizardIdConstant {
   CREATE_MIRROR_TIP = 106
 }
 
-export const DASHBOARD_MAX_WIDGET_COUNT = 30;
-
 export const WIDGET_PANEL_MAX_WIDGET_COUNT = 30;
 
 // 0 => all
