@@ -211,5 +211,6 @@ export const getEnvVars = () => {
     VIEW_NAME_MAX_COUNT: process.env.VIEW_NAME_MAX_COUNT,
     DISABLED_QINIU_COMPRESSION_PARAMS: process.env.DISABLED_QINIU_COMPRESSION_PARAMS === 'true',
     DASHBOARD_WIDGET_MAX_NUM: process.env.DASHBOARD_WIDGET_MAX_NUM,
+    WIZARD_ENABLE: process.env.WIZARD_ENABLE === 'true',
   };
 };
