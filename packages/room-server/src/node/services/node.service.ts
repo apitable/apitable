@@ -17,6 +17,7 @@
  */
 
 import { IFormProps, IPermissions, Role } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { MetaService } from 'database/resource/services/meta.service';
 import { get, omit } from 'lodash';
@@ -52,6 +53,7 @@ export class NodeService {
     }
   }
 
+  @Span()
   async checkUserForNode(userId: string, nodeId: string): Promise<string> {
     // Get the space ID which the node belongs to
     const spaceId = await this.getSpaceIdByNodeId(nodeId);
@@ -60,6 +62,7 @@ export class NodeService {
     return spaceId;
   }
 
+  @Span()
   async checkNodePermission(nodeId: string, auth: IAuthHeader): Promise<void> {
     const permission = await this.nodePermissionService.getNodeRole(nodeId, auth);
     if (!permission?.readable) {
@@ -67,6 +70,7 @@ export class NodeService {
     }
   }
 
+  @Span()
   async getMainNodeId(nodeId: string): Promise<string> {
     const raw = await this.nodeRelRepository.selectMainNodeIdByRelNodeId(nodeId);
     if (raw?.mainNodeId) {
@@ -108,6 +112,7 @@ export class NodeService {
     return omit(permission, ['userId', 'uuid', 'role', 'hasRole', 'isGhostNode', 'nodeFavorite', 'fieldPermissionMap']);
   }
 
+  @Span()
   async getNodeDetailInfo(nodeId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<NodeDetailInfo> {
     // Node permission view. If no auth is given, it is template access or share access.
     const permission = await this.nodePermissionService.getNodePermission(nodeId, auth, origin);

@@ -24,7 +24,7 @@ import * as os from 'os';
  * If you use a virtual machine or VPN to access the network, you may have obtained the wrong IP
  */
 export const getIPAddress = (): string => {
-  if(process.env.NEST_CUSTOMIZE_IP){
+  if (process.env.NEST_CUSTOMIZE_IP) {
     return process.env.NEST_CUSTOMIZE_IP;
   }
   // server local address

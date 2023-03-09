@@ -53,9 +53,10 @@ spring:
     otel:
       exporter:
         jaeger:
-          enabled: false
+          enabled: ${OTEL_JAEGER_ENABLED:false}
+          endpoint: ${OTEL_JAEGER_ENDPOINT:}
       config:
-        trace-id-ratio-based: 0.1
+        trace-id-ratio-based: ${OTEL_JAEGER_TRACE_ID_RATIO_BASED:0.1}
   logger:
     max-history-days: ${LOGGER_MAX_HISTORY_DAYS:7}
 
