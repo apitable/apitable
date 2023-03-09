@@ -18,9 +18,10 @@
 
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { CollaCommandName } from 'commands';
-import { IRecordMap, IReduxState, Selectors, StoreActions } from '../../exports/store';
+import { IRecordMap, IReduxState, Selectors } from '../../exports/store';
 import { ResourceType } from 'types';
 import { Store } from 'redux';
+import { IJOTAction, OTActionName } from 'engine';
 
 export interface IResetRecordsOptions {
   cmd: CollaCommandName.ResetRecords;
@@ -34,7 +35,7 @@ export const resetRecords: ICollaCommandDef<IResetRecordsOptions> = {
 
   execute: (context, options) => {
     const { model: state, fieldMapSnapshot } = context;
-    const { data: _data, store } = options;
+    const { data: _data } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
 
@@ -42,16 +43,23 @@ export const resetRecords: ICollaCommandDef<IResetRecordsOptions> = {
       return null;
     }
 
-    store.dispatch(StoreActions.updateSnapshot(snapshot!.datasheetId, {
-      ...snapshot,
-      recordMap: _data, 
-    }));
+    const actions: IJOTAction[] = [{
+      n: OTActionName.ObjectDelete,
+      p: ['recordMap'],
+      od: snapshot.recordMap,
+    },
+    {
+      n: OTActionName.ObjectInsert,
+      p: ['recordMap'],
+      oi: _data,
+    }
+    ];
 
     return {
       result: ExecuteResult.Success,
       resourceId: datasheetId,
       resourceType: ResourceType.Datasheet,
-      actions: [],
+      actions,
       fieldMapSnapshot
     };
   },

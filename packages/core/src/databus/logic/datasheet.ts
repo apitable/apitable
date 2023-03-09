@@ -160,7 +160,7 @@ export class Datasheet implements IResource {
     );
   }
 
-  public resetRecords(recordMap: IRecordMap): Promise<ICommandExecutionResult<void>> {
+  public resetRecords(recordMap: IRecordMap, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
     return this.doCommand<void>(
       {
         cmd: CollaCommandName.ResetRecords,
@@ -168,7 +168,7 @@ export class Datasheet implements IResource {
         data: recordMap,
         store: this.store,
       },
-      {}
+      saveOptions
     );
   }
 
