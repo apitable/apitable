@@ -1152,7 +1152,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         log.info("Number of accounts with cooling-off:{}:{}:{}", startAt, endAt, userIds.size());
         userIds.forEach(userId -> {
             try {
-                closeAccount(baseMapper.selectById(userId));
+                UserEntity user = baseMapper.selectById(userId);
+                if (null != user) {
+                    closeAccount(user);
+                }
             } catch (Exception e) {
                 log.error("CloseUserError:{}", userId, e);
             }
