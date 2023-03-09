@@ -44,16 +44,11 @@ export const resetRecords: ICollaCommandDef<IResetRecordsOptions> = {
     }
 
     const actions: IJOTAction[] = [{
-      n: OTActionName.ObjectDelete,
+      n: OTActionName.ObjectReplace,
       p: ['recordMap'],
       od: snapshot.recordMap,
-    },
-    {
-      n: OTActionName.ObjectInsert,
-      p: ['recordMap'],
       oi: _data,
-    }
-    ];
+    }];
 
     return {
       result: ExecuteResult.Success,
