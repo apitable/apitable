@@ -67,6 +67,9 @@ export class DatasheetRecordService {
   }
 
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    if (recordIds.length === 0) {
+      return this.formatRecordMap([], {}, recordIds);
+    }
     if (await this.getNativeModule()) {
       return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
     }

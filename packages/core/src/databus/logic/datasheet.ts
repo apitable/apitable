@@ -72,10 +72,6 @@ export class Datasheet implements IResource {
     return Selectors.getSnapshot(this.store.getState(), this.id)!;
   }
 
-  public set setRecordMap(recordMap: IRecordMap) {
-    Selectors.getSnapshot(this.store.getState(), this.id)!.recordMap = recordMap;
-  }
-
   /**
    * The revision number of this datasheet.
    */
@@ -161,6 +157,17 @@ export class Datasheet implements IResource {
         data: recordOptions,
       },
       saveOptions,
+    );
+  }
+
+  public resetRecords(recordMap: IRecordMap): Promise<ICommandExecutionResult<void>> {
+    return this.doCommand<void>(
+      {
+        cmd: CollaCommandName.ResetRecords,
+        datasheetId: this.id,
+        data: recordMap,
+      },
+      {}
     );
   }
 

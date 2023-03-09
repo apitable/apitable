@@ -507,7 +507,7 @@ export class FusionApiService {
     // such as the field type is changed while updating, the value may be invalid
     // so we need to reload the record map to get the correct value
     const recordMap = await this.fusionApiRecordService.getBasicRecordsByRecordIds(dstId, recordIds);
-    datasheet.setRecordMap = recordMap;
+    await datasheet.resetRecords(recordMap);
 
     CacheManager.clear();
 
