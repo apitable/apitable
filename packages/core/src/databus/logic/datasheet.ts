@@ -166,6 +166,7 @@ export class Datasheet implements IResource {
         cmd: CollaCommandName.ResetRecords,
         datasheetId: this.id,
         data: recordMap,
+        store: this.store,
       },
       {}
     );
