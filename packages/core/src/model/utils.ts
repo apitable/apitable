@@ -88,7 +88,10 @@ export const handleEmptyCellValue = <T>(cellValue: T, basicValueType?: BasicValu
     case BasicValueType.String:
       if (
         (cellValue as any).length === 0 || 
-        (Array.isArray(cellValue) && cellValue.length === 1 && typeof cellValue[0] !== 'string' && !cellValue[0]?.text)
+        (
+          Array.isArray(cellValue) && cellValue.length === 1 && 
+          Object.prototype.toString.call(cellValue[0]) === '[object Object]' && !cellValue[0]?.text
+        )
       ) {
         return null;
       }
