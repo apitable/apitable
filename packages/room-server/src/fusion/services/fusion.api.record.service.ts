@@ -18,6 +18,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
+import { RecordMap } from 'database/interfaces';
 import { difference } from 'lodash';
 import { ApiException, ApiTipId } from 'shared/exception';
 
@@ -46,5 +47,9 @@ export class FusionApiRecordService {
     if (diffs.length) {
       throw ApiException.tipError(error, { recordId: diffs.join(',') });
     }
+  }
+
+  public async getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<RecordMap> {
+    return await this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);
   }
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField } from '@apitable/core';
+import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField, IMeta } from '@apitable/core';
 import { Store } from 'redux';
 
 export interface IApiRecord {
@@ -134,6 +134,10 @@ export interface IFetchDataOptions {
    * related datasheet record map
    */
   linkedRecordMap?: ILinkedRecordMap;
+  /**
+   * datasheet meta
+   */
+  meta?: IMeta;
 }
 
 /**

@@ -454,6 +454,7 @@ export class FusionApiService {
         auth,
         recordIds,
         linkedRecordMap,
+        meta,
       },
     });
     if (datasheet === null) {
@@ -502,21 +503,15 @@ export class FusionApiService {
     if (result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipConstant.api_update_error);
     }
-
-    const newDatasheet = await this.databusService.getDatasheet(dstId, {
-      loadOptions: {
-        auth,
-        recordIds,
-        linkedRecordMap,
-      },
-    });
-    if (newDatasheet === null) {
-      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
-    }
+    // success doesn't mean that all records are updated successfully, could be partial success
+    // such as the field type is changed while updating, the value may be invalid
+    // so we need to reload the record map to get the correct value
+    const recordMap = await this.fusionApiRecordService.getBasicRecordsByRecordIds(dstId, recordIds);
+    await datasheet.resetRecords(recordMap, { auth, applyChangesets: false });
 
     CacheManager.clear();
 
-    const recordViewObjects = this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
+    const recordViewObjects = this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
     updateRecordsProfiler.done({ message: `update ${dstId}'s records profiler, records count: ${rows.length}` });
     return recordViewObjects;
   }

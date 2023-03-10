@@ -44,6 +44,7 @@ pub fn get_records(
   dst_id: String,
   record_ids: Option<Vec<String>>,
   is_deleted: bool,
+  with_comment: bool,
 ) -> napi::Result<JsObject> {
-  env.spawn_future(datasheet::services::record::get_records(dst_id, record_ids, is_deleted).err_into())
+  env.spawn_future(datasheet::services::record::get_records(dst_id, record_ids, is_deleted, with_comment).err_into())
 }

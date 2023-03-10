@@ -29,7 +29,7 @@ import {
   ICollaCommandExecuteSuccessResult,
 } from 'command_manager';
 import { IField, ResourceType } from 'types';
-import { IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, ViewType } from 'exports/store';
+import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, ViewType } from 'exports/store';
 import { CollaCommandName, IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, ISetRecordOptions } from 'commands';
 import { getViewClass } from 'model';
 
@@ -157,6 +157,18 @@ export class Datasheet implements IResource {
         data: recordOptions,
       },
       saveOptions,
+    );
+  }
+
+  public resetRecords(recordMap: IRecordMap, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.doCommand<void>(
+      {
+        cmd: CollaCommandName.ResetRecords,
+        datasheetId: this.id,
+        data: recordMap,
+        store: this.store,
+      },
+      saveOptions
     );
   }
 

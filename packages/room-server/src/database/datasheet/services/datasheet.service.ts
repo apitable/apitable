@@ -99,7 +99,7 @@ export class DatasheetService {
     getNodeInfoProfiler.done({ message: `getNodeDetailInfo ${dstId} done` });
     // Query snapshot
     const getMetaProfiler = this.logger.startTimer();
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
+    const meta = options?.meta?? await this.datasheetMetaService.getMetaDataByDstId(dstId);
     getMetaProfiler.done({ message: `getMetaProfiler ${dstId} done` });
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap =
