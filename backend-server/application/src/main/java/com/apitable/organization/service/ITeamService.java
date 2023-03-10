@@ -35,6 +35,17 @@ import java.util.Map;
 public interface ITeamService extends IService<TeamEntity> {
 
     /**
+     * Get team Tree.
+     *
+     * @param spaceId   space id
+     * @param memberId  member id
+     * @param depth     recursive depth, min 1
+     * @return List<TeamTreeVo>
+     * @author Chambers
+     */
+    List<TeamTreeVo> getTeamTree(String spaceId, Long memberId, Integer depth);
+
+    /**
      * Check whether the team has members or teams
      *
      * @param spaceId space id

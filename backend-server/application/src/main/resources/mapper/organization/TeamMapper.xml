@@ -105,6 +105,40 @@
         ORDER BY d.sequence;
     </select>
 
+    <select id="selectTeamTreeVoByTeamId"
+            resultType="com.apitable.organization.vo.TeamTreeVo">
+        SELECT ut.id AS team_id, ut.team_name, ut.parent_id, ut.sequence,
+        IF(child.id IS NULL, 0, 1) AS has_children
+        FROM ${tablePrefix}unit_team ut
+        LEFT JOIN ${tablePrefix}unit_team child ON child.parent_id = ut.id
+        AND child.is_deleted = 0
+        WHERE ut.id IN
+        <foreach item="item" index="index" collection="teamIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND ut.is_deleted = 0
+        GROUP BY ut.id
+        ORDER BY ut.sequence
+    </select>
+
+    <select id="selectTeamTreeVoByParentId"
+            resultType="com.apitable.organization.vo.TeamTreeVo">
+        SELECT ut.id AS team_id, ut.team_name, ut.parent_id, ut.sequence,
+        IF(child.id IS NULL, 0, 1) AS has_children
+        FROM ${tablePrefix}unit_team ut
+        LEFT JOIN ${tablePrefix}unit_team child ON child.parent_id = ut.id
+        AND child.is_deleted = 0
+        WHERE ut.parent_id IN
+        <foreach item="item" index="index" collection="parentIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND ut.is_deleted = 0
+        GROUP BY ut.id
+        ORDER BY ut.sequence
+    </select>
+
     <select id="selectTeamIdsByParentId" resultType="java.lang.Long">
         SELECT vout.id
         FROM ${tablePrefix}unit_team vout

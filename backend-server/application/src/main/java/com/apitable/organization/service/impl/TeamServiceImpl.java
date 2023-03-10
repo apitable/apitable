@@ -19,6 +19,7 @@
 package com.apitable.organization.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
@@ -62,12 +63,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -112,6 +115,61 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     private IRoleMemberService iRoleMemberService;
 
     @Override
+    public List<TeamTreeVo> getTeamTree(String spaceId, Long memberId, Integer depth) {
+        // check whether members are isolated from contacts
+        MemberIsolatedInfo memberIsolatedInfo =
+            this.checkMemberIsolatedBySpaceId(spaceId, memberId);
+        if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
+            List<Long> teamIds = memberIsolatedInfo.getTeamIds();
+            List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
+            List<Long> teamIdList =
+                teamTreeVos.stream().map(TeamTreeVo::getTeamId).collect(Collectors.toList());
+            // Setting the id of the parent department to 0 is equivalent to raising
+            // the level of the directly affiliated department to the first-level department
+            for (TeamTreeVo teamVO : teamTreeVos) {
+                if (teamIds.contains(teamVO.getTeamId())
+                    && !teamIdList.contains(teamVO.getParentId())) {
+                    teamVO.setParentId(0L);
+                }
+            }
+            return new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
+        }
+        Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
+        List<Long> teamIds = new ArrayList<>();
+        teamIds.add(rootTeamId);
+        List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
+        return new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
+    }
+
+    private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
+        List<TeamTreeVo> teamTreeVos = teamMapper.selectTeamTreeVoByTeamId(teamIds);
+        Map<Long, TeamTreeVo> teamIdToTeamInfoMap = teamTreeVos.stream()
+            .collect(Collectors.toMap(TeamTreeVo::getTeamId, Function.identity(),
+                (k1, k2) -> k1, LinkedHashMap::new));
+        Set<Long> parentIds = teamTreeVos.stream()
+            .filter(i -> BooleanUtil.isTrue(i.getHasChildren()))
+            .map(TeamTreeVo::getTeamId).collect(Collectors.toSet());
+        while (!parentIds.isEmpty() && depth > 0) {
+            List<TeamTreeVo> treeVos = teamMapper.selectTeamTreeVoByParentId(parentIds);
+            if (treeVos.isEmpty()) {
+                return new ArrayList<>(teamIdToTeamInfoMap.values());
+            }
+            parentIds = new HashSet<>();
+            for (TeamTreeVo vo : treeVos) {
+                if (teamIdToTeamInfoMap.containsKey(vo.getTeamId())) {
+                    continue;
+                }
+                if (BooleanUtil.isTrue(vo.getHasChildren())) {
+                    parentIds.add(vo.getTeamId());
+                }
+                teamIdToTeamInfoMap.put(vo.getTeamId(), vo);
+            }
+            depth--;
+        }
+        return new ArrayList<>(teamIdToTeamInfoMap.values());
+    }
+
+    @Override
     public MemberIsolatedInfo checkMemberIsolatedBySpaceId(String spaceId, Long memberId) {
         log.info("check whether members are isolated from contacts");
         MemberIsolatedInfo memberIsolatedInfo = new MemberIsolatedInfo();
@@ -121,7 +179,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         Long spaceMainAdminId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         // determine whether to enable address book isolation
         if (Boolean.TRUE.equals(features.getOrgIsolated())
-            && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))) {
+            && Boolean.FALSE.equals(memberId.equals(spaceMainAdminId))) {
             // obtaining administrator information
             SpaceRoleDetailVo spaceRoleDetailVo =
                 iSpaceRoleService.getRoleDetail(spaceId, memberId);

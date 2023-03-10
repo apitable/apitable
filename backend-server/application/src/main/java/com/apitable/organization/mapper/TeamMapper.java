@@ -26,6 +26,7 @@ import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.SearchTeamResultVo;
 import com.apitable.organization.vo.TeamInfoVo;
+import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.UnitTeamVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -101,6 +102,24 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      */
     List<TeamInfoVo> selectSubTeamsByParentId(@Param("spaceId") String spaceId,
         @Param("parentId") Long parentId);
+
+    /**
+     * Query team tree view
+     *
+     * @param teamIds teamIds
+     * @return List<TeamTreeVo>
+     * @author Chambers
+     */
+    List<TeamTreeVo> selectTeamTreeVoByTeamId(@Param("teamIds") Collection<Long> teamIds);
+
+    /**
+     * Query team tree view
+     *
+     * @param parentIds parentIds
+     * @return List<TeamTreeVo>
+     * @author Chambers
+     */
+    List<TeamTreeVo> selectTeamTreeVoByParentId(@Param("parentIds") Collection<Long> parentIds);
 
     /**
      * Query the directly sub team.
