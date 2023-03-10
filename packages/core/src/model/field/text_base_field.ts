@@ -24,6 +24,7 @@ import { FOperator, FOperatorDescMap, IAddOpenFieldProperty, IAPIMetaTextBaseFie
 import {
   BasicValueType, FieldType, IEmailField, IPhoneField, ISegment, ISingleTextField, IStandardValue, ITextField, IURLField, SegmentType,
 } from 'types/field_types';
+import { IOpenFilterValueString } from 'types/open/open_filter_types';
 import { fastCloneDeep, string2Segment } from 'utils';
 import { Field } from './field';
 import { StatType } from './stat';
@@ -163,7 +164,14 @@ export abstract class TextBaseField extends Field {
   }
 
   // The formatted string is directly passed in here
-  static _isMeetFilter(operator: FOperator, cellText: string | null, conditionValue: IFilterText) {
+  static _isMeetFilter(
+    operator: FOperator, cellText: string | null, conditionValue: IFilterText,
+    optFn?: {
+      containsFn?: (filterValue: string) => boolean,
+      doesNotContainFn?: (filterValue: string) => boolean
+      defaultFn?: () => boolean,
+    }
+  ) {
     if (operator === FOperator.IsEmpty) {
       return cellText == null;
     }
@@ -174,6 +182,7 @@ export abstract class TextBaseField extends Field {
       return true;
     }
     const [filterValue] = conditionValue;
+    const { containsFn, defaultFn, doesNotContainFn } = optFn || {};
     switch (operator) {
       case FOperator.Is: {
         return cellText != null && cellText.trim().toLowerCase() === filterValue.trim().toLowerCase();
@@ -184,13 +193,22 @@ export abstract class TextBaseField extends Field {
       }
 
       case FOperator.Contains: {
+        if (containsFn) {
+          return containsFn(filterValue);
+        }
         return cellText != null && TextBaseField.stringInclude(cellText, filterValue);
       }
 
       case FOperator.DoesNotContain: {
+        if (doesNotContainFn) {
+          return doesNotContainFn(filterValue);
+        }
         return cellText == null || !TextBaseField.stringInclude(cellText, filterValue);
       }
       default: {
+        if (defaultFn) {
+          return defaultFn();
+        }
         return false;
       }
     }
@@ -202,38 +220,11 @@ export abstract class TextBaseField extends Field {
 
   override isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
     const cellText = this.cellValueToString(cellValue);
-    if (operator === FOperator.IsEmpty) {
-      return cellText == null;
-    }
-    if (operator === FOperator.IsNotEmpty) {
-      return cellText != null;
-    }
-    if (conditionValue === null) {
-      return true;
-    }
-    const [filterValue] = conditionValue;
-    switch (operator) {
-      // Exact search based on the entered value, ignoring spaces and case
-      case FOperator.Is: {
-        return cellText != null && cellText.trim().toLowerCase() === filterValue.trim().toLowerCase();
-      }
-
-      case FOperator.IsNot: {
-        return cellText == null || cellText.trim().toLowerCase() !== filterValue.trim().toLowerCase();
-      }
-
-      case FOperator.Contains: {
-        return cellText != null && this.stringInclude(cellText, filterValue);
-      }
-
-      case FOperator.DoesNotContain: {
-        return cellText == null || !this.stringInclude(cellText, filterValue);
-      }
-
-      default: {
-        return super.isMeetFilter(operator, cellValue, conditionValue);
-      }
-    }
+    return TextBaseField._isMeetFilter(operator, cellText, conditionValue, {
+      containsFn: (filterValue: string) => cellText != null && this.stringInclude(cellText, filterValue),
+      doesNotContainFn: (filterValue: string) => cellText == null || !this.stringInclude(cellText, filterValue),
+      defaultFn: () => super.isMeetFilter(operator, cellValue, conditionValue)
+    });
   }
 
   cellValueToApiStandardValue(cellValue: ISegment[] | null): string | null {
@@ -260,5 +251,31 @@ export abstract class TextBaseField extends Field {
       return { error: undefined, value: null };
     }
     return this.validateUpdateOpenProperty(updateProperty);
+  }
+
+  static _filterValueToOpenFilterValue(value: IFilterText): IOpenFilterValueString {
+    return value?.[0] ?? null;
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterText): IOpenFilterValueString {
+    return TextBaseField._filterValueToOpenFilterValue(value);
+  }
+
+  static _openFilterValueToFilterValue(value: IOpenFilterValueString): IFilterText {
+    return value === null ? null : [value];
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueString): IFilterText {
+    return TextBaseField._openFilterValueToFilterValue(value);
+  }
+
+  static validateOpenFilterSchema = Joi.string().allow(null);
+
+  static _validateOpenFilterValue(value: IOpenFilterValueString) {
+    return TextBaseField.validateOpenFilterSchema.validate(value);
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValueString) {
+    return TextBaseField._validateOpenFilterValue(value);
   }
 }

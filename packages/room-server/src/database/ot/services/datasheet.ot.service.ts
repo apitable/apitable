@@ -21,6 +21,7 @@ import {
   IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState,
   IRemoteChangeset, isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
@@ -148,6 +149,7 @@ export class DatasheetOtService {
   /**
    * Analyze Operation, apply special handling accordingly
    */
+  @Span()
   async analyseOperates(
     spaceId: string,
     mainDatasheetId: string,
@@ -761,6 +763,12 @@ export class DatasheetOtService {
           case 'name':
             // ====== View rename ======
             if (!permission.viewRenamable) {
+              throw new ServerException(PermissionException.OPERATION_DENIED);
+            }
+            return;
+          case 'displayHiddenColumnWithinMirror':
+            // ====== View displayHiddenColumnWithinMirror ======
+            if (!permission.editable || view?.lockInfo) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             return;

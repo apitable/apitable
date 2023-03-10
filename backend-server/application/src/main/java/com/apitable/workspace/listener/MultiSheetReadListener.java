@@ -50,11 +50,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.StopWatch;
 
 /**
@@ -306,6 +308,8 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
+        // get current locale
+        Locale currentLang = LocaleContextHolder.getLocale();
         // 3. the current sheet resolution is complete
         log.info("======================analysis completed==============================");
 
@@ -317,7 +321,8 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             // If it is not parsed to the column header, then this sheet is empty and initializes
             // the data.
             // initialize an empty table
-            initHead(MapUtil.of(0, "标题"), context);
+            initHead(MapUtil.of(0, I18nStringsUtil.t("default_datasheet_title", currentLang)),
+                context);
         }
 
         // More than 200 columns are not allowed to write to the number table.

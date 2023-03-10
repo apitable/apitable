@@ -90,7 +90,7 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
   }
   if (showFormatType === BasicValueType.Number || showFormatType === BasicValueType.Boolean) {
     const fieldFormatting = () => ({
-      symbol: '¥',
+      symbol: '$',
       precision: 0,
       formatType: FieldType.Number,
     });

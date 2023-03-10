@@ -80,6 +80,12 @@ public class ConstProperties {
     private String dingTalkOrderDatasheet;
 
     private Integer coolingOffPeriod;
+    /**
+     * close user cron string.
+     */
+    private String closePausedUserCron;
+
+    private String emailVerificationUrl = "user/email_verification";
 
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)

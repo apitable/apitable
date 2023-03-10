@@ -3,6 +3,7 @@ import {
   IReduxState, ActionConstants, Selectors
 } from '@apitable/core';
 import { aggregationWidgetPermission, mainMessage, setPermissionAction } from '@apitable/widget-sdk';
+import { getDependenceDstIds } from 'pc/utils/dependence_dst';
 
 const updatePermissions = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>) => {
   const state = store.getState();
@@ -24,6 +25,11 @@ const syncActionSubscribeView = (store: MiddlewareAPI<Dispatch<AnyAction>, IRedu
       }
     });
   });
+};
+
+const syncActionBroadcast = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, action: AnyAction) => {
+  const foreignDatasheetIds = getDependenceDstIds(store.getState(), action.datasheetId);
+  mainMessage.syncActionBroadcast(action, foreignDatasheetIds);
 };
 
 /**
@@ -48,19 +54,19 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
         updatePermissions(store);
         return;
       }
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.DATASHEET_JOT_ACTION: {
       // datasheet update
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.SET_ACTIVE_CELL:
     case ActionConstants.CLEAR_SELECTION:
     case ActionConstants.SET_SELECTION: {
       // datasheetMap - client update
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.PATCH_VIEW_DERIVATION:
@@ -83,14 +89,14 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
     case ActionConstants.UPDATE_USER_MAP:
     case ActionConstants.RESET_UNIT_INFO: {
       // unitMap update
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.SET_USER_AVATAR:
     case ActionConstants.SET_NICKNAME:
     case ActionConstants.UPDATE_USERINFO: {
       // user info update
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.DATASHEET_ACTIVE_COLLABORATOR: // collaborator enter
@@ -99,17 +105,17 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
     case ActionConstants.DATASHEET_DEACTIVATE_COLLABORATOR: // collaborator leave
     case ActionConstants.DASHBOARD_DEACTIVATE_COLLABORATOR:
     case ActionConstants.MIRROR_DEACTIVATE_COLLABORATOR: {
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.SET_PAGE_PARAMS: {
       // activeViewId
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
     case ActionConstants.CACHE_TEMPORARY_VIEW: {
       // mirror view property update
-      mainMessage.syncActionBroadcast(action);
+      syncActionBroadcast(store, action);
       return;
     }
   }

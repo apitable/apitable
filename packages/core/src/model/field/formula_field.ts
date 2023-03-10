@@ -24,7 +24,10 @@ import { ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
 import { IReduxState } from '../../exports/store';
 import { getSnapshot } from '../../exports/store/selectors';
-import { FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat, IFilterCondition } from 'types';
+import {
+  FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat,
+  IFilterCheckbox, IFilterCondition, IFilterDateTime, IFilterText
+} from 'types';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IFormulaField, IFormulaProperty, IStandardValue, ITimestamp,
 } from 'types/field_types';
@@ -38,6 +41,10 @@ import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, joiErrorResult } from './validate_schema';
+import {
+  IOpenFilterValue, IOpenFilterValueBoolean, IOpenFilterValueDataTime, IOpenFilterValueNumber,
+  IOpenFilterValueString
+} from 'types/open/open_filter_types';
 
 export class FormulaField extends ArrayValueField {
   constructor(public override field: IFormulaField, public override state: IReduxState) {
@@ -314,6 +321,20 @@ export class FormulaField extends ArrayValueField {
   }
 
   override isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: Exclude<any, null>) {
+    const innerBasicValueTypeFilter = (cv: ICellValue) => {
+      switch (this.innerBasicValueType) {
+        case BasicValueType.Number:
+          return NumberBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
+        case BasicValueType.Boolean:
+          return CheckboxField._isMeetFilter(operator, cv, conditionValue);
+        case BasicValueType.DateTime:
+          return DateTimeBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
+        case BasicValueType.String:
+          return TextBaseField._isMeetFilter(operator, this.cellValueToString(cv), conditionValue);
+        default:
+          return false;
+      }
+    };
     switch (this.basicValueType) {
       case BasicValueType.Number:
         return NumberBaseField._isMeetFilter(operator, cellValue as number | null, conditionValue);
@@ -329,35 +350,9 @@ export class FormulaField extends ArrayValueField {
           case FOperator.DoesNotContain:
           case FOperator.IsNot:
           case FOperator.IsEmpty:
-            return (cellValue as ICellValue[]).every(cv => {
-              switch (this.innerBasicValueType) {
-                case BasicValueType.Number:
-                  return NumberBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
-                case BasicValueType.Boolean:
-                  return CheckboxField._isMeetFilter(operator, cv, conditionValue);
-                case BasicValueType.DateTime:
-                  return DateTimeBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
-                case BasicValueType.String:
-                  return TextBaseField._isMeetFilter(operator, this.cellValueToString(cv), conditionValue);
-                default:
-                  return false;
-              }
-            });
+            return (cellValue as ICellValue[]).every(innerBasicValueTypeFilter);
           default:
-            return (cellValue as ICellValue[]).some(cv => {
-              switch (this.innerBasicValueType) {
-                case BasicValueType.Number:
-                  return NumberBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
-                case BasicValueType.Boolean:
-                  return CheckboxField._isMeetFilter(operator, cv, conditionValue);
-                case BasicValueType.DateTime:
-                  return DateTimeBaseField._isMeetFilter(operator, cv as number | null, conditionValue);
-                case BasicValueType.String:
-                  return TextBaseField._isMeetFilter(operator, this.cellValueToString(cv), conditionValue);
-                default:
-                  return false;
-              }
-            });
+            return (cellValue as ICellValue[]).some(innerBasicValueTypeFilter);
         }
       default:
         return false;
@@ -425,5 +420,50 @@ export class FormulaField extends ArrayValueField {
       formatting
     };
 
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterText | IFilterCheckbox | IFilterDateTime): IOpenFilterValue {
+    switch (this.valueType) {
+      case BasicValueType.Number:
+        return NumberBaseField._filterValueToOpenFilterValue(value as IFilterText);
+      case BasicValueType.Boolean:
+        return CheckboxField._filterValueToOpenFilterValue(value as IFilterCheckbox);
+      case BasicValueType.String:
+        return TextBaseField._filterValueToOpenFilterValue(value as IFilterText);
+      case BasicValueType.DateTime:
+        return DateTimeBaseField._filterValueToOpenFilterValue(value as IFilterDateTime);
+      default:
+        return null;
+    }
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValue): IFilterText | IFilterCheckbox | IFilterDateTime {
+    switch (this.valueType) {
+      case BasicValueType.Number:
+        return NumberBaseField._openFilterValueToFilterValue(value as IOpenFilterValueNumber);
+      case BasicValueType.Boolean:
+        return CheckboxField._openFilterValueToFilterValue(value as IOpenFilterValueBoolean);
+      case BasicValueType.String:
+        return TextBaseField._openFilterValueToFilterValue(value as IOpenFilterValueString);
+      case BasicValueType.DateTime:
+        return DateTimeBaseField._openFilterValueToFilterValue(value as IOpenFilterValueDataTime);
+      default:
+        return null;
+    }
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValue) {
+    switch (this.valueType) {
+      case BasicValueType.Number:
+        return NumberBaseField._validateOpenFilterValue(value as IOpenFilterValueNumber);
+      case BasicValueType.Boolean:
+        return CheckboxField._validateOpenFilterValue(value as IOpenFilterValueBoolean);
+      case BasicValueType.String:
+        return TextBaseField._validateOpenFilterValue(value as IOpenFilterValueString);
+      case BasicValueType.DateTime:
+        return DateTimeBaseField._validateOpenFilterValue(value as IOpenFilterValueDataTime);
+      default:
+        return joiErrorResult('formula no support Array filter');
+    }
   }
 }

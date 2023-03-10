@@ -22,7 +22,7 @@
 import { Logger } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { get, omit, values } from 'lodash';
-import { sleep } from './utils';
+import { sleep } from 'shared/common';
 
 /**
  * retryable decorator

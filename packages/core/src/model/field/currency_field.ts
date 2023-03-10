@@ -112,7 +112,7 @@ export class CurrencyField extends NumberBaseField {
 
   static defaultProperty() {
     return {
-      symbol: '¥',
+      symbol: '$',
       precision: 2,
       symbolAlign: SymbolAlign.default
     };

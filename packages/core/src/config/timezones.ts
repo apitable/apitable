@@ -1485,5 +1485,15 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Apia'
     ]
+  },
+  {
+    value: '',
+    abbr: 'LINT',
+    offset: 14,
+    isdst: false,
+    text: '(UTC+14:00) Kiritimati',
+    utc: [
+      'Pacific/Kiritimati'
+    ]
   }
 ];
