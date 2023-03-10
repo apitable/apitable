@@ -36,6 +36,7 @@ export const TimezoneSetting: FC = () => {
         disabled
         dropdownMatchSelectWidth
         triggerStyle={{ width: 200 }}
+        placeholder={t(Strings.empty)}
       />
     </div >
   );
