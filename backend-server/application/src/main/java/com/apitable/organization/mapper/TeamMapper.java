@@ -81,7 +81,7 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      * @return List<TeamTreeVo>
      * @author Chambers
      */
-    List<TeamTreeVo> selectTeamTreeVoByTeamId(@Param("teamIds") Collection<Long> teamIds);
+    List<TeamTreeVo> selectTeamTreeVoByTeamIdIn(@Param("teamIds") Collection<Long> teamIds);
 
     /**
      * Query team tree view
@@ -90,7 +90,7 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      * @return List<TeamTreeVo>
      * @author Chambers
      */
-    List<TeamTreeVo> selectTeamTreeVoByParentId(@Param("parentIds") Collection<Long> parentIds);
+    List<TeamTreeVo> selectTeamTreeVoByParentIdIn(@Param("parentIds") Collection<Long> parentIds);
 
     /**
      * Query the directly sub team.

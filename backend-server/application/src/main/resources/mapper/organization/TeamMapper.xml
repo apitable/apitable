@@ -40,7 +40,7 @@
           and is_deleted = 0
     </select>
 
-    <select id="selectTeamTreeVoByTeamId"
+    <select id="selectTeamTreeVoByTeamIdIn"
             resultType="com.apitable.organization.vo.TeamTreeVo">
         SELECT ut.id AS team_id, ut.team_name, ut.parent_id, ut.sequence,
         IF(child.id IS NULL, 0, 1) AS has_children
@@ -57,7 +57,7 @@
         ORDER BY ut.sequence
     </select>
 
-    <select id="selectTeamTreeVoByParentId"
+    <select id="selectTeamTreeVoByParentIdIn"
             resultType="com.apitable.organization.vo.TeamTreeVo">
         SELECT ut.id AS team_id, ut.team_name, ut.parent_id, ut.sequence,
         IF(child.id IS NULL, 0, 1) AS has_children

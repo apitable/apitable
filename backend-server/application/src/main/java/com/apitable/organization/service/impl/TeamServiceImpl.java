@@ -147,7 +147,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
-        List<TeamTreeVo> teamTreeVos = teamMapper.selectTeamTreeVoByTeamId(teamIds);
+        List<TeamTreeVo> teamTreeVos = teamMapper.selectTeamTreeVoByTeamIdIn(teamIds);
         Map<Long, TeamTreeVo> teamIdToTeamInfoMap = teamTreeVos.stream()
             .collect(Collectors.toMap(TeamTreeVo::getTeamId, Function.identity(),
                 (k1, k2) -> k1, LinkedHashMap::new));
@@ -155,7 +155,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             .filter(i -> BooleanUtil.isTrue(i.getHasChildren()))
             .map(TeamTreeVo::getTeamId).collect(Collectors.toSet());
         while (!parentIds.isEmpty() && depth > 0) {
-            List<TeamTreeVo> treeVos = teamMapper.selectTeamTreeVoByParentId(parentIds);
+            List<TeamTreeVo> treeVos = teamMapper.selectTeamTreeVoByParentIdIn(parentIds);
             if (treeVos.isEmpty()) {
                 return new ArrayList<>(teamIdToTeamInfoMap.values());
             }
