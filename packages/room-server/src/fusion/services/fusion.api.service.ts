@@ -84,9 +84,6 @@ import { DatasheetCreateDto, FieldCreateDto } from '../vos/datasheet.create.vo';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
 import { IServerSaveOptions } from './databus/server.data.storage.provider';
-import { promisify } from 'util';
-import { RedisLock } from 'shared/helpers/redis.lock';
-import { RedisService } from '@apitable/nestjs-redis';
 
 @Injectable()
 export class FusionApiService {
@@ -100,7 +97,6 @@ export class FusionApiService {
     private readonly commandService: CommandService,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
-    private readonly redisService: RedisService,
     private readonly databusService: DataBusService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
@@ -597,80 +593,64 @@ export class FusionApiService {
    */
   public async addRecords(dstId: string, body: RecordCreateRo, viewId: string): Promise<ListVo> {
     await this.checkDstRecordCount(dstId, body);
-    const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    /*
-     * Add locks to resources, api of the same resource can only be consumed sequentially.
-     * Solve the problem of concurrent writing of link fields and incomplete data of associated tables, 120 seconds timeout
-     */
-    const unlock = await lock('api.add.' + dstId, 120 * 1000);
+    const addRecordsProfiler = this.logger.startTimer();
 
-    try {
-      const addRecordsProfiler = this.logger.startTimer();
+    const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
+    const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
 
-      const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
-      const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
-
-      // Convert written fields
-      const auth = { token: this.request.headers.authorization };
-      const datasheet = await this.databusService.getDatasheet(dstId, {
-        loadOptions: {
-          auth,
-          recordIds: [],
-          linkedRecordMap: this.request[DATASHEET_LINKED],
-        },
-      });
-      if (datasheet === null) {
-        throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
-      }
-
-      if (viewId) {
-        await this.checkViewExists(datasheet, viewId);
-      }
-
-      const updateFieldOperations = await this.getFieldUpdateOps(datasheet, auth);
-
-      const result = await datasheet.addRecords(
-        {
-          viewId: meta.views[0]!.id,
-          index: meta.views[0]!.rows.length,
-          recordValues: body.records.map(record => record.fields),
-          ignoreFieldPermission: true,
-        },
-        { auth, prependOps: updateFieldOperations },
-      );
-      if (result.result !== ExecuteResult.Success) {
-        throw ApiException.tipError(ApiTipConstant.api_insert_error);
-      }
-
-      const userId = result.saveResult as string;
-      const recordIds = result.data as string[];
-
-      // API submission requires a record source for tracking the source of the record
-      this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
-      const rows = recordIds.map(recordId => {
-        return { recordId };
-      });
-
-      const newDatasheet = await this.databusService.getDatasheet(dstId, {
-        loadOptions: {
-          auth,
-          recordIds,
-          linkedRecordMap: this.request[DATASHEET_LINKED],
-        },
-      });
-      if (newDatasheet === null) {
-        throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
-      }
-
-      addRecordsProfiler.done({
-        message: `addRecords ${dstId} profiler`,
-      });
-
-      return this.getNewRecordListVo(newDatasheet, { viewId, rows, fieldMap });
-    } finally {
-      await unlock();
+    // Convert written fields
+    const auth = { token: this.request.headers.authorization };
+    const datasheet = await this.databusService.getDatasheet(dstId, {
+      loadOptions: {
+        auth,
+        recordIds: [],
+        linkedRecordMap: this.request[DATASHEET_LINKED],
+        meta
+      },
+    });
+    if (datasheet === null) {
+      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
+
+    if (viewId) {
+      await this.checkViewExists(datasheet, viewId);
+    }
+
+    const updateFieldOperations = await this.getFieldUpdateOps(datasheet, auth);
+
+    const result = await datasheet.addRecords(
+      {
+        viewId: meta.views[0]!.id,
+        index: meta.views[0]!.rows.length,
+        recordValues: body.records.map(record => record.fields),
+        ignoreFieldPermission: true,
+      },
+      { auth, prependOps: updateFieldOperations },
+    );
+    if (result.result !== ExecuteResult.Success) {
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
+    }
+
+    const userId = result.saveResult as string;
+    const recordIds = result.data as string[];
+
+    // API submission requires a record source for tracking the source of the record
+    this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
+    const rows = recordIds.map(recordId => {
+      return { recordId };
+    });
+
+    // success doesn't mean that all records are updated successfully, could be partial success
+    // such as the field type is changed while updating, the value may be invalid
+    // so we need to reload the record map to get the correct value
+    const recordMap = await this.fusionApiRecordService.getBasicRecordsByRecordIds(dstId, recordIds);
+    await datasheet.resetRecords(recordMap, { auth, applyChangesets: false });
+
+    addRecordsProfiler.done({
+      message: `addRecords ${dstId} profiler`,
+    });
+
+    return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
   private getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
