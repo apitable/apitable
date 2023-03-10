@@ -84,9 +84,6 @@ import { DatasheetCreateDto, FieldCreateDto } from '../vos/datasheet.create.vo';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
 import { IServerSaveOptions } from './databus/server.data.storage.provider';
-import { promisify } from 'util';
-import { RedisLock } from 'shared/helpers/redis.lock';
-import { RedisService } from '@apitable/nestjs-redis';
 
 @Injectable()
 export class FusionApiService {
@@ -100,7 +97,6 @@ export class FusionApiService {
     private readonly commandService: CommandService,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
-    private readonly redisService: RedisService,
     private readonly databusService: DataBusService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
