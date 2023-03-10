@@ -25,19 +25,16 @@ import static com.apitable.organization.enums.OrganizationException.TEAM_HAS_SUB
 import static com.apitable.organization.enums.OrganizationException.UPDATE_TEAM_ERROR;
 import static com.apitable.organization.enums.OrganizationException.UPDATE_TEAM_LEVEL_ERROR;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
-import com.apitable.organization.dto.MemberIsolatedInfo;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.ro.CreateTeamRo;
 import com.apitable.organization.ro.UpdateTeamRo;
-import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.TeamInfoVo;
@@ -54,10 +51,8 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -84,9 +79,6 @@ public class TeamController {
 
     @Resource
     private TeamMemberRelMapper teamMemberRelMapper;
-
-    @Resource
-    private IOrganizationService iOrganizationService;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
@@ -140,38 +132,16 @@ public class TeamController {
         @Parameter(name = "teamId", description = "team id",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
-    public ResponseData<List<TeamInfoVo>> getSubTeams(
+    public ResponseData<List<TeamTreeVo>> getSubTeams(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
-        Long memberId = LoginContext.me().getMemberId();
-        List<TeamInfoVo> teamInfos;
+        Long temId = teamId == 0 ? iTeamService.getRootTeamId(spaceId) : teamId;
+        List<TeamTreeVo> teamTreeVos =
+            teamMapper.selectTeamTreeVoByParentIdIn(Collections.singletonList(temId));
         if (teamId == 0) {
-            // check whether members are isolated from contacts
-            MemberIsolatedInfo memberIsolatedInfo =
-                iTeamService.checkMemberIsolatedBySpaceId(spaceId, memberId);
-            if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
-                // Load the first-layer department ID of the department to which a member belongs
-                List<Long> loadFirstTeamIds = iOrganizationService.loadMemberFirstTeamIds(spaceId,
-                    memberIsolatedInfo.getTeamIds());
-                teamInfos = teamMapper.selectTeamInfoByTeamIds(spaceId, loadFirstTeamIds);
-            } else {
-                teamId = teamMapper.selectRootIdBySpaceId(spaceId);
-                teamInfos = teamMapper.selectRootSubTeams(spaceId, teamId);
-            }
-        } else {
-            teamInfos = teamMapper.selectSubTeamsByParentId(spaceId, teamId);
+            teamTreeVos.forEach(i -> i.setParentId(0L));
         }
-        if (CollUtil.isEmpty(teamInfos)) {
-            return ResponseData.success(teamInfos);
-        }
-        // get team's and sub team's members number.
-        Map<Long, Integer> map = iTeamService.getTeamMemberCountMap(teamId);
-        teamInfos.forEach(data -> {
-            if (data.getHasChildren()) {
-                data.setMemberCount(map.get(data.getTeamId()));
-            }
-        });
-        return ResponseData.success(teamInfos);
+        return ResponseData.success(teamTreeVos);
     }
 
     /**

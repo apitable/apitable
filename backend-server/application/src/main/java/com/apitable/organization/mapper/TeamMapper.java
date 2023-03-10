@@ -25,7 +25,6 @@ import com.apitable.organization.dto.TeamPathInfo;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.SearchTeamResultVo;
-import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.UnitTeamVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -74,34 +73,6 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      * @return the maximum sorting
      */
     Integer selectMaxSequenceByParentId(@Param("parentId") Long parentId);
-
-    /**
-     * Query the sub team of the root team
-     *
-     * @param spaceId space id
-     * @param parentId parent team id
-     * @return TeamInfoVo
-     */
-    List<TeamInfoVo> selectRootSubTeams(@Param("spaceId") String spaceId,
-        @Param("parentId") Long parentId);
-
-    /**
-     * @param spaceId space id
-     * @param teamIds team ids
-     * @return TeamInfoVos
-     */
-    List<TeamInfoVo> selectTeamInfoByTeamIds(@Param("spaceId") String spaceId,
-        @Param("teamIds") List<Long> teamIds);
-
-    /**
-     * The result does not contain its own
-     *
-     * @param spaceId space id
-     * @param parentId parent team id
-     * @return TeamInfoVos
-     */
-    List<TeamInfoVo> selectSubTeamsByParentId(@Param("spaceId") String spaceId,
-        @Param("parentId") Long parentId);
 
     /**
      * Query team tree view
