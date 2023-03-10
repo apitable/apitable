@@ -40,7 +40,6 @@ import com.apitable.organization.ro.UpdateTeamRo;
 import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.vo.MemberPageVo;
-import com.apitable.organization.vo.OrganizationUnitVo;
 import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
@@ -173,60 +172,6 @@ public class TeamController {
             }
         });
         return ResponseData.success(teamInfos);
-    }
-
-    /**
-     * Query team's sub teams and members.
-     */
-    @GetResource(path = "/getSubTeamsAndMembers", name = "Query team's sub teams and members")
-    @Operation(summary = "Query team's sub teams and members", description = "Query team's sub "
-        + "teams and members, query sub team by team id. if team id lack, default root team.")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "spaceId", description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id",
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
-    })
-    public ResponseData<List<OrganizationUnitVo>> getSubTeamsAndMember(
-        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
-        String spaceId = LoginContext.me().getSpaceId();
-        if (teamId == 0) {
-            teamId = teamMapper.selectRootIdBySpaceId(spaceId);
-        }
-        // query sub departments and members
-        List<OrganizationUnitVo> resList = new ArrayList<>();
-        //  list of directly sub departments
-        List<TeamInfoVo> teamList = teamMapper.selectSubTeamsByParentId(spaceId, teamId);
-        // get the number of member in the sub department
-        Map<Long, Integer> map = iTeamService.getTeamMemberCountMap(teamId);
-        teamList.forEach(team -> {
-            OrganizationUnitVo vo = new OrganizationUnitVo();
-            vo.setId(team.getTeamId());
-            vo.setName(team.getTeamName());
-            vo.setType(1);
-            vo.setShortName(StrUtil.subWithLength(team.getTeamName(), 0, 1));
-            vo.setMemberCount(map.get(vo.getId()));
-            vo.setHasChildren(team.getHasChildren());
-            resList.add(vo);
-        });
-
-        // directly department's member'
-        List<MemberPageVo> memberList =
-            teamMapper.selectMembersByTeamId(Collections.singletonList(teamId));
-        memberList.forEach(member -> {
-            OrganizationUnitVo vo = new OrganizationUnitVo();
-            vo.setId(member.getMemberId());
-            vo.setName(StrUtil.isNotEmpty(member.getMemberName()) ? member.getMemberName()
-                : member.getEmail());
-            vo.setType(2);
-            vo.setAvatar(member.getAvatar());
-            vo.setTeams(member.getTeams());
-            vo.setIsActive(member.getIsActive());
-            resList.add(vo);
-        });
-        return ResponseData.success(resList);
     }
 
     /**
