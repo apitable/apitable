@@ -30,6 +30,7 @@ import { FOperator, IFilterCondition, IFilterMultiSelect } from 'types/view_type
 import { hasIntersect, isSameSet, isSelectType } from 'utils';
 import { DatasheetActions } from '../../datasheet';
 import { isOptionId, SelectField } from './common_select_field';
+import { IOpenFilterValueMultiSelect } from 'types/open/open_filter_types';
 
 export class MultiSelectField extends SelectField {
   constructor(public override field: IMultiSelectField, public override state: IReduxState) {
@@ -348,5 +349,27 @@ export class MultiSelectField extends SelectField {
       return result;
     }
     return this.validateWriteOpenOptionsEffect(updateProperty, effectOption);
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterMultiSelect): IOpenFilterValueMultiSelect {
+    if (Array.isArray(value)) {
+      const _value = value.filter(v => this.findOptionById(v));
+      return _value.length ? _value : null;
+    }
+    return value;
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueMultiSelect): IFilterMultiSelect {
+    if (Array.isArray(value)) {
+      const _value = value.filter(v => this.findOptionById(v));
+      return _value.length ? _value : null;
+    }
+    return value;
+  }
+
+  static validateOpenFilterSchema = Joi.array().items(Joi.string()).allow(null);
+
+  override validateOpenFilterValue(value: IOpenFilterValueMultiSelect) {
+    return MultiSelectField.validateOpenFilterSchema.validate(value);
   }
 }

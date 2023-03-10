@@ -18,7 +18,7 @@
 
 import { compact } from 'lodash';
 import React, { CSSProperties } from 'react';
-import { Emoji } from '../cell_rating/emoji';
+import { Emoji } from 'ui/_private/emoji';
 import { CheckboxStyled, CheckboxWrapperStyled } from './styled';
 
 interface ICellCheckbox {
