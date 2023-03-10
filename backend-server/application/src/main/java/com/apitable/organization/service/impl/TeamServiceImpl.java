@@ -67,6 +67,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -138,7 +139,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         List<Long> teamIds = new ArrayList<>();
         teamIds.add(rootTeamId);
         List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
-        return new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
+        List<TeamTreeVo> treeVos =
+            new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
+        treeVos.stream().filter(i -> Objects.equals(i.getTeamId(), rootTeamId))
+            .forEach(i -> i.setTeamId(0L));
+        return treeVos;
     }
 
     private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
