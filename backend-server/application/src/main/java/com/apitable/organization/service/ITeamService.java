@@ -48,6 +48,15 @@ public interface ITeamService extends IService<TeamEntity> {
     /**
      * Get all team id in team tree.
      *
+     * @param teamId team id
+     * @return AllTeamId
+     * @author Chambers
+     */
+    List<Long> getAllTeamIdsInTeamTree(Long teamId);
+
+    /**
+     * Get all team id in team tree.
+     *
      * @param teamIds team ids
      * @return AllTeamId
      * @author Chambers

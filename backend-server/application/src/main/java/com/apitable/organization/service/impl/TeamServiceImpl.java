@@ -171,6 +171,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
+    public List<Long> getAllTeamIdsInTeamTree(Long teamId) {
+        return this.getAllTeamIdsInTeamTree(Collections.singletonList(teamId));
+    }
+
+    @Override
     public List<Long> getAllTeamIdsInTeamTree(List<Long> teamIds) {
         Set<Long> teamIdSet = new LinkedHashSet<>(teamIds);
         List<Long> parentIds = new ArrayList<>(teamIds);
@@ -232,7 +237,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     public int countMemberCountByParentId(Long teamId) {
         log.info("count the team's members, includes the sub teams' members.");
-        List<Long> allSubTeamIds = baseMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> allSubTeamIds = this.getAllTeamIdsInTeamTree(teamId);
         return CollUtil.isNotEmpty(allSubTeamIds)
             ? SqlTool.retCount(teamMemberRelMapper.countByTeamId(allSubTeamIds)) : 0;
     }
@@ -410,7 +415,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             return teamInfo;
         }
         teamInfo.setTeamId(teamId);
-        List<Long> teamIds = this.getAllTeamIdsInTeamTree(Collections.singletonList(teamId));
+        List<Long> teamIds = this.getAllTeamIdsInTeamTree(teamId);
         Integer memberCount = teamMemberRelMapper.countByTeamId(teamIds);
         teamInfo.setMemberCount(memberCount);
         return teamInfo;

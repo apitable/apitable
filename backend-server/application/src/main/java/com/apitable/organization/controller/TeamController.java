@@ -236,7 +236,7 @@ public class TeamController {
             }
             return ResponseData.success();
         }
-        List<Long> subIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> subIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         // The parent department cannot be adjusted to its own child department,
         // nor can it be adjusted below itself, to prevent an infinite loop.
         ExceptionUtil.isFalse(subIds.contains(superId), UPDATE_TEAM_LEVEL_ERROR);
@@ -268,10 +268,8 @@ public class TeamController {
         // Query whether there are sub departments under the department
         int retCount = SqlTool.retCount(teamMapper.existChildrenByParentId(teamId));
         ExceptionUtil.isTrue(retCount == 0, TEAM_HAS_SUB);
-        // Query team's all sub team
-        List<Long> subIdList = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
         // query the all team's member number.
-        int count = SqlTool.retCount(teamMemberRelMapper.countByTeamId(subIdList));
+        int count = iTeamService.countMemberCountByParentId(teamId);
         ExceptionUtil.isFalse(count > 0, TEAM_HAS_MEMBER);
         // delete the team
         iTeamService.deleteTeam(teamId);

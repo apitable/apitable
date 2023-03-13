@@ -94,13 +94,6 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/sql/unit-team-data.sql")
-    void testSelectAllSubTeamIdsByParentId() {
-        List<Long> ids = teamMapper.selectAllSubTeamIdsByParentId(41L, false);
-        assertThat(ids).isNotEmpty();
-    }
-
-    @Test
     @Sql({ "/sql/unit-team-data.sql", "/sql/unit-team-member-rel-data.sql",
         "/sql/unit-member-data.sql" })
     void testSelectMembersByRootTeamId() {

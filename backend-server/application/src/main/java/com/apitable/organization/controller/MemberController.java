@@ -231,7 +231,7 @@ public class MemberController {
             return ResponseData.success(resultList);
         }
         // query the ids of all sub departments
-        List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
         if (CollUtil.isNotEmpty(resultList)) {
             // handle member's team name, get full hierarchy team names
@@ -274,7 +274,7 @@ public class MemberController {
             }
             return ResponseData.success(PageHelper.build(pageResult));
         }
-        List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         IPage<MemberPageVo> resultList =
             teamMapper.selectMemberPageByTeamId(page, teamIds, isActive);
         if (ObjectUtil.isNotNull(resultList)) {
