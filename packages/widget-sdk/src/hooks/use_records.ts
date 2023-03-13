@@ -111,7 +111,7 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
       _visibleRows = _visibleRows.filter(row => idSet.has(row.recordId));
     }
     // secondary filter
-    if (query.filter) {
+    if (query?.filter) {
       const { error } = validateOpenFilter(query.filter);
       if (error) {
         throw new Error(`filter query validate error: ${error.message}`);
