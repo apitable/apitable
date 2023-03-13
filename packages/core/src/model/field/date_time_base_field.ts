@@ -47,6 +47,8 @@ import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
 import { getTimeZoneAbbrByUtc } from '../../config';
+import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
+import Joi from 'joi';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -562,7 +564,7 @@ export abstract class DateTimeBaseField extends Field {
       return cellValue != null;
     }
     const [filterDuration] = conditionValue;
-    let timestamp: number | undefined | null;
+    let timestamp: string | number | undefined | null;
     if (
       filterDuration === FilterDuration.ExactDate ||
       filterDuration === FilterDuration.DateRange ||
@@ -651,5 +653,71 @@ export abstract class DateTimeBaseField extends Field {
 
   openWriteValueToCellValue(openWriteValue: string | Date | null) {
     return isNullValue(openWriteValue) ? null : new Date(openWriteValue).getTime();
+  }
+
+  static _filterValueToOpenFilterValue(value: IFilterDateTime): IOpenFilterValueDataTime {
+    if (!value || !Array.isArray(value)) {
+      return null;
+    }
+    const operator = value[0];
+    const _value = value[1];
+    if (operator === FilterDuration.DateRange) {
+      const range = typeof _value === 'string' ? _value.split('-').map(v => Number(v)) : [];
+      return range.length === 2 ? [operator, range[0]!, range[1]!] : [operator, null];
+    }
+    if (operator === FilterDuration.ExactDate) {
+      return [operator, _value as number | null];
+    }
+    if (operator === FilterDuration.SomeDayBefore || operator === FilterDuration.SomeDayAfter) {
+      return [operator, _value == null ? null : Number(_value)];
+    }
+    return [operator];
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterDateTime): IOpenFilterValueDataTime {
+    return DateTimeBaseField._filterValueToOpenFilterValue(value);
+  }
+
+  static _openFilterValueToFilterValue(value: IOpenFilterValueDataTime): IFilterDateTime {
+    if (!value || !Array.isArray(value)) {
+      return null;
+    }
+    const [operator, ..._value] = value;
+    if (operator === FilterDuration.DateRange) {
+      return _value.length === 2 ? [operator, _value.join('-')] : [operator, null];
+    }
+    if (operator === FilterDuration.ExactDate) {
+      return [operator, _value.length === 1 ? _value[0] : null];
+    }
+    if (operator === FilterDuration.SomeDayBefore || operator === FilterDuration.SomeDayAfter) {
+      return [operator, _value.length === 1 ? _value[0] : null] as any;
+    }
+    return [operator];
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueDataTime): IFilterDateTime {
+    return DateTimeBaseField._openFilterValueToFilterValue(value);
+  }
+
+  static _validateOpenFilterValue(value: IOpenFilterValueDataTime) {
+    if (!value) {
+      return Joi.allow(null).validate(value);
+    }
+    const [op, ..._value] = value;
+    if (op === FilterDuration.DateRange) {
+      return Joi.array().items(Joi.number().allow(null)).min(2).max(2).allow(null).validate(_value);
+    }
+    if (op === FilterDuration.ExactDate) {
+      return Joi.array().items(Joi.number().allow(null)).max(1).allow(null).validate(_value);
+    }
+    if (op === FilterDuration.SomeDayBefore || op === FilterDuration.SomeDayAfter) {
+      return Joi.array().items(Joi.number().allow(null)).max(1).allow(null).validate(_value);
+    }
+    return Joi.array().max(0).validate(_value);
+
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValueDataTime) {
+    return DateTimeBaseField._validateOpenFilterValue(value);
   }
 }

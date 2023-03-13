@@ -19,7 +19,8 @@
 import { Store } from 'redux';
 import {
   DateFormat, ICollaborator, IPermissions, IReduxState,
-  IViewRow, TimeFormat, WidgetPackageStatus, WidgetReleaseType
+  IViewRow, TimeFormat, WidgetPackageStatus, WidgetReleaseType,
+  IOpenFilterInfo
 } from 'core';
 import { ThemeName } from '@apitable/components';
 import { IResourceService } from '../resource/interface';
@@ -166,6 +167,8 @@ export interface IFieldQuery {
 export interface IRecordQuery {
   /** Specify which recordId data to query, explicitly pass undefined to return empty data, do not pass this parameter to not filter. */
   ids?: string[] | undefined,
+  /** filter condition */
+  filter?: IOpenFilterInfo;
 }
 
 export interface IUpdatePropertyError {

@@ -85,7 +85,7 @@ public class ConstProperties {
      */
     private String closePausedUserCron;
 
-    private String emailVerificationUrl = "user/email_verification";
+    private String emailVerificationUrl = "/user/email_verification";
 
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)

@@ -378,13 +378,13 @@ const WidgetBeta = (props: { text: string }) => {
       {props.text}
       <Box
         display='flex'
-        background={colors.deepPurple[50]}
+        background={colors.rainbowPurple1}
         borderRadius='2px'
         padding='1px 4px'
         marginLeft='8px'
         alignItems='center'
       >
-        <Typography variant='h9' color={colors.fc0}>
+        <Typography variant='h9' color={colors.rainbowPurple5}>
           BETA
         </Typography>
       </Box>
