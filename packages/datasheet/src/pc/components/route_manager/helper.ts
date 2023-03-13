@@ -76,7 +76,7 @@ const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, c
 export const getHistoryMethod = (method?: Method) => {
   switch (method) {
     case Method.Push: {
-      return wrapper((path: string) => Router.push(path));
+      return wrapper((path: string) => Router.push(path, undefined, { shallow: true }));
     }
     case Method.Replace: {
       return wrapper((path: string) => Router.replace(path));
