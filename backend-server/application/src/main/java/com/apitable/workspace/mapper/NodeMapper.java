@@ -19,15 +19,14 @@
 package com.apitable.workspace.mapper;
 
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.dto.SimpleNodeInfo;
 import com.apitable.workspace.dto.UrlNodeInfoDTO;
 import com.apitable.workspace.entity.NodeEntity;
-import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
-import com.apitable.workspace.vo.NodePathVo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.RubbishNodeVo;
 import com.apitable.workspace.vo.SimpleSortableNodeInfo;
@@ -66,7 +65,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return node id
      */
     List<String> selectNodeIdBySpaceIdAndType(@Param("spaceId") String spaceId,
-                                              @Param("nodeType") Integer nodeType);
+        @Param("nodeType") Integer nodeType);
 
     /**
      * query node id.
@@ -109,7 +108,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return node ids
      */
     List<String> selectLikeNodeName(@Param("spaceId") String spaceId,
-                                    @Param("likeName") String likeName);
+        @Param("likeName") String likeName);
 
     /**
      * Fuzzy search node
@@ -130,7 +129,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return NodeInfoVos
      */
     List<NodeInfoVo> selectNodeInfoByNodeIds(@Param("nodeIds") Collection<String> nodeIds,
-                                             @Param("memberId") Long memberId);
+        @Param("memberId") Long memberId);
 
     /**
      * query order node tree.
@@ -140,7 +139,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return NodeInfoTreeVo
      */
     List<NodeInfoTreeVo> selectNodeInfoTreeByNodeIds(@Param("nodeIds") Collection<String> nodeIds,
-                                                     @Param("memberId") Long memberId);
+        @Param("memberId") Long memberId);
 
     /**
      * node basic information
@@ -176,26 +175,15 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     NodeInfoVo selectNodeInfoByNodeId(@Param("nodeId") String nodeId);
 
     /**
-     * the child node of the query node, their order.
+     * Query node tree dto
      *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @param depth   recursive depth starting with 1
-     * @return NodeInfoTreeVo
+     * @param parentIds parent node ids
+     * @param isRubbish rubbish status
+     * @return List<NodeTreeDTO>
+     * @author Chambers
      */
-    List<String> selectSubNodesByOrder(@Param("spaceId") String spaceId,
-                                       @Param("nodeId") String nodeId, @Param("depth") int depth);
-
-    /**
-     * locate nodes and construct an ordered set of nodes.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return NodeInfoTreeVo
-     */
-    @Deprecated
-    List<String> selectParentNodesByOrder(@Param("spaceId") String spaceId,
-                                          @Param("nodeId") String nodeId);
+    List<NodeTreeDTO> selectNodeTreeDTOByParentIdIn(
+        @Param("parentIds") Collection<String> parentIds, @Param("isRubbish") Boolean isRubbish);
 
     /**
      * Query the ID of the direct child node.
@@ -214,26 +202,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<SimpleSortableNodeInfo> selectSubNodeInfo(@Param("parentId") String parentId);
 
     /**
-     * Query the ID of the direct child node
-     * Ordered nodes, performance consumption.
-     *
-     * @param nodeId node id
-     * @return children node
-     */
-    List<String> selectOrderSubNodeIds(@Param("nodeId") String nodeId,
-                                       @Param("nodeType") NodeType nodeType);
-
-    /**
-     * get the node sharing tree.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return NodeShareTree
-     */
-    List<NodeShareTree> selectShareTreeByNodeId(@Param("spaceId") String spaceId,
-                                                @Param("nodeId") String nodeId);
-
-    /**
      * share tree view according to node ids query.
      *
      * @param nodeIds node ids
@@ -250,26 +218,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     boolean selectHasChildren(@Param("nodeId") String nodeId);
 
     /**
-     * find all child nodes
-     * Unordered, improve query performance.
-     *
-     * @param nodeId node id
-     * @return children node
-     */
-    List<String> selectAllSubNodeIds(@Param("nodeId") String nodeId);
-
-    /**
-     * find all child nodes by type
-     * Unordered, improve query performance.
-     *
-     * @param nodeId   node id
-     * @param nodeType node type
-     * @return children node
-     */
-    List<String> selectAllSubNodeIdsByNodeType(@Param("nodeId") String nodeId,
-                                               @Param("nodeType") Integer nodeType);
-
-    /**
      * Gets the list of node names of the same type under the parent node.
      *
      * @param parentId parent node id
@@ -278,18 +226,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return node names
      */
     List<String> selectNameList(@Param("parentId") String parentId,
-                                @Param("nodeType") Integer nodeType,
-                                @Param("nodeId") String nodeId);
-
-    /**
-     * Obtain the node ID list of the node and its child descendants.
-     *
-     * @param nodeIds   node ids
-     * @param isRubbish whether in rubbish
-     * @return node ids
-     */
-    List<String> selectBatchAllSubNodeIds(@Param("nodeIds") List<String> nodeIds,
-                                          @Param("isRubbish") Boolean isRubbish);
+        @Param("nodeType") Integer nodeType, @Param("nodeId") String nodeId);
 
     /**
      * Query the number of non-root nodes and non-logically deleted nodes.
@@ -348,37 +285,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<NodeEntity> selectByNodeIds(@Param("nodeIds") Collection<String> nodeIds);
 
     /**
-     * query the node path from bottom to top, include itself.
-     *
-     * @param nodeId node id
-     * @return node path list
-     */
-    List<String> selectParentNodePath(@Param("nodeId") String nodeId);
-
-    /**
-     * all parent node paths of the query node
-     * contains own nodes
-     * node must be a folder.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return node path list
-     */
-    List<NodePathVo> selectParentNodeListByNodeId(@Param("spaceId") String spaceId,
-                                                  @Param("nodeId") String nodeId);
-
-    /**
-     * all parent node paths of the query node
-     * Contains its own node, but does not include the root node.
-     *
-     * @param spaceId space id
-     * @param nodeIds node ids
-     * @return BaseNodeInfoDto
-     */
-    List<NodeBaseInfoDTO> selectParentNodeByNodeIds(@Param("spaceId") String spaceId,
-                                                    @Param("list") List<String> nodeIds);
-
-    /**
      * update node.
      *
      * @param nodeId    node id
@@ -388,7 +294,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updateInfoByNodeId(@Param("nodeId") String nodeId, @Param("parentId") String parentId,
-                           @Param("preNodeId") String preNodeId, @Param("name") String name);
+        @Param("preNodeId") String preNodeId, @Param("name") String name);
 
     /**
      * （working directory delete node/rubbish recovery node）.
@@ -399,7 +305,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updateIsRubbishByNodeIdIn(@Param("userId") Long userId, @Param("list") List<String> nodeIds,
-                                  @Param("isRubbish") Boolean isRubbish);
+        @Param("isRubbish") Boolean isRubbish);
 
     /**
      * logical delete node（delete rubbish node）.
@@ -427,7 +333,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updatePreNodeIdByJoinSelf(@Param("preNodeId") String preNodeId,
-                                  @Param("parentId") String parentId);
+        @Param("parentId") String parentId);
 
     /**
      * Modify the new front node ID based on the old front node ID.
@@ -438,8 +344,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updatePreNodeIdBySelf(@Param("newPreNodeId") String newPreNodeId,
-                              @Param("originPreNodeId") String originPreNodeId,
-                              @Param("parentId") String parentId);
+        @Param("originPreNodeId") String originPreNodeId, @Param("parentId") String parentId);
 
     /**
      * query node parent id.
@@ -493,15 +398,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<String> selectNodeIdByPreNodeIdIn(@Param("list") List<String> preNodeIdList);
 
     /**
-     * query node parent id list.
-     *
-     * @param nodeIds node ids
-     * @return NodeTrees
-     */
-    List<SimpleNodeInfo> selectAllParentNodeIdsByNodeIds(@Param("nodeIds") List<String> nodeIds,
-                                                         @Param("includeRoot") boolean includeRoot);
-
-    /**
      * update node ban status.
      *
      * @param nodeId node id
@@ -519,13 +415,31 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     List<Boolean> selectIsTemplateByNodeId(@Param("nodeIds") List<String> nodeIds);
 
     /**
-     * select icon, name.
+     * Query node information with permission.
+     *
+     * @param nodeId    nodeId
+     * @return SimpleNodeInfo
+     * @author Chambers
+     */
+    SimpleNodeInfo selectNodeInfoWithPermissionStatus(@Param("nodeId") String nodeId);
+
+    /**
+     * query node base info.
+     *
+     * @param nodeId node id
+     * @return BaseNodeInfoDTO
+     */
+    NodeBaseInfoDTO selectNodeBaseInfoByNodeId(@Param("nodeId") String nodeId);
+
+    /**
+     * Batch query node base info.
      *
      * @param nodeIds node ids
+     * @param ignoreRubbish ignore rubbish status(no require.default:false)
      * @return BaseNodeInfoDto
      */
-    List<NodeBaseInfoDTO> selectBaseNodeInfoByNodeIdsIncludeDelete(
-        @Param("nodeIds") List<String> nodeIds);
+    List<NodeBaseInfoDTO> selectNodeBaseInfosByNodeIds(@Param("nodeIds") Collection<String> nodeIds,
+        @Param("ignoreRubbish") Boolean ignoreRubbish);
 
     /**
      * Query the modification time of the recovery compartment node.
@@ -545,8 +459,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return NodeIds
      */
     List<String> selectRubbishNodeIds(@Param("spaceId") String spaceId, @Param("size") int size,
-                                      @Param("beginTime") LocalDateTime beginTime,
-                                      @Param("endTime") LocalDateTime endTime);
+        @Param("beginTime") LocalDateTime beginTime, @Param("endTime") LocalDateTime endTime);
 
     /**
      * query rubbish node info.
@@ -557,16 +470,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return node info in rubbish
      */
     List<RubbishNodeVo> selectRubbishNodeInfo(@Param("spaceId") String spaceId,
-                                              @Param("nodeIds") List<String> nodeIds,
-                                              @Param("retainDay") Long retainDay);
-
-    /**
-     * query node base info.
-     *
-     * @param nodeId node id
-     * @return BaseNodeInfoDTO
-     */
-    NodeBaseInfoDTO selectNodeBaseInfoByNodeId(@Param("nodeId") String nodeId);
+        @Param("nodeIds") List<String> nodeIds, @Param("retainDay") Long retainDay);
 
     /**
      * update node extra.
@@ -576,7 +480,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updateExtraShowRecordHistoryByNodeId(@Param("nodeId") String nodeId,
-                                             @Param("showRecordHistory") int showRecordHistory);
+        @Param("showRecordHistory") int showRecordHistory);
 
     /**
      * update node extra.
@@ -595,7 +499,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return affected rows
      */
     int updateDingTalkDaStatusByNodeId(@Param("nodeId") String nodeId,
-                                       @Param("dingTalkDaStatus") int dingTalkDaStatus);
+        @Param("dingTalkDaStatus") int dingTalkDaStatus);
 
     /**
      * query node extra info.
@@ -653,5 +557,5 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return Integer
      */
     Integer selectCountByParentIdAndNodeName(@Param("parentId") String parentId,
-                                             @Param("nodeName") String nodeName);
+        @Param("nodeName") String nodeName);
 }

@@ -18,32 +18,15 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
+import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
@@ -77,30 +60,23 @@ import com.apitable.shared.util.IdUtil;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.widget.service.IWidgetService;
-import com.apitable.workspace.dto.DataSheetRecordDTO;
 import com.apitable.workspace.dto.DatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetWidgetDTO;
 import com.apitable.workspace.dto.NodeCopyDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.SnapshotDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
-import com.apitable.workspace.entity.DatasheetRecordEntity;
-import com.apitable.workspace.enums.CellType;
 import com.apitable.workspace.enums.DataSheetException;
-import com.apitable.workspace.enums.DateFormat;
 import com.apitable.workspace.enums.FieldType;
 import com.apitable.workspace.enums.NodeException;
-import com.apitable.workspace.enums.TimeFormat;
 import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.DatasheetMetaMapper;
-import com.apitable.workspace.mapper.DatasheetRecordMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
 import com.apitable.workspace.observer.RemindMemberOpSubject;
 import com.apitable.workspace.observer.remind.MailRemind;
 import com.apitable.workspace.observer.remind.NotifyDataSheetMeta;
 import com.apitable.workspace.observer.remind.RemindType;
-import com.apitable.workspace.ro.DateFieldProperty;
 import com.apitable.workspace.ro.FieldMapRo;
 import com.apitable.workspace.ro.LinkFieldProperty;
 import com.apitable.workspace.ro.MetaMapRo;
@@ -112,22 +88,34 @@ import com.apitable.workspace.ro.ViewMapRo;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IDatasheetRecordService;
 import com.apitable.workspace.service.IDatasheetService;
+import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.DatasheetRecordMapVo;
-import com.apitable.workspace.vo.DatasheetRecordVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
-import static java.util.stream.Collectors.toList;
-
 @Service
 @Slf4j
-public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, DatasheetEntity> implements IDatasheetService {
+public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, DatasheetEntity>
+    implements IDatasheetService {
 
     @Resource
     private IDatasheetMetaService datasheetMetaService;
@@ -140,9 +128,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Resource
     private IDatasheetRecordService datasheetRecordService;
-
-    @Resource
-    private DatasheetRecordMapper datasheetRecordMapper;
 
     @Resource
     private MemberMapper memberMapper;
@@ -205,13 +190,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     ) {
         log.info("Create datasheet");
         DatasheetEntity datasheet = DatasheetEntity.builder()
-                .spaceId(spaceId)
-                .nodeId(dstId)
-                .dstId(dstId)
-                .dstName(dstName)
-                .createdBy(creator)
-                .updatedBy(creator)
-                .build();
+            .spaceId(spaceId)
+            .nodeId(dstId)
+            .dstId(dstId)
+            .dstName(dstName)
+            .createdBy(creator)
+            .updatedBy(creator)
+            .build();
         boolean flag = this.save(datasheet);
         ExceptionUtil.isTrue(flag, DataSheetException.CREATE_FAIL);
         // Initialize datasheet information
@@ -226,15 +211,17 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo, JSONObject recordMap) {
+    public void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo,
+        JSONObject recordMap) {
         DatasheetEntity datasheet = DatasheetEntity.builder()
-                .dstName(name)
-                .dstId(nodeId)
-                .nodeId(nodeId)
-                .spaceId(spaceId)
-                .build();
+            .dstName(name)
+            .dstId(nodeId)
+            .nodeId(nodeId)
+            .spaceId(spaceId)
+            .build();
         // Save Meta information
-        datasheetMetaService.create(userId, datasheet.getDstId(), JSONUtil.parseObj(metaMapRo).toString());
+        datasheetMetaService.create(userId, datasheet.getDstId(),
+            JSONUtil.parseObj(metaMapRo).toString());
         if (recordMap.size() > 0) {
             // Save record information
             datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
@@ -246,7 +233,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public void updateDstName(Long userId, String dstId, String dstName) {
-        ExceptionUtil.isTrue(StrUtil.isNotBlank(dstId) && StrUtil.isNotBlank(dstName), ParameterException.INCORRECT_ARG);
+        ExceptionUtil.isTrue(StrUtil.isNotBlank(dstId) && StrUtil.isNotBlank(dstName),
+            ParameterException.INCORRECT_ARG);
         log.info("Edit datasheet name");
         boolean flag = SqlHelper.retBool(baseMapper.updateNameByDstId(userId, dstId, dstName));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -284,39 +272,44 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 : I18nStringsUtil.t("default_view", currentLang);
         metaMap.put("defaultView", defaultViewName);
         // Datasheet title column
-        metaMap.put("defaultDatasheetTitle", I18nStringsUtil.t("default_datasheet_title", currentLang));
+        metaMap.put("defaultDatasheetTitle",
+            I18nStringsUtil.t("default_datasheet_title", currentLang));
         // Datasheet options column
-        metaMap.put("defaultDatasheetOptions", I18nStringsUtil.t("default_datasheet_options", currentLang));
+        metaMap.put("defaultDatasheetOptions",
+            I18nStringsUtil.t("default_datasheet_options", currentLang));
         // Datasheet attachments column
-        metaMap.put("defaultDatasheetAttachments", I18nStringsUtil.t("default_datasheet_attachments", currentLang));
+        metaMap.put("defaultDatasheetAttachments",
+            I18nStringsUtil.t("default_datasheet_attachments", currentLang));
         // internationalization elements
-        String snapshotJson = beetlTemplate.render("datasheet/datasheet-meta-blank-tpl.btl", metaMap);
+        String snapshotJson =
+            beetlTemplate.render("datasheet/datasheet-meta-blank-tpl.btl", metaMap);
         return new JSONObject(snapshotJson).toBean(SnapshotMapRo.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId, String destDstName,
-            NodeCopyOptions options, Map<String, String> newNodeMap) {
+    public List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId,
+        String destDstName, NodeCopyOptions options, Map<String, String> newNodeMap) {
         log.info("Copy datasheet");
         // Copy the datasheet, meta, and record.
         DatasheetEntity datasheet = DatasheetEntity.builder()
-                .dstName(destDstName)
-                .dstId(destDstId)
-                .nodeId(destDstId)
-                .spaceId(spaceId)
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
+            .dstName(destDstName)
+            .dstId(destDstId)
+            .nodeId(destDstId)
+            .spaceId(spaceId)
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
         this.save(datasheet);
         // handle metaData
-        NodeCopyDTO nodeCopyDTO = this.processMeta(userId, spaceId, sourceDstId, destDstId, options, newNodeMap);
+        NodeCopyDTO nodeCopyDTO =
+            this.processMeta(userId, spaceId, sourceDstId, destDstId, options, newNodeMap);
         MetaMapRo metaMapRo = nodeCopyDTO.getMetaMapRo();
         // save record
         if (ObjectUtil.isNotNull(options) && options.isCopyData()) {
-            datasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(), nodeCopyDTO, options.isRetainRecordMeta());
-        }
-        else {
+            datasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(),
+                nodeCopyDTO, options.isRetainRecordMeta());
+        } else {
             // Remove the original record id in each view rows and fill in a blank line.
             JSONArray rows = JSONUtil.createArray();
             String recordId = IdUtil.createRecordId();
@@ -333,7 +326,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // save record information
             JSONObject recordMap = JSONUtil.createObj();
             // Supplement the self-increasing field data in this row.
-            RecordMapRo recordMapRo = RecordMapRo.builder().id(recordId).data(JSONUtil.createObj()).build();
+            RecordMapRo recordMapRo =
+                RecordMapRo.builder().id(recordId).data(JSONUtil.createObj()).build();
             if (!nodeCopyDTO.getAutoNumberFieldIds().isEmpty()) {
                 JSONObject fieldUpdatedMap = JSONUtil.createObj();
                 JSONObject autoNumber = JSONUtil.createObj();
@@ -347,31 +341,36 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
         // Save Meta information
-        datasheetMetaService.create(userId, datasheet.getDstId(), JSONUtil.parseObj(metaMapRo).toString());
+        datasheetMetaService.create(userId, datasheet.getDstId(),
+            JSONUtil.parseObj(metaMapRo).toString());
         return nodeCopyDTO.getLinkFieldIds();
     }
 
-    private NodeCopyDTO processMeta(Long userId, String spaceId, String sourceDstId, String destDstId, NodeCopyOptions options, Map<String, String> newNodeMap) {
+    private NodeCopyDTO processMeta(Long userId, String spaceId, String sourceDstId,
+        String destDstId, NodeCopyOptions options, Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
         // Obtain the information of the original node correspondence datasheet.
         SimpleDatasheetMetaDTO metaVo = datasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
         // gets the space id of the original node.
-        // If it is inconsistent with the space after replication and storage, you need to clear the data related to the member field.
+        // If it is inconsistent with the space after replication and storage,
+        // you need to clear the data related to the member field.
         String sourceSpaceId = nodeMapper.selectSpaceIdByNodeId(sourceDstId);
         boolean sameSpace = spaceId.equals(sourceSpaceId);
         // start processing
         List<String> delFieldIdsInView = new ArrayList<>();
         List<String> linkFieldIds = new ArrayList<>();
-        boolean filterPermissionField = options.isFilterPermissionField() && MapUtil.isNotEmpty(options.getDstPermissionFieldsMap());
+        boolean filterPermissionField = options.isFilterPermissionField()
+            && MapUtil.isNotEmpty(options.getDstPermissionFieldsMap());
         JSONObject fieldMap = JSONUtil.createObj();
         String uuid = userMapper.selectUuidById(userId);
         for (Object field : metaMapRo.getFieldMap().values()) {
             FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
             // Determine whether column permissions are enabled for a field in this datasheet.
             if (filterPermissionField) {
-                List<String> permissionFieldIds = options.getDstPermissionFieldsMap().get(sourceDstId);
+                List<String> permissionFieldIds =
+                    options.getDstPermissionFieldsMap().get(sourceDstId);
                 if (permissionFieldIds != null && permissionFieldIds.contains(fieldMapRo.getId())) {
                     delFieldIds.add(fieldMapRo.getId());
                     delFieldIdsInView.add(fieldMapRo.getId());
@@ -381,34 +380,44 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             FieldType type = FieldType.create(fieldMapRo.getType());
             switch (type) {
                 case LINK:
-                    LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                    LinkFieldProperty property =
+                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
-                    if (ObjectUtil.isNotNull(newNodeMap) && ObjectUtil.isNotNull(newNodeMap.get(foreignDstId))) {
-                        // Determine whether column permissions are enabled for the associated field corresponding to the associated datasheet.
+                    if (ObjectUtil.isNotNull(newNodeMap) && ObjectUtil.isNotNull(
+                        newNodeMap.get(foreignDstId))) {
+                        // Determine whether column permissions are enabled for the associated
+                        // field corresponding to the associated datasheet.
                         if (filterPermissionField) {
-                            List<String> permissionFieldIds = options.getDstPermissionFieldsMap().get(foreignDstId);
-                            if (permissionFieldIds != null && permissionFieldIds.contains(property.getBrotherFieldId())) {
+                            List<String> permissionFieldIds =
+                                options.getDstPermissionFieldsMap().get(foreignDstId);
+                            if (permissionFieldIds != null && permissionFieldIds.contains(
+                                property.getBrotherFieldId())) {
                                 delFieldIds.add(fieldMapRo.getId());
                                 delFieldIdsInView.add(fieldMapRo.getId());
                                 continue;
                             }
                         }
-                        // The associated datasheet is stored together, and the associated datasheet ID is replaced with the copied associated datasheet ID.
+                        // The associated datasheet is stored together, and the associated
+                        // datasheet ID is replaced with the copied associated datasheet ID.
                         property.setForeignDatasheetId(newNodeMap.get(foreignDstId));
-                    }
-                    else if (ObjectUtil.isNotNull(options) && options.isAddColumn()) {
-                        // Determine whether the columns of the associated datasheet exceed the limit.
-                        SimpleDatasheetMetaDTO meta = datasheetMetaService.findByDstId(foreignDstId);
+                    } else if (ObjectUtil.isNotNull(options) && options.isAddColumn()) {
+                        // Determine whether the columns of the associated datasheet exceed the
+                        // limit.
+                        SimpleDatasheetMetaDTO meta =
+                            datasheetMetaService.findByDstId(foreignDstId);
                         MetaMapRo mapRo = meta.getMeta().toBean(MetaMapRo.class);
-                        // Check whether the number of columns in the associated datasheet exceeds the 200 column limit
-                        ExceptionUtil.isTrue(mapRo.getFieldMap().size() < limitProperties.getMaxColumnCount(), NodeException.LINK_DATASHEET_COLUMN_EXCEED_LIMIT);
+                        // Check whether the number of columns in the associated datasheet
+                        // exceeds the 200 column limit
+                        ExceptionUtil.isTrue(
+                            mapRo.getFieldMap().size() < limitProperties.getMaxColumnCount(),
+                            NodeException.LINK_DATASHEET_COLUMN_EXCEED_LIMIT);
                         // Convert to text, put room-server to modify columns, and fill in data
                         fieldMapRo.setType(FieldType.TEXT.getFieldType());
                         linkFieldIds.add(fieldMapRo.getId());
                         property = null;
-                    }
-                    else {
-                        // The associated datasheet is not saved together. Delete the associated column.
+                    } else {
+                        // The associated datasheet is not saved together. Delete the associated
+                        // column.
                         delFieldIds.add(fieldMapRo.getId());
                         delFieldIdsInView.add(fieldMapRo.getId());
                         continue;
@@ -421,17 +430,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_TIME:
                     Object originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
-                        fieldMapRo.getProperty().set("datasheetId", newNodeMap.get(originDstId.toString()));
+                        fieldMapRo.getProperty()
+                            .set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
                     break;
                 case AUTO_NUMBER:
                     autoNumberFieldIds.add(fieldMapRo.getId());
                     originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
-                        fieldMapRo.getProperty().set("datasheetId", newNodeMap.get(originDstId.toString()));
+                        fieldMapRo.getProperty()
+                            .set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
                     if (!options.isCopyData()) {
-                        // When the record data is not copied, a blank line is automatically filled, so the next value of the self-increment field is 2.
+                        // When the record data is not copied, a blank line is automatically
+                        // filled, so the next value of the self-increment field is 2.
                         fieldMapRo.getProperty().set("nextId", 2);
                     }
                     break;
@@ -445,7 +457,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_BY:
                     originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
-                        fieldMapRo.getProperty().set("datasheetId", newNodeMap.get(originDstId.toString()));
+                        fieldMapRo.getProperty()
+                            .set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
                     if (!options.isRetainRecordMeta()) {
                         fieldMapRo.getProperty().set("uuids", Collections.singletonList(uuid));
@@ -455,17 +468,18 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
             }
             FieldMapRo fieldMapRo1 = FieldMapRo.builder()
-                    .id(fieldMapRo.getId())
-                    .name(fieldMapRo.getName())
-                    .desc(fieldMapRo.getDesc())
-                    .type(fieldMapRo.getType())
-                    .property(fieldMapRo.getProperty())
-                    .required(fieldMapRo.getRequired())
-                    .build();
+                .id(fieldMapRo.getId())
+                .name(fieldMapRo.getName())
+                .desc(fieldMapRo.getDesc())
+                .type(fieldMapRo.getType())
+                .property(fieldMapRo.getProperty())
+                .required(fieldMapRo.getRequired())
+                .build();
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo1));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // If there is a delete column, the corresponding to delete processing is columns in the view.
+        // If there is a delete column,
+        // the corresponding to delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
         // copy panel
         this.copyWidgetPanels(userId, spaceId, destDstId, metaMapRo, newNodeMap);
@@ -475,7 +489,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     /**
      * Deletes the view that contains the attribute information of the specified field id
      */
-    private void delViewFieldId(MetaMapRo metaMapRo, List<String> delFieldIds, List<String> delFieldIdsInFilter) {
+    private void delViewFieldId(MetaMapRo metaMapRo, List<String> delFieldIds,
+        List<String> delFieldIdsInFilter) {
         if (CollUtil.isNotEmpty(delFieldIds) || CollUtil.isNotEmpty(delFieldIdsInFilter)) {
             JSONArray views = JSONUtil.createArray();
             metaMapRo.getViews().jsonIter().forEach(view -> {
@@ -491,8 +506,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     if (conditions.size() > 0) {
                         filterInfo.set("conditions", conditions);
                         viewMapRo.setFilterInfo(filterInfo);
-                    }
-                    else {
+                    } else {
                         viewMapRo.setFilterInfo(null);
                     }
                 }
@@ -557,10 +571,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     /**
      * copy panel
      */
-    private void copyWidgetPanels(Long userId, String spaceId, String destDstId, MetaMapRo metaMapRo, Map<String, String> newNodeMap) {
+    private void copyWidgetPanels(Long userId, String spaceId, String destDstId,
+        MetaMapRo metaMapRo, Map<String, String> newNodeMap) {
         // construct a new component panel
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
-        JSONArray newWidgetPanels = this.generateWidgetPanels(metaMapRo.getWidgetPanels(), newWidgetIdMap);
+        JSONArray newWidgetPanels =
+            this.generateWidgetPanels(metaMapRo.getWidgetPanels(), newWidgetIdMap);
         if (newWidgetIdMap.isEmpty()) {
             return;
         }
@@ -568,7 +584,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         // Newly Created Component ID-Data Source datasheet ID MAP
         DatasheetWidgetDTO datasheetWidgetDTO = new DatasheetWidgetDTO(destDstId, destDstId);
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = newWidgetIdMap.values().stream()
-                .collect(Collectors.toMap(id -> id, id -> datasheetWidgetDTO));
+            .collect(Collectors.toMap(id -> id, id -> datasheetWidgetDTO));
 
         metaMapRo.setWidgetPanels(newWidgetPanels);
         // batch generation of new components
@@ -576,7 +592,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     @Override
-    public JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap) {
+    public JSONArray generateWidgetPanels(JSONArray widgetPanels,
+        Map<String, String> newWidgetIdMap) {
         // construct a new component panel
         JSONArray newWidgetPanels = JSONUtil.createArray();
         if (widgetPanels == null || widgetPanels.size() == 0) {
@@ -609,6 +626,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     @Override
+    public List<BaseNodeInfo> getForeignDstIdsFilterSelf(final List<String> nodeIds) {
+        Map<String, List<String>> dstIdToForeignIdsMap = this.getForeignDstIds(nodeIds, true);
+        if (MapUtil.isEmpty(dstIdToForeignIdsMap)) {
+            return new ArrayList<>();
+        }
+        List<String> filters = CollUtil.newArrayList();
+        Collection<List<String>> foreignDstIdLists = dstIdToForeignIdsMap.values();
+        for (List<String> foreignDstIdList : foreignDstIdLists) {
+            filters.addAll(foreignDstIdList);
+        }
+        return nodeMapper.selectBaseNodeInfoByNodeIds(filters);
+    }
+
+    @Override
     public Map<String, List<String>> getForeignDstIds(List<String> dstIdList, boolean filter) {
         log.info("Query the associated datasheet ID ");
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIdList);
@@ -620,14 +651,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 metaMapRo.getFieldMap().values().forEach(field -> {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
-                        LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                        LinkFieldProperty property =
+                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // whether to filter dst id list
                         if (filter) {
                             if (!dstIdList.contains(property.getForeignDatasheetId())) {
                                 dstIds.add(property.getForeignDatasheetId());
                             }
-                        }
-                        else {
+                        } else {
                             dstIds.add(property.getForeignDatasheetId());
                         }
                     }
@@ -643,7 +674,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds, boolean saveDb) {
+    public SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds,
+        boolean saveDb) {
         log.info("Delete the field of the specified association datasheet ");
         if (CollUtil.isNotEmpty(linkDstIds)) {
             // get datasheet information
@@ -654,7 +686,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             metaMapRo.getFieldMap().values().forEach(field -> {
                 FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                 if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
-                    LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                    LinkFieldProperty property =
+                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     if (linkDstIds.contains(foreignDstId)) {
                         delFieldIds.add(fieldMapRo.getId());
@@ -667,43 +700,54 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             this.delViewFieldId(metaMapRo, delFieldIds, delFieldIds);
             if (saveDb && CollUtil.isNotEmpty(delFieldIds)) {
                 // save changes
-                datasheetMetaService.edit(userId, dstId, MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
+                datasheetMetaService.edit(userId, dstId,
+                    MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
             }
             // record processing
-            DatasheetRecordMapVo recordMapVo = datasheetRecordService.delFieldData(dstId, delFieldIds, saveDb);
-            return SnapshotMapRo.builder().meta(JSONUtil.parseObj(metaMapRo)).recordMap(recordMapVo.getRecordMap()).build();
+            DatasheetRecordMapVo recordMapVo =
+                datasheetRecordService.delFieldData(dstId, delFieldIds, saveDb);
+            return SnapshotMapRo.builder().meta(JSONUtil.parseObj(metaMapRo))
+                .recordMap(recordMapVo.getRecordMap()).build();
         }
         return null;
     }
 
     @Override
-    public Map<String, SnapshotMapRo> findSnapshotMapByDstIds(List<String> dstIds, boolean hasRecordMap) {
+    public Map<String, SnapshotMapRo> findSnapshotMapByDstIds(List<String> dstIds,
+        boolean hasRecordMap) {
         log.info("Get multiple datasheets and corresponding snapshot ");
         List<SnapshotDTO> dtoList = new ArrayList<>();
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIds);
         if (CollUtil.isNotEmpty(metaList)) {
-            Map<String, String> dstIdToMetaMap = metaList.stream().collect(Collectors.toMap(DatasheetMetaDTO::getDstId, com.apitable.workspace.dto.DatasheetMetaDTO::getMetaData));
+            Map<String, String> dstIdToMetaMap = metaList.stream().collect(
+                Collectors.toMap(DatasheetMetaDTO::getDstId,
+                    com.apitable.workspace.dto.DatasheetMetaDTO::getMetaData));
             Map<String, JSONObject> dstIdToRecordMapMap = new HashMap<>(dstIdToMetaMap.size());
             if (hasRecordMap) {
-                List<DatasheetRecordMapVo> mapByDstIds = datasheetRecordService.findMapByDstIds(dstIdToMetaMap.keySet());
-                dstIdToRecordMapMap = mapByDstIds.stream().collect(Collectors.toMap(DatasheetRecordMapVo::getDstId, DatasheetRecordMapVo::getRecordMap));
+                List<DatasheetRecordMapVo> mapByDstIds =
+                    datasheetRecordService.findMapByDstIds(dstIdToMetaMap.keySet());
+                dstIdToRecordMapMap = mapByDstIds.stream().collect(
+                    Collectors.toMap(DatasheetRecordMapVo::getDstId,
+                        DatasheetRecordMapVo::getRecordMap));
             }
             Map<String, JSONObject> finalDstIdToRecordMapMap = dstIdToRecordMapMap;
             dstIdToMetaMap.keySet().forEach(dstId -> {
                 // get snapshot
                 JSONObject recordMap = finalDstIdToRecordMapMap.get(dstId);
                 SnapshotMapRo snapshotMapRo = SnapshotMapRo.builder()
-                        .meta(JSONUtil.parseObj(dstIdToMetaMap.get(dstId)))
-                        .recordMap(Optional.ofNullable(recordMap).orElse(JSONUtil.createObj()))
-                        .build();
+                    .meta(JSONUtil.parseObj(dstIdToMetaMap.get(dstId)))
+                    .recordMap(Optional.ofNullable(recordMap).orElse(JSONUtil.createObj()))
+                    .build();
                 dtoList.add(new SnapshotDTO(dstId, snapshotMapRo));
             });
         }
-        return dtoList.stream().collect(Collectors.toMap(SnapshotDTO::getDstId, SnapshotDTO::getSnapshot));
+        return dtoList.stream()
+            .collect(Collectors.toMap(SnapshotDTO::getDstId, SnapshotDTO::getSnapshot));
     }
 
     @Override
-    public List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo, Map<String, String> newNodeIdMap) {
+    public List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo,
+        Map<String, String> newNodeIdMap) {
         log.info("Replace the datasheet ID in the field attribute ");
         JSONObject fieldMap = JSONUtil.createObj();
         List<String> delFieldIds = new ArrayList<>();
@@ -714,7 +758,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             FieldType type = FieldType.create(fieldMapRo.getType());
             switch (type) {
                 case LINK:
-                    LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                    LinkFieldProperty property =
+                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     String nodeId = newNodeIdMap.get(foreignDstId);
                     if (nodeId == null) {
@@ -732,7 +777,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_TIME:
                     Object originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
-                        fieldMapRo.getProperty().set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                        fieldMapRo.getProperty()
+                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
                     }
                     break;
                 case MEMBER:
@@ -745,7 +791,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_BY:
                     originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
-                        fieldMapRo.getProperty().set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                        fieldMapRo.getProperty()
+                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
                     }
                     fieldMapRo.getProperty().set("uuids", Collections.singletonList(uuid));
                     break;
@@ -755,7 +802,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // If there is a delete column, the corresponding to delete processing is columns in the view.
+        // If there is a delete column,
+        // the corresponding to delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
         return delFieldIds;
     }
@@ -765,57 +813,67 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         log.info("Member field mentions other people's record operation");
         boolean notify = BooleanUtil.isTrue(ro.getIsNotify());
         if (notify) {
-            ExceptionUtil.isTrue(StrUtil.isNotBlank(ro.getNodeId()) && StrUtil.isNotBlank(ro.getViewId()), ParameterException.INCORRECT_ARG);
+            ExceptionUtil.isTrue(StrUtil.isNotBlank(ro.getNodeId())
+                && StrUtil.isNotBlank(ro.getViewId()), ParameterException.INCORRECT_ARG);
         }
         Set<Long> unitIds = new HashSet<>();
         ro.getUnitRecs().forEach(remindUnitRecRo -> {
-            ExceptionUtil.isNotEmpty(remindUnitRecRo.getUnitIds(), ParameterException.INCORRECT_ARG);
+            ExceptionUtil.isNotEmpty(remindUnitRecRo.getUnitIds(),
+                ParameterException.INCORRECT_ARG);
             unitIds.addAll(remindUnitRecRo.getUnitIds());
         });
         List<UnitEntity> units = unitMapper.selectBatchIds(unitIds);
         units.stream().filter(unit -> unit.getSpaceId().equals(spaceId)).findFirst()
-                .orElseThrow(() -> new BusinessException("submit data across spaces"));
+            .orElseThrow(() -> new BusinessException("submit data across spaces"));
         // refresh the mentioned member record cache
         userSpaceRemindRecordCacheService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
         if (notify) {
             // split roles into members and teams
             Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
             // self don't need to send notifications, filter
-            Long memberId = userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+            Long memberId =
+                userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
             // Gets the organizational unit of the member type, the corresponding member.
             Map<Long, Long> unitIdToMemberIdMap = units.stream()
-                    .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
-                            && unit.getSpaceId().equals(spaceId) && !unit.getUnitRefId().equals(memberId))
-                    // Only members with read permission to the node send notifications
-                    .filter(unitEntity -> controlTemplate.hasNodePermission(unitEntity.getUnitRefId(), ro.getNodeId(), NodePermission.READ_NODE))
-                    .collect(Collectors.toMap(UnitEntity::getId, UnitEntity::getUnitRefId));
+                .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
+                    && unit.getSpaceId().equals(spaceId) && !unit.getUnitRefId().equals(memberId))
+                // Only members with read permission to the node send notifications
+                .filter(unitEntity -> controlTemplate.hasNodePermission(unitEntity.getUnitRefId(),
+                    ro.getNodeId(), NodePermission.READ_NODE))
+                .collect(Collectors.toMap(UnitEntity::getId, UnitEntity::getUnitRefId));
             List<Long> memberIds = new ArrayList<>(unitIdToMemberIdMap.values());
             // Obtain the organizational unit of the department type and the list of members.
             Map<Long, List<Long>> unitIdToMemberIdsMap = MapUtil.newHashMap();
-            Map<Long, Long> teamIdToUnitIdMap = units.stream().filter(unit -> unit.getUnitType().equals(UnitType.TEAM.getType())
-                    && unit.getSpaceId().equals(spaceId)).collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
+            Map<Long, Long> teamIdToUnitIdMap =
+                units.stream().filter(unit -> unit.getUnitType().equals(UnitType.TEAM.getType())
+                        && unit.getSpaceId().equals(spaceId))
+                    .collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
             List<Long> teamIds = new ArrayList<>(teamIdToUnitIdMap.keySet());
             if (CollUtil.isNotEmpty(teamIds)) {
-                List<TeamMemberRelEntity> teamMemberRelEntities = teamMemberRelMapper.selectByTeamIds(teamIds);
+                List<TeamMemberRelEntity> teamMemberRelEntities =
+                    teamMemberRelMapper.selectByTeamIds(teamIds);
                 teamMemberRelEntities.stream()
-                        .filter(rel -> !rel.getMemberId().equals(memberId))
-                        // Only members with read permission to the node send notifications
-                        .filter(rel -> controlTemplate.hasNodePermission(rel.getMemberId(), ro.getNodeId(), NodePermission.READ_NODE))
-                        .forEach(rel -> {
-                            Long unitId = teamIdToUnitIdMap.get(rel.getTeamId());
-                            List<Long> members = unitIdToMemberIdsMap.get(unitId);
-                            if (CollUtil.isNotEmpty(members)) {
-                                members.add(rel.getMemberId());
-                            }
-                            else {
-                                unitIdToMemberIdsMap.put(unitId, CollUtil.newArrayList(rel.getMemberId()));
-                            }
-                        });
+                    .filter(rel -> !rel.getMemberId().equals(memberId))
+                    // Only members with read permission to the node send notifications
+                    .filter(
+                        rel -> controlTemplate.hasNodePermission(rel.getMemberId(), ro.getNodeId(),
+                            NodePermission.READ_NODE))
+                    .forEach(rel -> {
+                        Long unitId = teamIdToUnitIdMap.get(rel.getTeamId());
+                        List<Long> members = unitIdToMemberIdsMap.get(unitId);
+                        if (CollUtil.isNotEmpty(members)) {
+                            members.add(rel.getMemberId());
+                        } else {
+                            unitIdToMemberIdsMap.put(unitId,
+                                CollUtil.newArrayList(rel.getMemberId()));
+                        }
+                    });
                 unitIdToMemberIdsMap.values().forEach(memberIds::addAll);
             }
 
             if (CollUtil.isNotEmpty(roleUnitIdToRoleMemberUnitIds)) {
-                getRoleMemberIds(roleUnitIdToRoleMemberUnitIds, unitIdToMemberIdMap, unitIdToMemberIdsMap);
+                getRoleMemberIds(roleUnitIdToRoleMemberUnitIds, unitIdToMemberIdMap,
+                    unitIdToMemberIdsMap);
             }
 
             if (CollUtil.isEmpty(memberIds)) {
@@ -829,26 +887,28 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 return;
             }
             ro.getUnitRecs().forEach(remindUnitRecRo -> {
-                String recordTitle = StrUtil.blankToDefault(remindUnitRecRo.getRecordTitle(), I18nStringsUtil.t("record_unnamed"));
+                String recordTitle = StrUtil.blankToDefault(remindUnitRecRo.getRecordTitle(),
+                    I18nStringsUtil.t("record_unnamed"));
                 List<Long> toMemberIds = new ArrayList<>();
                 remindUnitRecRo.getUnitIds().forEach(unitId -> {
                     if (unitIdToMemberIdMap.get(unitId) != null) {
                         toMemberIds.add(unitIdToMemberIdMap.get(unitId));
-                    }
-                    else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                    } else if (unitIdToMemberIdsMap.get(unitId) != null) {
                         toMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
                     }
                 });
-                if (CollUtil.isNotEmpty(remindUnitRecRo.getRecordIds()) && CollUtil.isNotEmpty(toMemberIds)) {
+                if (CollUtil.isNotEmpty(remindUnitRecRo.getRecordIds())
+                    && CollUtil.isNotEmpty(toMemberIds)) {
                     JSONObject body = JSONUtil.createObj();
                     JSONObject extras = JSONUtil.createObj()
-                            .set("fieldName", remindUnitRecRo.getFieldName())
-                            .set("recordTitle", recordTitle)
-                            .set("viewId", ro.getViewId())
-                            .set("recordIds", remindUnitRecRo.getRecordIds());
+                        .set("fieldName", remindUnitRecRo.getFieldName())
+                        .set("recordTitle", recordTitle)
+                        .set("viewId", ro.getViewId())
+                        .set("recordIds", remindUnitRecRo.getRecordIds());
                     if (null != ro.getExtra() && null != ro.getExtra().getContent()) {
                         // comments
-                        extras.set("commentContent", HtmlUtil.unescape(HtmlUtil.cleanHtmlTag(ro.getExtra().getContent())));
+                        extras.set("commentContent",
+                            HtmlUtil.unescape(HtmlUtil.cleanHtmlTag(ro.getExtra().getContent())));
                     }
                     body.set(BODY_EXTRAS, extras);
                     // send notification
@@ -861,42 +921,46 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
                     notifyRo.setNotifyId(notifyId);
                     String templateId;
-                    if (RemindType.MEMBER.getRemindType() == ro.getType() && remindUnitRecRo.getRecordIds().size() == 1) {
+                    if (RemindType.MEMBER.getRemindType() == ro.getType()
+                        && remindUnitRecRo.getRecordIds().size() == 1) {
                         templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
-                    }
-                    else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
+                    } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
                         templateId = NotificationTemplateId.USER_FIELD.getValue();
-                    }
-                    else {
-                        templateId = NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
+                    } else {
+                        templateId =
+                            NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
                     }
                     notifyRo.setTemplateId(templateId);
                     notifyRo.setBody(body);
                     // save notification record
                     playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
                     NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
-                            .setRemindType(RemindType.of(ro.getType()))
-                            .setSpaceId(spaceId)
-                            .setNodeId(ro.getNodeId())
-                            .setViewId(ro.getViewId())
-                            .setRecordId(remindUnitRecRo.getRecordIds().get(0))
-                            .setFieldName(remindUnitRecRo.getFieldName())
-                            .setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
-                            .setExtra(ro.getExtra())
-                            .setFromMemberId(memberId)
-                            .setToMemberIds(toMemberIds)
-                            .setNotifyId(notifyId)
-                            .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
-                            .setRecordTitle(recordTitle);
+                        .setRemindType(RemindType.of(ro.getType()))
+                        .setSpaceId(spaceId)
+                        .setNodeId(ro.getNodeId())
+                        .setViewId(ro.getViewId())
+                        .setRecordId(remindUnitRecRo.getRecordIds().get(0))
+                        .setFieldName(remindUnitRecRo.getFieldName())
+                        .setCreatedAt(LocalDateTime.now().format(
+                            DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
+                        .setExtra(ro.getExtra())
+                        .setFromMemberId(memberId)
+                        .setToMemberIds(toMemberIds)
+                        .setNotifyId(notifyId)
+                        .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
+                        .setRecordTitle(recordTitle);
 
                     RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
                     // Default-Subscribe to Mail Notifications
-                    if (!templateId.equals(NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
-                        remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
+                    if (!templateId.equals(
+                        NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
+                        remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(
+                            StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
                     }
                     // Check whether the space is bound to third-party integration
                     SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
-                    if (connectInfo != null && connectInfo.isEnabled() && StrUtil.isNotBlank(connectInfo.getAppId())) {
+                    if (connectInfo != null && connectInfo.isEnabled()
+                        && StrUtil.isNotBlank(connectInfo.getAppId())) {
                         // transform social connect app type, register remind observer
                         socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
                     }
@@ -907,14 +971,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         }
     }
 
-    private void getRoleMemberIds(Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds, Map<Long, Long> unitIdToMemberIdMap, Map<Long, List<Long>> unitIdToMemberIdsMap) {
+    private void getRoleMemberIds(Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds,
+        Map<Long, Long> unitIdToMemberIdMap, Map<Long, List<Long>> unitIdToMemberIdsMap) {
         roleUnitIdToRoleMemberUnitIds.forEach((key, value) -> {
             HashSet<Long> readyAddMemberIds = CollUtil.newHashSet();
             value.forEach((unitId) -> {
                 if (unitIdToMemberIdMap.get(unitId) != null) {
                     readyAddMemberIds.add(unitIdToMemberIdMap.get(unitId));
-                }
-                else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                } else if (unitIdToMemberIdsMap.get(unitId) != null) {
                     readyAddMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
                 }
             });
@@ -923,232 +987,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     private Map<Long, List<Long>> getRoleMemberUnits(List<UnitEntity> units) {
-        Predicate<UnitEntity> roleEntityMatcher = unit -> UnitType.ROLE.getType().equals(unit.getUnitType());
-        List<Long> roleIds = units.stream().filter(roleEntityMatcher).map(UnitEntity::getUnitRefId).collect(toList());
+        Predicate<UnitEntity> roleEntityMatcher =
+            unit -> UnitType.ROLE.getType().equals(unit.getUnitType());
+        List<Long> roleIds = units.stream().filter(roleEntityMatcher).map(UnitEntity::getUnitRefId)
+            .collect(toList());
         units.removeIf(roleEntityMatcher);
         Map<Long, List<Long>> unitIdToUnitIds = iRoleService.flatMapToRoleMemberUnitIds(roleIds);
-        List<Long> roleMemberUnitIds = unitIdToUnitIds.values().stream().flatMap(List::stream).distinct().collect(toList());
+        List<Long> roleMemberUnitIds =
+            unitIdToUnitIds.values().stream().flatMap(List::stream).distinct().collect(toList());
         if (CollUtil.isEmpty(roleMemberUnitIds)) {
             return new HashMap<>(0);
         }
         List<UnitEntity> roleMemberUnit = unitMapper.selectByUnitIds(roleMemberUnitIds);
         units.addAll(roleMemberUnit);
         return unitIdToUnitIds;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void transformDeletedLinkField(Long userId, Map<String, List<String>> dstIdToDelDstIdsMap) {
-        log.info("convert the deleted associated field");
-        if (MapUtil.isNotEmpty(dstIdToDelDstIdsMap)) {
-            // gets the snapshot of all datasheets
-            List<String> nodeIds = CollUtil.newArrayList(dstIdToDelDstIdsMap.keySet());
-            Map<String, SnapshotMapRo> snapshotMap = this.findSnapshotMapByDstIds(nodeIds, false);
-            // The snapshot recordMap does not have the record datasheet ID, and the change needs to be obtained separately.
-            List<DataSheetRecordDTO> dataSheetRecordDTOList = datasheetRecordMapper.selectDtoByDstIds(nodeIds);
-            Map<String, List<DataSheetRecordDTO>> recordDtoMap = dataSheetRecordDTOList.stream().collect(Collectors.groupingBy(DataSheetRecordDTO::getDstId));
-            // process the datasheet.
-            // Obtain the relationship between the associated fields of each datasheet and the associated datasheet ID.
-            // The set of record rows that need to be modified for each datasheet.
-            // Each association datasheet corresponds to the set of records to be used.
-            Map<String, Map<String, String>> dstIdToFldLinkDstIdMap = MapUtil.newHashMap();
-            Map<String, Set<String>> dstIdToUpdateRecIdsMap = MapUtil.newHashMap();
-            Map<String, Set<String>> linkDstIdToRecIdsMap = MapUtil.newHashMap();
-            for (Map.Entry<String, List<String>> entry : dstIdToDelDstIdsMap.entrySet()) {
-                String dstId = entry.getKey();
-                List<String> linkDstIds = entry.getValue();
-                SnapshotMapRo snapshotMapRo = snapshotMap.get(dstId);
-                // prevent dirty data and delete failure
-                if (snapshotMapRo == null) {
-                    continue;
-                }
-                MetaMapRo metaMapRo = JSONUtil.parseObj(snapshotMapRo.getMeta()).toBean(MetaMapRo.class);
-                Map<String, String> fldIdToLinkDstIdMap = MapUtil.newHashMap();
-                // find the field id of the associated datasheet
-                metaMapRo.getFieldMap().values().forEach(field -> {
-                    FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
-                        LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
-                        String foreignDstId = property.getForeignDatasheetId();
-                        if (linkDstIds.contains(foreignDstId)) {
-                            // Record the associated number table corresponding to the column and convert the column to a text field.
-                            fldIdToLinkDstIdMap.put(fieldMapRo.getId(), foreignDstId);
-                            FieldMapRo fieldMapRo1 = FieldMapRo.builder()
-                                    .id(fieldMapRo.getId())
-                                    .name(fieldMapRo.getName())
-                                    .desc(fieldMapRo.getDesc())
-                                    .type(FieldType.TEXT.getFieldType()).build();
-                            metaMapRo.getFieldMap().set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo1));
-                        }
-                    }
-                });
-                // save changes
-                datasheetMetaService.edit(userId, dstId, MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
-                // traversal record map.
-                // The record datasheet corresponds to the set of recordId that needs to be modified, and the associated datasheet corresponds to the set of recordId that is used.
-                Set<String> updateRecIds = new HashSet<>();
-                List<DataSheetRecordDTO> recordMap = recordDtoMap.get(dstId);
-                // There is no record in this datasheet and there is no cell data to be converted.
-                if (CollUtil.isEmpty(recordMap)) {
-                    continue;
-                }
-                recordMap.forEach(recordDto -> fldIdToLinkDstIdMap.forEach((fldId, linkDstId) -> {
-                    Object cellVal = recordDto.getData().get(fldId);
-                    if (cellVal != null) {
-                        Set<String> recIds = CollUtil.newHashSet(JSONUtil.parseArray(cellVal).toList(String.class));
-                        Set<String> recordIds = linkDstIdToRecIdsMap.get(linkDstId);
-                        if (recordIds != null) {
-                            recordIds.addAll(recIds);
-                        }
-                        else {
-                            linkDstIdToRecIdsMap.put(linkDstId, recIds);
-                        }
-                        updateRecIds.add(recordDto.getRecordId());
-                    }
-                }));
-                if (CollUtil.isNotEmpty(updateRecIds)) {
-                    dstIdToUpdateRecIdsMap.put(dstId, updateRecIds);
-                    dstIdToFldLinkDstIdMap.put(dstId, fldIdToLinkDstIdMap);
-                }
-            }
-            // process deleted associated field column data
-            this.processDeletedLinkFieldData(recordDtoMap, dstIdToFldLinkDstIdMap, dstIdToUpdateRecIdsMap, linkDstIdToRecIdsMap);
-        }
-    }
-
-    /**
-     * process deleted associated field column data
-     *
-     * @param recordDtoMap           datasheet-> recordDto set
-     * @param dstIdToFldLinkDstIdMap datasheet-> (association field-> association datasheet ID)
-     * @param dstIdToUpdateRecIdsMap datasheet-> set of recordId to be modified
-     * @param linkDstIdToRecIdsMap   Association datasheet-> used recordId collection
-     */
-    private void processDeletedLinkFieldData(Map<String, List<DataSheetRecordDTO>> recordDtoMap, Map<String, Map<String, String>> dstIdToFldLinkDstIdMap,
-            Map<String, Set<String>> dstIdToUpdateRecIdsMap, Map<String, Set<String>> linkDstIdToRecIdsMap) {
-        if (MapUtil.isEmpty(linkDstIdToRecIdsMap)) {
-            return;
-        }
-        // The associated field has associated data, and the processing obtains the relationship between the corresponding record mapping data used by each associated datasheet.
-        Map<String, Map<String, String>> linkDstIdToRecValMap = new HashMap<>(linkDstIdToRecIdsMap.size());
-        List<String> linkDstIds = CollUtil.newArrayList(linkDstIdToRecIdsMap.keySet());
-        Map<String, SnapshotMapRo> linkSnapshotMap = this.findSnapshotMapByDstIds(linkDstIds, true);
-        for (Map.Entry<String, Set<String>> linkDstIdToRecIds : linkDstIdToRecIdsMap.entrySet()) {
-            String linkDstId = linkDstIdToRecIds.getKey();
-            Set<String> recIds = linkDstIdToRecIds.getValue();
-            SnapshotMapRo snapshotMapRo = linkSnapshotMap.get(linkDstId);
-            if (snapshotMapRo == null) {
-                continue;
-            }
-            // Find the field ID of the first column from the properties of the view.
-            MetaMapRo metaMapRo = JSONUtil.parseObj(snapshotMapRo.getMeta()).toBean(MetaMapRo.class);
-            ViewMapRo viewMapRo = JSONUtil.parseObj(metaMapRo.getViews().get(0)).toBean(ViewMapRo.class);
-            String firstColumnId = JSONUtil.parseObj(viewMapRo.getColumns().get(0)).get("fieldId").toString();
-            // Gets the properties of the first column field
-            FieldMapRo fieldMapRo = JSONUtil.parseObj(metaMapRo.getFieldMap().get(firstColumnId)).toBean(FieldMapRo.class);
-            FieldType fieldType = FieldType.create(fieldMapRo.getType());
-            // Traversing the set of recordId used to make up the MAP of the record ID and data.
-            Map<String, String> recIdToValMap = MapUtil.newHashMap();
-            JSONObject recordMap = snapshotMapRo.getRecordMap();
-            recIds.forEach(recId -> {
-                Object recordVo = recordMap.get(recId);
-                if (recordVo != null) {
-                    DatasheetRecordVo vo = JSONUtil.parseObj(recordVo).toBean(DatasheetRecordVo.class);
-                    Object cellVal = vo.getData().get(firstColumnId);
-                    String val = this.parseCellData(fieldType, fieldMapRo.getProperty(), cellVal);
-                    recIdToValMap.put(recId, val);
-                }
-            });
-            linkDstIdToRecValMap.put(linkDstId, recIdToValMap);
-        }
-        // Replace cell data in the associated column of the original datasheet
-        List<DatasheetRecordEntity> entities = new ArrayList<>();
-        dstIdToUpdateRecIdsMap.forEach((dstId, recIds) -> {
-            Map<String, String> fldIdToLinkDstIdMap = dstIdToFldLinkDstIdMap.get(dstId);
-            Map<String, DataSheetRecordDTO> recIdToDtoMap = recordDtoMap.get(dstId).stream().collect(Collectors.toMap(DataSheetRecordDTO::getRecordId, record -> record));
-            recIds.forEach(recId -> {
-                DataSheetRecordDTO recordDto = recIdToDtoMap.get(recId);
-                JSONObject data = recordDto.getData();
-                boolean change = false;
-                for (Map.Entry<String, String> entry : fldIdToLinkDstIdMap.entrySet()) {
-                    String fldId = entry.getKey();
-                    Object cellVal = data.get(fldId);
-                    if (cellVal != null) {
-                        StringBuilder strBuilder = new StringBuilder();
-                        Map<String, String> recIdToValMap = linkDstIdToRecValMap.get(entry.getValue());
-                        List<String> cellRecIds = JSONUtil.parseArray(cellVal).toList(String.class);
-                        cellRecIds.forEach(cellRecId -> {
-                            if (strBuilder.length() > 0) {
-                                strBuilder.append(",");
-                            }
-                            if (MapUtil.isEmpty(recIdToValMap) || recIdToValMap.get(cellRecId) == null) {
-                                strBuilder.append("Unnamed record ");
-                            }
-                            else {
-                                strBuilder.append(recIdToValMap.get(cellRecId));
-                            }
-                        });
-                        JSONObject obj = JSONUtil.createObj();
-                        obj.set("type", CellType.TEXT.getType());
-                        obj.set("text", strBuilder.toString());
-                        JSONArray array = JSONUtil.createArray();
-                        array.add(obj);
-                        data.set(fldId, array);
-                        change = true;
-                    }
-                }
-                if (change) {
-                    DatasheetRecordEntity entity = DatasheetRecordEntity.builder().id(recordDto.getId()).data(StrUtil.toString(data)).build();
-                    entities.add(entity);
-                }
-            });
-        });
-        // save changes
-        if (CollUtil.isNotEmpty(entities)) {
-            datasheetRecordService.updateBatchById(entities, entities.size());
-        }
-    }
-
-    @Override
-    public String parseCellData(FieldType fieldType, JSONObject property, Object cellVal) {
-        log.info("Analyze the cell data of the datasheet ");
-        if (cellVal != null) {
-            switch (fieldType) {
-                case AUTO_NUMBER:
-                    return cellVal.toString();
-                case SINGLE_TEXT:
-                case TEXT:
-                case URL:
-                case EMAIL:
-                case PHONE:
-                    StringBuilder strBuilder = new StringBuilder();
-                    JSONArray array = JSONUtil.parseArray(cellVal);
-                    array.forEach(json -> strBuilder.append(JSONUtil.parseObj(json).get("text")));
-                    return strBuilder.toString();
-                case NUMBER:
-                    int precision = Integer.parseInt(property.get("precision").toString());
-                    return NumberUtil.round(cellVal.toString(), precision).toString();
-                case CURRENCY:
-                    String symbol = property.get("symbol").toString();
-                    precision = Integer.parseInt(property.get("precision").toString());
-                    return symbol + NumberUtil.round(cellVal.toString(), precision).toString();
-                case PERCENT:
-                    precision = Integer.parseInt(property.get("precision").toString());
-                    BigDecimal val = NumberUtil.mul(cellVal.toString(), "100");
-                    return NumberUtil.round(val, precision).toString() + "%";
-                case DATETIME:
-                    DateFieldProperty dateFieldProperty = property.toBean(DateFieldProperty.class);
-                    String format = DateFormat.getPattern(dateFieldProperty.getDateFormat());
-                    if (dateFieldProperty.isIncludeTime()) {
-                        format = StrUtil.format("{} {}", format, TimeFormat.getPattern(dateFieldProperty.getTimeFormat()));
-                    }
-                    DateTime date = DateUtil.date(Long.parseLong(cellVal.toString()));
-                    return DateUtil.format(date, format);
-                default:
-                    break;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -1166,7 +1018,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     // determine if there is an associated field
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
-                        LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                        LinkFieldProperty property =
+                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // Determine whether the associated field is associated with the appearance.
                         if (!dstIdList.contains(property.getForeignDatasheetId())) {
                             foreignFieldNames.add(fieldMapRo.getName());
