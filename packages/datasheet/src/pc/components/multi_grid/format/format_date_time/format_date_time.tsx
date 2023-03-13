@@ -247,7 +247,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               onSelected={handleTimeZoneChange}
               renderValue={option => {
                 if (!option.value) {
-                  return `${option.label} ${getClientTimeZone()}`
+                  return `${option.label} ${getClientTimeZone()}`;
                 }
                 return option.label;
               }}

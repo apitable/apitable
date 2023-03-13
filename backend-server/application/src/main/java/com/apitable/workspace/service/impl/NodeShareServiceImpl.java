@@ -18,6 +18,9 @@
 
 package com.apitable.workspace.service.impl;
 
+import com.apitable.workspace.enums.IdRulePrefixEnum;
+import com.apitable.workspace.service.IDatasheetMetaService;
+import com.apitable.workspace.service.IDatasheetService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,6 +116,12 @@ public class NodeShareServiceImpl implements INodeShareService {
     private INodeService iNodeService;
 
     @Resource
+    private IDatasheetService iDatasheetService;
+
+    @Resource
+    private IDatasheetMetaService iDatasheetMetaService;
+
+    @Resource
     private ILabsApplicantService iLabsApplicantService;
 
     @Resource
@@ -156,14 +165,40 @@ public class NodeShareServiceImpl implements INodeShareService {
                 settingInfoVO.setOperatorHasPermission(roleDict.get(nodeId).isGreaterThanOrEqualTo(requireRole));
             }
         }
+        this.appendDatasheetInfo(settingInfoVO, nodeId);
+        return settingInfoVO;
+    }
+
+    private void appendDatasheetInfo(final NodeShareSettingInfoVO settingInfoVO,
+        final String nodeId) {
         // Query association table information
-        List<BaseNodeInfo> linkNodes = iNodeService.getForeignSheet(nodeId);
+        NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
+        ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
+        List<String> dstIds;
+        switch (nodeType) {
+            case FOLDER:
+                List<String> subNodeIds =
+                    iNodeService.getNodeIdsInNodeTree(nodeId, -1);
+                dstIds = subNodeIds.stream()
+                    .filter(i -> i.startsWith(IdRulePrefixEnum.DST.getIdRulePrefixEnum()))
+                    .collect(Collectors.toList());
+                break;
+            case DATASHEET:
+                dstIds = Collections.singletonList(nodeId);
+                break;
+            default:
+                return;
+        }
+        if (CollUtil.isEmpty(dstIds)) {
+            return;
+        }
+        List<BaseNodeInfo> linkNodes = iDatasheetService.getForeignDstIdsFilterSelf(dstIds);
         if (CollUtil.isNotEmpty(linkNodes)) {
-            settingInfoVO.setLinkNodes(CollUtil.getFieldValues(linkNodes, "nodeName", String.class));
+            List<String> nodeNames = CollUtil.getFieldValues(linkNodes, "nodeName", String.class);
+            settingInfoVO.setLinkNodes(nodeNames);
         }
         // Query whether the shared node (including child descendants) contains member fields
-        settingInfoVO.setContainMemberFld(iNodeService.judgeAllSubNodeContainMemberFld(nodeId));
-        return settingInfoVO;
+        settingInfoVO.setContainMemberFld(iDatasheetMetaService.judgeContainMemberField(dstIds));
     }
 
     @Override
@@ -248,10 +283,6 @@ public class NodeShareServiceImpl implements INodeShareService {
         Boolean allowDownloadAttachment = feature.getAllowDownloadAttachment();
         nodeShareInfoVo.setAllowDownloadAttachment(Objects.isNull(allowDownloadAttachment) || allowDownloadAttachment);
         nodeShareInfoVo.setSpaceName(space.getName());
-        nodeShareInfoVo.setShareNodeId(setting.getNodeId());
-        nodeShareInfoVo.setShareNodeName(node.getNodeName());
-        nodeShareInfoVo.setShareNodeType(node.getType());
-        nodeShareInfoVo.setShareNodeIcon(node.getIcon());
         // laboratory feature
         // At present, there is only one, which directly queries a single one, and there are multiple requirements behind it. Expand it
         LabsApplicantEntity spaceLabs = iLabsApplicantService.getApplicantByApplicantAndFeatureKey(node.getSpaceId(), LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
@@ -273,9 +304,9 @@ public class NodeShareServiceImpl implements INodeShareService {
         // If it is a directory node, query the permissions of the sharer and exclude child nodes without permissions.
         List<String> nodeIds = CollUtil.newArrayList(node.getNodeId());
         boolean hasChildren = nodeMapper.selectHasChildren(node.getNodeId());
-        nodeShareInfoVo.setIsFolder(hasChildren);
         if (hasChildren) {
-            List<String> subNodeIds = nodeMapper.selectSubNodesByOrder(node.getSpaceId(), node.getNodeId(), 0);
+            List<String> subNodeIds =
+                iNodeService.getNodeIdsInNodeTree(node.getNodeId(), -1);
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 nodeIds.addAll(subNodeIds);
             }
@@ -294,7 +325,6 @@ public class NodeShareServiceImpl implements INodeShareService {
         // node switches to memory custom sort
         CollectionUtil.customSequenceSort(list, NodeShareTree::getNodeId, new ArrayList<>(filterNodeIds));
         List<NodeShareTree> treeList = new DefaultTreeBuildFactory<NodeShareTree>(node.getNodeId()).doTreeBuild(list);
-        nodeShareInfoVo.setNodeTree(treeList);
         NodeShareTree nodeTree = new NodeShareTree();
         nodeTree.setNodeId(node.getNodeId());
         nodeTree.setNodeName(node.getNodeName());
@@ -375,7 +405,8 @@ public class NodeShareServiceImpl implements INodeShareService {
         MemberInfoDTO member = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(nodeSetting.getUpdatedBy(), nodeSpaceId);
         ExceptionUtil.isNotNull(member.getId(), NodeException.SHARE_EXPIRE);
         // Obtain the node ID of the node and its child descendants.
-        List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(Collections.singletonList(nodeSetting.getNodeId()), false);
+        List<String> nodeIds =
+            iNodeService.getNodeIdsInNodeTree(nodeSetting.getNodeId(), -1);
         // Filter the required permissions of the node and share the display logic of the node tree synchronously.
         ControlRoleDict roleDict = controlTemplate.fetchShareNodeTree(member.getId(), nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), NodeException.SHARE_EXPIRE);

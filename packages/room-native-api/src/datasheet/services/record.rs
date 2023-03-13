@@ -21,6 +21,7 @@ pub async fn get_records(
   dst_id: String,
   record_ids: Option<Vec<String>>,
   is_deleted: bool,
+  with_comment: bool,
 ) -> Result<HashMap<String, Record>, anyhow::Error> {
   let mut cond = record::Column::DstId
     .eq(&dst_id)
@@ -29,7 +30,7 @@ pub async fn get_records(
     cond = cond.and(record::Column::RecordId.is_in(record_ids));
   }
   let record_list = record::Entity::find().filter(cond).all(database::connection()).await?;
-  let comment_counts = record_comment::get_record_comment_map_by_dst_id(dst_id).await?;
+  let comment_counts = get_comment_count_map(dst_id, with_comment).await?;
   let mut record_map = HashMap::default();
   for record in record_list {
     let record_id = record.record_id;
@@ -50,6 +51,13 @@ pub async fn get_records(
     );
   }
   Ok(record_map)
+}
+
+async fn get_comment_count_map(dst_id: String, with_comments: bool) -> Result<HashMap<String, i64>, anyhow::Error> {
+  if !with_comments {
+    return Ok(HashMap::default());
+  }
+  return record_comment::get_record_comment_map_by_dst_id(dst_id).await;
 }
 
 #[cfg(test)]
@@ -160,7 +168,7 @@ mod tests {
       ]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false, true).await);
 
     assert_eq!(
       record_map,
@@ -237,7 +245,8 @@ mod tests {
       get_records(
         "dst1".to_owned(),
         Some(vec!["rec1".to_owned(), "rec2".to_owned(), "rec3".to_owned(),]),
-        false
+        false,
+        true
       )
       .await
     );
@@ -334,7 +343,7 @@ mod tests {
       .append_query_results::<MockRow, _, _>([vec![]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true, true).await);
 
     assert_eq!(
       record_map,

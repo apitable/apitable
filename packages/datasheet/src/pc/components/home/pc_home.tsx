@@ -36,6 +36,7 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [action, setAction] = useState<ActionType>(ActionType.SignUp);
+  const [email, setEmail] = useState<string>('');
 
   const switchActionType = (actionType: ActionType) => {
     setAction(actionType);
@@ -51,13 +52,13 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   const homeModal = (action: ActionType) => {
     switch(action) {
       case ActionType.SignIn:
-        return <Login switchClick={switchActionType} />;
+        return <Login switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
       case ActionType.SignUp:
-        return <SignUp switchClick={switchActionType} />;
+        return <SignUp switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
       case ActionType.ForgetPassword:
-        return <ForgetPassword switchClick={switchActionType} />;
+        return <ForgetPassword switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
     }
     
@@ -72,7 +73,7 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
         return 'Sign Up';
         break;
       case ActionType.ForgetPassword:
-        return 'Reset password';
+        return 'Reset Password';
         break;
     }
   };

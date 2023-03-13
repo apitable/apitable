@@ -69,6 +69,7 @@ class MyDocument extends Document<IClientInfo> {
           {
             !JSON.parse(envVars).DISABLE_AWSC && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           }
+          {JSON.parse(envVars).SENSORSDATA_TOKEN && <Script src='/file/js/sensors.js' strategy={'beforeInteractive'} />}
           {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`

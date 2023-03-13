@@ -22,12 +22,17 @@ export const getTimeZoneOffsetByUtc = (utc: string) => {
 export const getTimeZoneAbbrByUtc = (utc: string) => {
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
   return currentTimeZoneData?.abbr;
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> 60ef90a01419b713f486b88ff0acbcf3e0873cfd
 
 export const getUtcOptionList = () => {
   let list: IUtcOption[] = [];
 
   for(let i = 0; i < TIMEZONES.length; i++) {
+<<<<<<< HEAD
     const { abbr, offset, utc, isdst } = TIMEZONES[i]!;
     if (isdst) continue;
     list = list.concat(utc.filter((tz: string) => !tz.includes('Etc/GMT')).map((tz: string) => {
@@ -42,14 +47,35 @@ export const getUtcOptionList = () => {
 
   return list;
 };
+=======
+    const { abbr, offset, utc } = TIMEZONES[i]!;
+    list = list.concat(utc.map((tz: string) => {
+      return {
+        abbr,
+        offset,
+        label: `UTC${offset > 0  ? '+' : ''}${offset}(${tz})`,
+        value: tz,
+      }
+    }))
+  }
+
+  return list;
+}
+>>>>>>> 60ef90a01419b713f486b88ff0acbcf3e0873cfd
 
 export const getClientTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
   const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(clientTimeZone))!;
   const { offset } = currentTimeZoneData;
+<<<<<<< HEAD
   return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;
 };
+=======
+  return `UTC${offset > 0  ? '+' : ''}${offset}(${clientTimeZone})`;
+}
+
+>>>>>>> 60ef90a01419b713f486b88ff0acbcf3e0873cfd
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
 export const TIMEZONES = [
@@ -1485,6 +1511,7 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Apia'
     ]
+<<<<<<< HEAD
   },
   {
     value: '',
@@ -1495,5 +1522,7 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Kiritimati'
     ]
+=======
+>>>>>>> 60ef90a01419b713f486b88ff0acbcf3e0873cfd
   }
-];
+]

@@ -58,7 +58,7 @@ export class DatasheetRecordService {
   @Span()
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
     if (await this.getNativeModule()) {
-      return (await this.getNativeModule())!.getRecords(dstId, undefined, false) as Promise<RecordMap>;
+      return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
     }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
@@ -70,8 +70,11 @@ export class DatasheetRecordService {
 
   @Span()
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    if (recordIds.length === 0) {
+      return this.formatRecordMap([], {}, recordIds);
+    }
     if (await this.getNativeModule()) {
-      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted) as Promise<RecordMap>;
+      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
     }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
@@ -79,6 +82,18 @@ export class DatasheetRecordService {
     });
     const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
     return this.formatRecordMap(records, commentCountMap, recordIds);
+  }
+
+  @Span()
+  async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    if (await this.getNativeModule()) {
+      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
+    }
+    const records = await this.recordRepo.find({
+      select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
+      where: { recordId: In(recordIds), dstId, isDeleted },
+    });
+    return this.formatRecordMap(records, {}, recordIds);
   }
 
   @Span()

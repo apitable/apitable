@@ -71,7 +71,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
-import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';

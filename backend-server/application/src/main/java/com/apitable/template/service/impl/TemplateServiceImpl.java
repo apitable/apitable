@@ -18,42 +18,29 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.workspace.enums.NodeException.NOT_ALLOW;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.SystemConfigType;
 import com.apitable.base.model.SystemConfigDTO;
 import com.apitable.base.service.ISystemConfigService;
-import com.apitable.shared.component.LanguageManager;
-import com.apitable.widget.service.IWidgetService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.tree.DefaultTreeBuildFactory;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.cache.bean.RecommendConfig;
 import com.apitable.shared.cache.bean.RecommendConfig.AlbumGroup;
 import com.apitable.shared.cache.bean.RecommendConfig.TemplateGroup;
 import com.apitable.shared.cache.service.TemplateConfigCacheService;
+import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.CollectionUtil;
@@ -82,6 +69,7 @@ import com.apitable.template.vo.TemplateDirectoryVo;
 import com.apitable.template.vo.TemplateGroupVo;
 import com.apitable.template.vo.TemplateSearchResult;
 import com.apitable.template.vo.TemplateVo;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -93,16 +81,24 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.NodeShareTree;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.tree.DefaultTreeBuildFactory;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.workspace.enums.NodeException.NOT_ALLOW;
 
 /**
  * Template Service Implement Class.
@@ -239,15 +235,14 @@ public class TemplateServiceImpl
         List<BaseNodeInfo> nodeInfos =
             nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
         Map<Integer, List<String>> nodeTypeToNodeIdsMap = nodeInfos.stream()
-                .collect(Collectors.groupingBy(BaseNodeInfo::getType,
-                    Collectors.mapping(BaseNodeInfo::getNodeId,
-                        Collectors.toList())));
+            .collect(Collectors.groupingBy(BaseNodeInfo::getType,
+                Collectors.mapping(BaseNodeInfo::getNodeId, Collectors.toList())));
         // If there is a number table,
         // check whether it is associated with an external number table
         if (nodeTypeToNodeIdsMap
             .containsKey(NodeType.DATASHEET.getNodeType())) {
             this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(
-                NodeType.DATASHEET.getNodeType()), true,
+                    NodeType.DATASHEET.getNodeType()), true,
                 TemplateException.FOLDER_NODE_LINK_FOREIGN_NODE);
             // Check Field Permissions
             for (String subNodeId : nodeTypeToNodeIdsMap
@@ -361,8 +356,8 @@ public class TemplateServiceImpl
             iFieldRoleService.getFieldPermissionMap(memberId, nodeId, null);
         if (MapUtil.isNotEmpty(fieldPermissionMap)) {
             FieldPermissionInfo info = fieldPermissionMap.values().stream()
-                    .filter(val -> !Boolean.TRUE.equals(val.getHasRole()))
-                    .findFirst().orElse(null);
+                .filter(val -> !Boolean.TRUE.equals(val.getHasRole()))
+                .findFirst().orElse(null);
             ExceptionUtil.isNull(info,
                 TemplateException.FIELD_PERMISSION_INSUFFICIENT);
         }
@@ -402,11 +397,11 @@ public class TemplateServiceImpl
         NodeType nodeType = iNodeService.getTypeByNodeId(ro.getNodeId());
         String nodeId = IdUtil.createNodeId(nodeType.getNodeType());
         NodeCopyOptions options = NodeCopyOptions.builder()
-                .copyData(BooleanUtil.isTrue(ro.getData()))
-                .nodeId(nodeId)
-                .template(true)
-                .retainRecordMeta(true)
-                .build();
+            .copyData(BooleanUtil.isTrue(ro.getData()))
+            .nodeId(nodeId)
+            .template(true)
+            .retainRecordMeta(true)
+            .build();
         // Overwrite with the same name, delete the old map node
         if (id != null) {
             TemplateInfo info = baseMapper.selectInfoById(id);
@@ -591,8 +586,8 @@ public class TemplateServiceImpl
     public List<TemplateCategoryMenuVo> getTemplateCategoryList(
         final String lang) {
         List<TemplatePropertyDto> properties =
-                templatePropertyService.getTemplatePropertiesWithLangAndOrder(
-                    TemplatePropertyType.CATEGORY, lang);
+            templatePropertyService.getTemplatePropertiesWithLangAndOrder(
+                TemplatePropertyType.CATEGORY, lang);
         List<TemplateCategoryMenuVo> categoryVos = new ArrayList<>();
         for (TemplatePropertyDto property : properties) {
             TemplateCategoryMenuVo vo = new TemplateCategoryMenuVo();
@@ -671,14 +666,14 @@ public class TemplateServiceImpl
                 iNodeDescService.getNodeIdToDescMap(nodeIds);
             templateDtoList.forEach(dto -> {
                 TemplateVo vo = TemplateVo.builder()
-                        .templateId(dto.getTemplateId())
-                        .templateName(dto.getName())
-                        .nodeId(dto.getNodeId())
-                        .nodeType(dto.getType())
-                        .cover(dto.getCover())
-                        .description(nodeIdToDescMap.get(dto.getNodeId()))
-                        .tags(tags.get(dto.getTemplateId()))
-                        .build();
+                    .templateId(dto.getTemplateId())
+                    .templateName(dto.getName())
+                    .nodeId(dto.getNodeId())
+                    .nodeType(dto.getType())
+                    .cover(dto.getCover())
+                    .description(nodeIdToDescMap.get(dto.getNodeId()))
+                    .tags(tags.get(dto.getTemplateId()))
+                    .build();
                 // The template belongs to the space station
                 // and shows the creator information
                 if (BooleanUtil.isTrue(isPrivate)) {
@@ -716,14 +711,13 @@ public class TemplateServiceImpl
         nodeTree.setType(templateDto.getType());
         nodeTree.setIcon(templateDto.getIcon());
         TemplateDirectoryVo vo = TemplateDirectoryVo.builder()
-                .templateId(templateId)
-                .templateName(templateDto.getName())
-                .nodeTree(nodeTree)
-                .build();
+            .templateId(templateId)
+            .templateName(templateDto.getName())
+            .nodeTree(nodeTree)
+            .build();
         if (templateDto.getType() == NodeType.FOLDER.getNodeType()) {
             List<NodeShareTree> treeByNodeIds =
-                nodeMapper.selectShareTreeByNodeId(templateDto.getTypeId(),
-                    templateDto.getNodeId());
+                iNodeService.getSubNodes(templateDto.getNodeId());
             if (CollUtil.isNotEmpty(treeByNodeIds)) {
                 List<NodeShareTree> treeList =
                     new DefaultTreeBuildFactory<NodeShareTree>(
@@ -768,8 +762,7 @@ public class TemplateServiceImpl
             templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
         // Get template custom IDs of all online templates
         LinkedHashSet<String> templateIds =
-                templatePropertyService.getTemplateIdsByKeyWordAndLang(
-                    StrUtil.trim(keyword), lang);
+            templatePropertyService.getTemplateIdsByKeyWordAndLang(StrUtil.trim(keyword), lang);
         if (CollUtil.isEmpty(templateIds)) {
             return new ArrayList<>();
         }
@@ -878,19 +871,7 @@ public class TemplateServiceImpl
         // Query the node ID of the template map
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TemplateException.TEMPLATE_INFO_ERROR);
-
-        List<String> nodeIds = new ArrayList<>();
-        nodeIds.add(nodeId);
-        // Determine the node type
-        NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
-        if (nodeType == NodeType.FOLDER) {
-            // find all child nodes
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
-            if (!subNodeIds.isEmpty()) {
-                nodeIds.addAll(subNodeIds);
-            }
-        }
-        return nodeIds;
+        return iNodeService.getNodeIdsInNodeTree(nodeId, -1);
     }
 
     private void complementCategoryInfo(
