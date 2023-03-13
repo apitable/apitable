@@ -40,6 +40,17 @@
           and is_deleted = 0
     </select>
 
+    <select id="selectTeamIdByParentIdIn" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_team
+        WHERE parent_id IN
+        <foreach item="item" index="index" collection="parentIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectTeamTreeVoByTeamIdIn"
             resultType="com.apitable.organization.vo.TeamTreeVo">
         SELECT ut.id AS team_id, ut.team_name, ut.parent_id, ut.sequence,

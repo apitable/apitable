@@ -48,8 +48,6 @@ import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.TeamVo;
 import com.apitable.organization.vo.UnitTeamVo;
-import com.apitable.space.entity.SpaceEntity;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
@@ -96,9 +94,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;
-
-    @Resource
-    private SpaceMapper spaceMapper;
 
     @Resource
     private MemberMapper memberMapper;
@@ -390,61 +385,35 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
-    public TeamInfoVo getTeamInfoById(String spaceId, Long teamId) {
+    public TeamInfoVo getTeamInfoById(Long teamId) {
         log.info("get team info by id");
-        Long rootTeamId = baseMapper.selectRootIdBySpaceId(spaceId);
-        ExceptionUtil.isNotNull(rootTeamId, OrganizationException.GET_TEAM_ERROR);
-        SpaceEntity spaceEntity = spaceMapper.selectBySpaceId(spaceId);
-        ExceptionUtil.isNotNull(spaceEntity, OrganizationException.GET_TEAM_ERROR);
+        TeamEntity team = teamMapper.selectById(teamId);
         TeamInfoVo teamInfo = new TeamInfoVo();
-        if (teamId == 0) {
-            // query root team，default root team is 0.
+        teamInfo.setTeamName(team.getTeamName());
+        if (team.getParentId() == 0L) {
             teamInfo.setTeamId(0L);
-            teamInfo.setTeamName(spaceEntity.getName());
-            teamInfo.setSequence(1);
-            List<Long> subTeamIds = baseMapper.selectTeamIdsByParentId(spaceId, rootTeamId);
-            if (CollUtil.isNotEmpty(subTeamIds)) {
-                teamInfo.setHasChildren(true);
-            }
-            // total number of enquiries
-            int memberCount = SqlTool.retCount(memberMapper.selectCountBySpaceId(spaceId));
+            Integer memberCount = memberMapper.selectCountBySpaceId(team.getSpaceId());
             teamInfo.setMemberCount(memberCount);
-            //  query the number of active members
-            int activateMemberCount =
-                SqlTool.retCount(memberMapper.selectActiveMemberCountBySpaceId(spaceId));
-            teamInfo.setActivateMemberCount(activateMemberCount);
             return teamInfo;
         }
-        // Query information about non-root departments
-        TeamEntity teamEntity = baseMapper.selectById(teamId);
-        ExceptionUtil.isNotNull(teamEntity, OrganizationException.GET_TEAM_ERROR);
         teamInfo.setTeamId(teamId);
-        teamInfo.setTeamName(teamEntity.getTeamName());
-        teamInfo.setSequence(teamEntity.getSequence());
-        if (rootTeamId.equals(teamEntity.getParentId())) {
-            teamInfo.setParentId(0L);
-            teamInfo.setParentTeamName(spaceEntity.getName());
-        } else {
-            teamInfo.setParentId(teamEntity.getParentId());
-            String parentTeamName = baseMapper.selectTeamNameById(teamEntity.getParentId());
-            teamInfo.setParentTeamName(parentTeamName);
-        }
-        List<Long> subTeamIds = baseMapper.selectTeamIdsByParentId(spaceId, teamId);
-        if (CollUtil.isNotEmpty(subTeamIds)) {
-            // get the number of people in the sub departments
-            teamInfo.setHasChildren(true);
-            List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamIds(subTeamIds);
-            teamInfo.setMemberCount(memberIds.isEmpty() ? 0 : new HashSet<>(memberIds).size());
-            // Gets the number of activated people in sub departments
-            List<Long> activeMemberIds =
-                teamMemberRelMapper.selectActiveMemberIdsByTeamIds(subTeamIds);
-            teamInfo.setActivateMemberCount(memberIds.isEmpty()
-                ? 0 : new HashSet<>(activeMemberIds).size());
-        } else {
-            teamInfo.setMemberCount(baseMapper.selectMemberCountByTeamId(teamId));
-            teamInfo.setActivateMemberCount(baseMapper.selectActiveMemberCountByTeamId(teamId));
-        }
+        List<Long> teamIds = this.getAllTeamIdsContainSubTeam(teamId);
+        Integer memberCount = teamMemberRelMapper.countByTeamId(teamIds);
+        teamInfo.setMemberCount(memberCount);
         return teamInfo;
+    }
+
+    private List<Long> getAllTeamIdsContainSubTeam(Long teamId) {
+        List<Long> teamIds = new ArrayList<>();
+        teamIds.add(teamId);
+        List<Long> parentIds = teamIds;
+        while (true) {
+            parentIds = teamMapper.selectTeamIdByParentIdIn(parentIds);
+            if (parentIds.isEmpty()) {
+                return teamIds;
+            }
+            teamIds.addAll(parentIds);
+        }
     }
 
     @Override

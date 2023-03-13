@@ -75,6 +75,15 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     Integer selectMaxSequenceByParentId(@Param("parentId") Long parentId);
 
     /**
+     * Query team ids
+     *
+     * @param parentIds parentIds
+     * @return TeamIds
+     * @author Chambers
+     */
+    List<Long> selectTeamIdByParentIdIn(@Param("parentIds") Collection<Long> parentIds);
+
+    /**
      * Query team tree view
      *
      * @param teamIds teamIds

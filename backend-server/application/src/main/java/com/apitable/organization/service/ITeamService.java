@@ -171,11 +171,10 @@ public interface ITeamService extends IService<TeamEntity> {
     Long getByTeamNamePath(String spaceId, List<String> teamNames);
 
     /**
-     * @param spaceId space id
      * @param teamId team id, root team default 0
      * @return TeamInfoVo
      */
-    TeamInfoVo getTeamInfoById(String spaceId, Long teamId);
+    TeamInfoVo getTeamInfoById(Long teamId);
 
     /**
      * @param teamId team id

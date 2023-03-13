@@ -182,7 +182,8 @@ public class TeamController {
     public ResponseData<TeamInfoVo> readTeamInfo(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
-        TeamInfoVo teamInfo = iTeamService.getTeamInfoById(spaceId, teamId);
+        Long temId = teamId == 0 ? iTeamService.getRootTeamId(spaceId) : teamId;
+        TeamInfoVo teamInfo = iTeamService.getTeamInfoById(temId);
         return ResponseData.success(teamInfo);
     }
 
