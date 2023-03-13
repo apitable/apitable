@@ -85,9 +85,9 @@ const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
 
-if (!process.env.SSR && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
