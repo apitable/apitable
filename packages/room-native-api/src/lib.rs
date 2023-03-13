@@ -5,7 +5,6 @@ use datasheet::database::InitDbOptions;
 use futures::TryFutureExt;
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use std::env;
-use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 
 mod datasheet;
 mod types;
