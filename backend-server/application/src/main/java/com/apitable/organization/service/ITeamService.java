@@ -46,6 +46,15 @@ public interface ITeamService extends IService<TeamEntity> {
     List<TeamTreeVo> getTeamTree(String spaceId, Long memberId, Integer depth);
 
     /**
+     * Get all team id in team tree.
+     *
+     * @param teamIds team ids
+     * @return AllTeamId
+     * @author Chambers
+     */
+    List<Long> getAllTeamIdsInTeamTree(List<Long> teamIds);
+
+    /**
      * Check whether the team has members or teams
      *
      * @param spaceId space id
@@ -110,14 +119,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @return parent team's id
      */
     Long getParentId(Long teamId);
-
-    /**
-     * get all sub teams id, excluding self.
-     *
-     * @param teamId team id
-     * @return team ids
-     */
-    List<Long> getAllSubTeamIdsByParentId(Long teamId);
 
     /**
      *  Get the maximum sorting value of sub team in the team.
@@ -218,15 +219,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @return TeamTreeVos
      */
     List<TeamTreeVo> buildTree(String spaceId, List<Long> teamIds);
-
-    /**
-     * Count the number of people in the team and it's sub team in the space.
-     * the team's members include sub teams'.
-     *
-     * @param teamId team id
-     * @return team id - the member amount
-     */
-    Map<Long, Integer> getTeamMemberCountMap(Long teamId);
 
     /**
      * @param spaceId space id

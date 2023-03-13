@@ -130,26 +130,6 @@
         FROM sub_ids;
     </select>
 
-    <select id="selectAllSubTeamIds" resultType="java.lang.Long">
-        WITH RECURSIVE sub_ids (id) AS
-        (
-        SELECT id
-        FROM ${tablePrefix}unit_team
-        WHERE parent_id IN
-            <foreach item="item" index="index" collection="parentIds" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-            AND is_deleted = 0
-        UNION ALL
-        SELECT c.id
-        FROM sub_ids AS cp
-        JOIN ${tablePrefix}unit_team AS c
-        ON cp.id = c.parent_id and c.is_deleted = 0
-        )
-        SELECT distinct *
-        FROM sub_ids;
-    </select>
-
     <select id="selectByTeamName" resultType="com.apitable.organization.vo.SearchTeamResultVo">
         SELECT vod.id                             as team_id,
                vod.team_name                      as team_name,

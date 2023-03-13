@@ -128,14 +128,6 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
         @Param("includeSelf") boolean includeSelf);
 
     /**
-     * query all team's sub team ids.
-     *
-     * @param parentIds parent team ids
-     * @return all sub team ids
-     */
-    List<Long> selectAllSubTeamIds(@Param("parentIds") Collection<Long> parentIds);
-
-    /**
      * query root team's members
      *
      * @param spaceId space id

@@ -62,6 +62,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -130,7 +131,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             }
             return new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
         }
-        Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
+        Long rootTeamId = this.getRootTeamId(spaceId);
         List<Long> teamIds = new ArrayList<>();
         teamIds.add(rootTeamId);
         List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
@@ -167,6 +168,23 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             depth--;
         }
         return new ArrayList<>(teamIdToTeamInfoMap.values());
+    }
+
+    @Override
+    public List<Long> getAllTeamIdsInTeamTree(List<Long> teamIds) {
+        Set<Long> teamIdSet = new LinkedHashSet<>(teamIds);
+        List<Long> parentIds = new ArrayList<>(teamIds);
+        while (!parentIds.isEmpty()) {
+            List<Long> subTeamIds = teamMapper.selectTeamIdByParentIdIn(parentIds);
+            if (subTeamIds.isEmpty()) {
+                break;
+            }
+            parentIds = subTeamIds.stream()
+                .filter(i -> !teamIdSet.contains(i))
+                .collect(Collectors.toList());
+            teamIdSet.addAll(subTeamIds);
+        }
+        return new ArrayList<>(teamIdSet);
     }
 
     @Override
@@ -227,8 +245,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<Long> getMemberIdsByTeamIds(List<Long> teamIds) {
-        List<Long> subTeamIds = baseMapper.selectAllSubTeamIds(teamIds);
-        return teamMemberRelMapper.selectMemberIdsByTeamIds(CollUtil.union(teamIds, subTeamIds));
+        List<Long> allTeamIds = this.getAllTeamIdsInTeamTree(teamIds);
+        return teamMemberRelMapper.selectMemberIdsByTeamIds(allTeamIds);
     }
 
     @Override
@@ -253,11 +271,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     public Long getParentId(Long teamId) {
         return baseMapper.selectParentIdByTeamId(teamId);
-    }
-
-    @Override
-    public List<Long> getAllSubTeamIdsByParentId(Long teamId) {
-        return baseMapper.selectAllSubTeamIdsByParentId(teamId, false);
     }
 
     @Override
@@ -397,23 +410,10 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             return teamInfo;
         }
         teamInfo.setTeamId(teamId);
-        List<Long> teamIds = this.getAllTeamIdsContainSubTeam(teamId);
+        List<Long> teamIds = this.getAllTeamIdsInTeamTree(Collections.singletonList(teamId));
         Integer memberCount = teamMemberRelMapper.countByTeamId(teamIds);
         teamInfo.setMemberCount(memberCount);
         return teamInfo;
-    }
-
-    private List<Long> getAllTeamIdsContainSubTeam(Long teamId) {
-        List<Long> teamIds = new ArrayList<>();
-        teamIds.add(teamId);
-        List<Long> parentIds = teamIds;
-        while (true) {
-            parentIds = teamMapper.selectTeamIdByParentIdIn(parentIds);
-            if (parentIds.isEmpty()) {
-                return teamIds;
-            }
-            teamIds.addAll(parentIds);
-        }
     }
 
     @Override
@@ -511,22 +511,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             res.add(teamTreeVo);
         }
         return res;
-    }
-
-    @Override
-    public Map<Long, Integer> getTeamMemberCountMap(Long teamId) {
-        List<Long> ids = baseMapper.selectAllSubTeamIdsByParentId(teamId, true);
-        Map<Long, Integer> map = new HashMap<>(ids.size());
-        if (CollUtil.isNotEmpty(ids)) {
-            List<TeamMemberDTO> dtoList = baseMapper.selectTeamsByIds(ids);
-            dtoList.forEach(dto -> {
-                List<Long> memberIds = new ArrayList<>();
-                recurse(dtoList, dto, memberIds);
-                List<Long> mIds = CollUtil.distinct(memberIds);
-                map.put(dto.getTeamId(), mIds.size());
-            });
-        }
-        return map;
     }
 
     @Override

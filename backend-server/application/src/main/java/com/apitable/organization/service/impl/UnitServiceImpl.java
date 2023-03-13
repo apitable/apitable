@@ -283,8 +283,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             UnitType type = UnitType.toEnum(entry.getKey());
             switch (type) {
                 case TEAM:
-                    List<Long> subTeamIds = teamMapper.selectAllSubTeamIds(entry.getValue());
-                    Collection<Long> teamIds = CollUtil.union(entry.getValue(), subTeamIds);
+                    Collection<Long> teamIds =
+                        iTeamService.getAllTeamIdsInTeamTree(entry.getValue());
                     List<Long> teamMemberIds =
                         teamMemberRelMapper.selectMemberIdsByTeamIds(teamIds);
                     if (CollUtil.isNotEmpty(teamMemberIds)) {

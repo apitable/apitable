@@ -29,7 +29,6 @@ import com.apitable.organization.dto.TeamPathInfo;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.SearchTeamResultVo;
-import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.UnitTeamVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -98,13 +97,6 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/unit-team-data.sql")
     void testSelectAllSubTeamIdsByParentId() {
         List<Long> ids = teamMapper.selectAllSubTeamIdsByParentId(41L, false);
-        assertThat(ids).isNotEmpty();
-    }
-
-    @Test
-    @Sql("/sql/unit-team-data.sql")
-    void testSelectAllSubTeamIds() {
-        List<Long> ids = teamMapper.selectAllSubTeamIds(CollUtil.newArrayList(41L));
         assertThat(ids).isNotEmpty();
     }
 
