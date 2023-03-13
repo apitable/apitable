@@ -56,20 +56,6 @@
         SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
     </select>
 
-    <select id="selectBatchAllSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE parent (node_id) AS
-        (SELECT node_id FROM ${tablePrefix}node
-        WHERE node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_rubbish = #{isRubbish} AND is_deleted = 0
-        UNION ALL
-        SELECT t.node_id
-        FROM parent p JOIN ${tablePrefix}node t ON p.node_id = t.parent_id AND t.is_rubbish = #{isRubbish} AND t.is_deleted = 0
-        )SELECT * FROM parent
-    </select>
-
     <select id="countByNodeIds" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}node
@@ -129,6 +115,18 @@
         AND is_rubbish = 0
     </select>
 
+    <select id="selectNodeTreeDTOByParentIdIn"
+            resultType="com.apitable.workspace.dto.NodeTreeDTO">
+        SELECT node_id, `type`, parent_id, pre_node_id
+        FROM ${tablePrefix}node
+        WHERE parent_id IN
+        <foreach item="item" index="index" collection="parentIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_rubbish = #{isRubbish}
+    </select>
+
     <select id="selectSubNodeIds" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
@@ -140,63 +138,6 @@
         SELECT node_id, pre_node_id
         FROM ${tablePrefix}node
         WHERE parent_id = #{parentId} and is_rubbish = 0
-    </select>
-
-    <select id="selectOrderSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id, pre_node_id, type) AS (
-        SELECT vn.node_id,
-        vn.pre_node_id,
-        vn.type
-        FROM ${tablePrefix}node vn
-        WHERE vn.parent_id = #{nodeId}
-        AND vn.pre_node_id IS NULL
-        AND vn.is_rubbish = 0
-        UNION ALL
-        SELECT vn.node_id,
-        vn.pre_node_id,
-        vn.type
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id
-        AND vn.is_rubbish = 0
-        )
-        SELECT node_id
-        FROM pre
-        <if test="nodeType != null">
-            WHERE pre.type = #{nodeType.nodeType}
-        </if>
-    </select>
-
-    <select id="selectAllSubNodeIds" resultType="java.lang.String">
-        WITH RECURSIVE sub_ids (node_id) AS
-        (
-        SELECT node_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} and is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id
-        FROM sub_ids AS cp
-        JOIN ${tablePrefix}node AS c
-        ON cp.node_id = c.parent_id and c.is_rubbish = 0
-        )
-        SELECT distinct *
-        FROM sub_ids;
-    </select>
-
-    <select id="selectAllSubNodeIdsByNodeType" resultType="java.lang.String">
-        WITH RECURSIVE sub_ids (node_id, type) AS
-        (
-        SELECT node_id, type
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} and is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id, c.type
-        FROM sub_ids AS cp
-        JOIN ${tablePrefix}node AS c
-        ON cp.node_id = c.parent_id and c.is_rubbish = 0
-        )
-        SELECT distinct node_id
-        FROM sub_ids
-        WHERE type = #{nodeType}
     </select>
 
     <select id="selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted" resultType="java.lang.String">
@@ -357,96 +298,6 @@
         GROUP BY vn.node_id
     </select>
 
-    <select id="selectSubNodesByOrder" resultType="java.lang.String">
-        WITH RECURSIVE tree_view(node_id) AS (
-        SELECT vn.node_id
-        FROM ${tablePrefix}node vn
-        WHERE vn.space_id = #{spaceId} AND vn.pre_node_id IS NULL AND vn.is_rubbish = 0 AND vn.parent_id IN
-        (
-        WITH RECURSIVE tree (node_id, type, lvl) AS (
-        SELECT node_id,
-        type,
-        1 lvl
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT vn.node_id,
-        vn.type,
-        c.lvl + 1
-        FROM tree c
-        JOIN ${tablePrefix}node vn ON vn.parent_id = c.node_id AND vn.is_rubbish = 0
-        <if test="depth != 0">
-            WHERE c.lvl <![CDATA[<]]> #{depth}
-        </if>
-        )
-        SELECT node_id
-        FROM tree
-        WHERE type != 2
-        )
-        UNION ALL
-        SELECT vn.node_id
-        FROM tree_view p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )
-        SELECT node_id FROM tree_view GROUP BY node_id
-        UNION
-        SELECT #{nodeId} AS node_id
-    </select>
-
-    <select id="selectParentNodesByOrder" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id) AS
-        ( SELECT vn.node_id
-        FROM ${tablePrefix}node vn
-        WHERE vn.pre_node_id IS NULL AND vn.space_id = #{spaceId} AND vn.is_rubbish = 0 AND vn.parent_id IN (
-        WITH RECURSIVE child (parent_id) AS
-        ( SELECT parent_id
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT vn.parent_id
-        FROM child AS c
-        JOIN ${tablePrefix}node vn ON vn.node_id = c.parent_id AND vn.is_rubbish = 0
-        )SELECT * FROM child
-        )
-        UNION ALL
-        SELECT vn.node_id
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )SELECT DISTINCT node_id FROM pre
-    </select>
-
-    <select id="selectShareTreeByNodeId" resultType="com.apitable.workspace.vo.NodeShareTree">
-        WITH RECURSIVE pre (node_id, node_name, icon, parent_id, pre_node_id, type, cover, extra) AS
-        (SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
-        FROM ${tablePrefix}node vn
-        WHERE vn.space_id = #{spaceId}
-        AND vn.pre_node_id IS NULL
-        AND vn.is_rubbish = 0
-        AND vn.parent_id IN (
-        WITH RECURSIVE sub_ids (node_id, parent_id) AS (
-        SELECT node_id,
-        parent_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{nodeId} AND is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        c.parent_id
-        FROM sub_ids AS cp JOIN ${tablePrefix}node AS c ON cp.node_id = c.parent_id AND c.is_rubbish = 0
-        )
-        SELECT parent_id
-        FROM sub_ids
-        GROUP BY parent_id
-        )
-        GROUP BY vn.node_id
-        UNION ALL
-        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
-        FROM pre p
-        JOIN ${tablePrefix}node vn ON p.node_id = vn.pre_node_id AND vn.is_rubbish = 0
-        )
-        SELECT *
-        FROM pre
-    </select>
-
     <select id="selectShareTree" resultType="com.apitable.workspace.vo.NodeShareTree">
         SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover
         FROM ${tablePrefix}node vn
@@ -461,70 +312,6 @@
         FROM ${tablePrefix}node vn
         LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
         WHERE vn.node_id = #{nodeId}
-    </select>
-
-    <select id="selectParentNodePath" resultType="java.lang.String">
-        WITH RECURSIVE parent_view (node_id, parent_id, lvl) AS (
-        SELECT n.node_id,
-        n.parent_id,
-        0 lvl
-        FROM ${tablePrefix}node n
-        WHERE n.node_id = #{nodeId}
-        AND n.is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        c.parent_id,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        )
-        SELECT node_id
-        FROM parent_view
-        WHERE parent_id != '0'
-        ORDER BY lvl DESC
-    </select>
-
-    <select id="selectParentNodeListByNodeId" resultType="com.apitable.workspace.vo.NodePathVo">
-        WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS (
-        SELECT n.node_id,
-        IF(n.parent_id = '0', s.NAME, n.node_name) node_name,
-        n.parent_id,
-        0 lvl
-        FROM ${tablePrefix}node n
-        JOIN ${tablePrefix}space as s ON s.space_id = n.space_id
-        WHERE n.node_id = #{nodeId} AND n.space_id = #{spaceId} AND n.is_rubbish = 0
-        UNION ALL
-        SELECT c.node_id,
-        IF(c.parent_id = '0', s.NAME, c.node_name) node_name,
-        c.parent_id,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        JOIN ${tablePrefix}space AS s ON s.space_id = c.space_id
-        )
-        SELECT node_id,
-        node_name
-        FROM parent_view
-        ORDER BY lvl DESC
-    </select>
-
-    <select id="selectParentNodeByNodeIds" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        WITH RECURSIVE parent_view (node_id, node_name, parent_id) AS (
-        SELECT n.node_id, n.node_name, n.parent_id
-        FROM ${tablePrefix}node n
-        WHERE n.space_id = #{spaceId} AND n.node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND n.is_rubbish = 0
-        UNION
-        SELECT c.node_id, c.node_name, c.parent_id
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        )
-        SELECT node_id, node_name, parent_id
-        FROM parent_view
-        WHERE parent_id != '0'
     </select>
 
     <update id="updateInfoByNodeId">
@@ -628,38 +415,6 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.apitable.workspace.dto.SimpleNodeInfo">
-        WITH RECURSIVE parent_view ( node_id, parent_id, extend, lvl ) AS (
-        SELECT
-        n.node_id,
-        n.parent_id,
-        IF(vc.id IS NULL, 1, 0) extend,
-        0 lvl
-        FROM ${tablePrefix}node n
-        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = n.node_id AND vc.is_deleted = 0
-        WHERE n.node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND n.is_rubbish = 0
-        UNION ALL
-        SELECT
-        c.node_id,
-        c.parent_id,
-        IF(vc.id IS NULL, 1, 0) extend,
-        pv.lvl + 1
-        FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-        <if test="!includeRoot">
-            AND c.parent_id != '0'
-        </if>
-        LEFT JOIN ${tablePrefix}control vc ON vc.control_id = c.node_id AND vc.is_deleted = 0
-        )
-        SELECT DISTINCTROW node_id, parent_id, extend
-        FROM parent_view
-        ORDER BY lvl DESC
-    </select>
-
     <select id="selectSpaceIdByNodeIdIncludeDeleted" resultType="java.lang.String">
         SELECT space_id
         FROM ${tablePrefix}node
@@ -676,13 +431,40 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        SELECT node_id, node_name, icon, type
+    <select id="selectNodeInfoWithPermissionStatus"
+            resultType="com.apitable.workspace.dto.SimpleNodeInfo">
+        SELECT n.node_id,
+               n.parent_id,
+               n.type,
+               IF(c.id IS NULL, 1, 0) extend
+        FROM ${tablePrefix}node n
+                     LEFT JOIN ${tablePrefix}control c
+                ON c.control_id = n.node_id AND c.is_deleted = 0
+        WHERE n.node_id = #{nodeId}
+          AND n.is_rubbish = 0
+    </select>
+
+    <select id="selectNodeBaseInfoByNodeId"
+            resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
+        SELECT node_id, parent_id, `type`, node_name, icon
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+          AND is_rubbish = 0
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeBaseInfosByNodeIds"
+            resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
+        SELECT node_id, parent_id, `type`, node_name, icon
         FROM ${tablePrefix}node
         WHERE node_id IN
-        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
+        <if test="ignoreRubbish == null or !ignoreRubbish">
+            AND is_rubbish = 0
+        </if>
     </select>
 
     <select id="selectRubbishUpdatedAtByNodeId" resultType="java.time.LocalDateTime">
@@ -720,12 +502,6 @@
         </foreach>
         AND vn.parent_id = '-1' AND vn.is_rubbish = 1 AND vn.is_deleted = 0
         ORDER BY vn.updated_at DESC
-    </select>
-
-    <select id="selectNodeBaseInfoByNodeId" resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
-        SELECT node_id, node_name, icon
-        FROM ${tablePrefix}node
-        WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
     </select>
 
     <update id="updateExtraShowRecordHistoryByNodeId">

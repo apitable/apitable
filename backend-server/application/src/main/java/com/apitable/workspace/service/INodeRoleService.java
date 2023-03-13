@@ -18,6 +18,7 @@
 
 package com.apitable.workspace.service;
 
+import com.apitable.workspace.dto.SimpleNodeInfo;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -189,11 +190,12 @@ public interface INodeRoleService {
     Map<String, Set<Long>> getRoleToUnitIds(boolean isParent, String spaceId, String nodeId);
 
     /**
-     * handle node role member's team path name, show full hierarchy team name
+     * Get node information with permission status.
      *
-     * @param nodeRoleUnits node role units
-     * @param spaceId space id
+     * @param nodeIds   node ids
+     * @return List<SimpleNodeInfo>
+     * @author Chambers
      */
-    void handleNodeRoleUnitsTeamPathName(List<NodeRoleUnit> nodeRoleUnits, String spaceId);
+    List<SimpleNodeInfo> getNodeInfoWithPermissionStatus(List<String> nodeIds);
 
 }

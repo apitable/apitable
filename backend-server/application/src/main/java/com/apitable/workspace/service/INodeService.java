@@ -22,9 +22,11 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.workspace.dto.CreateNodeDto;
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeData;
+import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.DatasheetMetaEntity;
 import com.apitable.workspace.entity.DatasheetRecordEntity;
@@ -38,7 +40,6 @@ import com.apitable.workspace.ro.NodeMoveOpRo;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeRelRo;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
-import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
@@ -46,6 +47,7 @@ import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeInfoWindowVo;
 import com.apitable.workspace.vo.NodePathVo;
 import com.apitable.workspace.vo.NodeSearchResult;
+import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.io.IOException;
@@ -160,6 +162,26 @@ public interface INodeService extends IService<NodeEntity> {
     List<String> getPathParentNode(String nodeId);
 
     /**
+     * gets the node parent path.
+     * * contains root node
+     *
+     * @param spaceId space id
+     * @param nodeId node id
+     * @return parent path
+     */
+    List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
+
+    /**
+     * gets the node parent path.
+     *
+     * @param nodeIds   node ids
+     * @param includeRootNode   include root node
+     * @return List<NodeBaseInfoDTO>
+     * @author Chambers
+     */
+    List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode);
+
+    /**
      * get multi node info.
      *
      * @param nodeIds node ids
@@ -176,14 +198,6 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfoVos
      */
     List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId, List<String> nodeIds);
-
-    /**
-     * The query node includes the associated nodes of all the following nodes.
-     *
-     * @param nodeId node id
-     * @return BaseNodeInfo
-     */
-    List<BaseNodeInfo> getForeignSheet(String nodeId);
 
     /**
      * whether node exist on the specific space.
@@ -235,6 +249,45 @@ public interface INodeService extends IService<NodeEntity> {
     NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth);
 
     /**
+     * Get sub nodes.
+     *
+     * @param nodeId node id
+     * @return List<NodeShareTree>
+     * @author Chambers
+     */
+    List<NodeShareTree> getSubNodes(String nodeId);
+
+    /**
+     * Get node ids in node tree.
+     *
+     * @param nodeId  node id
+     * @param depth   recursive depth starting with 1
+     * @return NodeInfoTreeVo
+     * @author Chambers
+     */
+    List<String> getNodeIdsInNodeTree(String nodeId, Integer depth);
+
+    /**
+     * Get node ids in node tree.
+     *
+     * @param nodeId  node id
+     * @param depth   recursive depth starting with 1
+     * @param isRubbish rubbish status
+     * @return NodeInfoTreeVo
+     * @author Chambers
+     */
+    List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish);
+
+    /**
+     * Sort node.
+     *
+     * @param sub sub
+     * @return List<String>
+     * @author Chambers
+     */
+    List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub);
+
+    /**
      * query child node information.
      *
      * @param spaceId  space id
@@ -244,17 +297,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfoVos
      */
     List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId,
-                                           NodeType nodeType);
-
-    /**
-     * gets the node parent path
-     * contains root node.
-     *
-     * @param spaceId space id
-     * @param nodeId  node id
-     * @return parent path
-     */
-    List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
+        NodeType nodeType);
 
     /**
      * get node position.
@@ -304,7 +347,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return form id
      */
     String createDatasheetWithDesc(String spaceId, Long userId,
-                                   CreateDatasheetRo createDatasheetRo);
+        CreateDatasheetRo createDatasheetRo);
 
     /**
      * create child node.
@@ -355,9 +398,9 @@ public interface INodeService extends IService<NodeEntity> {
      * delete template mapping node
      *
      * @param userId  user id
-     * @param nodeIds nodeIds
+     * @param nodeId  node id
      */
-    void delTemplateRefNode(Long userId, String... nodeIds);
+    void delTemplateRefNode(Long userId, String nodeId);
 
     /**
      * copy.
@@ -379,7 +422,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return new node id
      */
     String copyNodeToSpace(Long userId, String destSpaceId, String destParentId,
-                           String sourceNodeId, NodeCopyOptions options);
+        String sourceNodeId, NodeCopyOptions options);
 
     /**
      * import excel.
@@ -402,8 +445,8 @@ public interface INodeService extends IService<NodeEntity> {
      * @return excel data
      */
     Map<String, List<List<Object>>> importMultipleSheetsByEasyExcel(ExcelReader excelReader,
-                                                                    ExcelSheetsDataListener sheetsDataListener,
-                                                                    List<ReadSheet> readSheets);
+        ExcelSheetsDataListener sheetsDataListener,
+        List<ReadSheet> readSheets);
 
     /**
      * import.
@@ -414,8 +457,8 @@ public interface INodeService extends IService<NodeEntity> {
      * @return excel data
      */
     List<List<Object>> importSingleSheetByEasyExcel(ExcelReader excelReader,
-                                                    ExcelSheetsDataListener sheetsDataListener,
-                                                    ReadSheet readSheet);
+        ExcelSheetsDataListener sheetsDataListener,
+        ReadSheet readSheet);
 
     /**
      * update node ban status.
@@ -437,14 +480,6 @@ public interface INodeService extends IService<NodeEntity> {
     String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId);
 
     /**
-     * Determine whether the node and all child and descendant nodes contain member fields.
-     *
-     * @param nodeId node id
-     * @return boolean
-     */
-    boolean judgeAllSubNodeContainMemberFld(String nodeId);
-
-    /**
      * Verify the permissions of all child and descendant nodes.
      *
      * @param memberId member id
@@ -455,14 +490,16 @@ public interface INodeService extends IService<NodeEntity> {
     List<String> checkSubNodePermission(Long memberId, String nodeId, ControlRole role);
 
     /**
-     * The next step after the table node is copied, complete the attributes and contents of the link field.
+     * The next step after the table node is copied, complete the attributes and contents of the
+     * link field.
      *
      * @param effect impact field collection for node replication
      */
     void nodeCopyChangeset(NodeCopyEffectDTO effect);
 
     /**
-     * The next step after the deletion of the table node converts the undeleted association into a text field.
+     * The next step after the deletion of the table node converts the undeleted association into
+     * a text field.
      *
      * @param nodeIds deleted node id
      */
@@ -482,7 +519,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return node id
      */
     String parseExcel(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-                      String fileName, String fileSuffix, InputStream inputStream);
+        String fileName, String fileSuffix, InputStream inputStream);
 
     /**
      * parse csv.
@@ -497,7 +534,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return node id
      */
     String parseCsv(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-                    String fileName, InputStream inputStream);
+        String fileName, InputStream inputStream);
 
     /**
      * special batch save operation
@@ -510,9 +547,9 @@ public interface INodeService extends IService<NodeEntity> {
      * @param recordEntities    records
      */
     void batchCreateDataSheet(NodeData data, List<NodeEntity> nodeEntities,
-                              List<DatasheetEntity> datasheetEntities,
-                              List<DatasheetMetaEntity> metaEntities,
-                              List<DatasheetRecordEntity> recordEntities);
+        List<DatasheetEntity> datasheetEntities,
+        List<DatasheetMetaEntity> metaEntities,
+        List<DatasheetRecordEntity> recordEntities);
 
     /**
      * save records.
@@ -557,7 +594,8 @@ public interface INodeService extends IService<NodeEntity> {
     Optional<String> getNodeName(String nodeId, Long userId);
 
     /**
-     * If the node is a root node, check whether the user's operations on the root directory meet the requirements of global security settings-root directory management.
+     * If the node is a root node, check whether the user's operations on the root directory meet
+     * the requirements of global security settings-root directory management.
      *
      * @param memberId member id
      * @param spaceId  space id
@@ -566,7 +604,8 @@ public interface INodeService extends IService<NodeEntity> {
     void checkEnableOperateNodeBySpaceFeature(Long memberId, String spaceId, String nodeId);
 
     /**
-     * Check whether the user's operation on the root directory meets the requirements of global security settings-root directory management.
+     * Check whether the user's operation on the root directory meets the requirements of global
+     * security settings-root directory management.
      *
      * @param memberId member id
      * @param spaceId  space id

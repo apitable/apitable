@@ -18,6 +18,7 @@
 
 package com.apitable.workspace.mapper;
 
+import com.apitable.workspace.dto.NodeTreeDTO;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
@@ -39,8 +40,8 @@ public class NodeFavoriteMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/node-favorite-data.sql")
     void testSelectOrderNodeIdByMemberId() {
-        List<String> ids = nodeFavoriteMapper.selectOrderNodeIdByMemberId(41L);
-        assertThat(ids).isNotEmpty();
+        List<NodeTreeDTO> nodes = nodeFavoriteMapper.selectNodeTreeDTOByMemberId(41L);
+        assertThat(nodes).isNotEmpty();
     }
 
     @Test

@@ -50,7 +50,6 @@ import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.space.enums.SpaceUpdateOperate;
-import com.apitable.space.service.ISpaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -87,9 +86,6 @@ public class TeamController {
     private TeamMemberRelMapper teamMemberRelMapper;
 
     @Resource
-    private ISpaceService iSpaceService;
-
-    @Resource
     private IOrganizationService iOrganizationService;
 
     @Resource
@@ -99,12 +95,10 @@ public class TeamController {
      * Search the space's teams.
      */
     @GetResource(path = "/tree", name = "Search the space's teams")
-    @Operation(summary = "Search the space's teams", description = "Search the space's teams. "
-        + "result is tree.")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
-    })
+    @Operation(summary = "Search the space's teams",
+        description = "Search the space's teams. result is tree.")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<TeamTreeVo>> getTeamTree() {
         String spaceId = LoginContext.me().getSpaceId();
         // Filtering statistics of the number of superior departments
@@ -118,10 +112,8 @@ public class TeamController {
      */
     @GetResource(path = "/branch", name = "team branch")
     @Operation(summary = "team branch", description = "team branch. result is tree")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
-    })
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<TeamTreeVo>> getTeamBranch() {
         // get the member's space
         String spaceId = LoginContext.me().getSpaceId();
@@ -135,13 +127,13 @@ public class TeamController {
      * Query direct sub departments.
      */
     @GetResource(path = "/subTeams", name = "Query direct sub departments")
-    @Operation(summary = "Query direct sub departments", description = "query sub team by team id"
-        + ". if team id lack, default root team.")
+    @Operation(summary = "Query direct sub departments",
+        description = "query sub team by team id. if team id lack, default root team.")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
         @Parameter(name = "teamId", description = "team id", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<List<TeamInfoVo>> getSubTeams(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -164,15 +156,16 @@ public class TeamController {
         } else {
             teamInfos = teamMapper.selectSubTeamsByParentId(spaceId, teamId);
         }
-        if (CollUtil.isNotEmpty(teamInfos)) {
-            // get team's and sub team's members number.
-            Map<Long, Integer> map = iTeamService.getTeamMemberCountMap(teamId);
-            teamInfos.forEach(data -> {
-                if (data.getHasChildren()) {
-                    data.setMemberCount(map.get(data.getTeamId()));
-                }
-            });
+        if (CollUtil.isEmpty(teamInfos)) {
+            return ResponseData.success(teamInfos);
         }
+        // get team's and sub team's members number.
+        Map<Long, Integer> map = iTeamService.getTeamMemberCountMap(teamId);
+        teamInfos.forEach(data -> {
+            if (data.getHasChildren()) {
+                data.setMemberCount(map.get(data.getTeamId()));
+            }
+        });
         return ResponseData.success(teamInfos);
     }
 
@@ -186,9 +179,9 @@ public class TeamController {
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
         @Parameter(name = "spaceId", description = "space id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "spcyQkKp9XJEl"),
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "spcyQkKp9XJEl"),
         @Parameter(name = "teamId", description = "team id", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
+        @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<List<OrganizationUnitVo>> getSubTeamsAndMember(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -234,13 +227,13 @@ public class TeamController {
      * Query the team's members.
      */
     @GetResource(path = "/members")
-    @Operation(summary = "Query the team's members", description = "Query the team's members, no "
-        + "include sub team's")
+    @Operation(summary = "Query the team's members",
+        description = "Query the team's members, no include sub team's")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id", schema = @Schema(type = "string"),
-            in = ParameterIn.QUERY, example = "0")
+        @Parameter(name = "teamId", description = "team id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "0")
     })
     public ResponseData<List<MemberPageVo>> getTeamMembers(
         @RequestParam(name = "teamId") Long teamId) {
@@ -257,13 +250,13 @@ public class TeamController {
      * Query team information.
      */
     @GetResource(path = "/read", name = "Querying team information")
-    @Operation(summary = "Query team information", description = "Query department information. "
-        + "if team id lack, default root team")
+    @Operation(summary = "Query team information",
+        description = "Query department information. if team id lack, default root team")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id", schema = @Schema(type = "string"),
-            in = ParameterIn.QUERY, example = "1")
+        @Parameter(name = "teamId", description = "team id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1")
     })
     public ResponseData<TeamInfoVo> readTeamInfo(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -319,13 +312,13 @@ public class TeamController {
                 // only the department name is modified
                 iTeamService.updateTeamName(teamId, teamName);
             }
-        } else {
-            List<Long> subIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
-            // The parent department cannot be adjusted to its own child department, nor can it
-            // be adjusted below itself, to prevent an infinite loop.
-            ExceptionUtil.isFalse(subIds.contains(superId), UPDATE_TEAM_LEVEL_ERROR);
-            iTeamService.updateTeamParent(teamId, teamName, superId);
+            return ResponseData.success();
         }
+        List<Long> subIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        // The parent department cannot be adjusted to its own child department, nor can it
+        // be adjusted below itself, to prevent an infinite loop.
+        ExceptionUtil.isFalse(subIds.contains(superId), UPDATE_TEAM_LEVEL_ERROR);
+        iTeamService.updateTeamParent(teamId, teamName, superId);
         return ResponseData.success();
     }
 
@@ -333,14 +326,14 @@ public class TeamController {
      * Delete team.
      */
     @PostResource(path = "/delete/{teamId}", method = {
-        RequestMethod.DELETE}, name = "Delete team", tags = "DELETE_TEAM")
-    @Operation(summary = "Delete team", description = "Delete team. If team has members, it can "
-        + "be deleted.")
+        RequestMethod.DELETE }, name = "Delete team", tags = "DELETE_TEAM")
+    @Operation(summary = "Delete team",
+        description = "Delete team. If team has members, it can be deleted.")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "1")
+        @Parameter(name = "teamId", description = "team id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "1")
     })
     public ResponseData<Void> deleteTeam(@PathVariable("teamId") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
