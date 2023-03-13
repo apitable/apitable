@@ -23,7 +23,7 @@ import {
 } from '@apitable/core';
 import {
   AddCircleOutlined, ApiOutlined, ChevronDownOutlined, EyeOpenOutlined, FilterOutlined, GalleryOutlined, GroupOutlined, HistoryFilled, ListOutlined,
-  RankOutlined, RobotOutlined, SettingFilled, SettingOutlined, ShareOutlined, WidgetOutlined
+  RankOutlined, RobotOutlined, SettingFilled, SettingOutlined, ShareOutlined, StyleOutlined, WidgetOutlined,
 } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
@@ -807,7 +807,6 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
   const isGridType = viewType === ViewType.Grid;
   const isGanttType = viewType === ViewType.Gantt;
   const isCalendarType = viewType === ViewType.Calendar;
-  const isOrgType = viewType === ViewType.OrgChart;
   const isExclusive = type === ToolHandleType.HideExclusiveField;
   const hideFieldString = isGanttType && isExclusive ? Strings.hide_one_graphic_field : Strings.hide_fields;
   const toolName = isMobile ? t(Strings.tool_bar_hidden) : t(hideFieldString);
@@ -824,10 +823,10 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
         [styles.hide]: true,
       })}
       icon={
-        isGridType || isGanttType || isCalendarType || isOrgType ? (
+        isGridType || isGanttType || isCalendarType ? (
           <EyeOpenOutlined size={16} color={hasHide ? colorVars.primaryColor : colorVars.secondLevelText} className={styles.toolIcon} />
         ) : (
-          <SettingOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />
+          <StyleOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />
         )
       }
       text={

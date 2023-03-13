@@ -373,4 +373,6 @@ export { ShieldSecurityOutlined } from './shield_security_outlined';
 export { ShieldSecurityFilled } from './shield_security_filled';
 export { LoadingOutlined } from './loading_outlined';
 export { LoadingFilled } from './loading_filled';
+export { StyleFilled } from './style_filled';
+export { StyleOutlined } from './style_outlined';
 export * from '../doc_hide_components';
