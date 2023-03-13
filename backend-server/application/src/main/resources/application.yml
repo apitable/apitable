@@ -114,6 +114,10 @@ starter:
       callback:
         url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
         body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}
+    huawei-cloud:
+      access-key: ${HUAWEICLOUD_OBS_ACCESS_KEY:}
+      secret-key: ${HUAWEICLOUD_OBS_SECRET_KEY:}
+      endpoint: ${HUAWEICLOUD_OBS_ENDPOINT:obs.cn-south-1.myhuaweicloud.com}
     minio:
       endpoint: ${MINIO_ENDPOINT:http://minio:9000}
       access-key: ${MINIO_ACCESS_KEY:apitable}
