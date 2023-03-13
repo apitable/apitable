@@ -766,6 +766,7 @@ __metadata:
     "@types/socket.io-client": ^1.4.36
     "@types/styled-components": ^5.1.26
     ahooks: ^3.5.0
+    antd: 4.23.5
     attr-accept: ^2.1.0
     babel-jest: ^26.6.0
     bowser: ^2.11.0
