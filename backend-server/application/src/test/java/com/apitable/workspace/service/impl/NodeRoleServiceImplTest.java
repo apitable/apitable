@@ -39,6 +39,7 @@ import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +164,10 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
         nodeIds.add(firstLevelFolderId);
         List<SimpleNodeInfo> nodes = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
         assertThat(nodes.size()).isEqualTo(2);
-        assertThat(nodes.get(0).getExtend()).isFalse();
+        Optional<SimpleNodeInfo> first =
+            nodes.stream().filter(i -> firstLevelFolderId.equals(i.getNodeId())).findFirst();
+        assertThat(first.isPresent()).isTrue();
+        assertThat(first.get().getExtend()).isFalse();
 
         // second level folder id
         op.setParentId(firstLevelFolderId);

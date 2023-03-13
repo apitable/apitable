@@ -80,7 +80,8 @@ public class UnitTestUtil {
             throw new RuntimeException("extract table names fail", e);
         }
         tableNames.removeIf(tableName -> tableName.equals(tablePrefix + ASSET_TABLE_NAME)
-            || tableName.contains(LIQUIBASE_TABLE_PREFIX));
+            || tableName.contains(LIQUIBASE_TABLE_PREFIX)
+            || !tableName.startsWith(tablePrefix));
         List<String> rows = getAssetTableExcludeRows();
         if (!rows.isEmpty()) {
             String whereClause = StrUtil.format("file_url not in({})",
