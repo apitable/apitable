@@ -20,8 +20,9 @@ import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { Value } from 'grpc/generated/google/protobuf/struct';
-import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, Retryable, TRACE_ID } from 'shared/common';
+import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID } from 'shared/common';
 import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
+import { Retryable } from 'shared/decorator/retry.decorator';
 import { BroadcastTypes } from 'shared/enums/broadcast-types.enum';
 import { RequestTypes } from 'shared/enums/request-types.enum';
 import { ServerErrorCode, SocketEventEnum } from 'shared/enums/socket.enum';
@@ -78,16 +79,14 @@ export class RoomService {
     const createTime = Date.now();
     const isExistRoom = socket.rooms.has(room);
     const _grpcMetadata = initGlobalGrpcMetadata();
-    const traceId = _grpcMetadata.get(TRACE_ID)[0];
 
     this.logger.log({
       action: 'WatchRoom',
-      traceId: traceId,
       message: `WatchRoom Start roomId:[${message.roomId}]`,
     });
 
     if (isExistRoom) {
-      this.logger.log(`traceId[${traceId}] User are already in room,
+      this.logger.log(`User are already in room,
       socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
     }
     // notifies nest-server to handle `WatchRoom` messages
@@ -97,7 +96,7 @@ export class RoomService {
       // Broadcast join and userEnter when the client does not exist in the room
       if (!isExistRoom) {
         socket.join(room);
-        this.logger.log({ room, socketId: socket.id, message: `traceId[${traceId}] User are join in room` });
+        this.logger.log({ room, socketId: socket.id, message: 'User are join in room' });
         // Notify the client that all connected new users join the room
         socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
           collaborators: [
@@ -122,7 +121,6 @@ export class RoomService {
     const endTime = +new Date();
     this.logger.log({
       action: 'WatchRoom',
-      traceId: traceId,
       ms: endTime - createTime,
       message: `WatchRoom End roomId:[${message.roomId}] Success, total time: ${endTime - createTime}ms`,
     });
@@ -186,11 +184,9 @@ export class RoomService {
     const createTime = Date.now();
     const room = message.roomId;
     const _grpcMetadata = initGlobalGrpcMetadata(this.changesetToGrpcMeta(message.changesets));
-    const traceId = _grpcMetadata.get(CHANGESETS_MESSAGE_ID)[0];
 
     this.logger.log({
       action: 'RoomChange',
-      traceId: traceId,
       message: `RoomChange Start roomId:[${message.roomId}]`,
     });
 
@@ -204,7 +200,6 @@ export class RoomService {
     const endTime = +new Date();
     this.logger.log({
       action: 'RoomChange',
-      traceId: traceId,
       ms: endTime - createTime,
       message: `RoomChange End roomId:[${message.roomId}] Success, total time: ${endTime - createTime}ms`,
     });

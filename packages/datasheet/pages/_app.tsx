@@ -196,7 +196,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       let userInfoError: IUserInfoError | undefined;
 
       /**
-       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same, so there is no need to repeat the request.
+       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same,
+       * so there is no need to repeat the request.
        */
       if (
         pathUrl &&
@@ -344,7 +345,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         updateUserTimeZone(timeZone, () => {
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
-            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0  ? '+' : ''}${offset}(${timeZone})` }),
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
           });
         });
       }
@@ -482,8 +483,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 }
 
 /**
- * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus. When an offset is detected, it needs to be reset manually.
- * The reason why the onBlur event is not used here is that after the editing element is out of focus, other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
+ * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus.
+ * When an offset is detected, it needs to be reset manually.
+ * The reason why the onBlur event is not used here is that after the editing element is out of focus,
+ * other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
  * @param e
  */
 const onScroll = (e: React.UIEvent<HTMLDivElement>) => {

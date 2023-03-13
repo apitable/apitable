@@ -53,9 +53,10 @@ spring:
     otel:
       exporter:
         jaeger:
-          enabled: false
+          enabled: ${OTEL_JAEGER_ENABLED:false}
+          endpoint: ${OTEL_JAEGER_ENDPOINT:}
       config:
-        trace-id-ratio-based: 0.1
+        trace-id-ratio-based: ${OTEL_JAEGER_TRACE_ID_RATIO_BASED:0.1}
   logger:
     max-history-days: ${LOGGER_MAX_HISTORY_DAYS:7}
 
@@ -75,6 +76,8 @@ const:
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
+  cooling-off-period: ${COOLING_OFF_PERIOD:30}
+  close-paused-user-cron: ${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}
 limit:
   space-max-count: ${SPACE_MAX_COUNT:10}
   max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}
@@ -172,4 +175,4 @@ grpc:
 
 springdoc:
   api-docs:
-    enabled: ${API_DOCS_ENABLED:true}
+    enabled: ${API_DOCS_ENABLED:false}

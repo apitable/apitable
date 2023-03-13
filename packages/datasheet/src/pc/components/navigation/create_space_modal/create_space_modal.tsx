@@ -65,7 +65,7 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
           return;
         }
         dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-        Router.redirect(Navigation.SPACE, { params: { spaceId: data.spaceId }});
+        Router.redirect(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
       } else {
         dispatch(StoreActions.setSpaceErr({
           code,

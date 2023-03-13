@@ -673,9 +673,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // The parent id and space id must match.
         // The parent node belongs to this space to prevent cross-space and cross-node operations.
         this.checkNodeIfExist(spaceId, nodeOpRo.getParentId());
-        ExceptionUtil.isFalse(Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())
-            && nodeNameExists(nodeOpRo.getParentId(),
-            nodeOpRo.getNodeName()), NodeException.DUPLICATE_NODE_NAME);
         String name =
             duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(),
                 null);
@@ -2086,9 +2083,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public boolean nodeNameExists(String parentNodeId, String nodeName) {
-        return SqlTool.retCount(
-            baseMapper.selectCountByParentIdAndNodeName(parentNodeId, nodeName)) > 0;
+    public String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName) {
+        return baseMapper.selectNodeIdByParentIdAndNodeName(parentNodeId, nodeName);
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {

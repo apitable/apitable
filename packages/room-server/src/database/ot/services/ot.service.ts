@@ -33,6 +33,7 @@ import {
   ResourceIdPrefix,
   ResourceType,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import * as Sentry from '@sentry/node';
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
@@ -223,6 +224,7 @@ export class OtService {
   /**
    * @param message client ROOM message
    */
+  @Span()
   async applyRoomChangeset(message: IRoomChannelMessage, auth: IAuthHeader): Promise<IRemoteChangeset[]> {
     // Validate that sharing enables editing
     if (message.shareId) {
@@ -336,6 +338,7 @@ export class OtService {
     return results;
   }
 
+  @Span()
   async parseChanges(spaceId: string, message: IRoomChannelMessage, changeset: ILocalChangeset, auth: IAuthHeader): Promise<IChangesetParseResult> {
     const { sourceDatasheetId, sourceType, shareId, roomId, internalAuth, allowAllEntrance } = message;
     const { resourceId } = changeset;

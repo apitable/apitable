@@ -17,6 +17,7 @@
  */
 
 import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
@@ -54,6 +55,7 @@ export class DatasheetRecordService {
     return this.nativeModule;
   }
 
+  @Span()
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
     if (await this.getNativeModule()) {
       return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
@@ -66,6 +68,7 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, commentCountMap);
   }
 
+  @Span()
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
     if (recordIds.length === 0) {
       return this.formatRecordMap([], {}, recordIds);
@@ -81,6 +84,7 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, commentCountMap, recordIds);
   }
 
+  @Span()
   async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
     if (await this.getNativeModule()) {
       return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
@@ -92,6 +96,7 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, {}, recordIds);
   }
 
+  @Span()
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
     if (recordIds) {
       // recordMap follows the order of 'records'

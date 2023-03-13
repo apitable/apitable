@@ -17,6 +17,7 @@
  */
 
 import { FieldType, ResourceIdPrefix, ResourceType } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { AutomationService } from 'automation/services/automation.service';
 import { PermissionException, ServerException } from 'shared/exception';
@@ -36,6 +37,7 @@ export class ResourceService {
     private readonly automationService: AutomationService,
   ) { }
 
+  @Span()
   async getSpaceIdByResourceId(resourceId: string): Promise<string> {
     const nodeId = await this.getNodeIdByResourceId(resourceId);
     return this.nodeService.getSpaceIdByNodeId(nodeId);
@@ -49,6 +51,7 @@ export class ResourceService {
     return resourceId;
   }
 
+  @Span()
   async getHasRobotByResourceIds(resourceIds: string[]) {
     return await this.automationService.isResourcesHasRobots(resourceIds);
   }

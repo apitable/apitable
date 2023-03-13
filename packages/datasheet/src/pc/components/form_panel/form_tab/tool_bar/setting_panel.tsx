@@ -25,6 +25,10 @@ import { IToolBarBase } from './interface';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { Tooltip } from 'antd';
 import { useThemeColors } from '@apitable/components';
+import { useSelector } from 'react-redux';
+import { LevelType } from 'pc/components/space_manage/space_info/interface';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel, isEnterprise } from 'enterprise';
 
 enum IFormOptionType {
   CoverVisible = 'CoverVisible',
@@ -35,38 +39,13 @@ enum IFormOptionType {
   CompactMode = 'CompactMode',
 }
 
-const optionList = [
-  {
-    id: IFormOptionType.CoverVisible,
-    name: t(Strings.form_cover_visible),
-    disabled: false,
-  },
-  {
-    id: IFormOptionType.LogoVisible,
-    name: t(Strings.form_logo_visible),
-    disabled: false,
-  },
-  {
-    id: IFormOptionType.IndexVisible,
-    name: t(Strings.form_index_visible),
-    disabled: false,
-  },
-  {
-    id: IFormOptionType.FullScreen,
-    name: t(Strings.form_full_screen),
-    disabled: false,
-  },
-  {
-    id: IFormOptionType.CompactMode,
-    name: t(Strings.form_compact_option_mode),
-    disabled: false,
-    tooltipText: t(Strings.form_compact_option_desc),
-  },
-  {
-    id: IFormOptionType.BrandVisible,
-    name: t(Strings.form_brand_visible),
-    disabled: true,
-  },
+const FORM_BRAND_ENABLE_LEVELS = [
+  LevelType.Gold,
+  LevelType.Pro,
+  LevelType.Enterprise,
+  LevelType.DingtalkEnterprise,
+  LevelType.PrivateCloud,
+  LevelType.Atlas,
 ];
 
 export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (props) => {
@@ -90,6 +69,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
     if (compactMode) set.add(IFormOptionType.CompactMode);
     return set;
   });
+  const product = useSelector(state => state.billing.subscription?.product);
 
   const updateProps = (id: IFormOptionType, selected: boolean) => {
     switch (id) {
@@ -113,6 +93,49 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
         break;
     }
   };
+
+  const optionList = React.useMemo(() => {
+    const productName = product?.toLowerCase();
+
+    return [
+      {
+        id: IFormOptionType.CoverVisible,
+        name: t(Strings.form_cover_visible),
+        disabled: false,
+      },
+      {
+        id: IFormOptionType.LogoVisible,
+        name: t(Strings.form_logo_visible),
+        disabled: false,
+      },
+      {
+        id: IFormOptionType.IndexVisible,
+        name: t(Strings.form_index_visible),
+        disabled: false,
+      },
+      {
+        id: IFormOptionType.FullScreen,
+        name: t(Strings.form_full_screen),
+        disabled: false,
+      },
+      {
+        id: IFormOptionType.CompactMode,
+        name: t(Strings.form_compact_option_mode),
+        disabled: false,
+        tooltipText: t(Strings.form_compact_option_desc),
+      },
+      {
+        id: IFormOptionType.BrandVisible,
+        name: (
+          <>
+            {t(Strings.form_brand_visible)}
+            {isEnterprise && <SubscribeLabel grade={SubscribeGrade.Gold} />}
+          </>
+        ),
+        disabled: productName ? !FORM_BRAND_ENABLE_LEVELS.includes(productName as LevelType) : true,
+      },
+    ];
+  }, [product]);
 
   const onChange = (id: IFormOptionType) => {
     const temp = new Set([...checkedList]);

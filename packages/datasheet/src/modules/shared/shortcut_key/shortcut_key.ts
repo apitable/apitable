@@ -33,6 +33,7 @@ import { Message } from 'pc/components/common/message/message';
 import { notify } from 'pc/components/common/notify/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { EXPAND_RECORD, expandRecordIdNavigate } from 'pc/components/expand_record';
+import { EXPAND_SEARCH } from 'pc/components/quick_search/const';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getParentNodeByClass } from 'pc/utils/dom';
@@ -129,6 +130,9 @@ export class ShortcutContext {
       return hasPermissions().editable;
     },
     [ContextName.modalVisible]: () => false,
+    [ContextName.isQuickSearchExpanding]: () => {
+      return Boolean(document.querySelectorAll(`.${EXPAND_SEARCH}`).length);
+    }
   };
 
   static bind(key: ContextName, fn: () => boolean) {

@@ -22,7 +22,7 @@ import { ISensors } from '../../typings';
 
 let sensors: ISensors | undefined;
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   sensors = window.sensors;
 }
 

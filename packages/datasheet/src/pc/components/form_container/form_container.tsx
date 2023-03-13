@@ -770,7 +770,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         )}
 
         {/* Top left: brand logo */}
-        {shareId && !fullScreen && !isMobile && (
+        {brandVisible && shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
               <Logo theme={theme}/>

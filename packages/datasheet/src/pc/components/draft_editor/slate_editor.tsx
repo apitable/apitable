@@ -20,7 +20,7 @@ import { Api, DatasheetApi, StoreActions, Strings, t } from '@apitable/core';
 import { Spin, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { find, get, keyBy, keys, toPairs, values } from 'lodash';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { Emoji } from 'pc/components/common';
 // @ts-ignore
@@ -43,7 +43,6 @@ import { ActivityContext } from '../expand_record/activity_pane/activity_context
 import styles from './styles/style.module.less';
 import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const withLastSelection = (editor: ReactEditor) => {
   const { onChange } = editor;
   editor.onChange = (...params) => {
@@ -376,8 +375,8 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
               data-cy="mentions-portal"
             >
               {loading ? <div className={styles.loading}>
-                  <Spin size="small" indicator={<LoadingOutlined/>}/>
-                </div> :
+                <Spin size="small" indicator={<LoadingOutlined className="circle-loading" />}/>
+              </div> :
                 <>
                   <MemberOptionList
                     listData={members}

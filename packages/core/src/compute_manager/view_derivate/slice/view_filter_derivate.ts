@@ -149,7 +149,7 @@ export class ViewFilterDerivate {
     return false;
   }
 
-  private getFilterRowsBase(props: { filterInfo: IFilterInfo | undefined, rows: IViewRow[], recordMap: IRecordMap }) {
+  getFilterRowsBase(props: { filterInfo: IFilterInfo | undefined, rows: IViewRow[], recordMap: IRecordMap }) {
     let filterInfo = props.filterInfo;
     const recordMap = props.recordMap;
     let rows = props.rows;

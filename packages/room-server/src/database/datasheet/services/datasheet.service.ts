@@ -20,6 +20,7 @@ import {
   FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap,
   IFieldPermissionMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState, IResourceRevision,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
@@ -70,6 +71,7 @@ export class DatasheetService {
     return entity;
   }
 
+  @Span()
   async fetchViewPack(dstId: string, viewId: string): Promise<ViewPack> {
     // Query metadata of datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
@@ -89,6 +91,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchDataPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading main datasheet data [${dstId}]`);
@@ -128,6 +131,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading share data [${dstId}]`);
@@ -154,6 +158,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading template data [${dstId}]`);
@@ -268,6 +273,7 @@ export class DatasheetService {
    * @param origin query parameters
    * @param linkedRecordMap Specifies records to be queried in linked datasheet
    */
+  @Span()
   async processField(
     mainDstId: string,
     auth: IAuthHeader,

@@ -18,12 +18,13 @@
 
 import { memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import * as React from 'react';
-import { Field, getDay, getToday, ICellValue } from '@apitable/core';
+import { diffTimeZone, Field, getDay, getToday, ICellValue } from '@apitable/core';
 import { IDateTimeEditorProps } from '..';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import { IEditor } from '../../interface';
 import { PickerContent } from './picker_content';
+import dayjs from 'dayjs';
 
 const noop = () => { };
 
@@ -42,7 +43,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     curAlarm,
   } = props;
 
-  const { dateFormat } = Field.bindModel(field);
+  const { dateFormat, timeZone, includeTimeZone } = Field.bindModel(field);
 
   const mode = field.property.includeTime ? 'minute' : 'day';
 
@@ -89,8 +90,11 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       last === OptionType.ONCHANGE
       && lastPrev === OptionType.BACKTONOW
     ) {
-     
       _val = value;
+    }
+    if (timeZone && option !== OptionType.BACKTONOW) {
+      const diff = diffTimeZone(timeZone);
+      _val = dayjs(dayjs(_val).valueOf() + diff).toDate();
     }
 
     setValue(_val);
@@ -137,6 +141,8 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       dateTimeFormat={dateTimeFormat}
       alarm={curAlarm}
       setVisible={setVisible}
+      timeZone={timeZone}
+      includeTimeZone={includeTimeZone}
     />
   );
 };

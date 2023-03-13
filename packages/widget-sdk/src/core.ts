@@ -28,5 +28,5 @@ export {
   ICollaCommandOptions, ICollaCommandExecuteResult, ILabs, IPageParams, IShareInfo, IDatasheetState, IViewRow, IMirrorMap, IMirrorPack,
   IOpenFieldProperty, IUpdateOpenFieldProperty, IEffectOption, IUpdateOpenMagicLinkFieldProperty, Conversion, IOpenCreatedByFieldProperty,
   getFieldClass, getFieldTypeByString, IAddOpenFieldProperty, IUser, IActiveRowInfo, WhyRecordMoveType, IDashboardPack, IUserInfo, ActionConstants,
-  DEFAULT_PERMISSION
+  DEFAULT_PERMISSION, IOpenFilterInfo
 } from '@apitable/core';

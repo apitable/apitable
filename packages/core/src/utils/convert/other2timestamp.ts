@@ -74,8 +74,8 @@ export const diffTimeZone = (timeZone?: string) => {
   if (!timeZone) return 0;
   const tzOffset = getTimeZoneOffsetByUtc(timeZone)!;
   const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const clientTzOffset  = getTimeZoneOffsetByUtc(clientTimeZone)!;
+  const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone)!;
   return dayjs.duration({
     hours: clientTzOffset - tzOffset
   }).asMilliseconds();
-}
+};

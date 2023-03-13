@@ -645,6 +645,6 @@ public interface INodeService extends IService<NodeEntity> {
      * @param nodeName     node name
      * @return boolean
      */
-    boolean nodeNameExists(String parentNodeId, String nodeName);
+    String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName);
 
 }

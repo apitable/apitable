@@ -46,7 +46,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {
     changeFilter && changeFilter(value => {
       return produce(value, draft => {
-        const condition = draft.conditions[conditionIndex];
+        const condition = draft.conditions[conditionIndex] as any;
         draft.conditions[conditionIndex] = {
           ...condition,
           // Type inconsistency (e.g. magic lookup switching type), change to fix.

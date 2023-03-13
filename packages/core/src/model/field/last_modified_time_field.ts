@@ -42,6 +42,8 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     dateFormat: Joi.string().allow(...enumToArray(DateFormat)).required(),
     timeFormat: Joi.string().allow(...enumToArray(TimeFormat)).required(),
     includeTime: Joi.boolean().required(),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
 
   static defaultDateFormat: string = DateFormat[0]!;
@@ -127,7 +129,9 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     timeFormat: Joi.valid(...enumKeyToArray(TimeFormat)),
     includeTime: Joi.boolean(),
     collectType: Joi.number().valid(CollectType.AllFields, CollectType.SpecifiedFields),
-    fieldIdCollection: Joi.array().items(Joi.string())
+    fieldIdCollection: Joi.array().items(Joi.string()),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
 
   override validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedTimeFieldProperty) {
