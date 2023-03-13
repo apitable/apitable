@@ -34,6 +34,10 @@
       text-indent: 0;
       width: 100%;
       height: 40px;
+      border-color: var(--borderCommonDefault);
+      &:focus-within {
+        border-color: var(--borderBrandDefault);
+      }
       :global {
         .ant-input-prefix {
           margin-right: 2px;
@@ -91,13 +95,15 @@
 }
 
 .modalHeader {
-  width: 151px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  .titleSearchIcon {
+    margin-right: 10px;
+  }
 }
 
 .modalWrapper {
+  height: calc(100vh - 160px) !important;
   :global {
     .ant-modal-header {
       padding: 16px;

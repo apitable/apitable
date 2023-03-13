@@ -1,25 +1,7 @@
-/**
- * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+import { deepPurple } from './base/deepPurple';
 import { black } from './base/black';
 import { teal } from './base/teal';
 import { orange } from './base/orange';
-import { deepPurple } from './base/deepPurple';
 import { blackBlue } from './base/blackBlue';
 import { red } from './base/red';
 
@@ -35,6 +17,8 @@ export const rc08 = '#FF7A00';
 export const rc09 = '#FF708B';
 export const rc10 = '#E33E38';
 export const rc11 = '#6E382D';
+export const bgControlsDegradeDefault = 'rgba(51, 51, 51, 0.08)';
+export const bgControlsDegradeHigh = 'rgba(51, 51, 51, 0.12)';
 export const bgControlsActiveSolid = 'rgba(206, 211, 219, 1)';
 export const bgControlsDefaultSolid = 'rgba(240, 242, 245, 1)';
 export const bgControlsHoverSolid = 'rgba(224, 227, 233, 1)';
