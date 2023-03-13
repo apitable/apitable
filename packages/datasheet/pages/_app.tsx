@@ -77,11 +77,23 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
+
+if (!process.env.SSR && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+    // Disable in development
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+    }
+  });
+}
 
 export interface IUserInfoError {
   code: number;
@@ -161,6 +173,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
+      posthog.capture('$pageview');
+
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -274,7 +288,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         guide: SystemConfig.guide,
         player: SystemConfig.player,
       }, JSON.parse(res.data.wizards));
-
+      posthog.identify(userInfo.userId);
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -376,7 +390,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy="lazyOnload" id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -445,20 +459,22 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={'__next_main'}>
         {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
-          <Provider store={store}>
-            <RouterProvider>
-              <ThemeWrapper>
-                <Component {...pageProps} userInfo={userData} />
-              </ThemeWrapper>
-            </RouterProvider>
-          </Provider>
+          <PostHogProvider client={posthog}>
+            <Provider store={store}>
+              <RouterProvider>
+                <ThemeWrapper>
+                  <Component {...pageProps} userInfo={userData} />
+                </ThemeWrapper>
+              </RouterProvider>
+            </Provider>
+          </PostHogProvider>
         </div>}
         {
           <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
             {
               ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
               </div>
             }
           </div>
