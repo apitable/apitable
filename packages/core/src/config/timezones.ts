@@ -1485,7 +1485,6 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Apia'
     ]
-<<<<<<< HEAD
   },
   {
     value: '',
@@ -1496,7 +1495,5 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Kiritimati'
     ]
-=======
->>>>>>> 60ef90a01419b713f486b88ff0acbcf3e0873cfd
   }
-]
+];
