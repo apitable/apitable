@@ -3,6 +3,26 @@
 
 
 
+## [v0.18.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.2) (2023-03-13)
+
+
+### Features and enhancements
+
+* feat: optimize patch records api ([#526](https://github.com/apitable/apitable/pull/526)) @yort-feng 
+* feat: optimize post records api ([#544](https://github.com/apitable/apitable/pull/544)) @yort-feng 
+* feat: add a snippet code of prodcut analytics ([#547](https://github.com/apitable/apitable/pull/547)) @Sky-FE 
+* feat: support huaweicloud OBS for Oss ([#537](https://github.com/apitable/apitable/pull/537)) @showlovetommy 
+
+### Bug fixes
+
+* fix: correct env value about all-in-one dockerfile ([#528](https://github.com/apitable/apitable/pull/528)) @ChambersChan 
+* fix: init theme in widget runtime ([#542](https://github.com/apitable/apitable/pull/542)) @boris-w 
+* fix: query may be undefined ([#553](https://github.com/apitable/apitable/pull/553)) @boris-w 
+
+### What's more
+
+* refactor: replace node cte sql ([#473](https://github.com/apitable/apitable/pull/473)) @ChambersChan 
+* sync: hosted cloud ([#551](https://github.com/apitable/apitable/pull/551)) @yort-feng 
 ## [v0.18.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.1) (2023-03-06)
 
 
