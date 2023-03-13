@@ -18,28 +18,27 @@
 
 package com.apitable.workspace.mapper;
 
-import java.util.List;
-
+import com.apitable.workspace.dto.NodeTreeDTO;
+import com.apitable.workspace.entity.NodeFavoriteEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.apitable.workspace.entity.NodeFavoriteEntity;
-
 public interface NodeFavoriteMapper extends BaseMapper<NodeFavoriteEntity> {
-
-    /**
-     * the favorite node ids in an orderly query
-     *
-     * @param memberId member id
-     * @return node ids
-     */
-    List<String> selectOrderNodeIdByMemberId(@Param("memberId") Long memberId);
 
     /**
      * @param memberId member id
      * @return node ids
      */
     List<String> selectNodeIdByMemberId(@Param("memberId") Long memberId);
+
+    /**
+     * Query node tree information.
+     *
+     * @param memberId member id
+     * @return List<NodeTreeDTO>
+     */
+    List<NodeTreeDTO> selectNodeTreeDTOByMemberId(@Param("memberId") Long memberId);
 
     /**
      * @param memberId member id

@@ -1,5 +1,5 @@
 import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
-import { Strings, t, isEmail, IReduxState } from '@apitable/core';
+import { Strings, t, isEmail, IReduxState, Api } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean } from 'ahooks';
 import { Form } from 'antd';
@@ -106,13 +106,16 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
   };
 
   const signUp = async() => {
- 
     const result = await signUpReq(username!, password!);
     if (!result) {
       return;
     }
     const { message, success } = result;
     if (success) {
+      Api.submitQuestionnaire({
+        nickName: username,
+        env: 'apitable-ce'
+      });
       return;
     } 
     Message.error({ content: message });

@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.workspace.vo;
+package com.apitable.workspace.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * <p>
- * Node Path View.
+ * NodeTreeDTO.
  * </p>
+ *
+ * @author Chambers
  */
 @Data
-@AllArgsConstructor
-@Schema(description = "Node Path View")
-public class NodePathVo {
+public class NodeTreeDTO {
 
-    @Schema(description = "Node ID", example = "nod10")
     private String nodeId;
 
-    @Schema(description = "Node Name", example = "This is a node")
-    private String nodeName;
+    private Integer type;
+
+    private String parentId;
+
+    private String preNodeId;
 }

@@ -18,28 +18,30 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.control.infrastructure.ControlType;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlRoleService;
+import com.apitable.control.service.IControlService;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.ControlRoleInfo;
+import com.apitable.workspace.dto.SimpleNodeInfo;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
 
@@ -57,6 +59,9 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
     private ITeamService iTeamService;
+
+    @Resource
+    private IControlService iControlService;
 
     @Autowired
     private IControlRoleService iControlRoleService;
@@ -111,5 +116,60 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
         iControlRoleService.addControlRole(1L, "nod", CollUtil.newArrayList(3L, 4L), Node.EDITOR);
         List<ControlRoleInfo> controlRoleInfos = iNodeRoleService.deleteNodeRoles("nod", CollUtil.newArrayList(1L, 3L));
         assertThat(controlRoleInfos.size()).isEqualTo(2);
+    }
+
+    @Test
+    void testGetNodeExtendNodeId() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        String rootExtendNodeId = iNodeRoleService.getNodeExtendNodeId(rootNodeId);
+        assertThat(rootExtendNodeId).isNull();
+
+        // first level folder id
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // create permission control unit
+        iControlService.create(userSpace.getUserId(), spaceId, firstLevelFolderId, ControlType.NODE);
+        String firstExtendNodeId = iNodeRoleService.getNodeExtendNodeId(firstLevelFolderId);
+        assertThat(firstExtendNodeId).isEqualTo(firstLevelFolderId);
+
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        String secondExtendNodeId = iNodeRoleService.getNodeExtendNodeId(secondLevelFolderId);
+        assertThat(secondExtendNodeId).isEqualTo(firstLevelFolderId);
+    }
+
+    @Test
+    void testGetNodeInfoWithPermissionStatus() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        // first level folder id
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // create permission control unit
+        iControlService.create(userSpace.getUserId(), spaceId, firstLevelFolderId, ControlType.NODE);
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(firstLevelFolderId);
+        List<SimpleNodeInfo> nodes = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
+        assertThat(nodes.size()).isEqualTo(2);
+        assertThat(nodes.get(0).getExtend()).isFalse();
+
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        nodeIds.add(secondLevelFolderId);
+        List<SimpleNodeInfo> nodes2 = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
+        assertThat(nodes2.size()).isEqualTo(3);
     }
 }
