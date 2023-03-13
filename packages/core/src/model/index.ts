@@ -28,3 +28,5 @@ export * from './utils';
 export * from './widget';
 export * from './dashboard';
 export * from './member_maintainer';
+export * from './filter_data_structure_parse';
+export * from './color';

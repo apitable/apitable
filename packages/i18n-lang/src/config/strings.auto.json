@@ -1558,6 +1558,10 @@
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
             "en_US": "{\n    \"plus\": \"$6\",\n    \"pro\": \"$14\"\n}"
         },
+        "apitable_password_input_placeholder": {
+            "zh_CN": "请输入 8-24 位字符的密码",
+            "en_US": "Password between 8 and 24 characters"
+        },
         "apitable_price_sub_title": {
             "zh_CN": "Early Bird Offer ${discount} Ends March 1,2023",
             "en_US": "Early Bird Offer ${discount} Ends March 7,2023"
@@ -3775,6 +3779,11 @@
             "en_US": "custom range",
             "zh_HK": "時間範圍"
         },
+        "date_setting_time_zone_tooltips": {
+            "zh_CN": "修改时区会影响日期的值，从而影响记录在其他视图里显示的时间",
+            "en_US": "Changing the time zone will affect the value of the date, thereby affecting the time of the record that displayed in other views",
+            "zh_HK": "修改時區會影響日期的值，從而影響記錄在其他視圖裡顯示的時間"
+        },
         "datetime_format": {
             "zh_CN": "日期格式",
             "en_US": "Date format",
@@ -5777,6 +5786,10 @@
             "zh_CN": "收起 ${count} 个隐藏字段",
             "en_US": "Collapse ${count} hidden field(s)",
             "zh_HK": "收起 ${count} 個隱藏字段"
+        },
+        "follow_system_time_zone": {
+            "zh_CN": "跟随系统时区",
+            "en_US": "Use system time zone"
         },
         "food_and_drink": {
             "zh_CN": "饮食",

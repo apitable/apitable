@@ -32,6 +32,8 @@ import { isNullValue } from 'model/utils';
 import { Conversion, IAddOpenMagicLinkFieldProperty, IUpdateOpenMagicLinkFieldProperty } from 'types/open/open_field_write_types';
 import { enumToArray } from './validate_schema';
 import { IOpenMagicLinkFieldProperty } from 'types/open/open_field_read_types';
+import { IOpenFilterValueString } from 'types/open/open_filter_types';
+import { TextBaseField } from './text_base_field';
 
 export const getTextRecordMap =
   createSelector<IReduxState, string | void, IReduxState | undefined, ISnapshot | undefined, { [text: string]: string }>(
@@ -423,5 +425,17 @@ export class LinkField extends ArrayValueField {
       limitToView,
       limitSingleRecord
     };
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterText): IOpenFilterValueString {
+    return TextBaseField._filterValueToOpenFilterValue(value);
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueString): IFilterText {
+    return TextBaseField._openFilterValueToFilterValue(value);
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValueString) {
+    return TextBaseField._validateOpenFilterValue(value);
   }
 }

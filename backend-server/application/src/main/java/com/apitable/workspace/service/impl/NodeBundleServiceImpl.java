@@ -136,7 +136,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
         Map<String, String> nodeIdToFileNameMap = CollUtil.newHashMap();
         List<NodeShareTree> childrenList = new ArrayList<>();
         if (node.getType() < NodeType.DATASHEET.getNodeType()) {
-            childrenList = nodeMapper.selectShareTreeByNodeId(node.getSpaceId(), nodeId);
+            childrenList = iNodeService.getSubNodes(nodeId);
             if (CollUtil.isNotEmpty(childrenList)) {
                 List<String> ids = childrenList.stream().map(NodeShareTree::getNodeId).collect(Collectors.toList());
                 nodeIds.addAll(ids);

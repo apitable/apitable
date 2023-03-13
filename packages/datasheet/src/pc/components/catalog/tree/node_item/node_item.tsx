@@ -43,6 +43,8 @@ export interface INodeItemProps {
   level: string;
 }
 
+let mobileModalClose: () => void;
+
 const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({ node, expanded = false, actived = false, hasChildren = false, editing, deleting, from, level }) => {
   const { deleteNodeReq } = useCatalogTreeRequest();
   const { run: deleteNode } = useRequest(deleteNodeReq, { manual: true });
@@ -80,6 +82,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({ node, expan
   };
 
   const cancelDeleteModalHandler = () => {
+    mobileModalClose?.();
     dispatch(StoreActions.setDelNodeId(''));
     dispatch(StoreActions.setDelNodeId('', ConfigConstant.Modules.FAVORITE));
   };
@@ -105,12 +108,13 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({ node, expan
 
   useEffect(() => {
     if (deleting && isMobile) {
-      Modal.warning({
+      const { close } = Modal.warning({
         title: t(Strings.delete),
         content: ConfirmContent,
         onOk: deleteNodeHandler,
         onCancel: cancelDeleteModalHandler,
       });
+      mobileModalClose = close;
     }
     // eslint-disable-next-line
   }, [deleting]);
@@ -122,7 +126,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({ node, expan
       title={ConfirmContent}
       onCancel={cancelDeleteModalHandler}
       onOk={deleteNodeHandler}
-      type="danger"
+      type='danger'
     >
       <ItemRender
         id={`${from}${node.nodeId}`}

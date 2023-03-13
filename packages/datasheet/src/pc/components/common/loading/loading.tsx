@@ -19,13 +19,11 @@
 import { Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import classNames from 'classnames';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import * as React from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
-
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 export interface ILoadingProps {
   showText?: boolean;
@@ -45,7 +43,7 @@ export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = props => {
     >
       <Spin
         tip={showText ? t(Strings.loading) : ''}
-        indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+        indicator={<LoadingOutlined size={24} className="circle-loading" />}
       />
     </div>
   );

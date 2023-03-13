@@ -18,16 +18,13 @@
 
 package com.apitable.workspace.vo;
 
-import static com.apitable.shared.constants.DateFormatConstants.TIME_NORM_PATTERN;
-
 import com.apitable.organization.vo.CreatedMemberInfoVo;
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullObjectSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -80,9 +77,8 @@ public class ShowcaseVo {
     @Schema(description = "Node Creator Information")
     private CreatedMemberInfoVo createdMemberInfo;
 
-    @Schema(description = "Node update time", example = "2021-05-04")
-    @JsonFormat(pattern = TIME_NORM_PATTERN)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Schema(description = "Node update time", example = "1677257886000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime updatedAt;
 
     @Schema(description = "Third party information")

@@ -23,8 +23,8 @@ import { Record } from '../model/record';
 import { WidgetContext } from '../context';
 import { useMeta } from './use_meta';
 import { Datasheet } from 'model';
-import { getWidgetDatasheet } from 'store';
-import { IReduxState, Selectors } from '@apitable/core';
+import { getSnapshot, getWidgetDatasheet } from 'store';
+import { IReduxState, parseInnerFilter, Selectors, validateOpenFilter, ViewFilterDerivate } from '@apitable/core';
 import { useReferenceCount } from 'view_computed';
 
 /**
@@ -109,6 +109,18 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
       }
       const idSet = new Set(query.ids);
       _visibleRows = _visibleRows.filter(row => idSet.has(row.recordId));
+    }
+    // secondary filter
+    if (query.filter) {
+      const { error } = validateOpenFilter(query.filter);
+      if (error) {
+        throw new Error(`filter query validate error: ${error.message}`);
+      }
+      const state = context.widgetStore.getState() as any;
+      const snapshot = getSnapshot(state, datasheetId)!;
+      const filterInfo = parseInnerFilter(query.filter, { state, fieldMap: snapshot.meta.fieldMap }) || undefined;
+      const viewFilterDerivate = new ViewFilterDerivate(state, datasheetId);
+      _visibleRows = viewFilterDerivate.getFilterRowsBase({ filterInfo, rows: _visibleRows, recordMap: snapshot.recordMap });
     }
     return _visibleRows.map(row => new Record(datasheetId, context, row.recordId));
   }, [datasheetId, visibleRows, query, context]);

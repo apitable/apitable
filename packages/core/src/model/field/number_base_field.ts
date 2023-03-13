@@ -39,6 +39,7 @@ import { str2number, str2NumericStr, numberToShow, str2Currency, times } from 'u
 import { IAPIMetaNumberBaseFieldProperty } from 'types/field_api_property_types';
 import Joi from 'joi';
 import { isNullValue } from 'model/utils';
+import { IOpenFilterValueNumber } from 'types/open/open_filter_types';
 
 export type ICommonNumberField = INumberField | IRatingField | ICurrencyField | IPercentField | IAutoNumberField;
 export const commonNumberFields = new Set([
@@ -301,5 +302,32 @@ export abstract class NumberBaseField extends Field {
 
   validateOpenWriteValue(owv: number | null) {
     return NumberBaseField.openWriteValueSchema.validate(owv);
+  }
+
+  static _filterValueToOpenFilterValue(value: IFilterNumber): IOpenFilterValueNumber {
+    const num = Number(value?.[0]);
+    return isNaN(num) ? null : num;
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterNumber): IOpenFilterValueNumber {
+    return NumberBaseField._filterValueToOpenFilterValue(value);
+  }
+
+  static _openFilterValueToFilterValue(value: IOpenFilterValueNumber): IFilterNumber {
+    return value === null ? null : [value.toString()];
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueNumber): IFilterNumber {
+    return NumberBaseField._openFilterValueToFilterValue(value);
+  }
+
+  static validateOpenFilterSchema = Joi.number().allow(null);
+
+  static _validateOpenFilterValue(value: IOpenFilterValueNumber) {
+    return NumberBaseField.validateOpenFilterSchema.validate(value);
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValueNumber) {
+    return NumberBaseField._validateOpenFilterValue(value);
   }
 }

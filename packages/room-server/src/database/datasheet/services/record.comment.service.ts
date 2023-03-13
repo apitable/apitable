@@ -17,6 +17,7 @@
  */
 
 import { ICommentContent, ICommentMsg, IListInsertAction } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { UnitService } from 'unit/services/unit.service';
 import { isEmpty, pickBy } from 'lodash';
@@ -95,6 +96,7 @@ export class RecordCommentService {
     return firstMemberInfo && firstMemberInfo.userId === uuid;
   }
 
+  @Span()
   getCommentCountMapByDstId(dstId: string): Promise<{ [recordId: string]: number }> {
     return this.repo.selectRecordCommentCountByDstId(dstId);
   }

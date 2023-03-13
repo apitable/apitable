@@ -18,7 +18,6 @@
 
 package com.apitable.shared.support.serializer;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.config.ServerConfig;
 import com.apitable.shared.context.LoginContext;
@@ -50,8 +49,8 @@ public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime
         String userTimeZone;
         if (userId != null) {
             LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
-            userTimeZone = ObjectUtil.isNotEmpty(loginUserDto) ? loginUserDto.getTimeZone()
-                : serverConfig.getTimeZoneId().toString();
+            userTimeZone = loginUserDto != null && loginUserDto.getTimeZone() != null
+                ? loginUserDto.getTimeZone() : serverConfig.getTimeZoneId().toString();
         } else {
             userTimeZone = serverConfig.getTimeZoneId().toString();
         }

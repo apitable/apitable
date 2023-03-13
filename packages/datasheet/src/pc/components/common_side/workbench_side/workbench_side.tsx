@@ -32,7 +32,7 @@ import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';
 import { NodeContextMenu } from 'pc/components/catalog/node_context_menu';
 import { PermissionSettingsPlus } from 'pc/components/catalog/permission_settings_plus';
-import { Search } from 'pc/components/catalog/search';
+import { expandSearch } from 'pc/components/quick_search';
 import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -66,7 +66,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
   const [activeKey, setActiveKey] = useState<string[]>([]);
-  const [isSearch, setIsSearch] = useState(false);
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const {
     spaceId,
@@ -134,12 +133,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         ShortcutActionName.SaveAsTemplate,
         () => {
           dispatch(StoreActions.updateSaveAsTemplateModalNodeId(activeNodeId || ''));
-        },
-      ],
-      [
-        ShortcutActionName.SearchNode,
-        () => {
-          setIsSearch(!isSearch);
         },
       ],
     ]);
@@ -281,19 +274,15 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.header}>
           <SpaceInfo />
           <div className={styles.search}>
-            {isSearch ? (
-              <Search closeSearch={() => setIsSearch(false)} />
-            ) : (
-              <IconButton
-                shape='square'
-                className={styles.searchBtn}
-                icon={SearchOutlined}
-                onClick={e => {
-                  stopPropagation(e);
-                  setIsSearch(true);
-                }}
-              />
-            )}
+            <IconButton
+              shape='square'
+              className={styles.searchBtn}
+              icon={SearchOutlined}
+              onClick={e => {
+                stopPropagation(e);
+                expandSearch();
+              }}
+            />
           </div>
         </div>
 

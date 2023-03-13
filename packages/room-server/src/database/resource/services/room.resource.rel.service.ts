@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
 import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@apitable/core';
@@ -55,6 +56,7 @@ export class RoomResourceRelService {
     return resourceIds.length > 0;
   }
 
+  @Span()
   async getEffectDatasheetIds(resourceIds: string[]): Promise<string[]> {
     const allEffectResourceIds = new Set<string>();
     for (const resourceId of resourceIds) {
@@ -211,6 +213,7 @@ export class RoomResourceRelService {
     }
   }
 
+  @Span()
   async getRoomChangeResult(roomId: string, changesets: IRemoteChangeset[]): Promise<IClientRoomChangeResult[]> {
     const beginTime = +new Date();
     this.logger.info(`Start loading RoomChangeResult roomId:${roomId}`);

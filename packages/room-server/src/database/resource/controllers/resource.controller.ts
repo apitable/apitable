@@ -49,11 +49,11 @@ export class ResourceController {
     private readonly otService: OtService,
   ) {}
 
-  // TODO: deprecate revisions parameter
+  // TODO(Chambers): deprecate revisions parameter
   @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
   async getChangesetList(
     @Headers('cookie') cookie: string, @Param('resourceId') resourceId: string,
-    @Query() query: { sourceId: string, revisions: string | number[]; resourceType: ResourceType; startRevision: number; endRevision: number },
+    @Query() query: { sourceId: string, resourceType: ResourceType; startRevision: number; endRevision: number },
   ): Promise<ChangesetView[]> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
@@ -61,13 +61,8 @@ export class ResourceController {
     // check the user has the privileges of the node
     await this.nodeService.checkNodePermission(query.sourceId || resourceId, { cookie });
     await this.resourceService.checkResourceEntry(resourceId, query.resourceType, query.sourceId);
-    if (query.revisions?.length > 0) {
-      return await this.changesetService.getChangesetList(
-        resourceId,
-        Number(query.resourceType),
-        +query.revisions[0]!,
-        +query.revisions[query.revisions.length - 1]!
-      );
+    if (query.endRevision - query.startRevision > 100) {
+      throw new ServerException(PermissionException.OPERATION_DENIED);
     }
     return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
   }
@@ -77,6 +72,9 @@ export class ResourceController {
     @Param('shareId') shareId: string, @Param('resourceId') resourceId: string,
     @Query() query: { sourceId: string, resourceType: ResourceType; startRevision: number; endRevision: number },
   ): Promise<ChangesetView[]> {
+    if (query.endRevision - query.startRevision > 100) {
+      throw new ServerException(PermissionException.OPERATION_DENIED);
+    }
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, query.sourceId || resourceId);
     await this.resourceService.checkResourceEntry(resourceId, query.resourceType, query.sourceId);
     // Share limit can only load the most recent 100 versions

@@ -24,7 +24,6 @@ import { Value } from 'grpc/generated/google/protobuf/struct';
 import { ApiServingService, NodeBrowsingRo } from 'grpc/generated/serving/BackendServingService';
 import { LeaveRoomRo, RoomServingService, UserRoomChangeRo, WatchRoomRo } from 'grpc/generated/serving/RoomServingService';
 import { lastValueFrom } from 'rxjs';
-import { TRACE_ID } from 'shared/common';
 import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
 import { GrpcClientProxy } from './grpc.client.proxy';
 
@@ -54,7 +53,6 @@ export class GrpcClient implements OnModuleInit {
   async watchRoom(message: WatchRoomRo, metadata: any): Promise<any | null> {
     this.logger.log({
       action: 'WatchRoom',
-      traceId: String(metadata.get(TRACE_ID)),
       message: `WatchRoom socket-id:[${message.clientId}] To room-server:[${await this.roomClient.currentClientUrl}]`,
     });
 
@@ -64,7 +62,6 @@ export class GrpcClient implements OnModuleInit {
   async getActiveCollaborators(message: WatchRoomRo, metadata: any): Promise<any | null> {
     this.logger.log({
       action: 'GetActiveCollaborators',
-      traceId: String(metadata.get(TRACE_ID)),
       message: `GetActiveCollaborators socket-id:[${message.clientId}] To room-server:[${await this.roomClient.currentClientUrl}]`,
     });
 
@@ -74,7 +71,6 @@ export class GrpcClient implements OnModuleInit {
   async leaveRoom(message: LeaveRoomRo, metadata: any): Promise<BasicResult> {
     this.logger.log({
       action: 'LeaveRoom',
-      traceId: String(metadata.get(TRACE_ID)),
       message: `LeaveRoom socket-id:[${message.clientId}] To room-server:[${await this.roomClient.currentClientUrl}]`,
     });
 
@@ -84,7 +80,6 @@ export class GrpcClient implements OnModuleInit {
   async roomChange(message: UserRoomChangeRo, metadata: any): Promise<any> {
     this.logger.log({
       action: 'RoomChange',
-      traceId: String(metadata.get(TRACE_ID)),
       message: `RoomChange socket-id:[${message.clientId}] To room-server:[${await this.roomClient.currentClientUrl}]`,
     });
 

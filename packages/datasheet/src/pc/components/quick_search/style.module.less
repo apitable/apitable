@@ -1,0 +1,144 @@
+@import "~pc/styles/lib_var.less";
+
+@keyframes fadeIn {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.hover {
+  background-color: var(--rowSelectedBg);
+}
+.searchWrapper {
+  width: 100%;
+  height: 620px;
+  transform-origin: right center;
+  animation: fadeIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  .searchContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .search {
+    background: var(--defaultBg);
+    .searchInput {
+      padding: 0 16px;
+      text-indent: 0;
+      width: 100%;
+      height: 40px;
+      :global {
+        .ant-input-prefix {
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+
+  .closeBtn {
+    display: flex;
+    cursor: pointer;
+  }
+
+  .nodeList {
+    position: absolute;
+    padding: 0 16px;
+    top: 96px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    flex: 1;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .emptyResult {
+    width: 42%;
+    margin: 10% auto 0 auto;
+
+    img {
+      width: 100%;
+    }
+
+    .tip {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-top: 8px;
+      text-align: center;
+    }
+  }
+
+  .title {
+    height: 32px;
+    font-size: 12px;
+    color: var(--thirdLevelText);
+    line-height: 32px;
+    margin-left: 20px;
+
+    &:nth-child(1) {
+      margin-top: 8px;
+    }
+  }
+}
+
+.modalHeader {
+  width: 151px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modalWrapper {
+  :global {
+    .ant-modal-header {
+      padding: 16px;
+    }
+    .ant-modal-body {
+      padding: 0 !important;
+    }
+  }
+}
+
+.tabWrapper {
+  display: flex;
+  align-content: center;
+  padding: 16px 0;
+  .typeTabItem {
+    padding: 3px 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--textCommonPrimary);
+    cursor: pointer;
+  }
+  .typeTabItemActive {
+    background-color: var(--bgBrandLightDefault);
+    color: var(--textBrandDefault);
+  }
+}
+
+.defaultContent {
+  max-width: 100%;
+  width: 358px;
+  margin: auto;
+  img {
+    width: 100%;
+  }
+}
+
+.footerTips {
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bgCommonDefault);
+  border-radius: 0 0 8px 8px;
+}
