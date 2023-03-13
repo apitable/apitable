@@ -75,7 +75,7 @@ export enum FilterDuration {
 }
 
 export type IFilterValue = string;
-export type IFilterCheckbox = [boolean] | null;
+export type IFilterCheckbox = boolean | null;
 export type IFilterText = [IFilterValue] | null;
 export type IFilterNumber = [IFilterValue] | null;
 // export type IFilterRating = [IFilterValue] | null;
@@ -85,8 +85,9 @@ export type IFilterMultiSelect = IFilterValue[] | null;
 export type IFilterMember = IUnitIds | null;
 
 export type IFilterDateTime =
-  [Exclude<FilterDuration, FilterDuration.ExactDate>] |
+  [Exclude<FilterDuration, FilterDuration.ExactDate | FilterDuration.DateRange>] |
   [FilterDuration.ExactDate, ITimestamp | null] |
+  [FilterDuration.DateRange, string | null] |
   null;
 
 export interface IFilterBaseCondition {
