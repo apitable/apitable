@@ -158,11 +158,11 @@ mod tests {
       .append_query_results(mock_record_query_results(false))
       .append_query_results([vec![
         btreemap! {
-          "0" => Value::String(Some(box "rec1".to_owned())),
+          "0" => Value::String(Some(Box::new("rec1".to_owned()))),
           "1" => Value::BigInt(Some(2)),
         },
         btreemap! {
-          "0" => Value::String(Some(box "rec2".to_owned())),
+          "0" => Value::String(Some(Box::new("rec2".to_owned()))),
           "1" => Value::BigInt(Some(1)),
         },
       ]])
@@ -220,12 +220,18 @@ mod tests {
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );
@@ -317,17 +323,20 @@ mod tests {
         AND (`apitable_datasheet_record`.`is_deleted` = ?) \
         AND (`apitable_datasheet_record`.`record_id` IN (?, ?, ?))",
           [
-            Value::String(Some(box "dst1".to_owned())),
+            Value::String(Some(Box::new("dst1".to_owned()))),
             Value::Bool(Some(false)),
-            Value::String(Some(box "rec1".to_owned())),
-            Value::String(Some(box "rec2".to_owned())),
-            Value::String(Some(box "rec3".to_owned()))
+            Value::String(Some(Box::new("rec1".to_owned()))),
+            Value::String(Some(Box::new("rec2".to_owned()))),
+            Value::String(Some(Box::new("rec3".to_owned())))
           ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );
@@ -395,12 +404,18 @@ mod tests {
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(true))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(true))
+          ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );
