@@ -160,7 +160,6 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
                   }
                   addNewView(e as any as React.MouseEvent, viewType);
                 }}
-                data-sensors-click
                 id={getViewAnalyticsId(viewType)}
                 data-test-id={getViewAnalyticsId(viewType)}
               >
@@ -186,7 +185,6 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
               >
                 <section
                   className={styles.viewItem}
-                  data-sensors-click
                   id={DATASHEET_ID.VIEW_CREATOR_FORM}
                   onClick={e => addNewNode(e as any as React.MouseEvent, nodeType)}
                 >
@@ -203,7 +201,6 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
       { !embedId && <section
         className={styles.addNewDatasheet}
         onClick={() => ShortcutActionManager.trigger(ShortcutActionName.NewDatasheet)}
-        data-sensors-click
         id={DATASHEET_ID.VIEW_CREATOR_TABLE}
       >
         {t(Strings.tab_add_view_datasheet)}

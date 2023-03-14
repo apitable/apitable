@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
 import { Select, Typography } from '@apitable/components';
-import styles from './style.module.less';
-import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
-import { tracker } from 'pc/utils/tracker';
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './style.module.less';
 
 const options = [
   {
@@ -47,9 +46,6 @@ export const RecordVisionSetting: FC<React.PropsWithChildren<unknown>> = () => {
     setStorage(StorageName.RecordVision, newValue, StorageMethod.Set);
     dispatch(StoreActions.setRecordVision(newValue));
     dispatch(StoreActions.toggleSideRecord(false));
-    tracker.track(TrackEvents.RecordCard, {
-      recordCardStyle: newValue
-    });
   };
 
   return (

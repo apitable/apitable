@@ -47,6 +47,7 @@ import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
 import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
+import { expandSearch } from '../quick_search';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -231,6 +232,12 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
           handleSetSideBarByUser(!sideBarVisible, panelVisible);
         },
       ],
+      [
+        ShortcutActionName.SearchNode,
+        () => {
+          expandSearch();
+        },
+      ]
     ]);
 
     eventBundle.forEach((cb, key) => {

@@ -21,8 +21,10 @@ import * as React from 'react';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { ISearchNode } from '../search';
-import { getNodeIcon } from '../../tree/node_icon';
+import { getNodeIcon } from '../../catalog/tree/node_icon';
+import { INode } from '@apitable/core';
+
+export type ISearchNode = INode & { superiorPath: string };
 
 export interface INodeProps {
   node: ISearchNode;

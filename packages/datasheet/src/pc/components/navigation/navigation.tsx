@@ -18,7 +18,9 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SettingOutlined, UserGroupOutlined, WorkbenchOutlined } from '@apitable/icons';
+import {
+  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, Setting2Outlined, UserGroupOutlined, WorkbenchOutlined
+} from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
@@ -56,6 +58,8 @@ import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 import { useIntercom } from 'react-use-intercom';
+import { expandSearch } from '../quick_search';
+
 enum NavKey {
   SpaceManagement = 'management',
   Org = 'org',
@@ -209,12 +213,22 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
     {
       routeAddress: '/management' + search,
-      icon: SettingOutlined,
+      icon: Setting2Outlined,
       text: t(Strings.nav_space_settings),
       key: NavKey.SpaceManagement,
       domId: NAV_ID.ICON_SPACE_MANAGE,
     },
   ]);
+
+  navList.splice(1, 0, {
+    component: () => {
+      return (
+        <div className={styles.navItem} onClick={() => expandSearch()}>
+          <SearchOutlined className={styles.navIcon} />
+        </div>
+      );
+    }
+  });
 
   const NotificationNav = React.useMemo((): React.ReactElement => {
     const dom = (
@@ -253,7 +267,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
 
   useEffect(() => {
-    if(!isHiddenIntercom() || isMobile) {
+    if (!isHiddenIntercom() || isMobile) {
       return;
     }
     updateIntercom({ hideDefaultLauncher: !router.pathname.includes('workbench') });
@@ -308,12 +322,12 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
       }}
     >
       <div className={classNames(styles.navigation, templateActive && styles.templateActived, notice && styles.noticeOpend)}>
-        <div className={styles.spaceLogo} onClick={openSpaceMenu} data-sensors-click>
+        <div className={styles.spaceLogo} onClick={openSpaceMenu}>
           <div className={styles.spaceImg}>
             <Avatar type={AvatarType.Space} title={user!.spaceName} id={user!.spaceId} src={user!.spaceLogo} size={AvatarSize.Size32} />
           </div>
           <div className={styles.spaceDown}>
-            <Tooltip title={t(Strings.workspace_list)} placement="bottom">
+            <Tooltip title={t(Strings.workspace_list)} placement='bottom'>
               <div>
                 <ChevronDownOutlined className={styles.spaceIcon} />
               </div>
@@ -322,6 +336,9 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
         </div>
         <div className={styles.navWrapper} onClick={hiddenUserMenu}>
           {navList.map((item: any) => {
+            if (item.component) {
+              return item.component();
+            }
             if (user && !user!.isAdmin && item.key === NavKey.SpaceManagement) {
               return null;
             }
@@ -351,7 +368,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
 
             return (
               <div key={item.key}>
-                <Tooltip title={item.text} placement="right">
+                <Tooltip title={item.text} placement='right'>
                   <span>{NavItem()}</span>
                 </Tooltip>
               </div>
@@ -372,7 +389,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </Popup>
           </ComponentDisplay>
         </div>
-        <Tooltip title={t(Strings.notification_center)} placement="right" key="notification_center">
+        <Tooltip title={t(Strings.notification_center)} placement='right' key='notification_center'>
           <span className={styles.notification}>
             {NotificationNav}
             <span id={NAV_ID.ICON_NOTIFICATION} className={styles.noticeAnimate} />

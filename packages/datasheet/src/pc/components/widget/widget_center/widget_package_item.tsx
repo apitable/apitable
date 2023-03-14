@@ -18,7 +18,7 @@
 
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
-import { AddOutlined, LinkOutlined, MoreOutlined, WarnFilled } from '@apitable/icons';
+import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
@@ -77,7 +77,6 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         type: 'warning',
         title: t(Strings.widget_center_install_modal_title),
         width: 400,
-        icon: <WarnFilled size={24} />,
         content: (
           <div className={styles.spaceWidgetInfoContent}>
             {t(Strings.widget_center_install_modal_content)}
@@ -106,7 +105,6 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         type: 'warning',
         title: t(Strings.widget_install_error_title),
         width: 400,
-        icon: <WarnFilled size={24} />,
         content: t(Strings.widget_install_error_env, {
           errorEnv: installPosition === InstallPosition.Dashboard ? t(Strings.dashboard) : t(Strings.widget_panel),
           expectEnv: installPosition !== InstallPosition.Dashboard ? t(Strings.dashboard) : t(Strings.widget_panel),

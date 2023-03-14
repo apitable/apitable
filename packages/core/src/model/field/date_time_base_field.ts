@@ -147,11 +147,6 @@ export const dateTimeFormat = (
     dayjs.locale(formatLocale);
     format += ' a';
   }
-  // server-side
-  if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    const date = dayjs(Number(timestamp));
-    return date.format(format);
-  }
   if (props.includeTimeZone) {
     const timeZone = props.timeZone || defaultProps.timeZone;
     const abbr = getTimeZoneAbbrByUtc(timeZone)!;

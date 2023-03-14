@@ -18,16 +18,13 @@
 
 package com.apitable.workspace.service;
 
-import java.util.List;
-
-import cn.hutool.json.JSONObject;
-import org.apache.ibatis.annotations.Param;
-
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetMetaDTO;
 import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.entity.DatasheetMetaEntity;
 import com.apitable.workspace.ro.MetaOpRo;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface IDatasheetMetaService {
 
@@ -51,7 +48,7 @@ public interface IDatasheetMetaService {
     /**
      * @param userId user id
      * @param dstId datasheet id
-     * @param metaData
+     * @param metaData meta data
      */
     void create(Long userId, String dstId, String metaData);
 
@@ -78,19 +75,10 @@ public interface IDatasheetMetaService {
     DatasheetSnapshot getMetaByDstId(String dstId);
 
     /**
-     * Check if the field exists in the table
+     * Determine whether the datasheets contain member fields.
      *
-     * @param dstId datasheet id
-     * @param fieldId fieldId
+     * @param dstIds datasheet ids
+     * @return boolean
      */
-    void checkFieldIfExist(String dstId, String fieldId);
-
-    /**
-     * Query field properties based on the number table ID query and field name.
-     *
-     * @param dstId datasheet id
-     * @param fieldName fieldName
-     * @return field properties
-     */
-    JSONObject getFieldPropertyByDstIdAndFieldName(String dstId, String fieldName);
+    boolean judgeContainMemberField(List<String> dstIds);
 }

@@ -28,6 +28,7 @@ export enum ContextName {
   visualizationEditable = 'visualizationEditable', // View toolbar editing
   recordEditable = 'recordEditable', // Record Record Editing
   modalVisible = 'modalVisible',  // Is the modal window currently open
+  isQuickSearchExpanding = 'isQuickSearchExpanding', // quick search is expanding
 }
 
 export enum ShortcutActionName {
@@ -107,4 +108,9 @@ export enum ShortcutActionName {
   CloseExpandRecord = 'CloseExpandRecord',
   // Developer Panel
   ToggleDevPanel = 'ToggleDevPanel',
+  // Quick Search Modal
+  QuickSearchUp = 'QuickSearchUp',
+  QuickSearchDown = 'QuickSearchDown',
+  QuickSearchTab = 'QuickSearchTab',
+  QuickSearchEnter = 'QuickSearchEnter',
 }

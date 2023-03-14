@@ -28,6 +28,7 @@ import classNames from 'classnames';
 import { UserMenu } from '../user_menu';
 import { InviteCodeModal } from '../invite_code_modal';
 import { stopPropagation } from 'pc/utils';
+
 export const User: FC<React.PropsWithChildren<unknown>> = () => {
   const { user } = useSelector(
     (state: IReduxState) => ({
@@ -51,7 +52,7 @@ export const User: FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <>
-      <div onClick={openUserMenu} data-sensors-click>
+      <div onClick={openUserMenu}>
         <Avatar id={memberId} src={avatar} title={nickName} avatarColor={avatarColor} size={AvatarSize.Size40} />
       </div>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>

@@ -778,10 +778,13 @@ public class NodeController {
             createNodeId =
                 iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(), mainName,
                     targetInputStream);
-        } else {
+        } else if (fileSuffix.equals(FileSuffixConstants.XLS)
+            || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             createNodeId =
                 iNodeService.parseExcel(userId, uuid, spaceId, memberId, data.getParentId(),
                     mainName, fileSuffix, data.getFile().getInputStream());
+        } else {
+            throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }
         // publish space audit events
         AuditSpaceArg arg =

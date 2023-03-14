@@ -1,25 +1,7 @@
-/**
- * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+import { deepPurple } from './base/deepPurple';
 import { black } from './base/black';
 import { teal } from './base/teal';
 import { orange } from './base/orange';
-import { deepPurple } from './base/deepPurple';
 import { blackBlue } from './base/blackBlue';
 import { red } from './base/red';
 
@@ -35,6 +17,8 @@ export const rc08 = '#FF7A00';
 export const rc09 = '#FF708B';
 export const rc10 = '#E33E38';
 export const rc11 = '#6E382D';
+export const bgControlsDegradeDefault = 'rgba(0, 0, 0, 0.12)';
+export const bgControlsDegradeHigh = 'rgba(0, 0, 0, 0.12)';
 export const bgControlsActiveSolid = 'rgba(85, 85, 85, 1)';
 export const bgControlsDefaultSolid = 'rgba(49, 49, 49, 1)';
 export const bgControlsHoverSolid = 'rgba(67, 67, 67, 1)';
@@ -73,7 +57,7 @@ export const rainbowYellow2 = ' rgba(255, 195, 16, 0.4)';
 export const rainbowYellow3 = ' rgba(255, 195, 16, 0.6)';
 export const rainbowYellow4 = ' rgba(255, 195, 16, 0.8)';
 export const rainbowYellow5 = ' rgba(255, 195, 16, 1)';
-export const bgGradientHorizontal = '270deg, #292929 0%, rgba(41, 41, 41, 0) 100%';
+export const bgGradientHorizontal = '270deg, #292929 0%, rgba(41, 41, 41, 0) 100%)';
 export const bgGradientVertical = '0deg, #292929 0%, rgba(41, 41, 41, 0) 100%';
 export const bgReverseDefault = 'rgba(255, 255, 255, 1)';
 export const bgStaticDarkHigh = 'rgba(79, 84, 92, 1)';
@@ -155,8 +139,8 @@ export const bgBrandActive = 'rgba(192, 182, 250, 1)';
 export const bgBrandDefault = 'rgba(144, 127, 240, 1)';
 export const bgBrandDisabled = 'rgba(144, 127, 240, 0.5)';
 export const bgBrandHover = 'rgba(168, 154, 245, 1)';
-export const bgCommonDefault = 'rgba(31, 31, 31, 1)';
-export const bgCommonHigh = 'rgba(41, 41, 41, 1)';
+export const bgCommonDefault = 'rgba(26, 26, 26, 1)';
+export const bgCommonHigh = 'rgba(38, 38, 38, 1)';
 export const bgCommonHighest = 'rgba(51, 51, 51, 1)';
 export const bgControlsActive = 'rgba(255, 255, 255, 0.24)';
 export const bgControlsDefault = 'rgba(255, 255, 255, 0.08)';
@@ -174,7 +158,7 @@ export const bgTagActive = 'rgba(255, 255, 255, 0.32)';
 export const bgTagDefault = 'rgba(255, 255, 255, 0.16)';
 export const bgTagDisabled = 'rgba(255, 255, 255, 0.08)';
 export const bgTagHover = 'rgba(255, 255, 255, 0.24)';
-export const bgCommonLower = 'rgba(20, 20, 20, 1)';
+export const bgCommonLower = 'rgba(13, 13, 13, 1)';
 export const rainbowBlue1 = ' rgba(92, 207, 255, 0.2)';
 export const rainbowBlue2 = ' rgba(92, 207, 255, 0.4)';
 export const rainbowBlue3 = ' rgba(92, 207, 255, 0.6)';

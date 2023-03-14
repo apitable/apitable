@@ -161,7 +161,6 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
           <ContextmenuItem
             key={item.text}
             className={styles.menuItem}
-            data-sensors-click
             {...item}
             name={item.text}
             onClick={e => {

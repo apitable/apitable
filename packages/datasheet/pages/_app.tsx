@@ -71,18 +71,30 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
-import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+    autocapture: false,
+    // Disable in development
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+    }
+  });
+}
 
 export interface IUserInfoError {
   code: number;
@@ -162,6 +174,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
+
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -197,7 +210,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       let userInfoError: IUserInfoError | undefined;
 
       /**
-       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same, so there is no need to repeat the request.
+       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same,
+       * so there is no need to repeat the request.
        */
       if (
         pathUrl &&
@@ -274,7 +288,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         guide: SystemConfig.guide,
         player: SystemConfig.player,
       }, JSON.parse(res.data.wizards));
-
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -346,12 +359,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
             content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
+            maskClosable: false,
+            onOk: () => {
+              window.location.reload();
+            }
           });
         });
       }
     };
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
     return () => {
       clearInterval(interval);
     };
@@ -376,7 +393,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy="lazyOnload" id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -445,20 +462,22 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={'__next_main'}>
         {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
-          <Provider store={store}>
-            <RouterProvider>
-              <ThemeWrapper>
-                <Component {...pageProps} userInfo={userData} />
-              </ThemeWrapper>
-            </RouterProvider>
-          </Provider>
+          <PostHogProvider client={posthog}>
+            <Provider store={store}>
+              <RouterProvider>
+                <ThemeWrapper>
+                  <Component {...pageProps} userInfo={userData} />
+                </ThemeWrapper>
+              </RouterProvider>
+            </Provider>
+          </PostHogProvider>
         </div>}
         {
           <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
             {
               ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
               </div>
             }
           </div>
@@ -483,8 +502,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 }
 
 /**
- * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus. When an offset is detected, it needs to be reset manually.
- * The reason why the onBlur event is not used here is that after the editing element is out of focus, other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
+ * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus.
+ * When an offset is detected, it needs to be reset manually.
+ * The reason why the onBlur event is not used here is that after the editing element is out of focus,
+ * other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
  * @param e
  */
 const onScroll = (e: React.UIEvent<HTMLDivElement>) => {

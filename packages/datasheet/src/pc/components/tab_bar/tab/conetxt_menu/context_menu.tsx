@@ -245,7 +245,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         text: t(Strings.rename_view),
         onClick: handleRenameItem,
         hidden: !permissions.viewRenamable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_RENAME,
       },
       {
@@ -255,7 +254,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         hidden: !permissions.viewCreatable,
         disabled: isViewCountOverLimit,
         disabledTip: t(Strings.view_count_over_limit, { count: getMaxViewCountPerSheet() }),
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_COPY,
       },
       {
@@ -263,7 +261,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         text: t(Strings.create_view_form),
         onClick: addForm,
         hidden: !viewAllowCreateForm || !formCreatable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_COPY_FORM,
       },
       {
@@ -271,7 +268,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         text: t(Strings.create_mirror),
         onClick: addMirror,
         hidden: !mirrorCreatable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_COPY_MIRROR,
       },
     ],
@@ -289,7 +285,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
           const view = viewList[tabIndex];
           return Boolean(view.lockInfo);
         },
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_LOCK,
       },
       {
@@ -305,7 +300,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
           const view = viewList[tabIndex];
           return !view.lockInfo;
         },
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_LOCK_CHECK,
       },
       {
@@ -314,7 +308,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         shortcutKey: <Switch size={'small'} />,
         onClick: () => { confirmViewAutoSave(false, activeNodeId!, activeViewId!, shareId); },
         hidden: Boolean(view?.autoSave) || !spaceManualSaveViewIsOpen || !viewSyncManageable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_CHANGE_AUTO_SAVE,
       },
       {
@@ -323,7 +316,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         shortcutKey: <Switch size={'small'} checked />,
         onClick: () => { confirmViewAutoSave(true, activeNodeId!, activeViewId!, shareId); },
         hidden: !view?.autoSave || !spaceManualSaveViewIsOpen || !viewSyncManageable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_CHANGE_AUTO_SAVE_CHECK,
       }
     ],
@@ -338,19 +330,16 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
           // icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
           text: t(Strings.csv),
           onClick: exportTypeCsv,
-          'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_CSV,
         }, {
           // icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
           text: t(Strings.excel),
           onClick: exportTypeXlsx,
-          'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_EXCEL,
         }, {
           // icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
           text: t(Strings.png),
           onClick: exportTypeImage,
-          'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_IMAGE,
           hidden: ![ViewType.Grid, ViewType.Gantt].includes(view?.type as ViewType),
           disabled: activeViewId !== currentViewId,
@@ -364,7 +353,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
         text: t(Strings.delete_view),
         onClick: handleForDeleteView,
         hidden: !permissions.viewRemovable,
-        'data-sensors-click': true,
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_DELETE,
         disabled: (arg: any) => {
           const { props: { tabIndex }} = arg;

@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,4 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './search';
+package com.apitable.user.ro;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
+
+/**
+ * <p>
+ * user email verification ro.
+ * </p>
+ */
+@Data
+@Schema(description = "verify email parameters")
+public class EmailVerificationRo {
+
+    @Schema(description = "email", example = "123456@**", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "email")
+    private String email;
+}

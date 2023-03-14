@@ -27,6 +27,8 @@ import { Tooltip } from 'antd';
 import { useThemeColors } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { LevelType } from 'pc/components/space_manage/space_info/interface';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel, isEnterprise } from 'enterprise';
 
 enum IFormOptionType {
   CoverVisible = 'CoverVisible',
@@ -124,7 +126,12 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
       },
       {
         id: IFormOptionType.BrandVisible,
-        name: t(Strings.form_brand_visible),
+        name: (
+          <>
+            {t(Strings.form_brand_visible)}
+            {isEnterprise && <SubscribeLabel grade={SubscribeGrade.Gold} />}
+          </>
+        ),
         disabled: productName ? !FORM_BRAND_ENABLE_LEVELS.includes(productName as LevelType) : true,
       },
     ];

@@ -56,9 +56,9 @@ class MyDocument extends Document<IClientInfo> {
             JSON.parse(envVars).COOKIEBOT_ID &&
             <script
               id="Cookiebot"
-              src="https://consent.cookiebot.com/uc.js" 
+              src="https://consent.cookiebot.com/uc.js"
               data-cbid={JSON.parse(envVars).COOKIEBOT_ID}
-              data-blockingmode="auto" 
+              data-blockingmode="auto"
               async
             />
           }
