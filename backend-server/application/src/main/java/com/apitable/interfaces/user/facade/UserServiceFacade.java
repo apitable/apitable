@@ -38,6 +38,9 @@ public interface UserServiceFacade {
     void onUserChangeAvatarAction(Long userId, String avatarUrl);
 
     void onUserChangeNicknameAction(Long userId, String nickname, Boolean init);
+
+    void onUserCloseAccount(Long userId);
+
     InvitationCode getUserInvitationCode(Long userId);
 
     boolean getInvitationReward(Long userId);

@@ -43,6 +43,11 @@ public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade
     }
 
     @Override
+    public void onUserCloseAccount(Long userId) {
+
+    }
+
+    @Override
     public InvitationCode getUserInvitationCode(Long userId) {
         return new InvitationCode();
     }
