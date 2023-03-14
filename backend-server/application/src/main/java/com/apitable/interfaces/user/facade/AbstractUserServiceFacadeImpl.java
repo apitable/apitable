@@ -77,7 +77,7 @@ public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade
     }
 
     @Override
-    public boolean verifyEmail(UserAuth userAuth) {
+    public boolean verifyEmail(String email) {
         return false;
     }
 

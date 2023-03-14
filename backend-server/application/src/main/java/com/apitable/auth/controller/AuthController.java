@@ -41,7 +41,6 @@ import com.apitable.shared.config.properties.CookieProperties;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
@@ -192,13 +191,13 @@ public class AuthController {
      */
     @PostResource(name = "sign out", path = "/signOut", requiredPermission = false, method = {
         RequestMethod.GET,
-        RequestMethod.POST})
+        RequestMethod.POST}, requiredLogin = false)
     @Operation(summary = "sign out", description = "log out of current user")
     public ResponseData<LogoutVO> logout(final HttpServletRequest request,
                                          final HttpServletResponse response) {
         LogoutVO logoutVO = new LogoutVO();
-        UserLogout userLogout = authServiceFacade.logout(
-            new UserAuth(SessionContext.getUserId()));
+        Long userId = SessionContext.getUserIdWithoutException();
+        UserLogout userLogout = authServiceFacade.logout(new UserAuth(userId));
         if (userLogout != null) {
             logoutVO.setNeedRedirect(userLogout.isRedirect());
             logoutVO.setRedirectUri(userLogout.getRedirectUri());

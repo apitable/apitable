@@ -62,7 +62,7 @@ public interface UserServiceFacade {
     /**
      * user verification on email.
      *
-     * @param userAuth {@link UserAuth}
+     * @param email email
      */
-    boolean verifyEmail(UserAuth userAuth);
+    boolean verifyEmail(String email);
 }
