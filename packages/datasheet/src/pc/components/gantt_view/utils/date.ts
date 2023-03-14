@@ -23,7 +23,7 @@ dayjs.extend(dayOfYear);
 export type DateTimeType = Dayjs | string | number;
 
 export const getDayjs = (dateTime: DateTimeType): Dayjs => {
-  return isDayjs(dateTime) ? dateTime : dayjs(dateTime);
+  return isDayjs(dateTime) ? dateTime : dayjs.tz(dateTime);
 };
 
 /**
