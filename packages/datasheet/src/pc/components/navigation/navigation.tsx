@@ -19,7 +19,7 @@
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
 import {
-  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, SettingOutlined, UserGroupOutlined, WorkbenchOutlined
+  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, Setting2Outlined, UserGroupOutlined, WorkbenchOutlined
 } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
@@ -212,7 +212,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
     {
       routeAddress: '/management' + search,
-      icon: SettingOutlined,
+      icon: Setting2Outlined,
       text: t(Strings.nav_space_settings),
       key: NavKey.SpaceManagement,
       domId: NAV_ID.ICON_SPACE_MANAGE,

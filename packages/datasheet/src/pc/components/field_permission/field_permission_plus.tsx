@@ -48,7 +48,7 @@ export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermiss
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
             <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon} rel="noreferrer">
-              <QuestionCircleOutlined color={colors.thirdLevelText} className={styles.infoIcon} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIcon} />
             </a>
           </Tooltip>
         }
