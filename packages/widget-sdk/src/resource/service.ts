@@ -16,30 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Url, databus } from '@apitable/core';
+import { databus, Url } from '@apitable/core';
 import {
-  CollaCommandManager,
-  ComputeRefManager,
-  Engine,
-  Events,
-  IError,
-  IJOTAction,
-  IOperation,
-  IReduxState,
-  IResourceOpsCollect,
-  OP2Event,
-  OPEventManager,
-  OPEventNameEnums,
-  Player,
-  ResourceStashManager,
-  ResourceType,
-  RoomService,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-  TrackEvents,
-  UndoManager,
+  CollaCommandManager, ComputeRefManager, Engine, IError, IJOTAction, IOperation, IReduxState, IResourceOpsCollect, OP2Event, OPEventManager,
+  OPEventNameEnums, ResourceStashManager, ResourceType, RoomService, Selectors, StoreActions, Strings, t, UndoManager,
 } from 'core';
 import localForage from 'localforage';
 import { Store } from 'redux';
@@ -359,20 +339,11 @@ export class ResourceService implements IResourceService {
   // If a command operates on data from multiple datasheet (associated fields), this will be called multiple times
   localOperationDispatch = (resourceOpsCollects: IResourceOpsCollect[]) => {
     resourceOpsCollects.forEach(resourceOpsCollect => {
-      const { resourceId, operations } = resourceOpsCollect;
+      const { resourceId } = resourceOpsCollect;
       const collaEngine = this.getCollaEngine(resourceId);
       if (!collaEngine) {
         throw new Error(t(Strings.error_not_initialized_datasheet_instance));
       }
-      operations.forEach(operation => {
-        Player.doTrigger(Events.app_tracker, {
-          name: TrackEvents.Operation,
-          props: {
-            cmd: operation.cmd,
-            actionsLength: operation.actions.length,
-          },
-        });
-      });
     });
     this.applyOperations(this.store, resourceOpsCollects);
   };

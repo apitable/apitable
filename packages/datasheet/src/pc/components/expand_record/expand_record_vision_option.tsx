@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC } from 'react';
 import { colors, IconButton } from '@apitable/components';
-import { Tooltip } from 'pc/components/common';
+import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/icons';
-import styles from './style.module.less';
-import { useDispatch, useSelector } from 'react-redux';
-import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';
+import { Tooltip } from 'pc/components/common';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
-import { tracker } from 'pc/utils/tracker';
+import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './style.module.less';
 
 interface IIconButtonProps {
   active: boolean,
@@ -63,9 +62,6 @@ const ExpandRecordVisionOptionBase: FC<React.PropsWithChildren<unknown>> = () =>
           onClick={() => {
             setStorage(StorageName.RecordVision, RecordVision.Center, StorageMethod.Set);
             dispatch(StoreActions.setRecordVision(RecordVision.Center));
-            tracker.track(TrackEvents.RecordCard, {
-              recordCardStyle: RecordVision.Center
-            });
             dispatch(StoreActions.toggleSideRecord(false));
             dispatch(StoreActions.toggleRecordFullScreen(false));
           }}
@@ -77,9 +73,6 @@ const ExpandRecordVisionOptionBase: FC<React.PropsWithChildren<unknown>> = () =>
           onClick={() => {
             setStorage(StorageName.RecordVision, RecordVision.Side, StorageMethod.Set);
             dispatch(StoreActions.setRecordVision(RecordVision.Side));
-            tracker.track(TrackEvents.RecordCard, {
-              recordCardStyle: RecordVision.Side
-            });
             dispatch(StoreActions.toggleSideRecord(true));
             // setIsFullScreen(false);
             dispatch(StoreActions.toggleRecordFullScreen(false));

@@ -88,6 +88,7 @@ declare const window: any;
 if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+    autocapture: false,
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
@@ -173,7 +174,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
-      posthog.capture('$pageview');
 
       if (loading !== LoadingStatus.Start) {
         return;
@@ -288,7 +288,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         guide: SystemConfig.guide,
         player: SystemConfig.player,
       }, JSON.parse(res.data.wizards));
-      posthog.identify(userInfo.userId);
     };
     getUser().then(() => {
       import('../src/preIndex');
