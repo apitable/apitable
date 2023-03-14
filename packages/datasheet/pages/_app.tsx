@@ -360,12 +360,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
             content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
+            maskClosable: false,
+            onOk: () => {
+              window.location.reload();
+            }
           });
         });
       }
     };
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
     return () => {
       clearInterval(interval);
     };

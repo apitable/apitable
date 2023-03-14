@@ -217,11 +217,6 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
           {field.type === FieldType.Attachment && (cellValue as IAttachmentValue[])?.length && !isMobile && allowDownload && (
             <BulkDownload files={cellValue as IAttachmentValue[]} className="more" datasheetId={datasheetId} />
           )}
-          {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
-            <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
-              {t(Strings.task_reminder_entry)}
-            </LinkButton>
-          )}
 
           {!hideLock && <FieldPermissionLockEnhance fieldId={fieldId} className="more" />}
 
@@ -247,6 +242,12 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
                 />
               </Tooltip>
             </div>
+          )}
+
+          {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
+            <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
+              {t(Strings.task_reminder_entry)}
+            </LinkButton>
           )}
         </div>
 
