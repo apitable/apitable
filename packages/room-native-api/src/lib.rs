@@ -1,5 +1,5 @@
 #![deny(clippy::all)]
-#![feature(async_closure, box_syntax)]
+#![feature(async_closure)]
 
 use datasheet::database::InitDbOptions;
 use futures::TryFutureExt;
