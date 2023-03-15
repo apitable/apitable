@@ -199,7 +199,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
       Router.push(Navigation.SHARE_SPACE, {
         params: { 
           shareId: shareSpaceInfo.shareId, 
-          nodeId: curDatasheetId || folderId || formId || mirrorId || dashboardId,
+          nodeId: curDatasheetId || folderId || formId || mirrorId || dashboardId || shareNodeTree.nodeId,
           viewId,
           recordId,
           widgetId
