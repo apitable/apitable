@@ -173,7 +173,6 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
         {
           linkRecordIds!.map((id, index) => {
             const text = cellStringList[index];
-            console.log({ text });
             return (
               <div
                 className={classNames(styles.tabItem, styles.link, 'link')}

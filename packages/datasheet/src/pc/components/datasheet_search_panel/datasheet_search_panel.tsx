@@ -378,7 +378,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
         {showSubColumnWithView && (
           <Tooltip title={t(Strings.form_tour_desc)}>
             <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
-              <QuestionCircleOutlined color={colors.firstLevelText} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} />
             </a>
           </Tooltip>
         )}
