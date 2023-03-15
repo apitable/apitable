@@ -284,10 +284,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = defaultsDeep({
+      window.__initialization_data__.wizards = defaultsDeep(JSON.parse(res.data.wizards), {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      }, JSON.parse(res.data.wizards));
+      });
     };
     getUser().then(() => {
       import('../src/preIndex');
