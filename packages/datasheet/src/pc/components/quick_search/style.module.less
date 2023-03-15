@@ -119,6 +119,7 @@
       height: 100%;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
   }
 }
@@ -135,6 +136,7 @@
     color: var(--textCommonPrimary);
     cursor: pointer;
     border-radius: 4px;
+    white-space: nowrap;
   }
   .typeTabItemActive {
     background-color: var(--bgBrandLightDefault);
@@ -172,8 +174,6 @@
 .footerTipsEsc {
   justify-content: end;
   .footerIconBox {
-    width: 20px;
-    height: 20px;
-    padding: 0;
+    padding: 1px 8px;
   }
 }

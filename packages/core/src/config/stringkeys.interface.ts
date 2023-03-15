@@ -2297,6 +2297,7 @@ export type StringKeysMapType = {
   'placeholder_select_report_reason': 'placeholder_select_report_reason',
   'platform_synchronization': 'platform_synchronization',
   'player_contact_us_confirm_btn': 'player_contact_us_confirm_btn',
+  'player_step_ui_config_165': 'player_step_ui_config_165',
   'player_step_ui_config_166': 'player_step_ui_config_166',
   'player_step_ui_config_167': 'player_step_ui_config_167',
   'player_step_ui_config_168': 'player_step_ui_config_168',

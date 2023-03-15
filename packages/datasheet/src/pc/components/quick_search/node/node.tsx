@@ -44,7 +44,7 @@ export const Node: FC<React.PropsWithChildren<INodeProps>> = props => {
       onMouseUp={onMouseDown}
     >
       <div className={styles.node}>
-        <div className={styles.icon}>{getNodeIcon(node.icon, node.type)}</div>
+        <div className={styles.icon}>{getNodeIcon(node.icon, node.type, { emojiSize: 16 })}</div>
         <div
           className={styles.nodeName}
           dangerouslySetInnerHTML={{ __html: node.nodeName }}

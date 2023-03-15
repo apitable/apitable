@@ -2,6 +2,7 @@ import { Space, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { EnterOutlined, EscOutlined, UpAndDownOutlined } from '@apitable/icons';
 import classNames from 'classnames';
+import { browser } from 'modules/shared/browser';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import styles from './style.module.less';
@@ -16,7 +17,7 @@ export const FooterTips: React.FC<{ shortcutEsc?: boolean }> = (props) => {
     return (
       <div className={classNames(styles.footerTips, styles.footerTipsEsc)}>
         <Space size={8}>
-          {getShortcutKeyString(ShortcutActionName.SearchNode).split(' ').map((v: string, key: number) => {
+          {getShortcutKeyString(ShortcutActionName.SearchNode).split(browser?.is('Windows') ? ' + ' : ' ').map((v: string, key: number) => {
             return <div className={styles.footerIconBox} key={key}>{getFont(v)}</div>;
           })}
         </Space>

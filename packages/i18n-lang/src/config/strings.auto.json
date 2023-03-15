@@ -3438,8 +3438,8 @@
             "zh_HK": "生成當前視圖的鏡像"
         },
         "create_mirror_guide_content": {
-            "zh_CN": "镜像具有隐藏部分数据的功能，你可以在原表的视图中设置“筛选条件”和“隐藏字段”来控制镜像中需要展示的记录和字段。\n</br>\n如果配合「视图锁」功能一起使用，可以防止其他人修改。\n</br>\n另外，前往「原表>隐藏字段」可以修改“镜像中允许查看隐藏字段”的配置",
-            "en_US": "The mirror has the function of hiding part of the data, and you can set \"filter criteria\" and \"hidden fields\" in the view of the original table to control the records and fields that need to be displayed in the mirror.\n</br>\nIf used in conjunction with the View Lock feature, you can prevent others from modifying it.\n</br>\nIn addition, go to the original Table > Hidden Fields to modify the configuration of allow Hidden Fields to be viewed in the Mirror"
+            "zh_CN": "镜像具有隐藏部分数据的功能，你可以在原表的视图中设置“筛选条件”和“隐藏字段”来控制镜像中需要展示的记录和字段。\n</br>\n</br>\n如果配合「视图锁」功能一起使用，可以防止其他人修改。\n</br>\n</br>\n另外，前往「原表>隐藏字段」可以修改“镜像中允许查看隐藏字段”的配置",
+            "en_US": "The mirror function has the ability to hide certain data. You can set \"filter conditions\" and \"hidden fields\" in the original datasheet view to control which records and fields are displayed in the mirror.\n</br>\n</br>\nIf used in conjunction with the \"view lock\" function, it can prevent others from making modifications.\n</br>\n</br>\nIn addition, you can go to \"Original Table>Hidden Fields\" to modify the configuration for \"Show all fields in Mirrors\"."
         },
         "create_mirror_guide_title": {
             "zh_CN": "镜像将隐藏部分记录和字段",
@@ -11339,6 +11339,10 @@
             "en_US": "Done",
             "zh_HK": "已完成添加"
         },
+        "player_step_ui_config_165": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，隐藏敏感字段安心协作</li><li>用户账号时区上线，可单独设置日期列的时区，跨时区协作更流畅</li><li>「全局搜索」体验优化，新增搜索结果分类</li><li>黄金级空间站权益增加，分享表单支持隐藏官方标识</li><li>API 接口性能优化，大幅提高调用效率</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 English Test</h3>\"\n}"
+        },
         "player_step_ui_config_166": {
             "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
             "en_US": "{\n  \"title\": \"Upgrade To Pro And Save 50%!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the early bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
@@ -11696,7 +11700,7 @@
         },
         "quick_search_not_found": {
             "zh_CN": "我们找不到你要搜索的内容",
-            "en_US": "Sorry we didn't find anything"
+            "en_US": "We couldn't find what you were searching for"
         },
         "quick_search_placeholder": {
             "zh_CN": "搜索文件",
