@@ -3438,10 +3438,12 @@
             "zh_HK": "生成當前視圖的鏡像"
         },
         "create_mirror_guide_content": {
-            "zh_CN": "为了保证数据安全，此镜像屏蔽了 32 列已隐藏的字段。意味着普通成员访问该镜像时，无法查看或重新显示原表中已隐藏的字段。\n这是镜像的默认设置，如果你想更改，可以返回原表在「镜像列表」中对此镜像进行单独设置"
+            "zh_CN": "镜像具有隐藏部分数据的功能，你可以在原表的视图中设置“筛选条件”和“隐藏字段”来控制镜像中需要展示的记录和字段。\n</br>\n如果配合「视图锁」功能一起使用，可以防止其他人修改。\n</br>\n另外，前往「原表>隐藏字段」可以修改“镜像中允许查看隐藏字段”的配置",
+            "en_US": "The mirror has the function of hiding part of the data, and you can set \"filter criteria\" and \"hidden fields\" in the view of the original table to control the records and fields that need to be displayed in the mirror.\n</br>\nIf used in conjunction with the View Lock feature, you can prevent others from modifying it.\n</br>\nIn addition, go to the original Table > Hidden Fields to modify the configuration of allow Hidden Fields to be viewed in the Mirror"
         },
         "create_mirror_guide_title": {
-            "zh_CN": "镜像将屏蔽隐藏的字段"
+            "zh_CN": "镜像将隐藏部分记录和字段",
+            "en_US": "Mirror hides some records and fields"
         },
         "create_public_invitation_link": {
             "zh_CN": "创建公开的邀请链接",
@@ -9720,7 +9722,8 @@
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
         },
         "mirror_show_hidden_checkbox": {
-            "zh_CN": "镜像中允许查看隐藏字段"
+            "zh_CN": "镜像中允许查看隐藏字段",
+            "en_US": "Show all fields in Mirrors"
         },
         "mirror_uploader_label": {
             "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
@@ -11688,8 +11691,8 @@
             "zh_HK": "快速安全<%= type %> "
         },
         "quick_search_intro": {
-            "zh_CN": "只需输入文件名称的关键词，所有相关的搜索结果将在此处展示。通过点击“维格表”、“文件夹”、“神奇表单”、“镜像”或“仪表盘”标签，你可以快速地按类型过滤搜索结果。",
-            "en_US": "Simply enter the keyword of the file name and all relevant search results will be displayed here. By clicking on the \"Datasheet\", \"Folder\", \"Form\", \"Mirror\", or \"Dashboard\" tabs, you can quickly filter search results by type. "
+            "zh_CN": "只需输入文件名称的关键词，所有相关的搜索结果将在此处展示。通过点击“维格表”、“文件夹”、“神奇表单”、“镜像”或“仪表盘”标签，你可以快速地按类型过滤搜索结果",
+            "en_US": "Enter a file name keyword and relevant search results will appear. Easily filter by type with tabs for Datasheet, Folder, Form, Mirror, and Dashboard."
         },
         "quick_search_not_found": {
             "zh_CN": "我们找不到你要搜索的内容",
