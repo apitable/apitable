@@ -22,8 +22,19 @@ import { FormulaField, LookUpField } from 'model';
 import { IOpenComputedFormat } from 'types/open/open_field_read_types';
 import { IUserMap, ViewType } from '../exports/store';
 import {
-  BasicValueType, DateFormat, FieldType, IAPIMetaCurrencyFormat, IAPIMetaDateTimeFormat, IAPIMetaNoneStringValueFormat, IAPIMetaNumberFormat,
-  IAPIMetaUser, IComputedFieldFormattingProperty, IDateTimeFieldPropertyFormat, INumberBaseFieldPropertyFormat, IPercentFormat, MemberType,
+  BasicValueType,
+  DateFormat,
+  FieldType,
+  IAPIMetaCurrencyFormat,
+  IAPIMetaDateTimeFormat,
+  IAPIMetaNoneStringValueFormat,
+  IAPIMetaNumberFormat,
+  IAPIMetaUser,
+  IComputedFieldFormattingProperty,
+  IDateTimeFieldPropertyFormat,
+  INumberBaseFieldPropertyFormat,
+  IPercentFormat,
+  MemberType,
   TimeFormat,
 } from '../types';
 import { APIMetaFieldPropertyFormatEnums, APIMetaFieldType, APIMetaMemberType, APIMetaViewType } from './../types/field_api_enums';
@@ -87,11 +98,11 @@ export const handleEmptyCellValue = <T>(cellValue: T, basicValueType?: BasicValu
       break;
     case BasicValueType.String:
       if (
-        (cellValue as any).length === 0 || 
-        (
-          Array.isArray(cellValue) && cellValue.length === 1 && 
-          Object.prototype.toString.call(cellValue[0]) === '[object Object]' && !cellValue[0]?.text
-        )
+        (cellValue as any).length === 0 ||
+        (Array.isArray(cellValue) &&
+          cellValue.length === 1 &&
+          Object.prototype.toString.call(cellValue[0]) === '[object Object]' &&
+          !cellValue[0]?.text)
       ) {
         return null;
       }
@@ -219,17 +230,16 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
         },
       };
     }
-    const {
-      dateFormat,
-      timeFormat,
-      includeTime,
-    } = (fieldInstance.field.property.formatting || {}) as IDateTimeFieldPropertyFormat;
+    const { dateFormat, timeFormat, includeTime, timeZone, includeTimeZone } = (fieldInstance.field.property.formatting ||
+      {}) as IDateTimeFieldPropertyFormat;
     return {
       type: APIMetaFieldPropertyFormatEnums.DateTime,
       format: {
         dateFormat: DateFormat[dateFormat]!,
         timeFormat: TimeFormat[timeFormat]!,
         includeTime,
+        timeZone,
+        includeTimeZone,
       },
     };
   }
@@ -317,11 +327,11 @@ export const isNullValue = (value: any): value is null => {
  * @param fieldInstance
  * @param format
  */
-export const computedFormattingToFormat =
-  (format: IOpenComputedFormat): IComputedFieldFormattingProperty => {
-    let formatting: IComputedFieldFormattingProperty | undefined = undefined;
-    switch (format?.type) {
-      case APIMetaFieldPropertyFormatEnums.DateTime: {
+export const computedFormattingToFormat = (format: IOpenComputedFormat): IComputedFieldFormattingProperty => {
+  let formatting: IComputedFieldFormattingProperty | undefined = undefined;
+  switch (format?.type) {
+    case APIMetaFieldPropertyFormatEnums.DateTime:
+      {
         const { dateFormat, timeFormat, includeTime } = format.format as IAPIMetaDateTimeFormat;
         formatting = {
           dateFormat: DateFormat[dateFormat],
@@ -329,8 +339,9 @@ export const computedFormattingToFormat =
           includeTime,
         };
       }
-        break;
-      case APIMetaFieldPropertyFormatEnums.Currency: {
+      break;
+    case APIMetaFieldPropertyFormatEnums.Currency:
+      {
         const { precision, symbol } = format.format as IAPIMetaCurrencyFormat;
         formatting = {
           formatType: FieldType.Currency,
@@ -338,22 +349,23 @@ export const computedFormattingToFormat =
           symbol,
         };
       }
-        break;
-      case APIMetaFieldPropertyFormatEnums.Number: {
+      break;
+    case APIMetaFieldPropertyFormatEnums.Number:
+      {
         const { precision } = format.format as IAPIMetaNumberFormat;
         formatting = {
           formatType: FieldType.Number,
           precision,
         };
       }
-        break;
-      case APIMetaFieldPropertyFormatEnums.Percent: {
-        const { precision } = format.format as IPercentFormat;
-        formatting = {
-          formatType: FieldType.Percent,
-          precision,
-        };
-      }
+      break;
+    case APIMetaFieldPropertyFormatEnums.Percent: {
+      const { precision } = format.format as IPercentFormat;
+      formatting = {
+        formatType: FieldType.Percent,
+        precision,
+      };
     }
-    return formatting;
-  };
+  }
+  return formatting;
+};
