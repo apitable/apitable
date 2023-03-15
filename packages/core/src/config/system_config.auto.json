@@ -1357,13 +1357,13 @@
         },
         {
             "show": true,
-            "key": "cmd+g",
-            "winKey": "ctrl+g",
+            "key": "cmd+k",
+            "winKey": "ctrl+k",
             "name": [
                 "open_quickgo_panel"
             ],
             "when": "!isRecordExpanding",
-            "id": "cmd+g",
+            "id": "cmd+k",
             "command": "SearchNode",
             "description": "打开工作台的搜索栏",
             "type": [

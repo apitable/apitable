@@ -220,16 +220,6 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
   ]);
 
-  navList.splice(1, 0, {
-    component: () => {
-      return (
-        <div className={styles.navItem} onClick={() => expandSearch()}>
-          <SearchOutlined className={styles.navIcon} />
-        </div>
-      );
-    }
-  });
-
   const NotificationNav = React.useMemo((): React.ReactElement => {
     const dom = (
       <Badge
@@ -336,9 +326,6 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
         </div>
         <div className={styles.navWrapper} onClick={hiddenUserMenu}>
           {navList.map((item: any) => {
-            if (item.component) {
-              return item.component();
-            }
             if (user && !user!.isAdmin && item.key === NavKey.SpaceManagement) {
               return null;
             }
@@ -389,6 +376,11 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </Popup>
           </ComponentDisplay>
         </div>
+        <Tooltip title={t(Strings.quick_search_title)} placement='right'>
+          <div className={styles.iconWrap} onClick={() => expandSearch()}>
+            <SearchOutlined size={24} color={colors.secondLevelText}/>
+          </div>
+        </Tooltip>
         <Tooltip title={t(Strings.notification_center)} placement='right' key='notification_center'>
           <span className={styles.notification}>
             {NotificationNav}
