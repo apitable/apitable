@@ -576,7 +576,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         if (CollUtil.isEmpty(parentNodes)) {
             return new ArrayList<>();
         }
-        List<String> existedControlIds = iControlService.getExistedControlId(nodeIds);
+        List<String> controlIds = parentNodes.stream()
+            .map(NodeBaseInfoDTO::getNodeId).collect(toList());
+        List<String> existedControlIds = iControlService.getExistedControlId(controlIds);
         return parentNodes.stream()
             .map(i -> new SimpleNodeInfo(i.getNodeId(), i.getParentId(), i.getType(),
                 !existedControlIds.contains(i.getNodeId())))
