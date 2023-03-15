@@ -156,15 +156,18 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
 
   if (isMobile) {
     return <div className={styles.mobileBar}>
-      <div
-        onClick={() => setSideBarVisible(true)}
-        className={styles.side}
-        style={{
-          backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
-        }}
-      >
-        <ListOutlined size={20} color={colors.defaultBg} />
-      </div>
+      {
+        !embedId ? <div
+          onClick={() => setSideBarVisible(true)}
+          className={styles.side}
+          style={{
+            backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
+          }}
+        >
+          <ListOutlined size={20} color={colors.defaultBg} />
+        </div> : <span className={styles.ghost} />
+      }
+
       <InlineNodeName className={styles.nodeName} nodeId={dashboardId} nodeIcon={dashboardIcon} nodeName={dashboardName} />
       <span className={styles.ghost} />
     </div>;

@@ -213,5 +213,6 @@ export const getEnvVars = () => {
     WIZARD_ENABLE: process.env.WIZARD_ENABLE === 'true',
     NEXT_PUBLIC_POSTHOG_KEY:process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST:process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    ADD_RECORD_BUTTON_BG_COLOR:process.env.ADD_RECORD_BUTTON_BG_COLOR,
   };
 };
