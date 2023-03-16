@@ -1,6 +1,5 @@
 import { Strings, t, ConfigConstant } from '@apitable/core';
 import classNames from 'classnames';
-import { nodeConfigData } from 'pc/utils';
 import styles from './style.module.less';
 
 export enum TabNodeType {
@@ -17,7 +16,26 @@ export const nodeTypeList = [
     name: t(Strings.all),
     type: TabNodeType.ALL_TYPE
   },
-  ...nodeConfigData.map(({ name, type }) => ({ name, type }))
+  {
+    name: t(Strings.datasheet),
+    type: ConfigConstant.NodeType.DATASHEET
+  },
+  {
+    name: t(Strings.folder),
+    type: ConfigConstant.NodeType.FOLDER
+  },
+  {
+    name: t(Strings.view_form),
+    type: ConfigConstant.NodeType.FORM
+  },
+  {
+    name: t(Strings.mirror),
+    type: ConfigConstant.NodeType.MIRROR
+  },
+  {
+    name: t(Strings.dashboard),
+    type: ConfigConstant.NodeType.DASHBOARD
+  },
 ];
 
 interface ITypeTab {

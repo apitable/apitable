@@ -11340,8 +11340,8 @@
             "zh_HK": "已完成添加"
         },
         "player_step_ui_config_165": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，隐藏敏感字段安心协作</li><li>用户账号时区上线，可单独设置日期列的时区，跨时区协作更流畅</li><li>「全局搜索」体验优化，新增搜索结果分类</li><li>黄金级空间站权益增加，分享表单支持隐藏官方标识</li><li>API 接口性能优化，大幅提高调用效率</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 English Test</h3>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高响应速度</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
         },
         "player_step_ui_config_166": {
             "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
@@ -11695,8 +11695,8 @@
             "zh_HK": "快速安全<%= type %> "
         },
         "quick_search_intro": {
-            "zh_CN": "只需输入文件名称的关键词，所有相关的搜索结果将在此处展示。通过点击“维格表”、“文件夹”、“神奇表单”、“镜像”或“仪表盘”标签，你可以快速地按类型过滤搜索结果",
-            "en_US": "Enter a file name keyword and relevant search results will appear. Easily filter by type with tabs for Datasheet, Folder, Form, Mirror, and Dashboard."
+            "zh_CN": "输入关键词可快速找到相关搜索结果。点击分类项可过滤文件类型，包括维格表、文件夹、神奇表单、镜像和仪表盘",
+            "en_US": "Quickly obtain relevant search results by entering a keyword. Filter by file type (e.g. datasheet, folder, form, mirror, dashboard) using category items"
         },
         "quick_search_not_found": {
             "zh_CN": "我们找不到你要搜索的内容",
