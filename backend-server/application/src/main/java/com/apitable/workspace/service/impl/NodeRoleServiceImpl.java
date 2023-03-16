@@ -138,13 +138,13 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         // Enable the node to specify permissions and set the current member organization unit role to Owner
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
         log.info("「{}」open node「{}」specify permissions，and set up units「{}」role「{}」", userId, nodeId, unitId, Node.OWNER);
+        if (includeExtend) {
+            addExtendNodeRole(userId, spaceId, nodeId);
+        }
         // create a permission control unit
         iControlService.create(userId, spaceId, nodeId, ControlType.NODE);
         // create a control unit role
         iControlRoleService.addControlRole(userId, nodeId, Collections.singletonList(unitId), Node.OWNER);
-        if (includeExtend) {
-            addExtendNodeRole(userId, spaceId, nodeId);
-        }
     }
 
     @Override
