@@ -100,6 +100,7 @@ dependencies {
     implementation(rootProject.ext.dependencies['wx-open'])
     implementation(rootProject.ext.dependencies['v-client'])
     implementation(rootProject.ext.dependencies['sensors'])
+    implementation(rootProject.ext.dependencies['posthog'])
 
     // for apitable-ee
     implementation(rootProject.ext.dependencies['auth0'])
