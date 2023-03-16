@@ -59,6 +59,7 @@ import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 import { useIntercom } from 'react-use-intercom';
 import { expandSearch } from '../quick_search';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -101,6 +102,26 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   // Check if there is a system banner notification to be displayed
   useRequest(getNotificationList);
 
+  useEffect(() => {
+    const eventBundle = new Map([
+      [
+        ShortcutActionName.SearchNode,
+        () => {
+          expandSearch();
+        },
+      ]
+    ]);
+
+    eventBundle.forEach((cb, key) => {
+      ShortcutActionManager.bind(key, cb);
+    });
+
+    return () => {
+      eventBundle.forEach((_cb, key) => {
+        ShortcutActionManager.unbind(key);
+      });
+    };
+  });
   // Listen to the message pushed by ws and change the number displayed on the icon
   useEffect(() => {
     if (notice) {
@@ -378,7 +399,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
         </div>
         <Tooltip title={t(Strings.quick_search_title)} placement='right'>
           <div className={styles.iconWrap} onClick={() => expandSearch()}>
-            <SearchOutlined size={24} color={colors.secondLevelText}/>
+            <SearchOutlined className={styles.icon} size={24} />
           </div>
         </Tooltip>
         <Tooltip title={t(Strings.notification_center)} placement='right' key='notification_center'>
