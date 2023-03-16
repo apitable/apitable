@@ -674,7 +674,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && embedSetting.shareBtn && !isIframe() && (
+        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && !embedId && !isIframe() && (
           <Display type={ToolHandleType.Share}>
             <ToolItem
               showLabel={showIconBarLabel}
