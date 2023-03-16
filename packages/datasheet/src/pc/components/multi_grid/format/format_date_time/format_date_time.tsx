@@ -228,7 +228,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
             {t(Strings.field_incluede_time_and_time_zone_title)}
             <Tooltip title={t(Strings.date_setting_time_zone_tooltips)} trigger={'hover'}>
               <span className={settingStyles.sectionTitleTip}>
-                <QuestionCircleOutlined size={16} />
+                <QuestionCircleOutlined size={16} color={colorVars.textCommonTertiary} />
               </span>
             </Tooltip>
           </div>

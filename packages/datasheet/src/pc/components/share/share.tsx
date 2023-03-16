@@ -24,7 +24,7 @@ import { Message } from 'pc/components/common/message';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
-import { usePageParams, useRequest, useSideBarVisible, useSpaceRequest, useUserRequest } from 'pc/hooks';
+import { getPageParams, usePageParams, useRequest, useSideBarVisible, useSpaceRequest, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { isIframe } from 'pc/utils/env';
 import { deleteStorageByKey, getStorage, StorageName } from 'pc/utils/storage/storage';
@@ -51,6 +51,8 @@ import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
 import { getEnvVariables } from 'pc/utils/env';
 import Image from 'next/image';
 import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
+import { useMount } from 'ahooks';
+import { useRouter } from 'next/router';
 const _SplitPane: any = SplitPane;
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
@@ -120,6 +122,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     run: getSpaceList,
   } = useRequest(getSpaceListReq, { manual: true });
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const themeName = useSelector(state => state.theme);
   const { IS_APITABLE } = getEnvVariables();
@@ -163,7 +166,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     }
   }, [shareSpace?.hasLogin, getSpaceList]);
 
-  useEffect(() => {
+  useMount(() => {
     if (!shareInfo) {
       setShareClose(true);
       return;
@@ -172,9 +175,6 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     const isFolder = shareNodeTree.type === ConfigConstant.NodeType.FOLDER;
     setShareSpace({ ...shareSpaceInfo, isFolder } as IShareSpaceInfo);
     setNodeTree(shareNodeTree);
-    // _dispatch(StoreActions.setPageParams({
-    //   shareId: shareSpaceInfo.shareId
-    // }));
     if (isFolder && shareNodeTree.children.length === 0) {
       return;
     }
@@ -191,15 +191,22 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     if (datasheetId) {
       return;
     }
+    const { 
+      datasheetId: curDatasheetId, folderId, formId, mirrorId, dashboardId, viewId, recordId, widgetId
+    } = getPageParams(router.asPath);
     setTimeout(() => {
       console.log('share navigationTo');
       Router.push(Navigation.SHARE_SPACE, {
-        params: { shareId: shareSpaceInfo.shareId, nodeId: shareNodeTree.nodeId },
+        params: { 
+          shareId: shareSpaceInfo.shareId, 
+          nodeId: curDatasheetId || folderId || formId || mirrorId || dashboardId || shareNodeTree.nodeId,
+          viewId,
+          recordId,
+          widgetId
+        },
       });
     }, 0);
-
-    // eslint-disable-next-line
-  }, [JSON.stringify(shareInfo)]);
+  });
 
   const component = useMemo(() => {
     if (!nodeTree) {

@@ -23,7 +23,6 @@ import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 
 import { IFieldTransformInterface } from '../i.field.transform.interface';
 
 export abstract class BaseField implements IFieldTransformInterface, IFieldValidatorInterface {
-
   validate(fieldValue: IFieldValue, _field: IField, _extra?: { [key: string]: string }) {
     if (fieldValue === null) return;
   }
@@ -33,12 +32,9 @@ export abstract class BaseField implements IFieldTransformInterface, IFieldValid
     return fieldValue as ICellValue;
   }
 
-  voTransform(cellValue: ICellValue, field: IField, {
-    cellFormat,
-    store
-  }: IFieldVoTransformOptions): IFieldValue {
+  voTransform(cellValue: ICellValue, field: IField, { cellFormat, store, userTimeZone }: IFieldVoTransformOptions): IFieldValue {
     if (cellFormat === CellFormatEnum.STRING) {
-      return Field.bindContext(field, store!.getState()).cellValueToApiStringValue(cellValue);
+      return Field.bindContext(field, store!.getState()).cellValueToApiStringValue(cellValue, { userTimeZone });
     }
     return Field.bindContext(field, store!.getState()).cellValueToApiStandardValue(cellValue);
   }
@@ -50,5 +46,4 @@ export abstract class BaseField implements IFieldTransformInterface, IFieldValid
   getSetFieldAttrChangesets(_datasheetId: string, _field: IField, _store: any, _extras?: { deleteBrotherField?: boolean }) {
     return null;
   }
-
 }

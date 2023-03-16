@@ -122,8 +122,6 @@ export { WarnCircleFilled } from './warn_circle_filled';
 export { WarnCircleOutlined } from './warn_circle_outlined';
 export { UncheckedFilled } from './unchecked_filled';
 export { UncheckedOutlined } from './unchecked_outlined';
-export { DescriptionFilled } from './description_filled';
-export { DescriptionOutlined } from './description_outlined';
 export { EnterOutlined } from './enter_outlined';
 export { EnterFilled } from './enter_filled';
 export { UpAndDownFilled } from './up_and_down_filled';

@@ -23,7 +23,7 @@ import { ComputeServices } from './constants';
 export const computeServiceSet: { [key: string]: (state: IReduxState, resourceId?: string) => any } = {
   [ComputeServices.PureVisibleRows]: (state, resourceId) => Selectors.getPureVisibleRows(state, resourceId),
   [ComputeServices.VisibleColumns]: (state, resourceId) => Selectors.getVisibleColumns(state, resourceId),
-  [ComputeServices.SearchResultArray]: (state) => Selectors.getSearchResultArray(state, Selectors.getSearchKeyword(state) || ''),
+  [ComputeServices.SearchResultArray]: (state) => Selectors.getSearchResult(state),
   [ComputeServices.LinearRows]: (state) => Selectors.getLinearRows(state),
   [ComputeServices.GroupBreakpoint]: (state) => Selectors.getGroupBreakpoint(state),
 };

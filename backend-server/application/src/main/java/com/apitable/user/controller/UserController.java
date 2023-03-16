@@ -81,6 +81,7 @@ import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
 import com.apitable.user.ro.EmailCodeValidateRo;
+import com.apitable.user.ro.EmailVerificationRo;
 import com.apitable.user.ro.RetrievePwdOpRo;
 import com.apitable.user.ro.SmsCodeValidateRo;
 import com.apitable.user.ro.UpdatePwdOpRo;
@@ -803,11 +804,10 @@ public class UserController {
      *
      * @return {@link ResponseData}
      */
-    @PostResource(path = "/verifyEmail")
+    @PostResource(path = "/verifyEmail", requiredLogin = false)
     @Operation(summary = "verify user's email", hidden = true)
-    public ResponseData<Void> verifyEmail() {
-        Long userId = SessionContext.getUserId();
-        boolean result = userServiceFacade.verifyEmail(new UserAuth(userId));
+    public ResponseData<Void> verifyEmail(@RequestBody @Valid EmailVerificationRo ro) {
+        boolean result = userServiceFacade.verifyEmail(ro.getEmail());
         if (result) {
             return ResponseData.success();
         }

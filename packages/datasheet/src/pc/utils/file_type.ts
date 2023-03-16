@@ -190,7 +190,7 @@ export const imageSizeExceeded = (size: number) => {
 export const showOriginImageThumbnail = (file: IAttachmentValue) => {
   const fileArgument = { name: file.name, type: file.mimeType };
   return (
-    isPdf(fileArgument) ||
+    (isPdf(fileArgument) && file.preview) ||
     (
       isImage(fileArgument) &&
       !imageSizeExceeded(file.size) &&

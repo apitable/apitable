@@ -112,7 +112,7 @@ describe('Text function test', () => {
     expect(evaluate(
       'CONCATENATE({a}, {b}, {c}, {d})',
       mergeContext({ a: 0, b: chineseString, c: 1591414562369, d: ['opt1'] }),
-    )).toEqual('0欢迎加入APITable科技2020/06/06科');
+    )).toEqual('0欢迎加入APITable科技2020/06/05科');
 
     expect(() => evaluate(
       'CONCATENATE()',

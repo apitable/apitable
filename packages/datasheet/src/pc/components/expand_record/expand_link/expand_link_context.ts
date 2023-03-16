@@ -16,37 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, ILinkIds, IMultiSelectedIds, ISegment, ITimestamp, IUnitIds } from 'types/field_types';
+import { createContext } from 'react';
 
-export type ICellValueBase =
-  | null
-  | number
-  | string
-  | boolean
-  | ISegment[]
-  | IMultiSelectedIds
-  | ITimestamp
-  | IAttachmentValue[]
-  | ILinkIds
-  | IUnitIds;
-
-// LookUp value is another entity field cell value flat array
-export type ILookUpValue = ICellValueBase[];
-export type ICellValue = ICellValueBase | ILookUpValue;
-
-export type ICellToStringOption = {
-  datasheetId?: string;
-  hideUnit?: boolean;
-  orderInCellValueSensitive?: boolean;
-  userTimeZone?: string;
-};
-
-export enum CellFormatEnum {
-  STRING = 'string',
-  JSON = 'json',
+export interface ICalendarContext {
+  ignoreMirror?: boolean;
+  // Request related table data, in order to avoid authorization issues, it is necessary to provide an ID for this table.
+  baseDatasheetId?: string;
 }
 
-export enum FieldKeyEnum {
-  NAME = 'name',
-  ID = 'id',
-}
+export const ExpandLinkContext = createContext({} as ICalendarContext);

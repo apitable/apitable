@@ -16,32 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.workspace.ro;
+package com.apitable.user.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
- * ImportExcelOpRo.
- *
- * @author Chambers
- * @since 2019/11/6
+ * <p>
+ * user email verification ro.
+ * </p>
  */
 @Data
-@Schema(description = "Import data table request parameters")
-public class ImportExcelOpRo {
+@Schema(description = "verify email parameters")
+public class EmailVerificationRo {
 
-    @Schema(description = "Parent Node Id", example = "nod10", required = true)
-    @NotBlank(message = "The parent node ID cannot be empty")
-    private String parentId;
-
-    @Schema(description = "Import File", required = true)
-    @NotNull(message = "The import file cannot be empty")
-    private MultipartFile file;
-
-    @Schema(description = "View Name", example = "nod10")
-    private String viewName;
+    @Schema(description = "email", example = "123456@**", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "email")
+    private String email;
 }

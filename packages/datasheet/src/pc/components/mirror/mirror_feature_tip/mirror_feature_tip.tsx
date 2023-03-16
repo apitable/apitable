@@ -29,7 +29,7 @@ export const MirrorFeatureWarn: React.FC<{ onModalClose: () => void }> = ({ onMo
           {t(Strings.create_mirror_guide_title)}
         </Typography>
         <Typography variant={'body2'}>
-          {t(Strings.create_mirror_guide_content)}
+          <p dangerouslySetInnerHTML={{ __html: t(Strings.create_mirror_guide_content) }} />
         </Typography>
         <Button variant='fill' color='primary' onClick={() => {
           addWizardNumberAndApiRun?.(ConfigConstant.WizardIdConstant.CREATE_MIRROR_TIP);

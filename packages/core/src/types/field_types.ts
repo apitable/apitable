@@ -291,6 +291,8 @@ export interface ICreatedTimeFieldProperty {
   dateFormat: DateFormat; // date format
   timeFormat: TimeFormat; // time format
   includeTime: boolean; // whether to include time
+  timeZone?: string;
+  includeTimeZone?: boolean;
 }
 
 export interface ICreatedTimeField extends IBaseField {
@@ -312,6 +314,8 @@ export interface ILastModifiedTimeFieldProperty {
   timeFormat: TimeFormat;
   // whether to include time
   includeTime: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
   // dependent field collection type
   collectType: CollectType;
   // dependent fields
