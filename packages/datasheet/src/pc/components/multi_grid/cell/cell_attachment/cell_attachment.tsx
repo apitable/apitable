@@ -34,7 +34,6 @@ import { getCellValueThumbSrc, showOriginImageThumbnail, UploadManager, UploadSt
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import ImagePlaceholder from 'static/icon/datasheet/attachment/datasheet_img_placeholder.png';
 import { ICellComponentProps } from '../cell_value/interface';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './styles.module.less';
@@ -100,7 +99,6 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
   const rowHeightLevel = useSelector(Selectors.getViewRowHeight);
   const height = rowHeight - CELL_PADDING_OFFSET;
   const editable = Field.bindModel(field).recordEditable() && permissions.cellEditable;
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const { mobile } = usePlatform();
 
   function Preview(file: IAttachmentValue, index: number) {
@@ -130,8 +128,6 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
             });
           }
         }}
-        onMouseEnter={() => setHoverIndex(index)}
-        onMouseOut={() => setHoverIndex(null)}
         style={{
           width: calcFileWidth(file, height),
           height,
@@ -140,14 +136,10 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
       >
         <img
           src={imgUrl}
-          alt={file.name}
+          alt=''
           key={keyPrefix ? `${keyPrefix}-${index}` : file.id + index}
           className={styles.img}
-          onError={e => {
-            const ImgEle = (e.target as HTMLElement);
-            ImgEle.setAttribute('src', ImagePlaceholder as any as string);
-            ImgEle.setAttribute('style', 'width:auto;height:auto');
-          }}
+         
           style={{
             width: calcFileWidth(file, height),
             height,
@@ -161,13 +153,12 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
     return (
       <>
         {
-          (mobile || hoverIndex !== index)
-            ? ImageWrapper
+          mobile ? 
+            ImageWrapper
             : (
               <Tooltip
                 content={file.name}
                 key={file.id + index}
-                visible={hoverIndex === index}
               >
                 {ImageWrapper}
               </Tooltip>
