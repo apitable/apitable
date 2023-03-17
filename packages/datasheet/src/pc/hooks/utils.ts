@@ -23,6 +23,9 @@ import { getEnvVariables } from 'pc/utils/env';
 
 export const secondStepVerify = (code: number) => {
   const env = getEnvVariables();
+  if (env.DISABLE_AWSC) {
+    return true;
+  }
   if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
     openSliderVerificationModal();
   } else if (code === StatusCode.PHONE_VALIDATION) {
