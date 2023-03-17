@@ -17,11 +17,10 @@
  */
 
 import { useHover, useMount } from 'ahooks';
-import { FC, useRef, useState, useEffect } from 'react';
-import * as React from 'react';
 import { AnimationItem } from 'lottie-web/index';
+import * as React from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { getEnvVariables } from 'pc/utils/env';
 
 export interface INavigationItemProps {
   animationData: any;
@@ -56,17 +55,14 @@ export const NavigationItem: FC<React.PropsWithChildren<INavigationItemProps>> =
     });
   });
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (getEnvVariables().SENSORSDATA_TOKEN) {
-      window.sensors?.quick('trackHeatMap', event.target, {
-        activity_entry: id,
-      });
-    }
+  const handleClick = () => {
     onClick && onClick();
   };
 
   useEffect(() => {
-    if (!animInstance || isMobile) { return; }
+    if (!animInstance || isMobile) {
+      return;
+    }
     isHovering ? animInstance.play() : animInstance.stop();
   }, [isHovering, animInstance]);
 

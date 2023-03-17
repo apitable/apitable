@@ -112,7 +112,7 @@ export class GanttView extends View {
       rows: this.defaultRows(srcView),
       frozenColumnCount: 1,
       style: this.defaultStyle(snapshot, activeViewId, state),
-      displayHiddenColumnWithinMirror: false
+      displayHiddenColumnWithinMirror: true
     };
   }
 

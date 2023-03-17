@@ -41,10 +41,10 @@ import {
   FilterConjunction, FOperator, FOperatorDescMap, IFilterCheckbox, IFilterCondition,
   IFilterDateTime, IFilterText
 } from '../../types/view_types';
-import { ICellValue, ICellValueBase, ILookUpValue } from '../record';
+import { ICellToStringOption, ICellValue, ICellValueBase, ILookUpValue } from '../record';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField, Field } from './field';
+import { ArrayValueField, Field, ICellApiStringValueOptions } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
@@ -768,7 +768,7 @@ export class LookUpField extends ArrayValueField {
     }
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
+  cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
     if (cellValue == null) {
       return null;
     }
@@ -781,7 +781,7 @@ export class LookUpField extends ArrayValueField {
             return numberFormat(cellValue, this.field.property?.formatting);
           }
           case BasicValueType.DateTime:
-            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty);
+            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty, options?.userTimeZone);
           case BasicValueType.String:
           case BasicValueType.Array:
             return String(cellValue);
@@ -828,9 +828,9 @@ export class LookUpField extends ArrayValueField {
     }, []);
   }
 
-  arrayValueToString(cellValue: any[] | null): string | null {
+  arrayValueToString(cellValue: any[] | null, options?: ICellToStringOption): string | null {
     const rollUpType = this.field.property.rollUpType;
-    let vArray = this.arrayValueToArrayStringValueArray(cellValue);
+    let vArray = this.arrayValueToArrayStringValueArray(cellValue, options);
     // Process ARRAYUNIQUE, ARRAYCOMPACT functions
     if (rollUpType === RollUpFuncType.ARRAYUNIQUE) {
       vArray = vArray && [...new Set(vArray)];
@@ -844,7 +844,7 @@ export class LookUpField extends ArrayValueField {
     return vArray == null ? null : vArray.join(', ');
   }
 
-  arrayValueToArrayStringValueArray(cellValue: any[] | null): (string | null)[] | null {
+  arrayValueToArrayStringValueArray(cellValue: any[] | null, options?: ICellToStringOption): (string | null)[] | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -858,7 +858,7 @@ export class LookUpField extends ArrayValueField {
       // Date type should use the format configured by the lookup field
       if (basicValueType === BasicValueType.DateTime) {
         const formatting = this.field.property.formatting as IDateTimeFieldProperty || entityField.property;
-        return dateTimeFormat(value, formatting);
+        return dateTimeFormat(value, formatting, options?.userTimeZone);
       }
 
       // The number|boolean type should use the format configured by the lookup field
@@ -999,7 +999,7 @@ export class LookUpField extends ArrayValueField {
     return cellValue as any;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue): string | null {
+  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -1008,7 +1008,7 @@ export class LookUpField extends ArrayValueField {
     if (entityField.type == FieldType.Member || entityField.type == FieldType.CreatedBy || entityField.type == FieldType.LastModifiedBy) {
       return Field.bindContext(entityField, this.state).cellValueToApiStringValue(cellValue as any);
     }
-    return this.cellValueToString(cellValue);
+    return this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone });
   }
 
   cellValueToOpenValue(cellValue: ICellValue): BasicOpenValueType | null {

@@ -330,10 +330,10 @@
             "value": "[{\"key\":0,\"title\":\"表格内的操作权限\",\"detail\":[{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删维格列\",\"permissions\":[0,1]},{\"title\":\"编辑维格列属性（列名/类型/描述）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏）\",\"permissions\":[0,1]},{\"title\":\"编辑行（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"将继承切换为指定权限\",\"permissions\":[0,1]},{\"title\":\"将指定切换为继承权限\",\"permissions\":[0]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]"
         },
         "quick_search_default_dark": {
-            "value": "space/2023/03/08/ce4bf6a1009f43598ea5fdae27f948f5"
+            "value": "space/2023/03/15/42dc46843161478fb56d27efb43a50b8"
         },
         "quick_search_default_light": {
-            "value": "space/2023/03/08/e39a46d0e42b4c6a816791a52ec81f7e"
+            "value": "space/2023/03/15/0fd81978a8c04d96a483f4c785736b62"
         },
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
@@ -1357,13 +1357,13 @@
         },
         {
             "show": true,
-            "key": "cmd+g",
-            "winKey": "ctrl+g",
+            "key": "cmd+k",
+            "winKey": "ctrl+k",
             "name": [
                 "open_quickgo_panel"
             ],
             "when": "!isRecordExpanding",
-            "id": "cmd+g",
+            "id": "cmd+k",
             "command": "SearchNode",
             "description": "打开工作台的搜索栏",
             "type": [
@@ -3233,9 +3233,9 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00"
+                    "sign_up_time_IS_AFTER_2023-03-15 19:15"
                 ],
-                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00],[open_guide_wizards([4])]",
+                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15],[open_guide_wizards([4])]",
                 "event": [
                     "address_shown"
                 ]
@@ -3346,11 +3346,11 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
+                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
                 "event": [
                     "datasheet_wigdet_empty_panel_shown"
                 ]
@@ -3420,11 +3420,11 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
+                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
                 "event": [
                     "template_center_shown"
                 ]
@@ -3541,12 +3541,12 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3557,12 +3557,12 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3573,11 +3573,11 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 102])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 102])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3587,12 +3587,12 @@
                     "open_guide_wizards([76, 102])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 102])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-15 19:15, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 102])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3602,12 +3602,12 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "device_IS_app"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3946,14 +3946,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_AFTER_2023-03-15 19:15",
+                "conditionArgs": "2023-03-15 19:15"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_BEFORE_2023-03-15 19:15",
+                "conditionArgs": "2023-03-15 19:15"
             },
             {
                 "operator": "EXCLUDES",
@@ -4914,6 +4914,10 @@
                         "recO09HUv27dd"
                     ]
                 }
+            },
+            "107": {
+                "completeIndex": -1,
+                "steps": "[[169]]"
             }
         },
         "step": {
@@ -6479,6 +6483,20 @@
                     "datasheet_create_mirror_tip"
                 ],
                 "uiConfig": "{\n\"templateKey\":\"createMirrorTip\"\n}"
+            },
+            "169": {
+                "uiConfigId": "player_step_ui_config_165",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，隐藏敏感字段安心协作</li><li>用户账号时区上线，可单独设置日期列的时区，跨时区协作更流畅</li><li>「全局搜索」体验优化，新增搜索结果分类</li><li>黄金级空间站权益增加，分享表单支持隐藏官方标识</li><li>API 接口性能优化，大幅提高调用效率</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
             }
         }
     },

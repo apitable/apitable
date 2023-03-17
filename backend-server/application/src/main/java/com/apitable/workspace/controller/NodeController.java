@@ -776,12 +776,15 @@ public class NodeController {
                 new ByteArrayInputStream(
                     IOUtils.toString(data.getFile().getInputStream(), encoding).getBytes());
             createNodeId =
-                iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(), mainName,
-                    targetInputStream);
-        } else {
+                iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(),
+                    data.getViewName(), mainName, targetInputStream);
+        } else if (fileSuffix.equals(FileSuffixConstants.XLS)
+            || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             createNodeId =
                 iNodeService.parseExcel(userId, uuid, spaceId, memberId, data.getParentId(),
-                    mainName, fileSuffix, data.getFile().getInputStream());
+                    data.getViewName(), mainName, fileSuffix, data.getFile().getInputStream());
+        } else {
+            throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }
         // publish space audit events
         AuditSpaceArg arg =

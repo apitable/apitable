@@ -175,6 +175,22 @@
   .notificationIcon.navActiveItem .notice {
     fill: var(--primaryColor);
   }
+  .iconWrap {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .icon {
+      fill: var(--secondLevelText);
+    }
+    &:hover {
+      background-color: var(--rowSelectedBg);
+      border-radius: 16px;
+    }
+  }
 }
 .templateActived {
   border: none;
@@ -182,6 +198,14 @@
   z-index: var(--template_navigation);
   .notification:hover {
     background-color: var(--blackBlue_800);
+  }
+  .iconWrap {
+    .icon {
+      fill: var(--blackBlue_500);
+    }
+    &:hover {
+      background-color: var(--blackBlue_800);
+    }
   }
 }
 

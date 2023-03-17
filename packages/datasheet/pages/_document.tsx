@@ -56,9 +56,9 @@ class MyDocument extends Document<IClientInfo> {
             JSON.parse(envVars).COOKIEBOT_ID &&
             <script
               id="Cookiebot"
-              src="https://consent.cookiebot.com/uc.js" 
+              src="https://consent.cookiebot.com/uc.js"
               data-cbid={JSON.parse(envVars).COOKIEBOT_ID}
-              data-blockingmode="auto" 
+              data-blockingmode="auto"
               async
             />
           }
@@ -69,7 +69,6 @@ class MyDocument extends Document<IClientInfo> {
           {
             !JSON.parse(envVars).DISABLE_AWSC && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           }
-          {JSON.parse(envVars).SENSORSDATA_TOKEN && <Script src='/file/js/sensors.js' strategy={'beforeInteractive'} />}
           {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`

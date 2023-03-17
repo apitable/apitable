@@ -26,8 +26,11 @@ import com.apitable.auth.dto.UserLoginDTO;
 import com.apitable.auth.ro.LoginRo;
 import com.apitable.auth.service.IAuthService;
 import com.apitable.base.enums.ActionException;
+import com.apitable.core.constants.RedisConstants;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.EntitlementRemark;
 import com.apitable.interfaces.user.facade.UserLinkServiceFacade;
 import com.apitable.interfaces.user.model.UserLinkRequest;
 import com.apitable.organization.dto.MemberDTO;
@@ -35,10 +38,12 @@ import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.SocialAuthInfo;
 import com.apitable.shared.cache.service.SocialAuthInfoCacheService;
 import com.apitable.shared.captcha.*;
+import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.internal.concurrent.Task;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -78,6 +83,9 @@ public class AuthServiceImpl implements IAuthService {
     @Resource
     private PasswordService passwordService;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
     @Override
     public Long register(final String username, final String password) {
         // Check email format and if exists
@@ -85,7 +93,7 @@ public class AuthServiceImpl implements IAuthService {
         boolean exist = iUserService.checkByEmail(username);
         ExceptionUtil.isFalse(exist, REGISTER_EMAIL_HAS_EXIST);
         // Register User
-        return this.registerUserUsingEmail(username, password);
+        return this.registerUserUsingEmail(username, password, null);
     }
 
     @Override
@@ -153,11 +161,7 @@ public class AuthServiceImpl implements IAuthService {
             // registered a new user
             String nickName = socialLogin ? authInfo.getNickName() : null;
             String avatar = socialLogin ? authInfo.getAvatar() : null;
-            userId = registerUserUsingMobilePhone(areaCode, mobile, nickName, avatar);
-            if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
-                // Cache, used to invite users to give away attachment capacity
-                this.handleCache(userId, loginRo.getSpaceId());
-            }
+            userId = registerUserUsingMobilePhone(areaCode, mobile, nickName, avatar, loginRo.getSpaceId());
             result.setIsSignUp(true);
         }
         // If it is a third-party application that binds the account after scanning the code to log in
@@ -194,11 +198,7 @@ public class AuthServiceImpl implements IAuthService {
             iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
             // Email automatic registration users do not provide third-party scan code login binding
-            userId = registerUserUsingEmail(email, null);
-            if (StrUtil.isNotEmpty(loginRo.getSpaceId())) {
-                // Cache, used to invite users to give away attachment capacity
-                this.handleCache(userId, loginRo.getSpaceId());
-            }
+            userId = registerUserUsingEmail(email, null, loginRo.getSpaceId());
             result.setIsSignUp(true);
         }
         // delete verification code
@@ -207,21 +207,29 @@ public class AuthServiceImpl implements IAuthService {
         return result;
     }
 
-    public Long registerUserUsingMobilePhone(String areaCode, String mobile, String nickName, String avatar) {
+    public Long registerUserUsingMobilePhone(String areaCode, String mobile, String nickName, String avatar, String spaceId) {
         // Create a new user based on the mobile phone number and activate the corresponding member
         UserEntity user = iUserService.createUserByMobilePhone(areaCode, mobile, nickName, avatar);
         // Query whether there is a space member corresponding to a mobile phone number
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
+        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
+        if (spaceId != null) {
+            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
+        }
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }
 
-    private Long registerUserUsingEmail(final String email, final String password) {
+    private Long registerUserUsingEmail(final String email, final String password, String spaceId) {
         // Create a new user based on the mailbox and activate the corresponding member
         UserEntity user = iUserService.createUserByEmail(email, password);
         // Query whether there is a space member corresponding to the mailbox, only new
         // registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
+        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
+        if (spaceId != null) {
+            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
+        }
         createOrActiveSpace(user,
             inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
@@ -237,11 +245,6 @@ public class AuthServiceImpl implements IAuthService {
 
     private void removeInviteTokenFromCache(String token) {
         redisTemplate.delete(StrUtil.format(USER_AUTH_INFO_TOKEN, token));
-    }
-
-    private void handleCache(Long userId, String spaceId) {
-        String key = getUserInvitedJoinSpaceKey(userId, spaceId);
-        redisTemplate.opsForValue().set(key, userId, 5, TimeUnit.MINUTES);
     }
 
 }

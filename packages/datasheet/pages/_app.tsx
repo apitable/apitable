@@ -88,6 +88,7 @@ declare const window: any;
 if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+    autocapture: false,
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
@@ -173,7 +174,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
-      posthog.capture('$pageview');
 
       if (loading !== LoadingStatus.Start) {
         return;
@@ -284,11 +284,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = defaultsDeep({
+      window.__initialization_data__.wizards = defaultsDeep(JSON.parse(res.data.wizards), {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      }, JSON.parse(res.data.wizards));
-      posthog.identify(userInfo.userId);
+      });
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -360,12 +359,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
             content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
+            maskClosable: false,
+            onOk: () => {
+              window.location.reload();
+            }
           });
         });
       }
     };
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
     return () => {
       clearInterval(interval);
     };

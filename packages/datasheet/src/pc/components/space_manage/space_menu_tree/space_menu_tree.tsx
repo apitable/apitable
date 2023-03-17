@@ -20,7 +20,7 @@ import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { 
   LogOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
-  TriangleRightFilled, DashboardOutlined, OrganizationalOutlined, WorkbenchOutlined 
+  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined 
 } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
@@ -92,7 +92,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.organization_and_role),
     key: 'addressManage',
-    icon: <OrganizationalOutlined />,
+    icon: <DepartmentOutlined />,
     valid:
       isMainAdmin ||
       permissions.includes(ConfigConstant.PermissionCode.TEAM) ||

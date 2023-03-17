@@ -111,19 +111,19 @@ export interface IAPIMetaRatingFieldProperty {
   max: number;
 }
 
-export interface IAPIMetaDateTimeFieldProperty {
+export interface IAPIMetaDateTimeBaseFieldProperty {
   format: string;
   autoFill?: boolean;
   includeTime: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
 }
 
-export type IAPIMetaCreatedTimeFieldProperty = IAPIMetaDateTimeFieldProperty;
+export type IAPIMetaDateTimeFieldProperty = IAPIMetaDateTimeBaseFieldProperty;
+
+export type IAPIMetaCreatedTimeFieldProperty = IAPIMetaDateTimeBaseFieldProperty;
 
 export type IAPIMetaLastModifiedTimeFieldProperty = IAPIMetaCreatedTimeFieldProperty;
-
-export type IAPIMetaDateTimeBaseFieldProperty = IAPIMetaDateTimeFieldProperty
-  | IAPIMetaCreatedTimeFieldProperty
-  | IAPIMetaLastModifiedTimeFieldProperty;
 
 export interface IAPIMetaLinkFieldProperty {
   foreignDatasheetId: string;
@@ -160,6 +160,8 @@ export interface IAPIMetaDateTimeFormat {
   dateFormat: string;
   timeFormat: string;
   includeTime: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
 }
 
 export interface IAPIMetaNoneStringValueFormat {

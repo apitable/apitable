@@ -18,7 +18,6 @@ import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { ISearchNode, Node } from './node';
 import styles from './style.module.less';
-import { SearchOutlined } from '@apitable/icons';
 import { nodeTypeList, TabNodeType, TypeTab } from './type_tab';
 import { DefaultContent } from './default_content';
 import { FooterTips } from './footer_tips';
@@ -173,14 +172,15 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
             className={styles.searchInput}
             size='small'
             placeholder={
-              isMobile ? t(Strings.search) : t(Strings.search_node_pleaseholder, { shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode) })
+              isMobile ? 
+                t(Strings.quick_search_placeholder) :
+                t(Strings.search_node_pleaseholder, { shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode) })
             }
             autoFocus
             lineStyle
             value={keyword}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            prefix={<SearchOutlined />}
             suffix={
               keyword && (
                 <div onClick={clearKeyword} className={styles.closeBtn}>
@@ -212,7 +212,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
           </div>
         )}
       </div>
-      {keyword && dataNodeList.length > 0 && <FooterTips/>}
+      {!isMobile && !(keyword && dataNodeList.length < 1) && <FooterTips shortcutEsc={!keyword}/>}
     </div>
   );
 };

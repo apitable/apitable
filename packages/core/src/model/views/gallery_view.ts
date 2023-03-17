@@ -71,7 +71,7 @@ export class GalleryView extends CardView {
       columns: this.defaultColumns(srcView, 4),
       rows: this.defaultRows(srcView),
       style: this.defaultStyle(snapshot, srcView),
-      displayHiddenColumnWithinMirror: false
+      displayHiddenColumnWithinMirror: true
     };
   }
 

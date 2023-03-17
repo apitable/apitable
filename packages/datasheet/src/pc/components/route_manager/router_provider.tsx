@@ -28,7 +28,6 @@ import VersionUpdater from 'pc/components/version_updater';
 import { IScrollOffset, ScrollContext } from 'pc/context';
 import { useNavigatorName } from 'pc/hooks';
 import { useBlackSpace } from 'pc/hooks/use_black_space';
-import { useViewTypeTrack } from 'pc/hooks/use_view_type_track';
 import { ResourceContext, resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getCookie } from 'pc/utils';
@@ -74,7 +73,7 @@ const RouterProvider = ({ children }: any) => {
     dispatch(StoreActions.setRecordVision(getStorage(StorageName.RecordVision) || RecordVision.Center));
   }, [dispatch]);
 
-  // To solve the problem of routing in Feishu needs to bring a Feishu logo, 
+  // To solve the problem of routing in Feishu needs to bring a Feishu logo,
   // so the behavior of the a tag is handled together with the proxy in navigationToUrl
   useEffect(() => {
     const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
@@ -120,7 +119,6 @@ const RouterProvider = ({ children }: any) => {
   }, []);
 
   useNavigatorName();
-  useViewTypeTrack(); // View Type Burial
   useBlackSpace();
 
   useEffect(() => {
