@@ -252,7 +252,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       styles.iframeMask,
       dragging && styles.iframeMasking,
     )} />
-    {iframeLoading && !connected && <div className={styles.iframeLoadingWarp}>
+    {iframeLoading && <div className={styles.iframeLoadingWarp}>
       <WidgetLoading/>
     </div>}
     <iframe
