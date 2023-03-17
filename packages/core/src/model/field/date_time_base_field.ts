@@ -49,8 +49,8 @@ import { StatTranslate, StatType } from './stat';
 import { getTimeZoneAbbrByUtc } from '../../config';
 import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
 import Joi from 'joi';
-
-const DEFAULT_SERVER_TIME_ZONE: string = 'America/Toronto';
+import { DEFAULT_TIME_ZONE } from 'model';
+import { isServer } from 'utils/env';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -151,9 +151,8 @@ export const dateTimeFormat = (
     format += ' a';
   }
   let timeZone = props.timeZone || userTimeZone;
-  if (typeof window === 'undefined') {
-    // on server
-    timeZone = timeZone || DEFAULT_SERVER_TIME_ZONE;
+  if (isServer()) {
+    timeZone = timeZone || DEFAULT_TIME_ZONE;
   }
   if (props.includeTimeZone) {
     timeZone = timeZone || defaultProps.timeZone;

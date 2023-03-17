@@ -111,7 +111,7 @@ describe('DatetimeField', () => {
     });
 
     it('cellFormat--string--should return 2021-01-01 00:00', () => {
-      expect(fieldClass.voTransform(1609430400000, field, { cellFormat: CellFormatEnum.STRING, store })).toBe('2020-12-31 11:00');
+      expect(fieldClass.voTransform(1609430400000, field, { cellFormat: CellFormatEnum.STRING, store })).toBe('2021-01-01 00:00');
     });
   });
 });

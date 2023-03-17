@@ -183,6 +183,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    .icon {
+      fill: var(--secondLevelText);
+    }
     &:hover {
       background-color: var(--rowSelectedBg);
       border-radius: 16px;
@@ -195,6 +198,14 @@
   z-index: var(--template_navigation);
   .notification:hover {
     background-color: var(--blackBlue_800);
+  }
+  .iconWrap {
+    .icon {
+      fill: var(--blackBlue_500);
+    }
+    &:hover {
+      background-color: var(--blackBlue_800);
+    }
   }
 }
 
