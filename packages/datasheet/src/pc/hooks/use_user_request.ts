@@ -220,25 +220,26 @@ export const useUserRequest = () => {
         }
         Router.push(Navigation.HOME);
       }
-
-      if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
-        openSliderVerificationModal();
-      } else if (code === StatusCode.PHONE_VALIDATION) {
-        Modal.confirm({
-          title: t(Strings.warning),
-          content: t(Strings.status_code_phone_validation),
-          onOk: () => {
-            if (!env.DISABLE_AWSC) {
-              window['nvc'].reset();
-            }
-          },
-          type: 'warning',
-          okText: t(Strings.got_it),
-          cancelButtonProps: {
-            style: { display: 'none' },
-          },
-        });
-        return;
+      if (!env.DISABLE_AWSC) {
+        if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
+          openSliderVerificationModal();
+        } else if (code === StatusCode.PHONE_VALIDATION) {
+          Modal.confirm({
+            title: t(Strings.warning),
+            content: t(Strings.status_code_phone_validation),
+            onOk: () => {
+              if (!env.DISABLE_AWSC) {
+                window['nvc'].reset();
+              }
+            },
+            type: 'warning',
+            okText: t(Strings.got_it),
+            cancelButtonProps: {
+              style: { display: 'none' },
+            },
+          });
+          return;
+        }
       }
       dispatch(
         StoreActions.setHomeErr({
@@ -464,7 +465,7 @@ export const useUserRequest = () => {
     const env = getEnvVariables();
     return Api.getSmsCode(areaCode, phone, type, data).then((res) => {
       const { success, code } = res.data;
-      if (success) {
+      if (success || env.DISABLE_AWSC) {
         return res.data;
       }
       // Perform secondary verification (slider verification)
