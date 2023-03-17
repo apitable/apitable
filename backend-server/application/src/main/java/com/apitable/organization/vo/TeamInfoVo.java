@@ -18,15 +18,11 @@
 
 package com.apitable.organization.vo;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -34,9 +30,6 @@ import lombok.NoArgsConstructor;
  * </p>
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder(toBuilder = true)
 @Schema(description = "Department information")
 public class TeamInfoVo {
 
@@ -47,26 +40,7 @@ public class TeamInfoVo {
     @Schema(description = "Department name", example = "R&D Department")
     private String teamName;
 
-    @Schema(description = "Parent ID, 0 if the parent is root", type = "java.lang.String",
-        example = "0")
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long parentId;
-
-    @Schema(description = "Parent department name", example = "Scientific Research Center")
-    private String parentTeamName;
-
     @Schema(description = "Number of department members", example = "3")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
-
-    @Schema(description = "Number of activated department members", example = "3")
-    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    private Integer activateMemberCount;
-
-    @Schema(description = "Sort No", example = "1")
-    private Integer sequence;
-
-    @Schema(description = "Whether there are sub departments", example = "true")
-    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean hasChildren;
 }
