@@ -82,6 +82,7 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
   const productName = useSelector(state => String(state.billing?.subscription?.product).toLowerCase());
   const themeName = useSelector(state => state.theme);
   const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
+  const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state));
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';
@@ -392,7 +393,7 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {
     return (
       <div className={styles.spin}>
-        <Spin indicator={<LoadingOutlined size={24} className="circle-loading" />} />
+        <Spin indicator={<LoadingOutlined size={24} className='circle-loading' />} />
       </div>
     );
   }
@@ -440,13 +441,15 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
             cacheFieldOptions={cacheFieldOptions}
             setChooseComment={setChooseComment}
             unit={unit}
+            fieldPermissionMap={fieldPermissionMap}
+            isMirror={Boolean(mirrorId)}
           />
         );
       })}
       {more && <div className={styles.loadTrigger} ref={topRef} onClick={() => loadMore()} />}
       {isAdding && (
         <div className={styles.spin}>
-          <Spin indicator={<LoadingOutlined size={14} className="circle-loading" />} />
+          <Spin indicator={<LoadingOutlined size={14} className='circle-loading' />} />
         </div>
       )}
       {end &&
