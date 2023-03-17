@@ -89,6 +89,7 @@ if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
     autocapture: false,
+    capture_pageview: false,
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
