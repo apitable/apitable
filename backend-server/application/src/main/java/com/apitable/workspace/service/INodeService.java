@@ -513,13 +513,14 @@ public interface INodeService extends IService<NodeEntity> {
      * @param spaceId      space id
      * @param memberId     member id
      * @param parentNodeId parentNodeId
+     * @param viewName     view name
      * @param fileName     filename
      * @param fileSuffix   file name suffix
      * @param inputStream  file
      * @return node id
      */
     String parseExcel(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-        String fileName, String fileSuffix, InputStream inputStream);
+        String viewName, String fileName, String fileSuffix, InputStream inputStream);
 
     /**
      * parse csv.
@@ -529,12 +530,13 @@ public interface INodeService extends IService<NodeEntity> {
      * @param spaceId      space id
      * @param memberId     member id
      * @param parentNodeId parentNodeId
+     * @param viewName     view name
      * @param fileName     file name
      * @param inputStream  file
      * @return node id
      */
     String parseCsv(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-        String fileName, InputStream inputStream);
+        String viewName, String fileName, InputStream inputStream);
 
     /**
      * special batch save operation

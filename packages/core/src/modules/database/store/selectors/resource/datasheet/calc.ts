@@ -90,8 +90,7 @@ import {
   getViewById,
 } from './base';
 
-import { getSearchResultArray } from './computed';
-import { getVisibleRows } from './rows_calc';
+import { getSearchResult, getVisibleRows } from './rows_calc';
 
 export const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 
@@ -113,7 +112,7 @@ export const getCurrentSearchItem = (state: IReduxState) => {
   if (!searchKeyword) {
     return;
   }
-  const searchResultArray = getSearchResultArray(state, searchKeyword);
+  const searchResultArray = getSearchResult(state);
   if (!searchResultArray || !Array.isArray(searchResultArray)) {
     return;
   }

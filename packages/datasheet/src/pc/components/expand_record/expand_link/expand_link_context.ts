@@ -16,18 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BasicValueType } from 'types';
-import { isServer } from 'utils/env';
+import { createContext } from 'react';
 
-// album(gallery) view has no cover field ID
-export const NO_COVER_FIELD_ID = 'NO_COVER_FIELD_ID';
+export interface ICalendarContext {
+  ignoreMirror?: boolean;
+  // Request related table data, in order to avoid authorization issues, it is necessary to provide an ID for this table.
+  baseDatasheetId?: string;
+}
 
-export const DEFAULT_TIME_ZONE = isServer() && (process.env.TZ || process.env.TIMEZONE) || 'America/Toronto';
-
-export const ValueTypeMap = {
-  [BasicValueType.Number]: 'number',
-  [BasicValueType.String]: 'string',
-  [BasicValueType.Boolean]: 'boolean',
-  [BasicValueType.Array]: 'array',
-  [BasicValueType.DateTime]: 'string',
-};
+export const ExpandLinkContext = createContext({} as ICalendarContext);

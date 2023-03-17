@@ -39,6 +39,7 @@ import {
   NoticeTemplatesConstant,
   Selectors,
   IInternalFix,
+  IUserInfo,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -215,13 +216,15 @@ export class FusionApiService {
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
     const getRecordsProfiler = this.logger.startTimer();
 
+    let userInfo: IUserInfo | undefined;
+
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
         recordIds: query.recordIds,
       },
       createStore: async dst => {
-        const userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
+        userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
         return this.commandService.fullFillStore(dst, userInfo);
       },
     });
@@ -307,7 +310,7 @@ export class FusionApiService {
       },
     });
 
-    const recordVos = this.getRecordViewObjects(records, query.cellFormat);
+    const recordVos = this.getRecordViewObjects(records, userInfo!.timeZone ?? undefined, query.cellFormat);
 
     getRecordsProfiler.done({
       message: `getRecords ${dstId} profiler`,
@@ -456,7 +459,7 @@ export class FusionApiService {
     if (datasheet === null) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
-    
+
     if (viewId) {
       await this.checkViewExists(datasheet, viewId);
     }
@@ -605,7 +608,7 @@ export class FusionApiService {
         auth,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
-        meta
+        meta,
       },
     });
     if (datasheet === null) {
@@ -653,8 +656,14 @@ export class FusionApiService {
     return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
-  private getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
-    return records.map(record => record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)));
+  private getRecordViewObjects(
+    records: databus.Record[],
+    userTimeZone?: string,
+    cellFormat: CellFormatEnum = CellFormatEnum.JSON,
+  ): ApiRecordDto[] {
+    return records.map(record =>
+      record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, userTimeZone, cellFormat)),
+    );
   }
 
   /**

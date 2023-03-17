@@ -138,13 +138,13 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         // Enable the node to specify permissions and set the current member organization unit role to Owner
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
         log.info("「{}」open node「{}」specify permissions，and set up units「{}」role「{}」", userId, nodeId, unitId, Node.OWNER);
+        if (includeExtend) {
+            addExtendNodeRole(userId, spaceId, nodeId);
+        }
         // create a permission control unit
         iControlService.create(userId, spaceId, nodeId, ControlType.NODE);
         // create a control unit role
         iControlRoleService.addControlRole(userId, nodeId, Collections.singletonList(unitId), Node.OWNER);
-        if (includeExtend) {
-            addExtendNodeRole(userId, spaceId, nodeId);
-        }
     }
 
     @Override
@@ -576,7 +576,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         if (CollUtil.isEmpty(parentNodes)) {
             return new ArrayList<>();
         }
-        List<String> existedControlIds = iControlService.getExistedControlId(nodeIds);
+        List<String> controlIds = parentNodes.stream()
+            .map(NodeBaseInfoDTO::getNodeId).collect(toList());
+        List<String> existedControlIds = iControlService.getExistedControlId(controlIds);
         return parentNodes.stream()
             .map(i -> new SimpleNodeInfo(i.getNodeId(), i.getParentId(), i.getType(),
                 !existedControlIds.contains(i.getNodeId())))

@@ -227,8 +227,8 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
           <div className={settingStyles.sectionTitle}>
             {t(Strings.field_incluede_time_and_time_zone_title)}
             <Tooltip title={t(Strings.date_setting_time_zone_tooltips)} trigger={'hover'}>
-              <span className={settingStyles.sectionTitleTip}>
-                <QuestionCircleOutlined size={16} />
+              <span className={classNames(settingStyles.sectionTitleTip, settingStyles.noCursor)}>
+                <QuestionCircleOutlined size={16} color={colorVars.textCommonTertiary} />
               </span>
             </Tooltip>
           </div>
@@ -247,7 +247,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               onSelected={handleTimeZoneChange}
               renderValue={option => {
                 if (!option.value) {
-                  return `${option.label} ${getClientTimeZone()}`;
+                  return `${option.label}: ${getClientTimeZone()}`;
                 }
                 return option.label;
               }}
@@ -257,7 +257,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               }, ...getUtcOptionList()]}
               openSearch
               searchPlaceholder={t(Strings.search)}
-              highlightStyle={{ backgroundColor: colorVars.primaryColor, color: colorVars.black[50] }}
+              highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: colorVars.fc1, borderRadius: '4px' }}
             />
             <div className={styles.showTimeZone}>
               <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, DEFAULT_TIMEZONE, ICellValue, IField } from '@apitable/core';
+import { ApiTipConstant, DEFAULT_TIME_ZONE, ICellValue, IField } from '@apitable/core';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { BaseField } from 'fusion/field/base.field';
 import { isNumber } from 'lodash';
@@ -43,7 +43,7 @@ export class DateTimeField extends BaseField implements OnApplicationBootstrap {
   override async roTransform(fieldValue: IFieldValue, _field: IField): Promise<ICellValue> {
     // Default Time Zone
     // TODO: Currently dayjs setDefaultTimeZone is reporting an error, then cut to dayjs
-    moment.tz.setDefault(DEFAULT_TIMEZONE);
+    moment.tz.setDefault(DEFAULT_TIME_ZONE);
     const zoneTime = moment(fieldValue!.toString());
     // Revert
     moment.tz.setDefault();

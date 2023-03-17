@@ -47,7 +47,7 @@ export const onError: IServiceError = (error, type) => {
 
     let modalType = error.modalType || 'error';
     let contentMessage = `<span>${errorMessage}(${errorCode})${qrcodeVisible ? '' :
-      `<a href="${env.CRASH_PAGE_REPORT_ISSUES_URL}">，${t(Strings.report_issues)}</a>`}</span>`;
+      `<a href="${env.CRASH_PAGE_REPORT_ISSUES_URL}" target="_blank">，${t(Strings.report_issues)}</a>`}</span>`;
     // TODO: Temporary solutions, forms and tables without permission to insert or edit need to report different errors and
     // different error codes to report errors need different copy
     if (errorCode == StatusCode.NOT_PERMISSION || errorCode == StatusCode.NODE_NOT_EXIST) {
@@ -55,7 +55,7 @@ export const onError: IServiceError = (error, type) => {
       contentMessage = /fom\w+/.test(window.location.href) && errorCode == StatusCode.NOT_PERMISSION ?
         t(Strings.no_datasheet_editing_right) :
         `<span>${t(Strings.no_file_permission_message)}(${errorCode})${qrcodeVisible ? '' :
-          `<a href="${env.HELP_MENU_USER_COMMUNITY_URL}">，${t(Strings.join_discord_community)}</a>`}</span>`;
+          `<a href="${env.HELP_MENU_USER_COMMUNITY_URL}" target="_blank">，${t(Strings.join_discord_community)}</a>`}</span>`;
     }
     if (errorCode == OtErrorCode.REVISION_OVER_LIMIT) {
       modalType = 'info';

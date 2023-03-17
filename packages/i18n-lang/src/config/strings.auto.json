@@ -603,6 +603,10 @@
             "en_US": "API overused",
             "zh_HK": "API 用量超量使用"
         },
+        "api_favicon_value_error": {
+            "zh_CN": "favicon 的值必须符合URL标准，例如：https://www.example.com/favicon.ico",
+            "en_US": "Please make sure your favicon.ico value conforms to the URL standard, such as: https://www.example.com/favicon.ico"
+        },
         "api_fieldid_empty_error": {
             "zh_CN": "fieldId 的值不能为空",
             "en_US": "fieldId should not be empty"
@@ -3434,10 +3438,12 @@
             "zh_HK": "生成當前視圖的鏡像"
         },
         "create_mirror_guide_content": {
-            "zh_CN": "为了保证数据安全，此镜像屏蔽了 32 列已隐藏的字段。意味着普通成员访问该镜像时，无法查看或重新显示原表中已隐藏的字段。\n这是镜像的默认设置，如果你想更改，可以返回原表在「镜像列表」中对此镜像进行单独设置"
+            "zh_CN": "镜像具有隐藏部分数据的功能，你可以在原表的视图中设置“筛选条件”和“隐藏字段”来控制镜像中需要展示的记录和字段。\n</br>\n</br>\n如果配合「视图锁」功能一起使用，可以防止其他人修改。\n</br>\n</br>\n另外，前往「原表>隐藏字段」可以修改“镜像中允许查看隐藏字段”的配置",
+            "en_US": "The mirror function has the ability to hide certain data. You can set \"filter conditions\" and \"hidden fields\" in the original datasheet view to control which records and fields are displayed in the mirror.\n</br>\n</br>\nIf used in conjunction with the \"view lock\" function, it can prevent others from making modifications.\n</br>\n</br>\nIn addition, you can go to \"Original Table>Hidden Fields\" to modify the configuration for \"Show all fields in Mirrors\"."
         },
         "create_mirror_guide_title": {
-            "zh_CN": "镜像将屏蔽隐藏的字段"
+            "zh_CN": "镜像将隐藏部分记录和字段",
+            "en_US": "Mirror hides some records and fields"
         },
         "create_public_invitation_link": {
             "zh_CN": "创建公开的邀请链接",
@@ -3780,9 +3786,9 @@
             "zh_HK": "時間範圍"
         },
         "date_setting_time_zone_tooltips": {
-            "zh_CN": "修改时区会影响日期的值，从而影响记录在其他视图里显示的时间",
-            "en_US": "Changing the time zone will affect the value of the date, thereby affecting the time of the record that displayed in other views",
-            "zh_HK": "修改時區會影響日期的值，從而影響記錄在其他視圖裡顯示的時間"
+            "zh_CN": "修改时区会影响单元格内显示的时间，从而影响记录在其他视图里显示的时间",
+            "en_US": "Changing the time zone will affect the display of the time, thereby affecting the time of the record that displayed in other views",
+            "zh_HK": "修改時區會影響單元格內顯示的時間，從而影響記錄在其他視圖裡顯示的時間"
         },
         "datetime_format": {
             "zh_CN": "日期格式",
@@ -5789,7 +5795,7 @@
         },
         "follow_system_time_zone": {
             "zh_CN": "跟随系统时区",
-            "en_US": "Use system time zone"
+            "en_US": "Local time zone"
         },
         "food_and_drink": {
             "zh_CN": "饮食",
@@ -9716,7 +9722,8 @@
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
         },
         "mirror_show_hidden_checkbox": {
-            "zh_CN": "镜像中允许查看隐藏字段"
+            "zh_CN": "镜像中允许查看隐藏字段",
+            "en_US": "Show all fields in Mirrors"
         },
         "mirror_uploader_label": {
             "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
@@ -11332,13 +11339,17 @@
             "en_US": "Done",
             "zh_HK": "已完成添加"
         },
+        "player_step_ui_config_165": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高响应速度</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
+        },
         "player_step_ui_config_166": {
             "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
             "en_US": "{\n  \"title\": \"Upgrade To Pro And Save 50%!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the early bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
         },
         "player_step_ui_config_167": {
-            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
-            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Manufacture\",\n        \"Other Things\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\",\n        \"Through a friend\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
+            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"项目管理\",\n        \"市场营销\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的团队规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"只有我\",\n        \"2-5\",\n        \"6-10\",\n        \"11-15\",\n        \"16-25\",\n        \"25-50\",\n        \"51-100\",\n        \"101-500\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"您的公司规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"1-19\",\n        \"20-49\",\n        \"50-99\",\n        \"100-250\",\n        \"251-500\",\n        \"501-1500\",\n        \"1500+\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 5,\n      \"name\": \"answer5\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 6,\n      \"name\": \"answer6\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Project Management\",\n        \"Marketing\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Manufacture\",\n        \"Other Things\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n        {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How many people are on your team? \",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Just me\",\n        \"2-5\",\n        \"6-10\",\n        \"11-15\",\n        \"16-25\",\n        \"25-50\",\n        \"51-100\",\n        \"101-500\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"How many people work at your company?  \",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"1-19\",\n        \"20-49\",\n        \"50-99\",\n        \"100-250\",\n        \"251-500\",\n        \"501-1500\",\n        \"1500+\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 5,\n      \"name\": \"answer5\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\",\n        \"Through a friend\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 6,\n      \"name\": \"answer6\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
         },
         "player_step_ui_config_168": {
             "zh_CN": "{\n\"templateKey\":\"createMirrorTip\"\n}",
@@ -11682,6 +11693,38 @@
             "zh_CN": "快速安全<%= type %> ",
             "en_US": "<%= type %>",
             "zh_HK": "快速安全<%= type %> "
+        },
+        "quick_search_intro": {
+            "zh_CN": "输入关键词可快速找到相关搜索结果。点击分类项可过滤文件类型，包括维格表、文件夹、神奇表单、镜像和仪表盘",
+            "en_US": "Quickly obtain relevant search results by entering a keyword. Filter by file type (e.g. datasheet, folder, form, mirror, dashboard) using category items"
+        },
+        "quick_search_not_found": {
+            "zh_CN": "我们找不到你要搜索的内容",
+            "en_US": "We couldn't find what you were searching for"
+        },
+        "quick_search_placeholder": {
+            "zh_CN": "搜索文件",
+            "en_US": "Search for files"
+        },
+        "quick_search_shortcut_esc": {
+            "zh_CN": "关闭窗口",
+            "en_US": "Close"
+        },
+        "quick_search_shortcut_open": {
+            "zh_CN": "打开",
+            "en_US": "Open"
+        },
+        "quick_search_shortcut_select": {
+            "zh_CN": "选择",
+            "en_US": "Select"
+        },
+        "quick_search_shortcut_tab": {
+            "zh_CN": "使用 Tab 键可切换筛选项",
+            "en_US": "Use the Tab shortcut key to switch between filters"
+        },
+        "quick_search_title": {
+            "zh_CN": "全局搜索",
+            "en_US": "Quick Search"
         },
         "quick_tour": {
             "zh_CN": "快速教程",
@@ -13353,9 +13396,9 @@
             "zh_HK": "搜索成員暱稱，選擇移交的主管理員"
         },
         "search_node_pleaseholder": {
-            "zh_CN": "搜索(${shortcutKey})",
-            "en_US": "Search (${shortcutKey})",
-            "zh_HK": "搜索(${shortcutKey})"
+            "zh_CN": "搜索文件 (${shortcutKey})",
+            "en_US": "Search for files (${shortcutKey})",
+            "zh_HK": "搜索文件 (${shortcutKey})"
         },
         "search_or_add": {
             "zh_CN": "查找或添加",

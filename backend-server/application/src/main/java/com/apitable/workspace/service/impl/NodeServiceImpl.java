@@ -1860,13 +1860,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String parseExcel(Long userId, String uuid, String spaceId, Long memberId,
-                             String parentNodeId, String fileName, String fileSuffix,
-                             InputStream inputStream) {
+    public String parseExcel(Long userId, String uuid, String spaceId,
+        Long memberId, String parentNodeId, String viewName, String fileName,
+        String fileSuffix, InputStream inputStream) {
         ExcelReader excelReader = null;
         MultiSheetReadListener readListener =
-            new MultiSheetReadListener(this, userId, uuid, spaceId, memberId, parentNodeId,
-                fileName);
+            new MultiSheetReadListener(this, userId, uuid, spaceId, memberId,
+                parentNodeId, viewName, fileName);
         ExcelReaderBuilder readerBuilder;
         ExcelTypeEnum excelType = FileSuffixConstants.XLS.equals(fileSuffix)
             ? ExcelTypeEnum.XLS : ExcelTypeEnum.XLSX;
@@ -1890,10 +1890,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String parseCsv(Long userId, String uuid, String spaceId, Long memberId,
-                           String parentNodeId, String fileName, InputStream inputStream) {
+        String parentNodeId, String viewName, String fileName, InputStream inputStream) {
         ExcelReader excelReader = null;
         CsvReadListener readListener =
-            new CsvReadListener(this, userId, uuid, spaceId, memberId, parentNodeId, fileName);
+            new CsvReadListener(this, userId, uuid, spaceId, memberId,
+                parentNodeId, viewName, fileName);
         try {
             excelReader = EasyExcel.read(inputStream)
                 .excelType(ExcelTypeEnum.CSV)

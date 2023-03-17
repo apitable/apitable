@@ -146,6 +146,7 @@
 
     <resultMap id="memberInfo" type="com.apitable.organization.vo.MemberInfoVo">
         <result column="member_id" property="memberId"/>
+        <result column="space_id" property="spaceId"/>
         <result column="avatar" property="avatar"/>
         <result column="nick_name" property="nickName"/>
         <result column="color" property="avatarColor"/>
@@ -173,6 +174,7 @@
 
     <select id="selectInfoById" resultMap="memberInfo">
         SELECT vom.id as member_id,
+               vom.space_id,
                vu.avatar,
                vu.nick_name,
                vu.color,
@@ -204,6 +206,7 @@
 
     <select id="selectMembersByRootTeamId" resultMap="memberInfo">
         SELECT vom.id AS member_id,
+        vom.space_id,
         vu.avatar,
         vu.nick_name,
         vu.color,
@@ -235,6 +238,7 @@
 
     <select id="selectMembersByTeamId" resultMap="memberInfo">
         SELECT vom.id AS member_id,
+        vom.space_id,
         vu.avatar,
         vu.nick_name,
         vu.color,

@@ -41,6 +41,7 @@ import {
   ITemplateRecommendResponse,
   IUpdateSecuritySetting,
 } from './api.interface';
+
 export * from '../../enterprise';
 export * from '../../user/api/api.auth';
 export * from '../../user/api/api.user';
@@ -325,6 +326,9 @@ export const templateRecommend = (headers?: Record<string, string>) => {
  * @returns
  */
 export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, searchEmail }: ILoadOrSearchArg): Promise<IAxiosResponse<any>> {
+  if (unitIds && unitIds.includes('opt')) {
+    return Promise.reject();
+  }
   return axios.get(Url.LOAD_OR_SEARCH, {
     params: {
       filterIds,
