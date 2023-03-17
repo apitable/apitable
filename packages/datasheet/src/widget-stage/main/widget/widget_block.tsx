@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading, useThemeMode } from '@apitable/components';
+import { useThemeMode } from '@apitable/components';
 import {
   widgetMessage, initWidgetMessage, WidgetProvider, widgetStore, getLanguage, initWidgetStore,
   RuntimeEnv, MouseListenerType, IWidgetConfigIframePartial
 } from '@apitable/widget-sdk';
 import { useMount } from 'ahooks';
+import { WidgetLoading } from 'pc/components/widget/widget_panel/widget_item/widget_loading';
 import React, { useCallback, useEffect, useState } from 'react';
 import { WidgetLoader } from './widget_loader';
  
@@ -144,11 +145,11 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
     return <>Error: no widgetId</>;
   }
   if (!connected) {
-    return <Loading/>;
+    return <WidgetLoading/>;
   }
  
   if (!init) {
-    return <Loading/>;
+    return <WidgetLoading/>;
   }
  
   return (

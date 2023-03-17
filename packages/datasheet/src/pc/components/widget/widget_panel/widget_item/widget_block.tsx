@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading } from '@apitable/components';
 import { getLanguage, Selectors, StoreActions } from '@apitable/core';
 import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, MessageType, RuntimeEnv } from '@apitable/widget-sdk';
 import { useUnmount } from 'ahooks';
@@ -36,6 +35,7 @@ import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import styles from './style.module.less';
 import { patchDatasheet } from './utils';
+import { WidgetLoading } from './widget_loading';
 
 let WIDGET_IFRAME_PATH: string;
 if (process.env.NODE_ENV !== 'production') {
@@ -239,11 +239,11 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
   }, [connected, setDevWidgetId, setCodeUrl, widgetPackageId, widgetId, codeUrl]);
   
   if (!widgetCanRender) {
-    return <Loading />;
+    return <WidgetLoading/>;
   }
 
   if (!nodeConnected) {
-    return <Loading />;
+    return <WidgetLoading/>;
   }
 
   return <>
@@ -252,8 +252,8 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       styles.iframeMask,
       dragging && styles.iframeMasking,
     )} />
-    {iframeLoading && <div className={styles.iframeLoadingWarp}>
-      <Loading />
+    {iframeLoading && !connected && <div className={styles.iframeLoadingWarp}>
+      <WidgetLoading/>
     </div>}
     <iframe
       style={{
