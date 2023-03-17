@@ -52,8 +52,9 @@ export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperPro
   const isCalendarView = activeView && activeView.type === ViewType.Calendar;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const embedInfo = useSelector(state => state.embedInfo);
-  if(embedInfo.viewControl?.viewId === activeView.id) {
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { isShowEmbedToolBar = true } = embedInfo;
+  if(!isShowEmbedToolBar) {
     return <></>;
   }
   return (

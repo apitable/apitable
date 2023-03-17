@@ -85,10 +85,12 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
               teamId: data.teamId,
             }),
           );
+          dispatch(StoreActions.updateMemberListPageNo(1));
         }
       });
       isMobile && setSideBarVisible(false);
       dispatch(StoreActions.updateMemberInfo({ memberId: '', email: '' }));
+      dispatch(StoreActions.updateMemberListPageNo(1));
     },
     [isMobile, setSideBarVisible, dispatch],
   );

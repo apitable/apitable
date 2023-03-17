@@ -41,7 +41,7 @@ const _SplitPane: any = SplitPane;
 
 export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
-  const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user } = useSelector(
+  const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user , memberListTotal } = useSelector(
     (state: IReduxState) => ({
       selectedTeamInfo: state.addressList.selectedTeamInfo,
       memberList: state.addressList.memberList,
@@ -50,12 +50,10 @@ export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
       spaceId: state.space.activeId || '',
       spaceInfo: state.space.curSpaceInfo,
       user: state.user.info,
+      memberListTotal: state.addressList.memberListTotal,
     }),
     shallowEqual,
   );
-  // Permission-related information
-  // const [isMainAdmin, setIsMainAdmin] = useState(false);
-  // const [permissionList, setPermissionList] = useState<string[]>([]);
   const contactSyncing = isSocialDingTalk?.(spaceInfo) && isContactSyncing?.(spaceInfo);
   const themeName = useSelector(state => state.theme);
   const OrgImage = themeName === ThemeName.Light ? OrgImageLight : OrgImageDark;
@@ -87,7 +85,7 @@ export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
             <div className={styles.title}>{selectedTeamInfo.teamTitle}</div>
           </ComponentDisplay>
           <span>
-            （{memberList.length}
+            （{memberListTotal}
             {t(Strings.person)}）
           </span>
         </div>
@@ -95,7 +93,7 @@ export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
       <div className={styles.memberWrapper}>
         {memberList.length > 0 ? (
           <>
-            <div className={styles.memberList}>
+            <div className={styles.memberList} >
               {contactSyncing && (
                 <div style={{ padding: '0 20px 24px' }}>
                   <Alert type="default" content={t(Strings.dingtalk_admin_contact_syncing_tips)} />
