@@ -83,10 +83,10 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
         p: [...p, 'data', k],
       }));
     }
-    // TODO: 可以在这里过滤不用显示的字段
+
     actionArr = actionArr.concat(actions).filter(item => {
       if (!isMirror) {
-        return;
+        return true;
       }
       const { p } = item as any;
       if (p.length === 4 && p[0] === 'recordMap' && p[1].startsWith(IDPrefix.Record)) {
