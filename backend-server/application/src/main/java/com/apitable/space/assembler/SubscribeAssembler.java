@@ -18,8 +18,11 @@
 
 package com.apitable.space.assembler;
 
+import java.time.ZoneOffset;
+
 import cn.hutool.core.collection.CollUtil;
 
+import com.apitable.core.util.DateTimeUtil;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.space.vo.SpaceSubscribeVo;
@@ -32,6 +35,9 @@ public class SubscribeAssembler {
         result.setProduct(subscriptionInfo.getProduct());
         result.setPlan(subscriptionInfo.getBasePlan());
         result.setOnTrial(subscriptionInfo.onTrial());
+        result.setBillingMode(subscriptionInfo.getBillingMode());
+        result.setRecurringInterval(subscriptionInfo.getRecurringInterval());
+        result.setExpireAt(DateTimeUtil.localDateToSecond(subscriptionInfo.getEndDate(), ZoneOffset.UTC));
         result.setDeadline(subscriptionInfo.getEndDate());
         if (CollUtil.isNotEmpty(subscriptionInfo.getAddOnPlans())) {
             result.setAddOnPlans(subscriptionInfo.getAddOnPlans());

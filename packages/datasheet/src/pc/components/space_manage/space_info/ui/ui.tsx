@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, Typography, useThemeColors } from '@apitable/components';
-import { ChevronRightOutlined } from '@apitable/icons';
+import { Button, Skeleton, Typography, useThemeColors, ThemeName } from '@apitable/components';
+import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
 import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useContext, useMemo } from 'react';
-import InfoIcon from 'static/icon/common/common_icon_information.svg';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
-
+import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
+import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
+import { useSelector } from 'react-redux';
 interface IAvertProps {
   className?: string;
   desc?: string;
@@ -36,7 +37,7 @@ interface IAvertProps {
   minHeight?: string | number;
 }
 
-export const Advert: FC<IAvertProps> = props => {
+export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
   const { adData } = useContext(SpaceContext);
 
   const handleClick = () => {
@@ -44,6 +45,9 @@ export const Advert: FC<IAvertProps> = props => {
       window.open(props.linkUrl || adData.linkUrl, '_blank');
     }
   };
+
+  const themeName = useSelector(state => state.theme);
+  const marketingAdvertisement = themeName === ThemeName.Light ? MarketingAdvertisementLight : MarketingAdvertisementDark;
 
   const style: React.CSSProperties = useMemo(() => {
     if (!props.minHeight) {
@@ -68,7 +72,7 @@ export const Advert: FC<IAvertProps> = props => {
   return (
     <div className={classnames(styles.advert, props.className)} style={style}>
       <span className={styles.advertImg}>
-        <Image src={adData.banners?.[0]?.url} width={160} height={110} />
+        <Image src={marketingAdvertisement} width={160} height={110} alt='' />
       </span>
       <Typography variant='body3' className={styles.content}>
         {props.desc || adData.desc}
@@ -99,7 +103,7 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitle
         {!isMobile && (
           <Tooltip title={tipTitle} trigger='hover' placement='top'>
             <span className={styles.infoIcon}>
-              <InfoIcon className={styles.infoIconInDesc} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIconInDesc} />
             </span>
           </Tooltip>
         )}

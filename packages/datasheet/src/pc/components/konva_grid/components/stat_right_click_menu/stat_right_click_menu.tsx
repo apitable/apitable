@@ -28,7 +28,7 @@ import { copy2clipBoard, flatContextData } from 'pc/utils';
 
 interface IStatRightClickMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;
-  getBoundary: (e) => IFieldBoundary | null;
+  getBoundary: (e: any) => IFieldBoundary | null;
 }
 
 /**
@@ -43,7 +43,7 @@ export const StatRightClickMenu = ({
   const colors = useThemeColors();
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_STAT_RIGHT_CLICK_MENU });
 
-  const showMenu = (e) => {
+  const showMenu = (e: any) => {
     if (e.button === MouseDownType.Left) return;
 
     const fieldBoundary = getBoundary(e);

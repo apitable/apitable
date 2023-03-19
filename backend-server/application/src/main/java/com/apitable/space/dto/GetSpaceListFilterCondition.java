@@ -18,11 +18,14 @@
 
 package com.apitable.space.dto;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * Get Space List Filter Condition.
+ */
 @Data
-@ApiModel("Space Filter Condition")
+@Schema(description = "Space Filter Condition")
 public class GetSpaceListFilterCondition {
 
     private Boolean manageable;

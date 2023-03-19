@@ -18,11 +18,11 @@
 
 import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
 import { createRoot } from 'react-dom/client';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import Vikaby from 'static/icon/workbench/vikaby-good.png';
 import styles from './style.module.less';
 
@@ -46,7 +46,7 @@ export const AlertUi = (props: IAlertProps) => {
   const colors = useThemeColors();
   const { showVikaby = true, content, btnText, onBtnClick, closable, onClose, upgrade } = props;
   return (
-    <div className={classNames(styles.alert, { [styles.hasUpgradeBtn]: upgrade })}>
+    <div className={classNames(styles.alert, { [styles.hasUpgradeBtn!]: upgrade })}>
       {showVikaby && <span className={styles.img}><Image src={Vikaby} /></span>}
       <div className={styles.body}>
         <Typography variant='h7' color={colors.primaryColor}>{content}</Typography>
@@ -58,7 +58,7 @@ export const AlertUi = (props: IAlertProps) => {
         </span>
         <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade)}</span>
       </Button>}
-      {closable && <span onClick={onClose} className={styles.close}><CloseIcon /></span>}
+      {closable && <span onClick={onClose} className={styles.close}><CloseOutlined /></span>}
     </div>
   );
 };
@@ -76,7 +76,7 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
     }
   }
   const div = document.createElement('div');
-  div.setAttribute('class', styles.funcAlert);
+  div.setAttribute('class', styles.funcAlert!);
   div.setAttribute('id', BANNER_ALERT_ID);
   document.body.appendChild(div);
   const root = createRoot(div);

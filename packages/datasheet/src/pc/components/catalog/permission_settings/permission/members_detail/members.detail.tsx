@@ -30,7 +30,7 @@ export interface IMembersDetailProps {
   onCancel: () => void;
 }
 
-export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
+export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = ({ data, onCancel }) => {
   const close = () => {
     onCancel();
   };

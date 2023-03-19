@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IStoreProvider } from '../store.provider.interface';
+import { IStoreProvider } from '../providers';
 import { Store, AnyAction, createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { batchDispatchMiddleware } from 'redux-batched-actions';

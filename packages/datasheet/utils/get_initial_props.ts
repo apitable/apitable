@@ -23,7 +23,7 @@ import { FILTER_HEADERS } from './constant';
 const LANG_MAP = {
   en_US: 'en-US',
   zh_CN: 'zh-CN',
-}
+};
 
 const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
   if (!headers) return {};
@@ -60,7 +60,7 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
       const parts = value.split(`; ${name}=`);
       if (parts.length >= 2) return parts[1].split(';').shift();
       return null;
-    }
+    };
     // server lang
     const langParts = getCookie('lang');
     // client cache cookie while language toggle
@@ -75,5 +75,5 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   return {
     ...baseResponse,
     locale,
-  }
-}
+  };
+};

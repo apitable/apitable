@@ -68,6 +68,7 @@ export class GridView extends View {
       columns,
       rows: this.defaultRows(srcView),
       frozenColumnCount: 1,
+      displayHiddenColumnWithinMirror: false
     };
   }
 

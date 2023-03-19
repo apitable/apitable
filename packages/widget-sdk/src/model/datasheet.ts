@@ -20,9 +20,10 @@ import { DatasheetOperationPermission, FieldType, IInsertPosition, IPermissionRe
 import {
   CollaCommandName, ConfigConstant, ExecuteResult, Field as CoreField, ICollaCommandExecuteResult, ISetRecordOptions, Selectors,
   FieldType as CoreFieldType, IDPrefix, getNewId, getFieldClass, IField, Conversion,
-  getFieldTypeByString
+  getFieldTypeByString,
+  IReduxState
 } from 'core';
-import { cmdExecute } from 'iframe_message/utils';
+import { cmdExecute } from 'message/utils';
 import { getWidgetDatasheet } from 'store';
 import { errMsg } from 'utils/private';
 
@@ -112,7 +113,7 @@ export class Datasheet {
   }
 
   private checkRecordsValues(records: { [key: string]: any }[]) {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const fieldDataMap = Selectors.getFieldMap(state, this.datasheetId)!;
 
     records.forEach(valuesMap => {
@@ -135,7 +136,7 @@ export class Datasheet {
   }
 
   private transformRecordValues(records: { [key: string]: any }[]): { [key: string]: any }[] {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const fieldDataMap = Selectors.getFieldMap(state, this.datasheetId)!;
     return records.map(valuesMap => {
       const coreFieldMap: Record<string, any> = {};
@@ -149,7 +150,7 @@ export class Datasheet {
   }
 
   private checkRecordIdsExist(recordIds: (string | undefined)[]): IPermissionResult {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const datasheetId = this.datasheetId;
     for (const recordId of recordIds) {
       // If the recordId is not passed in, the existence verification will not be performed
@@ -169,7 +170,7 @@ export class Datasheet {
     const datasheetId = this.datasheetId;
     const datasheet = getWidgetDatasheet(state, datasheetId);
     const sourceId = state.widget?.snapshot.sourceId;
-    const globalState = this.wCtx.globalStore.getState();
+    const globalState = this.wCtx.widgetStore.getState() as any as IReduxState;
     const permissions = Selectors.getPermissions(globalState, datasheetId, undefined, sourceId?.startsWith('mir') ? sourceId : '');
     if (!datasheet || !permissions) {
       return { acceptable: false, message: 'Failed to load the data of the datasheet' };
@@ -207,7 +208,7 @@ export class Datasheet {
   }
 
   private checkPermissionsForRecordsValues(records: ({ [key: string]: any } | undefined)[]): IPermissionResult {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const datasheetId = this.datasheetId;
 
     for (const valuesMap of records) {
@@ -252,7 +253,7 @@ export class Datasheet {
     if (typeof name !== 'string'){
       return errMsg('Field name must be a string');
     }
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const fieldDataMap = Selectors.getFieldMap(state, this.datasheetId)!;
     const hasTheSameName = Object.keys(fieldDataMap).some(fieldId => {
       const item = fieldDataMap[fieldId]!;
@@ -265,7 +266,7 @@ export class Datasheet {
   }
 
   private checkPrimaryField(fieldId: string) {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const snapshot = Selectors.getSnapshot(state, this.datasheetId);
     return Boolean(snapshot?.meta.views[0]!.columns[0]!.fieldId === fieldId);
   }
@@ -316,7 +317,7 @@ export class Datasheet {
    * ```
    */
   async addRecord(valuesMap: { [key: string]: any } = {}, insertPosition?: IInsertPosition) {
-    return (await this.addRecords([{ valuesMap }], insertPosition))[0];
+    return (await this.addRecords([{ valuesMap }], insertPosition))[0]!;
   }
 
   /**
@@ -375,7 +376,7 @@ export class Datasheet {
    * ```
    */
   addRecords(records: { valuesMap: { [key: string]: any } }[] = [], insertPosition?: IInsertPosition): Promise<string[]> {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const recordsValues: { [key: string]: any }[] = [];
     for (const record of records) {
       recordsValues.push(record.valuesMap);
@@ -417,7 +418,7 @@ export class Datasheet {
         count: transformedRecords.length,
         index,
         cellValues: transformedRecords,
-      }, this.wCtx.resourceService);
+      });
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }
@@ -497,7 +498,7 @@ export class Datasheet {
       recordIds.push(record.id);
       recordsValues.push(record.valuesMap);
     }
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const transformedRecordsValues = this.transformRecordValues(recordsValues);
     this.checkRecordsValues(transformedRecordsValues);
 
@@ -524,7 +525,7 @@ export class Datasheet {
       cmd: CollaCommandName.SetRecords,
       datasheetId: this.datasheetId,
       data,
-    }, this.wCtx.resourceService);
+    });
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -586,7 +587,7 @@ export class Datasheet {
       cmd: CollaCommandName.DeleteRecords,
       datasheetId: this.datasheetId,
       data: recordIds,
-    }, this.wCtx.resourceService);
+    });
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -618,7 +619,7 @@ export class Datasheet {
    * ```
    */
   async addField(name: string, type: FieldType, property: any): Promise<string> {
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const view = Selectors.getCurrentView(state, this.datasheetId)!;
     const index = view.columns.length;
     const fieldType = getFieldTypeByString(type as any)!;
@@ -628,7 +629,7 @@ export class Datasheet {
       type: fieldType,
       property: getFieldClass(fieldType).defaultProperty(),
     } as IField;
-    const field = CoreField.bindContext(fieldInfoForState, this.wCtx.globalStore.getState());
+    const field = CoreField.bindContext(fieldInfoForState, state);
     const result: ICollaCommandExecuteResult<any> = await cmdExecute({
       cmd: CollaCommandName.AddFields,
       data: [{
@@ -639,7 +640,7 @@ export class Datasheet {
         },
         index,
       }],
-    }, this.wCtx.resourceService);
+    });
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -684,7 +685,7 @@ export class Datasheet {
         deleteBrotherField: conversion === Conversion.Delete,
         fieldId,
       }],
-    }, this.wCtx.resourceService);
+    });
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -1085,7 +1086,8 @@ export class Datasheet {
         type: fieldType,
         property: getFieldClass(fieldType).defaultProperty(),
       } as IField;
-      const field = CoreField.bindContext(fieldInfoForState, this.wCtx.globalStore.getState());
+      const state = this.wCtx.widgetStore.getState() as any as IReduxState;
+      const field = CoreField.bindContext(fieldInfoForState, state);
       const { error } = field.validateAddOpenFieldProperty(property || null);
       if (error) {
         return errMsg(`current property ${JSON.stringify(property)} does not match the format, please check: ${error.message}`);
@@ -1132,7 +1134,7 @@ export class Datasheet {
       return basicPermissionsCheckResult;
     }
 
-    const state = this.wCtx.globalStore.getState();
+    const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, this.datasheetId);
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
     const field = Selectors.getField(state, fieldId, this.datasheetId);

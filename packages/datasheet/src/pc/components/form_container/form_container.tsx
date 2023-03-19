@@ -22,7 +22,7 @@ import {
   IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors,
   StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, InfoCircleOutlined, EditOutlined } from '@apitable/icons';
 import * as Sentry from '@sentry/nextjs';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
@@ -58,20 +58,21 @@ import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
 // @ts-ignore
 import { triggerUsageAlertForDatasheet } from 'enterprise';
+import { getEnvVariables } from '../../utils/env';
 
 enum IFormContentType {
   Form = 'Form',
   Welcome = 'Welcome',
 }
 
-const serialize = nodes => {
+const serialize = (nodes: any) => {
   if (Array.isArray(nodes)) {
     return nodes.map(n => Node.string(n)).join('\n');
   }
   return '';
 };
 
-const isEmptyValue = value => {
+const isEmptyValue = (value: unknown) => {
   if (value == null) {
     return true;
   }
@@ -89,7 +90,7 @@ const defaultMeta = {
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
 
-export const FormContainer: React.FC = () => {
+export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
   const {
     id,
     name,
@@ -149,6 +150,7 @@ export const FormContainer: React.FC = () => {
   const unmounted = useRef(false);
   const query = useQuery();
   const colors = useThemeColors();
+  const theme = useSelector(Selectors.getTheme);
 
   const dispatch = useDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
@@ -393,7 +395,9 @@ export const FormContainer: React.FC = () => {
       setContentType(IFormContentType.Welcome);
     }
     try {
-      !isPrivateDeployment() && (window as any).sensors.track('formSubmitSuccess', { $url: window.location.href });
+      if (!isPrivateDeployment() || getEnvVariables().SENSORSDATA_TOKEN) {
+        (window as any).sensors?.track('formSubmitSuccess', { $url: window.location.href })
+      }
     } catch (error) {
       Sentry.captureMessage(String(error));
     }
@@ -458,7 +462,7 @@ export const FormContainer: React.FC = () => {
   //   return defaultData;
   // };
 
-  const validValue = (localValue, fieldMap) => {
+  const validValue = (localValue: any, fieldMap: IFieldMap) => {
     if (!localValue || !fieldMap) {
       return {};
     }
@@ -628,7 +632,7 @@ export const FormContainer: React.FC = () => {
   }, [fieldMap]);
 
   const _setFormData = useCallback(
-    (fieldId, value) => {
+    (fieldId: any, value: any) => {
       setFormData(prev => {
         const data = { ...prev, [fieldId]: value };
         patchRecord({ id: recordId, data } as IRecord);
@@ -656,7 +660,7 @@ export const FormContainer: React.FC = () => {
     >
       <Head>
         <meta property='og:description'
-          content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
+          content={serialize(formProps.description)} />
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* Form completion page */}
@@ -756,7 +760,7 @@ export const FormContainer: React.FC = () => {
                 params={{
                   logo: (
                     <span className={styles.logoWrap} onClick={onJump}>
-                      <Logo size='mini' />
+                      <Logo size='mini' theme={theme}/>
                     </span>
                   ),
                 }}
@@ -766,10 +770,10 @@ export const FormContainer: React.FC = () => {
         )}
 
         {/* Top left: brand logo */}
-        {shareId && !fullScreen && !isMobile && (
+        {brandVisible && shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
-              <Logo />
+              <Logo theme={theme}/>
             </span>
           </div>
         )}
@@ -802,24 +806,24 @@ export const FormContainer: React.FC = () => {
                 {
                   icon: <EditOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.modify_field),
-                  hidden: ({ props }) => !props?.onEdit,
-                  onClick: ({ props }) => props?.onEdit && props.onEdit(),
+                  hidden: ({ props }: any) => !props?.onEdit,
+                  onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
-                  icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                  icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.editing_field_desc),
-                  onClick: ({ props }) => props?.onEditDesc && props.onEditDesc(),
+                  onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },
                 {
                   icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_above),
-                  disabled: ({ props }) => !props.onInsertAbove,
-                  onClick: ({ props }) => props?.onInsertAbove && props.onInsertAbove(),
+                  disabled: ({ props }: any) => !props.onInsertAbove,
+                  onClick: ({ props }: any) => props?.onInsertAbove && props.onInsertAbove(),
                 },
                 {
                   icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_below),
-                  onClick: ({ props }) => props?.onInsertBelow && props.onInsertBelow(),
+                  onClick: ({ props }: any) => props?.onInsertBelow && props.onInsertBelow(),
                 },
               ],
             ],

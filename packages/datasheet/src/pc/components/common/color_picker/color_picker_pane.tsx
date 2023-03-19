@@ -18,6 +18,7 @@
 
 import { colorVars, useThemeColors } from '@apitable/components';
 import { ISelectFieldOption, Strings, t } from '@apitable/core';
+import { DeleteOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
@@ -27,7 +28,6 @@ import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
@@ -41,7 +41,7 @@ export interface IColorPickerPane {
   onClose: () => void;
 }
 
-export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
+export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>> = props => {
   const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();
@@ -84,7 +84,7 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
     </div>
   );
 
-  const onInput = e => {
+  const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = e.target.value;
     if (value.length > 100) {
@@ -136,7 +136,7 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
               value={newName}
             />
             <div className={styles.deleteIconWrap}>
-              <DeleteIcon width={16} height={16} fill={colors.thirdLevelText} onClick={onDelete} />
+              <DeleteOutlined size={16} color={colors.thirdLevelText} onClick={onDelete} />
             </div>
           </div>
           <div className={styles.divider} />
@@ -145,13 +145,13 @@ export const ColorPickerPane: React.FC<IColorPickerPane> = props => {
       <div className={styles.colorMenuGroup}>
         {renderMenu(
           t(Strings.option_configuration_basic_palette),
-          Array.from({ length: 20 }, (item, index) => index),
+          Array.from({ length: 20 }, (_item, index) => index),
           false,
           true,
         )}
         {renderMenu(
           t(Strings.option_configuration_advance_palette),
-          Array.from({ length: 30 }, (item, index) => index + 20),
+          Array.from({ length: 30 }, (_item, index) => index + 20),
           true,
         )}
       </div>

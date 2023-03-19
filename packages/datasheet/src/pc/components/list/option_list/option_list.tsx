@@ -27,20 +27,20 @@ import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { colorVars } from '@apitable/components';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
-const SortableContainer = sortableContainer(({ children }) => {
+const SortableContainer: any = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;
 });
 
-const SortableItem = sortableElement(({ children }) => <>{children}</>);
+const SortableItem: any = sortableElement(({ children }: any) => <>{children}</>);
 
-export const OptionList: React.FC<IOptionListProps> = (props) => {
+export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (props) => {
   const {
     listData: optionList, existValues, onAddHandle, multiMode, onClickItem,
     dragOption, setCurrentField, inputRef, monitorId, datasheetId, placeholder
@@ -92,7 +92,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
       }
     }
 
-    onClickItem(value);
+    onClickItem(value as any);
   }
 
   // The swap in the filter condition should get the true index of the current option in the original array
@@ -100,7 +100,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
     return optionList.findIndex(item => item.id === optionId);
   }, [optionList]);
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
+  const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
     dragOption!.setDraggingId(undefined);
     let actualOldIndex = oldIndex;
     let actualNewIndex = newIndex;
@@ -115,7 +115,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
 
   };
 
-  const onKeyEnter = (clearKeyword) => {
+  const onKeyEnter = (clearKeyword: () => void) => {
     const matchResult = getExactMatchResult();
     clearKeyword();
     if (!matchResult) {
@@ -161,7 +161,7 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
           className={classNames(styles.addNewItem)}
           onClick={_onAddHandle}
         >
-          <IconAdd width={10} height={10} fill={colorVars.thirdLevelText} />
+          <AddOutlined size={10} color={colorVars.thirdLevelText} />
           <span>
             {t(Strings.add)}
           </span>
@@ -187,14 +187,14 @@ export const OptionList: React.FC<IOptionListProps> = (props) => {
   return (
     <CommonList
       value={existValues || []}
-      onClickItem={(e, index) => {
+      onClickItem={(_e, index) => {
         switchOptionsStatus(optionByFilter[index].id);
       }}
       noDataTip={t(Strings.no_option)}
       footerComponent={renderFooter}
       showInput
       inputRef={inputRef}
-      onSearchChange={(e, keyword) => { setKeyword(keyword); }}
+      onSearchChange={(_e, keyword) => { setKeyword(keyword); }}
       monitorId={monitorId}
       onInputEnter={onKeyEnter}
       inputStyle={{ padding: 8 }}

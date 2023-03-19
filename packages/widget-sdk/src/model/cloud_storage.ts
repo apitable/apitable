@@ -17,9 +17,8 @@
  */
 
 import { ICloudStorageData, ICloudStorageValue, IPermissionResult } from 'interface';
-import { IResourceService } from 'resource';
 import { CollaCommandName, ExecuteResult, ResourceType } from 'core';
-import { cmdExecute } from 'iframe_message/utils';
+import { cmdExecute } from 'message/utils';
 
 /**
  * @hidden
@@ -43,7 +42,6 @@ export class CloudStorage {
    */
   constructor(
     private storage: ICloudStorageData,
-    private resourceService: IResourceService,
     private widgetId: string
   ) { }
 
@@ -115,7 +113,7 @@ export class CloudStorage {
       value,
       resourceType: ResourceType.Widget,
       resourceId: this.widgetId,
-    }, this.resourceService).then(result => {
+    }).then(result => {
       if (result.result !== ExecuteResult.Success) {
         // TODO: replace with toast
         alert('Operation execution failed');

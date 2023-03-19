@@ -1,0 +1,38 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable max-len */
+import React from 'react';
+import { makeIcon, IIconProps } from '../utils/icon';
+
+export const FormAddOutlined: React.FC<IIconProps> = makeIcon({
+  Path: ({ colors }) => <>
+    <path d="M4 13.5H8.25C8.66421 13.5 9 13.8358 9 14.25C9 14.6642 8.66421 15 8.25 15H3.75C3.05964 15 2.5 14.4404 2.5 13.75V3.5C2.5 2.80965 3.05964 2.25 3.75 2.25H5.06056C5.2757 1.52713 5.94534 1 6.73809 1H9.03571C9.82847 1 10.4981 1.52713 10.7132 2.25H12.25C12.9404 2.25 13.5 2.80964 13.5 3.5V7.25C13.5 7.66421 13.1642 8 12.75 8C12.3358 8 12 7.66421 12 7.25V3.75H10.0357C9.6215 3.75 9.28571 3.41421 9.28571 3V2.75C9.28571 2.61193 9.17379 2.5 9.03571 2.5H6.73809C6.60002 2.5 6.4881 2.61193 6.4881 2.75V3C6.4881 3.41421 6.15231 3.75 5.7381 3.75H4V13.5Z" fill={ colors[0] }/>
+    <path d="M6 5.25C5.58579 5.25 5.25 5.58579 5.25 6C5.25 6.41421 5.58579 6.75 6 6.75H10C10.4142 6.75 10.75 6.41421 10.75 6C10.75 5.58579 10.4142 5.25 10 5.25H6Z" fill={ colors[0] }/>
+    <path d="M6 8.25C5.58579 8.25 5.25 8.58579 5.25 9C5.25 9.41421 5.58579 9.75 6 9.75H8C8.41421 9.75 8.75 9.41421 8.75 9C8.75 8.58579 8.41421 8.25 8 8.25H6Z" fill={ colors[0] }/>
+    <path d="M12.75 9.5C13.1642 9.5 13.5 9.83579 13.5 10.25V11.5H14.75C15.1642 11.5 15.5 11.8358 15.5 12.25C15.5 12.6642 15.1642 13 14.75 13H13.5V14.25C13.5 14.6642 13.1642 15 12.75 15C12.3358 15 12 14.6642 12 14.25V13H10.75C10.3358 13 10 12.6642 10 12.25C10 11.8358 10.3358 11.5 10.75 11.5H12V10.25C12 9.83579 12.3358 9.5 12.75 9.5Z" fill={ colors[0] }/>
+
+  </>,
+  name: 'form_add_outlined',
+  defaultColors: ['#D9D9D9'],
+  colorful: false,
+  allPathData: ['M4 13.5H8.25C8.66421 13.5 9 13.8358 9 14.25C9 14.6642 8.66421 15 8.25 15H3.75C3.05964 15 2.5 14.4404 2.5 13.75V3.5C2.5 2.80965 3.05964 2.25 3.75 2.25H5.06056C5.2757 1.52713 5.94534 1 6.73809 1H9.03571C9.82847 1 10.4981 1.52713 10.7132 2.25H12.25C12.9404 2.25 13.5 2.80964 13.5 3.5V7.25C13.5 7.66421 13.1642 8 12.75 8C12.3358 8 12 7.66421 12 7.25V3.75H10.0357C9.6215 3.75 9.28571 3.41421 9.28571 3V2.75C9.28571 2.61193 9.17379 2.5 9.03571 2.5H6.73809C6.60002 2.5 6.4881 2.61193 6.4881 2.75V3C6.4881 3.41421 6.15231 3.75 5.7381 3.75H4V13.5Z', 'M6 5.25C5.58579 5.25 5.25 5.58579 5.25 6C5.25 6.41421 5.58579 6.75 6 6.75H10C10.4142 6.75 10.75 6.41421 10.75 6C10.75 5.58579 10.4142 5.25 10 5.25H6Z', 'M6 8.25C5.58579 8.25 5.25 8.58579 5.25 9C5.25 9.41421 5.58579 9.75 6 9.75H8C8.41421 9.75 8.75 9.41421 8.75 9C8.75 8.58579 8.41421 8.25 8 8.25H6Z', 'M12.75 9.5C13.1642 9.5 13.5 9.83579 13.5 10.25V11.5H14.75C15.1642 11.5 15.5 11.8358 15.5 12.25C15.5 12.6642 15.1642 13 14.75 13H13.5V14.25C13.5 14.6642 13.1642 15 12.75 15C12.3358 15 12 14.6642 12 14.25V13H10.75C10.3358 13 10 12.6642 10 12.25C10 11.8358 10.3358 11.5 10.75 11.5H12V10.25C12 9.83579 12.3358 9.5 12.75 9.5Z'],
+  width: '16',
+  height: '16',
+  viewBox: '0 0 16 16',
+});

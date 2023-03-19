@@ -19,10 +19,6 @@
 import { useMemo } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';
-import ExpandIcon from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
-import CheckIcon from 'static/icon/common/common_icon_multiple_normal.svg';
-import CheckedIcon from 'static/icon/common/common_icon_multiple_select.svg';
-import CommentIcon from 'static/icon/datasheet/activity/datasheet_icon_comment_bj.svg';
 import { Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -30,7 +26,7 @@ import { batchActions } from 'redux-batched-actions';
 import { useThemeColors } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
 import classNames from 'classnames';
-import { DragOutlined } from '@apitable/icons';
+import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, UncheckedOutlined } from '@apitable/icons';
 
 interface IOperateColumnOwnProperty {
   isHeader: boolean;
@@ -40,14 +36,14 @@ interface IOperateColumnOwnProperty {
 }
 
 export interface IRowCheckedProps {
-  onCheck?(e): void;
+  onCheck?(e: any): void;
   isChecked: boolean;
   shape?: 'default' | 'circle'
 }
 
 const noop = () => { };
 
-export const RowChecked: React.FC<IRowCheckedProps> = props => {
+export const RowChecked: React.FC<React.PropsWithChildren<IRowCheckedProps>> = props => {
   const colors = useThemeColors();
   const {
     onCheck = noop,
@@ -67,20 +63,20 @@ export const RowChecked: React.FC<IRowCheckedProps> = props => {
   return (
     <div onClick={onCheck} className={styles.iconCheckWrapper}>
       {isChecked ?
-        <CheckedIcon width={15} height={15} fill={colors.primaryColor} /> :
-        <CheckIcon width={15} height={15} fill={colors.thirdLevelText} />}
+        <CheckboxFilled size={15} color={colors.primaryColor} /> :
+        <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
     </div>
   );
 };
 
 export const CommentCount = ({ count, expand }: { count: number, expand(): void }) => {
   return <div className={styles.commentCount} onClick={expand}>
-    <CommentIcon />
+    <CommentBgFilled />
     <span>{count}</span>
   </div>;
 };
 
-export const OperateColumn: React.FC<IOperateColumnOwnProperty> = React.memo(props => {
+export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnProperty>> = React.memo(props => {
   const { isHeader, recordId, commentCount, expand } = props;
   const colors = useThemeColors();
   const dispatch = useDispatch();
@@ -202,8 +198,8 @@ export const OperateColumn: React.FC<IOperateColumnOwnProperty> = React.memo(pro
     return (
       <div className={styles.headerIcon} onClick={selectAll} data-record-id={recordId}>
         {isCheckedAll ?
-          <CheckedIcon width={15} height={15} fill={colors.primaryColor} /> :
-          <CheckIcon width={15} height={15} fill={colors.thirdLevelText} />}
+          <CheckboxFilled size={15} color={colors.primaryColor} /> :
+          <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
       </div>
     );
   }
@@ -231,7 +227,7 @@ export const OperateColumn: React.FC<IOperateColumnOwnProperty> = React.memo(pro
           {
             showCommentCount ?
               <CommentCount count={commentCount!} expand={expand!} /> :
-              <ExpandIcon width={15} height={15} fill={colors.primaryColor} />
+              <ExpandOutlined size={15} color={colors.primaryColor} />
           }
         </div>
       </Tooltip>

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { t, Strings } from '../exports/i18n';
-import { IFilterInfo } from './view_types';
+import { t, Strings } from 'exports/i18n';
+import type { IFilterInfo } from './view_types';
+
 /* eslint-disable */
 export type ITextFieldProperty = null;
 export type IEmailProperty = null;
@@ -408,6 +409,8 @@ export interface IDateTimeFieldProperty {
   includeTime: boolean;
   /** Whether to automatically fill in the creation time when adding a new record */
   autoFill: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
 }
 
 export interface IDateTimeField extends IBaseField {
@@ -424,6 +427,9 @@ export interface IDateTimeBaseFieldProperty {
   includeTime: boolean;
   // Whether to automatically fill in the creation time when adding a record
   autoFill?: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
+
   // dependent field collection type
   collectType?: CollectType;
   // dependent fields

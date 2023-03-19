@@ -1,6 +1,8 @@
 import { Select } from './index';
 import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
+import { Tooltip } from '../tooltip';
+import { StarOutlined, WarnCircleFilled } from '@apitable/icons';
 
 <Meta title="表单组件/Select 下拉框/文档" />
 
@@ -28,7 +30,19 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--select-item" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 8', value: 'opt8' },
+    ]}
+    value={'opt1'}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -36,7 +50,7 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--default" />
+  <Select />
 </ThemeToggle>
 </Canvas>
 
@@ -46,7 +60,21 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--not-match-width" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -54,7 +82,21 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--match-width" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -67,7 +109,21 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--select-item-with-icon" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 2', value: 'opt2', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 3', value: 'opt3', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 4', value: 'opt4', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 5', value: 'opt5', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 6', value: 'opt6', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 7', value: 'opt7', prefixIcon: <StarOutlined />, suffixIcon: <StarOutlined /> },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -81,7 +137,21 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--disabled-select-item" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1', disabled: true },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4', disabled: true },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -89,7 +159,21 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--disabled-select-item-with-tip" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1', disabled: true, disabledTip: 'option disabled reason' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4', disabled: true, disabledTip: 'option disabled reason' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -99,7 +183,32 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--disabled-select-icon-with-tip" />
+  <Select
+    options={[
+      {
+        label: 'Test data 1',
+        value: 'opt1',
+        disabled: true,
+        suffixIcon: (
+          <Tooltip content={'option disabled reason'}>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <WarnCircleFilled color="#FFAB00" />
+              </span>
+          </Tooltip>
+        ),
+      },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -107,7 +216,22 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--disabled-select" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1', disabled: true },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4', disabled: true },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 888888888888888888', value: 'opt8' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth={false}
+    triggerStyle={{ width: 100 }}
+    disabled
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -117,7 +241,24 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--search" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 8', value: 'opt8' },
+      { label: 'abcdefg', value: 'opt9' },
+      { label: 'ABCDEFG', value: 'opt10' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth
+    triggerStyle={{ width: 100 }}
+    openSearch
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -125,7 +266,28 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--search-custom-highlight-style" />
+  <Select
+    options={[
+      { label: 'Test data 1', value: 'opt1' },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 8', value: 'opt8' },
+      { label: 'abcdefg', value: 'opt9' },
+      { label: 'ABCDEFG', value: 'opt10' },
+    ]}
+    value={'opt1'}
+    highlightStyle={{
+      backgroundColor: '#7B67EE',
+      color: '#fff'
+    }}
+    dropdownMatchSelectWidth
+    triggerStyle={{ width: 100 }}
+    openSearch
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -133,7 +295,19 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--format-select-item" />
+  <Select
+    options={[
+      { label: 'Tom-male', value: 'opt1' },
+      { label: 'Jonson-male', value: 'opt2' },
+      { label: 'Allen-female', value: 'opt3' },
+    ]}
+    value={'opt1'}
+    dropdownMatchSelectWidth
+    triggerStyle={{ width: 100 }}
+    renderValue={(option) => {
+      return option.label.split('-')[0];
+    }}
+  />
 </ThemeToggle>
 </Canvas>
 
@@ -143,7 +317,32 @@ for (let i = 0; i < 20; i++) {
 
 <Canvas>
 <ThemeToggle>
-  <Story id="表单组件-select-下拉框--select-option" />
+  <Select
+    value={'opt2'}
+    dropdownMatchSelectWidth
+    triggerStyle={{ width: 100 }}
+  >
+    {[
+      { label: 'Test data 1', value: 'opt1', disabled: true },
+      { label: 'Test data 2', value: 'opt2' },
+      { label: 'Test data 3', value: 'opt3' },
+      { label: 'Test data 4', value: 'opt4' },
+      { label: 'Test data 5', value: 'opt5' },
+      { label: 'Test data 6', value: 'opt6' },
+      { label: 'Test data 7', value: 'opt7' },
+      { label: 'Test data 8', value: 'opt8' },
+    ].map((option, index) => {
+      return (
+        <Select.Option
+          value={option.value}
+          disabled={option.disabled}
+          currentIndex={index}
+        >
+          {option.label}
+        </Select.Option>
+      );
+    })}
+  </Select>
 </ThemeToggle>
 </Canvas>
 

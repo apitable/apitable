@@ -18,35 +18,34 @@
 
 package com.apitable.workspace.ro;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Add node role request parameters
+ * Add node role request parameters.
  * </p>
  */
 @Data
-@ApiModel("Add node role request parameters")
+@Schema(description = "Add node role request parameters")
 public class AddNodeRoleRo {
 
-	@NotBlank(message = "Node ID cannot be empty")
-	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
-	private String nodeId;
+    @NotBlank(message = "Node ID cannot be empty")
+    @Schema(description = "Node ID", example = "nod10")
+    private String nodeId;
 
-	@NotEmpty(message = "Organization unit cannot be empty")
-	@ApiModelProperty(value = "Organization Unit ID Collection", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", required = true, position = 2)
-	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
-	private List<Long> unitIds;
+    @NotEmpty(message = "Organization unit cannot be empty")
+    @Schema(description = "Organization Unit ID Collection", type = "List", example =
+        "[\"10101\",\"10102\",\"10103\",\"10104\"]", required = true)
+    @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
+    private List<Long> unitIds;
 
-	@ApiModelProperty(value = "Role", example = "editor", position = 3, required = true)
-	@NotBlank(message = "Role cannot be empty")
-	private String role;
+    @Schema(description = "Role", example = "editor", required = true)
+    @NotBlank(message = "Role cannot be empty")
+    private String role;
 }

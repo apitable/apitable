@@ -26,9 +26,9 @@ import { store } from 'pc/store';
 import styles from './styles.module.less';
 import { FieldTitle } from '../expand_record/field_editor/field_title';
 import { useThemeColors } from '@apitable/components';
-import IconMore from 'static/icon/common/common_icon_more_stand.svg';
 import { FIELD_HEAD_CLASS } from 'pc/utils';
 import classNames from 'classnames';
+import { MoreStandOutlined } from '@apitable/icons';
 
 enum CellType {
   HEAD,
@@ -42,7 +42,7 @@ interface ICellFuncOwnProps {
 
 type ChildProps = GridChildComponentProps & ListChildComponentProps;
 
-const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
+const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>> = props => {
   const colors = useThemeColors();
   const {
     columnIndex,
@@ -102,7 +102,7 @@ const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
         </div>
         {manageable &&
           <div className={styles.fieldMenuTrigger}>
-            <IconMore fill={colors.thirdLevelText} />
+            <MoreStandOutlined color={colors.thirdLevelText} />
           </div>
         }
       </div>

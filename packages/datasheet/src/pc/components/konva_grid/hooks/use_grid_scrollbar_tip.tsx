@@ -40,7 +40,7 @@ export const useScrollbarTip = (props: IUseScrollbarTipProps) => {
   // eslint-disable-next-line
   }, [totalWidth, containerWidth, horizontalBarRef.current]);
 
-  const onMouseEnter = useCallback(e => {
+  const onMouseEnter = useCallback((e: any) => {
     if (!isHorizontalScroll) return;
     const target = e.currentTarget as HTMLDivElement;
     const rate = target.clientWidth / target.scrollWidth;

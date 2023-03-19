@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CloseLargeOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useKeyPress, useUnmount } from 'ahooks';
 import { Box } from 'components/box';
 import { IconButton } from 'components/icon_button';
@@ -43,7 +43,7 @@ const getPosition = (e: MouseEvent) => {
   }, 100);
 };
 
-export const ModalBase: React.FC<IModalProps> = (props) => {
+export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props) => {
 
   const {
     className,
@@ -152,7 +152,7 @@ export const ModalBase: React.FC<IModalProps> = (props) => {
 
   const DefaultCloseIcon = (
     <CloseIconBox onClick={handleCancel}>
-      <IconButton icon={CloseLargeOutlined} />
+      <IconButton icon={CloseOutlined} />
     </CloseIconBox>
   );
 

@@ -32,7 +32,7 @@ export interface IModifyNameModalProps {
   originName: string;
 }
 
-export const ModifyNameModal: FC<IModifyNameModalProps> = props => {
+export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>> = props => {
   const { setNameModal, originName } = props;
   const { getLoginStatusReq } = useUserRequest();
   const { err, loading } = useSelector((state: IReduxState) => ({

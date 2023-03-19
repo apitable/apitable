@@ -18,7 +18,7 @@
 
 import { useState, Fragment, FC, useCallback, useContext } from 'react';
 import { Typography, Button, ListDeprecate, IconButton, useThemeColors } from '@apitable/components';
-import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { DragItem } from './drag_item';
 import { DropWrapper } from '../drop_wrapper';
 import styles from './styles.module.less';
@@ -34,12 +34,12 @@ import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
 interface IRecordList {
   nodes: INode[];
   disabled?: boolean;
+
   onClose(): void;
 }
 
 export const addRecord = (viewId: string, index: number, autoOpen = true) => {
-  const collaCommandManager = resourceService.instance!.commandManager;
-  const result = collaCommandManager.execute({
+  const result = resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.AddRecords,
     count: 1,
     viewId,
@@ -54,25 +54,19 @@ export const addRecord = (viewId: string, index: number, autoOpen = true) => {
 };
 
 // TODO: Extracted as a public business component
-export const RecordList: FC<IRecordList> = (props) => {
+export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
   const colors = useThemeColors();
   const {
     nodes,
     disabled,
-    onClose
+    onClose,
   } = props;
 
-  const {
-    viewId,
-    orgChartStyle,
-    nodeStateMap,
-    setNodeStateMap,
-    rowsCount,
-  } = useContext(FlowContext);
+  const { viewId, orgChartStyle, nodeStateMap, setNodeStateMap, rowsCount } = useContext(FlowContext);
 
-  const [keyword, setKeyword] = useState();
+  const [keyword, setKeyword] = useState<string>();
 
-  const handleSearch = (e, word) => {
+  const handleSearch = (_e: any, word: string) => {
     if (!keyword) {
       setKeyword(word);
     }
@@ -83,7 +77,6 @@ export const RecordList: FC<IRecordList> = (props) => {
 
   const handleDrop = useCallback(
     (item: IDragItem) => {
-
       const data: ISetRecordOptions[] = [
         {
           fieldId: linkFieldId,
@@ -96,13 +89,13 @@ export const RecordList: FC<IRecordList> = (props) => {
         const sourceLinkData = item.data.parents?.reduce((sourceLinkData, parent) => {
           const {
             id: sourceId,
-            data: { linkIds }
+            data: { linkIds },
           } = parent;
 
           sourceLinkData.push({
             recordId: sourceId,
             fieldId: linkFieldId,
-            value: linkIds.filter((id) => id !== item.id),
+            value: linkIds.filter(id => id !== item.id),
           });
           return sourceLinkData;
         }, [] as ISetRecordOptions[]);
@@ -110,12 +103,15 @@ export const RecordList: FC<IRecordList> = (props) => {
         data.push(...(sourceLinkData || []));
       }
 
-      const changedNodeState = item.data.linkIds.reduce((prev: INodeStateMap, cur) => {
-        prev[cur] = {
-          handleState: NodeHandleState.Unhandled,
-        };
-        return prev;
-      }, { [item.id]: { handleState: NodeHandleState.Unhandled }});
+      const changedNodeState = item.data.linkIds.reduce(
+        (prev: INodeStateMap, cur) => {
+          prev[cur] = {
+            handleState: NodeHandleState.Unhandled,
+          };
+          return prev;
+        },
+        { [item.id]: { handleState: NodeHandleState.Unhandled }},
+      );
 
       setNodeStateMap(s => ({
         ...s,
@@ -127,23 +123,23 @@ export const RecordList: FC<IRecordList> = (props) => {
         data,
       });
     },
-    [linkFieldId, setNodeStateMap]
+    [linkFieldId, setNodeStateMap],
   );
 
-  const nodesToRender = nodes.filter(n => {
-    if (nodeStateMap && nodeStateMap[n.id]?.handleState === NodeHandleState.Handling) {
-      return false;
-    }
-    if (!isEmpty(keyword)) {
-      return n.data?.recordName.includes(keyword as unknown as string);
-    }
-    return true;
-  }).map((node) => <DragItem key={node.id} node={node} />);
+  const nodesToRender = nodes
+    .filter(n => {
+      if (nodeStateMap && nodeStateMap[n.id]?.handleState === NodeHandleState.Handling) {
+        return false;
+      }
+      if (!isEmpty(keyword)) {
+        return n.data?.recordName.includes((keyword as unknown) as string);
+      }
+      return true;
+    })
+    .map(node => <DragItem key={node.id} node={node} />);
 
   return (
-    <div 
-      className={styles.recordList}
-    >
+    <div className={styles.recordList}>
       <RecordMenu hideInsert />
       <DropWrapper
         onDrop={handleDrop}
@@ -160,13 +156,13 @@ export const RecordList: FC<IRecordList> = (props) => {
           <Typography variant="h6">{t(Strings.org_chart_record_list)}</Typography>
           <IconButton
             onClick={onClose}
-            icon={CloseMiddleOutlined}
+            icon={CloseOutlined}
             size="small"
           />
         </div>
         <ListDeprecate
           className={styles.list}
-          onClick={() => { }}
+          onClick={() => {}}
           searchProps={{
             onSearchChange: handleSearch,
             placeholder: t(Strings.search),
@@ -174,13 +170,7 @@ export const RecordList: FC<IRecordList> = (props) => {
         >
           {!disabled ? (
             <div className={styles.add}>
-              <Button
-                color={colors.fc6}
-                onClick={() => addRecord(viewId, rowsCount)}
-                block
-                size="small"
-                prefixIcon={<AddOutlined size={16} />}
-              >
+              <Button color={colors.fc6} onClick={() => addRecord(viewId, rowsCount)} block size="small" prefixIcon={<AddOutlined size={16} />}>
                 {t(Strings.add_record)}
               </Button>
             </div>
@@ -188,9 +178,7 @@ export const RecordList: FC<IRecordList> = (props) => {
             <Fragment />
           )}
           <div className={styles.listItems}>
-            {nodesToRender.length > 0 ? nodesToRender : (
-              <div className={styles.empty}>{t(Strings.empty_record)}</div>
-            )}
+            {nodesToRender.length > 0 ? nodesToRender : <div className={styles.empty}>{t(Strings.empty_record)}</div>}
           </div>
         </ListDeprecate>
       </DropWrapper>

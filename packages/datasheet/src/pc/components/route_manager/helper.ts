@@ -22,6 +22,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';
 import { store } from 'pc/store';
 import browserPath from 'path-browserify';
+import urlcat from 'urlcat';
 
 export function joinPath(pathParams: (string | undefined)[]) {
   const params: string[] = [];
@@ -32,6 +33,10 @@ export function joinPath(pathParams: (string | undefined)[]) {
       break;
     }
     params.push(param);
+  }
+
+  if (params.length === 2) {
+    return urlcat(params[0], params[1]);
   }
 
   return browserPath.join(...params);
@@ -71,7 +76,7 @@ const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, c
 export const getHistoryMethod = (method?: Method) => {
   switch (method) {
     case Method.Push: {
-      return wrapper((path: string) => Router.push(path));
+      return wrapper((path: string) => Router.push(path, undefined, { shallow: true }));
     }
     case Method.Replace: {
       return wrapper((path: string) => Router.replace(path));

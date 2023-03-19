@@ -39,7 +39,7 @@ export interface IKonvaGridProps {
   isExporting?: boolean;
 }
 
-export const KonvaGrid: FC<IKonvaGridProps> = memo((props) => {
+export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((props) => {
   const {
     instance,
     scrollState,

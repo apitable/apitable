@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'lodash';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
@@ -67,6 +68,7 @@ export class NodeShareSettingService {
    * @param shareId share ID
    * @param nodeId  node ID
    */
+  @Span()
   async checkNodeShareCanBeEdited(shareId: string, nodeId: string): Promise<void> {
     const props = await this.getNodeShareProps(shareId, nodeId);
     if (!props?.canBeEdited) {

@@ -32,7 +32,7 @@ interface IUrlDiscernProp {
  * @returns 
  * Splitting strings to add clickable functionality to URLs
  */
-export const UrlDiscern: React.FC<IUrlDiscernProp> = props => {
+export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = props => {
   const { value = '' } = props;
   const getValidValue = (originValue: string | null) => {
     if(originValue) {

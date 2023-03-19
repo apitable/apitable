@@ -38,7 +38,7 @@ interface IPopStructureProps {
 
 const SECURITY_PADDING = 30; 
 
-export const PopStructure: React.FC<IPopStructureProps> = props => {
+export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>> = props => {
   const { children, editing, height, className, style, width, onClose } = props;
 
   const [position, setPosition] = useState({});

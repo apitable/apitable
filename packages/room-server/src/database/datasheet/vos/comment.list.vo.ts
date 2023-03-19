@@ -18,7 +18,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { CommentDto } from '../dtos/comment.dto';
-import { UnitBaseInfoDto } from '../../../unit/dtos/unit.base.info.dto';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 
 export class CommentListVo {
   @ApiProperty({
@@ -31,5 +31,5 @@ export class CommentListVo {
     type: [CommentDto],
     description: 'list of units involved in record comments',
   })
-    units!: UnitBaseInfoDto[];
+    units!: UnitInfoDto[];
 }

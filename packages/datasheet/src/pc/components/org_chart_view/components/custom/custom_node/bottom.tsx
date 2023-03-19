@@ -27,7 +27,7 @@ interface IBottomProps {
   linkIds: string[];
 }
 
-export const Bottom: FC<IBottomProps> = ({
+export const Bottom: FC<React.PropsWithChildren<IBottomProps>> = ({
   id,
   linkIds,
 }) => {
@@ -40,7 +40,7 @@ export const Bottom: FC<IBottomProps> = ({
   return (
     <div 
       className={classNames(styles.collapse, {
-        [styles.horizontal]: horizontal,
+        [styles.horizontal!]: horizontal,
       })}
     >
       <svg

@@ -39,9 +39,8 @@ interface IExpandRecordModal {
   children: JSX.Element[];
 }
 
-const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
+const ExpandRecordModalBase: FC<React.PropsWithChildren<IExpandRecordModal>> = props => {
   const recordVision = useSelector(state => state.recordVision);
-  const hasRecordId = useSelector(state => Boolean(state.pageParams.recordId));
   useSelector(state => state.space.isSideRecordOpen);
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
   const isEditingCell = useSelector(state => Boolean(Selectors.getEditingCell(state)));
@@ -64,7 +63,7 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
   const renderCenterModal = () => {
     return (
       <Modal
-        visible
+        open
         wrapClassName={classNames(props.wrapClassName, 'centerExpandRecord', EXPAND_RECORD_CLS)}
         onCancel={props.onCancel}
         closeIcon={null}
@@ -85,8 +84,8 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
     );
   };
 
-  // forced centering (no recordId in route or forceCenter set and not in full screen mode)
-  if (!hasRecordId || (props.forceCenter && !isRecordFullScreen)) {
+  // forced centering (forceCenter set and not in full screen mode)
+  if (props.forceCenter && !isRecordFullScreen) {
     return renderCenterModal();
   }
 
@@ -102,6 +101,7 @@ const ExpandRecordModalBase: FC<IExpandRecordModal> = props => {
         {props.children}
       </div>
     );
+    // @ts-ignore
     return <Portal getContainer={() => document.querySelector(`#${DATASHEET_ID.SIDE_RECORD_PANEL}`) as HTMLElement}>{() => children}</Portal>;
   }
 

@@ -29,7 +29,7 @@ interface IFormatmember {
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormatMember: React.FC<IFormatmember> = (props: IFormatmember) => {
+export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (props: IFormatmember) => {
   const handleIsMultiChange = (checked: boolean) => {
     props.setCurrentField({
       ...props.currentField,

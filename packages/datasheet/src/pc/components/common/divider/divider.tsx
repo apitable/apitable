@@ -27,7 +27,7 @@ interface IDividerProps {
   className?: string;
 }
 
-export const Divider: React.FC<IDividerProps> = props => {
+export const Divider: React.FC<React.PropsWithChildren<IDividerProps>> = props => {
   const colors = useThemeColors();
   const { height = 1, color = colors.lineColor, marginTop = 8, marginBottom = 16 , className } = props;
   const style: React.CSSProperties = {

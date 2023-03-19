@@ -20,7 +20,7 @@ import { useThemeColors } from '@apitable/components';
 import { FC, memo } from 'react';
 import { EdgeProps, getBezierPath } from '@apitable/react-flow';
 
-export const BezierEdge: FC<EdgeProps> = memo(({
+export const BezierEdge: FC<React.PropsWithChildren<EdgeProps>> = memo(({
   id,
   sourceX,
   sourceY,

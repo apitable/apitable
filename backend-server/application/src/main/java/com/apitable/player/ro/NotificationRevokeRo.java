@@ -18,40 +18,37 @@
 
 package com.apitable.player.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-
 import javax.validation.constraints.NotBlank;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/** 
-* <p> 
-* Undo notification parameters
-* </p>
-*/
+/**
+ * <p>
+ * Undo notification parameters.
+ * </p>
+ */
 @Data
-@ApiModel("Undo notification parameters")
+@Schema(description = "Undo notification parameters")
 public class NotificationRevokeRo {
 
-    @ApiModelProperty(value = "Uuid of the notified user (optional)", position = 1 )
+    @Schema(description = "Uuid of the notified user (optional)")
     private List<String> uuid;
 
-    @ApiModelProperty(value = "Space ID (optional, either uuid or space ID)", example = "spcHKrd0liUcl", position = 5)
+    @Schema(description = "Space ID (optional, either uuid or space ID)", example = "spcHKrd0liUcl")
     protected String spaceId = null;
 
     @NotBlank(message = "Template ID cannot be empty")
-    @ApiModelProperty(value = "Template ID", example = "user_filed", required = true,
-            position = 2)
+    @Schema(description = "Template ID", example = "user_filed", required = true)
     private String templateId;
 
-    @ApiModelProperty(value = "Version number (optional)", example = "v0.12.1.release", position = 3)
+    @Schema(description = "Version number (optional)", example = "v0.12.1.release")
     private String version;
 
-    @ApiModelProperty(value = "Expiration time (optional) accurate to milliseconds", example = "1614587900000", position = 4)
+    @Schema(description = "Expiration time (optional) accurate to milliseconds", example =
+        "1614587900000")
     private String expireAt;
 
-    @ApiModelProperty(value = "Undo type: 1 read, 2 delete, read by default", example = "1614587900000", position = 5)
+    @Schema(description = "Undo type: 1 read, 2 delete, read by default", example = "1614587900000")
     private int revokeType = 1;
 }

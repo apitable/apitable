@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TextInput } from '@apitable/components';
+import { SearchOutlined } from '@apitable/icons';
+import { TextInput, ThemeName } from '@apitable/components';
 import { ISearchMemberData, Strings, t } from '@apitable/core';
 import cls from 'classnames';
 import Image from 'next/image';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
+import { getSocialWecomUnitName, isSocialWecom, WecomOpenData } from 'enterprise';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import SearchImage from 'static/icon/common/common_img_search_default.png';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { InfoCard } from '../index';
 import styles from './style.module.less';
-// @ts-ignore
-import { WecomOpenData } from 'enterprise';
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;
@@ -40,7 +39,7 @@ interface ISearchMemberListProps {
   placehodler?: string;
 }
 
-export const SearchMemberList: FC<ISearchMemberListProps> = props => {
+export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps>> = props => {
   const { searchResult, initInputText } = props;
   const [keyword, setKeyword] = useState('');
   const [listVisible, setListVisible] = useState(false);
@@ -48,6 +47,8 @@ export const SearchMemberList: FC<ISearchMemberListProps> = props => {
   const [isMemberInputFocus, setMemberInputFocus] = useState(false);
   const _isSocialWecom = isSocialWecom?.(spaceInfo);
   const wecomMemberNameVisible = _isSocialWecom && !isMemberInputFocus && keyword !== '' && !listVisible;
+  const themeName = useSelector(state => state.theme);
+  const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   useEffect(() => {
     initInputText && setKeyword(initInputText);
   }, [initInputText]);
@@ -107,7 +108,7 @@ export const SearchMemberList: FC<ISearchMemberListProps> = props => {
         placeholder={props.placehodler || t(Strings.placeholder_input_member_name)}
         onChange={(e:React.ChangeEvent<HTMLInputElement>) => onKeywordChange(e.target.value)}
         value={keyword}
-        prefix={<SearchIcon onClick={myStopPropagation} />}
+        prefix={<span onClick={myStopPropagation}><SearchOutlined /></span>}
         onClick={() => setMemberInputFocus(true)}
         onBlur={() => setMemberInputFocus(false)}
         block

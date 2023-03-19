@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getEnvVariables } from 'pc/utils/env';
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import style from '../style.module.less';
-import { IViewProperty, Selectors, Strings, t, DatasheetActions } from '@apitable/core';
+import { IViewProperty, Selectors, Strings, t, DatasheetActions, ViewType } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { ActionType, ViewItem } from '../view_item';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -36,7 +37,7 @@ interface IViewSwitcherProps {
   onClose: () => void;
 }
 
-export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
+export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProps>> = props => {
 
   const {
     viewCreatable,
@@ -57,7 +58,9 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
   const [keyword, setKeyword] = useState('');
 
   const searchedViews = useMemo(() => {
-    if (isEmpty(keyword)) { return; }
+    if (isEmpty(keyword)) {
+      return;
+    }
     return views.filter(view => view.name.includes(keyword));
   }, [views, keyword]);
 
@@ -68,17 +71,23 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
 
     switch (actionType) {
       case ActionType.Duplicate: {
-        if (!viewCreatable) { return; }
+        if (!viewCreatable) {
+          return;
+        }
         viewAction.duplicateView(view.id);
         break;
       }
       case ActionType.Rename: {
-        if (!viewRenamable) { return; }
+        if (!viewRenamable) {
+          return;
+        }
         viewAction.modifyView(view.id, view.name);
         break;
       }
       case ActionType.Delete: {
-        if (!viewRemovable) { return; }
+        if (!viewRemovable) {
+          return;
+        }
         if (view.id === activeViewId) {
           if (views.findIndex(item => item.id === view.id) === 0) {
             changeView(views[1].id);
@@ -90,7 +99,9 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
         break;
       }
       case ActionType.Add: {
-        if (!viewCreatable) { return; }
+        if (!viewCreatable) {
+          return;
+        }
         viewAction.addView(view);
         break;
       }
@@ -139,7 +150,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
     return (
       <ViewItem
         key={view.id}
-        activeViewId=''
+        activeViewId=""
         view={view}
         onChange={onChange}
         draggable={false}
@@ -156,7 +167,7 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
     viewAction.moveView(movingItemId, destination.index);
   };
 
-  const onAddView = (e, viewType) => {
+  const onAddView = (_e: any, viewType: ViewType) => {
     const _view = DatasheetActions.deriveDefaultViewProperty(
       Selectors.getSnapshot(store.getState())!, viewType, activeViewId,
     );
@@ -173,11 +184,13 @@ export const ViewSwitcher: React.FC<IViewSwitcherProps> = props => {
         }
         if (!validator(value)) {
           Message.error({
-            content: t(Strings.view_name_length_err),
+            content: t(Strings.view_name_length_err, {
+              maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+            }),
           });
           return;
         }
-        
+
         onChange(ActionType.Rename, { ..._view, name: value });
       },
     });

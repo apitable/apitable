@@ -46,7 +46,7 @@ export const FieldInput = ({ field, fop, onChange, value }: IFieldInputProps) =>
   // IExpression => IFilterCondition
   const condition = filterInfo.conditions[0];
 
-  const handleChangeFilter = useCallback((cb) => {
+  const handleChangeFilter = useCallback((cb: any) => {
     const newFilterInfo = cb(filterInfo);
     onChange(newFilterInfo.conditions[0].value);
   }, [filterInfo, onChange]);

@@ -18,33 +18,31 @@
 
 package com.apitable.workspace.ro;
 
+import com.apitable.core.support.deserializer.StringToLongDeserializer;
+import com.apitable.shared.validator.FieldRoleMatch;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import com.apitable.shared.validator.FieldRoleMatch;
-import com.apitable.core.support.deserializer.StringToLongDeserializer;
 
 /**
  * <p>
- * DataSheet field role editing request parameters
+ * DataSheet field role editing request parameters.
  * </p>
  */
 @Data
-@ApiModel("DataSheet field role editing request parameters")
+@Schema(description = "DataSheet field role editing request parameters")
 public class FieldRoleEditRo {
 
     @NotNull(message = "Organization unit cannot be empty")
-    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
+    @Schema(description = "Org Unit ID", type = "java.lang.String", required = true, example =
+        "761263712638")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;
 
     @NotBlank(message = "Role cannot be empty")
     @FieldRoleMatch
-    @ApiModelProperty(value = "Role", example = "editor", required = true, position = 3)
+    @Schema(description = "Role", example = "editor", required = true)
     private String role;
 }

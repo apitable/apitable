@@ -1,110 +1,8 @@
-/**
- * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-import { IDatasheetPack, IReduxState, Role } from 'core';
-import { IWidgetDashboardState, IWidgetDatasheetState, IWidgetState } from 'interface';
-import { ConfigConstant, IFieldMap, IFieldPermissionMap, Selectors } from 'core';
+import { Role } from 'core';
+import { IWidgetState } from 'interface';
+import { ConfigConstant, IFieldPermissionMap, Selectors } from 'core';
 import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
-import { widgetMessage } from 'iframe_message';
-import { IDashboardPack } from '@apitable/core';
-import { widgetStore } from '../root';
-import { expireCalcCache, refreshCalcCache } from '../calc_cache/action';
-
-/**
- * Get the datasheet state required by the widget in one go.
- */
-export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string): IWidgetDatasheetState | null => {
-  const datasheetPack = state.datasheetMap[datasheetId];
-  if (!datasheetPack) {
-    return null;
-  }
-  const datasheet = datasheetPack.datasheet;
-  if (!datasheet) {
-    return null;
-  }
-  // Part of the data is approximately equal to no data, can not be calculated, logarithmic datasheet filter will report an error.
-  if (datasheet.isPartOfData) {
-    return null;
-  }
-  const { snapshot, permissions, name, activeView } = datasheet;
-  const { collaborators, selection, activeRowInfo } = datasheetPack.client!;
-  return {
-    connected: true,
-    datasheet: {
-      id: datasheetId,
-      datasheetName: name,
-      datasheetId,
-      permissions,
-      snapshot,
-      fieldPermissionMap: datasheetPack.fieldPermissionMap,
-      activeView,
-    },
-    client: {
-      collaborators,
-      selection,
-      activeRowInfo,
-    },
-  };
-};
-
-export const iframeWidgetDatasheetSelector = (datasheetPack: IDatasheetPack): IWidgetDatasheetState | null => {
-  if (!datasheetPack) {
-    return null;
-  }
-  const datasheet = datasheetPack.datasheet;
-  if (!datasheet) {
-    return null;
-  }
-  const datasheetId = datasheetPack.datasheet?.id;
-  if (!datasheetId) {
-    return null;
-  }
-  const { snapshot, permissions, name, activeView, isPartOfData } = datasheet;
-  const { collaborators, selection } = datasheetPack.client!;
-  return {
-    connected: true,
-    datasheet: {
-      id: datasheetId,
-      datasheetName: name,
-      datasheetId,
-      permissions,
-      snapshot,
-      fieldPermissionMap: datasheetPack.fieldPermissionMap,
-      activeView,
-      isPartOfData,
-    },
-    client: {
-      collaborators,
-      selection,
-    },
-  };
-};
-
-export const iframeWidgetDashboardSelector = (dashboardPack?: IDashboardPack | null): IWidgetDashboardState | null => {
-  if (!dashboardPack || !dashboardPack.dashboard) {
-    return null;
-  }
-  return {
-    permissions: dashboardPack.dashboard.permissions,
-    collaborators: dashboardPack.client.collaborators,
-  };
-};
 
 export const isCurrentDatasheetActive = (state: IWidgetState, currentDatasheetId?: string) => {
   return currentDatasheetId === state.pageParams?.datasheetId;
@@ -138,39 +36,69 @@ export const getView = createCachedSelector(
     (state: IWidgetState, _viewId: string, datasheetId: string) => getViews(state, datasheetId),
     getFieldPermissionMap,
     (_state: IWidgetState, viewId: string) => viewId,
+    (state: IWidgetState) => {
+      const mirrorId = state.widget?.snapshot.sourceId;
+      return mirrorId?.startsWith('mir') && state.mirrorMap?.[mirrorId]?.mirror;
+    }
   ],
-  (views, fieldPermissionMap, viewId) => {
+  (views, fieldPermissionMap, viewId, mirror) => {
     if (!views) {
       return;
     }
-    const view = views.find(view => view.id == viewId) || views[0]!;
+    const view = views.find(view => view.id == viewId) || views[0];
+
+    if (!view) {
+      return;
+    }
+
+    let columns = view.columns.filter(column => {
+      const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
+      return fieldRole !== ConfigConstant.Role.None;
+    });
+
+    if (typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror && mirror) {
+      const originViewHiddenColumnIds = columns.filter(item => item.hidden).map(item => item.fieldId) || [];
+      const mirrorColumns = mirror.temporaryView?.columns;
+      const mirrorFilterColumns = mirrorColumns?.filter(item => {
+        return !originViewHiddenColumnIds.includes(item.fieldId);
+      });
+
+      if (!mirrorFilterColumns) {
+        // If mirrorFilterColumns does not exist, it means that the user has not configured a trial view in the mirror.
+        // In this case, only the hidden columns in the original view need to be filtered.
+        columns = view.columns.filter(col => !col.hidden);
+      }
+    }
 
     return {
       ...view,
-      columns: view.columns.filter(column => {
-        const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
-        return fieldRole !== ConfigConstant.Role.None;
-      }),
+      columns
     };
-  },
-)((state, viewId?: string, datasheetId?: string) => viewId || getViews(state, datasheetId)?.[0]!.id);
+  }
+)((state, viewId?: string, datasheetId?: string) => viewId || getViews(state, datasheetId)?.[0]?.id);
 
 export const getFieldMap = createSelector(
   [(state: IWidgetState, useDatasheetId: string | undefined) => getSnapshot(state, useDatasheetId)?.meta, getFieldPermissionMap],
   (meta, fieldPermissionMap) => {
-    const _fieldMap: IFieldMap = {};
+    const _fieldMap = {};
     const fieldMap = meta?.fieldMap;
     if (!fieldMap) {
       return;
     }
+    if (!fieldPermissionMap) {
+      return fieldMap;
+    }
     for (const fieldId in fieldMap) {
-      const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
-      if (!fieldRole || fieldRole !== ConfigConstant.Role.None) {
-        _fieldMap[fieldId] = fieldMap[fieldId]!;
+      const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, fieldId);
+      if (fieldRole === Role.None) {
+        // room-server currently don't do data filter for no permission fields,
+        // so do it in selector
+        continue;
       }
+      _fieldMap[fieldId] = fieldMap[fieldId];
     }
     return _fieldMap;
-  },
+  }
 );
 
 export const getWidgetDatasheet = (state: IWidgetState, id?: string) => {
@@ -186,16 +114,17 @@ export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | 
 };
 
 // Get the currently active view.
-export const getActiveView = (state: IWidgetState, id?: string) => {
+export const getActiveViewId = (state: IWidgetState, id?: string) => {
   const datasheet = getWidgetDatasheet(state, id);
-  if (!datasheet) {
-    return undefined;
+  const views = datasheet?.snapshot.meta.views;
+  const pageViewId = state.pageParams?.viewId;
+  if (!views) {
+    return pageViewId;
   }
-  const viewList = datasheet && datasheet.snapshot.meta.views;
-  if (viewList.findIndex(item => item.id === datasheet.activeView) !== -1) {
-    return datasheet.activeView;
+  if (!views.find(item => item.id === pageViewId)) {
+    return views[0]?.id;
   }
-  return viewList[0]!.id;
+  return pageViewId;
 };
 
 export const getWidgetDatasheetPack = (state: IWidgetState, id?: string) => {
@@ -212,28 +141,6 @@ export const getSelection = (state: IWidgetState) => {
 
 export const getPermissions = (state: IWidgetState, id?: string) => {
   return getWidgetDatasheet(state, id)?.permissions;
-};
-
-export const getVisibleRowsCalcCache = (state: IWidgetState, datasheetId: string, viewId: string) => {
-  const { cache, expire } = state.calcCache?.[datasheetId]?.[viewId] || {};
-  if (!cache && getViewById(state, datasheetId, viewId)) {
-    // Prevent repeated initialization.
-    widgetStore.dispatch(
-      refreshCalcCache({
-        datasheetId,
-        viewId,
-        cache: [],
-      }),
-    );
-    widgetMessage.initCache(datasheetId, viewId);
-    return null;
-  }
-  if (expire) {
-    // Avoid repeatedly sending messages that update the cache due to caching de-caching.
-    widgetStore.dispatch(expireCalcCache({ datasheetId, viewId, expire: false }));
-    widgetMessage.initCache(datasheetId, viewId);
-  }
-  return cache;
 };
 
 export const getViewById = (state: IWidgetState, datasheetId: string, viewId: string) => {
@@ -258,4 +165,10 @@ export const getVisibleColumns = (state: IWidgetState, datasheetId: string, view
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
     return !hidden && fieldRole !== ConfigConstant.Role.None;
   });
+};
+
+export const getPrimaryFieldId = (state: IWidgetState, datasheetId?: string) => {
+  const snapshot = getSnapshot(state, datasheetId);
+  const view = snapshot?.meta.views[0];
+  return view?.columns[0]?.fieldId;
 };

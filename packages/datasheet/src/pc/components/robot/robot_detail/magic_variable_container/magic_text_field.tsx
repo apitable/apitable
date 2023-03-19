@@ -39,7 +39,7 @@ import { MagicVariableContainer } from './magic_variable_container';
 import styles from './styles.module.less';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 
-const DefaultElement = props => {
+const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
 };
 
@@ -94,14 +94,14 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     }
   }, [isOpen, editor]);
 
-  const updateFormValue = useCallback((value) => {
+  const updateFormValue = useCallback((value: any) => {
     // console.log('1.Form input SlateValue', value);
     const { value: transformedValue } = transformSlateValue(value);
     // console.log('2.Form input TransformSlateValue', transformedValue, isMagicVariable);
     onChange && onChange(transformedValue);
   }, [onChange]);
 
-  const handleKeyDown = useCallback((event) => {
+  const handleKeyDown = useCallback((event: any) => {
     inputRef.current && clearTimeout(inputRef.current);
     if (event.key === '/') {
       Transforms.insertText(editor, '/');
@@ -114,7 +114,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     return false;
   }, [setOpen, editor]);
 
-  const handleEditorChange = (value) => {
+  const handleEditorChange = (value: any) => {
     setValue(value);
   };
 
@@ -133,7 +133,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     return nodeOutputSchema;
   });
 
-  const renderElement = (props) => {
+  const renderElement = (props: any) => {
     switch (props.element.type) {
       case 'magicVariable':
         return <MagicVariableElement {...props} nodeOutputSchemaList={nodeOutputSchemaList} />;

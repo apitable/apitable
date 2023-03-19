@@ -33,7 +33,7 @@ interface IRecordPageTurnProps {
   isMobile?: boolean;
 }
 
-export const RecordPageTurn: React.FC<IRecordPageTurnProps> = props => {
+export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnProps>> = props => {
   const { activeRecordId, recordIds, switchRecord, isMobile } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
   const [expandRecordIndex, setExpandRecordIndex] = useState(-1);

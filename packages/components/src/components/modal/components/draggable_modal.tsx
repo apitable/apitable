@@ -27,7 +27,7 @@ const CustomTitle = styled.div`
   cursor: move;
 `;
 
-export const DraggableModal: React.FC<Omit<IModalProps, 'modelRender'>> = props => {
+export const DraggableModal: React.FC<React.PropsWithChildren<Omit<IModalProps, 'modelRender'>>> = props => {
 
   const [disabled, setDisabled] = useState(false);
 

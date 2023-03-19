@@ -24,7 +24,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ThemeWrapper: React.FC = (props) => {
+const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', { defaultValue: (getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName) || ThemeName.Light });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const ThemeWrapper: React.FC = (props) => {
     const themeMedia = window.matchMedia('(prefers-color-scheme: light)');
     // Reset the theme when the systemTheme state changes to open
     setTheme(themeMedia.matches ? ThemeName.Light : ThemeName.Dark);
-    const listener = e => {
+    const listener = (e: MediaQueryListEvent) => {
       if (e.matches) {
         setTheme(ThemeName.Light);
       } else {

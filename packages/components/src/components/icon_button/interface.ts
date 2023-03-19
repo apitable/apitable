@@ -43,7 +43,7 @@ export interface IIconButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   /** 
    * Icon component
    */
-  icon: React.FC<IIconProps>;
+  icon: React.FC<React.PropsWithChildren<IIconProps>>;
   /**
    * Icon size
    */

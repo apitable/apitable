@@ -26,7 +26,7 @@ interface IProps {
   datasheetId?: string;
 }
 
-export const SuspensionPanel: FC<IProps> = ({ shareId, datasheetId }) => {
+export const SuspensionPanel: FC<React.PropsWithChildren<IProps>> = ({ shareId, datasheetId }) => {
 
   return (
     <div className={styles.suspensionPanel}>

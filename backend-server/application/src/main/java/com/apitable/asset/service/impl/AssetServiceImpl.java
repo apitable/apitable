@@ -18,6 +18,7 @@
 
 package com.apitable.asset.service.impl;
 
+import com.apitable.shared.config.properties.ConstProperties.OssBucketInfo;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,6 +146,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     public void checkBeforeUpload(String nodeId, String secret) {
+        if (!humanVerificationServiceFacade.isEnabled()) {
+            return;
+        }
         // get api key
         String apiKey = ApiHelper.getApiKey(HttpContextUtil.getRequest());
         // check whether the api key is valid
@@ -402,10 +406,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     public Long save(String checksum, String headSum, long size, String path, String mimeType, Integer height, Integer width, String preview) {
         log.info("save records of base attachments");
+        OssBucketInfo ossBucketInfo = constProperties.getOssBucketByAsset();
         AssetEntity entity = AssetEntity.builder()
                 .checksum(checksum)
                 .headSum(headSum)
-                .bucket(constProperties.getOssBucketByAsset().getType())
+                .bucket(ossBucketInfo.getType())
+                .bucketName(ossBucketInfo.getBucketName())
                 .fileSize((int) size)
                 .fileUrl(path)
                 .mimeType(mimeType)

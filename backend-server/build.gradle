@@ -1,7 +1,7 @@
 plugins {
   id("io.spring.dependency-management")
-  id("org.jetbrains.kotlin.jvm") apply false
-  // https://youtrack.jetbrains.com/issue/KT-30276
+  id("org.jetbrains.kotlin.jvm") apply false // https://youtrack.jetbrains.com/issue/KT-30276
+  id "checkstyle"
 }
 
 apply from: 'lib.gradle'
@@ -20,7 +20,8 @@ allprojects {
 
 subprojects {
   apply plugin: 'io.spring.dependency-management'
-  
+  apply plugin: 'checkstyle'
+
   dependencyManagement {
     imports {
       mavenBom("org.springframework.boot:spring-boot-dependencies:${spring_boot_version}")
@@ -33,7 +34,7 @@ subprojects {
     }
   }
   
-  configurations.all {
+  configurations.configureEach {
     resolutionStrategy {
       cacheChangingModulesFor 0, 'seconds'
     }

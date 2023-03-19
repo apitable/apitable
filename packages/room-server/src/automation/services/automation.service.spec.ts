@@ -28,6 +28,7 @@ import { CommonException } from '../../shared/exception';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
+import { RobotRobotService } from './robot.robot.service';
 
 describe('RobotActionTypeServiceTest', () => {
   let module: TestingModule;
@@ -35,8 +36,9 @@ describe('RobotActionTypeServiceTest', () => {
   let automationRobotRepository: AutomationRobotRepository;
   let automationRunHistoryRepository: AutomationRunHistoryRepository;
   let service: AutomationService;
+  let robotService: RobotRobotService;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
@@ -51,6 +53,12 @@ describe('RobotActionTypeServiceTest', () => {
             selectSpaceIdByNodeId: jest.fn(),
           },
         },
+        {
+          provide: RobotRobotService,
+          useValue: {
+            getRobotById: jest.fn(),
+          },
+        },
         AutomationRobotRepository,
         AutomationRunHistoryRepository,
       ],
@@ -59,6 +67,7 @@ describe('RobotActionTypeServiceTest', () => {
     automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
     automationRunHistoryRepository = module.get<AutomationRunHistoryRepository>(AutomationRunHistoryRepository);
     service = module.get<AutomationService>(AutomationService);
+    robotService = module.get<RobotRobotService>(RobotRobotService);
   });
 
   it('should be defined', () => {
@@ -73,19 +82,19 @@ describe('RobotActionTypeServiceTest', () => {
     service.checkCreateRobotPermission('resourceId');
   });
 
-  it('should be check create robot permission throw exception', async () => {
+  it('should be check create robot permission throw exception', async() => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(ConfigConstant.MAX_ROBOT_COUNT_PER_DST + 1);
-    await expect(async () => await service.checkCreateRobotPermission('resourceId')).rejects.toThrow(
+    await expect(async() => await service.checkCreateRobotPermission('resourceId')).rejects.toThrow(
       CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT.message,
     );
   });
 
-  it('handleTask should be execute', async () => {
+  it('handleTask should be execute', async() => {
     jest.spyOn(automationRobotRepository, 'getResourceIdByRobotId').mockResolvedValue('datasheetId');
     jest.spyOn(nodeService, 'selectSpaceIdByNodeId').mockResolvedValue({ spaceId: 'spaceId' });
     jest.spyOn(automationRunHistoryRepository, 'create').mockImplementation();
     jest.spyOn(automationRunHistoryRepository, 'save').mockImplementation();
-    jest.spyOn(automationRobotRepository, 'getRobotById').mockResolvedValue({
+    jest.spyOn(robotService, 'getRobotById').mockResolvedValue({
       id: 'robotId',
       triggerId: 'triggerId',
       triggerTypeId: 'triggerTypeId',
@@ -141,7 +150,7 @@ describe('RobotActionTypeServiceTest', () => {
       },
     };
 
-    await service.handleTask('robotId', { input: {}, output: {} });
+    await service.handleTask('robotId', { input: {}, output: {}});
     delete services['test'];
   });
 });

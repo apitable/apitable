@@ -45,19 +45,19 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a>
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
   简体中文
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ 快速开始
@@ -75,7 +75,7 @@
 ## 🔥 功能特性
 
 <table>
-  
+
   <tr>
     <th>
       <a href="#">实时协作</a>
@@ -160,9 +160,9 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
   - `基于空间(Space)`：使用分离的工作空间来代替基于 App/Base 的结构，使无限的表格连接成为可能。
   - `暗色模式` 和主题定制。
-  - `7 种视图类型`: 网格视图(Datasheet) / 图库视图 / 脑图视图/ 看板视图 / 全功能网格视图 / 日历视图
+  - `7 种视图类型`: 网格视图(数据表) / 图库视图 / 脑图视图/ 看板视图 / 全功能网格视图 / 日历视图
   - 一键式 API 面板
-- 装备齐全
+- 开箱即用
   - 内置的 10+ 个官方模板
   - 机器人自动化和自定义配置
   - 商业化智能(BI)仪表板
@@ -237,9 +237,15 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 
 ## 安装
 
-请确保您已在本地安装 `docker` & `curl` 。
+在您开始之前：
 
-如果您的计算机安装了 Docker ，打开您的终端并这样运行：
+- 请确保您的电脑已安装`docker` 和 `docker-compose v2 ` 。
+- 建议使用配置 4核CPU / 8 GB 内存或更多。
+- 已安装一个带有基础功能（如curl）的命令行工具。
+- 原生arm64架构（苹果芯片）容器镜像还没有准备好，或可能导致性能不佳。
+
+
+使用docker compose来安装apitable，打开您的终端并运行以下代码：
 
 ```
 curl https://apitable.github.io/install.sh | bash
@@ -251,13 +257,21 @@ curl https://apitable.github.io/install.sh | bash
 
 ## 🧑‍💻 贡献
 
-欢迎并感谢您有兴趣为 APITable 作出贡献！
+欢迎并感谢您为 APITable 作出贡献！
 
-除了编写代码，您还有许多方法可以做出贡献。
+除了编写代码，您还有许多方法可以帮助 APITable 项目的茁壮成长。
 
-你可以阅读这个仓库的 [贡献指南](./CONTRIBUTING.md) 来学习如何贡献.
+你可以通过如下方式给项目提供帮助:
 
-这是一个帮助您为 APITable 作出贡献的快速指南。
+- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
+- 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
+- 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
+- 完善、增添项目的 [Documentation](./docs) 
+- 当然还有无限欢迎的 [Contributing Code](./docs/contribute/developer-guide.md)
+
+更多详情，请查看 [贡献指南](./CONTRIBUTING.md) 。
+
+这是一份入门指南，让您快速了解如何为 APITable 的茁壮成长贡献力量。
 
 ### 开发环境
 
@@ -332,7 +346,7 @@ APITable 可适用这些通用的约定：
 - **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
 - **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
 
-无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 talent@apitable
+无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 <talent@apitable.com>。
 
 ## 📺 截图
 

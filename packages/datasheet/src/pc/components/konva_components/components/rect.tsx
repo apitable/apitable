@@ -23,7 +23,7 @@ import { FC, memo, useContext } from 'react';
 
 const RectComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/rect'), { ssr: false });
 
-export const Rect: FC<ShapeConfig> = memo((props) => {
+export const Rect: FC<React.PropsWithChildren<ShapeConfig>> = memo((props) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const {

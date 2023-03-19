@@ -18,6 +18,11 @@
 
 package com.apitable.workspace.service.impl;
 
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.vo.NodeInfoTreeVo;
+import com.apitable.workspace.vo.NodePathVo;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,13 +155,138 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testGetPathParentNode() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        List<String> rootPathParentNode = iNodeService.getPathParentNode(rootNodeId);
+        assertThat(rootPathParentNode).isEmpty();
+
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<String> pathParentNodes = iNodeService.getPathParentNode(secondLevelFolderId);
+        assertThat(pathParentNodes.size()).isEqualTo(2);
+    }
+
+    @Test
+    void testGetParentPathByNodeId() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<NodePathVo> parentPathNodes = iNodeService.getParentPathByNodeId(spaceId, secondLevelFolderId);
+        assertThat(parentPathNodes.size()).isEqualTo(3);
+
+        NodePathVo nodePathVo = parentPathNodes.get(0);
+        assertThat(nodePathVo.getNodeId()).isEqualTo(rootNodeId);
+        String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+        assertThat(nodePathVo.getNodeName()).isEqualTo(spaceName);
+    }
+
+    @Test
+    void testGetParentPathNodes() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        List<NodeBaseInfoDTO> parentPathNodes =
+            iNodeService.getParentPathNodes(Collections.singletonList(rootNodeId), false);
+        assertThat(parentPathNodes.size()).isEqualTo(0);
+        // first level folder id
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("node")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        String firstLevelFolderId2 = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<NodeBaseInfoDTO> secondLevelParentPathNodes =
+            iNodeService.getParentPathNodes(Collections.singletonList(secondLevelFolderId), false);
+        assertThat(secondLevelParentPathNodes.size()).isEqualTo(2);
+        // third level folder id
+        op.setParentId(secondLevelFolderId);
+        String thirdLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(firstLevelFolderId2);
+        nodeIds.add(thirdLevelFolderId);
+        List<NodeBaseInfoDTO> parentPathNodes1 = iNodeService.getParentPathNodes(nodeIds, true);
+        assertThat(parentPathNodes1.size()).isEqualTo(5);
+        // The upper and lower level nodes exist at the same time
+        nodeIds.add(firstLevelFolderId);
+        List<NodeBaseInfoDTO> parentPathNodes2 = iNodeService.getParentPathNodes(nodeIds, true);
+        assertThat(parentPathNodes2.size()).isEqualTo(5);
+    }
+
+    @Test
+    void testGetNodeIdsInNodeTreeWithAssignDepth() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("node")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        // second level datasheet id
+        op.setType(NodeType.DATASHEET.getNodeType());
+        iNodeService.createNode(userSpace.getUserId(), spaceId, op);
+        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 2);
+        assertThat(nodeIds.size()).isEqualTo(4);
+    }
+
+    @Test
+    void testGetNodeTreeWithAssignSortAtSameLevel() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long userId = userSpace.getUserId();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("node")
+            .build();
+        String thirdFolderId = iNodeService.createNode(userId, spaceId, op);
+        String firstFolderId = iNodeService.createNode(userId, spaceId, op);
+        op.setPreNodeId(firstFolderId);
+        String secondFolderId = iNodeService.createNode(userId, spaceId, op);
+
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        NodeInfoTreeVo nodeTree = iNodeService.getNodeTree(spaceId, rootNodeId, memberId, 2);
+        assertThat(nodeTree.getChildrenNodes().size()).isEqualTo(3);
+        assertThat(nodeTree.getChildrenNodes().get(0).getNodeId()).isEqualTo(firstFolderId);
+        assertThat(nodeTree.getChildrenNodes().get(1).getNodeId()).isEqualTo(secondFolderId);
+        assertThat(nodeTree.getChildrenNodes().get(2).getNodeId()).isEqualTo(thirdFolderId);
+    }
+
+    @Test
     void testGetChildNodesByNodeIdWithNullType() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         NodeOpRo op = new NodeOpRo().toBuilder()
                 .parentId(rootNodeId)
                 .type(NodeType.DATASHEET.getNodeType())
-                .nodeName("folder")
+                .nodeName("datasheet")
                 .build();
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
@@ -172,7 +302,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         NodeOpRo op = new NodeOpRo().toBuilder()
                 .parentId(rootNodeId)
                 .type(NodeType.DATASHEET.getNodeType())
-                .nodeName("folder")
+                .nodeName("datasheet")
                 .build();
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());

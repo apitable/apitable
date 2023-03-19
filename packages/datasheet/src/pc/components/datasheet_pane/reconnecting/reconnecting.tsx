@@ -19,12 +19,12 @@
 import * as React from 'react';
 import { Modal } from 'antd';
 import { useSelector } from 'react-redux';
-import WarningIcon from 'static/icon/common/common_icon_warning.svg';
 import { useThemeColors } from '@apitable/components';
 import styles from './styles.module.less';
 import { t, Strings } from '@apitable/core';
+import { WarnCircleFilled } from '@apitable/icons';
 
-export const Reconnecting: React.FC = () => {
+export const Reconnecting: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const reconnecting = useSelector(state => {
     return state.space.reconnecting;
@@ -42,7 +42,7 @@ export const Reconnecting: React.FC = () => {
         pointerEvents: 'none',
       }}
       footer={null}
-      title={<><WarningIcon fill={colors.warningColor} /> {t(Strings.disconnect_from_the_server)}</>}
+      title={<><WarnCircleFilled color={colors.warningColor} /> {t(Strings.disconnect_from_the_server)}</>}
     >
       {t(Strings.try_my_best_effort_to_reconnect)}
     </Modal>

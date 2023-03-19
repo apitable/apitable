@@ -28,7 +28,7 @@ interface ISelectFieldParam {
 // Fill in the missing fields in the radio op
 export const supplySelectField = (props: ISelectFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
-  if (get(field, 'property.options', []).some(op => oiOrOd === op.id)) {
+  if (get(field, 'property.options', []).some((op: any) => oiOrOd === op.id)) {
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as ISelectField[];
@@ -44,7 +44,7 @@ interface IMultiSelectOrMemberFieldParam {
 // Complete the missing fields in the multiple choice op
 export const supplyMultiSelectField = (props: IMultiSelectOrMemberFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
-  if (get(field, 'property.options', []).some(op => oiOrOd[0] === op.id)) {
+  if (get(field, 'property.options', []).some((op: any) => oiOrOd[0] === op.id)) {
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as IMultiSelectField[];
@@ -54,7 +54,7 @@ export const supplyMultiSelectField = (props: IMultiSelectOrMemberFieldParam) =>
 // Completes a missing field in a member
 export const supplyMemberField = (props: IMultiSelectOrMemberFieldParam) => {
   const { cacheFieldOptions, fieldId, oiOrOd, field } = props;
-  if (get(field, 'property.unitIds', []).some(op => oiOrOd[0] === op.id)) {
+  if (get(field, 'property.unitIds', []).some((op: any) => oiOrOd[0] === op.id)) {
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as IMemberField[];

@@ -17,14 +17,13 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { DateRange, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
-import { NotificationSmallOutlined } from '@apitable/icons';
+import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone } from '@apitable/core';
+import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import style from './style.module.less';
 
 interface IPickerContentProps {
@@ -38,6 +37,8 @@ interface IPickerContentProps {
   onClear?: () => void;
   dateFormat: string;
   dateTimeFormat: string;
+  timeZone?: string;
+  includeTimeZone?: boolean;
   alarm?: WithOptional<IRecordAlarmClient, 'id'>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -50,7 +51,7 @@ interface ICustomChildren {
   arrowIcon?: JSX.Element | null;
 }
 
-export const CustomChildren: React.FC<ICustomChildren> = props => {
+export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> = props => {
   const {
     onClick,
     children,
@@ -75,13 +76,13 @@ export const CustomChildren: React.FC<ICustomChildren> = props => {
         {children}
       </span>
       {
-        arrowIcon !== undefined ? arrowIcon : <IconArrow width={16} height={16} fill={colors.fourthLevelText} />
+        arrowIcon !== undefined ? arrowIcon : <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
       }
     </div>
   );
 };
 
-const PickerContentBase: FC<IPickerContentProps> = (props) => {
+const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (props) => {
   const colors = useThemeColors();
   const {
     value,
@@ -96,6 +97,8 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
     dateTimeFormat,
     alarm,
     setVisible,
+    includeTimeZone,
+    timeZone
   } = props;
 
   const alarmRealTime = useMemo(() => {
@@ -108,12 +111,22 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
     return alarm?.time || alarmDate.format('HH:mm');
   }, [alarm?.subtract, alarm?.time, value]);
 
-  const getDefaultValue = ()=>{
-    if(value){
-      return dayjs(value).format(mode == 'day' ? dateFormat : dateTimeFormat);
+  const getDefaultValue = () =>{
+    let abbr = '';
+    if (includeTimeZone) {
+      const tz = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
-    return mode == 'day' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase();
+    if(value){
+      const dateTime = timeZone ? dayjs(value).tz(timeZone) : dayjs(value);
+      return `${dateTime.format(mode == 'day' ? dateFormat : dateTimeFormat)}${abbr}`;
+    }
+    return `${mode == 'day' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase()}${abbr}`;
   };
+
+  const diff = timeZone ? diffTimeZone(timeZone) : 0;
+
+  const diffDate = dayjs(value).valueOf() - diff;
 
   return (
     <div className={style.mobileDatePicker}>
@@ -125,7 +138,7 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
         min={new Date(DateRange.MinTimeStamp)}
         max={new Date(DateRange.MaxTimeStamp)}
         precision={mode}
-        value={value}
+        value={dayjs(diffDate).toDate()}
         visible={editable && visible}
         onClose={() => {
           setVisible(false);
@@ -159,7 +172,7 @@ const PickerContentBase: FC<IPickerContentProps> = (props) => {
       />
       {Boolean(alarm) && (
         <div className={style.alarm}>
-          <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
+          <NotificationOutlined color={colors.deepPurple[500]} size={14} />
           <span className={style.alarmTime}>
             {alarmRealTime}
           </span>

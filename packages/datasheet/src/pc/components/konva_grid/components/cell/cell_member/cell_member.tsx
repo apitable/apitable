@@ -18,7 +18,7 @@
 
 import { getNextShadeColor } from '@apitable/components';
 import { KONVA_DATASHEET_ID, MemberType } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -40,9 +40,9 @@ import { IRenderContentBase } from '../interface';
 import { Avatar } from './avatar';
 
 const AddOutlinedPath = AddOutlined.toString();
-const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
+const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellMember: FC<ICellProps> = props => {
+export const CellMember: FC<React.PropsWithChildren<ICellProps>> = props => {
   const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
@@ -65,7 +65,7 @@ export const CellMember: FC<ICellProps> = props => {
   const avatarSize = AvatarSize.Size20;
 
   function deleteItem(index?: number) {
-    let value: string[] | null = (cellValue as string[]).filter((item, idx) => {
+    let value: string[] | null = (cellValue as string[]).filter((_item, idx) => {
       return idx !== index;
     });
     if (value.length === 0) {
@@ -138,16 +138,18 @@ export const CellMember: FC<ICellProps> = props => {
                     y={4}
                     data={CloseSmallOutlinedPath}
                     fill={colors.fc2}
-                    size={16}
+                    scaleX={0.75}
+                    scaleY={0.75}
+                    transformsEnabled={'all'}
                     background={iconBg}
                     backgroundHeight={16}
                     backgroundWidth={16}
                     cornerRadius={2}
-                    onTap={e => deleteItem(index)}
-                    onMouseDown={e => {
+                    onTap={() => deleteItem(index)}
+                    onMouseDown={() => {
                       setCloseIconDownId(id);
                     }}
-                    onMouseUp={e => {
+                    onMouseUp={() => {
                       if (closeIconDownId) {
                         deleteItem(index);
                       }

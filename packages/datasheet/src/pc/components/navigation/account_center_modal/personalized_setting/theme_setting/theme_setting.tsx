@@ -37,14 +37,14 @@ const options = [{
   value: 'system'
 }];
 
-export const ThemeSetting: FC = () => {
+export const ThemeSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {
     defaultValue: getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName || ThemeName.Light
   });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
 
-  const handleSelected = (option) => {
+  const handleSelected = (option: any) => {
     let newValue: ThemeName | 'system' = option.value;
     if (newValue === (systemTheme === SystemTheme.Open ? 'system' : theme)) {
       return;

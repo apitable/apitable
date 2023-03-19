@@ -18,34 +18,35 @@
 
 package com.apitable.organization.ro;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
-
 /**
- * Adjust member department request parameters
+ * Adjust member department request parameters.
  */
 @Data
-@ApiModel("Adjust member department request parameters")
+@Schema(description = "Adjust member department request parameters")
 public class UpdateMemberTeamRo {
 
     @NotEmpty
-    @ApiModelProperty(value = "Member ID", required = true, dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 1)
+    @Schema(description = "Member ID", required = true, type = "List", example = "[\"10101\","
+        + "\"10102\",\"10103\",\"10104\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> memberIds;
 
-    @ApiModelProperty(value = "The original department ID list can be blank. If it is blank, it means the root department", dataType = "java.lang.String", example = "271632", position = 2)
+    @Schema(description = "The original department ID list can be blank. If it is blank, it means"
+        + " the root department", type = "java.lang.String", example = "271632")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long preTeamId;
 
     @NotEmpty
-    @ApiModelProperty(value = "Adjusted Department ID List", required = true, dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 3)
+    @Schema(description = "Adjusted Department ID List", required = true, type = "List", example
+        = "[\"10101\",\"10102\",\"10103\",\"10104\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> newTeamIds;
 }

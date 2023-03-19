@@ -39,7 +39,7 @@ import { exportDatasheetBase } from 'pc/utils';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
@@ -65,10 +65,24 @@ const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_p
   ),
 });
 
-const DatasheetMain = ({
-  loading, datasheetErrorCode, isNoPermission, shareId, datasheetId,
-  preview, testFunctions, handleExitTest, mirrorId, embedId
-}) => {
+interface IDatasheetMain {
+  loading: boolean;
+  datasheetErrorCode?: number | null;
+  isNoPermission: boolean;
+  shareId?: string;
+  datasheetId?: string;
+  preview?: any;
+  testFunctions: any;
+  handleExitTest: any;
+  mirrorId?: string;
+  embedId?: string;
+}
+
+const DatasheetMain = (props: IDatasheetMain) => {
+  const {
+    loading, datasheetErrorCode, isNoPermission, shareId, datasheetId,
+    preview, testFunctions, handleExitTest, mirrorId, embedId
+  } = props;
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
@@ -91,7 +105,7 @@ const DatasheetMain = ({
             {!mirrorId && (
               <>
                 {isShowViewbar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-                  <TabBar loading={loading} />
+                  <TabBar loading={loading}/>
                 </ComponentDisplay>}
                 <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
                   <MobileToolBar loading={loading} />
@@ -134,11 +148,8 @@ const DefaultPanelWidth = {
 
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
 
-const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
-  const { shareId, datasheetId, templateId, mirrorId, embedId } = useSelector(state => {
-    const { shareId, datasheetId, templateId, mirrorId, embedId } = state.pageParams;
-    return { shareId, datasheetId, templateId, mirrorId, embedId };
-  }, shallowEqual);
+const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>> = props => {
+  const { shareId, datasheetId, templateId, mirrorId, embedId } = useSelector(state => {return state.pageParams;});
   const isLogin = useSelector(state => state.user.isLogin);
 
   const isShareMode = shareId || templateId || (embedId && !isLogin);
@@ -175,6 +186,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
   });
+
   useMountWidgetPanelShortKeys();
 
   const [isDevToolsOpen, { toggle: toggleDevToolsOpen, set: setDevToolsOpen }] = useToggle();
@@ -193,7 +205,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   useEffect(() => {
     if (isApiPanelOpen) {
       dispatch(StoreActions.toggleSideRecord(false));
-      closeAllExpandRecord();
+      closeAllExpandRecord(); // async
     }
   }, [dispatch, isApiPanelOpen]);
 
@@ -381,7 +393,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
 
   const childComponent = (
     <AutoSizer style={{ width: '100%', height: '100%' }}>
-      {({ width, height }) =>
+      {({ width }) =>
         panelSize ? (
           <VikaSplitPanel
             panelLeft={datasheetMain}

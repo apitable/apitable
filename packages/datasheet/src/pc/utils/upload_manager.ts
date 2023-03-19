@@ -26,6 +26,7 @@ import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { getEnvVariables } from './env';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;
@@ -53,12 +54,15 @@ interface IQueue {
 }
 
 export const checkNetworkEnv = (code: number) => {
+  const env = getEnvVariables();
   if (code === StatusCode.PHONE_VALIDATION || code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
     Modal.confirm({
       title: t(Strings.warning),
       content: t(Strings.status_code_phone_validation),
       onOk: () => {
-        window['nvc'].reset();
+        if (!env.DISABLE_AWSC) {
+          window['nvc'].reset();
+        }
       },
       type: 'warning',
       okText: t(Strings.got_it),
@@ -79,11 +83,10 @@ export class UploadManager {
   /**
    * @param {number} limit Limits the number of simultaneous requests
    * TODO: Consider doing a global limit on the number of cells, which is currently only done for the current cell
-   * @memberof UploadManager
    */
   constructor(
-    public limit: number,
-    public commandManager: CollaCommandManager,
+    private readonly limit: number,
+    private readonly commandManager: CollaCommandManager,
   ) {
     window.onbeforeunload = this.checkBeforePageUnMount;
   }
@@ -143,12 +146,12 @@ export class UploadManager {
       };
     }
     this.notifyUploadListUpdate(cellId);
-    this.checkCapacitySizeBilling().then(res => {
+    this.checkCapacitySizeBilling().then(() => {
       if (this.isRequestLimit(cellId)) {
         return this.execute(cellId);
       }
-    });
-
+      return null;
+    })
   }
 
   /**
@@ -172,7 +175,7 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  private async execute(cellId: string) {
+  private async execute(cellId: string): Promise<any> {
     if (!this.uploadMap[cellId].waitQueue.length) {
       return;
     }
@@ -249,7 +252,7 @@ export class UploadManager {
       this.fileStatusMap.has(cellId) &&
       this.fileStatusMap.get(cellId)!.has(options.fileId)
     ) {
-      this.fileStatusMap
+      return this.fileStatusMap
         .get(cellId)!
         .get(options.fileId)!
         .forEach((item) => item());
@@ -387,7 +390,7 @@ export class UploadManager {
   }
 
   public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const request = async(nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
@@ -492,7 +495,7 @@ export class UploadManager {
       });
       return [];
     }
-    const list = fileList.map((item) => {
+    return fileList.map((item) => {
       const newId = getNewId(IDPrefix.File, [...exitIds, ...uploadListId]);
       exitIds.push(newId);
       return {
@@ -501,7 +504,6 @@ export class UploadManager {
         fileId: newId,
       };
     });
-    return list;
   }
 
   static checkFileSize(file: File) {

@@ -38,7 +38,7 @@ interface IUnBindModalProps {
   };
 }
 
-export const UnBindModal: React.FC<IUnBindModalProps> = (props) => {
+export const UnBindModal: React.FC<React.PropsWithChildren<IUnBindModalProps>> = (props) => {
   const { data, setUnBindModal, unbindType } = props;
   const [identifyingCode, setIdentifyingCode] = useState('');
   const [loading, setLoading] = useState(false);

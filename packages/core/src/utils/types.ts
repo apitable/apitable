@@ -23,9 +23,9 @@ import {
   ISingleSelectField,
   IMultiSelectField,
 } from 'types/field_types';
-import { IGroupInfo } from '../types';
-import { ISnapshot } from '../exports/store/interfaces';
-import { ViewType } from '../modules/shared/store/constants';
+import type { IGroupInfo } from 'types';
+import type { ISnapshot } from 'exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
 
 export function assertNever(x: never) {
   console.error(`${x} is not a never type`);

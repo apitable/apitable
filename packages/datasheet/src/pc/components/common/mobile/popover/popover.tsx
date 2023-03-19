@@ -24,7 +24,7 @@ import style from './style.module.less';
 
 type ITriggerProps = Omit<TriggerProps, 'popup'> & { content: TriggerProps['popup'] };
 
-export const Popover: React.FC<ITriggerProps> = props => {
+export const Popover: React.FC<React.PropsWithChildren<ITriggerProps>> = props => {
   const {
     content,
     ...rest
@@ -55,7 +55,7 @@ export const Popover: React.FC<ITriggerProps> = props => {
           <div className={style.arrowWrapper}>
             <ArrowIcon fill={'#262838'} width={20} height={12} />
           </div>
-          {content}
+          {content as any}
         </div>
       }
       {...rest}

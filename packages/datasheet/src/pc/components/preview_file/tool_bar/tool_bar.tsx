@@ -24,17 +24,17 @@ import styles from './style.module.less';
 import { copy2clipBoard, getDownloadSrc, isSupportImage } from 'pc/utils';
 import { ITransFormInfo } from '../preview_file.interface';
 import {
-  CloseLargeOutlined,
-  ColumnUrlOutlined,
+  CloseOutlined,
+  LinkOutlined,
   DeleteOutlined,
   DownloadOutlined,
-  FullscreenOutlined,
+  ExpandOutlined,
   NewtabOutlined,
   RotateOutlined,
-  UnfullscreenOutlined,
+  NarrowOutlined,
+  AddCircleOutlined,
+  SubtractCircleOutlined,
 } from '@apitable/icons';
-import IconZoomIn from 'static/icon/datasheet/datasheet_icon_zoom_in.svg';
-import IconZoomOut from 'static/icon/datasheet/datasheet_icon_zoom_out.svg';
 import { IPreviewToolItem, PreviewToolItem } from './tool_item';
 import { Message } from 'pc/components/common';
 import { Loading, useThemeColors } from '@apitable/components';
@@ -95,7 +95,7 @@ export async function download(fileInfo: IAttachmentValue) {
       return;
     }
     // If the image contentDisposition type is inline, force the download using a binary stream
-    if (contentDisposition.includes('inline')) {
+    if (contentDisposition?.includes('inline')) {
       mode = 'stream';
     }
   }
@@ -110,7 +110,7 @@ export async function download(fileInfo: IAttachmentValue) {
   Message.destroy();
 }
 
-export const ToolBar: React.FC<IToolBar> = props => {
+export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = props => {
   const {
     transformInfo,
     fileInfo,
@@ -146,7 +146,11 @@ export const ToolBar: React.FC<IToolBar> = props => {
         visible: isImage({ name: fileInfo.name, type: fileInfo.mimeType }) && isSupportImage(fileInfo.mimeType),
         group: [
           {
-            component: <IconZoomOut width={16} height={16} fill={colors.black[50]} opacity={scale * initActualScale <= MIN_SCALE ? 0.5 : 1} />,
+            component: (
+              <span style={{ opacity: scale * initActualScale <= MIN_SCALE ? 0.5 : 1 }}>
+                <SubtractCircleOutlined size={16} color={colors.black[50]} />
+              </span>
+            ),
             tip: t(Strings.zoom_out),
             onClick: () => onZoom(scale / MULTIPLE),
             style: { marginRight: 0 },
@@ -167,12 +171,14 @@ export const ToolBar: React.FC<IToolBar> = props => {
           },
           {
             component: (
-              <IconZoomIn
-                width={16}
-                height={16}
-                fill={colors.black[50]}
-                opacity={scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1}
-              />
+              <span style={{
+                opacity: scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1
+              }}>
+                <AddCircleOutlined
+                  size={16}
+                  color={colors.black[50]}
+                />
+              </span>
             ),
             tip: t(Strings.zoom_in),
             onClick: () => onZoom(scale * MULTIPLE),
@@ -193,7 +199,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
       },
       {
         visible: !disabledDownload,
-        icon: ColumnUrlOutlined,
+        icon: LinkOutlined,
         tip: t(Strings.preview_copy_attach_url),
         onClick: () => {
           let addr = getDownloadSrc(fileInfo);
@@ -222,14 +228,14 @@ export const ToolBar: React.FC<IToolBar> = props => {
     title: fileInfo.name,
     toolRight: [
       {
-        icon: isFullScreen ? UnfullscreenOutlined : FullscreenOutlined,
+        icon: isFullScreen ? NarrowOutlined : ExpandOutlined,
         tip: () => t(isFullScreen ? Strings.attachment_preview_exit_fullscreen : Strings.attachment_preview_fullscreen),
         onClick: () => toggleIsFullScreen(),
         className: styles.rightIcon,
         visible: !isRecordFullScreen && isSideRecordOpen && !document.querySelector('.centerExpandRecord'),
       },
       {
-        icon: CloseLargeOutlined,
+        icon: CloseOutlined,
         tip: t(Strings.close),
         onClick: onClose,
         className: classNames(styles.rightIcon, styles.iconClose),
@@ -237,7 +243,7 @@ export const ToolBar: React.FC<IToolBar> = props => {
     ],
   };
 
-  const renderToolItem = (toolItemProps: IPreviewToolItem, index) => {
+  const renderToolItem = (toolItemProps: IPreviewToolItem, index: number) => {
     const component = toolItemProps.icon ? <toolItemProps.icon size={16} color={colors.black[50]} /> : toolItemProps.component;
     return <PreviewToolItem key={index} {...toolItemProps} component={component} />;
   };

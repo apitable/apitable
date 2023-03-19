@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apitable/components';
+import { Button, Skeleton, TextButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 // @ts-ignore
 import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
 import { last } from 'lodash';
@@ -29,16 +30,15 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import MoreIcon from 'static/icon/common/common_icon_more_stand.svg';
-import RecoverIcon from 'static/icon/datasheet/rightclick/recover.svg';
-import EmptyPng from 'static/icon/workbench/notification/workbench_img_no_notification.png';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { UnitTag } from '../catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { ButtonPlus, Message, Tooltip } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
+import { QuestionCircleOutlined, MoreStandOutlined, HistoryOutlined } from '@apitable/icons';
 
 export interface ITrashItem {
   nodeId: string;
@@ -56,7 +56,7 @@ export interface ITrashItem {
   isMemberNameModified?: boolean;
 }
 
-const Trash: FC = () => {
+const Trash: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const spaceName = useSelector((state: IReduxState) => state.user.info?.spaceName);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -66,10 +66,12 @@ const Trash: FC = () => {
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useAppDispatch();
   const { loading: recoverLoading, run: trashRecover } = useRequest(nodeId => Api.trashRecover(nodeId), { manual: true });
+  const themeName = useSelector(state => state.theme);
+  const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);
   const [noMore, setNoMore] = useState(false);
-  const handleSuccess = res => {
+  const handleSuccess = (res: { data: { success: any; data: any; }; }) => {
     const { success, data } = res.data;
     if (success) {
       const lastDataItem = last(data as ITrashItem[]);
@@ -108,22 +110,22 @@ const Trash: FC = () => {
     if (recoverLoading) {
       return;
     }
-    const result = triggerUsageAlert('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return;
     }
 
     if (formIdReg.test(`/${nodeId}`)) {
-      const result = triggerUsageAlert('maxFormViewsInSpace',
-        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result = triggerUsageAlert?.('maxFormViewsInSpace',
+        { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
       if (result) {
         return;
       }
     }
 
     if (mirrorIdReg.test(`/${nodeId}`)) {
-      const result = triggerUsageAlert('maxMirrorNums',
-        { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result = triggerUsageAlert?.('maxMirrorNums',
+        { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
       if (result) {
         return;
       }
@@ -145,7 +147,7 @@ const Trash: FC = () => {
 
   const data = [
     {
-      icon: <RecoverIcon />,
+      icon: <HistoryOutlined />,
       text: t(Strings.recover_node),
       onClick: recoverHandler,
     },
@@ -156,12 +158,12 @@ const Trash: FC = () => {
       loadMore();
       return;
     }
-    triggerUsageAlert(
+    triggerUsageAlert?.(
       'maxRemainTrashDays',
       // Here maxRemainTrashDays is obtained as the value in billing,
       // which is actually the maximum allowed, so in order to trigger the popup, you need +1.
       { usage: maxRemainTrashDays + 1, alwaysAlert: true },
-      SubscribeUsageTipType.Alert,
+      SubscribeUsageTipType?.Alert,
     );
   };
 
@@ -171,15 +173,19 @@ const Trash: FC = () => {
         <div className={styles.title}>
           {t(Strings.trash)}
           <Tooltip title={t(Strings.form_tour_desc)} trigger='hover' placement='right'>
-            <a href={getEnvVariables().TRASH_HELP_URL} rel='noopener noreferrer' target='_blank'>
-              <HelpIcon
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: 8,
-                  display: 'inline-block',
-                  fontSize: 24,
-                }}
-                fill={colors.thirdLevelText}
+            <a 
+              href={getEnvVariables().TRASH_HELP_URL} 
+              rel='noopener noreferrer' 
+              target='_blank'
+              style={{
+                cursor: 'pointer',
+                marginLeft: 8,
+                display: 'inline-block',
+                fontSize: 24,
+              }}
+            >
+              <QuestionCircleOutlined
+                color={colors.thirdLevelText}
               />
             </a>
           </Tooltip>
@@ -249,14 +255,14 @@ const Trash: FC = () => {
                       />
                     </div>
                     <Tooltip title={deletedAt} textEllipsis>
-                      <div className={styles.expirationTime}>{deletedAt}</div>
+                      <div className={styles.expirationTime}>{dayjs(deletedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </Tooltip>
 
                     <Tooltip title={delPath || spaceName} textEllipsis>
                       <div className={styles.path}>{delPath || spaceName}</div>
                     </Tooltip>
                     <TrashContextMenu nodeId={nodeId} data={data}>
-                      <ButtonPlus.Icon icon={<MoreIcon />} />
+                      <ButtonPlus.Icon icon={<MoreStandOutlined />} />
                     </TrashContextMenu>
                   </div>
                 );
@@ -266,7 +272,7 @@ const Trash: FC = () => {
                   noMore && <span className={styles.end}>{t(Strings.end)}</span>
                 }
                 {
-                  (product !== SubscribeGrade.Enterprise || (product === SubscribeGrade.Enterprise && !noMore)) && <div style={{ marginTop: 8 }}>
+                  (product !== SubscribeGrade?.Enterprise || (product === SubscribeGrade?.Enterprise && !noMore)) && <div style={{ marginTop: 8 }}>
                     {
                       moreLoading ?
                         <Button loading variant='jelly'>

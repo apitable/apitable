@@ -38,7 +38,7 @@ const PreviewMedia = dynamic(() => import('./preview_media/preview_media'), {
   loading: () => <Loading />,
 });
 
-export const PreviewType: React.FC<IPreviewTypeBase> = memo(props => {
+export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = memo(props => {
   const {
     file,
     userInfo,

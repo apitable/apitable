@@ -35,7 +35,7 @@ interface IPermissionSelectProps {
   onRemove?: (unitId: string) => void;
 }
 
-export const PermissionSelectMobile: React.FC<IPermissionSelectProps> = (props) => {
+export const PermissionSelectMobile: React.FC<React.PropsWithChildren<IPermissionSelectProps>> = (props) => {
   const { roleOptions, role, onChange, unitId, onRemove, children, title } = props;
   const colors = useThemeColors();
   return (

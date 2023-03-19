@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { DescriptionOutlined } from '@apitable/icons';
+import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { CloseCircleOutlined, CloseOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
@@ -30,8 +30,6 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
-import IconClose from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
 import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
 
@@ -41,18 +39,18 @@ interface IRenderModalBase {
   visible: boolean;
   onClose: () => void;
   activeNodeId: string;
-  datasheetName: string;
+  datasheetName: string | null;
   modalStyle?: React.CSSProperties;
   isMobile?: boolean;
 }
 
-const getDefaultValue = (desc) => {
+const getDefaultValue = (desc: INodeDescription | null) => {
   if (!desc) return '';
   if (desc.type === SLATE_EDITOR_TYPE) return desc.data;
   return Deserializer.html(desc.render);
 };
 
-const RenderModalBase: React.FC<IRenderModalBase> = props => {
+const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = props => {
   const { visible, onClose, activeNodeId, datasheetName, modalStyle, isMobile } = props;
   const dispatch = useDispatch();
   const nodeDesc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);
@@ -63,7 +61,7 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
   // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
   const editorHtml = useRef('');
 
-  const onCancel = (e, isButton?: boolean) => {
+  const onCancel = (e: any, isButton?: boolean) => {
     stopPropagation(e);
     const isExitInnerText = null;
     if (!isExitInnerText) {
@@ -149,7 +147,7 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
       width={'90%'}
       style={{ ...modalStyle, maxWidth: 640 }}
       title={mobileTitle()}
-      closeIcon={isMobile ? <></> : <CloseIcon style={{}} />}
+      closeIcon={isMobile ? <></> : <CloseOutlined />}
       onCancel={onCancel}
       bodyStyle={{ padding: '0 0 24px 0' }}
       keyboard
@@ -169,7 +167,7 @@ const RenderModalBase: React.FC<IRenderModalBase> = props => {
       {
         isMobile &&
         <div className={styles.mobileCloseButton} onClick={onCancel}>
-          <IconClose width={32} height={32} />
+          <CloseCircleOutlined size={32} />
         </div>
       }
     </Modal>
@@ -229,8 +227,8 @@ function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
   return [];
 }
 
-export const DescriptionModal: React.FC<IDescriptionModal> = props => {
-  const { activeNodeId, datasheetName, showIntroduction = true, className, showIcon = true, ...rest } = props;
+export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = props => {
+  const { activeNodeId, datasheetName, showIntroduction = true, className, ...rest } = props;
   const [visible, setVisible] = useState(false);
   const desc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);
   const curGuideWizardId = useSelector((state: IReduxState) => state.hooks?.curGuideWizardId);
@@ -257,7 +255,6 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
         props.onClick && props.onClick();
       }}
     >
-      {showIcon && <DescriptionOutlined size={16} />}
       {
         showIntroduction &&
         <div className={styles.text}>{desc && htmlElmentHasText(desc.render) ? sanitized(desc.render) : t(Strings.edit_node_desc)}</div>
@@ -273,7 +270,9 @@ export const DescriptionModal: React.FC<IDescriptionModal> = props => {
   );
 };
 
-export const expandNodeDescription = ({ datasheetName, activeNodeId, isMobile }) => {
+export const expandNodeDescription = (
+  { datasheetName, activeNodeId, isMobile }: Pick<IRenderModalBase, 'datasheetName' | 'activeNodeId' | 'isMobile'>
+) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const root = createRoot(div);

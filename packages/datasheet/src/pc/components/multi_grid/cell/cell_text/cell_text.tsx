@@ -34,24 +34,22 @@ import {
 import classNames from 'classnames';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import IconEmail from 'static/icon/datasheet/column/datasheet_icon_email.svg';
-import IconPhone from 'static/icon/datasheet/column/datasheet_icon_phone.svg';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
 import { ICellComponentProps } from '../cell_value/interface';
 import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
 import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 
 // Simple recognition rules are used to process single line text enhancement fields.
-const isEmail = text => text && /.+@.+/.test(text);
-const isPhoneNumber = text => text && /^[0-9\-()（）#+]+$/.test(text);
+const isEmail = (text: string | null) => text && /.+@.+/.test(text);
+const isPhoneNumber = (text: string) => text && /^[0-9\-()（）#+]+$/.test(text);
 
 type ICellText = ICellComponentProps & {
   cellValue: ICellValue | typeof FormulaBaseError
   rowHeightLevel?: RowHeightLevel,
 };
 
-export const CellText: React.FC<ICellText> = props => {
+export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
   const colors = useThemeColors();
   const { className, field, cellValue, toggleEdit, isActive, rowHeightLevel } = props;
   const fieldType = field.type;
@@ -61,15 +59,15 @@ export const CellText: React.FC<ICellText> = props => {
   const isEnhanceText = _isEnhanceText || fieldType === FieldType.Formula;
   const _handleEnhanceTextClick = useEnhanceTextClick();
   // Verify URL legitimacy when clicking on links
-  const handleURLClick = (e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
+  const handleURLClick = (_e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
     _handleEnhanceTextClick(type, text);
   };
-  const getEnhanceTypeIcon = type => {
+  const getEnhanceTypeIcon = (type: FieldType) => {
     const typeIconMap = {
-      [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,
-      [FieldType.Email]: <IconEmail fill={colors.thirdLevelText} />,
-      [FieldType.Phone]: <IconPhone fill={colors.thirdLevelText} />,
+      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span

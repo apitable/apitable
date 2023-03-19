@@ -33,7 +33,7 @@ interface IInviteCodeModal {
   setShowInviteCode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const InviteCodeModal: FC<IInviteCodeModal> = ({ setShowInviteCode }) => {
+export const InviteCodeModal: FC<React.PropsWithChildren<IInviteCodeModal>> = ({ setShowInviteCode }) => {
   const userInfo = useSelector(state => state.user.info);
   const inviteCode = userInfo?.inviteCode!;
   const usedInviteReward = userInfo?.usedInviteReward;

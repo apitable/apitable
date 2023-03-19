@@ -17,9 +17,8 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { DeleteOutlined } from '@apitable/icons';
+import { DeleteOutlined, LoadingOutlined } from '@apitable/icons';
 import { message, Spin } from 'antd';
-import dynamic from 'next/dynamic';
 import { getElementDataset } from 'pc/utils';
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -39,7 +38,6 @@ import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 // import Decorate from '../element_decorate';
 import styles from './style.module.less';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const Image = React.memo(({ children, element }: IElementRenderProps<IElement<IImageElementData>>) => {
   const colors = useThemeColors();
   const elementData = useMemo(() => element.data || {}, [element.data]);
@@ -65,7 +63,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
   const isFocusedInSelf = focusedElement && element._id === focusedElement._id;
   const hasImg = !!url;
 
-  const handleFileChange = useCallback((_file) => {
+  const handleFileChange = useCallback((_file: any) => {
     const file = _file as IPreviewFile;
     const successFunc = (url = file.preview) => {
       const nextData = {
@@ -78,7 +76,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     if (uploader) {
       setUploading(true);
       uploader(file)
-        .then((res) => {
+        .then((res: API.IImageResponse) => {
           successFunc((res as API.IImageResponse).imgUrl);
         })
         .finally(() => {
@@ -90,7 +88,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     successFunc();
   }, [editor, elementData]);
 
-  const handleImagePickerError = useCallback((type) => {
+  const handleImagePickerError = useCallback((type: any) => {
     if (type === 'size') {
       message.error(i18nText.imageSizeError);
     } else {
@@ -249,7 +247,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
         limitSize={1024 * 1024 * 2}>
         <div className={styles.imgPicker} data-focused={isFocusedInSelf}>
           {uploading && <div className={styles.loadingMask}>
-            <Spin tip={i18nText.imageUploading} size="small" indicator={<LoadingOutlined />} />
+            <Spin tip={i18nText.imageUploading} size="small" indicator={<LoadingOutlined className="circle-loading" />} />
           </div>}
           <Icons.image />
           <span className={styles.imgPlaceholder}>{i18nText.addImage}</span>

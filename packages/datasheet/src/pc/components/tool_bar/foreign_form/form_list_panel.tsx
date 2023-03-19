@@ -18,7 +18,7 @@
 
 import { Button, Skeleton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
-import { InformationLargeOutlined } from '@apitable/icons';
+import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 
 import Image from 'next/image';
@@ -26,9 +26,7 @@ import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { FC } from 'react';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import EmptyState from 'static/icon/datasheet/form/emptystate.png';
-import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 import styles from './style.module.less';
 
 export interface IFormNodeItem {
@@ -48,7 +46,7 @@ interface IFormListPanelProps {
   formList: IFormNodeItem[];
 }
 
-export const FormListPanel: FC<IFormListPanelProps> = (props) => {
+export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (props) => {
   const {
     spaceId,
     folderId,
@@ -85,7 +83,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
     );
   };
 
-  const onJump = (formId) => {
+  const onJump = (formId: string) => {
     Router.push(Navigation.WORKBENCH, { params: { spaceId, formId }});
   };
 
@@ -112,10 +110,9 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
             className={styles.formItem}
             onClick={() => onJump(form.nodeId)}
           >
-            <FormIcon
-              width={16}
-              height={16}
-              fill={colors.thirdLevelText}
+            <FormOutlined
+              size={16}
+              color={colors.thirdLevelText}
             />
             <span className={styles.formName}>
               {form.nodeName}
@@ -132,7 +129,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
         {t(Strings.view_form)}
         <Tooltip title={t(Strings.form_tour_desc)}>
           <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
-            <InformationLargeOutlined color={colors.fc3} />
+            <QuestionCircleOutlined color={colors.fc3} />
           </a>
         </Tooltip>
       </h4>
@@ -155,7 +152,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
               size='middle'
               onClick={addForm}
             >
-              {!isEmpty && <IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.addIcon} />}
+              {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </Button>
           ) : (
@@ -165,7 +162,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
               style={{ height: '100%' }}
               onClick={addForm}
             >
-              {!isEmpty && <IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.addIcon} />}
+              {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </TextButton>
           )}

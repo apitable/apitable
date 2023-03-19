@@ -18,7 +18,7 @@
 
 import { FC, useContext } from 'react';
 import styles from './style.module.less';
-import { FavoriteOutlined, FavoriteFilled } from '@apitable/icons';
+import { StarOutlined, StarFilled } from '@apitable/icons';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 import { t, Strings, IReduxState } from '@apitable/core';
@@ -31,7 +31,7 @@ export interface INodeFavoriteStatusProps {
   enabled: boolean;
 }
 
-export const NodeFavoriteStatus: FC<INodeFavoriteStatusProps> = ({ nodeId, enabled }) => {
+export const NodeFavoriteStatus: FC<React.PropsWithChildren<INodeFavoriteStatusProps>> = ({ nodeId, enabled }) => {
   const { updateNodeFavoriteStatusReq } = useCatalogTreeRequest();
   const { run: updateNodeFavoriteStatus, loading } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
@@ -51,8 +51,8 @@ export const NodeFavoriteStatus: FC<INodeFavoriteStatusProps> = ({ nodeId, enabl
       <div className={styles.favoriteStatus} onClick={clickHandler}>
         {
           enabled ?
-            <FavoriteFilled size={16} className={styles.favorite} /> :
-            <FavoriteOutlined size={16} className={styles.unFavorite} />
+            <StarFilled size={16} className={styles.favorite} /> :
+            <StarOutlined size={16} className={styles.unFavorite} />
         }
       </div>
     </Tooltip>

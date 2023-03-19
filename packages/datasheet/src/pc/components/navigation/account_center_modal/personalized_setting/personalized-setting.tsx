@@ -23,10 +23,11 @@ import { Strings, t } from '@apitable/core';
 import { LanguageSetting } from './language_setting';
 import { ThemeSetting } from './theme_setting';
 import { RecordVisionSetting } from './record_vision_setting';
+import { TimezoneSetting } from './timezone_setting';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
-export const PersonalizedSetting: FC = () => {
+export const PersonalizedSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -39,6 +40,7 @@ export const PersonalizedSetting: FC = () => {
 
       <ThemeSetting />
       <LanguageSetting />
+      <TimezoneSetting />
       {!isMobile && <RecordVisionSetting />}
     </div>
   );

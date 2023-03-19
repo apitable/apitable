@@ -74,20 +74,14 @@ public class EmailValidateCodeProcessor extends AbstractValidateCodeProcessor {
         HttpServletRequest request = HttpContextUtil.getRequest();
         String ipAddr = HttpContextUtil.getRemoteAddr(request);
         this.checkBeforeSend(target, ipAddr);
-        try {
-            String subject = EmailCodeType.ofName(validateCode.getScope()).getSubject();
-            Dict dict = Dict.create();
-            dict.set("VERIFICATION_CODE", validateCode.getCode());
-            dict.set("YEARS", LocalDate.now().getYear());
-            final String lang = validateTarget.getLang();
-            NotifyMailFactory.me().sendMail(lang, subject, dict, Collections.singletonList(target));
-            // save the total number of sending after sending
-            this.saveSendCount(target, ipAddr);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("send email error email:{}, reason：{}", target, e.getMessage());
-            throw new BusinessException("failed to send email");
-        }
+        String subject = EmailCodeType.ofName(validateCode.getScope()).getSubject();
+        Dict dict = Dict.create();
+        dict.set("VERIFICATION_CODE", validateCode.getCode());
+        dict.set("YEARS", LocalDate.now().getYear());
+        final String lang = validateTarget.getLang();
+        NotifyMailFactory.me().sendMail(lang, subject, dict, Collections.singletonList(target));
+        // save the total number of sending after sending
+        this.saveSendCount(target, ipAddr);
     }
 
     private void checkBeforeSend(String email, String ipAddr) {

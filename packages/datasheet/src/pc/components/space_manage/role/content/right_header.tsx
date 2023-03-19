@@ -22,7 +22,7 @@ import { useContext } from 'react';
 import { RoleContext } from '../context';
 import styles from './style.module.less';
 
-export const RightHeader: React.FC<{
+export const RightHeader: React.FC<React.PropsWithChildren<{
   count?: number;
   roleName?: string;
   buttonOpts?: {
@@ -30,7 +30,7 @@ export const RightHeader: React.FC<{
   };
   openAddMemberModal?: () => void;
   onRemove?: () => void;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { roleName, count, buttonOpts, openAddMemberModal, onRemove } = props;
   const { manageable } = useContext(RoleContext);

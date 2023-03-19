@@ -25,7 +25,7 @@ import { CellScrollContainer } from '../../cell_scroll_container';
 import { IRenderData } from '../interface';
 import { generateTargetName } from 'pc/components/gantt_view';
 
-export const CellCheckbox: React.FC<ICellProps> = props => {
+export const CellCheckbox: React.FC<React.PropsWithChildren<ICellProps>> = props => {
   const { x, y, isActive, recordId, field, cellValue, columnWidth, rowHeight, onChange } = props;
   const fieldId = field.id;
   const name = generateTargetName({

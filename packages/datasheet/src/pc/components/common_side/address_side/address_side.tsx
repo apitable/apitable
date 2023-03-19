@@ -20,7 +20,7 @@ import { Button } from '@apitable/components';
 import {
   ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, AddressOutlined } from '@apitable/icons';
+import { AddOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
@@ -39,11 +39,10 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
 
-export const AddressSide: React.FC = () => {
+export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useSelector(
     (state: IReduxState) => ({
       teamList: state.addressList.teamList,
@@ -117,7 +116,7 @@ export const AddressSide: React.FC = () => {
               color='primary'
               prefixIcon={<AddOutlined />}
               id={ADDRESS_ID.INVITE_BTN}
-              className={classNames({ [styles.inviteBtnMobile]: isMobile })}
+              className={classNames({ [styles.inviteBtnMobile!]: isMobile })}
               onClick={() => {
                 expandUnitModal({
                   source: SelectUnitSource.SyncMember,
@@ -144,11 +143,11 @@ export const AddressSide: React.FC = () => {
           <Button
             size={btnSize}
             color={isSyncingMembers ? 'default' : 'primary'}
-            prefixIcon={<AddressOutlined />}
+            prefixIcon={<UserAddOutlined />}
             id={ADDRESS_ID.INVITE_BTN}
             className={classNames({
-              [styles.inviteBtnMobile]: isMobile,
-              [styles.isSyncingMembers]: isSyncingMembers,
+              [styles.inviteBtnMobile!]: isMobile,
+              [styles.isSyncingMembers!]: isSyncingMembers,
             })}
             onClick={() => expandInviteModal({ resUpdate: () => teamClick(ConfigConstant.ROOT_TEAM_ID) })}
           >
@@ -173,7 +172,7 @@ export const AddressSide: React.FC = () => {
               setInSearch(true);
             }}
           >
-            <SearchIcon />
+            <SearchOutlined />
           </span>
         </div>
       </ComponentDisplay>
@@ -182,7 +181,7 @@ export const AddressSide: React.FC = () => {
           <div className={styles.searchInputWrapper}>
             <Input
               className={styles.searchInput}
-              prefix={<SearchIcon />}
+              prefix={<SearchOutlined />}
               size='small'
               placeholder={t(Strings.search)}
               onClick={() => setInSearch(true)}
@@ -195,7 +194,7 @@ export const AddressSide: React.FC = () => {
         <div style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }} className={styles.filter}>
           {OperateButton}
           <div className={styles.menu}>
-            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0])} inSearch={inSearch} />
+            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0]!)} inSearch={inSearch} />
           </div>
         </div>
         {/* <ComponentDisplay minWidthCompatible={ScreenSize.md}> */}

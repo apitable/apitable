@@ -28,10 +28,9 @@ import { MouseDownType } from 'pc/components/selection_wrapper';
 import { ICellComponentProps } from 'pc/components/multi_grid/cell/cell_value/interface';
 import { OptionalCellContainer } from 'pc/components/multi_grid/cell/optional_cell_container/optional_cell_container';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import { difference, keyBy } from 'lodash';
 import { store } from 'pc/store';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 
 interface ICellMemberProps {
   keyPrefix?: string;
@@ -40,7 +39,7 @@ interface ICellMemberProps {
   deletable?: boolean;
 }
 
-export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = props => {
+export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & ICellMemberProps>> = props => {
   const {
     cellValue: cellValueIncludeOldData, 
     field, 
@@ -81,9 +80,9 @@ export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = prop
     onChange && onChange((cellValue as IUnitIds)?.filter((_, idx) => idx !== index));
   }
 
-  function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) return;
-    isActive && !readonly && toggleEdit && toggleEdit();
+    isActive && !readonly && toggleEdit && await toggleEdit();
   }
 
   const showAddIcon = (isActive && !readonly) && (isMulti || (!isMulti && (!cellValue || cellValue.length === 0)));
@@ -105,7 +104,7 @@ export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = prop
         <ButtonPlus.Icon
           size={'x-small'}
           className={optionalStyle.iconAdd}
-          icon={<IconAdd width={14} height={14} fill={colors.fourthLevelText} />}
+          icon={<AddOutlined size={14} color={colors.fourthLevelText} />}
         />
       }
       {
@@ -120,7 +119,7 @@ export const CellMember: React.FC<ICellComponentProps & ICellMemberProps> = prop
                     onClick={e => deleteItem(e, index)}
                     onMouseDown={stopPropagation}
                   >
-                    <IconClose width={8} height={8} fill={colors.secondLevelText} />
+                    <CloseOutlined size={8} color={colors.secondLevelText} />
                   </div> : <></>
               }
             </MemberItem>

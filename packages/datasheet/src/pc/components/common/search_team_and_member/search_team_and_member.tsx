@@ -33,7 +33,7 @@ interface ISearchTeamAndMemberProps {
   memberClick: (id: string) => void;
   top?: string;
 }
-export const SearchTeamAndMember: FC<ISearchTeamAndMemberProps> = ({ setInSearch, teamClick, memberClick, top }) => {
+export const SearchTeamAndMember: FC<React.PropsWithChildren<ISearchTeamAndMemberProps>> = ({ setInSearch, teamClick, memberClick, top }) => {
   const ref = useRef<HTMLDivElement>(null);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const [keyword, setKeyword] = useState('');

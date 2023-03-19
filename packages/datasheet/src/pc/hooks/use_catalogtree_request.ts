@@ -36,15 +36,17 @@ export const useCatalogTreeRequest = () => {
     datasheetId,
     dashboardId,
     mirrorId,
+    embedId
   } = useSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
-    const { datasheetId, formId, dashboardId, mirrorId } = state.pageParams;
+    const { datasheetId, formId, dashboardId, mirrorId, embedId } = state.pageParams;
     return {
       spaceId,
       formId,
       datasheetId,
       dashboardId,
       mirrorId,
+      embedId
     };
   }, shallowEqual);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
@@ -143,7 +145,7 @@ export const useCatalogTreeRequest = () => {
           if (activedNodeId === nodeId) {
             Api.keepTabbar({}).then(res => {
               if (res.data.success) {
-                Router.push(Navigation.SPACE, { params: { spaceId }});
+                Router.push(Navigation.WORKBENCH, { params: { spaceId }});
               }
             });
             return;
@@ -281,6 +283,7 @@ export const useCatalogTreeRequest = () => {
    * @param teamId
    */
   const getSubUnitListReq = (teamId?: string, linkId?: string) => {
+    if(embedId) linkId = undefined;
     return Api.getSubUnitList(teamId, linkId).then(res => {
       const { success, data } = res.data;
       if (success) {

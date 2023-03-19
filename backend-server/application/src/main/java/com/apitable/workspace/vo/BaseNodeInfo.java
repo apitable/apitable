@@ -18,21 +18,22 @@
 
 package com.apitable.workspace.vo;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * Basic node information
+ * Basic node information.
  */
 @Data
 public class BaseNodeInfo {
 
-	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
-	protected String nodeId;
+    @Schema(description = "Node ID", example = "nod10")
+    protected String nodeId;
 
-	@ApiModelProperty(value = "Node Name", example = "This is a node", position = 2)
-	protected String nodeName;
+    @Schema(description = "Node Name", example = "This is a node")
+    protected String nodeName;
 
-    @ApiModelProperty(value = "Node Type 0-ROOT（Root node） 1-folder（Folder） 2-file（Datasheet）", example = "1", position = 3)
+    @Schema(description = "Node Type 0-ROOT（Root node） 1-folder（Folder） 2-file（Datasheet）",
+        example = "1")
     private Integer type;
 }

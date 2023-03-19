@@ -19,28 +19,33 @@
 package com.apitable.shared.listener;
 
 import com.apitable.shared.component.LanguageManager;
+import java.time.ZoneOffset;
+import java.util.Locale;
+import java.util.TimeZone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneOffset;
-import java.util.Locale;
-import java.util.TimeZone;
-
 /**
  * <p>
- * service startup success event listener
+ * service startup success event listener.
  * </p>
  *
  * @author Shawn Deng
  */
 @Component
 @Slf4j
-public class ApplicationReadyEventListener implements ApplicationListener<ApplicationReadyEvent> {
+public class ApplicationReadyEventListener implements
+    ApplicationListener<ApplicationReadyEvent> {
 
+    /**
+     * Application Ready Event.
+     *
+     * @param event the event to respond to Application
+     */
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(final ApplicationReadyEvent event) {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.UTC));
         Locale.setDefault(LanguageManager.me().getDefaultLanguage());
         log.info("Server Locale is「{}」", Locale.getDefault());

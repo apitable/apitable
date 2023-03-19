@@ -29,14 +29,14 @@ export interface ICreateDataSheetModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CreateDataSheetModal: FC<ICreateDataSheetModalProps> = props => {
+export const CreateDataSheetModal: FC<React.PropsWithChildren<ICreateDataSheetModalProps>> = props => {
   const { setShow } = props;
   const [name, setName] = useState('');
   const dispatch = useAppDispatch();
   const spaceId = useSelector(state => state.space.activeId);
   const [error, setError] = useState('');
-  const { run: addNode } = useRequest((parentId: string, type: number, nodeName?: string, preNodeId?: string) =>
-    Api.addNode({ parentId, type, nodeName, preNodeId }).then(res => {
+  const { run: addNode } = useRequest((parentId: string, type: number, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) =>
+    Api.addNode({ parentId, type, nodeName, preNodeId, extra }).then(res => {
       const { data, message, success } = res.data;
       if (success) {
         dispatch(StoreActions.addNode(data));
@@ -71,7 +71,7 @@ export const CreateDataSheetModal: FC<ICreateDataSheetModalProps> = props => {
     if (error) {
       return;
     }
-    addNode(parentId, ConfigConstant.NodeType.DATASHEET, name);
+    addNode(parentId, ConfigConstant.NodeType.DATASHEET, name, undefined, { viewName: t(Strings.default_view) });
   };
 
   return (

@@ -24,7 +24,7 @@ import { useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 import { ConfigConstant } from '@apitable/core';
 
-export const HorizontalScroll: FC = props => {
+export const HorizontalScroll: FC<React.PropsWithChildren<unknown>> = props => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollMax, setScrollMax] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);

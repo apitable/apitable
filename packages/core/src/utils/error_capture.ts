@@ -17,7 +17,7 @@
  */
 
 import { StatusCode } from 'config';
-import { Strings, t } from '../exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import { ErrorCode, ErrorType } from 'types';
 
 export const OVER_LIMIT_PER_SHEET_RECORDS = '305';

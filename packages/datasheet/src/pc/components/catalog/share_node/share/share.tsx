@@ -29,10 +29,9 @@ import { TComponent } from 'pc/components/common/t_component';
 import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import CheckedIcon from 'static/icon/common/common_icon_select.svg';
-import DownArrowIcon from 'static/icon/datasheet/rightclick/rightclick_icon_pulldown.svg';
 import { ShareLink } from './share_link';
 import styles from './style.module.less';
+import { TriangleDownFilled, CheckOutlined } from '@apitable/icons';
 
 export interface IShareProps {
   shareSettings: IShareSettings;
@@ -40,7 +39,7 @@ export interface IShareProps {
   onChange?: (data: IShareSettings) => void;
 }
 
-export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
+export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings, onChange, nodeId }) => {
   // Whether to display the drop-down menu
   const [menuVisible, setMenuVisible] = useState(false);
   // Control the display of modal boxes for sharing QR codes
@@ -220,7 +219,7 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
                 <div className={styles.title}>{item.title}</div>
                 <div className={styles.desc}>{item.desc}</div>
               </div>
-              {!isMobile && <CheckedIcon />}
+              {!isMobile && <CheckOutlined />}
             </div>
           ))}
         </div>
@@ -249,13 +248,13 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
               getPopupContainer={triggerNode => triggerNode.parentElement!}
             >
               <div className={classnames(styles.currentStatus, shareSettings.shareOpened && styles.sharing)}>
-                {status.title} <DownArrowIcon />
+                {status.title} <TriangleDownFilled />
               </div>
             </Popover>
           </ComponentDisplay>
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={classnames(styles.currentStatus, shareSettings.shareOpened && styles.sharing)} onClick={() => setMenuVisible(true)}>
-              {status.title} <DownArrowIcon />
+              {status.title} <TriangleDownFilled />
             </div>
             <Popup
               className={styles.menuDrawer}

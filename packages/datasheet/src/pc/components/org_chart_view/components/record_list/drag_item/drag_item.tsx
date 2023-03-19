@@ -33,7 +33,7 @@ interface IDrag {
   style?: React.CSSProperties;
 }
 
-const DragItemBase: FC<IDrag> = ({ node, style }) => {
+const DragItemBase: FC<React.PropsWithChildren<IDrag>> = ({ node, style }) => {
   const { id } = node;
 
   const { 
@@ -49,7 +49,7 @@ const DragItemBase: FC<IDrag> = ({ node, style }) => {
     id: GRID_RECORD_MENU,
   });
   
-  const onContextMenu = (e) => {
+  const onContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     show(e, {
       props: {
         recordId: id

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { readInstallationWidgets } from '../../../../../widget/api/widget_api';
-import { Events, Player } from '../../../../../shared/player';
+import { readInstallationWidgets } from 'modules/widget/api/widget_api';
+import { Events, Player } from 'modules/shared/player';
 import { batchActions } from 'redux-batched-actions';
-import { Selectors } from '../../../../../../exports/store';
-import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from '../../../../../shared/store/action_constants';
-import { IReduxState, IUnMountWidget, IWidget } from '../../../../../../exports/store/interfaces';
+import { Selectors } from 'exports/store';
+import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from 'modules/shared/store/action_constants';
+import { IReduxState, IUnMountWidget, IWidget } from 'exports/store/interfaces';
 
 export const fetchWidgetsByWidgetIds = (
   widgetIds: string[],

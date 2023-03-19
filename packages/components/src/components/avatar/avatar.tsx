@@ -21,7 +21,7 @@ import { IAvatarProps } from './interface';
 import { Box } from 'components';
 import { AvatarChildWrapper, AvatarSizeConfig, AvatarWrapper } from './styled';
 
-export const Avatar: FC<IAvatarProps> = ({
+export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = ({
   size = 'm',
   icon,
   src,

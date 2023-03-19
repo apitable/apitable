@@ -21,7 +21,7 @@ import React from 'react';
 
 const DynamicComponentWithNoSSR = dynamic(() => import('pc/components/route_manager/org_router'), { ssr: false });
 
-const App = (props) => {
+const App = () => {
   return <>
     <DynamicComponentWithNoSSR />
   </>;

@@ -86,7 +86,7 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     }
     const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      const line = lines[i]!;
       const lineWidth = context?.measureText(line).width ?? 0;
       width = Math.max(width, lineWidth);
       lineCount = maxWidth != null ? (Math.ceil(lineWidth / maxWidth) || 1) : 1;
@@ -115,7 +115,7 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     const textLength = arrText.length;
 
     for (let n = 0; n < textLength; n++) {
-      const singleText = arrText[n];
+      const singleText = arrText[n]!;
       const composeText = showText + singleText;
       // If you don't pass the maxLineCount, you keep changing lines
       isLimitRow = maxLineCount ? rowCount === (maxLineCount - 1) : false;

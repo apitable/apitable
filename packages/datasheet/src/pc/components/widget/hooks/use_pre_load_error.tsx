@@ -21,7 +21,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FC, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { ErrorWidget } from '../widget_loader';
+import { ErrorWidget } from '../error_widget';
 
 enum PreLoadErrorCode {
   NotSupportMobile,
@@ -65,7 +65,7 @@ export const usePreLoadError = (widget: IWidget | undefined): JSX.Element | unde
   }, [getError, widget]);
 };
 
-const PreLoadError: FC<{ errorCode: PreLoadErrorCode }> = ({ errorCode }) => {
+const PreLoadError: FC<React.PropsWithChildren<{ errorCode: PreLoadErrorCode }>> = ({ errorCode }) => {
   const ErrorCodeMap = {
     [PreLoadErrorCode.NotSupportDashboard]: {
       title: t(Strings.widget_install_error_title),

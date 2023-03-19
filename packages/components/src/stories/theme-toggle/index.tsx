@@ -26,7 +26,7 @@ const ThemeStyle = styled.div`
     padding: 8px 16px;
     border-radius: 4px;
     ${props => css`
-      background: ${props.theme === 'light' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)'}
+      background: ${props.theme === 'light' ? 'rgb(255, 255, 255)' : '#1F1F1F'}
     `}
   }
   .storyItem {
@@ -39,7 +39,7 @@ interface IThemeToggle {
   lang?: 'en' | 'zh'
 }
 
-export const ThemeToggle: React.FC<IThemeToggle> = props => {
+export const ThemeToggle: React.FC<React.PropsWithChildren<IThemeToggle>> = props => {
   const isEn = props.lang === 'en';
   const [theme, setTheme] = useState('light');
   return (

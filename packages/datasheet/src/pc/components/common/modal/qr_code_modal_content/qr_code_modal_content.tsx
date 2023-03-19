@@ -29,7 +29,7 @@ import { getEnvVariables } from 'pc/utils/env';
 
 interface IModalContentProps {
   content: string;
-  onOk: () => void;
+  onOk: () => void | Promise<void>;
   modalButtonType: string;
   okText?: string;
 }
@@ -41,7 +41,7 @@ enum ModalBottonType {
   Info = 'primary',
 }
 
-export const QRCodeModalContent: React.FC<IModalContentProps> = (props) => {
+export const QRCodeModalContent: React.FC<React.PropsWithChildren<IModalContentProps>> = (props) => {
   const { content, onOk, modalButtonType, okText = t(Strings.refresh) } = props;
   return(
     <Provider store={store}>
@@ -67,7 +67,7 @@ export const QRCodeModalContent: React.FC<IModalContentProps> = (props) => {
   );
 };
 
-export const getModalConfig = (props) => {
+export const getModalConfig = (props: any) => {
   const { isShowQrcode = true, title, content, onOk, okText, modalButtonType } = props;
   const qrcodeVisible = getEnvVariables().ERROR_PAGE_CUSTOMER_SERVICE_QRCODE_VISIBLE;
 

@@ -39,7 +39,7 @@ interface IModalProps {
   feature: ApiInterface.ILabsFeature
 }
 
-export const Modal: React.FC<IModalProps> = props => {
+export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
   const { onClose, feature, status } = props;
   const config = SystemConfig.test_function[feature.key];
   const loadingMessage = useRef<boolean>(false);
@@ -57,7 +57,7 @@ export const Modal: React.FC<IModalProps> = props => {
         if (isToOpen) {
           setStorage(StorageName.TestFunctions, { ...testFunctionsStorage, [feature.key]: t(Strings[config.feature_name]) });
         } else {
-          setStorage(StorageName.TestFunctions, pickBy(testFunctionsStorage, (value, key) => key !== feature.key), StorageMethod.Set);
+          setStorage(StorageName.TestFunctions, pickBy(testFunctionsStorage, (_value, key) => key !== feature.key), StorageMethod.Set);
         }
         Message.success({ content: isToOpen ? t(Strings.marketplace_app_enable_succeed) : t(Strings.marketplace_app_disable_succeed) });
         loadingMessage.current = true;

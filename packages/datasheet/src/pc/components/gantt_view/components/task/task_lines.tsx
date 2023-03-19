@@ -31,7 +31,7 @@ interface ITaskLineProps {
   dashEnabled: boolean;
   sourceId: string;
   targetId: string;
-  setLineTooltipInfo: (info) => void;
+  setLineTooltipInfo: (info: any) => void;
   pointPosition: PointPosition;
   isCycleLine: boolean;
 }
@@ -41,7 +41,7 @@ enum HoverType {
   Out = 'out'
 }
 
-export const TaskLine : FC<ITaskLineProps> = (props) => {
+export const TaskLine : FC<React.PropsWithChildren<ITaskLineProps>> = (props) => {
   const { points, fillColor, dashEnabled, sourceId, targetId, setLineTooltipInfo, pointPosition, isCycleLine } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;

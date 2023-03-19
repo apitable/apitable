@@ -1,0 +1,3 @@
+ARG IMAGE_TAG=latest
+
+FROM apitable/all-in-one:${IMAGE_TAG}

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { t, Strings } from '../../exports/i18n';
+import { t, Strings } from 'exports/i18n';
 
 /**
  * Params Error Type, used to identify the error type and error message

@@ -18,37 +18,36 @@
 
 package com.apitable.player.controller;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+import com.apitable.core.support.ResponseData;
 import com.apitable.player.ro.ActivityStatusRo;
 import com.apitable.player.service.IPlayerActivityService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.core.support.ResponseData;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * Player System - Activity API
- * </p>
+ * Player System - Activity API.
  */
 @RestController
-@Api(tags = "Player System - Activity API")
+@Tag(name = "Player System - Activity API")
 @ApiResource(path = "/player/activity")
 public class ActivityController {
 
     @Resource
     private IPlayerActivityService iPlayerActivityService;
 
+    /**
+     * Trigger Wizard.
+     */
     @PostResource(path = "/triggerWizard", requiredPermission = false)
-    @ApiOperation(value = "Trigger Wizard", notes = "Scene: After triggering the guided click event, modify the state or the cumulative number of times.")
+    @Operation(summary = "Trigger Wizard", description = "Scene: After triggering the guided "
+        + "click event, modify the state or the cumulative number of times.")
     public ResponseData<Void> triggerWizard(@RequestBody @Valid ActivityStatusRo ro) {
         Long userId = SessionContext.getUserId();
         iPlayerActivityService.changeStatus(userId, ro.getWizardId());

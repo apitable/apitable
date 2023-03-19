@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Editor, Transforms, Element as SlateElement, Range, Location as SlateLocation, Path, Node } from 'slate';
+import { Editor, Transforms, Element as SlateElement, Range, Location as SlateLocation, Path, Node, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import clamp from 'lodash/clamp';
 
@@ -38,13 +38,13 @@ export const toggleMark = (editor: Editor, format: string, value: boolean | numb
   }
 };
 
-export const toggleBlock = (editor, block) => {
+export const toggleBlock = (editor: any, block: ElementType) => {
   ReactEditor.focus(editor);
   const isActive = isBlockActive(editor, block);
   const nextBlock = isActive ? ElementType.PARAGRAPH : block;
   const isList = LIST_TYPE_DICT[nextBlock];
-  const validSection = getValidSelection(editor) ;
-  
+  const validSection = getValidSelection(editor);
+
   Transforms.select(editor, validSection);
   Transforms.unwrapNodes(editor, {
     match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPE_DICT[(n as IElement).type],
@@ -69,8 +69,8 @@ export const removeAllMarks = (editor: Editor) => {
   }
 };
 
-export const updateElementData = (editor, partialData: IElementData, location?: SlateLocation, autoSelect = true) => {
-  ReactEditor.focus(editor);
+export const updateElementData = (editor: BaseEditor, partialData: IElementData, location?: SlateLocation, autoSelect = true) => {
+  ReactEditor.focus(editor as any);
   try {
     const validSection = location || getValidSelection(editor) ;
     if (autoSelect) {
@@ -84,7 +84,7 @@ export const updateElementData = (editor, partialData: IElementData, location?: 
   }
 };
 
-const changeElementIndent = (editor: Editor, isAdd) => {
+const changeElementIndent = (editor: Editor, isAdd: boolean) => {
   const validSection = getValidSelection(editor);
   const step = isAdd ? 1 : -1;
   // TODO: The problem of multiple indentations when nesting multiple layers is to be solved
@@ -148,7 +148,7 @@ export const insertLink = (editor: Editor, url: string, text: string) => {
   }
 };
 
-export const setNodeWithNewId = (editor: Editor, partialElement: Partial<IElement>, options?) => {
+export const setNodeWithNewId = (editor: Editor, partialElement: Partial<IElement>, options?: any) => {
   Transforms.setNodes(editor, { ...partialElement, _id: generateId() } as IElement, options);
 };
 
@@ -186,11 +186,11 @@ export const insertBlockElement = (editor: Editor, element: IElement, options: {
   Transforms.select(editor, nextPath);
 };
 
-export const insertImage = (editor: Editor, imageData: IImageElementData, options?) => {
+export const insertImage = (editor: Editor, imageData: IImageElementData, options?: any) => {
   Transforms.insertNodes(editor, GENERATOR.image({ data: imageData }), options);
   (editor as unknown as IMetaEditor).updateMeta('imageSize', imageData.size ?? 0, 'add');
 };
-export const updateImage = (editor: Editor, imageData: IImageElementData, path?, autoSelect = true) => {
+export const updateImage = (editor: Editor, imageData: IImageElementData, path?: SlateLocation, autoSelect = true) => {
   (editor as unknown as IMetaEditor).updateMeta('imageSize', imageData.size ?? 0, 'add');
   updateElementData(editor, imageData, path, autoSelect);
 };

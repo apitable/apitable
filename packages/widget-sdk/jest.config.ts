@@ -39,11 +39,16 @@ const config: Config.InitialOptions = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   modulePaths: ['<rootDir>/src'],
   moduleNameMapper: {
-    '^.+\\.(css|less|scss)$': 'babel-jest'
+    '^.+\\.(css|less|scss)$': 'babel-jest',
+    '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': '<rootDir>/assets-jest.js'
   },
   setupFiles: [
-    '@apitable/i18n-lang'
-  ]
+    '@apitable/i18n-lang',
+  ],
+  setupFilesAfterEnv: [
+    '<rootDir>/setup-jest.js'
+  ],
+  testRegex: '.spec.'
 };
 
 export default config;

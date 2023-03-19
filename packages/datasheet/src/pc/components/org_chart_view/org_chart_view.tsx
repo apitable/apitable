@@ -38,8 +38,7 @@ import {
   ISetRecordOptions,
 } from '@apitable/core';
 import { ReactFlowProvider } from '@apitable/react-flow';
-import { useSize } from 'ahooks';
-import { useLocalStorageState } from 'ahooks';
+import { useSize, useLocalStorageState } from 'ahooks';
 import { resourceService } from 'pc/resource_service';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { Fragment, FC, useEffect, useMemo, useRef, useState } from 'react';
@@ -67,13 +66,15 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
 
+const _ReactFlowProvider: any = ReactFlowProvider;
+
 export interface IOrgChartViewProps {
   width: number;
   height: number;
   isMobile?: boolean;
 }
 
-export const OrgChartView: FC<IOrgChartViewProps> = ({
+export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({
   width,
   height,
   isMobile,
@@ -107,8 +108,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     };
   }, shallowEqual);
 
-  const { style: orgChartStyle } = activeView;
-  const { id: viewId } = activeView;
+  const { style: orgChartStyle, id: viewId } = activeView;
 
   const { linkFieldId, horizontal } = orgChartStyle;
   const linkField = fieldMap[linkFieldId] as ILinkField;
@@ -234,7 +234,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     const orgChartStatusMap = getStorage(StorageName.OrgChartStatusMap);
     let status: Partial<IOrgChartViewStatus> = {};
     if (orgChartStatusMap) {
-      status = orgChartStatusMap[`${spaceId}_${datasheetId}_${activeView.id}`] || {};
+      status = orgChartStatusMap[`${spaceId}_${datasheetId}_${viewId}`] || {};
       if (settingPanelVisible) {
         dispatch(
           batchActions([
@@ -247,7 +247,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
       }
     }
     setStorage(StorageName.OrgChartStatusMap, {
-      [`${spaceId}_${datasheetId}_${activeView.id}`]: {
+      [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...status,
         rightPanelVisible: settingPanelVisible ? true : visible,
         settingPanelVisible: false,
@@ -259,19 +259,19 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
   const handleSettingPanelClose = () => {
     const { guideStatus } = orgChartViewStatus;
     if (guideStatus) {
-      dispatch(StoreActions.toggleOrgChartSettingPanel(false, datasheetId!));
+      dispatch(StoreActions.toggleOrgChartSettingPanel(false, datasheetId));
     } else {
       dispatch(
         batchActions([
-          StoreActions.toggleOrgChartSettingPanel(false, datasheetId!),
-          StoreActions.toggleOrgChartGuideStatus(true, datasheetId!),
-          StoreActions.toggleOrgChartRightPanel(true, datasheetId!),
+          StoreActions.toggleOrgChartSettingPanel(false, datasheetId),
+          StoreActions.toggleOrgChartGuideStatus(true, datasheetId),
+          StoreActions.toggleOrgChartRightPanel(true, datasheetId),
         ])
       );
     }
     const restStatus = guideStatus ? {} : { guideStatus: true, guideWidth: true };
     setStorage(StorageName.OrgChartStatusMap, {
-      [`${spaceId}_${datasheetId}_${activeView.id}`]: {
+      [`${spaceId}_${datasheetId}_${viewId}`]: {
         ...orgChartViewStatus,
         settingPanelVisible: false,
         ...restStatus,
@@ -321,7 +321,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
         });
       }, {
         style: {
-          ...activeView.style,
+          ...orgChartStyle,
           [OrgChartStyleKeyType.LinkFieldId]: newId,
         }
       });
@@ -330,7 +330,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
 
   useEffect(() => {
     const storeOrgChartViewStatus = getStorage(StorageName.OrgChartStatusMap);
-    const orgChartViewStatus = storeOrgChartViewStatus?.[`${spaceId}_${datasheetId}_${activeView.id}`] || {};
+    const orgChartViewStatus = storeOrgChartViewStatus?.[`${spaceId}_${datasheetId}_${viewId}`] || {};
     const defaultOrgChartViewStatus = {
       ...defaultViewStatus,
       ...orgChartViewStatus,
@@ -349,11 +349,9 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
     // eslint-disable-next-line
   }, [viewId]);
 
-  const commandManager = resourceService.instance!.commandManager;
-
   const handleChange = (data: ISetRecordOptions[]) => {
     if (data.length) {
-      commandManager.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,
         data,
@@ -466,7 +464,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
           size={size}
           allowResize={false}
           panelLeft={(
-            <ReactFlowProvider>
+            <_ReactFlowProvider>
               <div
                 className={styles.orgChartView}
                 onContextMenu={e => {
@@ -476,7 +474,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
               >
                 <Cycle elements={cycleElements} />
               </div>
-            </ReactFlowProvider>
+            </_ReactFlowProvider>
           )}
           panelRight={panelRight}
         />
@@ -501,7 +499,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
           size={size}
           allowResize={false}
           panelLeft={(
-            <ReactFlowProvider>
+            <_ReactFlowProvider>
               <OrgChart />
               {fieldVisible && linkField && (
                 <>
@@ -509,7 +507,7 @@ export const OrgChartView: FC<IOrgChartViewProps> = ({
                   <EdgeContextMenu />
                 </>
               )}
-            </ReactFlowProvider>
+            </_ReactFlowProvider>
           )}
           panelRight={panelRight}
         />

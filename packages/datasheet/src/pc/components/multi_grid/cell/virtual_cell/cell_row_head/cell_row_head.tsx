@@ -37,7 +37,7 @@ interface ICellRowHead {
   style?: React.CSSProperties;
 }
 
-export const CellRowHead: React.FC<ICellRowHead> = React.memo(props => {
+export const CellRowHead: React.FC<React.PropsWithChildren<ICellRowHead>> = React.memo(props => {
   const { recordId, groupInfo, row, displayRowIndex, recordChecked, className, style = {}} = props;
   const operateHead = classNames({
     [OPERATE_HEAD_CLASS]: true,

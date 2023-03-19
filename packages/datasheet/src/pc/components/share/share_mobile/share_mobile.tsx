@@ -40,7 +40,7 @@ export interface IShareMobileProps extends IShareMenu {
   applicationJoinAlertVisible: boolean;
 }
 
-export const ShareMobile: React.FC<IShareMobileProps> = props => {
+export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> = props => {
   const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
   const [viewListStatus, setViewListStatus] = useState(false);
   const [shareGuideStatus, setShareGuideStatus] = useState(false);

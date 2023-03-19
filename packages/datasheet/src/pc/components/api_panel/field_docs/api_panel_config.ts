@@ -23,6 +23,6 @@ export const getFieldDocs = (fieldType: FieldType): {
   defaultExampleId?: string;
   descriptionId?: string;
 } => {
-  const str = FieldType[fieldType];
+  const str = FieldType[fieldType]!;
   return SystemConfig.api_panel[str] || {};
 };

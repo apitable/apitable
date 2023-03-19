@@ -86,7 +86,13 @@ export const handleEmptyCellValue = <T>(cellValue: T, basicValueType?: BasicValu
       }
       break;
     case BasicValueType.String:
-      if ((cellValue as any).length === 0) {
+      if (
+        (cellValue as any).length === 0 || 
+        (
+          Array.isArray(cellValue) && cellValue.length === 1 && 
+          Object.prototype.toString.call(cellValue[0]) === '[object Object]' && !cellValue[0]?.text
+        )
+      ) {
         return null;
       }
       break;
@@ -186,6 +192,18 @@ export const getViewTypeString = (viewType: ViewType): APIMetaViewType => {
   };
 
   return ViewTypeStringMap[viewType];
+};
+
+export const getViewTypeByString = (viewType: APIMetaViewType): ViewType => {
+  const viewTypeStringMap = {
+    [APIMetaViewType.Grid]: ViewType.Grid,
+    [APIMetaViewType.Gallery]: ViewType.Gallery,
+    [APIMetaViewType.Kanban]: ViewType.Kanban,
+    [APIMetaViewType.Gantt]: ViewType.Gantt,
+    [APIMetaViewType.Calendar]: ViewType.Calendar,
+    [APIMetaViewType.Architecture]: ViewType.OrgChart,
+  };
+  return viewTypeStringMap[viewType];
 };
 
 export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaField): IAPIMetaNoneStringValueFormat | null => {

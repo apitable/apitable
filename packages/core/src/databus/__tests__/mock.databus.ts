@@ -17,17 +17,16 @@
  */
 
 import { DataBus } from '../databus';
-import { MockDataLoaderSaver } from './mock.data.loader.saver';
+import { MockDataStorageProvider } from './mock.data.storage.provider';
 import { MockStoreProvider } from './mock.store.provider';
 
-const dataLoader = new MockDataLoaderSaver();
+const dataStorageProvider = new MockDataStorageProvider();
 
 export const MockDataBus = DataBus.create({
-  dataLoader,
-  dataSaver: dataLoader,
+  dataStorageProvider,
   storeProvider: new MockStoreProvider(),
 });
 
 export const resetDataLoader = () => {
-  dataLoader.reset();
+  dataStorageProvider.reset();
 };

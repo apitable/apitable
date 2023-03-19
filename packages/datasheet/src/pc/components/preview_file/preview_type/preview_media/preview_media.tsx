@@ -26,7 +26,7 @@ import Player from 'xgplayer';
 import { IPreviewTypeBase } from '../preview_type.interface';
 import { IAVInfo, IStream } from './av_info';
 
-const PreviewMedia: React.FC<IPreviewTypeBase> = props => {
+const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
   const { file } = props;
   const ref = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player>();

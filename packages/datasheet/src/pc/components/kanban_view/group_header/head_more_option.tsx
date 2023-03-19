@@ -20,12 +20,12 @@ import { Selectors, Strings, t, UN_GROUP } from '@apitable/core';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
-import { AddOutlined, EditOutlined, NarrowRecordOutlined, DeleteOutlined, HideFilled } from '@apitable/icons';
+import { AddOutlined, EditOutlined, NarrowOutlined, DeleteOutlined, EyeOpenOutlined } from '@apitable/icons';
 import { flatContextData } from 'pc/utils';
 
 export const KANBAN_GROUP_MORE = 'KANBAN_GROUP_MORE';
 
-export const GroupHeadMenu: React.FC = props => {
+export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { rowCreatable, fieldPropertyEditable } = useSelector(Selectors.getPermissions);
   const colors = useThemeColors();
   return <ContextMenu
@@ -36,14 +36,14 @@ export const GroupHeadMenu: React.FC = props => {
           icon: <AddOutlined color={colors.thirdLevelText} />,
           text: t(Strings.add_kanban_group_card),
           hidden: !rowCreatable,
-          onClick: ({ props: { addNewRecord }}) => {
+          onClick: ({ props: { addNewRecord }}: any) => {
             addNewRecord();
           },
         },
         {
           icon: <EditOutlined color={colors.thirdLevelText} />,
           text: t(Strings.editing_group),
-          hidden(arg) {
+          hidden(arg: any) {
             const { props: { groupId }} = arg;
 
             if (!fieldPropertyEditable || groupId === UN_GROUP) {
@@ -52,26 +52,26 @@ export const GroupHeadMenu: React.FC = props => {
 
             return false;
           },
-          onClick: ({ props: { setEditing }}) => {
+          onClick: ({ props: { setEditing }}: any) => {
             setEditing(true);
           },
         },
         {
-          icon: <HideFilled color={colors.thirdLevelText} />,
+          icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
           text: t(Strings.hide_kanban_grouping),
-          onClick: ({ props: { hideGroup }}) => { hideGroup(); },
+          onClick: ({ props: { hideGroup }}: any) => { hideGroup(); },
         },
         {
-          icon: <NarrowRecordOutlined color={colors.thirdLevelText} />,
+          icon: <NarrowOutlined color={colors.thirdLevelText} />,
           text: t(Strings.collapse_kanban_group),
-          onClick: ({ props: { collapseGroup }}) => { collapseGroup(); },
+          onClick: ({ props: { collapseGroup }}: any) => { collapseGroup(); },
         },
       ],
       [
         {
           icon: <DeleteOutlined color={colors.thirdLevelText} />,
           text: t(Strings.delete),
-          hidden(arg) {
+          hidden(arg: any) {
             const { props: { groupId }} = arg;
 
             if (!fieldPropertyEditable || groupId === UN_GROUP) {
@@ -80,7 +80,7 @@ export const GroupHeadMenu: React.FC = props => {
 
             return false;
           },
-          onClick: ({ props: { deleteGroup }}) => {
+          onClick: ({ props: { deleteGroup }}: any) => {
             deleteGroup();
           },
         },

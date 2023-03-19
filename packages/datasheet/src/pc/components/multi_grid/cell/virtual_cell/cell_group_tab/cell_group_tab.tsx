@@ -51,7 +51,7 @@ interface ICellGroupTab {
 export const GRAY_COLOR_BORDER = ' 1px solid ' + colorVars.sheetLineColor;
 export const PRIMARY_COLOR_BORDER = ' 1px solid ' + colorVars.primaryColor;
 
-export const CellGroupTab: React.FC<ICellGroupTab> = React.memo(props => {
+export const CellGroupTab: React.FC<React.PropsWithChildren<ICellGroupTab>> = React.memo(props => {
   const { actualColumnIndex, row, style, columnsLength, groupInfo, isSort } = props;
   // const groupingCollapseMap = useSelector(state => Selectors.getGroupingCollapseMap(state));
   let width = parseInt(style.width as string, 10);

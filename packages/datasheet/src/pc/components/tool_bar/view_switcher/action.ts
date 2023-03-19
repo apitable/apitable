@@ -89,7 +89,7 @@ export const useViewAction = () => {
 
     duplicateView: (viewId: string) => {
       const index = views.findIndex(view => view.id === viewId);
-      const view = views[index];
+      const view = views[index]!;
       const snapshot = Selectors.getSnapshot(store.getState());
       const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
       const { result } = resourceService.instance!.commandManager.execute({

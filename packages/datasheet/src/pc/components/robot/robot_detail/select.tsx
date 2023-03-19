@@ -30,7 +30,7 @@ export const Select = (props: {
 }) => {
   const [state] = useControllableValue<any>(props);
   const { onChange, options, placeholder } = props;
-  const handleChange = (option, index) => {
+  const handleChange = (option: { value: any; }) => {
     // setState(option.value);
     onChange && onChange(option.value);
   };

@@ -17,8 +17,10 @@
  */
 
 import {
-  FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState,
+  FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap,
+  IFieldPermissionMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState, IResourceRevision,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
@@ -28,13 +30,14 @@ import { InjectLogger } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordMap, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
-import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
-import { DatasheetRepository } from '../../datasheet/repositories/datasheet.repository';
+import { DatasheetPack, NodeInfo, RecordMap, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
+import { DatasheetRepository } from '../repositories/datasheet.repository';
 import { NodeService } from 'node/services/node.service';
 import { UserService } from '../../../user/services/user.service';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
+import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class DatasheetService {
@@ -48,6 +51,8 @@ export class DatasheetService {
     @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly commandService: CommandService,
+    @Inject(forwardRef(() => MetaService))
+    private readonly resourceMetaService: MetaService,
   ) {}
 
   /**
@@ -66,6 +71,7 @@ export class DatasheetService {
     return entity;
   }
 
+  @Span()
   async fetchViewPack(dstId: string, viewId: string): Promise<ViewPack> {
     // Query metadata of datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
@@ -74,7 +80,7 @@ export class DatasheetService {
     if (!view) {
       throw new ServerException(DatasheetException.VIEW_NOT_EXIST);
     }
-    const revision = await this.nodeService.getRevisionByDstId(dstId);
+    const revision = await this.resourceMetaService.getRevisionByDstId(dstId);
     return { view, revision: revision! };
   }
 
@@ -85,6 +91,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchDataPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading main datasheet data [${dstId}]`);
@@ -95,7 +102,7 @@ export class DatasheetService {
     getNodeInfoProfiler.done({ message: `getNodeDetailInfo ${dstId} done` });
     // Query snapshot
     const getMetaProfiler = this.logger.startTimer();
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
+    const meta = options?.meta?? await this.datasheetMetaService.getMetaDataByDstId(dstId);
     getMetaProfiler.done({ message: `getMetaProfiler ${dstId} done` });
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap =
@@ -106,9 +113,7 @@ export class DatasheetService {
     const endTime = +new Date();
     this.logger.info(`Finished main datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
     // Query foreignDatasheetMap and unitMap
-    const getProcessFieldProfiler = this.logger.startTimer();
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
-    getProcessFieldProfiler.done({ message: `getProcessFieldProfiler ${dstId} done` });
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -126,6 +131,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading share data [${dstId}]`);
@@ -142,13 +148,7 @@ export class DatasheetService {
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
     this.logger.info(`Finished loading share data, duration [${dstId}]: ${endTime - beginTime}ms`);
-    return {
-      snapshot: { meta, recordMap, datasheetId: node.id },
-      datasheet: node,
-      foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as (UserInfo | UnitInfo)[],
-      fieldPermissionMap,
-    };
+    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
   }
 
   /**
@@ -158,6 +158,7 @@ export class DatasheetService {
    * @param auth authorization
    * @param options query parameters
    */
+  @Span()
   async fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading template data [${dstId}]`);
@@ -203,6 +204,10 @@ export class DatasheetService {
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
     this.logger.info(`Finished loading form linked datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
+    return this.getFormDataPack(meta, recordMap, node, combine, fieldPermissionMap);
+  }
+
+  public getFormDataPack(meta: IMeta, recordMap: RecordMap, node: NodeInfo, combine: IForeignDatasheetMap & IDatasheetUnits, fieldPermissionMap: IFieldPermissionMap | undefined) {
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -268,6 +273,7 @@ export class DatasheetService {
    * @param origin query parameters
    * @param linkedRecordMap Specifies records to be queried in linked datasheet
    */
+  @Span()
   async processField(
     mainDstId: string,
     auth: IAuthHeader,
@@ -344,7 +350,7 @@ export class DatasheetService {
     return this.commandService.setPageParam({ datasheetId: dstIds[0]! }, store);
   }
 
-  getAllLinkDstIdFromFieldMap(fieldMap: IFieldMap): Set<string> {
+  private getAllLinkDstIdFromFieldMap(fieldMap: IFieldMap): Set<string> {
     const dstIds = new Set<string>();
     for (const fieldId in fieldMap) {
       const field = fieldMap[fieldId]!;
@@ -487,5 +493,13 @@ export class DatasheetService {
       linkedRecordMap[key] = [...new Set(linkedRecordMap[key])];
     }
     return linkedRecordMap;
+  }
+
+  async selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
+    return await this.datasheetRepository.selectRevisionByDstIds(dstIds);
+  }
+
+  async selectRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
+    return await this.datasheetRepository.selectRevisionByDstId(dstId);
   }
 }

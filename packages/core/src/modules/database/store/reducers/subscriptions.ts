@@ -30,4 +30,4 @@ export const subscriptions = produce((subscriptions: ISubscriptions = [], action
       return subscriptions;
     }
   }
-}, []);
+}, [] as ISubscriptions);

@@ -30,7 +30,7 @@ export interface ICellCreatedTimeProps extends ICellComponentProps {
   isFromExpand?: boolean;
 }
 
-export const CellCreatedTime: React.FC< ICellCreatedTimeProps> = props => {
+export const CellCreatedTime: React.FC<React.PropsWithChildren<ICellCreatedTimeProps>> = props => {
   const { field, isFromExpand, className, readonly, cellValue } = props;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule] = cellString ? cellString.split(' ') : [];

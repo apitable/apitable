@@ -32,7 +32,7 @@ interface ICapacity {
   dataColor?: string;
 }
 
-export const Capacity: FC<ICapacity> = ({ maxValue, curValue, dataColor, strokeColor }) => {
+export const Capacity: FC<React.PropsWithChildren<ICapacity>> = ({ maxValue, curValue, dataColor, strokeColor }) => {
   const colors = useThemeColors();
   const loading = useMemo(() => {
     return typeof maxValue !== 'number' || typeof curValue !== 'number';
@@ -101,7 +101,7 @@ export const Capacity: FC<ICapacity> = ({ maxValue, curValue, dataColor, strokeC
               trailColor={colors.lineColor}
               strokeWidth={8}
               className={classNames({
-                [styles.isEdgeValue]: percent === 0 || percent === 100,
+                [styles.isEdgeValue!]: percent === 0 || percent === 100,
               })}
               format={() => usedCapacity}
             />

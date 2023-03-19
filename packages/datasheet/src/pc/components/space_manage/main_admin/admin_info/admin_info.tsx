@@ -26,7 +26,7 @@ import { Typography } from '@apitable/components';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
 
-export const AdminInfo: FC = () => {
+export const AdminInfo: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const mainAdminInfo = useSelector((state: IReduxState) => state.spacePermissionManage.mainAdminInfo);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);

@@ -18,33 +18,31 @@
 
 package com.apitable.workspace.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.apitable.shared.support.serializer.ChinaLocalDateTimeToUtcSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * <p>
- * Share operation records
+ * Share operation records.
  * </p>
  */
 @Data
-@ApiModel("Node sharing operation record view")
+@Schema(description = "Node sharing operation record view")
 public class ShareOperateNoteVO {
 
-    @ApiModelProperty(value = "Operator", example = "Zhang San", position = 1)
+    @Schema(description = "Operator", example = "Zhang San")
     private String operator;
 
-    @ApiModelProperty(value = "Denomination of dive", example = "Open｜Close｜Refresh", position = 2)
+    @Schema(description = "Denomination of dive", example = "Open｜Close｜Refresh")
     private String action;
 
-    @ApiModelProperty(value = "Operation event", example = "Share｜ Allow others to save ｜ Share Link", position = 3)
+    @Schema(description = "Operation event", example = "Share｜ Allow others to save ｜ Share Link")
     private String event;
 
-    @ApiModelProperty(value = "Operation time (UTC timestamp)", example = "2020-03-19T16:03:16.000", position = 4)
+    @Schema(description = "Operation time (UTC timestamp)", example = "2020-03-19T16:03:16.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime timestamp;
 }

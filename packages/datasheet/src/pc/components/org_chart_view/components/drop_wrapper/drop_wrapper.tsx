@@ -34,7 +34,7 @@ interface IDrop {
   style?: React.CSSProperties;
 }
 
-export const DropWrapper: React.FC<IDrop> = ({ 
+export const DropWrapper: React.FC<React.PropsWithChildren<IDrop>> = ({ 
   children, 
   onDrop, 
   onMouseOver,

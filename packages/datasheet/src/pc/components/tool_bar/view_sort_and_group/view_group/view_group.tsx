@@ -40,7 +40,7 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewGroup: React.FC<IViewSetting> = props => {
+export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
   const { triggerInfo } = props;
   const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state));
   const activityView = useSelector(state => Selectors.getCurrentView(state))!;
@@ -123,7 +123,7 @@ export const ViewGroup: React.FC<IViewSetting> = props => {
   }
 
   function deleteItem(index: number) {
-    const result = activeViewGroupInfo.filter((item, idx) => idx !== index);
+    const result = activeViewGroupInfo.filter((_item, idx) => idx !== index);
     submitGroup(result.length ? result : null);
   }
 

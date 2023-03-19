@@ -28,7 +28,7 @@ interface IFormatSingleText {
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormatSingleText: React.FC<IFormatSingleText> = props => {
+export const FormatSingleText: React.FC<React.PropsWithChildren<IFormatSingleText>> = props => {
   const { setCurrentField, currentField } = props;
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {

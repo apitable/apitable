@@ -33,21 +33,20 @@ import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import RightArrowIcon from 'static/icon/common/common_icon_right_line.svg';
-import EyeIcon from 'static/icon/signin/signin_icon_display.svg';
 import { MembersDetail } from '../../permission_settings/permission/members_detail';
 import { UnitItem } from '../../permission_settings/permission/unit_item';
 import { TeamTreeSelect } from '../team_tree_select';
 import styles from './style.module.less';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { ChevronRightOutlined, EyeOpenOutlined } from '@apitable/icons';
 
 export interface ITeamworkProps {
   nodeId: string;
   jumpPublicLink: () => void;
 }
 
-export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
+export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, jumpPublicLink }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [joinTeamId, setJoinTeamId] = useState('');
@@ -125,13 +124,13 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
         {nodeAssignable && getEnvVariables().FILE_PERMISSION_VISIBLE ? (
           <div className={styles.permissionSettingBtn} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(nodeId))}>
             {t(Strings.permission_setting)}
-            <RightArrowIcon />
+            <ChevronRightOutlined />
           </div>
         ) : (
           <Tooltip title={t(Strings.no_permission_setting)}>
             <div className={classnames(styles.permissionSettingBtn, !nodeAssignable && styles.disable)}>
               {t(Strings.permission_setting)}
-              <RightArrowIcon />
+              <ChevronRightOutlined />
             </div>
           </Tooltip>
         )}
@@ -178,7 +177,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
         </div>
       )}
       <div className={styles.jumpBtn} onClick={jumpPublicLink}>
-        <EyeIcon />
+        <EyeOpenOutlined />
         {t(Strings.teamwork_click_here)}
       </div>
       {detailModalVisible && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
@@ -186,7 +185,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
   );
 };
 
-const Row = props => {
+const Row = (props: any) => {
   const { index, data, style } = props;
   const { roleList } = data;
   const { members, admins, owner } = roleList;
@@ -203,7 +202,7 @@ const Row = props => {
           isTeam: false,
         }}
         identity={{
-          admin: Boolean(admins.find(item => item.memberId === member.memberId)),
+          admin: Boolean(admins.find((item: any) => item.memberId === member.memberId)),
           permissionOpener: owner?.memberId === member.memberId,
         }}
         disabled

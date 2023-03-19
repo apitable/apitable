@@ -25,6 +25,7 @@ import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Select, useThemeColors } from '@apitable/components';
+// @ts-ignore
 import { snake } from 'naming-style';
 
 export const DateDuration = [
@@ -42,7 +43,7 @@ interface IFilterDateDurationProps {
   condition: IFilterCondition<FieldType>;
 }
 
-export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
+export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDurationProps>> = props => {
   const { conditionIndex, condition, changeFilter } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();

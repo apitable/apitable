@@ -52,7 +52,7 @@ const polyfillData = (description: string) => {
   return Deserializer.html(data.data);
 };
 
-export const DescriptionModal: FC<IDescriptionModalProps> = props => {
+export const DescriptionModal: FC<React.PropsWithChildren<IDescriptionModalProps>> = props => {
   const { nodeInfo, updateDesc } = props;
   const [value, setValue] = useState<EditorValue | IEditorData>(polyfillData(nodeInfo.description));
   const [description, setDescription] = useState(nodeInfo.description);

@@ -87,12 +87,12 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
       Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query });
   }
 }, 300);
-export const recordModalCloseFns: Array<() => void> = [];
+export const recordModalCloseFns: Array<() => void | Promise<void>> = [];
 
-export function closeAllExpandRecord() {
-  recordModalCloseFns.forEach(fn => {
-    fn();
-  });
+export async function closeAllExpandRecord(): Promise<void> {
+  for (const fn of recordModalCloseFns) {
+    await fn();
+  }
   recordModalCloseFns.splice(0);
   store.dispatch(StoreActions.toggleRecordFullScreen(false));
 }

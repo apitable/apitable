@@ -24,7 +24,7 @@ interface IExpressionColorant {
   expression: string;
 }
 
-export const ExpressionColorantBase: React.FC<IExpressionColorant> = props => {
+export const ExpressionColorantBase: React.FC<React.PropsWithChildren<IExpressionColorant>> = props => {
   const { expression } = props;
   const tokens = new FormulaExprLexer(expression).fullMatches;
   const elements = tokens.map((token, index) => {

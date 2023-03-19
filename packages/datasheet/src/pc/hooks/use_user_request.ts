@@ -31,6 +31,8 @@ import { getSearchParams } from 'pc/utils';
 import { isLocalSite } from 'pc/utils/catalog';
 import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
+import { getEnvVariables } from 'pc/utils/env';
+import { ActionType } from 'pc/components/home/pc_home';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
@@ -103,7 +105,7 @@ export const useUserRequest = () => {
   /**
    * Direct login/registration
    */
-  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
+  const loginOrRegisterReq = (loginData: ApiInterface.ISignIn) => {
     // Extract the spaceId of the invitation to join, which is needed to give away space
     const invite = store.getState().invite;
     const spaceId = invite?.inviteLinkInfo?.data?.spaceId || invite?.inviteEmailInfo?.data?.spaceId;
@@ -174,6 +176,7 @@ export const useUserRequest = () => {
    * Log in [abandoned]
    */
   const loginReq = (loginData: ApiInterface.ISignIn, loginType?: ConfigConstant.LoginTypes) => {
+    const env = getEnvVariables();
     return Api.signIn(loginData).then((res) => {
       const { success, code, message, data } = res.data;
       if (success) {
@@ -217,23 +220,26 @@ export const useUserRequest = () => {
         }
         Router.push(Navigation.HOME);
       }
-
-      if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
-        openSliderVerificationModal();
-      } else if (code === StatusCode.PHONE_VALIDATION) {
-        Modal.confirm({
-          title: t(Strings.warning),
-          content: t(Strings.status_code_phone_validation),
-          onOk: () => {
-            window['nvc'].reset();
-          },
-          type: 'warning',
-          okText: t(Strings.got_it),
-          cancelButtonProps: {
-            style: { display: 'none' },
-          },
-        });
-        return;
+      if (!env.DISABLE_AWSC) {
+        if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
+          openSliderVerificationModal();
+        } else if (code === StatusCode.PHONE_VALIDATION) {
+          Modal.confirm({
+            title: t(Strings.warning),
+            content: t(Strings.status_code_phone_validation),
+            onOk: () => {
+              if (!env.DISABLE_AWSC) {
+                window['nvc'].reset();
+              }
+            },
+            type: 'warning',
+            okText: t(Strings.got_it),
+            cancelButtonProps: {
+              style: { display: 'none' },
+            },
+          });
+          return;
+        }
       }
       dispatch(
         StoreActions.setHomeErr({
@@ -269,6 +275,34 @@ export const useUserRequest = () => {
     });
   };
 
+  const registerReq = (username: string, credential: string) => {    
+    return Api.register(username, credential).then((res) => {
+      const { success } = res.data;
+      if (success) {
+        dispatch(StoreActions.setLoading(true));
+
+        const urlParams = getSearchParams();
+        // Send a friend invitation code for a reward
+        if (urlParams.has('inviteLinkToken')) {
+          join();
+          return res.data;
+        }
+        if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
+          Router.redirect(Navigation.WORKBENCH, {
+            params: { spaceId: inviteEmailInfo.data.spaceId },
+            clearQuery: true,
+          });
+          return res.data;
+        }
+        Router.redirect(Navigation.WORKBENCH, {
+          query: { reference },
+        });
+        return res.data;
+      }
+      return res.data;
+    });
+  };
+
   /**
    * Logout
    */
@@ -280,6 +314,7 @@ export const useUserRequest = () => {
           window.location.href = data.redirectUri;
         } else {
           window.location.href = '/login';
+          localStorage.setItem('loginAction', ActionType.SignIn);
         }
       }
     });
@@ -427,9 +462,10 @@ export const useUserRequest = () => {
     type: number,
     data?: string
   ) => {
+    const env = getEnvVariables();
     return Api.getSmsCode(areaCode, phone, type, data).then((res) => {
       const { success, code } = res.data;
-      if (success) {
+      if (success || env.DISABLE_AWSC) {
         return res.data;
       }
       // Perform secondary verification (slider verification)
@@ -440,7 +476,9 @@ export const useUserRequest = () => {
           title: t(Strings.warning),
           content: t(Strings.status_code_phone_validation),
           onOk: () => {
-            window['nvc'].reset();
+            if (!env.DISABLE_AWSC) {
+              window['nvc'].reset();
+            }
           },
           type: 'warning',
           okText: t(Strings.got_it),
@@ -518,5 +556,6 @@ export const useUserRequest = () => {
     updateLangReq,
     submitInviteCodeReq,
     updateAvatarColor,
+    registerReq
   };
 };

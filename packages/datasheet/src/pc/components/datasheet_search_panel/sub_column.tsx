@@ -28,10 +28,10 @@ interface ISubColumnProps {
   showSubColumnWithWidget: boolean;
   currentViewId: string;
   currentDatasheetId: string;
-  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] });
+  onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] }): void;
 }
 
-export const SubColumn: React.FC<ISubColumnProps> = props => {
+export const SubColumn: React.FC<React.PropsWithChildren<ISubColumnProps>> = props => {
   const { currentMeta, setLoading, showSubColumnWithWidget, currentViewId, currentDatasheetId, onChange } = props;
   const [installedWidgets, setInstalledWidgets] = useState<INodeInstalledWidget[] | null>(null);
 

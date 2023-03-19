@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// @ts-ignore
 import MonthCalendar from 'rc-calendar/es/MonthCalendar';
 import * as React from 'react';
 import createPicker from './create_picker';

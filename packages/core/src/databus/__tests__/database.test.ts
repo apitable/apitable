@@ -17,9 +17,13 @@
  */
 
 import { fulfillStore } from './mock.store.provider';
-import { MockDataBus } from './mock.databus';
+import { MockDataBus, resetDataLoader } from './mock.databus';
 import { StoreActions } from 'exports/store';
 import { ResourceType } from 'types';
+import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from 'databus/common/event';
+import { ExecuteResult, ICollaCommandExecuteSuccessResult } from 'command_manager';
+import { CollaCommandName } from 'commands';
+import { mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
 
 const db = MockDataBus.getDatabase();
 
@@ -31,6 +35,7 @@ describe('store provider', () => {
         store.dispatch(StoreActions.updateRevision(12408, 'dst1', ResourceType.Datasheet));
         return Promise.resolve(store);
       },
+      loadOptions: {},
     });
 
     expect(dst).toBeTruthy();
@@ -40,7 +45,238 @@ describe('store provider', () => {
 
 describe('getDatasheet', () => {
   it('should return null if datasheet does not exist', async() => {
-    const dst = await db.getDatasheet('dst7', {});
+    const dst = await db.getDatasheet('dst7', { loadOptions: {}, storeOptions: {}});
     expect(dst).toBeNull();
+  });
+});
+
+describe('event handlers', () => {
+  beforeEach(resetDataLoader);
+
+  test('add an event listener', () => {
+    const result = db.addEventHandler({
+      type: DatasheetEventType.CommandExecuted,
+      handle: () => Promise.resolve(),
+    });
+
+    expect(result).toBeTruthy();
+  });
+
+  test('add the same event listener twice', () => {
+    const listener = {
+      type: DatasheetEventType.CommandExecuted,
+      handle: () => Promise.resolve(),
+    };
+
+    db.addEventHandler(listener);
+    const result = db.addEventHandler(listener);
+
+    expect(result).toBeFalsy();
+  });
+
+  test('remove an event listener', () => {
+    const listener = {
+      type: DatasheetEventType.CommandExecuted,
+      handle: () => Promise.resolve(),
+    };
+
+    db.addEventHandler(listener);
+
+    const result = db.removeEventHandler(listener);
+
+    expect(result).toBeTruthy();
+  });
+
+  test('remove the same event listener twice', () => {
+    const listener = {
+      type: DatasheetEventType.CommandExecuted,
+      handle: () => Promise.resolve(),
+    };
+
+    db.addEventHandler(listener);
+
+    db.removeEventHandler(listener);
+    const result = db.removeEventHandler(listener);
+
+    expect(result).toBeFalsy();
+  });
+
+  test('remove a non-existent event listener', () => {
+    const listener = {
+      type: DatasheetEventType.CommandExecuted,
+      handle: () => Promise.resolve(),
+    };
+
+    const result = db.removeEventHandler(listener);
+
+    expect(result).toBeFalsy();
+  });
+
+  describe('fire event', () => {
+    test('fire an event with one event listeners', async() => {
+      let result: any;
+      db.addEventHandler({
+        type: DatasheetEventType.CommandExecuted,
+        handle(event) {
+          result = event;
+          return Promise.resolve();
+        },
+      });
+
+      const event: IDatasheetEvent = {
+        type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
+        resourceOpCollections: [],
+      };
+
+      await db.fireEvent(event);
+
+      expect(result).toStrictEqual(event);
+    });
+
+    test('fire an event with two event listeners', async() => {
+      let result1: any;
+      let result2: any;
+      db.addEventHandler({
+        type: DatasheetEventType.CommandExecuted,
+        handle(event) {
+          result1 = event;
+          return Promise.resolve();
+        },
+      });
+      db.addEventHandler({
+        type: DatasheetEventType.CommandExecuted,
+        handle(event) {
+          result2 = event;
+          return Promise.resolve();
+        },
+      });
+
+      const event: IDatasheetEvent = {
+        type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
+        resourceOpCollections: [],
+      };
+
+      await db.fireEvent(event);
+
+      expect(result1).toStrictEqual(event);
+      expect(result2).toStrictEqual(event);
+    });
+
+    it('should not be invoked after being removed', async() => {
+      let result: any = undefined;
+      const handler: IDatasheetEventHandler & { type: DatasheetEventType } = {
+        type: DatasheetEventType.CommandExecuted,
+        handle(event) {
+          result = event;
+          return Promise.resolve();
+        },
+      };
+      db.addEventHandler(handler);
+
+      db.removeEventHandler(handler);
+
+      const event: IDatasheetEvent = {
+        type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
+        resourceOpCollections: [],
+      };
+
+      await db.fireEvent(event);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should not be invoked after the kind of handlers is removed', async() => {
+      let result: any = undefined;
+      db.addEventHandler({
+        type: DatasheetEventType.CommandExecuted,
+        handle(event) {
+          result = event;
+          return Promise.resolve();
+        },
+      });
+
+      db.removeEventHandlers(DatasheetEventType.CommandExecuted);
+
+      const event: IDatasheetEvent = {
+        type: DatasheetEventType.CommandExecuted,
+        execResult: CommandExecutionResultType.Success,
+        resourceOpCollections: [],
+      };
+
+      await db.fireEvent(event);
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  it('should receive success event if doCommand succeeded', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+    let event: any = undefined;
+    db.addEventHandler({
+      type: DatasheetEventType.CommandExecuted,
+      handle(e) {
+        event = e;
+        return Promise.resolve();
+      },
+    });
+
+    const result = await dst1!.doCommand(
+      {
+        cmd: CollaCommandName.AddRecords,
+        viewId: 'viw1',
+        index: 3,
+        count: 1,
+      },
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    const recordId = (result as ICollaCommandExecuteSuccessResult<string[]>).data![0]!;
+
+    expect(event).toBeTruthy();
+
+    expect(event).toStrictEqual({
+      type: DatasheetEventType.CommandExecuted,
+      execResult: CommandExecutionResultType.Success,
+      resourceOpCollections: mockOpsCollectOfAddOneDefaultRecord(recordId),
+    });
+  });
+
+  it('should not receive event if doCommand returns none', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+    let event: any = undefined;
+    db.addEventHandler({
+      type: DatasheetEventType.CommandExecuted,
+      handle(e) {
+        event = e;
+        return Promise.resolve();
+      },
+    });
+
+    const result = await dst1!.doCommand(
+      {
+        cmd: CollaCommandName.AddRecords,
+        viewId: 'viw1',
+        index: 3,
+        count: 0,
+      },
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.None);
+
+    expect(event).toBeUndefined();
   });
 });

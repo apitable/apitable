@@ -29,7 +29,7 @@ interface IModalProProps extends IModalProps {
   optArea?: React.ReactElement;
 }
 
-export const ModalPro: FC<IModalProProps> = props => {
+export const ModalPro: FC<React.PropsWithChildren<IModalProProps>> = props => {
 
   const {
     direction = 'row-reverse',

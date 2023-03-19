@@ -186,7 +186,7 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
   /**
    * Inverted visual list, calculating how many items need to be removed to place the inserted display label
    */
-  const reCalculateDisplayWidth = (list, childList: IUnionDOMText[], originTotal, total: number, item) => {
+  const reCalculateDisplayWidth = (list: string | any[], childList: IUnionDOMText[], originTotal: number, total: number, item: IUnionDOMText) => {
     let sum = originTotal;
     let index = list.length - 1;
     let deleteCount = 0;
@@ -394,8 +394,8 @@ const CollapseBase: React.ForwardRefRenderFunction<ICollapseFunc, ICollapseProps
     }
     if (onSort) {
      
-      const dragItem = show.filter((v, index) => index === source.index)[0];
-      const dropItem = show.filter((v, index) => index === destination.index)[0];
+      const dragItem = show.filter((_v, index) => index === source.index)[0];
+      const dropItem = show.filter((_v, index) => index === destination.index)[0];
       if (!dragItem || !dropItem) return;
       const dragIndex = data.findIndex((v) => v.key === dragItem.key);
       const dropIndex = data.findIndex((v) => v.key === dropItem.key);

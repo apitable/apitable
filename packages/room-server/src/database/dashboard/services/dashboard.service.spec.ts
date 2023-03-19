@@ -20,7 +20,7 @@ import { IPermissions, IResourceMeta, Role } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NodeInfo } from 'database/interfaces';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { MetaService } from 'database/resource/services/meta.service';
 import { NodeService } from 'node/services/node.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardService } from './dashboard.service';
@@ -31,7 +31,7 @@ describe('DashboardService', () => {
   let service: DashboardService;
   let nodeService: NodeService;
   let restService: RestService;
-  let resourceMetaRepository: ResourceMetaRepository;
+  let resourceMetaService: MetaService;
   const knownDashboardId = 'dstNnnfdsffsbadaOd23';
   const permissions: IPermissions = Object.assign({ allowEditConfigurable: false });
   const nodeInfo: NodeInfo = Object.assign({ id: knownDashboardId, name: 'Test Dashboard', role: Role.Editor, nodeFavorite: false, permissions });
@@ -90,7 +90,12 @@ describe('DashboardService', () => {
             fetchMe: jest.fn() 
           }
         }, 
-        ResourceMetaRepository
+        { 
+          provide: MetaService, 
+          useValue: { 
+            selectMetaByResourceId: jest.fn() 
+          }
+        }, 
       ],
     }).compile();
     // module = await Test.createTestingModule({
@@ -108,8 +113,8 @@ describe('DashboardService', () => {
     service = module.get<DashboardService>(DashboardService);
     nodeService = module.get<NodeService>(NodeService);
     restService = module.get<RestService>(RestService);
-    resourceMetaRepository = module.get<ResourceMetaRepository>(ResourceMetaRepository);
-    jest.spyOn(resourceMetaRepository, 'selectMetaByResourceId').mockImplementation(async(dashboardId) => {
+    resourceMetaService = module.get<MetaService>(MetaService);
+    jest.spyOn(resourceMetaService, 'selectMetaByResourceId').mockImplementation(async(dashboardId) => {
       if (dashboardId === knownDashboardId) {
         return await Promise.resolve(meta);
       }
@@ -127,7 +132,7 @@ describe('DashboardService', () => {
       expect(service).toBeDefined();
       expect(nodeService).toBeDefined();
       expect(restService).toBeDefined();
-      expect(resourceMetaRepository).toBeDefined();
+      expect(resourceMetaService).toBeDefined();
     });
 
   });

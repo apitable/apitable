@@ -93,7 +93,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
 
           if (Array.isArray(cellValue)) {
             opData = cellValue.map(v => ({
-              ...v,
+              ...(v as any),
               type: SegmentType.Url,
               title: meta?.title,
               favicon: meta?.favicon,
@@ -159,7 +159,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
     if (res?.data?.success) {
       const metaMap: IURLMetaMap = res.data.data.contents;
 
-      const generateOpValue = (data) => {
+      const generateOpValue = (data: any) => {
         if (data.length > 1) return data;
 
         const text = data[0]?.text;
@@ -169,7 +169,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
 
         if (!meta?.isAware) return data;
 
-        return data.map(v => ({
+        return data.map((v: any) => ({
           ...v,
           type: SegmentType.Url,
           title: meta?.title,

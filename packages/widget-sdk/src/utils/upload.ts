@@ -97,9 +97,10 @@ export function upload(params: {
       });
       return;
     }
+
     resolve(pickBy({
       id: data.token,
-      name: data.name,
+      name: data.name || file.name,
       mimeType: data.mimeType,
       token: data.token,
       bucket: data.bucket,

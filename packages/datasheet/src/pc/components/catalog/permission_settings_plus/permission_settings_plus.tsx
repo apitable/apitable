@@ -26,7 +26,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getNodeIcon } from '../tree/node_icon';
 import { PermissionModalHeader } from 'pc/components/field_permission/permission_modal_header';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { useThemeColors, Tooltip } from '@apitable/components';
 import classNames from 'classnames';
 
@@ -41,7 +41,7 @@ export interface IPermissionSettingsProps {
   onClose: () => void;
 }
 
-export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, visible, onClose }) => {
+export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSettingsProps>> = ({ data, visible, onClose }) => {
   const [permDescModalVisible, setPermDescModalVisible] = useState(false);
   const colors = useThemeColors();
 
@@ -53,7 +53,7 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
     return (
       <Tooltip content={t(Strings.instruction_of_node_permission)}>
         <span className={styles.helpBtn}>
-          <InformationSmallOutlined color={colors.thirdLevelText} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
+          <QuestionCircleOutlined color={colors.textCommonTertiary} onClick={() => setPermDescModalVisible(true)} className={styles.infoIcon} />
         </span>
       </Tooltip>
     );
@@ -65,14 +65,14 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
         {visible && (
           <Popup
             className={styles.permissionDrawer}
-            height="90%"
+            height='90%'
             open={visible}
-            placement="bottom"
+            placement='bottom'
             title={
               <PermissionModalHeader
                 typeName={t(Strings.file)}
                 targetName={data.name}
-                targetIcon={getNodeIcon(data.icon, data.type)}
+                targetIcon={getNodeIcon(data.icon, data.type, { normalColor: colors.textCommonTertiary })}
                 docIcon={<Title />}
               />
             }
@@ -92,7 +92,7 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
               <PermissionModalHeader
                 typeName={t(Strings.file)}
                 targetName={data.name}
-                targetIcon={getNodeIcon(data.icon, data.type)}
+                targetIcon={getNodeIcon(data.icon, data.type, { normalColor: colors.textCommonTertiary })}
                 docIcon={<Title />}
               />
             }

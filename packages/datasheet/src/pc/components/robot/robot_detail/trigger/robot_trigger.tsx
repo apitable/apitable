@@ -41,7 +41,16 @@ interface IRobotTriggerProps {
   setTrigger: (trigger: IRobotTrigger) => void;
 }
 
-const RobotTriggerBase = (props) => {
+interface IRobotTriggerBase {
+  trigger: IRobotTrigger;
+  mutate: any;
+  triggerTypes: ITriggerType[];
+  formList:  IFormNodeItem[];
+  datasheetId?: string;
+  datasheetName?: string;
+}
+
+const RobotTriggerBase = (props: IRobotTriggerBase) => {
   const { trigger, mutate, triggerTypes, formList, datasheetId, datasheetName } = props;
   const formData = trigger.input;
   const triggerTypeId = trigger.triggerTypeId;
@@ -109,7 +118,7 @@ const RobotTriggerBase = (props) => {
     return isFilterForm ? {
       ...uiSchema,
       filter: {
-        'ui:widget': ({ defaultValue, value, onChange }) => {
+        'ui:widget': ({ value, onChange }: any) => {
           const transformedValue = value == null || isEqual(value, EmptyNullOperand) ? {
             operator: OperatorEnums.And,
             operands: [],
@@ -129,7 +138,9 @@ const RobotTriggerBase = (props) => {
     } : {};
   }, [datasheetId, triggerType?.endpoint, uiSchema]);
 
-  const handleUpdateFormChange = useCallback(({ formData }) => {
+  const handleUpdateFormChange = useCallback(({
+    formData
+  }: any) => {
     if (!shallowEqual(formData, trigger.input)) {
       updateTriggerInput(trigger.triggerId, formData).then(() => {
         mutate({
@@ -156,7 +167,7 @@ const RobotTriggerBase = (props) => {
       onSubmit={handleUpdateFormChange}
       title={triggerType?.name}
       description={triggerType?.description}
-      serviceLogo={integrateCdnHost(triggerType?.service.logo)}
+      serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
       <Select options={triggerTypeOptions} onChange={handleTriggerTypeChange} value={triggerTypeId} />
     </NodeForm>

@@ -26,12 +26,13 @@ import { getRecordName } from 'pc/components/expand_record';
 import styles from '../styles.module.less';
 import { IDegree, IEdge, IDegrees, IAdj, IGraphData, INode, INodeStateMap } from '../interfaces';
 import { useCreation } from 'ahooks';
+import { Edge } from '@apitable/react-flow';
 
 export const useElements = (props: {
   fieldMap: IFieldMap;
   getCardHeight: (recordId: string | null) => number;
   nodeStateMap: INodeStateMap;
-  rows,
+  rows: IViewRow[],
   datasheetId: string;
   linkFieldId: string;
   primaryFieldId: string;
@@ -62,7 +63,7 @@ export const useElements = (props: {
     const degrees: IDegrees = {};
     const adj: IAdj = {};
 
-    rows.forEach((row) => {
+    rows.forEach((row: any) => {
       degrees[row.recordId] = {
         degree: 0,
         inDegree: 0,
@@ -81,7 +82,7 @@ export const useElements = (props: {
 
     const baseHeight = rows.length && getCardHeight(rows[0].recordId) - 16;
     const data = rows.reduce(
-      (graph, row: IViewRow) => {
+      (graph: any, row: IViewRow) => {
         let linkIds = adj[row.recordId];
         if (!Array.isArray(linkIds)) {
           linkIds = [];
@@ -145,7 +146,7 @@ export const useElements = (props: {
               targetHandle: id,
               type: NodeType.CustomEdge,
             };
-          }).filter(Boolean)
+          }).filter(Boolean) as Edge<any>[]
         );
         return graph;
       },

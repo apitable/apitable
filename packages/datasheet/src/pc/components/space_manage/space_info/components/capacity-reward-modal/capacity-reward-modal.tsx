@@ -55,7 +55,7 @@ type IRecord = {
   };
 };
 
-export const CapacityRewardModal: FC<ICapacityRewardModalProps> = ({ onCancel }) => {
+export const CapacityRewardModal: FC<React.PropsWithChildren<ICapacityRewardModalProps>> = ({ onCancel }) => {
   const columns: ColumnsType<IRecord> = [
     {
       title: t(Strings.attachment_capacity_details_model_source),

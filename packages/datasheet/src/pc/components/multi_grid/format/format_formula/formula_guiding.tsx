@@ -26,7 +26,7 @@ interface IFormulaGuiding {
   item: IField | IFunction;
 }
 
-export const FormulaGuiding: React.FC<IFormulaGuiding> = props => {
+export const FormulaGuiding: React.FC<React.PropsWithChildren<IFormulaGuiding>> = props => {
   const { type, item } = props;
 
   const title = item.name;

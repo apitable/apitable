@@ -27,10 +27,10 @@ import styles from '../style.module.less';
 import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
 import { Typography, useThemeColors } from '@apitable/components';
 
-export const DateRangePickerMobile: React.FC<IFilterDateProps & {
-  rangePickerChange(date: (Dayjs | null)[] | null);
+export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDateProps & {
+  rangePickerChange: (date: (Dayjs | null)[] | null) => void;
   dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null
-}> = (props) => {
+}>> = (props) => {
   const colors = useThemeColors();
   const { rangePickerChange, dataValue } = props;
   const [startVisible, setStartVisible] = useState(false);
@@ -58,14 +58,14 @@ export const DateRangePickerMobile: React.FC<IFilterDateProps & {
     // eslint-disable-next-line
   }, [endDate, startDate]);
 
-  const startDateChange = (date) => {
+  const startDateChange = (date: React.SetStateAction<Date | undefined>) => {
     setStartDate(date);
     if (!endDate) {
       setEndVisible(true);
     }
   };
 
-  const endDateChange = (date) => {
+  const endDateChange = (date: React.SetStateAction<Date | undefined>) => {
     setEndDate(date);
     if (!startDate) {
       setStartVisible(true);

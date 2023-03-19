@@ -18,62 +18,67 @@
 
 package com.apitable.widget.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Applet Package Information View
+ * Applet Package Information View.
  * </p>
  */
 @Data
-@ApiModel("Applet Package Information View")
+@Schema(description = "Applet Package Information View")
 public class WidgetPackageInfoVo {
 
-    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 1)
+    @Schema(description = "Package ID", example = "wpkABC")
     private String packageId;
 
-    @ApiModelProperty(value = "Widget name - returned according to the request Accept Language. Default:zh-CN，Current Support List：「en-US/zh-CN」", example = "Chart", position = 2)
+    @Schema(description = "Widget name - returned according to the request Accept Language. "
+        + "Default:zh-CN，Current Support List：「en-US/zh-CN」", example = "Chart")
     private String name;
 
-    @ApiModelProperty(value = "Widget package icon", example = "https://apitable.com/space/2020/12/23/aqa", position = 3)
+    @Schema(description = "Widget package icon", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String icon;
 
-    @ApiModelProperty(value = "Cover drawing of component package", example = "https://apitable.com/space/2020/12/23/aqa", position = 4)
+    @Schema(description = "Cover drawing of component package", example = "https://apitable"
+        + ".com/space/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "Widget description - returned according to the request Accept Language, default: zh CN, current support list:「en-US/zh-CN」", example = "This is the description of a chart applet", position = 5)
+    @Schema(description = "Widget description - returned according to the request Accept "
+        + "Language, default: zh CN, current support list:「en-US/zh-CN」", example = "This is the "
+        + "description of a chart applet")
     private String description;
 
-    @ApiModelProperty(value = "Widget package version number", example = "1.0.0", position = 6)
+    @Schema(description = "Widget package version number", example = "1.0.0")
     private String version;
 
-    @ApiModelProperty(value = "Widget package status (0: under development; 1: banned; 2: to be published; 3: published; 4: off the shelf)", example = "3", position = 7)
+    @Schema(description = "Widget package status (0: under development; 1: banned; 2: to be "
+        + "published; 3: published; 4: off the shelf)", example = "3")
     private Integer status;
 
-    @ApiModelProperty(value = "Author Name", position = 8)
+    @Schema(description = "Author Name")
     private String authorName;
 
-    @ApiModelProperty(value = "Author icon", position = 9)
+    @Schema(description = "Author icon")
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "Author Email", position = 10)
+    @Schema(description = "Author Email")
     private String authorEmail;
 
-    @ApiModelProperty(value = "Author website address", position = 11)
+    @Schema(description = "Author website address")
     private String authorLink;
 
-    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 12)
+    @Schema(description = "Widget package type (0: third party, 1: official)")
     private Integer packageType;
 
-    @ApiModelProperty(value = "0: Publish to the component store in the space station, 1: Publish to the global app store", position = 13)
+    @Schema(description = "0: Publish to the component store in the space station, 1: Publish to "
+        + "the global app store")
     private Integer releaseType;
 
 }

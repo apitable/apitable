@@ -31,7 +31,7 @@ export interface IChangesetItemHeader {
   block?: boolean;
 }
 
-const ChangesetItemHeader: React.FC<IChangesetItemHeader> = (props) => {
+const ChangesetItemHeader: React.FC<React.PropsWithChildren<IChangesetItemHeader>> = (props) => {
   const { field, old, inline = true, block } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
   if (!field) return null;

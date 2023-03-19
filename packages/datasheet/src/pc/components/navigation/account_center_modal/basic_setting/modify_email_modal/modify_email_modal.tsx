@@ -55,7 +55,7 @@ const defaultErrMsg = {
   identifyingCodeErrMsg: '',
 };
 
-export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
+export const ModifyEmailModal: FC<React.PropsWithChildren<IModifyEmailModalProps>> = (props) => {
   const { setEmailModal, data } = props;
   const [newEmail, setNewEmail] = useState('');
   const [identifyingCode, setIdentifyingCode] = useState('');
@@ -135,8 +135,10 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
     });
   };
 
-  const handleChange = (e) => {
-    setNewEmail(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const newValue = value.replace(/\s/g, '');
+    setNewEmail(newValue);
     setErrMsg(defaultErrMsg);
   };
 
@@ -147,7 +149,7 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
 
-    const value = e.target.value.trim();
+    const value = e.target.value.replace(/\s/g, '');
     setIdentifyingCode(value);
   };
 
@@ -177,6 +179,7 @@ export const ModifyEmailModal: FC<IModifyEmailModalProps> = (props) => {
                 errMsg.accountErrMsg ||
                 errMsg.identifyingCodeErrMsg
               )}
+              value={identifyingCode}
             />
           </WithTipWrapper>
         </Form>

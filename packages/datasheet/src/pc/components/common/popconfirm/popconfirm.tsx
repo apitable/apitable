@@ -37,7 +37,7 @@ interface IPopconfirmProps extends PopoverProps {
   okButtonProps?: IButtonProps;
 }
 
-export const Popconfirm: FC<IPopconfirmProps> = ({
+export const Popconfirm: FC<React.PropsWithChildren<IPopconfirmProps>> = ({
   icon,
   title,
   children,
@@ -72,9 +72,9 @@ export const Popconfirm: FC<IPopconfirmProps> = ({
         <>
           {finalIcon && <div className={styles.left}>{finalIcon}</div>}
           <div className={styles.right}>
-            {title && <div className={styles.title}>{title}</div>}
+            {title && <div className={styles.title}>{title as ReactNode}</div>}
             <div className={classnames(styles.content, { [styles.indent]: icon, [styles.accent]: !title })}>
-              {content}
+              {content as ReactNode}
             </div>
             <Space className={styles.btnGroup}>
               {onCancel &&

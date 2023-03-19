@@ -18,7 +18,7 @@
 
 import {
   CollaCommandName,
-  FieldType,
+  FieldType, IAttacheField,
   IAttachmentValue,
   ICellValue,
   IDateTimeField,
@@ -32,7 +32,7 @@ import {
   SegmentType,
   Selectors,
   StoreActions,
-  ViewType
+  ViewType,
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
@@ -85,7 +85,7 @@ export interface IFieldBlockProps {
   showAlarm?: boolean;
 }
 
-export const FieldBlock: React.FC<IFieldBlockProps> = props => {
+export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = props => {
   const { commonProps: _commonProps, cellValue, isFocus, onMouseDown, showAlarm } = props;
 
   const { datasheetId, mirrorId, field, record, ref: editorRef } = _commonProps;
@@ -127,7 +127,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
               recordId: record.id,
               fieldId: field.id,
               value: value.map(v => ({
-                ...v,
+                ...(v as any),
                 type: SegmentType.Url,
                 title: meta?.title,
                 favicon: meta?.favicon,
@@ -224,6 +224,7 @@ export const FieldBlock: React.FC<IFieldBlockProps> = props => {
         <ExpandAttachContext.Provider value={{ isFocus }}>
           <ExpandAttachment
             {...commonProps}
+            field={field as IAttacheField}
             recordId={record.id}
             cellValue={cellValue as IAttachmentValue[]}
             onClick={onMouseDown}

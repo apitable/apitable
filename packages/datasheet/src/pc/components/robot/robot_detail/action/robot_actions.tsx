@@ -51,11 +51,11 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
   }
   const actions = data.data.data;
 
-  const entryActionId = actions.find(item => item.prevActionId === null)?.id;
+  const entryActionId = actions.find((item: any) => item.prevActionId === null)?.id;
   if (!entryActionId) {
     return <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} />;
   }
-  const actionsById = actions.reduce((acc, item) => {
+  const actionsById = actions.reduce((acc: any, item: any) => {
     acc[item.id] = item;
     return acc;
   }, {});

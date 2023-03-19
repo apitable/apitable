@@ -18,10 +18,12 @@
 
 package com.apitable.user.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +33,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * User Table
+ * User Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -48,104 +50,110 @@ public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * User ID
+     * User ID.
      */
     private String uuid;
 
     /**
-     * Nick Name
+     * Nick Name.
      */
     private String nickName;
 
     /**
-     * code
+     * code.
      */
     private String code;
 
     /**
-     * Phone Number
+     * Phone Number.
      */
     private String mobilePhone;
 
     /**
-     * Email
+     * Email.
      */
     private String email;
 
     /**
-     * Password
+     * Password.
      */
     private String password;
 
     /**
-     * Avatar
+     * Avatar.
      */
     private String avatar;
 
     /**
-     * default avatar color number
+     * default avatar color number.
      */
     private Integer color;
 
     /**
-     * Gender
+     * Time Zone.
+     */
+    private String timeZone;
+
+    /**
+     * Gender.
      */
     private String gender;
 
     /**
-     * Remark
+     * Remark.
      */
     private String remark;
 
     /**
-     * Language
+     * Language.
      */
     private String locale;
 
     /**
-     * Unique identification in open application of DingTalk
+     * Unique identification in open application of DingTalk.
      */
     private String dingOpenId;
 
     /**
-     * Unique identifier in the DingTalk developer enterprise
+     * Unique identifier in the DingTalk developer enterprise.
      */
     private String dingUnionId;
 
     /**
-     * Last Login Time
+     * Last Login Time.
      */
     private LocalDateTime lastLoginTime;
 
     /**
-     * Whether the nickname has been modified as a third-party IM user. 0: No; 1: Yes; 2: Not an IM third-party user
+     * Whether the nickname has been modified as a third-party IM user. 0: No;
+     * 1: Yes; 2: Not an IM third-party user.
      */
     private Integer isSocialNameModified;
 
     /**
-     * Whether to cancel the cool off period (1: Yes, 0: No)
+     * Whether to cancel the cool off period (1: Yes, 0: No).
      */
     private Boolean isPaused;
 
     /**
-     * Delete Tag (1: Yes, 0: No)
+     * Delete Tag (1: Yes, 0: No).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

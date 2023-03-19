@@ -20,6 +20,7 @@ import { Divider, Typography, useThemeColors } from '@apitable/components';
 import {
   Field, IField, ISelectField, ISelectFieldProperty, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
 } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import produce from 'immer';
 import { omit } from 'lodash';
@@ -31,7 +32,6 @@ import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
@@ -61,10 +61,10 @@ interface ISortableContainerProps {
   onDragUpdate?: (initial: DragUpdate, provided: ResponderProvided) => void;
 }
 
-const SortableContainer: React.FC<ISortableContainerProps> = ({ onDragUpdate, onSortEnd, children }) => {
+const SortableContainer: React.FC<React.PropsWithChildren<ISortableContainerProps>> = ({ onDragUpdate, onSortEnd, children }) => {
   return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
     <Droppable droppableId='droppable'>
-      {(provided, snapshot) => (
+      {(provided) => (
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
@@ -99,7 +99,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     });
   }
 
-  const onSortEnd = (result) => {
+  const onSortEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
@@ -123,7 +123,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   };
 
   // Here there is an unused parameter because of the generic property setting method defined in ColorPiker
-  const onOptionChange = (type: OptionSetting, id: string, value: number | string) => {
+  const onOptionChange = (_type: OptionSetting, id: string, value: number | string) => {
     selectColor(
       options.findIndex(item => item.id === id),
       value as number,
@@ -159,7 +159,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
         </SortableContainer>
       </div>
       <div style={btnStyle} className={styles.addNewItem} onClick={addNewItem}>
-        <IconAdd width={15} height={15} fill={colors.thirdLevelText} />
+        <AddOutlined size={15} color={colors.thirdLevelText} />
         {t(Strings.add_an_option)}
       </div>
       {options.length > 0 && (
@@ -195,7 +195,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   );
 };
 
-export const FormatSelect: React.FC<IFormatSelect> = props => {
+export const FormatSelect: React.FC<React.PropsWithChildren<IFormatSelect>> = props => {
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>

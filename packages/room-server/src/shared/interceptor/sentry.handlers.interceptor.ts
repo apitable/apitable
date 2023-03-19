@@ -27,7 +27,7 @@ import { isString } from '@sentry/utils';
 import http from 'http';
 import { isEmpty } from 'lodash';
 import { Observable } from 'rxjs';
-import { ALS } from 'shared/helpers/fastify.zipkin.plugin';
+import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, TRACE_ID } from 'shared/common';
 
 /**
  * Sentry Http Tracing Interceptor
@@ -51,10 +51,6 @@ export class TracingHandlerInterceptor implements NestInterceptor {
       const rpcData = rpcCtx.getData();
       const rpcContext = rpcCtx.getContext() as Metadata;
       const rpcServerUnary = host.getArgByIndex(2);
-      const rpcTraceId = isEmpty(rpcContext.get('x-changesets-message-id')) ? rpcContext.get('x-trace-id') :
-        rpcContext.get('x-changesets-message-id');
-
-      !isEmpty(rpcTraceId) && ALS.enterWith({ traceId: rpcTraceId, spanId: rpcTraceId });
 
       if (rpcServerUnary) {
         const { call: serverUnaryCall } = rpcServerUnary;
@@ -131,18 +127,18 @@ function grpcTracingHandler(data: any, context: Metadata, serverUnaryCall: Http2
       .setContext('Request', rpcData);
   });
 
-  serverUnaryCall.once('callEnd', (code: status) => {
+  serverUnaryCall.once('close', (code: status) => {
     setImmediate(() => {
-      const traceId = context.get('x-trace-id')?.toString();
-      const changesetsMessageId = context.get('x-changesets-message-id')?.toString();
-      const changesetsCmd = context.get('x-trace-id')?.toString();
+      const traceId = context.get(TRACE_ID)?.toString();
+      const changesetsMessageId = context.get(CHANGESETS_MESSAGE_ID)?.toString();
+      const changesetsCmd = context.get(TRACE_ID)?.toString();
 
       transaction.setTag('grpc.status_code', code)
         .setTag('grpc.trace_id', traceId);
 
       // add changesets meta info
-      !isEmpty(changesetsMessageId) && transaction.setTag('x-changesets-message-id', changesetsMessageId);
-      !isEmpty(changesetsCmd) && transaction.setTag('x-changesets-cmd', changesetsCmd);
+      !isEmpty(changesetsMessageId) && transaction.setTag(CHANGESETS_MESSAGE_ID, changesetsMessageId);
+      !isEmpty(changesetsCmd) && transaction.setTag(CHANGESETS_CMD, changesetsCmd);
 
       transaction.setTag('grpc.status_code', code)
         .setStatus(code === status.OK ? SpanStatus.Ok : SpanStatus.UnknownError)
@@ -197,7 +193,7 @@ function extractRpcData(
         requestData.requestType = req.type || '';
         break;
       case 'changesetsCmd':
-        requestData.changesetsCmd = req?.grpcMetaData?.get('x-changesets-cmd') || '';
+        requestData.changesetsCmd = req?.grpcMetaData?.get(CHANGESETS_CMD) || '';
         break;
       case 'roomId':
         requestData.roomId = req.roomId || '';

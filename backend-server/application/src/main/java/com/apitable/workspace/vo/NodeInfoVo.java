@@ -18,83 +18,85 @@
 
 package com.apitable.workspace.vo;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.support.serializer.ChinaLocalDateTimeToUtcSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.shared.config.properties.LimitProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * Search Node Results View
+ * Search Node Results View.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("Node View")
+@Schema(description = "Node View")
 public class NodeInfoVo extends BaseNodeInfo {
 
-    @ApiModelProperty(value = "Space ID", example = "spc09", position = 4)
+    @Schema(description = "Space ID", example = "spc09")
     private String spaceId;
 
-    @ApiModelProperty(value = "Parent Node Id", example = "nod10", position = 4)
+    @Schema(description = "Parent Node Id", example = "nod10")
     private String parentId;
 
-    @ApiModelProperty(value = "Previous node ID", example = "nod11", position = 5)
+    @Schema(description = "Previous node ID", example = "nod11")
     private String preNodeId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Node icon", example = ":smile", position = 6)
+    @Schema(description = "Node icon", example = ":smile")
     private String icon;
 
-    @ApiModelProperty(value = "Whether there are sub nodes. The node type is folder", example = "true", position = 7)
+    @Schema(description = "Whether there are sub nodes. The node type is folder", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasChildren;
 
-    @ApiModelProperty(value = "Whether it belongs to the template node", hidden = true)
+    @Schema(description = "Whether it belongs to the template node", hidden = true)
     @JsonIgnore
     private Boolean isTemplate;
 
-    @ApiModelProperty(value = "Whether the node is shared", position = 7)
+    @Schema(description = "Whether the node is shared")
     private Boolean nodeShared;
 
-    @ApiModelProperty(value = "Whether the node permission is set", position = 8)
+    @Schema(description = "Whether the node permission is set")
     private Boolean nodePermitSet;
 
-    @ApiModelProperty(value = "Whether the node is a star", position = 9)
+    @Schema(description = "Whether the node is a star")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean nodeFavorite;
 
-    @ApiModelProperty(value = "When the node is a data table, whether the returned data table field has reached the upper limit", example = "true", position = 11)
+    @Schema(description = "When the node is a data table, whether the returned data table field "
+        + "has reached the upper limit", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean columnLimit;
 
-    @ApiModelProperty(value = "Metadata of data table node - data table field set length", hidden = true)
+    @Schema(description = "Metadata of data table node - data table field set length", hidden =
+        true)
     @JsonIgnore
     private Integer mdFieldMapSize;
 
-    @ApiModelProperty(value = "Create time", dataType = "string", example = "2020-03-18T15:29:59.000", position = 12)
+    @Schema(description = "Create time", type = "string", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "Update time", dataType = "string", example = "2020-03-18T15:29:59.000", position = 13)
+    @Schema(description = "Update time", type = "string", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime updateTime;
 
-    @ApiModelProperty(value = "Role", example = "editor", position = 14)
+    @Schema(description = "Role", example = "editor")
     private String role;
 
-    @ApiModelProperty(value = "Node Permissions", position = 15)
+    @Schema(description = "Node Permissions")
     private NodePermissionView permissions;
 
+    /**
+     * Get Column Limit.
+     */
     public Boolean getColumnLimit() {
         if (Objects.nonNull(this.mdFieldMapSize)) {
             LimitProperties properties = SpringContextHolder.getBean(LimitProperties.class);

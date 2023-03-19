@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography } from '@apitable/components';
+import { Button, Typography, ThemeName } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { OnLoadParams, useStoreState } from '@apitable/react-flow';
@@ -27,14 +27,16 @@ import { CARD_WIDTH } from '../../constants';
 import { FlowContext } from '../../context/flow_context';
 import { NodeHandleState } from '../../interfaces';
 import styles from './styles.module.less';
-
+import ArchitectureEmptyLight from 'static/icon/datasheet/architecture_empty_light.png';
+import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark.png';
+import { useSelector } from 'react-redux';
 interface IAddFirstNodeProps {
   mode: 'none' | 'add';
-  onAdd: () => string;
+  onAdd: () => Promise<string>;
   reactFlowInstance: React.MutableRefObject<OnLoadParams<any> | undefined>;
 }
 
-export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
+export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = props => {
 
   const {
     mode,
@@ -54,6 +56,9 @@ export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
   const [,,scale] = useStoreState(state => state.transform);
 
   const addMode = mode === 'add';
+  console.log('addMode', addMode);
+  const themeName = useSelector(state => state.theme);
+  const architectureEmpty = themeName === ThemeName.Light ? ArchitectureEmptyLight : ArchitectureEmptyDark;
 
   return (
     <div className={styles.wrapper}>
@@ -67,7 +72,7 @@ export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
             src={
               addMode
                 ? integrateCdnHost(Settings.view_architecture_empty_record_list_img.value)
-                : integrateCdnHost(Settings.view_architecture_empty_graphics_img.value)
+                : architectureEmpty
             }
             width={232}
             height={176}
@@ -99,8 +104,8 @@ export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
             <Button
               prefixIcon={<AddOutlined />}
               color='primary'
-              onClick={() => {
-                const id = onAdd();
+              onClick={async() => {
+                const id = await onAdd();
                 const position = reactFlowInstance.current!.project({
                   x: bodySize.width / 2 - offsetLeft - CARD_WIDTH * scale / 2,
                   y: bodySize.height / 2 - offsetTop - getCardHeight(id) * scale / 2,

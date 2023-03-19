@@ -48,7 +48,7 @@ export function getAddFieldWidth(fieldEditable: boolean, groupInfo: IGroupInfo) 
   return AddFieldWidth.Editable;
 }
 
-export const CellAddField: React.FC<ICellAddField> = props => {
+export const CellAddField: React.FC<React.PropsWithChildren<ICellAddField>> = props => {
   const { rowIndex, rows, style, className, isEmptyRows, groupInfo, permissions } = props;
   const width = getAddFieldWidth(permissions.fieldCreatable, groupInfo);
   const row = rows[rowIndex];

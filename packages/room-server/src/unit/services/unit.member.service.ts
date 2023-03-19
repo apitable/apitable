@@ -22,10 +22,14 @@ import { isEmpty } from 'lodash';
 import { PermissionException, ServerException } from 'shared/exception';
 import { UnitMemberRepository } from '../repositories/unit.member.repository';
 import { UserService } from '../../user/services/user.service';
+import { UnitMemberBaseInfoVo } from '../vos/unit.member.vo';
 
 @Injectable()
 export class UnitMemberService {
-  constructor(private readonly memberRepo: UnitMemberRepository, private readonly userService: UserService) {}
+  constructor(
+    private readonly memberRepo: UnitMemberRepository,
+    private readonly userService: UserService,
+  ) {}
 
   /**
    * Get member base infos by member ids
@@ -35,7 +39,7 @@ export class UnitMemberService {
    * @author Zoe Zheng
    * @date 2020/7/30 5:39 PM
    */
-  async getMembersBaseInfo(memberIds: number[]): Promise<{ [memberId: number]: IUserValue }> {
+  public async getMembersBaseInfo(memberIds: number[]): Promise<{ [memberId: number]: IUserValue }> {
     if (memberIds.length > 0) {
       const members = await this.memberRepo.selectMembersByIdsIncludeDeleted(memberIds);
       const userIds = members.reduce<number[]>((pre, cur) => {
@@ -51,7 +55,7 @@ export class UnitMemberService {
           name: cur.memberName,
           type: MemberType.Member,
           avatar: user?.avatar,
-          nickName: user?.nickName,
+          nickName: user?.nikeName,
           avatarColor: user?.color,
           isActive: cur.isActive,
           isDeleted: cur.isDeleted,
@@ -64,25 +68,21 @@ export class UnitMemberService {
     return {};
   }
 
-  async getIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<string | null> {
+  public async getIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<string | null> {
     const rawData = await this.memberRepo.selectIdBySpaceIdAndName(spaceId, memberName);
     if (rawData) return rawData.id;
     return null;
   }
 
-  async getIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<string | null> {
+  public async getIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<string | null> {
     const entity = await this.memberRepo.selectIdBySpaceIdAndUserId(spaceId, userId);
     return entity ? entity.id : null;
-  }
-
-  getCountBySpaceIdAndId(id: string, spaceId: string): Promise<number> {
-    return this.memberRepo.selectCountByIdAndSpaceId(id, spaceId);
   }
 
   /**
    * Check if the user is in the space
    */
-  async checkUserIfInSpace(userId: string, spaceId: string) {
+  public async checkUserIfInSpace(userId: string, spaceId: string) {
     const memberId = await this.getIdBySpaceIdAndUserId(spaceId, userId);
     if (isEmpty(memberId)) {
       throw new ServerException(PermissionException.ACCESS_DENIED);
@@ -90,15 +90,11 @@ export class UnitMemberService {
     return;
   }
 
-  async getMembersBaseInfoBySpaceIdAndUserIds(
+  public async getMembersBaseInfoBySpaceIdAndUserIds(
     spaceId: string,
     userIds: string[],
     excludeDeleted = true,
-  ): Promise<{
-    [userId: string]: {
-      memberId: string, memberName: string; isActive: boolean; isDeleted: boolean; isMemberNameModified: boolean; unitId: string
-    }
-  }> {
+  ): Promise<{ [userId: string]: UnitMemberBaseInfoVo }> {
     const members = await this.memberRepo.selectMembersBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
     if (!members || !members.length) return {};
     return members.reduce<{
@@ -116,5 +112,9 @@ export class UnitMemberService {
       };
       return pre;
     }, {});
+  }
+
+  async selectSpaceIdsByUserId(userId: string): Promise<string[]> {
+    return await this.memberRepo.selectSpaceIdsByUserId(userId);
   }
 }

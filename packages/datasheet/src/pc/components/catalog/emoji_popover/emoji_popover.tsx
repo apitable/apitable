@@ -33,19 +33,19 @@ export interface IEmojiPopoverProps {
   offset?: number[];
 }
 
-export const EmojiPopoverBase: FC<PropsWithChildren<IEmojiPopoverProps>> = ({ nodeId, iconEditable = true, type, offset, children }) => {
+export const EmojiPopoverBase: FC<React.PropsWithChildren<PropsWithChildren<IEmojiPopoverProps>>> = ({ nodeId, iconEditable = true, type, offset, children }) => {
   const [visible, setVisible] = useState(false);
   const { updateNodeIconReq } = useCatalogTreeRequest();
   const { run: updateNodeIcon } = useRequest(updateNodeIconReq, { manual: true });
 
-  const stopPropagation = e => {
+  const stopPropagation = (e: React.SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
   };
 
-  const EmojiPicker = ({ nodeId }) => {
-    const selectEmoji = emoji => {
+  const EmojiPicker = ({ nodeId }: { nodeId: string }) => {
+    const selectEmoji = (emoji: { id: string; }) => {
       updateNodeIcon(nodeId, type, emoji.id);
       setVisible(false);
     };
@@ -70,11 +70,11 @@ export const EmojiPopoverBase: FC<PropsWithChildren<IEmojiPopoverProps>> = ({ no
       overlayClassName={styles.emojiPopover}
       content={<EmojiPicker nodeId={nodeId} />}
       trigger="click"
-      visible={visible}
+      open={visible}
       arrowPointAtCenter={false}
       mouseEnterDelay={0}
       mouseLeaveDelay={0}
-      onVisibleChange={visible => setVisible(visible)}
+      onOpenChange={visible => setVisible(visible)}
       destroyTooltipOnHide={{ keepParent: false }}
       align={{
         points: ['tl', 'bl'],

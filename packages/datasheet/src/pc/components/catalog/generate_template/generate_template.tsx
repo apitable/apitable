@@ -33,7 +33,7 @@ export interface IGenerateTemplateProps {
   onCancel: () => void;
 }
 
-export const GenerateTemplate: FC<IGenerateTemplateProps> = ({
+export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps>> = ({
   nodeId,
   onCancel,
 }) => {

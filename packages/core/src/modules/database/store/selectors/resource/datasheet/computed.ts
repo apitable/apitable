@@ -94,9 +94,3 @@ export const getLinearRowsFormComputed = (state: IReduxState, dsId?: string) => 
     return check(item);
   }, true));
 };
-
-export const getGroupBreakpoint = (state: IReduxState) => {
-  const computedInfo = getComputedInfo(state);
-  if (computedInfo && computedInfo.groupBreakpoint) return computedInfo.groupBreakpoint;
-  return computeCache.get('groupBreakpoint');
-};

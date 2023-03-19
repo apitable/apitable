@@ -26,7 +26,7 @@ curl -s "https://get.sdkman.io" | bash
 # installer nodejs 
 nvm install 16. 5.0 && nvm utilise 16.15. && corepack active
 # installer le kit de développement java
-sdk install java 8. .342-amzn && sdk utilise java 8.0.342-amzn
+sdk env install
 ```
 
 ### macOS
@@ -87,12 +87,11 @@ faire
 
 ## Démarrer l'environnement de développement
 
-APITable se compose de 4 processus :
+APITable se compose de 3 processus :
 
 1. serveur backend
 2. room-server
-3. socket-server
-4. serveur web
+3. serveur web
 
 Pour démarrer l'environnement de développement localement, exécutez ces commandes :
 
@@ -111,12 +110,8 @@ make run # enter 1
 make run # enter 2
 
 # and then switch to a new terminal
-# start socket-server
-make run # enter 3  
-
-# and then switch to a new terminal
 # start web-server
-make run # enter 4
+make run # enter 3
 
 ```
 

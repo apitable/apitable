@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import { Tooltip } from '@apitable/components';
 import styles from './style.module.less';
 
@@ -35,7 +35,7 @@ export const HelpIconButton = ({ help }: { help: IHelp }) => {
         rel="noopener noreferrer"
         style={{ marginLeft: 4 }}
         target='_blank'>
-        <InformationSmallOutlined className={styles.helpIcon} color="#8c8c8c" />
+        <QuestionCircleOutlined className={styles.helpIcon} color="#8c8c8c" />
       </a>
     </Tooltip>
   );

@@ -27,7 +27,7 @@ import styles from '../styles.module.less';
 
 type IKanbanMemberProps = IKanbanOptionProps;
 
-export const KanbanMember: React.FC<IKanbanMemberProps> = props => {
+export const KanbanMember: React.FC<React.PropsWithChildren<IKanbanMemberProps>> = props => {
   const { command, onClose, fieldMap } = props;
   const [notify, setNotify] = useState(true);
   const defaultName = getUniqName(t(Strings.view_filed), Object.keys(fieldMap).map(id => fieldMap[id].name));

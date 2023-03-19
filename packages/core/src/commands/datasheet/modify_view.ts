@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { isEmpty, find } from 'lodash';
-import { IJOTAction } from 'engine/ot';
-import { DatasheetActions } from 'model';
-import { Selectors, IViewColumn } from '../../exports/store';
-import { t, Strings } from '../../exports/i18n';
-import { ResourceType } from 'types';
-import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
+import { CollaCommandName } from 'commands';
+import { getCustomConfig } from 'config';
+import { IJOTAction } from 'engine/ot';
+import { find, isEmpty } from 'lodash';
+import { DatasheetActions } from 'model';
+import { ResourceType } from 'types';
+import { Strings, t } from '../../exports/i18n';
+import { IViewColumn, Selectors } from '../../exports/store';
 
 export interface IModifyViewBase {
   viewId: string;
@@ -41,12 +42,18 @@ export interface IModifyViewStrings extends IModifyViewBase {
   value: string;
 }
 
-type IModifyView = IModifyViewColumns | IModifyViewStrings;
+export interface IModifyViewBoolean extends IModifyViewBase {
+  viewId: string;
+  key: 'displayHiddenColumnWithinMirror';
+  value: boolean;
+}
+
+type IModifyView = IModifyViewColumns | IModifyViewStrings | IModifyViewBoolean;
 
 export interface IModifyViewsOptions {
   cmd: CollaCommandName.ModifyViews;
   data: IModifyView[];
-  datasheetId?: string
+  datasheetId?: string;
 }
 
 export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
@@ -72,7 +79,7 @@ export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
       const { viewId, key, value } = recordOption;
 
       // character is too long or not filled
-      if (key === 'name' && (value.length > 30 || value.length < 1)) {
+      if (key === 'name' && (value.length > (getCustomConfig().VIEW_NAME_MAX_COUNT || 30) || value.length < 1)) {
         return collected;
       }
 

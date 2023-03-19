@@ -69,7 +69,7 @@ export const getDocHtml = (lang: CodeLanguage, method: string, context: any) => 
   return md.render(mdText, method);
 };
 
-export const getDoc = (lang, context) => {
+export const getDoc = (lang: CodeLanguage, context: any) => {
   const { method, ...restContext } = context;
   return getDocHtml(lang, method, restContext);
 };

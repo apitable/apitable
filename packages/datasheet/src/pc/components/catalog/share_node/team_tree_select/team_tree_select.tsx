@@ -19,26 +19,25 @@
 import { FC, useState, useEffect } from 'react';
 import * as React from 'react';
 import { ConfigConstant, ITeamTreeNode, Strings, t } from '@apitable/core';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { useRequest } from 'pc/hooks';
 import produce from 'immer';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import styles from './style.module.less';
 import { TreeView, TreeItem } from 'pc/components/common/tree_view';
-import CheckIcon from 'static/icon/common/common_tip_success_small.svg';
 import { useThemeColors } from '@apitable/components';
 import classnames from 'classnames';
 import RcTrigger from 'rc-trigger';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { CheckOutlined, ChevronDownOutlined } from '@apitable/icons';
 
 export interface ITeamTreeSelectProps {
   className?: string;
   onChange?: (checkedTeamId: string) => void;
 }
 
-export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }) => {
+export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> = ({ className, onChange }) => {
   const colors = useThemeColors();
   const [checkedTeamId, setCheckedTeamId] = useState('');
   const [checkedTeamName, setCheckedTeamName] = useState('');
@@ -97,7 +96,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
       const nodeLabel = (
         <div className={styles.nodeLabel}>
           <div className={styles.teamName}>{item.teamName}</div>
-          {item.teamId === checkedTeamId && isMobile && <CheckIcon width={16} height={16} fill={colors.primaryColor} />}
+          {item.teamId === checkedTeamId && isMobile && <CheckOutlined size={16} color={colors.primaryColor} />}
         </div>
       );
       if (item.children?.length) {
@@ -112,7 +111,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
     });
   };
 
-  const selectNodeHandler = (e: React.MouseEvent, selectedKeys: string | string[]) => {
+  const selectNodeHandler = (_e: React.MouseEvent, selectedKeys: string | string[]) => {
     if (typeof selectedKeys === 'string') {
       setCheckedTeamId(selectedKeys);
       onChange && onChange(selectedKeys);
@@ -128,7 +127,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
         <div className={styles.name}>
           <div className={styles.text}>{checkedTeamName || t(Strings.please_select_org)}</div>
         </div>
-        <PulldownIcon width={16} height={16} fill={colors.secondLevelText} />
+        <ChevronDownOutlined size={16} color={colors.secondLevelText} />
       </div>
     );
   };
