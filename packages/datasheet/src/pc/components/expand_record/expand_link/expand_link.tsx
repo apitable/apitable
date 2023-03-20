@@ -26,6 +26,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { useCellEditorVisibleStyle } from 'pc/components/editors/hooks';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { LinkEditor, LinkEditorModalLayout } from 'pc/components/editors/link_editor';
+import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';
 import { expandRecordInCenter } from 'pc/components/expand_record/expand_record.utils';
 import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault, useResponsive } from 'pc/hooks';
@@ -248,16 +249,23 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
                   return <></>;
                 }
                 return (
-                  <RecordCard
-                    className={style.recordCard}
+                  <ExpandLinkContext.Provider
+                    value={{
+                      ignoreMirror: true,
+                      baseDatasheetId: field.property.foreignDatasheetId
+                    }}
                     key={keyPrefix ? `${keyPrefix}-${index}` : recordId}
-                    record={record}
-                    fieldMap={foreignSnapshot.meta.fieldMap}
-                    columns={visibleColumns}
-                    onClick={clickRecord}
-                    onDelete={editable ? deleteRecord : undefined}
-                    datasheetId={field.property.foreignDatasheetId}
-                  />
+                  >
+                    <RecordCard
+                      className={style.recordCard}
+                      record={record}
+                      fieldMap={foreignSnapshot.meta.fieldMap}
+                      columns={visibleColumns}
+                      onClick={clickRecord}
+                      onDelete={editable ? deleteRecord : undefined}
+                      datasheetId={field.property.foreignDatasheetId}
+                    />
+                  </ExpandLinkContext.Provider>
                 );
               })}
             {hasShowMoreBtn && (

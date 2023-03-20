@@ -22,7 +22,7 @@ import {
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
 } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, DuplicateOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
   FilterOutlined, FreezeOutlined, GroupOutlined, EyeOpenOutlined, LockOutlined
 } from '@apitable/icons';
 import { useMount } from 'ahooks';
@@ -362,7 +362,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         id: 'insert_after',
       },
       {
-        icon: <CopyOutlined color={colors.thirdLevelText} />,
+        icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.duplicate_field),
         disabled: () => {
           if (field?.type === FieldType.Link) {

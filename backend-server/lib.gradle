@@ -80,6 +80,7 @@ ext {
             ],
             'beetl'                        : "com.ibeetl:beetl:${ibeetl_version}",
             'sensors'                      : "com.sensorsdata.analytics.javasdk:SensorsAnalyticsSDK:${sensors_version}",
+            'posthog'                      : "com.posthog.java:posthog:${posthog_version}",
             'wx-open'                      : "com.github.binarywang:weixin-java-open:${wx_java_sdk_version}",
             'wx-mp'                        : "com.github.binarywang:weixin-java-mp:${wx_java_sdk_version}",
             'wx-miniapp'                   : "com.github.binarywang:weixin-java-miniapp:${wx_java_sdk_version}",

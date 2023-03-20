@@ -68,10 +68,10 @@ const:
   callback-domain: ${CALLBACK_DOMAIN:}
   oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
   ossBuckets:
-    vk_assets_ltd:
-      resource-url: ${VK_ASSETS_LTD_URL:}
-      bucket-name: ${VK_ASSETS_LTD_BUCKET:}
-      type: ${VK_ASSETS_LTD_TYPE:QNY1}
+    assets_ltd:
+      resource-url: ${ASSETS_LTD_URL:}
+      bucket-name: ${ASSETS_LTD_BUCKET:}
+      type: ${ASSETS_LTD_TYPE:QNY1}
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}

@@ -44,7 +44,7 @@ export const Steps: React.FC<React.PropsWithChildren<IStepsProps>> = ({ current,
         isFinish && styles.stepItemFinish
       )}>
         <div className={styles.stepItemIcon} onClick={() => item?.onClick?.(item, index)}>
-          {isFinish ? <CheckOutlined color={colors.staticWhite0} size={24}/> : index + 1}
+          {isFinish ? <CheckOutlined color={colors.staticWhite0} size={16}/> : index + 1}
         </div>
         <div className={styles.stepItemContent}>
           <div className={styles.stepItemTitle}>{item.title}</div>

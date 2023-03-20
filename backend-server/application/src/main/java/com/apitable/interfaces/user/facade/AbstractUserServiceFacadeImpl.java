@@ -43,6 +43,11 @@ public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade
     }
 
     @Override
+    public void onUserCloseAccount(Long userId) {
+
+    }
+
+    @Override
     public InvitationCode getUserInvitationCode(Long userId) {
         return new InvitationCode();
     }
@@ -72,7 +77,7 @@ public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade
     }
 
     @Override
-    public boolean verifyEmail(UserAuth userAuth) {
+    public boolean verifyEmail(String email) {
         return false;
     }
 

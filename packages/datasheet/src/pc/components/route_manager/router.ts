@@ -19,11 +19,11 @@
 import { Navigation } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getHistoryMethod, toggleSpace } from 'pc/components/route_manager/helper';
-import { IParams, IQuery } from 'pc/components/route_manager/interface';
+import { IParams, IQuery, IOptions } from 'pc/components/route_manager/interface';
 import { IFunctionResult, RouterStrategy } from 'pc/components/route_manager/router_strategy';
 
 export class Router {
-  static push(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean } = {}) {
+  static push(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean, options?: IOptions } = {}) {
     navigatePath(path, { ...info, method: Method.Push });
   }
 
@@ -40,11 +40,11 @@ export class Router {
   }
 }
 
-async function navigatePath(path: Navigation, info: { params?: IParams, query?: IQuery, method?: Method, clearQuery?: boolean }) {
-  const { params, method } = info;
+async function navigatePath(path: Navigation, info: { params?: IParams, query?: IQuery, method?: Method, clearQuery?: boolean, options?: IOptions }) {
+  const { params, method, options } = info;
   const spaceId = params?.spaceId;
   // Will default to new tab open by url jumping
-  const go = getHistoryMethod(method);
+  const go = getHistoryMethod(method, options);
 
   await toggleSpace(spaceId);
 

@@ -1,6 +1,6 @@
 {
   "name": "@apitable/datasheet",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -89,6 +89,7 @@
     "path-browserify": "^1.0.1",
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
+    "posthog-js": "^1.50.8",
     "prismjs": "^1.27.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.4.4",

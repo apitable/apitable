@@ -8,7 +8,7 @@ export const DefaultContent = () => {
   const defaultImg = theme === ThemeName.Light ? Settings.quick_search_default_light.value : Settings.quick_search_default_dark.value;
   return (
     <div className={styles.defaultContent}>
-      <Box padding={'12px 58px 39px'}>
+      <Box padding={'12px 19px 9px'}>
         <img src={integrateCdnHost(defaultImg)} alt='search' />
       </Box>
       <Typography style={{ paddingBottom: 8 }} align='center' variant={'h7'}>{t(Strings.quick_search_title)}</Typography>

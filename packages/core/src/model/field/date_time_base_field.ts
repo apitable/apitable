@@ -43,12 +43,14 @@ import {
 } from 'types/field_types';
 import { FilterDuration, FOperator, IFilterCondition, IFilterDateTime } from 'types/view_types';
 import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'utils';
-import { ICellValue } from '../record';
-import { Field } from './field';
+import { ICellToStringOption, ICellValue } from '../record';
+import { Field, ICellApiStringValueOptions } from './field';
 import { StatTranslate, StatType } from './stat';
 import { getTimeZoneAbbrByUtc } from '../../config';
 import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
 import Joi from 'joi';
+import { DEFAULT_TIME_ZONE } from 'model';
+import { isServer } from 'utils/env';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -131,6 +133,7 @@ export const getDateTimeFormat = (props: IOptionalDateTimeFieldProperty) => {
 export const dateTimeFormat = (
   timestamp: any,
   props?: IOptionalDateTimeFieldProperty,
+  userTimeZone?: string,
 ) => {
   if (!timestamp) {
     return null;
@@ -147,18 +150,17 @@ export const dateTimeFormat = (
     dayjs.locale(formatLocale);
     format += ' a';
   }
-  // server-side
-  if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    const date = dayjs(Number(timestamp));
-    return date.format(format);
+  let timeZone = props.timeZone || userTimeZone;
+  if (isServer()) {
+    timeZone = timeZone || DEFAULT_TIME_ZONE;
   }
   if (props.includeTimeZone) {
-    const timeZone = props.timeZone || defaultProps.timeZone;
+    timeZone = timeZone || defaultProps.timeZone;
     const abbr = getTimeZoneAbbrByUtc(timeZone)!;
     return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
   }
-  if (!props.includeTimeZone && props.timeZone) {
-    return dayjs(Number(timestamp)).tz(props.timeZone).format(format);
+  if (!props.includeTimeZone && timeZone) {
+    return dayjs(Number(timestamp)).tz(timeZone).format(format);
   }
   return dayjs(Number(timestamp)).format(format);
 };
@@ -212,10 +214,12 @@ export abstract class DateTimeBaseField extends Field {
     return DateTimeBaseField.FOperatorDescMap[type];
   }
 
-  get apiMetaProperty(): IAPIMetaDateTimeBaseFieldProperty {
+  override get apiMetaProperty(): IAPIMetaDateTimeBaseFieldProperty {
     const res: IAPIMetaDateTimeBaseFieldProperty = {
       format: getDateTimeFormat(this.field.property),
       includeTime: this.field.property.includeTime,
+      timeZone: this.field.property.timeZone,
+      includeTimeZone : this.field.property.includeTimeZone
     };
     if ((this.field.property as any).autoFill) {
       res.autoFill = true;
@@ -351,8 +355,8 @@ export abstract class DateTimeBaseField extends Field {
     return isEqual(dateTimeFormat(cv1, this.field.property), dateTimeFormat(cv2, this.field.property));
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
-    return dateTimeFormat(cellValue, this.field.property);
+  override cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
+    return dateTimeFormat(cellValue, this.field.property, options?.userTimeZone);
   }
 
   cellValueToStdValue(cellValue: ITimestamp | null): IStandardValue {
@@ -643,8 +647,8 @@ export abstract class DateTimeBaseField extends Field {
     return cellValue;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue): string | null {
-    return cellValue ? this.cellValueToString(cellValue) : null;
+  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
+    return cellValue ? this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone }) : null;
   }
 
   cellValueToOpenValue(cellValue: ICellValue): string | null {

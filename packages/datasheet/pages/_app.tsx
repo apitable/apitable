@@ -77,11 +77,24 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+    autocapture: false,
+    // Disable in development
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+    }
+  });
+}
 
 export interface IUserInfoError {
   code: number;
@@ -161,6 +174,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
+
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -270,11 +284,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = defaultsDeep({
+      window.__initialization_data__.wizards = defaultsDeep(JSON.parse(res.data.wizards), {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      }, JSON.parse(res.data.wizards));
-
+      });
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -346,12 +359,16 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
             content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
+            maskClosable: false,
+            onOk: () => {
+              window.location.reload();
+            }
           });
         });
       }
     };
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
     return () => {
       clearInterval(interval);
     };
@@ -376,7 +393,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy="lazyOnload" id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -445,20 +462,22 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={'__next_main'}>
         {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
-          <Provider store={store}>
-            <RouterProvider>
-              <ThemeWrapper>
-                <Component {...pageProps} userInfo={userData} />
-              </ThemeWrapper>
-            </RouterProvider>
-          </Provider>
+          <PostHogProvider client={posthog}>
+            <Provider store={store}>
+              <RouterProvider>
+                <ThemeWrapper>
+                  <Component {...pageProps} userInfo={userData} />
+                </ThemeWrapper>
+              </RouterProvider>
+            </Provider>
+          </PostHogProvider>
         </div>}
         {
           <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
             {
               ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
               </div>
             }
           </div>

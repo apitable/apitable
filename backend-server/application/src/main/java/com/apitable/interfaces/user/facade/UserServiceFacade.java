@@ -38,6 +38,9 @@ public interface UserServiceFacade {
     void onUserChangeAvatarAction(Long userId, String avatarUrl);
 
     void onUserChangeNicknameAction(Long userId, String nickname, Boolean init);
+
+    void onUserCloseAccount(Long userId);
+
     InvitationCode getUserInvitationCode(Long userId);
 
     boolean getInvitationReward(Long userId);
@@ -59,7 +62,7 @@ public interface UserServiceFacade {
     /**
      * user verification on email.
      *
-     * @param userAuth {@link UserAuth}
+     * @param email email
      */
-    boolean verifyEmail(UserAuth userAuth);
+    boolean verifyEmail(String email);
 }

@@ -20,7 +20,7 @@ import { getComputeRefManager } from 'compute_manager';
 import { ExpCache, FormulaBaseError, parse } from 'formula_parser';
 import Joi from 'joi';
 import { ValueTypeMap } from 'model/constants';
-import { ICellValue } from 'model/record';
+import { ICellToStringOption, ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
 import { IReduxState } from '../../exports/store';
 import { getSnapshot } from '../../exports/store/selectors';
@@ -36,7 +36,7 @@ import { IUpdateOpenFormulaFieldProperty } from 'types/open/open_field_write_typ
 import { isClient } from 'utils/env';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField } from './field';
+import { ArrayValueField, ICellApiStringValueOptions } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
@@ -262,15 +262,15 @@ export class FormulaField extends ArrayValueField {
     return cellValue;
   }
 
-  arrayValueToString(cellValue: any): string | null {
+  arrayValueToString(cellValue: any, options?: ICellToStringOption): string | null {
     if (Array.isArray(cellValue)) {
-      const vArray = this.arrayValueToArrayStringValueArray(cellValue);
+      const vArray = this.arrayValueToArrayStringValueArray(cellValue, options);
       return vArray == null ? null : vArray.join(', ');
     }
     return String(cellValue);
   }
 
-  arrayValueToArrayStringValueArray(cellValue: any[]) {
+  arrayValueToArrayStringValueArray(cellValue: any[], options?: ICellToStringOption) {
     return (cellValue as any[]).map(cv => {
       switch (this.innerBasicValueType) {
         case BasicValueType.Number:
@@ -278,7 +278,7 @@ export class FormulaField extends ArrayValueField {
           return numberFormat(cv, this.field.property?.formatting);
         }
         case BasicValueType.DateTime:
-          return dateTimeFormat(cv, this.field.property.formatting as any);
+          return dateTimeFormat(cv, this.field.property.formatting as any, options?.userTimeZone);
         case BasicValueType.String:
           return String(cv);
         default:
@@ -299,7 +299,7 @@ export class FormulaField extends ArrayValueField {
     return null;
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
+  cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
     if (cellValue == null) {
       return null;
     }
@@ -309,11 +309,11 @@ export class FormulaField extends ArrayValueField {
         return numberFormat(cellValue, this.field.property?.formatting);
       }
       case BasicValueType.DateTime:
-        return dateTimeFormat(cellValue, this.field.property.formatting as any);
+        return dateTimeFormat(cellValue, this.field.property.formatting as any, options?.userTimeZone);
       case BasicValueType.String:
         return String(cellValue);
       case BasicValueType.Array: {
-        return this.arrayValueToString(cellValue);
+        return this.arrayValueToString(cellValue, options);
       }
       default:
         return null;
@@ -376,8 +376,8 @@ export class FormulaField extends ArrayValueField {
     return cellValue;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue): string | null {
-    return this.cellValueToString(cellValue);
+  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
+    return this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone });
   }
 
   cellValueToOpenValue(

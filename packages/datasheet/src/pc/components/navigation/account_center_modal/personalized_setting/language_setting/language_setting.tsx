@@ -16,21 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
 import { Select, Typography } from '@apitable/components';
+import { getLanguage, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
-import { useRequest } from 'pc/hooks';
+import { useRequest, useUserRequest } from 'pc/hooks';
+import { FC, useState } from 'react';
 import styles from './style.module.less';
-import { getLanguage, Strings, t, TrackEvents } from '@apitable/core';
-import { useUserRequest } from 'pc/hooks';
-import { tracker } from 'pc/utils/tracker';
 
 const options = [{
   label: '简体中文',
   value: 'zh-CN'
 }, {
   label: 'English',
-  value: 'en-US' 
+  value: 'en-US'
 }];
 
 export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
@@ -45,7 +43,7 @@ export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
     if (newValue === value) {
       return;
     }
-    
+
     const { success, message } = await updateLang(newValue);
 
     if (!success) {
@@ -53,9 +51,6 @@ export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
       return;
     }
     setValue(newValue);
-    tracker.track(TrackEvents.Language, {
-      languageType: newValue
-    });
     // cache client locale
     window.document.cookie = `client-lang=${newValue}`;
     window.location.reload();

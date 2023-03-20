@@ -18,11 +18,11 @@
 
 import { IconButton, Typography, useContextMenu, useThemeColors } from '@apitable/components';
 import {
-  ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
+  ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t, TrackEvents,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import { 
-  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteFilled, PlanetOutlined 
+import {
+  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteFilled, PlanetOutlined
 } from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
@@ -53,6 +53,7 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
+import { usePostHog } from 'posthog-js/react';
 
 const { Panel } = Collapse;
 
@@ -108,6 +109,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useAppDispatch();
+  const posthog = usePostHog();
 
   const userInfo = useSelector(state => state.user.info);
   const spaceFeatures = useSelector(state => state.space.spaceFeatures);
@@ -219,7 +221,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       id: rootId,
       module: ConfigConstant.Modules.CATALOG,
       contextMenuType: ConfigConstant.ContextMenuType.DEFAULT,
-      level: '0', 
+      level: '0',
     });
     onSetContextMenu(e);
   };
@@ -349,19 +351,25 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.fixedGroup}>
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
-              <div className={styles.groupItem} onClick={jumpTrash} data-sensors-click id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
+              <div className={styles.groupItem} onClick={jumpTrash} id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
                 <DeleteFilled color={colors.rc04} />
               </div>
             </Tooltip>
           )}
           <Tooltip title={t(Strings.workbench_side_space_template)}>
-            <div className={styles.groupItem} onClick={jumpSpaceTemplate} data-sensors-click id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
+            <div className={styles.groupItem} onClick={jumpSpaceTemplate} id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
               <PlanetOutlined color={colors.rc02} />
             </div>
           </Tooltip>
           {inviteStatus && !isIdassPrivateDeployment() && (
             <Tooltip title={t(Strings.invite_friends)}>
-              <div className={styles.groupItem} onClick={() => expandInviteModal()}>
+              <div
+                className={styles.groupItem}
+                onClick={() => {
+                  posthog?.capture(TrackEvents.InviteByWorkbench);
+                  expandInviteModal();
+                }}
+              >
                 <UserAddOutlined color={colors.primaryColor} />
               </div>
             </Tooltip>

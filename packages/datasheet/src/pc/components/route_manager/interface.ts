@@ -86,3 +86,7 @@ export interface IQuery {
   nodeId?: string;
   comment?: number;
 }
+
+export interface IOptions {
+  shallow?: boolean;
+}

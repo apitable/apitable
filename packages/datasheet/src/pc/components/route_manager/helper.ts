@@ -19,10 +19,11 @@
 import { Api, PREVIEW_DATASHEET_ID, StoreActions } from '@apitable/core';
 import Router from 'next/router';
 import { Method } from 'pc/components/route_manager/const';
-import { IQuery } from 'pc/components/route_manager/interface';
+import { IOptions, IQuery } from 'pc/components/route_manager/interface';
 import { store } from 'pc/store';
 import browserPath from 'path-browserify';
 import urlcat from 'urlcat';
+import { pick } from 'lodash';
 
 export function joinPath(pathParams: (string | undefined)[]) {
   const params: string[] = [];
@@ -73,10 +74,11 @@ const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, c
  * @params path: The path to jump (without query and hash)
  * @params query: The query carried on the path, e.g. {x: '1', y: '2'} is equivalent to ?x=1&y=2
  */
-export const getHistoryMethod = (method?: Method) => {
+export const getHistoryMethod = (method?: Method, options?: IOptions) => {
   switch (method) {
     case Method.Push: {
-      return wrapper((path: string) => Router.push(path, undefined, { shallow: true }));
+      const pushOptions = pick(options, 'shallow');
+      return wrapper((path: string) => Router.push(path, undefined, pushOptions));
     }
     case Method.Replace: {
       return wrapper((path: string) => Router.replace(path));

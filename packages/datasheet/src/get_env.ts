@@ -48,7 +48,6 @@ export const getEnvVars = () => {
     DISABLE_NPS: process.env.DISABLE_NPS === 'true',
     BAIDU_ANALYSE_ID: process.env.BAIDU_ANALYSE_ID,
     DINGTALK_MONITOR_PLATFORM_ID: process.env.DINGTALK_MONITOR_PLATFORM_ID,
-    SENSORSDATA_TOKEN: process.env.SENSORSDATA_TOKEN,
     QNY1: process.env.QNY1,
     QNY2: process.env.QNY2,
     QNY3: process.env.QNY3,
@@ -212,5 +211,8 @@ export const getEnvVars = () => {
     DISABLED_QINIU_COMPRESSION_PARAMS: process.env.DISABLED_QINIU_COMPRESSION_PARAMS === 'true',
     DASHBOARD_WIDGET_MAX_NUM: process.env.DASHBOARD_WIDGET_MAX_NUM,
     WIZARD_ENABLE: process.env.WIZARD_ENABLE === 'true',
+    NEXT_PUBLIC_POSTHOG_KEY:process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST:process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    ADD_RECORD_BUTTON_BG_COLOR:process.env.ADD_RECORD_BUTTON_BG_COLOR,
   };
 };

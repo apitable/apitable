@@ -978,6 +978,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             .updatedBy(user.getId())
             .build();
         iUserHistoryService.create(userHistory);
+        userServiceFacade.onUserCloseAccount(user.getId());
     }
 
     @Override

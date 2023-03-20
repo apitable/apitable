@@ -19,30 +19,29 @@
 import { BasicValueType } from '@apitable/core';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import { NumberOutlined, CheckboxFilled, TextOutlined, CalendarOutlined } from '@apitable/icons';
+import { NumberOutlined, CheckOutlined, TextOutlined, CalendarOutlined } from '@apitable/icons';
 
 const IconMap = {
   [BasicValueType.Array]: TextOutlined,
   [BasicValueType.DateTime]: CalendarOutlined,
   [BasicValueType.Number]: NumberOutlined,
   [BasicValueType.String]: TextOutlined,
-  [BasicValueType.Boolean]: CheckboxFilled,
+  [BasicValueType.Boolean]: CheckOutlined,
 };
 
 interface IViewIcon {
   valueType: BasicValueType;
-  width?: number;
-  height?: number;
+  size?: number;
   fill?: string;
   onClick?: () => void;
 }
 
 export const ValueTypeIcon: React.FC<React.PropsWithChildren<IViewIcon>> = props => {
   const colors = useThemeColors();
-  const { valueType, width = 16, fill = colors.thirdLevelText, onClick } = props;
+  const { valueType, size = 16, fill = colors.thirdLevelText, onClick } = props;
   const ComponentIcon = valueType && IconMap[valueType];
   if (ComponentIcon) {
-    return <ComponentIcon size={width} color={fill} onClick={onClick} />;
+    return <ComponentIcon size={size} color={fill} onClick={onClick} />;
   } 
   return null;
   

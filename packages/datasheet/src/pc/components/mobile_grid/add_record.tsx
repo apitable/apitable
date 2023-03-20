@@ -17,6 +17,7 @@
  */
 
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import styles from './styles.module.less';
 import { useThemeColors } from '@apitable/components';
@@ -54,6 +55,8 @@ export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = pro
       style={{
         width: outerSize,
         height: outerSize,
+        background: getEnvVariables().ADD_RECORD_BUTTON_BG_COLOR,
+        boxShadow: getEnvVariables().ADD_RECORD_BUTTON_BG_COLOR ? 'unset' : ''
       }}
     >
       <div className={styles.btnWrapper}>

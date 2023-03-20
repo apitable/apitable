@@ -20,6 +20,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import {
+  getTimeZoneAbbrByUtc,
   IFromUserInfo,
   INoticeDetail,
   integrateCdnHost,
@@ -261,8 +262,13 @@ export const getMsgText = (data: INoticeDetail) => {
     }
   }
 };
+
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const abbr = getTimeZoneAbbrByUtc(timeZone)!;
+
 // spaceName is the space to which the current notification belongs
 export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBodyOptions) => {
+
   const pureString = options ? options.pureString : false;
   const spaceInfo = options ? options.spaceInfo : null;
 
@@ -378,10 +384,10 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           return <b>&nbsp;{payFee}</b>;
         }
         case TemplateKeyword.ExpireAt: {
-          return <b>&nbsp;{dayjs(Number(expireAt)).format('YYYY-MM-DD')}</b>;
+          return <b>&nbsp;{dayjs(Number(expireAt)).tz(timeZone).format('YYYY-MM-DD')}({abbr})</b>;
         }
         case TemplateKeyword.TaskExpireAt: {
-          return <b>&nbsp;{dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm')}</b>;
+          return <b>&nbsp;{dayjs(Number(taskExpireAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})</b>;
         }
         case TemplateKeyword.FeatureName: {
           return <b>{featureName}</b>;

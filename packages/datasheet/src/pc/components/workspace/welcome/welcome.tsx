@@ -109,7 +109,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                                 <Typography variant='body4' color={colors.fc3}>
                                   {t(Strings[item.moreOperation.textKay])}
                                 </Typography>
-                                <ChevronRightOutlined size={16} color={colors.fc3} />
+                                <ChevronRightOutlined size={12} color={colors.fc3} />
                               </TextButton>
                             </div>}
                           </div>

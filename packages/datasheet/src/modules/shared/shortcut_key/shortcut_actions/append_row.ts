@@ -58,20 +58,20 @@ export function appendRow(option: IAppendRowsOption = {}): Promise<ICollaCommand
   const rowsMap = Selectors.getVisibleRowsIndexMap(state);
   const baseRecordIndex = rowsMap.has(recordId) ? rowsMap.get(recordId)! : -1;
   const groupCellValues = getCellValuesForGroupRecord(recordId);
-  const executeData: { recordValues?: IRecordCellValue[]; groupCellValues?: ICellValue[] } = {};
+  const executeData: { cellValues?: IRecordCellValue[]; groupCellValues?: ICellValue[] } = {};
   const isSideRecordOpen = state.space.isSideRecordOpen;
   if (isDuplicate) {
     const recordCellValue = getRecordCellValue(state, recordId);
     if (recordCellValue) {
-      executeData.recordValues = [recordCellValue];
+      executeData.cellValues = [recordCellValue];
     }
   }
   if (groupCellValues.length) {
     executeData.groupCellValues = groupCellValues;
   }
   if (recordData != null) {
-    const prevCellValues = executeData.recordValues;
-    executeData.recordValues = prevCellValues == null ? [recordData] : [{ ...prevCellValues[0], ...recordData }];
+    const prevCellValues = executeData.cellValues;
+    executeData.cellValues = prevCellValues == null ? [recordData] : [{ ...prevCellValues[0], ...recordData }];
   }
 
   let index = findRowsIndexById(recordId);

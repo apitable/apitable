@@ -592,7 +592,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
           memberIds.addAll(members);
         } else {
           List<Long> subIds =
-              teamMapper.selectAllSubTeamIdsByParentId(value.getId(), true);
+              iTeamService.getAllTeamIdsInTeamTree(value.getId());
           List<Long> members = teamMemberRelMapper.selectMemberIdsByTeamIds(subIds);
           memberIds.addAll(members);
         }

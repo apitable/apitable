@@ -80,7 +80,8 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
 
     if (fieldId) {
-      showField((e as any), {
+      const event = (e.type === 'touchend' ? (e as TouchEvent).changedTouches?.[0] : e) || e;
+      showField((event as any), {
         id: DATASHEET_ID.FIELD_CONTEXT,
         props: {
           fieldId,
