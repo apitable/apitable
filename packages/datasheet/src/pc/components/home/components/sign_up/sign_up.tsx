@@ -158,7 +158,7 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
                   {isVisible ? <EyeOpenOutlined color={colors.textCommonTertiary} /> : <EyeCloseOutlined color={colors.textCommonTertiary} />}
                 </div>
               }
-              placeholder={t(Strings.placeholder_input_new_password_with_given_rules)}
+              placeholder={t(Strings.apitable_password_input_placeholder)}
               error={Boolean(errorMsg.password)}
               block
             />
