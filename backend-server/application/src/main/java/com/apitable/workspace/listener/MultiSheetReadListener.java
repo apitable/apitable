@@ -161,7 +161,11 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             ? context.readSheetHolder().getApproximateTotalRowNumber() : 0;
         View view = new View(headSize, totalRow);
         view.id = IdUtil.createViewId();
+<<<<<<< HEAD
         view.name = viewName != null ? viewName: I18nStringsUtil.t("default_view");
+=======
+        view.name = I18nStringsUtil.t("default_view");
+>>>>>>> 94651c7c85b44b92e4a54e263fb0c829a20cefaa
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 
