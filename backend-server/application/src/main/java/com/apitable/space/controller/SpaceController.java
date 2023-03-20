@@ -190,7 +190,7 @@ public class SpaceController {
      * Create space.
      */
     @PostResource(path = "/create", requiredPermission = false)
-    @Operation(summary = "Create space")
+    @Operation(summary = "Create Space")
     public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
@@ -233,7 +233,7 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true, schema =
         @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId,
-        @RequestBody @Valid SpaceDeleteRo param) {
+                                     @RequestBody @Valid SpaceDeleteRo param) {
         // This operation cannot be performed when binding to a third party
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();

@@ -297,6 +297,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             iNodeService.copyNodeToSpace(userId, spaceId, rootNodeId,
                 templateNodeId, NodeCopyOptions.create());
         }
+        entitlementServiceFacade.createSubscription(spaceId, userId);
         return spaceId;
     }
 
