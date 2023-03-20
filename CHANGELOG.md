@@ -3,6 +3,20 @@
 
 
 
+## [v0.19.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.19.0-alpha) (2023-03-20)
+
+
+### Bug fixes
+
+* fix: remove unused test file ([#565](https://github.com/apitable/apitable/pull/565)) @shawndenggh 
+* fix: disable awsc ignore verification ([#577](https://github.com/apitable/apitable/pull/577)) @wangkailang 
+* fix: sign up password placeholder string @laboonly 
+* fix: sign up password placeholder string ([#590](https://github.com/apitable/apitable/pull/590)) @laboonly 
+
+### What's more
+
+* release: v0.18.0-rc.2 ([#556](https://github.com/apitable/apitable/pull/556)) @yort-feng 
+* sync: hosted cloud ([#589](https://github.com/apitable/apitable/pull/589)) @yort-feng 
 ## [v0.18.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.2) (2023-03-13)
 
 
