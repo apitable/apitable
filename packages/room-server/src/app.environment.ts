@@ -40,6 +40,11 @@ export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
 // project root directory
 export const PROJECT_DIR = __dirname;
 
+// default language
+export const defaultLanguage = process.env.DEFAULT_LANGUAGE || 'en-US';
+
+export const supportedLanguages = process.env.SUPPORTED_LANGUAGES ? process.env.SUPPORTED_LANGUAGES.split(',') : ['zh-CN', 'en-US'];
+
 export default {
   isDevMode,
   isProdMode,
