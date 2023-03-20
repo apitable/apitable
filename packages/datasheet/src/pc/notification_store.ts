@@ -195,7 +195,7 @@ export const renderNoticeUi = (data: INoticeDetail) => {
         content: t(Strings.deleted_in_curspace_tip),
         okText: t(Strings.refresh),
         onOk: () => {
-          Router.redirect(Navigation.SPACE);
+          Router.redirect(Navigation.WORKBENCH);
         },
       });
       break;

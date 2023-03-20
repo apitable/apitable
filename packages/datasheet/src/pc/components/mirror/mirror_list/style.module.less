@@ -52,10 +52,6 @@
   &:hover {
     background: var(--rowSelectedBg);
     border-radius: 4px;
-
-    svg {
-      fill: var(--primaryColor);
-    }
   }
 }
 
@@ -106,8 +102,14 @@
   }
 }
 
-.boxTop {
-  svg {
-    margin-left: 4px;
+
+.switchCoverFit {
+  display: flex;
+  align-items: center;
+
+  div[role='checkbox'] {
+    border-color: var(--textCommonQuaternary);
   }
 }
+
+

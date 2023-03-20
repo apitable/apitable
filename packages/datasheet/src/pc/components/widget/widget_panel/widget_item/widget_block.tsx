@@ -72,10 +72,17 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     setDevWidgetId, runtimeEnv
   } = props;
   const [connected, setConnected] = useState<boolean>();
+  const [iframeLoading, setIframeLoading] = useState<boolean>(true);
   const widgetCanRender = useWidgetCanRender(widgetId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
   const nodeConnected = useSelector(state => {
+    const datasheet = Selectors.getDatasheet(state, nodeId);
+    const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
+    // The initialization of the widget must be done after the datasheet loaded.
+    if (!bindDatasheetLoaded) {
+      return false;
+    }
     const { templateId } = state.pageParams;
     return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
@@ -245,12 +252,16 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       styles.iframeMask,
       dragging && styles.iframeMasking,
     )} />
+    {iframeLoading && <div className={styles.iframeLoadingWarp}>
+      <Loading />
+    </div>}
     <iframe
       style={{
         width: '100%',
         height: '100%',
         border: 0
       }}
+      onLoad={() => setIframeLoading(false)}
       ref={iframeRef}
       src={`${WIDGET_IFRAME_PATH}/?widgetId=${widgetId}&lang=${getLanguage()}&isSocialWecom=${isWecom}&runtimeEnv=${runtimeEnv}`} />
   </>;

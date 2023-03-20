@@ -18,26 +18,17 @@
 
 import { LoggerService, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { disableHSTS, environment, isDevMode } from 'app.environment';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { environment, isDevMode } from 'app.environment';
 import { AppModule } from 'app.module';
 import { useContainer } from 'class-validator';
-import helmet from 'fastify-helmet';
-import fastifyMultipart from 'fastify-multipart';
-import { HelmetOptions } from 'helmet';
 import * as immer from 'immer';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
-import { initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
-import { GRPC_MAX_PACKAGE_SIZE } from 'shared/common';
+import { initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
 import { GlobalExceptionFilter } from 'shared/filters';
-import { FastifyZipkinPlugin } from 'shared/helpers';
 import { HttpResponseInterceptor } from 'shared/interceptor';
-import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.interceptor';
-import { ZIPKIN_MODULE_OPTIONS, ZIPKIN_MODULE_PROVIDER } from 'shared/services/zipkin/zipkin.constants';
-import { IZipkinModuleOptions } from 'shared/services/zipkin/zipkin.interface';
-import { ZipkinService } from 'shared/services/zipkin/zipkin.service';
 
 /**
  * entrance method
@@ -51,43 +42,9 @@ async function bootstrap() {
     console.log('initialize native module failed:', e);
   }
 
-  const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
-  fastifyAdapter.register(fastifyMultipart);
-  // registe helmet in fastify to avoid conflict with swagger
-  let helmetOptions: HelmetOptions = {
-    // update script-src to be compatible with swagger
-    contentSecurityPolicy: {
-      directives: {
-        'default-src': ["'self'"],
-        'base-uri': ["'self'"],
-        'block-all-mixed-content': [],
-        'font-src': ["'self'", 'https:', 'data:'],
-        'frame-ancestors': ["'self'"],
-        'img-src': ["'self'", 'data:'],
-        'object-src': ["'none'"],
-        'script-src': ["'self'", "'unsafe-inline'"],
-        'script-src-attr': ["'none'"],
-        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-        'upgrade-insecure-requests': [],
-      },
-    },
-  };
-  if (disableHSTS) {
-    helmetOptions = { ...helmetOptions, hsts: false };
-  }
-  fastifyAdapter.register(helmet, helmetOptions);
+  const fastifyAdapter = initFastify();
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
-
-  const zipkinOptions = app.get<IZipkinModuleOptions>(ZIPKIN_MODULE_OPTIONS);
-  if (zipkinOptions.enabled && zipkinOptions.endpoint) {
-    const zipkinService = app.get<ZipkinService>(ZIPKIN_MODULE_PROVIDER);
-    await app.register(FastifyZipkinPlugin.fastifyZipkinPlugin, {
-      serviceName: `${environment}-room-server`,
-      port: Number(process.env.PORT),
-      tracer: zipkinService.tracer,
-    });
-  }
 
   const logger = app.get<LoggerService>(WINSTON_MODULE_NEST_PROVIDER);
   app.useLogger(logger);
@@ -104,7 +61,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter(app.get<I18nService>(I18nService)));
 
   // tracing all the requests by sentry
-  app.useGlobalInterceptors(new TracingHandlerInterceptor());
+  // app.useGlobalInterceptors(new TracingHandlerInterceptor());
 
   // global intercept with standard format
   app.useGlobalInterceptors(new HttpResponseInterceptor());

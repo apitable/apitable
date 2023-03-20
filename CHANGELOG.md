@@ -3,6 +3,180 @@
 
 
 
+## [v0.18.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.2) (2023-03-13)
+
+
+### Features and enhancements
+
+* feat: optimize patch records api ([#526](https://github.com/apitable/apitable/pull/526)) @yort-feng 
+* feat: optimize post records api ([#544](https://github.com/apitable/apitable/pull/544)) @yort-feng 
+* feat: add a snippet code of prodcut analytics ([#547](https://github.com/apitable/apitable/pull/547)) @Sky-FE 
+* feat: support huaweicloud OBS for Oss ([#537](https://github.com/apitable/apitable/pull/537)) @showlovetommy 
+
+### Bug fixes
+
+* fix: correct env value about all-in-one dockerfile ([#528](https://github.com/apitable/apitable/pull/528)) @ChambersChan 
+* fix: init theme in widget runtime ([#542](https://github.com/apitable/apitable/pull/542)) @boris-w 
+* fix: query may be undefined ([#553](https://github.com/apitable/apitable/pull/553)) @boris-w 
+
+### What's more
+
+* refactor: replace node cte sql ([#473](https://github.com/apitable/apitable/pull/473)) @ChambersChan 
+* sync: hosted cloud ([#551](https://github.com/apitable/apitable/pull/551)) @yort-feng 
+## [v0.18.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.1) (2023-03-06)
+
+
+### Features and enhancements
+
+* feat: fix existing unidir link ([#3333](https://github.com/apitable/apitable/pull/3333)) @arucil 
+* feat: apitable support to reset password ([#3278](https://github.com/apitable/apitable/pull/3278)) @zoe-icu 
+* feat: timezone fe ([#3268](https://github.com/apitable/apitable/pull/3268)) @wangkailang 
+* feat: apitable change password ([#3369](https://github.com/apitable/apitable/pull/3369)) @laboonly 
+* feat: components color change ([#3386](https://github.com/apitable/apitable/pull/3386)) @laboonly 
+* feat: add apitable cloud reset password error message ([#3438](https://github.com/apitable/apitable/pull/3438)) @laboonly 
+* feat: auth0 email varify ([#3465](https://github.com/apitable/apitable/pull/3465)) @zoe-icu 
+* feat: apitable email verification page ([#3456](https://github.com/apitable/apitable/pull/3456)) @laboonly 
+* feat: node  update/create api modify ([#3477](https://github.com/apitable/apitable/pull/3477)) @zoe-icu 
+* feat: infoflow share form permission ([#3469](https://github.com/apitable/apitable/pull/3469)) @zoe-icu 
+* feat: design icons ([#3442](https://github.com/apitable/apitable/pull/3442)) @Sky-FE 
+* feat: migrate getRecordsById to rust ([#3391](https://github.com/apitable/apitable/pull/3391)) @arucil 
+* feat: merge test/0.18.1 into develop ([#3515](https://github.com/apitable/apitable/pull/3515)) @arucil 
+* feat: set system default timezone ([#3517](https://github.com/apitable/apitable/pull/3517)) @LiuZijingBron 
+* feat: phone and email input add input rules ([#3523](https://github.com/apitable/apitable/pull/3523)) @laboonly 
+* feat: static icons migration ([#3531](https://github.com/apitable/apitable/pull/3531)) @Sky-FE 
+* feat: api modify view name support to define view name length ([#3592](https://github.com/apitable/apitable/pull/3592)) @zoe-icu 
+* feat: schedule task for reporting ([#3585](https://github.com/apitable/apitable/pull/3585)) @shawndenggh 
+* feat: embed support manual save ([#3619](https://github.com/apitable/apitable/pull/3619)) @JaneSu 
+
+### Bug fixes
+
+* fix: core unit test errors ([#3355](https://github.com/apitable/apitable/pull/3355)) @arucil 
+* fix: dayjs plugin ts error ([#3365](https://github.com/apitable/apitable/pull/3365)) @wangkailang 
+* fix: link auth0 user provider should not be null ([#3377](https://github.com/apitable/apitable/pull/3377)) @zoe-icu 
+* fix: use sensors env ([#3404](https://github.com/apitable/apitable/pull/3404)) @wangkailang 
+* fix: avoid form commit no change jot ([#3437](https://github.com/apitable/apitable/pull/3437)) @wangkailang 
+* fix: only enterprise set symlinks false ([#3448](https://github.com/apitable/apitable/pull/3448)) @wangkailang 
+* fix: mobile style ([#3453](https://github.com/apitable/apitable/pull/3453)) @wangkailang 
+* fix: modify node info cannot be synchronized ([#3452](https://github.com/apitable/apitable/pull/3452)) @zoe-icu 
+* fix: share embed modal form hidden logo ([#3459](https://github.com/apitable/apitable/pull/3459)) @laboonly 
+* fix: mirror add record ([#3462](https://github.com/apitable/apitable/pull/3462)) @arucil 
+* fix: sensors not found ([#3464](https://github.com/apitable/apitable/pull/3464)) @wangkailang 
+* fix: widget menu render ([#3468](https://github.com/apitable/apitable/pull/3468)) @boris-w 
+* fix: collaborative add widget in the dashboard does not get the entity ([#3480](https://github.com/apitable/apitable/pull/3480)) @boris-w 
+* fix: mobile menu group style ([#3487](https://github.com/apitable/apitable/pull/3487)) @wangkailang 
+* fix: widget grid layout init in the dashborad ([#3488](https://github.com/apitable/apitable/pull/3488)) @boris-w 
+* fix: popup css error ([#3489](https://github.com/apitable/apitable/pull/3489)) @wangkailang 
+* fix: dashboard init layout ([#3509](https://github.com/apitable/apitable/pull/3509)) @boris-w 
+* fix: safari create team fail ([#3507](https://github.com/apitable/apitable/pull/3507)) @wangkailang 
+* fix: View name length handling error ([#3521](https://github.com/apitable/apitable/pull/3521)) @JaneSu 
+* fix: embed link expand record show comment pane ([#3547](https://github.com/apitable/apitable/pull/3547)) @laboonly 
+* fix: databus unit test type errors ([#3546](https://github.com/apitable/apitable/pull/3546)) @arucil 
+* fix: email and phone feild input add rules ([#3561](https://github.com/apitable/apitable/pull/3561)) @laboonly 
+* fix: unknown column issue ([#3562](https://github.com/apitable/apitable/pull/3562)) @yort-feng 
+* fix: env control nps disable ([#3578](https://github.com/apitable/apitable/pull/3578)) @wangkailang 
+* fix: reset password get verify code ([#3586](https://github.com/apitable/apitable/pull/3586)) @wangkailang 
+* fix: space manual view save not work on embed link ([#3581](https://github.com/apitable/apitable/pull/3581)) @zoe-icu 
+* fix: web ci fail ([#3593](https://github.com/apitable/apitable/pull/3593)) @wangkailang 
+* fix: icon style ([#3600](https://github.com/apitable/apitable/pull/3600)) @Sky-FE 
+* fix:  multi timeZone serializer ([#3580](https://github.com/apitable/apitable/pull/3580)) @LiuZijingBron 
+* fix: apitable register bugfix @laboonly 
+* fix: clear console.log @laboonly 
+* fix: the logo on the create space page supports the dark theme ([#508](https://github.com/apitable/apitable/pull/508)) @boris-w 
+* fix: missing import @laboonly 
+* fix: apitable register bugfix ([#509](https://github.com/apitable/apitable/pull/509)) @laboonly 
+
+### What's more
+
+* chore: upgrade email copy right @xukecheng 
+* Merge branch 'develop' into chore/upgrade_email_copy_right @xukecheng 
+* Fix/iteration14 bugfix ([#3351](https://github.com/apitable/apitable/pull/3351)) @laboonly 
+* Feat/iframe ([#3361](https://github.com/apitable/apitable/pull/3361)) @JaneSu 
+* test: add update user timezone unit test ([#3366](https://github.com/apitable/apitable/pull/3366)) @LiuZijingBron 
+* sync: APITable Merge commit 'e6f50e43c1595fd16906c1eabd400f7fdf442542' into develop @mr-kelly 
+* Feat/apitable change password ([#3371](https://github.com/apitable/apitable/pull/3371)) @laboonly 
+* sync: APITable Merge commit '15856531bd388cc9272c474b19930af398c23c07' into develop @mr-kelly 
+* Feat/apitable change password ([#3374](https://github.com/apitable/apitable/pull/3374)) @laboonly 
+* Fix cola ([#3381](https://github.com/apitable/apitable/pull/3381)) @JaneSu 
+* chore: classify enterprise dir ([#3372](https://github.com/apitable/apitable/pull/3372)) @shawndenggh 
+* Merge commit '4d600c938308566f6776d3dfadd8860fd5959fe0' into develop @mr-kelly 
+* Fix cola ([#3415](https://github.com/apitable/apitable/pull/3415)) @JaneSu 
+* refactor: integrate DataBus into frontend ([#3037](https://github.com/apitable/apitable/pull/3037)) @arucil 
+* Feat/embed dashboard ([#3440](https://github.com/apitable/apitable/pull/3440)) @JaneSu 
+* chore: merge release/0.18.0 to develop ([#3433](https://github.com/apitable/apitable/pull/3433)) @boris-w 
+* chore: apply edition db changeset depend on local differ edition development ([#3447](https://github.com/apitable/apitable/pull/3447)) @shawndenggh 
+* refactor: view derivation calculated data ([#2853](https://github.com/apitable/apitable/pull/2853)) @boris-w 
+* revert: restore init-appdata service in dataenv-up ([#3450](https://github.com/apitable/apitable/pull/3450)) @shawndenggh 
+* Feat/embed dashboard ([#3451](https://github.com/apitable/apitable/pull/3451)) @JaneSu 
+* sync: APITable Merge commit '8eb02d1f6fbd1ab43827fadc3e13cc7189c7d02d' into develop @mr-kelly 
+* chore: unified data services image version ([#3460](https://github.com/apitable/apitable/pull/3460)) @shawndenggh 
+* chore: apitable data services image version change ([#3461](https://github.com/apitable/apitable/pull/3461)) @shawndenggh 
+* chore: third-party scripts env ([#3457](https://github.com/apitable/apitable/pull/3457)) @wangkailang 
+* Feat/embed dashboard ([#3470](https://github.com/apitable/apitable/pull/3470)) @JaneSu 
+* chore: tune mail starter ([#3483](https://github.com/apitable/apitable/pull/3483)) @ChambersChan 
+* sync: APITable Merge commit '4135b4e190bca5828c6e19b253e3401575eb3108' into develop @mr-kelly 
+* sync: APITable Merge branch 'develop' of github.com:vikadata/vikadata into develop @mr-kelly 
+* Revert "feat: migrate getRecordsById to rust ([#3391](https://github.com/apitable/apitable/pull/3391))" (#3500) @arucil 
+* chore: tune afs starter & upload afs verify ([#3512](https://github.com/apitable/apitable/pull/3512)) @ChambersChan 
+* sync: APITable Merge commit '99f80b54f12d3f68dc5af318dee10696760b4aa6' into develop @mr-kelly 
+* refactor: resolve merge conflict ([#3533](https://github.com/apitable/apitable/pull/3533)) @zoe-icu 
+* sync: apitable to vikadata ([#3540](https://github.com/apitable/apitable/pull/3540)) @yort-feng 
+* chore: ci for cross compiling room-native-api to arm64 ([#3536](https://github.com/apitable/apitable/pull/3536)) @arucil 
+* sync: apitable ([#3564](https://github.com/apitable/apitable/pull/3564)) @Sky-FE 
+* Revert "sync: apitable" ([#3583](https://github.com/apitable/apitable/pull/3583)) @yort-feng 
+* Merge commit '1815a91b6f96361fefcd1de83b7463f0efeecb58' into develop @yort-feng 
+* chore: revert commit codes manully due to auto merge issue @yort-feng 
+* Merge branch 'develop' into sync/apitable-23022802 @yort-feng 
+* Feat/apitable ce register ([#3606](https://github.com/apitable/apitable/pull/3606)) @laboonly 
+* chore: merge conflict @Sky-FE 
+* Sync/hosted ([#487](https://github.com/apitable/apitable/pull/487)) @laboonly 
+* chore: sync env to all-in-one dockerfile ([#491](https://github.com/apitable/apitable/pull/491)) @ChambersChan 
+* docs: improve zh-CN translation ([#367](https://github.com/apitable/apitable/pull/367)) @xianjianlf2 
+* chore: upgrade email copy right ([#298](https://github.com/apitable/apitable/pull/298)) @xukecheng 
+* hpm log with api prefix  ([#476](https://github.com/apitable/apitable/pull/476)) @buzuosheng 
+* Merge branch 'develop' into fix/register-bugfix @laboonly 
+* Merge branch 'develop' into fix/register-bugfix @laboonly 
+* Merge branch 'fix/register-bugfix' of github.com:apitable/apitable into fix/register-bugfix @laboonly 
+* sync: hosted cloud ([#511](https://github.com/apitable/apitable/pull/511)) @yort-feng 
+## [v0.18.0-rc](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc) (2023-02-28)
+
+
+### Features and enhancements
+
+* feat: register api ([#440](https://github.com/apitable/apitable/pull/440)) @ChambersChan 
+* feat: replace controller's swagger2 annotation with openapi annotation @LiuZijingBron 
+* feat: modify lint.yml @LiuZijingBron 
+* feat: modify .jscpd.json @LiuZijingBron 
+* feat: Add email template: task-due-remind ([#438](https://github.com/apitable/apitable/pull/438)) @wmEvie 
+
+### Bug fixes
+
+* fix: widget crash @JaneSu 
+* fix: widget crash ([#448](https://github.com/apitable/apitable/pull/448)) @JaneSu 
+* fix: parse date strings in the mobile calendar month picker according to standard format ([#449](https://github.com/apitable/apitable/pull/449)) @Sky-FE 
+* fix: trash error ([#455](https://github.com/apitable/apitable/pull/455)) @wangkailang 
+* fix: README spell ([#441](https://github.com/apitable/apitable/pull/441)) @0xflotus 
+* fix: robot error ([#458](https://github.com/apitable/apitable/pull/458)) @oolongTea007 
+
+### What's more
+
+* release: v0.18.0-beta ([#432](https://github.com/apitable/apitable/pull/432)) @yort-feng 
+* docs: remove start socket server introduce ([#436](https://github.com/apitable/apitable/pull/436)) @ChambersChan 
+* Add email template: task-due-remind @wmEvie 
+* chore: replace swagger2 with springdoc-openapi @LiuZijingBron 
+* Update subject.properties @wmEvie 
+* Merge branch 'develop' into chore-knife4j-swagger @LiuZijingBron 
+* chore: replace swagger2 with springdoc-openapi ([#439](https://github.com/apitable/apitable/pull/439)) @LiuZijingBron 
+* chore: replace model swagger2 annotation with openapi annotation @LiuZijingBron 
+* Merge branch 'develop' into chore-openapi-model @LiuZijingBron 
+* chore: replace model swagger2 annotation with openapi annotation ([#460](https://github.com/apitable/apitable/pull/460)) @LiuZijingBron 
+* docs: fix L10N readme href ([#456](https://github.com/apitable/apitable/pull/456)) @Jealee3000 
+* chroe: Remove task due remind template @wmEvie 
+* chroe: Remove task due reminder template ([#466](https://github.com/apitable/apitable/pull/466)) @wmEvie 
+* test: add property based tests to DataBus ([#140](https://github.com/apitable/apitable/pull/140)) (#467) @Exclamation-mark 
+* refactor: replace dynamic sql in getUserInfo ([#453](https://github.com/apitable/apitable/pull/453)) @Jealee3000 
+* sync: hosted cloud ([#470](https://github.com/apitable/apitable/pull/470)) @yort-feng 
+* chore: compatible widget icons ([#471](https://github.com/apitable/apitable/pull/471)) @Sky-FE 
+* Revert "refactor: replace dynamic sql in getUserInfo" ([#475](https://github.com/apitable/apitable/pull/475)) @yort-feng 
 ## [v0.18.0-beta](https://github.com/apitable/apitable/releases/tag/v0.18.0-beta) (2023-02-22)
 
 

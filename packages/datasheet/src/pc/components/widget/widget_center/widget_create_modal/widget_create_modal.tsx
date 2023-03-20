@@ -602,7 +602,7 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
         </div>
         <div className={classNames(styles.contentFooter, styles.configContentFooter)}>
           <Button color='primary' onClick={startDev} disabled={!devUrl}>{t(Strings.widget_start_dev)}</Button>
-          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<BulbOutlined />} onClick={() => {
+          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<BulbOutlined color={colors.thirdLevelText} />} onClick={() => {
             expandWidgetCreateSteps({
               widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl,
             });

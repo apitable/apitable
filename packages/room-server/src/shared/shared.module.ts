@@ -19,15 +19,13 @@
 import { HttpModule } from '@nestjs/axios';
 import { Global, Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
-import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { HttpConfigService } from './services/config/http.config.service';
-import { ZipkinConfigService } from './services/config/zipkin.config.service';
 import { JavaModule } from './services/java/java.module';
 import { QueueDynamicModule } from './services/queue/queue.dynamic.module';
-import { ZipkinModule } from './services/zipkin/zipkin.module';
 import { RestService } from './services/rest/rest.service';
 import { ClientStorage } from './services/socket/client.storage';
 
@@ -37,10 +35,6 @@ import { ClientStorage } from './services/socket/client.storage';
     JavaModule,
     HttpModule.registerAsync({
       useClass: HttpConfigService,
-    }),
-    // Zipkin configuration
-    ZipkinModule.forRootAsync({
-      useClass: ZipkinConfigService,
     }),
     MiddlewareModule,
     EnvConfigModule,

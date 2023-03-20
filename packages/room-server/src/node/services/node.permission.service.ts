@@ -19,6 +19,7 @@
 import {
   ConfigConstant, DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION, IDPrefix,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
@@ -104,6 +105,7 @@ export class NodePermissionService {
     return +nodePermitSetCount.count > 0;
   }
 
+  @Span()
   async getNodeRole(nodeId: string, auth: IAuthHeader, shareId?: string): Promise<NodePermission> {
     // On-space permission
     if (!shareId) {

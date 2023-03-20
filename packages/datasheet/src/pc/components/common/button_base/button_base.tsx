@@ -17,13 +17,12 @@
  */
 
 import classNames from 'classnames';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import { stylizeIcon } from 'pc/utils/dom';
 import * as React from 'react';
 import { IButtonBase } from './button_base.interface';
 import { ButtonPrefixCls } from './constants';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 const DEFAULT_ICON_SIZE = 16;
 
 export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props) => {
@@ -69,7 +68,9 @@ export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props
   );
   const finalKidsNode = loading ? (
     <>
-      <LoadingOutlined style={{ marginRight: finalIcon || children ? '4px' : '0px' }} />
+      <span style={{ marginRight: finalIcon || children ? '4px' : '0px' }}>
+        <LoadingOutlined className="circle-loading" />
+      </span>
       {propsNode}
     </>
   ) : <>{propsNode}</>;

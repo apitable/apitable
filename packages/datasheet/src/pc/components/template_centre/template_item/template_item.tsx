@@ -239,9 +239,9 @@ export const TemplateItem: React.FC<React.PropsWithChildren<ITemplateItemProps>>
         )}
         {bannerDesc && type === Types.BANNER && (
           <div className={classNames('bannerDesc', styles.bannerDesc)}>
-            <div className={classNames('title', styles.title)} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
+            <Typography variant="h6" className={classNames('title', styles.title)} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
               {bannerDesc.title}
-            </div>
+            </Typography>
             <div className={classNames('desc', styles.desc)} style={bannerDesc.color ? { color: bannerDesc.color } : undefined}>
               {bannerDesc.desc}
             </div>

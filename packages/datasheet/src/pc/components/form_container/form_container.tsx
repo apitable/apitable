@@ -58,6 +58,7 @@ import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
 // @ts-ignore
 import { triggerUsageAlertForDatasheet } from 'enterprise';
+import { getEnvVariables } from '../../utils/env';
 
 enum IFormContentType {
   Form = 'Form',
@@ -394,7 +395,9 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
       setContentType(IFormContentType.Welcome);
     }
     try {
-      !isPrivateDeployment() && (window as any).sensors.track('formSubmitSuccess', { $url: window.location.href });
+      if (!isPrivateDeployment() || getEnvVariables().SENSORSDATA_TOKEN) {
+        (window as any).sensors?.track('formSubmitSuccess', { $url: window.location.href })
+      }
     } catch (error) {
       Sentry.captureMessage(String(error));
     }
@@ -767,7 +770,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         )}
 
         {/* Top left: brand logo */}
-        {shareId && !fullScreen && !isMobile && (
+        {brandVisible && shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
               <Logo theme={theme}/>

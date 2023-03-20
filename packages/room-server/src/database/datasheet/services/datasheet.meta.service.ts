@@ -17,6 +17,7 @@
  */
 
 import { IMeta } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { DatasheetMetaRepository } from 'database/datasheet/repositories/datasheet.meta.repository';
 import { PermissionException, ServerException } from 'shared/exception';
@@ -31,6 +32,7 @@ export class DatasheetMetaService {
     return metaEntity?.metaData;
   }
 
+  @Span()
   async getMetaDataByDstId(dstId: string, exception?: IBaseException, ignoreDeleted = false): Promise<IMeta> {
     const metaEntity = ignoreDeleted ? await this.repository.selectMetaByDstIdIgnoreDeleted(dstId) : await this.repository.selectMetaByDstId(dstId);
     if (metaEntity?.metaData) {

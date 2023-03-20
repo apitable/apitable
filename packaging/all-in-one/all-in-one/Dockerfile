@@ -99,7 +99,7 @@ ENV \
     SMS_ENABLED=false \
     \
     MAIL_ENABLED=false \
-    MAIL_TYPE=stmp \
+    MAIL_TYPE=smtp \
     MAIL_HOST= \
     MAIL_PASSWORD= \
     MAIL_PORT= \

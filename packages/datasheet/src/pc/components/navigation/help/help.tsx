@@ -18,16 +18,14 @@
 
 /* eslint-disable no-script-url */
 import { Tooltip, Typography, useThemeColors } from '@apitable/components';
-import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
-  AdviseOutlined, BookOutlined, ClassOutlined, CodeFilled, CommunityOutlined, MortarboardOutlined, TimeOutlined, DownloadOutlined,
-  InfoCircleOutlined, BulbOutlined, QuestionCircleOutlined, PlanetOutlined, KeyboardOutlined, RoadmapOutlined,
-  CommentOutlined, VikabyOutlined, WebOutlined, CompassOutlined
+  AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
+  VikabyOutlined, WebOutlined
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
-import { clearWizardsData, inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
 import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
@@ -52,8 +50,6 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   const spaceId = useSelector(state => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const isFeishu = inSocialApp?.(ConfigConstant.SocialType.FEISHU);
-  const env = getEnvVariables();
 
   const contactUs = useContactUs();
   const openShortcutKeyPanel = () => {
@@ -71,95 +67,17 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
     }
   };
 
-  const startGuideClick = () => {
-    clearWizardsData?.();
-    TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.FUNCTION_GUIDANCE);
-  };
-
-  const linkToCommunity = () => {
-    navigationToUrl(env.HELP_MENU_USER_COMMUNITY_URL!);
-  };
   const menuData = [
-    {
-      icon: <BulbOutlined color={colors.thirdLevelText} size={16} />,
-      text: t(Strings.solution),
-      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
-      hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
-    },
-    {
-      icon: <ClassOutlined color={colors.thirdLevelText} size={16} />,
-      text: t(Strings.help_video_tutorials),
-      onClick: () => navigationToUrl(env.HELP_MENU_VIDEO_TUTORIALS_URL!),
-      hidden: isMobile || !env.HELP_MENU_VIDEO_TUTORIALS_URL,
-    },
-    {
-      icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
-      text: t(Strings.product_roadmap),
-      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
-      hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
-    },
-    {
-      icon: <PlanetOutlined />,
-      text: t(Strings.join_the_community),
-      onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL),
-      hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
-    },
-    {
-      icon: <CompassOutlined />,
-      text: t(Strings.function_guidance),
-      onClick: startGuideClick,
-      hidden: isMobile || !getEnvVariables().HELP_MENU_SMART_ONBOARDING_VISIBLE,
-    },
-    {
-      icon: <MortarboardOutlined />,
-      text: t(Strings.quick_tour),
-      onClick: () => navigationToUrl(t(Strings.help_quick_start_url)),
-    },
-    {
-      icon: <AdviseOutlined />,
-      text: t(Strings.vomit_a_slot),
-      onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
-      hidden: isPrivateDeployment(),
-    },
-    {
-      icon: <TimeOutlined color={colors.thirdLevelText} size={16} />,
-      text: t(Strings.subscribe_demonstrate),
-      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
-      hidden: isMobile || !getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL,
-    },
-    {
-      icon: <VikabyOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.assistant),
-      id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
-      onClick: vikabyHelperClick,
-      hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
-    },
-    {
-      icon: <CommunityOutlined />,
-      text: t(Strings.help_user_community),
-      onClick: linkToCommunity,
-      hidden: !env.HELP_MENU_USER_COMMUNITY_URL
-    },
-    {
-      icon: <QuestionCircleOutlined />,
-      text: t(Strings.help_center),
-      onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
-    },
-    {
-      icon: <BookOutlined />,
-      text: t(Strings.handbook),
-      onClick: () => navigationToUrl(t(Strings.help_product_manual_url)),
-    },
-    {
-      icon: <InfoCircleOutlined />,
-      text: t(Strings.faq),
-      onClick: () => navigationToUrl(t(Strings.help_questions_url)),
-    },
     {
       icon: <WebOutlined />,
       text: t(Strings.official_website_without_abbr),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
       hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL
+    },
+    {
+      icon: <QuestionCircleOutlined />,
+      text: t(Strings.help_center),
+      onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
     },
     {
       icon: <CodeFilled />,
@@ -174,11 +92,16 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
     },
     {
-      icon: <KeyboardOutlined />,
-      text: t(Strings.keybinding_show_keyboard_shortcuts_panel),
-      id: NAV_ID.HELP_MENU_SHORTCUT_PANEL,
-      onClick: openShortcutKeyPanel,
-      hidden: isMobile,
+      icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.product_roadmap),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
+      hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
+    },
+    {
+      icon: <TimeOutlined color={colors.thirdLevelText} size={16} />,
+      text: t(Strings.subscribe_demonstrate),
+      onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
+      hidden: isMobile || !getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL,
     },
     {
       icon: <CommentOutlined />,
@@ -187,6 +110,26 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
         contactUs();
       },
       hidden: isMobile || isPrivateDeployment(),
+    },
+    {
+      icon: <AdviseOutlined />,
+      text: t(Strings.vomit_a_slot),
+      onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
+      hidden: isPrivateDeployment(),
+    },
+    {
+      icon: <KeyboardOutlined />,
+      text: t(Strings.keybinding_show_keyboard_shortcuts_panel),
+      id: NAV_ID.HELP_MENU_SHORTCUT_PANEL,
+      onClick: openShortcutKeyPanel,
+      hidden: isMobile,
+    },
+    {
+      icon: <VikabyOutlined color={colors.thirdLevelText} />,
+      text: t(Strings.assistant),
+      id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
+      onClick: vikabyHelperClick,
+      hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
     },
   ];
 

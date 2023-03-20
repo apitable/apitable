@@ -88,18 +88,18 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
       return <></>;
     }
     // Defaults to isAdmin && !isOwner
-    let backgroundColor = colors.deepPurple[100];
-    let color = colors.deepPurple[500];
+    let backgroundColor: string = colors.rainbowPurple1;
+    let color: string = colors.rainbowPurple5;
     let str = t(Strings.space_admin);
 
     if (!isAdmin && isOwner) {
-      backgroundColor = colors.teal[100];
-      color = colors.teal[500];
+      backgroundColor = colors.rainbowTeal1;
+      color = colors.rainbowTeal4;
       str = t(Strings.share_permisson_model_node_owner);
     }
     if (isAdmin && isOwner) {
-      backgroundColor = colors.indigo[100];
-      color = colors.indigo[500];
+      backgroundColor = colors.rainbowIndigo1;
+      color = colors.rainbowIndigo5;
       str = t(Strings.node_permission_label_space_and_file);
     }
     return (

@@ -17,7 +17,7 @@
  */
 
 import { ResourceIdPrefix } from '@apitable/core';
-import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, UseFilters } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { ILeaveRoomRo, INodeCopyRo, INodeDeleteRo } from 'database/interfaces/grpc.interface';
 import { IRoomChannelMessage } from 'database/ot/interfaces/ot.interface';
@@ -31,16 +31,15 @@ import {
 import { GrpcSocketService } from 'grpc/services/grpc.socket.service';
 import { NodeService } from 'node/services/node.service';
 import { InjectLogger } from 'shared/common';
+import { SpanAddTag } from 'shared/decorator/tracing.extend.decorator';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { GrpcExceptionFilter } from 'shared/filters/grpc.exception.filter';
-import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.interceptor';
 import { Logger } from 'winston';
 
 /**
  * grpc works for internal service
  */
 @UseFilters(new GrpcExceptionFilter())
-@UseInterceptors(new TracingHandlerInterceptor())
 @Controller(protobufPackage)
 export class GrpcController {
   constructor(
@@ -104,6 +103,9 @@ export class GrpcController {
   }
 
   @GrpcMethod('RoomServingService', 'roomChange')
+  @SpanAddTag([
+    (args: any[]) => args[1].toJSON(),
+  ])
   async userRoomChange(message: UserRoomChangeRo): Promise<UserRoomChangeVo> {
     try {
       let data: IRoomChannelMessage = {

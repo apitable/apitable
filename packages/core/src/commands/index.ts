@@ -40,6 +40,7 @@ import {
 import { IUpdateFormProps, updateFormProps } from './form';
 import { IManualSaveView, manualSaveView } from 'commands/datasheet/manual_save_view';
 import { ISetViewAutoSave, setViewAutoSave } from 'commands/datasheet/set_view_auto_save';
+import { IResetRecordsOptions, resetRecords } from './datasheet/reset_records';
 export { IInternalFix } from 'commands/common/field';
 
 export enum CollaCommandName {
@@ -113,7 +114,10 @@ export enum CollaCommandName {
   SetViewAutoSave = 'SetViewAutoSave',
 
   // special command, correct one-way association DstId
-  FixOneWayLinkDstId = 'FixOneWayLinkDstId'
+  FixOneWayLinkDstId = 'FixOneWayLinkDstId',
+
+  // Only used for Fusion API for reload recordMap
+  ResetRecords = 'ResetRecords',
 }
 
 export const COLLA_COMMAND_MAP: { [name: string]: ICollaCommandDef } = {
@@ -168,6 +172,7 @@ export const COLLA_COMMAND_MAP: { [name: string]: ICollaCommandDef } = {
   [CollaCommandName.FixOneWayLinkDstId]: fixOneWayLinkDstId,
   [CollaCommandName.SetViewFrozenColumnCount]: setViewFrozenColumnCount,
   [CollaCommandName.SetDateTimeCellAlarm]: setDateTimeCellAlarm,
+  [CollaCommandName.ResetRecords]: resetRecords,
 };
 
 export type ICollaCommandOptions = ISetRecordsOptions |
@@ -220,7 +225,8 @@ export type ICollaCommandOptions = ISetRecordsOptions |
   ISetViewLockInfo |
   IFixOneWayLinkDstId |
   ISetViewFrozenColumnCount |
-  ISetDateTimeCellAlarmOptions;
+  ISetDateTimeCellAlarmOptions | 
+  IResetRecordsOptions;
 
 export * from './datasheet';
 

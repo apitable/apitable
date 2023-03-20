@@ -18,16 +18,7 @@
 
 package com.apitable.shared.listener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.service.RestTemplateService;
 import com.apitable.shared.listener.event.NodeShareDisableEvent;
 import com.apitable.shared.util.MultiValueMapUtils;
@@ -38,7 +29,12 @@ import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.ro.NodeShareDisableNotifyRo;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.BaseNodeInfo;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -78,25 +74,30 @@ public class NodeShareDisableListener implements ApplicationListener<NodeShareDi
         for (NodeShareDTO shareDTO : shareDTOList) {
             NodeType nodeType = iNodeService.getTypeByNodeId(shareDTO.getNodeId());
             if (nodeType != NodeType.FOLDER) {
-                MultiValueMapUtils.accumulatedValueIfAbsent(nodeIdToShareIdsMap, shareDTO.getNodeId(), shareDTO.getShareId());
+                MultiValueMapUtils.accumulatedValueIfAbsent(nodeIdToShareIdsMap,
+                    shareDTO.getNodeId(), shareDTO.getShareId());
                 continue;
             }
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(shareDTO.getNodeId());
+            List<String> subNodeIds =
+                iNodeService.getNodeIdsInNodeTree(shareDTO.getNodeId(), -1);
             for (String subNodeId : subNodeIds) {
-                MultiValueMapUtils.accumulatedValueIfAbsent(nodeIdToShareIdsMap, subNodeId, shareDTO.getShareId());
+                MultiValueMapUtils.accumulatedValueIfAbsent(nodeIdToShareIdsMap, subNodeId,
+                    shareDTO.getShareId());
             }
         }
         if (nodeIdToShareIdsMap.isEmpty()) {
             return;
         }
         List<NodeShareDisableNotifyRo> message = new ArrayList<>(nodeIdToShareIdsMap.size());
-        List<BaseNodeInfo> nodeInfos = nodeMapper.selectBaseNodeInfoByNodeIds(nodeIdToShareIdsMap.keySet());
+        List<BaseNodeInfo> nodeInfos =
+            nodeMapper.selectBaseNodeInfoByNodeIds(nodeIdToShareIdsMap.keySet());
         for (BaseNodeInfo node : nodeInfos) {
             // Folders have no collaborative rooms and do not need broadcasting
             if (node.getType().equals(NodeType.FOLDER.getNodeType())) {
                 continue;
             }
-            message.add(new NodeShareDisableNotifyRo(node.getNodeId(), nodeIdToShareIdsMap.get(node.getNodeId())));
+            message.add(new NodeShareDisableNotifyRo(node.getNodeId(),
+                nodeIdToShareIdsMap.get(node.getNodeId())));
         }
         restTemplateService.disableNodeShareNotify(message);
     }

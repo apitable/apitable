@@ -18,33 +18,16 @@
 
 import { colorVars, TextButton, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName,
-  DATASHEET_ID,
-  Events,
-  ExecuteResult,
-  FieldType,
-  IDatasheetClientState,
-  IGalleryViewProperty,
-  IGridViewProperty,
-  IKanbanViewProperty,
-  IViewProperty,
-  LayoutType,
-  Player,
-  ResourceType,
-  RowHeightLevel,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-  UN_GROUP,
-  ViewType,
+  CollaCommandName, DATASHEET_ID, Events, ExecuteResult, FieldType, IDatasheetClientState, IGalleryViewProperty, IGridViewProperty,
+  IKanbanViewProperty, IViewProperty, LayoutType, Player, ResourceType, RowHeightLevel, Selectors, StoreActions, Strings, t, UN_GROUP, ViewType,
 } from '@apitable/core';
-import { 
-  ApiOutlined, ChevronDownOutlined, HistoryFilled, RobotOutlined, SettingFilled, 
-  WidgetOutlined, AddCircleOutlined, GroupOutlined, RankOutlined, SettingOutlined, ShareOutlined, GalleryOutlined, FilterOutlined, EyeOpenOutlined 
+import {
+  AddCircleOutlined, ApiOutlined, ChevronDownOutlined, EyeOpenOutlined, FilterOutlined, GalleryOutlined, GroupOutlined, HistoryFilled, ListOutlined,
+  RankOutlined, RobotOutlined, SettingFilled, SettingOutlined, ShareOutlined, StyleOutlined, WidgetOutlined,
 } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
+import { get } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
@@ -54,6 +37,7 @@ import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { getEnvVariables, isIframe } from 'pc/utils/env';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -73,9 +57,6 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
-import { get } from 'lodash';
-import { getEnvVariables, isIframe } from 'pc/utils/env';
-import { ListOutlined } from '@apitable/icons';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -826,7 +807,6 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
   const isGridType = viewType === ViewType.Grid;
   const isGanttType = viewType === ViewType.Gantt;
   const isCalendarType = viewType === ViewType.Calendar;
-  const isOrgType = viewType === ViewType.OrgChart;
   const isExclusive = type === ToolHandleType.HideExclusiveField;
   const hideFieldString = isGanttType && isExclusive ? Strings.hide_one_graphic_field : Strings.hide_fields;
   const toolName = isMobile ? t(Strings.tool_bar_hidden) : t(hideFieldString);
@@ -843,10 +823,10 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
         [styles.hide]: true,
       })}
       icon={
-        isGridType || isGanttType || isCalendarType || isOrgType ? (
+        isGridType || isGanttType || isCalendarType ? (
           <EyeOpenOutlined size={16} color={hasHide ? colorVars.primaryColor : colorVars.secondLevelText} className={styles.toolIcon} />
         ) : (
-          <SettingOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />
+          <StyleOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />
         )
       }
       text={

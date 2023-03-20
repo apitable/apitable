@@ -46,7 +46,10 @@ export const initRootWidgetState = (state: IReduxState, widgetId: string, opt?: 
 
   const foreignDatasheetIds = opt?.foreignDatasheetIds || [];
   foreignDatasheetIds.forEach(dstId => {
-    const datasheet = widgetDatasheetSelector(state, dstId);
+    if (dstId === datasheetId) {
+      return;
+    }
+    const datasheet = widgetDatasheetSelector(state, dstId, true);
     if (datasheet) {
       datasheetMap[dstId] = datasheet;
     }

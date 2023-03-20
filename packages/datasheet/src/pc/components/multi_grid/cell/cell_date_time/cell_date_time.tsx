@@ -49,7 +49,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
   // No alarm is displayed when snapshot is undefined (e.g. the notification center expands the card directly)
   const alarm = showAlarm ? Selectors.getDateTimeCellAlarm(snapshot, recordId!, field.id) : undefined;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
-  const [date, time, timeRule] = cellString ? cellString.split(' ') : [];
+  const [date, time, timeRule, abbr] = cellString ? cellString.split(' ') : [];
   const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
 
   const alarmRealTime = useMemo(() => {
@@ -74,6 +74,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
           <div className={classNames(styles.date, !time && styles.single, 'cellDateTimeDate')}>{date}</div>
           {time && <div className={classNames(styles.time, 'time')}>{time}</div>}
           {timeRule && <div className={classNames(styles.time, 'time')}>{timeRule}</div>}
+          {abbr && <div className={classNames(styles.time, 'time')}>{abbr}</div>}
         </div>
       )}
       {showAlarm && Boolean(alarm) && date && Boolean(snapshot) && RECORD_TASK_REMINDER_VISIBLE && (
@@ -81,7 +82,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
           title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
           <span className={styles.alarm} onClick={toggleEdit}>
-            <NotificationOutlined color={colors.deepPurple[500]} size={14} />
+            <NotificationOutlined color={colors.deepPurple[500]} size={16} />
             <span className={styles.alarmTime}>
               {alarmRealTime}
             </span>
@@ -108,7 +109,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
               },
             });
           }}>
-            <NotificationOutlined color={colors.fc3} size={14} />
+            <NotificationOutlined color={colors.fc3} size={16} />
           </span>
         </Tooltip>
       )}

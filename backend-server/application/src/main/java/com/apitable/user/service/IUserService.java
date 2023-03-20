@@ -370,4 +370,10 @@ public interface IUserService extends IService<UserEntity> {
      * @return user's email
      */
     String getEmailByUserId(Long userId);
+
+    /**
+     * Close Paused User.
+     * Among them, the account has applied for cancellation for more than limit Days
+     */
+    void closePausedUser(int limitDays);
 }

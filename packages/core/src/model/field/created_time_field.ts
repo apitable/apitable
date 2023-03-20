@@ -36,6 +36,8 @@ export class CreatedTimeField extends DateTimeBaseField {
     dateFormat: Joi.string().allow(...enumToArray(DateFormat)).required(),
     timeFormat: Joi.string().allow(...enumToArray(TimeFormat)).required(),
     includeTime: Joi.boolean().required(),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
   static defaultDateFormat: string = DateFormat[0]!;
   static defaultTimeFormat: string = TimeFormat[0]!;
@@ -99,7 +101,9 @@ export class CreatedTimeField extends DateTimeBaseField {
   static openUpdatePropertySchema = Joi.object({
     dateFormat: Joi.valid(...enumKeyToArray(DateFormat)).required(),
     timeFormat: Joi.valid(...enumKeyToArray(TimeFormat)),
-    includeTime: Joi.boolean()
+    includeTime: Joi.boolean(),
+    timeZone: Joi.string(),
+    includeTimeZone: Joi.boolean(),
   }).required();
 
   override validateUpdateOpenProperty(updateProperty: IUpdateOpenCreatedTimeFieldProperty) {

@@ -24,7 +24,7 @@ export const initTheme = () => {
   let localTheme = localStorage.getItem('theme');
   localTheme = localTheme ? 
     (localTheme.includes(ThemeName.Dark) ? ThemeName.Dark : ThemeName.Light) : null;
-  const theme = query.get('theme') || localTheme || ThemeName.Light;
+  const theme = query.get('theme') || localTheme || getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME ||ThemeName.Light;
   switchTheme(theme as ThemeName);
 };
 

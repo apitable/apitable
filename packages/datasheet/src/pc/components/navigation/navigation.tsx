@@ -18,7 +18,9 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SettingOutlined, UserGroupOutlined, WorkbenchOutlined } from '@apitable/icons';
+import {
+  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, SettingOutlined, UserGroupOutlined, WorkbenchOutlined
+} from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
@@ -56,6 +58,7 @@ import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 import { useIntercom } from 'react-use-intercom';
+import { expandSearch } from '../quick_search';
 enum NavKey {
   SpaceManagement = 'management',
   Org = 'org',
@@ -216,6 +219,16 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
   ]);
 
+  navList.splice(1, 0, {
+    component: () => {
+      return (
+        <div className={styles.navItem} onClick={() => expandSearch()}>
+          <SearchOutlined className={styles.navIcon}/>
+        </div>
+      );
+    }
+  });
+
   const NotificationNav = React.useMemo((): React.ReactElement => {
     const dom = (
       <Badge
@@ -322,6 +335,9 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
         </div>
         <div className={styles.navWrapper} onClick={hiddenUserMenu}>
           {navList.map((item: any) => {
+            if (item.component) {
+              return item.component();
+            }
             if (user && !user!.isAdmin && item.key === NavKey.SpaceManagement) {
               return null;
             }

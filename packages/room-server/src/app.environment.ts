@@ -20,6 +20,7 @@ export const environment = process.env.NODE_ENV || 'development';
 export const isDevMode = Object.is(environment, 'development');
 export const isProdMode = Object.is(environment, 'production');
 export const enableSwagger = Object.is(process.env.ENABLE_SWAGGER, 'true');
+export const enableOtelJaeger = Object.is(process.env.ENABLE_OTEL_JAEGER, 'true');
 export const serviceDomain = process.env.SERVER_DOMAIN;
 export const currentAppInstanceId = process.env.NODE_APP_INSTANCE || 0;
 export const disableHSTS = Object.is(process.env.STRICT_TRANSPORT_SECURITY, 'false');

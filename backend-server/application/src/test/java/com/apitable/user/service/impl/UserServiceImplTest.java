@@ -26,6 +26,7 @@ import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.ro.UserOpRo;
+import com.apitable.user.service.IUserHistoryService;
 import java.util.List;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private IUserHistoryService iUserHistoryService;
 
     @Test
     public void testEditUserAvatar() {
@@ -98,5 +102,15 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
 
         UserEntity userEntity = iUserService.getById(userSpace.getUserId());
         assertThat(userEntity.getPassword()).isNotBlank();
+    }
+
+    @Test
+    public void testClosePausedAccount() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(2);
+        iUserService.closePausedUser(1);
+        UserEntity result = iUserService.getById(userSpace.getUserId());
+        assertThat(result).isNull();
     }
 }

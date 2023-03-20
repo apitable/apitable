@@ -84,8 +84,9 @@ export class UnitService {
     return units.reduce<UnitInfoDto[]>((pre, cur) => {
       const tmp = cur.unitType === MemberType.Member ? members[cur.unitRefId] : teams[cur.unitRefId];
       if (tmp) {
+        const avatar = tmp.avatar ? (tmp.avatar.startsWith('http') ? tmp.avatar : oss.host + '/' + tmp.avatar) : '';
         pre.push({
-          avatar: tmp.avatar ? oss.host + '/' + tmp.avatar : '',
+          avatar,
           isActive: tmp?.isActive!,
           isDeleted: tmp?.isDeleted!,
           isNickNameModified: tmp?.isNickNameModified!,
@@ -172,9 +173,10 @@ export class UnitService {
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {
       const member = memberMap[user.id];
+      const avatar = user.avatar ? (user.avatar.startsWith('http') ? user.avatar : oss.host + '/' + user.avatar) : '';
       // key is ID of user table
       userMap.set(user.id, {
-        avatar: user.avatar ? oss.host + '/' + user.avatar : '',
+        avatar,
         isActive: member?.isActive!,
         isDeleted: member?.isDeleted!,
         isNickNameModified: user.isSocialNameModified !== 0,

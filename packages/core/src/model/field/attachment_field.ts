@@ -29,34 +29,29 @@ import { BasicOpenValueTypeBase, IAttachmentFieldOpenValue } from 'types/field_t
 import { Strings, t } from '../../exports/i18n';
 import { isNullValue } from 'model/utils';
 import { IAddOpenAttachmentFieldProperty } from 'types';
+import { joiErrorResult } from './validate_schema';
+
+const baseAttachmentFieldSchema = {
+  id: Joi.string().required(),
+  name: Joi.string().required(),
+  mimeType: Joi.string().required(),
+  token: Joi.string().required(),
+  bucket: Joi.string().required(),
+  size: Joi.number().required(),
+  width: Joi.number(),
+  height: Joi.number(),
+  preview: Joi.string()
+};
 
 export class AttachmentField extends ArrayValueField {
   static propertySchema = Joi.equal(null);
 
-  static cellValueSchema = Joi.array().items(Joi.object({
-    id: Joi.string().required(),
-    name: Joi.string().required(),
-    mimeType: Joi.string().required(),
-    token: Joi.string().required(),
-    bucket: Joi.string().required(),
-    size: Joi.number().required(),
-    width: Joi.number(),
-    height: Joi.number(),
-    preview: Joi.string()
-  }).required()).allow(null).required();
+  static cellValueSchema = Joi.array().items(Joi.object(baseAttachmentFieldSchema).required()).allow(null).required();
 
   static openWriteValueValueSchema = Joi.array().items(Joi.object({
-    id: Joi.string().required(),
-    name: Joi.string().required(),
-    mimeType: Joi.string().required(),
-    token: Joi.string().required(),
-    bucket: Joi.string().required(),
-    size: Joi.number().required(),
-    previewUrl: Joi.string(),
-    width: Joi.number(),
-    height: Joi.number(),
-    preview: Joi.string(),
+    ...baseAttachmentFieldSchema,
     url: Joi.string(),
+    previewUrl: Joi.string(),
   }).required()).allow(null).required();
 
   constructor(public override field: IAttacheField, state: IReduxState) {
@@ -310,5 +305,20 @@ export class AttachmentField extends ArrayValueField {
       return { error: undefined, value: null };
     }
     return this.validateUpdateOpenProperty(updateProperty);
+  }
+
+  override filterValueToOpenFilterValue(): null {
+    return null;
+  }
+
+  override openFilterValueToFilterValue(): null {
+    return null;
+  }
+
+  override validateOpenFilterValue(value: null) {
+    if (value) {
+      return joiErrorResult('The attachment field does not need to set the filter criteria value');
+    }
+    return Joi.allow(null).validate(value);
   }
 }

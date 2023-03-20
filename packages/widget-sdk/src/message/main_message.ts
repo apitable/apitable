@@ -261,13 +261,13 @@ class MainMessage {
    * Broadcast action.
    * @param action
    */
-  syncActionBroadcast(action: AnyAction) {
+  syncActionBroadcast(action: AnyAction, dependenceDstIds?: string[]) {
     const subscribeViews = this.subscribeViews();
     if (!subscribeViews.length) {
       return;
     }
     if (action.datasheetId) {
-      const needEmit = subscribeViews.find(item => item.datasheetId === action.datasheetId);
+      const needEmit = subscribeViews.find(item => dependenceDstIds?.includes(item.datasheetId) || item.datasheetId === action.datasheetId);
       if (!needEmit) {
         return ;
       }

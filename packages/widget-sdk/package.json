@@ -41,6 +41,7 @@
     "@apitable/core": "*",
     "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
+    "antd": "4.23.5",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",
     "emoji-mart": "^3.0.0",

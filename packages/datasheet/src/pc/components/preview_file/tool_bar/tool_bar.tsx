@@ -95,7 +95,7 @@ export async function download(fileInfo: IAttachmentValue) {
       return;
     }
     // If the image contentDisposition type is inline, force the download using a binary stream
-    if (contentDisposition.includes('inline')) {
+    if (contentDisposition?.includes('inline')) {
       mode = 'stream';
     }
   }

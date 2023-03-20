@@ -43,4 +43,9 @@
         AND vuh.user_status = #{userStatus}
     </select>
 
+    <select id="selectUserIdsByCreatedAtAndUserStatus" resultType="java.lang.Long">
+        SELECT user_id FROM ${tablePrefix}user_history
+        WHERE user_status = #{userStatus}
+        AND created_at between #{startAt} AND #{endAt}
+    </select>
 </mapper>

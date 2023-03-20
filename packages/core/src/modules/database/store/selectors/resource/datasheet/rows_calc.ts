@@ -1,27 +1,19 @@
+import { Strings, t } from 'exports/i18n';
+
+import {
+  IFieldPermissionMap, IMirror, IRecord, IReduxState, ISnapshot, IViewDerivation, IViewProperty, IViewRow, Role,
+} from 'exports/store/interfaces';
+
+import { Field, LookUpField } from 'model';
+import { PREVIEW_DATASHEET_ID, RecordMoveType } from 'modules/shared/store/constants';
 import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
 
-import {
-  IFieldPermissionMap, IMirror, IRecord, IReduxState, ISnapshot, IViewDerivation, IViewProperty,
-  IViewRow, Role,
-} from 'exports/store/interfaces';
-
-import {
-  FieldType, IField, IFilterInfo, ISortedField,
-} from 'types';
-
-import {
-  Field, LookUpField,
-} from 'model';
-
-import {
-  getActiveDatasheetId, getActiveViewId,
-  getFieldRoleByFieldId, getSnapshot, getViewById, getViewIdByNodeId
-} from './base';
-import { Strings, t } from 'exports/i18n';
-import { getCellValue } from './cell_calc';
+import { FieldType, IField, IFilterInfo, ISortedField } from 'types';
 import { getMirror } from '../mirror';
-import { PREVIEW_DATASHEET_ID, RecordMoveType } from 'modules/shared/store/constants';
+
+import { getActiveDatasheetId, getActiveViewId, getFieldRoleByFieldId, getSnapshot, getViewById, getViewIdByNodeId } from './base';
+import { getCellValue } from './cell_calc';
 
 /**
  * Single Sort Calculation.
@@ -49,40 +41,38 @@ export function sortRowsBySortInfo(state: IReduxState, rows: IViewRow[], sortRul
   return shallowRows;
 }
 
-export const getFilterInfo = createCachedSelector<
-  IReduxState,
+export const getFilterInfo = createCachedSelector<IReduxState,
   string | undefined | void,
   ISnapshot | undefined,
   string | undefined,
   IMirror | undefined | null,
-  IFilterInfo | undefined
->([getSnapshot, getActiveViewId, state => getMirror(state)], (snapshot, viewId, mirror) => {
-  if (!snapshot || !viewId) {
-    return;
-  }
-  const view = getViewById(snapshot, viewId);
-  if (!view) {
-    return;
-  }
-  if (mirror?.id) {
-    const originViewConditionIds = view.filterInfo?.conditions.map(item => item.conditionId) || [];
-    const filterInfo = mirror.temporaryView?.filterInfo;
-    const mirrorConditions = filterInfo?.conditions.filter(item => {
-      return !originViewConditionIds.includes(item.conditionId);
-    });
-
-    if (!mirrorConditions) {
-      return mirror.temporaryView?.filterInfo;
+  IFilterInfo | undefined>([getSnapshot, getActiveViewId, state => getMirror(state)], (snapshot, viewId, mirror) => {
+    if (!snapshot || !viewId) {
+      return;
     }
-    return {
-      conjunction: filterInfo!.conjunction,
-      conditions: mirrorConditions,
-    };
-  }
-  return view.filterInfo;
-})({
-  keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
-});
+    const view = getViewById(snapshot, viewId);
+    if (!view) {
+      return;
+    }
+    if (mirror?.id) {
+      const originViewConditionIds = view.filterInfo?.conditions.map(item => item.conditionId) || [];
+      const filterInfo = mirror.temporaryView?.filterInfo;
+      const mirrorConditions = filterInfo?.conditions.filter(item => {
+        return !originViewConditionIds.includes(item.conditionId);
+      });
+
+      if (!mirrorConditions) {
+        return filterInfo;
+      }
+      return {
+        conjunction: filterInfo!.conjunction,
+        conditions: mirrorConditions,
+      };
+    }
+    return view.filterInfo;
+  })({
+    keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
+  });
 
 /* clipboard for clipboard */
 export const getGroupFields = (view: IViewProperty, fieldMap: { [id: string]: IField }, fieldPermissionMap?: IFieldPermissionMap): IField[] => {

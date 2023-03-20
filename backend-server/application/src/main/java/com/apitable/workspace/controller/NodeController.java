@@ -18,6 +18,8 @@
 
 package com.apitable.workspace.controller;
 
+import static com.apitable.workspace.enums.NodeException.DUPLICATE_NODE_NAME;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -474,6 +476,15 @@ public class NodeController {
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
             nodeOpRo.getExtra());
+        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())) {
+            String oldNodeId = iNodeService.getNodeIdByParentIdAndNodeName(nodeOpRo.getParentId(),
+                nodeOpRo.getNodeName());
+            if (StrUtil.isNotBlank(oldNodeId)) {
+                return ResponseData.status(false, DUPLICATE_NODE_NAME.getCode(),
+                        DUPLICATE_NODE_NAME.getMessage())
+                    .data(iNodeService.getNodeInfoByNodeId(spaceId, oldNodeId, role));
+            }
+        }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
         // publish space audit events
         AuditSpaceArg arg =

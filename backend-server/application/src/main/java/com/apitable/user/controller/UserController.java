@@ -56,6 +56,7 @@ import com.apitable.organization.ro.UserLinkEmailRo;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.bean.UserSpaceDto;
+import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.CodeValidateScope;
@@ -196,6 +197,9 @@ public class UserController {
 
     @Resource
     private UserServiceFacade userServiceFacade;
+
+    @Resource
+    private LoginUserCacheService loginUserCacheService;
 
     /**
      * Get personal information.
@@ -648,6 +652,8 @@ public class UserController {
         iUserService.applyForClosingAccount(user);
         // Destroy user cookies and maintain sessions
         iUserService.closeMultiSession(userId, true);
+        // delete user cache
+        loginUserCacheService.delete(userId);
         return ResponseData.success();
     }
 
