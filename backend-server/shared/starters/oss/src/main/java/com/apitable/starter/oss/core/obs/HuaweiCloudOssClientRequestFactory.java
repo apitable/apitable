@@ -16,22 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.user.ro;
+package com.apitable.starter.oss.core.obs;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.NotBlank;
-import lombok.Data;
+
+import com.apitable.starter.oss.core.OssClientRequest;
+import com.apitable.starter.oss.core.OssClientRequestFactory;
+import com.obs.services.ObsClient;
 
 /**
- * <p>
- * user email verification ro.
- * </p>
+ * obs Client Request Construction Factory
  */
-@Data
-@Schema(description = "verify email parameters")
-public class EmailVerificationRo {
+public class HuaweiCloudOssClientRequestFactory implements OssClientRequestFactory {
 
-    @Schema(description = "email", example = "123456@**", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "email")
-    private String email;
+    private final String ak;
+    private final String sk;
+    private final String endpoint;
+   
+    public HuaweiCloudOssClientRequestFactory(String ak, String sk, String endpoint) {
+        this.ak = ak;
+        this.sk = sk;
+        this.endpoint = endpoint;
+    }
+
+    @Override
+    public OssClientRequest createClient() {
+        ObsClient obsClient = new ObsClient(ak, sk, endpoint);
+        return new HuaweiCloudOssClientRequest(obsClient, true);
+    }
 }

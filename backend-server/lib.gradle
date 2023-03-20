@@ -72,6 +72,7 @@ ext {
             'qcloudsms'                    : "com.github.qcloudsms:qcloudsms:${qcloud_sms_version}",
             'qcloudses'                    : "com.tencentcloudapi:tencentcloud-sdk-java-ses:${qcloud_ses_version}",
             'qiniu'                        : "com.qiniu:qiniu-java-sdk:${qiniu_oss_sdk_version}",
+            'huaweicloud-obs'              : "com.huaweicloud:esdk-obs-java-bundle:${huaweicloud_obs_sdk_version}",
             'yunpian-sms'                  : "com.yunpian.sdk:yunpian-java-sdk:${yunpian_sms_sdk_version}",
             'easyexcel'                    : [
                     "com.alibaba:easyexcel:${easy_excel_version}",
@@ -79,6 +80,7 @@ ext {
             ],
             'beetl'                        : "com.ibeetl:beetl:${ibeetl_version}",
             'sensors'                      : "com.sensorsdata.analytics.javasdk:SensorsAnalyticsSDK:${sensors_version}",
+            'posthog'                      : "com.posthog.java:posthog:${posthog_version}",
             'wx-open'                      : "com.github.binarywang:weixin-java-open:${wx_java_sdk_version}",
             'wx-mp'                        : "com.github.binarywang:weixin-java-mp:${wx_java_sdk_version}",
             'wx-miniapp'                   : "com.github.binarywang:weixin-java-miniapp:${wx_java_sdk_version}",

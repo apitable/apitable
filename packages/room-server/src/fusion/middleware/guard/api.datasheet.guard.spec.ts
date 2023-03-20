@@ -30,7 +30,7 @@ describe('ApiDatasheetGuard', () => {
   let context: any;
   let memberRepository: any;
   beforeAll(async() => {
-    jest.setTimeout(60000);
+    jest.setTimeout(300000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();

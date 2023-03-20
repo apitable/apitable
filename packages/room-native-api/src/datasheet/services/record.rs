@@ -1,6 +1,7 @@
 use crate::datasheet::database;
 use crate::datasheet::entities::record;
 use crate::datasheet::services::record_comment;
+use crate::json::fix_json;
 use crate::HashMap;
 use sea_orm::prelude::*;
 
@@ -39,14 +40,14 @@ pub async fn get_records(
       record_id.clone(),
       Record {
         id: record_id,
-        data: record.data.unwrap_or_else(|| Json::Object(Default::default())),
+        data: fix_json(record.data.unwrap_or_else(|| Json::Object(Default::default()))),
         comment_count,
         created_at: record.created_at.timestamp_millis(),
         updated_at: record.updated_at.map(|d| d.timestamp_millis()),
         revision_history: record
           .revision_history
           .map(|s| s.split(',').map(|n| n.parse().unwrap_or(0)).collect()),
-        record_meta: record.record_meta,
+        record_meta: record.record_meta.map(fix_json),
       },
     );
   }
@@ -100,7 +101,7 @@ mod tests {
         data: Some(json!({ "fld1": 889 })),
         revision_history: Some("4".to_owned()),
         revision: Some(4),
-        record_meta: Some(json!( { "createdAt": 1676945874561i64 } )),
+        record_meta: Some(json!( { "createdAt": 1676945874561f64 } )),
         is_deleted,
         created_by: Some(1),
         updated_by: Some(1),
@@ -194,7 +195,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
@@ -281,7 +282,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
@@ -378,7 +379,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
