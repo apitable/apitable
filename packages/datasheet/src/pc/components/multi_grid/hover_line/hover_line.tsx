@@ -39,7 +39,7 @@ type IHoverLine = IHoverLineOwnProps & Pick<IDragProps, 'width' | 'height' | 'ro
 
 type IPosition = { x: number; y: number } | null;
 
-export const HoverLine: React.FC<IHoverLine> = props => {
+export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = props => {
   const {
     isChangeColumnsWidth,
     setDirection,

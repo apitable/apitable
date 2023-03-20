@@ -36,9 +36,9 @@ import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconArrow from 'static/icon/common/common_icon_pulldown.svg';
 import styles from './styles.module.less';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { TriangleDownFilled } from '@apitable/icons';
 
 interface IStatOption {
   fieldId: string;
@@ -87,7 +87,7 @@ export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   return column.statType;
 };
 
-const StatOptionBase: React.FC<IStatOption> = props => {
+const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => {
   const colors = useThemeColors();
   const { className, row, fieldId } = props;
   const triggerRef = useRef<any>(null);
@@ -175,12 +175,11 @@ const StatOptionBase: React.FC<IStatOption> = props => {
   }, [statType, getStatRecordIds, field]);
 
   function commandForStat(e: React.MouseEvent, newStatType: StatType) {
-    const commandManager = resourceService.instance!.commandManager;
     if (!statType && newStatType === StatType.None) {
       return triggerRef.current!.close(e);
     }
     executeCommandWithMirror(() => {
-      commandManager.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetColumnsProperty,
         viewId,
         fieldId: field.id,
@@ -241,10 +240,10 @@ const StatOptionBase: React.FC<IStatOption> = props => {
         <div style={{ marginRight: '4px' }}>
           {statText}
         </div>
-        <div style={{ width: '8px' }}>
-          <IconArrow
-            fill={colors.fourthLevelText} width={8} height={6}
-            style={{ display: statType ? 'inline-block' : '' }}
+        <div style={{ width: '8px', display: statType ? 'inline-block' : '' }}>
+          <TriangleDownFilled
+            size={8}
+            color={colors.fourthLevelText}
           />
         </div>
       </div>

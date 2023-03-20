@@ -45,7 +45,7 @@ export interface ITagProps {
   className?: string;
 }
 
-export const Tag: FC<ITagProps> = ({
+export const Tag: FC<React.PropsWithChildren<ITagProps>> = ({
   color = '#000000',
   mod = TagMod.FILL,
   style,

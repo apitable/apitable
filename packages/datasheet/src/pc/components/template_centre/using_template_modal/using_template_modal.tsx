@@ -17,6 +17,7 @@
  */
 
 import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { BaseModal } from 'pc/components/common';
@@ -26,7 +27,6 @@ import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import styles from './style.module.less';
 
 export interface IUsingTemplateModalProps {
@@ -43,7 +43,7 @@ interface ISelectTreeNode {
   isLeaf: boolean;
 }
 
-export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
+export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalProps>> = props => {
   const { onCancel, templateId } = props;
   const [treeData, setTreeData] = useState<ISelectTreeNode[]>([]);
   const [nodeId, setNodeId] = useState('');
@@ -147,7 +147,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
               treeDataSimpleMode
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              suffixIcon={<PulldownIcon />}
+              suffixIcon={<ChevronDownOutlined />}
               value={nodeId}
               onChange={onChange}
               treeData={treeData}

@@ -28,7 +28,7 @@ interface IFormatLastModifiedBy {
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormatLastModifiedBy: React.FC<IFormatLastModifiedBy> = (props: IFormatLastModifiedBy) => {
+export const FormatLastModifiedBy: React.FC<React.PropsWithChildren<IFormatLastModifiedBy>> = (props: IFormatLastModifiedBy) => {
   const { currentField, setCurrentField } = props;
   const [isModalShow, setModalShow] = useState(false);
 

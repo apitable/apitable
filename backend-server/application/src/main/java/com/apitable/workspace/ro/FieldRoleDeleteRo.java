@@ -18,26 +18,24 @@
 
 package com.apitable.workspace.ro;
 
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * <p>
- * DataSheet field role deletion request parameter
+ * DataSheet field role deletion request parameter.
  * </p>
  */
 @Data
-@ApiModel("DataSheet field role deletion request parameter")
+@Schema(description = "DataSheet field role deletion request parameter")
 public class FieldRoleDeleteRo {
 
     @NotNull(message = "Organization unit cannot be empty")
-    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
+    @Schema(description = "Org Unit ID", type = "java.lang.String", required = true, example =
+        "761263712638")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;
 }

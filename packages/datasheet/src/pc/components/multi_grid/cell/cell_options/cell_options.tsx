@@ -18,7 +18,7 @@
 
 import { Button, useThemeColors, Typography } from '@apitable/components';
 import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus } from 'pc/components/common';
@@ -51,7 +51,7 @@ interface ICellOptionsProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel
 }
 
-export const CellOptions: React.FC<ICellOptionsProps> = props => {
+export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> = props => {
   const { field: propsField, cellValue, isActive, className, onChange, toggleEdit, readonly, rowHeightLevel, deletable = true } = props;
   const isSingleSelect = !Array.isArray(cellValue);
   const field = Selectors.findRealField(store.getState(), propsField);
@@ -68,7 +68,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
       return <></>;
     }
     const color = cacheTheme === ThemeName.Light ? getOptionNameColor(content, field) : colors.staticWhite0;
-    const iconColor = color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg;
+    const iconColor = cacheTheme === ThemeName.Light ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
     const style: React.CSSProperties = {
       background: inquiryValueByKey('color', content, field, cacheTheme),
       color,
@@ -121,18 +121,18 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
           variant="fill"
           color={bgColor}
         >
-          <CloseSmallOutlined size={16} color={color} />
+          <CloseOutlined size={12} color={color} />
         </Button>
       );
     }
     return null;
   }
 
-  function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) {
       return;
     }
-    isActive && toggleEdit && toggleEdit();
+    isActive && toggleEdit && await toggleEdit();
   }
 
   function returnMulti(content: IMultiSelectedIds) {
@@ -152,7 +152,7 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
               color,
             };
             const classname = classNames('tabItem', styles.tabItem, styles.multi);
-            const iconColor = color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg;
+            const iconColor = cacheTheme === ThemeName.Light ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
             return (
               <div
                 style={style}

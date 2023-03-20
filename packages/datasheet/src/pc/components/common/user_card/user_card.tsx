@@ -51,7 +51,7 @@ enum TAGTYPE {
   Alien = 'Alien',
 }
 
-export const UserCard: FC<IUserCard> = ({
+export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   memberId,
   userId,
   spareName,
@@ -159,7 +159,7 @@ export const UserCard: FC<IUserCard> = ({
               {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE &&
                 <div className={styles.cardTool} onClick={openPermissionModal}>
                   <div className={styles.settingPermissionBtn}>
-                    <SettingOutlined />
+                    <SettingOutlined color={colors.textCommonPrimary} />
                   </div>
                   <span>{t(Strings.permission)}</span>
                 </div>
@@ -196,18 +196,21 @@ export const UserCard: FC<IUserCard> = ({
                 </div>
               </div>
               <div className={styles.infoContent}>
-                <div className={styles.infoWrapper}>
-                  <p>{t(Strings.role_member_table_header_team)}</p>
-                  <div className={styles.teamList}>
-                    {memberInfo ?
-                      memberInfo?.teamData?.map((item, index) => {
-                        return (
-                          <div key={index} className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
-                        );
-                      }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-'
-                    }
+                {
+                  getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
+                    <p>{t(Strings.role_member_table_header_team)}</p>
+                    <div className={styles.teamList}>
+                      {memberInfo ?
+                        memberInfo?.teamData?.map((item, index) => {
+                          return (
+                            <div key={index} className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
+                          );
+                        }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-'
+                      }
+                    </div>
                   </div>
-                </div>
+                }
+
               </div>
             </div>
           )
@@ -222,7 +225,7 @@ interface ITeamTag {
   isActive?: boolean | undefined;
 }
 
-const TeamTag: FC<ITeamTag> = (props) => {
+const TeamTag: FC<React.PropsWithChildren<ITeamTag>> = (props) => {
   const { tagText, isActive } = props;
 
   const colors = useThemeColors();

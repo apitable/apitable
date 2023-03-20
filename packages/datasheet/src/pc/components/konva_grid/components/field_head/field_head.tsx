@@ -17,7 +17,7 @@
  */
 
 import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
-import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
+import { InfoCircleOutlined, IIconProps, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
@@ -42,7 +42,7 @@ interface IFieldHeadProps {
   field: IField;
   columnIndex: number;
   iconVisible: boolean; // Show icon or not, show when mouse over, otherwise hide
-  permissionInfo?: (string | FC<IIconProps>)[] | null;
+  permissionInfo?: (string | FC<React.PropsWithChildren<IIconProps>>)[] | null;
   isSelected: boolean;
   isHighlight: boolean;
   editable: boolean;
@@ -54,10 +54,10 @@ interface IFieldHeadProps {
 
 // IconPath
 const MoreStandOutlinedPath = MoreStandOutlined.toString();
-const EditDescribeFilledPath = EditGanttDescribeFilled.toString();
-const WarningTriangleNonzeroFilledPath = WarningTriangleNonzeroFilled.toString();
+const EditDescribeFilledPath = InfoCircleOutlined.toString();
+const WarningTriangleNonzeroFilledPath = WarnCircleFilled.toString();
 
-export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
+export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((props) => {
   const {
     x = 0, y = 0, width, field, iconVisible, isSelected, height: headHeight,
     isHighlight, editable, stroke, permissionInfo, isFrozen, autoHeadHeight: _autoHeadHeight, viewType
@@ -255,8 +255,7 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
           size={GRID_ICON_COMMON_SIZE}
           shape={'circle'}
           data={EditDescribeFilledPath}
-          fill={colors.primaryColor}
-          background={colors.rc01}
+          fill={colors.textCommonTertiary}
           backgroundWidth={GRID_ICON_SMALL_SIZE}
           backgroundHeight={GRID_ICON_SMALL_SIZE}
           opacity={0.2}

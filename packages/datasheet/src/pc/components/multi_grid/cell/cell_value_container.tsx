@@ -44,7 +44,7 @@ interface ICellValueContainer {
 export const OPERATE_COLUMN_WIDTH = 72;
 const EMPTY_ARRAY: never[] = [];
 
-export const CellValueContainerFC: React.FC<ICellValueContainer> = props => {
+export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueContainer>> = props => {
   const {
     gridCellWrapper, row, rowHeightLevel, datasheetId,
     actualColumnIndex, groupInfo, style, columns, recordMoveType,

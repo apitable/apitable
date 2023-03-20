@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EntityRepository, In, Not, Repository } from 'typeorm';
-import { UnitTypeEnum } from '../../shared/enums';
+import { EntityRepository, getConnection, In, Repository } from 'typeorm';
 import { UnitEntity } from '../entities/unit.entity';
+import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 
 /**
  * Operations on table `unit`
@@ -28,8 +28,8 @@ import { UnitEntity } from '../entities/unit.entity';
  */
 @EntityRepository(UnitEntity)
 export class UnitRepository extends Repository<UnitEntity> {
-  selectUnitMembersByIdsIncludeDeleted(unitIds: string[]): Promise<UnitEntity[]> {
-    return this.find({ select: ['id', 'unitType', 'unitRefId'], where: { id: In(unitIds), unitType: Not(UnitTypeEnum.TAG) }});
+  public async selectUnitMembersByIdsIncludeDeleted(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
+    return await this.find({ select: ['id', 'unitType', 'unitRefId'], where: { id: In(unitIds) }});
   }
 
   selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {
@@ -38,5 +38,29 @@ export class UnitRepository extends Repository<UnitEntity> {
 
   selectIdByRefIdAndSpaceId(refId: string, spaceId: string): Promise<{ id: string } | undefined> {
     return this.findOne({ select: ['id'], where: { unitRefId: refId, spaceId, isDeleted: false }});
+  }
+
+  public async selectUnitInfosBySpaceIdAndUnitIds(spaceId: string, unitIds: string[]) {
+    const queryRunner = getConnection().createQueryRunner();
+    const tableNamePrefix = this.manager.connection.options.entityPrefix;
+    // todo(itou): replace dynamic sql
+    const unitInfo: any[] = await queryRunner.query(
+      `
+          SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
+          COALESCE(vut.team_name, vum.member_name, vur.role_name) name, u.avatar avatar, u.color avatarColor,
+          u.nick_name nickName,
+          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
+          vum.is_active isActive, u.uuid userId, u.uuid uuid
+          FROM ${tableNamePrefix}unit vu
+          LEFT JOIN ${tableNamePrefix}unit_team vut ON vu.unit_ref_id = vut.id
+          LEFT JOIN ${tableNamePrefix}unit_member vum ON vu.unit_ref_id = vum.id
+          LEFT JOIN ${tableNamePrefix}unit_role vur ON vu.unit_ref_id = vur.id
+          LEFT JOIN ${tableNamePrefix}user u ON vum.user_id = u.id
+          WHERE vu.space_id = ? AND vu.id IN (?)
+        `,
+      [spaceId, unitIds],
+    );
+    await queryRunner.release();
+    return unitInfo;
   }
 }

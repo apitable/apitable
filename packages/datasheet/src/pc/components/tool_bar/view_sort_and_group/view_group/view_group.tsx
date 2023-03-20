@@ -40,7 +40,7 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewGroup: React.FC<IViewSetting> = props => {
+export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
   const { triggerInfo } = props;
   const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state));
   const activityView = useSelector(state => Selectors.getCurrentView(state))!;

@@ -27,7 +27,7 @@ export interface IShareProps {
   isTriggerRender?: boolean;
 }
 
-export const Share: FC<IShareProps> = ({ nodeId, onClose, isTriggerRender }) => {
+export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ nodeId, onClose, isTriggerRender }) => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   if (!nodeId) { return null; }
   return (

@@ -18,10 +18,10 @@
 
 import { Modal, Tooltip } from 'antd';
 import * as React from 'react';
-import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Strings, t } from '@apitable/core';
+import { NarrowOutlined } from '@apitable/icons';
 
 interface IModalOutsideOperateProps {
   onModalClose (): void;
@@ -33,7 +33,7 @@ interface IModalOutsideOperateProps {
   getContainer?: HTMLElement | false
 }
 
-export const ModalOutsideOperate: React.FC<IModalOutsideOperateProps> = (props) => {
+export const ModalOutsideOperate: React.FC<React.PropsWithChildren<IModalOutsideOperateProps>> = (props) => {
 
   const { pageTurn, onModalClose, children, modalClassName, modalWidth, showOutsideOperate = true, getContainer } = props;
   return <Modal
@@ -55,7 +55,7 @@ export const ModalOutsideOperate: React.FC<IModalOutsideOperateProps> = (props) 
           }
           <Tooltip title={t(Strings.close)}>
             <span className={styles.closeButton} onClick={() => { onModalClose(); }}>
-              <IconNarrow width={16} height={16} />
+              <NarrowOutlined size={16} />
             </span>
           </Tooltip>
         </div>

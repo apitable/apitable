@@ -34,7 +34,7 @@ interface IMenuItem {
   }
   onClick?: (value: any) => void;
 }
-export const MenuItem: React.FC<IMenuItem> = (props) => {
+export const MenuItem: React.FC<React.PropsWithChildren<IMenuItem>> = (props) => {
   const { item, option, onClick, active, className } = props;
   const { label, value, subLabel } = item;
   const colors = useThemeColors();

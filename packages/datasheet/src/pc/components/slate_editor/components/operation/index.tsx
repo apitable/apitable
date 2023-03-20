@@ -17,13 +17,11 @@
  */
 
 import cx from 'classnames';
-import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { IElement } from '../../interface/element';
 
 import styles from './operation.module.less';
-
-const PlusOutlined = dynamic(() => import('@ant-design/icons/PlusOutlined'), { ssr: false });
+import { AddOutlined } from '@apitable/icons';
 
 export interface IOperationProps {
   element: IElement;
@@ -37,7 +35,7 @@ const Operation = ({ visible, style, className }: IOperationProps) => {
     return null;
   }
   return <span contentEditable={false} className={cx(styles.operation, className)} style={style}>
-    <PlusOutlined />
+    <AddOutlined />
   </span>;
 };
 

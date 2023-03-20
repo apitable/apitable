@@ -30,7 +30,7 @@ interface ICellBlank {
   needOffsetBorderBottom?: boolean;
 }
 
-export const CellBlank: React.FC<ICellBlank> = props => {
+export const CellBlank: React.FC<React.PropsWithChildren<ICellBlank>> = props => {
   const { style, row, actualColumnIndex, groupLength, needOffsetBorderBottom } = props;
   return (
     <div style={{

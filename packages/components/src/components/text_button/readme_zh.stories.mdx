@@ -1,7 +1,7 @@
-import { ViewKanbanFilled } from '@apitable/icons';
 import { TextButton } from './index';
-import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
 import { ThemeToggle } from '../../stories/theme-toggle';
+import { DownloadOutlined } from '@apitable/icons';
 
 <Meta title="基础组件/Button 按钮/TextButton 文本按钮/文档" />
 
@@ -17,7 +17,7 @@ import { TextButton } from '@apitable/components';
 
 <Canvas>
 <ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
+  <TextButton>文本按钮</TextButton>
 </ThemeToggle>
 </Canvas>
 
@@ -25,8 +25,8 @@ import { TextButton } from '@apitable/components';
 
 <Canvas>
 <ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--prefix-icon" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--suffix-icon" />
+  <TextButton prefixIcon={<DownloadOutlined />}>文本按钮</TextButton>
+  <TextButton suffixIcon={<DownloadOutlined />}>文本按钮</TextButton>
 </ThemeToggle>
 </Canvas>
 
@@ -34,9 +34,9 @@ import { TextButton } from '@apitable/components';
 
 <Canvas>
 <ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--primary-color" />
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--danger-color" />
+  <TextButton>文本按钮</TextButton>
+  <TextButton color="primary">文本按钮</TextButton>
+  <TextButton color="danger">文本按钮</TextButton>
 </ThemeToggle>
 </Canvas>
 
@@ -54,7 +54,7 @@ import { TextButton } from '@apitable/components';
 
 <Canvas>
 <ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--disabled" />
+  <TextButton disabled>文本按钮</TextButton>
   <TextButton disabled color="primary"> 文本按钮 </TextButton>
   <TextButton disabled color="danger"> 文本按钮 </TextButton>
 </ThemeToggle>
@@ -64,7 +64,7 @@ import { TextButton } from '@apitable/components';
 
 <Canvas>
 <ThemeToggle>
-  <Story id="基础组件-button-按钮-textbutton-文本按钮--block" />
+  <TextButton block>文本按钮</TextButton>
 </ThemeToggle>
 </Canvas>
 

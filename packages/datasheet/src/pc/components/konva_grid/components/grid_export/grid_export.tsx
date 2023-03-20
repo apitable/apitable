@@ -49,7 +49,7 @@ interface IGridExportProps {
   fieldHeadHeight: number;
 }
 
-export const GridExport: FC<IGridExportProps> = (props) => {
+export const GridExport: FC<React.PropsWithChildren<IGridExportProps>> = (props) => {
   const { fieldHeadHeight } = props;
   const {
     view,

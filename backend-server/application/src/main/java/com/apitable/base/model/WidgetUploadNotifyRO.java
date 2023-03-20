@@ -18,24 +18,21 @@
 
 package com.apitable.base.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * widget upload file callback body
+ * widget upload file callback body.
  *
  * @author tao
  */
 @Data
-@ApiModel("widget upload callback body")
+@Schema(description = "widget upload callback body")
 public class WidgetUploadNotifyRO {
 
-    @ApiModelProperty(value = "file url. max: 20", example = "[\"widget/asset/adflkajadfj\"]", position = 1)
+    @Schema(description = "file url. max: 20", example = "[\"widget/asset/adflkajadfj\"]")
     @NotEmpty(message = "resourceKeys no empty")
     private List<String> resourceKeys;
 

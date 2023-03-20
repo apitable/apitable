@@ -25,7 +25,9 @@ import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
 
-const SpaceManage: React.FC = ({ children }) => {
+const _SplitPane: any = SplitPane;
+
+const SpaceManage: React.FC<React.PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const { clientWidth } = useResponsive();
   const isMobile = clientWidth <= 800;
@@ -39,10 +41,10 @@ const SpaceManage: React.FC = ({ children }) => {
   return (
     <div className={styles.spaceManage}>
       {
-        !isMobile ? <SplitPane defaultSize={280} minSize={180} maxSize={800} className={styles.navSplit}>
+        !isMobile ? <_SplitPane defaultSize={280} minSize={180} maxSize={800} className={styles.navSplit}>
           <CommonSide />
           {children}
-        </SplitPane>
+        </_SplitPane>
           : <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
             <MobileBar title="空间站管理" />
             {children}

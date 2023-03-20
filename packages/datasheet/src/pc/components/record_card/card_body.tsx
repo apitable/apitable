@@ -40,6 +40,7 @@ const showTitle = (cellValue: ICellValue, field: IField) => {
 
 interface IGalleryCardBodyProps {
   visibleFields: IViewColumn[];
+  datasheetId: string;
   recordId: string;
   showEmptyField: boolean;
   multiTextMaxLine: number;
@@ -51,9 +52,9 @@ interface IGalleryCardBodyProps {
 
 const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currency, FieldType.Percent, FieldType.DateTime];
 
-export const CardBody: React.FC<IGalleryCardBodyProps> = props => {
-  const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery } = props;
-  const recordSnapshot = useSelector(state => Selectors.getRecordSnapshot(state, recordId), shallowEqual);
+export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> = props => {
+  const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery, datasheetId } = props;
+  const recordSnapshot = useSelector(state => Selectors.getRecordSnapshot(state, datasheetId, recordId), shallowEqual);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const colors = useThemeColors();

@@ -26,16 +26,16 @@ import { useContext } from 'react';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import OrgChartCreationLinkLight from 'static/icon/account/architecture_add_link_light.png';
 import OrgChartCreationLinkDark from 'static/icon/account/architecture_add_link_dark.png';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { FlowContext } from '../../context/flow_context';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
+import { AddOutlined } from '@apitable/icons';
 
 interface ICreateFieldModalProps {
   onAdd: () => void;
 }
 
-export const CreateFieldModal: React.FC<ICreateFieldModalProps> = props => {
+export const CreateFieldModal: React.FC<React.PropsWithChildren<ICreateFieldModalProps>> = props => {
   const colors = useThemeColors();
   const { onAdd } = props;
   const { permissions: { manageable }} = useContext(FlowContext);
@@ -60,7 +60,11 @@ export const CreateFieldModal: React.FC<ICreateFieldModalProps> = props => {
       <div className={styles.createFieldModal}>
         <div className={styles.banner}>
           <span className={styles.bannerImg}>
-            <Image src={manageable ? OrgChartCreationLink : OrgChartCreationNoPermission} alt={'banner'} />
+            <Image 
+              src={manageable ? OrgChartCreationLink : OrgChartCreationNoPermission} 
+              alt={'banner'} 
+              style={{ borderRadius: 4 }}
+            />
           </span>
         </div>
         <Typography variant="h7" align={'center'}>
@@ -79,7 +83,7 @@ export const CreateFieldModal: React.FC<ICreateFieldModalProps> = props => {
           onClick={onAdd}
           size="middle"
           disabled={!manageable}
-          prefixIcon={<IconAdd width={16} height={16} fill={colors.staticWhite0} />}
+          prefixIcon={<AddOutlined size={16} color={colors.staticWhite0} />}
         >
           {t(Strings.org_chart_init_fields_button)}
         </Button>

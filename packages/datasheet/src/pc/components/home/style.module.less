@@ -8,12 +8,30 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bgCommonLower);
+  position: relative;
+  overflow-y: scroll;
   .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 32px;
+    .brand {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      img {
+        margin-right: 14px;
+      }
+    }
+    .iconContent {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
     .linkLine {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       a {
         margin-left: 32px;
       }
@@ -33,9 +51,17 @@
     .loginBox {
       position: relative;
       width: 340px;
-      margin: 84px 0;
+      margin: 67px 0;
       padding: 9px 69px 60px 52px;
       box-sizing: content-box;
+      .title {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 36px;
+        text-align: left;
+        color: var(--textCommonSecondary);
+        margin-bottom: 48px;
+      }
       .bgBox1 {
         position: absolute;
         width: 179px;
@@ -75,6 +101,23 @@
   }
 }
 
+.invite {
+  text-align: center;
+  h4 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    margin: 0 0 16px;
+  }
+  p {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    color: var(--textBrandDefault);
+    margin: 0 0 48px;
+  }
+}
+
 .mobileHome {
   height: 100%;
   display: flex;
@@ -87,8 +130,16 @@
     }
   }
   .content {
-    padding: 50px 0;
+    padding: 20px 0;
     flex: 1;
+  }
+  .title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 36px;
+    text-align: left;
+    color: var(--textCommonSecondary);
+    margin: 24px 0;
   }
   .footer {
     display: flex;
@@ -96,3 +147,4 @@
     justify-content: center;
   }
 }
+

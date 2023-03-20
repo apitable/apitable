@@ -16,35 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IUseListenTriggerInfo, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType,
-  CollaCommandName,
-  Field,
-  FilterConjunction as CoreFilterConjunction,
-  FilterDuration,
-  getNewId,
-  IDPrefix,
-  IFilterInfo,
-  IGridViewProperty,
-  Selectors,
-  Strings,
-  t,
+  BasicValueType, CollaCommandName, Field, FilterConjunction as CoreFilterConjunction, FilterDuration, getNewId, IDPrefix, IFilterInfo,
+  IGridViewProperty, Selectors, Strings, t
 } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import classNames from 'classnames';
+import { PopUpTitle } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
-import { useCallback, useEffect, useRef } from 'react';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import * as React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
+import { SyncViewTip } from '../sync_view_tip';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
-import classNames from 'classnames';
 import styles from './style.module.less';
-import { PopUpTitle } from 'pc/components/common';
-import { SyncViewTip } from '../sync_view_tip';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { useResponsive } from 'pc/hooks';
 
 interface IViewFilter {
   triggerInfo?: IUseListenTriggerInfo;
@@ -172,7 +162,7 @@ const ViewFilterBase = (props: IViewFilter) => {
       </div>
       <div className={styles.addNewButton} onClick={commandForAddViewFilter}>
         <div className={styles.iconAdd}>
-          <IconAdd width={16} height={16} fill={colors.thirdLevelText} />
+          <AddOutlined size={16} color={colors.thirdLevelText} />
         </div>
         {t(Strings.add_filter)}
       </div>

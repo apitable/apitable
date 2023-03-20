@@ -23,7 +23,7 @@ import cls from 'classnames';
 import { ActivitySelectType } from 'pc/utils';
 import { ActivityContext } from '../activity_context';
 
-export const ActivityList: FC<IActivityListProps> = props => {
+export const ActivityList: FC<React.PropsWithChildren<IActivityListProps>> = props => {
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [empty, setEmpty] = useState(true);

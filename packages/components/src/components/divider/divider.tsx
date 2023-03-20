@@ -20,7 +20,7 @@ import React from 'react';
 import { IDividerProps } from './interface';
 import { DividerStyled, DividerChildStyled } from './styled';
 
-export const Divider: React.FC<IDividerProps> = ({
+export const Divider: React.FC<React.PropsWithChildren<IDividerProps>> = ({
   orientation = 'horizontal', textAlign, dashed, component = 'div', style, className, children, typography = 'body2'
 }) => {
   const hasChildren = Boolean(children);

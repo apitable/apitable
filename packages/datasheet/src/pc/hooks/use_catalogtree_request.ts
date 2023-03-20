@@ -145,7 +145,7 @@ export const useCatalogTreeRequest = () => {
           if (activedNodeId === nodeId) {
             Api.keepTabbar({}).then(res => {
               if (res.data.success) {
-                Router.push(Navigation.SPACE, { params: { spaceId }});
+                Router.push(Navigation.WORKBENCH, { params: { spaceId }});
               }
             });
             return;

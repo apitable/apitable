@@ -45,7 +45,7 @@ const optionData4Precision = [
   { value: 4, label: '1.0000' },
 ];
 
-export const LookUpFormatNumber: React.FC<IFormateNumberProps> = (props: IFormateNumberProps) => {
+export const LookUpFormatNumber: React.FC<React.PropsWithChildren<IFormateNumberProps>> = (props: IFormateNumberProps) => {
   const { currentField, setCurrentField } = props;
 
   const onChange = (newFormatting: Object) => {

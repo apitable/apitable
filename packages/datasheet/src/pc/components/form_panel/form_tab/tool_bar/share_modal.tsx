@@ -18,6 +18,7 @@
 
 import { Button, Skeleton } from '@apitable/components';
 import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
@@ -41,7 +42,7 @@ interface IShareModalProps {
   onClose: () => void;
 }
 
-export const ShareModal: React.FC<IShareModalProps> = props => {
+export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = props => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
   const { formId, visible, onClose } = props;
@@ -322,6 +323,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
           destroyOnClose
           footer={null}
           centered
+          closeIcon={<CloseOutlined />}
         >
           {content}
         </Modal>

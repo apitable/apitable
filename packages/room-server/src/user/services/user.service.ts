@@ -24,6 +24,7 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { UnitInfo } from '../../database/interfaces';
 import { UserRepository } from '../repositories/user.repository';
 import { UserEntity } from '../entities/user.entity';
+import { UserBaseInfoDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
     private readonly envConfigService: EnvConfigService,
     private readonly restService: RestService,
     private readonly userRepo: UserRepository,
+
   ) {}
 
   /**
@@ -113,7 +115,7 @@ export class UserService {
     return {} as IUserBaseInfo;
   }
 
-  async selectUserBaseInfoByIds(userIds: number[]): Promise<UserEntity[]> {
+  async selectUserBaseInfoByIds(userIds: number[]): Promise<UserBaseInfoDto[]> {
     return await this.userRepo.selectUserBaseInfoByIds(userIds);
   }
 

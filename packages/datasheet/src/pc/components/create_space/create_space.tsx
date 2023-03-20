@@ -17,7 +17,7 @@
  */
 
 import { Button, ThemeName } from '@apitable/components';
-import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';
@@ -40,12 +40,13 @@ interface ICreateSpace {
   submitCb?: (name: string) => Promise<void>;
 }
 
-const CreateSpace: FC<ICreateSpace> = props => {
+const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
   const themeName = useSelector(state => state.theme);
   const CreateSpaceIcon = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
+  const theme = useSelector(Selectors.getTheme);
 
   const { isCreateSpace, err, user } = useSelector((state: IReduxState) => ({
     isCreateSpace: state.user.isCreateSpace,
@@ -108,7 +109,7 @@ const CreateSpace: FC<ICreateSpace> = props => {
       {
         !props.isShare &&
         <div className={styles.logo}>
-          <Logo size='large' />
+          <Logo size='large' theme={theme} />
         </div>
       }
 

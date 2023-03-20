@@ -34,7 +34,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import restrictedAccessLight from 'static/icon/datasheet/restricted_access_light.png';
 import restrictedAccessDark from 'static/icon/datasheet/restricted_access_dark.png';
 
-export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
+export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ desc }) => {
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
   const dispatch = useDispatch();
   const { setSideBarVisible } = useSideBarVisible();

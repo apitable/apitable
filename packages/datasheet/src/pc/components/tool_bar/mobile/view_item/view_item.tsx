@@ -22,11 +22,14 @@ import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import SwipeOut from 'rc-swipeout';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { ViewIcon } from '../../view_switcher/view_icon';
 import style from '../style.module.less';
+
+const _SwipeOut: any = SwipeOut;
 
 export enum ActionType {
   Delete,
@@ -44,7 +47,7 @@ interface IViewItemProps {
   validator(value: string): boolean;
 }
 
-export const ViewItem: React.FC<IViewItemProps> = props => {
+export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props => {
   const colors = useThemeColors();
   const {
     onChange,
@@ -100,7 +103,9 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
             }
             if (!validator(value)) {
               Message.error({
-                content: t(Strings.view_name_length_err),
+                content: t(Strings.view_name_length_err, {
+                  maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+                })
               });
               return;
             }
@@ -155,7 +160,7 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
   const fontColor = active ? colors.primaryColor : colors.firstLevelText;
 
   return (
-    <SwipeOut
+    <_SwipeOut
       right={_rightContent}
       autoClose
       disabled={!viewCreatable && !viewRenamable && !viewRemovable}
@@ -174,7 +179,7 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
         )}
         <ViewIcon
           viewType={view.type}
-          fill={fillColor}
+          color={fillColor}
         />
         <span
           className={style.text}
@@ -183,6 +188,6 @@ export const ViewItem: React.FC<IViewItemProps> = props => {
           {view.name}
         </span>
       </div>
-    </SwipeOut>
+    </_SwipeOut>
   );
 };

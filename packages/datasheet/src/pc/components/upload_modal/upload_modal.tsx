@@ -27,7 +27,7 @@ import { BulkDownload } from '../preview_file/preview_main/bulk_download';
 import { Memory } from './memory';
 import styles from './styles.module.less';
 import { UploadCore } from './upload_core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 
 interface IUploadAttachment {
@@ -43,7 +43,7 @@ interface IUploadAttachment {
   editable?: boolean;
 }
 
-export const UploadModal: React.FC<IUploadAttachment> = props => {
+export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> = props => {
   const colors = useThemeColors();
   const {
     recordId,
@@ -59,13 +59,13 @@ export const UploadModal: React.FC<IUploadAttachment> = props => {
   const [visible, setVisible] = useState(_visible ?? true);
   const allowedDownload = useAllowDownloadAttachment(field.id);
 
-  function closeFn() {
+  async function closeFn(): Promise<void> {
     if (_setVisible) {
       _setVisible(false);
     } else {
       setVisible(false);
     }
-    ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
+    await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }
 
   const Footer = (
@@ -95,7 +95,7 @@ export const UploadModal: React.FC<IUploadAttachment> = props => {
       onCancel={closeFn}
       destroyOnClose
       centered
-      closeIcon={<CloseMiddleOutlined currentColor />}
+      closeIcon={<CloseOutlined currentColor />}
       className={styles.uploadModal}
     >
       <div style={{ padding: '0 24px' }}>

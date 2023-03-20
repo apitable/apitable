@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CURSOR_MOVE, DATASHEET_ACTIVE_COLLABORATOR, DATASHEET_DEACTIVATE_COLLABORATOR } from '../../../../../shared/store/action_constants';
-import { ICursorMove, ICollaborator } from '../../../../../../exports/store/interfaces';
+import { CURSOR_MOVE, DATASHEET_ACTIVE_COLLABORATOR, DATASHEET_DEACTIVATE_COLLABORATOR } from 'modules/shared/store/action_constants';
+import { ICursorMove, ICollaborator } from 'exports/store/interfaces';
 
 export const activeDatasheetCollaborator = (payload: ICollaborator, resourceId: string) => {
   return {
@@ -38,9 +38,9 @@ export const deactivateDatasheetCollaborator = (payload: { socketId: string }, r
 export const cursorMove = (
   payload: {
     socketId: string;
-    fieldId: string,
-    recordId: string,
-    time: number
+    fieldId: string;
+    recordId: string;
+    time: number;
   },
   datasheetId: string,
 ): ICursorMove => {

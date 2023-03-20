@@ -19,33 +19,30 @@
 import * as React from 'react';
 import styles from './style.module.less';
 import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@apitable/core';
+import { IIconProps, RowhightExtremhighOutlined, RowhightHighOutlined, RowhightMediumOutlined, RowhightShortOutlined } from '@apitable/icons';
 import { IUseListenTriggerInfo } from '@apitable/components';
-import IconShort from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_short_normal.svg';
-import IconMedium from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_medium_normal.svg';
-import IconTail from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_high_normal.svg';
-import IconExtraTall from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_extremhigh_normal.svg';
 import classNames from 'classnames';
 import { colorVars, Checkbox, Divider, useListenVisualHeight } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';
 
-export function getRowHeightIcon(level: RowHeightLevel, props: React.SVGProps<SVGSVGElement>) {
+export function getRowHeightIcon(level: RowHeightLevel, props: IIconProps) {
   switch (level) {
     case RowHeightLevel.Short: {
-      return <IconShort {...props} />;
+      return <RowhightShortOutlined {...props} />;
     }
     case RowHeightLevel.Medium: {
-      return <IconMedium {...props} />;
+      return <RowhightMediumOutlined {...props} />;
     }
     case RowHeightLevel.Tall: {
-      return <IconTail {...props} />;
+      return <RowhightHighOutlined {...props} />;
     }
     case RowHeightLevel.ExtraTall: {
-      return <IconExtraTall {...props} />;
+      return <RowhightExtremhighOutlined {...props} />;
     }
     default: {
-      return <IconShort {...props} />;
+      return <RowhightShortOutlined {...props} />;
     }
   }
 }
@@ -58,8 +55,8 @@ function short(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void)
     >
       <div className={styles.icon}>
         {
-          isCurrent ? getRowHeightIcon(RowHeightLevel.Short, { fill: colorVars.primaryColor }) :
-            getRowHeightIcon(RowHeightLevel.Short, { fill: colorVars.thirdLevelText })
+          isCurrent ? getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.primaryColor }) :
+            getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.thirdLevelText })
         }
       </div>
       {t(Strings.row_height_short)}
@@ -75,8 +72,8 @@ function medium(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void
     >
       <div className={styles.icon}>
         {
-          isCurrent ? getRowHeightIcon(RowHeightLevel.Medium, { fill: colorVars.primaryColor }) :
-            getRowHeightIcon(RowHeightLevel.Medium, { fill: colorVars.thirdLevelText })
+          isCurrent ? getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.primaryColor }) :
+            getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.thirdLevelText })
         }
       </div>
       {t(Strings.row_height_medium)}
@@ -92,8 +89,8 @@ function tail(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void) 
     >
       <div className={styles.icon}>
         {
-          isCurrent ? getRowHeightIcon(RowHeightLevel.Tall, { fill: colorVars.primaryColor }) :
-            getRowHeightIcon(RowHeightLevel.Tall, { fill: colorVars.thirdLevelText })
+          isCurrent ? getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.primaryColor }) :
+            getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.thirdLevelText })
         }
       </div>
       {t(Strings.row_height_tall)}
@@ -109,8 +106,8 @@ function extraTall(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => v
     >
       <div className={styles.icon}>
         {
-          isCurrent ? getRowHeightIcon(RowHeightLevel.ExtraTall, { fill: colorVars.primaryColor }) :
-            getRowHeightIcon(RowHeightLevel.ExtraTall, { fill: colorVars.thirdLevelText })
+          isCurrent ? getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.primaryColor }) :
+            getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.thirdLevelText })
         }
       </div>
       {t(Strings.row_height_extra_tall)}

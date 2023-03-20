@@ -23,7 +23,7 @@ import { IDoubleSelectProps } from 'components/double_select/interface';
 import { DoubleSelectItem } from 'components/double_select/double_select_item.ignore';
 import { WrapperTooltip } from 'components/tooltip';
 
-export const DoubleSelect: React.FC<IDoubleSelectProps> = (props) => {
+export const DoubleSelect: React.FC<React.PropsWithChildren<IDoubleSelectProps>> = (props) => {
   const { onSelected, disabled, options, value, triggerStyle, triggerCls } = props;
   const [selectedValue, setSelectedValue] = useState(value);
 

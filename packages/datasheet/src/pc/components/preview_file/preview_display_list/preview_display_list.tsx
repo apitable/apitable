@@ -33,7 +33,7 @@ interface IPreviewDisplayList {
 
 const DISPLAY_HEIGHT = 35;
 
-export const PreviewDisplayList: React.FC<IPreviewDisplayList> = memo(props => {
+export const PreviewDisplayList: React.FC<React.PropsWithChildren<IPreviewDisplayList>> = memo(props => {
   const { files, setActiveIndex, activeIndex } = props;
 
   const getFileSrc =

@@ -25,7 +25,7 @@ import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 import { ThemeName } from '@apitable/components';
 
-export const NoData: FC = () => {
+export const NoData: FC<React.PropsWithChildren<unknown>> = () => {
   const themeName = useSelector(state => state.theme);
   const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   return (

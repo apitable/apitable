@@ -46,7 +46,7 @@ interface IFormFieldUIProps {
   editable: boolean;
 }
 
-export const FormFieldUI: React.FC<IFormFieldUIProps> = ({
+export const FormFieldUI: React.FC<React.PropsWithChildren<IFormFieldUIProps>> = ({
   index,
   title,
   children,

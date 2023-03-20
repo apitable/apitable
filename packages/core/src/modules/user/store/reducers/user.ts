@@ -22,13 +22,13 @@ import { ActionConstants } from '../../../../exports/store';
 import {
   IAddWizardNumberAction, ISetActiveRecordId, ISetHttpErrInfoAction, ISetIsLoginActions, ISetLoadingAction, ISetLoginErrAction, ISetNicknameAction,
   ISetRegisterAction, ISetReqStatusAction, ISetUsedInviteReward, ISetUserAvatarAction, ISetUserAvatarColorAction, ISetUserMeActions, ISignOutAction,
-  IUpdateUserInfoAction, IUpdateUserInfoErrAction, IUser
+  IUpdateUserInfoAction, IUpdateUserInfoErrAction, IUser, ISetUserTimezoneAction
 } from '../../../../exports/store/interfaces';
 
 type UserActions = ISetUserMeActions | ISetIsLoginActions | ISetLoginErrAction |
   ISetRegisterAction | ISetLoadingAction | ISetUserAvatarColorAction |
   ISignOutAction | ISetUserAvatarAction | ISetReqStatusAction | ISetHttpErrInfoAction | ISetNicknameAction |
-  IUpdateUserInfoAction | IUpdateUserInfoErrAction | IAddWizardNumberAction | ISetActiveRecordId | ISetUsedInviteReward;
+  IUpdateUserInfoAction | IUpdateUserInfoErrAction | IAddWizardNumberAction | ISetActiveRecordId | ISetUsedInviteReward | ISetUserTimezoneAction;
 
 const initValue: IUser = {
   info: null,
@@ -102,6 +102,10 @@ export const user = produce((userDraft: IUser = defaultValue, action: UserAction
     }
     case ActionConstants.SET_USER_AVATAR_COLOR: {
       userDraft.info!.avatarColor = action.payload;
+      return userDraft;
+    }
+    case ActionConstants.SET_USER_TIMEZONE: {
+      userDraft.info!.timeZone = action.payload;
       return userDraft;
     }
     case ActionConstants.SIGN_OUT: {

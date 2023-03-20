@@ -41,7 +41,7 @@ interface ITeamInfo {
   searchMemberRes: IMemberInfoInSpace[]
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>
 }
-export const TeamInfo: FC<ITeamInfo> = (props) => {
+export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   const [pageNo, setPageNo] = useState(1);
   const [adjustMemberModalVisible, setAdjustMemberModalVisible] = useState(false);
   const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);

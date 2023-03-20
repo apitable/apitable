@@ -35,7 +35,7 @@ interface IWidgetPreviewProps {
   onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;
   installedWidgets: INodeInstalledWidget[];
 }
-export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
+export const WidgetPreview: React.FC<React.PropsWithChildren<IWidgetPreviewProps>> = props => {
   const { onChange, installedWidgets } = props;
   const [selectedWidgetIds, setSelectedWidgetIds] = useState<string[]>([]);
   const colors = useThemeColors();

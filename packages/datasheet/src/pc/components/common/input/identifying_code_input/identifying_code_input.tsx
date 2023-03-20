@@ -17,7 +17,7 @@
  */
 
 import { FC, useEffect, useState } from 'react';
-import { VerificationCodeFilled } from '@apitable/icons';
+import { ShieldCheckFilled } from '@apitable/icons';
 import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
 import { Button, ITextInputProps, TextInput } from '@apitable/components';
 import { useBoolean, useMount, useInterval } from 'ahooks';
@@ -25,6 +25,7 @@ import { useRequest } from 'pc/hooks';
 import styles from './style.module.less';
 import { useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
+import { Message } from 'pc/components/common';
 
 export interface IIdentifyingCodeInputProps extends ITextInputProps {
   mode?: ConfigConstant.LoginMode;
@@ -52,7 +53,7 @@ export interface IIdentifyingCodeInputProps extends ITextInputProps {
   checkAccount?: () => boolean;
 }
 
-export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
+export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeInputProps>> = ({
   mode = ConfigConstant.LoginMode.PHONE,
   data,
   disabled = false,
@@ -138,6 +139,9 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
       case StatusCode.SECONDARY_VALIDATION:
       case StatusCode.NVC_FAIL:
         break;
+      case StatusCode.COMMON_ERR:
+        Message.error({ content: message });
+        break;
       default:
         setErrMsg({ accountErrMsg: message });
     }
@@ -160,7 +164,7 @@ export const IdentifyingCodeInput: FC<IIdentifyingCodeInputProps> = ({
       <div className={styles.identifyingCodeInput}>
         <TextInput
           maxLength={6}
-          prefix={<VerificationCodeFilled />}
+          prefix={<ShieldCheckFilled />}
           placeholder={t(Strings.placeholder_enter_your_verification_code)}
           className={styles.input}
           block

@@ -41,7 +41,7 @@ interface IStatMenuProps {
   getBoundary: (e: MouseEvent) => IFieldBoundary | null;
 }
 
-export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
+export const StatMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = React.memo((props) => {
   const { getBoundary, parentRef } = props;
   const [fieldId, setFieldId] = useState<string>('');
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_STAT_MENU });
@@ -63,10 +63,9 @@ export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
   const fieldStatTypeList = field && getStatTypeList(field, state);
 
   function commandForStat(newStatType: StatType) {
-    const commandManager = resourceService.instance!.commandManager;
     if (!statType && newStatType === StatType.None) return;
     executeCommandWithMirror(()=>{
-      commandManager.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetColumnsProperty,
         viewId: view.id,
         fieldId: field.id,

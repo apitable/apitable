@@ -19,6 +19,8 @@
 import {
   ConfigConstant, Field, IDatasheetState, ISpaceBasicInfo, ISpaceInfo, ITreeNodesMap, IViewProperty, ResourceType, Selectors, StoreActions, Strings,
   t, UnitItem, IViewColumn,
+  ViewDerivateBase,
+  IReduxState,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'modules/shared/browser';
@@ -197,7 +199,7 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
     });
     return;
   }
-  const { rows, cols } = getRowsAndCols(datasheet, view);
+  const { rows, cols } = getRowsAndCols(state, datasheet, view);
   // Filter out fields without permissions
   const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
 
@@ -283,11 +285,11 @@ const getColumnHeader = (datasheet: IDatasheetState, cols: IViewColumn[]) => {
  * Get the set of objects to be exported in rows and columns
  * When the view object is passed in, the rows and columns are retrieved according to the display of the view
  */
-const getRowsAndCols = (datasheet: IDatasheetState, view?: IViewProperty) => {
+const getRowsAndCols = (state: IReduxState, datasheet: IDatasheetState, view?: IViewProperty) => {
   let rows;
   let cols;
   if (view) {
-    rows = Selectors.getVisibleRowsBase(store.getState(), datasheet.snapshot, view);
+    rows = new ViewDerivateBase(state, datasheet.id).getViewDerivation(view).visibleRows;
     cols = view.columns.filter(item => !item.hidden);
   } else {
     rows = datasheet.snapshot.meta.views[0]!.rows;

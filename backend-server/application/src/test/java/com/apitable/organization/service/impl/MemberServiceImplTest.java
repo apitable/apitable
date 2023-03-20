@@ -84,8 +84,8 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         // check this member should join this space again
         MemberEntity member = iMemberService.getById(toDeletedMemberId);
         assertThat(member).isNotNull();
-        assertThat(member.getIsActive()).isNotNull().isFalse();
-        assertThat(member.getIsPoint()).isNotNull().isFalse();
+        assertThat(member.getIsActive()).isNotNull().isTrue();
+        assertThat(member.getIsPoint()).isNotNull().isTrue();
         assertThat(member.getStatus()).isEqualTo(UserSpaceStatus.INACTIVE.getStatus());
 
         // check member should join in root team

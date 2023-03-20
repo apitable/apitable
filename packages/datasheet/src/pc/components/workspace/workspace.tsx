@@ -18,7 +18,7 @@
 
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
+import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 // @ts-ignore
@@ -47,6 +47,7 @@ import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
 import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
+import { expandSearch } from '../quick_search';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -90,7 +91,7 @@ const resumeUserHistory = (path: string) => {
   }
 };
 
-export const Workspace: React.FC = () => {
+export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const localSize = getStorage(StorageName.SplitPos);
   const defaultSidePanelSize = localSize && localSize !== 280 ? localSize : 335;
@@ -231,6 +232,12 @@ export const Workspace: React.FC = () => {
           handleSetSideBarByUser(!sideBarVisible, panelVisible);
         },
       ],
+      [
+        ShortcutActionName.SearchNode,
+        () => {
+          expandSearch();
+        },
+      ]
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -346,7 +353,7 @@ export const Workspace: React.FC = () => {
                     }}
                     data-test-id='sidebar-toggle-btn'
                   >
-                    {!sideBarVisible ? <ExpandOutlined /> : <CollapseOutlined />}
+                    {!sideBarVisible ? <CollapseOpenOutlined /> : <CollapseOutlined />}
                   </div>
                 </Tooltip>
               </div>

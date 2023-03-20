@@ -1,0 +1,35 @@
+.forgetPasswordWrap {
+  position: relative;
+  .inputWrap {
+    .inputTitle {
+      padding-bottom: 4px;
+    }
+    .input {
+      background: var(--bgControlsDefault);
+      input {
+        color: var(--textCommonPrimary);
+        &::placeholder {
+          color: var(--textCommonQuaternary);
+        }
+      }
+    }
+  }
+  .loginBtn {
+    margin: 40px 0 24px;
+  }
+  .forgetPassword {
+    cursor: pointer;
+    margin-top: -16px;
+  }
+  .switchContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p {
+      margin: 0 0;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+}

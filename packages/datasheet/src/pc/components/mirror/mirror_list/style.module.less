@@ -9,6 +9,7 @@
   height: 322px;
   padding: 16px 8px 16px 16px;
   position: relative;
+  overflow: hidden;
 
   .scroll {
     margin-top: 8px;
@@ -29,6 +30,7 @@
     border-top: 1px solid var(--lineColor);
     cursor: pointer;
     border-radius: 0px;
+    background: none;
 
     & > span:nth-child(1) {
       display: flex;
@@ -50,10 +52,6 @@
   &:hover {
     background: var(--rowSelectedBg);
     border-radius: 4px;
-
-    svg {
-      fill: var(--primaryColor);
-    }
   }
 }
 
@@ -104,8 +102,14 @@
   }
 }
 
-.boxTop {
-  svg {
-    margin-left: 4px;
+
+.switchCoverFit {
+  display: flex;
+  align-items: center;
+
+  div[role='checkbox'] {
+    border-color: var(--textCommonQuaternary);
   }
 }
+
+

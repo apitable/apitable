@@ -16,16 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Url } from '@apitable/core';
+import { Url, databus } from '@apitable/core';
 import {
-  CollaCommandManager, ComputeRefManager, Engine, Events, IError, IJOTAction, IOperation, IReduxState, IResourceOpsCollect, OP2Event, OPEventManager,
-  OPEventNameEnums, Player, ResourceStashManager, ResourceType, RoomService, Selectors, StoreActions, Strings, t, TrackEvents, UndoManager,
+  CollaCommandManager,
+  ComputeRefManager,
+  Engine,
+  Events,
+  IError,
+  IJOTAction,
+  IOperation,
+  IReduxState,
+  IResourceOpsCollect,
+  OP2Event,
+  OPEventManager,
+  OPEventNameEnums,
+  Player,
+  ResourceStashManager,
+  ResourceType,
+  RoomService,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  TrackEvents,
+  UndoManager,
 } from 'core';
-import { mainWidgetMessage } from 'iframe_message';
 import localForage from 'localforage';
 import { Store } from 'redux';
 import SocketIO from 'socket.io-client';
 import lsStore from 'store2';
+import { ClientStoreProvider, loadDatasheet } from './databus';
+import { ClientDataStorageProvider } from './databus/data_storage_provider';
 import { IResourceService, IServiceError } from './interface';
 
 const RECONNECT_DELAY = 2000;
@@ -48,7 +69,6 @@ export const remoteActions2Operation = (actions: IJOTAction[]) => {
 export class ResourceService implements IResourceService {
   socket!: SocketIOClient.Socket;
   roomService!: RoomService;
-  commandManager!: CollaCommandManager;
   initialized?: boolean;
   undoManager!: UndoManager;
   resourceStashManager!: ResourceStashManager;
@@ -58,6 +78,14 @@ export class ResourceService implements IResourceService {
   roomIOClear = true;
   roomLastSendTime?: number;
   firstRoomInit = true;
+  private database!: databus.Database;
+  private databus: databus.DataBus;
+  currentResource: databus.Datasheet | undefined;
+
+  /**
+   * @deprecated This is a temporary member. All dependencies of CommandManager in the front-end will be removed in the future.
+   */
+  readonly commandManager: CollaCommandManager;
 
   constructor(public store: Store<IReduxState>, public onError: IServiceError) {
     this.opEventManager = new OPEventManager({
@@ -72,6 +100,8 @@ export class ResourceService implements IResourceService {
       op2Event: new OP2Event(clientWatchedEvents),
     });
     this.computeRefManager = new ComputeRefManager();
+    this.databus = this.createDataBus();
+    this.commandManager = this.createCommandManager();
   }
 
   init() {
@@ -83,7 +113,7 @@ export class ResourceService implements IResourceService {
 
     this.bindBeforeUnload();
     this.socket = this.createSocket();
-    this.commandManager = this.createCommandManager();
+    this.database = this.createDatabase();
     this.resourceStashManager = new ResourceStashManager(this.store, () => {
       return this.roomService;
     });
@@ -95,9 +125,10 @@ export class ResourceService implements IResourceService {
     }
     this.initialized = false;
 
-    this.roomService && Array.from(this.roomService.collaEngineMap.values()).forEach(engine => {
-      this.reset(engine.resourceId);
-    });
+    this.roomService &&
+      Array.from(this.roomService.collaEngineMap.values()).forEach(engine => {
+        this.reset(engine.resourceId);
+      });
 
     this.socket && this.socket.removeAllListeners();
     this.socket && this.socket.close();
@@ -106,7 +137,7 @@ export class ResourceService implements IResourceService {
     this.resourceStashManager.destroy();
   }
 
-  static getResourceFetchAction(resourceType: ResourceType): any {
+  private static getResourceFetchAction(resourceType: ResourceType): any {
     switch (resourceType) {
       case ResourceType.Datasheet: {
         return StoreActions.fetchDatasheet;
@@ -127,44 +158,66 @@ export class ResourceService implements IResourceService {
     }
   }
 
-  async switchResource(params: { from?: string, to: string, resourceType: ResourceType, extra?: { [key: string]: any } }) {
+  async switchResource(params: { from?: string; to: string; resourceType: ResourceType; extra?: { [key: string]: any } }) {
     console.log('enter datasheet', params);
     const { to, resourceType, extra } = params;
     const allowSwitchRoom = this.allowSwitchRoom();
 
-    allowSwitchRoom && await this.switchRoom(to);
+    allowSwitchRoom && (await this.switchRoom(to));
 
     await this.fetchResource(to, resourceType, false, extra);
 
     this.createUndoManager(to);
-    allowSwitchRoom && await this.roomService.init(this.firstRoomInit);
+    allowSwitchRoom && (await this.roomService.init(this.firstRoomInit));
     this.firstRoomInit = false;
   }
 
-  fetchResource(to: string, resourceType: ResourceType, overWrite = false, extra?: { [key: string]: any }) {
-    return new Promise<void>((resolve, reject) => {
-      const fetchAction = ResourceService.getResourceFetchAction(resourceType);
-      this.store.dispatch(fetchAction(to, () => {
-        resolve();
-      }, overWrite, extra, () => reject()) as any);
-    });
+  fetchResource(to: string, resourceType: ResourceType, overWrite = false, extra?: { [key: string]: any }): Promise<void> {
+    switch (resourceType) {
+      case ResourceType.Datasheet:
+        return new Promise<void>((resolve, reject) => {
+          this.store.dispatch(
+            loadDatasheet(
+              this.database,
+              to,
+              datasheet => {
+                this.currentResource = datasheet;
+                resolve();
+              },
+              overWrite,
+              extra as { recordIds: string[] },
+              () => reject(),
+            ) as any,
+          );
+        });
+      // TODO dashboard, form, mirror
+      default:
+        return new Promise<void>((resolve, reject) => {
+          const fetchAction = ResourceService.getResourceFetchAction(resourceType);
+          this.store.dispatch(
+            fetchAction(
+              to,
+              () => {
+                this.currentResource = undefined;
+                resolve();
+              },
+              overWrite,
+              extra,
+              () => reject(),
+            ) as any,
+          );
+        });
+    }
   }
 
-  applyOperations(
-    store: Store<IReduxState>,
-    resourceOpsCollects: IResourceOpsCollect[],
-  ) {
+  applyOperations(store: Store<IReduxState>, resourceOpsCollects: IResourceOpsCollect[]) {
     const changesets = resourceOpsCollects;
     const events = this.opEventManager.handleChangesets(changesets);
     this.opEventManager.handleEvents(events, true);
     changesets.forEach(changeset => {
       const { resourceType, operations, resourceId } = changeset;
-      if (resourceType === ResourceType.Datasheet || resourceType === ResourceType.Widget) {
-        mainWidgetMessage?.enable && mainWidgetMessage.syncOperations(operations, resourceType, resourceId);
-      }
       // console.log('================= apply jot start ================');
       store.dispatch(StoreActions.applyJOTOperations(operations, resourceType, resourceId));
-      // console.log('================= apply jot end ================');
     });
     // To widget synchronization operations.
     this.opEventManager.handleEvents(events, false);
@@ -198,7 +251,7 @@ export class ResourceService implements IResourceService {
           return this.roomIOClear;
         },
         setRoomIOClear: (status: boolean) => {
-          return this.roomIOClear = status;
+          return (this.roomIOClear = status);
         },
         getRoomLastSendTime: () => {
           return this.roomLastSendTime;
@@ -214,15 +267,15 @@ export class ResourceService implements IResourceService {
   }
 
   /**
-   * @description undoManger is bound to the main resource that created the room,
+   * @description undoManager is bound to the main resource that created the room,
    * and when switching the resource, it is necessary to instantiate undoManager,
-   * and bind undoManger to commandManager.
+   * and bind undoManager to commandManager.
    * @param {string} resourceId
    */
   createUndoManager(resourceId: string) {
     const undoManager = this.resourceStashManager.getUndoManager(resourceId);
     this.undoManager = undoManager;
-    undoManager.setCommandManger(this.commandManager);
+    undoManager.setCommandManager(this.commandManager);
     this.commandManager.addUndoStack = (cmd, result, executeType) => {
       const collaEngine = this.getCollaEngine(result.resourceId);
       if (!collaEngine) {
@@ -230,15 +283,16 @@ export class ResourceService implements IResourceService {
       }
       undoManager.addUndoStack({ cmd, result }, executeType);
     };
+    if (this.currentResource) {
+      this.currentResource.commandManager.addUndoStack = this.commandManager.addUndoStack;
+    }
   }
 
   /**
    * @description Determine if the current operation is taking place "in the template",
    * no resource in the template needs to create/destroy the room.
-   * @returns {boolean}
-   * @private
    */
-  private allowSwitchRoom() {
+  private allowSwitchRoom(): boolean {
     const state = this.store.getState();
     return !state.pageParams.templateId;
   }
@@ -304,13 +358,13 @@ export class ResourceService implements IResourceService {
   // The operations generated by the application command, that is, the locally generated op.
   // If a command operates on data from multiple datasheet (associated fields), this will be called multiple times
   localOperationDispatch = (resourceOpsCollects: IResourceOpsCollect[]) => {
-    resourceOpsCollects.forEach((resourceOpsCollect) => {
+    resourceOpsCollects.forEach(resourceOpsCollect => {
       const { resourceId, operations } = resourceOpsCollect;
       const collaEngine = this.getCollaEngine(resourceId);
       if (!collaEngine) {
         throw new Error(t(Strings.error_not_initialized_datasheet_instance));
       }
-      operations.forEach((operation) => {
+      operations.forEach(operation => {
         Player.doTrigger(Events.app_tracker, {
           name: TrackEvents.Operation,
           props: {
@@ -323,13 +377,6 @@ export class ResourceService implements IResourceService {
     this.applyOperations(this.store, resourceOpsCollects);
   };
 
-  /**
-   * @desc The method that applies command to generate an op, which is passed in as a callback function when the CommandManager is initialized.
-   * This method is responsible for only two things.
-   * 1. Apply the op generated by command to the local.
-   * 2. Send op to intermediate layer via socket.
-   * @param resourceOpsCollects
-   */
   operationExecuted = (resourceOpsCollects: IResourceOpsCollect[]) => {
     this.localOperationDispatch(resourceOpsCollects);
     // Collaboration of operations to remote.
@@ -341,16 +388,39 @@ export class ResourceService implements IResourceService {
     //   .map(v => ({ resourceId: v.resourceId, resourceType: v.resourceType, operations: [v.operation] })), this.store);
   };
 
+  private createDataBus(): databus.DataBus {
+    return databus.DataBus.create({
+      dataStorageProvider: new ClientDataStorageProvider({
+        operationExecuted: (resourceOpsCollects: IResourceOpsCollect[]) => this.operationExecuted(resourceOpsCollects),
+      }),
+      storeProvider: new ClientStoreProvider(this.store),
+    });
+  }
+
+  private createDatabase(): databus.Database {
+    const database = this.databus.getDatabase();
+    database.addEventHandler({
+      type: databus.event.DatasheetEventType.CommandExecuted,
+      handle: event => {
+        if (event.execResult === databus.event.CommandExecutionResultType.Error) {
+          const { error, errorType: type } = event;
+          this.onError?.(error, type || 'message');
+        }
+      },
+    });
+    return database;
+  }
+
   private createCommandManager() {
-    return new CollaCommandManager({
-      handleCommandExecuted: this.operationExecuted,
-      handleCommandExecuteError: (error: IError, type?: 'message' | 'modal' | 'subscribeUsage') => {
-        this.onError?.(error, type || 'message');
+    return new CollaCommandManager(
+      {
+        handleCommandExecuted: this.operationExecuted,
+        handleCommandExecuteError: (error: IError, type?: 'message' | 'modal' | 'subscribeUsage') => {
+          this.onError?.(error, type || 'message');
+        },
       },
-      getRoomId: () => {
-        return this.roomService.roomId;
-      },
-    }, this.store);
+      this.store,
+    );
   }
 
   private beforeUnload = (event: BeforeUnloadEvent): string | void => {
@@ -383,11 +453,13 @@ export class ResourceService implements IResourceService {
 
   onNewChanges(resourceType: ResourceType, resourceId: string, actions: IJOTAction[]) {
     console.log('================= change from remote ================');
-    return this.applyOperations(this.store, [{
-      resourceType,
-      resourceId,
-      operations: [remoteActions2Operation(actions)],
-    }]);
+    return this.applyOperations(this.store, [
+      {
+        resourceType,
+        resourceId,
+        operations: [remoteActions2Operation(actions)],
+      },
+    ]);
   }
 
   /**
@@ -414,11 +486,14 @@ export class ResourceService implements IResourceService {
           this.onError?.(error, 'modal');
         },
         onNewChanges: this.onNewChanges.bind(this),
-        onAcceptSystemOperations: (ops: IOperation[]) => this.applyOperations(this.store, [{
-          resourceType,
-          resourceId,
-          operations: ops,
-        }]),
+        onAcceptSystemOperations: (ops: IOperation[]) =>
+          this.applyOperations(this.store, [
+            {
+              resourceType,
+              resourceId,
+              operations: ops,
+            },
+          ]),
         getUndoManager: () => {
           return this.undoManager;
         },

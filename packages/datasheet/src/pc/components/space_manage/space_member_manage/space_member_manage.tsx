@@ -31,7 +31,9 @@ import { Loading } from './loading';
 import { useMount } from 'ahooks';
 import { TeamInfo } from './team_info';
 
-export const SpaceMemberManage: FC = () => {
+const _SplitPane: any = SplitPane;
+
+export const SpaceMemberManage: FC<React.PropsWithChildren<unknown>> = () => {
   const [rightLoading, setRightLoading] = useState(false);
   const [searchMemberRes, setSearchMemberRes] = useState<IMemberInfoInSpace[]>([]);
   useMount(() => {
@@ -42,7 +44,7 @@ export const SpaceMemberManage: FC = () => {
     <div className={styles.memberManageWrapper}>
       {
         (
-          <SplitPane
+          <_SplitPane
             minSize={199}
             maxSize={800}
             defaultSize={199}
@@ -56,7 +58,7 @@ export const SpaceMemberManage: FC = () => {
               rightLoading ? <div className={styles.loading}><Loading /></div> :
                 <TeamInfo searchMemberRes={searchMemberRes} setSearchMemberRes={setSearchMemberRes} />
             }
-          </SplitPane>
+          </_SplitPane>
         ) 
       }
     </div>

@@ -17,7 +17,7 @@
  */
 
 import { Button, TextButton, useThemeColors } from '@apitable/components';
-import { SelectOutlined } from '@apitable/icons';
+import { CheckOutlined } from '@apitable/icons';
 import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
 import { Col, Row, Tabs, Upload } from 'antd';
 import { RowProps } from 'antd/lib/row';
@@ -32,7 +32,6 @@ import { FC, useCallback, useRef, useState } from 'react';
 // @ts-ignore
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import SelectedIcon from 'static/icon/common/common_icon_select.svg';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
@@ -50,7 +49,7 @@ const initCropConfigMap = new Map([
   [ICropShape.AnyShape, { unit: '%', width: 100, height: 100 }],
 ]);
 
-export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
+export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (props) => {
   const {
     type = IUploadType.Other,
     confirm,
@@ -116,7 +115,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
     setPreviewUrl('');
   };
 
-  const onLoad = useCallback(img => {
+  const onLoad = useCallback((img: any) => {
     imgRef.current = img;
   }, []);
 
@@ -394,7 +393,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
                               >
                                 {
                                   avatarColor === index &&
-                                  <SelectOutlined size={16} color={colors.textStaticPrimary} />
+                                  <CheckOutlined size={16} color={colors.textStaticPrimary} />
                                 }
                               </div>
                             </Col>
@@ -422,7 +421,7 @@ export const ImageCropUpload: FC<IImageUploadProps> = (props) => {
                                   </span>
                                   {officialImgToken === imgToken && (
                                     <div className={styles.checked}>
-                                      <SelectedIcon />
+                                      <CheckOutlined />
                                     </div>
                                   )}
                                 </div>

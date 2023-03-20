@@ -37,7 +37,7 @@ export interface IWidgetStandAloneProps {
  * with its own data loading capabilities and resourceService.
  * Multiple widgets can be loaded in a page, just wrap WidgetProvider on the outer layer of each widget.
  */
-export const WidgetStandAloneProvider: React.FC<IWidgetStandAloneProps> = props => {
+export const WidgetStandAloneProvider: React.FC<React.PropsWithChildren<IWidgetStandAloneProps>> = props => {
   const { resourceService, globalStore } = useContext(GlobalContext);
   const [isSettingOpened, { toggle: toggleSetting }] = useToggleOrSet(true);
   const [isExpanded, { toggle: toggleExpand }] = useToggleOrSet(false);
@@ -60,9 +60,8 @@ export const WidgetStandAloneProvider: React.FC<IWidgetStandAloneProps> = props 
       toggleSettings={toggleSetting}
       toggleFullscreen={toggleExpand}
       expandRecord={noop}
-      resourceService={resourceService}
-      globalStore={globalStore}
       className={className}
+      widgetStore={globalStore as any}
       style={style}
     >
       {children}

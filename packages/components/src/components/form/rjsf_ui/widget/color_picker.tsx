@@ -80,15 +80,18 @@ export const ColorWidget = ({ value, onChange }: WidgetProps) => {
     onChange && onChange(newColor);
   };
 
+  const GlobalStyleProxy: any = GlobalStyle;
+  const _SketchPicker: any = SketchPicker;
+
   return (
     <div>
-      <GlobalStyle />
+      <GlobalStyleProxy />
       <StyledSwatch onClick={handleClick} {...triggerProps}>
         <StyledColor rgbaColor={color} />
       </StyledSwatch>
       { displayColorPicker && renderLayer(
         <div {...layerProps}>
-          <SketchPicker color={color} onChange={handleChange} />
+          <_SketchPicker color={color} onChange={handleChange} />
           <Arrow {...arrowProps} size={5} roundness={0} />
         </div>
       )}

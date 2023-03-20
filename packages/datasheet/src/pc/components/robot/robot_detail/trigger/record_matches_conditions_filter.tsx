@@ -20,7 +20,7 @@ import { Box, Button, IconButton, Typography, useTheme } from '@apitable/compone
 import {
   ConfigConstant, EmptyNullOperand, IExpression, ILiteralOperand, OperandTypeEnums, OperatorEnums, Selectors, Strings, t
 } from '@apitable/core';
-import { AddOutlined, DeleteOutlined, ErrorFilled } from '@apitable/icons';
+import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import produce from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
 import { useAllColumns } from 'pc/hooks';
@@ -55,7 +55,7 @@ const WarningTip = (props: any) => {
     alignItems="center"
     gridColumn="property-start / value-end"
   >
-    <ErrorFilled color={theme.color.fc10}/>
+    <WarnCircleFilled color={theme.color.fc10}/>
     <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
       {props.children}
     </Typography>
@@ -77,7 +77,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
-  const updateFilter = useCallback((filter) => {
+  const updateFilter = useCallback((filter: any) => {
     setFilter(filter);
     // The updated value of the child component is passed to the parent component. 
     // The parent component knows the specific path of the child component and only needs to pass the value.

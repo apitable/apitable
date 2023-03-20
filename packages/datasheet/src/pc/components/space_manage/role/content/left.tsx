@@ -47,12 +47,12 @@ export const addRole = (roleName: string, cb: () => void) => {
   });
 };
 
-export const Left: React.FC<{
+export const Left: React.FC<React.PropsWithChildren<{
   roleList: IRoleItem[];
   refreshRoleList: () => void;
   activeRoleId?: string;
   setActiveRoleId: (roleId: string) => void;
-}> = props => {
+}>> = props => {
   const { roleList, refreshRoleList, activeRoleId, setActiveRoleId } = props;
   const { manageable, setActiveRoleName, refreshMemberList } = useContext(RoleContext);
   const [search, setSearch] = useState<string>('');
@@ -186,11 +186,11 @@ export const Left: React.FC<{
   );
 };
 
-const RoleListSearchContent: React.FC<{
+const RoleListSearchContent: React.FC<React.PropsWithChildren<{
   list: IRoleItem[];
   activeRoleId?: string;
   onClick?: (roleId: string) => void;
-}> = props => {
+}>> = props => {
   const { activeRoleId, list, onClick } = props;
   if (list.length === 0) {
     return <SearchEmpty />;

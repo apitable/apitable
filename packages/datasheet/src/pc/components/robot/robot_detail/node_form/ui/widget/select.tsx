@@ -36,6 +36,7 @@ export const SelectWidget = ({
           onChange(literal2Operand(option.value));
         }}
         dropdownMatchSelectWidth
+        noDataTip={t(Strings.no_option)}
         triggerStyle={style}
         placeholder={t(Strings.robot_select_option)}
       />

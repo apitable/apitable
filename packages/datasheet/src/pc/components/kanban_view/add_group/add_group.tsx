@@ -33,7 +33,7 @@ interface IAddGroup {
   kanbanFieldId: string;
 }
 
-export const AddGroup: React.FC<IAddGroup> = props => {
+export const AddGroup: React.FC<React.PropsWithChildren<IAddGroup>> = props => {
   const colors = useThemeColors();
   const { kanbanFieldId } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;

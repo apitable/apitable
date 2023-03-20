@@ -18,7 +18,7 @@
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@apitable/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined, EyeOpenOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { MobileGrid } from 'pc/components/mobile_grid';
@@ -43,7 +43,7 @@ import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
-export const View: React.FC = () => {
+export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const { currentView, rows, linearRows } = useSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
@@ -121,7 +121,7 @@ export const View: React.FC = () => {
         paddingLeft: isMobile || (!isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) ? 0 : embedInfo.viewControl?.tabBar ? '24px' : '32px'
       }}
     >
-      { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+      {isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
       </ComponentDisplay> }
       <div style={{ flex: '1 1 auto', height: '100%', paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : '' }}>
@@ -135,7 +135,7 @@ export const View: React.FC = () => {
                 return useKonva ? (
                   <KonvaGridView width={width} height={height} />
                 ) : (
-                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />
+                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />
                 );
               }
               case ViewType.Gallery:
@@ -149,7 +149,7 @@ export const View: React.FC = () => {
               case ViewType.OrgChart:
                 return <OrgChartView width={width} height={height - (isMobile ? 40 : 0)} isMobile={isMobile} />;
               default:
-                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows.length} height={height} width={width} />;
+                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />;
             }
           }}
         </AutoSizer>
@@ -167,7 +167,7 @@ export const View: React.FC = () => {
                 onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
               },
               {
-                icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.editing_field_desc),
                 onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
               },
@@ -189,7 +189,7 @@ export const View: React.FC = () => {
                 onClick: ({ props }: any) => props?.onCopyField && props.onCopyField(),
               },
               {
-                icon: <HideFilled color={colors.thirdLevelText} />,
+                icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.hide_fields),
                 hidden: ({ props }: any) => !props?.onHiddenField,
                 onClick: ({ props }: any) => props?.onHiddenField && props.onHiddenField(),

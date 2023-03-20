@@ -46,7 +46,7 @@ export interface ICellComponentProps {
    * The component controls itself internally how to start editing.
    * When called, the Editor component corresponding to the cell will receive the editing change parameter.
    */
-  toggleEdit?: () => void;
+  toggleEdit?: () => Promise<void>;
 
   showAlarm?: boolean;
 

@@ -18,43 +18,45 @@
 
 package com.apitable.workspace.ro;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * DataSheet Operation Request Parameters
+ * DataSheet Operation Request Parameters.
  * </p>
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ApiModel("DataSheet Operation Request Parameters")
-public class DatasheetOperationOpRo  {
+@Schema(description = "DataSheet Operation Request Parameters")
+public class DatasheetOperationOpRo {
 
 
-
-    @ApiModelProperty(value = "Operation ID", position = 2)
+    @Schema(description = "Operation ID")
     private String opId;
 
-    @ApiModelProperty(value = "Meter ID", position = 3)
+    @Schema(description = "Meter ID")
     private String dstId;
 
-    @ApiModelProperty(value = "Operation name", position = 4)
+    @Schema(description = "Operation name")
     private String actionName;
 
-    @ApiModelProperty(value = "Collection of operations", position = 5)
+    @Schema(description = "Collection of operations")
     private String actions;
 
-    @ApiModelProperty(value = "Type 1-JOT 2-COT", position = 6)
+    @Schema(description = "Type 1-JOT 2-COT")
     private Integer type;
 
-    @ApiModelProperty(value = "Action member ID", position = 7)
+    @Schema(description = "Action member ID")
     private Long memberId;
 
-    @ApiModelProperty(value = "Version", position = 8)
+    @Schema(description = "Version")
     private Long revision;
 
 

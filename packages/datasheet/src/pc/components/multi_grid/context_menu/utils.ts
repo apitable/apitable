@@ -32,9 +32,8 @@ export const getShowFieldName = (name: string) => {
 };
 
 export const getCopyField = (field: IField, fieldMap: IFieldMap, viewId?: string, datasheetId?: string) => {
-  const commandManager = resourceService.instance!.commandManager;
   return (index: number, fieldId: string, offset: number, hiddenColumn?: boolean) => {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       copyCell: true,
       fieldId: field.id,

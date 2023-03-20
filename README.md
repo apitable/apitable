@@ -66,20 +66,15 @@
 
 ## ✨ Quick Start
 
-> APITable is currently a `Work In Progress`.
->
-> We will publish the first release in late February 2023.
->
-> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
+If you just want to try out APITable[^info], use our cloud-hosted version at [apitable.com](https://apitable.com).
 
-<!-- If you just want try out APITable[^info], using our hosted version at [apitable.com](https://apitable.com). -->
-
-If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
+Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
 ## 🔥 Features
 
 <table>
@@ -162,7 +157,7 @@ APITable provides a range of amazing features, from the personal to the enterpri
   - **100k+** data rows with real-time collaboration.
   - Full-stack API access, from `Data` to `Metadata`.
   - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
 - Beautiful and Rich Database-Spreadsheet UI
   - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
   - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
@@ -260,13 +255,21 @@ curl https://apitable.github.io/install.sh | bash
 
 Then open [http://localhost:80](http://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
+We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
 ## 🧑‍💻 Contributing
 
 Welcome, and thank you for your interest in contributing to APITable!
 
-In addition to writing code, there are many ways for you to contribue.
+In addition to writing code, there are many ways for you to contribute.
 
 You can contribute as following:
 - Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
@@ -307,6 +310,8 @@ APITable use these common conventions:
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
 - What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- What is the Architecture Overview? -> [Understand APITable - Architecture Overview](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
@@ -321,7 +326,7 @@ APITable use these common conventions:
 ### Future Features
 
 - Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
+- Embeddable 3rd party documentation components
 - SQL-like Domain-Specific Languages
 - As an IdP
 - Advanced automation robot

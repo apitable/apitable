@@ -1,0 +1,34 @@
+@import "~pc/styles/lib_var.less";
+
+.errorWidgetWrap {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 4px;
+    span {
+      margin-left: 4px;
+      font-size: 13px;
+      line-height: 20px;
+      color: var(--errorColor);
+    }
+  }
+  .content {
+    padding: 0 16px;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--thirdLevelText);
+    text-align: center;
+  }
+  p {
+    margin: 0;
+  }
+  .actionBtn {
+    margin-top: 5px;
+  }
+}

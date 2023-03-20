@@ -23,7 +23,7 @@ import styles from './style.module.less';
 import { WidgetBlock } from './widget/widget_block';
 import WidgetAlone from './widget_alone';
 
-export const Main: React.FC = () => {
+export const Main: React.FC<React.PropsWithChildren<unknown>> = () => {
   const query = new URLSearchParams(window.location.search);
   const isAlone = query.get('isAlone');
   const widgetId = query.get('widgetId');

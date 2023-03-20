@@ -41,7 +41,7 @@ interface ICellGroupOffset {
 /**
  * Handle the border boundaries of the first and last columns in the case of grouping
  */
-export const CellGroupOffset: React.FC<ICellGroupOffset> = React.memo(({
+export const CellGroupOffset: React.FC<React.PropsWithChildren<ICellGroupOffset>> = React.memo(({
   children, groupLength, actualColumnIndex, style, row, columnsLength, needOffsetBorderBottom, nextRow,
 }) => {
   const colors = useThemeColors();

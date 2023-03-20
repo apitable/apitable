@@ -18,6 +18,7 @@
 
 import { ISpaceBasicInfo, ISpaceFeatures } from '@apitable/core';
 import { CSSProperties } from 'react';
+import { StaticImageData } from 'next/image';
 
 export enum LevelType {
   Bronze = 'bronze',
@@ -63,8 +64,8 @@ export interface ILevelCard {
   titleColor: string,
   buttonText: string,
   onClick: () => void,
-  cardBg: React.ReactNode,
-  cardSkin: React.ReactNode,
+  cardBg: StaticImageData,
+  cardSkin: StaticImageData,
   skinStyle: CSSProperties,
   cardTagPosition: Position,
   buttonStyle?: CSSProperties,

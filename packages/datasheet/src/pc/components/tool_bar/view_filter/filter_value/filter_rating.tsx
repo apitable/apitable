@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
-export const FilterRating: React.FC<Omit<IFilterNumberProps, 'execute'>> = props => {
+export const FilterRating: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = props => {
   const { condition, onChange, field } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;

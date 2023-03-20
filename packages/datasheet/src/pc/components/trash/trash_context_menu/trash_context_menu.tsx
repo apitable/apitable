@@ -26,7 +26,7 @@ export interface ITrashContextMenuProps {
   data: any[];
 }
 
-export const TrashContextMenu: FC<ITrashContextMenuProps> = ({
+export const TrashContextMenu: FC<React.PropsWithChildren<ITrashContextMenuProps>> = ({
   children,
   nodeId,
   data,

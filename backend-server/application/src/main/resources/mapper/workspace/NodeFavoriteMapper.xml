@@ -20,17 +20,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apitable.workspace.mapper.NodeFavoriteMapper">
 
-    <select id="selectOrderNodeIdByMemberId" resultType="java.lang.String">
-        WITH RECURSIVE pre (node_id) AS (
-        SELECT node_id FROM ${tablePrefix}node_favorite WHERE member_id = #{memberId} AND pre_node_id IS NULL
-        UNION
-        SELECT vnf.node_id FROM pre p
-        JOIN ${tablePrefix}node_favorite vnf ON p.node_id = vnf.pre_node_id AND vnf.member_id = #{memberId}
-        ) SELECT * FROM pre
-    </select>
-
     <select id="selectNodeIdByMemberId" resultType="java.lang.String">
         SELECT node_id
+        FROM ${tablePrefix}node_favorite
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="selectNodeTreeDTOByMemberId"
+            resultType="com.apitable.workspace.dto.NodeTreeDTO">
+        SELECT node_id, pre_node_id
         FROM ${tablePrefix}node_favorite
         WHERE member_id = #{memberId}
     </select>

@@ -95,6 +95,7 @@ export function updateUser(info: {
   nickName?: string | null; 
   locale?: string; 
   init?: boolean;
+  timeZone?: string;
 }) {
   return axios.post(Url.UPDATE_USER, info);
 }

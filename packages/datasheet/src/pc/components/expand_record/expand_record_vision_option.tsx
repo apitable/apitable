@@ -30,7 +30,7 @@ interface IIconButtonProps {
   active: boolean,
   tooltipText: string,
   onClick: () => void,
-  icon: React.FC<IIconProps>
+  icon: React.FC<React.PropsWithChildren<IIconProps>>
 }
 
 const OptionButton = ({ active, onClick, tooltipText, icon: Icon }: IIconButtonProps): JSX.Element => {
@@ -47,7 +47,7 @@ const OptionButton = ({ active, onClick, tooltipText, icon: Icon }: IIconButtonP
   );
 };
 
-const ExpandRecordVisionOptionBase: FC = () => {
+const ExpandRecordVisionOptionBase: FC<React.PropsWithChildren<unknown>> = () => {
   const recordVision = useSelector(state => state.recordVision);
   const dispatch = useDispatch();
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);

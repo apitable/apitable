@@ -25,14 +25,12 @@ import {
   ChangeEvent, default as React,
   forwardRef, memo, useImperativeHandle, useRef, useState,
 } from 'react';
-import IconEmail from 'static/icon/datasheet/column/datasheet_icon_email.svg';
-import IconPhone from 'static/icon/datasheet/column/datasheet_icon_phone.svg';
-import IconURL from 'static/icon/datasheet/column/datasheet_icon_url.svg';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
@@ -99,10 +97,32 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   };
 
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
+    
     if (props.editing) {
       const value = event.target.value;
-      setValue(value);
-      propsOnChange && propsOnChange(getValidValue(value));
+      if(field.type === FieldType.Phone) {
+        const newValue = value
+          .replace(/[^+0-9]/g, '') 
+          .replace(/^([+])/, '$1') 
+          .replace(/\+{2,}/g, '+') 
+          .replace(/^([+][0-9]*){0,1}([0-9]*)/, '$1$2');
+
+        setValue(newValue);
+        propsOnChange && propsOnChange(getValidValue(newValue));
+      } else if(field.type === FieldType.Email) {
+        const newValue = value.replace(/\s/g, '');
+        setValue(newValue);
+        propsOnChange && propsOnChange(getValidValue(newValue));
+      } else {
+        setValue(value);
+        propsOnChange && propsOnChange(getValidValue(value));
+      }
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === ' ' && field.type === FieldType.Email) {
+      event.preventDefault();
     }
   };
 
@@ -149,9 +169,9 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getEnhanceTypeIcon = (type: string | number) => {
     if (!value) return null;
     const typeIconMap = {
-      [FieldType.URL]: <IconURL fill={colors.thirdLevelText} />,
-      [FieldType.Email]: <IconEmail fill={colors.thirdLevelText} />,
-      [FieldType.Phone]: <IconPhone fill={colors.thirdLevelText} />,
+      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span
@@ -206,6 +226,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           disabled={disabled}
           value={value}
           onChange={updateValue}
+          onKeyPress={handleKeyPress}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{

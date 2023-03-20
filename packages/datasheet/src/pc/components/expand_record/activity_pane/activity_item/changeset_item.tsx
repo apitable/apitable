@@ -49,7 +49,7 @@ type IChangesetItem = IActivityPaneProps & {
   setChooseComment: (item: IChooseComment) => void;
 };
 
-const ChangesetItemBase: React.FC<IChangesetItem> = props => {
+const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = props => {
   const { expandRecordId, changeset, cacheFieldOptions, datasheetId, setChooseComment, unit } = props;
   const { operations, userId, createdAt, revision } = changeset;
 

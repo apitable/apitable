@@ -18,6 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { EditOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';
 import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, IUploadType, Wrapper } from 'pc/components/common';
@@ -27,7 +28,6 @@ import { isLocalSite } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import EditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_edit.svg';
 import { useQuery } from '../../hooks/use_home';
 import { defaultAvatars } from '../navigation/account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
@@ -36,7 +36,7 @@ const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 })
 };
 
-const SettingNickname: FC = () => {
+const SettingNickname: FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const colors = useThemeColors();
   const [avatarSelectModalVisible, setAvatarSelectModalVisible] = useState(false);
@@ -197,7 +197,7 @@ const SettingNickname: FC = () => {
                 size='x-small'
                 shadow
                 shape='circle'
-                icon={<EditIcon fill={colors.secondLevelText} />}
+                icon={<EditOutlined color={colors.secondLevelText} />}
                 onClick={() => setAvatarSelectModalVisible(true)}
               />
             </div>

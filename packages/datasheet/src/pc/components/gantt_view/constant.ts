@@ -49,6 +49,8 @@ export const GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT = 20;
 // The size of the icon in the Gantt chart
 export const GANTT_COMMON_ICON_SIZE = 16;
 
+export const GANTT_SMALL_ICON_SIZE = 12;
+
 // Inner spacing of exported images
 export const EXPORT_IMAGE_PADDING = 16;
 

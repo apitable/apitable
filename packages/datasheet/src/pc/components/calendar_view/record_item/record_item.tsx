@@ -29,7 +29,7 @@ interface IRecordItem {
   column: ICalendarViewColumn
 }
 
-const RecordItemBase: FC<IRecordItem> = props => {
+const RecordItemBase: FC<React.PropsWithChildren<IRecordItem>> = props => {
   const { id, column } = props;
   const { fieldMap, firstFieldId, getCellValue, calendarStyle, datasheetId } = useContext(CalendarContext);
   const { isColNameVisible } = calendarStyle;

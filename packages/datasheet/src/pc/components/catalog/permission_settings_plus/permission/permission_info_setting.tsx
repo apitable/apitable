@@ -18,7 +18,7 @@
 
 import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { IRoleMember, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, MultiplemembersFilled } from '@apitable/icons';
+import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, UserGroupOutlined } from '@apitable/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -30,7 +30,7 @@ import styles from './style.module.less';
 import { IRoleOption } from './unit_item/interface';
 import { PermissionSelectMobile } from './unit_item/permission_select_mobile';
 
-export const PermissionInfoSetting: React.FC<{
+export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
   isExtend?: boolean;
   members: IRoleMember[];
   defaultRole: IRoleOption[];
@@ -46,7 +46,7 @@ export const PermissionInfoSetting: React.FC<{
   toggleIsMemberDetail: () => void;
   batchEditRole?: (role: string) => void;
   batchDeleteRole?: () => void;
-}> = props => {
+}>> = props => {
   const {
     isExtend,
     members,
@@ -70,7 +70,7 @@ export const PermissionInfoSetting: React.FC<{
       <div className={styles.tipContainer}>
         {isExtend ? (
           <Box>
-            <MultiplemembersFilled className={styles.tipIcon} color={colors.textCommonTertiary} />
+            <UserGroupOutlined className={styles.tipIcon} color={colors.textCommonTertiary} />
             <Typography variant="body3" className={styles.tip} color={colors.textCommonSecondary}>
               {extendTips}
             </Typography>
@@ -174,7 +174,13 @@ const BatchSetting = (props: { defaultRole: IRoleOption[]; onClick?: (role: stri
       visible={batchSelectVisible}
       onVisibleChange={setBatchSelectVisible}
     >
-      <TextButton size="small" suffixIcon={batchSelectVisible ? <ChevronUpOutlined /> : <ChevronDownOutlined />}>
+      <TextButton 
+        size="small" 
+        suffixIcon={batchSelectVisible ? <ChevronUpOutlined size={12} /> : <ChevronDownOutlined size={12} />}
+        style={{
+          fontSize: 13
+        }}
+      >
         {t(Strings.batch_edit_permission)}
       </TextButton>
     </Dropdown>

@@ -37,7 +37,7 @@ export interface IErrorMsg {
   identifyingCodeErrMsg: string;
 }
 
-export const Step: React.FC = () => {
+export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { step, setStep, userData } = useContext(StepContext);
   const colors = useThemeColors();
 

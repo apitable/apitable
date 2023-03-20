@@ -22,9 +22,9 @@ export enum UnitTypeEnum {
    */
   TEAM = 1,
   /**
-   * Tag
+   * ROLE
    */
-  TAG = 2,
+  ROLE = 2,
   /**
    * Member
    */

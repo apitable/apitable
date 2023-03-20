@@ -58,7 +58,7 @@ interface IDisplay extends Partial<TriggerProps> {
 
 const OFFSET = [0, 8];
 
-export const Display: React.FC<IDisplay> = props => {
+export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
   const { style, children, type, className, onVisibleChange, disableAutoActiveItem = false } = props;
   const editable = useSelector(state => {
     const permissions = Selectors.getPermissions(state);
@@ -95,14 +95,14 @@ export const Display: React.FC<IDisplay> = props => {
     }
   }, [ref]);
 
-  function onMenuVisibleChange(popupVisible: boolean) {
+  async function onMenuVisibleChange(popupVisible: boolean): Promise<void> {
     // If the filtered row has a recordId corresponding to the url, close the record card popup if it doesn't.
     const state = store.getState();
     const visibleRows = Selectors.getVisibleRows(state);
     const recordId = state.pageParams.recordId;
     const hasCurrentRecordId = visibleRows.find(row => row.recordId === recordId);
     if (!popupVisible && type === ToolHandleType.ViewFilter && !hasCurrentRecordId) {
-      closeAllExpandRecord();
+      await closeAllExpandRecord();
     }
 
     if (type !== ToolHandleType.ViewSwitcher && showViewLockModal && !mirrorId) {
@@ -133,9 +133,9 @@ export const Display: React.FC<IDisplay> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const close = useCallback(
-    (e: React.MouseEvent) => {
+    async(e: React.MouseEvent) => {
       if (isMobile) {
-        onMenuVisibleChange(false);
+        await onMenuVisibleChange(false);
         return;
       }
       ref.current && ref.current.close(e);

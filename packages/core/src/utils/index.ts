@@ -29,6 +29,7 @@ export * from './async';
 export * from './tree';
 export * from './error_capture';
 export * from './consistency_check';
+export * from './link_consistency_check';
 export * from './check_type_switch';
 export * from './not_in_timestamp_range';
 export * from './matrix';

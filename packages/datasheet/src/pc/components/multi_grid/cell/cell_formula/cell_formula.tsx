@@ -34,7 +34,7 @@ interface ICellFormula extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel,
 }
 
-export const CellFormula: React.FC<ICellFormula> = props => {
+export const CellFormula: React.FC<React.PropsWithChildren<ICellFormula>> = props => {
   const { cellValue, field } = props;
   const isCheckbox = Field.bindModel(field).basicValueType === BasicValueType.Boolean;
   const [showTip, setShowTip] = useState(false);

@@ -17,7 +17,8 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
-import { evaluate, parse, ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';
+import { evaluate, parse } from 'formula_parser/evaluate';
+import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { Functions } from 'formula_parser/functions';
 import { Strings, t } from '../../exports/i18n';
 import Joi from 'joi';
@@ -31,12 +32,15 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { checkTypeSwitch, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getFilteredRecords, getSnapshot } from '../../exports/store/selectors';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot } from '../../exports/store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
   INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType
 } from '../../types/field_types';
-import { FilterConjunction, FOperator, FOperatorDescMap, IFilterCondition } from '../../types/view_types';
+import {
+  FilterConjunction, FOperator, FOperatorDescMap, IFilterCheckbox, IFilterCondition,
+  IFilterDateTime, IFilterText
+} from '../../types/view_types';
 import { ICellValue, ICellValueBase, ILookUpValue } from '../record';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
@@ -45,6 +49,11 @@ import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
+import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
+import {
+  IOpenFilterValue, IOpenFilterValueBoolean, IOpenFilterValueDataTime, IOpenFilterValueNumber,
+  IOpenFilterValueString
+} from 'types/open/open_filter_types';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -570,7 +579,10 @@ export class LookUpField extends ArrayValueField {
 
     if (openFilter) {
       // magic reference filter
-      recordIDs = getFilteredRecords(this.state, foreignSnapshot, recordIDs, filterInfo);
+      recordIDs = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
+        linkFieldRecordIds: recordIDs,
+        filterInfo,
+      });
     }
 
     return recordIDs && recordIDs.length ? recordIDs.map((recordId: string) => {
@@ -1097,5 +1109,69 @@ export class LookUpField extends ArrayValueField {
       rollUpType,
       formatting
     };
+  }
+
+  override filterValueToOpenFilterValue(value: any): IOpenFilterValue {
+    if (this.getExpression()) {
+      switch (this.valueType) {
+        case BasicValueType.Number:
+          return NumberBaseField._filterValueToOpenFilterValue(value as IFilterText);
+        case BasicValueType.Boolean:
+          return CheckboxField._filterValueToOpenFilterValue(value as IFilterCheckbox);
+        case BasicValueType.String:
+          return TextBaseField._filterValueToOpenFilterValue(value as IFilterText);
+        case BasicValueType.DateTime:
+          return DateTimeBaseField._filterValueToOpenFilterValue(value as IFilterDateTime);
+      }
+    }
+
+    const lookUpEntityFieldInfo = this.getLookUpEntityFieldInfo();
+    if (!lookUpEntityFieldInfo) {
+      return null;
+    }
+    const entityField = Field.bindContext(lookUpEntityFieldInfo.field, this.state);
+    return entityField.filterValueToOpenFilterValue(value);
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValue): any {
+    if (this.getExpression()) {
+      switch (this.valueType) {
+        case BasicValueType.Number:
+          return NumberBaseField._openFilterValueToFilterValue(value as IOpenFilterValueNumber);
+        case BasicValueType.Boolean:
+          return CheckboxField._openFilterValueToFilterValue(value as IOpenFilterValueBoolean);
+        case BasicValueType.String:
+          return TextBaseField._openFilterValueToFilterValue(value as IOpenFilterValueString);
+        case BasicValueType.DateTime:
+          return DateTimeBaseField._openFilterValueToFilterValue(value as IOpenFilterValueDataTime);
+      }
+    }
+    const lookUpEntityFieldInfo = this.getLookUpEntityFieldInfo();
+    if (!lookUpEntityFieldInfo) {
+      return null;
+    }
+    const entityField = Field.bindContext(lookUpEntityFieldInfo.field, this.state);
+    return entityField.openFilterValueToFilterValue(value);
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValue) {
+    if (this.getExpression()) {
+      switch (this.valueType) {
+        case BasicValueType.Number:
+          return NumberBaseField._validateOpenFilterValue(value as IOpenFilterValueNumber);
+        case BasicValueType.Boolean:
+          return CheckboxField._validateOpenFilterValue(value as IOpenFilterValueBoolean);
+        case BasicValueType.String:
+          return TextBaseField._validateOpenFilterValue(value as IOpenFilterValueString);
+        case BasicValueType.DateTime:
+          return DateTimeBaseField._validateOpenFilterValue(value as IOpenFilterValueDataTime);
+      }
+    }
+    const lookUpEntityFieldInfo = this.getLookUpEntityFieldInfo();
+    if (!lookUpEntityFieldInfo) {
+      return joiErrorResult(`${this.field.name} look up has no entity field`);
+    }
+    const entityField = Field.bindContext(lookUpEntityFieldInfo.field, this.state);
+    return entityField.openFilterValueToFilterValue(value);
   }
 }

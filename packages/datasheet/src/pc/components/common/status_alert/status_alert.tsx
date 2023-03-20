@@ -17,7 +17,7 @@
  */
 
 import styles from './style.module.less';
-import { DefaultFilled } from '@apitable/icons';
+import { InfoCircleFilled } from '@apitable/icons';
 import { Typography } from '@apitable/components';
 import * as React from 'react';
 
@@ -26,10 +26,10 @@ interface IStatusAlertProps {
   style?: React.CSSProperties;
 }
 
-export const StatusAlert: React.FC<IStatusAlertProps> = (props) => {
+export const StatusAlert: React.FC<React.PropsWithChildren<IStatusAlertProps>> = (props) => {
   const { style, content } = props;
   return <div className={styles.closeSyncViewTip} style={style}>
-    <DefaultFilled />
+    <InfoCircleFilled />
     <Typography variant="body4" className={styles.text} ellipsis={{ tooltip: content }}>
       {content}
     </Typography>

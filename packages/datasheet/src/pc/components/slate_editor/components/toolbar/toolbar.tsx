@@ -49,7 +49,7 @@ interface IToolbarProps {
   borderLess?: boolean;
 }
 
-export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
+export const Toolbar: FC<React.PropsWithChildren<IToolbarProps>> = (({ borderLess }) => {
   const colors = useThemeColors();
   const { i18nText, mode } = useContext(EditorContext);
   const editor = useSlate() as ReactEditor;
@@ -63,11 +63,11 @@ export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
   const alignList = useListWithIcons(ALIGN_LIST);
   const isFullMode = mode === 'full';
 
-  const handleElementTypeChange = useCallback((block) => {
+  const handleElementTypeChange = useCallback((block: any) => {
     toggleBlock(editor, block);
   }, [editor]);
 
-  const handleElementAlignChange = useCallback((align) => {
+  const handleElementAlignChange = useCallback((align: any) => {
     updateElementData(editor, { align });
   }, [editor]);
 
@@ -86,7 +86,7 @@ export const Toolbar: FC<IToolbarProps> = (({ borderLess }) => {
     toggleMark(editor, mark);
   }, [editor]);
 
-  const handleHighlightChange = useCallback((next) => {
+  const handleHighlightChange = useCallback((next: any) => {
     const validSelection = getValidSelection(editor);
     ReactEditor.focus(editor);
     Transforms.select(editor, validSelection);

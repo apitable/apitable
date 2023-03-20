@@ -16,22 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useCallback, useMemo } from 'react';
+import { DeleteOutlined } from '@apitable/icons';
 import { Transforms } from 'slate';
 import { ReactEditor, useReadOnly, useSlate } from 'slate-react';
 import { IElement, IElementRenderProps } from '../../interface/element';
 import styles from './divider.module.less';
 
-const DeleteOutlined = dynamic(() => import('@ant-design/icons/DeleteOutlined'), { ssr: false });
 const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>) => {
 
   const readOnly = useReadOnly();
   const editor = useSlate() as ReactEditor;
 
-  const handleDelete = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleDelete = useCallback(() => {
     try {
       const path = ReactEditor.findPath(editor, element);
       Transforms.removeNodes(editor, { at: path });
@@ -50,7 +48,7 @@ const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>
         DotList
       }
       {
-        !readOnly && <DeleteOutlined className={styles.deleteBtn} onMouseDown={handleDelete} />
+        !readOnly && <DeleteOutlined className={styles.deleteBtn} onClick={handleDelete} />
       }
     </div>
     {children}

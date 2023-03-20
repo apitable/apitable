@@ -27,7 +27,7 @@ interface IBottomProps {
   linkIds: string[];
 }
 
-export const Bottom: FC<IBottomProps> = ({
+export const Bottom: FC<React.PropsWithChildren<IBottomProps>> = ({
   id,
   linkIds,
 }) => {

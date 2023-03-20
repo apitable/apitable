@@ -18,7 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronDownOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { RecordCard } from 'pc/components/common/record_card';
@@ -35,7 +35,6 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconPullDown from 'static/icon/common/common_icon_pulldown_line.svg';
 import { IExpandFieldEditRef } from '../field_editor';
 import style from './style.module.less';
 
@@ -263,7 +262,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
               })}
             {hasShowMoreBtn && (
               <div className={style.showMore} onClick={() => setIsShowMoreOpen(true)}>
-                <IconPullDown fill={colors.thirdLevelText} />
+                <ChevronDownOutlined color={colors.thirdLevelText} />
                 <span className={style.showMoreText}>
                   {t(Strings.expand_rest_records_by_count, {
                     record_count: getRestRecordsCount(),

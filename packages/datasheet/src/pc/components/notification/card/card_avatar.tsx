@@ -22,9 +22,9 @@ import { AvatarBase } from 'pc/components/common/avatar/avatar_base';
 import { Avatar, AvatarSize, AvatarType, IAvatarProps, Logo } from 'pc/components/common';
 import { NoticeTypesConstant } from '../utils';
 import { useThemeColors } from '@apitable/components';
-import OfficialIcon from 'static/icon/workbench/notification/workbench_icon_notification_offcial.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
+import { HornOutlined } from '@apitable/icons';
 
 export const OfficialAvatar = (): React.ReactElement => (
   <AvatarBase
@@ -45,7 +45,7 @@ export const BottomMsgAvatarBase = (props: IAvatarProps & { notifyType: string }
           className={styles.avatar}
           size={AvatarSize.Size20}
         >
-          <OfficialIcon fill={colors.defaultBg} />
+          <HornOutlined color={colors.defaultBg} />
         </AvatarBase>
       );
     }

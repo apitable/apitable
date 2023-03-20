@@ -30,8 +30,6 @@ import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record.svg';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_tagdelete.svg';
 import { SearchControl } from '../../common/search_control/search_control';
 import { TComponent } from '../../common/t_component/t_component';
 import { FocusHolder } from '../focus_holder';
@@ -41,6 +39,7 @@ import { SearchContent } from './search_content';
 import style from './style.module.less';
 import { Align } from 'react-window';
 import { Divider } from 'antd';
+import { CloseCircleOutlined, NarrowOutlined } from '@apitable/icons';
 
 export enum LinkEditorModalLayout {
   Center = 'Center',
@@ -220,10 +219,10 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     }
   };
 
-  const IconClose = isMobile ? CloseIcon : IconNarrow;
+  const IconClose = isMobile ? CloseCircleOutlined : NarrowOutlined;
   const PortalChild = (
     <div className={classNames(style.linkCard, { [style.rightLayout]: layout === LinkEditorModalLayout.CenterRight })} onKeyDown={onKeydown}>
-      <IconClose className={style.iconClose} width={24} height={24} fill={colors.thirdLevelText} onClick={toggleEditing} />
+      <IconClose className={style.iconClose} size={24} color={colors.thirdLevelText} onClick={toggleEditing} />
       {loading ? (
         <div className={style.loadingWrap}>
           <Skeleton />

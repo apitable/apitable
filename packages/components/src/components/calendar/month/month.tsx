@@ -33,7 +33,7 @@ export type IMonth = Omit<ICalendar, 'defaultDate'> & {
   isMobile: boolean;
 };
 
-const MonthBase:FC<IMonth> = props => {
+const MonthBase:FC<React.PropsWithChildren<IMonth>> = props => {
   const {
     isMobile, step, tasks = [], update, lang = 'zh', dnd = [], listStyle, startListStyle,
     warnText, rowMixCount = 3, disabled, resizable, moreText, moveTaskId

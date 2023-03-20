@@ -32,13 +32,17 @@ import { IOption, ISelectProps } from './interface';
 import {
   GlobalStyle, hightLightCls, OptionOutside, StyledArrowIcon, StyledListContainer, StyledSelectedContainer, StyledSelectTrigger
 } from './styled';
+import debounce from 'lodash/debounce';
 
 const _renderValue = (option: IOption) => {
   return option.label;
 };
 
-export const Select: FC<ISelectProps> & {
-  Option: React.FC<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>
+const _Highlighter: any = Highlighter;
+const _GlobalStyle: any = GlobalStyle;
+
+export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
+  Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
 } = (props) => {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
@@ -59,8 +63,10 @@ export const Select: FC<ISelectProps> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
+  const setKeywordDebounce = debounce(setKeyword, 300);
+
   const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
-    setKeyword(keyword);
+    setKeywordDebounce(keyword);
   };
 
   useEffect(() => {
@@ -93,12 +99,12 @@ export const Select: FC<ISelectProps> & {
     return <OptionOutside
       currentIndex={index}
       id={item.value as string}
-      key={item.value as string}
+      key={`${item.value as string}-${index}`}
       {...item}
     >
       <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>
         {
-          !keyword ? null : <Highlighter
+          !keyword ? null : <_Highlighter
             highlightClassName={hightLightCls.toString()}
             highlightStyle={highlightStyle as any}
             searchWords={[keyword]}
@@ -180,7 +186,7 @@ export const Select: FC<ISelectProps> & {
   };
 
   return <>
-    <GlobalStyle />
+    <_GlobalStyle />
     <Trigger
       // getPopupContainer={() => containerRef.current!}
       popup={renderOptionList}

@@ -29,7 +29,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { MirrorOutlined } from '@apitable/icons';
 import { IForeignFormProps, IMirrorItem } from './interface';
 
-export const MirrorList: FC<IForeignFormProps> = props => {
+export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = props => {
   const colors = useThemeColors();
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export const MirrorList: FC<IForeignFormProps> = props => {
   } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
-    const activeView = Selectors.getActiveView(state)!;
+    const activeView = Selectors.getActiveViewId(state)!;
     const views = datasheet?.snapshot.meta.views || [];
     const viewName = views.find(item => item.id === activeView)?.name;
     return {

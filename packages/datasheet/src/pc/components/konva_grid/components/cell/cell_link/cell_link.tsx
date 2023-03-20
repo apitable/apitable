@@ -18,7 +18,7 @@
 
 import { black, getNextShadeColor, Message } from '@apitable/components';
 import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { KonvaEventObject } from 'konva/lib/Node';
 import dynamic from 'next/dynamic';
 import { expandRecordInCenter } from 'pc/components/expand_record';
@@ -36,9 +36,9 @@ import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
 
 const AddOutlinedPath = AddOutlined.toString();
-const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
+const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellLink: FC<ICellProps> = (props) => {
+export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,
@@ -72,11 +72,11 @@ export const CellLink: FC<ICellProps> = (props) => {
   const [closeIconDownId, setCloseIconDownId] = useState<null | string>(null);
   const { renderContent } = renderData;
 
-  function onClick(e: { evt: { button: MouseDownType; }; }) {
+  async function onClick(e: { evt: { button: MouseDownType; }; }) {
     if (e.evt.button === MouseDownType.Right) {
       return;
     }
-    operatingEnable && toggleEdit && toggleEdit();
+    operatingEnable && toggleEdit && await toggleEdit();
   }
 
   function deleteItem(e: KonvaEventObject<MouseEvent>, index?: number) {
@@ -135,7 +135,7 @@ export const CellLink: FC<ICellProps> = (props) => {
   const addBtnVisible = !realField.property.limitSingleRecord || renderContent == null;
 
   return (
-    <CellScrollContainer
+    (<CellScrollContainer
       x={x}
       y={y}
       columnWidth={columnWidth}
@@ -206,7 +206,9 @@ export const CellLink: FC<ICellProps> = (props) => {
                   y={2}
                   data={CloseSmallOutlinedPath}
                   fill={colors.secondLevelText}
-                  size={16}
+                  scaleX={0.75}
+                  scaleY={0.75}
+                  transformsEnabled={'all'}
                   background={iconBg}
                   backgroundHeight={16}
                   backgroundWidth={16}
@@ -233,6 +235,6 @@ export const CellLink: FC<ICellProps> = (props) => {
           );
         })
       }
-    </CellScrollContainer>
+    </CellScrollContainer>)
   );
 };

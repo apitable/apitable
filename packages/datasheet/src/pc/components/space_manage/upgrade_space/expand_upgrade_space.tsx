@@ -1,6 +1,6 @@
 import { colorVars, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import UpgradeSpace from 'pc/components/space_manage/upgrade_space/upgrade_space';
 import { stopPropagation } from 'pc/utils';
@@ -36,7 +36,7 @@ export const expandUpgradeSpace = () => {
           <Typography variant='h6'>
             {t(Strings.upgrade)}
           </Typography>
-          <CloseMiddleOutlined color={colorVars.fc3} size={16} onClick={onModalClose}/>
+          <CloseOutlined color={colorVars.fc3} size={16} onClick={onModalClose}/>
         </div>
         <UpgradeSpace />
       </Modal>

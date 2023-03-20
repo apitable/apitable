@@ -21,6 +21,7 @@ import {
   IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState,
   IRemoteChangeset, isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
@@ -146,18 +147,9 @@ export class DatasheetOtService {
   }
 
   /**
-   * @description Analyze Operation, apply special handling accordingly
-   * @param spaceId
-   * @param operation
-   * @param datasheetId
-   * @param permission
-   * @param cookie
-   * @param token
-   * @param getNodeRole
-   * @param effectMap
-   * @param resultSet
-   * @returns
+   * Analyze Operation, apply special handling accordingly
    */
+  @Span()
   async analyseOperates(
     spaceId: string,
     mainDatasheetId: string,
@@ -182,7 +174,6 @@ export class DatasheetOtService {
     resultSet.temporaryViews = meta.views;
     for (const { mainLinkDstId } of operation) {
       const _condition = mainLinkDstId || mainDatasheetId;
-      this.logger.info(`Related data of current operation misses mainLinkDstId: ${datasheetId}`);
       const condition = auth.internal || datasheetId === _condition || sourceType === SourceTypeEnum.FORM;
       const mainDstPermission = condition ? permission : await getNodeRole(_condition, auth);
       resultSet.mainLinkDstPermissionMap.set(_condition, mainDstPermission);
@@ -412,6 +403,7 @@ export class DatasheetOtService {
         }
       }
     }
+
     // Validate cell operations without edit permission, if is operation related to linking
     if (resultSet.fldOpInRecMap.size > 0) {
       for (const [fieldId, cmd] of resultSet.fldOpInRecMap.entries()) {
@@ -442,6 +434,7 @@ export class DatasheetOtService {
         }
       }
     }
+
     // Not undo operation, create LookUp requires permission above readable of linked datasheet.
     // If the target field set field permission, permission above readable of this field is also required.
     if (resultSet.toCreateLookUpProperties.length > 0) {
@@ -770,6 +763,12 @@ export class DatasheetOtService {
           case 'name':
             // ====== View rename ======
             if (!permission.viewRenamable) {
+              throw new ServerException(PermissionException.OPERATION_DENIED);
+            }
+            return;
+          case 'displayHiddenColumnWithinMirror':
+            // ====== View displayHiddenColumnWithinMirror ======
+            if (!permission.editable || view?.lockInfo) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             return;
@@ -2303,7 +2302,7 @@ export class DatasheetOtService {
    * @param dstId datasheet ID
    * @param effectMap effect variable collection
    */
-  private async getMetaDataByCache(dstId: string, effectMap: Map<string, any>): Promise<IMeta> {
+  async getMetaDataByCache(dstId: string, effectMap: Map<string, any>): Promise<IMeta> {
     if (effectMap.has(EffectConstantName.Meta)) {
       return effectMap.get(EffectConstantName.Meta);
     }

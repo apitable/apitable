@@ -17,9 +17,10 @@
  */
 
 import dayjs from 'dayjs';
-import { IDateTimeField, ITimestamp } from 'types/field_types';
+import type { IDateTimeField, ITimestamp } from 'types/field_types';
 import duration from 'dayjs/plugin/duration';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { getTimeZoneOffsetByUtc } from '../../config';
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
 
@@ -68,3 +69,13 @@ export function str2time(value: string, _field?: IDateTimeField) {
     // milliseconds: dateTime.millisecond(),
   }).asMilliseconds();
 }
+
+export const diffTimeZone = (timeZone?: string) => {
+  if (!timeZone) return 0;
+  const tzOffset = getTimeZoneOffsetByUtc(timeZone)!;
+  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone)!;
+  return dayjs.duration({
+    hours: clientTzOffset - tzOffset
+  }).asMilliseconds();
+};

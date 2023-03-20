@@ -29,7 +29,7 @@ interface IItemProps {
   imgSrc: string;
 }
 
-export const Item: FC<IItemProps> = props => {
+export const Item: FC<React.PropsWithChildren<IItemProps>> = props => {
 
   const {
     index,

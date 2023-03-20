@@ -28,7 +28,7 @@ import { IHeadMemberProps } from './interface';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 
-export const MemberFieldHead: React.FC<IHeadMemberProps> = props => {
+export const MemberFieldHead: React.FC<React.PropsWithChildren<IHeadMemberProps>> = props => {
   const { cellValue, field, editing, setEditing, onCommand, readOnly, isNewBoard } = props;
   const divRef = useRef(null);
   const { datasheetId, linkId, unitMap } = useSelector(state => ({

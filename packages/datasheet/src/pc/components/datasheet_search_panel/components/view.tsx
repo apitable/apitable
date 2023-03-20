@@ -23,12 +23,12 @@ import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useThemeColors } from '@apitable/components';
 import { ViewType } from '@apitable/core';
 
-export const View: React.FC<{ 
+export const View: React.FC<React.PropsWithChildren<{ 
   id: string,
   active?: boolean, 
   viewType: ViewType,
   onClick?(id: string): void
-}> = props => {
+}>> = props => {
   const { 
     children, 
     id, 
@@ -45,7 +45,7 @@ export const View: React.FC<{
         })}
         onClick={() => onClick && onClick(id)}
       >
-        <ViewIcon viewType={viewType} fill={active ? colors.primaryColor : colors.fourthLevelText} />
+        <ViewIcon viewType={viewType} color={active ? colors.primaryColor : colors.fourthLevelText} />
         <span className={classNames(styles.text, styles.rightText)}>{children}</span>
       </div>
     </div>

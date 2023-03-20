@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ContextMenu, Skeleton, useContextMenu } from '@apitable/components';
+import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
   Player, Settings, StoreActions, Strings, t,
@@ -42,15 +42,11 @@ import * as React from 'react';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { useDispatch, useSelector } from 'react-redux';
-import MoreIcon from 'static/icon/common/common_icon_more.svg';
-import ShareIcon from 'static/icon/common/common_icon_share.svg';
-import BannerEditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { GenerateTemplate } from '../catalog/generate_template';
 import { makeNodeIconComponent, NodeIcon } from '../catalog/node_context_menu';
 import { getNodeIcon } from '../catalog/tree/node_icon';
 import { ImageCropUpload, Message } from '../common';
 import { NodeInfoBar } from '../common/node_info_bar';
-// @ts-ignore
 import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
@@ -58,6 +54,9 @@ import { DingTalkDa } from './dingtalk_da';
 // @ts-ignore
 import { WeixinShareWrapper, inSocialApp } from 'enterprise';
 import styles from './style.module.less';
+import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
+
+const _ContextMenuTrigger: any = ContextMenuTrigger;
 
 export interface IFolderShowcaseProps {
   nodeInfo: {
@@ -85,7 +84,7 @@ const customTips = {
 
 const template = /(\/)?template(\/)?/;
 
-export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes, nodeInfo }) => {
+export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> = ({ readOnly, childNodes, nodeInfo }) => {
   const [childrenNodeIdList, setChildrenNodeIdList] = useState<IChildrenNode[]>([]);
   const [banners, setBanners] = useState<string[]>([]);
   const [isDescriptionModal, { toggle: toggleIsDescriptionModal }] = useToggle(false);
@@ -111,6 +110,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
 
   const pathname = location.pathname;
   const isMatchTemplate = template.test(pathname);
+  const colors = useThemeColors();
 
   useUnmount(() => {
     if (!isMatchTemplate) {
@@ -387,7 +387,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
                   {permissions.descriptionEditable && (
                     <div className={styles.editBtn}>
-                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<BannerEditIcon />} />
+                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<EditOutlined color={colors.textCommonPrimary} />} />
                     </div>
                   )}
                 </div>
@@ -432,7 +432,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                     shape='round'
                     size='small'
                     onClick={() => setShareNodeId(nodeInfo.id)}
-                    prefixIcon={<ShareIcon fill='currentColor' />}
+                    prefixIcon={<ShareOutlined color='currentColor' />}
                   >
                     {t(Strings.share)}
                   </Button>
@@ -441,7 +441,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                   <DingTalkDa suiteKey={socialInfo.dingTalkSuiteKey} corpId={socialInfo.dingTalkCorpId} bizAppId={folderId} />
                 )}
                 {(permissions.nodeAssignable || permissions.templateCreatable) && (
-                  <ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
+                  <_ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
                     <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                       <Button
                         id={FOLDER_SHOWCASE_ID.BTN_MORE}
@@ -449,15 +449,15 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                         size='small'
                         onClick={openMoreContextMenu}
                         shape='round'
-                        prefixIcon={<MoreIcon fill='currentColor' />}
+                        prefixIcon={<MoreOutlined color='currentColor' />}
                       />
                     </ComponentDisplay>
                     {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
                      <div className={styles.disabledBtn}>
-                     <MoreIcon />
+                     <MoreOutlined />
                      </div>
                      </ComponentDisplay> */}
-                  </ContextMenuTrigger>
+                  </_ContextMenuTrigger>
                 )}
               </div>
             </div>

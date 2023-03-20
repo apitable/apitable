@@ -18,33 +18,32 @@
 
 package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Space public invitation link vo
+ * Space public invitation link vo.
  * </p>
  */
 @Data
-@ApiModel("Space public invitation link vo")
+@Schema(description = "Space public invitation link vo")
 public class SpaceLinkVo {
 
-    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
+    @Schema(description = "Department ID", type = "java.lang.String", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Name of superior department", example = "R&D Department", position = 2)
+    @Schema(description = "Name of superior department", example = "R&D Department")
     private String parentTeamName;
 
-    @ApiModelProperty(value = "Department name", example = "Front end group", position = 3)
+    @Schema(description = "Department name", example = "Front end group")
     private String teamName;
 
-    @ApiModelProperty(value = "Invitation Token", example = "qwe31", position = 4)
+    @Schema(description = "Invitation Token", example = "qwe31")
     private String token;
 }

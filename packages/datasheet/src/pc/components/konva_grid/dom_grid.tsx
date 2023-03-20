@@ -132,7 +132,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       activeFieldOperateType: operate,
       selectField: Selectors.getSelectedField(state),
       selectRecord: Selectors.getSelectedRecord(state),
-      linearRows: Selectors.getLinearRows(state),
+      linearRows: Selectors.getLinearRows(state)!,
       recordMoveType: Selectors.getRecordMoveType(state),
       permissions: Selectors.getPermissions(state),
       selectRanges: Selectors.getSelectRanges(state),
@@ -190,7 +190,10 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   }, [containerWidth, instance, permissions.rowCreatable, recordId, pointRowIndex, targetName, isScrolling, linearRows]);
 
   const rectCalculator = useCallback(
-    ({ recordId, fieldId }) => {
+    ({
+      recordId,
+      fieldId
+    }: any) => {
       const state = store.getState();
       const activeCellUIIndex = Selectors.getCellUIIndex(state, {
         recordId,
@@ -518,9 +521,9 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     }
   };
 
-  const editFieldSetting = useCallback(fieldId => clickFieldHead(FieldOperateType.FieldSetting, fieldId), [clickFieldHead]);
+  const editFieldSetting = useCallback((fieldId: any) => clickFieldHead(FieldOperateType.FieldSetting, fieldId), [clickFieldHead]);
 
-  const editFieldDesc = useCallback(fieldId => clickFieldHead(FieldOperateType.FieldDesc, fieldId), [clickFieldHead]);
+  const editFieldDesc = useCallback((fieldId: any) => clickFieldHead(FieldOperateType.FieldDesc, fieldId), [clickFieldHead]);
 
   const onMouseDown = () => {
     prevTargetName.current = targetName;

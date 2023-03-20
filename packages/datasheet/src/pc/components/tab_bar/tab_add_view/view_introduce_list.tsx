@@ -42,7 +42,7 @@ interface IViewIntroduceList {
   triggerInfo?: IUseListenTriggerInfo;
 }
 
-const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
+const ViewIntroduce: React.FC<React.PropsWithChildren<{ viewType: ViewType }>> = props => {
   const { viewType: fieldType } = props;
   const info = getViewClass(fieldType).getViewIntroduce()!;
   if (!info) {
@@ -61,7 +61,7 @@ const ViewIntroduce: React.FC<{ viewType: ViewType }> = props => {
   </div>;
 };
 
-const NodeIntroduce: React.FC<{ nodeType: ConfigConstant.NodeType }> = () => {
+const NodeIntroduce: React.FC<React.PropsWithChildren<{ nodeType: ConfigConstant.NodeType }>> = () => {
   const info = FormView.getViewIntroduce();
 
   if (!info) {
@@ -164,7 +164,7 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
                 id={getViewAnalyticsId(viewType)}
                 data-test-id={getViewAnalyticsId(viewType)}
               >
-                <ViewIcon viewType={viewType} fill={colors.primaryColor} width={16} height={16} />
+                <ViewIcon viewType={viewType} color={colors.primaryColor} size={16} />
                 <span>{getViewClass(viewType).getViewIntroduce()!.title}</span>
                 <AddOutlined color={colors.thirdLevelText} />
               </section>
@@ -190,7 +190,7 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
                   id={DATASHEET_ID.VIEW_CREATOR_FORM}
                   onClick={e => addNewNode(e as any as React.MouseEvent, nodeType)}
                 >
-                  <NodeIcon nodeType={nodeType} fill={colors.primaryColor} width={16} height={16} />
+                  <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16} />
                   <span>{FormView.getViewIntroduce()!.title}</span>
                   <AddOutlined color={colors.thirdLevelText} />
                 </section>

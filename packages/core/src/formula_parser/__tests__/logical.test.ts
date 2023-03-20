@@ -220,6 +220,11 @@ describe('Logical function test', () => {
 
   it('ISERROR', () => {
     expect(evaluate(
+      'ISERROR(-1/{a})',
+      mergeContext({ a: 0, b: 'abc', c: 1591414562369, d: ['opt1', 'opt2'] }),
+    )).toEqual(true);
+
+    expect(evaluate(
       'ISERROR({a}/{a})',
       mergeContext({ a: 0, b: 'abc', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(true);

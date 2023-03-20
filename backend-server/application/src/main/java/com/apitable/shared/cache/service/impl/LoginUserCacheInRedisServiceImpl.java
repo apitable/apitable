@@ -40,23 +40,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginUserCacheInRedisServiceImpl implements LoginUserCacheService {
 
+    /**
+     * RedisTemplate.
+     */
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    /**
+     * UserMapper.
+     */
     @Resource
     private UserMapper userMapper;
 
     /**
-     * Storage unit(minutes)
+     * Storage unit(minutes).
      */
     private static final int TIMEOUT = 30;
 
+    /**
+     * Get login user info.
+     *
+     * @param userId user id
+     * @return Login user dto
+     */
     @Override
-    public LoginUserDto getLoginUser(Long userId) {
-        String str = redisTemplate.opsForValue().get(RedisConstants.getLoginUserKey(userId));
+    public LoginUserDto getLoginUser(final Long userId) {
+        String str = redisTemplate.opsForValue()
+            .get(RedisConstants.getLoginUserKey(userId));
         if (str != null) {
             LoginUserDto userDto = JSONUtil.toBean(str, LoginUserDto.class);
-            if (userDto != null && StrUtil.isNotBlank(userDto.getAreaCode()) && Objects.nonNull(userDto.getIsNickNameModified())) {
+            if (userDto != null && StrUtil.isNotBlank(userDto.getAreaCode())
+                && Objects.nonNull(userDto.getIsNickNameModified())) {
                 return userDto;
             }
         }
@@ -70,21 +84,30 @@ public class LoginUserCacheInRedisServiceImpl implements LoginUserCacheService {
         loginUserDto.setEmail(user.getEmail());
         loginUserDto.setAvatar(user.getAvatar());
         loginUserDto.setColor(user.getColor());
+        loginUserDto.setTimeZone(user.getTimeZone());
         loginUserDto.setSignUpTime(user.getCreatedAt());
         loginUserDto.setLastLoginTime(user.getLastLoginTime());
         loginUserDto.setLocale(user.getLocale());
         loginUserDto.setIsPaused(user.getIsPaused());
-        Integer isSocialNameModified = ObjectUtil.defaultIfNull(user.getIsSocialNameModified(), SocialNameModified.NO_SOCIAL.getValue());
+        Integer isSocialNameModified = ObjectUtil.defaultIfNull(
+            user.getIsSocialNameModified(),
+            SocialNameModified.NO_SOCIAL.getValue());
         loginUserDto.setIsNickNameModified(isSocialNameModified > 0);
         if (StrUtil.isBlank(user.getPassword())) {
             loginUserDto.setNeedPwd(true);
         }
-        redisTemplate.opsForValue().set(RedisConstants.getLoginUserKey(userId), JSONUtil.toJsonStr(loginUserDto), TIMEOUT, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(RedisConstants.getLoginUserKey(userId),
+            JSONUtil.toJsonStr(loginUserDto), TIMEOUT, TimeUnit.MINUTES);
         return loginUserDto;
     }
 
+    /**
+     * delete cache.
+     *
+     * @param userId user id
+     */
     @Override
-    public void delete(Long userId) {
+    public void delete(final Long userId) {
         redisTemplate.delete(RedisConstants.getLoginUserKey(userId));
     }
 }

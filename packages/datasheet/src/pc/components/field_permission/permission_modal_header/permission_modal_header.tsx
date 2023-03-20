@@ -20,10 +20,10 @@ import styles from './styles.module.less';
 import { Typography, useThemeColors } from '@apitable/components';
 import { TComponent } from 'pc/components/common/t_component';
 import { t, Strings } from '@apitable/core';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import * as React from 'react';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { CloseOutlined } from '@apitable/icons';
 
 interface IPermissionModalHeaderProps {
   typeName: string;
@@ -33,7 +33,7 @@ interface IPermissionModalHeaderProps {
   targetIcon?: JSX.Element;
 }
 
-export const PermissionModalHeader: React.FC<IPermissionModalHeaderProps> = props => {
+export const PermissionModalHeader: React.FC<React.PropsWithChildren<IPermissionModalHeaderProps>> = props => {
   const colors = useThemeColors();
   const { typeName, targetName, targetIcon, onModalClose, docIcon } = props;
 
@@ -50,7 +50,7 @@ export const PermissionModalHeader: React.FC<IPermissionModalHeaderProps> = prop
               name: (
                 <span className={styles.targetClx}>
                   {targetIcon}
-                  <Typography variant={'h6'} component={'span'} ellipsis style={{ flex: 1, maxWidth: isMobile ? 95 : 270 }}>
+                  <Typography variant={'h6'} component={'span'} ellipsis style={{ flex: 1, maxWidth: isMobile ? 95 : 180 }}>
                     {targetName}
                   </Typography>
                 </span>
@@ -61,7 +61,7 @@ export const PermissionModalHeader: React.FC<IPermissionModalHeaderProps> = prop
         </Typography>
         {docIcon}
       </div>
-      {onModalClose && <CloseIcon fill={colors.fourthLevelText} onClick={onModalClose} width={24} height={24} />}
+      {onModalClose && <CloseOutlined color={colors.fourthLevelText} onClick={onModalClose} size={24} />}
     </div>
   );
 };

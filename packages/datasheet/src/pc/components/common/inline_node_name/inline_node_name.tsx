@@ -45,7 +45,7 @@ interface IInlineNodeNameProps {
   iconEditable?: boolean;
 }
 
-export const InlineNodeName: React.FC<IInlineNodeNameProps> = props => {
+export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNameProps>> = props => {
   const {
     nodeId, nodeName, nodeIcon, withIcon, iconSize = 18, size = 16, withBrackets, nodeNameStyle,
     prefix = '', className, withTip, iconEditable,
@@ -62,9 +62,9 @@ export const InlineNodeName: React.FC<IInlineNodeNameProps> = props => {
     <Tooltip
       title={nodeName}
       placement="left"
-      visible={showTip}
+      open={showTip}
       mouseEnterDelay={0.5}
-      onVisibleChange={handleShowTipChange}
+      onOpenChange={handleShowTipChange}
     >
       <div className={classNames(styles.datasheetInfo, className, iconEditable && styles.iconEditable)}>
         {prefix}

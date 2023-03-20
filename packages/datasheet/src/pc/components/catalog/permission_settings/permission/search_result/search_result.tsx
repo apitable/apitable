@@ -28,7 +28,7 @@ export interface ISearchResultProps {
   isEmpty?: boolean;
 }
 
-export const SearchResult: FC<ISearchResultProps> = ({ isEmpty, children }) => {
+export const SearchResult: FC<React.PropsWithChildren<ISearchResultProps>> = ({ isEmpty, children }) => {
   const themeName = useSelector(state => state.theme);
   const NotDataImg = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (isEmpty) {

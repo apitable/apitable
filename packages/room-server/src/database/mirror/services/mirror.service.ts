@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { IPermissions } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
@@ -56,6 +57,7 @@ export class MirrorService {
     };
   }
 
+  @Span()
   async fetchDataPack(mirrorId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`mirror[${mirrorId}] Start loading data`);

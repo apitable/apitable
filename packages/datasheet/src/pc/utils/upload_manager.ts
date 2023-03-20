@@ -26,6 +26,7 @@ import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { getEnvVariables } from './env';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;
@@ -53,12 +54,15 @@ interface IQueue {
 }
 
 export const checkNetworkEnv = (code: number) => {
+  const env = getEnvVariables();
   if (code === StatusCode.PHONE_VALIDATION || code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
     Modal.confirm({
       title: t(Strings.warning),
       content: t(Strings.status_code_phone_validation),
       onOk: () => {
-        window['nvc'].reset();
+        if (!env.DISABLE_AWSC) {
+          window['nvc'].reset();
+        }
       },
       type: 'warning',
       okText: t(Strings.got_it),
@@ -79,11 +83,10 @@ export class UploadManager {
   /**
    * @param {number} limit Limits the number of simultaneous requests
    * TODO: Consider doing a global limit on the number of cells, which is currently only done for the current cell
-   * @memberof UploadManager
    */
   constructor(
-    public limit: number,
-    public commandManager: CollaCommandManager,
+    private readonly limit: number,
+    private readonly commandManager: CollaCommandManager,
   ) {
     window.onbeforeunload = this.checkBeforePageUnMount;
   }

@@ -30,7 +30,7 @@ import { MobileToolBar } from 'pc/components/mobile_tool_bar';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { View } from 'pc/components/view';
 
-export const Mirror: React.FC<{ mirror: IMirror }> = ({ mirror }) => {
+export const Mirror: React.FC<React.PropsWithChildren<{ mirror: IMirror }>> = ({ mirror }) => {
   const { status } = useNetwork(true, mirror!.id, ResourceType.Mirror);
   const { shareId, datasheetId } = useSelector(state => state.pageParams);
 

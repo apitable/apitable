@@ -49,13 +49,13 @@ class MyDocument extends Document<IClientInfo> {
           <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <link rel='manifest' href={'/file/manifest.json'} />
-          <script src={'/file/js/browser_check.2.js'} async />
+          <script src='/file/js/browser_check.2.js' async />
           {/* injection of custom configs of editions, e.g. APITable */}
           <script src='/custom/custom_config.js' defer />
           {
             JSON.parse(envVars).COOKIEBOT_ID &&
-            <script 
-              id="Cookiebot" 
+            <script
+              id="Cookiebot"
               src="https://consent.cookiebot.com/uc.js" 
               data-cbid={JSON.parse(envVars).COOKIEBOT_ID}
               data-blockingmode="auto" 
@@ -69,6 +69,7 @@ class MyDocument extends Document<IClientInfo> {
           {
             !JSON.parse(envVars).DISABLE_AWSC && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           }
+          {JSON.parse(envVars).SENSORSDATA_TOKEN && <Script src='/file/js/sensors.js' strategy={'beforeInteractive'} />}
           {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`

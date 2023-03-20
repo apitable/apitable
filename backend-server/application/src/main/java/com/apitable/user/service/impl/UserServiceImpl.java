@@ -18,15 +18,22 @@
 
 package com.apitable.user.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
+import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
+import static com.apitable.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
+import static com.apitable.user.enums.UserException.LINK_EMAIL_ERROR;
+import static com.apitable.user.enums.UserException.MODIFY_PASSWORD_ERROR;
+import static com.apitable.user.enums.UserException.MUST_BIND_EAMIL;
+import static com.apitable.user.enums.UserException.MUST_BIND_MOBILE;
+import static com.apitable.user.enums.UserException.REGISTER_FAIL;
+import static com.apitable.user.enums.UserException.SIGN_IN_ERROR;
+import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
+import static com.apitable.user.enums.UserException.USER_LANGUAGE_SET_UN_SUPPORTED;
+import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
+import static com.apitable.user.enums.UserOperationType.COMPLETE_CLOSING;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -69,16 +76,19 @@ import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceOpenedSheetCacheService;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.INotificationFactory;
 import com.apitable.shared.component.notification.NotificationManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.LanguageConstants;
 import com.apitable.shared.constants.NotificationConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
+import com.apitable.shared.util.StringUtil;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.ro.SpaceUpdateOpRo;
@@ -101,165 +111,118 @@ import com.apitable.workspace.service.INodeShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
-import static com.apitable.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
-import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
-import static com.apitable.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
-import static com.apitable.user.enums.UserException.LINK_EMAIL_ERROR;
-import static com.apitable.user.enums.UserException.MODIFY_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.MUST_BIND_EAMIL;
-import static com.apitable.user.enums.UserException.MUST_BIND_MOBILE;
-import static com.apitable.user.enums.UserException.REGISTER_FAIL;
-import static com.apitable.user.enums.UserException.SIGN_IN_ERROR;
-import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
-import static com.apitable.user.enums.UserException.USER_LANGUAGE_SET_UN_SUPPORTED;
-import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
-import static com.apitable.user.enums.UserOperationType.COMPLETE_CLOSING;
-
-/** User table service implementation class. */
+/**
+ * User table service implementation class.
+ */
 @Service
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     implements IUserService {
 
-    /** */
     private static final int USER_AVATAR_COLOR_MAX_VALUE = 10;
 
-    /** */
     private static final int USER_IS_PAUSED_CLOSE_DAY = 30;
 
-    /** */
     private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
-    /** */
     @Resource
     private LoginUserCacheService loginUserCacheService;
 
-    /** */
     @Resource
     private IAssetService iAssetService;
 
-    /** */
     @Resource
     private ISpaceService iSpaceService;
 
-    /** */
     @Resource
     private IPlayerActivityService iPlayerActivityService;
 
-    /** */
     @Resource
     private PlayerActivityMapper playerActivityMapper;
 
-    /** */
     @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
-    /** */
     @Resource
     private UserSpaceCacheService userSpaceCacheService;
 
-    /** */
     @Resource
     private UserSpaceOpenedSheetCacheService userSpaceOpenedSheetCacheService;
 
-    /** */
     @Resource
     private INodeShareService nodeShareService;
 
-    /** */
     @Resource
     private ISpaceInviteLinkService spaceInviteLinkService;
 
-    /** */
     @Resource
     private IPlayerNotificationService notificationService;
 
-    /** */
     @Resource
     private MemberMapper memberMapper;
 
-    /** */
     @Resource
     private SpaceMapper spaceMapper;
 
-    /** */
     @Resource
     private FindByIndexNameSessionRepository<? extends Session> sessions;
 
-    /** */
     @Resource
     private IUserHistoryService iUserHistoryService;
 
-    /** */
     @Resource
     private UserMapper userMapper;
 
-    /** */
     @Resource
     private SocialServiceFacade socialServiceFacade;
 
-    /** */
     @Resource
     private IMemberService iMemberService;
 
-    /** */
     @Resource
     private INotificationFactory notificationFactory;
 
-    /** */
     @Resource
     private UserServiceFacade userServiceFacade;
 
-    /** */
     @Resource
     private UserLinkServiceFacade userLinkServiceFacade;
 
-    /** */
     @Resource
     private PasswordService passwordService;
 
-    /** */
     @Resource
     private IDeveloperService iDeveloperService;
 
-    /**
-     * *
-     * @param mobile cell-phone number
-     * @return user id
-     */
+    @Resource
+    private ConstProperties constProperties;
+
     @Override
     public Long getUserIdByMobile(final String mobile) {
         return baseMapper.selectIdByMobile(mobile);
     }
 
-    /**
-     * *
-     * @param email email
-     * @return user id
-     */
     @Override
     public Long getUserIdByEmail(final String email) {
         return baseMapper.selectIdByEmail(email);
     }
 
-    /**
-     * *
-     * @param code   Area code
-     * @param mobile Phone number
-     * @return boolean
-     */
     @Override
     public boolean checkByCodeAndMobile(final String code,
         final String mobile) {
@@ -272,22 +235,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             && userEntity.getCode().equals(areaCode);
     }
 
-    /**
-     * *
-     * @param email email
-     * @return boolean
-     */
     @Override
     public boolean checkByEmail(final String email) {
         return SqlTool.retCount(baseMapper.selectCountByEmail(email)) > 0;
     }
 
-    /**
-     * *
-     * @param code          Area code
-     * @param mobilePhone   Phone number
-     * @return UserEntity
-     */
     @Override
     public UserEntity getByCodeAndMobilePhone(final String code,
         final String mobilePhone) {
@@ -303,12 +255,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return null;
     }
 
-    /**
-     * *
-     * @param code          Area code
-     * @param mobilePhones  Mobile number list
-     * @return List<UserEntity>
-     */
     @Override
     public List<UserEntity> getByCodeAndMobilePhones(
         final String code, final Collection<String> mobilePhones) {
@@ -324,35 +270,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             .collect(Collectors.toList());
     }
 
-    /**
-     * *
-     * @param email email
-     * @return UserEntity
-     */
     @Override
     public UserEntity getByEmail(final String email) {
         return baseMapper.selectByEmail(email);
     }
 
-    /**
-     * *
-     * @param emails email list
-     * @return List<UserEntity>
-     */
     @Override
     public List<UserEntity> getByEmails(final Collection<String> emails) {
         return baseMapper.selectByEmails(emails);
     }
 
-    /**
-     * *
-     * @param externalId External System ID
-     * @param nickName Nickname
-     * @param avatar Avatar
-     * @param email email
-     * @param remark Remarks
-     * @return user id
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createByExternalSystem(
@@ -423,11 +350,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return user.getId();
     }
 
-    /**
-     * *
-     * @param user user entity
-     * @return boolean
-     */
     @Override
     public boolean saveUser(final UserEntity user) {
         boolean flag = save(user);
@@ -455,16 +377,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return flag;
     }
 
-    /**
-     * *
-     * @param areaCode  Area code
-     * @param mobile Phone number
-     * @param nickName   Third party user nickname
-     * @param avatar Third party user avatar
-     * @param email  email
-     * @param spaceName Name of the new space
-     * @return user id
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long create(
@@ -529,14 +441,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return entity.getId();
     }
 
-    /**
-     * *
-     * @param areaCode  Area code
-     * @param mobile Phone number
-     * @param nickName   Third party user nickname
-     * @param avatar Third party user avatar
-     * @return UserEntity
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByMobilePhone(
@@ -565,14 +469,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return entity;
     }
 
-    /**
-     * *
-     * @param email email
-     * @return UserEntity
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email) {
+        return this.createUserByEmail(email, null);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserEntity createUserByEmail(final String email, final String password) {
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .email(email)
@@ -580,6 +485,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
             .lastLoginTime(LocalDateTime.now())
             .build();
+        if (password != null) {
+            entity.setPassword(passwordService.encode(password));
+        }
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // Create user activity record
@@ -589,10 +497,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return entity;
     }
 
-    /**
-     * *
-     * @param user user entity
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void initialDefaultSpaceForUser(final UserEntity user) {
@@ -605,11 +509,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         iSpaceService.createSpace(user, spaceName);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     * @return boolean
-     */
     @Override
     public boolean checkUserHasBindEmail(final Long userId) {
         log.info("Query whether users bind email");
@@ -618,12 +517,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return user.getEmail() != null;
     }
 
-    /**
-     * *
-     * @param userId  User ID
-     * @param spaceId Space ID
-     * @param email   email
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void bindMemberByEmail(final Long userId, final String spaceId,
@@ -644,11 +537,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         updateEmailByUserId(userId, email);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     * @param email  email
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateEmailByUserId(final Long userId, final String email) {
@@ -668,12 +556,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
         loginUserCacheService.delete(userId);
+        userServiceFacade.onUserChangeEmailAction(userId, email);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void unbindEmailByUserId(final Long userId) {
@@ -690,17 +575,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         loginUserCacheService.delete(userId);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     * @param code   Area code
-     * @param mobile Phone number
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMobileByUserId(final Long userId, final String code,
         final String mobile) {
-        LoginUserDto userDto = loginUserCacheService.getLoginUser(userId);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setCode(code);
@@ -720,17 +598,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         loginUserCacheService.delete(userId);
         // Email registration is bound to mobile phones for the first time,
         // and additional invitation rewards are given
+        LoginUserDto userDto = loginUserCacheService.getLoginUser(userId);
         if (userDto.getMobile() == null) {
-            TaskManager.me() .execute(
+            TaskManager.me().execute(
                 () -> userServiceFacade.rewardUserInfoUpdateAction(
                     new RewardedUser(userId, userDto.getNickName())));
         }
     }
 
-    /**
-     * *
-     * @param userId    User Id
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void unbindMobileByUserId(final Long userId) {
@@ -747,25 +622,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         loginUserCacheService.delete(userId);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     */
     @Override
     public void updateLoginTime(final Long userId) {
         // Update the last login time
         UserEntity update = new UserEntity();
         update.setId(userId);
-        update.setLastLoginTime(LocalDateTime.now());
+        update.setLastLoginTime(ClockManager.me().getLocalDateTimeNow());
         boolean flag = updateById(update);
         ExceptionUtil.isTrue(flag, SIGN_IN_ERROR);
     }
 
-    /**
-     * *
-     * @param userId User ID
-     * @param param  Operate parameters
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(final Long userId, final UserOpRo param) {
@@ -777,10 +643,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         if (StrUtil.isNotBlank(param.getAvatar())) {
             waitDeleteOldAvatar = userEntity.getAvatar();
             userMapper.updateUserAvatarInfo(userId, param.getAvatar(), null);
+            userServiceFacade.onUserChangeAvatarAction(userId,
+                StringUtil.trimSlash(constProperties.getOssBucketByAsset().getResourceUrl())
+                    + param.getAvatar());
         }
         if (ObjectUtil.isNotNull(param.getAvatarColor())) {
             userMapper.updateUserAvatarInfo(userId, null,
                 param.getAvatarColor());
+        }
+        if (StrUtil.isNotBlank(param.getTimeZone())) {
+            user.setTimeZone(param.getTimeZone());
         }
         if (StrUtil.isNotBlank(param.getLocale())) {
             ExceptionUtil.isTrue(
@@ -823,10 +695,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             });
             user.setNickName(param.getNickName())
                 .setIsSocialNameModified(SocialNameModified.YES.getValue());
-            if (BooleanUtil.isTrue(param.getInit())) {
-                userServiceFacade.onUserChangeNicknameAction(userId,
-                    param.getNickName());
-            }
+            userServiceFacade.onUserChangeNicknameAction(userId,
+                param.getNickName(), param.getInit());
         } else {
             user.setNickName(userEntity.getNickName());
         }
@@ -841,11 +711,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         }
     }
 
-    /**
-     * *
-     * @param id user id
-     * @param password New password set
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePwd(final Long id, final String password) {
@@ -861,13 +726,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         ExceptionUtil.isTrue(flag, MODIFY_PASSWORD_ERROR);
     }
 
-    /**
-     * *
-     * @param userId  User ID
-     * @param spaceId Space ID
-     * @param filter  Whether to filter space related information
-     * @return UserInfoVo
-     */
     @Override
     public UserInfoVo getCurrentUserInfo(final Long userId,
         final String spaceId, final Boolean filter) {
@@ -970,11 +828,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return userInfo;
     }
 
-    /**
-     * *
-     * @param userId   User ID
-     * @param isRetain Whether to keep the current session
-     */
     @Override
     public void closeMultiSession(final Long userId, final boolean isRetain) {
         Collection<? extends Session> usersSessions =
@@ -994,30 +847,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         }
     }
 
-    /**
-     * *
-     * @param userId    User ID
-     * @return uuid
-     */
     @Override
     public String getUuidByUserId(final Long userId) {
         return baseMapper.selectUuidById(userId);
     }
 
-    /**
-     * *
-     * @param userId user id
-     * @return Nickname
-     */
     @Override
     public String getNicknameByUserId(final Long userId) {
         return baseMapper.selectNickNameById(userId);
     }
 
-    /**
-     * *
-     * @param user User
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void applyForClosingAccount(final UserEntity user) {
@@ -1055,8 +894,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     /**
-     * Encapsulate Notification to notify the master administrator
-     * * that the member has applied for logoff.
+     * Encapsulate Notification to notify the master administrator that the member has applied for
+     * logoff.
      *
      * @param user   User
      * @param spaces Space List
@@ -1089,10 +928,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         baseMapper.updateById(userPaused);
     }
 
-    /**
-     * *
-     * @param user UserEntity
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void cancelClosingAccount(final UserEntity user) {
@@ -1122,10 +957,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         iUserHistoryService.create(userHistory);
     }
 
-    /**
-     * *
-     * @param user UserEntity
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void closeAccount(final UserEntity user) {
@@ -1149,11 +980,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         iUserHistoryService.create(userHistory);
     }
 
-    /**
-     * *
-     * @param userIds User ID List
-     * @return List<UserInPausedDto>
-     */
     @Override
     public List<UserInPausedDto> getPausedUserDtos(final List<Long> userIds) {
         return userMapper.selectPausedUsers(userIds);
@@ -1203,12 +1029,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return true;
     }
 
-    /**
-     * *
-     * @param expectedLang The user did not set the system language.
-     * @param emails Email list
-     * @return List<UserLangDTO>
-     */
     @Override
     public List<UserLangDTO> getLangByEmails(final String expectedLang,
         final List<String> emails) {
@@ -1240,12 +1060,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return userLangs;
     }
 
-    /**
-     * *
-     * @param expectedLang The user did not set the system language.
-     * @param email Email
-     * @return The email sending language
-     */
     @Override
     public String getLangByEmail(
         final String expectedLang, final String email) {
@@ -1258,12 +1072,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         return expectedLang;
     }
 
-    /**
-     * *
-     * @param userIds User ID
-     * @param defaultLocale Default Language
-     * @return List<UserLangDTO>
-     */
     @Override
     public List<UserLangDTO> getLangAndEmailByIds(
         final List<Long> userIds, final String defaultLocale) {
@@ -1275,11 +1083,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         }).collect(Collectors.toList());
     }
 
-    /**
-     * *
-     * @param uuid User uuid
-     * @return user id
-     */
     @Override
     public Long getUserIdByUuid(final String uuid) {
         return userMapper.selectIdByUuid(uuid);
@@ -1296,8 +1099,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     /**
-     * Query users by username.
-     * User's name can be email or area code+mobile phone number
+     * Query users by username. User's name can be email or area code+mobile phone number
      *
      * @param areaCode Area code
      * @param username User name
@@ -1323,5 +1125,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // User name format error
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
+    }
+
+    /**
+     * get user's email by user id.
+     *
+     * @param userId user id
+     * @return user's email
+     */
+    @Override
+    public String getEmailByUserId(final Long userId) {
+        return userMapper.selectEmailById(userId);
+    }
+
+    @Override
+    public void closePausedUser(int limitDays) {
+        LocalDateTime endAt =
+            ClockManager.me().getLocalDateTimeNow().minusDays(limitDays);
+        LocalDateTime startAt =
+            endAt.minusDays(limitDays * 2L);
+        // After obtaining the specified cooling-off period, there has been an operation to
+        // cancel the application within 30 days before.
+        List<Long> userIds = iUserHistoryService
+            .getUserIdsByCreatedAtAndUserOperationType(startAt, endAt,
+                UserOperationType.APPLY_FOR_CLOSING);
+        log.info("Number of accounts with cooling-off:{}:{}:{}", startAt, endAt, userIds.size());
+        userIds.forEach(userId -> {
+            try {
+                UserEntity user = baseMapper.selectById(userId);
+                if (null != user) {
+                    closeAccount(user);
+                }
+            } catch (Exception e) {
+                log.error("CloseUserError:{}", userId, e);
+            }
+        });
     }
 }

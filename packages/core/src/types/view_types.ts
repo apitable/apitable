@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUnitIds } from 'types/field_types';
-import { FieldType, ITimestamp } from './field_types';
-import { t, Strings } from '../exports/i18n';
+import type { IUnitIds } from 'types/field_types';
+import type { FieldType, ITimestamp } from './field_types';
+import { t, Strings } from 'exports/i18n';
 
 export interface ISortedField {
   fieldId: string;
@@ -75,7 +75,7 @@ export enum FilterDuration {
 }
 
 export type IFilterValue = string;
-export type IFilterCheckbox = [boolean] | null;
+export type IFilterCheckbox = boolean | null;
 export type IFilterText = [IFilterValue] | null;
 export type IFilterNumber = [IFilterValue] | null;
 // export type IFilterRating = [IFilterValue] | null;
@@ -85,8 +85,9 @@ export type IFilterMultiSelect = IFilterValue[] | null;
 export type IFilterMember = IUnitIds | null;
 
 export type IFilterDateTime =
-  [Exclude<FilterDuration, FilterDuration.ExactDate>] |
+  [Exclude<FilterDuration, FilterDuration.ExactDate | FilterDuration.DateRange>] |
   [FilterDuration.ExactDate, ITimestamp | null] |
+  [FilterDuration.DateRange, string | null] |
   null;
 
 export interface IFilterBaseCondition {

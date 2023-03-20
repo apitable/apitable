@@ -43,7 +43,7 @@ interface IGanttExportProps {
   dateUnitType: DateUnitType;
 }
 
-export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
+export const GanttExport: FC<React.PropsWithChildren<IGanttExportProps>> = ({ dateUnitType }) => {
   const {
     view,
     rowHeight,
@@ -56,7 +56,7 @@ export const GanttExport: FC<IGanttExportProps> = ({ dateUnitType }) => {
     return {
       view,
       rowHeightLevel,
-      ganttLinearRows: Selectors.getGanttLinearRows(state),
+      ganttLinearRows: Selectors.getLinearRows(state)!,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
       ganttStyle: Selectors.getGanttStyle(state)!,
     };

@@ -20,13 +20,10 @@ import { Button, Loading } from '@apitable/components';
 import {
   Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamListInSpace, StoreActions, Strings, t
 } from '@apitable/core';
-import { AddressOutlined } from '@apitable/icons';
+import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
-// import AdjustLevel from 'static/icon/space/space_icon_adjustlevel.svg';
-// @ts-ignore
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -35,17 +32,15 @@ import * as React from 'react';
 import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
 import { shallowEqual, useSelector } from 'react-redux';
-import AddContentIcon from 'static/icon/common/common_icon_add_content.svg';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import MoreIcon from 'static/icon/common/common_icon_more.svg';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
-import RenameIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { CreateTeamModal, RenameTeamModal } from '../modal';
 // @ts-ignore
-import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg } from 'enterprise';
+import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';
+
+const _ContextMenu: any = ContextMenu;
+const _MenuItem: any = MenuItem;
+const _ContextMenuTrigger: any = ContextMenuTrigger;
 
 interface IModalProps {
   setSearchMemberRes: Dispatch<SetStateAction<IMemberInfoInSpace[]>>;
@@ -55,7 +50,7 @@ interface IModalProps {
 const { TreeNode, DirectoryTree } = Tree;
 const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
-export const TeamTree: FC<IModalProps> = props => {
+export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const dispatch = useAppDispatch();
   const {
     teamListInSpace,
@@ -109,7 +104,7 @@ export const TeamTree: FC<IModalProps> = props => {
         return (
           <TreeNode
             title={
-              <ContextMenuTrigger
+              <_ContextMenuTrigger
                 id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
                 holdToDisplay={-1}
                 ref={nodeRef}
@@ -130,12 +125,12 @@ export const TeamTree: FC<IModalProps> = props => {
                     onClick={e => moreClick(e, nodeRef)}
                     style={{ visibility: 'visible' }}
                   >
-                    <AddContentIcon />
+                    <AddOutlined />
                   </span>
                 }
                 {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-                <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-              </ContextMenuTrigger>
+                <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+              </_ContextMenuTrigger>
             }
             key={item.teamId}
           >
@@ -148,7 +143,7 @@ export const TeamTree: FC<IModalProps> = props => {
       return (
         <TreeNode
           title={
-            <ContextMenuTrigger
+            <_ContextMenuTrigger
               id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
               holdToDisplay={-1}
               ref={nodeRef}
@@ -170,12 +165,12 @@ export const TeamTree: FC<IModalProps> = props => {
                   onClick={e => moreClick(e, nodeRef)}
                   style={{ visibility: 'visible' }}
                 >
-                  <AddContentIcon />
+                  <AddOutlined />
                 </span>
               }
               {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-              <span onClick={e => moreClick(e, nodeRef)}><MoreIcon /></span>}
-            </ContextMenuTrigger>
+              <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+            </_ContextMenuTrigger>
           }
           key={item.teamId}
           isLeaf
@@ -304,7 +299,7 @@ export const TeamTree: FC<IModalProps> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<AddressOutlined />}
+          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined size={16} />}
           onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
@@ -341,7 +336,7 @@ export const TeamTree: FC<IModalProps> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={<AddressOutlined />}
+          prefixIcon={<UserGroupOutlined size={16} />}
           className={styles.inviteOutsiderBtn}
           onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
         >
@@ -360,7 +355,7 @@ export const TeamTree: FC<IModalProps> = props => {
         <div onClick={(e) => {
           stopPropagation(e);
           setInSearch(true);
-        }}><SearchIcon /></div>
+        }}><SearchOutlined /></div>
       </div>
       <div className={styles.originContent} style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }}>
         {operateButtonCom}
@@ -369,7 +364,7 @@ export const TeamTree: FC<IModalProps> = props => {
             teamListInSpace.length > 0 &&
             <DirectoryTree
               onSelect={onSelect}
-              switcherIcon={<div><PullDownIcon /></div>}
+              switcherIcon={<div><TriangleRightFilled size={12} /></div>}
               selectedKeys={[selectKey]}
               showIcon={false}
               expandAction={false}
@@ -403,14 +398,14 @@ export const TeamTree: FC<IModalProps> = props => {
       }
       {
         teamOperate && <>
-          <ContextMenu id={TEAM_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-            <MenuItem onClick={handleRenameClick}><RenameIcon />{t(Strings.rename_team)}</MenuItem>
-            <MenuItem onClick={handleDeleteClick}><DeleteIcon />{t(Strings.delete_team)}</MenuItem>
-          </ContextMenu>
-          <ContextMenu id={TEAM_ROOT_OPERATE}>
-            <MenuItem onClick={handleAddDeptClick}><AddContentIcon />{t(Strings.add_team)}</MenuItem>
-          </ContextMenu></>
+          <_ContextMenu id={TEAM_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
+            <_MenuItem onClick={handleRenameClick}><EditOutlined />{t(Strings.rename_team)}</_MenuItem>
+            <_MenuItem onClick={handleDeleteClick}><DeleteOutlined />{t(Strings.delete_team)}</_MenuItem>
+          </_ContextMenu>
+          <_ContextMenu id={TEAM_ROOT_OPERATE}>
+            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
+          </_ContextMenu></>
       }
     </div>
   );

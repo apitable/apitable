@@ -17,12 +17,11 @@
  */
 
 import * as React from 'react';
-import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { Strings, t } from '@apitable/core';
-import ClearIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import { stopPropagation, useThemeColors } from '@apitable/components';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 
 interface ILineSearchInputProps {
   value?: string;
@@ -78,7 +77,7 @@ export const LineSearchInputBase: React.ForwardRefRenderFunction<{}, ILineSearch
     style={style}
   >
     <span className={styles.prefixIcon}>
-      <SearchIcon fill={colors.fourthLevelText} width={16} height={16} />
+      <SearchOutlined color={colors.fourthLevelText} size={16} />
     </span>
     <input
       type="text"
@@ -97,7 +96,7 @@ export const LineSearchInputBase: React.ForwardRefRenderFunction<{}, ILineSearch
         handleClear();
       }} 
     >
-      {Boolean(value) && allowClear && <ClearIcon fill={colors.fourthLevelText} />}
+      {Boolean(value) && allowClear && <CloseCircleFilled color={colors.fourthLevelText} />}
     </span>
   </div>;
 };

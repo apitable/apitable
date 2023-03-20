@@ -26,7 +26,7 @@ interface IRateItemProps {
   checked: boolean;
 }
 
-export const RateItem: React.FC<IRateItemProps> = props => {
+export const RateItem: React.FC<React.PropsWithChildren<IRateItemProps>> = props => {
 
   const {
     children,

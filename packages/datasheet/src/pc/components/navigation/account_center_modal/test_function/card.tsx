@@ -28,7 +28,7 @@ import { FunctionType } from './interface';
 import { Modal } from './modal';
 import style from './style.module.less';
 
-export const Card: React.FC<{ feature: ApiInterface.ILabsFeature; isUser?: boolean; }> = props => {
+export const Card: React.FC<React.PropsWithChildren<{ feature: ApiInterface.ILabsFeature; isUser?: boolean; }>> = props => {
   const { feature, isUser } = props;
   const config = SystemConfig.test_function[feature.key];
   const [showModal, setShowModal] = useState<boolean>(false);

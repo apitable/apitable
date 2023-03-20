@@ -21,9 +21,9 @@ import {
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
-import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@apitable/icons';
+import { LoadingOutlined } from '@apitable/icons';
+import { AutosaveOutlined, ChevronRightOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
-import dynamic from 'next/dynamic';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
@@ -41,8 +41,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
-
 interface IContextMenuProps {
   activeViewId: string | undefined;
   activeNodeId: string | undefined;
@@ -53,7 +51,7 @@ interface IContextMenuProps {
   setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-export const ContextMenu: React.FC<IContextMenuProps> = props => {
+export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> = props => {
   const {
     activeViewId,
     viewList,
@@ -168,7 +166,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     if (currentViewId !== viewId) return;
     ModalComponent.success({
       icon: null,
-      title: <Spin style={{ width: '100%' }} indicator={<LoadingOutlined size={16} color={deepPurple[500]} />} />,
+      title: <Spin style={{ width: '100%' }} indicator={<LoadingOutlined className="circle-loading" size={16} color={deepPurple[500]} />} />,
       content: t(Strings.export),
       width: 180,
       style: {
@@ -279,7 +277,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     ],
     [
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
@@ -295,7 +293,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         id: DATASHEET_ID.VIEW_OPERATION_ITEM_LOCK,
       },
       {
-        icon: <LockNonzeroOutlined />,
+        icon: <LockOutlined />,
         shortcutKey: <Switch size={'small'} checked />,
         text: t(Strings.view_lock),
         onClick: openViewLock,
@@ -335,21 +333,21 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
         text: t(Strings.view_export_to_excel),
         hidden: !permissions.exportable || isMobileApp(),
         id: DATASHEET_ID.VIEW_EXPORT,
-        arrow: <CalenderRightOutlined size={10} color={black[500]} />,
+        arrow: <ChevronRightOutlined size={10} color={black[500]} />,
         children: [{
-          icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Csv), // <CsvIcon />,
           text: t(Strings.csv),
           onClick: exportTypeCsv,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_CSV,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Excel), // <ExcelIcon />,
           text: t(Strings.excel),
           onClick: exportTypeXlsx,
           'data-sensors-click': true,
           id: DATASHEET_ID.VIEW_OPERATION_ITEM_EXPORT_VIEW_TO_EXCEL,
         }, {
-          icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
+          // icon: makeNodeIconComponent(NodeIcon.Image), // <ImageIcon />,
           text: t(Strings.png),
           onClick: exportTypeImage,
           'data-sensors-click': true,

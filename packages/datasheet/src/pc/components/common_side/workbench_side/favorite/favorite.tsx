@@ -33,7 +33,7 @@ import EmptyFavoritePng from 'static/icon/workbench/catalogue/favorite.png';
 import { WorkbenchSideContext } from '../workbench_side_context';
 import styles from './style.module.less';
 
-const FavoriteBase: FC = () => {
+const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));

@@ -19,7 +19,7 @@
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import { Button } from '@apitable/components';
-import { CloseLargeOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { BatchDeleteNode } from 'pc/components/development/dev_tools_panel/batch_delete_node/batch_delete_node';
 import { TestFunctions } from './test_functions';
 import { ApplyBackupData } from 'pc/components/development/dev_tools_panel/apply_backup_data';
@@ -61,7 +61,7 @@ const Container = (props: IContainer) => <div style={{
       zIndex: 9
     }}
     onClick={() => props.onClose(false)}>
-    <CloseLargeOutlined color="#666" size={24} />
+    <CloseOutlined color="#666" size={24} />
   </span>
 </div>;
 
@@ -75,7 +75,7 @@ export const openEruda = () => {
       Message.destroy();
     });
 };
-const DevMenu: React.FC<IDevMenuProps> = props => {
+const DevMenu: React.FC<React.PropsWithChildren<IDevMenuProps>> = props => {
   return (
     <div style={{
       display: 'flex',
@@ -95,7 +95,7 @@ interface IDevToolsPanel {
   onClose: (visible: false) => void;
 }
 
-export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose }) => {
+export const DevToolsPanel: React.FC<React.PropsWithChildren<IDevToolsPanel>> = ({ onClose }) => {
   const [name, setName] = useState<MenuItemName>(MenuItemName.Empty);
   const contentMap = useMemo(() => [
     <DevMenu onClick={setName} key="devMenu" />,

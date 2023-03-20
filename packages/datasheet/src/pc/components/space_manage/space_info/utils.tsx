@@ -30,7 +30,7 @@ import BronzeCardSkin from 'static/icon/space/img_bronze_skin.png';
 import cx from 'classnames';
 // import { showSeatsUpgrading, showLevelCompare, showLevelRenewing } from 'pc/components/subscription';
 import { BronzeFilled, SilverFilled, GoldFilled, EnterpriseFilled } from '@apitable/icons';
-import { ISpaceLevelInfo, ISpaceLevelType, Position } from './interface';
+import { ISpaceLevelInfo, ISpaceLevelInfoValue, ISpaceLevelType, Position } from './interface';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 
@@ -59,8 +59,8 @@ const bronzeAndFree = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   cardTagPosition: Position.L,
   cardBg: BronzeCardBg,
@@ -69,12 +69,14 @@ const bronzeAndFree = {
   expirationColor: undefined,
   logo: <BronzeFilled size={24} />,
   getLabel: (text: string) => {
-    return <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
-    <span className={styles.icon}>
-      <BronzeFilled size={16} />
-    </span>
-    <span className={styles.text}>{text}</span>
-  </span>;
+    return (
+      <span className={cx(styles.spaceLevelTag, styles.bronzeTag)}>
+        <span className={styles.icon}>
+          <BronzeFilled size={16} />
+        </span>
+        <span className={styles.text}>{text}</span>
+      </span>
+    );
   }
 };
 
@@ -93,8 +95,8 @@ const silverAndPlus = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   logo: <SilverFilled size={24} />,
   getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
@@ -120,8 +122,8 @@ const goldenAndPro = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   logo: <GoldFilled size={24} />,
   getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
@@ -170,7 +172,7 @@ const LevelConfigMap = {
 const getSpaceConfig = (
   spaceLevel: keyof typeof LevelConfigMap,
   texts: { title: string, titleTip: string, tagText: string, buttonText: string },
-) => {
+): ISpaceLevelInfoValue => {
   const config = LevelConfigMap[spaceLevel];
   const { title, titleTip, tagText, buttonText } = texts;
   return {

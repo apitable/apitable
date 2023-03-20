@@ -33,14 +33,13 @@ import { resourceService } from 'pc/resource_service';
 import { useStoreState } from '@apitable/react-flow';
 import { flatContextData } from 'pc/utils';
 
-export const EdgeContextMenu: FC = () => {
+export const EdgeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const {
     linkField,
     datasheetId,
   } = useContext(FlowContext);
 
-  const commandManager = resourceService.instance!.commandManager;
   const nodes = useStoreState(state => state.nodes);
 
   const linkFieldId = linkField.id;
@@ -57,7 +56,7 @@ export const EdgeContextMenu: FC = () => {
               const sourceNode = nodes.find(item => item.id === source);
               if (sourceNode) {
                 const { data, id } = sourceNode as INode;
-                commandManager.execute({
+                resourceService.instance!.commandManager.execute({
                   cmd: CollaCommandName.SetRecords,
                   datasheetId,
                   data: [{

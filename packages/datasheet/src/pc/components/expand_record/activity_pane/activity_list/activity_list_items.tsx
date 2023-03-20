@@ -24,7 +24,7 @@ import {
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
@@ -43,8 +43,6 @@ import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
-
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
 const MAX_LIMIT_DAY = 730;
@@ -62,11 +60,11 @@ interface ICommentUpdatedContext {
 
 export type IChangeSet = WithOptional<IRemoteChangeset, 'messageId' | 'resourceType'>;
 
-export const ActivityListItems: FC<IActivityListProps & {
+export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & {
   containerRef: React.RefObject<HTMLDivElement>;
   listRef: React.RefObject<HTMLDivElement>;
   setEmpty: (bool: boolean) => void;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { expandRecordId, datasheetId, selectType, setChooseComment, containerRef, listRef, setEmpty, mirrorId } = props;
   const dispatch = useDispatch();
@@ -394,7 +392,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {
     return (
       <div className={styles.spin}>
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+        <Spin indicator={<LoadingOutlined size={24} className="circle-loading" />} />
       </div>
     );
   }
@@ -448,7 +446,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       {more && <div className={styles.loadTrigger} ref={topRef} onClick={() => loadMore()} />}
       {isAdding && (
         <div className={styles.spin}>
-          <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
+          <Spin indicator={<LoadingOutlined size={14} className="circle-loading" />} />
         </div>
       )}
       {end &&

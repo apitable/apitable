@@ -40,7 +40,7 @@ export interface IPaneIconProps {
 
 export interface IExpandRecordWrapperProp {
   recordType: RecordType;
-  modalClose: () => void;
+  modalClose: () => void | Promise<void>;
   recordIds: string[];
   nodeId: string;
   activeRecordId?: string;

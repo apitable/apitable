@@ -17,7 +17,8 @@
  */
 
 import accept from 'attr-accept';
-import { IAttachmentValue } from 'types/field_types';
+import { getCustomConfig } from 'config';
+import type { IAttachmentValue } from 'types/field_types';
 import urlcat from 'urlcat';
 
 export enum CutMethod {
@@ -110,7 +111,7 @@ function getImageThumbSrcForQiniu(src: string, options: IImageThumbOption) {
 }
 
 export function getImageThumbSrc(src: string, options?: IImageThumbOption) {
-  if (!options) {
+  if (!options || getCustomConfig()?.DISABLED_QINIU_COMPRESSION_PARAMS) {
     return src;
   }
   return getImageThumbSrcForQiniu(src, options);

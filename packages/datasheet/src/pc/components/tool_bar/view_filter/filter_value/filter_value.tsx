@@ -37,7 +37,7 @@ import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
 
-export const FilterValue: React.FC<IFilterValueProps> = props => {
+export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
@@ -46,7 +46,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {
     changeFilter && changeFilter(value => {
       return produce(value, draft => {
-        const condition = draft.conditions[conditionIndex];
+        const condition = draft.conditions[conditionIndex] as any;
         draft.conditions[conditionIndex] = {
           ...condition,
           // Type inconsistency (e.g. magic lookup switching type), change to fix.

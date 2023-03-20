@@ -18,6 +18,7 @@
 
 export * from './space_id';
 export * from './share_id';
+export * from './embed_id';
 export * from './template_id';
 export * from './dashboard_id';
 export * from './datasheet_id';
@@ -35,7 +36,6 @@ export * from './datasheet_map';
 export * from './computed_status';
 export * from './mirror_id';
 export * from './mirror_map';
-export * from './embed_id';
 // export const initSubscribe = (store: Store<any>) => {
 //   datasheetMapSubscribe(store);
 // };
@@ -43,8 +43,6 @@ export * from './form_map';
 export * from './expand_record_id';
 export * from './space_domain';
 export * from './temporary_view';
-export * from './widget_data';
-export * from './visible_rows_base';
 export * from './theme_name';
 export * from './is_side_record_open';
 export * from './node_id';

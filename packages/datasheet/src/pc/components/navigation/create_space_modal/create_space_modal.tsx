@@ -33,15 +33,15 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
-import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
 import styles from './style.module.less';
+import { CloseOutlined } from '@apitable/icons';
 
 export interface ICreateSpaceModalProps {
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
   isMobile: boolean;
 }
 
-export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
+export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps>> = props => {
   const { isMobile } = props;
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
           return;
         }
         dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-        Router.redirect(Navigation.SPACE, { params: { spaceId: data.spaceId }});
+        Router.redirect(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
       } else {
         dispatch(StoreActions.setSpaceErr({
           code,
@@ -147,7 +147,7 @@ export const CreateSpaceModal: FC<ICreateSpaceModalProps> = props => {
         height={566}
         className={cls(styles.createSpaceWrapper, { [styles.createSpaceWrapperMobile]: isMobile })}
         headerStyle={{ borderBottom: 'none' }}
-        closeIcon={<CloseIcon width={16} height={16} fill={colors.thirdLevelText} />}
+        closeIcon={<CloseOutlined size={16} color={colors.thirdLevelText} />}
       >
         {renderContent()}
       </Drawer>

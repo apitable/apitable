@@ -21,13 +21,13 @@ import * as React from 'react';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { IMemberInfoInSpace, Strings, t, Api, ISpaceBasicInfo } from '@apitable/core';
 import { TextButton } from '@apitable/components';
-import DescribeIcon from 'static/icon/datasheet/rightclick/datasheet_icon_edit_describe.svg';
 import styles from './style.module.less';
 import { Identity } from '../../identity';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+import { InfoCircleOutlined } from '@apitable/icons';
 
-export const Reinvite: FC<{record: IMemberInfoInSpace}> = ({ record }) => {
+export const Reinvite: FC<React.PropsWithChildren<{record: IMemberInfoInSpace}>> = ({ record }) => {
   const reSendEmail = (record: IMemberInfoInSpace) => {
     Api.reSendInvite(record.email).then(res => {
       const { success, message } = res.data;
@@ -49,7 +49,7 @@ export const Reinvite: FC<{record: IMemberInfoInSpace}> = ({ record }) => {
       onOk={() => reSendEmail(record)}
       trigger="click"
     >
-      <DescribeIcon />
+      <InfoCircleOutlined />
     </Popconfirm>
   );
 };
@@ -84,14 +84,14 @@ export const nameColRender = (value: string, record: IMemberInfoInSpace, spaceIn
   );
 };
 
-export const OperateCol: FC<{
+export const OperateCol: FC<React.PropsWithChildren<{
   prevBtnClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void),
   prevBtnText?: string,
   nextBtnClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void),
   nextBtnText?: string,
   disabledNextBtn?: boolean,
   hideNextBtn?: boolean,
-}> = ({
+}>> = ({
   prevBtnClick,
   prevBtnText = t(Strings.edit),
   nextBtnClick,

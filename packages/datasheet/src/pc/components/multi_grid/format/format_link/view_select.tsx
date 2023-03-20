@@ -75,7 +75,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
               })}
               onClick={() => onSelectItemClick(view.id)}
             >
-              <ViewIcon width={16} height={16} viewType={view.type} />
+              <ViewIcon size={16} viewType={view.type} />
               {view.name}
             </div>
           );
@@ -87,7 +87,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
   const Trigger = (
     <div className={settingStyles.sectionInfo} onClick={handleTriggerClick} ref={viewSelectTriggerRef}>
       <div className={settingStyles.icon}>
-        <ViewIcon width={16} height={16} viewType={view.type} />
+        <ViewIcon size={16} viewType={view.type} />
       </div>
       <div className={settingStyles.text}>{view.name}</div>
       <div className={settingStyles.arrow}>
@@ -100,7 +100,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
     return {
       value: view.id,
       label: view.name,
-      prefixIcon: <ViewIcon width={16} height={16} viewType={view.type} />,
+      prefixIcon: <ViewIcon size={16} viewType={view.type} />,
     };
   });
 

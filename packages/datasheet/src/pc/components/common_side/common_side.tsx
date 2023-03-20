@@ -27,7 +27,7 @@ import { TemplateCategorySide } from './template_category_side';
 import { TemplateDetailSide } from './template_detail_side/template_detail_side';
 import { WorkbenchSide } from './workbench_side';
 
-export const CommonSide: FC = () => {
+export const CommonSide: FC<React.PropsWithChildren<unknown>> = () => {
   const router = useRouter();
   const user = useSelector(state => state.user.info);
 

@@ -18,7 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
-import { DragOutlined } from '@apitable/icons';
+import { DeleteOutlined, DragOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
@@ -27,7 +27,6 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from '../styles.module.less';
 
 export interface IFormatSelectItem {
@@ -39,7 +38,7 @@ export interface IFormatSelectItem {
   addNewItem: () => void;
 }
 
-export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
+export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
   const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const colors = useThemeColors();
@@ -95,7 +94,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
           })}
           {...provided.dragHandleProps}
         >
-          <DragOutlined size={10} color={colors.thirdLevelText} />
+          <DragOutlined size={16} color={colors.thirdLevelText} />
         </div>
         <div onClick={stopPropagation} ref={colorPickerRef}>
           <ColorPicker onChange={onOptionChange} option={item} mask />
@@ -110,7 +109,7 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
           />
         </div>
         <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>
-          <IconDelete width={15} height={15} fill={colors.fourthLevelText} />
+          <DeleteOutlined size={16} color={colors.fourthLevelText} />
         </div>
       </div>
     )}

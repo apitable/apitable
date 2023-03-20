@@ -18,7 +18,7 @@
 import { Router } from 'pc/components/route_manager/router';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 // @ts-ignore
@@ -42,7 +42,7 @@ interface ILevelCard {
   isMobile?: boolean;
 }
 
-export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className, isMobile }) => {
+export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHeight, deadline, className, isMobile }) => {
   const {
     title,
     levelCard: {
@@ -167,9 +167,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
       {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} />}
       {cardSkin && (
-        <span className={styles.skin} style={skinStyle}>
-          <Image src={cardSkin} alt='skin' width={68} height={82} />
-        </span>
+        <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle} />
       )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
         {tagText}
@@ -181,7 +179,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
         {!isMobile && (
           <Tooltip title={titleTip || t(Strings.grade_desc)} placement='top'>
             <span className={styles.infoIcon}>
-              <InformationSmallOutlined color={secondTextColor || strokeColor} />
+              <QuestionCircleOutlined color={secondTextColor || strokeColor} />
             </span>
           </Tooltip>
         )}

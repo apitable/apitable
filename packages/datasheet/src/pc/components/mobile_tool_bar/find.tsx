@@ -18,7 +18,7 @@
 
 import { StoreActions, Strings, t } from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { CancelFilled } from '@apitable/icons';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
@@ -26,7 +26,6 @@ import { useDispatch } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_search.svg';
 import styles from './style.module.less';
 
 interface IFind {
@@ -37,7 +36,7 @@ interface ISearch extends IFind {
   onClose(): void;
 }
 
-const Search: React.FC<ISearch> = ({
+const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
   datasheetId,
   onClose,
 }) => {
@@ -86,7 +85,7 @@ const Search: React.FC<ISearch> = ({
         className={styles.search}
         size='small'
         autoFocus
-        prefix={<SearchIcon width={16} height={16} fill={colors.fc3} />}
+        prefix={<SearchOutlined size={16} color={colors.fc3} />}
         onChange={onChange}
         value={keyword}
         ref={inputRef}
@@ -99,7 +98,7 @@ const Search: React.FC<ISearch> = ({
               inputRef.current?.focus();
             }}
           >
-            <CancelFilled size={14} />
+            <CloseCircleFilled size={14} />
           </div>
         }
         onCompositionStart={onChange}
@@ -121,7 +120,7 @@ const Search: React.FC<ISearch> = ({
   );
 };
 
-export const Find: React.FC<IFind> = ({
+export const Find: React.FC<React.PropsWithChildren<IFind>> = ({
   datasheetId,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -137,7 +136,7 @@ export const Find: React.FC<IFind> = ({
       <IconButton
         onClick={() => setVisible(true)}
         className={styles.find}
-        icon={() => <SearchIcon width={16} height={16} fill={colors.fc2} />}
+        icon={() => <SearchOutlined size={16} color={colors.fc2} />}
       />
       {visible &&
         <Search

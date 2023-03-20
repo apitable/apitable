@@ -24,7 +24,7 @@ import { Popup } from '../popup';
 import styles from './style.module.less';
 import { IMobileContextMenuProps } from './interface';
 
-export const MobileContextMenu: FC<IMobileContextMenuProps> = (props) => {
+export const MobileContextMenu: FC<React.PropsWithChildren<IMobileContextMenuProps>> = (props) => {
   const { visible, data, height = '90%', title, onClose, params } = props;
 
   const hiddenItem = (hidden?: boolean | ((args: any) => boolean)) => {

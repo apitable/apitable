@@ -31,6 +31,7 @@ import { getFieldTypeString, IBindFieldContext, IBindFieldModel } from '../index
 import { ICellToStringOption, ICellValue } from '../record';
 import { StatTranslate, StatType } from './stat';
 import { joiErrorResult } from './validate_schema';
+import { IOpenFilterValue } from 'types/open/open_filter_types';
 
 // China sensitive string comparison `collators` constructor.
 const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
@@ -466,6 +467,30 @@ export abstract class Field {
    */
   updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenFieldProperty): IFieldProperty {
     return openFieldProperty;
+  }
+
+  /**
+   * Converting internal filter structures to external data structures.
+   * @param _value 
+   */
+  filterValueToOpenFilterValue(_value: any): IOpenFilterValue {
+    throw new Error(`${getFieldTypeString(this.field.type)} not support filterValueToOpenFilterValue`);
+  }
+
+  /**
+   * Converting external filter structures to internal data structures.
+   * @param value 
+   */
+  openFilterValueToFilterValue(_value: IOpenFilterValue): any {
+    throw new Error(`${getFieldTypeString(this.field.type)} not support filterValueToOpenFilterValue`);
+  }
+
+  /**
+   * Verify that the incoming external filter data structure is secure.
+   * @param value
+   */
+  validateOpenFilterValue(_value: IOpenFilterValue): Joi.ValidationResult {
+    return joiErrorResult(`${getFieldTypeString(this.field.type)} not support validateOpenFilterValue`);
   }
 }
 

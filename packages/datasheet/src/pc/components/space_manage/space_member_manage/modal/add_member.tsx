@@ -26,7 +26,7 @@ import { useMemberManage } from 'pc/hooks';
 interface IAddMember {
   onCancel: () => void;
 }
-export const AddMember: FC<IAddMember> = ({ onCancel }) => {
+export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel }) => {
   const {
     selectedTeamInfoInSpace,
     spaceId,

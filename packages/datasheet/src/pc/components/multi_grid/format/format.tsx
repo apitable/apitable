@@ -18,7 +18,7 @@
 
 import { SetStateAction } from 'react';
 import * as React from 'react';
-import { FieldType, IField } from '@apitable/core';
+import { FieldType, IDateTimeBaseField, IField } from '@apitable/core';
 import { FormatSelect } from './format_select/format_select';
 import { Dispatch } from 'react';
 import { FormateNumber } from './format_number';
@@ -41,7 +41,7 @@ interface IFieldFormatProps {
   datasheetId?: string;
 }
 
-export const FieldFormat: React.FC<IFieldFormatProps> = props => {
+export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = props => {
   const { from, currentField, setCurrentField, hideOperateBox, datasheetId } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
@@ -79,7 +79,7 @@ export const FieldFormat: React.FC<IFieldFormatProps> = props => {
     case FieldType.DateTime:
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
-      return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField} />;
+      return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField as  React.Dispatch<SetStateAction<IDateTimeBaseField>>} />;
     case FieldType.Link:
       return <FormateLink currentField={currentField} setCurrentField={setCurrentField} hideOperateBox={hideOperateBox} datasheetId={datasheetId} />;
     case FieldType.Formula:

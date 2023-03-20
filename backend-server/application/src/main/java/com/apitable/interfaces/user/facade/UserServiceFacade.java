@@ -18,14 +18,26 @@
 
 package com.apitable.interfaces.user.facade;
 
+import com.apitable.interfaces.auth.model.UserAuth;
 import com.apitable.interfaces.user.model.InvitationCode;
 import com.apitable.interfaces.user.model.RewardWizardAction;
 import com.apitable.interfaces.user.model.RewardedUser;
 
+/**
+ * user service facade.
+ */
 public interface UserServiceFacade {
+    void onUserChangeEmailAction(Long userId, String email);
 
-    void onUserChangeNicknameAction(Long userId, String nickname);
+    /**
+     * event on user change avatar.
+     *
+     * @param userId    user id
+     * @param avatarUrl avatar url
+     */
+    void onUserChangeAvatarAction(Long userId, String avatarUrl);
 
+    void onUserChangeNicknameAction(Long userId, String nickname, Boolean init);
     InvitationCode getUserInvitationCode(Long userId);
 
     boolean getInvitationReward(Long userId);
@@ -35,4 +47,19 @@ public interface UserServiceFacade {
     void rewardUserInfoUpdateAction(RewardedUser rewardedUser);
 
     void rewardWizardAction(RewardWizardAction wizardAction);
+
+    /**
+     * user reset password.
+     *
+     * @param userAuth {@link UserAuth}
+     * @return boolean
+     */
+    boolean resetPassword(UserAuth userAuth);
+
+    /**
+     * user verification on email.
+     *
+     * @param userAuth {@link UserAuth}
+     */
+    boolean verifyEmail(UserAuth userAuth);
 }

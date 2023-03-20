@@ -17,7 +17,7 @@
  */
 
 import { KONVA_DATASHEET_ID, StoreActions } from '@apitable/core';
-import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
+import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { Icon, Rect } from 'pc/components/konva_components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
@@ -36,10 +36,10 @@ interface IGroupTabProps {
   recordId: string;
 }
 
-const TriangleDown16FilledPath = TriangleDown16Filled.toString();
-const TriangleRight16FilledPath = TriangleRight16Filled.toString();
+const TriangleDown16FilledPath = TriangleDownFilled.toString();
+const TriangleRight16FilledPath = TriangleRightFilled.toString();
 
-export const GroupTab: FC<IGroupTabProps> = memo((props) => {
+export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props) => {
   const { x = 0, y = 0, width, height, recordId, depth } = props;
   const {
     datasheetId,
@@ -86,6 +86,9 @@ export const GroupTab: FC<IGroupTabProps> = memo((props) => {
         name={KONVA_DATASHEET_ID.GRID_GROUP_TOGGLE_BUTTON}
         x={16}
         y={(height - GRID_ICON_COMMON_SIZE) / 2}
+        scaleX={0.8}
+        scaleY={0.8}
+        transformsEnabled={'all'}
         data={isCollapse ? TriangleRight16FilledPath : TriangleDown16FilledPath}
         onClick={clickExpandToggle}
       />

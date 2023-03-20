@@ -98,7 +98,7 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
   return addNewRecord;
 }
 
-export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
+export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> = props => {
   const colors = useThemeColors();
   const { provided, groupId, height, setCollapse, isDragging, kanbanFieldId, dragId } = props;
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
@@ -134,7 +134,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
     return sortInfo && sortInfo.keepSort;
   });
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchItem);
+  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
 
   const [showSortBorder, setShowSortBorder] = useState(false);
   const { screenIsAtMost } = useResponsive();
@@ -144,7 +144,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
     if (!searchRecordId) {
       return;
     }
-    const searchRecordIndex = rows.map(item => item.id).indexOf(searchRecordId as string);
+    const searchRecordIndex = rows.map(item => item.id).indexOf(searchRecordId);
     if (searchRecordIndex < 0) {
       return;
     }

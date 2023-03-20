@@ -73,7 +73,7 @@ const defaultValue = [
   GENERATOR.paragraph({}),
 ] as unknown as EditorValue;
 
-const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
+const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props) => {
 
   const {
     onChange: propsOnChange,
@@ -225,50 +225,52 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
     // eslint-disable-next-line
   }, [autoFocus]);
 
-  return <EditorContext.Provider value={{ i18nText, operationAble, placeholder, mode }}>
-    <div className={styles.editorWrap} data-section-spacing={sectionSpacing} onClick={handleWrapClick}>
-      <Slate editor={editor} value={value} onChange={handleChange}>
-        {
-          headerToolbarEnabled && <div className={styles.header}> <Toolbar /> </div>
-        }
-        {
-          hoveringToolbarEnabled && <HoveringToolbar />
-        }
-        {
-          useMention && <MentionPanel />
-        }
-        <InsertPanel />
-        <Editable
-          {...otherProps}
-          readOnly={readOnly}
-          // decorate={getDecorate(editor)}
-          data-has-operation={operationAble}
-          className={clx(styles.editor, className)}
-          style={editorStyle}
-          onMouseMove={handleEditorMouseMove}
-          onMouseLeave={handleEditorMouseLeave}
-          onMouseUp={handleEditorMouseUp}
-          onScroll={handleScroll}
-          renderElement={useCallback((props) => <ElementRender {...props} />, [])}
-          renderLeaf={useCallback((props) => <LeafRender {...props} />, [])}
-          onKeyDown={useCallback((e) => { hotkeyHandle(e, editor); }, [editor])}
-          onCompositionStart={useCallback(() => {
-            editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_START);
-          }, [editor])}
-          onCompositionUpdate={useCallback(() => {
-            editor.isComposing = true;
-          }, [editor])}
-          onCompositionEnd={useCallback((e: React.CompositionEvent) => {
-            const text = e.data;
-            imeInputText.current = text;
-            editor.isComposing = false;
-            editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_END, text);
-            return fixImeInputBug(e, editor);
-          }, [editor])}
-        />
-      </Slate>
-    </div>
-  </EditorContext.Provider>;
+  return (
+    <EditorContext.Provider value={{ i18nText, operationAble, placeholder, mode }}>
+      <div className={styles.editorWrap} data-section-spacing={sectionSpacing} onClick={handleWrapClick}>
+        <Slate editor={editor} value={value} onChange={handleChange}>
+          {
+            headerToolbarEnabled && <div className={styles.header}> <Toolbar /> </div>
+          }
+          {
+            hoveringToolbarEnabled && <HoveringToolbar />
+          }
+          {
+            useMention && <MentionPanel />
+          }
+          <InsertPanel />
+          <Editable
+            {...otherProps}
+            readOnly={readOnly}
+            // decorate={getDecorate(editor)}
+            data-has-operation={operationAble}
+            className={clx(styles.editor, className)}
+            style={editorStyle}
+            onMouseMove={handleEditorMouseMove}
+            onMouseLeave={handleEditorMouseLeave}
+            onMouseUp={handleEditorMouseUp}
+            onScroll={handleScroll}
+            renderElement={useCallback((props: any) => <ElementRender {...props} />, [])}
+            renderLeaf={useCallback((props: any) => <LeafRender {...props} />, [])}
+            onKeyDown={useCallback((e: any) => { hotkeyHandle(e, editor); }, [editor])}
+            onCompositionStart={useCallback(() => {
+              editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_START);
+            }, [editor])}
+            onCompositionUpdate={useCallback(() => {
+              editor.isComposing = true;
+            }, [editor])}
+            onCompositionEnd={useCallback((e: React.CompositionEvent) => {
+              const text = e.data;
+              imeInputText.current = text;
+              editor.isComposing = false;
+              editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_END, text);
+              return fixImeInputBug(e, editor);
+            }, [editor])}
+          />
+        </Slate>
+      </div>
+    </EditorContext.Provider>
+  );
 });
 
 export const SlateEditor = React.memo(SlateEditorBase);

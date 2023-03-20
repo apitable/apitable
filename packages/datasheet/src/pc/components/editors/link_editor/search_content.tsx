@@ -19,7 +19,7 @@
 import { Button, LinkButton, useThemeColors, ThemeName } from '@apitable/components';
 import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
-  Strings, t, TextBaseField,
+  Strings, t, TextBaseField, ViewDerivateBase,
 } from '@apitable/core';
 import { Align, FixedSizeList } from 'react-window';
 import { useDebounce, useUpdateEffect } from 'ahooks';
@@ -36,12 +36,12 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
 import { RecordList } from './record_list';
 import style from './style.module.less';
+import { AddOutlined } from '@apitable/icons';
 
 interface ISearchContentProps {
   field: ILinkField;
@@ -84,7 +84,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   const foreignDataMap = useMemo(() => {
     if (hasLimitToView && !foreignDatasheet.isPartOfData) {
       return {
-        foreignRows: Selectors.getVisibleRowsBase(store.getState(), foreignDatasheet.snapshot, foreignView),
+        foreignRows: new ViewDerivateBase(store.getState(), foreignDatasheetId).getViewDerivation(foreignView).rowsWithoutSearch,
         foreignColumns: Selectors.getVisibleColumnsBase(foreignView),
       };
     }
@@ -97,7 +97,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       foreignRows,
       foreignColumns: Selectors.getVisibleColumns(store.getState(), foreignDatasheet.id)
     };
-  }, [hasLimitToView, foreignDatasheet, store, foreignView, formId]);
+  }, [hasLimitToView, foreignDatasheet, foreignView, formId, foreignDatasheetId]);
 
   const { foreignRows, foreignColumns } = foreignDataMap;
 
@@ -353,7 +353,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
                       className={classNames(style.addRecordBtn, 'textButton')}
                       onClick={addNewRecord}
                       color="primary"
-                      prefixIcon={<IconAdd fill={colors.black[50]} width="14px" height="14px" />}
+                      prefixIcon={<AddOutlined color={colors.black[50]} size={14} />}
                     >
                       {<TComponent
                         tkey={t(Strings.add_new_record_by_name)}
@@ -378,7 +378,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
             underline={false}
             onClick={addNewRecord}
             color={colors.fc2}
-            prefixIcon={<IconAdd fill="currentColor" />}
+            prefixIcon={<AddOutlined color="currentColor" />}
             disabled={!foreignDatasheetEditable}
             block
           >

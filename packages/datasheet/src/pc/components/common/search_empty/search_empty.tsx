@@ -25,7 +25,7 @@ import styles from './style.module.less';
 import { ThemeName } from '@apitable/components';
 import { useSelector } from 'react-redux';
 
-export const SearchEmpty: FC = () => {
+export const SearchEmpty: FC<React.PropsWithChildren<unknown>> = () => {
   const themeName = useSelector(state => state.theme);
   const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (

@@ -34,9 +34,9 @@ export class UndoManager {
   private _commandManager: CollaCommandManager | null = null;
   private _transformSquare = 100000;
 
-  constructor(public resourceId: string) { }
+  constructor(public resourceId: string) {}
 
-  setCommandManger(commandManager: CollaCommandManager) {
+  setCommandManager(commandManager: CollaCommandManager) {
     this._commandManager = commandManager;
   }
 
@@ -47,11 +47,7 @@ export class UndoManager {
     }
     const undoAction = undoStack.pop();
     if (undoAction && commandManager && commandManager.hasCommand(undoAction.cmd)) {
-      return commandManager._executeActions(
-        undoAction.cmd,
-        undoAction.result,
-        ExecuteType.Undo,
-      );
+      return commandManager._executeActions(undoAction.cmd, undoAction.result, ExecuteType.Undo);
     }
     return null;
   }
@@ -63,13 +59,20 @@ export class UndoManager {
     }
     const redoAction = redoStack.pop();
     if (redoAction && commandManager && commandManager.hasCommand(redoAction.cmd)) {
-      return commandManager._executeActions(
-        redoAction.cmd,
-        redoAction.result,
-        ExecuteType.Redo,
-      );
+      return commandManager._executeActions(redoAction.cmd, redoAction.result, ExecuteType.Redo);
     }
     return null;
+  }
+
+  private static revertLinkedActions(cmd: IUndoCommand) {
+    if (cmd.result.linkedActions) {
+      cmd.result.linkedActions = cmd.result.linkedActions.map(lCmd => {
+        return {
+          ...lCmd,
+          actions: jot.invert(lCmd.actions),
+        };
+      });
+    }
   }
 
   addUndoStack(command: IUndoCommand, executeType: ExecuteType) {
@@ -86,17 +89,10 @@ export class UndoManager {
         result: {
           ...command.result,
           actions: jot.invert(command.result.actions),
-        }
+        },
       };
 
-      if (inverted.result.linkedActions) {
-        inverted.result.linkedActions = inverted.result.linkedActions.map(lCmd => {
-          return {
-            ...lCmd,
-            actions: jot.invert(lCmd.actions),
-          };
-        });
-      }
+      UndoManager.revertLinkedActions(inverted);
 
       this._redoStack.push(inverted);
     } else {
@@ -116,14 +112,7 @@ export class UndoManager {
         },
       };
 
-      if (inverted.result.linkedActions) {
-        inverted.result.linkedActions = inverted.result.linkedActions.map(lCmd => {
-          return {
-            ...lCmd,
-            actions: jot.invert(lCmd.actions),
-          };
-        });
-      }
+      UndoManager.revertLinkedActions(inverted);
 
       undoStack.push(inverted);
 
@@ -150,19 +139,19 @@ export class UndoManager {
   }
 
   /**
-   * @description Temporary solution to solve the page stuck caused by excessive data volume 
+   * @description Temporary solution to solve the page stuck caused by excessive data volume
    * when transforming locally cached actions and remote collaborative actions
-   * The current idea is to give up this transform if the product of the two actions of the transform 
+   * The current idea is to give up this transform if the product of the two actions of the transform
    * exceeds the set threshold. And clear all caches this time and later,
    * Subsequent solutions will solve performance problems through workers
-   * 
+   *
    * @param {number} stackActionLen
    * @param {number} remoteActionLen
    * @returns {boolean}
    * @private
    */
   private checkTransformSquareOverLimit(stackActionLen: number, remoteActionLen: number) {
-    return Boolean((stackActionLen * remoteActionLen) > this._transformSquare);
+    return Boolean(stackActionLen * remoteActionLen > this._transformSquare);
   }
 
   private transformStack(stack: IUndoCommand[], remoteActions: IJOTAction[]) {
@@ -173,15 +162,13 @@ export class UndoManager {
         break;
       }
       const [left, right] = jot.transformX(stackActions, remoteActions);
-      newStack.push(
-        {
-          ...stack[i]!,
-          result: {
-            ...stack[i]!.result,
-            actions: left
-          }
-        }
-      );
+      newStack.push({
+        ...stack[i]!,
+        result: {
+          ...stack[i]!.result,
+          actions: left,
+        },
+      });
       remoteActions = right;
     }
     return newStack.reverse();

@@ -41,7 +41,7 @@ export interface IPermissionSettingProps {
 
 type IRoleMap = INodeRoleMap & { belongRootFolder: boolean };
 
-export const Permission: FC<IPermissionSettingProps> = ({ data }) => {
+export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = ({ data }) => {
   // Current operating mode
   const [isAppointMode, setIsAppointMode] = useState(true);
   // Whether to display the View Member Details modal box

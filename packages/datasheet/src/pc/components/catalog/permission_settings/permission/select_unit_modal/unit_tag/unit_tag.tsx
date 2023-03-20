@@ -18,9 +18,9 @@
 
 import { FC } from 'react';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';
+import { CloseOutlined } from '@apitable/icons';
 
 export interface IUnitTagProps {
   unitId: string;
@@ -37,7 +37,7 @@ export interface IUnitTagProps {
   maxWidth?: number;
 }
 
-export const UnitTag: FC<IUnitTagProps> = props => {
+export const UnitTag: FC<React.PropsWithChildren<IUnitTagProps>> = props => {
   const { deletable = true, avatar, avatarColor, nickName, name, isTeam = false, onClose, unitId, isLeave, title, maxWidth } = props;
   return (
     <div className={classNames(styles.unitTag, props.className, { [styles.isLeave]: isLeave })}>
@@ -53,7 +53,7 @@ export const UnitTag: FC<IUnitTagProps> = props => {
         <div className={styles.name} style={{ maxWidth }}>{title || name}</div>
         {
           deletable &&
-          <CloseIcon className={styles.closeBtn} width={8} height={8} onClick={() => onClose && onClose(unitId)} />
+          <CloseOutlined className={styles.closeBtn} size={8} onClick={() => onClose && onClose(unitId)} />
         }
       </div>
     </div>

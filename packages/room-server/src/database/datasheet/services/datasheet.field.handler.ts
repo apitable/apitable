@@ -20,6 +20,7 @@ import {
   FieldType, ICreatedByProperty, IDatasheetUnits, IFieldMap, IForeignDatasheetMap, IFormulaField, ILinkFieldProperty, ILookUpProperty,
   IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
@@ -84,6 +85,7 @@ export class DatasheetFieldHandler {
     };
   }
 
+  @Span()
   async parse(
     mainDstId: string,
     auth: IAuthHeader,
@@ -133,6 +135,7 @@ export class DatasheetFieldHandler {
    * @param globalParam global parameters
    * @param linkedRecordMap linked field data
    */
+  @Span()
   private async parseField(
     dstId: string,
     fieldMap: IFieldMap,
@@ -894,7 +897,7 @@ export class DatasheetFieldHandler {
     }
   }
 
-  async getSpaceIdByDstId(dstId: string): Promise<string> {
+  private async getSpaceIdByDstId(dstId: string): Promise<string> {
     const rawData = await this.datasheetRepository.selectSpaceIdByDstId(dstId);
     if (rawData?.spaceId) {
       return rawData.spaceId;

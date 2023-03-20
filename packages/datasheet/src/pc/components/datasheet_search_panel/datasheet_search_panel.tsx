@@ -46,12 +46,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record.svg';
 import { ScreenSize } from '../common/component_display/enum';
 import { Popup } from '../common/mobile/popup';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
 import styles from './style.module.less';
+import { QuestionCircleOutlined, NarrowOutlined } from '@apitable/icons';
 
 interface ISearchPanelProps {
   folderId: string;
@@ -93,7 +92,7 @@ const getModalTitle = (subColumnType?: SubColumnType) => {
   }
 };
 
-const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
+const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = props => {
   const colors = useThemeColors();
   const { activeDatasheetId, noCheckPermission, folderId, subColumnType, showMirrorNode } = props;
   const showSubColumnWithView = subColumnType === SubColumnType.View;
@@ -115,10 +114,8 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const [nodes, setNodes] = useState<ICommonNode[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [onlyShowEditableNode, setOnlyShowEditableNode] = useState<boolean>(() => {
-    if (showSubColumnWithView) {
-      return true;
-    }
-    return false;
+    return showSubColumnWithView;
+
   });
   const [folderLoaded, setFolderLoaded] = useState<boolean>(false);
 
@@ -134,7 +131,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const mirror = useSelector(state => {
     return currentMirrorId ? Selectors.getMirror(state, currentMirrorId) : undefined;
   });
-  const isEmbed = useSelector(state => Boolean(state.pageParams.embedId));
+  const { embedId } = useSelector(state => state.pageParams);
 
   const search = useMemo(() => {
     return throttle((spaceId: string, val: string) => {
@@ -372,13 +369,16 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
 
   const SearchPanel = (
     <div className={styles.searchPanel} onClick={e => e.stopPropagation()}>
-      {!isMobile && <ButtonPlus.Icon className={styles.narrowBtn} icon={<IconNarrow width={24} height={24} />} size="small" onClick={hidePanel} />}
+      {
+        !isMobile && 
+        <ButtonPlus.Icon className={styles.narrowBtn} icon={<NarrowOutlined size={16} color={'currentColor'} />} size='small' onClick={hidePanel} />
+      }
       {!isMobile && <h2 className={styles.searchPanelTitle}>
         {getModalTitle(subColumnType)}
         {showSubColumnWithView && (
           <Tooltip title={t(Strings.form_tour_desc)}>
-            <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target="_blank" rel="noreferrer">
-              <HelpIcon fill={colors.firstLevelText}/>
+            <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
+              <QuestionCircleOutlined color={colors.firstLevelText} />
             </a>
           </Tooltip>
         )}
@@ -395,7 +395,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
         value={searchValue}
         switchVisible={!showSubColumnWithView}
       />
-      {!showSearch && !isEmbed && <FolderBreadcrumb parents={parents} onNodeClick={onNodeClick} />}
+      {!showSearch && !embedId && <FolderBreadcrumb parents={parents} onNodeClick={onNodeClick} />}
       {showSearch ? (
         <SearchResult
           searchResult={searchResult}
@@ -452,7 +452,8 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
           document.body,
         )
       ) : (
-        <Popup title={getModalTitle(subColumnType)} open height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
+        <Popup title={getModalTitle(subColumnType)} open height='90%' bodyStyle={{ padding: 0 }} onClose={hidePanel}
+          className={styles.portalContainerDrawer}>
           {SearchContainer}
         </Popup>
       )}

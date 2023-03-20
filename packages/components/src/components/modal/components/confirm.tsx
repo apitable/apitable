@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DefaultFilled, ErrorFilled, InformationSmallOutlined, SuccessFilled, WarnFilled } from '@apitable/icons';
+import { InfoCircleFilled, WarnCircleFilled, QuestionCircleOutlined, CheckCircleFilled, WarnFilled } from '@apitable/icons';
 import { Box } from 'components/box';
 import { Button } from 'components/button';
 import { TextButton } from 'components/text_button';
@@ -160,7 +160,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
 
 export const withConfirm = (props: IModalFuncProps): IModalFuncProps => {
   return {
-    icon: <DefaultFilled />,
+    icon: <InfoCircleFilled />,
     type: 'confirm',
     ...props,
   };
@@ -174,7 +174,7 @@ export const withWarning = (props: IModalFuncProps): IModalFuncProps => {
   };
 };
 
-const IconDanger = styled(InformationSmallOutlined).attrs(applyDefaultTheme)`
+const IconDanger = styled(QuestionCircleOutlined).attrs(applyDefaultTheme)`
   ${(props) => {
     const {
       red,
@@ -195,7 +195,7 @@ export const withDanger = (props: IModalFuncProps): IModalFuncProps => {
 
 export const withError = (props: IModalFuncProps): IModalFuncProps => {
   return {
-    icon: <ErrorFilled />,
+    icon: <WarnCircleFilled />,
     type: 'error',
     ...props,
   };
@@ -203,7 +203,7 @@ export const withError = (props: IModalFuncProps): IModalFuncProps => {
 
 export const withSuccess = (props: IModalFuncProps): IModalFuncProps => {
   return {
-    icon: <SuccessFilled />,
+    icon: <CheckCircleFilled />,
     type: 'success',
     ...props,
   };
@@ -211,7 +211,7 @@ export const withSuccess = (props: IModalFuncProps): IModalFuncProps => {
 
 export const withInfo = (props: IModalFuncProps): IModalFuncProps => {
   return {
-    icon: <InformationSmallOutlined />,
+    icon: <QuestionCircleOutlined />,
     type: 'info',
     ...props,
   };

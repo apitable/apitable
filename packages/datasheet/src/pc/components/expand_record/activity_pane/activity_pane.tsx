@@ -18,9 +18,9 @@
 
 import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
-import { CloseMiddleOutlined } from '@apitable/icons';
+import { CloseOutlined, DeleteOutlined, QuestionCircleOutlined, ChevronDownOutlined } from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
-import { Dropdown, Menu  } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import classNames from 'classnames';
 import { pick } from 'lodash';
 import { MobileContextMenu, Tooltip } from 'pc/components/common';
@@ -33,9 +33,6 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { ActivityContext } from './activity_context';
 import { ActivityList } from './activity_list/activity_list';
 
@@ -43,7 +40,7 @@ import { CommentEditor } from './comment_editor';
 import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 import styles from './style.module.less';
 
-export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
+export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPaneProps>> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
@@ -123,10 +120,13 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
             <div className={styles.paneTitle}>
               {t(Strings.activity)}
               <Tooltip title={t(Strings.activity_tip)} trigger={'hover'}>
-                <a href={getEnvVariables().RECORD_ACTIVITY_HELP_URL} rel="noopener noreferrer" target="_blank">
-                  <HelpIcon
-                    style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
-                    fill={colors.thirdLevelText}
+                <a 
+                  href={getEnvVariables().RECORD_ACTIVITY_HELP_URL} 
+                  rel="noopener noreferrer" target="_blank"
+                  style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
+                >
+                  <QuestionCircleOutlined
+                    color={colors.thirdLevelText}
                   />
                 </a>
               </Tooltip>
@@ -153,14 +153,14 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
               <div>
                 {ACTIVITY_SELECT_MAP[selectType][1]}
                 <span className={classNames(styles.selectIcon, { [styles.open!]: selectOpen })}>
-                  <IconArrow width={16} height={16} fill={colors.thirdLevelText} />
+                  <ChevronDownOutlined size={16} color={colors.thirdLevelText} />
                 </span>
               </div>
             </Dropdown>
           </div>
           {closable && !isMobile && (
             <IconButton
-              icon={CloseMiddleOutlined}
+              icon={CloseOutlined}
               shape="square"
               onClick={() => {
                 onClose && onClose();
@@ -191,7 +191,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
           data={[
             [
               {
-                icon: <IconDelete fill={colors.thirdLevelText} />,
+                icon: <DeleteOutlined color={colors.thirdLevelText} />,
                 text: t(Strings.delete),
                 isWarn: true,
                 onClick: () => {

@@ -84,7 +84,7 @@ export function Emoji(props: any) {
   );
 }
 
-export const Picker: React.FC<Record<any, any>> = (props: any) => {
+export const Picker: React.FC<React.PropsWithChildren<Record<any, any>>> = (props: any) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
