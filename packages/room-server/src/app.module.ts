@@ -23,7 +23,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
-import { enableScheduler, enableSocket } from 'app.environment';
+import { defaultLanguage, enableScheduler, enableSocket } from 'app.environment';
 import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
 import { DeveloperModule } from 'developer/developer.module';
@@ -34,7 +34,7 @@ import { GrpcModule } from 'grpc/grpc.module';
 import { I18nModule } from 'nestjs-i18n';
 import { NodeModule } from 'node/node.module';
 import path, { resolve } from 'path';
-import { DEFAULT_LANGUAGE, I18nJsonParser } from 'shared/adapters/I18n.json.parser';
+import { I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import openTelemetryConfiguration from 'shared/services/config/open.telemetry.config.service';
@@ -66,7 +66,7 @@ import { UserModule } from 'user/user.module';
     }),
     EnvConfigModule,
     I18nModule.forRoot({
-      fallbackLanguage: DEFAULT_LANGUAGE,
+      fallbackLanguage: defaultLanguage,
       parser: I18nJsonParser as any,
       parserOptions: {
         path: path.join(__dirname, '/i18n/'),
