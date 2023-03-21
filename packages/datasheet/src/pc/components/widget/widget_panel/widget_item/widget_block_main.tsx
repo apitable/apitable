@@ -3,6 +3,7 @@ import {
   eventMessage, getLanguage, IExpandRecordProps, initRootWidgetState, initWidgetStore, MessageType, RuntimeEnv, WidgetProvider
 } from '@apitable/widget-sdk';
 import { useMount, useUnmount } from 'ahooks';
+import { dashboardReg } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
@@ -50,8 +51,12 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
     if (!bindDatasheetLoaded) {
       return false;
     }
-    const { templateId } = state.pageParams;
-    return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
+    const { templateId, nodeId: pageNodeId } = state.pageParams;
+    // dashboard in
+    if (pageNodeId && dashboardReg.test(pageNodeId)) {
+      return Selectors.getDashboardPack(state, nodeId)?.connected;
+    }
+    return templateId || nodeId !== pageNodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
 
   useImperativeHandle(ref, () => ({
@@ -122,6 +127,19 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
       eventMessage.removeListenEvent(widgetId, MessageType.WIDGET_SUBSCRIBE_CHANGE);
     };
   }, [widgetId]);
+
+  useEffect(() => {
+    if (widgetStore) {
+      // Handling updates action.
+      eventMessage.onSyncAction(widgetId, (action) => {
+        widgetStore.dispatch(action);
+      });
+    }
+      
+    return () => {
+      eventMessage.removeListenEvent(widgetId, MessageType.MAIN_SYNC_ACTION);
+    };
+  }, [widgetId, widgetStore]);
 
   if (!nodeConnected || !widgetStore) {
     return <WidgetLoading/>;

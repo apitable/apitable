@@ -5,7 +5,6 @@ import { isSandbox } from 'utils/private';
  * Maintaining the reference count of the view cache.
  */
 class ReferenceCount {
-  widgetId: string = '';
   private referenceCountMap = new Map<string, {[key: string]: number}>();
 
   constructor() {}
@@ -21,19 +20,19 @@ class ReferenceCount {
     return res;
   }
 
-  add(datasheetId: string, viewId: string) {
+  add(datasheetId: string, viewId: string, widgetId: string) {
     const datasheetCount = this.referenceCountMap.get(datasheetId);
     const viewCount = datasheetCount?.[viewId] || 0;
     if (!datasheetCount) {
       this.referenceCountMap.set(datasheetId, { [viewId]: 1 });
-      this.notify();
+      this.notify(widgetId);
       return;
     }
     this.referenceCountMap.set(datasheetId, { ...datasheetCount, [viewId]: viewCount + 1 });
-    this.notify();
+    this.notify(widgetId);
   }
 
-  remove(datasheetId: string, viewId: string) {
+  remove(datasheetId: string, viewId: string, widgetId: string) {
     const datasheetCount = this.referenceCountMap.get(datasheetId);
     const viewCount = datasheetCount?.[viewId];
     if (!datasheetCount || !viewCount) {
@@ -41,7 +40,7 @@ class ReferenceCount {
     }
     this.referenceCountMap.set(datasheetId, { ...datasheetCount, [viewId]: viewCount - 1 });
     this.maintainCount(datasheetId);
-    this.notify();
+    this.notify(widgetId);
   }
 
   /**
@@ -66,18 +65,18 @@ class ReferenceCount {
     this.referenceCountMap.set(datasheetId, referenceCount);
   }
 
-  clear() {
+  clear(widgetId: string) {
     this.referenceCountMap.clear();
-    this.notify();
+    this.notify(widgetId);
   }
 
   /**
    * Notify the main thread of a change in subscription count.
    */
-  notify() {
+  notify(widgetId: string) {
     isSandbox() ?
       widgetMessage.syncWidgetSubscribeView(this.getSubscribeMap()) :
-      eventMessage.syncWidgetSubscribeView(this.getSubscribeMap(), this.widgetId);
+      eventMessage.syncWidgetSubscribeView(this.getSubscribeMap(), widgetId);
   }
 }
 

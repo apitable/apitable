@@ -23,8 +23,6 @@ import { ErrorHandler } from '../error_handler';
 import { uniqueId } from 'lodash';
 import { IWidgetStore } from 'store';
 import { ThemeName } from '@apitable/components';
-import { eventMessage, MessageType } from 'message';
-import { isSandbox } from 'utils/private';
 
 const _Provider: any = Provider;
 /**
@@ -64,19 +62,6 @@ export const WidgetProvider: React.FC<React.PropsWithChildren<IWidgetProviderPro
       return;
     }
   }, [id, props.widgetStore]);
-
-  useEffect(() => {
-    if (!isSandbox() && widgetStore) {
-      // Handling updates action.
-      eventMessage.onSyncAction(id, (action) => {
-        widgetStore.dispatch(action);
-      });
-    }
-      
-    return () => {
-      eventMessage.removeListenEvent(id, MessageType.MAIN_SYNC_ACTION);
-    };
-  }, [id, props.widgetStore, widgetStore]);
 
   const widgetConfigValue = useMemo(() => {
     return { mountId, isShowingSettings, isFullscreen, toggleFullscreen, toggleSettings, expandRecord };
