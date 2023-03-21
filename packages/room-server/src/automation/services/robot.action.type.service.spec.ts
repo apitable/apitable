@@ -49,7 +49,7 @@ describe('RobotActionTypeServiceTest', () => {
   });
 
   it('get action type should be return webhook', async() => {
-    jest.spyOn(automationActionTypeRepository, 'findOneOrFail').mockResolvedValue({
+    jest.spyOn(automationActionTypeRepository, 'find').mockResolvedValue([{
       id: 'id',
       serviceId: 'serviceId',
       actionTypeId: 'actionTypeId',
@@ -57,8 +57,8 @@ describe('RobotActionTypeServiceTest', () => {
       description: 'description',
       endpoint: 'endpoint',
       i18n: { en: {}},
-    } as AutomationActionTypeEntity);
-    jest.spyOn(automationServiceRepository, 'findOneOrFail').mockResolvedValue({
+    } as AutomationActionTypeEntity]);
+    jest.spyOn(automationServiceRepository, 'findOne').mockResolvedValue({
       id: 'id',
       serviceId: 'serviceId',
       slug: 'slug',
