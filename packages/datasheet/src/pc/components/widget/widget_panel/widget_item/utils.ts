@@ -1,5 +1,5 @@
 import { Selectors, StoreActions } from '@apitable/core';
-import { addDatasheet, mainMessage, widgetDatasheetSelector } from '@apitable/widget-sdk';
+import { addDatasheet, eventMessage, mainMessage, widgetDatasheetSelector } from '@apitable/widget-sdk';
 import { store } from 'pc/store';
 
 interface IPatchDatasheetProps {
@@ -17,6 +17,7 @@ const syncDatasheet = (widgetId: string, datasheetId: string, messageId?: string
   const datasheet = Selectors.getDatasheet(state, datasheetId);
   if (datasheetPack && datasheet && !datasheet.isPartOfData) {
     mainMessage.syncAction(widgetId, addDatasheet(datasheetId, widgetDatasheetSelector(state, datasheetId)!), messageId);
+    eventMessage.syncAction(addDatasheet(datasheetId, widgetDatasheetSelector(state, datasheetId)!), widgetId);
   }
 };
 

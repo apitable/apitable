@@ -19,7 +19,9 @@
 import { colors, LinkButton, Loading } from '@apitable/components';
 import { Strings, t, WidgetPackageStatus } from '@apitable/core';
 import { WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
-import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage } from '@apitable/widget-sdk';
+import {
+  ErrorBoundary, eventMessage, initWidgetCliSocket, MessageType, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage
+} from '@apitable/widget-sdk';
 import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { getEnvVariables } from 'pc/utils/env';
@@ -59,10 +61,13 @@ export const WidgetLoader: React.FC<React.PropsWithChildren<{
   const [WidgetComponent, refresh, loading, error] = useWidgetComponent(loadUrl, widgetPackageId);
 
   useEffect(() => {
-    widgetMessage.onRefreshWidget(() => {
-      refresh();
-    });
-  }, [refresh]);
+    widgetMessage?.onRefreshWidget(refresh);
+    widgetId && eventMessage.onRefreshWidget(widgetId, refresh);
+    return () => {
+      widgetId && eventMessage.removeListenEvent(widgetId, MessageType.MAIN_REFRESH_WIDGET);
+      widgetMessage?.removeListenEvent(MessageType.MAIN_REFRESH_WIDGET);
+    };
+  }, [refresh, widgetId]);
 
   useEffect(() => {
     if (!isDevMode) {

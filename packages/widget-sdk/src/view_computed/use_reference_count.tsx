@@ -1,9 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { WidgetContext } from 'context';
+import { IWidgetContext } from 'interface';
+import { useContext, useEffect, useRef } from 'react';
 import { widgetReferenceCount } from './reference_count';
 
 export const useReferenceCount = (datasheetId: string | undefined, viewId: string | undefined) => {
+  const context = useContext<IWidgetContext>(WidgetContext);
   const preDatasheetId = useRef<string>();
   const preViewId = useRef<string>();
+  widgetReferenceCount.widgetId = context.id;
   useEffect(() => {
     if (!datasheetId || !viewId) {
       return;

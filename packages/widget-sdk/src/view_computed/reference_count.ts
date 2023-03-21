@@ -1,9 +1,11 @@
-import { widgetMessage } from 'message';
+import { eventMessage, widgetMessage } from 'message';
+import { isSandbox } from 'utils/private';
 
 /**
  * Maintaining the reference count of the view cache.
  */
 class ReferenceCount {
+  widgetId: string = '';
   private referenceCountMap = new Map<string, {[key: string]: number}>();
 
   constructor() {}
@@ -73,7 +75,9 @@ class ReferenceCount {
    * Notify the main thread of a change in subscription count.
    */
   notify() {
-    widgetMessage.syncWidgetSubscribeView(this.getSubscribeMap());
+    isSandbox() ?
+      widgetMessage.syncWidgetSubscribeView(this.getSubscribeMap()) :
+      eventMessage.syncWidgetSubscribeView(this.getSubscribeMap(), this.widgetId);
   }
 }
 
