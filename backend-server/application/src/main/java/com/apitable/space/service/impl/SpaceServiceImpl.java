@@ -243,7 +243,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createSpace(final UserEntity user, final String spaceName) {
-        log.info("Create space");
         Long userId = user.getId();
         // Check whether the user reaches the upper limit
         boolean limit = this.checkSpaceNumber(userId);
@@ -297,7 +296,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             iNodeService.copyNodeToSpace(userId, spaceId, rootNodeId,
                 templateNodeId, NodeCopyOptions.create());
         }
-        entitlementServiceFacade.createSubscription(spaceId, userId);
+        // entitlementServiceFacade.createSubscription(spaceId, userId);
         return spaceId;
     }
 
