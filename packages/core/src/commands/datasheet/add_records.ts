@@ -18,6 +18,7 @@
 
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { DatasheetActions, ICellValue } from 'model';
+import { getDatasheetLoading } from 'modules/database/store/selectors/resource';
 import { getNewIds, IDPrefix } from 'utils';
 import { IJOTAction } from 'engine';
 import { Selectors } from '../../exports/store';
@@ -51,6 +52,11 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, datasheetId);
+    const loading = getDatasheetLoading(state, datasheetId);
+
+    if(loading){
+      throw new Error(t(Strings.datasheet_is_loading));
+    }
 
     if (!snapshot) {
       return null;

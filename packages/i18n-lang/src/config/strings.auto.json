@@ -3745,6 +3745,10 @@
             "en_US": "Use the template first, then you can modify or write data",
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
         },
+        "datasheet_is_loading": {
+            "zh_CN": "当前有正在加载的数据，请稍后操作",
+            "en_US": "There is data being loaded currently, please wait to proceed."
+        },
         "datasheet_manager_label": {
             "zh_CN": "在「可以编辑」基础上，还可以配置字段和表格",
             "en_US": "In addition to \"Editor\",  can also configure datasheet and fields",
@@ -11340,8 +11344,8 @@
             "zh_HK": "已完成添加"
         },
         "player_step_ui_config_165": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高响应速度</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高请求速度</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
         },
         "player_step_ui_config_166": {
             "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
@@ -11697,6 +11701,10 @@
         "quick_search_intro": {
             "zh_CN": "输入关键词可快速找到相关搜索结果。点击分类项可过滤文件类型，包括维格表、文件夹、神奇表单、镜像和仪表盘",
             "en_US": "Quickly obtain relevant search results by entering a keyword. Filter by file type (e.g. datasheet, folder, form, mirror, dashboard) using category items"
+        },
+        "quick_search_loading": {
+            "zh_CN": "正在搜索...",
+            "en_US": "Searching..."
         },
         "quick_search_not_found": {
             "zh_CN": "我们找不到你要搜索的内容",
@@ -12384,7 +12392,7 @@
         },
         "robot_action_send_web_request_title": {
             "zh_CN": "发送网络请求",
-            "en_US": "Send web request",
+            "en_US": "Send a web request",
             "zh_HK": "發送網絡請求"
         },
         "robot_action_type": {
