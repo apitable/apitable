@@ -49,7 +49,6 @@ import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.FileTool;
 import com.apitable.core.util.SpringContextHolder;
-import com.apitable.core.util.SqlTool;
 import com.apitable.integration.grpc.BasicResult;
 import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
@@ -163,6 +162,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -170,6 +170,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.EncryptedDocumentException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -255,6 +256,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private IWidgetService iWidgetService;
+
+    @Resource
+    private RedisLockRegistry redisLockRegistry;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -896,7 +900,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeIds.add(opRo.getParentId());
             info.set(AuditConstants.OLD_PARENT_ID, nodeEntity.getParentId());
         } else {
-            // Sort at the same level, the old and new front nodes are the same, that is, no movement has occurred.
+            // Sort at the same level, the old and new front nodes are the same,
+            // that is, no movement has occurred.
             if (Optional.ofNullable(opRo.getPreNodeId()).orElse("")
                 .equals(Optional.ofNullable(nodeEntity.getPreNodeId()).orElse(""))) {
                 return new ArrayList<>();
@@ -910,16 +915,27 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
             CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
         nodeIds.addAll(suffixNodeIds);
-        // Update the front node of the latter node
-        // to the front node of the node (A <- B <- C => A <- C)
-        nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(), nodeEntity.getNodeId(),
-            nodeEntity.getParentId());
-        // Update the sequence relationship of nodes before
-        // and after the move (D <- E => D <- B <- E)
-        nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
-        // Update the information of this node (the ID of the previous node may be updated to
-        // null, so update By id is not used)
-        nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
+        Lock lock = redisLockRegistry.obtain(parentId);
+        try {
+            if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                // Update the front node of the latter node
+                // to the front node of the node (A <- X <- C => A <- C)
+                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(),
+                    nodeEntity.getNodeId(), nodeEntity.getParentId());
+                // Update the sequence relationship of nodes before
+                // and after the move (D <- E => D <- X <- E)
+                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
+                // Update the information of this node (the ID of the previous
+                // node may be updated to null, so update By id is not used)
+                nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
+            } else {
+                throw new BusinessException("Frequent operations");
+            }
+        } catch (InterruptedException e) {
+            throw new BusinessException("Frequent operations");
+        } finally {
+            lock.unlock();
+        }
         // Publish Space Audit Events
         info.set(AuditConstants.MOVE_EFFECT_SUFFIX_NODES, CollUtil.emptyIfNull(suffixNodeIds));
         AuditSpaceArg arg =
