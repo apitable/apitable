@@ -44,11 +44,17 @@ export const rootReducers = combineReducers<IWidgetState>({
   },
 });
 
-export let widgetStore = createStore(rootReducers) as Store<IWidgetState>;
+export const getWidgetStore = (widgetId: string): Store<IWidgetState> => {
+  const widgetStore = (window as any)[`_widgetStore_${widgetId}`];
+  if (widgetStore) {
+    return widgetStore;
+  }
+  return createStore(rootReducers);
+};
 
-export const initWidgetStore = (state: IWidgetState) => {
-  const next = createStore(rootReducers, state);
-  widgetStore = next;
+export const initWidgetStore = (state: IWidgetState, widgetId: string = '') => {
+  const widgetStore = createStore(rootReducers, state) as Store<IWidgetState>;
   /** debug */
-  (window as any)._widgetStore = next;
+  (window as any)[`_widgetStore_${widgetId}`] = widgetStore;
+  return widgetStore;
 };

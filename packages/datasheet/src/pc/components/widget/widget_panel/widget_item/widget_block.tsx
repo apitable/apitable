@@ -29,13 +29,37 @@ import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 import * as React from 'react';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useWidgetCanRender } from '../../context';
+import { useManageWidgetRenderTask, useWidgetCanRender } from '../../context';
 import { widgetRenderTask } from '../../context/widget_render_task';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import styles from './style.module.less';
 import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
+import * as components from '@apitable/components';
+import * as core from '@apitable/core';
+import * as icons from '@apitable/icons';
+import * as widgetSdk from '@apitable/widget-sdk';
+import { getEnvVariables } from 'pc/utils/env';
+import ReactDOM from 'react-dom';
+
+(() => {
+  if (!process.env.SSR) {
+    const prefix = getEnvVariables().WIDGET_REPO_PREFIX;
+    window['_React'] = React;
+    window['_ReactDom'] = ReactDOM;
+    window['_@apitable/components'] = components;
+    window['_@apitable/widget-sdk'] = widgetSdk;
+    window['_@apitable/core'] = core;
+    window['_@apitable/icons'] = icons;
+    if (prefix !== 'apitable') {
+      window[`_@${prefix}/components`] = components;
+      window[`_@${prefix}/widget-sdk`] = widgetSdk;
+      window[`_@${prefix}/core`] = core;
+      window[`_@${prefix}/icons`] = icons;
+    }
+  }
+})();
 
 let WIDGET_IFRAME_PATH: string;
 if (process.env.NODE_ENV !== 'production') {
@@ -71,6 +95,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     widgetId, widgetPackageId, isExpandWidget, isSettingOpened, isDevMode, nodeId, toggleFullscreen, toggleSetting, expandRecord, dragging,
     setDevWidgetId, runtimeEnv
   } = props;
+  useManageWidgetRenderTask(widgetId);
   const [connected, setConnected] = useState<boolean>();
   const [iframeLoading, setIframeLoading] = useState<boolean>(true);
   const widgetCanRender = useWidgetCanRender(widgetId);
