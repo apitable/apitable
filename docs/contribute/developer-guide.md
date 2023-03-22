@@ -149,7 +149,7 @@ If you are interested in cloud service API interfaces, you can also directly acc
 
 ## How to set the limitation of widget quantity in dashboard? (Default 30)
 
-## Can I improve the API query rate limit? (Default 5)
+## Can I increase request rate limit of the API? (5 by default)
 
 In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
@@ -157,7 +157,10 @@ In the `.env.default` file of `room-server`, there are two parameters that can a
 
 2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
 
-## Can I improve the API query batch tasks? (Default 10)
+## How to increase the number of records inserted per API call? (10 by default)
+
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+
 
 ## How to upgrade to the newest release version?
 
