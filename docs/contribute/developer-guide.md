@@ -73,7 +73,7 @@ sudo apt install make
 ```
 
 
-## Build Tool
+## What Build Tool we use?
 
 We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
 
@@ -87,7 +87,7 @@ make
 
 
 
-## Start Development Environment
+## How to start development environment?
 
 APITable consists of 3 processes:
 
@@ -120,10 +120,37 @@ make run # enter 3
 
 
 
-## IDE
+## What IDE should you use?
 
 We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
 
 APITable have prepared these two IDE's debug configs.
 
 Just open APITable's root directory with IDE.
+
+
+
+## How to configurate the SMTP server?
+
+By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+
+
+## Performance problem under macOS M1 docker run?
+
+## Where is the API documentation?
+
+## How to set the limitation of widget quantity in dashboard? (Default 30)
+
+## Can I improve the API query rate limit? (Default 5)
+Yes, You can configure it in the .env file.
+But, we recommend you don't set it too large due to the performance problem.
+
+## Can I improve the API query batch tasks? (Default 10)
+
+## How to upgrade to the newest release version?
+
+## How to change the default 80 port?
+
+
+
+
