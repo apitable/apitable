@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import { useTheme } from '@apitable/components';
 import { ListChildComponentProps } from 'react-window';
 import { RecordCard } from './record_card';
-import { RecordCardWrapper } from './styled';
+import styles from './style.module.less';
+import classNames from 'classnames';
 
 export const Row: React.FC<ListChildComponentProps> = memo(props => {
   const { index, data, style } = props;
@@ -27,8 +28,10 @@ export const Row: React.FC<ListChildComponentProps> = memo(props => {
       key={recordId} 
       style={style}
     >
-      <RecordCardWrapper
-        isSelected={isSelected}
+      <div
+        className={classNames(styles.recordCardWrapper, {
+          [styles.recordCardWrapperSelected]: isSelected
+        })}
       >
         <RecordCard
           row={row}
@@ -40,7 +43,7 @@ export const Row: React.FC<ListChildComponentProps> = memo(props => {
           }}
           onClick={onClick}
         />
-      </RecordCardWrapper>
+      </div>
     </div>
   );
 });
