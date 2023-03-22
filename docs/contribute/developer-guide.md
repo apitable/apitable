@@ -151,8 +151,8 @@ But, we recommend you don't set it too large due to the performance problem.
 
 ## How to upgrade to the newest release version?
 
+
 ## How to change the default 80 port?
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-
-
-
+For example. It would be set as NGINX_HTTP_PORT=8080
