@@ -139,6 +139,8 @@ By default, APITable doesn't configure the SMTP server, which means you cannot i
 
 ## Where is the API documentation?
 
+the api document local access address is http://localhost:8081/api/v1/doc.html 
+
 ## How to set the limitation of widget quantity in dashboard? (Default 30)
 
 ## Can I improve the API query rate limit? (Default 5)
