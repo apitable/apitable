@@ -631,7 +631,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apitable/room-native-api@workspace:packages/room-native-api"
   dependencies:
-    "@napi-rs/cli": ^2.14.6
+    "@napi-rs/cli": 2.15.1
     open-cli: ^7.1.0
   languageName: unknown
   linkType: soft
@@ -7967,12 +7967,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/cli@npm:^2.14.6":
-  version: 2.14.6
-  resolution: "@napi-rs/cli@npm:2.14.6"
+"@napi-rs/cli@npm:2.15.1":
+  version: 2.15.1
+  resolution: "@napi-rs/cli@npm:2.15.1"
   bin:
     napi: scripts/index.js
-  checksum: f34d6af1df96a5a592babd9f67b7aa1750527c1874c2ab7b6692511fb1eda058628739b3259429fa8d2f771fe8aba4476ed68f43cb26d93ee2106ad757679315
+  checksum: 2836d364452ef62200764ddc227a0ccffac6916fdea25cc5679ddf9c0131dace2bdb7aec04cc10928ac489962fe5ae58031caf236ec61aaea4c269af4b820d2c
   languageName: node
   linkType: hard
 

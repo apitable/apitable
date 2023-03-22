@@ -566,6 +566,7 @@ export interface Events {
     workbench_form_container_shown: AddressShown;
     workbench_hidden_vikaby_btn_clicked: AddressShown;
     workbench_no_emit: AddressShown;
+    workbench_show_trial_tip: AddressShown;
     workbench_shown: AddressShown;
     workbench_space_list_shown: AddressShown;
 }
