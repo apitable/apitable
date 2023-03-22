@@ -4,19 +4,10 @@ import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.
 import { store } from 'pc/store';
 import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';
-import {
-  RecordCardContainer,
-  RecordCardStyled,
-  RecordCardRow,
-  RecordCardTitle,
-  CellRow,
-  CardCell,
-  CardColumn,
-  CellTitle,
-  CellHolder,
-  CellValue
-} from './styled';
+import styles from './style.module.less';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 
 export interface IRecordCardProps {
   datasheetId: string;
@@ -31,6 +22,7 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
   const { datasheetId, row, columns, fieldMap, style, onClick } = props;
   const state = store.getState();
   const snapshot = useSelector(Selectors.getSnapshot)!;
+  const colors = useThemeColors();
   const recordId = row.recordId;
   const [frozenColumn, ...remainColumns] = columns;
   const primaryFieldId = frozenColumn.fieldId;
@@ -82,54 +74,57 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
   };
 
   return (
-    <RecordCardContainer>
-      <RecordCardStyled
+    <div className={styles.recordCardContainer}>
+      <div
         style={style}
+        className={styles.recordCardStyled}
         onClick={() => onClick?.(recordId)}
       >
         {
           recordId ? 
             <>
-              <RecordCardRow>
-                <RecordCardTitle
-                  isEmpty={!Boolean(title)}
+              <div className={styles.recordCardRow}>
+                <h3
+                  className={styles.recordCardTitle}
+                  style={{ color: !Boolean(title) ? colors.fourthLevelText : colors.firstLevelText }}
                 >
                   {title || t(Strings.record_unnamed)}
-                </RecordCardTitle>
-                <CellRow>
+                </h3>
+                <div className={styles.cellRow}>
                   {
                     normalColumns.map(column => {
                       const fieldId = column.fieldId;
                       const field = fieldMap[column.fieldId];
                       const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
                       return (
-                        <CardColumn key={fieldId}>
-                          <CellTitle>
+                        <div className={styles.cardColumn} key={fieldId}>
+                          <div className={styles.cellTitle}>
                             {field.name}
-                          </CellTitle>
-                          <CardCell>
+                          </div>
+                          <div className={styles.cardCell}>
                             {
                               cellValue == null ?
-                                <CellHolder /> :
+                                <div className={styles.cellHolder} /> :
                                 <CellValue
                                   recordId={recordId}
                                   field={field}
                                   cellValue={cellValue}
                                   datasheetId={datasheetId}
+                                  className={styles.cellValueComponent}
                                 />
                             }
-                          </CardCell>
-                        </CardColumn>
+                          </div>
+                        </div>
                       );
                     })
                   }
-                </CellRow>
-              </RecordCardRow>
+                </div>
+              </div>
               {attachmentColumn && AttachmentPreview(attachmentColumn.fieldId)}
             </> : 
             t(Strings.loading)
         }
-      </RecordCardStyled>
-    </RecordCardContainer>
+      </div>
+    </div>
   );
 };

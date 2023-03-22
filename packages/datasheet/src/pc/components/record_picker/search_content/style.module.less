@@ -1,0 +1,173 @@
+@import "~pc/styles/lib_var.less";
+
+.searchContentWrapper {
+  height: 486px;
+  position: relative;
+  padding-top: 8px;
+  overflow: hidden;
+
+  .searchEmpty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .searchEmptyText {
+      text-align: center;
+      color: var(--thirdLevelText);
+      font-size: 13px;
+      margin-top: 16px;
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.recordListWrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  div > div {
+    overflow-y: scroll !important;
+
+    &::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: none;
+      height: 0;
+      width: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      background-clip: padding-box;
+      border: 3px solid rgba(0, 0, 0, 0);
+      border-radius: 6px;
+      min-height: 36px;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(191, 193, 203, 0.5);
+    }
+  }
+}
+
+.recordCardWrapper {
+  margin: 1px 12px 7px 24px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+
+  &.recordCardWrapperSelected {
+    box-shadow: 0px 0px 0px 1px var(--primaryColor);
+
+    &::before {
+      content: " ";
+      z-index: 1;
+      width: 31px;
+      height: 31px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translate(-50%, -50%) rotate(45deg);
+      background-color: var(--primaryColor);
+    }
+
+    &::after {
+      content: " ";
+      z-index: 1;
+      left: 3px;
+      top: 6px;
+      width: 5px;
+      height: 8px;
+      position: absolute;
+      display: table;
+      border: 1px solid #fff;
+      border-top: 0;
+      border-left: 0;
+      transform: rotate(45deg) scale(1) translate(-50%, -50%);
+      opacity: 1;
+      transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+    }
+  }
+}
+
+.recordCardContainer {
+  position: relative;
+
+  .recordCardStyled {
+    position: relative;
+    display: flex;
+    background-color: var(--fill0);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+
+    .recordCardRow {
+      flex: 1 1;
+      width: calc(100% - 90px);
+      height: 90px;
+      border-radius: 2px;
+      padding-left: 10px;
+
+      .recordCardTitle {
+        margin-top: 10px;
+        height: 18px;
+        line-height: 18px;
+        font-size: 13px;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .cellRow {
+        display: flex;
+        flex: 1 1;
+
+        .cardColumn {
+          flex: 1 1;
+          width: 20%;
+
+          .cellTitle {
+            font-size: 11px;
+            color: var(--thirdLevelText);
+            line-height: 16px;
+          }
+          
+          .cardCell {
+            height: 31px;
+            display: flex;
+            align-items: center;
+
+            .cellHolder {
+              border: solid 1px var(--fourthLevelText);
+              height: 2px;
+              width: 7px;
+              border-radius: 2px;
+            }
+            
+            .cellValueComponent {
+              padding-left: 0;
+              padding-right: 0;
+              margin-right: 8px;
+              overflow: hidden;
+              flex-wrap: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+}

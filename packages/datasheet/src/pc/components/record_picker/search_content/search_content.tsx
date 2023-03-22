@@ -6,11 +6,7 @@ import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, Strings,
 import { store } from 'pc/store';
 import { RecordList } from './record_list';
 import { TComponent } from 'pc/components/common/t_component';
-import {
-  SearchContentWrapper,
-  SearchEmpty,
-  SearchEmptyText
-} from './styled';
+import styles from './style.module.less';
 
 interface ISearchContentProps {
   searchValue: string;
@@ -113,7 +109,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): IVi
   }));
 
   return (
-    <SearchContentWrapper>
+    <div className={styles.searchContentWrapper}>
       {
         visibleRows.length ?
           <RecordList
@@ -126,18 +122,18 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): IVi
             selectedRecordIds={selectedRecordIds}
             onClick={saveValue}
           /> :
-          <SearchEmpty>
-            <SearchEmptyText>
+          <div className={styles.searchEmpty}>
+            <div className={styles.searchEmptyText}>
               <TComponent
                 tkey={t(Strings.not_found_record_contains_value)}
                 params={{
                   searchValueSpan: searchValue,
                 }}
               />
-            </SearchEmptyText>
-          </SearchEmpty>
+            </div>
+          </div>
       }
-    </SearchContentWrapper>
+    </div>
   );
 };
 

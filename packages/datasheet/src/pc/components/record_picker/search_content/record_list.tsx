@@ -2,7 +2,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List, Align } from 'react-window';
 import React, { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
 import { Row } from './row';
-import { RecordListWrapper } from './styled';
+import styles from './style.module.less';
 import { IFieldMap, IViewColumn, IViewRow } from '@apitable/core';
 
 interface IRecordListProps {
@@ -52,7 +52,7 @@ const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (pr
   };
 
   return (
-    <RecordListWrapper>
+    <div className={styles.recordListWrapper}>
       <AutoSizer style={{ width: '100%', height: '100%' }}>
         {({ height, width }) => {
           return (
@@ -70,7 +70,7 @@ const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (pr
           );
         }}
       </AutoSizer>
-    </RecordListWrapper>
+    </div>
   );
 };
 

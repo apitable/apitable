@@ -2,19 +2,14 @@ import ReactDOM from 'react-dom';
 import { Align } from 'react-window';
 import { shallowEqual, useSelector } from 'react-redux';
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { IReduxState, IViewRow, Selectors, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import { stopPropagation, useTheme } from '@apitable/components';
+import { IReduxState, IViewRow, Selectors, Strings, t } from '@apitable/core';
 import { SearchContent } from './search_content';
 import { KeyCode } from 'pc/utils';
-import { 
-  PortalContainer,
-  PortalContent,
-  PortalTitleWrapper,
-  PortalTitle,
-  CloseIcon
-} from './styled';
 import { TComponent } from '../common/t_component';
 import { SearchControl } from '../common/search_control';
+import styles from './style.module.less';
 
 export interface IRecordPickerProps {
   datasheetId: string;
@@ -111,23 +106,25 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
   };
 
   const PortalChild = (
-    <PortalContent
+    <div
+      className={styles.portalContent}
       onKeyDown={onKeyDown}
     >
-      <CloseIcon
+      <CloseOutlined
+        className={styles.closeIcon}
         color={color.thirdLevelText}
         onClick={() => onClose?.()}
       />
-      <PortalTitleWrapper>
-        <PortalTitle>
+      <h2 className={styles.portalTitleWrapper}>
+        <span className={styles.portalTitle}>
           <TComponent
             tkey={t(Strings.function_current_sheet)}
             params={{
               datasheetName: datasheet.name,
             }}
           />
-        </PortalTitle>
-      </PortalTitleWrapper>
+        </span>
+      </h2>
       <SearchControl
         ref={editorRef}
         value={searchValue}
@@ -150,11 +147,12 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
         isSingle={isSingle}
       />
       {children}
-    </PortalContent>
+    </div>
   );
 
   return ReactDOM.createPortal((
-    <PortalContainer
+    <div
+      className={styles.portalContainer}
       tabIndex={-1}
       onWheel={stopPropagation}
       onClick={onClickPortalContainer}
@@ -162,7 +160,7 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
       onMouseMove={stopPropagation}
     >
       {PortalChild}
-    </PortalContainer>
+    </div>
   ), document.body);
 });
 
