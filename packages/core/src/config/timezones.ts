@@ -52,6 +52,7 @@ export const getClientTimeZone = () => {
 };
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
+// compare to https://github.com/vikadata/vikadata/blob/new-teamx/apitable/packages/datasheet/src/pc/components/editors/cascader_editor/cascader_editor.tsx
 export const TIMEZONES = [
   {
     value: 'Dateline Standard Time',
@@ -1143,7 +1144,8 @@ export const TIMEZONES = [
     text: '(UTC+06:00) Dhaka',
     utc: [
       'Asia/Dhaka',
-      'Asia/Thimphu'
+      'Asia/Thimphu',
+      'Asia/Omsk'
     ]
   },
   {
@@ -1184,8 +1186,7 @@ export const TIMEZONES = [
     text: '(UTC+07:00) Novosibirsk',
     utc: [
       'Asia/Novokuznetsk',
-      'Asia/Novosibirsk',
-      'Asia/Omsk'
+      'Asia/Novosibirsk'
     ]
   },
   {
