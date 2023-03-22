@@ -47,5 +47,6 @@
         SELECT user_id FROM ${tablePrefix}user_history
         WHERE user_status = #{userStatus}
         AND created_at between #{startAt} AND #{endAt}
+        GROUP BY user_id
     </select>
 </mapper>
