@@ -144,8 +144,11 @@ the api document local access address is http://localhost:8081/api/v1/doc.html
 ## How to set the limitation of widget quantity in dashboard? (Default 30)
 
 ## Can I improve the API query rate limit? (Default 5)
-Yes, You can configure it in the .env file.
-But, we recommend you don't set it too large due to the performance problem.
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+
+1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+
+2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
 
 ## Can I improve the API query batch tasks? (Default 10)
 
