@@ -29,6 +29,7 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.organization.mapper.MemberMapper;
@@ -125,6 +126,9 @@ public class SpaceController {
     @Resource
     private SocialServiceFacade socialServiceFacade;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
     /**
      * Get space capacity info.
      */
@@ -195,6 +199,7 @@ public class SpaceController {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
+        entitlementServiceFacade.createSubscription(spaceId, userId);
         // release space audit events
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId)

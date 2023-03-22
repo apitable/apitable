@@ -18,112 +18,128 @@
 
 package com.apitable.space.service;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
-import com.apitable.space.vo.SpaceGlobalFeature;
-import com.apitable.space.vo.SpaceSubscribeVo;
+import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.ro.SpaceUpdateOpRo;
+import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
+import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
-import com.apitable.space.entity.SpaceEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+import java.util.function.Consumer;
 
+/**
+ * space service interface.
+ */
 public interface ISpaceService extends IService<SpaceEntity> {
 
     /**
+     * get by space id.
+     *
      * @param spaceId space id
      * @return SpaceEntity
      */
     SpaceEntity getBySpaceId(String spaceId);
 
     /**
-     * check whether the space exists
+     * check whether the space exists.
+     *
      * @param spaceId space id
      */
     void checkExist(String spaceId);
 
     /**
+     * get space by id with ignore whether deleted.
+     *
      * @param spaceId space id
      * @return SpaceEntity
      */
     SpaceEntity getBySpaceIdIgnoreDeleted(String spaceId);
 
     /**
+     * batch get space list.
+     *
      * @param spaceIds space ids
      * @return SpaceEntity List
      */
     List<SpaceEntity> getBySpaceIds(List<String> spaceIds);
 
     /**
-     * user creation space
+     * create space by user.
      *
-     * @param user    user
+     * @param user      user
      * @param spaceName spaceName
      * @return space id
      */
     String createSpace(UserEntity user, String spaceName);
 
     /**
-     * @param userId userId
-     * @param spaceId space id
+     * update space information.
+     *
+     * @param userId    userId
+     * @param spaceId   space id
      * @param spaceOpRo SpaceUpdateOpRo
      */
     void updateSpace(Long userId, String spaceId, SpaceUpdateOpRo spaceOpRo);
 
     /**
-     * @param userId userId
+     * prepare delete space operation.
+     *
+     * @param userId  userId
      * @param spaceId space id
      */
     void preDeleteById(Long userId, String spaceId);
 
     /**
+     * delete space list by id.
+     *
      * @param spaceIds space ids
      */
     void deleteSpace(Long userId, List<String> spaceIds);
 
     /**
-     * cancel the delete
+     * cancel the delete operation.
      *
-     * @param userId userId
+     * @param userId  userId
      * @param spaceId space id
      */
     void cancelDelByIds(Long userId, String spaceId);
 
     /**
-     * quit space
+     * quit space.
      *
-     * @param spaceId space id
+     * @param spaceId  space id
      * @param memberId memberId
      */
     void quit(String spaceId, Long memberId);
 
     /**
-     * query the list of space owned by a user
+     * query the list of space owned by a user.
      *
-     * @param userId userId
+     * @param userId    userId
      * @param condition query condition
      * @return SpaceVO List
      */
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
 
     /**
+     * get space info.
+     *
      * @param spaceId space id
      * @return SpaceInfoVO
      */
     SpaceInfoVO getSpaceInfo(String spaceId);
 
     /**
-     * get space capacity used sizes information
+     * get space capacity used sizes information.
      *
-     * @param spaceId space id
+     * @param spaceId          space id
      * @param capacityUsedSize space capacity used sizes
      * @return SpaceCapacityUsedInfo space capacity used information
      */
@@ -131,7 +147,7 @@ public interface ISpaceService extends IService<SpaceEntity> {
 
     /**
      * gets the amount of space used
-     * the internal interface
+     * the internal interface.
      *
      * @param spaceId space id
      * @return InternalSpaceUsageVo
@@ -139,7 +155,7 @@ public interface ISpaceService extends IService<SpaceEntity> {
     InternalSpaceUsageVo getInternalSpaceUsageVo(String spaceId);
 
     /**
-     * the internal interface
+     * the internal interface.
      *
      * @param spaceId space id
      * @return InternalSpaceCapacityVo
@@ -147,26 +163,32 @@ public interface ISpaceService extends IService<SpaceEntity> {
     InternalSpaceCapacityVo getSpaceCapacityVo(String spaceId);
 
     /**
-     * @param spaceId space id
+     * change main administer of space.
+     *
+     * @param spaceId  space id
      * @param memberId memberId
      * @return new main admin user id
      */
     Long changeMainAdmin(String spaceId, Long memberId);
 
     /**
-     * remove main admin
+     * remove main admin.
      *
      * @param spaceId space id
      */
     void removeMainAdmin(String spaceId);
 
     /**
+     * get main administer member id of space.
+     *
      * @param spaceId space id
      * @return main admin member id
      */
     Long getSpaceMainAdminMemberId(String spaceId);
 
     /**
+     * get main administer user id of space.
+     *
      * @param spaceId space id
      * @return main admin user id
      */
@@ -174,87 +196,97 @@ public interface ISpaceService extends IService<SpaceEntity> {
 
     /**
      * Check that the member is not the master administrator of the space
-     * If yes, throwing a exception
+     * If yes, throwing exception.
      *
-     * @param spaceId space id
+     * @param spaceId  space id
      * @param memberId memberId
      */
     void checkMemberIsMainAdmin(String spaceId, Long memberId);
 
     /**
      * Check that the members is not the master administrator of the space
-     * If yes, throwing a exception
+     * If yes, throwing exception.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param memberIds memberIds
      */
     void checkMembersIsMainAdmin(String spaceId, List<Long> memberIds);
 
     /**
-     * queries whether a member is in a space
+     * queries whether a member is in a space.
      *
-     * @param spaceId space id
+     * @param spaceId  space id
      * @param memberId memberId
      */
     void checkMemberInSpace(String spaceId, Long memberId);
 
     /**
-     * batch queries whether a member is in a space
+     * batch queries whether a member is in a space.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param memberIds memberIds
      */
     void checkMembersInSpace(String spaceId, List<Long> memberIds);
 
     /**
-     * @param userId userId
+     * get permission resource in space.
+     *
+     * @param userId  userId
      * @param spaceId space id
      * @return UserSpaceVo
      */
     UserSpaceVo getUserSpaceResource(Long userId, String spaceId);
 
     /**
+     * get space features.
+     *
      * @param spaceId space id
      * @return SpaceGlobalFeature
      */
     SpaceGlobalFeature getSpaceGlobalFeature(String spaceId);
 
     /**
-     * change the space feature
+     * change the space feature.
      *
-     * @param userId userId
+     * @param userId  userId
      * @param spaceId space id
-     * @param feature   feature
+     * @param feature feature
      */
     void switchSpacePros(Long userId, String spaceId, SpaceGlobalFeature feature);
 
     /**
-     * Check whether space resources are allowed to be manipulated
+     * Check whether space resources are allowed to be manipulated.
      *
      * @param spaceId space id
      */
     void checkCanOperateSpaceUpdate(String spaceId);
 
     /**
+     * get space id by relation id.
+     *
      * @param linkId linkId（sharing id or template id）
      * @return spaceId
      */
     String getSpaceIdByLinkId(String linkId);
 
     /**
+     * get space name.
+     *
      * @param spaceId space id
      * @return space name
      */
     String getNameBySpaceId(String spaceId);
 
     /**
+     * get owner user id of space.
+     *
      * @param spaceId space id
-     * @return main admin's userId
+     * @return main admin userId
      */
     Long getSpaceOwnerUserId(String spaceId);
 
     /**
-     * verify whether the space has been authenticated
+     * verify whether the space has been authenticated.
      *
      * @param spaceId space id
      * @return boolean
@@ -262,26 +294,34 @@ public interface ISpaceService extends IService<SpaceEntity> {
     boolean isCertified(String spaceId);
 
     /**
-     * switch space
+     * switch space.
      *
-     * @param userId userId
+     * @param userId  userId
      * @param spaceId space id
      */
     void switchSpace(Long userId, String spaceId);
 
     /**
-     * check space available
+     * check space available.
+     *
      * @param spaceId spaceId
      */
     void isSpaceAvailable(String spaceId);
 
     /**
-     *  Check whether the user is in space
-     * @param userId    user id
-     * @param spaceId space id
-     * @param consumer  callback
+     * Check whether the user is in space.
+     *
+     * @param userId   user id
+     * @param spaceId  space id
+     * @param consumer callback
      */
     void checkUserInSpace(Long userId, String spaceId, Consumer<Boolean> consumer);
 
+    /**
+     * get space subscription view.
+     *
+     * @param spaceId space id
+     * @return SpaceSubscribeVo
+     */
     SpaceSubscribeVo getSpaceSubscriptionInfo(String spaceId);
 }
