@@ -20,6 +20,7 @@ import { CacheManager, getFieldTypeString, IReduxState } from '@apitable/core';
 import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
 import { IWidgetContext } from 'interface';
 import { getActiveViewId, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
+import { isSandbox } from 'utils/private';
 import { showField } from './field';
 
 /**
@@ -89,7 +90,7 @@ export class Record {
       return null;
     }
     // remove cell value cache.
-    CacheManager.removeCellCacheByRecord(this.datasheetId, this.recordId);
+    isSandbox() && CacheManager.removeCellCacheByRecord(this.datasheetId, this.recordId);
     return Selectors.getCellValue(globalState, snapshot, this.recordId, fieldId);
   }
 

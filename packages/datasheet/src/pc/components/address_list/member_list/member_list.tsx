@@ -33,6 +33,7 @@ import styles from './style.module.less';
 import VirtualList from 'rc-virtual-list';
 import { Loading } from '@apitable/components';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useThrottleFn } from 'ahooks';
 
 export interface IMemberList {
   memberList: IMemberInfoInAddressList[];
@@ -73,13 +74,22 @@ export const MemberList: FC<React.PropsWithChildren<IMemberList>> = props => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
- 
+
+  const handleScroll = () => { 
+    
+    dispatch(StoreActions.updateMemberListPageNo(memberListPageNo + 1));
+    dispatch(StoreActions.getMemberListPageData(memberListPageNo + 1,selectedTeamInfo.teamId));
+    
+  };
+
+  const { run: loadData } = useThrottleFn(() => handleScroll(), { wait: 500 });
+
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     const pages = Math.ceil(memberListTotal / ConfigConstant.MEMBER_LIST_PAGE_SIZE);
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === listHeight && memberListPageNo < pages) {
-      dispatch(StoreActions.updateMemberListPageNo(memberListPageNo + 1));
-      dispatch(StoreActions.getMemberListPageData(memberListPageNo + 1,selectedTeamInfo.teamId));
+      loadData();
     }
+    
   };
 
   return (

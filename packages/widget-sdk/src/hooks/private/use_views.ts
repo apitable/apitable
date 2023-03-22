@@ -19,7 +19,7 @@ export const useViews = (datasheetId?: string) => {
       const sourceInfo = Selectors.getMirrorSourceInfo(state as any as IReduxState, sourceId);
       if (sourceInfo) {
         const viewData = views.find(viewData => viewData.id === sourceInfo.viewId);
-        return [viewData!];
+        return viewData ? [viewData] : [];
       }
     }
     return views;

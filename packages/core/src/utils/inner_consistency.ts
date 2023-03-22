@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { CollaCommandName } from 'commands';
+import { IResourceOpsCollect } from 'command_manager';
+import { IJOTAction, OTActionName } from 'engine';
+import { IReduxState, Selectors } from 'exports/store';
 import xor from 'lodash/xor';
+import { ResourceType } from 'types';
 import type { ISnapshot } from '../modules/database/store/interfaces/resource';
 
 export type IConsistencyErrorInfo = {
@@ -56,7 +61,7 @@ function getDuplicates<T = any>(array: T[], key: 'recordId' | 'fieldId' | 'id'):
 
 // Consistency check requires that all views in the snapshot are not duplicated, 
 // and that rows/columns correspond to recordMap/fieldMap one-to-one without duplication
-export function consistencyCheck(snapshot: ISnapshot) {
+export function innerConsistencyCheck(snapshot: ISnapshot) {
   const startTime = Date.now();
   const recordsInMap = Object.keys(snapshot.recordMap || {});
   const fieldsInMap = Object.keys(snapshot.meta.fieldMap || {});
@@ -117,4 +122,130 @@ export function consistencyCheck(snapshot: ISnapshot) {
 
   console.log(`dstId:${snapshot.datasheetId}, data consistency check done, duration : ${Date.now() - startTime} ms`);
   return consistencyErrors.length ? consistencyErrors : null;
+}
+
+export function generateFixInnerConsistencyChangesets(
+  datasheetId: string,
+  errors: IConsistencyErrorInfo[],
+  state: IReduxState,
+): IResourceOpsCollect[] {
+  const actions: IJOTAction[] = [];
+  const datasheet = Selectors.getDatasheet(state, datasheetId);
+  if (!datasheet) {
+    return [];
+  }
+
+  errors.forEach(data => {
+    // Delete duplicate view
+    if ('duplicateViews' in data) {
+      data.duplicateViews.forEach((index, i) => {
+        actions.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', index - i],
+          ld: datasheet.snapshot.meta.views[index],
+        });
+      });
+      return;
+    }
+
+    const {
+      viewId,
+      notExistInRecordMap,
+      notExistInViewRow,
+      notExistInFieldMap,
+      notExistInViewColumn,
+      duplicateRows,
+      duplicateColumns,
+      replaceRows,
+      recordsInMap,
+    } = data;
+    const viewIndex = datasheet.snapshot.meta.views.findIndex(view => view.id === viewId);
+    const rows = datasheet.snapshot.meta.views[viewIndex]!.rows;
+    const columns = datasheet.snapshot.meta.views[viewIndex]!.columns;
+    // row/column index is value to prevent duplicate deletions
+    const rowsToDelete = new Set<number>(duplicateRows);
+    const columnsToDelete = new Set<number>(duplicateColumns);
+
+    // column and row may have null values in them, which should be dealt with in advance
+    rows.forEach((item, index) => {
+      if (!item) {
+        rowsToDelete.add(index);
+      }
+    });
+    columns.forEach((item, index) => {
+      if (!item) {
+        columnsToDelete.add(index);
+      }
+    });
+
+    // If there are more than 100 rows of data that cannot be matched, the rows of the view are replaced in their entirety
+    if (replaceRows) {
+      actions.push({
+        n: OTActionName.ObjectReplace,
+        p: ['meta', 'views', viewIndex, 'rows'],
+        od: rows,
+        oi: recordsInMap.map(recordId => ({ recordId })),
+      });
+    }
+
+    // If it does not exist in the recordMap, delete it in the view
+    notExistInRecordMap &&
+      notExistInRecordMap.forEach((recordId: string) => {
+        const rowIndex = rows.findIndex(row => row && row.recordId === recordId);
+        rowIndex > -1 && rowsToDelete.add(rowIndex);
+      });
+
+    // If it does not exist in the view, add it to the view
+    notExistInViewRow &&
+      notExistInViewRow.forEach((recordId: string) => {
+        actions.push({
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', viewIndex, 'rows', rows.length],
+          li: { recordId },
+        });
+      });
+
+    // If it does not exist in the fieldMap, delete it in the view
+    notExistInFieldMap &&
+      notExistInFieldMap.forEach((fieldId: string) => {
+        const columnIndex = columns.findIndex(column => column && column.fieldId === fieldId);
+        columnIndex > -1 && columnsToDelete.add(columnIndex);
+      });
+
+    // If it does not exist in the view, add it to the view
+    notExistInViewColumn &&
+      notExistInViewColumn.forEach((fieldId: string) => {
+        actions.push({
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', viewIndex, 'columns', columns.length],
+          li: { fieldId },
+        });
+      });
+
+    Array.from(rowsToDelete)
+      .sort()
+      .forEach((index, i) => {
+        actions.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', viewIndex, 'rows', index - i],
+          ld: rows[index],
+        });
+      });
+    Array.from(columnsToDelete)
+      .sort()
+      .forEach((index, i) => {
+        actions.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', viewIndex, 'columns', index - i],
+          ld: columns[index],
+        });
+      });
+  });
+
+  const operation = {
+    cmd: CollaCommandName.FixConsistency,
+    actions,
+  };
+
+  return [{ resourceId: datasheetId, resourceType: ResourceType.Datasheet, operations: [operation] }];
 }

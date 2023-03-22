@@ -179,6 +179,11 @@ class WidgetMessage {
   syncWidgetSubscribeView(subscribeViews: ISubscribeView[]) {
     this.emit(MessageType.WIDGET_SUBSCRIBE_CHANGE, { success: true, data: subscribeViews });
   }
+
+  removeListenEvent(type: MessageType) {
+    this.messageBridge.removeListenEvent(type);
+  }
+
 }
 
 /**

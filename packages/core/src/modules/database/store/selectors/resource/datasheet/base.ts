@@ -33,7 +33,7 @@ import {
 import { gridViewActiveFieldStateDefault, gridViewDragStateDefault } from '../../../reducers/resource';
 import { getMirror } from '../mirror';
 
-const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined | void) => datasheetId || getActiveDatasheetId(state);
+const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined | void) => datasheetId || getNodeId(state);
 
 export const getDatasheetPrimaryField = (snapshot: ISnapshot) => {
   const firstView = snapshot.meta.views[0]!;

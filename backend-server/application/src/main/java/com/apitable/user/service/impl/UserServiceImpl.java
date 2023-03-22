@@ -1081,6 +1081,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             if (StrUtil.isBlank(v.getLocale())) {
                 v.setLocale(defaultLocale);
             }
+            if (StrUtil.isBlank(v.getTimeZone())) {
+                v.setTimeZone(ClockManager.me().getDefaultTimeZone().toString());
+            }
         }).collect(Collectors.toList());
     }
 
@@ -1154,7 +1157,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         userIds.forEach(userId -> {
             try {
                 UserEntity user = baseMapper.selectById(userId);
-                if (null != user) {
+                if (null != user && user.getIsPaused()) {
                     closeAccount(user);
                 }
             } catch (Exception e) {

@@ -202,7 +202,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
           <div
             className={styles.nodeList}
             onClick={handleNodeClick}
-            style={{ background: keyword ? colors.defaultBg : 'transparent' }}
+            style={{ background: 'transparent' }}
             ref={listContainerRef}
           >
             {nodeList.map(node => {

@@ -186,7 +186,7 @@ public class NotificationFactory implements INotificationFactory {
     @Override
     public JSONObject getJsonObject(Object object) {
         if (ObjectUtil.isNotNull(object)) {
-            return JSONUtil.parseObj(objectMapper.writeValueAsString(object));
+            return JSONUtil.parseObj(JSONUtil.toJsonStr(object));
         }
         return null;
     }
@@ -243,9 +243,9 @@ public class NotificationFactory implements INotificationFactory {
         }
         List<String> distinctNodeIds = CollUtil.removeBlank(CollUtil.distinct(nodeIds));
         if (CollUtil.isNotEmpty(distinctNodeIds)) {
-            List<NodeBaseInfoDTO> baseInfoDTOS =
+            List<NodeBaseInfoDTO> baseInfoDtos =
                 nodeMapper.selectNodeBaseInfosByNodeIds(distinctNodeIds, true);
-            Map<String, NodeBaseInfoDTO> nodes = baseInfoDTOS.stream()
+            Map<String, NodeBaseInfoDTO> nodes = baseInfoDtos.stream()
                 .collect(Collectors.toMap(NodeBaseInfoDTO::getNodeId, a -> a, (k1, k2) -> k1));
             list.setNodes(nodes);
         }

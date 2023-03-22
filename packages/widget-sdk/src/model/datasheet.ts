@@ -418,7 +418,7 @@ export class Datasheet {
         count: transformedRecords.length,
         index,
         cellValues: transformedRecords,
-      });
+      }, this.wCtx.id);
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }
@@ -525,7 +525,7 @@ export class Datasheet {
       cmd: CollaCommandName.SetRecords,
       datasheetId: this.datasheetId,
       data,
-    });
+    }, this.wCtx.id);
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -587,7 +587,7 @@ export class Datasheet {
       cmd: CollaCommandName.DeleteRecords,
       datasheetId: this.datasheetId,
       data: recordIds,
-    });
+    }, this.wCtx.id);
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -640,7 +640,7 @@ export class Datasheet {
         },
         index,
       }],
-    });
+    }, this.wCtx.id);
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
@@ -685,7 +685,7 @@ export class Datasheet {
         deleteBrotherField: conversion === Conversion.Delete,
         fieldId,
       }],
-    });
+    }, this.wCtx.id);
     if (result.result === ExecuteResult.Fail) {
       throw new Error(result.reason);
     }
