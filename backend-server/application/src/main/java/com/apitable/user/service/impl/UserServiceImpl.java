@@ -1154,7 +1154,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         userIds.forEach(userId -> {
             try {
                 UserEntity user = baseMapper.selectById(userId);
-                if (null != user) {
+                if (null != user && user.getIsPaused()) {
                     closeAccount(user);
                 }
             } catch (Exception e) {
