@@ -46,7 +46,7 @@ public class ClockManagerTest extends AbstractIntegrationTest {
                 19, 10, 30, 0, ZoneOffset.UTC);
         getClock().setTime(initialCreateDate);
 
-        OffsetDateTime utcNow = ClockManager.me().getUTCNow();
+        OffsetDateTime utcNow = ClockManager.me().getUtcNow();
 
         assertThat(utcNow).isAfterOrEqualTo(initialCreateDate);
     }
