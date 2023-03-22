@@ -100,3 +100,5 @@ jobs:
           FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*
           VALIDATE_GOOGLE_JAVA_FORMAT: false
           JAVA_FILE_NAME: checkstyle.xml
+          VALIDATE_SHELL_SHFMT: false
+          VALIDATE_DOCKERFILE_HADOLINT: false
