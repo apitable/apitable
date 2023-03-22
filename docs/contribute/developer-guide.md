@@ -130,9 +130,24 @@ Just open APITable's root directory with IDE.
 
 
 
-## How to configurate the SMTP server?
+## How to configure the SMTP server?
 
 By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+
+It is needed to modify .env configuration using self email, and restart backend server.
+
+``
+MAIL_ENABLED=true
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=your_email_password
+MAIL_PORT=465
+MAIL_SSL_ENABLE=true
+MAIL_TYPE=smtp
+MAIL_USERNAME=your_email
+``
+
+In addition, some mailboxes need to be enabled in the background to use smtp.
+For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## Performance problem under macOS M1 docker run?
@@ -143,6 +158,11 @@ the api document local access address is http://localhost:8081/api/v1/doc.html
 
 ## How to set the limitation of widget quantity in dashboard? (Default 30)
 
+It is needed to add .env configuration, and restart backend server.
+``
+DSB_WIDGET_MAX_COUNT=xx
+``
+
 ## Can I improve the API query rate limit? (Default 5)
 Yes, You can configure it in the .env file.
 But, we recommend you don't set it too large due to the performance problem.
@@ -151,8 +171,8 @@ But, we recommend you don't set it too large due to the performance problem.
 
 ## How to upgrade to the newest release version?
 
+
 ## How to change the default 80 port?
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-
-
-
+For example. It would be set as NGINX_HTTP_PORT=8080
