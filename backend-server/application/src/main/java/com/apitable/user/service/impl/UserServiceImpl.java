@@ -1156,6 +1156,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 UserEntity user = baseMapper.selectById(userId);
                 if (null != user && user.getIsPaused()) {
                     closeAccount(user);
+                    log.info("ClosedUserAccount:{}", user.getId());
                 }
             } catch (Exception e) {
                 log.error("CloseUserError:{}", userId, e);
