@@ -64,6 +64,7 @@ import { AttachmentEditor } from './attachment_editor';
 import { CheckboxEditor } from './checkbox_editor';
 import { DateTimeEditor } from './date_time_editor';
 import { EnhanceTextEditor } from './enhance_text_editor';
+import { CascaderEditor } from './cascader_editor';
 import { useCellEditorVisibleStyle } from './hooks';
 import { IContainerEdit, IEditor } from './interface';
 import { LinkEditor } from './link_editor';
@@ -767,6 +768,17 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.Text:
       case FieldType.SingleText:
         return <TextEditor style={editorRect} ref={editorRef} {...commonProps} />;
+      case FieldType.Cascader:
+        return (
+          <CascaderEditor
+            style={editorRect}
+            ref={editorRef}
+            {...commonProps}
+            field={field}
+            toggleEditing={toggleEditing}
+            recordId={record.id}
+          />
+        );
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:

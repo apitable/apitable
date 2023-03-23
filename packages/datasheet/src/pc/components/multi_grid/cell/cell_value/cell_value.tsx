@@ -91,6 +91,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = pr
     case FieldType.Email:
     case FieldType.Phone:
     case FieldType.SingleText:
+    case FieldType.Cascader:
       return(
         <CellText
           {...cellProps}

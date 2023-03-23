@@ -637,7 +637,7 @@ export class Datasheet {
           name,
           type: fieldType,
           property: field.addOpenFieldPropertyTransformProperty(property),
-        },
+        } as any,
         index,
       }],
     }, this.wCtx.id);

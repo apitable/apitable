@@ -16,17 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  assertNever,
-  Field, FieldType, FOperator,
-  IField
-} from '@apitable/core';
+import { assertNever, Field, FieldType, FOperator, IField } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { Input } from 'antd';
 import produce from 'immer';
 import { get, isEqual } from 'lodash';
-import { useMemo, useState } from 'react';
 import * as React from 'react';
+import { useMemo, useState } from 'react';
 import { IFilterValueProps } from '../interface';
 import { FilterCheckbox } from './filter_checkbox';
 import { FilterDate } from './filter_date';
@@ -52,7 +48,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           // Type inconsistency (e.g. magic lookup switching type), change to fix.
           fieldType: props.field.type,
           value: inputValue ? [inputValue] : null
-        };
+        } as any;
         return draft;
       });
     });
@@ -101,7 +97,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           // Type inconsistency (e.g. magic lookup switching type), change to fix.
           fieldType: props.field.type,
           value: selectValue
-        };
+        } as any;
         return draft;
       });
     });

@@ -1,0 +1,36 @@
+.cascaderEditor {
+  background: var(--defaultBg);
+  border-radius: 4px;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.cascaderContainer {
+  background: var(--bgCommonHighest);
+  border-radius: 4px;
+
+  :global {
+    .ant-cascader-input {
+      border: none;
+      height: 32px;
+
+      &:focus {
+        border: none;
+      }
+    }
+
+    .ant-cascader-picker-arrow {
+      display: none;
+    }
+  }
+}
+.emptyPlaceholder {
+  padding: 12px 8px;
+  color: var(--secondLevelText);
+}
+
+:global {
+  .ant-cascader-menu-item-active {
+    background-color: var(--rowSelectedBg) !important;
+  }
+}

@@ -109,7 +109,7 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
           fieldType: field.type,
           operator: value,
           value: generateValue(value),
-        };
+        } as any;
         return draft;
       });
     });
