@@ -59,7 +59,9 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
                     throw new RuntimeException("There are duplicate resources during resource scanning！\nNew resources are： " + resourceDefinition);
                 }
                 resourceDefinitions.put(resourceDefinition.getResourceCode(), resourceDefinition);
-                urlDefineResources.put(resourceDefinition.getResourceUrl(), resourceDefinition);
+                for (String resourceUrl : resourceDefinition.getResourceUrls()) {
+                    urlDefineResources.put(resourceUrl, resourceDefinition);
+                }
 
                 Map<String, ResourceDefinition> modularResources = modularResourceDefinitions.get(StrUtil.toUnderlineCase(resourceDefinition.getModularCode()));
                 if (modularResources == null) {

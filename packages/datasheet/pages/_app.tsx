@@ -89,6 +89,8 @@ if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
     autocapture: false,
+    capture_pageview: false,
+    capture_pageleave: false,
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
@@ -473,7 +475,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           </PostHogProvider>
         </div>}
         {
-          <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) })}>
+          <div
+            className={classNames(
+              'script-loading-wrap-default',
+              { 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }
+            )}>
             {
               ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
                 <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />

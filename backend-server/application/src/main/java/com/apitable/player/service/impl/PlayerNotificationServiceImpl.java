@@ -18,18 +18,34 @@
 
 package com.apitable.player.service.impl;
 
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_CONTACT_URL;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_CREATED_AT;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_DATASHEET_URL;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_NODE_NAME;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_ID;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_URL;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_SPACE_NAME;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_URL;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_VIEW_ID;
+import static com.apitable.shared.constants.NotificationConstants.EXPIRE_AT;
+import static com.apitable.shared.constants.NotificationConstants.INVOLVE_RECORD_IDS;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.net.url.UrlPath;
 import cn.hutool.core.net.url.UrlQuery;
-import cn.hutool.core.util.*;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -52,9 +68,15 @@ import com.apitable.player.vo.NotificationDetailVo;
 import com.apitable.player.vo.NotificationStatisticsVo;
 import com.apitable.player.vo.PlayerBaseVo;
 import com.apitable.shared.cache.bean.LoginUserDto;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.ClientEntryTemplateConfig;
 import com.apitable.shared.component.TaskManager;
-import com.apitable.shared.component.notification.*;
+import com.apitable.shared.component.notification.INotificationFactory;
+import com.apitable.shared.component.notification.NotificationHelper;
+import com.apitable.shared.component.notification.NotificationRenderMap;
+import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.NotificationToTag;
+import com.apitable.shared.component.notification.NotifyMailFactory;
 import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.NotificationConstants;
@@ -72,6 +94,20 @@ import com.apitable.workspace.service.INodeService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cursor.Cursor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -79,28 +115,16 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
-import static com.apitable.shared.constants.NotificationConstants.*;
-
 /**
  * <p>
- * Player Notification Service Implement Class
+ * Player Notification Service Implement Class.
  * </p>
  */
 @Service
 @Slf4j
-public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificationMapper, PlayerNotificationEntity>
-        implements IPlayerNotificationService {
+public class PlayerNotificationServiceImpl
+    extends ServiceImpl<PlayerNotificationMapper, PlayerNotificationEntity>
+    implements IPlayerNotificationService {
 
     public static final Integer NOTIFY_LIMIT = 100;
 
@@ -146,8 +170,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         try {
             notificationCreateRoList.forEach(this::createNotify);
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Bulk create notification exception：", e);
             return false;
         }
@@ -182,19 +205,23 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     @Override
-    public void createMemberNotify(NotificationTemplate template, NotificationCreateRo ro, NotificationToTag toTag) {
+    public void createMemberNotify(NotificationTemplate template, NotificationCreateRo ro,
+                                   NotificationToTag toTag) {
         List<Long> userIds;
-        if (NotificationTemplateId.spaceDeleteNotify(NotificationTemplateId.getValue(ro.getTemplateId()))) {
+        if (NotificationTemplateId.spaceDeleteNotify(
+            NotificationTemplateId.getValue(ro.getTemplateId()))) {
             userIds = CollUtil.toList(Convert.toLongArray(ro.getToUserId()));
-        }
-        else {
+        } else {
             List<Long> toMemberIds = CollUtil.newArrayList();
             if (CollUtil.isNotEmpty(ro.getToMemberId())) {
-                toMemberIds.addAll(CollUtil.removeBlank(CollUtil.distinct(ro.getToMemberId())).stream().map(Long::valueOf).collect(Collectors.toList()));
+                toMemberIds.addAll(
+                    CollUtil.removeBlank(CollUtil.distinct(ro.getToMemberId())).stream()
+                        .map(Long::valueOf).collect(Collectors.toList()));
             }
             if (CollUtil.isNotEmpty(ro.getToUnitId())) {
                 List<Long> unitIds =
-                        CollUtil.removeBlank(CollUtil.distinct(ro.getToUnitId())).stream().map(Long::valueOf).collect(Collectors.toList());
+                    CollUtil.removeBlank(CollUtil.distinct(ro.getToUnitId())).stream()
+                        .map(Long::valueOf).collect(Collectors.toList());
                 toMemberIds.addAll(iUnitService.getMembersIdByUnitIds(unitIds));
             }
             userIds = getSpaceUserIdByMemberIdAndToTag(ro.getSpaceId(), toMemberIds, toTag);
@@ -203,7 +230,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             throw new BusinessException(NotificationException.USER_EMPTY_ERROR);
         }
         // Member's notice
-        if (NotificationTemplateId.recordNotify(NotificationTemplateId.getValue(ro.getTemplateId()))) {
+        if (NotificationTemplateId.recordNotify(
+            NotificationTemplateId.getValue(ro.getTemplateId()))) {
             createMemberMentionedNotify(userIds, template, ro);
             return;
         }
@@ -212,7 +240,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
 
     /**
      * Create system notifications
-     * Curson cursor query is used to prevent each query from closing the connection, plus @Transactional control
+     * Curson cursor query is used to prevent each query from closing the connection, plus @Transactional control.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -233,16 +261,13 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             if (CollUtil.isNotEmpty(userIds)) {
                 createNotifyWithoutVerify(userIds, template, ro);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Create notification exception", e);
-        }
-        finally {
+        } finally {
             if (ObjectUtil.isNotNull(userIdCursor)) {
                 try {
                     userIdCursor.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     log.error("Create notification close cursor exception", e);
                 }
             }
@@ -250,23 +275,27 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     @Override
-    public boolean createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template, NotificationCreateRo ro) {
+    public boolean createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template,
+                                             NotificationCreateRo ro) {
         // todo message middle key
         List<PlayerNotificationEntity> creatEntities = new ArrayList<>();
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
         List<Long> mailUserIds = new ArrayList<>();
         for (Long userId : userIds) {
             // Record the sending frequency, and judge that it is recorded if it is not sent successfully because the data can be recovered --redis delete key
-            String nonce = StrUtil.blankToDefault(ro.getSpaceId(), "") + StrUtil.blankToDefault(ro.getNodeId(), "");
+            String nonce = StrUtil.blankToDefault(ro.getSpaceId(), "")
+                + StrUtil.blankToDefault(ro.getNodeId(), "");
             if (!notificationFactory.frequencyLimited(userId, template, DigestUtil.md5Hex(nonce))) {
-                if (ObjectUtil.isNotNull(userId) && !userId.equals(Convert.toLong(ro.getFromUserId()))) {
+                if (ObjectUtil.isNotNull(userId)
+                    && !userId.equals(Convert.toLong(ro.getFromUserId()))) {
                     PlayerNotificationEntity entity = getCreateEntity(userId, template, ro);
                     // Send notifications and create records
                     if (template.isNotification()) {
                         creatEntities.add(entity);
                     }
                     // need to send mail
-                    if (template.isMail() && StrUtil.isNotBlank(template.getMailTemplateSubject())) {
+                    if (template.isMail()
+                        && StrUtil.isNotBlank(template.getMailTemplateSubject())) {
                         mailUserIds.add(userId);
                     }
                     notifyEntities.add(entity);
@@ -275,13 +304,15 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         }
         // Send email notifications asynchronously
         if (!mailUserIds.isEmpty()) {
-            TaskManager.me().execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
+            TaskManager.me()
+                .execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
         }
         return createBatch(notifyEntities, creatEntities);
     }
 
     @Override
-    public void createMemberMentionedNotify(List<Long> toUserIds, NotificationTemplate template, NotificationCreateRo ro) {
+    public void createMemberMentionedNotify(List<Long> toUserIds, NotificationTemplate template,
+                                            NotificationCreateRo ro) {
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
         Map<Long, String> notifyIdMap = new HashMap<>(toUserIds.size());
         List<Long> mailUserIds = new ArrayList<>();
@@ -293,11 +324,13 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             // Within 15s, the number of times +1 does not notify update
             if (!notificationFactory.delayLock(delayKey, entity.getId())) {
                 Long notifyId = notificationFactory.getNotificationIdFromRedis(delayKey);
-                String notifyBody = NotificationHelper.getMentionBody(baseMapper.selectNotifyBodyById(notifyId), ro.getBody());
+                String notifyBody =
+                    NotificationHelper.getMentionBody(baseMapper.selectNotifyBodyById(notifyId),
+                        ro.getBody());
                 baseMapper.updateNotifyBodyById(notifyId, notifyBody);
-            }
-            else {
-                entity.setNotifyBody(NotificationHelper.getMentionBody(JSONUtil.toJsonStr(ro.getBody()), null));
+            } else {
+                entity.setNotifyBody(
+                    NotificationHelper.getMentionBody(JSONUtil.toJsonStr(ro.getBody()), null));
                 notifyEntities.add(entity);
                 notifyIdMap.put(userId, entity.getId().toString());
                 // send mail
@@ -314,27 +347,32 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         }
         // Send email notifications asynchronously
         if (!mailUserIds.isEmpty()) {
-            TaskManager.me().execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
+            TaskManager.me()
+                .execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
         }
         createBatch(notifyEntities);
     }
 
     @Override
-    public List<NotificationDetailVo> pageList(NotificationPageRo notificationPageRo, LoginUserDto toUser) {
-        Integer totalCount = baseMapper.selectTotalCountByRoAndToUser(notificationPageRo, toUser.getUserId()) + 1;
+    public List<NotificationDetailVo> pageList(NotificationPageRo notificationPageRo,
+                                               LoginUserDto toUser) {
+        Integer totalCount =
+            baseMapper.selectTotalCountByRoAndToUser(notificationPageRo, toUser.getUserId()) + 1;
         if (null == notificationPageRo.getRowNo()) {
             // reverse order
             notificationPageRo.setRowNo(totalCount);
         }
         List<NotificationModelDTO> dtos =
-                baseMapper.selectPlayerNotificationPage(notificationPageRo, toUser.getUserId(), totalCount);
+            baseMapper.selectPlayerNotificationPage(notificationPageRo, toUser.getUserId(),
+                totalCount);
         return formatDetailVos(dtos, toUser.getUuid());
     }
 
     @Override
     public List<NotificationDetailVo> list(NotificationListRo ro, LoginUserDto toUser) {
         List<NotificationDetailVo> notificationRecordList = new ArrayList<>();
-        List<NotificationModelDTO> dtos = getUserNotificationByTypeAndIsRead(toUser.getUserId(), ro.getIsRead());
+        List<NotificationModelDTO> dtos =
+            getUserNotificationByTypeAndIsRead(toUser.getUserId(), ro.getIsRead());
         if (CollUtil.isEmpty(dtos)) {
             return notificationRecordList;
         }
@@ -344,12 +382,14 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             }
             // check expired
             JSONObject extraInfo =
-                    NotificationHelper.getExtrasFromNotifyBody(dto.getNotifyBody());
+                NotificationHelper.getExtrasFromNotifyBody(dto.getNotifyBody());
             if (ObjectUtil.isNull(extraInfo)) {
                 return false;
             }
-            if (extraInfo.containsKey(EXPIRE_AT) && ObjectUtil.isNotNull(extraInfo.get(EXPIRE_AT))) {
-                return CompareUtil.compare(extraInfo.get(EXPIRE_AT).toString(), String.valueOf(System.currentTimeMillis())) > 0;
+            if (extraInfo.containsKey(EXPIRE_AT)
+                && ObjectUtil.isNotNull(extraInfo.get(EXPIRE_AT))) {
+                return CompareUtil.compare(extraInfo.get(EXPIRE_AT).toString(),
+                    String.valueOf(System.currentTimeMillis())) > 0;
             }
             return false;
         }).collect(Collectors.toList());
@@ -357,7 +397,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     @Override
-    public List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser, Integer isRead) {
+    public List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser,
+                                                                         Integer isRead) {
         return baseMapper.selectDtoByTypeAndIsRead(toUser, isRead);
     }
 
@@ -368,7 +409,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         if (CollUtil.isNotEmpty(ro.getUuid())) {
             List<Long> userIds = userMapper.selectIdByUuidList(ro.getUuid());
             return SqlHelper.retBool(baseMapper.updateBatchByUserIdsAndTemplateId(userIds,
-                    template.getNotificationsType(), ro.getTemplateId(), ro));
+                template.getNotificationsType(), ro.getTemplateId(), ro));
         }
         return revokeAllUserNotification(template, ro);
     }
@@ -380,7 +421,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean revokeAllUserNotification(NotificationTemplate template,
-            NotificationRevokeRo ro) {
+                                             NotificationRevokeRo ro) {
         Cursor<Long> userIdCursor = null;
         try {
             userIdCursor = userMapper.selectAllUserIdByIgnoreDelete(true);
@@ -391,25 +432,22 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 }
                 if (userIds.size() == NOTIFY_LIMIT) {
                     baseMapper.updateBatchByUserIdsAndTemplateId(userIds,
-                            template.getNotificationsType(), ro.getTemplateId(), ro);
+                        template.getNotificationsType(), ro.getTemplateId(), ro);
                     userIds.clear();
                 }
             });
             if (CollUtil.isNotEmpty(userIds)) {
                 baseMapper.updateBatchByUserIdsAndTemplateId(userIds,
-                        template.getNotificationsType(), ro.getTemplateId(), ro);
+                    template.getNotificationsType(), ro.getTemplateId(), ro);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Delete user notification exception", e);
             return false;
-        }
-        finally {
+        } finally {
             if (userIdCursor != null) {
                 try {
                     userIdCursor.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     log.error("Undo notification close cursor exception", e);
                 }
             }
@@ -419,26 +457,53 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
 
     @Override
     public void sendMailNotifyBatch(NotificationTemplate template, List<Long> userIds, Dict dict) {
-        List<UserLangDTO> emailsWithLang = iUserService.getLangAndEmailByIds(userIds, LocaleContextHolder.getLocale().toLanguageTag());
-        List<MailWithLang> tos = emailsWithLang.stream()
+        List<UserLangDTO> users = iUserService.getLangAndEmailByIds(userIds,
+            LocaleContextHolder.getLocale().toLanguageTag());
+        // timestamp transform
+        List<String> dateKeys = dict.keySet().stream().filter(i -> i.endsWith("AT")).collect(
+            Collectors.toList());
+        if (dateKeys.isEmpty()) {
+            List<MailWithLang> tos = users.stream()
                 .filter(i -> StrUtil.isNotBlank(i.getEmail()))
-                .map(emailWithLang -> new MailWithLang(emailWithLang.getLocale(), emailWithLang.getEmail()))
+                .map(emailWithLang -> new MailWithLang(emailWithLang.getLocale(),
+                    emailWithLang.getEmail()))
                 .collect(Collectors.toList());
-        if (CollUtil.isNotEmpty(tos)) {
             NotifyMailFactory.me().sendMail(template.getMailTemplateSubject(), dict, dict, tos);
+            return;
+        }
+        Map<String, List<MailWithLang>> timeZonesGroups =
+            users.stream().filter(i -> StrUtil.isNotBlank(i.getEmail())).collect(
+                Collectors.groupingBy(UserLangDTO::getTimeZone,
+                    Collectors.mapping(i -> new MailWithLang(i.getLocale(), i.getEmail()),
+                        Collectors.toList())));
+        for (String timeZone : timeZonesGroups.keySet()) {
+            for (String key : dateKeys) {
+                ZonedDateTime value = ZonedDateTime.ofInstant(
+                    Instant.ofEpochMilli(Long.parseLong(dict.get(key).toString())),
+                    ZoneId.of(timeZone));
+                dict.set(StrUtil.toUnderlineCase(key).toUpperCase(), value.format(ISO_DATE_TIME));
+            }
+            NotifyMailFactory.me().sendMail(template.getMailTemplateSubject(), dict, dict,
+                timeZonesGroups.get(timeZone));
         }
     }
 
     @Override
-    public List<NotificationDetailVo> formatDetailVos(List<NotificationModelDTO> notificationModelDTOList, String uuid) {
+    public List<NotificationDetailVo> formatDetailVos(
+        List<NotificationModelDTO> notificationModelDTOList, String uuid) {
         List<NotificationDetailVo> notificationRecordList = new ArrayList<>();
-        NotificationRenderMap renderField = notificationFactory.getRenderList(notificationModelDTOList);
+        NotificationRenderMap renderField =
+            notificationFactory.getRenderList(notificationModelDTOList);
         notificationModelDTOList.forEach(dto -> {
-            NotificationDetailVo detailVo = NotificationDetailVo.builder().id(dto.getId().toString())
+            NotificationDetailVo detailVo =
+                NotificationDetailVo.builder().id(dto.getId().toString())
                     .rowNo(dto.getRowNo()).toUserId(uuid).toUuid(uuid).createdAt(dto.getCreatedAt())
-                    .updatedAt(dto.getUpdatedAt()).isRead(dto.getIsRead()).notifyType(dto.getNotifyType())
+                    .updatedAt(dto.getUpdatedAt()).isRead(dto.getIsRead())
+                    .notifyType(dto.getNotifyType())
                     .templateId(dto.getTemplateId())
-                    .fromUser(notificationFactory.formatFromUser(dto.getFromUser(), dto.getSpaceId(), renderField)).build();
+                    .fromUser(
+                        notificationFactory.formatFromUser(dto.getFromUser(), dto.getSpaceId(),
+                            renderField)).build();
             detailVo.setNotifyBody(formatNotificationDetailBodyVo(dto, renderField));
             notificationRecordList.add(detailVo);
         });
@@ -452,17 +517,17 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         if (ArrayUtil.isNotEmpty(ids)) {
             // It may be jumped by mail, you need to find the specific ID in redis, and then mark it as read
             String key = RedisConstants.getNotifyTemporaryKey(ids[0]);
-            if (Boolean.TRUE.equals(redisTemplate.opsForHash().hasKey(key, userId)) && !NumberUtil.isLong(ids[0])) {
+            if (Boolean.TRUE.equals(redisTemplate.opsForHash().hasKey(key, userId))
+                && !NumberUtil.isLong(ids[0])) {
                 Object notifyId = redisTemplate.opsForHash().get(key, userId);
-                String[] realIds = { ObjectUtil.toString(notifyId) };
+                String[] realIds = {ObjectUtil.toString(notifyId)};
                 redisTemplate.opsForHash().delete(key, userId);
                 return baseMapper.updateReadIsTrueByIds(realIds);
             }
             if (NumberUtil.isLong(ids[0])) {
                 return baseMapper.updateReadIsTrueByIds(ids);
             }
-        }
-        else if (isAll != 0) {
+        } else if (isAll != 0) {
             return baseMapper.updateReadIsTrueByUserId(userId);
         }
         return true;
@@ -473,7 +538,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         Integer readCount = baseMapper.selectCountByUserIdAndIsRead(userId, 1);
         Integer totalCount = baseMapper.selectTotalCountByUserId(userId);
         return NotificationStatisticsVo.builder().readCount(readCount).totalCount(totalCount)
-                .unReadCount(totalCount - readCount).build();
+            .unReadCount(totalCount - readCount).build();
     }
 
     @Override
@@ -483,9 +548,10 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
 
     @Override
     public boolean createBatch(List<PlayerNotificationEntity> notifyEntities,
-            List<PlayerNotificationEntity> createEntities) {
+                               List<PlayerNotificationEntity> createEntities) {
         if (CollUtil.isNotEmpty(notifyEntities)) {
-            SpringContextHolder.getApplicationContext().publishEvent(new NotificationCreateEvent(this, notifyEntities));
+            SpringContextHolder.getApplicationContext()
+                .publishEvent(new NotificationCreateEvent(this, notifyEntities));
             // Send first and then save. If there is a key, it will be updated, which will cause the number of messages to be inconsistent with the total number of messages.
             // Therefore, if there is a key, no message will be sent, but the number of messages will be increased.
         }
@@ -501,7 +567,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     private List<Long> getSpaceUserIdByMemberIdAndToTag(String spaceId,
-            List<Long> memberIds, NotificationToTag toTag) {
+                                                        List<Long> memberIds,
+                                                        NotificationToTag toTag) {
         if (toTag.equals(NotificationToTag.MEMBERS)) {
             ExceptionUtil.isNotEmpty(memberIds, NotificationException.MEMBER_EMPTY_ERROR);
             return notificationFactory.getMemberUserId(memberIds, spaceId);
@@ -510,11 +577,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             return notificationFactory.getSpaceAllUserId(spaceId);
         }
         if (toTag.equals(NotificationToTag.SPACE_ADMINS)) {
-            return notificationFactory.getMemberUserId(spaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId), spaceId);
+            return notificationFactory.getMemberUserId(
+                spaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId), spaceId);
         }
         if (toTag.equals(NotificationToTag.SPACE_MEMBER_ADMINS)) {
             List<Long> memberAdminIds = spaceMemberRoleRelService.getMemberId(spaceId,
-                    ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
+                ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
             memberAdminIds.add(notificationFactory.getSpaceSuperAdmin(spaceId));
             if (CollUtil.isNotEmpty(memberAdminIds)) {
                 return notificationFactory.getMemberUserIdExcludeDeleted(memberAdminIds);
@@ -522,39 +590,44 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         }
         if (toTag.equals(NotificationToTag.SPACE_MAIN_ADMIN)) {
             Long mainMemberId = notificationFactory.getSpaceSuperAdmin(spaceId);
-            return notificationFactory.getMemberUserId(Collections.singletonList(mainMemberId), spaceId);
+            return notificationFactory.getMemberUserId(Collections.singletonList(mainMemberId),
+                spaceId);
         }
         return null;
     }
 
 
     private PlayerNotificationEntity getCreateEntity(Long toUserId,
-            NotificationTemplate template, NotificationCreateRo ro) {
+                                                     NotificationTemplate template,
+                                                     NotificationCreateRo ro) {
         return PlayerNotificationEntity.builder()
-                .id(IdWorker.getId())
-                .fromUser(Convert.toLong(ro.getFromUserId()))
-                .toUser(toUserId)
-                .templateId(template.getId())
-                .notifyBody(JSONUtil.toJsonStr(ro.getBody()))
-                .spaceId(ro.getSpaceId())
-                .nodeId(ro.getNodeId())
-                .notifyType(template.getNotificationsType())
-                .build();
+            .id(IdWorker.getId())
+            .fromUser(Convert.toLong(ro.getFromUserId()))
+            .toUser(toUserId)
+            .templateId(template.getId())
+            .notifyBody(JSONUtil.toJsonStr(ro.getBody()))
+            .spaceId(ro.getSpaceId())
+            .nodeId(ro.getNodeId())
+            .notifyType(template.getNotificationsType())
+            .build();
     }
 
     /**
-     * Assemble the data of notifyBody
+     * Assemble the data of notifyBody.
      */
     private NotificationDetailVo.NotifyBody formatNotificationDetailBodyVo(NotificationModelDTO dto,
-            NotificationRenderMap renderMap) {
+                                                                           NotificationRenderMap renderMap) {
         JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(dto.getNotifyBody());
         NotificationDetailVo.NotifyBody notifyBody = NotificationDetailVo.NotifyBody.builder()
-                .title(dto.getTemplateId()).extras(notificationFactory.formatExtra(extras, renderMap.getMembers())).build();
+            .title(dto.getTemplateId())
+            .extras(notificationFactory.formatExtra(extras, renderMap.getMembers())).build();
         if (ObjectUtil.isNotNull(dto.getNodeId())) {
-            notifyBody.setNode(notificationFactory.formatNode(renderMap.getNodes().get(dto.getNodeId())));
+            notifyBody.setNode(
+                notificationFactory.formatNode(renderMap.getNodes().get(dto.getNodeId())));
         }
         if (ObjectUtil.isNotNull(dto.getSpaceId())) {
-            notifyBody.setSpace(notificationFactory.formatSpace(renderMap.getSpaces().get(dto.getSpaceId())));
+            notifyBody.setSpace(
+                notificationFactory.formatSpace(renderMap.getSpaces().get(dto.getSpaceId())));
         }
         // template field
         NotificationTemplate template = notificationFactory.getTemplateById(dto.getTemplateId());
@@ -574,19 +647,21 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 templateRenderMap.putAll(BeanUtil.beanToMap(notifyBody.getSpace()));
             }
             PlayerBaseVo fromPlayer =
-                    notificationFactory.formatFromUser(dto.getFromUser(), dto.getSpaceId(), renderMap);
+                notificationFactory.formatFromUser(dto.getFromUser(), dto.getSpaceId(), renderMap);
             if (ObjectUtil.isNotNull(fromPlayer)) {
                 templateRenderMap.putAll(BeanUtil.beanToMap(fromPlayer));
             }
-            templateRenderMap.put(NotificationConstants.URL_HOST_TAG, constProperties.getServerDomain());
+            templateRenderMap.put(NotificationConstants.URL_HOST_TAG,
+                constProperties.getServerDomain());
             // template str
             String templateStr = NotificationHelper.getTemplateString(template.getFormatString(),
-                    NotificationHelper.getUserLanguageType(dto.getToUser(), dto.getFromUser()));
+                NotificationHelper.getUserLanguageType(dto.getToUser(), dto.getFromUser()));
             notifyBody.setTemplate(clientTemplateConfig.render(templateStr, templateRenderMap));
             // render url
             if (template.getUrl() != null) {
                 notifyBody.setIntent(NotificationDetailVo.Intent.builder()
-                        .url(clientTemplateConfig.render(template.getUrl(), templateRenderMap)).build());
+                    .url(clientTemplateConfig.render(template.getUrl(), templateRenderMap))
+                    .build());
             }
         }
         return notifyBody;
@@ -597,11 +672,13 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         Dict dict = Dict.create();
         dict.set("YEARS", LocalDate.now().getYear());
         if (ObjectUtil.isNotNull(ro.getSpaceId())) {
-            dict.set(EMAIL_SPACE_NAME, StrUtil.blankToDefault(iSpaceService.getNameBySpaceId(ro.getSpaceId()), ""));
+            dict.set(EMAIL_SPACE_NAME,
+                StrUtil.blankToDefault(iSpaceService.getNameBySpaceId(ro.getSpaceId()), ""));
         }
         long fromUserId = Long.parseLong(ro.getFromUserId());
         if (fromUserId > 0) {
-            String memberName = StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
+            String memberName =
+                StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
                     ro.getSpaceId()), I18nStringsUtil.t("unnamed"));
             dict.set(EMAIL_MEMBER_NAME, memberName);
         }
@@ -609,23 +686,17 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(ro.getBody());
             if (extras != null) {
                 extras.forEach((k, v) -> {
-                    // processing timestamp
-                    if (StrUtil.endWith(k, "At")) {
-                        LocalDateTime dateTime = DateUtil.toLocalDateTime(Instant.ofEpochMilli(Long.parseLong(v.toString())));
-                        dict.set(StrUtil.toUnderlineCase(k).toUpperCase(), DateUtil.format(dateTime,
-                                NORM_DATETIME_MINUTE_PATTERN));
-                    }
-                    else if (Objects.equals(k, INVOLVE_RECORD_IDS)) {
+                    if (Objects.equals(k, INVOLVE_RECORD_IDS)) {
                         dict.set(EMAIL_RECORD_ID, JSONUtil.parseArray(v).get(0));
-                    }
-                    else {
+                    } else {
                         dict.set(StrUtil.toUnderlineCase(k).toUpperCase(), v);
                     }
                 });
             }
         }
         if (ObjectUtil.isNotNull(ro.getNodeId())) {
-            dict.set(EMAIL_NODE_NAME, StrUtil.blankToDefault(iNodeService.getNodeNameByNodeId(ro.getNodeId()), ""));
+            dict.set(EMAIL_NODE_NAME,
+                StrUtil.blankToDefault(iNodeService.getNodeNameByNodeId(ro.getNodeId()), ""));
             if (StrUtil.isNotBlank(template.getUrl()) && template.isCanJump()) {
                 StringBuilder notifyUr = new StringBuilder();
                 notifyUr.append(constProperties.getServerDomain());
@@ -637,7 +708,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     notifyPath.add(dict.get(EMAIL_RECORD_ID).toString());
                     notifyUr.append(notifyPath.build(CharsetUtil.CHARSET_UTF_8));
                     UrlQuery notifyQuery = new UrlQuery();
-                    if (NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue().equals(ro.getTemplateId())) {
+                    if (NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue()
+                        .equals(ro.getTemplateId())) {
                         notifyQuery.add("comment", 1);
                     }
                     if (StrUtil.isNotBlank(ro.getNotifyId())) {
@@ -647,14 +719,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     dict.set(EMAIL_RECORD_URL, notifyUr.toString());
                     dict.set(EMAIL_URL, notifyUr.toString());
                     dict.set(EMAIL_CREATED_AT,
-                            LocalDateTime.now().format(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)));
-                }
-                else {
+                        ClockManager.me().getUtcNow().toInstant().toEpochMilli());
+                } else {
                     dict.set(EMAIL_DATASHEET_URL, notifyUr.toString());
                 }
             }
-        }
-        else {
+        } else {
             String url = constProperties.getServerDomain() + template.getUrl();
             String contactUrl = constProperties.getServerDomain() + "/?home=1";
             dict.set(EMAIL_URL, url);

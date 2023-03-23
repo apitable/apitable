@@ -180,7 +180,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
       fieldMap: Selectors.getFieldMap(state, datasheetId)!,
       entityFieldMap: Selectors.getFieldMapIgnorePermission(state)!,
       linearRows: Selectors.getLinearRows(state)!,
-      ganttLinearRows: Selectors.getLinearRows(state)!,
+      ganttLinearRows: Selectors.getPureLinearRows(state)!,
       permissions: Selectors.getPermissions(state),
       rowHeightLevel,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),

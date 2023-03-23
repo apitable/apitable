@@ -62,8 +62,8 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
       const flatCellValue = LookUpField.bindContext(hostField, state).getFlatCellValue(context.record.id, true);
       return LookUpField.bindContext(hostField, state).cellValueToArray(flatCellValue);
     }
-
-    const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
+ 
+    const fieldPermissionMap = Selectors.getFieldPermissionMap(state, datasheet.id);
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
 
     const field = fieldMap[fieldId];

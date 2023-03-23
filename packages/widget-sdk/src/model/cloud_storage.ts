@@ -113,7 +113,7 @@ export class CloudStorage {
       value,
       resourceType: ResourceType.Widget,
       resourceId: this.widgetId,
-    }).then(result => {
+    }, this.widgetId).then(result => {
       if (result.result !== ExecuteResult.Success) {
         // TODO: replace with toast
         alert('Operation execution failed');

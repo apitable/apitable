@@ -40,7 +40,7 @@ export function init() {
 
   let config: IWizardsConfig | undefined;
   /**
-   * Here it is better to distinguish the environment, local debugging is convenient to read the information directly from the configuration table, 
+   * Here it is better to distinguish the environment, local debugging is convenient to read the information directly from the configuration table,
    * if not distinguish the environment, the impact on debugging will be greater
    */
   if (process.env.NODE_ENV === 'development') {
@@ -75,10 +75,13 @@ export function init() {
       // Filter out triggers that don't match rule
       const validTriggers = allTriggerIds.filter(triggerId => {
         const curTrigger = triggers.find((item: any) => item.id === triggerId);
-        return curTrigger &&
-          isEventStateMatch(args, curTrigger.eventState) &&
-          isTimeRulePassed((curTrigger as any).startTime, (curTrigger as any).endTime) &&
-          isRulesPassed(config?.player.rule, curTrigger.rules);
+        if (!curTrigger) return;
+
+        const eventMatch = isEventStateMatch(args, curTrigger.eventState);
+        const timeRulePassed = isTimeRulePassed((curTrigger as any).startTime, (curTrigger as any).endTime);
+        const rulesPassed = isRulesPassed(config?.player.rule, curTrigger.rules);
+
+        return eventMatch && timeRulePassed && rulesPassed;
       });
       // Iterate through multiple triggers and execute the corresponding actions
       validTriggers.forEach(triggerId => {

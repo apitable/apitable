@@ -29,5 +29,6 @@ export * from './interface';
 export * from './utils';
 export * from './utils/private';
 export * from './message';
+export * as Script from './script';
 
 export { initializeWidget } from './initialize_widget';

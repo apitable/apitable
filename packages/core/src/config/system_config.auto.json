@@ -693,9 +693,7 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -708,9 +706,7 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -722,9 +718,7 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -737,9 +731,7 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -752,9 +744,7 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -767,9 +757,7 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -782,9 +770,7 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -797,9 +783,7 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -812,9 +796,7 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -827,9 +809,7 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -842,9 +822,7 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -857,9 +835,7 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -872,9 +848,7 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -887,9 +861,7 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -902,9 +874,7 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -917,9 +887,7 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -932,9 +900,7 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -947,9 +913,7 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -962,9 +926,7 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -977,9 +939,7 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -992,9 +952,7 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1007,9 +965,7 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1022,9 +978,7 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1037,9 +991,7 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1052,9 +1004,7 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1067,9 +1017,7 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1082,9 +1030,7 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1097,9 +1043,7 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1112,9 +1056,7 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1127,9 +1069,7 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1142,9 +1082,7 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1157,9 +1095,7 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1172,9 +1108,7 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1187,9 +1121,7 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1202,9 +1134,7 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1217,9 +1147,7 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1232,9 +1160,7 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1247,9 +1173,7 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1374,9 +1298,7 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [
-                "new_datasheet"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1434,9 +1356,7 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [
-                "permission_setting"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -3233,9 +3153,9 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2023-03-15 19:15"
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00"
                 ],
-                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15],[open_guide_wizards([4])]",
+                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00],[open_guide_wizards([4])]",
                 "event": [
                     "address_shown"
                 ]
@@ -3346,11 +3266,11 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
+                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
                 "event": [
                     "datasheet_wigdet_empty_panel_shown"
                 ]
@@ -3420,11 +3340,11 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
+                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
                 "event": [
                     "template_center_shown"
                 ]
@@ -3537,62 +3457,76 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([105])"
+                    "open_guide_wizards([104, 105])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
+                    "url_EXCLUDES_templateId",
+                    "url_EXCLUDES_shareId"
+                ],
+                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([104, 105])]",
+                "event": [
+                    "workbench_show_trial_tip"
+                ]
+            },
+            {
+                "actions": [
+                    "open_guide_wizards([104, 105])"
+                ],
+                "rules": [
+                    "device_IS_pc",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([104, 105])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([1, 24])"
+                    "open_guide_wizards([24, 1])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2023-03-15 19:15",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([24, 1])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 102])"
+                    "open_guide_wizards([29, 76, 107])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 102])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 102])"
+                    "open_guide_wizards([76, 107])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-15 19:15, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 102])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3602,12 +3536,12 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2023-03-15 19:15",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "device_IS_app"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-15 19:15, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3717,7 +3651,12 @@
             },
             "datasheet_search_panel_shown": {
                 "module": "datasheet",
-                "name": "search_panel_shown"
+                "name": "search_panel_shown",
+                "guide": {
+                    "step": [
+                        "reczmcUK1NLK4"
+                    ]
+                }
             },
             "datasheet_shown": {
                 "module": "datasheet",
@@ -3861,6 +3800,10 @@
                 "module": "workbench",
                 "name": "no_emit"
             },
+            "workbench_show_trial_tip": {
+                "module": "workbench",
+                "name": "show_trial_tip"
+            },
             "workbench_shown": {
                 "module": "workbench",
                 "name": "shown"
@@ -3946,14 +3889,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2023-03-15 19:15",
-                "conditionArgs": "2023-03-15 19:15"
+                "id": "sign_up_time_IS_AFTER_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2023-03-15 19:15",
-                "conditionArgs": "2023-03-15 19:15"
+                "id": "sign_up_time_IS_BEFORE_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "EXCLUDES",
@@ -4206,14 +4149,9 @@
                 "commandArgs": "88"
             },
             {
-                "id": "open_guide_wizards([1, 24])",
+                "id": "open_guide_wizards([104, 105])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[1, 24]"
-            },
-            {
-                "id": "open_guide_wizards([105])",
-                "command": "open_guide_wizards",
-                "commandArgs": "[105]"
+                "commandArgs": "[104, 105]"
             },
             {
                 "id": "open_guide_wizards([19])",
@@ -4226,9 +4164,14 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 102])",
+                "id": "open_guide_wizards([24, 1])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 102]"
+                "commandArgs": "[24, 1]"
+            },
+            {
+                "id": "open_guide_wizards([29, 76, 107])",
+                "command": "open_guide_wizards",
+                "commandArgs": "[29, 76, 107]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4241,9 +4184,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 102])",
+                "id": "open_guide_wizards([76, 107])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 102]"
+                "commandArgs": "[76, 107]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4484,7 +4427,12 @@
             },
             "29": {
                 "completeIndex": 0,
-                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]"
+                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ"
+                    ]
+                }
             },
             "30": {
                 "completeIndex": 0,
@@ -4751,7 +4699,14 @@
                 "steps": "[[93]]"
             },
             "76": {
-                "steps": "[[93]]"
+                "steps": "[[93]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ",
+                        "recEIcl9v4jzr",
+                        "recZmyGfgUNR6"
+                    ]
+                }
             },
             "77": {
                 "steps": "[[111]]"
@@ -4829,13 +4784,7 @@
             },
             "90": {
                 "completeIndex": -1,
-                "steps": "[[145]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[145]]"
             },
             "91": {
                 "completeIndex": -1,
@@ -4883,17 +4832,17 @@
             },
             "102": {
                 "completeIndex": -1,
-                "steps": "[[164]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[164]]"
             },
             "104": {
+                "repeat": true,
                 "completeIndex": 0,
-                "steps": "[[166]]"
+                "steps": "[[166]]",
+                "player": {
+                    "action": [
+                        "recRyoECYFqBv"
+                    ]
+                }
             },
             "105": {
                 "completeIndex": -1,
@@ -4917,6 +4866,17 @@
             },
             "107": {
                 "completeIndex": -1,
+                "steps": "[[169]]",
+                "player": {
+                    "action": [
+                        "recEIcl9v4jzr",
+                        "recBtbbzXDolQ"
+                    ]
+                }
+            },
+            "108": {
+                "completeIndex": -1,
+                "endTime": 1677677940000,
                 "steps": "[[169]]"
             }
         },
@@ -6492,7 +6452,7 @@
                 ],
                 "next": "查看详情",
                 "nextId": "check_detail",
-                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/15/975dd60376c4441ca67ee683f7a4abda\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，隐藏敏感字段安心协作</li><li>用户账号时区上线，可单独设置日期列的时区，跨时区协作更流畅</li><li>「全局搜索」体验优化，新增搜索结果分类</li><li>黄金级空间站权益增加，分享表单支持隐藏官方标识</li><li>API 接口性能优化，大幅提高调用效率</li></ul>\"\n}",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高请求速度</li></ul>\"\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -7312,9 +7272,7 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "be_invited_to_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7323,9 +7281,7 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "complete_bind_email"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7333,26 +7289,20 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_email"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_phone"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [
-                    "fission_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7360,9 +7310,7 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7379,9 +7327,7 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "official_invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7390,27 +7336,21 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "redemption_code"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [
-                    "wallet_activity_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7418,9 +7358,7 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_video_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"

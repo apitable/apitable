@@ -19,14 +19,14 @@
 import { BasicValueType } from '@apitable/core';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import { NumberOutlined, CheckOutlined, TextOutlined, CalendarOutlined } from '@apitable/icons';
+import { NumberOutlined, CheckboxOutlined, TextOutlined, CalendarOutlined } from '@apitable/icons';
 
 const IconMap = {
   [BasicValueType.Array]: TextOutlined,
   [BasicValueType.DateTime]: CalendarOutlined,
   [BasicValueType.Number]: NumberOutlined,
   [BasicValueType.String]: TextOutlined,
-  [BasicValueType.Boolean]: CheckOutlined,
+  [BasicValueType.Boolean]: CheckboxOutlined,
 };
 
 interface IViewIcon {

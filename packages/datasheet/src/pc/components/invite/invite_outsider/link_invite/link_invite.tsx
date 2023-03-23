@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, ITeamTreeNode, StoreActions, Strings, t } from '@apitable/core';
 import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Input, TreeSelect } from 'antd';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
@@ -29,6 +29,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
 import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
+import type { DataNode } from 'antd/es/tree';
 
 const { TreeNode } = TreeSelect;
 
@@ -74,22 +75,27 @@ export const LinkInvite = () => {
     setShowPopconfirmKey(visible ? key : '');
   };
 
-  const renderTreeNodes = (data: ITeamList[]) => {
+  const renderTreeNodes = (data: ITeamTreeNode[]) => {
     const tempList = linkList.map(item => item.teamId);
+    if (!data || data.length === 0) {
+      return <></>;
+    }
     return data.map(item => {
       const config = {
         title: item.teamName,
         value: item.teamId,
         disabled: tempList.includes(item.teamId),
       };
-      if (item.children && item.children.length) {
-        return (
-          <TreeNode {...config} key={item.teamId}>
-            {renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode {...config} isLeaf={!(userInfo!.isAdmin && item.children?.length)} key={item.teamId} />;
+      
+      return (
+        <TreeNode 
+          {...config} 
+          key={item.teamId}
+          isLeaf={!item.hasChildren}
+        >
+          { item.children && item.children.length > 0 && renderTreeNodes(item.children)}
+        </TreeNode>
+      );
     });
   };
 
@@ -195,6 +201,14 @@ export const LinkInvite = () => {
       );
     });
   };
+
+  const onExpand = (expandedKeys: DataNode['key'][]) => {   
+    const teamId = expandedKeys[expandedKeys.length - 1];
+    
+    dispatch(StoreActions.getSubTeam(teamId));
+  
+  };
+
   return (
     <div className={styles.linkInvite}>
       <InviteAlert />
@@ -215,6 +229,7 @@ export const LinkInvite = () => {
               dropdownClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
               listHeight={200}
+              onTreeExpand={onExpand}
             >
               {renderTreeNodes(teamList || [])}
             </TreeSelect>

@@ -47,7 +47,9 @@ import { ErrorWidget } from '../../error_widget';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
 import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
-import { useManageWidgetRenderTask } from '../../context';
+import { WidgetBlockMain } from './widget_block_main';
+import { WidgetLoading } from './widget_loading';
+import { expandRecordPicker } from 'pc/components/record_picker';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -93,11 +95,11 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
   const [isFullScreenWidget, toggleFullScreenWidget] = useFullScreen(widgetId);
   const widgetLoader = useRef<IWidgetBlockRefs>(null);
 
-  useManageWidgetRenderTask(widgetId);
-
   // Whether to enable sandbox (enable to use iframe to render).
-  const [, , error, refreshVersion] = useDevLoadCheck(widgetId, config?.isDevMode);
+  const [devSandbox, devSandboxLoading, error, refreshVersion] = useDevLoadCheck(widgetId, config?.isDevMode);
   const isCiLowVersion = error === WidgetLoadError.CliLowVersion;
+  const sandbox = config?.isDevMode ? devSandbox : widget?.sandbox;
+  const sandboxLoad = widget?.snapshot && !devSandboxLoading;
 
   const PreLoadError = usePreLoadError(widget);
 
@@ -158,6 +160,8 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
   const toggleSetting = useCallback(() => {
     (isExpandWidget || isSettingOpened) && toggleSettingOpened();
   }, [isExpandWidget, toggleSettingOpened, isSettingOpened]);
+
+  const WidgetBox = sandbox ? WidgetBlock : WidgetBlockMain;
 
   return (
     <div
@@ -226,9 +230,9 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
             ) : (
               PreLoadError ||
               (
-                isCiLowVersion ? 
+                !sandboxLoad ? <WidgetLoading /> : (isCiLowVersion ? 
                   <ErrorWidget content={t(Strings.widget_cli_upgrade_tip)} /> :
-                  <WidgetBlock
+                  <WidgetBox
                     widgetId={widgetId}
                     widgetPackageId={widget.widgetPackageId}
                     ref={widgetLoader}
@@ -238,13 +242,14 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
                     toggleSetting={toggleSetting}
                     toggleFullscreen={toggleFullscreen}
                     expandRecord={expandRecordInCenter}
+                    expandRecordPicker={expandRecordPicker}
                     isDevMode={config?.isDevMode}
                     setDevWidgetId={setDevWidgetId}
                     dragging={dragging}
                     key={props.index}
                     runtimeEnv={runtimeEnv}
                   />
-              )
+                ))
             ))}
         </div>
         {searchPanelVisible && !readonly && (

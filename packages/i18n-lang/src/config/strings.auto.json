@@ -3745,6 +3745,10 @@
             "en_US": "Use the template first, then you can modify or write data",
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
         },
+        "datasheet_is_loading": {
+            "zh_CN": "当前有正在加载的数据，请稍后操作",
+            "en_US": "There is data being loaded currently, please wait to proceed."
+        },
         "datasheet_manager_label": {
             "zh_CN": "在「可以编辑」基础上，还可以配置字段和表格",
             "en_US": "In addition to \"Editor\",  can also configure datasheet and fields",
@@ -11340,12 +11344,12 @@
             "zh_HK": "已完成添加"
         },
         "player_step_ui_config_165": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高响应速度</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/07bb03421de64407877374d50afb4c68\",\n    \"readMoreUrl\": \"https://help.vika.cn\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高请求速度</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>The mirror is upgraded again, hiding sensitive fields and collaborating with peace of mind</li><li>The time zone of the user account is online, and the time zone of the date list can be set independently, making cross-time zone cooperation smoother.</li><li>\"Global Search\" experience optimization, new search result categories</li><li>Gold-level space station benefits are increased, and the sharing form supports hiding official logos</li><li>API interface performance optimization, greatly improving call efficiency</li></ul>\"\n}"
         },
         "player_step_ui_config_166": {
             "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
-            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save 50%!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the early bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
+            "en_US": "{\n  \"title\": \"Congratulations!\",\n  \"description\": \"Your space get free trial 14 days. Click the button below to select a plan to start the trial.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/management/upgrade\"\n}."
         },
         "player_step_ui_config_167": {
             "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"项目管理\",\n        \"市场营销\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的团队规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"只有我\",\n        \"2-5\",\n        \"6-10\",\n        \"11-15\",\n        \"16-25\",\n        \"25-50\",\n        \"51-100\",\n        \"101-500\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"您的公司规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"1-19\",\n        \"20-49\",\n        \"50-99\",\n        \"100-250\",\n        \"251-500\",\n        \"501-1500\",\n        \"1500+\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 5,\n      \"name\": \"answer5\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 6,\n      \"name\": \"answer6\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
@@ -11697,6 +11701,10 @@
         "quick_search_intro": {
             "zh_CN": "输入关键词可快速找到相关搜索结果。点击分类项可过滤文件类型，包括维格表、文件夹、神奇表单、镜像和仪表盘",
             "en_US": "Quickly obtain relevant search results by entering a keyword. Filter by file type (e.g. datasheet, folder, form, mirror, dashboard) using category items"
+        },
+        "quick_search_loading": {
+            "zh_CN": "正在搜索...",
+            "en_US": "Searching..."
         },
         "quick_search_not_found": {
             "zh_CN": "我们找不到你要搜索的内容",
@@ -12384,7 +12392,7 @@
         },
         "robot_action_send_web_request_title": {
             "zh_CN": "发送网络请求",
-            "en_US": "Send web request",
+            "en_US": "Send a web request",
             "zh_HK": "發送網絡請求"
         },
         "robot_action_type": {
