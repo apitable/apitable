@@ -112,7 +112,7 @@ import {
 } from 'modules/shared/store/action_constants';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
 import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
-import { innerConsistencyCheck } from 'utils';
+import { checkInnerConsistency } from 'utils';
 import produce from 'immer';
 import { checkLinkConsistency } from 'utils/link_consistency';
 
@@ -150,7 +150,7 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
     }
   }
 
-  const errorInfo = innerConsistencyCheck(snapshot);
+  const errorInfo = checkInnerConsistency(snapshot);
 
   if (errorInfo) {
     Player.doTrigger(Events.app_error_logger, {
@@ -171,8 +171,8 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
   }
 }
 
-function ensureLinkConsistency(state: IReduxState) {
-  const error = checkLinkConsistency(state);
+function ensureLinkConsistency(state: IReduxState, loadedForeignDstId: string) {
+  const error = checkLinkConsistency(state, loadedForeignDstId);
   if (!error || !error.errorRecordIds.size) {
     return;
   }
@@ -357,7 +357,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
           if (props.responseBody.success) {
             if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
               dispatch((_dispatch: any, getState: () => IReduxState) => {
-                ensureLinkConsistency(getState());
+                ensureLinkConsistency(getState(), foreignDstId);
               });
             }
           }
