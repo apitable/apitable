@@ -125,7 +125,11 @@ export const MemberList: FC<React.PropsWithChildren<IMemberList>> = props => {
               }
               return '';
             };
-            const identity = getIdentity(item);
+            const identity = getIdentity({
+              ...item,
+              isMainAdmin: item.isSubAdmin,
+              isAdmin: item.isPrimary,
+            });
             return (
               <List.Item 
                 key={item.memberId} 

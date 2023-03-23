@@ -105,6 +105,8 @@ export interface IMemberInfoInAddressList {
   isActive?: string;
   tags?: ITags[];
   teamData?: ITeamData[];
+  isPrimary?: boolean;
+  isSubAdmin?: boolean;
 }
 
 export interface ITeams {

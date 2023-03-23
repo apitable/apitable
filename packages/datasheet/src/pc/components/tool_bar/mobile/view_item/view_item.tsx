@@ -126,7 +126,6 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
       text: t(Strings.delete),
       onPress: async() => {
         const formList = await StoreActions.fetchForeignFormList(datasheetId!, view.id!);
-        console.log(formList);
         Modal.warning({
           title: t(Strings.delete),
           content: formList.length > 0 ? t(Strings.notes_delete_the_view_linked_to_form, {

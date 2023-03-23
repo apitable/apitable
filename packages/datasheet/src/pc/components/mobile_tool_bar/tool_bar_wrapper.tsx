@@ -57,7 +57,7 @@ export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperPro
   const { isShowEmbedToolBar = true } = embedInfo;
 
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
-  
+  const showWidgetBtn = embedId ? get(embedInfo, 'viewControl.toolBar.widgetBtn', false) : true;
   if(!isShowEmbedToolBar) {
     return <></>;
   }
@@ -73,7 +73,7 @@ export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperPro
         <div className={styles.toolRight}>
           {!(isCalendarView && isMobile) && <Find datasheetId={datasheetId!} />}
           <MoreTool />
-          <WidgetTool />
+          { showWidgetBtn && <WidgetTool /> }
         </div>
       </div>
       {!hideViewList && !isOnlyView && (
