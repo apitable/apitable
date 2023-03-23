@@ -113,4 +113,44 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         UserEntity result = iUserService.getById(userSpace.getUserId());
         assertThat(result).isNull();
     }
+
+    @Test
+    public void testCloseAccountWithCanceledApply() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(2);
+        iUserService.cancelClosingAccount(iUserService.getById(userSpace.getUserId()));
+        iUserService.closePausedUser(1);
+        UserEntity result = iUserService.getById(userSpace.getUserId());
+        assertThat(result.getIsPaused()).isFalse();
+    }
+
+    @Test
+    public void testCloseAccountWithManyOperation() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(1);
+        iUserService.cancelClosingAccount(iUserService.getById(userSpace.getUserId()));
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(1);
+        iUserService.closePausedUser(1);
+        UserEntity result = iUserService.getById(userSpace.getUserId());
+        assertThat(result).isNull();
+    }
+
+    @Test
+    public void testCloseAccountWithManyOperationAndCanceledApply() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(1);
+        iUserService.cancelClosingAccount(iUserService.getById(userSpace.getUserId()));
+        iUserService.applyForClosingAccount(iUserService.getById(userSpace.getUserId()));
+        getClock().addDays(1);
+        iUserService.cancelClosingAccount(iUserService.getById(userSpace.getUserId()));
+        iUserService.closePausedUser(1);
+        UserEntity result = iUserService.getById(userSpace.getUserId());
+        assertThat(result).isNotNull();
+        assertThat(result.getIsPaused()).isFalse();
+
+    }
 }
