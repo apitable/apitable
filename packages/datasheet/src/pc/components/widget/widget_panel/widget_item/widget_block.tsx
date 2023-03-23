@@ -261,6 +261,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       onSave: (recordIds: string[]) => {
         mainMessage.syncRecordPickerResult(widgetId, recordIds, messageId);
       },
+      onClose: () => mainMessage.syncRecordPickerResult(widgetId, [], messageId)
     }));
     return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_RECORD_PICKER);
   }, [connected, widgetId, expandRecordPicker]);
