@@ -497,6 +497,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                         recordId={recordId || ''}
                         fieldId={field.id}
                         includeTime={field.property.includeTime}
+                        timeZone={timeZone}
                         dateValue={dateValue}
                         timeValue={timeValue}
                         curAlarm={this.props.curAlarm}
