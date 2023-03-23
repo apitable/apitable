@@ -26,7 +26,8 @@ import parser from 'html-react-parser';
 import { isEmpty } from 'lodash';
 import Image from 'next/image';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc, isDingtalkFunc } from 'enterprise';
+import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 // import { Modal } from 'pc/components/common';
@@ -173,7 +174,9 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
                       <Typography className={styles.notFoundTip} variant='body2' align='center'>
                         <span
                           className={styles.text}
-                          onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`)}
+                          onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, { 
+                            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
+                          })}
                         >
                           {t(Strings.template_not_found)}
                         </span>
