@@ -398,10 +398,6 @@ export class CellHelper extends KonvaDrawer {
     const generateRenderText = (): string | null => {
       if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
 
-      if (field.type === FieldType.URL && field.property?.isRecogURLFlag) {
-        return Field.bindModel(field).cellValueToURLTitle(cellValue);
-      }
-
       return Field.bindModel(field).cellValueToString(cellValue);
     };
 

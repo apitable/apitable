@@ -188,7 +188,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const renderURLTitle = () => {
     if (!showURLTitleFlag) return null;
 
-    const urlTitle = Field.bindModel(field).cellValueToURLTitle(cellValue);
+    const urlTitle = Field.bindModel(field).cellValueToString(cellValue);
     if (!urlTitle) return null;
 
     return(
