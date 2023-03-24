@@ -659,6 +659,13 @@
         WHERE space_id = #{spaceId} AND is_deleted = 0
     </select>
 
+    <select id="selectIncompleteMemberVo"
+            resultType="com.apitable.workspace.vo.NodeRoleMemberVo">
+        SELECT id AS memberId
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
     <select id="selectBindSocialListBySpaceIdWithOffset" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
         FROM `${tablePrefix}unit_member`

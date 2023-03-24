@@ -19,6 +19,7 @@
 package com.apitable.workspace.vo;
 
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -46,8 +47,8 @@ public class NodeRoleMemberVo {
     @Schema(description = "Member avatar", example = "http://www.apitable.com/image.png")
     private String avatar;
 
-    @Schema(description = "Member's Department", example = "Operation Department | Product "
-        + "Department | R&D Department")
+    @Schema(description = "Member's Department",
+        example = "Operation Department | Product Department | R&D Department")
     private String teams;
 
     @Schema(description = "Role", example = "manager")
@@ -62,8 +63,13 @@ public class NodeRoleMemberVo {
     @JsonIgnore
     private String uuid;
 
-    @JsonIgnore
-    private Boolean isAdmin;
+    @Schema(description = "Whether the member is the Workbench admin")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isWorkbenchAdmin;
+
+    @Schema(description = "Whether the member is the control owner")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isControlOwner;
 
     @Schema(description = "default avatar color number", example = "1")
     private Integer avatarColor;
