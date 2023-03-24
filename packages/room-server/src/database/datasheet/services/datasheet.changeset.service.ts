@@ -162,7 +162,6 @@ export class DatasheetChangesetService {
     if (lastChangeset) {
       changesetMap.set(lastChangeset.messageId, lastChangeset);
     }
-    let composeStartAt: number | null | undefined;
     entities.reduce<string[]>((pre, entity) => {
       if (!entity.operations) {
         return pre;
@@ -173,7 +172,6 @@ export class DatasheetChangesetService {
       }
       if (operations.length) {
         const curChangeset = this.formatDstChangesetDto(dstId, entity, userMap, operations);
-        if (composeStartAt) curChangeset.tmpCreatedAt = composeStartAt;
         let messageId: string | undefined;
         if (pre.length) {
           messageId = pre.pop();
@@ -188,12 +186,9 @@ export class DatasheetChangesetService {
         // No changesets after merging cur and pre, and messageId is not from previous changeset.
         if (!changeset) {
           changesetMap.delete(messageId!);
-          // Set tmpCreateAt of next changeset to time before merge.
-          composeStartAt = preChangeset?.tmpCreatedAt;
         } else {
           changesetMap.set(changeset.messageId, changeset);
           pre.push(changeset.messageId);
-          composeStartAt = null;
         }
       }
       return pre;

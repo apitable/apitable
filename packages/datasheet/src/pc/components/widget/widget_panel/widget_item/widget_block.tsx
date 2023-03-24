@@ -23,6 +23,7 @@ import classnames from 'classnames';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise';
 import { resourceService } from 'pc/resource_service';
+import { IRecordPickerProps } from 'pc/components/record_picker';
 import { store } from 'pc/store';
 import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 // import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
@@ -85,6 +86,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
   toggleSetting(state?: boolean | undefined): any;
   toggleFullscreen(state?: boolean | undefined): any;
   expandRecord(props: IExpandRecordProps): any;
+  expandRecordPicker: (props: IRecordPickerProps) => any;
   nodeId: string;
   isDevMode?: boolean;
   setDevWidgetId?: ((widgetId: string) => void) | undefined;
@@ -93,7 +95,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
 }> = (props, ref) => {
   const {
     widgetId, widgetPackageId, isExpandWidget, isSettingOpened, isDevMode, nodeId, toggleFullscreen, toggleSetting, expandRecord, dragging,
-    setDevWidgetId, runtimeEnv
+    setDevWidgetId, runtimeEnv, expandRecordPicker
   } = props;
   useManageWidgetRenderTask(widgetId);
   const [connected, setConnected] = useState<boolean>();
@@ -248,6 +250,21 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     mainMessage.onExpandRecord(widgetId, expandRecord);
     return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_RECORD);
   }, [connected, widgetId, expandRecord]);
+
+  useEffect(() => {
+    if (!connected) {
+      return;
+    }
+    mainMessage.onExpandRecordPicker(widgetId, (datasheetId: string, messageId?: string) => expandRecordPicker({ 
+      datasheetId,
+      isSingle: true,
+      onSave: (recordIds: string[]) => {
+        mainMessage.syncRecordPickerResult(widgetId, recordIds, messageId);
+      },
+      onClose: () => mainMessage.syncRecordPickerResult(widgetId, [], messageId)
+    }));
+    return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_RECORD_PICKER);
+  }, [connected, widgetId, expandRecordPicker]);
   
   useEffect(() => {
     if (!connected) {

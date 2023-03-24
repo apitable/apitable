@@ -117,3 +117,9 @@ export const UNSUBSCRIBE_DATASHEET_RECORDS = '/datasheets/:dstId/records/subscri
 // =============== datasheet related =======================
 
 export const GET_CONTENT_DISPOSITION = '/attach/getContentDisposition';
+
+// Cascader data
+export const CASCADER_DATA = '/spaces/:spaceId/datasheets/:datasheetId/cascader';
+
+// Cascader snapshot data
+export const CASCADER_SNAPSHOT = '/spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot';

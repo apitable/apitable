@@ -62,6 +62,13 @@ interface ISearchPanelProps {
   showMirrorNode?: boolean;
 }
 
+export interface ISearchChangeProps {
+  datasheetId?: string;
+  mirrorId?: string;
+  viewId?: string;
+  widgetIds?: string[];
+}
+
 export enum SubColumnType {
   Widget,
   View,

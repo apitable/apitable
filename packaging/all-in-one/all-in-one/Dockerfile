@@ -115,5 +115,5 @@ ENV \
     AWS_REGION=us-east-1 \
     \
     OSS_BUCKET_NAME=assets \
-    VK_ASSETS_LTD_BUCKET=assets \
-    VK_ASSETS_LTD_URL=assets
+    ASSETS_LTD_BUCKET=assets \
+    ASSETS_LTD_URL=assets

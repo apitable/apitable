@@ -49,6 +49,7 @@ import styles from './style.module.less';
 import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
 import { WidgetBlockMain } from './widget_block_main';
 import { WidgetLoading } from './widget_loading';
+import { expandRecordPicker } from 'pc/components/record_picker';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -241,6 +242,7 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = p
                     toggleSetting={toggleSetting}
                     toggleFullscreen={toggleFullscreen}
                     expandRecord={expandRecordInCenter}
+                    expandRecordPicker={expandRecordPicker}
                     isDevMode={config?.isDevMode}
                     setDevWidgetId={setDevWidgetId}
                     dragging={dragging}

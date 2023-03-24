@@ -42,6 +42,7 @@ import {
   TelephoneOutlined,
   LookupOutlined,
   StarOutlined,
+  CascadeOutlined
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -68,6 +69,7 @@ const FieldIconMap = {
   [FieldType.LastModifiedTime]: HistoryFilled,
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
+  [FieldType.Cascader]: CascadeOutlined,
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16) => {

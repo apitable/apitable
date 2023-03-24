@@ -47,7 +47,7 @@ export const useLinkInvite = () => {
       if (success) {
         Api.joinViaSpace(linkToken, nodeId).then(res => {
           if (res.data.success) {
-            Router.redirect(Navigation.WORKBENCH, { params: { spaceId: info.spaceId }, clearQuery: true });
+            Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
           }
         });
@@ -70,11 +70,13 @@ export const useLinkInvite = () => {
       reGetLinkInfo(linkToken, nodeId);
       return;
     }
+        
     // Get data from the store
     if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
       Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then(res => {
+
         if (res.data.success) {
-          Router.redirect(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
+          Router.redirect(Navigation.WORKBENCH, { query: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
           Router.redirect(Navigation.WORKBENCH,);
         }

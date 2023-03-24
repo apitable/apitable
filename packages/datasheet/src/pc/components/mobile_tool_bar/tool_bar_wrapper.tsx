@@ -33,6 +33,7 @@ import { ScreenSize } from '../common/component_display';
 import { WidgetTool } from './widget_tool/widget_tool';
 import classNames from 'classnames';
 import { ListOutlined } from '@apitable/icons';
+import { get } from 'lodash';
 
 export interface IToolBarWrapperProps {
   hideToolBar?: boolean;
@@ -52,8 +53,12 @@ export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperPro
   const isCalendarView = activeView && activeView.type === ViewType.Calendar;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const embedInfo = useSelector(state => state.embedInfo);
-  if(embedInfo.viewControl?.viewId === activeView.id) {
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { isShowEmbedToolBar = true } = embedInfo;
+
+  const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
+  const showWidgetBtn = embedId ? get(embedInfo, 'viewControl.toolBar.widgetBtn', false) : true;
+  if(!isShowEmbedToolBar) {
     return <></>;
   }
   return (
@@ -68,10 +73,10 @@ export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperPro
         <div className={styles.toolRight}>
           {!(isCalendarView && isMobile) && <Find datasheetId={datasheetId!} />}
           <MoreTool />
-          <WidgetTool />
+          { showWidgetBtn && <WidgetTool /> }
         </div>
       </div>
-      {!hideViewList && (
+      {!hideViewList && !isOnlyView && (
         <div className={styles.viewToolsWrapper}>
           <div className={styles.menuOpenContainer} onClick={() => setViewMenuVisible(true)}>
             <div className={styles.menuIconWrapper}>

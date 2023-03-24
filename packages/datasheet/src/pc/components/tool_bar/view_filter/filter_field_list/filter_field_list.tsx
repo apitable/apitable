@@ -89,7 +89,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
           conditionId: condition.conditionId,
           operator: Field.bindModel(field).acceptFilterOperators[0],
           value: getDefaultValue(valueType) as any,
-        };
+        } as any;
         return draft;
       });
     });

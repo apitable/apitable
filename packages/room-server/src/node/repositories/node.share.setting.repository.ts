@@ -25,14 +25,14 @@ export class NodeShareSettingRepository extends Repository<NodeShareSettingEntit
   /**
    * Obtain the sharing setting with a sharing ID
    */
-  selectByShareId(shareId: string): Promise<NodeShareSettingEntity | undefined> {
-    return this.findOne({ where: [{ shareId }] });
+  public async selectByShareId(shareId: string): Promise<NodeShareSettingEntity | undefined> {
+    return await this.findOne({ where: [{ shareId }] });
   }
 
   /**
    * Obtain the sharing setting with a node ID
    */
-  selectByNodeId(nodeId: string): Promise<NodeShareSettingEntity | undefined> {
-    return this.findOne({ where: [{ nodeId }] });
+  public async selectByNodeId(nodeId: string): Promise<NodeShareSettingEntity | undefined> {
+    return await this.findOne({ where: [{ nodeId }] });
   }
 }

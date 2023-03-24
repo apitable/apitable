@@ -36,6 +36,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const shareId = useSelector(state => state.pageParams.shareId);
+  const embedId = useSelector(state => state.pageParams.embedId);
   const undoManager = resourceService.instance!.undoManager!;
   const datasheetName = useSelector(state => {
     const treeNodesMap = state.catalogTree.treeNodesMap;
@@ -107,7 +108,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
           <span className={classNames({ [styles.toolName]: redoLength })}>{t(Strings.redo)}</span>
         </LinkButton>
       </div>
-      <div
+      { !embedId && <div
         className={styles.moreToolItem}
         onClick={() => {
           expandNodeDescription({
@@ -125,6 +126,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
           <span className={styles.toolName}>{t(Strings.file_summary)}</span>
         </LinkButton>
       </div>
+      }
     </div>
   );
 

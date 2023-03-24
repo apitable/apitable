@@ -18,28 +18,28 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
+import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.MemberTeamInfoDTO;
 import com.apitable.organization.dto.SearchMemberDTO;
 import com.apitable.organization.dto.SpaceMemberDTO;
 import com.apitable.organization.dto.SpaceMemberIdDTO;
-import com.apitable.player.dto.PlayerBaseDTO;
-import com.apitable.workspace.vo.FieldRoleMemberVo;
-import com.apitable.workspace.vo.NodeRoleMemberVo;
+import com.apitable.organization.dto.TenantMemberDto;
+import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.SearchMemberVo;
 import com.apitable.organization.vo.UnitMemberVo;
-import com.apitable.space.vo.MainAdminInfoVo;
-import com.apitable.organization.dto.MemberBaseInfoDTO;
-import com.apitable.organization.dto.MemberTeamInfoDTO;
+import com.apitable.player.dto.PlayerBaseDTO;
 import com.apitable.shared.util.ibatis.ExpandBaseMapper;
-import com.apitable.organization.dto.TenantMemberDto;
+import com.apitable.space.vo.MainAdminInfoVo;
 import com.apitable.workspace.dto.MemberInfoDTO;
-import com.apitable.organization.entity.MemberEntity;
+import com.apitable.workspace.vo.FieldRoleMemberVo;
+import com.apitable.workspace.vo.NodeRoleMemberVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Collection;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
 
@@ -616,10 +616,21 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<NodeRoleMemberVo> selectNodeRoleMemberByIds(@Param("memberIds") Collection<Long> memberIds);
 
     /**
+     * Query Incomplete Member View.
+     *
+     * @param page      page param
+     * @param spaceId   space id
+     * @return IPage<NodeRoleMemberVo>
+     * @author Chambers
+     */
+    IPage<NodeRoleMemberVo> selectIncompleteMemberVo(Page<NodeRoleMemberVo> page,
+        @Param("spaceId") String spaceId);
+
+    /**
      * query the members' FieldRole
      *
      * @param memberIds member id
-     * @return NodeRoleMemberVo
+     * @return List<FieldRoleMemberVo>
      */
     List<FieldRoleMemberVo> selectFieldRoleMemberByIds(@Param("memberIds") Collection<Long> memberIds);
 

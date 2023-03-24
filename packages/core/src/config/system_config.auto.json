@@ -3457,7 +3457,21 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([105])"
+                    "open_guide_wizards([104, 105])"
+                ],
+                "rules": [
+                    "device_IS_pc",
+                    "url_EXCLUDES_templateId",
+                    "url_EXCLUDES_shareId"
+                ],
+                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([104, 105])]",
+                "event": [
+                    "workbench_show_trial_tip"
+                ]
+            },
+            {
+                "actions": [
+                    "open_guide_wizards([104, 105])"
                 ],
                 "rules": [
                     "device_IS_pc",
@@ -3466,7 +3480,7 @@
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([104, 105])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3785,6 +3799,10 @@
             "workbench_no_emit": {
                 "module": "workbench",
                 "name": "no_emit"
+            },
+            "workbench_show_trial_tip": {
+                "module": "workbench",
+                "name": "show_trial_tip"
             },
             "workbench_shown": {
                 "module": "workbench",
@@ -4131,9 +4149,9 @@
                 "commandArgs": "88"
             },
             {
-                "id": "open_guide_wizards([105])",
+                "id": "open_guide_wizards([104, 105])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[105]"
+                "commandArgs": "[104, 105]"
             },
             {
                 "id": "open_guide_wizards([19])",
@@ -4817,8 +4835,14 @@
                 "steps": "[[164]]"
             },
             "104": {
+                "repeat": true,
                 "completeIndex": 0,
-                "steps": "[[166]]"
+                "steps": "[[166]]",
+                "player": {
+                    "action": [
+                        "recRyoECYFqBv"
+                    ]
+                }
             },
             "105": {
                 "completeIndex": -1,

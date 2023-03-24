@@ -93,7 +93,12 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
     editIcon && setEditIcon(false);
   }, [memberInfo, editIcon, user, spaceResource, setEditIcon, spaceInfo]);
 
-  const identity = getIdentity(memberInfo);
+  const identity = getIdentity({
+    ...memberInfo,
+    isMainAdmin: memberInfo.isSubAdmin,
+    isAdmin: memberInfo.isPrimary,
+  });
+  
   const { avatar, avatarColor, nickName, memberId, memberName, mobile, email, isMemberNameModified, teamData } = memberInfo;
   const displayMemberName = getSocialWecomUnitName?.({
     name: memberName,

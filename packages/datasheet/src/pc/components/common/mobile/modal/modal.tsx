@@ -52,6 +52,7 @@ export function confirm(props: IModalFuncProps) {
     {
       title,
       content,
+      closeOnAction: true,
       actions: [
         { text: cancelText || t(Strings.cancel), onClick: onCancel, key: cancelText || t(Strings.cancel) },
         { text: okText || t(Strings.confirm), onClick: onOk, style: { color: colorVars.primaryColor }, key: okText || t(Strings.confirm) },
@@ -96,6 +97,7 @@ export function warning(props: IModalFuncProps) {
     {
       title: <span style={{ color: colorVars.errorColor }}>{title}</span>,
       content,
+      closeOnAction: true,
       actions: [
         { text: cancelText || t(Strings.cancel), onClick: onCancel, key: cancelText || t(Strings.cancel) },
         { text: okText || t(Strings.confirm), onClick: onOk, style: { color: colorVars.errorColor }, key: okText || t(Strings.confirm) },
