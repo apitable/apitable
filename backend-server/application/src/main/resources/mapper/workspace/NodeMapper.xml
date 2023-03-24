@@ -485,7 +485,7 @@
         JOIN ${tablePrefix}node AS n ON pv.parent_id = n.node_id
         AND n.is_rubbish = 0
         )
-        SELECT DISTINCTROW node_id, parent_id, `type`
+        SELECT DISTINCTROW node_id, parent_id, `type`, node_name, icon
         FROM parent_view
         <if test="!includeRoot">
             WHERE parent_id != '0'
