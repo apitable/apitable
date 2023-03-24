@@ -304,9 +304,9 @@
             <if test="globalWidgetInfo.isEnabled != null">
                 vwp.is_enabled = #{globalWidgetInfo.isEnabled},
             </if>
-            <if test="globalWidgetInfo.openSourceAddres != null and globalWidgetInfo.openSourceAddres != ''">
+            <if test="globalWidgetInfo.openSourceAddress != null and globalWidgetInfo.openSourceAddress != ''">
                 vwp.widget_body = JSON_SET(IFNULL(widget_body, '{}'), '$.widgetOpenSource',
-                #{globalWidgetInfo.openSourceAddres}),
+                #{globalWidgetInfo.openSourceAddress}),
             </if>
             <if test="globalWidgetInfo.templateCover != null and globalWidgetInfo.templateCover != ''">
                 vwp.widget_body = JSON_SET(IFNULL(widget_body, '{}'), '$.templateCover',
