@@ -71,7 +71,10 @@ const fixLinkConsistency = (error: ILinkConsistencyError, state: IReduxState) =>
 
 // Set user ID, logged in
 Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
-  posthog.identify(args.uuid);
+
+  if (typeof window['posthog'] !== 'undefined') {
+    posthog.identify(args.uuid);
+  }
 
   Sentry.setUser({
     email: args.email,
