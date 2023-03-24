@@ -85,6 +85,8 @@ export type StringKeysMapType = {
   'additional_styling_options': 'additional_styling_options',
   'admin': 'admin',
   'admin_cannot_quit_space': 'admin_cannot_quit_space',
+  'admin_test_function': 'admin_test_function',
+  'admin_test_function_content': 'admin_test_function_content',
   'admins_per_space': 'admins_per_space',
   'advanced': 'advanced',
   'advanced_features': 'advanced_features',
@@ -3088,6 +3090,11 @@ export type StringKeysMapType = {
   'template_not_found': 'template_not_found',
   'template_recommend_title': 'template_recommend_title',
   'template_type': 'template_type',
+  'test_function': 'test_function',
+  'test_function_desc': 'test_function_desc',
+  'test_function_normal_modal_close_content': 'test_function_normal_modal_close_content',
+  'test_function_normal_modal_open_content': 'test_function_normal_modal_open_content',
+  'test_function_space_level_desc': 'test_function_space_level_desc',
   'text': 'text',
   'text_editor_tip_end': 'text_editor_tip_end',
   'text_functions': 'text_functions',
@@ -3761,7 +3768,8 @@ export type StringKeysMapType = {
   'input_new_password': 'input_new_password',
   'placeholder_input_new_password_again': 'placeholder_input_new_password_again',
   'obtain_verification_code': 'obtain_verification_code',
-  'phone_email_login': 'phone_email_login'
+  'phone_email_login': 'phone_email_login',
+  'new_user_welcome_notify': 'new_user_welcome_notify'
 };
 
 export type StringKeysType = keyof StringKeysMapType;

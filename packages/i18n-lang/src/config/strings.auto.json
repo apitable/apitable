@@ -413,6 +413,16 @@
             "en_US": "You are the Space admin so you can't exit. You can transfer or delete this Space on \"Space Management\".",
             "zh_HK": "你是當前空間站的主管理員，無法退出。你可以在「空間站管理」轉讓或刪除空間站"
         },
+        "admin_test_function": {
+            "zh_CN": "管理员的实验性功能",
+            "en_US": "Experimental features of admin",
+            "zh_HK": "管理員的實驗性功能"
+        },
+        "admin_test_function_content": {
+            "zh_CN": "管理员可以申请或开启下列实验性功能，启用后会对整个空间站生效",
+            "en_US": "The admin can enable or apply for enabling the following experimental features that take effect for all members in the Space",
+            "zh_HK": "管理員可以申請或開啟下列實驗性功能，啟用後會對整個空間站生效"
+        },
         "admins_per_space": {
             "zh_CN": "管理员数量",
             "en_US": "Admins per space",
@@ -15225,6 +15235,31 @@
             "zh_CN": "模板",
             "en_US": "Template",
             "zh_HK": "模板"
+        },
+        "test_function": {
+            "zh_CN": "实验性功能",
+            "en_US": "Experimental features",
+            "zh_HK": "實驗性功能"
+        },
+        "test_function_desc": {
+            "zh_CN": "实验性功能可能因为产品策略或计价策略变动而调整，请仔细阅读功能影响范围后再启用",
+            "en_US": "Experimental features may be adjusted due to changes in product strategy or billing strategy, please read the scope of impact of the features carefully before enabling them",
+            "zh_HK": "實驗性功能可能因為產品策略或計價策略變動而調整，請仔細閱讀功能影響範圍後再啟用"
+        },
+        "test_function_normal_modal_close_content": {
+            "zh_CN": "当前实验性功能已成功停用，刷新后即可生效",
+            "en_US": "Disabled. Please refresh the page.",
+            "zh_HK": "當前實驗性功能已成功停用，刷新後即可生效"
+        },
+        "test_function_normal_modal_open_content": {
+            "zh_CN": "当前实验性功能已成功启用，刷新后即可生效",
+            "en_US": "Enabled. Please refresh the page.",
+            "zh_HK": "當前實驗性功能已成功啟用，刷新後即可生效"
+        },
+        "test_function_space_level_desc": {
+            "zh_CN": "启用空间站级别的实验性功能后，会对空间站的所有成员生效",
+            "en_US": "After you enable an experimental feature at the Space level, it will take effect on all members in the Space",
+            "zh_HK": "啟用空間站級別的實驗性功能後，會對空間站的所有成員生效"
         },
         "text": {
             "zh_CN": "文本",
