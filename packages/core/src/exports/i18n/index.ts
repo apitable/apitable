@@ -20,8 +20,7 @@
  * read strings.auto.json,  go translation
  */
 import { I18N } from '@apitable/i18n';
-import type { StringKeysMapType, StringKeysType } from 'config/stringkeys.interface';
-import type { StringSaaSKeysMapType, StringSaaSKeysType } from 'modules/enterprise';
+import type { L10nKeys } from 'config/stringkeys.interface';
 
 export * from 'config/stringkeys.interface';
 
@@ -30,7 +29,7 @@ export const Strings = new Proxy({}, {
   get: function(_target, key) {
     return key;
   },
-}) as (StringKeysMapType & StringSaaSKeysMapType) as any;
+}) as (L10nKeys) as any;
 
 /**
  * read Settings in config
@@ -64,6 +63,6 @@ rewriteI18nForEdition();
 // global singleton of I18N
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, getLanguage());
 
-export function t(stringKey: StringKeysType & StringSaaSKeysType, options: any = null, isPlural = false): string {
+export function t(stringKey: L10nKeys, options: any = null, isPlural = false): string {
   return i18n.getText(stringKey, options, isPlural);
 }

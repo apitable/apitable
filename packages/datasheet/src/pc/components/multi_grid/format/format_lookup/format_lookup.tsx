@@ -19,7 +19,7 @@
 import { Select, TextButton, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
-  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t,
+  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, Strings, t,
 } from '@apitable/core';
 import { ChevronRightOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Switch } from 'antd';
@@ -55,7 +55,7 @@ interface IFormateLookUpProps {
 
 interface IRollUpFunction {
   value: string;
-  name: StringKeysType;
+  name: string;
   label: string;
   example: string;
 }

@@ -1,5 +1,35 @@
-files:
-  - source: /README.md
-    translation: /docs/readme/%locale%/%original_file_name%
-  - source: /docs/contribute/*
-    translation: /docs/readme/%locale%/docs/contribute/%original_file_name%
+# files:
+#  - source: /README.md
+#    translation: /docs/readme/%locale%/%original_file_name%
+#  - source: /docs/contribute/*
+#    translation: /docs/readme/%locale%/docs/contribute/%original_file_name%
+#
+# Your Crowdin credentials
+"project_id" : "xxx"
+"api_token" : "jwt token replace"
+"base_path" : "."
+"base_url" : "https://api.crowdin.com"
+
+#
+# Choose file structure in Crowdin
+# e.g. true or false
+#
+"preserve_hierarchy": true
+
+#
+# Files configuration
+#
+files: [
+  {
+    "source" : "/README.md",
+    "translation" : "/docs/readme/%locale%/%original_file_name%",
+  },
+  {
+    "source" : "/docs/contribute/*",
+    "translation" : "/docs/readme/%locale%/docs/contribute/%original_file_name%",
+  },
+  {
+    "source" : "/packages/i18n-lang/src/l10n/base/**/*.json",
+    "translation" : "%original_path%/%locale%.json",
+  }
+]

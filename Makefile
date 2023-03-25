@@ -367,7 +367,7 @@ install: install-local
 	@echo 'Install Finished'
 
 .PHONY: install-local
-install-local: ## install all dependencies with local programming language environment
+install-local: apitable_l10n apitable_env## install all dependencies with local programming language environment
 	yarn install && yarn build:pre
 	cd backend-server && ./gradlew build -x test --stacktrace
 
@@ -469,6 +469,21 @@ db-apply: ## init-db update database structure (use .env)
 	cd init-db ;\
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
 	docker run --rm --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
+
+apitable_l10n: ## Aggregate l10n files into one
+	ts-node ./packages/i18n-lang/src/generatel10nJson.ts ./.setting/l10n ./packages/i18n-lang/src/gen ./packages/i18n-lang/src/default
+	ts-node ./packages/i18n-lang/src/generateInterface.ts ./packages/core/src/config/stringkeys.interface.ts ./.setting/l10n/en-US.json
+
+apitable_env: ## Aggregate env files into one
+	ts-node ./packages/i18n-lang/src/generateL10nEnv.ts ./.setting/ ./packages/i18n-lang/src/default
+	cp ./.setting/.env ./packages/datasheet/.env
+
+upload_crowdin:
+	crowdin upload sources
+	crowdin upload translations
+
+download_crowdin:
+	crowdin download
 
 changelog: ## make changelog with github api
 	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\

@@ -15,18 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import strings from './config/strings.json';
-// @ts-ignore
-import { strings as _strings } from './enterprise';
+import strings from './gen/l10n.json'
 
 declare const window: any;
 declare const global: any;
 
 function loadAllLang() {
   if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
+    (window as any).apitable_i18n = strings;
   } else {
-    (global as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
+    (global as any).apitable_i18n = strings;
   }
 }
 

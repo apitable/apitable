@@ -1,5 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .idea
+.setting
+packages/datasheet/.env
+packages/datasheet/.env.local
+packages/core/src/config/stringkeys.interface.ts
+packages/i18n-lang/src/gen
 __pycache__
 *.pyc
 
