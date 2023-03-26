@@ -4839,6 +4839,7 @@
                 "steps": "[[164]]"
             },
             "104": {
+                "repeat": true,
                 "completeIndex": 0,
                 "steps": "[[166]]",
                 "player": {

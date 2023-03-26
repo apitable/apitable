@@ -1284,6 +1284,332 @@ describe('checkLinkConsistency', () => {
       } as ILinkConsistencyError);
     });
   });
+
+  test('link deleted records', () => {
+    const mockState: IReduxState = ({
+      pageParams: {
+        datasheetId: 'dst1',
+      } as IPageParams,
+      datasheetMap: ({
+        dst1: {
+          loading: false,
+          connected: false,
+          syncing: false,
+          datasheet: ({
+            id: 'dst1',
+            name: 'Dst 1',
+            isPartOfData: false,
+            snapshot: {
+              meta: {
+                fieldMap: {
+                  'fld1-1': {
+                    id: 'fld1-1',
+                    name: 'field 1',
+                    type: FieldType.SingleText,
+                    property: {},
+                  },
+                  'fld1-2': {
+                    id: 'fld1-2',
+                    name: 'field 2',
+                    type: FieldType.Link,
+                    property: {
+                      foreignDatasheetId: 'dst1',
+                    },
+                  },
+                },
+                views: [
+                  {
+                    id: 'viw1',
+                    name: 'view 1',
+                    type: ViewType.Grid,
+                    columns: [{ fieldId: 'fld1-1' }, { fieldId: 'fld1-2' }],
+                    rows: [{ recordId: 'rec1-1' }, { recordId: 'rec1-2' }, { recordId: 'rec1-3' }, { recordId: 'rec1-4' }],
+                    frozenColumnCount: 1,
+                  },
+                ],
+              },
+              recordMap: {
+                'rec1-1': {
+                  id: 'rec1-1',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 1' }], 'fld1-2': ['rec1-1', 'rec1-2', 'rec1-4'] },
+                  commentCount: 0,
+                },
+                'rec1-2': {
+                  id: 'rec1-2',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 2' }], 'fld1-2': ['rec1-4', 'rec1-6'] },
+                  commentCount: 0,
+                },
+                'rec1-3': {
+                  id: 'rec1-3',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 3' }], 'fld1-2': ['rec1-17', 'rec1-19'] },
+                  commentCount: 0,
+                },
+                'rec1-4': {
+                  id: 'rec1-4',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 3' }] },
+                  commentCount: 0,
+                },
+              },
+              datasheetId: 'dst1',
+            } as ISnapshot,
+            permissions: {
+              editable: true,
+            },
+          } as any) as IDatasheetState,
+        },
+      } as any) as IDatasheetMap,
+    } as any) as IReduxState;
+
+    const result = checkLinkConsistency(mockState);
+    expect(result).toStrictEqual({
+      mainDstId: 'dst1',
+      mainDstName: 'Dst 1',
+      errorRecordIds: new Map([
+        [
+          'dst1',
+          new Map([
+            ['rec1-2:fld1-2', { redundant: new Set(['rec1-6']) }],
+            ['rec1-3:fld1-2', { redundant: new Set(['rec1-17', 'rec1-19']) }],
+          ]),
+        ],
+      ]),
+    } as ILinkConsistencyError);
+  });
+});
+
+describe('generateFixLinkConsistencyChangesets', () => {
+  test('missing & redundant recordIds changesets', () => {
+    const state = mockStateLinkDeletedRecordsAndMissingRecordIdsInBothDatasheets;
+    const error = checkLinkConsistency(state);
+    expect(error).toBeTruthy();
+    const changesets = generateFixLinkConsistencyChangesets(error!, state);
+    expect(changesets).toStrictEqual([
+      {
+        resourceId: 'dst2',
+        resourceType: ResourceType.Datasheet,
+        operations: [
+          {
+            cmd: CollaCommandName.FixConsistency,
+            actions: [
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec1-4'],
+                oi: ['rec1-4', 'rec1-1'],
+                p: ['recordMap', 'rec2-1', 'data', 'fld2-2'],
+              },
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec1-1', 'rec1-3', 'rec1-37'],
+                oi: ['rec1-1', 'rec1-3', 'rec1-2', 'rec1-4'],
+                p: ['recordMap', 'rec2-2', 'data', 'fld2-2'],
+              },
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec1-39', 'rec1-4', 'rec1-1', 'rec1-37', 'rec1-3'],
+                oi: ['rec1-4', 'rec1-1', 'rec1-3'],
+                p: ['recordMap', 'rec2-3', 'data', 'fld2-2'],
+              },
+            ],
+          },
+        ] as IOperation[],
+      },
+      {
+        resourceId: 'dst1',
+        resourceType: ResourceType.Datasheet,
+        operations: [
+          {
+            cmd: CollaCommandName.FixConsistency,
+            actions: [
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec2-2', 'rec2-10'],
+                oi: ['rec2-2'],
+                p: ['recordMap', 'rec1-2', 'data', 'fld1-2'],
+              },
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec2-2', 'rec2-1', 'rec2-7', 'rec2-3'],
+                oi: ['rec2-2', 'rec2-1', 'rec2-3'],
+                p: ['recordMap', 'rec1-4', 'data', 'fld1-2'],
+              },
+              {
+                n: OTActionName.ObjectInsert,
+                oi: ['rec2-2', 'rec2-3'],
+                p: ['recordMap', 'rec1-3', 'data', 'fld1-2'],
+              },
+              {
+                n: OTActionName.ObjectReplace,
+                od: ['rec2-1', 'rec2-2'],
+                oi: ['rec2-1', 'rec2-2', 'rec2-3'],
+                p: ['recordMap', 'rec1-1', 'data', 'fld1-2'],
+              },
+            ],
+          },
+        ] as IOperation[],
+      },
+    ]);
+  });
+
+  test('changesets contain oi & od', () => {
+    const mockState: IReduxState = ({
+      pageParams: {
+        datasheetId: 'dst1',
+      } as IPageParams,
+      datasheetMap: ({
+        dst1: {
+          loading: false,
+          connected: false,
+          syncing: false,
+          datasheet: ({
+            id: 'dst1',
+            name: 'Dst 1',
+            isPartOfData: false,
+            snapshot: {
+              meta: {
+                fieldMap: {
+                  'fld1-1': {
+                    id: 'fld1-1',
+                    name: 'field 1',
+                    type: FieldType.SingleText,
+                    property: {},
+                  },
+                  'fld1-2': {
+                    id: 'fld1-2',
+                    name: 'field 2',
+                    type: FieldType.Link,
+                    property: {
+                      foreignDatasheetId: 'dst2',
+                      brotherFieldId: 'fld2-2',
+                    },
+                  },
+                },
+                views: [
+                  {
+                    id: 'viw1',
+                    name: 'view 1',
+                    type: ViewType.Grid,
+                    columns: [{ fieldId: 'fld1-1' }, { fieldId: 'fld1-2' }],
+                    rows: [{ recordId: 'rec1-1' }, { recordId: 'rec1-2' }],
+                    frozenColumnCount: 1,
+                  },
+                ],
+              },
+              recordMap: {
+                'rec1-1': {
+                  id: 'rec1-1',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 1' }], 'fld1-2': ['rec2-2'] },
+                  commentCount: 0,
+                },
+                'rec1-2': {
+                  id: 'rec1-2',
+                  data: { 'fld1-1': [{ type: SegmentType.Text, text: 'rec 2' }] },
+                  commentCount: 0,
+                },
+              },
+              datasheetId: 'dst1',
+            } as ISnapshot,
+            permissions: {
+              editable: true,
+            },
+          } as any) as IDatasheetState,
+        },
+        dst2: {
+          loading: false,
+          connected: false,
+          syncing: false,
+          datasheet: ({
+            id: 'dst2',
+            name: 'Dst 2',
+            isPartOfData: false,
+            snapshot: {
+              meta: {
+                fieldMap: {
+                  'fld2-1': {
+                    id: 'fld2-1',
+                    name: 'field 1',
+                    type: FieldType.SingleText,
+                    property: {},
+                  },
+                  'fld2-2': {
+                    id: 'fld2-2',
+                    name: 'field 2',
+                    type: FieldType.Link,
+                    property: {
+                      foreignDatasheetId: 'dst1',
+                      brotherFieldId: 'fld1-2',
+                    },
+                  },
+                },
+                views: [
+                  {
+                    id: 'viw1',
+                    name: 'view 1',
+                    type: ViewType.Grid,
+                    columns: [{ fieldId: 'fld2-1' }, { fieldId: 'fld2-2' }],
+                    rows: [{ recordId: 'rec2-1' }, { recordId: 'rec2-2' }, { recordId: 'rec2-3' }],
+                    frozenColumnCount: 1,
+                  },
+                ],
+              },
+              recordMap: {
+                'rec2-1': {
+                  id: 'rec2-1',
+                  data: { 'fld2-1': [{ type: SegmentType.Text, text: 'rec 1' }], 'fld2-2': ['rec1-4', 'rec1-7'] },
+                  commentCount: 0,
+                },
+                'rec2-2': {
+                  id: 'rec2-2',
+                  data: { 'fld2-1': [{ type: SegmentType.Text, text: 'rec 2' }], 'fld2-2': ['rec1-1', 'rec1-2'] },
+                  commentCount: 0,
+                },
+              },
+              datasheetId: 'dst2',
+            } as ISnapshot,
+            permissions: {
+              editable: true,
+            },
+          } as any) as IDatasheetState,
+        },
+      } as any) as IDatasheetMap,
+    } as any) as IReduxState;
+    const error = checkLinkConsistency(mockState);
+    expect(error).toBeTruthy();
+    const changesets = generateFixLinkConsistencyChangesets(error!, mockState);
+    expect(changesets).toStrictEqual([
+      {
+        resourceId: 'dst2',
+        resourceType: ResourceType.Datasheet,
+        operations: [
+          {
+            cmd: CollaCommandName.FixConsistency,
+            actions: [
+              {
+                n: OTActionName.ObjectDelete,
+                od: ['rec1-4', 'rec1-7'],
+                p: ['recordMap', 'rec2-1', 'data', 'fld2-2'],
+              },
+            ],
+          },
+        ] as IOperation[],
+      },
+      {
+        resourceId: 'dst1',
+        resourceType: ResourceType.Datasheet,
+        operations: [
+          {
+            cmd: CollaCommandName.FixConsistency,
+            actions: [
+              {
+                n: OTActionName.ObjectInsert,
+                oi: ['rec2-2'],
+                p: ['recordMap', 'rec1-2', 'data', 'fld1-2'],
+              },
+            ],
+          },
+        ] as IOperation[],
+      },
+    ]);
+  });
 });
 
 describe('generateFixLinkConsistencyChangesets', () => {
