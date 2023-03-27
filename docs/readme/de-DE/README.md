@@ -157,7 +157,7 @@ APITable bietet eine Reihe von erstaunlichen Funktionen, von der persönlichen b
   - **100k+** Datenzeilen mit Echtzeit-Kollaboration.
   - Vollständiger API-Zugriff, von `Daten` bis `Metadaten`.
   - Ein-Richtung / Bi-Richtung Tabellenlink und `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Community-freundliche Programmiersprachen und -Framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) und Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Schöne und reiche Datenbank-Tabellenkalkulation
   - `CRUD`: Erstellen, lesen, aktualisieren, die Tabellen, Spalten und Zeilen löschen
   - `Feldoperationen`: Sortieren, filtern, gruppieren, verstecken/unverstecken, Höheneinstellung einstellen.
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 Öffnen Sie dann [http://localhost:80](http://localhost:80) in Ihrem Browser, um sie zu besuchen. (Standardname `admin@apitable.com` und Passwort `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+Wir bieten auch ein All-In-One-Bild basierend auf [pm2](https://pm2.keymetrics.io/) für Demo oder Testzwecke (nicht empfohlen für Unternehmen oder Produktionsnutzung):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Abhängig von Ihrer Umgebung müssen Sie eventuell mehrere Minuten warten, bis alle Dienste gestartet werden. Dieses Bild ist nur amd64 (x86_64) und auf arm64 oder Apfelsilicons kann es zu schlechten Leistungen kommen.
 
 Wenn Sie Ihre lokale Entwicklungsumgebung einrichten möchten, lesen Sie unseren [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -268,7 +268,7 @@ Wenn Sie Ihre lokale Entwicklungsumgebung einrichten möchten, lesen Sie unseren
 
 Herzlich willkommen und vielen Dank für Ihr Interesse an APITable!
 
-In addition to writing code, there are many ways for you to contribute.
+Es gibt viele Möglichkeiten, einen Beitrag zu leisten, abgesehen vom Schreiben von Code.
 
 Sie können wie folgt beitragen:
 - An unserem [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) teilnehmen und Übersetzungen ändern
@@ -278,12 +278,12 @@ Sie können wie folgt beitragen:
 - [Code beisteuern](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+So wie folgendermaßen:
+- Treten Sie [Crowdin-Übersetzungsprojekt](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- [Tickets](https://github.com/apitable/apitable/issues/new/choose) erstellen
+- Unserem [Twitter](https://twitter.com/apitable_com) folgen
+- [Dokumentation](./docs) erstellen
+- [Code beisteuern](./docs/contribute/developer-guide.md)
 
 
 Lesen Sie die Richtlinien für die Mitarbeit an diesem Repository, um zu erfahren, wie Sie beitragen können.
@@ -317,7 +317,7 @@ APITable use these common convention:
 - Wie kann ich versionieren und taggingen? [Semantische Versionierung](https://semver.org/)
 - Was ist die Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Was ist die TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Was ist die Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - Was ist die Architekturübersicht? APITable verstehen - Überblick über die Architektur
 
 ### Dokumentationen
@@ -333,7 +333,7 @@ APITable use these common convention:
 ### Zukünftige Funktionen
 
 - Heavy-Code Interface Builder
-- Embeddable 3rd party documentation components
+- Embbedbare Dokumentations-Komponenten von Drittanbietern
 - SQL-ähnliche Domain-spezifische Sprachen
 - Als IdP
 - Fortschrittlicher Automatisierungsroboter
@@ -401,7 +401,7 @@ Unabhängig von Zeit und Bedingungen, wenn Sie sich an das APITable-Team beteili
     <img src="docs/static/screenshot-it.png" alt="APITable Screenshot-Bild" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot-Bild" />
 </p>
 
 ## 🥰 Lizenz
