@@ -8,7 +8,7 @@ Das Datenblatt bietet Echtzeit-Zusammenarbeit für mehrere Mitarbeiter, die glei
 
 Ein konkreteres Diagramm ist unten zu sehen:
 
-![Architecture Overview](../static/architecture-overview.png)
+![Architektur-Übersicht](../static/architecture-overview.png)
 
 - UI: bietet eine extrem glatte, benutzerfreundliche, superschnelle Datenbank-Tabellenschnittstelle in. <canvas> Webserver: erstellt mit Hilfe von Nextjs superschnelle, SEO-freundliche und extrem benutzerfreundliche statische Websites und Webanwendungen
 - Web Server: erstellt mit Hilfe von Nextjs superschnelle, SEO-freundliche und extrem benutzerfreundliche statische Websites und Webanwendungen
