@@ -268,7 +268,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 欢迎并感谢您为 APITable 作出贡献！
 
-In addition to writing code, there are many ways for you to contribute.
+除了编写代码，您还有许多方法可以帮助 APITable 项目的茁壮成长。
 
 你可以通过如下方式给项目提供帮助:
 - 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
@@ -278,12 +278,12 @@ In addition to writing code, there are many ways for you to contribute.
 - [贡献代码](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+例如：
+- 加入 [Crowdin 翻译项目](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
+- 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
+- 完善、增添项目的 [Documentation](./docs)
+- [贡献代码](./docs/contribute/developer-guide.md)
 
 
 更多详情，请查看 [贡献指南](./CONTRIBUTING.md) 。
@@ -317,7 +317,7 @@ APITable 可适用这些通用的约定：
 - 如何进行版本控制和标记？ [语义化版本控制](https://semver.org/)
 - Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript 编码准则是什么？ -> [TypeScript 风格指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- 什么是Rust编码准则？ -> [Rust API 准则](https://rust-lang.github.io/api-guidelines/about.html)
 - 什么是架构视图？ -> [了解APITable - 架构视图](./docs/contribute/architecute-overview.md)
 
 ### 文档
@@ -333,7 +333,7 @@ APITable 可适用这些通用的约定：
 ### 未来的功能
 
 - 重代码界面生成器
-- Embeddable 3rd party documentation components
+- 可嵌入的第三方文档组件
 - SQL类域特定语言
 - 作为一个 IdP
 - 先进的自动化机器人
@@ -400,7 +400,7 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-it.png" alt="可用屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable 截图图像" />
 </p>
 
 ## 🥰 许可协议
