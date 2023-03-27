@@ -156,7 +156,7 @@ APITable proporciona una amplia gama de características increíbles, desde lo p
   - **100k+** filas de datos con colaboración en tiempo real.
   - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
   - Vínculo de tabla de una dirección / Bi-dirección y `Enlaces cruzados infinitos`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Lenguajes de programación y marco amigables con la comunidad TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot)), y nos estamos moviendo a Rust gradualmente.
 - Bonito y rico Database-Hoja de cálculo UI
   - `CRUD`: Crear, leer, actualizar, eliminar las tablas, columnas y filas
   - `Operaciones de campos`: ordenar, filtro, agrupar, ocultar/desocultar, ajuste de altura.
@@ -253,13 +253,13 @@ curl https://apitable.github.io/install.sh | bash
 
 Luego abra [http://localhost:80](http://localhost:80)  en su navegador para visitarlo. (nombre de usuario predeterminado `admin@apitable.com` y contraseña `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+También proporcionamos una imagen todo en uno basada en [pm2](https://pm2.keymetrics.io/) para propósitos de demostración o prueba (no recomendada para uso empresarial o producción):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Dependiendo de su entorno, puede que necesite esperar varios minutos para que todos los servicios comiencen. Esta imagen es sólo amd64 (x86_64), puede encontrarse con un rendimiento bastante malo en arm64 o silicón de manzana.
 
 Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -267,7 +267,7 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra [🧑● 💻 
 
 Bienvenido, y gracias por su interés en contribuir a APITable!
 
-In addition to writing code, there are many ways for you to contribute.
+Además de escribir código, hay muchas formas en las que puedes contribuir.
 
 Puedes contribuir de la siguiente manera:
 - Unirte y modificar traducciones en nuestro proyecto de traducción de [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
@@ -277,12 +277,12 @@ Puedes contribuir de la siguiente manera:
 - [Contribuir con código](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+Tal como lo siguiente:
+- Únete a [Proyecto de traducción de Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Crear [issues](https://github.com/apitable/apitable/issues/new/choose)
+- Seguir nuestro [Twitter](https://twitter.com/apitable_com)
+- Crear [documentación](./docs)
+- [Contribuir con código](./docs/contribute/developer-guide.md)
 
 
 Puede leer las [Directrices de contribución](./CONTRIBUTING.md) de este repositorio para aprender a contribuir.
@@ -316,7 +316,7 @@ Utilizar estas convenciones comunes:
 - ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
 - ¿Qué es la guía de código de Java? Guía de codificación en Java | Plugin de Intellij IDEA
 - ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- ¿Qué es la guía de código de TypeScript? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - ¿Qué es la Visión General de la Arquitectura? -> [ Comprender APITable - Visión General de la Arquitectura.](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
@@ -332,10 +332,10 @@ Utilizar estas convenciones comunes:
 ### Características futuras
 
 - Constructor de Interfaz de código pesado
-- Embeddable 3rd party documentation components
+- Componentes de documentación de terceros incrustables
 - Idiomas específicos del dominio de SQL
 - Como IdP
-- Advanced automation robot
+- Robot de automatización avanzado
 - Características Web 3
 - ...
 
@@ -399,7 +399,7 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
     <img src="docs/static/screenshot-it.png" alt="Imagen de captura de pantalla APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Imagen de captura de pantalla APITable" />
 </p>
 
 ## 🥰 Licencia
