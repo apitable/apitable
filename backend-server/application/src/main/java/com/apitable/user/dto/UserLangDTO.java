@@ -21,7 +21,7 @@ package com.apitable.user.dto;
 import lombok.Data;
 
 /**
- * User Language and Email
+ * User Language and Email.
  */
 @Data
 public class UserLangDTO {
@@ -31,5 +31,6 @@ public class UserLangDTO {
     private String locale;
 
     private String email;
+    private String timeZone;
 
 }

@@ -23,7 +23,6 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.apitable.core.util.HttpContextUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.impl.PlayerNotificationServiceImpl;
@@ -35,10 +34,8 @@ import com.apitable.starter.socketio.core.SocketClientTemplate;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 /**
  * notification manager.
@@ -99,16 +96,16 @@ public class NotificationManager {
     /**
      * space notification.
      *
-     * @param templateId notification template id
-     * @param userId     user id
-     * @param spaceId    space id
-     * @param result     response
+     * @param requestStorage request parameter map
+     * @param templateId          notification template id
+     * @param userId              user id
+     * @param spaceId             space id
+     * @param result              response
      */
-    public void spaceNotify(NotificationTemplateId templateId, Long userId, String spaceId,
+    public void spaceNotify(RequestStorage requestStorage,
+                            NotificationTemplateId templateId, Long userId, String spaceId,
                             Object result) {
-        HttpServletRequest request = HttpContextUtil.getRequest();
-        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
-        Object nodeId = NotificationHelper.resolveNodeId(requestWrapper, result);
+        Object nodeId = NotificationHelper.resolveNodeId(requestStorage, result);
         if (ObjectUtil.isNotNull(nodeId)) {
             String nodeIdStr = nodeId.toString();
             SpaceNotificationInfo.NodeInfo nodeInfoVo;
@@ -126,7 +123,7 @@ public class NotificationManager {
             nodeInfoVo.setNodeId(nodeIdStr);
             SpaceNotificationInfo info = SpaceNotificationInfo.builder().spaceId(spaceId)
                 .type(StrUtil.toCamelCase(templateId.getValue()))
-                .data(nodeInfoVo).socketId(NotificationHelper.resolvePlayerSocketId(requestWrapper))
+                .data(nodeInfoVo).socketId(NotificationHelper.resolvePlayerSocketId(requestStorage))
                 .build();
             if (templateId == NotificationTemplateId.NODE_FAVORITE) {
                 info.setUuid(loginUserCacheService.getLoginUser(userId).getUuid());

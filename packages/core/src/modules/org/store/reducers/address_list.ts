@@ -81,7 +81,9 @@ const reUpdateTeamTree = (originTree: ITeamTreeNode[], parentId: string, childre
   if (!parent) {
     return;
   }
-  parent.children = childrenTree;
+  if((!parent.children || parent.children?.length === 0 ) && parent.hasChildren) { 
+    parent.children = childrenTree;
+  }
 };
 
 export const addressList = produce((data: IAddressList = defaultState, action: IAddressListActions) => {

@@ -17,7 +17,6 @@
  */
 
 import { RedisModule } from '@apitable/nestjs-redis';
-import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -37,7 +36,6 @@ import path, { resolve } from 'path';
 import { I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
-import openTelemetryConfiguration from 'shared/services/config/open.telemetry.config.service';
 import { redisModuleOptions } from 'shared/services/config/redis.config.service';
 import { SchedTaskDynamicModule } from 'shared/services/sched_task/sched.task.dynamic.module';
 import { SharedModule } from 'shared/shared.module';
@@ -72,7 +70,6 @@ import { UserModule } from 'user/user.module';
         path: path.join(__dirname, '/i18n/'),
       },
     }),
-    OpenTelemetryModule.forRoot(openTelemetryConfiguration),
     ScheduleModule.forRoot(),
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),

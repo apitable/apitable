@@ -35,7 +35,6 @@ import { Switch } from 'antd';
 import settingStyles from '../../field_setting/styles.module.less';
 import { CollectTypeSelect } from './collect_type_select';
 import { FieldSelectModal } from './field_select_modal';
-import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect, Tooltip } from 'pc/components/common';
 import { Checkbox, Select, colorVars } from '@apitable/components';
@@ -217,14 +216,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       </ComponentDisplay>
       <section className={settingStyles.section} style={{ marginTop: 16 }}>
         <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.include_time)}
-          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
-        </div>
-      </section>
-      {includeTime && <Divider />}
-      {includeTime && (
-        <section className={settingStyles.section}>
-          <div className={settingStyles.sectionTitle}>
+          <div className={styles.timeTitle}>
             {t(Strings.field_incluede_time_and_time_zone_title)}
             <Tooltip title={t(Strings.date_setting_time_zone_tooltips)} trigger={'hover'}>
               <span className={classNames(settingStyles.sectionTitleTip, settingStyles.noCursor)}>
@@ -232,6 +224,11 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               </span>
             </Tooltip>
           </div>
+          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
+        </div>
+      </section>
+      {includeTime && (
+        <section className={settingStyles.section}>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Select
               triggerCls={styles.customSelect}

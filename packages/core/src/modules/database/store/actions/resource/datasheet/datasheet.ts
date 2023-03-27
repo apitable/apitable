@@ -112,9 +112,9 @@ import {
 } from 'modules/shared/store/action_constants';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
 import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
-import { consistencyCheck } from 'utils';
+import { checkInnerConsistency } from 'utils';
 import produce from 'immer';
-import { checkLinkConsistency } from 'utils/link_consistency_check';
+import { checkLinkConsistency } from 'utils/link_consistency';
 
 export function requestDatasheetPack(datasheetId: string) {
   return {
@@ -150,14 +150,14 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
     }
   }
 
-  const errorInfo = consistencyCheck(snapshot);
+  const errorInfo = checkInnerConsistency(snapshot);
 
   if (errorInfo) {
     Player.doTrigger(Events.app_error_logger, {
       error: new Error(t(Strings.error_data_consistency_and_check_the_snapshot)),
       metaData: {
         datasheetId: datasheet.id,
-        errorInfo,
+        errors: errorInfo,
       },
     });
 
@@ -165,16 +165,19 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
       key: ModalConfirmKey.FixInnerConsistency,
       metaData: {
         datasheetId: datasheet.id,
+        errors: errorInfo,
       },
     });
   }
 }
 
-function ensureLinkConsistency(state: IReduxState) {
-  const error = checkLinkConsistency(state);
-  if (!error || !error.missingRecords.size) {
+function ensureLinkConsistency(state: IReduxState, loadedForeignDstId: string) {
+  const error = checkLinkConsistency(state, loadedForeignDstId);
+  if (!error || !error.errorRecordIds.size) {
     return;
   }
+
+  console.log('found link inconsistency', error);
 
   Player.doTrigger(Events.app_error_logger, {
     error: new Error(t(Strings.error_data_consistency_and_check_the_snapshot)),
@@ -212,7 +215,7 @@ const checkSortInto = (snapshot: ISnapshot) => {
       if (Array.isArray(v.sortInfo)) {
         v.sortInfo = {
           keepSort: true,
-          rules: v.sortInfo
+          rules: v.sortInfo,
         };
       }
     }
@@ -354,7 +357,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
           if (props.responseBody.success) {
             if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
               dispatch((_dispatch: any, getState: () => IReduxState) => {
-                ensureLinkConsistency(getState());
+                ensureLinkConsistency(getState(), foreignDstId);
               });
             }
           }
@@ -853,20 +856,20 @@ export const resetExportViewId = (datasheetId: string) => {
   };
 };
 
-export const setViewDerivation = (datasheetId: string, payload: { viewId: string, viewDerivation: IViewDerivation}) => {
+export const setViewDerivation = (datasheetId: string, payload: { viewId: string; viewDerivation: IViewDerivation }) => {
   return {
     datasheetId,
     type: SET_VIEW_DERIVATION,
-    payload
+    payload,
   };
 };
 
 // As opposed to set, patch means partial update
-export const patchViewDerivation = (datasheetId: string, payload: { viewId: string, viewDerivation: Partial<IViewDerivation>}) => {
+export const patchViewDerivation = (datasheetId: string, payload: { viewId: string; viewDerivation: Partial<IViewDerivation> }) => {
   return {
     datasheetId,
     type: PATCH_VIEW_DERIVATION,
-    payload
+    payload,
   };
 };
 
@@ -874,7 +877,7 @@ export const deleteViewDerivation = (datasheetId: string, viewId: string) => {
   return {
     datasheetId,
     type: DELETE_VIEW_DERIVATION,
-    payload: { viewId }
+    payload: { viewId },
   };
 };
 
@@ -882,7 +885,6 @@ export const triggerViewDerivationComputed = (datasheetId: string, viewId: strin
   return {
     datasheetId,
     type: TRIGGER_VIEW_DERIVATION_COMPUTED,
-    payload: { datasheetId, viewId }
+    payload: { datasheetId, viewId },
   };
 };
-

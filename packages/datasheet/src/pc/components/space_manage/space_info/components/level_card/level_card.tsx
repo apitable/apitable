@@ -17,7 +17,7 @@
  */
 import { Router } from 'pc/components/route_manager/router';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
-import { Navigation, Strings, t } from '@apitable/core';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
@@ -63,6 +63,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
   const space = useSelector(state => state.space);
+  const onTrial = useSelector((state: IReduxState) => state.billing.subscription?.onTrial);
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {
@@ -170,7 +171,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle} />
       )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
-        {tagText}
+        {onTrial ? t(Strings.trial_subscription) : tagText}
       </div>
       <div className={classnames(styles.titleWrap, { [styles.mt24]: isLeftTag })}>
         <Typography variant='h6' color={titleColor}>

@@ -275,7 +275,7 @@ export class Field {
           ...this.fieldData,
           desc
         }
-      });
+      }, this.wCtx.id);
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }
@@ -340,7 +340,7 @@ export class Field {
           ...this.fieldData,
           property: updateProperty
         }
-      });
+      }, this.wCtx.id);
       if (result.result === ExecuteResult.Fail) {
         throw new Error(result.reason);
       }

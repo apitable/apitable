@@ -43,6 +43,9 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
+// @ts-ignore
+import { isDingtalkFunc } from 'enterprise';
+import { Method } from 'pc/components/route_manager/const';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
@@ -223,7 +226,9 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
       </Row>
       {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
         <Typography className={styles.notFoundTip} variant="body2" align="center">
-          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`)}>
+          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, { 
+            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
+          })}>
             {t(Strings.template_not_found)}
           </span>
         </Typography>

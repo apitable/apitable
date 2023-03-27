@@ -126,6 +126,7 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     case FieldType.DateTime:
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
+    case FieldType.Cascader:
       return <CellText {...cellProps} />;
     case FieldType.SingleSelect:
       return <CellSingleSelect {...cellProps} />;

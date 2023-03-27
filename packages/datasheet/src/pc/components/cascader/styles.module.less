@@ -1,0 +1,38 @@
+.cascader {
+  width: 100% !important;
+}
+
+.emptyPlaceholder {
+  text-align: center;
+  padding: 32px 0;
+
+  .img {
+    width: 160px;
+    height: 120px;
+  }
+
+  .title {
+    font-size: 14px;
+    color: var(--secondLevelText);
+    margin-top: 8px;
+  }
+}
+:global {
+  .ant-select-selection-placeholder {
+    padding-left: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .ant-select-clear {
+    background-color: transparent !important;
+    &:hover {
+      svg {
+        fill: var(--bgControlsHover);
+      }
+    }
+  }
+
+  .ant-select-selection-item {
+    color: var(--firstLevelText) !important;
+  }
+}

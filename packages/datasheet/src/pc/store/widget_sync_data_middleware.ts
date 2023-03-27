@@ -2,11 +2,15 @@ import { Middleware, AnyAction, MiddlewareAPI, Dispatch } from 'redux';
 import {
   IReduxState, ActionConstants, Selectors
 } from '@apitable/core';
-import { aggregationWidgetPermission, mainMessage, setPermissionAction } from '@apitable/widget-sdk';
+import { aggregationWidgetPermission, eventMessage, mainMessage, setPermissionAction } from '@apitable/widget-sdk';
 import { getDependenceDstIds } from 'pc/utils/dependence_dst';
 
 const updatePermissions = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>) => {
   const state = store.getState();
+  eventMessage.widgets.forEach((_widget, widgetId) => {
+    const action = setPermissionAction(aggregationWidgetPermission(state, widgetId));
+    eventMessage.syncAction(action, widgetId);
+  });
   mainMessage.widgets.forEach((_widget, widgetId) => {
     const action = setPermissionAction(aggregationWidgetPermission(state, widgetId));
     mainMessage.syncAction(widgetId, action);
@@ -25,11 +29,19 @@ const syncActionSubscribeView = (store: MiddlewareAPI<Dispatch<AnyAction>, IRedu
       }
     });
   });
+  eventMessage.widgets.forEach((v, k) => {
+    v.subscribeViews.forEach(({ datasheetId, viewId }) => {
+      if (datasheetId === _datasheetId && Selectors.getViewIdByNodeId(state, datasheetId, viewId) === _viewId) {
+        eventMessage.syncAction(action, k);
+      }
+    });
+  });
 };
 
 const syncActionBroadcast = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, action: AnyAction) => {
   const foreignDatasheetIds = getDependenceDstIds(store.getState(), action.datasheetId);
   mainMessage.syncActionBroadcast(action, foreignDatasheetIds);
+  eventMessage.syncAction(action);
 };
 
 /**
@@ -79,6 +91,7 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
     case ActionConstants.WIDGET_JOT_ACTION: {
       // widget update
       mainMessage.syncAction(action.widgetId, action);
+      eventMessage.syncAction(action, action.widgetId);
       return;
     }
     case ActionConstants.DATASHEET_ERROR_CODE: {

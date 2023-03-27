@@ -125,7 +125,7 @@ export function getTeamListData(_user: IUserInfo) {
 export function getMemberListData(teamId?: string) {
   const pageObjectParams = {
     pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
-    order: 'createdAt',
+    order: ' vom.id',
     sort: ConfigConstant.SORT_ASC,
   };
   return (dispatch: any) => {
@@ -148,9 +148,10 @@ export function getMemberListData(teamId?: string) {
 export function getMemberListPageData(pageNo: number, teamId?: string) {
   const pageObjectParams = {
     pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
-    order: 'createdAt',
+    order: ' vom.id',
     sort: ConfigConstant.SORT_ASC,
   };
+  
   return (dispatch: any) => {
     dispatch(updataMemberListLoading(true));
 

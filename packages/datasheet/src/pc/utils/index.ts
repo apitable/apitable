@@ -30,3 +30,4 @@ export * from './datetime';
 export * from './flat';
 export * from './url_recognition';
 export * from './emoji_url';
+export * from './tree';

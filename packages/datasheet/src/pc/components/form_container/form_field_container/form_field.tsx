@@ -57,7 +57,7 @@ const needPositionField = [FieldType.Member];
 
 const needTriggerStartEditField = [FieldType.Number, FieldType.Percent, FieldType.Currency];
 
-const compactField = [FieldType.SingleSelect, FieldType.MultiSelect];
+const compactField = [FieldType.SingleSelect, FieldType.MultiSelect, FieldType.Cascader];
 
 export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = props => {
   const colors = useThemeColors();

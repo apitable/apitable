@@ -46,7 +46,7 @@ export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>
     }
   }, [condition.operator, fieldType]);
 
-  function _onCHange(value: string | string[] | null) {
+  function _onChange(value: string | string[] | null) {
     if (value && !Array.isArray(value)) {
       value = [value];
     }
@@ -57,7 +57,7 @@ export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>
     <FilterGeneralSelect
       field={field}
       isMulti={isMulti}
-      onChange={_onCHange}
+      onChange={_onChange}
       cellValue={filterValue.map((item: { id: any; }) => item.id)}
       listData={field.property.options}
     />

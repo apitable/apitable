@@ -154,13 +154,20 @@ export const dateTimeFormat = (
   if (isServer()) {
     timeZone = timeZone || DEFAULT_TIME_ZONE;
   }
-  if (props.includeTimeZone) {
-    timeZone = timeZone || defaultProps.timeZone;
-    const abbr = getTimeZoneAbbrByUtc(timeZone)!;
-    return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
-  }
-  if (!props.includeTimeZone && timeZone) {
-    return dayjs(Number(timestamp)).tz(timeZone).format(format);
+  try {
+    if (props.includeTimeZone) {
+      timeZone = timeZone || defaultProps.timeZone;
+      const abbr = getTimeZoneAbbrByUtc(timeZone)!;
+      return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
+    }
+    if (!props.includeTimeZone && timeZone) {
+      return dayjs(Number(timestamp)).tz(timeZone).format(format);
+    }
+  } catch (e) {
+    if (e instanceof RangeError) {
+      return 'Invalid Date';
+    }
+    throw e;
   }
   return dayjs(Number(timestamp)).format(format);
 };

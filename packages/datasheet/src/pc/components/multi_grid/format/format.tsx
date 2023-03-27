@@ -31,6 +31,7 @@ import { FormateLookUp } from './format_lookup';
 import { FormatMember } from './format_member';
 import { FormatSingleText } from './format_single_text';
 import { FormatLastModifiedBy } from './format_last_modified_by';
+import { FormatCascader } from './format_cascader';
 import { FormatURL } from './format_url';
 
 interface IFieldFormatProps {
@@ -94,6 +95,8 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
       return <FormatLastModifiedBy currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.URL:
       return <FormatURL currentField={currentField} setCurrentField={setCurrentField} />;
+    case FieldType.Cascader:
+      return <FormatCascader currentField={currentField} setCurrentField={setCurrentField} />;
     default:
       return <></>;
   }

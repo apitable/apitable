@@ -36,7 +36,7 @@ import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 
 @Injectable()
 export class DatasheetRecordService {
-  private nativeModule: typeof import('@apitable/room-native-api') | undefined | null;
+  // private nativeModule: typeof import('@apitable/room-native-api') | undefined | null;
 
   constructor(
     private readonly recordRepo: DatasheetRecordRepository,
@@ -44,22 +44,22 @@ export class DatasheetRecordService {
     private readonly datasheetChangesetService: DatasheetChangesetService,
   ) {}
 
-  private async getNativeModule(): Promise<typeof import('@apitable/room-native-api') | null> {
-    if (this.nativeModule === undefined) {
-      try {
-        this.nativeModule = await import('@apitable/room-native-api');
-      } catch (_e) {
-        this.nativeModule = null;
-      }
-    }
-    return this.nativeModule;
-  }
+  // private async getNativeModule(): Promise<typeof import('@apitable/room-native-api') | null> {
+  //   if (this.nativeModule === undefined) {
+  //     try {
+  //       this.nativeModule = await import('@apitable/room-native-api');
+  //     } catch (_e) {
+  //       this.nativeModule = null;
+  //     }
+  //   }
+  //   return this.nativeModule;
+  // }
 
   @Span()
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
-    if (await this.getNativeModule()) {
-      return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
-    }
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
+    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
@@ -73,9 +73,9 @@ export class DatasheetRecordService {
     if (recordIds.length === 0) {
       return this.formatRecordMap([], {}, recordIds);
     }
-    if (await this.getNativeModule()) {
-      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
-    }
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
+    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
@@ -86,9 +86,9 @@ export class DatasheetRecordService {
 
   @Span()
   async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
-    if (await this.getNativeModule()) {
-      return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
-    }
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
+    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },

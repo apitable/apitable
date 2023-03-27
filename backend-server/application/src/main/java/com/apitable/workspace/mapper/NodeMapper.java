@@ -436,10 +436,20 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param nodeIds node ids
      * @param ignoreRubbish ignore rubbish status(no require.default:false)
-     * @return BaseNodeInfoDto
+     * @return List<NodeBaseInfoDTO>
      */
     List<NodeBaseInfoDTO> selectNodeBaseInfosByNodeIds(@Param("nodeIds") Collection<String> nodeIds,
         @Param("ignoreRubbish") Boolean ignoreRubbish);
+
+    /**
+     * Query all parent node id list.
+     *
+     * @param nodeIds       node ids
+     * @param includeRoot   whether include root node
+     * @return List<NodeBaseInfoDTO>
+     */
+    List<NodeBaseInfoDTO> selectAllParentNodeIds(@Param("nodeIds") List<String> nodeIds,
+        @Param("includeRoot") boolean includeRoot);
 
     /**
      * Query the modification time of the recovery compartment node.

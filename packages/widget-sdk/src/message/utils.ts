@@ -1,4 +1,6 @@
-import { ICollaCommandExecuteResult, ICollaCommandOptions } from 'core';
+import { ExecuteResult, ICollaCommandExecuteResult, ICollaCommandOptions, ResourceType } from 'core';
+import { isSandbox } from 'utils/private';
+import { eventMessage } from './event_message';
 import { IResponse, messageMap } from './protocol';
 import { widgetMessage } from './widget_message';
 
@@ -13,8 +15,18 @@ export const isSafeOrigin = (origin: string) => {
   return SAFE_ORIGIN_END.some(str => origin.endsWith(str)) || LOCAL.some(str => origin.startsWith(str));
 };
 
-export const cmdExecute = (cmdOptions: ICollaCommandOptions): Promise<ICollaCommandExecuteResult<any>> => {
-  return widgetMessage.syncCmd(cmdOptions);
+export const cmdExecute = (cmdOptions: ICollaCommandOptions, widgetId?: string): Promise<ICollaCommandExecuteResult<any>> => {
+  if (isSandbox()) {
+    return widgetMessage.syncCmd(cmdOptions);
+  }
+  if (!widgetId) {
+    return new Promise((resolve) => resolve({
+      result: ExecuteResult.None,
+      resourceId: '',
+      resourceType: ResourceType.Widget
+    }));
+  }
+  return eventMessage.syncCmd(cmdOptions, widgetId!);
 };
 
 /**
