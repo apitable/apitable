@@ -71,7 +71,7 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## 우리가 사용하는 빌드 도구는 무엇입니까?
 
 우리는 make를 중심 빌드 도구 항목으로 사용하여 gradle / npm / yarn과 같은 다른 빌드 도구를 구동합니다.
 
@@ -85,9 +85,9 @@ make
 
 
 
-## How to start development environment?
+## 개발 환경 시작?
 
-APITable consists of 3 processes:
+에이피테이블은 3개의 프로세스로 구성됩니다
 
 1. backend-server
 2. room-server
@@ -110,15 +110,19 @@ make run # enter 1
 make run # enter 2
 
 # and then switch to a new terminal
+# start socket-server
+make run # enter 3  
+
+# and then switch to a new terminal
 # start web-server
-make run # enter 3
+make run # enter 4
 
 ```
 
 
 
 
-## What IDE should you use?
+## 어떤 IDE를 사용해야 합니까?
 
 IDE는 Visual Studio Code 또는 Intellij IDEA를 사용하는 것을 권장합니다.
 
@@ -128,11 +132,11 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 
 
-## How to configure the SMTP server?
+## SMTP 서버를 구성하는 방법은 무엇입니까?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+기본적으로 APITable은 SMTP 서버를 구성하지 않습니다. 즉, 이메일 전송 기능이 필요하므로 사용자를 초대할 수 없습니다.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+자체 이메일을 사용하여 .env 구성을 수정하고 백엔드 서버를 다시 시작해야 합니다.
 
 `
 MAIL_ENABLED=true
