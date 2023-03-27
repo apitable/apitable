@@ -162,7 +162,7 @@ APITable은 개인부터 기업까지 다양한 기능을 제공합니다.
   - 실시간 협업을 이용하여 10만 개 이상의 데이터 행 처리 가능
   - 데이터부터 메타데이터까지 모두에 대한 Full-stack API 액세스
   - 단방향/양방향 테이블 링크 및 무한 교차 링크
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - TypeScript(NextJS + NestJS) 및 Java(Spring Boot) 와 같은 커뮤니티 친화적인 프로그래밍 언어 및 프레임워크 사용
 - 아름다운 및 풍부한 데이터베이스 스프레드시트 UI
   - CRUD: 테이블, 열 및 행 생성, 읽기, 업데이트, 삭제
   - 필드 작업: 정렬, 필터링, 그룹화, 숨기기/표시, 높이 설정 등
@@ -259,13 +259,13 @@ curl https://apitable.github.io/install.sh | bash
 
 그런 다음 브라우저에서 http://localhost:80을 열어 방문하십시오. (기본 사용자 이름은 admin@apitable.com이고 비밀번호는 Apitable2022입니다)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+또한 데모 또는 테스트 목적으로 [pm2](https://pm2.keymetrics.io/) 기반의 올인원 이미지를 제공합니다(엔터프라이즈 또는 프로덕션 용도로는 권장되지 않음).
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+환경에 따라 모든 서비스가 시작되는 데 몇 분 정도 기다려야 할 수 있습니다. 이 이미지는 amd64(x86_64) 전용이며 arm64 또는 애플 실리콘에서 성능이 상당히 저하될 수 있습니다.
 
 로컬 개발 환경을 설정하려면 🧑💻 개발자 가이드를 읽으십시오.
 
@@ -273,7 +273,7 @@ Depending on your environment, you may need to wait several minutes for all the 
 
 APITable에 기여해주신 것에 감사드립니다!
 
-In addition to writing code, there are many ways for you to contribute.
+코드 작성 외에도 기여할 수 있는 다양한 방법이 있습니다.
 
 아래와 같이 기여할 수 있습니다:
 - 우리의 [Crowdin 번역 프로젝트](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)에 참여하여 번역 수정
@@ -283,12 +283,12 @@ In addition to writing code, there are many ways for you to contribute.
 - [코드 기여](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+다음과 같이 설치하세요.
+- 우리의 [Crowdin 번역 프로젝트](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)에 참여하여 번역 수정
+- [Issue](https://github.com/apitable/apitable/issues/new/choose)를 생성
+- 우리의 [Twitter](https://twitter.com/apitable_com)를 팔로우
+- [문서](./docs) 작성
+- [코드 기여](./docs/contribute/developer-guide.md)
 
 
 기여하는 방법에 대해 알아보려면 이 저장소의 [Contributing Guidelines](./CONTRIBUTING.md)을 읽어보세요.
@@ -322,7 +322,7 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - 버전 관리와 태그는 어떻게 하나요? [Semantic Versioning](https://semver.org/)
 - 자바 코딩 가이드라인은 무엇인가요? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - 타입스크립트 코딩 가이드라인은 무엇인가요? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Rust 코딩 가이드라인은 무엇인가요? -> [Rust API 가이드](https://rust-lang.github.io/api-guidelines/about.html)
 - 아키텍처 개요는 무엇인가요? 아키텍처 개요 이해
 
 ### 문서화
@@ -338,7 +338,7 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 ### 미래 기능
 
 - Heavy-code 인터페이스 빌더
-- Embeddable 3rd party documentation components
+- 임베디드 가능한 3rd party 문서 구성 요소
 - SQL과 유사한 도메인 특화 언어
 - IdP로서
 - 고급 자동화 로봇
