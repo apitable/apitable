@@ -304,7 +304,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param isRubbish flag of node whether rubbish (yes for deletion, no for recovery)
      * @return affected rows
      */
-    int updateIsRubbishByNodeIdIn(@Param("userId") Long userId, @Param("list") List<String> nodeIds,
+    int updateIsRubbishByNodeIdIn(@Param("userId") Long userId, @Param("nodeIds") Collection<String> nodeIds,
         @Param("isRubbish") Boolean isRubbish);
 
     /**
@@ -323,7 +323,8 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param delPath delete path
      * @return affected rows
      */
-    int updateDeletedPathByNodeId(@Param("nodeId") String nodeId, @Param("delPath") String delPath);
+    int updateDeletedPathByNodeId(@Param("userId") Long userId,
+        @Param("nodeId") String nodeId, @Param("delPath") String delPath);
 
     /**
      * According to the old front node ID, modify the new front node ID (self-associated real-time).

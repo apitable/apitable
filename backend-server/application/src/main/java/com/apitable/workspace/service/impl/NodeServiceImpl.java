@@ -931,18 +931,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String spaceId, Long memberId, String... ids) {
-        log.info("Delete node ");
+        log.info("Delete node {}", (Object) ids);
         Long userId = memberMapper.selectUserIdByMemberId(memberId);
         List<String> idList = Arrays.asList(ids);
-        List<NodeEntity> list = this.getByNodeIds(new HashSet<>(idList));
+        List<NodeEntity> nodes = this.getByNodeIds(new HashSet<>(idList));
         // verify root node
-        long count = list.stream()
+        long count = nodes.stream()
             .filter(node -> node.getType().equals(NodeType.ROOT.getNodeType()))
             .count();
         ExceptionUtil.isFalse(count > 0, NodeException.NOT_ALLOW);
         // get the superior path
         List<String> parentIds =
-            list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
+            nodes.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
         Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         // give delete node role
         iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId,
@@ -954,31 +954,50 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (CollUtil.isNotEmpty(nodeIds)) {
             this.nodeDeleteChangeset(nodeIds);
             iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
-            boolean flag =
-                SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
-            ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+            Collection<String> subNodeIds = CollUtil.disjunction(nodeIds, idList);
+            if (!subNodeIds.isEmpty()) {
+                boolean flag =
+                    SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId,
+                        subNodeIds, true));
+                ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+            }
             // disable node sharing
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
             // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
         }
-        list.forEach(nodeEntity -> {
-            // The previous node corresponding to the updated node
-            // (Large datasheet processing takes a long time, nodeEntity.getPreNodeId() may have
-            // changed, so updatePreNodeIdBySelf is not used directly)
-            nodeMapper.updatePreNodeIdByJoinSelf(nodeEntity.getNodeId(), nodeEntity.getParentId());
-            // Save the path of the deletion.
-            // Specify that the deleted node is attached to the parent node -1.
-            String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
-                ? parentIdToPathMap.get(nodeEntity.getParentId()) : null;
-            nodeMapper.updateDeletedPathByNodeId(nodeEntity.getNodeId(), delPath);
-            // publish space audit events
-            AuditSpaceArg arg =
-                AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_NODE).userId(userId)
-                    .nodeId(nodeEntity.getNodeId()).build();
-            SpringContextHolder.getApplicationContext()
-                .publishEvent(new AuditSpaceEvent(this, arg));
-        });
+        for (NodeEntity node : nodes) {
+            Lock lock = redisLockRegistry.obtain(node.getParentId());
+            try {
+                if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                    String nodeId = node.getNodeId();
+                    // The previous node corresponding to the updated node
+                    // (Large datasheet processing takes a long time,
+                    // node.getPreNodeId() may have changed,
+                    // so updatePreNodeIdBySelf is not used directly)
+                    nodeMapper.updatePreNodeIdByJoinSelf(nodeId, node.getParentId());
+                    // Save the path of the deletion.
+                    // Specify that the deleted node is attached to the parent node -1.
+                    String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
+                        ? parentIdToPathMap.get(node.getParentId()) : null;
+                    nodeMapper.updateDeletedPathByNodeId(userId, nodeId, delPath);
+                    // publish space audit events
+                    AuditSpaceArg arg = AuditSpaceArg.builder()
+                        .action(AuditSpaceAction.DELETE_NODE)
+                        .userId(userId)
+                        .nodeId(nodeId)
+                        .build();
+                    SpringContextHolder.getApplicationContext()
+                        .publishEvent(new AuditSpaceEvent(this, arg));
+                } else {
+                    throw new BusinessException("Frequent operations");
+                }
+            } catch (InterruptedException e) {
+                throw new BusinessException("Frequent operations");
+            } finally {
+                lock.unlock();
+            }
+        }
     }
 
     @Override
