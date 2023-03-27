@@ -157,7 +157,7 @@
   - **100k+** 資料列數和實時協作
   - 完全 API 訪問，包括 `數據` 甚至 `元數據`
   - 單向/雙向表連結和 `無限交叉連結`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - 社區友好的程式設計語言和框架，TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - 美觀和齊全的多維表格UI界面
   - `CRUD`: 創建、閱讀、更新、刪除表、列和行
   - `字段操作`: 排序、過濾、分組、隱藏/取消隱藏、高度設置
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可 (默認用戶名 `admin@apitable.com` 和密碼 `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+我們還提供了一個基於 [pm2](https://pm2.keymetrics.io/) 的一體化鏡像，用於演示或測試目的（不推薦用於企業或生產用途）：
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+根據您的環境，您可能需要等待幾分鐘才能啟動所有服務。 此映像僅適用於 amd64 (x86_64)，您可能會在 arm64 或 apple silicon 上遇到非常糟糕的性能。
 
 如果您想要配置本地開發環境，請參考我們的 [🧑‍💻開發者指南](./docs/contribute/developer-guide.md)
 
@@ -268,7 +268,7 @@ Depending on your environment, you may need to wait several minutes for all the 
 
 歡迎並感謝您有興趣為APITable作出貢獻！
 
-In addition to writing code, there are many ways for you to contribute.
+除了編寫程式外，還有許多途徑為我們提供幫助
 
 您可以：
 - 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
@@ -278,12 +278,12 @@ In addition to writing code, there are many ways for you to contribute.
 - [編寫程式](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+比如下面的：
+- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
+- 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- 關注我們的 [Twitter](https://twitter.com/apitable_com)
+- 創建 [文檔](./docs)
+- [編寫程式](./docs/contribute/developer-guide.md)
 
 
 你可以閱讀這個存儲庫的 [貢獻指南](./CONTRIBUTING.md) 來學習如何貢獻。
@@ -317,7 +317,7 @@ APITable 使用以下常見約定：
 - 如何進行版本控制和標記？ [Semantic Versioning](https://semver.org/)
 - 我們的 Java 編碼規範是什麼？ [Java 編碼準則](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 我們的 TypeScript 編碼規範是什麼？ -> [TypeScript 樣式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- 我們的 Java 編碼規範是什麼？ -> [Rust API 指南](https://rust-lang.github.io/api-guidelines/about.html)
 - 我們的技術架構是什麼？ -> [瞭解 APITable - 技術架構](./docs/contribute/architecute-overview.md)
 
 ### 文檔
@@ -333,7 +333,7 @@ APITable 使用以下常見約定：
 ### 未來的功能
 
 - 重碼生成器介面
-- Embeddable 3rd party documentation components
+- 可嵌入第三方文檔
 - 類SQL領域特性編程
 - 身份供應商（IdP）
 - 進階自動化機器人
@@ -400,7 +400,7 @@ APITable 使用以下常見約定：
     <img src="docs/static/screenshot-it.png" alt="APITable 界面截圖" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable 界面截圖" />
 </p>
 
 ## 🥰 許可證
