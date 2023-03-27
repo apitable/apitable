@@ -20,6 +20,7 @@ package com.apitable.client.task;
 
 import static net.javacrumbs.shedlock.core.LockAssert.assertLocked;
 
+import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.config.properties.ConstProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,9 @@ public class ClientTasks {
         assertLocked();
         HttpHeaders headers = new HttpHeaders();
         Map<String, Object> message = new HashMap<>();
-        message.put("serverDomain", constProperties.getServerDomain());
+        if (StrUtil.isNotBlank(constProperties.getServerDomain())) {
+            message.put("serverDomain", constProperties.getServerDomain());
+        }
         message.put("locale", constProperties.getLanguageTag());
         HttpEntity<Object> request = new HttpEntity<>(message, headers);
         restTemplate.postForObject(heartbeatUrl, request, String.class);
