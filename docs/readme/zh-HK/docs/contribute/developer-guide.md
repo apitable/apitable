@@ -1,10 +1,10 @@
 # 開發者指南
 
-本指南可幫助您開始開發 APITable。
+本指南幫助您開始開發 APITable 。
 
 ## 依賴關係
 
-在設置開發人員環境之前，請確保安裝了以下依賴項和編程語言：
+請確保您在設置開發者環境之前安裝了以下依賴關係和編程語言：
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
@@ -14,27 +14,27 @@
 
 ### 編程語言
 
-如果您使用的是 macOS 或 Linux。 我們建議使用 SDK 管理器 sdkman 和 nvm 安裝編程語言。
+如果您使用 macOS 或 Linux。 我們建議使用 SDK 管理器 `sdkman` 和 `nvm` 安裝編程語言。
 
 ```bash
-# quick install nvm
+# 安裝 nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+# 安裝 sdkman
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
+# 安裝 nodejs 
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
+# 安裝 java 開發者環境
 sdk env install
-# install rust toolchain
+# 安裝 rust 工具鏈
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS
 
-我們建議使用 Homebrew 來安裝任何缺少的依賴項：
+我們建議使用 [Homebrew](https://brew.sh/) 來安裝任何缺失的依賴包：
 
 ```bash
-## necessary required
+## 必須要有以下依賴
 brew install git
 brew install --cask docker
 brew install make
@@ -42,14 +42,14 @@ brew install make
 
 ### Linux
 
-在 CentOS/RHEL 或其他帶有 yum 的 Linux 發行版上
+在 CentOS / RHEL或其他 Linux 發行版使用 `yum`
 
 ```bash
 sudo yum install git
 sudo yum install make
 ```
 
-在 Ubuntu / Debian 或其他帶有 apt 的 Linux 發行版上
+在 Ubuntu / Debian 或其他 Linux 發行版使用 `apt`
 
 ```bash
 sudo apt update
@@ -60,9 +60,9 @@ sudo apt install make
 
 ### Windows
 
-如果您在 Windows 10/11 上運行 APITable，我們建議在 Windows 上安裝 Docker Desktop，在 WSL 上安裝 Ubuntu 和 Windows Terminal，您可以在官方網站上了解更多關於 Windows Subsystem for Linux (WSL) 的信息。
+如果您正在Windows 10/11上運行 APITable ，我們建議在Windows上安裝[Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) 和 [Windows Terminal](https://aka.ms/terminal), 您可以在 [官方網站](https://learn.microsoft.com/en-us/windows/wsl) 了解更多關於 Windows 子系統 的Linux (WSL) 的信息。
 
-使用 apt 在 Ubuntu 上安裝缺少的依賴項：
+使用 `apt` 在 Ubuntu 上安裝缺少的依賴：
 
 ```bash
 sudo apt update
@@ -71,46 +71,42 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## 我們使用什麼構建工具？
 
-我們使用 make 作為我們的中心構建工具入口，驅動其他構建工具，如 gradle / npm / yarn。
+我們使用 `make` 作為我們的中心構建工具，來驅動其他構建工具，如 `gradle` / `npm` / `yarn`
 
-所以你可以只輸入 make 命令並查看所有構建命令：
+所以您可以只輸入 `make` 命令並看到所有構建命令：
 
 ```bash
 make
 ```
 
-![make command screenshot](../static/make.png)
+![命令截圖](../static/make.png)
 
 
 
-## How to start development environment?
+## 如何設置開發環境？
 
-APITable consists of 3 processes:
+APITable 由 3 個進程組成:
 
-1. 後端服務器
-2. 房間服務器
-3. 網絡服務器
+1. backend-server
+2. room-server
+3. web-server
 
-要在本地啟動開發環境，請運行以下命令：
+要啟動本地開發環境，請運行這些命令：
 
 ```bash
-# start databases in dockers
+# 在 Docker 中啟動數據庫
 make dataenv 
-
-# install dependencies
+# 安裝依賴關係
 make install 
-
-#start backend-server
+# 啟動 backend-server
 make run # enter 1  
-
-# and then switch to a new terminal
-# start room-server
+# 然後切換到新的終端
+# 啟動 room-server
 make run # enter 2
-
-# and then switch to a new terminal
-# start web-server
+# 然後切換到新的終端
+# 啟動 web-server
 make run # enter 3
 
 ```
@@ -118,21 +114,21 @@ make run # enter 3
 
 
 
-## What IDE should you use?
+## 您應該使用什麼IDE？
 
-我們建議您使用 Visual Studio Code 或 Intellij IDEA 作為您的 IDE。
+我們建議您使用 `Visual Studio Code` 或 `Intellij IDEA` 為您的 IDE。
 
-APITable 已經準備好這兩個IDE 的debug configs。
+APITable 已準備好這兩個IDE調試配置。
 
-用IDE打開APITable的根目錄即可。
+只需打開 IDE 的 APITable 根目錄。
 
 
 
-## How to configure the SMTP server?
+## 如何配置SMTP服務器？
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+默認情況下，APITable 不配置SMTP服務器，這意味著您不能邀請用戶，因為它需要電子郵件發送功能。
 
-It is needed to modify .env configuration using self email, and restart backend server.
+需要使用自己的郵箱修改.env配置，重啟 backend-server。
 
 `
 MAIL_ENABLED=true
@@ -143,42 +139,42 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+另外，有些郵箱需要在後台啟用smtp。 詳細可以搜索xxx郵箱smtp教程。
 
 
-## Performance problem under macOS M1 docker run?
+## macOS M1 下 docker 運行的性能問題？
 
-## Where is the API documentation?
+## API文檔在哪裡？
 
-You can access the API documentation by starting a local server:
+您可以通過啟動本地服務器來訪問 API 文檔：
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
+1. Backend server 的文檔地址為: http://localhost:8081/api/v1/doc.html
 
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
+2. Room server 的文檔地址為: http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+如果您對雲服務 API 接口感興趣，也可以直接訪問 https://developers.apitable.com/api/introduction 獲取在線 API 文檔。
 
-## How to set the limitation of widget quantity in dashboard? (30 by default)
+## 如何在儀表板中設置小部件數量限制？ （默認為 30）
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+可以在`.env`文件中設置`DSB_WIDGET_MAX_COUNT`參數來實現。
 
-## Can I increase request rate limit of the API? (5 by default)
+## 我可以增加 API 的請求速率限制嗎？ （默認為 5）
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+在 `room-server` 下的 `.env.default` 文件中，有兩個參數可以調整請求頻率：
 
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+1. 您可以設置參數 `LIMIT_POINTS` 和 `LIMIT_DURATION` 來設置在單位時間段內可以發出的請求數。 其中 LIMIT_POINTS 是次數，LIMIT_DURATION 是持續時間，以秒為單位。
 
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
+2. 您可以設置參數 `LIMIT_WHITE_LIST` 來為特定用戶設置單獨的請求頻率。 它的值為一個JSON字符串，其結構可以參考`Map<string, IBaseRateLimiter>`。
 
-## How to increase the number of records inserted per API call? (10 by default)
+## 如何增加每次 API 調用插入行記錄的數量？ （默認為 10）
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
-
-
-## How to upgrade to the newest release version?
+可以通過在 `room-server` 下的 `.env.default` 文件中設置 `API_MAX_MODIFY_RECORD_COUNTS` 參數來實現。
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## 如何更新到最新的版本?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## 如何更改默認的80端口?
+`.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
+
+For example. 例如： 例如，可以通過這種方式設置: NGINX_HTTP_PORT=8080
