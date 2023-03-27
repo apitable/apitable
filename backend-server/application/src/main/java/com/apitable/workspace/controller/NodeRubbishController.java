@@ -37,6 +37,8 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.ro.NodeRecoverRo;
@@ -141,9 +143,14 @@ public class NodeRubbishController {
         // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.RECOVER_RUBBISH_NODE).userId(userId)
-                .nodeId(ro.getNodeId()).build();
+                .nodeId(ro.getNodeId())
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
+                .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, ro.getNodeId(),
             ControlRoleManager.parseNodeRole(Node.MANAGER)));
@@ -171,9 +178,14 @@ public class NodeRubbishController {
         // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_RUBBISH_NODE).userId(userId)
-                .nodeId(nodeId).build();
+                .nodeId(nodeId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
+                .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }

@@ -73,6 +73,8 @@ import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.CollectionUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.StringUtil;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.mapper.SpaceAssetMapper;
@@ -789,8 +791,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_NAME, StrUtil.nullToEmpty(entity.getNodeName()));
         info.set(AuditConstants.NODE_NAME, nodeName);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.RENAME_NODE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -809,8 +815,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_ICON, StrUtil.nullToEmpty(oldNodeIcon));
         info.set(AuditConstants.NODE_ICON, icon);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_ICON).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -833,8 +843,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_COVER, StrUtil.nullToEmpty(oldNodeCover));
         info.set(AuditConstants.NODE_COVER, StrUtil.nullToEmpty(cover));
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_COVER).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -921,8 +935,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // Publish Space Audit Events
         info.set(AuditConstants.MOVE_EFFECT_SUFFIX_NODES, CollUtil.emptyIfNull(suffixNodeIds));
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(action).userId(userId).nodeId(opRo.getNodeId())
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return nodeIds;
@@ -982,10 +1000,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         ? parentIdToPathMap.get(node.getParentId()) : null;
                     nodeMapper.updateDeletedPathByNodeId(userId, nodeId, delPath);
                     // publish space audit events
+                    ClientOriginInfo clientOriginInfo = InformationUtil
+                        .getClientOriginInfoInCurrentHttpContext(true, false);
                     AuditSpaceArg arg = AuditSpaceArg.builder()
                         .action(AuditSpaceAction.DELETE_NODE)
                         .userId(userId)
                         .nodeId(nodeId)
+                        .requestIp(clientOriginInfo.getIp())
+                        .requestUserAgent(clientOriginInfo.getUserAgent())
                         .build();
                     SpringContextHolder.getApplicationContext()
                         .publishEvent(new AuditSpaceEvent(this, arg));

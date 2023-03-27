@@ -20,6 +20,7 @@ package com.apitable.shared.filter;
 
 import static com.apitable.shared.constants.FilterConstants.REQUEST_THREAD_HOLDER_FILTER;
 
+import com.apitable.shared.holder.ClientOriginInfoHolder;
 import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
@@ -57,6 +58,7 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
         SpaceHolder.init();
         MemberHolder.init();
         NotificationRenderFieldHolder.init();
+        ClientOriginInfoHolder.init();
 
         ContentCachingRequestWrapper wrappedRequest =
             new ContentCachingRequestWrapper(httpServletRequest);
@@ -69,6 +71,7 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
             SpaceHolder.remove();
             MemberHolder.remove();
             NotificationRenderFieldHolder.remove();
+            ClientOriginInfoHolder.remove();
         }
     }
 

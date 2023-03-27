@@ -81,6 +81,8 @@ import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.assembler.SpaceAssembler;
 import com.apitable.space.assembler.SubscribeAssembler;
 import com.apitable.space.dto.ControlStaticsDTO;
@@ -351,8 +353,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_SPACE_NAME, entity.getName());
         info.set(AuditConstants.SPACE_NAME, spaceName);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.RENAME_SPACE)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .userId(userId).spaceId(spaceId).info(info).build();
         SpringContextHolder.getApplicationContext()
             .publishEvent(new AuditSpaceEvent(this, arg));
@@ -385,8 +391,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         info.set(AuditConstants.OLD_SPACE_LOGO,
             StrUtil.nullToEmpty(entity.getLogo()));
         info.set(AuditConstants.SPACE_LOGO, spaceLogo);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
             .action(AuditSpaceAction.UPDATE_SPACE_LOGO).userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
             .spaceId(spaceId).info(info).build();
         SpringContextHolder.getApplicationContext()
             .publishEvent(new AuditSpaceEvent(this, arg));
