@@ -1,6 +1,6 @@
 # Entwicklerhandbuch
 
-Diese Anleitung hilft Ihnen bei der Entwicklung von APITable.
+Dieser Leitfaden hilft Ihnen beim Einstieg in die Entwicklung von APITable.
 
 ## Abhängigkeiten
 
@@ -9,35 +9,35 @@ Stellen Sie sicher, dass Sie die folgenden Abhängigkeiten und Programmiersprach
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `machen`
+- `make`
 
 
 ### Programmiersprache
 
-Wenn Sie macOS oder Linux verwenden. Wir empfehlen die Installation der Programmiersprache mit dem SDK-Manager `sdkman` und `nvm`.
+Wenn Sie macOS oder Linux verwenden. Wir empfehlen, die Programmiersprache mit dem SDK-Manager „sdkman“ und „nvm“ zu installieren.
 
 ```bash
-# quick install nvm
+# schnell installieren nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+# sdkman schnell installieren
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
+# installiere nodejs
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
-sdk env install
-# install rust toolchain
+# Java-Entwicklungskit installieren
+SDK-Env installieren
+# Rust-Toolchain installieren
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+### Mac OS
 
-Wir empfehlen [Homebrew](https://brew.sh/) zur Installation fehlender Abhängigkeiten zu verwenden:
+Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
 ```bash
-## erforderlich
-braut Installation git
-braut Installation --cask docker
-braut install make
+## erforderlich erforderlich
+braue installiere git
+brew install --cask docker
+brauen installieren machen
 ```
 
 ### Linux
@@ -45,140 +45,136 @@ braut install make
 Auf CentOS / RHEL oder anderen Linux-Distributionen mit `yum`
 
 ```bash
-sudo yum install git
+sudo yum installiere git
 sudo yum install make
 ```
 
-Auf Ubuntu / Debian oder andere Linux-Distribution mit `apt`
+Auf Ubuntu / Debian oder anderen Linux-Distributionen mit `apt`
 
 ```bash
-sudo apt update
-sudo apt install git
-sudo apt install make
+sudo apt aktualisieren
+sudo apt installiere git
+sudo apt install machen
 ```
 
 
 ### Fenster
 
-Wenn Sie APITable unter Windows 10/11 ausführen, empfehlen wir die Installation von [Docker Desktop unter Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu auf WSL](https://ubuntu.com/wsl) und [Windows Terminal](https://aka.ms/terminal), Mehr über Windows Subsystem für Linux (WSL) erfahren Sie unter [der offiziellen Seite](https://learn.microsoft.com/en-us/windows/wsl).
+Wenn Sie APITable unter Windows 10/11 ausführen, empfehlen wir die Installation von [Docker Desktop unter Windows](https://docs.docker.com/desktop/install/windows-install/), \[Ubuntu on WSL\](https:/ /ubuntu.com/wsl) und \[Windows Terminal\] (https://aka.ms/terminal), Weitere Informationen zum Windows-Subsystem für Linux (WSL) finden Sie auf [der offiziellen Website](https://learn.microsoft.com/en-us/windows/wsl).
 
-Fehlende Abhängigkeiten auf Ubuntu mit `apt` installieren:
+Installieren Sie fehlende Abhängigkeiten auf Ubuntu mit `apt`:
 
 ```bash
-sudo apt update
-sudo apt install git
-sudo apt install make
+sudo apt aktualisieren
+sudo apt installiere git
+sudo apt install machen
 ```
 
 
-## What Build Tool we use?
+## Welches Build-Tool verwenden wir?
 
-Wir verwenden `make` als unseren zentrischen Buildwerkzeug, der andere Buildwerkzeuge wie `Gradle` / `npm` / `Garn` antreibt.
+Wir verwenden „make“ als unseren zentralen Build-Tool-Eintrag, der andere Build-Tools wie „gradle“ / „npm“ / „yarn“ steuert.
 
-So können Sie einfach `make` Befehl eingeben und alle Build-Befehle sehen:
+Sie können also einfach den Befehl "make" eingeben und alle Build-Befehle sehen:
 
 ```bash
-machen
+make
 ```
 
-![erstelle einen Screenshot](../static/make.png)
+![Screenshot des Befehls erstellen](../static/make.png)
 
 
 
-## How to start development environment?
+## Wie starte ich die Entwicklungsumgebung?
 
-APITable consists of 3 processes:
+APITable besteht aus 3 Prozessen:
 
-1. backend-Server
-2. room-Server
-3. web-server
+1. Backend-Server
+2. Room-Server
+3. Webserver
 
 Um die Entwicklungsumgebung lokal zu starten, führen Sie diese Befehle aus:
 
 ```bash
-# start databases in dockers
-make dataenv 
-
-# install dependencies
-make install 
-
-#start backend-server
-make run # enter 1  
-
-# and then switch to a new terminal
-# start room-server
-make run # enter 2
-
-# and then switch to a new terminal
-# start web-server
-make run # enter 3
+# Datenbanken in Dockern starten
+Datenumgebung erstellen
+# Abhängigkeiten installieren
+Installation machen
+# Backend-Server starten
+make run # geben Sie 1 ein
+# und dann zu einem neuen Terminal wechseln
+# Raumserver starten
+Ausführen ausführen # 2 eingeben
+# und dann zu einem neuen Terminal wechseln
+# Webserver starten
+Ausführen ausführen # 3 eingeben
 
 ```
 
 
 
 
-## What IDE should you use?
+## Welche IDE sollten Sie verwenden?
 
-Wir empfehlen Ihnen, `Visual Studio Code` oder `Intellij IDEA` für Ihre IDE zu verwenden.
+Wir empfehlen die Verwendung von „Visual Studio Code“ oder „Intellij IDEA“ für Ihre IDE.
 
-APITable haben diese beiden IDE Debug-Konfigurationen vorbereitet.
+APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
-Öffnen Sie einfach das Hauptverzeichnis von APITable mit IDE.
+Öffnen Sie einfach das Stammverzeichnis von APITable mit IDE.
 
 
 
-## How to configure the SMTP server?
+## Wie konfiguriere ich den SMTP-Server?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+Standardmäßig konfiguriert APITable den SMTP-Server nicht, was bedeutet, dass Sie keine Benutzer einladen können, da dies die E-Mail-Sendefunktion erfordert.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+Es ist erforderlich, die .env-Konfiguration mit Self-E-Mail zu ändern und den Back-End-Server neu zu starten.
 
 `
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
-MAIL_PASSWORD=your_email_password
+MAIL_PASSWORD=Ihr_E-Mail-Passwort
 MAIL_PORT=465
-MAIL_SSL_ENABLE=true
+MAIL_SSL_ENABLE=wahr
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=Ihre_E-Mail`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
-
-
-## Performance problem under macOS M1 docker run?
-
-## Where is the API documentation?
-
-You can access the API documentation by starting a local server:
-
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
-
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
-
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
-
-## How to set the limitation of widget quantity in dashboard? (30 by default)
-
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
-
-## Can I increase request rate limit of the API? (5 by default)
-
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
-
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
-
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
-
-## How to increase the number of records inserted per API call? (10 by default)
-
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+Darüber hinaus müssen einige Postfächer im Hintergrund aktiviert werden, um SMTP verwenden zu können. Für Details können Sie nach dem xxx-Postfach-smtp-Tutorial suchen.
 
 
-## How to upgrade to the newest release version?
+## Performance-Problem unter macOS M1 Docker-Lauf?
+
+## Wo ist die API-Dokumentation?
+
+Sie können auf die API-Dokumentation zugreifen, indem Sie einen lokalen Server starten:
+
+1. Die Dokumentationsadresse für den Backend-Server lautet: http://localhost:8081/api/v1/doc.html
+
+2. Die Dokumentationsadresse für den Room-Server lautet: http://localhost:3333/nest/v1/docs
+
+Wenn Sie an Cloud-Service-API-Schnittstellen interessiert sind, können Sie auch direkt auf die Online-API-Dokumentation unter https://developers.apitable.com/api/introduction zugreifen.
+
+## Wie stelle ich die Begrenzung der Widget-Menge im Dashboard ein? (standardmäßig 30)
+
+Dies kann durch Setzen des Parameters `DSB_WIDGET_MAX_COUNT` in der `.env`-Datei erreicht werden.
+
+## Kann ich das Anforderungsratenlimit der API erhöhen? (standardmäßig 5)
+
+In der `.env.default`-Datei von `room-server` gibt es zwei Parameter, die die Anfragehäufigkeit anpassen können:
+
+1. Sie können „LIMIT_POINTS“ und „LIMIT_DURATION“ festlegen, um die Anzahl der Anforderungen anzugeben, die in einer Zeiteinheit erfolgen können. Dabei ist LIMIT_POINTS die Anzahl der Male und LIMIT_DURATION die Dauer, gemessen in Sekunden.
+
+2. Sie können den Parameter `LIMIT_WHITE_LIST` setzen, um eine separate Anforderungshäufigkeit für bestimmte Benutzer festzulegen. Sein Wert ist ein JSON-String, und seine Struktur kann auf `Map<string, IBaseRateLimiter>` verweisen.
+
+## Wie kann die Anzahl der pro API-Aufruf eingefügten Datensätze erhöht werden? (10 standardmäßig)
+
+Dies kann durch Setzen des Parameters `API_MAX_MODIFY_RECORD_COUNTS` in der `.env.default`-Datei von `room-server` erreicht werden.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## Wie aktualisiere ich auf die neueste Release-Version?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## Wie ändere ich den Standardport 80?
+Konfigurationseigenschaften in der `.env`-Datei können auch überschrieben werden, indem sie env vars `NGINX_HTTP_PORT` angeben
+
+Zum Beispiel. Es würde als NGINX_HTTP_PORT=8080 festgelegt werden
