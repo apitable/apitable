@@ -10,7 +10,7 @@ Un diagramme plus concret est présenté ci-dessous:
 
 ![Architecture Overview](../static/architecture-overview.png)
 
-- UI: fournit une interface de base de données et de feuilles de calcul extrêmement fluide, conviviale et ultra-rapide. <canvas> Rendering Engine
+- UI: fournit une interface de base de données et de feuilles de calcul extrêmement fluide, conviviale et ultra-rapide. <canvas> Moteur de rendu
 - `Web Server`: construit un site Web statique et une application Web superchargés, conviviaux pour le référencement et extrêmement orientés vers l'utilisateur en utilisant Nextjs.
 - `Backend Server`: gère les requêtes HTTP concernant les nœuds, les utilisateurs, les organisations, etc.
 - `Socket Server`: établit une longue connexion avec les clients par le biais du protocole WebSocket, permettant une communication bidirectionnelle et une collaboration en temps réel, des notifications et d'autres fonctionnalités.
