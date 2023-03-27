@@ -10,7 +10,7 @@ APITable 概念上由两个部分组成：工作台（workbench）和数据表�
 
 ![Architecture Overview](../static/architecture-overview.png)
 
-- `UI`: 在渲染引擎中提供极其流畅、用户友好、超快速的数据库电子表格界面 <canvas> Rendering Engine
+- `UI`: 在渲染引擎中提供极其流畅、用户友好、超快速的数据库电子表格界面 <canvas> 渲染引擎
 - `Web Server`: 使用 `Nextjs` 构建功能强大、对 SEO 友好且非常面向用户的静态网站和 Web 应用程序
 - `Backend Server`: 处理关于节点、用户、组织等的 HTTP 请求
 - `Socket Server`: 通过WebSocket协议与客户端建立长连接，实现双向通信和实时协作、通知等功能
