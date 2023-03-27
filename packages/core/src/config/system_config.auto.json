@@ -3019,7 +3019,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_9f3930dd7d7ad00c",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_async_compute",
-                "info_image": "space/2022/01/25/83d9e37eac454877a5d2a9c1a6bdacae"
+                "info_image": "ASYNC_COMPUTE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3042,7 +3042,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_a08120b120fad00e",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_prompt",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_PROMPT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3065,7 +3065,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_robot",
-                "info_image": "space/2022/01/25/7679e8085aa0473e9aaa86809cf1bdeb"
+                "info_image": "ROBOT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3088,7 +3088,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_widget",
-                "info_image": "space/2022/01/25/3828da03312f4035a37912edd6db6f0b"
+                "info_image": "WIDGET_CENTER_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3110,7 +3110,7 @@
                 "info": "test_function_modal_info_render_normal",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_normal",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_NORMAL_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3132,7 +3132,7 @@
                 "info": "test_function_modal_info_view_manual_save",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_view_manual_save",
-                "info_image": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
+                "info_image": "VIEW_MANUAL_SAVE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3457,21 +3457,22 @@
             },
             {
                 "actions": [
-                    "open_guide_wizards([104, 105])"
+                    "open_guide_wizards([105, 104])"
                 ],
                 "rules": [
                     "device_IS_pc",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_apitable"
                 ],
-                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([104, 105])]",
+                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
                 "event": [
                     "workbench_show_trial_tip"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([104, 105])"
+                    "open_guide_wizards([105, 104])"
                 ],
                 "rules": [
                     "device_IS_pc",
@@ -3480,7 +3481,7 @@
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([104, 105])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3509,9 +3510,10 @@
                     "device_IS_pc",
                     "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 107])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3524,9 +3526,10 @@
                     "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 107])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3539,9 +3542,10 @@
                     "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
-                    "device_IS_app"
+                    "device_IS_app",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app, edition_IS_vika],[open_guide_wizards([76, 87])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -4149,9 +4153,9 @@
                 "commandArgs": "88"
             },
             {
-                "id": "open_guide_wizards([104, 105])",
+                "id": "open_guide_wizards([105, 104])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[104, 105]"
+                "commandArgs": "[105, 104]"
             },
             {
                 "id": "open_guide_wizards([19])",

@@ -18,6 +18,8 @@
 
 package com.apitable.shared.support.serializer;
 
+import static java.time.ZoneId.getAvailableZoneIds;
+
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.config.ServerConfig;
 import com.apitable.shared.context.LoginContext;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import javax.annotation.Resource;
 
 /**
@@ -54,6 +57,9 @@ public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime
         } else {
             userTimeZone = serverConfig.getTimeZoneId().toString();
         }
+        // get Available ZoneIds
+        Set<String> zoneIds = getAvailableZoneIds();
+        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : serverConfig.getTimeZone().toString();
         // server config timeZone time
         ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, serverConfig.getTimeZoneId());
         // target timeZone time

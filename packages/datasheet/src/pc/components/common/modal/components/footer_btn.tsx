@@ -42,7 +42,7 @@ export const FooterBtnInModal: FC<React.PropsWithChildren<IFooterBtnInModalProps
   } = props;
 
   return (
-    <div className={classNames(styles['modal-footer-btn-wrapper'], className)}>
+    <div className={classNames(styles.modalFooterBtnWrapper, className)}>
       {
         !hiddenCancelBtn &&
         <TextButton className="cancelBtn" size="small" onClick={onCancel} {...cancelButtonProps}>{cancelText}</TextButton>

@@ -20,12 +20,10 @@ import { Button, TextButton, Typography, useThemeColors, ThemeName } from '@apit
 import { ConfigConstant, integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
 // @ts-ignore
-import { showModal } from 'enterprise';
+import { showModal, isDingtalkFunc, isSocialPlatformEnabled } from 'enterprise';
 import { get } from 'lodash';
 import Image from 'next/image';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
@@ -104,7 +102,9 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                             {item.moreOperation && <div className={styles.rightBtn}>
                               <TextButton
                                 className={styles.moreTemplateBtn}
-                                onClick={() => navigationToUrl(openUrl(`${item.moreOperation.linkUrl}`))}
+                                onClick={() => navigationToUrl(openUrl(`${item.moreOperation.linkUrl}`), { 
+                                  method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
+                                })}
                               >
                                 <Typography variant='body4' color={colors.fc3}>
                                   {t(Strings[item.moreOperation.textKay])}
@@ -129,7 +129,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                                   return;
                                 }
                                 navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
-                                  method: card.linkNewTab === 'true' ? Method.NewTab : Method.Push
+                                  method: isDingtalkFunc?.() ? Method.Push : (card.linkNewTab === 'true' ? Method.NewTab : Method.Push)
                                 });
                               }}
                               onMouseDown={() => setDownModuleId(card.id)}
@@ -180,7 +180,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                             return;
                           }
                           navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
-                            method: card.linkNewTab === 'true' ? Method.NewTab : Method.Push
+                            method: isDingtalkFunc?.() ? Method.Push : (card.linkNewTab === 'true' ? Method.NewTab : Method.Push)
                           });
                         }}
                         onTouchStart={() => setDownModuleId(card.id)}

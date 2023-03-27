@@ -32,7 +32,6 @@ import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.mapper.TeamMapper;
-import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.ro.CreateTeamRo;
 import com.apitable.organization.ro.UpdateTeamRo;
 import com.apitable.organization.service.ITeamService;
@@ -76,9 +75,6 @@ public class TeamController {
 
     @Resource
     private TeamMapper teamMapper;
-
-    @Resource
-    private TeamMemberRelMapper teamMemberRelMapper;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;

@@ -382,24 +382,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
-        Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
-        Set<String> parentIds = new HashSet<>(nodeIds);
-        while (!parentIds.isEmpty()) {
-            List<NodeBaseInfoDTO> nodes =
-                nodeMapper.selectNodeBaseInfosByNodeIds(parentIds, false);
-            parentIds = new HashSet<>();
-            for (NodeBaseInfoDTO node : nodes) {
-                if (nodeIdToNodeMap.containsKey(node.getNodeId())
-                    || (!includeRootNode && node.getType().equals(NodeType.ROOT.getNodeType()))) {
-                    continue;
-                }
-                if (!nodeIdToNodeMap.containsKey(node.getParentId())) {
-                    parentIds.add(node.getParentId());
-                }
-                nodeIdToNodeMap.put(node.getNodeId(), node);
-            }
-        }
-        return new ArrayList<>(nodeIdToNodeMap.values());
+        return nodeMapper.selectAllParentNodeIds(nodeIds, includeRootNode);
     }
 
     @Override

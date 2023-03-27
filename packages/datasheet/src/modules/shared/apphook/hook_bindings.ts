@@ -20,7 +20,7 @@ import {
   Events,
   generateFixInnerConsistencyChangesets,
   generateFixLinkConsistencyChangesets,
-  IConsistencyErrorInfo,
+  IInnerConsistencyErrorInfo,
   ILinkConsistencyError,
   IReduxState,
   IUserInfo,
@@ -38,14 +38,17 @@ import posthog from 'posthog-js';
 import { IModalConfirmArgs } from './interface';
 
 let lastModalDestroy: IModalReturn | null = null;
+let fixConsistencyMetadata: { errors: IInnerConsistencyErrorInfo[]; datasheetId: string } | null = null;
 
-const fixInnerConsistency = (datasheetId: string, errors: IConsistencyErrorInfo[], state: IReduxState) => {
+const fixInnerConsistency = (datasheetId: string, errors: IInnerConsistencyErrorInfo[], state: IReduxState) => {
   const ops = generateFixInnerConsistencyChangesets(datasheetId, errors, state);
   if (!ops.length) {
     return;
   }
 
+  fixConsistencyMetadata = null;
   resourceService.instance!.operationExecuted(ops);
+
   Sentry.captureMessage('fixInnerConsistency: Inner data inconsistency of datasheet found and attempts made to fix', {
     extra: {
       datasheetId,
@@ -60,6 +63,14 @@ const fixLinkConsistency = (error: ILinkConsistencyError, state: IReduxState) =>
     return;
   }
 
+  if (fixConsistencyMetadata) {
+    // FixInnerConsistency hasn't been carried out, combine their ops
+    const { datasheetId, errors } = fixConsistencyMetadata;
+    const ops = generateFixInnerConsistencyChangesets(datasheetId, errors, state);
+    resourceOps.push(...ops);
+    fixConsistencyMetadata = null;
+  }
+
   resourceService.instance!.operationExecuted(resourceOps);
   Sentry.captureMessage('fixLinkConsistency: Link inconsistency found and attempts made to fix', {
     extra: {
@@ -71,7 +82,10 @@ const fixLinkConsistency = (error: ILinkConsistencyError, state: IReduxState) =>
 
 // Set user ID, logged in
 Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
-  posthog.identify(args.uuid);
+
+  if (typeof window['posthog'] !== 'undefined') {
+    posthog.identify(args.uuid);
+  }
 
   Sentry.setUser({
     email: args.email,
@@ -112,6 +126,7 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
     }
     case ModalConfirmKey.FixInnerConsistency:
     default: {
+      fixConsistencyMetadata = metaData;
       const handleOk = () => {
         const { datasheetId, errors } = metaData;
         fixInnerConsistency(datasheetId, errors, store.getState());
@@ -126,6 +141,9 @@ Player.bindTrigger(Events.app_modal_confirm, (args: IModalConfirmArgs) => {
         type: 'warning',
         content: t(Strings.confirm_the_system_has_detected_a_conflict_in_document),
         onOk: handleOk,
+        onCancel: () => {
+          fixConsistencyMetadata = null;
+        },
       });
       break;
     }

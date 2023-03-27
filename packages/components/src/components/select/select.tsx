@@ -47,7 +47,8 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
     openSearch = false, searchPlaceholder, highlightStyle, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
-    onSelected, hideSelectedOption, dropdownRender, disabled, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240
+    onSelected, hideSelectedOption, dropdownRender, disabled, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240,
+    popupStyle = {}
   } = props;
   const [isInit, setIsInit] = useState(true);
   const theme = useProviderTheme();
@@ -198,6 +199,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
         width: 'max-content',
         position: 'absolute',
         zIndex: 1200, // Same level as antd modal
+        ...popupStyle,
       }}
       ref={triggerRef}
       popupVisible={visible}

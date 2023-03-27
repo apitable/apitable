@@ -195,6 +195,7 @@ export const useTemplateRequest = () => {
       Message.error({
         content: message,
       });
+      return;
     });
   }
 

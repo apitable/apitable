@@ -15,7 +15,7 @@ export type ILinkConsistencyError = {
   errorRecordIds: Map<string, Map<string, { missing?: Set<string>; redundant?: Set<string> }>>;
 };
 
-export function checkLinkConsistency(state: IReduxState): ILinkConsistencyError | undefined {
+export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: string): ILinkConsistencyError | undefined {
   const datasheet = getDatasheet(state);
   if (!datasheet || datasheet.isPartOfData) {
     return;
@@ -50,13 +50,10 @@ export function checkLinkConsistency(state: IReduxState): ILinkConsistencyError 
   /** does not include self-linking fields */
   const linkFieldIds: string[] = [];
   const linkedForeignDstIds: Set<string> = new Set();
-  const selfLinkingFieldIds: string[] = [];
   for (const fieldId in fieldMap) {
     if (fieldMap[fieldId]!.type === FieldType.Link) {
       const prop = fieldMap[fieldId]!.property as ILinkFieldProperty;
-      if (prop.foreignDatasheetId === mainDstId) {
-        selfLinkingFieldIds.push(fieldId);
-      } else if (prop.brotherFieldId) {
+      if (prop.foreignDatasheetId !== mainDstId && prop.brotherFieldId) {
         linkFieldIds.push(fieldId);
         linkedForeignDstIds.add(prop.foreignDatasheetId);
       }
@@ -64,9 +61,14 @@ export function checkLinkConsistency(state: IReduxState): ILinkConsistencyError 
   }
 
   // no valid link fields, don't check consistency
-  if (!linkFieldIds.length && !selfLinkingFieldIds.length) {
+  if (!linkFieldIds.length) {
     return;
   }
+
+  // Loaded foreign datasheet is not directly linked, ignore.
+  // if (!linkedForeignDstIds.has(loadedForeignDstId)) {
+  //   return;
+  // }
 
   // Only when all linked datasheets are fully loaded then link consistency is checked.
   for (const dstId of linkedForeignDstIds) {
@@ -110,22 +112,6 @@ export function checkLinkConsistency(state: IReduxState): ILinkConsistencyError 
 
   const addRedundantRecordId = (dstId: string, recordId: string, fieldId: string, redundantRecordId: string) =>
     addRecordId('redundant', dstId, recordId, fieldId, redundantRecordId);
-
-  // Check all self-linking link fields
-  for (const fieldId of selfLinkingFieldIds) {
-    for (const recordId in recordMap) {
-      const record = recordMap[recordId]!;
-      const cellValue = record.data[fieldId] as ILinkIds | undefined;
-      if (!Array.isArray(cellValue)) {
-        continue;
-      }
-      for (const linkedRecordId of cellValue) {
-        if (!recordMap[linkedRecordId]) {
-          addRedundantRecordId(mainDstId, recordId, fieldId, linkedRecordId);
-        }
-      }
-    }
-  }
 
   // Check all link fields that link foreign datasheets
   for (const fieldId of linkFieldIds) {

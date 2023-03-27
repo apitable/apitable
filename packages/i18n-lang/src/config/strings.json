@@ -84,6 +84,8 @@
     "additional_styling_options": "颜色自定义",
     "admin": "管理员",
     "admin_cannot_quit_space": "你是当前空间站的主管理员，无法退出。你可以在「空间站管理」转让或删除空间站",
+    "admin_test_function": "管理员的实验性功能",
+    "admin_test_function_content": "管理员可以申请或开启下列实验性功能，启用后会对整个空间站生效",
     "admins_per_space": "管理员数量",
     "advanced": "高级",
     "advanced_features": "高级功能",
@@ -3080,6 +3082,11 @@
     "template_not_found": "找不到想要的模板? 请告诉我们~",
     "template_recommend_title": "热门推荐",
     "template_type": "模板",
+    "test_function": "实验性功能",
+    "test_function_desc": "实验性功能可能因为产品策略或计价策略变动而调整，请仔细阅读功能影响范围后再启用",
+    "test_function_normal_modal_close_content": "当前实验性功能已成功停用，刷新后即可生效",
+    "test_function_normal_modal_open_content": "当前实验性功能已成功启用，刷新后即可生效",
+    "test_function_space_level_desc": "启用空间站级别的实验性功能后，会对空间站的所有成员生效",
     "text": "文本",
     "text_editor_tip_end": "Enter 结束编辑",
     "text_functions": "文本函数",
@@ -3752,7 +3759,8 @@
     "input_new_password": "新密码",
     "placeholder_input_new_password_again": "请再次输入新密码",
     "obtain_verification_code": "未获取验证码或已过期，请重新获取",
-    "phone_email_login": "邮箱登录"
+    "phone_email_login": "邮箱登录",
+    "new_user_welcome_notify": "欢迎加入 APITable，我们为你准备了一份免费学习 APITable 的见面礼，点击这条消息即可跳转了解详情。"
   },
   "en-US": {
     "access_to_space_station_editors": "Enter the space to edit",
@@ -3839,6 +3847,8 @@
     "additional_styling_options": "Additional color and styling options",
     "admin": "Admin",
     "admin_cannot_quit_space": "You are the Space admin so you can't exit. You can transfer or delete this Space on \"Space Management\".",
+    "admin_test_function": "Experimental features of admin",
+    "admin_test_function_content": "The admin can enable or apply for enabling the following experimental features that take effect for all members in the Space",
     "admins_per_space": "Admins per space",
     "advanced": "Advanced",
     "advanced_features": "Advanced",
@@ -6835,6 +6845,11 @@
     "template_not_found": "Can't find templates you want? Tell us",
     "template_recommend_title": "Hot",
     "template_type": "Template",
+    "test_function": "Experimental features",
+    "test_function_desc": "Experimental features may be adjusted due to changes in product strategy or billing strategy, please read the scope of impact of the features carefully before enabling them",
+    "test_function_normal_modal_close_content": "Disabled. Please refresh the page.",
+    "test_function_normal_modal_open_content": "Enabled. Please refresh the page.",
+    "test_function_space_level_desc": "After you enable an experimental feature at the Space level, it will take effect on all members in the Space",
     "text": "Text",
     "text_editor_tip_end": "\"Enter\" to end editing",
     "text_functions": "String Function",
@@ -7507,6 +7522,7 @@
     "input_new_password": "New password",
     "placeholder_input_new_password_again": "Enter your new password again",
     "obtain_verification_code": "Verification code not obtained or expired",
-    "phone_email_login": "Email login"
+    "phone_email_login": "Email login",
+    "new_user_welcome_notify": "Welcome to APITable. We have prepared a free meeting gift for you to learn APITable. Click here to learn more."
   }
 }

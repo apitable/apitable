@@ -22,7 +22,7 @@ napi = { version = "2.12.0", default-features = false, features = [
   "chrono_date",
   "serde-json",
 ] }
-napi-derive = "2.12.0"
+napi-derive = "2.12.1"
 once_cell = "1.17.1"
 percent-encoding = "2.2.0"
 sea-orm = { git = "https://github.com/arucil/sea-orm", features = [

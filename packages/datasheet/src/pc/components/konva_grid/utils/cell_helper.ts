@@ -158,7 +158,8 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.Member:
       case FieldType.Rating:
       case FieldType.CreatedBy:
-      case FieldType.LastModifiedBy: {
+      case FieldType.LastModifiedBy:
+      case FieldType.Cascader: {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
@@ -193,7 +194,8 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.Email:
       case FieldType.Phone:
       case FieldType.Text:
-      case FieldType.SingleText: {
+      case FieldType.SingleText:
+      case FieldType.Cascader: {
         return this.renderCellText(renderProps, ctx);
       }
       case FieldType.DateTime:
@@ -395,10 +397,6 @@ export class CellHelper extends KonvaDrawer {
 
     const generateRenderText = (): string | null => {
       if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
-
-      if (field.type === FieldType.URL && field.property?.isRecogURLFlag) {
-        return Field.bindModel(field).cellValueToURLTitle(cellValue);
-      }
 
       return Field.bindModel(field).cellValueToString(cellValue);
     };

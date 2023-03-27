@@ -21,10 +21,10 @@ import { IResourceOpsCollect } from 'command_manager';
 import { IJOTAction, OTActionName } from 'engine';
 import { IReduxState, Selectors } from 'exports/store';
 import xor from 'lodash/xor';
-import { ResourceType } from 'types';
+import { FieldType, ILinkFieldProperty, ILinkIds, ResourceType } from 'types';
 import type { ISnapshot } from '../modules/database/store/interfaces/resource';
 
-export type IConsistencyErrorInfo = {
+export type IInnerConsistencyErrorInfo = {
   viewId: string;
   viewName: string;
   recordsInMap: string[];
@@ -37,6 +37,9 @@ export type IConsistencyErrorInfo = {
   replaceRows?: boolean;
 } | {
   duplicateViews: number[];
+} | {
+  /** recordId:fieldId -> updated set of linked recordIds (may be empty) */
+  updatedSelfLinkRecordIds: Map<string, string[]>
 };
 
 /**
@@ -61,11 +64,14 @@ function getDuplicates<T = any>(array: T[], key: 'recordId' | 'fieldId' | 'id'):
 
 // Consistency check requires that all views in the snapshot are not duplicated, 
 // and that rows/columns correspond to recordMap/fieldMap one-to-one without duplication
-export function innerConsistencyCheck(snapshot: ISnapshot) {
+export function checkInnerConsistency(snapshot: ISnapshot) {
+  const dstId = snapshot.datasheetId;
   const startTime = Date.now();
-  const recordsInMap = Object.keys(snapshot.recordMap || {});
-  const fieldsInMap = Object.keys(snapshot.meta.fieldMap || {});
-  const consistencyErrors: IConsistencyErrorInfo[] = [];
+  const recordMap = snapshot.recordMap || {};
+  const recordsInMap = Object.keys(recordMap);
+  const fieldMap = snapshot.meta.fieldMap || {};
+  const fieldsInMap = Object.keys(fieldMap);
+  const consistencyErrors: IInnerConsistencyErrorInfo[] = [];
   const duplicateViews = getDuplicates(snapshot.meta.views, 'id');
   // filter duplicate views
   const views = duplicateViews ? snapshot.meta.views.filter((_, index) => !duplicateViews.some((idx) => idx === index))
@@ -85,7 +91,7 @@ export function innerConsistencyCheck(snapshot: ISnapshot) {
     const differentFields = xor(fieldsInMap, fieldsInColumn);
     const duplicateRows = getDuplicates(view.rows, 'recordId');
     const duplicateColumns = getDuplicates(view.columns, 'fieldId');
-    const err: IConsistencyErrorInfo = {
+    const err: IInnerConsistencyErrorInfo = {
       viewId: view.id,
       viewName: view.name,
       recordsInMap,
@@ -120,13 +126,47 @@ export function innerConsistencyCheck(snapshot: ISnapshot) {
     consistencyErrors.push(err);
   });
 
-  console.log(`dstId:${snapshot.datasheetId}, data consistency check done, duration : ${Date.now() - startTime} ms`);
+  const selfLinkingFieldIds: string[] = [];
+  // Find all self-linking link fields
+  for (const fieldId in fieldMap) {
+    if (fieldMap[fieldId]!.type === FieldType.Link) {
+      const prop = fieldMap[fieldId]!.property as ILinkFieldProperty;
+      if (prop.foreignDatasheetId === dstId) {
+        selfLinkingFieldIds.push(fieldId);
+      }
+    }
+  }
+
+  // Check all self-linking link fields
+  if (selfLinkingFieldIds.length) {
+    const updatedSelfLinkRecordIds = new Map<string, string[]>();
+    for (const fieldId of selfLinkingFieldIds) {
+      for (const recordId in recordMap) {
+        const record = recordMap[recordId]!;
+        const cellValue = record.data[fieldId] as ILinkIds | undefined;
+        if (!Array.isArray(cellValue)) {
+          continue;
+        }
+        if (cellValue.some(linkedRecordId => !recordMap[linkedRecordId])) {
+          const cellId = recordId + ':' + fieldId;
+          updatedSelfLinkRecordIds.set(cellId, cellValue.filter(linkedRecordId => recordMap[linkedRecordId]));
+        }
+      }
+    }
+    if (updatedSelfLinkRecordIds.size) {
+      consistencyErrors.push({
+        updatedSelfLinkRecordIds
+      });
+    }
+  }
+
+  console.log(`dstId:${dstId}, data consistency check done, duration : ${Date.now() - startTime} ms`);
   return consistencyErrors.length ? consistencyErrors : null;
 }
 
 export function generateFixInnerConsistencyChangesets(
   datasheetId: string,
-  errors: IConsistencyErrorInfo[],
+  errors: IInnerConsistencyErrorInfo[],
   state: IReduxState,
 ): IResourceOpsCollect[] {
   const actions: IJOTAction[] = [];
@@ -145,6 +185,34 @@ export function generateFixInnerConsistencyChangesets(
           ld: datasheet.snapshot.meta.views[index],
         });
       });
+      return;
+    }
+
+    // Remove invalid self-linking record IDs 
+    if ('updatedSelfLinkRecordIds' in data) {
+      const { recordMap } = datasheet.snapshot;
+      for (const[cellId, newRecordIds] of data.updatedSelfLinkRecordIds) {
+        const [recordId, fieldId] = cellId.split(':') as [string, string];
+        const record = recordMap[recordId]!;
+        if (!record) {
+          continue;
+        }
+        const oldRecordIds = record.data[fieldId] as ILinkIds;
+        if (newRecordIds.length) {
+          actions.push({
+            n: OTActionName.ObjectReplace,
+            od: oldRecordIds,
+            oi: newRecordIds,
+            p: ['recordMap', recordId, 'data', fieldId],
+          });
+        } else {
+          actions.push({
+            n: OTActionName.ObjectDelete,
+            od: oldRecordIds,
+            p: ['recordMap', recordId, 'data', fieldId],
+          });
+        }
+      }
       return;
     }
 

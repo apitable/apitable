@@ -22,6 +22,7 @@ import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS, EmptyNullOperand, IFieldPermissionMap, Strings, t,
 } from '@apitable/core';
 import produce from 'immer';
+import { isSafari } from 'react-device-detect';
 import { Transforms, Selection, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
@@ -525,8 +526,10 @@ export const insertMagicVariable = (data: any, editor: BaseEditor) => {
     if (lastSelection) {
       ReactEditor.focus(editor as any);
       Transforms.select(editor, lastSelection);
-      // Delete / , insert magic variable
-      Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+      if (!isSafari) {
+        // Delete / , insert magic variable
+        Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+      }
       // console.log(lastSelection, 'lastSelection');
       Transforms.insertNodes(editor, [mv]);
       // slate transform moves the cursor to the newly inserted position
