@@ -214,5 +214,6 @@ export const getEnvVars = () => {
     NEXT_PUBLIC_POSTHOG_KEY:process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST:process.env.NEXT_PUBLIC_POSTHOG_HOST,
     ADD_RECORD_BUTTON_BG_COLOR:process.env.ADD_RECORD_BUTTON_BG_COLOR,
+    USE_CE_LOGIN_PAGE: process.env.USE_CE_LOGIN_PAGE === 'true',
   };
 };
