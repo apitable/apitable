@@ -142,7 +142,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
               mainMessage.initWidgetWindow(widgetId, {
                 window: iframeRef.current.contentWindow,
                 origin: WIDGET_IFRAME_PATH
-              });
+              }, nodeId);
             }
           }
         }
