@@ -10,7 +10,7 @@ Se puede ver un diagrama más concreto a continuación:
 
 ![Architecture Overview](../static/architecture-overview.png)
 
-- `UI`: proporciona una base de datos extremadamente suave, fácil de usar y súper rápida. <canvas> Rendering Engine
+- `UI`: proporciona una base de datos extremadamente suave, fácil de usar y súper rápida. <canvas> Motor de Renderizado
 - `Servidor Web`: construye sitios web y aplicaciones web estáticas, súper cargadas, amigables con el SEO y extremadamente orientadas al usuario utilizando `Nextjs`
 - `Servidor Backend`: maneja solicitudes HTTP sobre nodos, usuarios, organizaciones, etc.
 - `Servidor Socket`: establece una conexión larga con los clientes a través del protocolo WebSocket, lo que permite la comunicación bidireccional y la colaboración en tiempo real, notificaciones y otras características.
