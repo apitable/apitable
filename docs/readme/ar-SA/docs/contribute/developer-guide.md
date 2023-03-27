@@ -7,9 +7,9 @@
 تأكد من أن لديك التبعيات التالية ولغات البرمجة مثبتة قبل إعداد بيئة المطور الخاص بك:
 
 - `git`
-- [مخزن](https://docs.docker.com/engine/install/)
-- [المرفأ - تكوين v2](https://docs.docker.com/engine/install/)
-- `اصنع`
+- [docker](https://docs.docker.com/engine/install/)
+- [docker-compose v2](https://docs.docker.com/engine/install/)
+- `make`
 
 
 ### لغة البرمجة
@@ -35,9 +35,9 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 
 ```bash
 ## ضروري مطلوب
-التثبيت git
-التثبيت --كاسك دكر
-التثبيت
+brew install git
+brew install --cask docker
+brew install make
 ```
 
 ### Linux
@@ -45,8 +45,8 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 في CentOS / RHEL أو أي توزيع آخر لـ Linux مع `yum`
 
 ```bash
-sudo yum تثبيت git
-sudo yum التثبيت
+sudo yum install git
+sudo yum install make
 ```
 
 على Ubuntu / Debian أو أي توزيع آخر لـ Linux مع `Apt`
@@ -71,23 +71,23 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## أي أداة بناء نستخدمها؟
 
 نحن نستخدم `صنع` كإدخال لأداة البناء المركزي لدينا التي تقود أداة بناء أخرى مثل `صف` / `npm` / `yarn`.
 
 لذا يمكنك فقط إدخال `صنع أمر` ومشاهدة جميع أوامر الإنشاء:
 
 ```bash
-اصنع
+make
 ```
 
-![اصنع لقطة للأوامر](../static/make.png)
+![لقطة شاشة لأمر make](../static/make.png)
 
 
 
-## How to start development environment?
+## كيفية بدء بيئة التطوير؟
 
-APITable consists of 3 processes:
+يتكون APITable من 3 عمليات:
 
 1. الخادم الخلفي
 2. الغرفة-الخادم
@@ -118,7 +118,7 @@ make run # enter 3
 
 
 
-## What IDE should you use?
+## ما IDE الذي يجب أن تستخدمه؟
 
 ننصحك باستخدام `Visual Studio Code` أو `Intellij IDEA` من أجل IDE الخاص بك.
 
@@ -128,57 +128,58 @@ make run # enter 3
 
 
 
-## How to configure the SMTP server?
+## كيف يتم تكوين خادم SMTP؟
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+بشكل افتراضي ، لا يقوم APITable بتكوين خادم SMTP ، مما يعني أنه لا يمكنك دعوة المستخدمين لأنه يتطلب ميزة إرسال البريد الإلكتروني.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+يلزم تعديل تكوين .env باستخدام البريد الإلكتروني الذاتي ، وإعادة تشغيل خادم الخلفية.
 
 `
+<code>
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email`</code>
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
-
-
-## Performance problem under macOS M1 docker run?
-
-## Where is the API documentation?
-
-You can access the API documentation by starting a local server:
-
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
-
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
-
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
-
-## How to set the limitation of widget quantity in dashboard? (30 by default)
-
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
-
-## Can I increase request rate limit of the API? (5 by default)
-
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
-
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
-
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
-
-## How to increase the number of records inserted per API call? (10 by default)
-
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
 
-## How to upgrade to the newest release version?
+## مشكلة في الأداء في ظل تشغيل عامل ميناء macOS M1؟
+
+## أين وثائق API؟
+
+يمكنك الوصول إلى وثائق API عن طريق بدء خادم محلي:
+
+1. عنوان التوثيق لخادم الواجهة الخلفية هو: http://localhost:8081/api/v1/doc.html
+
+2. عنوان التوثيق لخادم الغرفة هو:http://localhost:3333/nest/v1/docs
+
+إذا كنت مهتمًا بواجهات API الخاصة بالخدمة السحابية ، فيمكنك أيضًا الوصول مباشرة إلى وثائق API عبر الإنترنت على https://developers.apitable.com/api/introduction.
+
+## كيفية ضبط حدود كمية عنصر واجهة المستخدم في لوحة القيادة؟ (30 افتراضيًا)
+
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `DSB_WIDGET_MAX_COUNT` في ملف`.env`.
+
+## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
+
+في ملف ".env.default" الخاص بـ "خادم الغرفة" ، توجد معلمتان يمكنهما ضبط تردد الطلب:
+
+1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
+
+2. يمكنك تعيين المعلمة `LIMIT_WHITE_LIST` لتحديد تردد الطلبات المنفصل للمستخدمين المحددين. قيمتها هي سلسلة JSON ، ويمكن الرجوع إلى هيكلها من خلال `Map&lt;string، IBaseRateLimiter&gt;`.
+
+## كيفية زيادة عدد السجلات المدخلة في كل استدعاء API؟ (10 افتراضيًا)
+
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `API_MAX_MODIFY_RECORD_COUNTS` في ملف `.env.default` من `room-server`.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## كيف يمكنك الترقية إلى الإصدار الأحدث؟
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## كيفية تغيير منفذ 80 الافتراضي؟
+يمكن أيضًا تجاوز خصائص التهيئة في ملف `.env` من خلال تحديد متغيرات البيئة الخاصة بها`NGINX_HTTP_PORT`
+
+For example. على سبيل المثال ، سيتم تعيينه كـ NGINX_HTTP_PORT = 8080
