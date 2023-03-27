@@ -157,7 +157,7 @@ APITable يوفر مجموعة من الميزات المذهلة، من الش�
   - **100k+** صفوف البيانات مع التعاون في الوقت الحقيقي.
   - الوصول إلى واجهة برمجة التطبيقات الكاملة، من `بيانات` إلى `بيانات التعريف`.
   - اتجاه واحد / رابط جدول الاتجاه الثنائي و `روابط متداخلة لا نهائية`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - لغات البرمجة الملائمة للمجتمع و إطار, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) و Java ([حذاء الربيع](https://spring.io/projects/spring-boot)).
 - واجهة المستخدم لقاعدة البيانات الغنية الجميلة
   - `CRUD`: إنشاء، قراءة، تحديث، حذف الجداول، الأعمدة، والصفوف
   - `عمليات الحقول`: الفرز، الفلتر، التجميع، الإخفاء/الفحص، إعداد الطول.
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 ثم افتح [ http: // localhost: 80 ](http://localhost:80) في متصفحك لزيارته. (اسم المستخدم الافتراضي `admin@apitable.com` وكلمة المرور `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+نحن أيضًا نقدم صورة كل في واحد استنادًا إلى [pm2](https://pm2.keymetrics.io/) للغرض التجريبي أو الاختباري (غير موصى به للمؤسسة أو لاستخدام الإنتاج):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+تبعاً لبيئتك، قد تحتاج إلى الانتظار عدة دقائق حتى تبدأ جميع الخدمات. هذه الصورة هي amd64 (x86_64) فقط، قد تواجه أداء سيئ للغاية على الدروع 64 أو السيليكون التفاح.
 
 إذا كنت ترغب في إعداد بيئة التنمية المحلية الخاصة بك، اقرأ دليل المطور [🧑<unk> :laptop_computer](./docs/contribute/developer-guide.md)
 
@@ -268,7 +268,7 @@ Depending on your environment, you may need to wait several minutes for all the 
 
 مرحبا، وشكرا لاهتمامك بالمساهمة في APITable!
 
-In addition to writing code, there are many ways for you to contribute.
+هناك العديد من الطرق التي يمكن أن تساهم بها، بما يتجاوز كتابة الكود.
 
 يمكنك المساهمة على النحو التالي:
 - انضم إلى الترجمات وعدّلها في [ مشروع Crowdin للترجمة ](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
@@ -278,12 +278,12 @@ In addition to writing code, there are many ways for you to contribute.
 - [رمز المساهمة](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+من قبيل ما يلي:
+- انضم إلى الترجمات وعدّلها في [ مشروع Crowdin للترجمة ](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- إنشاء [مشكلات](https://github.com/apitable/apitable/issues/new/choose)
+- تابعنا على [ Twitter ](https://twitter.com/apitable_com)
+- إنشاء [مستندات](./docs)
+- [رمز المساهمة](./docs/contribute/developer-guide.md)
 
 
 يمكنك قراءة هذا المستودع [إرشادات المساهمة](./CONTRIBUTING.md) لتعلم كيفية المساهمة.
@@ -323,7 +323,7 @@ Such as the following:
 - كيفية الإصدار و الوسم؟ [الإصدار السامي](https://semver.org/)
 - ما هو دليل برمجة جافا؟ [Java Coding Guidelin](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines)
 - ما هو دليل برمجة TypeScript Ccolining؟ -> [دليل نمط النص النصي](https://google.github.io/styleguide/tsguide.html)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- ما هو دليل برمجة الروستين؟ -> [تطبيق إرشادات API](https://rust-lang.github.io/api-guidelines/about.html)
 - ما هي نظرة عامة على العمارة؟ [ فهم APITable - نظرة عامة على البنية ](./docs/contribute/architecute-overview.md)
 
 
@@ -345,7 +345,7 @@ Such as the following:
 ### ميزات المستقبل
 
 - منشئ الواجهة برموز ثقيلة
-- Embeddable 3rd party documentation components
+- مكونات توثيق الطرف الثالث القابلة للنسر
 - لغات شبيهة بنطاق محدد
 - كهوية شخصية
 - روبوت أتمتة متقدم
@@ -422,7 +422,7 @@ Such as the following:
     <img src="docs/static/screenshot-it.png" alt="صورة لقطة شاشة APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="صورة لقطة شاشة APITable" />
 </p>
 
 ## 🥰 ترخيص
