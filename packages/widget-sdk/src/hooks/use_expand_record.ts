@@ -44,7 +44,11 @@ import { useMeta } from './use_meta';
 export function useExpandRecord(): ((expandRecordParams: IExpandRecord) => void) {
   const { expandRecord } = useContext(WidgetConfigContext);
   const metaDatasheetId = useMeta().datasheetId!;
-  return useCallback(({ recordIds, viewId, datasheetId }) => {
+  return useCallback(({
+    recordIds,
+    viewId,
+    datasheetId
+  }: any) => {
     expandRecord({
       viewId,
       recordIds,

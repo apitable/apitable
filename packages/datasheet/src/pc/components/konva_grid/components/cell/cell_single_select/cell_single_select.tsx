@@ -18,7 +18,7 @@
 
 import { getNextShadeColor, ThemeName } from '@apitable/components';
 import { KONVA_DATASHEET_ID } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
@@ -32,9 +32,9 @@ import { IRenderContentBase, IRenderData } from '../interface';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const AddOutlinedPath = AddOutlined.toString();
-const CloseSmallOutlinedPath = CloseSmallOutlined.toString();
+const CloseSmallOutlinedPath = CloseOutlined.toString();
 
-export const CellSingleSelect: FC<ICellProps> = (props) => {
+export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const {
     x,
     y,
@@ -109,16 +109,18 @@ export const CellSingleSelect: FC<ICellProps> = (props) => {
             y={2}
             data={CloseSmallOutlinedPath}
             fill={iconColor}
-            size={16}
+            scaleX={0.75}
+            scaleY={0.75}
+            transformsEnabled={'all'}
             background={iconBg}
             backgroundHeight={16}
             backgroundWidth={16}
             cornerRadius={2}
-            onTap={e => onChange?.(null)}
-            onMouseDown={e => {
+            onTap={() => onChange?.(null)}
+            onMouseDown={() => {
               setIsMouseDown(true);
             }}
-            onMouseUp={(e) => {
+            onMouseUp={() => {
               if (isMouseDown) {
                 onChange?.(null);
               }

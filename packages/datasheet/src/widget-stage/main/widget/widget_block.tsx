@@ -16,175 +16,110 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading, useThemeMode } from '@apitable/components';
-import { StoreActions } from '@apitable/core';
+import { useThemeMode } from '@apitable/components';
 import {
-  widgetMessage, initWidgetMessage, iframeWidgetDatasheetSelector, iframeWidgetDashboardSelector,
-  WidgetProvider, UPDATE_DASHBOARD, refreshUsedDatasheetAction, refreshWidgetAction, updateWidgetConfigAction,
-  UPDATE_UNIT_INFO, setErrorCodeAction, widgetStore, refreshUsedDatasheetClientAction, getWidgetDatasheet, SET_SHARE_INFO,
-  refreshUsedDatasheetSimpleAction,
-  refreshCalcCache, setMirrorAction, expireCalcCache, SET_USER_INFO, RuntimeEnv
+  widgetMessage, initWidgetMessage, WidgetProvider, getWidgetStore, getLanguage, initWidgetStore,
+  RuntimeEnv, MouseListenerType, IWidgetConfigIframePartial, MessageType
 } from '@apitable/widget-sdk';
-import { MouseListenerType } from '@apitable/widget-sdk/dist/iframe_message/interface';
+import { useMount } from 'ahooks';
+import { WidgetLoading } from 'pc/components/widget/widget_panel/widget_item/widget_loading';
 import React, { useCallback, useEffect, useState } from 'react';
 import { WidgetLoader } from './widget_loader';
-
+ 
 const query = new URLSearchParams(window.location.search);
 const widgetId = query.get('widgetId');
-
+ 
 declare const window: any;
-// Initialize global static parameters
+// __initialization_data__
 window.__initialization_data__ = window.__initialization_data__ || {};
-window.__initialization_data__.isIframe = true;
 window.__initialization_data__.lang = query.get('lang');
 widgetId && initWidgetMessage(widgetId);
-
+ 
 const isSocialWecom = query.get('isSocialWecom');
 window['_isSocialWecom'] = isSocialWecom;
-
+window['_widget_iframe'] = true;
+ 
 const widgetRuntimeEnv = query.get('runtimeEnv') as RuntimeEnv;
-
-export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
+ 
+export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>> = ({ widgetId }) => {
+  const [isDevMode, setIsDevMode] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [isShowingSettings, setIsShowingSettings] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>();
   const [init, setInit] = useState<boolean>();
   const theme = useThemeMode();
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (widgetMessage.connected) {
-        setConnected(true);
-        clearInterval(timer);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [setConnected]);
-
+  const [widgetStore, setWidgetStore] = useState<any>(getWidgetStore(widgetId));
+ 
+  useMount(() => {
+    widgetMessage.connectWidget(() => {
+      setConnected(true);
+      console.log('%s connected', widgetId);
+    });
+  });
+ 
   useEffect(() => {
     if (widgetId && connected) {
-      widgetMessage.initWidget().then(data => {
-        setInit(true);
-        const { datasheetMap, widget, dashboard, unitInfo, widgetConfig, pageParams, labs, share, mirrorMap, user } = data;
-        const datasheetId = widget.snapshot.datasheetId;
-        const widgetDatasheetMap = {};
-        Object.keys(datasheetMap).forEach(datasheetId => {
-          widgetDatasheetMap[datasheetId] = iframeWidgetDatasheetSelector(datasheetMap[datasheetId]);
-        });
-        widgetStore.dispatch(refreshUsedDatasheetAction(datasheetId ? widgetDatasheetMap : {}));
-        widgetStore.dispatch(refreshWidgetAction(widget));
-        widgetStore.dispatch(updateWidgetConfigAction(widgetConfig));
-        widgetStore.dispatch({ type: UPDATE_DASHBOARD, payload: iframeWidgetDashboardSelector(dashboard) });
-        widgetStore.dispatch({ type: UPDATE_UNIT_INFO, payload: unitInfo });
-        widgetStore.dispatch(StoreActions.setLabs(labs));
-        widgetStore.dispatch(setErrorCodeAction(datasheetId && datasheetMap?.[datasheetId]?.errorCode || null));
-        widgetStore.dispatch({ type: 'UPDATE_PAGE_PARAMS', payload: pageParams });
-        widgetStore.dispatch({ type: SET_SHARE_INFO, payload: share });
-        mirrorMap && widgetStore.dispatch(setMirrorAction(mirrorMap));
-        widgetStore.dispatch({ type: SET_USER_INFO, payload: user });
+      widgetMessage.onInitWidget(data => {
+        const { widgetConfig, ...widgetState } = data;
+        // redux
+        const store = initWidgetStore(widgetState, widgetId);
+        setWidgetStore(store);
+        // config
         setIsFullscreen(widgetConfig.isFullscreen);
         setIsShowingSettings(widgetConfig.isShowingSettings);
+        setIsDevMode(Boolean(widgetConfig.isDevMode));
+        setInit(true);
+        console.log('%s init data', widgetId);
       });
     }
   }, [connected, widgetId, setInit]);
-
-  useEffect(() => {
-    if (widgetMessage && widgetStore && connected) {
-      /** Update widget config */
-      widgetMessage.onSyncWidgetConfig(res => {
-        if (res.success && res.data) {
-          widgetStore.dispatch(updateWidgetConfigAction(res.data));
-          setIsFullscreen(res.data.isFullscreen);
-          setIsShowingSettings(res.data.isShowingSettings);
-        }
-      });
-    }
-  }, [setIsFullscreen, setIsShowingSettings, connected]);
-
+ 
   useEffect(() => {
     if (connected && widgetMessage && widgetStore) {
-      /** Update widget Store */
-      widgetMessage.onSyncOperations(res => {
-        const state = widgetStore.getState();
-        if (res.success && res.data && (Object.keys(state.datasheetMap).includes(res.data.resourceId) || state.widget?.id === res.data.resourceId)) {
-          const { operations, resourceType, resourceId } = res.data;
-          widgetStore.dispatch(StoreActions.applyJOTOperations(operations, resourceType, resourceId));
-        }
+      // TODO Handling updates action.
+      widgetMessage.onSyncAction((action) => {
+        widgetStore.dispatch(action);
       });
-      widgetMessage.onSyncDatasheetClient(res => {
-        const datasheetId = getWidgetDatasheet(widgetStore.getState())?.datasheetId;
-        datasheetId && widgetStore.dispatch(refreshUsedDatasheetClientAction({ datasheetId, client: res }));
-      });
-      widgetMessage.onSyncLabs(res => {
-        widgetStore.dispatch(StoreActions.setLabs(res));
-      });
-      widgetMessage.onSyncPageParams(res => {
-        widgetStore.dispatch({ type: 'UPDATE_PAGE_PARAMS', payload: res });
-      });
-      widgetMessage.onSyncUnitInfo(res => {
-        widgetStore.dispatch({ type: UPDATE_UNIT_INFO, payload: res });
-      });
-      widgetMessage.onSyncUnitInfo(res => {
-        widgetStore.dispatch({ type: UPDATE_UNIT_INFO, payload: res });
-      });
-      widgetMessage.onSyncShare(res => {
-        widgetStore.dispatch({ type: SET_SHARE_INFO, payload: res });
-      });
-      // Initial Load other related datasheet data
-      widgetMessage.onLoadOtherDatasheet(data => {
-        const datasheetMap = {};
-        Object.keys(data).forEach(datasheetId => {
-          datasheetMap[datasheetId] = iframeWidgetDatasheetSelector(data[datasheetId]);
-        });
-        widgetStore.dispatch(refreshUsedDatasheetAction(datasheetMap));
-      });
-
-      // Update Load other related datasheet data
-      widgetMessage.onDatasheetSimpleUpdate(datasheet => {
-        widgetStore.dispatch(refreshUsedDatasheetSimpleAction(datasheet));
-      });
-
-      widgetMessage.onRefreshSnapshot(datasheetId => {
-        widgetStore.dispatch(StoreActions.refreshSnapshot(datasheetId));
-      });
-
-      widgetMessage.onSyncDashboard(dashboard => {
-        widgetStore.dispatch({ type: UPDATE_DASHBOARD, payload: dashboard });
-      });
-
-      widgetMessage.onSyncCalcCache(res => {
-        widgetStore.dispatch(refreshCalcCache(res));
-      });
-
-      widgetMessage.onSyncMirrorMap(res => {
-        res && widgetStore.dispatch(setMirrorAction(res));
-      });
-
-      widgetMessage.onCalcExpire(res => {
-        widgetStore.dispatch(expireCalcCache(res));
-      });
-
-      widgetMessage.onSyncUserInfo(res => {
-        widgetStore.dispatch({ type: SET_USER_INFO, payload: res });
-      });
-
-      // Add listen to the main app loading applet code action
-      widgetMessage.onLoadWidget();
     }
-  }, [connected]);
-
-  const updateConfig = useCallback((config) => {
-    widgetStore.dispatch(updateWidgetConfigAction(config));
+    return () => {
+      widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_ACTION);
+    };
+  }, [connected, widgetStore]);
+ 
+  useEffect(() => {
+    if (connected && widgetMessage && widgetStore) {
+      widgetMessage.onSyncRecordPickerResult();
+    }
+    return () => {
+      widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_RECORD_PICKER_RESULT);
+    };
+  }, [connected, widgetStore]);
+ 
+  useEffect(() => {
+    if (widgetMessage && widgetStore && connected) {
+      /** update widget config */
+      widgetMessage.onSyncWidgetConfig(data => {
+        setIsFullscreen(data.isFullscreen);
+        setIsShowingSettings(data.isShowingSettings);
+        setIsDevMode(Boolean(data.isDevMode));
+      });
+    }
+    return () => {
+      widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_WIDGET_CONFIG);
+    };
+  }, [setIsFullscreen, setIsShowingSettings, connected, widgetStore]);
+ 
+  const updateConfig = useCallback((config: IWidgetConfigIframePartial) => {
     widgetMessage.syncWidgetConfig(config);
   }, []);
-
+ 
   const toggleSetting = useCallback(() => {
     const config = {
       isShowingSettings: !isShowingSettings
     };
     updateConfig(config);
   }, [isShowingSettings, updateConfig]);
-
+ 
   const toggleFullscreen = useCallback(() => {
     const config = {
       isFullscreen: !isFullscreen,
@@ -192,19 +127,19 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
     updateConfig(config);
   }, [isFullscreen, updateConfig]);
 
-  const expandRecord = useCallback((props) => {
+  const expandRecord = useCallback((props: any) => {
     widgetMessage.expandRecord(props);
   }, []);
-
+ 
   const expandDevConfig = () => {
     widgetMessage.expandDevConfig();
   };
-
+ 
   useEffect(() => {
     if (!connected) {
       return;
     }
-    const fn = (e) => {
+    const fn = (e: { type: MouseListenerType; }) => {
       if (!e?.type) {
         return;
       }
@@ -217,35 +152,32 @@ export const WidgetBlock: React.FC<{ widgetId: string }> = ({ widgetId }) => {
       window.document.removeEventListener(MouseListenerType.LEAVE, fn);
     };
   }, [connected]);
-
+ 
   if (!widgetId) {
     return <>Error: no widgetId</>;
   }
   if (!connected) {
-    console.log('%s waiting connect...', widgetId);
-    return <Loading/>;
+    return <WidgetLoading/>;
   }
-
+ 
   if (!init) {
-    console.log('%s waiting init data...', widgetId);
-    return <Loading/>;
+    return <WidgetLoading/>;
   }
-
+ 
   return (
     <WidgetProvider
       id={widgetId}
+      locale={getLanguage()}
       theme={theme}
       runtimeEnv={widgetRuntimeEnv}
       widgetStore={widgetStore}
-      resourceService={null as any}
-      globalStore={null as any}
       isFullscreen={isFullscreen}
       isShowingSettings={isShowingSettings}
       toggleSettings={toggleSetting}
       toggleFullscreen={toggleFullscreen}
       expandRecord={expandRecord}
     >
-      <WidgetLoader expandDevConfig={expandDevConfig}/>
+      <WidgetLoader expandDevConfig={expandDevConfig} isDevMode={isDevMode}/>
     </WidgetProvider>
   );
 };

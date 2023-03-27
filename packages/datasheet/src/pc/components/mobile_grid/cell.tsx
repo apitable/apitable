@@ -26,9 +26,9 @@ import { store } from 'pc/store';
 import styles from './styles.module.less';
 import { FieldTitle } from '../expand_record/field_editor/field_title';
 import { useThemeColors } from '@apitable/components';
-import IconMore from 'static/icon/common/common_icon_more_stand.svg';
 import { FIELD_HEAD_CLASS } from 'pc/utils';
 import classNames from 'classnames';
+import { MoreStandOutlined } from '@apitable/icons';
 
 enum CellType {
   HEAD,
@@ -42,7 +42,7 @@ interface ICellFuncOwnProps {
 
 type ChildProps = GridChildComponentProps & ListChildComponentProps;
 
-const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
+const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>> = props => {
   const colors = useThemeColors();
   const {
     columnIndex,
@@ -102,7 +102,7 @@ const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
         </div>
         {manageable &&
           <div className={styles.fieldMenuTrigger}>
-            <IconMore fill={colors.thirdLevelText} />
+            <MoreStandOutlined color={colors.thirdLevelText} />
           </div>
         }
       </div>
@@ -110,13 +110,18 @@ const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
   }
 
   const record = Selectors.getRecord(state, rows[type === CellType.TITLE ? index : rowIndex].recordId, datasheetId)!;
+ 
   const field = fieldMap[type === CellType.TITLE ? firstColumn.fieldId : remainingColumns[columnIndex].fieldId];
-  const cellValue = Selectors.getCellValue(state, {
+  const cellValue = record ? Selectors.getCellValue(state, {
     meta: { fieldMap: { [field.id]: field }},
     recordMap: { [record.id]: record },
-  }, record.id, field.id);
+  }, record.id, field.id) : null;
 
   const isEmptyCell = Boolean(cellValue);
+
+  if(!record) {
+    return null;
+  }
 
   if (type === CellType.TITLE) {
     const hasFoundMark = matched(record.id, field.id);

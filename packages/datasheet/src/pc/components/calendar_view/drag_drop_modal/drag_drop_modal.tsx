@@ -18,7 +18,7 @@
 
 import { memo, useContext, useRef, useState } from 'react';
 import { Selectors, t, Strings } from '@apitable/core';
-import { ExpandRecordOutlined } from '@apitable/icons';
+import { ExpandOutlined } from '@apitable/icons';
 import { Typography, IconButton } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { FieldEditor } from 'pc/components/expand_record/field_editor';
@@ -69,7 +69,7 @@ const DragDropModalBase = ({ recordId, style }: { recordId?: string; style: obje
         <Typography variant="h7">
           {t(Strings.set_record)}
         </Typography>
-        <IconButton icon={ExpandRecordOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
+        <IconButton icon={ExpandOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
       </header>
       <div className={styles.content}>
         <div ref={titleFieldRef} onMouseDown={() => clickWithinField.current = true}>

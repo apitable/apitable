@@ -84,4 +84,9 @@ export interface IQuery {
   spaceId?: string;
   client_id?: string; // Spatial parameters of the privatized binding of Yufu
   nodeId?: string;
+  comment?: number;
+}
+
+export interface IOptions {
+  shallow?: boolean;
 }

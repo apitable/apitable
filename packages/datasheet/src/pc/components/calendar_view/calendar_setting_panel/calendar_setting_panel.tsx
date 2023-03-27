@@ -19,9 +19,9 @@
 import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
-  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, IDPrefix, StoreActions, Strings, t
+  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, ISetCalendarStyle, IDPrefix, StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { notify } from 'pc/components/common/notify';
@@ -45,7 +45,7 @@ interface ICalendarSettingPanel {
   calendarStyle: ICalendarViewStyle;
 }
 
-export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle }) => {
+export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPanel>> = ({ calendarStyle }) => {
   const colors = useThemeColors();
   const { startFieldId, endFieldId, colorOption } = calendarStyle;
   const { color } = colorOption;
@@ -72,7 +72,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
   const { CALENDAR_SETTING_HELP_URL } = getEnvVariables();
   const fieldOptions = useMemo(() => {
     const options = columns.map(({ fieldId }) => {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       if ([Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime)) {
         return {
           label: field.name,
@@ -87,7 +87,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
         value: startFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)} />
+        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
       });
     }
     if (isCryptoEndField) {
@@ -95,14 +95,14 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
         value: endFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)} />
+        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
       });
     }
     options.push({
       label: t(Strings.calendar_add_date_time_field),
       value: 'add',
       disabled: !permissions.manageable,
-      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
+      prefixIcon: <AddOutlined color={colors.thirdLevelText}/>,
     });
     return options;
   }, [columns, endFieldId, fieldMap, isCryptoEndField, isCryptoStartField, permissions.manageable, startFieldId, colors]);
@@ -118,7 +118,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
           StoreActions.toggleCalendarSettingPanel(false, datasheetId!),
           StoreActions.toggleCalendarGuideStatus(true, datasheetId!),
           StoreActions.toggleCalendarGrid(true, datasheetId!),
-        ])
+        ]),
       );
     }
     const restStatus = guideStatus ? {} : { guideStatus: true, guideWidth: true };
@@ -131,7 +131,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     });
   };
 
-  const handleAddField = (styleKey) => {
+  const handleAddField = (styleKey: CalendarStyleKeyType) => {
     if (!permissions.manageable) {
       return;
     }
@@ -159,16 +159,17 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     }
   };
 
-  const handleStyleChange = (styleKey, styleValue) => {
+  const handleStyleChange = (styleKey: CalendarStyleKeyType, styleValue: ISetCalendarStyle['styleValue']) => {
     executeCommandWithMirror(() => {
+      const calendarStyle = {
+        styleKey,
+        styleValue,
+      } as ISetCalendarStyle;
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetCalendarStyle,
         viewId: viewId!,
         isClear: styleValue === UNUSED_END_DATE,
-        data: [{
-          styleKey,
-          styleValue,
-        }]
+        data: [calendarStyle]
       });
     }, {
       style: {
@@ -178,7 +179,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     });
   };
 
-  const onColorPick = (type: OptionSetting, id: string, value: string | number) => {
+  const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
     if (type === OptionSetting.SETCOLOR) {
       handleStyleChange(CalendarStyleKeyType.ColorOption, {
         ...colorOption,
@@ -206,11 +207,11 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
               rel='noopener noreferrer'
               className={styles.helpIcon}
             >
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseMiddleOutlined
+        <CloseOutlined
           className={styles.closeIcon}
           size={16}
           color={black[500]}
@@ -220,7 +221,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
       {
         getEnvVariables().CALENDAR_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
-            <ClassroomOutlined size={16} color={colors.primaryColor} />
+            <ClassOutlined size={16} color={colors.primaryColor} />
             <Typography variant='body3' color={colors.secondLevelText}>
               {t(Strings.calendar_play_guide_video_title)}
             </Typography>
@@ -249,7 +250,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
                       if (option.value === 'add') {
                         handleAddField(handleKey);
                       } else {
-                        handleStyleChange(handleKey, option.value);
+                        handleStyleChange(handleKey, option.value as string);
                       }
                     }
                   }
@@ -292,6 +293,12 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.must_one_date)}</span>}
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+          <div className={styles.timeZoneTip}>
+            <WarnCircleOutlined color={colors.textCommonTertiary} />
+            <span>{t(Strings.time_zone_inconsistent_tips)}</span>
+          </div>
+        )}
       </div>
       {false && <div className={styles.color}>
         <div className={styles.outer}>

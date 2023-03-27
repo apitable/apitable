@@ -33,7 +33,7 @@ import EmptyFavoritePng from 'static/icon/workbench/catalogue/favorite.png';
 import { WorkbenchSideContext } from '../workbench_side_context';
 import styles from './style.module.less';
 
-const FavoriteBase: FC = () => {
+const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
@@ -68,7 +68,7 @@ const FavoriteBase: FC = () => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
 
-  const onContextMenu = e => {
+  const onContextMenu = (e: React.SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
   };
@@ -129,7 +129,7 @@ const FavoriteBase: FC = () => {
                 onContextMenu={onContextMenu}
                 onClick={() => {
                   treeViewRef.current?.setLoadingNodeId(nodeId);
-                  loadData(nodeId).then(res => {
+                  loadData(nodeId).then(() => {
                     treeViewRef.current?.setLoadingNodeId('');
                   });
                 }}

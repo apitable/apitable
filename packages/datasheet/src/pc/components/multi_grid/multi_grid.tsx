@@ -66,7 +66,7 @@ const { setHoverRecordId, setActiveFieldState, setHoverRowOfAddRecord, setGridVi
 
 export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiGridOwnStateProps> {
   gridRef: React.RefObject<IGridViewsHandle> = React.createRef();
-  static contextType = ScrollContext;
+  static override contextType = ScrollContext;
   eventBundle: Map<ShortcutActionName, () => void> | null = null;
   cacheScrollDomInfo = {
     maxScrollLeft: 0,
@@ -86,7 +86,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     (window as any).MultiGridsScroll = this.columnScroll;
   }
 
-  componentDidMount = () => {
+  override componentDidMount = () => {
     const eventBundle = new Map([
       [
         ShortcutActionName.PageDown,
@@ -125,7 +125,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     }
   };
 
-  componentDidUpdate = preProps => {
+  override componentDidUpdate = (preProps: { viewId: string; datasheetId: string; }) => {
     const { viewId, datasheetId } = this.props;
     if (preProps.viewId !== viewId && preProps.datasheetId !== datasheetId) {
       const cacheScroll = this.getCacheScrollPosition();
@@ -135,6 +135,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
   getCacheScrollPosition = () => {
     const { viewId, datasheetId } = this.props;
+    // @ts-ignore
     const cacheScrollMap = this.context?.cacheScrollMap.current;
     if (!cacheScrollMap) {
       return;
@@ -152,7 +153,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     };
   };
 
-  componentWillUnmount = () => {
+  override componentWillUnmount = () => {
     if (!this.eventBundle) {
       return;
     }
@@ -177,8 +178,8 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
         scrollLeft: bottomRightReg.scrollLeft,
       },
       () => {
-        this.context.changeCacheScroll &&
-          this.context.changeCacheScroll(
+        // @ts-ignore
+        this.context.changeCacheScroll && this.context.changeCacheScroll(
             {
               scrollTop: this.state.scrollTop,
               scrollLeft: this.state.scrollLeft,
@@ -337,8 +338,8 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
         scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
       });
       gridRef.changeScroll(GridReg.BottomLeftReg, { scrollTop: bottomLeftRegTop + _scrollObj.columnSpeed, scrollLeft: 0 });
-      this.context.changeCacheScroll &&
-        this.context.changeCacheScroll(
+      // @ts-ignore
+      this.context.changeCacheScroll && this.context.changeCacheScroll(
           {
             scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
             scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,
@@ -366,7 +367,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     };
   })();
 
-  clickFieldHead = (target: HTMLElement, type?: string | null) => {
+  clickFieldHead = (target: HTMLElement, type?: string | null): void => {
     const { datasheetId, permissions } = this.props;
     const headerEle = getParentNodeByClass(target, FIELD_HEAD_CLASS);
     if (!headerEle) {
@@ -404,7 +405,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     );
   };
 
-  onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  onClick = async(e: React.MouseEvent<HTMLDivElement>): Promise<void> => {
     const { permissions } = this.props;
     const target = e.target as HTMLElement;
     const element = getParentNodeByClass(target, OPERATE_BUTTON_CLASS);
@@ -416,7 +417,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
 
     if (operateType === ButtonOperateType.AddRecord && permissions.rowCreatable) {
       const recordId = getElementDataset(element, 'recordId');
-      appendRow({ recordId: recordId || '' });
+      await appendRow({ recordId: recordId || '' });
       return;
     }
     return this.clickFieldHead(element.parentNode as HTMLElement, operateType);
@@ -476,7 +477,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     gridRef.scrollToItem(GridRef.BottomRightRef, { align: props.align, rowIndex: props.rowIndex });
   };
 
-  updateScrollOffset = gridRef => {
+  updateScrollOffset = (gridRef: IGridViewsHandle) => {
     const bottomRightReg = gridRef.getReg(GridReg.BottomRightReg);
     if (!bottomRightReg) {
       return;
@@ -597,7 +598,7 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
     });
   };
 
-  render() {
+  override render() {
     const {
       height,
       width,
@@ -714,7 +715,7 @@ const mapStateToProps = (state: IReduxState): IMultiGridStateProps => {
     view,
     snapshot: Selectors.getSnapshot(state)!,
     datasheetId: Selectors.getActiveDatasheetId(state)!,
-    viewId: Selectors.getActiveView(state)!,
+    viewId: Selectors.getActiveViewId(state)!,
     selection: Selectors.getSelectRanges(state),
     fillHandleStatus: Selectors.getFillHandleStatus(state),
     columnCount: Selectors.getVisibleColumnCount(state),

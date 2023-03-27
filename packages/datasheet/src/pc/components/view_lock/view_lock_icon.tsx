@@ -18,13 +18,13 @@
 
 import * as React from 'react';
 import { Tooltip } from 'antd';
-import { LockNonzeroOutlined } from '@apitable/icons';
+import { LockOutlined } from '@apitable/icons';
 // import { useSelector } from 'react-redux';
 import { IViewProperty, /* Selectors,  */Strings, t } from '@apitable/core';
 import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
 import { useThemeColors } from '@apitable/components';
 
-export const ViewLockIcon: React.FC<{ viewId: string, view: IViewProperty }> = ({ viewId, view }) => {
+export const ViewLockIcon: React.FC<React.PropsWithChildren<{ viewId: string, view: IViewProperty }>> = ({ view }) => {
   // const currentView = useSelector(Selectors.getCurrentView);
   const colors = useThemeColors();
   if (!view.lockInfo) {
@@ -37,7 +37,7 @@ export const ViewLockIcon: React.FC<{ viewId: string, view: IViewProperty }> = (
 
   return <Tooltip title={t(Strings.un_lock_view)} placement="bottom">
     <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}>
-      <LockNonzeroOutlined color={colors.primaryColor} />
+      <LockOutlined color={colors.primaryColor} />
     </span>
   </Tooltip>;
 };

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SET_RECORD_VISION_MODE } from '../../../shared/store/action_constants';
-import { RecordVision } from '../../../../exports/store/interfaces';
+import { SET_RECORD_VISION_MODE } from 'modules/shared/store/action_constants';
+import { RecordVision } from 'exports/store/interfaces';
 
 export const setRecordVision = (recordVision: RecordVision) => {
   return {

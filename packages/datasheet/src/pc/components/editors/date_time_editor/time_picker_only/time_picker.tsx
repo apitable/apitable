@@ -51,6 +51,7 @@ interface ITimePickerProps {
   hourStep?: number;
   secondStep?: number;
   open?: boolean;
+  timeZone?: string;
 }
 
 interface ITimePickerState {
@@ -82,7 +83,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: ITimePickerProps) {
+  override UNSAFE_componentWillReceiveProps(nextProps: ITimePickerProps) {
     if (nextProps.hasOwnProperty('open') && nextProps.open !== this.props.open) {
       this.setOpen(nextProps.open || false);
     }
@@ -101,7 +102,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     this.props.onOpenChange?.(open);
     if (open) {
       if (!this.state.value) {
-        this.setValue(dayjs().format('HH:mm'));
+        const date = this.props.timeZone ? dayjs.tz(dayjs(), this.props.timeZone) : dayjs();
+        this.setValue(date.format('HH:mm'));
       }
       this.saveInputRef.focus();
     }
@@ -160,7 +162,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     );
   }
 
-  render() {
+  override render() {
     const { props, state } = this;
     const {
       align,

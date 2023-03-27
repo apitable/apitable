@@ -26,7 +26,7 @@ interface IViewFilterProps {
   [key: string]: any;
 }
 
-export const ViewFilter: FC<IViewFilterProps> = props => {
+export const ViewFilter: FC<React.PropsWithChildren<IViewFilterProps>> = props => {
   const { viewsList, ...rest } = props;
 
   return (

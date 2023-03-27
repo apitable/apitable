@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+import { Router } from 'pc/components/route_manager/router';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@apitable/icons';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
+import { QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 // @ts-ignore
@@ -42,7 +42,7 @@ interface ILevelCard {
   isMobile?: boolean;
 }
 
-export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className, isMobile }) => {
+export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHeight, deadline, className, isMobile }) => {
   const {
     title,
     levelCard: {
@@ -63,12 +63,13 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
   const space = useSelector(state => state.space);
+  const onTrial = useSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {
       return t(Strings.without_day);
     }
-    return dayjs(expiration).format('YYYY-MM-DD');
+    return dayjs(typeof expiration === 'number' ? (expiration * 1000) : expiration).format('YYYY-MM-DD');
   }, [expiration]);
 
   const style: React.CSSProperties = useMemo(() => {
@@ -93,7 +94,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
             showUpgradeContactUs?.();
           }}
           color={colors.black[50]}
-          size="small"
+          size='small'
           style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
         >
           {t(Strings.contact_us)}
@@ -107,10 +108,24 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
             type === LevelType.Bronze ? window.open(`/space/${space.activeId}/upgrade`, '_blank', 'noopener,noreferrer') : showUpgradeContactUs?.();
           }}
           color={colors.black[50]}
-          size="small"
+          size='small'
           style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
         >
           {type === LevelType.Bronze ? t(Strings.upgrade) : t(Strings.contact_us)}
+        </Button>
+      );
+    }
+    if (type === LevelType.Free || type === LevelType.Plus || type === LevelType.Pro) {
+      return (
+        <Button
+          onClick={() => {
+            Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' }});
+          }}
+          color={colors.black[50]}
+          size='small'
+          style={{ color: upgradeBtnColor || titleColor || strokeColor, fontSize: 12, opacity: 0.8 }}
+        >
+          {t(Strings.upgrade)}
         </Button>
       );
     }
@@ -121,10 +136,10 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
     };
     return (
       <ButtonGroup withSeparate>
-        <React.Fragment key=".0">
+        <React.Fragment key='.0'>
           <Button
             style={{ ...commonStyle, borderRadius: '16px 0px 0px 16px' }}
-            size="small"
+            size='small'
             color={colors.black[50]}
             onClick={() => {
               window.open(`/space/${space.activeId}/upgrade?pageType=${SubscribePageType?.Renewal}`, '_blank', 'noopener,noreferrer');
@@ -134,7 +149,7 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
           </Button>
           <Button
             style={{ ...commonStyle, borderRadius: '0px 16px 16px 0px', marginLeft: 0 }}
-            size="small"
+            size='small'
             className={styles.beforeBg}
             color={colors.black[50]}
             onClick={() => {
@@ -153,21 +168,19 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
       {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} />}
       {cardSkin && (
-        <span className={styles.skin} style={skinStyle}>
-          <Image src={cardSkin} alt="skin" width={68} height={82} />
-        </span>
+        <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle} />
       )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
-        {tagText}
+        {onTrial ? t(Strings.trial_subscription) : tagText}
       </div>
       <div className={classnames(styles.titleWrap, { [styles.mt24]: isLeftTag })}>
-        <Typography variant="h6" color={titleColor}>
+        <Typography variant='h6' color={titleColor}>
           {title}
         </Typography>
         {!isMobile && (
-          <Tooltip title={titleTip || t(Strings.grade_desc)} placement="top">
+          <Tooltip title={titleTip || t(Strings.grade_desc)} placement='top'>
             <span className={styles.infoIcon}>
-              <InformationSmallOutlined color={secondTextColor || strokeColor} />
+              <QuestionCircleOutlined color={secondTextColor || strokeColor} />
             </span>
           </Tooltip>
         )}
@@ -180,11 +193,11 @@ export const LevelCard: FC<ILevelCard> = ({ type, minHeight, deadline, className
             <span>
               {/* Temporarily hide the payment record portal */}
               {/* <a
-                 className={styles.payRecord}
-                 style={{ color: secondTextColor || strokeColor }} >
-                 {t(Strings.payment_record)} <ChevronRightOutlined color={secondTextColor ||strokeColor} />
-                 </a>
-                 <br /> */}
+               className={styles.payRecord}
+               style={{ color: secondTextColor || strokeColor }} >
+               {t(Strings.payment_record)} <ChevronRightOutlined color={secondTextColor ||strokeColor} />
+               </a>
+               <br /> */}
               <span>
                 <span className={styles.expirationText}>{expirationText}</span>
                 <span style={{ fontSize: 14 }}>{t(Strings.expire)}</span>

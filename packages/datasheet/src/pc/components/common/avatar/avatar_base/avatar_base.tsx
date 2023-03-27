@@ -29,7 +29,7 @@ export interface IAvatarBaseProps {
   className?: string;
 }
 
-export const AvatarBase: React.FC<IAvatarBaseProps> = ({
+export const AvatarBase: React.FC<React.PropsWithChildren<IAvatarBaseProps>> = ({
   src,
   size = AvatarSize.Size32,
   style,

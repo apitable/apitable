@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState, IFieldMap, ThemeName, RecordVision, IRecordCellValue } from '../../exports/store/interfaces';
-import { FieldType } from '../../types/field_types';
+import { IReduxState, IFieldMap, ThemeName, RecordVision, IRecordCellValue } from 'exports/store/interfaces';
+import { FieldType } from 'types/field_types';
 import { IFormulaContext } from '../functions/basic';
 import { evaluate as _evaluate } from '../evaluate';
 
@@ -318,6 +318,9 @@ export const generateMockState = (fieldMap: IFieldMap): IReduxState => ({
       memberId: '',
       email: '',
     },
+    memberListPageNo: 0,
+    memberListTotal: 0,
+    memberListLoading: false,
   },
   spaceMemberManage: {
     memberListInSpace: [],
@@ -558,6 +561,8 @@ export const mockState = {
       memberId: '',
       email: '',
     },
+    memberListPageNo: 0,
+    memberListTotal: 0,
   },
   spaceMemberManage: {
     memberListInSpace: [],

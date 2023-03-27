@@ -26,7 +26,7 @@ interface IComputedFieldWrapperProps {
   className?: string;
 }
 
-export const ComputedFieldWrapper: FC<IComputedFieldWrapperProps> = props => {
+export const ComputedFieldWrapper: FC<React.PropsWithChildren<IComputedFieldWrapperProps>> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   return (

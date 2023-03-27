@@ -18,16 +18,16 @@
 
 import { Typography, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import { DisabledViewLock } from 'pc/components/view_lock/disabled_view_lock';
 import { EnabledViewLock } from 'pc/components/view_lock/enabled_view_lock';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { IViewLockProps } from './interface';
 import styles from './style.module.less';
 
-export const ViewLock: React.FC<IViewLockProps> = props => {
+export const ViewLock: React.FC<React.PropsWithChildren<IViewLockProps>> = props => {
   const colors = useThemeColors();
   const { viewId, onModalClose, unlockHandle } = props;
   const view = useSelector(state => {
@@ -44,7 +44,7 @@ export const ViewLock: React.FC<IViewLockProps> = props => {
           <Typography variant={'h6'}>{isViewLocked ? t(Strings.un_lock_view) : t(Strings.lock_view)}</Typography>
         </div>
         <div>
-          <CloseIcon fill={colors.fourthLevelText} onClick={onModalClose} width={24} height={24} />
+          <CloseOutlined color={colors.fourthLevelText} onClick={onModalClose} size={24} />
         </div>
       </div>
     );

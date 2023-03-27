@@ -63,7 +63,7 @@ export interface ITooltipProps {
   style?: React.CSSProperties;
 }
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle: any = createGlobalStyle`
   .tooltip {
     z-index: 1001;
   }
@@ -88,7 +88,7 @@ function isReactText(children: React.ReactNode) {
   return ['string', 'number'].includes(typeof children);
 }
 
-export const Tooltip: FC<ITooltipProps> = (
+export const Tooltip: FC<React.PropsWithChildren<ITooltipProps>> = (
   {
     children,
     content,

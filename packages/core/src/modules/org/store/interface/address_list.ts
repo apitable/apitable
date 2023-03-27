@@ -17,10 +17,11 @@
  */
 
 import * as actions from '../../../shared/store/action_constants';
+import { ITeamTreeNode } from './invite';
 
 export interface IUpdateTeamListAction {
   type: typeof actions.UPDATE_TEAM_LIST;
-  payload: ITeamList[];
+  payload: ITeamTreeNode[];
 }
 export interface IUpdateMemberListAction {
   type: typeof actions.UPDATE_MEMBER_LIST;
@@ -41,6 +42,32 @@ export interface IUpdateSingleMemberInMemberListAction {
   type: typeof actions.UPDATE_SINGLE_MEMBER_IN_MEMBERLIST;
   payload: Partial<IMemberInfoInAddressList>;
 }
+
+export interface IUpdateAddressTreeAction {
+  type: typeof actions.UPDATE_ADDRESS_TREE;
+  payload: {parentId: string, childrenTree: ITeamTreeNode[]};
+}
+
+export interface IUpdateMemberListPageNoAction { 
+  type: typeof actions.UPDATE_MEMBER_LIST_PAGE_NO;
+  payload: number;
+}
+
+export interface IUpdateMemberListTotalAction {
+  type: typeof actions.UPDATE_MEMBER_LIST_TOTAL;
+  payload: number;
+}
+
+export interface IUpdateMemberListLodingAction {
+  type: typeof actions.UPDATE_MEMBER_LIST_LOADING;
+  payload: boolean;
+}
+
+export interface IUpdateMemberListPageAction { 
+  type: typeof actions.UPDATE_MEMBER_LIST_PAGE;
+  payload: IMemberInfoInAddressList[];
+}
+
 export interface ITeamList {
   teamId: string;
   teamName: string;
@@ -89,10 +116,13 @@ export interface ITags {
   tagName: string;
 }
 export interface IAddressList {
-  teamList: ITeamList[] | [];
+  teamList: ITeamTreeNode[] | [];
   memberList: IMemberInfoInAddressList[];
   selectedTeamInfo: ISelectedTeamInfo;
   memberInfo: IMemberInfoInAddressList;
+  memberListPageNo: number;
+  memberListTotal: number;
+  memberListLoading: boolean;
 }
 
 export interface ISelectedTeamInfo {

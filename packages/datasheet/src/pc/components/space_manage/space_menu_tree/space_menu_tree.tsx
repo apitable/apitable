@@ -18,7 +18,10 @@
 
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
-import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
+import { 
+  LogOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
+  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined 
+} from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
 import { isEnterprise, Log, Marketing } from 'enterprise';
@@ -32,11 +35,6 @@ import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { ReactText, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
-import ApplicationIcon from 'static/icon/space/application_outlined.svg';
-import DashBoardIcon from 'static/icon/space/space_icon_dashboard_normal.svg';
-import AddressIcon from 'static/icon/space/space_icon_manage_address_normal.svg';
-import WorkBenchIcon from 'static/icon/space/space_icon_manage_workingtable_normal.svg';
 import styles from './style.module.less';
 
 const { TreeNode, DirectoryTree } = Tree;
@@ -66,21 +64,21 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.space_info),
     key: SPACE_INFO_KEY,
-    icon: <DashBoardIcon />,
+    icon: <DashboardOutlined />,
     valid: true,
     routeAddress: '/overview',
   },
   Log && {
     title: t(Strings.space_log_title),
     key: 'log',
-    icon: <AuditOutlined />,
+    icon: <LogOutlined />,
     valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
     routeAddress: '/log',
   },
   {
     title: t(Strings.view_permission_description),
     key: 'workbench',
-    icon: <WorkBenchIcon />,
+    icon: <WorkbenchOutlined />,
     valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.WORKBENCH)) && getEnvVariables().SPACE_PERMISSION_OVERVIEW_VISIBLE,
     routeAddress: '/workbench',
   },
@@ -94,7 +92,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.organization_and_role),
     key: 'addressManage',
-    icon: <AddressIcon />,
+    icon: <DepartmentOutlined />,
     valid:
       isMainAdmin ||
       permissions.includes(ConfigConstant.PermissionCode.TEAM) ||
@@ -124,14 +122,14 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.permission_and_security),
     key: 'security',
-    icon: <ManagePowerOutlined />,
+    icon: <ShieldCheckOutlined />,
     valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.SECURITY)) && getEnvVariables().SPACE_SECURITY_PAGE_VISIBLE,
     routeAddress: '/security',
   },
   {
     title: t(Strings.space_manage_menu_social),
     key: 'marketing',
-    icon: <ApplicationIcon />,
+    icon: <ManageApplicationOutlined />,
     valid: isMainAdmin && !marketplaceDisable && !isMobileApp() && Boolean(Marketing),
     routeAddress: '/marketing',
   },
@@ -144,7 +142,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   },
 ]);
 
-export const SpaceMenuTree: React.FC = () => {
+export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { spaceId, spaceResource, userInfo, appType } = useSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
@@ -219,7 +217,7 @@ export const SpaceMenuTree: React.FC = () => {
           onSelect={onSelect}
           switcherIcon={
             <div>
-              <PullDownIcon />
+              <TriangleRightFilled size={12} />
             </div>
           }
           // defaultSelectedKeys={[SPACE_INFO_KEY]}

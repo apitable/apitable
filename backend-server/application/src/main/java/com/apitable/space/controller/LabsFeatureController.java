@@ -18,28 +18,22 @@
 
 package com.apitable.space.controller;
 
-import javax.annotation.Resource;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.space.service.ILabsFeatureService;
-import com.apitable.space.vo.UserSpaceLabsFeatureVo;
+import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
-import com.apitable.core.support.ResponseData;
-
-import org.springframework.http.MediaType;
+import com.apitable.space.service.ILabsFeatureService;
+import com.apitable.space.vo.UserSpaceLabsFeatureVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * Laboratory module experimental function interface
- * </p>
+ * Laboratory module experimental function interface.
  */
 @RestController
-@Api(tags = "Laboratory module_ Experimental function interface")
+@Tag(name = "Laboratory module_ Experimental function interface")
 @ApiResource(path = "/labs")
 @Slf4j
 public class LabsFeatureController {
@@ -47,8 +41,11 @@ public class LabsFeatureController {
     @Resource
     private ILabsFeatureService iLabsFeatureService;
 
+    /**
+     * Get Lab Function List.
+     */
     @GetResource(name = "Get Lab Function List", path = "/features", requiredPermission = false)
-    @ApiOperation(value = "Get Lab Function List", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get Lab Function List")
     public ResponseData<UserSpaceLabsFeatureVo> showAvailableLabsFeatures() {
         // Get a list of available experiments
         return ResponseData.success(iLabsFeatureService.getAvailableLabsFeature());

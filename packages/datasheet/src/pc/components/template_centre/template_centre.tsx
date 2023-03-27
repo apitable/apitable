@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Events, IReduxState, Player } from '@apitable/core';
+import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
@@ -28,14 +28,16 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileSideBar } from '../mobile_side_bar';
 import styles from './style.module.less';
 import cls from 'classnames';
+import { usePostHog } from 'posthog-js/react';
 
-const TemplateCentre: FC = props => {
+const TemplateCentre: FC<React.PropsWithChildren<unknown>> = props => {
   const { getLoginStatusReq } = useUserRequest();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
+  const posthog = usePostHog();
   usePageParams();
 
   useMount(() => {
@@ -43,6 +45,7 @@ const TemplateCentre: FC = props => {
       getLoginStatus();
     }
     Player.doTrigger(Events.template_center_shown);
+    posthog?.capture(TrackEvents.TemplatePageView);
   });
 
   if (loading) {
@@ -68,7 +71,7 @@ const TemplateCentre: FC = props => {
   return (
     <>
       {
-        WecomContactWrapper ? 
+        WecomContactWrapper ?
           <WecomContactWrapper>
             {childComponent}
           </WecomContactWrapper> :

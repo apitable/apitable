@@ -28,7 +28,7 @@ import { TextInput, Button, LinkButton } from '@apitable/components';
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
 }
-export const SelectAdmin: FC<IVerifyAdminProps> = props => {
+export const SelectAdmin: FC<React.PropsWithChildren<IVerifyAdminProps>> = props => {
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const [keyword, setKeyword] = useState('');
   const [searchMember, setSearchMember] = useState<ISearchMemberData[]>([]);
@@ -38,7 +38,7 @@ export const SelectAdmin: FC<IVerifyAdminProps> = props => {
     keyword && Api.searchMember(keyword, true).then(res => {
       const { success, data } = res.data;
       if (success) {
-        setSearchMember(data.filter(item => item.memberId !== userInfo!.memberId));
+        setSearchMember(data.filter((item: { memberId: string; }) => item.memberId !== userInfo!.memberId));
       }
     });
   }, [keyword, userInfo]);

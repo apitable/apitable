@@ -41,7 +41,7 @@ export class AstNode {
 export class BinaryOperatorNode extends AstNode {
   readonly left: AstNode;
   readonly right: AstNode;
-  readonly name = AstNodeType.BinaryOperatorNode;
+  override readonly name = AstNodeType.BinaryOperatorNode;
 
   constructor(left: AstNode, token: Token, right: AstNode) {
     super(token);
@@ -53,7 +53,7 @@ export class BinaryOperatorNode extends AstNode {
 
 export class UnaryOperatorNode extends AstNode {
   readonly child: AstNode;
-  readonly name = AstNodeType.UnaryOperatorNode;
+  override readonly name = AstNodeType.UnaryOperatorNode;
 
   constructor(child: AstNode, token: Token) {
     super(token);
@@ -63,7 +63,7 @@ export class UnaryOperatorNode extends AstNode {
 
 export class ValueOperandNode extends AstNode {
   readonly value: string;
-  readonly name = AstNodeType.ValueOperandNode;
+  override readonly name = AstNodeType.ValueOperandNode;
 
   constructor(token: Token) {
     super(token);

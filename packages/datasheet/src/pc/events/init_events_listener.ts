@@ -21,7 +21,7 @@ import {
   JOTApply, NO_CACHE, OPEventNameEnums, ResourceType, Selectors,
   StoreActions, WhyRecordMoveType
 } from '@apitable/core';
-import { mainWidgetMessage, ResourceService } from '@apitable/widget-sdk';
+import { ResourceService } from '@apitable/widget-sdk';
 import produce, { current } from 'immer';
 import { debounce, difference } from 'lodash';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -32,7 +32,7 @@ import { createRemindKey, remindAggregation } from './events';
 
 const { DATASHEET_JOT_ACTION } = ActionConstants;
 
-const makeVEvent = (datasheetId, fieldId, recordId) => {
+const makeVEvent = (datasheetId: string, fieldId: string, recordId: string) => {
   return {
     eventName: OPEventNameEnums.CellUpdated,
     scope: ResourceType.Datasheet,
@@ -49,7 +49,6 @@ const makeVEvent = (datasheetId, fieldId, recordId) => {
 
 const debounceRefreshSnapshot = debounce((datasheetId) => {
   dispatch(StoreActions.refreshSnapshot(datasheetId));
-  mainWidgetMessage.refreshSnapshot(datasheetId);
 }, 500);
 
 const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recordId?: string) => {
@@ -86,7 +85,7 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
     if (nextCache && !nextCache.ignoreCache) {
       CacheManager.setCellCache(datasheetId, fieldId!, recordId!, nextCache);
       // console.log('setCellCache', datasheetId, fieldId!, recordId!, nextCache);
-      remotePayload.push(nextCache);
+      remotePayload.push(nextCache!);
     }
     debounceRefreshSnapshot(datasheetId);
     comlinkStore?.proxy?.removeCache(remotePayload);
@@ -265,7 +264,7 @@ export const initEventListen = (resourceService: ResourceService) => {
       const isRecordNotInView = !rowsMap.has(newRecordId);
       const newRecordIndex = rowsMap.get(newRecordId);
       const isRecordIndexMove = expectIndex !== newRecordIndex;
-      const newRecordSnapshot = Selectors.getRecordSnapshot(_state, newRecordId);
+      const newRecordSnapshot = Selectors.getRecordSnapshot(_state, datasheetId, newRecordId);
       if (!newRecordSnapshot) {
         return;
       }
@@ -299,12 +298,12 @@ export const initEventListen = (resourceService: ResourceService) => {
     beforeApply: true, // Before applying to store
   });
 
-  opEventManager.addEventListener(OPEventNameEnums.RecordCreated, ({ recordId, op, datasheetId }) => {
+  opEventManager.addEventListener(OPEventNameEnums.RecordCreated, ({ recordId, datasheetId }) => {
     if (!store || !recordId || !datasheetId) return;
     const state = store.getState();
     const viewId = Selectors.getActiveViewId(state)!;
     const newRecordId = recordId;
-    const newRecordSnapshot = Selectors.getRecordSnapshot(state, newRecordId);
+    const newRecordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, newRecordId);
     if (!newRecordSnapshot) {
       return;
     }

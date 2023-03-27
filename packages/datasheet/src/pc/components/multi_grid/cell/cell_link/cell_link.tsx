@@ -18,20 +18,20 @@
 
 import { useThemeColors } from '@apitable/components';
 import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
 import { expandRecord } from 'pc/components/expand_record';
+import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import * as React from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
 import styles from '../cell_options/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
@@ -52,7 +52,7 @@ interface ICellLink extends ICellComponentProps {
   datasheetId?: string;
 }
 
-export const CellLink: React.FC<ICellLink> = props => {
+export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = props => {
   const {
     onChange, isActive, cellValue, field: propsField, toggleEdit, className, readonly, keyPrefix, rowHeightLevel,
   } = props;
@@ -62,6 +62,7 @@ export const CellLink: React.FC<ICellLink> = props => {
   const field = Selectors.findRealField(store.getState(), propsField);
   const linkRecordIds = field ? (Field.bindModel(field).validate(cellValue) ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : undefined) :
     [];
+  const { ignoreMirror, baseDatasheetId } = useContext(ExpandLinkContext) || {};
 
   const allowShowTip = readonly && isActive;
 
@@ -75,7 +76,7 @@ export const CellLink: React.FC<ICellLink> = props => {
 
     const emptyRecords: string[] = [];
     if (linkRecordIds && field) {
-      const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId);
+      const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId, baseDatasheetId, undefined, undefined, ignoreMirror);
       const isLoading = Selectors.getDatasheetLoading(state, field.property.foreignDatasheetId);
       const datasheetClient = Selectors.getDatasheetClient(state, field.property.foreignDatasheetId);
       const snapshot = datasheet && datasheet.snapshot;
@@ -101,7 +102,7 @@ export const CellLink: React.FC<ICellLink> = props => {
 
       /**
        * Because the front-end only maintains a portion of the data in the link datasheet that has already been link.
-       * When the recordId of the current datasheet link does not exist in the link datasheet snapshot, 
+       * When the recordId of the current datasheet link does not exist in the link datasheet snapshot,
        * it means that this link record is a new link record.
        * In this case, you need to load the record data of this new link record into the link datasheet snapshot.
        */
@@ -133,7 +134,7 @@ export const CellLink: React.FC<ICellLink> = props => {
     if (isActive && !readonly) {
       return (
         <div className={styles.iconDelete} onClick={e => deleteItem(e, index)}>
-          <IconClose width={8} height={8} fill={colors.secondLevelText} />
+          <CloseOutlined size={8} color={colors.secondLevelText} />
         </div>
       );
     }
@@ -174,7 +175,6 @@ export const CellLink: React.FC<ICellLink> = props => {
         {
           linkRecordIds!.map((id, index) => {
             const text = cellStringList[index];
-            console.log({ text });
             return (
               <div
                 className={classNames(styles.tabItem, styles.link, 'link')}
@@ -209,7 +209,7 @@ export const CellLink: React.FC<ICellLink> = props => {
     );
   }
 
-  function dbClick() {
+  async function dbClick() {
     if (allowShowTip) {
       // Edit access to this datasheet, but no edit access to related datasheet
       setShowTip(true);
@@ -218,7 +218,7 @@ export const CellLink: React.FC<ICellLink> = props => {
       }, 3000);
       return;
     }
-    !readonly && toggleEdit && toggleEdit();
+    !readonly && toggleEdit && await toggleEdit();
   }
 
   const MainLayout = () => {

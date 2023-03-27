@@ -69,7 +69,7 @@ export interface IImageProps extends IGraphProps {
   width: number;
   height: number;
   opacity?: number;
-  clipFunc?: (ctx) => void;
+  clipFunc?: (ctx: any) => void;
 }
 
 export type ILabelProps = Omit<IRectProps & ITextProps, 'fillStyle'> & {

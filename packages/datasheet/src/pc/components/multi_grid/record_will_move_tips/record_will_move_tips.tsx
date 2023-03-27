@@ -21,8 +21,7 @@ import { Tooltip } from 'antd';
 import { useThemeColors } from '@apitable/components';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import FiltrationIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_filter_normal.svg';
-import RankIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rank_normal.svg';
+import { FilterOutlined, RankOutlined } from '@apitable/icons';
 
 export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => {
   const { rowHeight, y: _y } = props;
@@ -114,8 +113,8 @@ export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => 
         }}
       >
         <>
-          {recordMoveType === RecordMoveType.OutOfView && <FiltrationIcon fill={colors.black[50]} />}
-          {recordMoveType === RecordMoveType.WillMove && <RankIcon fill={colors.black[50]} />}
+          {recordMoveType === RecordMoveType.OutOfView && <FilterOutlined color={colors.black[50]} />}
+          {recordMoveType === RecordMoveType.WillMove && <RankOutlined color={colors.black[50]} />}
         </>
       </div>
     </Tooltip>

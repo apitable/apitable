@@ -30,11 +30,11 @@ export class ResourceServiceEnhanced extends ResourceService {
   keybindingService!: KeybindingService;
   clipboard!: Clipboard;
 
-  constructor(public store: Store<IReduxState>, public onError: IServiceError) {
+  constructor(public override store: Store<IReduxState>, public override onError: IServiceError) {
     super(store, onError);
   }
 
-  init() {
+  override init() {
     if (this.initialized) {
       console.warn('! ' + 'Do not repeat the initialize resource service');
       return;
@@ -47,7 +47,7 @@ export class ResourceServiceEnhanced extends ResourceService {
     console.log('resource service initialized successfully');
   }
 
-  destroy() {
+  override destroy() {
     if (!this.initialized) {
       return;
     }

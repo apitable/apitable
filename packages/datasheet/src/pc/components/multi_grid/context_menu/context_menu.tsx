@@ -42,7 +42,7 @@ interface IContextFieldOwnProps {
   onFrozenColumn?: (fieldId: string) => void;
 }
 
-export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
+export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnProps>> = props => {
   const { getIdMapByEvent, parentRef, editFieldSetting, editFieldDesc, onFrozenColumn } = props;
   const [fieldIdForMenu, setFieldIdForMenu] = useState('');
   const dispatch = useDispatch();
@@ -69,9 +69,9 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     };
   };
 
-  const showContextMenu = (e) => {
+  const showContextMenu = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
-    const { recordId, fieldId } = getIdMapByEvent ? getIdMapByEvent(e) : _getIdMapByEvent(e);
+    const { recordId, fieldId } = getIdMapByEvent ? getIdMapByEvent(e as MouseEvent) : _getIdMapByEvent(e as MouseEvent);
     if (!recordId && !fieldId) {
       hideAll();
       return;
@@ -80,7 +80,8 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
 
     if (fieldId) {
-      showField(e, {
+      const event = (e.type === 'touchend' ? (e as TouchEvent).changedTouches?.[0] : e) || e;
+      showField((event as any), {
         id: DATASHEET_ID.FIELD_CONTEXT,
         props: {
           fieldId,
@@ -97,7 +98,7 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
         return;
       }
       
-      showGrid(e, {
+      showGrid((e as any), {
         id: GRID_RECORD_MENU,
         props: {
           recordId,

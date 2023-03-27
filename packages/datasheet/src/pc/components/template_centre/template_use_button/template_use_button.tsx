@@ -17,20 +17,19 @@
  */
 
 import { Button } from '@apitable/components';
-import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
+import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t, TrackEvents } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 // @ts-ignore
-import { LoginModal } from 'enterprise';
+import { LoginModal, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconArrowRight from 'static/icon/datasheet/rightclick/datasheet_icon_insert_right.svg';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { ArrowRightOutlined } from '@apitable/icons';
+import { usePostHog } from 'posthog-js/react';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;
@@ -39,7 +38,7 @@ interface ITemplateUseButtonProps {
   block?: boolean;
 }
 
-const calcNodeNum = (directory: ITemplateTree[]) => {
+const calcNodeNum = (directory: ITemplateTree[]): number => {
   return directory.reduce<number>((total, cur) => {
     if (!cur.children.length) {
       return total + 1;
@@ -48,7 +47,7 @@ const calcNodeNum = (directory: ITemplateTree[]) => {
   }, 0);
 };
 
-export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
+export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseButtonProps>> = props => {
   const { style, showIcon, children, id, block } = props;
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector(state => state.space.activeId);
@@ -59,6 +58,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
+  const posthog = usePostHog();
 
   const nodeNumber = useMemo(() => {
     return calcNodeNum(templateDirectory!.nodeTree.children);
@@ -72,6 +72,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
   }, [openTemplateModal]);
 
   const openUseTemplateModal = () => {
+    posthog?.capture(TrackEvents.TemplateUse);
     // Current user is not logged in
     if (!userInfo) {
       Modal.confirm({
@@ -79,7 +80,7 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          Router.redirect(Navigation.LOGIN);
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning'
@@ -127,9 +128,10 @@ export const TemplateUseButton: React.FC<ITemplateUseButtonProps> = props => {
             style={{ ...style }}
             block={block}
             color='warning'
+            size='middle'
           >
             {t(Strings.apply_template)}
-            {showIcon && <IconArrowRight fill='white' />}
+            {showIcon && <ArrowRightOutlined color='white' />}
           </Button>
         }
 

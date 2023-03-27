@@ -99,7 +99,7 @@ const CheckboxEditorBase: React.ForwardRefRenderFunction<IEditor, ICheckboxEdito
     }
   };
 
-  const handleChange = (e: React.MouseEvent) => {
+  const handleChange = () => {
     if (disabled || !editable) return;
     const newValue = !value;
     setValue(newValue);
@@ -113,7 +113,7 @@ const CheckboxEditorBase: React.ForwardRefRenderFunction<IEditor, ICheckboxEdito
     <div
       className={styles.checkboxBase}
       style={style}
-      onMouseDown={e => handleChange(e)}
+      onMouseDown={() => handleChange()}
       onMouseMove={stopPropagation}
       onKeyDown={handleKeyDown}
     >

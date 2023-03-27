@@ -20,23 +20,22 @@ package com.apitable.organization.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
  * <p>
- * Label View
+ * Label View.
  * </p>
  */
 @Data
-@ApiModel("Label View")
+@Schema(description = "Label View")
 public class TagVo {
 
-    @ApiModelProperty(value = "Tag ID", dataType = "java.lang.String", example = "2", position = 1)
+    @Schema(description = "Tag ID", type = "java.lang.String", example = "2")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long tagId;
 
-    @ApiModelProperty(value = "Label Name", example = "Product", position = 2)
+    @Schema(description = "Label Name", example = "Product")
     private String tagName;
 }

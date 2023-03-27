@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LinkButton, Typography, useThemeColors } from '@apitable/components';
+import { LinkButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
   OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional,
@@ -24,7 +24,7 @@ import {
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
@@ -34,15 +34,14 @@ import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import * as React from 'react';
 import { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconNoList from 'static/icon/datasheet/activity/datasheet_img_activity_record.png';
-import { ActivityContext } from '../activity_context';
+import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
+import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
+import { ActivityContext, ICommentReplyMap } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
@@ -61,11 +60,11 @@ interface ICommentUpdatedContext {
 
 export type IChangeSet = WithOptional<IRemoteChangeset, 'messageId' | 'resourceType'>;
 
-export const ActivityListItems: FC<IActivityListProps & {
+export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & {
   containerRef: React.RefObject<HTMLDivElement>;
   listRef: React.RefObject<HTMLDivElement>;
   setEmpty: (bool: boolean) => void;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { expandRecordId, datasheetId, selectType, setChooseComment, containerRef, listRef, setEmpty, mirrorId } = props;
   const dispatch = useDispatch();
@@ -81,6 +80,9 @@ export const ActivityListItems: FC<IActivityListProps & {
   const topRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver>();
   const productName = useSelector(state => String(state.billing?.subscription?.product).toLowerCase());
+  const themeName = useSelector(state => state.theme);
+  const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
+  const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state));
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';
@@ -152,7 +154,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         if (hasAddEmoji) {
           const commentId: string = get(action, 'li.commentId');
           const curEmojis: ICommentMsg['emojis'] = get(action, 'li.commentMsg.emojis');
-          const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
+          const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
           set(newEmojis, `${commentId}.${emojiKey}`, uniq([...emojiUserIds, ...newUserIds]));
@@ -162,7 +164,7 @@ export const ActivityListItems: FC<IActivityListProps & {
         if (hasDeleteEmoji) {
           const commentId: string = get(action, 'ld.commentId');
           const curEmojis: ICommentMsg['emojis'] = get(action, 'ld.commentMsg.emojis');
-          const [[emojiKey, emojiUserIds]] = toPairs(curEmojis);
+          const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
           set(
@@ -284,7 +286,7 @@ export const ActivityListItems: FC<IActivityListProps & {
       if (data) {
         const { changesets, units, emojis: newEmojis, commentReplyMap } = data;
         setEmojis({ ...emojis, ...newEmojis });
-        updateCommentReplyMap(pre => ({ ...pre, ...commentReplyMap }));
+        updateCommentReplyMap((pre: ICommentReplyMap) => ({ ...pre, ...commentReplyMap }));
         // Update membership information
         dispatch(StoreActions.updateUnitMap(keyBy(units, 'unitId')));
 
@@ -391,7 +393,7 @@ export const ActivityListItems: FC<IActivityListProps & {
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {
     return (
       <div className={styles.spin}>
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+        <Spin indicator={<LoadingOutlined size={24} className='circle-loading' />} />
       </div>
     );
   }
@@ -439,13 +441,15 @@ export const ActivityListItems: FC<IActivityListProps & {
             cacheFieldOptions={cacheFieldOptions}
             setChooseComment={setChooseComment}
             unit={unit}
+            fieldPermissionMap={fieldPermissionMap}
+            isMirror={Boolean(mirrorId)}
           />
         );
       })}
       {more && <div className={styles.loadTrigger} ref={topRef} onClick={() => loadMore()} />}
       {isAdding && (
         <div className={styles.spin}>
-          <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
+          <Spin indicator={<LoadingOutlined size={14} className='circle-loading' />} />
         </div>
       )}
       {end &&

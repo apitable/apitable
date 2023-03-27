@@ -66,8 +66,8 @@ export interface IVikaEditor {
 export type EventHandle = (...params: Array<any>) => void;
 export interface IEventBusEditor {
   events: { [key: string]: Array<EventHandle> | null };
-  on: (eventType: string, EventHandle) => void;
-  off: (eventType: string, EventHandle) => boolean;
+  on: (eventType: string, arg1: EventHandle) => void;
+  off: (eventType: string, arg1: EventHandle) => boolean;
   clear: () => void;
   dispatch: (eventType: string, ...params: Array<any>) => void;
 }

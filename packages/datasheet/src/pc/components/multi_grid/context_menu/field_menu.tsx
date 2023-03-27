@@ -22,8 +22,8 @@ import {
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
 } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
-  FilterOutlined, FreezeOutlined, GroupOutlined, HideFilled, LockOutlined
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, DuplicateOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
+  FilterOutlined, FreezeOutlined, GroupOutlined, EyeOpenOutlined, LockOutlined
 } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
@@ -53,7 +53,7 @@ interface IFieldMenuProps {
   onFrozenColumn?: (fieldId: string) => void;
 }
 
-export const FieldMenu: React.FC<IFieldMenuProps> = memo((
+export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = memo((
   {
     fieldId,
     editFieldSetting: _editFieldSetting,
@@ -80,7 +80,6 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   const isGanttView = view.type === ViewType.Gantt;
   const mirrorId = useSelector(state => state.pageParams.mirrorId);
 
-  const commandManager = resourceService.instance!.commandManager;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     permissions,
@@ -130,7 +129,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   }, [canGroup, field]);
 
   function addField(index: number, fieldId: string, offset: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [{
         data: {
@@ -307,7 +306,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         id: 'modify_field',
       },
       {
-        icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+        icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
         text: t(Strings.editing_field_desc),
         hidden: !descriptionEditable || hasChosenMulti,
         onClick: toOpenFieldDesc,
@@ -321,7 +320,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         },
         disabled: !Boolean(fieldPermissionManageable),
         disabledTip: t(Strings.set_field_permission_no_access),
-        hidden(arg) {
+        hidden(arg: any) {
           if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || embedId) {
             return true;
           }
@@ -363,7 +362,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         id: 'insert_after',
       },
       {
-        icon: <CopyOutlined color={colors.thirdLevelText} />,
+        icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.duplicate_field),
         disabled: () => {
           if (field?.type === FieldType.Link) {
@@ -408,7 +407,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
     ],
     [
       {
-        icon: <HideFilled color={colors.thirdLevelText} />,
+        icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
         text: hasChosenMulti ? t(Strings.hidden_n_fields, { count: chosenCount }) : t(Strings.hide_one_field),
         hidden: !editable || fieldIndex === 0 || Boolean(mirrorId),
         onClick: hiddenField,

@@ -18,66 +18,38 @@
 
 import { IDashboardLayout, IResourceMeta } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { MetaService } from 'database/resource/services/meta.service';
 import { NodeService } from 'node/services/node.service';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
 import { ResourceException, ServerException } from 'shared/exception';
+import { IAuthHeader } from 'shared/interfaces';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardDataPack, NodeDetailInfo, WidgetMap } from '../../interfaces';
 
 @Injectable()
 export class DashboardService {
-
   constructor(
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
-    private readonly resourceMetaRepository: ResourceMetaRepository,
-  ) { }
+    private readonly resourceMetaService: MetaService,
+  ) {}
 
-  async fetchDashboardPack(
-    dashboardId: string,
-    auth: { token: string; cookie: string },
-  ): Promise<DashboardDataPack> {
-    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(
-      dashboardId,
-      auth,
-      { internal: true, notDst: true, main: true },
-    );
+  async fetchDashboardPack(dashboardId: string, auth: { token: string; cookie: string }): Promise<DashboardDataPack> {
+    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(dashboardId, auth, { internal: true, notDst: true, main: true });
     return await this.fetchPack(dashboardId, auth, baseNodeInfo);
   }
 
-  async fetchTemplateDashboardPack(
-    templateId: string,
-    dashboardId: string,
-    auth: { token: string; cookie: string }
-  ): Promise<DashboardDataPack> {
-    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(
-      dashboardId,
-      auth,
-      { internal: false, notDst: true, main: true },
-    );
+  async fetchTemplateDashboardPack(templateId: string, dashboardId: string, auth: { token: string; cookie: string }): Promise<DashboardDataPack> {
+    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(dashboardId, auth, { internal: false, notDst: true, main: true });
     return await this.fetchPack(dashboardId, auth, baseNodeInfo, templateId);
   }
 
-  async fetchShareDashboardPack(
-    shareId: string,
-    dashboardId: string,
-    auth: { token: string; cookie: string },
-  ): Promise<DashboardDataPack> {
-    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(
-      dashboardId,
-      auth,
-      { internal: false, notDst: true, main: true, shareId },
-    );
+  async fetchShareDashboardPack(shareId: string, dashboardId: string, auth: IAuthHeader): Promise<DashboardDataPack> {
+    const baseNodeInfo = await this.nodeService.getNodeDetailInfo(dashboardId, auth, { internal: false, notDst: true, main: true, shareId });
     return await this.fetchPack(dashboardId, auth, baseNodeInfo, shareId);
   }
 
-  async fetchPack(
-    dashboardId: string,
-    auth: { token: string; cookie: string },
-    baseNodeInfo: NodeDetailInfo,
-    linkId?: string,
-  ): Promise<DashboardDataPack> {
-    const meta = await this.resourceMetaRepository.selectMetaByResourceId(dashboardId);
+  async fetchPack(dashboardId: string, auth: IAuthHeader, baseNodeInfo: NodeDetailInfo, linkId?: string): Promise<DashboardDataPack> {
+    const meta = await this.resourceMetaService.selectMetaByResourceId(dashboardId);
     const dashboard = {
       ...baseNodeInfo.node,
       snapshot: {
@@ -92,11 +64,7 @@ export class DashboardService {
     };
   }
 
-  private async fetchWidgetMapByIds(
-    meta: IResourceMeta,
-    auth: { token: string; cookie: string },
-    linkId?: string,
-  ): Promise<WidgetMap> {
+  private async fetchWidgetMapByIds(meta: IResourceMeta, auth: IAuthHeader, linkId?: string): Promise<WidgetMap> {
     if (!Object.keys(meta).length) {
       return {};
     }

@@ -17,14 +17,14 @@
  */
 
 import { IReduxState, Selectors } from 'exports/store';
-import { IViewInfo } from '../view';
+import { IViewInfo } from '../logic';
 
 export const mockGetViewInfo = (dstId: string, viewId: string) => (state: IReduxState): IViewInfo | null => {
   const snapshot = Selectors.getSnapshot(state, dstId)!;
   const view = snapshot.meta.views.find(view => view.id === viewId);
   if (view) {
     return {
-      viewId,
+      id: viewId,
       type: view.type,
       name: view.name,
       rows: view.rows,

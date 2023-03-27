@@ -16,15 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ErrorBoundary } from '@sentry/nextjs';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
-  Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
-  Strings, t,
+  Api, DatasheetApi, FieldOperateType, Navigation, PermissionType, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode,
+  StoreActions, Strings, t
 } from '@apitable/core';
-import { AttentionOutlined, CommentOutlined } from '@apitable/icons';
+import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
+import { ErrorBoundary } from '@sentry/nextjs';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
+import { last } from 'lodash';
 import { expandRecordManager } from 'modules/database/expand_record_manager';
 
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -51,8 +52,8 @@ import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
-import IconNarrow from 'static/icon/datasheet/datasheet_icon_narrow_record16.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { IModalReturn } from '../common/modal/modal/modal.interface';
 import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
 import { EditorContainer } from './editor_container';
@@ -62,7 +63,6 @@ import { ExpandRecordVisionOption } from './expand_record_vision_option';
 import { IFieldDescCollapseStatus } from './field_editor';
 import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
-import { last } from 'lodash';
 import styles from './style.module.less';
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
@@ -80,7 +80,7 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   );
 };
 
-const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
+const SubscribeButton = ({ active, onSubOrUnsub }: { active: boolean; onSubOrUnsub: () => void }): JSX.Element => {
   const [updating, setUpdating] = useState(false);
 
   const _onSubOrUnsub = async() => {
@@ -112,12 +112,12 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
  * Expand the card to actually call it
  */
 export const expandRecordInner = (props: IExpandRecordInnerProp) => {
-  const { recordType, onClose, datasheetId } = props;
+  const { recordType, onClose, datasheetId, preventOpenNewModal } = props;
 
   const focusHolderRef = React.createRef<HTMLInputElement>();
   expandRecordManager.pushFocusHolderRef(focusHolderRef);
   let container = document.querySelector(`.${EXPAND_RECORD}`);
-  if (!container) {
+  if (!container || !preventOpenNewModal) {
     container = document.createElement('div');
     container.classList.add(EXPAND_RECORD);
   } else {
@@ -127,7 +127,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   document.body.appendChild(container);
   const root = createRoot(container);
 
-  const modalClose = () => {
+  const modalClose = async(): Promise<void> => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
@@ -140,7 +140,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     if (recordType === RecordType.Datasheet) {
       expandRecordIdNavigate(undefined, true);
-      ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      await ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }
 
     const idx = recordModalCloseFns.indexOf(modalClose);
@@ -154,7 +154,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   recordModalCloseFns.unshift(modalClose);
 
-  const monitorBodyFocus = e => {
+  const monitorBodyFocus = async(e: KeyboardEvent) => {
     if (!focusHolderRef.current) {
       return;
     }
@@ -164,7 +164,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     if (e.keyCode !== KeyCode.Esc) {
       return;
     }
-    modalClose();
+    await modalClose();
   };
 
   document.body.onkeydown = monitorBodyFocus;
@@ -191,7 +191,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
         <div
           ref={focusHolderRef}
           tabIndex={-1}
-          onFocus={e => {
+          onFocus={() => {
             document.body.onkeydown = monitorBodyFocus;
           }}
         />
@@ -200,7 +200,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   );
 };
 
-const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
+const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = props => {
   const { nodeId, viewId, recordIds, activeRecordId, recordType, modalClose } = props;
   const isIndependent = recordType === RecordType.Independent;
   const [realActiveRecordId, setRealActiveRecordId] = useState<string>();
@@ -230,7 +230,8 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
           resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
           extra: { recordIds: recordIds },
         })
-        .catch(() => {})
+        .catch(() => {
+        })
         .then(() => {
           setIndependentDataLoading(false);
           isMirror && setDatasheetId(store.getState().mirrorMap[nodeId].mirror?.sourceInfo.datasheetId);
@@ -250,16 +251,16 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   const isPathWithRecordId = last(pathnameArr)?.startsWith('rec');
 
   const errorHandle = useMemo(
-    () => (errorCode, recordIds?, activeRecordId?) => {
-      let customModal;
+    () => (errorCode?: number | null, _recordIds?: string[], activeRecordId?: string | number) => {
+      let customModal: IModalReturn;
       switch (errorCode) {
         case StatusCode.NODE_NOT_EXIST:
         case StatusCode.NODE_DELETED:
           customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.node_not_exist_content),
-            onOk: () => {
-              modalClose();
+            onOk: async() => {
+              await modalClose();
               customModal.destroy();
             },
             modalButtonType: 'warning',
@@ -270,8 +271,8 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
           customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.mirror_resource_dst_been_deleted),
-            onOk: () => {
-              modalClose();
+            onOk: async() => {
+              await modalClose();
               customModal.destroy();
             },
             modalButtonType: 'warning',
@@ -284,8 +285,8 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
         const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
           content: t(Strings.error_record_not_exist_now),
-          onOk: () => {
-            modalClose();
+          onOk: async() => {
+            await modalClose();
             customModal.destroy();
           },
           modalButtonType: 'error',
@@ -299,7 +300,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   useEffect(() => {
     // browser history back check
     if (!isPathWithRecordId && !activeRecordId) {
-      modalClose();
+      modalClose(); // async
       return;
     }
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
@@ -374,7 +375,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   return <ExpandRecordComponent {...commonProps} />;
 };
 
-const WrapperWithTheme = props => {
+const WrapperWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
@@ -383,7 +384,7 @@ const WrapperWithTheme = props => {
   );
 };
 
-const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props => {
+const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = props => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
   const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(
@@ -408,6 +409,8 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
+  const embedInfo = useSelector(state => state.embedInfo);
+  const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -482,8 +485,8 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
 
   useEffect(() => {
     if (isSideRecordOpen && pageParamsRecordId) {
-      setTimeout(() => {
-        ShortcutActionManager.trigger(ShortcutActionName.Focus);
+      setTimeout(async() => {
+        await ShortcutActionManager.trigger(ShortcutActionName.Focus);
       }, 50);
     }
   }, [isSideRecordOpen, pageParamsRecordId, activeId]);
@@ -495,6 +498,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
     if (hasMirrorId && hasShareId) {
       return false;
     }
+
     const list = getStorage(StorageName.ShowHiddenFieldInExpand) || [];
     return list.includes(`${datasheetId},${view.id}`);
   });
@@ -504,6 +508,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
       if (hasMirrorId && hasShareId) {
         return;
       }
+
       setShowHiddenField(state);
     },
     [hasMirrorId, hasShareId],
@@ -677,7 +682,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 sourceViewId={viewId}
                 fromCurrentDatasheet={fromCurrentDatasheet}
               />
-              {allowShowCommentPane && (
+              {allowShowCommentPane && isEmbedShowCommentPane && (
                 <CommentButton
                   active={commentPaneShow}
                   onClick={() => {
@@ -726,7 +731,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 )}
               </main>
             </div>
-            {commentPaneShow && (
+            {commentPaneShow && isEmbedShowCommentPane && (
               <ActivityPane
                 fromCurrentDatasheet={fromCurrentDatasheet}
                 datasheetId={datasheetId}
@@ -757,7 +762,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.mobileRecordHeader}>
             <div className={styles.toggleRecordBtnWrapper} onClick={modalClose}>
-              <IconButton icon={() => <IconNarrow width={16} height={16} fill={colors.black[50]} />} />
+              <IconButton icon={() => <NarrowOutlined size={16} color={colors.black[50]} />} />
             </div>
             <span className={styles.recordName}>{title}</span>
             <div className={styles.toCommentBtnWrapper}>

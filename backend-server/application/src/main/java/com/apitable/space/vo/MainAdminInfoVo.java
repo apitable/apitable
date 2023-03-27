@@ -18,50 +18,49 @@
 
 package com.apitable.space.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
  * <p>
- * Primary administrator information vo
+ * Primary administrator information vo.
  * </p>
  */
 @Data
-@ApiModel("Primary administrator information vo")
+@Schema(description = "Primary administrator information vo")
 public class MainAdminInfoVo {
 
-	@ApiModelProperty(value = "Name", example = "Zhang San", position = 1)
-	private String name;
+    @Schema(description = "Name", example = "Zhang San")
+    private String name;
 
-	@JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-	@ApiModelProperty(value = "Head portrait address", example = "http://wwww.apitable.com/2019/11/12/17123187253.png", position = 2)
-	private String avatar;
+    @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
+    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
+        + ".com/2019/11/12/17123187253.png")
+    private String avatar;
 
-	@ApiModelProperty(value = "Position", example = "Manager", position = 3)
-	private String position;
+    @Schema(description = "Position", example = "Manager")
+    private String position;
 
-    @ApiModelProperty(value = "Mobile phone area code", example = "+1", position = 4)
+    @Schema(description = "Mobile phone area code", example = "+1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String areaCode;
 
-	@ApiModelProperty(value = "Phone number", example = "13610102020", position = 4)
-	private String mobile;
+    @Schema(description = "Phone number", example = "13610102020")
+    private String mobile;
 
-	@ApiModelProperty(value = "Email", example = "example@qq.com", position = 5)
-	private String email;
+    @Schema(description = "Email", example = "example@qq.com")
+    private String email;
 
-    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 6)
+    @Schema(description = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "default avatar color number", example = "1", position = 7)
+    @Schema(description = "default avatar color number", example = "1")
     private Integer avatarColor;
 
-    @ApiModelProperty(value = "Nick Name", example = "Zhang San", position = 8)
+    @Schema(description = "Nick Name", example = "Zhang San")
     private String nickName;
 
 }

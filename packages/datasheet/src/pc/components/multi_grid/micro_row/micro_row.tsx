@@ -25,7 +25,7 @@ import { CellValue } from '../cell/cell_value';
 import styles from './styles.module.less';
 const { getSnapshot, getVisibleColumns, getGridViewDragState } = Selectors;
 
-const MicroRowBase: React.FC = () => {
+const MicroRowBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const {
     snapshot, recordRanges, rowsIndexMap,
     visibleColumn, dragTarget, datasheetId,

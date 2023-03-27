@@ -23,7 +23,7 @@ import * as text from './text';
 import * as record from './record';
 import * as dateTime from './date_time';
 import { FormulaFunc, FormulaBaseError } from './basic';
-import { t, Strings } from '../../exports/i18n';
+import { t, Strings } from 'exports/i18n';
 export { FormulaBaseError };
 
 export interface IFunction {

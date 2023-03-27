@@ -18,12 +18,11 @@
 
 import { getThemeColors, lightColors, getThemeName } from '@apitable/components';
 import { CutMethod, getImageThumbSrc } from '@apitable/core';
+import { UserGroupOutlined } from '@apitable/icons';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import * as React from 'react';
 
-import TeamIcon from 'static/icon/space/space_icon_department.svg';
 import { AvatarBase, IAvatarBaseProps } from './avatar_base';
-import styles from './style.module.less';
 
 export enum AvatarSize {
   Size16 = 16,
@@ -74,7 +73,7 @@ export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
   defaultIcon?: JSX.Element;
 }
 
-const AvatarHoc = Component => {
+const AvatarHoc = (Component: any) => {
   const ratio = process.env.SSR ? 2 : Math.max(window.devicePixelRatio, 2);
   const colors = getThemeColors();
   const themeName = getThemeName();
@@ -90,13 +89,12 @@ const AvatarHoc = Component => {
           shape="square"
           src={src}
           style={{
-            ...style,
             backgroundColor: getAvatarRandomColor(id),
             border: !src && '0px',
             ...style,
           }}
         >
-          {!src && <TeamIcon className={styles.teamIcon} style={{ width: size, height: size }} />}
+          {!src && <UserGroupOutlined size={size * 0.625} color={colors.textCommonPrimary} />}
         </Component>
       );
     }

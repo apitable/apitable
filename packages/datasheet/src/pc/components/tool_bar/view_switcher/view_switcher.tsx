@@ -33,11 +33,11 @@ import { store } from 'pc/store';
 import { Modal } from 'pc/components/common';
 import { changeView, useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import styles from './style.module.less';
 import { ViewIcon } from './view_icon';
 import { ViewItem } from './view_item';
@@ -48,6 +48,7 @@ import { useViewAction } from './action';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 import { useUnmount } from 'ahooks';
+import { AddOutlined } from '@apitable/icons';
 
 interface IViewSwitcherProperty {
   close: (e: React.MouseEvent) => void;
@@ -67,8 +68,10 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
     const { value } = e.target;
     let errorMsg = '';
     // Determine if the length is between 1 and 30.
-    if (value.length < 1 || value.length > 30) {
-      errorMsg = t(Strings.view_name_length_err);
+    if (value.length < 1 || value.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      errorMsg = t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      });
     }
     setErrMsg(errorMsg);
     setEditingValue(value);
@@ -98,12 +101,14 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
 
   const verifyEditingValue = () => {
     let errorMsg = '';
-    const isExitSameName = list.findIndex(item => item.name === editingValue && item.id !== editingId);
+    const isExitSameName = list.findIndex((item: any) => item.name === editingValue && item.id !== editingId);
 
     if (isExitSameName !== -1) {
       errorMsg = t(Strings.name_repeat);
-    } else if (!editingValue || editingValue.length > 30) {
-      errorMsg = t(Strings.view_name_length_err); // Name requirement within 1~30 characters.
+    } else if (!editingValue || editingValue.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
+      errorMsg = t(Strings.view_name_length_err, {
+        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+      }); // Name requirement within 1~30 characters.
     }
 
     if (errorMsg) {
@@ -125,12 +130,12 @@ export const useVerifyOperateItemTitle = (list: any, keyPressEnterCb?: (id: stri
   };
 };
 
-export const AddNewViewList: React.FC<{
+export const AddNewViewList: React.FC<React.PropsWithChildren<{
   addNewViews(e: React.MouseEvent, viewType: ViewType): void;
   style?: React.CSSProperties;
   isMobile?: boolean;
   isViewCountOverLimit?: boolean;
-}> = props => {
+}>> = props => {
   const colors = useThemeColors();
   const { addNewViews, style, isMobile, isViewCountOverLimit } = props;
   const btnStyle = {
@@ -164,7 +169,7 @@ export const AddNewViewList: React.FC<{
             <ViewIcon viewType={ViewType.Grid} />
             <span>{t(Strings.grid_view)}</span>
           </div>
-          <AddIcon fill={colors.thirdLevelText} />
+          <AddOutlined color={colors.thirdLevelText} />
         </Button>
         <Button
           className={styles.viewType}
@@ -175,10 +180,10 @@ export const AddNewViewList: React.FC<{
           disabled={isViewCountOverLimit}
         >
           <div className={classNames('flex item-center', styles.text)}>
-            <ViewIcon viewType={ViewType.Gallery} fill={colors.primaryColor} />
+            <ViewIcon viewType={ViewType.Gallery} color={colors.primaryColor} />
             <span>{t(Strings.gallery_view)}</span>
           </div>
-          <AddIcon fill={colors.thirdLevelText} />
+          <AddOutlined color={colors.thirdLevelText} />
         </Button>
         {!isMobile && (
           <Button
@@ -190,10 +195,10 @@ export const AddNewViewList: React.FC<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Kanban} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Kanban} color={colors.primaryColor} />
               <span>{t(Strings.kanban_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -206,10 +211,10 @@ export const AddNewViewList: React.FC<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Gantt} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Gantt} color={colors.primaryColor} />
               <span>{t(Strings.gantt_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -222,10 +227,10 @@ export const AddNewViewList: React.FC<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.Calendar} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.Calendar} color={colors.primaryColor} />
               <span>{t(Strings.calendar_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
         {!isMobile && (
@@ -238,10 +243,10 @@ export const AddNewViewList: React.FC<{
             disabled={isViewCountOverLimit}
           >
             <div className={classNames('flex item-center', styles.text)}>
-              <ViewIcon viewType={ViewType.OrgChart} fill={colors.primaryColor} />
+              <ViewIcon viewType={ViewType.OrgChart} color={colors.primaryColor} />
               <span>{t(Strings.org_chart_view)}</span>
             </div>
-            <AddIcon fill={colors.thirdLevelText} />
+            <AddOutlined color={colors.thirdLevelText} />
           </Button>
         )}
       </div>
@@ -251,7 +256,7 @@ export const AddNewViewList: React.FC<{
 
 const MIN_HEIGHT = 60;
 const MAX_HEIGHT = 340;
-export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
+export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProperty>> = props => {
   const { close, triggerInfo } = props;
   const activityViewId = useSelector(state => state.pageParams.viewId);
   const { viewCreatable, viewRenamable, viewMovable, viewRemovable, views, datasheetId } = useSelector(state => {
@@ -291,8 +296,8 @@ export const ViewSwitcher: React.FC<IViewSwitcherProperty> = props => {
     if (!viewCreatable) {
       return;
     }
-    // The following two block bubble events are designed to prevent the upper level bubble 
-    // like component from triggering a reset of the edit state and the upper level component from putting away 
+    // The following two block bubble events are designed to prevent the upper level bubble
+    // like component from triggering a reset of the edit state and the upper level component from putting away
     // the current component when clicking Add View.
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();

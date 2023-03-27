@@ -24,7 +24,7 @@ import { useToggle, useClickAway } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import { Menu, Dropdown, Switch } from 'antd';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
-import { ColumnUrlOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, EditDescribeOutlined } from '@apitable/icons';
+import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined } from '@apitable/icons';
 import { IconButton, useThemeColors } from '@apitable/components';
 
 import { Message } from 'pc/components/common';
@@ -52,7 +52,7 @@ interface IExpandRecordMoreOptionProps {
 
 const MORE_BTN_CLASS_NAME = 'expand-record-more-btn';
 
-export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (props) => {
+export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRecordMoreOptionProps>> = (props) => {
   const { expandRecordId, modalClose, datasheetId, sourceViewId, fromCurrentDatasheet } = props;
   const colors = useThemeColors();
   const rowRemovable = useSelector(state => Selectors.getPermissions(state, datasheetId).rowRemovable);
@@ -169,7 +169,7 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
       <Menu className={styles.moreOptionMenu}>
         <Menu.Item
           key="copy"
-          icon={<ColumnUrlOutlined color={colors.thirdLevelText} />}
+          icon={<LinkOutlined color={colors.thirdLevelText} />}
           className={styles.moreOptionMenuItemWrapper}
           onClick={() => copyLink()}
           hidden={isEmbed}
@@ -194,7 +194,7 @@ export const ExpandRecordMoreOption: React.FC<IExpandRecordMoreOptionProps> = (p
 
         <Menu.Item
           key="expand-desc"
-          icon={<EditDescribeOutlined color={colors.thirdLevelText} />}
+          icon={<InfoCircleOutlined color={colors.thirdLevelText} />}
           className={styles.moreOptionMenuItemWrapper}
           onClick={() => toggleFieldsDesc()}
         >

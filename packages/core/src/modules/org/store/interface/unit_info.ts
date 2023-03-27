@@ -42,6 +42,7 @@ interface IUnitBase {
   nickName?: string;
   isActive?: boolean;
   isDeleted?: boolean;
+  isSelf?: boolean;
 
   /**
    * for wecom(wechat work)

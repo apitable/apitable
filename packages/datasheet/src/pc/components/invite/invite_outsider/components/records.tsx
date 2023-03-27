@@ -44,7 +44,7 @@ const HeaderConfig = [
   { header: t(Strings.email), key: 'email', width: 40 },
   { header: t(Strings.error_detail), key: 'message', width: 40 },
 ];
-export const Records: FC<IRecordsProps> = ({ records, title, subTitle, showDetail = false, close, init, visible }) => {
+export const Records: FC<React.PropsWithChildren<IRecordsProps>> = ({ records, title, subTitle, showDetail = false, close, init, visible }) => {
   const [pageNo, setPageNo] = useState(1);
   const [curRecords, setCurRecords] = useState<IErrorInfo[]>([]);
   useEffect(()=>{

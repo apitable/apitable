@@ -34,7 +34,7 @@ interface ICardTextProps {
 
 export const EACH_TEXT_LINE_HEIGHT = 22;
 
-export const CardText: React.FC<ICardTextProps> = ({ cellValue, field, maxLine, autoHeight, isColNameVisible, isVirtual }) => {
+export const CardText: React.FC<React.PropsWithChildren<ICardTextProps>> = ({ cellValue, field, maxLine, autoHeight, isColNameVisible, isVirtual }) => {
   const isMultiLine = getShowFieldType(field) === FieldType.Text;
   const text = Field.bindModel(field).cellValueToString(cellValue);
   const style: React.CSSProperties = { width: '100%' };
@@ -55,9 +55,9 @@ export const CardText: React.FC<ICardTextProps> = ({ cellValue, field, maxLine, 
   return (
     <div
       className={classnames({
-        [styles.multi]: isMultiLine,
-        [styles.single]: !isMultiLine,
-        [styles.isVirtual]: isVirtual,
+        [styles.multi!]: isMultiLine,
+        [styles.single!]: !isMultiLine,
+        [styles.isVirtual!]: isVirtual,
       })}
       style={style}
     >

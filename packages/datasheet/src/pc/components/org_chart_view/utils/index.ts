@@ -31,6 +31,7 @@ import {
   NodeHandleState,
   IBounds
 } from '../interfaces';
+// @ts-ignore
 import dagre from '@futpib/dagre';
 import { createGhostNodes } from './create_ghost_nodes';
 import { markHiddenNodes } from './mark_hidden_nodes';
@@ -71,7 +72,7 @@ export const findCycles = (nodes: Array<string>, adj: IAdj) => {
     cycle.push(start);
   };
 
-  const dfs = source => {
+  const dfs = (source: string) => {
     if (found) {
       return;
     }
@@ -166,7 +167,7 @@ export const getRenderData = (props: {
 
   const nodesMap: INodesMap = {};
 
-  const DEFAULT_DADA = {
+  const DEFAULT_DATA = {
     initialElements: [],
     unhandledNodes: [],
     handlingCount: 0,
@@ -182,12 +183,12 @@ export const getRenderData = (props: {
   };
 
   if (data.nodes.length === 0) {
-    return DEFAULT_DADA;
+    return DEFAULT_DATA;
   }
 
   if (!fieldVisible) {
     return {
-      ...DEFAULT_DADA,
+      ...DEFAULT_DATA,
       unhandledNodes: data.nodes,
     };
   }

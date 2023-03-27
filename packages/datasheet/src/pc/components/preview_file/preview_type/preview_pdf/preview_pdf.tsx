@@ -27,7 +27,7 @@ import { IPreviewTypeBase } from '../preview_type.interface';
 import styles from './style.module.less';
 import { getEnvVariables } from 'pc/utils/env';
 
-const PreviewPdf: React.FC<IPreviewTypeBase> = props => {
+const PreviewPdf: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
   const { file } = props;
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);

@@ -29,18 +29,18 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, ReactText, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconCheck from 'static/icon/common/common_icon_select.svg';
 import { EditMemberModal } from '../modal';
 import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
+import { CheckOutlined, FilterOutlined } from '@apitable/icons';
 
 interface IMemberTable {
   searchMemberRes: IMemberInfoInSpace[];
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;
 }
 
-export const MemberTable: FC<IMemberTable> = (props) => {
+export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const [pageNo, setPageNo] = useState(1);
@@ -187,11 +187,12 @@ export const MemberTable: FC<IMemberTable> = (props) => {
           renderItem={(item: any, index) => (
             <div onClick={item.onClick} className={styles.listItem} key={index}>
               {item.title}
-              {item.isSelected && <IconCheck width={16} height={16} fill={lightColors.primaryColor} />}
+              {item.isSelected && <CheckOutlined size={16} color={lightColors.primaryColor} />}
             </div>
           )}
         />
       ),
+      filterIcon: <FilterOutlined />
     },
     {
       title: t(Strings.team),
@@ -199,8 +200,8 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       key: 'teamData',
       align: 'center',
       render: value => {
-        const text = value ? value.map(team => team.fullHierarchyTeamName).join(' & ') : [];
-        const tipsTitle = value ? (value.map((team, index) => <div key={index} className={styles.teamItem}>
+        const text = value ? value.map((team: any) => team.fullHierarchyTeamName).join(' & ') : [];
+        const tipsTitle = value ? (value.map((team: any, index: number) => <div key={index} className={styles.teamItem}>
           <p>-</p><p>{team.fullHierarchyTeamName}</p>
         </div>)) : '';
         return (
@@ -223,7 +224,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       key: 'operate',
       align: 'center',
       // width: isRootTeam ? 70 : 100,
-      render: (value, record) =>
+      render: (_value, record) =>
         <OperateCol
           prevBtnClick={() => editMemberBtn(record)}
           hideNextBtn={Boolean(hideDelBtn(record))}
@@ -255,7 +256,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
 
   const tableProps = {
     columns: spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial
-      ? columns : columns.filter((item, index) => index !== columns.length - 1),
+      ? columns : columns.filter((_item, index) => index !== columns.length - 1),
     dataSource: isEmptyData ? [] : props.searchMemberRes.length > 0 ? props.searchMemberRes : memberListInSpace,
     rowSelection: isBindSocial ? undefined : {
       selectedRowKeys: selectMemberListInSpace,
@@ -263,7 +264,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       onChange: onSelectMemberChange,
       columnWidth: 40,
     },
-    rowKey: record => String(record.orderNo),
+    rowKey: (record: any) => String(record.orderNo),
   };
 
   const showPagination = Boolean(selectedTeamInfoInSpace && selectedTeamInfoInSpace.memberCount &&

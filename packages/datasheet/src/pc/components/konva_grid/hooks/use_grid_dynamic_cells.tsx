@@ -77,7 +77,7 @@ const DBL_CLICK_DISABLED_TYPES = new Set([
   FieldType.MultiSelect,
 ]);
 
-const EMPTY_ARRAY = [];
+const EMPTY_ARRAY: any[] = [];
 
 interface IUseDynamicCellsProps {
   instance: GridCoordinate;
@@ -91,7 +91,7 @@ interface IUseDynamicCellsProps {
 /**
  * Determine where a cell is located based on whether it is the first/last column
  */
-export const getCellHorizontalPosition = (props) => {
+export const getCellHorizontalPosition = (props: { depth: number; columnWidth: number; columnIndex: number; columnCount: number; }) => {
   const {
     depth,
     columnWidth,
@@ -365,16 +365,17 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     }
   }
 
-  const toggleEditing = useCallback(() => {
+  const toggleEditing: () => Promise<boolean | void> = useCallback((): Promise<boolean | void> => {
     return ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   }, []);
 
-  const onDblClick = useCallback((e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number) => {
+  const onDblClick = useCallback(async(e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number): Promise<void> => {
     if (e.evt.button === MouseDownType.Right) return;
     const fieldType = field.type;
     if (DBL_CLICK_DISABLED_TYPES.has(fieldType)) return;
     if (!TOOLTIP_VISIBLE_SET.has(fieldType)) {
-      return toggleEditing();
+      await toggleEditing();
+      return;
     }
     if (cellEditable) {
       setTooltipInfo({
@@ -385,11 +386,12 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
         width: instance.getColumnWidth(columnIndex),
         height: rowHeight,
       });
-      return setTimeout(clearTooltipInfo, 2000);
+      setTimeout(clearTooltipInfo, 2000);
+      return;
     }
   }, [cellEditable, clearTooltipInfo, instance, rowHeight, setTooltipInfo, toggleEditing]);
 
-  const onMouseDown = useCallback((e: any, field, isActive) => {
+  const onMouseDown = useCallback((e: any, field: any, isActive: any) => {
     if (e.evt.button === MouseDownType.Right) return;
     if (![
       FieldType.MultiSelect,
@@ -456,9 +458,9 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             transformsEnabled={'position'}
             perfectDrawEnabled={false}
             shadowEnabled={false}
-            onDblClick={(e) => onDblClick(e, field, rowIndex, columnIndex)}
-            onMouseDown={(e) => onMouseDown(e, field, isActive)}
-            onTap={(e) => onMouseDown(e, field, isActive)}
+            onDblClick={(e: KonvaEventObject<MouseEvent>) => onDblClick(e, field, rowIndex, columnIndex)}
+            onMouseDown={(e: any) => onMouseDown(e, field, isActive)}
+            onTap={(e: any) => onMouseDown(e, field, isActive)}
           />
         );
       }

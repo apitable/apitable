@@ -25,9 +25,6 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.player.dto.NotificationModelDTO;
 import com.apitable.player.service.IPlayerNotificationService;
@@ -35,6 +32,8 @@ import com.apitable.shared.component.notification.INotificationFactory;
 import com.apitable.shared.component.notification.NotificationManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -62,7 +61,7 @@ public class PlayerNotificationServiceImplTest extends AbstractIntegrationTest {
         NotificationTemplate template =
                 notificationFactory.getTemplateById(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY.getValue());
         Dict extras = Dict.create();
-        if (StrUtil.isNotBlank(template.getUrl()) && template.getUrl().startsWith("http")) {
+        if (StrUtil.isNotBlank(template.getRedirectUrl())) {
             Dict toast = Dict.create();
             toast.put(EXTRA_TOAST_URL, template.getUrl());
             extras.put(EXTRA_TOAST, toast);

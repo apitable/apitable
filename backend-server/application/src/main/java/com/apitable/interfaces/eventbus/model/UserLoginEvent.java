@@ -21,19 +21,30 @@ package com.apitable.interfaces.eventbus.model;
 import com.apitable.auth.enums.LoginType;
 import com.apitable.shared.util.information.ClientOriginInfo;
 
-public class UserLoginEvent implements EventBusEvent{
+public class UserLoginEvent implements EventBusEvent {
 
     private Long userId;
 
     private LoginType loginType;
 
+    private String scene;
+
     private boolean register;
 
     private ClientOriginInfo clientOriginInfo;
 
-    public UserLoginEvent(Long userId, LoginType loginType, boolean register, ClientOriginInfo clientOriginInfo) {
+    public UserLoginEvent(Long userId, LoginType loginType, boolean register,
+        ClientOriginInfo clientOriginInfo) {
         this.userId = userId;
         this.loginType = loginType;
+        this.register = register;
+        this.clientOriginInfo = clientOriginInfo;
+    }
+
+    public UserLoginEvent(Long userId, String scene, boolean register,
+        ClientOriginInfo clientOriginInfo) {
+        this.userId = userId;
+        this.scene = scene;
         this.register = register;
         this.clientOriginInfo = clientOriginInfo;
     }
@@ -49,6 +60,10 @@ public class UserLoginEvent implements EventBusEvent{
 
     public LoginType getLoginType() {
         return loginType;
+    }
+
+    public String getScene() {
+        return scene;
     }
 
     public boolean isRegister() {

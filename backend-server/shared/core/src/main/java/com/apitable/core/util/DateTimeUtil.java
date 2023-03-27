@@ -18,8 +18,10 @@
 
 package com.apitable.core.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -127,6 +129,11 @@ public class DateTimeUtil {
         }
 
         return LocalDateTime.ofEpochSecond(epochSeconds, 0, ZoneOffset.ofHours(zoneOffset));
+    }
+
+
+    public static Long localDateToSecond(LocalDate date, ZoneId zoneId) {
+        return date != null ? date.atStartOfDay(zoneId).toEpochSecond() : null;
     }
 
     /**

@@ -37,7 +37,7 @@ interface IControlsProps {
   fitView: () => void;
 }
 
-export const Controls: FC<IControlsProps> = ({
+export const Controls: FC<React.PropsWithChildren<IControlsProps>> = ({
   zoomIn,
   zoomOut,
   zoomReset,
@@ -62,6 +62,9 @@ export const Controls: FC<IControlsProps> = ({
           onClick={() => setMenuVisible(!menuVisible)}
           size='small'
           active={menuVisible}
+          style={{
+            background: colors.defaultTag,
+          }}
         />
       </Tooltip>
       <Divider />

@@ -225,7 +225,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
   });
 
   useImperativeHandle(ref, () => ({
-    submit: e => {
+    submit: () => {
       formElementRef.current?.dispatchEvent(
         new CustomEvent('submit', {
           cancelable: true,

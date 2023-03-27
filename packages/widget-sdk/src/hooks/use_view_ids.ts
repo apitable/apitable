@@ -16,18 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallowEqual, useSelector } from 'react-redux';
-import { IWidgetState } from 'interface';
 import { Datasheet } from 'model';
-import { getWidgetDatasheet } from 'store';
-
-const viewSelector = (state: IWidgetState, datasheetId?: string) => {
-  const datasheet = getWidgetDatasheet(state, datasheetId);
-  if (!datasheet) {
-    return [];
-  }
-  return datasheet.snapshot.meta.views.map(view => view.id);
-};
+import { useViews } from './private/use_views';
 
 /**
  * Gets the ID of all view of the currently datasheet.
@@ -54,5 +44,6 @@ const viewSelector = (state: IWidgetState, datasheetId?: string) => {
  * 
  */
 export function useViewIds(datasheet?: Datasheet) {
-  return useSelector(state => viewSelector(state, datasheet?.datasheetId), shallowEqual);
+  const viewsData = useViews(datasheet?.datasheetId);
+  return viewsData.map(view => view.id);
 }

@@ -24,7 +24,7 @@ import { CellText } from '../cell_text';
 import { ICellProps } from '../cell_value';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellFormula: React.FC<ICellProps> = (props) => {
+export const CellFormula: React.FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const { x, y, field, cellValue } = props;
   const isCheckbox = Field.bindModel(field).basicValueType === BasicValueType.Boolean;
 

@@ -18,7 +18,7 @@
 
 import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, IReduxState, Settings, Strings, t } from '@apitable/core';
-import { EyeNormalOutlined } from '@apitable/icons';
+import { EyeOpenOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from 'pc/components/catalog/share_node/public_link/style.module.less';
@@ -42,7 +42,7 @@ export const DisabledShareFile = ({ style }: { style?: React.CSSProperties }) =>
       spaceResource && (spaceResource.mainAdmin || spaceResource.permissions.includes(ConfigConstant.PermissionCode.SECURITY)) &&
       <Link href='/management/security' style={{ position: 'absolute', bottom: 0, left: 0, display: 'flex', alignItems: 'center' }}>
         <a href={''} style={{ position: 'absolute', bottom: 0, left: 0, display: 'flex', alignItems: 'center' }}>
-          <EyeNormalOutlined color={colors.thirdLevelText} />
+          <EyeOpenOutlined color={colors.thirdLevelText} />
           <Typography variant={'body4'} color={colors.thirdLevelText} component={'span'} style={{ marginLeft: 4 }}>
             {t(Strings.share_field_shortcut_link_tip)}
           </Typography>

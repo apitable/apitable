@@ -42,13 +42,13 @@ import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import { stopPropagation } from '../../../utils/dom';
 import { FieldFormat } from '../format';
 import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
@@ -77,7 +77,7 @@ const MAX_HEIGHT = 640;
 /**
  * This component is reused by the Magic Form and Expand Modal, except for the DomGrid, which evokes it.
  */
-export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
+export const FieldSettingBase: React.FC<React.PropsWithChildren<IFieldSettingProps>> = props => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();
@@ -191,7 +191,6 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   const [optionErrMsg, setOptionErrMsg] = useState('');
 
   const { hasOptSetting } = FieldTypeDescriptionMap[currentField.type];
-  const commandManager = resourceService.instance!.commandManager;
 
   const isComputedField = Field.bindModel(currentField).isComputed;
 
@@ -303,7 +302,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
   };
 
   const modifyFieldType = (newField: IField) => {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetFieldAttr,
       fieldId: currentField.id,
       data: {
@@ -322,14 +321,14 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
     hideOperateBox();
   };
 
-  const handleFieldRequiredChange = required => {
+  const handleFieldRequiredChange = (required: boolean) => {
     setCurrentField((curField: IField) => {
       return { ...curField, required };
     });
   };
 
   function addField(newField: IField, colIndex?: number) {
-    const result = commandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
       data: [
         {
@@ -490,7 +489,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
               }
             >
               <span className={styles.requiredTip}>
-                <HelpIcon fill='currentColor' />
+                <QuestionCircleOutlined color='currentColor' />
               </span>
             </Tooltip>
           </div>

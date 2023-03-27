@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
+import type {
   IOpenCheckboxFieldProperty, IOpenComputedFormat, IOpenCreatedTimeFieldProperty, IOpenCurrencyFieldProperty,
   IOpenDateTimeFieldProperty,
   IOpenField, IOpenNumberFieldProperty, IOpenPercentFieldProperty,
   IOpenRatingFieldProperty, IOpenSingleTextFieldProperty
 } from './open_field_read_types';
-import { CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
+import type { CollectType, IMultiSelectedIds, RollUpFuncType } from '../field_types';
 
 export enum Conversion {
   /** delete the associated field of the associated table */

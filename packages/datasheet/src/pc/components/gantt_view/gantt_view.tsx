@@ -105,6 +105,8 @@ import styles from './style.module.less';
 import { getAllTaskLine, detectCyclesStack, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
 import { Message } from 'pc/components/common';
 import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
+import dayjs from 'dayjs';
+
 interface IGanttViewProps {
   height: number;
   width: number;
@@ -120,7 +122,7 @@ export const DEFAULT_SCROLL_STATE = {
   isScrolling: false,
 };
 
-export const GanttView: FC<IGanttViewProps> = memo(props => {
+export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,
@@ -177,8 +179,8 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       ganttVisibleColumns: Selectors.getGanttVisibleColumns(state),
       fieldMap: Selectors.getFieldMap(state, datasheetId)!,
       entityFieldMap: Selectors.getFieldMapIgnorePermission(state)!,
-      linearRows: Selectors.getLinearRows(state),
-      ganttLinearRows: Selectors.getGanttLinearRows(state),
+      linearRows: Selectors.getLinearRows(state)!,
+      ganttLinearRows: Selectors.getPureLinearRows(state)!,
       permissions: Selectors.getPermissions(state),
       rowHeightLevel,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
@@ -187,7 +189,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
       ganttStyle: Selectors.getGanttStyle(state)!,
       visibleRows: Selectors.getVisibleRows(state),
       recordRanges: Selectors.getSelectionRecordRanges(state),
-      rowsIndexMap: Selectors.getLinearRowsIndexMap(state),
+      rowsIndexMap: Selectors.getLinearRowsIndexMap(state) || new Map(),
       visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
       selectRanges: Selectors.getSelectRanges(state),
       fillHandleStatus: Selectors.getFillHandleStatus(state),
@@ -489,7 +491,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   const clearTooltipInfo = useCallback(() => setTooltipInfo(DEFAULT_TOOLTIP_PROPS), [setTooltipInfo]);
 
-  const handleGridHorizontalScroll = e => {
+  const handleGridHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGridScrollState({
       scrollLeft,
@@ -499,7 +501,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleGanttHorizontalScroll = e => {
+  const handleGanttHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setGanttScrollState({
       scrollLeft,
@@ -509,7 +511,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = e => {
+  const handleVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setGanttScrollState({
       scrollTop,
@@ -579,7 +581,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
 
   // Return to a time
   const backTo = useCallback(
-    (dateTime, offsetX: number = -ganttWidth / 2) => {
+    (dateTime: any, offsetX: number = -ganttWidth / 2) => {
       ganttInstance.initTimeline(dateUnitType, dateTime);
       const columnIndex = ganttInstance.getIndexFromStartDate(dateTime, unitType);
       const currentScrollLeft = ganttInstance.getColumnOffset(columnIndex) + offsetX;
@@ -805,6 +807,13 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
         StoreActions.setGanttDateUnitType(defaultGanttViewStatus.dateUnitType || DateUnitType.Month, datasheetId),
       ]),
     );
+
+    // set gantt default timeZone to start field timeZone
+    const startField = fieldMap[startFieldId];
+    const timeZone = startField?.property.timeZone;
+    if (timeZone) {
+      dayjs.tz.setDefault(timeZone);
+    }
     // eslint-disable-next-line
   }, [view?.id]);
 
@@ -919,7 +928,7 @@ export const GanttView: FC<IGanttViewProps> = memo(props => {
   }, [visibleRows, linkFieldId, groupCollapseIds, rowsIndexMap, startFieldId, endFieldId, state, snapshot, ganttLinearRowsAfterCollapseMap]);
 
   // Automatic scheduling of single-task modifications
-  const autoSingleTask = endData => {
+  const autoSingleTask = (endData: { recordId: string, endTime: number }) => {
     if (!linkFieldId || !startFieldId || !endFieldId) {
       return;
     }

@@ -24,12 +24,12 @@ import { Breadcrumb } from 'antd';
 
 import styles from './style.module.less';
 
-export const SelectFolderTips: React.FC<{
+export const SelectFolderTips: React.FC<React.PropsWithChildren<{
   isWhole?: boolean;
   data: IParent[];
   setIsWhole: (isWhole: boolean) => void;
-  onClick: (nodeId) => void;
-}> = (props) => {
+  onClick: (nodeId: string) => void;
+}>> = (props) => {
   const { isWhole, data, setIsWhole, onClick } = props;
   const colors = useThemeColors();
   const NoWholeTips = (

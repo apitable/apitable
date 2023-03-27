@@ -18,23 +18,22 @@
 
 package com.apitable.user.ro;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * Register operation request parameters
+ * Register operation request parameters.
  */
 @Data
-@ApiModel("Register operation request parameters")
+@Schema(description = "Register operation request parameters")
 public class RegisterOpRo {
 
-    @ApiModelProperty(value = "Save the token of WeChat union ID and mobile phone number", example = "thisistoken", position = 1, required = true)
+    @Schema(description = "Save the token of WeChat union ID and mobile phone number", example =
+        "thisistoken", required = true)
     @NotBlank(message = "Token cannot be empty")
     private String token;
 
-    @ApiModelProperty(value = "Registration invitation code", example = "test", position = 2, required = true)
+    @Schema(description = "Registration invitation code", example = "test", required = true)
     private String inviteCode;
 }

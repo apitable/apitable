@@ -106,7 +106,7 @@ export const DEFAULT_POINT_POSITION = {
   offsetLeft: 0,
 };
 
-export const KonvaGridView: FC<IGridViewProps> = memo(props => {
+export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(props => {
   const { width: _containerWidth, height: containerHeight } = props;
   const {
     datasheetId,
@@ -159,7 +159,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
       visibleColumns: Selectors.getVisibleColumns(state),
       fieldMap: Selectors.getFieldMap(state)!,
       fieldIndexMap: Selectors.getVisibleColumnsMap(state)!,
-      linearRows: Selectors.getLinearRows(state),
+      linearRows: Selectors.getLinearRows(state) || [],
       permissions: Selectors.getPermissions(state),
       rowHeightLevel,
       rowHeight: Selectors.getRowHeightFromLevel(rowHeightLevel),
@@ -167,7 +167,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
       selection: Selectors.getSelection(state),
       visibleRows: Selectors.getVisibleRows(state),
       recordRanges: Selectors.getSelectionRecordRanges(state),
-      rowsIndexMap: Selectors.getLinearRowsIndexMap(state),
+      rowsIndexMap: Selectors.getLinearRowsIndexMap(state)!,
       visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
       selectRanges: Selectors.getSelectRanges(state),
       fillHandleStatus: Selectors.getFillHandleStatus(state),
@@ -190,7 +190,9 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
       visibleRecordIds: Selectors.getVisibleRowIds(state),
       collaboratorCursorMap: Selectors.collaboratorCursorSelector(state),
       groupBreakpoint: Selectors.getGroupBreakpoint(state),
-      isManualSaveView: state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave),
+      isManualSaveView: state.labs.includes('view_manual_save') ||
+        Boolean(state.share.featureViewManualSave) ||
+        Boolean(state.embedInfo.viewManualSave),
       exportViewId: Selectors.getDatasheetClient(state)?.exportViewId,
     };
   }, shallowEqual);
@@ -272,7 +274,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
       const { name, desc } = field;
       const columnWidth = columnIndicesMap[index];
       const textWidth = Math.max(
-        columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE), 
+        columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE),
         FIELD_HEAD_TEXT_MIN_WIDTH
       );
       const { lastLineWidth, height } = textSizer.current.measureText(name, textWidth);
@@ -288,7 +290,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
 
       const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
       if (
-        fieldPermissionMap && fieldRole && 
+        fieldPermissionMap && fieldRole &&
         getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole)
       ) {
         realLastLineWidth += (FIELD_HEAD_ICON_SIZE_MAP[FieldHeadIconType.Permission] + FIELD_HEAD_ICON_GAP_SIZE);
@@ -396,7 +398,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     offsetX,
   });
 
-  const handleHorizontalScroll = e => {
+  const handleHorizontalScroll = (e: any) => {
     const { scrollLeft } = e.target;
     setScrollState(prev => ({
       ...prev,
@@ -408,7 +410,7 @@ export const KonvaGridView: FC<IGridViewProps> = memo(props => {
     resetScrollingDebounced();
   };
 
-  const handleVerticalScroll = e => {
+  const handleVerticalScroll = (e: any) => {
     const { scrollTop } = e.target;
     setScrollState(prev => ({
       ...prev,

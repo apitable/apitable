@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions } from '@apitable/core';
+import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions, IInviteLinkInfo, IInviteEmailInfo, StatusCode } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
+import { IParams } from 'pc/components/route_manager/interface';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Message } from 'pc/components/common';
 interface IJoinFuncProps {
   fromLocalStorage?: boolean;
 }
@@ -101,9 +102,9 @@ export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
   const urlParams = new URLSearchParams(window.location.search);
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
-  let inviteTokenInUrl;
-  let inviteInfo;
-  let invitePath;
+  let inviteTokenInUrl: string | null;
+  let inviteInfo: IInviteLinkInfo | IInviteEmailInfo | null;
+  let invitePath: IParams['invitePath'];
   if (type === 'linkInvite') {
     inviteTokenInUrl = urlParams.get('inviteLinkToken');
     inviteInfo = inviteLinkInfo;
@@ -152,6 +153,11 @@ export const useEmailInviteInModal = (
         if (secondStepVerify(code)) {
           return;
         }
+        if(code === StatusCode.COMMON_ERR) {
+          Message.error({ content: message });
+          return;
+        }
+        
         setErr(message);
       }
     });
@@ -164,16 +170,13 @@ export const useEmailInviteInModal = (
 
   useEffect(() => {
     if (!invite.length) {
+      setIsInvited(false);
+      setInvitedCount(0);
+      setErr('');
       return;
     }
 
     window['nvc'] ? execNoTraceVerification(request) : request();
-
-    return () => {
-      setIsInvited(false);
-      setInvitedCount(0);
-      setErr('');
-    };
   }, [spaceId, dispatch, invite, shareId, request]);
   return { isInvited, invitedCount, err };
 };

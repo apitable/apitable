@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IMeta } from '@apitable/core';
+import { IDPrefix, IMeta } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { DatasheetMetaRepository } from 'database/datasheet/repositories/datasheet.meta.repository';
 import { PermissionException, ServerException } from 'shared/exception';
@@ -31,6 +32,7 @@ export class DatasheetMetaService {
     return metaEntity?.metaData;
   }
 
+  @Span()
   async getMetaDataByDstId(dstId: string, exception?: IBaseException, ignoreDeleted = false): Promise<IMeta> {
     const metaEntity = ignoreDeleted ? await this.repository.selectMetaByDstIdIgnoreDeleted(dstId) : await this.repository.selectMetaByDstId(dstId);
     if (metaEntity?.metaData) {
@@ -84,7 +86,11 @@ export class DatasheetMetaService {
   }
 
   async isViewIdExist(dstId: string, viewId: string): Promise<boolean | null> {
-    const viewIds = await this.getViewIdsByDstId(dstId);
-    return viewIds && viewIds.includes(viewId);
+    // only check for dst
+    if (dstId.startsWith(IDPrefix.Table)) {
+      const viewIds = await this.getViewIdsByDstId(dstId);
+      return viewIds && viewIds.includes(viewId);
+    }
+    return true;
   }
 }

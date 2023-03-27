@@ -17,17 +17,8 @@
  */
 
 import { ThemeName, Typography, useThemeColors } from '@apitable/components';
-import {
-  ConfigConstant,
-  IReduxState,
-  ISearchAblum,
-  ISearchTemplate,
-  ITemplateCategory,
-  Navigation,
-  Strings,
-  t,
-  TrackEvents
-} from '@apitable/core';
+import { ConfigConstant, IReduxState, ISearchAblum, ISearchTemplate, ITemplateCategory, Navigation, Strings, t, TrackEvents } from '@apitable/core';
+import { CloseCircleFilled } from '@apitable/icons';
 import { useDebounceFn, useUnmount } from 'ahooks';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
@@ -39,15 +30,16 @@ import { SearchInput } from 'pc/components/common/search_input';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { KeyCode } from 'pc/utils/keycode';
-import { tracker } from 'pc/utils/tracker';
+import { usePostHog } from 'posthog-js/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SearchDefaultPng from 'static/icon/common/common_img_search_default.png';
-import CloseIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
+import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
+import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
-export const TemplateCategorySide: FC = () => {
+export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => {
+  const posthog = usePostHog();
   const colors = useThemeColors();
   /** official category list */
   const [categoryList, setCategoryList] = useState<ITemplateCategory[]>([]);
@@ -70,6 +62,8 @@ export const TemplateCategorySide: FC = () => {
   // Keep track of the keywords that have been reported to avoid duplication of buried reports
   const hasTrackSearchKeyWords = useRef('');
   const router = useRouter();
+  const themeName = useSelector(state => state.theme);
+  const SearchDefaultPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   useEffect(() => {
     if (templateCategory) {
@@ -113,16 +107,16 @@ export const TemplateCategorySide: FC = () => {
    * 4. Click to clear to report current results
    * 5. Input box enter
    */
-  const triggerTrack = useCallback(keywords => {
+  const triggerTrack = useCallback((keywords: any) => {
     if (!keywords || hasTrackSearchKeyWords.current === keywords) {
       return;
     }
     hasTrackSearchKeyWords.current = keywords;
     console.log(`template keyword track: ${keywords}`);
-    tracker.track(TrackEvents.TemplateKeyword, {
+    posthog?.capture(TrackEvents.TemplateSearchKeyword, {
       keyword: keywords,
     });
-  }, []);
+  }, [posthog]);
 
   const jumpTemplate = (categoryCode: string, templateId: string) => {
     triggerTrack(keywords);
@@ -135,7 +129,7 @@ export const TemplateCategorySide: FC = () => {
     bindSearchQuery('');
   };
 
-  const onSearchInputKeyDown = e => {
+  const onSearchInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === KeyCode.Enter) {
       triggerTrack(keywords);
     }
@@ -163,7 +157,7 @@ export const TemplateCategorySide: FC = () => {
   }, [debounceTriggerTrack, keywords]);
 
   const openTemplateAlbumDetail = (albumId: string) => {
-    Router.push( Navigation.TEMPLATE,{
+    Router.push(Navigation.TEMPLATE, {
       params: {
         spaceId,
         albumId,
@@ -179,7 +173,7 @@ export const TemplateCategorySide: FC = () => {
           {!spaceId && (
             <Tooltip title={t(Strings.jump_official_website)}>
               <div className={styles.logo} onClick={jumpOfficialWebsite}>
-                <Logo theme={ThemeName.Light} size='large' text={false} />
+                <Logo theme={ThemeName.Dark} size='large' text={false} />
               </div>
             </Tooltip>
           )}
@@ -193,7 +187,7 @@ export const TemplateCategorySide: FC = () => {
             size='small'
             onBlur={() => bindSearchQuery(keywords)}
             onKeyDown={onSearchInputKeyDown}
-            suffix={keywords && <CloseIcon className={styles.closeBtn} onClick={clearKeyword} />}
+            suffix={keywords && <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn} /></span>}
           />
         </div>
         <div className={styles.listContainer}>

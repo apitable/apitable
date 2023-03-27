@@ -26,7 +26,7 @@ export interface IWithTipWrapperProps extends ITypographyProps {
   captchaId?: string;
 }
 
-export const WithTipWrapper: FC<IWithTipWrapperProps> = ({ tip, children, className, captchaVisible, captchaId = '', ...rest }) => {
+export const WithTipWrapper: FC<React.PropsWithChildren<IWithTipWrapperProps>> = ({ tip, children, className, captchaVisible, captchaId = '', ...rest }) => {
   const colors = useThemeColors();
   return (
     <div className={className}>

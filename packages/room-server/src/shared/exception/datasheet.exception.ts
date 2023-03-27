@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { IBaseException } from './base.exception';
 
 /**
@@ -55,19 +54,23 @@ export class DatasheetException implements IBaseException {
   static readonly SUBSCRIPTION_RECORD_LIMIT = new DatasheetException(951, 'exceed the records limit, please upgrade your subscription plan');
 
   static getRECORD_ADD_LIMIT_PER_DATASHEETMsg(specification: number, usage: number) {
-    return new DatasheetException(305, t(Strings.max_rows_per_sheet, { specification, usage }));
+    // return new DatasheetException(305, t(Strings.max_rows_per_sheet, { specification, usage }));
+    return new DatasheetException(305, JSON.stringify({ key: 'max_rows_per_sheet', specification, usage }));
   }
 
   static getRECORD_ADD_LIMIT_WITHIN_SPACEMsg(specification: number, usage: number) {
-    return new DatasheetException(309, t(Strings.max_rows_in_space, { specification, usage }));
+    // return new DatasheetException(309, t(Strings.max_rows_in_space, { specification, usage }));
+    return new DatasheetException(309, JSON.stringify({ key: 'max_rows_in_space', specification, usage }));
   }
 
   static getVIEW_ADD_LIMIT_FOR_GANTTMsg(specification: number, usage: number) {
-    return new DatasheetException(307, t(Strings.max_gantt_views_in_space, { specification, usage }));
+    // return new DatasheetException(307, t(Strings.max_gantt_views_in_space, { specification, usage }));
+    return new DatasheetException(307, JSON.stringify({ key: 'max_gantt_views_in_space', specification, usage }));
   }
 
   static getVIEW_ADD_LIMIT_FOR_CALENDARMsg(specification: number, usage: number) {
-    return new DatasheetException(308, t(Strings.max_calendar_views_in_space, { specification, usage }));
+    // return new DatasheetException(308, t(Strings.max_calendar_views_in_space, { specification, usage }));
+    return new DatasheetException(308, JSON.stringify({ key: 'max_calendar_views_in_space', specification, usage }));
   }
 
   // Exception Type --------------------------------

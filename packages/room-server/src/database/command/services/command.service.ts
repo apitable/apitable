@@ -17,8 +17,23 @@
  */
 
 import {
-  CollaCommandManager, DEFAULT_EDITOR_PERMISSION, ExecuteResult, ICollaCommandExecuteResult, ICollaCommandOptions, IError, ILocalChangeset, INodeMeta,
-  IReduxState, IResourceOpsCollect, IServerDatasheetPack, ISnapshot, IUnitValue, IUserInfo, IUserValue, Reducers, resourceOpsToChangesets,
+  CollaCommandManager,
+  DEFAULT_EDITOR_PERMISSION,
+  ExecuteResult,
+  ICollaCommandExecuteResult,
+  ICollaCommandOptions,
+  IError,
+  ILocalChangeset,
+  INodeMeta,
+  IReduxState,
+  IResourceOpsCollect,
+  IServerDatasheetPack,
+  ISnapshot,
+  IUnitValue,
+  IUserInfo,
+  IUserValue,
+  Reducers,
+  resourceOpsToChangesets,
   StoreActions,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
@@ -50,7 +65,7 @@ export class CommandService {
         // Don't check linked datasheet, linked datasheet should be set to connected, or linked data can not be written
         store.dispatch(StoreActions.setDatasheetConnected(dstId));
         const dataPack = datasheetPack.foreignDatasheetMap![dstId]!;
-        store.dispatch(StoreActions.receiveDataPack(dataPack, true));
+        store.dispatch(StoreActions.receiveDataPack(dataPack, { isPartOfData: true, fixConsistency: false }));
         dataPack.fieldPermissionMap && store.dispatch(StoreActions.loadFieldPermissionMap(dataPack.fieldPermissionMap, dstId));
       });
     }
@@ -68,7 +83,7 @@ export class CommandService {
       store.dispatch(StoreActions.loadFieldPermissionMap(datasheetPack.fieldPermissionMap, datasheetPack.datasheet.id));
     }
     store.dispatch(StoreActions.setDatasheetConnected(datasheetPack.datasheet.id));
-    store.dispatch(StoreActions.receiveDataPack(datasheetPack));
+    store.dispatch(StoreActions.receiveDataPack(datasheetPack, { fixConsistency: false }));
 
     // Fill current user info, relates to personal filtering
     if (userInfo) {
@@ -86,7 +101,7 @@ export class CommandService {
           // Don't check linked datasheet, linked datasheet should be set to connected, or linked data can not be written
           store.dispatch(StoreActions.setDatasheetConnected(dstId));
           const dataPack = datasheetPack.foreignDatasheetMap![dstId]!;
-          store.dispatch(StoreActions.receiveDataPack(dataPack, true));
+          store.dispatch(StoreActions.receiveDataPack(dataPack, { isPartOfData: true, fixConsistency: false }));
         });
       }
       if (datasheetPack.units) {
@@ -100,7 +115,7 @@ export class CommandService {
         store.dispatch(StoreActions.updateUserMap(userMap));
       }
       store.dispatch(StoreActions.setDatasheetConnected(datasheetPack.datasheet.id));
-      store.dispatch(StoreActions.receiveDataPack(datasheetPack, true));
+      store.dispatch(StoreActions.receiveDataPack(datasheetPack, { isPartOfData: true, fixConsistency: false }));
     });
     // const state = store.getState();
     // this.logger.debug('fillTinyStore.state', state);
@@ -114,7 +129,11 @@ export class CommandService {
       if (!datasheet.permissions) {
         datasheet.permissions = DEFAULT_EDITOR_PERMISSION;
       }
-      store.dispatch(store.dispatch(StoreActions.receiveDataPack({ datasheet: pack.datasheet, snapshot: pack.snapshot }, true)));
+      store.dispatch(
+        store.dispatch(
+          StoreActions.receiveDataPack({ datasheet: pack.datasheet, snapshot: pack.snapshot }, { isPartOfData: true, fixConsistency: false }),
+        ),
+      );
     });
     return store;
   }

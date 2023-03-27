@@ -49,15 +49,15 @@ interface ILogoProps {
   theme?: ThemeName;
 }
 
-export const LogoText: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = {
+export const LogoText: React.FunctionComponent<React.PropsWithChildren<React.SVGProps<SVGSVGElement>>> = {
   'zh-CN': LogoTextZhCN,
   'en-US': LogoTextEnUS,
 }[getLanguage()];
 
-export const Logo: React.FC<ILogoProps> = (props) => {
+export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
   const colors = useThemeColors();
 
-  const { size = 'small', text = true, className, theme } = props;
+  const { size = 'small', text = true, className, theme = ThemeName.Light } = props;
   const isLightTheme = theme === ThemeName.Light;
   const logoSize = LogoSize[size];
 
@@ -91,7 +91,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
 
     return LogoText && (
       <LogoText
-        fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
+        fill={isLightTheme ? colors.primaryColor : colors.staticWhite0}
         width={undefined}
         height={logoSize.logoTextHeight}
       />

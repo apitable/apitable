@@ -36,7 +36,7 @@ interface IFormPropContainerProps {
   formProps: IFormProps;
 }
 
-export const FormPropContainer: React.FC<IFormPropContainerProps> = props => {
+export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = props => {
   const { formId, editable, formProps } = props;
   const { description, fullScreen, coverVisible, logoVisible, logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();

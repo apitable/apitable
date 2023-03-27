@@ -25,11 +25,11 @@ import { FileType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC } from 'react';
-import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import { directDownload } from '../tool_bar';
 import styles from './style.module.less';
 // @ts-ignore
 import { Marketing } from 'enterprise';
+import { DownloadOutlined } from '@apitable/icons';
 
 interface INoSupportProps {
   icon?: React.ReactNode;
@@ -43,12 +43,12 @@ interface INoSupportProps {
   disabledDownload?: boolean;
 }
 
-const getExt = fileName => {
+const getExt = (fileName: string) => {
   const matchedStr = fileName?.slice((Math.max(0, fileName.lastIndexOf('.')) || Infinity) + 1);
   return matchedStr === '.' ? null : matchedStr;
 };
 
-export const NoSupport: FC<INoSupportProps> = props => {
+export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => {
   const { icon, downloadUrl, isMainAdmin, footer, spaceId, onClose, fileName, type, disabledDownload } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -121,7 +121,7 @@ export const NoSupport: FC<INoSupportProps> = props => {
           !disabledDownload && (
           <div className={styles.download} onClick={handleDownload}>
             <Button color='primary' block>
-              <IconDownload fill='currentColor' />
+              <DownloadOutlined color='currentColor' />
               <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
             </Button>
           </div>

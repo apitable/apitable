@@ -17,7 +17,6 @@
  */
 
 import { ICheckboxField, IField, t, Strings } from '@apitable/core';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
 import { Emoji } from 'pc/components/common';
 import { Button, useThemeColors } from '@apitable/components';
 import { Dispatch, SetStateAction } from 'react';
@@ -25,16 +24,17 @@ import * as React from 'react';
 import { EMOJI_SIZE } from '../../catalog/tree/tree';
 import styles from './styles.module.less';
 import { EmojiPicker } from 'pc/components/common/emoji_picker';
+import { ChevronDownOutlined } from '@apitable/icons';
 interface IFormateCheckboxProps {
   currentField: ICheckboxField;
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
-export const FormateCheckbox: React.FC<IFormateCheckboxProps> = (props: IFormateCheckboxProps) => {
+export const FormateCheckbox: React.FC<React.PropsWithChildren<IFormateCheckboxProps>> = (props: IFormateCheckboxProps) => {
 
   const { currentField, setCurrentField } = props;
   const colors = useThemeColors();
-  const onSelect = emoji => {
+  const onSelect = (emoji: any) => {
     setCurrentField({
       ...currentField,
       property: { ...currentField.property, icon: emoji },
@@ -53,7 +53,9 @@ export const FormateCheckbox: React.FC<IFormateCheckboxProps> = (props: IFormate
       }}
     >
       <Emoji emoji={currentField.property.icon} set="apple" size={EMOJI_SIZE} />
-      <IconArrow width={16} height={16} fill={colors.fourthLevelText} style={{ marginLeft: '4px' }} />
+      <span style={{ marginLeft: 4 }}>
+        <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
+      </span>
     </Button>
   );
 

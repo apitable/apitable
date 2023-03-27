@@ -34,7 +34,7 @@ import { Field, ArrayValueField } from 'model';
 import { BasicValueType, FormulaFuncType } from 'types';
 import { plus, minus, times, divide } from 'utils';
 import { isNumber, isNull } from 'util';
-import { t, Strings } from '../../exports/i18n';
+import { t, Strings } from 'exports/i18n';
 import { isString } from 'lodash';
 
 export type ResolverFunction = (value: string, originValue?: boolean) => any;
@@ -75,10 +75,10 @@ export class Interpreter {
       }
 
       if (fieldBasicValueType === BasicValueType.Array) {
+        if (!value?.length) return null;
         switch (node.innerValueType) {
           // directly take the first value for calculation
           case BasicValueType.Number: {
-            if (!value?.length) return null;
             if (value.length > 1) {
               throw new FormulaBaseError('');
             }

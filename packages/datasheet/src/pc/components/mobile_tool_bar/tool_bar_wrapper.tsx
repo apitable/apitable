@@ -20,8 +20,6 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { useThemeColors } from '@apitable/components';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
-import IconViewList from 'static/icon/datasheet/viewtoolbar/datasheet_icon_viewlist.svg';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
 import { MoreTool } from './more_tool';
@@ -34,12 +32,14 @@ import { Find } from './find';
 import { ScreenSize } from '../common/component_display';
 import { WidgetTool } from './widget_tool/widget_tool';
 import classNames from 'classnames';
+import { ListOutlined } from '@apitable/icons';
+import { get } from 'lodash';
 
 export interface IToolBarWrapperProps {
   hideToolBar?: boolean;
 }
 
-export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) => {
+export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperProps>> = ({ hideToolBar }) => {
   const { setSideBarVisible } = useSideBarVisible();
   const [viewMenuVisible, setViewMenuVisible] = useState(false);
   const { datasheetId, mirrorId, embedId } = useSelector(state => state.pageParams);
@@ -53,13 +53,21 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
   const isCalendarView = activeView && activeView.type === ViewType.Calendar;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { isShowEmbedToolBar = true } = embedInfo;
+
+  const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
+  
+  if(!isShowEmbedToolBar) {
+    return <></>;
+  }
   return (
     <>
       <div className={classNames(styles.mobileToolBar, {
         [styles.embedPadding]: !!embedId
       })}>
         {!embedId && <div onClick={() => setSideBarVisible(true)} className={styles.side}>
-          <IconSide width={20} height={20} fill={colors.black[50]} />
+          <ListOutlined size={20} color={colors.black[50]} />
         </div>}
         {!hideToolBar && <Toolbar />}
         <div className={styles.toolRight}>
@@ -68,11 +76,11 @@ export const ToolBarWrapper: React.FC<IToolBarWrapperProps> = ({ hideToolBar }) 
           <WidgetTool />
         </div>
       </div>
-      {!hideViewList && (
+      {!hideViewList && !isOnlyView && (
         <div className={styles.viewToolsWrapper}>
           <div className={styles.menuOpenContainer} onClick={() => setViewMenuVisible(true)}>
             <div className={styles.menuIconWrapper}>
-              <IconViewList width={16} height={16} fill={colors.secondLevelText} />
+              <ListOutlined size={16} color={colors.secondLevelText} />
             </div>
           </div>
           <ViewMenu visible={viewMenuVisible} onClose={() => setViewMenuVisible(false)} />

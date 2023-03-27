@@ -33,7 +33,7 @@ export interface IModeItemProps {
   onClick: () => void;
 }
 
-export const ModeItem: FC<IModeItemProps> = ({
+export const ModeItem: FC<React.PropsWithChildren<IModeItemProps>> = ({
   className,
   img,
   name,

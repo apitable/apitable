@@ -29,14 +29,12 @@ import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import BackIcon from 'static/icon/common/common_icon_left_line.svg';
-import OpenupIcon from 'static/icon/workbench/openup.svg';
-import PackupIcon from 'static/icon/workbench/packup.svg';
 import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
 import styles from './style.module.less';
+import { ChevronLeftOutlined, Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 
-export const TemplateDetailSide: React.FC = () => {
+export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const officialLogo = integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_AVATAR!);
 
@@ -106,7 +104,7 @@ export const TemplateDetailSide: React.FC = () => {
         <>
           <div className={styles.categoryName}>
             <div className={styles.goBackWrapper} onClick={goBack}>
-              <BackIcon fill='currentColor' />
+              <ChevronLeftOutlined color='currentColor' />
               <span>
                 {t(Strings.template_go_back, {
                   category:
@@ -143,6 +141,7 @@ export const TemplateDetailSide: React.FC = () => {
                 onClick={shareTemplate}
                 style={{
                   color: colors.blackBlue[50],
+                  marginTop: 16
                 }}
               >
                 {t(Strings.copy_template_share_link)}
@@ -152,7 +151,7 @@ export const TemplateDetailSide: React.FC = () => {
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Tooltip title={!sideBarVisible ? t(Strings.expand_pane) : t(Strings.hide_pane)}>
               <div className={closeBtnClass} style={closeBtnStyles} onClick={handleClick}>
-                {!sideBarVisible ? <OpenupIcon width={16} height={16} /> : <PackupIcon width={16} height={16} />}
+                {!sideBarVisible ? <Collapse2OpenOutlined size={16} /> : <Collapse2Outlined size={16} />}
               </div>
             </Tooltip>
           </ComponentDisplay>

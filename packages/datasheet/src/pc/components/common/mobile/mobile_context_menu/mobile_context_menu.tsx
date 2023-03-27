@@ -24,7 +24,7 @@ import { Popup } from '../popup';
 import styles from './style.module.less';
 import { IMobileContextMenuProps } from './interface';
 
-export const MobileContextMenu: FC<IMobileContextMenuProps> = (props) => {
+export const MobileContextMenu: FC<React.PropsWithChildren<IMobileContextMenuProps>> = (props) => {
   const { visible, data, height = '90%', title, onClose, params } = props;
 
   const hiddenItem = (hidden?: boolean | ((args: any) => boolean)) => {
@@ -46,9 +46,9 @@ export const MobileContextMenu: FC<IMobileContextMenuProps> = (props) => {
       onClose={() => onClose()}
     >
       <div onClick={onClose}>
-        {data.map((group, index) => (
+        {data.map((group: any, index: number) => (
           <div className={styles.group} key={index}>
-            {group.map(groupItem => {
+            {group.map((groupItem: any) => {
 
               if (!groupItem || hiddenItem(groupItem.hidden) || groupItem.unsupportable) {
                 return null;

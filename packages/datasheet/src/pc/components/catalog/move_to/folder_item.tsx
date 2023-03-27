@@ -23,13 +23,13 @@ import { Emoji } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
 
-export const FolderItem: React.FC<{
+export const FolderItem: React.FC<React.PropsWithChildren<{
   folderId: string;
   folderName: string;
   icon: string;
   onClick: (folderId: string) => void;
   level?: string;
-}> = (props) => {
+}>> = (props) => {
   const { folderId, folderName, icon, onClick, level } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();

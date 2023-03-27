@@ -17,19 +17,19 @@
  */
 
 import { TextButton, useThemeColors } from '@apitable/components';
-import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
+import { ConfigConstant, PermissionType, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget_center';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
-import { useQuery, useSideBarVisible } from 'pc/hooks';
+import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
+import { getEnvVariables } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
+import { AddFilled, AddOutlined, NarrowOutlined, ImportOutlined, ExpandOutlined, ListOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -40,39 +40,43 @@ import { isDingtalkSkuPage } from 'enterprise';
 interface ITabBarProps {
   dashboardId: string;
   containerRef: React.RefObject<HTMLDivElement>;
-  setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>
+  setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>;
   visibleRecommend: boolean;
   canImportWidget: boolean;
   setIsFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
-  installedWidgetHandle(widgetId: string): void
+  installedWidgetHandle(widgetId: string): void;
   readonly?: boolean;
   isMobile?: boolean;
 }
 
-const Menu: React.FC<Pick<ITabBarProps, 'setVisibleRecommend'> & { triggerRef: React.MutableRefObject<any>; openWidgetCenter: () => void }> =
+const Menu: React.FC<React.PropsWithChildren<Pick<ITabBarProps, 'setVisibleRecommend'> & { triggerRef: React.MutableRefObject<any>; openWidgetCenter: () => void }>> =
   ({ setVisibleRecommend, triggerRef, openWidgetCenter }) => {
+    const { embedId } = useSelector(state => state.pageParams);
     const colors = useThemeColors();
     return <div className={styles.addWidgetMenu}>
       <div className={styles.menuItem} onClick={openWidgetCenter}>
         <AddOutlined size={16} color={colors.thirdLevelText} />
         {t(Strings.add_widget)}
       </div>
-      <div
-        className={styles.menuItem}
-        onClick={(e) => {
-          setVisibleRecommend(status => !status);
-          triggerRef.current!.close(e);
-        }}
-      >
-        <ImportOutlined size={15} color={colors.thirdLevelText} />
-        {t(Strings.import_widget)}
-      </div>
+      {
+        !embedId && <div
+          className={styles.menuItem}
+          onClick={(e) => {
+            setVisibleRecommend(status => !status);
+            triggerRef.current!.close(e);
+          }}
+        >
+          <ImportOutlined size={15} color={colors.thirdLevelText} />
+          {t(Strings.import_widget)}
+        </div>
+      }
+
     </div>;
   };
 
 const SHOW_OPERATE_BUTTON = 700;
 
-export const TabBar: React.FC<ITabBarProps> = (props) => {
+export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) => {
   const {
     dashboardId, containerRef, setVisibleRecommend, readonly,
     isMobile, canImportWidget, visibleRecommend, installedWidgetHandle, setIsFullScreen
@@ -82,7 +86,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
   const [openTrigger, setOpenTrigger] = useState(false);
   const triggerRef = useRef<any>();
   const { status } = useNetwork(true, dashboardId, ResourceType.Dashboard);
-  const { templateId, shareId } = useSelector(state => state.pageParams);
+  const { templateId, shareId, embedId } = useSelector(state => state.pageParams);
   const installedWidgetIds = useSelector(Selectors.getInstalledWidgetInDashboard);
   const {
     dashboardName,
@@ -100,12 +104,29 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
       nodePermissions: dashboard?.permissions,
     };
   }, shallowEqual);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const previousDashboardName = usePrevious(dashboardName);
 
-  const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= ConfigConstant.DASHBOARD_MAX_WIDGET_COUNT;
+  useEffect(() => {
+    if (!previousDashboardName || !dashboardName) return;
+    if (previousDashboardName === dashboardName) return;
+
+    window.parent.postMessage({
+      message: 'changeNodeName', data: {
+        roomId: dashboardId,
+        nodeName: dashboardName
+      }
+    }, '*');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dashboardName, previousDashboardName]);
+
+  const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
+
+  const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
   const { setSideBarVisible } = useSideBarVisible();
   const toolbarRef = useRef(null);
   const size = useSize(toolbarRef);
-  const linkId = useSelector(Selectors.getLinkId);
+  const linkId = templateId || shareId;
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
@@ -114,7 +135,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
     setIsFullScreen(isFullscreen);
   }, [isFullscreen, setIsFullScreen]);
 
-  const triggerOnChange = (status) => {
+  const triggerOnChange = (status: boolean) => {
     setOpenTrigger(status);
   };
 
@@ -135,15 +156,18 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
 
   if (isMobile) {
     return <div className={styles.mobileBar}>
-      <div
-        onClick={() => setSideBarVisible(true)}
-        className={styles.side}
-        style={{
-          backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
-        }}
-      >
-        <IconSide width={20} height={20} fill={colors.defaultBg} />
-      </div>
+      {
+        !embedId ? <div
+          onClick={() => setSideBarVisible(true)}
+          className={styles.side}
+          style={{
+            backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
+          }}
+        >
+          <ListOutlined size={20} color={colors.defaultBg} />
+        </div> : <span className={styles.ghost} />
+      }
+
       <InlineNodeName className={styles.nodeName} nodeId={dashboardId} nodeIcon={dashboardIcon} nodeName={dashboardName} />
       <span className={styles.ghost} />
     </div>;
@@ -153,24 +177,27 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
 
   return <div className={styles.tabBar} ref={toolbarRef}>
     <div className={styles.tabLeft}>
-      <NodeInfoBar
-        data={{
-          nodeId: dashboardId,
-          icon: dashboardIcon,
-          name: dashboardName,
-          type: ConfigConstant.NodeType.DASHBOARD,
-          role: role === ConfigConstant.Role.Foreigner && !readonly ? ConfigConstant.Role.Editor : role,
-          favoriteEnabled: nodeFavorite,
-          nameEditable: nodePermissions?.renamable,
-          iconEditable: nodePermissions?.iconEditable,
-        }}
-        hiddenModule={{ favorite: Boolean(shareId || templateId) }}
-        style={{ fontSize: '20px', fontWeight: 'bold', maxWidth: '256px' }}
-      />
+      {
+        (!embedId || embedInfo.viewControl?.nodeInfoBar) && <NodeInfoBar
+          data={{
+            nodeId: dashboardId,
+            icon: dashboardIcon,
+            name: dashboardName,
+            type: ConfigConstant.NodeType.DASHBOARD,
+            role: role === ConfigConstant.Role.Foreigner && !readonly ? ConfigConstant.Role.Editor : role,
+            favoriteEnabled: nodeFavorite && !hideReadonlyEmbedItem,
+            nameEditable: nodePermissions?.renamable && !hideReadonlyEmbedItem,
+            iconEditable: nodePermissions?.iconEditable && !hideReadonlyEmbedItem,
+          }}
+          hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+          style={{ fontSize: '20px', fontWeight: 'bold', maxWidth: '256px' }}
+        />
+      }
+
     </div>
     <div className={styles.tabRight}>
       {
-        !isFullscreen && !isMobile && canImportWidget && isEnoughToShowButton &&
+        !isFullscreen && !isMobile && canImportWidget && isEnoughToShowButton && !hideReadonlyEmbedItem &&
         <RcTrigger
           action={'click'}
           popup={
@@ -194,7 +221,7 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
           <WrapperTooltip wrapper={Boolean(reachInstalledLimit)} tip={t(Strings.reach_limit_installed_widget)}>
             <TextButton
               className={styles.atcButton}
-              prefixIcon={<AddFilled size={16} color={[colors.primaryColor, 'white']} />}
+              prefixIcon={<AddFilled size={16} color={openTrigger ? colors.primaryColor : colors.secondLevelText} />}
               onClick={() => { setOpenTrigger(true); }}
               style={{
                 color: openTrigger ? colors.primaryColor : colors.secondLevelText,
@@ -209,7 +236,8 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
         </RcTrigger>
       }
       {
-        !isFullscreen && !isMobile && !canImportWidget && isEnoughToShowButton &&
+        !isFullscreen && !isMobile && !canImportWidget && isEnoughToShowButton && !hideReadonlyEmbedItem &&
+        (!embedId || embedInfo.viewControl?.toolBar.addWidgetBtn) &&
         <TextButton
           prefixIcon={<AddFilled size={16} className={styles.toolIcon} color={[colors.primaryColor, 'white']} />}
           onClick={() => { expandWidgetCenter(InstallPosition.Dashboard); }}
@@ -219,8 +247,10 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
         </TextButton>
       }
       {
-        isEnoughToShowButton && <TextButton
-          prefixIcon={<WidgetExpandOutlined />}
+        isEnoughToShowButton &&
+        (!embedId || embedInfo.viewControl?.toolBar.fullScreenBtn) &&
+        <TextButton
+          prefixIcon={isFullscreen ? <NarrowOutlined /> : <ExpandOutlined />}
           onClick={toggleFullscreen}
           className={styles.atcButton}
         >
@@ -228,16 +258,23 @@ export const TabBar: React.FC<ITabBarProps> = (props) => {
         </TextButton>
       }
       {
-        !isFullscreen && !readonly && isEnoughToShowButton &&
-        <a href={t(Strings.intro_dashboard)} target="_blank" className={styles.shareDoc} rel="noreferrer">
+        !isFullscreen && !readonly && isEnoughToShowButton && !embedId &&
+        <a href={t(Strings.intro_dashboard)} target='_blank' className={styles.shareDoc} rel='noreferrer'>
           {t(Strings.form_tour_desc)}
         </a>
       }
       {
-        !isFullscreen && !templateId && <div className={styles.status}>
-          <CollaboratorStatus
-            resourceId={dashboardId!} resourceType={ResourceType.Dashboard}
-          />
+        !isFullscreen && !templateId &&
+        (!embedId || embedInfo.viewControl?.collaboratorStatusBar) &&
+        <div className={styles.status}>
+          {
+            !hideReadonlyEmbedItem && <CollaboratorStatus
+              resourceId={dashboardId!}
+              resourceType={ResourceType.Dashboard}
+              style={{ width: '110px' }}
+            />
+          }
+
           <NetworkStatus currentStatus={status} />
         </div>
       }

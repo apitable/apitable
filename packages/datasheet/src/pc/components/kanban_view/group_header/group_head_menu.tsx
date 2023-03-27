@@ -42,7 +42,6 @@ import { store } from 'pc/store';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import IconDot from 'static/icon/common/common_icon_more.svg';
 import { useClickAway } from 'ahooks';
 
 import { useContextMenu, useThemeColors } from '@apitable/components';
@@ -52,8 +51,14 @@ import { MemberFieldHead } from './member_field_head';
 import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
 import { IGroupHeaderProps } from './interface';
+import { MoreOutlined } from '@apitable/icons';
 
-const CollapseWrapper = ({ isCollapse, children }) => {
+interface ICollapseWrapper {
+  isCollapse?: boolean;
+  children: any;
+}
+
+const CollapseWrapper = ({ isCollapse, children }: ICollapseWrapper) => {
   if (isCollapse) {
     return (
       <div
@@ -71,7 +76,7 @@ const CollapseWrapper = ({ isCollapse, children }) => {
   return <>{children}</>;
 };
 
-export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
+export const GroupHeader: React.FC<React.PropsWithChildren<IGroupHeaderProps>> = props => {
   const colors = useThemeColors();
   const cacheTheme = useSelector(Selectors.getTheme);
   const { groupId, kanbanGroupMap, provided, setCollapse, collapse, scrollToItem } = props;
@@ -130,7 +135,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     }
     const newField = {
       ...field,
-      property: { ...field.property, unitIds: field.property.unitIds.filter(item => item !== groupId) },
+      property: { ...field.property, unitIds: field.property.unitIds.filter((item: string) => item !== groupId) },
     };
     setFieldAttr(newField);
   }
@@ -142,7 +147,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
   function getBgColor(theme: ThemeName) {
     const field = fieldMap![kanbanFieldId];
     if (groupId === UN_GROUP) {
-      return colors.borderCommon;
+      return colors.borderCommonDefault;
     }
     if (field.type === FieldType.SingleSelect) {
       return inquiryValueByKey('color', groupId, field, theme);
@@ -232,7 +237,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
         }
         const newField = {
           ...field,
-          property: { ...field.property, options: field.property.options.filter(item => item.id !== groupId) },
+          property: { ...field.property, options: field.property.options.filter((item: { id: string; }) => item.id !== groupId) },
         };
         setFieldAttr(newField);
         notifyWithUndo(t(Strings.delete_kanban_group), NotifyKey.DeleteKanbanGroup);
@@ -240,7 +245,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
     });
   }
 
-  const showMore = e => {
+  const showMore = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
     show(e, {
       props: {
@@ -340,7 +345,7 @@ export const GroupHeader: React.FC<IGroupHeaderProps> = props => {
       </CollapseWrapper>
       {(!collapse || !collapse.includes(groupId)) && (
         <span className={styles.more} onClick={showMore}>
-          <IconDot className={styles.dot} fill={colors.thirdLevelText} />
+          <MoreOutlined className={styles.dot} color={colors.thirdLevelText} />
         </span>
       )}
     </div>

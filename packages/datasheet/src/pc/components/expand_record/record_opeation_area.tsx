@@ -16,18 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { colorVars, IconButton, LinkButton } from '@apitable/components';
+import { StoreActions, Strings, t } from '@apitable/core';
+import { CloseOutlined, ExpandOutlined, GotoOutlined, NarrowOutlined } from '@apitable/icons';
+import { Tooltip } from 'antd';
 import * as React from 'react';
-import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';
-import { GotoLargeOutlined, CloseMiddleOutlined, FullscreenOutlined, UnfullscreenOutlined } from '@apitable/icons';
-import { IconButton, LinkButton } from '@apitable/components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { RecordPageTurn } from './record_page_turn/record_page_turn';
-
-import { colorVars } from '@apitable/components';
 import styles from './style.module.less';
-import { useDispatch, useSelector } from 'react-redux';
-import { Tooltip } from 'antd';
-import { tracker } from 'pc/utils/tracker';
 
 interface IRecordOperationArea {
   datasheetId: string;
@@ -41,13 +38,13 @@ interface IRecordOperationArea {
   showPageTurn?: boolean;
 }
 
-export const RecordOperationArea: React.FC<IRecordOperationArea> = props => {
+export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperationArea>> = props => {
   const { datasheetId, activeRecordId, recordIds, fromCurrentDatasheet, modalClose, switchRecord, gotoSourceDst, showPageTurn } = props;
   const dispatch = useDispatch();
   const isEmbed = useSelector(state => Boolean(state.pageParams.embedId));
   const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
   const showLinkBtn = !fromCurrentDatasheet && !isEmbed;
-  const showOperateArea = showLinkBtn || showPageTurn; 
+  const showOperateArea = showLinkBtn || showPageTurn;
   return (
     <div className={styles.operateAreaWrapper}>
       {showOperateArea && <div className={styles.operateArea}>
@@ -56,7 +53,7 @@ export const RecordOperationArea: React.FC<IRecordOperationArea> = props => {
           <LinkButton
             underline={false}
             component="button"
-            prefixIcon={<GotoLargeOutlined color={colorVars.fc3} />}
+            prefixIcon={<GotoOutlined color={colorVars.fc3} />}
             color={colorVars.fc2}
             className={styles.sourceButton}
             onClick={gotoSourceDst}
@@ -81,21 +78,18 @@ export const RecordOperationArea: React.FC<IRecordOperationArea> = props => {
           icon={() => (
             isRecordFullScreen
               ?
-              <UnfullscreenOutlined        
+              <NarrowOutlined
                 size={16}
                 color={colorVars.fc3}
               />
               :
-              <FullscreenOutlined
+              <ExpandOutlined
                 size={16}
                 color={colorVars.fc3}
               />
           )}
           onClick={() => {
             dispatch(StoreActions.toggleRecordFullScreen());
-            tracker.track(TrackEvents.RecordCard, {
-              recordCardStyle: 'fullScreen'
-            });
           }}
           style={{ marginLeft: 4 }}
         />
@@ -104,7 +98,7 @@ export const RecordOperationArea: React.FC<IRecordOperationArea> = props => {
         component="button"
         shape="square"
         icon={() => (
-          <CloseMiddleOutlined
+          <CloseOutlined
             size={16}
             color={colorVars.fc3}
           />

@@ -17,19 +17,19 @@
  */
 
 import { IFormProps, IPermissions, Role } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
-import { NodeDescriptionService } from 'node/services/node.description.service';
+import { MetaService } from 'database/resource/services/meta.service';
 import { get, omit } from 'lodash';
+import { NodeDescriptionService } from 'node/services/node.description.service';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
-import { NodeDetailInfo, NodeRelInfo } from '../../database/interfaces';
-import { DatasheetRepository } from '../../database/datasheet/repositories/datasheet.repository';
+import { UnitMemberService } from 'unit/services/unit.member.service';
+import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from '../../database/interfaces';
 import { NodeRelRepository } from '../repositories/node.rel.repository';
 import { NodeRepository } from '../repositories/node.repository';
-import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
-import { UnitMemberService } from 'unit/services/unit.member.service';
 import { NodePermissionService } from './node.permission.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 
@@ -42,9 +42,9 @@ export class NodeService {
     private readonly nodePermissionService: NodePermissionService,
     private readonly nodeRepository: NodeRepository,
     private readonly nodeRelRepository: NodeRelRepository,
-    private readonly datasheetRepository: DatasheetRepository,
-    private readonly resourceMetaRepository: ResourceMetaRepository,
-  ) {}
+    private readonly resourceMetaService: MetaService,
+  ) {
+  }
 
   async checkNodeIfExist(nodeId: string, exception?: IBaseException) {
     const count = await this.nodeRepository.selectCountByNodeId(nodeId);
@@ -53,6 +53,7 @@ export class NodeService {
     }
   }
 
+  @Span()
   async checkUserForNode(userId: string, nodeId: string): Promise<string> {
     // Get the space ID which the node belongs to
     const spaceId = await this.getSpaceIdByNodeId(nodeId);
@@ -61,6 +62,7 @@ export class NodeService {
     return spaceId;
   }
 
+  @Span()
   async checkNodePermission(nodeId: string, auth: IAuthHeader): Promise<void> {
     const permission = await this.nodePermissionService.getNodeRole(nodeId, auth);
     if (!permission?.readable) {
@@ -68,6 +70,7 @@ export class NodeService {
     }
   }
 
+  @Span()
   async getMainNodeId(nodeId: string): Promise<string> {
     const raw = await this.nodeRelRepository.selectMainNodeIdByRelNodeId(nodeId);
     if (raw?.mainNodeId) {
@@ -109,6 +112,7 @@ export class NodeService {
     return omit(permission, ['userId', 'uuid', 'role', 'hasRole', 'isGhostNode', 'nodeFavorite', 'fieldPermissionMap']);
   }
 
+  @Span()
   async getNodeDetailInfo(nodeId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<NodeDetailInfo> {
     // Node permission view. If no auth is given, it is template access or share access.
     const permission = await this.nodePermissionService.getNodePermission(nodeId, auth, origin);
@@ -116,8 +120,8 @@ export class NodeService {
     const nodeInfo = await this.nodeRepository.getNodeInfo(nodeId);
     // Node description
     const description = await this.nodeDescService.getDescription(nodeId);
-    // Node revisoin
-    const revision = origin.notDst ? await this.getReversionByResourceId(nodeId) : await this.getRevisionByDstId(nodeId);
+    // Node revision
+    const revision = origin.notDst ? await this.getReversionByResourceId(nodeId) : await this.resourceMetaService.getRevisionByDstId(nodeId);
     // Obtain node sharing state
     const nodeShared = await this.nodeShareSettingService.getShareStatusByNodeId(nodeId);
     // Obtain node permissions
@@ -159,13 +163,8 @@ export class NodeService {
     return (await this.nodeRepository.selectTemplateCountByNodeId(nodeId)) > 0;
   }
 
-  async getRevisionByDstId(dstId: string): Promise<number | undefined> {
-    const rawData = await this.datasheetRepository.selectRevisionByDstId(dstId);
-    return rawData && Number(rawData.revision);
-  }
-
   async getReversionByResourceId(resourceId: string): Promise<number | undefined> {
-    const entity = await this.resourceMetaRepository.selectReversionByResourceId(resourceId);
+    const entity = await this.resourceMetaService.selectReversionByResourceId(resourceId);
     return entity && Number(entity.revision);
   }
 
@@ -187,6 +186,10 @@ export class NodeService {
       throw new ServerException(DatasheetException.SHOW_RECORD_HISTORY_NOT_PERMISSION);
     }
     return showRecordHistory;
+  }
+
+  async selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+    return await this.nodeRepository.selectNodeBaseInfoByNodeId(nodeId);
   }
 
   async selectSpaceIdByNodeId(nodeId: string): Promise<{ spaceId: string } | undefined> {

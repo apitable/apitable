@@ -19,7 +19,7 @@
 import { Tooltip } from 'antd';
 import { t, Strings } from '@apitable/core';
 import { Typography, IconButton, useThemeColors } from '@apitable/components';
-import { LabelSmallOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { get } from 'lodash';
 import cls from 'classnames';
 import styles from './style.module.less';
@@ -58,7 +58,7 @@ export const ReplyComment = (props: IReplyComment) => {
     }
   }
   if (!text) { // slate data format
-    const _reply = Object.entries(reply).filter(([k, v]) => !isNaN(Number(k))).sort().map(([k, v]) => v);
+    const _reply = Object.entries(reply).filter(([k, ]) => !isNaN(Number(k))).sort().map(([, v]) => v);
     const _text = serialize(_reply as unknown as ITextNode[], spaceInfo);
     const isAllTextString = _text.every(t => typeof t === 'string');
     if (isAllTextString) {
@@ -86,7 +86,7 @@ export const ReplyComment = (props: IReplyComment) => {
       </Tooltip>
       {Boolean(handleClose) && (
         <IconButton
-          icon={LabelSmallOutlined}
+          icon={CloseOutlined}
           size="small"
           style={{
             width: '18px',

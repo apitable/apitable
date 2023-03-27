@@ -35,7 +35,7 @@ export enum IDingTalkModalType {
   Subscribe = 'Subscribe',
 }
 
-export const UpgradeInFeiShuContent: React.FC<{ onClick: () => void, content: string }> = (props) => {
+export const UpgradeInFeiShuContent: React.FC<React.PropsWithChildren<{ onClick: () => void, content: string }>> = (props) => {
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
@@ -58,7 +58,7 @@ export const UpgradeInFeiShuContent: React.FC<{ onClick: () => void, content: st
   );
 };
 
-export const UpgradeInWecomContent: React.FC<{ onClick: () => void }> = (props) => {
+export const UpgradeInWecomContent: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = (props) => {
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
@@ -80,7 +80,7 @@ export const UpgradeInWecomContent: React.FC<{ onClick: () => void }> = (props) 
   );
 };
 
-export const UpgradeInDDContent: React.FC<{ onClick: () => void }> = (props) => {
+export const UpgradeInDDContent: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = (props) => {
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
@@ -102,7 +102,7 @@ export const UpgradeInDDContent: React.FC<{ onClick: () => void }> = (props) => 
   );
 };
 
-export const SubscribeInDDContent: React.FC<{ onClick: () => void }> = (props) => {
+export const SubscribeInDDContent: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = (props) => {
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>

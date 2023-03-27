@@ -18,26 +18,26 @@
 
 package com.apitable.player.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
 /**
  * <p>
- * Message statistics
+ * Message statistics.
  * </p>
  */
 @Data
 @Builder
-@ApiModel("Message statistics")
+@Schema(description = "Message statistics")
 public class NotificationStatisticsVo {
-    @ApiModelProperty(value = "Number of messages read", example = "1")
+
+    @Schema(description = "Number of messages read", example = "1")
     private Integer readCount;
 
-    @ApiModelProperty(value = "Total number of messages", example = "1")
+    @Schema(description = "Total number of messages", example = "1")
     private Integer totalCount;
 
-    @ApiModelProperty(value = "Number of unread messages", example = "1")
+    @Schema(description = "Number of unread messages", example = "1")
     private Integer unReadCount;
 }

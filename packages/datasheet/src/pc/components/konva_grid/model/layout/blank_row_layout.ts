@@ -22,7 +22,7 @@ import { colors } from '@apitable/components';
 import { GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH } from '../../constant';
 
 export class BlankRowLayout extends GridLayout {
-  renderAddFieldBlank(row: ILinearRow) {
+  override renderAddFieldBlank(row: ILinearRow) {
     super.renderAddFieldBlank(row);
     const { depth } = row;
     const width = this.addBtnWidth;
@@ -37,7 +37,7 @@ export class BlankRowLayout extends GridLayout {
     }
   }
 
-  private renderFirstCell(row, colors) {
+  private renderFirstCell(row: ILinearRow, colors: { lowestBg: string; sheetLineColor: string; }) {
     if (!this.isFirst) return;
 
     const { depth } = row;
@@ -70,7 +70,7 @@ export class BlankRowLayout extends GridLayout {
     });
   }
 
-  private renderLastCell(row) {
+  private renderLastCell(row: ILinearRow) {
     if (!this.isLast) return;
     if (this.isFirst) {
       return this.renderAddFieldBlank(row);
@@ -107,7 +107,7 @@ export class BlankRowLayout extends GridLayout {
     }
   }
 
-  private renderCommonCell(row) {
+  private renderCommonCell(row: ILinearRow) {
     if (this.isFirst || this.isLast) return;
 
     const { depth } = row;
@@ -130,7 +130,7 @@ export class BlankRowLayout extends GridLayout {
     });
   }
 
-  render({ row, colors }) {
+  render({ row, colors }: { row: ILinearRow, colors: { lowestBg: string; sheetLineColor: string; } }) {
     this.renderFirstCell(row, colors);
     this.renderCommonCell(row);
     this.renderLastCell(row);

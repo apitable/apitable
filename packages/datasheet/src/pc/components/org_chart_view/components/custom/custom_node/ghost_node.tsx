@@ -29,7 +29,7 @@ import { useDragLayer, DragLayerMonitor } from 'react-dnd';
 import { DropWrapper } from '../../drop_wrapper';
 import styles from '../styles.module.less';
 
-export const GhostNode: FC<NodeProps<INodeData>> = memo((props) => {
+export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo((props) => {
 
   const {
     id,

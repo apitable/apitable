@@ -2,7 +2,7 @@
     "strings": {
         "access_to_space_station_editors": {
             "zh_CN": "进入空间站编辑",
-            "en_US": "Enter the Space to edit",
+            "en_US": "Enter the space to edit",
             "zh_HK": "進入空間站編輯"
         },
         "account_ass_manage": {
@@ -784,7 +784,7 @@
             "en_US": "the specified embed link does not exist, please adjust the linkId and try again"
         },
         "api_embed_link_instance_limit": {
-            "zh_CN": "抱歉, 暂不支持为表格类以外的其他节点创建嵌入链接",
+            "zh_CN": "抱歉, 暂时仅支持表格、仪表盘、表单类的节点创建嵌入链接",
             "en_US": "embedded links are not supported for nodes other than datasheet type"
         },
         "api_embed_link_limit": {
@@ -1154,6 +1154,10 @@
             "en_US": "Upload attachments",
             "zh_HK": "上傳文件"
         },
+        "api_param_add_widget_btn_type_error": {
+            "zh_CN": "参数 addWidgetBtn 只接受 boolean 类型的值",
+            "en_US": "the parameter addWidgetBtn must be a boolean type"
+        },
         "api_param_api_btn_type_error": {
             "zh_CN": "参数 apiBtn 只接受 boolean 类型的值",
             "en_US": "the parameter apiBtn must be a boolean type"
@@ -1186,6 +1190,10 @@
             "zh_CN": "field:{field} 勾选字段必须是布尔值",
             "en_US": "field:{field} Checkbox field value must be boolean",
             "zh_HK": "field:{field} 勾選字段必須是布爾值"
+        },
+        "api_param_collaborator_status_bar_type_error": {
+            "zh_CN": "参数 collaboratorStatusBar 只接受 boolean 类型的值",
+            "en_US": "the parameter collaboratorStatusBar must be a boolean type"
         },
         "api_param_collapsed_type_error": {
             "zh_CN": "参数 collapsed 只接受 boolean 类型的值",
@@ -1227,6 +1235,10 @@
             "zh_CN": "{value}",
             "en_US": "{value}",
             "zh_HK": "{value}"
+        },
+        "api_param_full_screen_btn_type_error": {
+            "zh_CN": "参数 fullScreenBtn 只接受 boolean 类型的值",
+            "en_US": "the parameter fullScreenBtn must be a boolean type"
         },
         "api_param_history_btn_type_error": {
             "zh_CN": "参数 historyBtn 只接受 boolean 类型的值",
@@ -1279,6 +1291,10 @@
         "api_param_node_id_not_empty_key": {
             "zh_CN": "参数 nodeId 为必填项",
             "en_US": "the parameter nodeId is required"
+        },
+        "api_param_node_info_bar_type_error": {
+            "zh_CN": "参数 titleBar 只接受 boolean 类型的值",
+            "en_US": "the parameter titleBar must be a boolean type"
         },
         "api_param_number_field_type_error": {
             "zh_CN": "field:{field} 数字字段的值必须是数字",
@@ -1655,6 +1671,10 @@
             "en_US": "SERVER_ERROR ({value})",
             "zh_HK": "SERVER_ERROR ({value})"
         },
+        "api_set_view_lock_error": {
+            "zh_CN": "修改视图锁失败",
+            "en_US": "Failed to update view lock info"
+        },
         "api_show_token": {
             "zh_CN": "显示 API Token",
             "en_US": "Show API Token",
@@ -1732,7 +1752,7 @@
         },
         "api_usage": {
             "zh_CN": "API 用量",
-            "en_US": "API usage",
+            "en_US": "API Usage",
             "zh_HK": "API 用量",
             "billing": {
                 "products": [
@@ -1798,13 +1818,25 @@
             "zh_CN": "Choose Pro",
             "en_US": "Choose Pro"
         },
+        "apitable_og_product_description_content": {
+            "zh_CN": "APITable is an API-first, embed-friendly no-code database, the best Airtable open-source alternative. Get your data and projects managed magically.",
+            "en_US": "APITable is an API-first, embed-friendly no-code database, the best Airtable open-source alternative. Get your data and projects managed magically."
+        },
+        "apitable_og_site_name_content": {
+            "zh_CN": "APITable | Open source no-code database and Airtable alternative",
+            "en_US": "APITable | Open source no-code database and Airtable alternative"
+        },
         "apitable_origin_price_by_month": {
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
-            "en_US": "{\n    \"plus\": \"$18\",\n    \"pro\": \"$30\"\n}"
+            "en_US": "{\n    \"plus\": \"$8\",\n    \"pro\": \"$16\"\n}"
         },
         "apitable_origin_price_by_year": {
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
-            "en_US": "{\n    \"plus\": \"$11\",\n    \"pro\": \"$20\"\n}"
+            "en_US": "{\n    \"plus\": \"$6\",\n    \"pro\": \"$14\"\n}"
+        },
+        "apitable_price_sub_title": {
+            "zh_CN": "Early Bird Offer ${discount} Ends March 1,2023",
+            "en_US": "Early Bird Offer ${discount} Ends March 7,2023"
         },
         "apitable_privatized_deployment_desc": {
             "zh_CN": "Manage it yourself",
@@ -1944,10 +1976,34 @@
             "en_US": "All-platform client support",
             "zh_HK": "全平台客戶端支持"
         },
+        "archive_record_in_menu": {
+            "zh_CN": "归档记录",
+            "en_US": "Archive record"
+        },
+        "archive_record_success": {
+            "zh_CN": "已归档记录",
+            "en_US": "Successfully archived records"
+        },
+        "archive_records_in_menu": {
+            "zh_CN": "归档 ${chose_num} 条记录",
+            "en_US": "Archive ${chose_num} records"
+        },
+        "archive_records_success": {
+            "zh_CN": "已归档 ${chose_num} 条记录",
+            "en_US": "${chose_num} record(s) successfully archived"
+        },
         "archived_failure": {
             "zh_CN": "转存失败",
             "en_US": "Transferring failed",
             "zh_HK": "轉存失敗"
+        },
+        "archived_operator_description": {
+            "zh_CN": "${archived_operator} 归档了 ${archived_num} 条记录",
+            "en_US": "${archived_operator} archived ${archived_num} record(s)"
+        },
+        "archived_records": {
+            "zh_CN": "归档箱",
+            "en_US": "Archived records"
         },
         "archived_successfully": {
             "zh_CN": "转存成功",
@@ -2718,7 +2774,7 @@
         },
         "back_workbench": {
             "zh_CN": "回到工作台",
-            "en_US": "Back to Workbench",
+            "en_US": "Workbench",
             "zh_HK": "回到工作台"
         },
         "background_purple": {
@@ -2768,7 +2824,7 @@
         },
         "batch_remove": {
             "zh_CN": "移出小组",
-            "en_US": "Move out of the team",
+            "en_US": "Remove",
             "zh_HK": "移出小組"
         },
         "be_invited_to_reward": {
@@ -3053,7 +3109,7 @@
         },
         "by_the_month": {
             "zh_CN": "按月",
-            "en_US": "monthly",
+            "en_US": "Monthly",
             "zh_HK": "按月"
         },
         "by_the_year": {
@@ -3257,7 +3313,7 @@
         },
         "can_read": {
             "zh_CN": "只可阅读",
-            "en_US": "Read only",
+            "en_US": "Read-only",
             "zh_HK": "只可閱讀"
         },
         "can_updater": {
@@ -3587,7 +3643,7 @@
         },
         "change_main_admin": {
             "zh_CN": "变更主管理员",
-            "en_US": "Change admin",
+            "en_US": "Change",
             "zh_HK": "變更主管理員"
         },
         "change_member_team_fail": {
@@ -3637,7 +3693,7 @@
         },
         "change_primary_admin": {
             "zh_CN": "更换主管理员",
-            "en_US": "Change admin",
+            "en_US": "Change",
             "zh_HK": "更換主管理員"
         },
         "change_primary_admin_succeed": {
@@ -3819,6 +3875,10 @@
             "zh_CN": "确认移交",
             "en_US": "Assign",
             "zh_HK": "確認移交"
+        },
+        "claim_special_offer": {
+            "zh_CN": "获取特殊优惠",
+            "en_US": "Claim This Special Offer!"
         },
         "clear": {
             "zh_CN": "清除",
@@ -4177,6 +4237,10 @@
             "en_US": " enabled task reminder",
             "zh_HK": "開啟了提醒"
         },
+        "command_fix_consistency": {
+            "zh_CN": "修复了数据",
+            "en_US": " fixed data consistency"
+        },
         "command_insert_comment": {
             "zh_CN": "添加了评论",
             "en_US": " commented",
@@ -4294,7 +4358,7 @@
             "zh_HK": "交流群"
         },
         "community": {
-            "zh_CN": "社区版(COMMING SOON)",
+            "zh_CN": "社区版",
             "en_US": "Community"
         },
         "community_and_local_interest": {
@@ -4313,7 +4377,7 @@
             }
         },
         "community_grade_desc": {
-            "zh_CN": "免费且开源，可以自助安装（即将开放，敬请期待）",
+            "zh_CN": "免费且开源，可以自助安装",
             "en_US": "Free and open source, you can install yourself"
         },
         "comoros": {
@@ -4323,7 +4387,7 @@
         },
         "company_grade_desc": {
             "zh_CN": "适用于有企业级安全及顾问需求的组织",
-            "en_US": "Suitable for organizations with enterprise-level security and consulting needs",
+            "en_US": "For teams with enterprise-level security and consulting need",
             "zh_HK": "適用於有企業級安全及顧問需求的組織"
         },
         "company_security": {
@@ -4441,6 +4505,10 @@
             "en_US": "Confirm to join the Space",
             "zh_HK": "確認加入空間站"
         },
+        "confirm_link_inconsistency_detected": {
+            "zh_CN": "关联字段发现异常数据，是否自动修复？",
+            "en_US": "Abnormal data have been found in link cells, fix them automatically?"
+        },
         "confirm_link_toggle_clear_filter": {
             "zh_CN": "请确定切换关联列，切换后筛选条件将被清空",
             "en_US": "Please make sure to switch the related column. After switching, the filter condition will be cleared",
@@ -4537,9 +4605,9 @@
             "zh_HK": "通訊錄配置"
         },
         "contacts_invite_link_template": {
-            "zh_CN": "【维格表】- ${nickName}邀请你加入「${spaceName}」空间站，为了更好的体验，建议通过电脑浏览器访问。",
-            "en_US": "From vikadata: ${nickName} invited you to join \"${spaceName}\" Space. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}邀請你加入「${spaceName}」空間站，為了更好的體驗，建議通過電腦瀏覽器訪問。"
+            "zh_CN": "【维格表】- ${nickName}邀请你加入「${spaceName}」空间站",
+            "en_US": "From vikadata: You were invited to join the \"${spaceName}\" space by ${nickName}.",
+            "zh_HK": "【維格表】- ${nickName}邀請你加入「${spaceName}」空間站"
         },
         "contacts_management": {
             "zh_CN": "通讯录管理",
@@ -4933,7 +5001,7 @@
         },
         "current_count_of_person": {
             "zh_CN": "现有成员数",
-            "en_US": "Total members",
+            "en_US": "Total Members",
             "zh_HK": "現有成員數"
         },
         "current_datasheet": {
@@ -5222,7 +5290,7 @@
         },
         "dating_back_to": {
             "zh_CN": "可回溯",
-            "en_US": "Can go back up to",
+            "en_US": "go back",
             "zh_HK": "可回溯"
         },
         "day": {
@@ -5389,6 +5457,10 @@
             "zh_CN": "删除",
             "en_US": "Delete",
             "zh_HK": "刪除"
+        },
+        "delete_archived_records_warning_description": {
+            "zh_CN": "该记录将被永久删除，也无法再还原到表格中，是否继续？",
+            "en_US": "Record(s) will be permanently deleted and can't be restored to datasheet. Do you want to continue?"
         },
         "delete_comment_tip_content": {
             "zh_CN": "评论删除后无法恢复，确定要删除吗？",
@@ -6280,6 +6352,22 @@
             "zh_CN": "请输入邮箱",
             "en_US": "Enter email address",
             "zh_HK": "請輸入郵箱"
+        },
+        "email_verify_warning_button_back": {
+            "zh_CN": "注销",
+            "en_US": "Logout"
+        },
+        "email_verify_warning_button_resend": {
+            "zh_CN": "重新发送",
+            "en_US": "Resend email"
+        },
+        "email_verify_warning_desc": {
+            "zh_CN": "带有确认链接的消息已发送至 ${email_address}。请点击链接激活您的帐户。",
+            "en_US": "A message with a confirmation link has been sent to ${email_address}. Please follow the link to activate your account."
+        },
+        "email_verify_warning_title": {
+            "zh_CN": "请验证你的电子邮件",
+            "en_US": "Please confirm your email"
         },
         "embed_error_page_help": {
             "zh_CN": "点击了解失效原因",
@@ -7468,6 +7556,11 @@
             "en_US": "Enter a URL, and click on it to open the web page",
             "zh_HK": "你可以在單元格內添加網址"
         },
+        "field_display_time_zone": {
+            "zh_CN": "显示时区标识",
+            "en_US": "Display time zone",
+            "zh_HK": "顯示時區標識"
+        },
         "field_had_deleted": {
             "zh_CN": "该维格列已被删除",
             "en_US": "This field was deleted",
@@ -7597,6 +7690,11 @@
             "zh_CN": "https://help.vika.cn/docs/guide/manual-field-url",
             "en_US": "https://help.vika.cn/docs/guide/manual-field-url",
             "zh_HK": "https://help.vika.cn/docs/guide/manual-field-url"
+        },
+        "field_incluede_time_and_time_zone_title": {
+            "zh_CN": "显示时间与时区",
+            "en_US": "Include time and time zone",
+            "zh_HK": "顯示時間與時區"
         },
         "field_member_property_multi": {
             "zh_CN": "允许添加多个成员",
@@ -7756,6 +7854,16 @@
             "zh_CN": "选择指定的维格列",
             "en_US": "Select last edited fields",
             "zh_HK": "選擇指定的維格列"
+        },
+        "field_select_time_zone_current": {
+            "zh_CN": "当前时区",
+            "en_US": "Current time zone",
+            "zh_HK": "當前時區"
+        },
+        "field_select_time_zone_other": {
+            "zh_CN": "其他时区",
+            "en_US": "Other time zones",
+            "zh_HK": "其他時區"
         },
         "field_set_you_by_user": {
             "zh_CN": "<a class=\"memberName\"></a>在维格表「<a class=\"nodeName\"></a>」的<a class=\"times\"></a>提及了你",
@@ -8150,8 +8258,8 @@
             "zh_HK": "回到空間站"
         },
         "form_brand_visible": {
-            "zh_CN": "显示水印",
-            "en_US": "Show watermarks",
+            "zh_CN": "显示品牌标识",
+            "en_US": "Show branding",
             "zh_HK": "顯示水印"
         },
         "form_compact_option_desc": {
@@ -9912,7 +10020,7 @@
         },
         "gantt_historical_data_warning": {
             "zh_CN": "是否要处理历史数据",
-            "en_US": "Do you want to deal with historical data?"
+            "en_US": "How to handle old data?"
         },
         "gantt_init_fields_button": {
             "zh_CN": "创建日期字段",
@@ -9970,12 +10078,12 @@
         },
         "gantt_open_auto_schedule_warning": {
             "zh_CN": "是否要根据依赖关系对目前已有的任务进行自动编排？编排后部分后置任务的开始和结束日期会被自动修改",
-            "en_US": "When turned on, Do you want tasks with dependencies will be aligned automatically? the date of some tasks will be changed",
+            "en_US": "Do you want tasks with dependencies to be automatically aligned when this feature is on? Some tasks' dates will be changed.",
             "zh_HK": "是否要根據依賴關係對目前已有的任務進行自動編排？編排後部分後置任務的開始和結束日期會被自動修改"
         },
         "gantt_open_auto_schedule_warning_no": {
             "zh_CN": "不修改历史数据",
-            "en_US": "Do not modify historical data",
+            "en_US": "Don't change old data",
             "zh_HK": "不修改歷史數據"
         },
         "gantt_pick_dates_tips": {
@@ -10225,12 +10333,12 @@
         },
         "gold_grade": {
             "zh_CN": "黄金级",
-            "en_US": "Team",
+            "en_US": "Gold",
             "zh_HK": "黃金級"
         },
         "gold_grade_desc": {
             "zh_CN": "适用于有复杂业务流程的团队或组织",
-            "en_US": "For teams or organizations with complex business procedures",
+            "en_US": "For teams with complex business process",
             "zh_HK": "適用於有復雜業務流程的團隊或組織"
         },
         "gold_seat_200_desc": {
@@ -10286,22 +10394,22 @@
         },
         "grade_price_by_month": {
             "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \" 680元 /月\",\n  \"gold\": \" 2,800元 /月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
-            "en_US": "{\n    \"bronze\": \"Free\",\n    \"silver\": \"$10 $25 /month\",\n    \"gold\": \" $125 /month\",\n    \"enterprise\": \"Customized\",\n    \"community\": \"Free\",\n    \"custom\": \"Customize\",\n    \"free\":\"Free\",\n    \"plus\": \"$10 $25 /month\",\n    \"pro\": \" $125 /month\"\n}",
+            "en_US": "{\n    \"bronze\": \"Free\",\n    \"silver\": \"$10 $25 /month\",\n    \"gold\": \" $125 /month\",\n    \"enterprise\": \"Customize\",\n    \"community\": \"Free\",\n    \"custom\": \"Customize\",\n    \"free\":\"$0\",\n    \"plus\": \"$99 $24 /month\",\n    \"pro\": \"$399 $199 /month\"\n}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month_origin": {
             "zh_CN": "{\n  \"bronze\": \"\",\n  \"silver\": \"\",\n  \"gold\": \"\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}",
-            "en_US": "{\n    \"bronze\":\"\",\n    \"silver\": \"Incl. 10 users, then $2/user/month\",\n    \"gold\": \"Incl. 10 users, then $2/user/month\",\n    \"enterprise\":\"\",\n    \"free\":\"Free\",\n    \"plus\": \"Incl. 10 users, then ${originPrice} $2/user/month\",\n    \"pro\": \"Incl. 10 users, then ${originPrice} $2/user/month\"\n}",
+            "en_US": "{\n    \"bronze\":\"\",\n    \"silver\": \"Incl. 10 users, then $2/user/month\",\n    \"gold\": \"Incl. 10 users, then $2/user/month\",\n    \"enterprise\":\"\",\n    \"free\":\"Forever\",\n    \"plus\": \"Incl. 10 seats, then ${originPrice} $2/seat/month\",\n    \"pro\": \"Incl. 20 seats, then ${originPrice} $4/seat/month\"\n}",
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
             "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \" 6,800元 /年\",\n  \"gold\": \" 26,800元 /年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
-            "en_US": "{\n    \"bronze\": \"Free\",\n    \"silver\": \"$15 $25 /year\",\n    \"gold\": \" $399 /year\",\n    \"enterprise\": \"Customize\",\n    \"community\": \"Free\",\n    \"custom\": \"Customize\",\n    \"free\":\"Free\",\n    \"plus\": \"$15 $25 /year\",\n    \"pro\": \" $399 /year\"\n}\n  ",
-            "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
+            "en_US": "{\n    \"bronze\": \"Free\",\n    \"silver\": \"$15 $25 /year\",\n    \"gold\": \" $399 /year\",\n    \"enterprise\": \"Customize\",\n    \"community\": \"Free\",\n    \"custom\": \"Customize\",\n    \"free\":\"$0\",\n    \"plus\": \"$79 $19 /month\",\n    \"pro\": \"$299 $149 /month\"\n}\n  ",
+            "zh_HK": "{\n    \"bronze\": \"Free\",\n    \"silver\": \"$15 $25 /year\",\n    \"gold\": \" $399 /year\",\n    \"enterprise\": \"Customize\",\n    \"community\": \"Free\",\n    \"custom\": \"Customize\",\n    \"free\":\"Free\",\n    \"plus\": \"$79 $19 /month\",\n    \"pro\": \" $299 $149 /month\"\n}"
         },
         "grade_price_by_year_origin": {
             "zh_CN": "{\n  \"bronze\": \"\",\n  \"silver\": \"\",\n  \"gold\": \"\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}",
-            "en_US": "{\n    \"bronze\": \"\",\n    \"silver\": \"Incl. 10 users, then ${originPrice} $2/user/year\",\n    \"gold\": \"Incl. 20 users, then ${originPrice} $8/user/year\",\n    \"enterprise\": \"\",\n    \"community\": \"\",\n    \"custom\": \"\",\n    \"free\": \"\",\n    \"plus\": \"Incl. 10 users, then ${originPrice} $2/user/year\",\n    \"pro\": \"Incl. 20 users, then ${originPrice} $8/user/year\"\n}",
+            "en_US": "{\n    \"bronze\": \"\",\n    \"silver\": \"Incl. 10 users, then ${originPrice} $1.5/seats/month\",\n    \"gold\": \"Incl. 20 users, then ${originPrice} $3/seats/month\",\n    \"enterprise\": \"\",\n    \"community\": \"\",\n    \"custom\": \"\",\n    \"free\": \"Forever\",\n    \"plus\": \"Incl. 10 seats, then ${originPrice} $1.5/seat/month\",\n    \"pro\": \"Incl. 20 seats, then ${originPrice} $3/seat/month\"\n}",
             "zh_HK": "{\n  \"bronze\": \"\",\n  \"silver\": \"约 368 元 人/年\",\n  \"gold\": \"约 538.8 元 人/年\",\n  \"enterprise\": \"\",\n  \"community\": \"\",\n  \"custom\": \"\"\n}"
         },
         "grades_restriction_prompt": {
@@ -11021,7 +11129,7 @@
         },
         "installation": {
             "zh_CN": "安装",
-            "en_US": "installation"
+            "en_US": "Installation"
         },
         "instruction_of_node_permission": {
             "zh_CN": "权限说明",
@@ -13347,8 +13455,8 @@
         },
         "max_record_num_per_dst": {
             "zh_CN": "当前支持的单表上限为 5w 行",
-            "en_US": "The current limit for a single datasheet is 5w rows",
-            "zh_HK": "當前支持的單表上限為 5w 行"
+            "en_US": "The current limit for a single datasheet is 50000 rows",
+            "zh_HK": "當前支持的單表上限為 50000 行"
         },
         "max_records": {
             "zh_CN": "记录数上限：${count}条",
@@ -13399,6 +13507,10 @@
             "zh_CN": "空间站每秒最大并发量",
             "en_US": "Maximum concurrent volume",
             "zh_HK": "空間站每秒最大並發量"
+        },
+        "maybe_later": {
+            "zh_CN": "跳过",
+            "en_US": "Maybe Later"
         },
         "mayotte": {
             "zh_CN": "马约特",
@@ -13672,7 +13784,7 @@
         },
         "message_invite_member_to_validate": {
             "zh_CN": "该成员将在登录邮箱完成验证后自动加入",
-            "en_US": "The invited member(s) will join the Space after they verify the invitation email.",
+            "en_US": "The invited member(s) will join the space after they verify the invitation email.",
             "zh_HK": "該成員將在登錄郵箱完成驗證後自動加入"
         },
         "message_member_name_modified_failed": {
@@ -13787,7 +13899,7 @@
         },
         "missing_instruction_op_error": {
             "zh_CN": "提交数据时发生错误，请刷新重试，如有疑问请扫描右方的二维码添加客服，让我们来帮助你解决",
-            "en_US": "An error occurred while submitting data, please refresh and retry, if you have any questions, please contact us and let us help you solve",
+            "en_US": "An error occurred while submitting data, please refresh and retry, if you have any questions, please contact us for help",
             "zh_HK": "提交數據時發生錯誤，請刷新重試，如有疑問請掃描右方的二維碼添加客服，讓我們來幫助你解決"
         },
         "mobile_and_account_login": {
@@ -13822,7 +13934,7 @@
         },
         "modal_content_confirm_revoke_logout": {
             "zh_CN": "确认要恢复账号吗？",
-            "en_US": "Confirm you want to recovery your account?",
+            "en_US": "Are you sure you want to recover your account?",
             "zh_HK": "確認要恢復賬號嗎？"
         },
         "modal_content_policy": {
@@ -14012,7 +14124,7 @@
         },
         "more_template": {
             "zh_CN": "更多模板",
-            "en_US": "More templates",
+            "en_US": "More",
             "zh_HK": "更多模板"
         },
         "more_tips": {
@@ -14222,7 +14334,7 @@
         },
         "new_space": {
             "zh_CN": "新建空间站",
-            "en_US": "New Space",
+            "en_US": "Create a New Space",
             "zh_HK": "新建空間站"
         },
         "new_space_is_unactived": {
@@ -14231,9 +14343,9 @@
             "zh_HK": "你的空間站數量已達10個上限。當前受邀的空間站將處於未激活狀態，且暫時無法訪問。"
         },
         "new_space_tips": {
-            "zh_CN": "Hi，给你的空间站起个名字吧～",
-            "en_US": "First, name your Space~",
-            "zh_HK": "Hi，給你的空間站起個名字吧～"
+            "zh_CN": " ",
+            "en_US": " ",
+            "zh_HK": " "
         },
         "new_space_widget_notify": {
             "zh_CN": "<a class=\"memberName\"></a>在空间站「<a class=\"spaceName\"></a>」发布了自建小程序「<a class=\"widgetName\"></a>」",
@@ -14245,8 +14357,10 @@
             "en_US": "If you have not signed up yet, click <a href=\"https://u.vika.cn/qmdp3\" target=\"_blank\"> \"sign up\" </a> and bind the account",
             "zh_HK": "若還不是維格表用戶，點擊<a href=\"https://u.vika.cn/qmdp3\" target=\"_blank\">註冊帳號</a>完成註冊再進行綁定"
         },
-        "new_user_welcom_notify": {
-            "zh_CN": "欢迎加入维格表，我们为你准备了一份免费学习维格表的见面礼，点击这条消息即可跳转了解详情。"
+        "new_user_welcome_notify": {
+            "zh_CN": "欢迎加入维格表，我们为你准备了一份免费学习维格表的见面礼，点击这条消息即可跳转了解详情。",
+            "en_US": "Welcome to Vikadata. We have prepared a free meeting gift for you to learn vikadata. Click here to learn more.",
+            "zh_HK": "歡迎加入維格表，我們為你準備了一份免費學習維格表的見面禮，點擊這條消息即可跳轉了解詳情。"
         },
         "new_view": {
             "zh_CN": "创建视图",
@@ -14847,6 +14961,16 @@
             "en_US": "granting permissions",
             "zh_HK": "為對方分配權限"
         },
+        "notify_time_zone_change_desc": {
+            "zh_CN": "已更新时区为 ${time_zone}",
+            "en_US": "The time zone has been updated to ${time_zone}",
+            "zh_HK": "已更新時區為 ${time_zone}"
+        },
+        "notify_time_zone_change_title": {
+            "zh_CN": "检测到当前时区已更新",
+            "en_US": "Detected that the time zone has changed",
+            "zh_HK": "檢測到當前時區已更新"
+        },
         "notify_type_datasheet": {
             "zh_CN": "表格通知",
             "en_US": "notify_type_datasheet",
@@ -14958,8 +15082,8 @@
             "zh_HK": "未獲取驗證碼或已過期，請重新獲取"
         },
         "offical_website_footer_nav_data": {
-            "zh_CN": "[{\n  \"title\": \"产品\",\n  \"lists\": [{\n    \"name\": \"快速入门\",\n    \"url\": \"https://help.vika.cn/docs/guide/tutorial-1-quick-start\"\n  }, {\n    \"name\": \"产品指南\",\n    \"url\": \"https://help.vika.cn/docs/guide/manual-1-what-is-vikadata\"\n  }, {\n    \"name\": \"产品价格\",\n    \"url\": \"/pricing/\"\n  }, {\n    \"name\": \"产品路线图\",\n    \"url\": \"https://vika.cn/share/shrvp76H9lQBFLaRG1wSY/dstB1RtGAw5qMoqnnY/viw9giKo0IcT5\"\n  }]\n}, {\n  \"title\": \"关于我们\",\n  \"lists\": [{\n    \"name\": \"公司介绍\",\n    \"url\": \"/company/\"\n  }, {\n    \"name\": \"加入我们\",\n    \"url\": \"/join-us/\"\n  }, {\n    \"name\": \"媒体报道\",\n    \"url\": \"/press/\"\n  }, {\n    \"name\": \"vika维格课堂\",\n    \"url\": \"https://u.vika.cn/vikaxueyuan\"\n  }, {\n    \"name\": \"维格合伙人\",\n    \"url\": \"/partners/\"\n  }]\n}, {\n  \"title\": \"解决方案\",\n  \"lists\": [{\n    \"name\": \"PMO项目群管理\",\n    \"url\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"url\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"url\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"url\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"url\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"url\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"url\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"url\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"url\": \"/shop/\"\n  }]\n}, {\n  \"title\": \"支持\",\n  \"lists\": [{\n    \"name\": \"意见反馈\",\n    \"url\": \"https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP\"\n  }, {\n    \"name\": \"帮助中心\",\n    \"url\": \"https://help.vika.cn/\"\n  }, {\n    \"name\": \"开发者中心\",\n    \"url\": \"/developers/\"\n  }, {\n    \"name\": \"服务条款\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"隐私协议\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"安全与合规\",\n    \"url\": \"/security/\"\n  }]\n}, {\n  \"title\": \"服务\",\n  \"lists\": [{\n    \"name\": \"加入社群\",\n    \"url\": \"/chatgroup/\"\n  }, {\n    \"name\": \"Github开源\",\n    \"url\": \"https://github.com/vikadata\"\n  }, {\n    \"name\": \"预约演示\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"专有云部署\",\n    \"url\": \"https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL\"\n  }, {\n    \"name\": \"应用连接\",\n    \"url\": \"/connections/\"\n  }]\n}, {\n  \"title\": \"联系我们\",\n  \"lists\": [{\n    \"name\": \"地址：深圳市南山区国信投资大厦1710\",\n    \"url\": \"https://ditu.amap.com/place/B0FFJ14BJ7\"\n  }, {\n    \"name\": \"售前咨询：点击联系商务\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"合作：bd@vikadata.com\",\n    \"url\": \"mailto:bd@vikadata.com\"\n  }, {\n    \"name\": \"媒体：pr@vikadata.com\",\n    \"url\": \"mailto:pr@vikadata.com\"\n  }, {\n    \"name\": \"招聘：hr@vikadata.com\",\n    \"url\": \"mailto:hr@vikadata.com\"\n  }]\n}]",
-            "en_US": "[{\n  \"title\": \"产品\",\n  \"lists\": [{\n    \"name\": \"快速入门\",\n    \"url\": \"https://help.vika.cn/docs/guide/tutorial-1-quick-start\"\n  }, {\n    \"name\": \"产品指南\",\n    \"url\": \"https://help.vika.cn/docs/guide/manual-1-what-is-vikadata\"\n  }, {\n    \"name\": \"产品价格\",\n    \"url\": \"/pricing/\"\n  }, {\n    \"name\": \"产品路线图\",\n    \"url\": \"https://vika.cn/share/shrvp76H9lQBFLaRG1wSY/dstB1RtGAw5qMoqnnY/viw9giKo0IcT5\"\n  }]\n}, {\n  \"title\": \"关于我们\",\n  \"lists\": [{\n    \"name\": \"公司介绍\",\n    \"url\": \"/company/\"\n  }, {\n    \"name\": \"加入我们\",\n    \"url\": \"/join-us/\"\n  }, {\n    \"name\": \"媒体报道\",\n    \"url\": \"/press/\"\n  }, {\n    \"name\": \"vika维格课堂\",\n    \"url\": \"https://u.vika.cn/vikaxueyuan\"\n  }, {\n    \"name\": \"维格合伙人\",\n    \"url\": \"/partners/\"\n  }]\n}, {\n  \"title\": \"解决方案\",\n  \"lists\": [{\n    \"name\": \"PMO项目群管理\",\n    \"url\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"url\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"url\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"url\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"url\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"url\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"url\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"url\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"url\": \"/shop/\"\n  }]\n}, {\n  \"title\": \"支持\",\n  \"lists\": [{\n    \"name\": \"意见反馈\",\n    \"url\": \"https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP\"\n  }, {\n    \"name\": \"帮助中心\",\n    \"url\": \"https://help.vika.cn/\"\n  }, {\n    \"name\": \"开发者中心\",\n    \"url\": \"/developers/\"\n  }, {\n    \"name\": \"服务条款\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"隐私协议\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"安全与合规\",\n    \"url\": \"/security/\"\n  }]\n}, {\n  \"title\": \"服务\",\n  \"lists\": [{\n    \"name\": \"加入社群\",\n    \"url\": \"/chatgroup/\"\n  }, {\n    \"name\": \"Github开源\",\n    \"url\": \"https://github.com/vikadata\"\n  }, {\n    \"name\": \"预约演示\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"专有云部署\",\n    \"url\": \"https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL\"\n  }, {\n    \"name\": \"应用连接\",\n    \"url\": \"/connections/\"\n  }]\n}, {\n  \"title\": \"联系我们\",\n  \"lists\": [{\n    \"name\": \"地址：深圳市南山区国信投资大厦1710\",\n    \"url\": \"https://ditu.amap.com/place/B0FFJ14BJ7\"\n  }, {\n    \"name\": \"售前咨询：点击联系商务\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"合作：bd@vikadata.com\",\n    \"url\": \"mailto:bd@vikadata.com\"\n  }, {\n    \"name\": \"媒体：pr@vikadata.com\",\n    \"url\": \"mailto:pr@vikadata.com\"\n  }, {\n    \"name\": \"招聘：hr@vikadata.com\",\n    \"url\": \"mailto:hr@vikadata.com\"\n  }]\n}]"
+            "zh_CN": "[{\n  \"title\": \"产品\",\n  \"lists\": [{\n    \"name\": \"快速入门\",\n    \"url\": \"https://help.vika.cn/docs/guide/tutorial-1-quick-start\"\n  }, {\n    \"name\": \"产品指南\",\n    \"url\": \"https://help.vika.cn/docs/guide/manual-1-what-is-vikadata\"\n  }, {\n    \"name\": \"产品价格\",\n    \"url\": \"/pricing/\"\n  }, {\n    \"name\": \"产品路线图\",\n    \"url\": \"https://vika.cn/share/shrvp76H9lQBFLaRG1wSY/dstB1RtGAw5qMoqnnY/viw9giKo0IcT5\"\n  }]\n}, {\n  \"title\": \"关于我们\",\n  \"lists\": [{\n    \"name\": \"公司介绍\",\n    \"url\": \"/company/\"\n  }, {\n    \"name\": \"加入我们\",\n    \"url\": \"/join-us/\"\n  }, {\n    \"name\": \"媒体报道\",\n    \"url\": \"/press/\"\n  }, {\n    \"name\": \"vika维格课堂\",\n    \"url\": \"https://edu.vika.cn/\"\n  }, {\n    \"name\": \"维格合伙人\",\n    \"url\": \"/partners/\"\n  }]\n}, {\n  \"title\": \"解决方案\",\n  \"lists\": [{\n    \"name\": \"PMO项目群管理\",\n    \"url\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"url\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"url\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"url\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"url\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"url\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"url\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"url\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"url\": \"/shop/\"\n  }]\n}, {\n  \"title\": \"支持\",\n  \"lists\": [{\n    \"name\": \"意见反馈\",\n    \"url\": \"https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP\"\n  }, {\n    \"name\": \"帮助中心\",\n    \"url\": \"https://help.vika.cn/\"\n  }, {\n    \"name\": \"开发者中心\",\n    \"url\": \"/developers/\"\n  }, {\n    \"name\": \"服务条款\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"隐私协议\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"安全与合规\",\n    \"url\": \"/security/\"\n  }]\n}, {\n  \"title\": \"服务\",\n  \"lists\": [{\n    \"name\": \"加入社群\",\n    \"url\": \"/chatgroup/\"\n  }, {\n    \"name\": \"Github开源\",\n    \"url\": \"https://github.com/vikadata\"\n  }, {\n    \"name\": \"预约演示\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"专有云部署\",\n    \"url\": \"https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL\"\n  }, {\n    \"name\": \"应用连接\",\n    \"url\": \"/connections/\"\n  }]\n}, {\n  \"title\": \"联系我们\",\n  \"lists\": [{\n    \"name\": \"地址：深圳市南山区国信投资大厦1710\",\n    \"url\": \"https://ditu.amap.com/place/B0FFJ14BJ7\"\n  }, {\n    \"name\": \"售前咨询：点击联系商务\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"合作：bd@vikadata.com\",\n    \"url\": \"mailto:bd@vikadata.com\"\n  }, {\n    \"name\": \"媒体：pr@vikadata.com\",\n    \"url\": \"mailto:pr@vikadata.com\"\n  }, {\n    \"name\": \"招聘：hr@vikadata.com\",\n    \"url\": \"mailto:hr@vikadata.com\"\n  }]\n}]",
+            "en_US": "[{\n  \"title\": \"产品\",\n  \"lists\": [{\n    \"name\": \"快速入门\",\n    \"url\": \"https://help.vika.cn/docs/guide/tutorial-1-quick-start\"\n  }, {\n    \"name\": \"产品指南\",\n    \"url\": \"https://help.vika.cn/docs/guide/manual-1-what-is-vikadata\"\n  }, {\n    \"name\": \"产品价格\",\n    \"url\": \"/pricing/\"\n  }, {\n    \"name\": \"产品路线图\",\n    \"url\": \"https://vika.cn/share/shrvp76H9lQBFLaRG1wSY/dstB1RtGAw5qMoqnnY/viw9giKo0IcT5\"\n  }]\n}, {\n  \"title\": \"关于我们\",\n  \"lists\": [{\n    \"name\": \"公司介绍\",\n    \"url\": \"/company/\"\n  }, {\n    \"name\": \"加入我们\",\n    \"url\": \"/join-us/\"\n  }, {\n    \"name\": \"媒体报道\",\n    \"url\": \"/press/\"\n  }, {\n    \"name\": \"vika维格课堂\",\n    \"url\": \"https://edu.vika.cn/\"\n  }, {\n    \"name\": \"维格合伙人\",\n    \"url\": \"/partners/\"\n  }]\n}, {\n  \"title\": \"解决方案\",\n  \"lists\": [{\n    \"name\": \"PMO项目群管理\",\n    \"url\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"url\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"url\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"url\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"url\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"url\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"url\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"url\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"url\": \"/shop/\"\n  }]\n}, {\n  \"title\": \"支持\",\n  \"lists\": [{\n    \"name\": \"意见反馈\",\n    \"url\": \"https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP\"\n  }, {\n    \"name\": \"帮助中心\",\n    \"url\": \"https://help.vika.cn/\"\n  }, {\n    \"name\": \"开发者中心\",\n    \"url\": \"/developers/\"\n  }, {\n    \"name\": \"服务条款\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"隐私协议\",\n    \"url\": \"/service-agreement/\"\n  }, {\n    \"name\": \"安全与合规\",\n    \"url\": \"/security/\"\n  }]\n}, {\n  \"title\": \"服务\",\n  \"lists\": [{\n    \"name\": \"加入社群\",\n    \"url\": \"/chatgroup/\"\n  }, {\n    \"name\": \"Github开源\",\n    \"url\": \"https://github.com/vikadata\"\n  }, {\n    \"name\": \"预约演示\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"专有云部署\",\n    \"url\": \"https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL\"\n  }, {\n    \"name\": \"应用连接\",\n    \"url\": \"/connections/\"\n  }]\n}, {\n  \"title\": \"联系我们\",\n  \"lists\": [{\n    \"name\": \"地址：深圳市南山区国信投资大厦1710\",\n    \"url\": \"https://ditu.amap.com/place/B0FFJ14BJ7\"\n  }, {\n    \"name\": \"售前咨询：点击联系商务\",\n    \"url\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\"\n  }, {\n    \"name\": \"合作：bd@vikadata.com\",\n    \"url\": \"mailto:bd@vikadata.com\"\n  }, {\n    \"name\": \"媒体：pr@vikadata.com\",\n    \"url\": \"mailto:pr@vikadata.com\"\n  }, {\n    \"name\": \"招聘：hr@vikadata.com\",\n    \"url\": \"mailto:hr@vikadata.com\"\n  }]\n}]"
         },
         "offical_website_nav_data": {
             "zh_CN": "[{\n  \"name\": \"产品\",\n  \"href\": \"/login\",\n  \"children\": [\n    {\n      \"name\": \"vika维格表 Overview\",\n      \"href\": \"/login/\"\n    },\n    {\n      \"name\": \"应用连接 Integration\",\n      \"href\": \"/connections/\"\n    },\n    {\n      \"name\": \"客户端（Beta） Download\",\n      \"href\": \"/download/\"\n    }\n  ]\n}, {\n  \"name\": \"解决方案\",\n  \"href\": \"/\",\n  \"children\": [{\n    \"name\": \"PMO项目群管理\",\n    \"href\": \"/business-pmo/\"\n  }, {\n    \"name\": \"智慧电商运营\",\n    \"href\": \"/ecommerce/\"\n  }, {\n    \"name\": \"CRM客户管理\",\n    \"href\": \"/crm/\"\n  }, {\n    \"name\": \"HR人力资源管理\",\n    \"href\": \"/hr/\"\n  }, {\n    \"name\": \"Scrum敏捷开发管理\",\n    \"href\": \"/scrum/\"\n  }, {\n    \"name\": \"营销策划与市场运营\",\n    \"href\": \"/marketing/\"\n  }, {\n    \"name\": \"OKR目标管理\",\n    \"href\": \"/okr/\"\n  }, {\n    \"name\": \"教育培训管理\",\n    \"href\": \"/education/\"\n  }, {\n    \"name\": \"智慧门店管理\",\n    \"href\": \"/shop/\"\n  }, {\n    \"name\": \"更多解决方案 >\",\n    \"href\": \"/solutions/\"\n  }]\n}, {\n  \"name\": \"模板/案例\",\n  \"href\": \"/template\",\n  \"children\": [\n    {\n      \"name\": \"模板中心 Tempaltes\",\n      \"href\": \"/template\"\n    },\n    {\n      \"name\": \"客户案例 Customers\",\n      \"href\": \"/cases/\"\n    }\n  ]\n},\n  {\n    \"name\": \"首页\",\n    \"href\": \"/?home=1\"\n  },\n  {\n    \"name\": \"学习资源\",\n    \"href\": \"https://edu.vika.cn/index\",\n    \"children\": [\n      {\n        \"name\": \"快速入门 Tutorials\",\n        \"href\": \"https://help.vika.cn/docs/guide/tutorial\"\n      },\n      {\n        \"name\": \"产品手册 Manual\",\n        \"href\": \"https://help.vika.cn/docs/guide/manual\"\n      },\n      {\n        \"name\": \"维格课堂 Vika Education\",\n        \"href\": \"https://edu.vika.cn/\"\n      },\n      {\n        \"name\": \"维格社区 Vika BBS\",\n        \"href\": \"https://bbs.vika.cn/\"\n      },\n      {\n        \"name\": \"第三方连接 Integration\",\n        \"href\": \"https://help.vika.cn/docs/guide/connection\"\n      },\n      {\n        \"name\": \"开发者中心 Developer Center\",\n        \"href\": \"/developers/\"\n      },\n      {\n        \"name\": \"常见问题 FAQ\",\n        \"href\": \"https://help.vika.cn/docs/guide/questions\"\n      }\n    ]\n  }]",
@@ -15051,8 +15175,8 @@
             "zh_HK": "官網"
         },
         "official_website_partners": {
-            "zh_CN": "[{\n  \"name\": \"五源资本\",\n  \"url\": \"https://www.5ycap.com/\"\n}, {\n  \"name\": \"IDG资本\",\n  \"url\": \"https://cn.idgcapital.com/\"\n}, {\n  \"name\": \"天图资本\",\n  \"url\": \"http://www.tiantu.com.cn/\"\n}, {\n  \"name\": \"惟客数据\",\n  \"url\": \"https://wakedata.com/\"\n}, {\n  \"name\": \"方云智能\",\n  \"url\": \"https://www.farcloud.com/\"\n}, {\n  \"name\": \"SegmentFault思否\",\n  \"url\": \"https://segmentfault.com/\"\n}, {\n  \"name\": \"字符科技\",\n  \"url\": \"http://www.alphabets.cn/\"\n}, {\n  \"name\": \"ones.ai\",\n  \"url\": \"https://ones.ai/\"\n}, {\n  \"name\": \"集简云\",\n  \"url\": \"https://jijyun.cn/\"\n}, {\n  \"name\": \"粤湾商盟\",\n  \"url\": \"http://www.gbabusiness.cn/\"\n},{\n  \"name\": \"语鹦企服\",\n  \"url\": \"https://crm.bytell.cn/\"\n}, {\n  \"name\": \"ShowMeBug\",\n  \"url\": \"https://www.showmebug.com/\"\n}, {\n  \"name\": \"ucbug软件站\",\n  \"url\": \"http://www.ucbug.com/\"\n}, {\n  \"name\": \"flomo 浮墨笔记\",\n  \"url\": \"https://flomoapp.com/\"\n}, {\n  \"name\": \"高瓴资本\",\n  \"url\": \"https://www.hillhousecap.com/zh-hans/\"\n}, {\n  \"name\": \"靖亚资本\",\n  \"url\": \"http://www.emventures.cn/\"\n}, {\n  \"name\": \"AdsPower指纹浏览器\",\n  \"url\": \"https://www.adspower.net/\"\n}, {\n  \"name\": \"微伴助手\",\n  \"url\": \"https://weibanzhushou.com/\"\n}, {\n  \"name\": \"Tapdata\",\n  \"url\": \"https://tapdata.net/\"\n}, {\n  \"name\": \"CodeFun\",\n  \"url\": \"https://code.fun/\"\n}]",
-            "en_US": "[{\n  \"name\": \"五源资本\",\n  \"url\": \"https://www.5ycap.com/\"\n}, {\n  \"name\": \"IDG资本\",\n  \"url\": \"https://cn.idgcapital.com/\"\n}, {\n  \"name\": \"天图资本\",\n  \"url\": \"http://www.tiantu.com.cn/\"\n}, {\n  \"name\": \"惟客数据\",\n  \"url\": \"https://wakedata.com/\"\n}, {\n  \"name\": \"方云智能\",\n  \"url\": \"https://www.farcloud.com/\"\n}, {\n  \"name\": \"SegmentFault思否\",\n  \"url\": \"https://segmentfault.com/\"\n}, {\n  \"name\": \"字符科技\",\n  \"url\": \"http://www.alphabets.cn/\"\n}, {\n  \"name\": \"ones.ai\",\n  \"url\": \"https://ones.ai/\"\n}, {\n  \"name\": \"集简云\",\n  \"url\": \"https://jijyun.cn/\"\n}, {\n  \"name\": \"粤湾商盟\",\n  \"url\": \"http://www.gbabusiness.cn/\"\n},{\n  \"name\": \"语鹦企服\",\n  \"url\": \"https://crm.bytell.cn/\"\n}, {\n  \"name\": \"ShowMeBug\",\n  \"url\": \"https://www.showmebug.com/\"\n}, {\n  \"name\": \"ucbug软件站\",\n  \"url\": \"http://www.ucbug.com/\"\n}, {\n  \"name\": \"flomo 浮墨笔记\",\n  \"url\": \"https://flomoapp.com/\"\n}, {\n  \"name\": \"高瓴资本\",\n  \"url\": \"https://www.hillhousecap.com/zh-hans/\"\n}, {\n  \"name\": \"靖亚资本\",\n  \"url\": \"http://www.emventures.cn/\"\n}, {\n  \"name\": \"AdsPower指纹浏览器\",\n  \"url\": \"https://www.adspower.net/\"\n}, {\n  \"name\": \"微伴助手\",\n  \"url\": \"https://weibanzhushou.com/\"\n}, {\n  \"name\": \"Tapdata\",\n  \"url\": \"https://tapdata.net/\"\n}, {\n  \"name\": \"CodeFun\",\n  \"url\": \"https://code.fun/\"\n}]"
+            "zh_CN": "[{\n  \"name\": \"五源资本\",\n  \"url\": \"https://www.5ycap.com/\"\n}, {\n  \"name\": \"IDG资本\",\n  \"url\": \"https://cn.idgcapital.com/\"\n}, {\n  \"name\": \"天图资本\",\n  \"url\": \"http://www.tiantu.com.cn/\"\n}, {\n  \"name\": \"惟客数据\",\n  \"url\": \"https://wakedata.com/\"\n}, {\n  \"name\": \"方云智能\",\n  \"url\": \"https://www.farcloud.com/\"\n}, {\n  \"name\": \"SegmentFault思否\",\n  \"url\": \"https://segmentfault.com/\"\n}, {\n  \"name\": \"字符科技\",\n  \"url\": \"http://www.alphabets.cn/\"\n}, {\n  \"name\": \"ones.ai\",\n  \"url\": \"https://ones.ai/\"\n}, {\n  \"name\": \"集简云\",\n  \"url\": \"https://jijyun.cn/\"\n}, {\n  \"name\": \"粤湾商盟\",\n  \"url\": \"http://www.gbabusiness.cn/\"\n},{\n  \"name\": \"语鹦企服\",\n  \"url\": \"https://crm.bytell.cn/\"\n}, {\n  \"name\": \"ShowMeBug\",\n  \"url\": \"https://www.showmebug.com/\"\n}, {\n  \"name\": \"flomo 浮墨笔记\",\n  \"url\": \"https://flomoapp.com/\"\n}, {\n  \"name\": \"高瓴资本\",\n  \"url\": \"https://www.hillhousecap.com/zh-hans/\"\n}, {\n  \"name\": \"靖亚资本\",\n  \"url\": \"http://www.emventures.cn/\"\n}, {\n  \"name\": \"AdsPower指纹浏览器\",\n  \"url\": \"https://www.adspower.net/\"\n}, {\n  \"name\": \"微伴助手\",\n  \"url\": \"https://weibanzhushou.com/\"\n}, {\n  \"name\": \"Tapdata\",\n  \"url\": \"https://tapdata.net/\"\n}, {\n  \"name\": \"CodeFun\",\n  \"url\": \"https://code.fun/\"\n}]",
+            "en_US": "[{\n  \"name\": \"五源资本\",\n  \"url\": \"https://www.5ycap.com/\"\n}, {\n  \"name\": \"IDG资本\",\n  \"url\": \"https://cn.idgcapital.com/\"\n}, {\n  \"name\": \"天图资本\",\n  \"url\": \"http://www.tiantu.com.cn/\"\n}, {\n  \"name\": \"惟客数据\",\n  \"url\": \"https://wakedata.com/\"\n}, {\n  \"name\": \"方云智能\",\n  \"url\": \"https://www.farcloud.com/\"\n}, {\n  \"name\": \"SegmentFault思否\",\n  \"url\": \"https://segmentfault.com/\"\n}, {\n  \"name\": \"字符科技\",\n  \"url\": \"http://www.alphabets.cn/\"\n}, {\n  \"name\": \"ones.ai\",\n  \"url\": \"https://ones.ai/\"\n}, {\n  \"name\": \"集简云\",\n  \"url\": \"https://jijyun.cn/\"\n}, {\n  \"name\": \"粤湾商盟\",\n  \"url\": \"http://www.gbabusiness.cn/\"\n},{\n  \"name\": \"语鹦企服\",\n  \"url\": \"https://crm.bytell.cn/\"\n}, {\n  \"name\": \"ShowMeBug\",\n  \"url\": \"https://www.showmebug.com/\"\n}, {\n  \"name\": \"flomo 浮墨笔记\",\n  \"url\": \"https://flomoapp.com/\"\n}, {\n  \"name\": \"高瓴资本\",\n  \"url\": \"https://www.hillhousecap.com/zh-hans/\"\n}, {\n  \"name\": \"靖亚资本\",\n  \"url\": \"http://www.emventures.cn/\"\n}, {\n  \"name\": \"AdsPower指纹浏览器\",\n  \"url\": \"https://www.adspower.net/\"\n}, {\n  \"name\": \"微伴助手\",\n  \"url\": \"https://weibanzhushou.com/\"\n}, {\n  \"name\": \"Tapdata\",\n  \"url\": \"https://tapdata.net/\"\n}, {\n  \"name\": \"CodeFun\",\n  \"url\": \"https://code.fun/\"\n}]"
         },
         "official_website_without_abbr": {
             "zh_CN": "官方网站",
@@ -15628,7 +15752,7 @@
         },
         "other_views": {
             "zh_CN": "高级视图",
-            "en_US": "Advanced View",
+            "en_US": "Advanced Views",
             "zh_HK": "高級視圖"
         },
         "owner": {
@@ -16270,9 +16394,9 @@
             "zh_HK": "請輸入小組名稱"
         },
         "placeholder_input_workspace_name": {
-            "zh_CN": "请输入空间站名称（${minCount}-${maxCount} 个字符）",
-            "en_US": "Enter a name with ${minCount}-${maxCount} characters",
-            "zh_HK": "請輸入空間站名稱（${minCount}-${maxCount} 個字符）"
+            "zh_CN": "请输入空间站名称",
+            "en_US": "Enter space name",
+            "zh_HK": "請輸入空間站名稱"
         },
         "placeholder_input_workspace_new_name": {
             "zh_CN": "请输入新的空间站名称（${minCount}~${maxCount}个字）",
@@ -16409,14 +16533,14 @@
             "zh_HK": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/01/21/0c57f86937e941289aae077071fc4338\",\n    \"readMoreUrl\": \"https://u.vika.cn/0c85m\",\n    \"children\": \"<h3>2022年1月更新｜第二彈</h3><ul><li>維格表功能界面支持英文語言，點亮 Hello World</li><li>回收艙取消「徹底刪除」，避免其他成員誤刪除導致無法恢復</li><li>小助手增加「歷史更新」，遊歷社區挖掘更多功能使用小技巧</li></ul>\"\n}"
         },
         "player_step_ui_config_105": {
-            "zh_CN": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引导\", \n\"description\": \"模板中心提供了 1000+ 业务自动化解决方案，可免费安装应用\", \"children\":\"\" \n}",
-            "en_US": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"Tips\", \n\"description\": \"The templates center offers more than 1000 business automation solutions and is free for download.\", \"children\":\"\" \n}",
-            "zh_HK": "{\n \"element\": \".sc-eFehXo:first-child .sc-fmBDoT:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引導\", \n\"description\": \"模板中心提供了 1000+ 業務自動化解決方案，可免費安裝應用\", \"children\":\"\" \n}"
+            "zh_CN": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引导\", \n\"description\": \"模板中心提供了 1000+ 业务自动化解决方案，可免费安装应用\", \"children\":\"\" \n}",
+            "en_US": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"Tips\", \n\"description\": \"The templates center offers more than 1000 business automation solutions and is free for download.\", \"children\":\"\" \n}",
+            "zh_HK": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"placement\": \"rightCenter\",\n \"title\": \"智能引導\", \n\"description\": \"模板中心提供了 1000+ 業務自動化解決方案，可免費安裝應用\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_106": {
-            "zh_CN": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} ",
-            "en_US": "{\n \"element\": \".sc-jlRMkV:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} ",
-            "zh_HK": "{\n \"element\": \".sc-eFehXo:first-child .sc-fmBDoT:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} "
+            "zh_CN": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} ",
+            "en_US": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} ",
+            "zh_HK": "{\n \"element\": \".sc-jmpzUR:nth-last-of-type(2)\",\n\"shadowDirection\":\"inset\"\n} "
         },
         "player_step_ui_config_107": {
             "zh_CN": "{ \n\"element\": \"#WORKBENCH_SIDE_ADD_NODE_BTN\", \"placement\": \"bottom\", \"title\": \"智能引导\", \"description\": \"还没想好怎么搭建业务场景？那就先从模板开始吧～\", \"children\":\"\" }",
@@ -16608,6 +16732,14 @@
         },
         "player_step_ui_config_164": {
             "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/10/20/1dc32d8aa47b4863a97ea84ce11ecc60?attname=Update_cover%402x.png\",\n    \"readMoreUrl\": \"https://bbs.vika.cn/article/252\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul><li>模板中心新增「专题」板块，更多元化的模板介绍</li><li>全新帮助中心上线，提供更丰富的内容</li><li>部分功能结束免费体验，正式按空间站等级提供服务</li></ul>\"\n}"
+        },
+        "player_step_ui_config_166": {
+            "zh_CN": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+            "en_US": "{\n  \"title\": \"Upgrade To Pro And Save 50%!\",\n  \"description\": \"In a few simple steps, you can upgrade to APITable Pro at the early bird special discount price.\",\n  \"listHeader\": \"Included Features:\",\n  \"listContent\": [\n    \"Up to 2,000,000 records per space\",\n    \"140GB of attachmens per space\",\n    \"All APIs are accessible\"\n  ],\n  \"listFooter\": \"More details\",\n  \"url\": \"https://apitable.com/pricing/\"\n}"
+        },
+        "player_step_ui_config_167": {
+            "zh_CN": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"How do you want to use APITable?\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT & Support\",\n        \"Education\",\n        \"Marketing\",\n        \"PMO\",\n        \"Product Management\",\n        \"HR & Recruiting\",\n        \"Operations\",\n        \"Finance\",\n        \"Sales & CRM\",\n        \"Software Development\",\n        \"HR & Legal\",\n        \"Design & Creative\",\n        \"Nonprofit\",\n        \"Manufacture\",\n        \"Other Things\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"What best describes your current role?\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"Business Owner\",\n        \"Team Leader\",\n        \"Team Member\",\n        \"Freelancer\",\n        \"Director\",\n        \"C-level\",\n        \"VP\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"How did you hear about us? \",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"Search Engine\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"Twitter\",\n        \"LinkedIn\",\n        \"Through a friend\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"We host a Discord channel as a place for discussion with APITable fans, come and join us!\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"Join Our Community\",\n      \"skipText\": \"skip\",\n      \"submit\": true\n    }\n  ]\n}"
         },
         "player_step_ui_config_17": {
             "zh_CN": "{\n \"element\": \"#TEMPLATE_CENTER_USE_TEMPLATE_BTN>button\", \n\"placement\": \"rightBottom\",\n\"offsetY\": 20,\n \"title\": \"使用模板教程\", \n\"description\": \"点击左侧按钮使用模板\", \"children\":\"\" \n}",
@@ -17019,9 +17151,9 @@
             "zh_HK": "{\"title\":\"🌟星球居民們🌟\",\"children\":\"<h3>🔒 視圖鎖</h3>\\n<p>在視圖標籤欄中開啟「視圖鎖」，其他協作者將無權對視圖進行篩選、分組、排序等操作，穩穩保住數據呈現效果。 </p>\\n<p><img src=\\\"https://s1.vika.cn/space/2021/12/23/831976472d6c491599ff92076045bb89\\\" alt=\\\"https://s1.vika.cn/space/2021/12/23/831976472d6c491599ff92076045bb89\\\"></p>\\n<h3>💬&nbsp;記錄評論</h3>\\n<p>記錄評論不僅支持引用指定評論進行回复，還可以用表情 👌&nbsp;和 👍&nbsp;表示知會和認可，讓工作瑣碎事事有響應。 </p>\\n<p><img src=\\\"https://s1.vika.cn/space/2021/12/23/694dcfc45bb94cbb91437cd8119d4af2\\\" alt=\\\"https://s1.vika.cn/space/2021/12/23/694dcfc45bb94cbb91437cd8119d4af2\\\"></p>\\n<h3>其他優化</h3>\\n<p>支持只讀權限成員進行視圖配置，可隨心進行篩選、排序等操作，不用擔心影響到其他人。 </p>\\n<p>維格小組件全面更名為「維格小程序」，組件板和組件中心同步更名為「小程序面板」、「小程序中心」。 </p>\"}"
         },
         "player_step_ui_config_97": {
-            "zh_CN": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
-            "en_US": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"If you have a problem, you can contact me to help you\",\n\t\t\"list\": \"<ul><li>Not sure how to use vikadata</li><li>What vikadata can do for me</li><li>Problems during use</li><li>What's new in the future</li><li>Get official invitation code</li></ul>\",\n\t\t\"tip\": \"Scan the QR code to contact us\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"Hello, I'm Vika's Digitalization Consultant\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Report bug\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"Give feedback\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"Customer support\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"Case recommendation\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"Solutions\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"FAQs\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"Please use WeChat to scan the code to add customer service to get more exclusive services\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"Please use DingTalk to scan the code to join our group\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"Scan the QR code to contact us\",\n\t\t\"tip\": \"Please use Lark to scan the code and add customer service for more help\",\n\t\t\"description\": \"So that you can get service at any time when you encounter problems during use\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
-            "zh_HK": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用過程中遇到問題，請掃描右側二維碼聯繫我解決\",\n\t\t\"list\": \"<ul><li>剛註冊維格表，不知道怎麼用</li><li>維格表可以實現我想要的效果嗎</li><li>使用過程出現異常問題</li><li>後續支持的功能有哪些</li><li>獲取官方邀請碼</li></ul>\",\n\t\t\"tip\": \"掃碼添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是維格表數字化顧問\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反饋\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服務支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推薦\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解決方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"產品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"掃碼添加微信，獲得更多專屬服務\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"請使用釘釘掃碼，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"掃碼添加客服\",\n\t\t\"tip\": \"請使用飛書掃碼，添加客服號備用\",\n\t\t\"description\": \"以便使用過程中遇到問題，可以隨時獲得服務和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}"
+            "zh_CN": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServiceOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"LikeOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"QuestionCircleOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+            "en_US": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"If you have a problem, you can contact me to help you\",\n\t\t\"list\": \"<ul><li>Not sure how to use vikadata</li><li>What vikadata can do for me</li><li>Problems during use</li><li>What's new in the future</li><li>Get official invitation code</li></ul>\",\n\t\t\"tip\": \"Scan the QR code to contact us\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"Hello, I'm Vika's Digitalization Consultant\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Report bug\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"Give feedback\\\", \\\"icon\\\": \\\"AdviseOutlined\\\"}, {\\\"title\\\": \\\"Customer support\\\", \\\"icon\\\": \\\"ServiceOutlined\\\"}, {\\\"title\\\": \\\"Case recommendation\\\", \\\"icon\\\": \\\"LikeOutlined\\\"}, {\\\"title\\\": \\\"Solutions\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"FAQs\\\", \\\"icon\\\": \\\"QuestionCircleOutlined\\\"}]\",\n\t\t\"tip\": \"Please use WeChat to scan the code to add customer service to get more exclusive services\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"Please use DingTalk to scan the code to join our group\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"Scan the QR code to contact us\",\n\t\t\"tip\": \"Please use Lark to scan the code and add customer service for more help\",\n\t\t\"description\": \"So that you can get service at any time when you encounter problems during use\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+            "zh_HK": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用過程中遇到問題，請掃描右側二維碼聯繫我解決\",\n\t\t\"list\": \"<ul><li>剛註冊維格表，不知道怎麼用</li><li>維格表可以實現我想要的效果嗎</li><li>使用過程出現異常問題</li><li>後續支持的功能有哪些</li><li>獲取官方邀請碼</li></ul>\",\n\t\t\"tip\": \"掃碼添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是維格表數字化顧問\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反饋\\\", \\\"icon\\\": \\\"AdviseOutlined\\\"}, {\\\"title\\\": \\\"服務支持\\\", \\\"icon\\\": \\\"ServiceOutlined\\\"}, {\\\"title\\\": \\\"案例推薦\\\", \\\"icon\\\": \\\"LikeOutlined\\\"}, {\\\"title\\\": \\\"解決方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"產品答疑\\\", \\\"icon\\\": \\\"QuestionCircleOutlined\\\"}]\",\n\t\t\"tip\": \"掃碼添加微信，獲得更多專屬服務\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"請使用釘釘掃碼，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"掃碼添加客服\",\n\t\t\"tip\": \"請使用飛書掃碼，添加客服號備用\",\n\t\t\"description\": \"以便使用過程中遇到問題，可以隨時獲得服務和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}"
         },
         "player_step_ui_config_99": {
             "zh_CN": "{\n  \"title\": \"🌟星球居民们🌟\",\n  \"children\": \"<p>2022 年首版更新已送达，希望每个细节体验都能在「辞旧迎新」中为你提供更多便利与舒心。</p>\\n<h3>📅 日期输入更包容</h3>\\n<p>日期字段体验优化，单元格输入 1-14、1/14 后智能补全为 2022/01/14，想你所想</p>\\n<p><img src=\\\"https://s1.vika.cn/space/2022/01/13/97f2bfa8572a43b58f83517e54fe7317\\\" alt=\\\"\\\"></p>\\n<h3>📅  日历展示更清晰</h3>\\n<p>优化日历视图展示效果，同一日期中的记录超出 5 条时自动折叠，保持页面简洁</p>\\n<p><img src=\\\"https://s1.vika.cn/space/2022/01/12/8173324f1f6b4cd78bb0827e21bbda71\\\" alt=\\\"\\\"></p>\\n<h3>🎮 小程序能力拓展</h3>\\n<p>小程序能力进一步开放，vika 实验室实力出道，本期练习生：抽奖幸运儿、word 文档生成器</p>\\n<p>由 Liam 研发的「抽奖幸运儿」在 2022 维格年会上首次亮相，界面简约、操作简单，出场即是焦点，承担 5 万行数据不在话下，关键还免费</p>\\n<p><img src=\\\"https://s1.vika.cn/space/2022/01/13/4121f5d7ff45473785842026811bae1a\\\" alt=\\\"\\\"></p>\\n<p>由 Kelvin 研发的「Word 文档生成器」，一键即可批量填充字段并合成新的 Word 文档，减少大量重复性工作，为职场工具人的效率而生</p>\\n<p><img src=\\\"https://s1.vika.cn/space/2022/01/13/50f6ff15fdd84b46a03f9a501d555d0f\\\" alt=\\\"\\\"></p>\\n<p>*两款小程序由 vika 实验室发布，欢迎前往维格社区与开发者互动交流</p>\\n<p>👉  <a target=\\\"_blank\\\" href=\\\"https://bbs.vika.cn/topic/7\\\">https://bbs.vika.cn/topic/7</a></p>\"\n}",
@@ -17275,8 +17407,8 @@
             "zh_HK": "產品價格問答"
         },
         "price_questions": {
-            "zh_CN": "[{\n\t\"question\": \"什么是空间站等级？\",\n\t\"answer\": \"空间站是组织或团队所有成员的共享工作区，在「维格表」里点击左上角空间站图标即可查看自己管理或受邀的空间站。空间站等级分为青铜级（永久免费）、白银级、黄金级和企业级。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益。\"\n}, {\n\t\"question\": \"如何查看空间站的当前等级和用量情况？\",\n\t\"answer\": \"在「空间站管理 > 空间站驾驶舱」中可查看。\"\n}, {\n\t\"question\": \"白银级/黄金级/企业级付费时长结束后，维格表数量/行数/附件等超出用量限制，会被删除吗？\",\n\t\"answer\": \"空间站到期后等级自动降级为青铜级，享受青铜级的权益。超出青铜级用量上限部分的数据不会被删除，可以正常使用。当你再新增数据时，如果超出了青铜级上限，则会触发上限提醒。\"\n}, {\n\t\"question\": \"文件节点数量是什么？\",\n\t\"answer\": \"文件节点数量包含工作目录中所有文件（表格、仪表盘、神奇表单、镜像）的数量统计。被删除的文件节点不计入统计。\"\n}, {\n\t\"question\": \"席位数是什么？\",\n\t\"answer\": \"席位数是空间站内席位成员的名额上限，席位成员属于正式成员，可以作为协作成员对文件进行编辑。\"\n}, {\n\t\"question\": \"空间站内的V币是什么？\",\n\t\"answer\": \"V币是维格表赠送的平台积分，与人民币的兑换比例为 100:1，可用于兑换维格表内的服务。如白银级空间站每人每月需要 30 元，即可用 3000 V币进行兑换。\"\n}, {\n\t\"question\": \"如何获取V币？\",\n\t\"answer\": \"V币的获取方式包括但不限于：完成新手任务、邀请好友、参与维格表相关活动等。\"\n}, {\n\t\"question\": \"为什么有的功能名称左侧标了星号「*」？\",\n\t\"answer\": \"标星号「*」表示目前该功能未上线，在未来会推出。\"\n}, {\n\t\"question\": \"有的功能是限时免费的，截止日期是多少？\",\n\t\"answer\": \"某些维格表新功能上线后，会有一段不定周期的时间给用户进行免费体验。功能正式收费后，免费体验期间创建的数据不会受到影响，请大家放心使用。\"\n}, {\n\t\"question\": \"企业级的定制小程序怎么收费？\",\n\t\"answer\": \"我们将根据企业级客户的实际业务需求，提供付费定制开发小程序的服务。如果想要了解定制费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"\n}, {\n\t\"question\": \"如何了解具体的收费计划和使用规则？\",\n\t\"answer\": \"如果想要了解企业级的费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"\n}, {\n\t\"question\": \"数据安全如何得到保障？\",\n\t\"answer\": \"数据安全是维格表的生命线。数据通过 HTTPS/SSL/TLS 协议配置 CA 证书进行加密传输，并存储于云服务商，由云厂商进行安全运维保障，数据实时备份不会丢失。此外，维格表中所有应用的数据授权，均通过 Vault 密钥钱包进行安全验证管理。考虑到企业更高的数据安全需求，维格表提供私有化部署服务，建立全面、稳定的技术防御。\"\n}]",
-            "en_US": "[\n  {\n    \"question\": \"What is the Space?\",\n    \"answer\": \"The space is a shared work area for all members of the organization or team. Click the space icon in the upper left corner of the APITable workbench to view your own managed or invited spaces.\"\n  }, \n  {\n\t\"question\": \"What is the grade of the space?\",\n\t\"answer\": \"APITable space grade include Free ,Plus, Pro and Enterprise. Different grade of space enjoy different rights and interests, and space members enjoy the relevant rights and interests in the same space\"\n}, {\n\t\"question\": \"How to check the current grade and usage of the space?\",\n\t\"answer\": \"You can view it in the Space settings > Overview.\"\n}, {\n\t\"question\": \"How does APITable's pricing work?\",\n\t\"answer\": \"APITable plans are charged flat rate and per-seat.For example, if you buy a plus plan of the space, you have to pay a fixed rate. Then，the plus plan contains 10 free seats. If you have more than 10 members on the space , you need to buy seats for the excess members.\"\n},{\n\t\"question\": \"How do I upgrade?\",\n\t\"answer\": \"you can go to the Space settings > upgrade and choose a paid plan.Only a fews steps,you can subscribe to a plan.If your space have been a paid plan,You can still choose a higher plan in this way.\"\n}, {\n\t\"question\": \"How does adding and removing members work?\",\n\t\"answer\": \" If you added members, your account will be charged a prorated amount based on the percentage of the billing cycle left at the time each member was added. If you removed members, your account will be credited in the same way.\"\n}, {\n\t\"question\": \"How do I downgrade or unsubscribe?\",\n\t\"answer\": \"Please contact us,you can click the small purple icon in the lower right corner and send us a message.\"\n}, {\n\t\"question\": \"How do I switch billing cycle\",\n\t\"answer\": \"Please contact us,you can click the small purple icon in the lower right corner and send us a message.\"\n}]",
+            "zh_CN": "[\n\t{\n\t\t\"question\": \"什么是空间站等级？\",\n\t\t\"answers\": [\"空间站是组织或团队所有成员的共享工作区，在「维格表」里点击左上角空间站图标即可查看自己管理或受邀的空间站。空间站等级分为青铜级（永久免费）、白银级、黄金级和企业级。不同等级的空间站享有不同的权益，空间站成员享有所处等级空间站的相关权益。\"]\n\t},\n\t{\n\t\t\"question\": \"如何查看空间站的当前等级和用量情况？\",\n\t\t\"answers\": [\"在「空间站管理 > 空间站驾驶舱」中可查看。\"]\n\t},\n\t{\n\t\t\"question\": \"白银级/黄金级/企业级付费时长结束后，维格表数量/行数/附件等超出用量限制，会被删除吗？\",\n\t\t\"answers\": [\"空间站到期后等级自动降级为青铜级，享受青铜级的权益。超出青铜级用量上限部分的数据不会被删除，可以正常使用。当你再新增数据时，如果超出了青铜级上限，则会触发上限提醒。\"]\n\t},\n\t{\n\t\t\"question\": \"文件节点数量是什么？\",\n\t\t\"answers\": [\"文件节点数量包含工作目录中所有文件（表格、仪表盘、神奇表单、镜像）的数量统计。被删除的文件节点不计入统计。\"]\n\t},\n\t{\n\t\t\"question\": \"席位数是什么？\",\n\t\t\"answers\": [\"席位数是空间站内席位成员的名额上限，席位成员属于正式成员，可以作为协作成员对文件进行编辑。\"]\n\t},\n\t{\n\t\t\"question\": \"空间站内的V币是什么？\",\n\t\t\"answers\": [\"V币是维格表赠送的平台积分，与人民币的兑换比例为 100:1，可用于兑换维格表内的服务。如白银级空间站每人每月需要 30 元，即可用 3000 V币进行兑换。\"]\n\t},\n\t{\n\t\t\"question\": \"如何获取V币？\",\n\t\t\"answers\": [\"V币的获取方式包括但不限于：完成新手任务、邀请好友、参与维格表相关活动等。\"]\n\t},\n\t{\n\t\t\"question\": \"为什么有的功能名称左侧标了星号「*」？\",\n\t\t\"answers\": [\"标星号「*」表示目前该功能未上线，在未来会推出。\"]\n\t},\n\t{\n\t\t\"question\": \"有的功能是限时免费的，截止日期是多少？\",\n\t\t\"answers\": [\"某些维格表新功能上线后，会有一段不定周期的时间给用户进行免费体验。功能正式收费后，免费体验期间创建的数据不会受到影响，请大家放心使用。\"]\n\t},\n\t{\n\t\t\"question\": \"企业级的定制小程序怎么收费？\",\n\t\t\"answers\": [\"我们将根据企业级客户的实际业务需求，提供付费定制开发小程序的服务。如果想要了解定制费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"]\n\t},\n\t{\n\t\t\"question\": \"如何了解具体的收费计划和使用规则？\",\n\t\t\"answers\": [\"如果想要了解企业级的费用详情，请点击右下角的「联系客服」进行咨询；移动端用户请点击底部的「联系客服」。\"]\n\t},\n\t{\n\t\t\"question\": \"数据安全如何得到保障？\",\n\t\t\"answers\": [\"数据安全是维格表的生命线。数据通过 HTTPS/SSL/TLS 协议配置 CA 证书进行加密传输，并存储于云服务商，由云厂商进行安全运维保障，数据实时备份不会丢失。此外，维格表中所有应用的数据授权，均通过 Vault 密钥钱包进行安全验证管理。考虑到企业更高的数据安全需求，维格表提供私有化部署服务，建立全面、稳定的技术防御。\"]\n\t}\n]",
+            "en_US": "[\n\t{\n\t\t\"question\": \"What is Space in APITable?\",\n\t\t\"answers\": [\n\t\t\t\"Space is a collaboration platform for all members of your organization or team. Access your personalized managed and invited spaces by clicking on the space icon located in the upper left corner of the APITable workbench.\"\n\t\t]\n\t},\n\t{\n\t\t\"question\": \"How can I check my current space plan and usage?\",\n\t\t\"answers\": [\n\t\t\t\"You can check your current Space plan and usage by navigating to the Space settings > Overview section.\"\n\t\t],\n\t\t\"list\": []\n\t},\n\t{\n\t\t\"question\": \"How does APITable's pricing work?\",\n\t\t\"answers\": [\n\t\t\t\"APITable charges are based on a combination of fixed rates and seat rates. On APITable's Free plan, you get 5 seats for free. If you choose to subscribe, you'll be charged based on the subscription plan and the number of seats. \",\n\t\t\t\"The Plus plan includes 10 available seats, and if you need to add more seats later, you'll need to pay a rate of 1.5 dollars/month/seat (during early bird pricing).\",\n\t\t\t\"The Pro plan includes 20 free available seats, and if you need to add more seats later, you'll need to pay a rate of 3 dollars/month/seat (during early bird pricing).\",\n\t\t\t\"Here, 'seats' refers to the number of members joined in the space and doesn't include non-space members who are allowed to submit forms.\"\n\t\t]\n\t},\n\t{\n\t\t\"question\": \"How do I upgrade my Space plan? \",\n\t\t\"answers\": [\n\t\t\t\"With just a few clicks, you can upgrade your existing paid Space plan by navigating to Space settings > Upgrade and selecting a paid plan.\"\n\t\t]\n\t},\n\t{\n\t\t\"question\": \"How does adding and removing members work on billing?\",\n\t\t\"answers\": [\n\t\t\t\"When you add members, you'll be charged a portion of the fee based on the time each member was added and the current billing cycle.\",\n\t\t\t\"When you remove members, you'll receive a credit for a portion of the fee based on the same calculation. These charges or credits will appear on your next billing statement.\"\n\t\t]\n\t},\n\t{\n\t\t\"question\": \"How do I downgrade or unsubscribe?\",\n\t\t\"answers\": [\n\t\t\t\"If you want to downgrade your current plan, you can do it directly in the Space settings. For unsubscribing, we will assist you with downgrading or unsubscribing your subscription. Click the purple icon in the bottom right corner and send us a message or contact us at support@apitable.com.\"\n\t\t]\n\t}\n]",
             "zh_HK": "[{\n\t\"question\": \"什麼是空間站等級？\",\n\t\"answer\": \"空間站是組織或團隊所有成員的共享工作區，在「維格表」裡點擊左上角空間站圖標即可查看自己管理或受邀的空間站。空間站等級分為青銅級（永久免費）、白銀級、黃金級和企業級。不同等級的空間站享有不同的權益，空間站成員享有所處等級空間站的相關權益。 \"\n}, {\n\t\"question\": \"如何查看空間站的當前等級和用量情況？\",\n\t\"answer\": \"在「空間站管理 > 空間站駕駛艙」中可查看。 \"\n}, {\n\t\"question\": \"白銀級/黃金級/企業級付費時長結束後，維格表數量/行數/附件等超出用量限制，會被刪除嗎？\",\n\t\"answer\": \"空間站到期後等級自動降級為青銅級，享受青銅級的權益。超出青銅級用量上限部分的數據不會被刪除，可以正常使用。當你再新增數據時，如果超出了青銅級上限，則會觸發上限提醒。\"\n}, {\n\t\"question\": \"文件節點數量是什麼？\",\n\t\"answer\": \"文件節點數量包含工作目錄中所有文件（表格、儀錶盤、神奇表單、鏡像）的數量統計。被刪除的文件節點不計入統計。\"\n}, {\n\t\"question\": \"席位數是什麼？\",\n\t\"answer\": \"席位數是空間站內席位成員的名額上限，席位成員屬於正式成員，可以作為協作成員對文件進行編輯。\"\n}, {\n\t\"question\": \"空間站內的V幣是什麼？\",\n\t\"answer\": \"V幣是維格表贈送的平台積分，與人民幣的兌換比例為 100:1，可用於兌換維格表內的服務。如白銀級空間站每人每月需要 30 元，即可用 3000 V幣進行兌換。\"\n}, {\n\t\"question\": \"如何獲取V幣？\",\n\t\"answer\": \"V幣的獲取方式包括但不限於：完成新手任務、邀請好友、參與維格表相關活動等。\"\n}, {\n\t\"question\": \"為什麼有的功能名稱左側標了星號「*」？ \",\n\t\"answer\": \"標星號「*」表示目前該功能未上線，在未來會推出。 \"\n}, {\n\t\"question\": \"有的功能是限時免費的，截止日期是多少？\",\n\t\"answer\": \"某些維格表新功能上線後，會有一段不定週期的時間給用戶進行免費體驗。功能正式收費後，免費體驗期間創建的數據不會受到影響，請大家放心使用。\"\n}, {\n\t\"question\": \"企業級的定制小程序怎麼收費？\",\n\t\"answer\": \"我們將根據企業級客戶的實際業務需求，提供付費定制開發小程序的服務。如果想要了解定制費用詳情，請點擊右下角的「聯繫客服」進行諮詢；移動端用戶請點擊底部的「聯繫客服」。 \"\n}, {\n\t\"question\": \"如何了解具體的收費計劃和使用規則？\",\n\t\"answer\": \"如果想要了解企業級的費用詳情，請點擊右下角的「聯繫客服」進行諮詢；移動端用戶請點擊底部的「聯繫客服」。 \"\n}, {\n\t\"question\": \"數據安全如何得到保障？\",\n\t\"answer\": \"數據安全是維格表的生命線。數據通過 HTTPS/SSL/TLS 協議配置 CA 證書進行加密傳輸，並存儲於雲服務商，由雲廠商進行安全運維保障，數據實時備份不會丟失。此外，維格表中所有應用的數據授權，均通過 Vault 密鑰錢包進行安全驗證管理。考慮到企業更高的數據安全需求，維格表提供私有化部署服務，建立全面、穩定的技術防禦。\"\n}]"
         },
         "price_sub_title": {
@@ -17378,7 +17510,7 @@
         },
         "privatized_deployment": {
             "zh_CN": "私有化部署",
-            "en_US": "Slef-Hosted"
+            "en_US": "Self-Hosted"
         },
         "privatized_deployment_desc": {
             "zh_CN": "将产品部署到您自有的公有云、私有云或IDC机房",
@@ -17386,7 +17518,6 @@
         },
         "privilege_list_of_sliver": {
             "zh_CN": "{\"title\":\"白银级空间站特权\",\"privilegeList\":[\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\",\"独享更换主题色\"],\"helper\":\"了解用户服务联系客服\"}",
-            "en_US": "{\"title\": \"Silver Space Station privilege\", \"privilegeList\": [\"exclusive change theme color\", \"exclusive change theme color\"], \"helper\": \"understand user service and contact customer service\"}",
             "zh_HK": "{\"title\":\"白銀級空間站特權\",\"privilegeList\":[\"獨享更換主題色\",\"獨享更換主題色\",\"獨享更換主題色\",\"獨享更換主題色\"],\"helper\":\"了解用戶服務聯繫客服\"}"
         },
         "pro_edition": {
@@ -17451,7 +17582,7 @@
         },
         "public_cloud": {
             "zh_CN": "公有云",
-            "en_US": "CLOUD"
+            "en_US": "Cloud"
         },
         "public_cloud_desc": {
             "zh_CN": "通过互联网可以便捷访问产品，数据存储到 vika.cn",
@@ -17584,7 +17715,7 @@
         },
         "rainbow_label": {
             "zh_CN": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
-            "en_US": "Rainbow tags and more themes",
+            "en_US": "You are experiencing advanced features: rainbow tags, which can be unlocked by an upgrade.",
             "zh_HK": "你正在體驗高級功能：彩虹標籤，升級可解鎖該功能。"
         },
         "rating": {
@@ -17935,7 +18066,7 @@
         },
         "remove_from_the_team": {
             "zh_CN": "移出小组",
-            "en_US": "Move out of the team",
+            "en_US": "Remove",
             "zh_HK": "移出小組"
         },
         "remove_member_fail": {
@@ -18181,6 +18312,19 @@
             "en_US": "Use phone number to reset password",
             "zh_HK": "使用手機號碼重置密碼"
         },
+        "reset_password_via_emai_failed": {
+            "zh_CN": "发送失败：${error_message}",
+            "en_US": "Failed to send: ${error_message}"
+        },
+        "reset_password_via_emai_success": {
+            "zh_CN": "发送成功",
+            "en_US": "Sent successfully"
+        },
+        "reset_password_via_email": {
+            "zh_CN": "通过电子邮件重置密码",
+            "en_US": "Reset password via email",
+            "zh_HK": "通過電子郵件重置密碼"
+        },
         "reset_permission": {
             "zh_CN": "恢复权限",
             "en_US": "Restore permissions",
@@ -18236,6 +18380,10 @@
             "en_US": "Remaining: ${memory}",
             "zh_HK": "剩餘空間站容量：${memory}"
         },
+        "restore": {
+            "zh_CN": "取消归档",
+            "en_US": "Restore"
+        },
         "restore_space": {
             "zh_CN": "恢复空间站",
             "en_US": "Restore Space",
@@ -18245,6 +18393,10 @@
             "zh_CN": "此空间站将正式删除",
             "en_US": "This Space will be deleted forever at this given time",
             "zh_HK": "此空間站將正式刪除"
+        },
+        "restore_success": {
+            "zh_CN": "还原成功",
+            "en_US": "Restored successfully"
         },
         "retail": {
             "zh_CN": "零售业",
@@ -18773,7 +18925,7 @@
         },
         "robot_new_action": {
             "zh_CN": "新的操作",
-            "en_US": "New action",
+            "en_US": "Add an action",
             "zh_HK": "新的操作"
         },
         "robot_new_action_tooltip": {
@@ -20976,7 +21128,7 @@
         },
         "share_only_desc": {
             "zh_CN": "他人在空间站外只有查看表格的权限",
-            "en_US": "External users outside the Space can only view the file",
+            "en_US": "External users outside the space can only view the file",
             "zh_HK": "他人在空間站外只有查看表格的權限"
         },
         "share_only_title": {
@@ -21229,7 +21381,7 @@
         },
         "silver_grade_desc": {
             "zh_CN": "适用于业务快速发展的团队或组织",
-            "en_US": "For teams or organizations with rapid business growth",
+            "en_US": "For teams with rapid business growth",
             "zh_HK": "適用於業務快速發展的團隊或組織"
         },
         "silver_grade_unlimited": {
@@ -21308,6 +21460,10 @@
             "zh_CN": "我要自己探索",
             "en_US": "Skip\n",
             "zh_HK": "我要自己探索"
+        },
+        "slider_verification_tips": {
+            "zh_CN": "请按住滑块，拖动到最右边",
+            "en_US": "Please hold the slider and drag to the right"
         },
         "slovakia": {
             "zh_CN": "斯洛伐克",
@@ -21614,7 +21770,7 @@
         },
         "space_capacity": {
             "zh_CN": "附件容量",
-            "en_US": "Attachments storage",
+            "en_US": "Attachments Storage",
             "zh_HK": "附件容量",
             "billing": {
                 "products": [
@@ -21981,7 +22137,7 @@
         },
         "space_rainbow_label_limit": {
             "zh_CN": "空间站正在使用白银级空间站专属功能「彩虹标签彩色色系」，请升级以继续使用",
-            "en_US": "The space is using the exclusive function \"Rainbow Label Color System\" for the silver-level space. Please upgrade to continue using it",
+            "en_US": "The space is using the advanced function \"Rainbow Label\". Please upgrade to continue using it.",
             "zh_HK": "空間站正在使用白銀級空間站專屬功能「彩虹標籤彩色色系」，請升級以繼續使用"
         },
         "space_rainbow_label_limit_email_title": {
@@ -22498,6 +22654,18 @@
             "en_US": "The number of people cannot be lower than the original program",
             "zh_HK": "人數不可低於原方案"
         },
+        "subscribe_grade_free": {
+            "zh_CN": "Free",
+            "en_US": "Free"
+        },
+        "subscribe_grade_plus": {
+            "zh_CN": "Plus",
+            "en_US": "Plus"
+        },
+        "subscribe_grade_pro": {
+            "zh_CN": "Pro",
+            "en_US": "Pro"
+        },
         "subscribe_label_tooltip": {
             "zh_CN": "${grade}以上空间站专享功能",
             "en_US": "Advanced space features",
@@ -22560,17 +22728,17 @@
         },
         "subscription_grades_checklist": {
             "zh_CN": "{\n  \"用量\": [\n    {\n      \"group\": \"用量\",\n      \"id\": \"member_num\",\n      \"title\": \"成员数量\",\n      \"bronze\": \"1~10 人\",\n      \"silver\": \"1~100 人\",\n      \"gold\": \"1~200 人\",\n      \"enterprise\": \"定制\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_number\",\n      \"title\": \"文件节点数量\",\n      \"bronze\": \"30 个\",\n      \"silver\": \"300 个\",\n      \"gold\": \"1000 个\",\n      \"enterprise\": \"1 万个\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_rows\",\n      \"title\": \"单维格表行数\",\n      \"bronze\": \"5,000 行\",\n      \"silver\": \"1 万行\",\n      \"gold\": \"2 万行\",\n      \"enterprise\": \"5 万行\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_rows\",\n      \"title\": \"空间站总行数\",\n      \"bronze\": \"2 万行\",\n      \"silver\": \"300 万行\",\n      \"gold\": \"2000 万行\",\n      \"enterprise\": \"5 亿行\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_capacity\",\n      \"title\": \"附件容量\",\n      \"bronze\": \"1GB 默认\",\n      \"silver\": \"席位数 * 5GB\",\n      \"gold\": \"席位数 * 7GB\",\n      \"enterprise\": \"席位数 * 10GB\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    }\n  ],\n  \"功能\": [\n    {\n      \"group\": \"功能\",\n      \"id\": \"star_marker\",\n      \"title\": \"星标\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"album_view\",\n      \"title\": \"相册视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"kanban_view\",\n      \"title\": \"看板视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"org_chart_view\",\n      \"title\": \"架构视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"gantt_view\",\n      \"title\": \"甘特视图\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"calendar_view\",\n      \"title\": \"日历视图\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"collection_table\",\n      \"title\": \"神奇表单\",\n      \"bronze\": \"单空间站 20 张\",\n      \"silver\": \"单空间站 100 张\",\n      \"gold\": \"单空间站 300 张\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"mirror\",\n      \"title\": \"镜像（行权限）\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"widget\",\n      \"title\": \"小程序\",\n      \"bronze\": \"不限，基础 + 自建\",\n      \"silver\": \"不限，基础 + 自建\",\n      \"gold\": \"不限，基础 + 自建\",\n      \"enterprise\": \"不限，基础 + 自建 + 定制\",\n      \"community\":\"不限，基础 + 自建\",\n      \"custom\":\"不限，基础 + 自建\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"dashboard\",\n      \"title\": \"仪表盘\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\",\n      \"community\": true,\n      \"custom\":\"true\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"custom_embedding\",\n      \"title\": \"自定义嵌入\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"rainbow_tags\",\n      \"title\": \"彩虹标签\",\n      \"bronze\": \"基础色系（20 个）\",\n      \"silver\": \"彩虹色系（50 个）\",\n      \"gold\": \"彩虹色系（50 个）\",\n      \"enterprise\": \"彩虹色系（50 个）\",\n      \"community\":\"基础色系（20 个）\",\n      \"custom\":\"彩虹色系（50 个）\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"full_platform_client_support\",\n      \"title\": \"全平台客户端支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"space_capacity\",\n      \"title\": \"时光机（历史记录）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"recycle_bin\",\n      \"title\": \"回收舱（历史文件）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"api_limits\",\n      \"title\": \"API 用量\",\n      \"bronze\": \"1 万次请求/月\",\n      \"silver\": \"10 万次请求/月\",\n      \"gold\": \"50 万次请求/月\",\n      \"enterprise\": \"100 万次请求/月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"robot\",\n      \"title\": \"机器人\",\n      \"bronze\": \"限时免费\",\n      \"silver\": \"限时免费\",\n      \"gold\": \"限时免费\",\n      \"enterprise\": \"限时免费\",\n      \"community\": true,\n      \"custom\": true\n    }\n  ],\n  \"管理和安全\": [\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"column_permission\",\n      \"title\": \"列权限\",\n      \"bronze\": \"单空间站 10 列\",\n      \"silver\": \"单空间站 50 列\",\n      \"gold\": \"单空间站 200 列\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"folder_permission\",\n      \"title\": \"文件权限\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"admin_counts\",\n      \"title\": \"管理员数量\",\n      \"bronze\": \"3 个\",\n      \"silver\": \"5 个\",\n      \"gold\": \"10 个\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"marketplace_integration_app_name_officepreview\",\n      \"title\": \"Office 文件预览\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"feishu_integration\",\n      \"title\": \"飞书集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"dingtalk_integration\",\n      \"title\": \"钉钉集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"wecom_integration\",\n      \"title\": \"企业微信集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"watermark\",\n      \"title\": \"全局水印\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_export_data\",\n      \"title\": \"禁止导出数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_share\",\n      \"title\": \"禁止创建公开链接\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_copy\",\n      \"title\": \"禁止复制数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_download_file\",\n      \"title\": \"禁止下载附件\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_invite_members\",\n      \"title\": \"禁止邀请站外用户\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_show_mobile\",\n      \"title\": \"通讯录显示手机号\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"single_sign_on\",\n      \"title\": \"*单点登录（SSO）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ],\n  \"支持服务\": [\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"online_server\",\n      \"title\": \"在线支持\",\n      \"bronze\": \"基础服务\",\n      \"silver\": \"高级服务\",\n      \"gold\": \"专业顾问 24 小时服务\",\n      \"enterprise\": \"VIP 顾问 24 小时服务\",\n      \"community\": \"基础服务\",\n      \"custom\": \"VIP 顾问 24 小时服务\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customer_support_group\",\n      \"title\": \"客户支持群\",\n      \"bronze\": \"用户社群\",\n      \"silver\": \"高级客户群\",\n      \"gold\": \"专业客户群\",\n      \"enterprise\": \"VIP 客户群\",\n      \"community\": \"用户社群\",\n      \"custom\": \"VIP 客户群\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"muti_language_email\",\n      \"title\": \"中英文邮件支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"free_online_video_train\",\n      \"title\": \"免费在线视频培训\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"exclusive_v_consultant\",\n      \"title\": \"专属 V+ 顾问\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customized_features\",\n      \"title\": \"定制功能开发（费用另计）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"enterprise_consulting_training\",\n      \"title\": \"企业级咨询培训\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ]\n}",
-            "en_US": "{\n  \"Usages\": [\n    {\n      \"group\": \"Usages\",\n      \"id\": \"member_num\",\n      \"title\": \"Seats\",\n      \"bronze\": \"Incl. 10 seats\",\n      \"silver\": \"Incl. 10 seats\",\n      \"gold\": \"Incl. 20 seats\",\n      \"enterprise\": \"Custom\",\n      \"community\":\"unlimited\",\n      \"custom\":\"unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"datasheet_number\",\n      \"title\": \"file nodes \",\n      \"bronze\": \"30\",\n      \"silver\": \"300\",\n      \"gold\": \"1,000\",\n      \"enterprise\": \"10,000\",\n      \"community\":\"unlimited\",\n      \"custom\":\"unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"datasheet_rows\",\n      \"title\": \"Records per datasheet\",\n      \"bronze\": \"5,000 \",\n      \"silver\": \"10,000\",\n      \"gold\": \"20,000\",\n      \"enterprise\": \"50,000\",\n      \"community\":\"50,000\",\n      \"custom\":\"50,000\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"space_rows\",\n      \"title\": \"Records per space\",\n      \"bronze\": \"20,000\",\n      \"silver\": \"3,000,000\",\n      \"gold\": \"20,000,000\",\n      \"enterprise\": \"500,000,000\",\n      \"community\":\"unlimited\",\n      \"custom\":\"unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"space_capacity\",\n      \"title\": \"Attachments storage per space\",\n      \"bronze\": \"1GB \",\n      \"silver\": \"seats * 5GB\",\n      \"gold\": \"seats * 7GB\",\n      \"enterprise\": \"seats * 10GB\",\n      \"community\":\"unlimited\",\n      \"custom\":\"unlimited\"\n    }\n  ],\n  \"Functions\": [\n    {\n      \"group\": \"Functions\",\n      \"id\": \"star_marker\",\n      \"title\": \"Pin\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"album_view\",\n      \"title\": \"Gallery view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"kanban_view\",\n      \"title\": \"Kanban view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"org_chart_view\",\n      \"title\": \"Architecture view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"gantt_view\",\n      \"title\": \"Gantt view\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"calendar_view\",\n      \"title\": \"Calendar view\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"collection_table\",\n      \"title\": \"Form\",\n      \"bronze\": \"20 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"300 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"mirror\",\n      \"title\": \"Mirror（records permission）\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"10 per space\",\n      \"gold\": \"100 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"widget\",\n      \"title\": \"Widget\",\n      \"bronze\": \"free for a limited time\",\n      \"silver\": \"free for a limited time\",\n      \"gold\": \"free for a limited time\",\n      \"enterprise\": \"free for a limited time\",\n      \"community\":\"free for a limited time\",\n      \"custom\":\"free for a limited time\"\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"dashboard\",\n      \"title\": \"Dashboard\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"100 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"custom_embedding\",\n      \"title\": \"Custom embedding\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"rainbow_tags\",\n      \"title\": \"Rainbow tags\",\n      \"bronze\": \"basic color\",\n      \"silver\": \"advanced color\",\n      \"gold\": \"advanced color\",\n      \"enterprise\": \"advanced color\",\n      \"community\":\"basic color\",\n      \"custom\":\"advanced color\"\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"space_capacity\",\n      \"title\": \"Record activity\",\n      \"bronze\": \"14 days\",\n      \"silver\": \"3 months\",\n      \"gold\": \"6 months\",\n      \"enterprise\": \"24 months\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"recycle_bin\",\n      \"title\": \"Trash（Historical node files）\",\n      \"bronze\": \"14 days\",\n      \"silver\": \"3 months\",\n      \"gold\": \"6 months\",\n      \"enterprise\": \"24 months\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"api_limits\",\n      \"title\": \"API\",\n      \"bronze\": \"free for a limited time\",\n      \"silver\": \"free for a limited time\",\n      \"gold\": \"free for a limited time\",\n      \"enterprise\": \"free for a limited time\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Functions\",\n      \"id\": \"robot\",\n      \"title\": \"Robot\",\n      \"bronze\": \"free for a limited time\",\n      \"silver\": \"free for a limited time\",\n      \"gold\": \"free for a limited time\",\n      \"enterprise\": \"free for a limited time\",\n      \"community\": true,\n      \"custom\": true\n    }\n  ],\n  \"Management and security\": [\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"column_permission\",\n      \"title\": \"Field permission\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"folder_permission\",\n      \"title\": \"File permission\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"unlimited\",\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"admin_counts\",\n      \"title\": \"Space admin\",\n      \"bronze\": \"3\",\n      \"silver\": \"5\",\n      \"gold\": \"10\",\n      \"enterprise\": \"unlimited\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"watermark\",\n      \"title\": \"Watermark\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_export_data\",\n      \"title\": \"Prohibit data export\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_share\",\n      \"title\": \"Prohibit opening public links\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_copy\",\n      \"title\": \"Prohibit copying datas\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_download_file\",\n      \"title\": \"Prohibit downloadimg files\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_invite_members\",\n      \"title\": \"Prohibit inviting off-space user\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"single_sign_on\",\n      \"title\": \"Single sign-on(SSO)\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ],\n  \"Support service\": [\n    {\n      \"group\": \"Support service\",\n      \"id\": \"online_server\",\n      \"title\": \"Online server\",\n      \"bronze\": \"community service\",\n      \"silver\": \"community service\",\n      \"gold\": \"community service\",\n      \"enterprise\": \"consultancy service\",\n      \"community\": \"community service\",\n      \"custom\": \"consultancy service\"\n    },\n    {\n      \"group\": \"Support service\",\n      \"id\": \"customized_features\",\n      \"title\": \"Custom function development (additional cost)\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Support service\",\n      \"id\": \"enterprise_consulting_training\",\n      \"title\": \"Enterprise-level consulting training\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ]\n}",
+            "en_US": "{\n  \"Usages\": [\n    {\n      \"group\": \"Usages\",\n      \"id\": \"member_num\",\n      \"title\": \"Seats\",\n      \"bronze\": \"Incl. 5 seats\",\n      \"silver\": \"Incl. 10 seats\",\n      \"gold\": \"Incl. 20 seats\",\n      \"enterprise\": \"Custom\",\n      \"community\":\"Unlimited\",\n      \"custom\":\"Unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"datasheet_number\",\n      \"title\": \"File nodes \",\n      \"bronze\": \"30\",\n      \"silver\": \"300\",\n      \"gold\": \"1,000\",\n      \"enterprise\": \"10,000\",\n      \"community\":\"Unlimited\",\n      \"custom\":\"Unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"datasheet_rows\",\n      \"title\": \"Records per datasheet\",\n      \"bronze\": \"5,000 \",\n      \"silver\": \"10,000\",\n      \"gold\": \"20,000\",\n      \"enterprise\": \"50,000\",\n      \"community\":\"50,000\",\n      \"custom\":\"50,000\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"space_rows\",\n      \"title\": \"Records per space\",\n      \"bronze\": \"20,000\",\n      \"silver\": \"3,000,000\",\n      \"gold\": \"20,000,000\",\n      \"enterprise\": \"500,000,000\",\n      \"community\":\"Unlimited\",\n      \"custom\":\"Unlimited\"\n    },\n    {\n      \"group\": \"Usages\",\n      \"id\": \"space_capacity\",\n      \"title\": \"Attachments storage per space\",\n      \"bronze\": \"1GB \",\n      \"silver\": \"Seats * 5GB\",\n      \"gold\": \"Seats * 7GB\",\n      \"enterprise\": \"Seats * 10GB\",\n      \"community\":\"Unlimited\",\n      \"custom\":\"Unlimited\"\n    }\n  ],\n  \"Features\": [\n    {\n      \"group\": \"Features\",\n      \"id\": \"star_marker\",\n      \"title\": \"Pin\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"album_view\",\n      \"title\": \"Gallery view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"kanban_view\",\n      \"title\": \"Kanban view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"org_chart_view\",\n      \"title\": \"Architecture view\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"gantt_view\",\n      \"title\": \"Gantt view\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"calendar_view\",\n      \"title\": \"Calendar view\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"collection_table\",\n      \"title\": \"Form\",\n      \"bronze\": \"20 per space\",\n      \"silver\": \"100 per space\",\n      \"gold\": \"300 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"mirror\",\n      \"title\": \"Mirror（records permission）\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"100 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"widget\",\n      \"title\": \"Widget\",\n      \"bronze\": \"Free for a limited time\",\n      \"silver\": \"Free for a limited time\",\n      \"gold\": \"Free for a limited time\",\n      \"enterprise\": \"Free for a limited time\",\n      \"community\":\"Free for a limited time\",\n      \"custom\":\"Free for a limited time\"\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"dashboard\",\n      \"title\": \"Dashboard\",\n      \"bronze\": \"5 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"100 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"custom_embedding\",\n      \"title\": \"Custom embedding\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"rainbow_tags\",\n      \"title\": \"Rainbow tags\",\n      \"bronze\": \"Basic color\",\n      \"silver\": \"Advanced color\",\n      \"gold\": \"Advanced color\",\n      \"enterprise\": \"Advanced color\",\n      \"community\":\"Basic color\",\n      \"custom\":\"Advanced color\"\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"space_capacity\",\n      \"title\": \"Record activity\",\n      \"bronze\": \"14 days\",\n      \"silver\": \"3 months\",\n      \"gold\": \"6 months\",\n      \"enterprise\": \"24 months\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"recycle_bin\",\n      \"title\": \"Trash\",\n      \"bronze\": \"14 days\",\n      \"silver\": \"3 months\",\n      \"gold\": \"6 months\",\n      \"enterprise\": \"24 months\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"api_limits\",\n      \"title\": \"API\",\n      \"bronze\": \"Free for a limited time\",\n      \"silver\": \"Free for a limited time\",\n      \"gold\": \"Free for a limited time\",\n      \"enterprise\": \"Free for a limited time\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Features\",\n      \"id\": \"robot\",\n      \"title\": \"Robot\",\n      \"bronze\": \"Free for a limited time\",\n      \"silver\": \"Free for a limited time\",\n      \"gold\": \"Free for a limited time\",\n      \"enterprise\": \"Free for a limited time\",\n      \"community\": true,\n      \"custom\": true\n    }\n  ],\n  \"Management and security\": [\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"column_permission\",\n      \"title\": \"Field permission\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"folder_permission\",\n      \"title\": \"File permission\",\n      \"bronze\": \"10 per space\",\n      \"silver\": \"50 per space\",\n      \"gold\": \"200 per space\",\n      \"enterprise\": \"Unlimited\",\n      \"community\":false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"admin_counts\",\n      \"title\": \"Space admin\",\n      \"bronze\": \"3\",\n      \"silver\": \"5\",\n      \"gold\": \"10\",\n      \"enterprise\": \"Unlimited\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"watermark\",\n      \"title\": \"Watermark\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_export_data\",\n      \"title\": \"Prohibit data export\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_share\",\n      \"title\": \"Prohibit opening public links\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_copy\",\n      \"title\": \"Prohibit copying datas\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_download_file\",\n      \"title\": \"Prohibit downloadimg files\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"Management and security\",\n      \"id\": \"security_disabled_invite_members\",\n      \"title\": \"Prohibit inviting off-space user\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ],\n  \"Support service\": [\n    {\n      \"group\": \"Support service\",\n      \"id\": \"online_server\",\n      \"title\": \"Online server\",\n      \"bronze\": \"Community service\",\n      \"silver\": \"Community service\",\n      \"gold\": \"Community service\",\n      \"enterprise\": \"Consultancy service\",\n      \"community\": \"Community service\",\n      \"custom\": \"Consultancy service\"\n    },\n    {\n      \"group\": \"Support service\",\n      \"id\": \"enterprise_consulting_training\",\n      \"title\": \"Enterprise-level consulting training\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ]\n}",
             "zh_HK": "{\n  \"用量\": [\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_number\",\n      \"title\": \"文件节点数量\",\n      \"bronze\": \"30 个\",\n      \"silver\": \"300 个\",\n      \"gold\": \"1000 个\",\n      \"enterprise\": \"1 万个\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"datasheet_rows\",\n      \"title\": \"单维格表行数\",\n      \"bronze\": \"5,000 行\",\n      \"silver\": \"1 万行\",\n      \"gold\": \"2 万行\",\n      \"enterprise\": \"5 万行\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_rows\",\n      \"title\": \"空间站总行数\",\n      \"bronze\": \"2 万行\",\n      \"silver\": \"300 万行\",\n      \"gold\": \"2000 万行\",\n      \"enterprise\": \"5 亿行\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"用量\",\n      \"id\": \"space_capacity\",\n      \"title\": \"附件容量\",\n      \"bronze\": \"1GB 默认\",\n      \"silver\": \"席位数 * 5GB\",\n      \"gold\": \"席位数 * 7GB\",\n      \"enterprise\": \"席位数 * 10GB\",\n      \"community\":\"不限\",\n      \"custom\":\"不限\"\n    }\n  ],\n  \"功能\": [\n    {\n      \"group\": \"功能\",\n      \"id\": \"star_marker\",\n      \"title\": \"星标\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"album_view\",\n      \"title\": \"相册视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"kanban_view\",\n      \"title\": \"看板视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"org_chart_view\",\n      \"title\": \"架构视图\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"gantt_view\",\n      \"title\": \"甘特视图\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"calendar_view\",\n      \"title\": \"日历视图\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"collection_table\",\n      \"title\": \"神奇表单\",\n      \"bronze\": \"单空间站 20 张\",\n      \"silver\": \"单空间站 100 张\",\n      \"gold\": \"单空间站 300 张\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"mirror\",\n      \"title\": \"镜像（行权限）\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\",\n      \"community\":true,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"widget\",\n      \"title\": \"小程序\",\n      \"bronze\": \"不限，基础 + 自建\",\n      \"silver\": \"不限，基础 + 自建\",\n      \"gold\": \"不限，基础 + 自建\",\n      \"enterprise\": \"不限，基础 + 自建 + 定制\",\n      \"community\":\"不限，基础 + 自建\",\n      \"custom\":\"不限，基础 + 自建\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"dashboard\",\n      \"title\": \"仪表盘\",\n      \"bronze\": \"单空间站 5 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 100 个\",\n      \"enterprise\": \"不限\",\n      \"community\": true,\n      \"custom\":\"不限\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"rainbow_tags\",\n      \"title\": \"彩虹标签\",\n      \"bronze\": \"基础色系（20 个）\",\n      \"silver\": \"彩虹色系（50 个）\",\n      \"gold\": \"彩虹色系（50 个）\",\n      \"enterprise\": \"彩虹色系（50 个）\",\n      \"community\":\"基础色系（20 个）\",\n      \"custom\":\"彩虹色系（50 个）\"\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"full_platform_client_support\",\n      \"title\": \"全平台客户端支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\":true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"space_capacity\",\n      \"title\": \"时光机（历史记录）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"recycle_bin\",\n      \"title\": \"回收舱（历史文件）\",\n      \"bronze\": \"追溯 14 天\",\n      \"silver\": \"追溯 3 个月\",\n      \"gold\": \"追溯 6 个月\",\n      \"enterprise\": \"追溯 24 个月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"api_limits\",\n      \"title\": \"API 用量\",\n      \"bronze\": \"1 万次请求/月\",\n      \"silver\": \"10 万次请求/月\",\n      \"gold\": \"50 万次请求/月\",\n      \"enterprise\": \"100 万次请求/月\",\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"功能\",\n      \"id\": \"robot\",\n      \"title\": \"机器人\",\n      \"bronze\": \"限时免费\",\n      \"silver\": \"限时免费\",\n      \"gold\": \"限时免费\",\n      \"enterprise\": \"限时免费\",\n      \"community\": true,\n      \"custom\": true\n    }\n  ],\n  \"管理和安全\": [\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"column_permission\",\n      \"title\": \"列权限\",\n      \"bronze\": \"单空间站 10 列\",\n      \"silver\": \"单空间站 50 列\",\n      \"gold\": \"单空间站 200 列\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"folder_permission\",\n      \"title\": \"文件权限\",\n      \"bronze\": \"单空间站 10 个\",\n      \"silver\": \"单空间站 50 个\",\n      \"gold\": \"单空间站 200 个\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"admin_counts\",\n      \"title\": \"管理员数量\",\n      \"bronze\": \"3 个\",\n      \"silver\": \"5 个\",\n      \"gold\": \"10 个\",\n      \"enterprise\": \"不限\",\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"marketplace_integration_app_name_officepreview\",\n      \"title\": \"Office 文件预览\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"feishu_integration\",\n      \"title\": \"飞书集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"dingtalk_integration\",\n      \"title\": \"钉钉集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"wecom_integration\",\n      \"title\": \"企业微信集成\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"watermark\",\n      \"title\": \"全局水印\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_export_data\",\n      \"title\": \"禁止导出数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_share\",\n      \"title\": \"禁止创建公开链接\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_copy\",\n      \"title\": \"禁止复制数据\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_download_file\",\n      \"title\": \"禁止下载附件\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_disabled_invite_members\",\n      \"title\": \"禁止邀请站外用户\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"security_show_mobile\",\n      \"title\": \"通讯录显示手机号\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"管理和安全\",\n      \"id\": \"single_sign_on\",\n      \"title\": \"*单点登录（SSO）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ],\n  \"支持服务\": [\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"online_server\",\n      \"title\": \"在线支持\",\n      \"bronze\": \"基础服务\",\n      \"silver\": \"高级服务\",\n      \"gold\": \"专业顾问 24 小时服务\",\n      \"enterprise\": \"VIP 顾问 24 小时服务\",\n      \"community\": \"基础服务\",\n      \"custom\": \"VIP 顾问 24 小时服务\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customer_support_group\",\n      \"title\": \"客户支持群\",\n      \"bronze\": \"用户社群\",\n      \"silver\": \"高级客户群\",\n      \"gold\": \"专业客户群\",\n      \"enterprise\": \"VIP 客户群\",\n      \"community\": \"用户社群\",\n      \"custom\": \"VIP 客户群\"\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"muti_language_email\",\n      \"title\": \"中英文邮件支持\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"free_online_video_train\",\n      \"title\": \"免费在线视频培训\",\n      \"bronze\": true,\n      \"silver\": true,\n      \"gold\": true,\n      \"enterprise\": true,\n      \"community\": true,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"exclusive_v_consultant\",\n      \"title\": \"专属 V+ 顾问\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"customized_features\",\n      \"title\": \"定制功能开发（费用另计）\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    },\n    {\n      \"group\": \"支持服务\",\n      \"id\": \"enterprise_consulting_training\",\n      \"title\": \"企业级咨询培训\",\n      \"bronze\": false,\n      \"silver\": false,\n      \"gold\": false,\n      \"enterprise\": true,\n      \"community\": false,\n      \"custom\": true\n    }\n  ]\n}"
         },
         "subscription_grades_checklist_mobile_saas": {
             "zh_CN": "[{\n\t\t\"grade\": \"bronze\",\n\t\t\"btnText\": \"立即体验\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持创建 30 个文件节点\",\n\t\t\t\"单表可创建 5,000 行记录\",\n\t\t\t\"支持相册、看板、架构、甘特、日历视图与神奇表单\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持创建 30 个文件节点\",\n\t\t\t\t\t\"单表可创建 5,000 行记录\",\n\t\t\t\t\t\"空间站可创建 2 万行记录\",\n\t\t\t\t\t\"附件容量 1GB（默认）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星标\",\n\t\t\t\t\t\"支持相册视图、看板视图、架构视图\",\n\t\t\t\t\t\"单空间站可创建 10 个甘特视图\",\n\t\t\t\t\t\"单空间站可创建 5 个日历视图\",\n\t\t\t\t\t\"单空间站可创建 20 张神奇表单\",\n\t\t\t\t\t\"单空间站可创建 5 个镜像文件（行权限）\",\n\t\t\t\t\t\"支持基础和自建小程序，不限量\",\n\t\t\t\t\t\"单空间站可创建 5 个仪表盘\",\n\t\t\t\t\t\"支持基础色系的彩虹标签（20 个）\",\n\t\t\t\t\t\"支持全平台客户端\",\n\t\t\t\t\t\"时光机（历史记录）可追溯 14 天\",\n\t\t\t\t\t\"回收舱（历史文件）可追溯 14 天\",\n\t\t\t\t\t\"每月支持 1 万次 API 请求\",\n\t\t\t\t\t\"支持创建和使用机器人（限时免费）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"单空间站支持配置 10 个列权限\",\n\t\t\t\t\t\"单空间站支持配置 10 个文件权限\",\n\t\t\t\t\t\"支持配置 3 个管理员\",\n\t\t\t\t\t\"支持 Office 文件预览\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服务\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"基础在线支持\",\n\t\t\t\t\t\"用户社群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"silver\",\n\t\t\"btnText\": \"立即体验\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持创建 300 个文件节点\",\n\t\t\t\"单表可创建 1 万行记录\",\n\t\t\t\"附件容量 5 GB/席位，全空间站共享\",\n\t\t\t\"支持相册、看板、架构、甘特、日历视图与神奇表单\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持创建 300 个文件节点\",\n\t\t\t\t\t\"单表可创建 1 万行记录\",\n\t\t\t\t\t\"空间站可创建 300 万行记录\",\n\t\t\t\t\t\"附件容量 5 GB/席位，全空间站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星标\",\n\t\t\t\t\t\"支持相册视图、看板视图、架构视图\",\n\t\t\t\t\t\"单空间站可创建 50 个甘特视图\",\n\t\t\t\t\t\"单空间站可创建 50 个日历视图\",\n\t\t\t\t\t\"单空间站可创建 100 张神奇表单\",\n\t\t\t\t\t\"单空间站可创建 50 个镜像文件（行权限）\",\n\t\t\t\t\t\"支持基础和自建小程序，不限量\",\n\t\t\t\t\t\"单空间站可创建 50 个仪表盘\",\n\t\t\t\t\t\"支持彩虹色系的标签（50 个）\",\n\t\t\t\t\t\"支持全平台客户端\",\n\t\t\t\t\t\"时光机（历史记录）可追溯 3 个月\",\n\t\t\t\t\t\"回收舱（历史文件）可追溯 3 个月\",\n\t\t\t\t\t\"每月支持 10 万次 API 请求\",\n\t\t\t\t\t\"支持创建和使用机器人（限时免费）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"单空间站支持配置 50 个列权限\",\n\t\t\t\t\t\"单空间站支持配置 50 个文件权限\",\n\t\t\t\t\t\"支持配置 5 个管理员\",\n\t\t\t\t\t\"支持 Office 文件预览\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服务\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"高级在线支持\",\n\t\t\t\t\t\"高级客户群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"gold\",\n\t\t\"btnText\": \"立即体验\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持创建 1000 个文件节点\",\n\t\t\t\"单表可创建 2 万行记录\",\n\t\t\t\"附件容量 7 GB/席位，全空间站共享\",\n\t\t\t\"支持相册、看板、架构、甘特、日历视图与神奇表单\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持创建 1000 个文件节点\",\n\t\t\t\t\t\"单表可创建 2 万行记录\",\n\t\t\t\t\t\"空间站可创建 2000 万行记录\",\n\t\t\t\t\t\"附件容量 7 GB/席位，全空间站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星标\",\n\t\t\t\t\t\"支持相册视图、看板视图、架构视图\",\n\t\t\t\t\t\"单空间站可创建 200 个甘特视图\",\n\t\t\t\t\t\"单空间站可创建 200 个日历视图\",\n\t\t\t\t\t\"单空间站可创建 300 张神奇表单\",\n\t\t\t\t\t\"单空间站可创建 100 个镜像文件（行权限）\",\n\t\t\t\t\t\"支持基础和自建小程序，不限量\",\n\t\t\t\t\t\"单空间站可创建 100 个仪表盘\",\n\t\t\t\t\t\"支持彩虹色系的标签（50 个）\",\n\t\t\t\t\t\"支持全平台客户端\",\n\t\t\t\t\t\"时光机（历史记录）可追溯 6 个月\",\n\t\t\t\t\t\"回收舱（历史文件）可追溯 6 个月\",\n\t\t\t\t\t\"每月支持 50 万次 API 请求\",\n\t\t\t\t\t\"支持创建和使用机器人（限时免费）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"单空间站支持配置 200 个列权限\",\n\t\t\t\t\t\"单空间站支持配置 200 个文件权限\",\n\t\t\t\t\t\"支持配置 10 个管理员\",\n\t\t\t\t\t\"支持 Office 文件预览\",\n\t\t\t\t\t\"禁止导出数据\",\n\t\t\t\t\t\"通讯录显示手机号\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服务\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"专业顾问 24 小时在线支持\",\n\t\t\t\t\t\"高级客户群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"enterprise\",\n\t\t\"btnText\": \"联系我们\",\n\t\t\"btnHref\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持创建 1 万个文件节点\",\n\t\t\t\"单表可创建 5 万行记录\",\n\t\t\t\"附件容量 10 GB/席位，全空间站共享\",\n\t\t\t\"支持全部视图、神奇表单和列权限等全部高级功能\",\n\t\t\t\"支持第三方 IM 集成、全局水印等安全管理功能\",\n\t\t\t\"专属 V+ 顾问提供全程支持服务\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持创建 1 万个文件节点\",\n\t\t\t\t\t\"单表可创建 5 万行记录\",\n\t\t\t\t\t\"空间站可创建 5 亿行记录\",\n\t\t\t\t\t\"附件容量 10 GB/席位，全空间站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星标\",\n\t\t\t\t\t\"支持相册视图、看板视图、架构视图\",\n\t\t\t\t\t\"甘特视图不限量\",\n\t\t\t\t\t\"日历视图不限量\",\n\t\t\t\t\t\"神奇表单不限量\",\n\t\t\t\t\t\"镜像文件（行权限）不限量\",\n\t\t\t\t\t\"支持基础、自建和定制小程序，不限量\",\n\t\t\t\t\t\"仪表盘不限量\",\n\t\t\t\t\t\"支持彩虹色系的标签（50 个）\",\n\t\t\t\t\t\"支持全平台客户端\",\n\t\t\t\t\t\"时光机（历史记录）可追溯 24 个月\",\n\t\t\t\t\t\"回收舱（历史文件）可追溯 24 个月\",\n\t\t\t\t\t\"每月支持 100 万次 API 请求\",\n\t\t\t\t\t\"支持创建和使用机器人（限时免费）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"列权限不限量\",\n\t\t\t\t\t\"文件权限不限量\",\n\t\t\t\t\t\"管理员不限量\",\n\t\t\t\t\t\"支持 Office 文件预览\",\n\t\t\t\t\t\"支持飞书、钉钉、企业微信集成\",\n\t\t\t\t\t\"支持全局水印\",\n\t\t\t\t\t\"禁止导出数据\",\n\t\t\t\t\t\"禁止创建公开链接\",\n\t\t\t\t\t\"禁止复制数据\",\n\t\t\t\t\t\"禁止下载附件\",\n\t\t\t\t\t\"禁止邀请站外用户\",\n\t\t\t\t\t\"通讯录显示手机号\",\n\t\t\t\t\t\"*支持单点登录（SSO）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服务\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"VIP 顾问 24 小时在线支持\",\n\t\t\t\t\t\"VIP 客户群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\",\n\t\t\t\t\t\"专属 V+ 顾问\",\n\t\t\t\t\t\"定制功能开发（费用另计）\",\n\t\t\t\t\t\"企业级咨询培训\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}\n]",
-            "en_US": "[{\n    \"grade\": \"free\",\n    \"btnText\": \"Start now\",\n    \"btnHref\": \"/login\",\n    \"primaryContent\": [\n      \"30 file nodes\",\n      \"5,000 records per datasheet\",\n      \"1G attachments storage in space\"\n    ],\n    \"details\": [{\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"30 file nodes\",\n          \"5,000 records per datasheet\",\n          \"20,000 records in space\",\n          \"1G attachments storage in space\"\n        ]\n      },\n      {\n        \"name\": \"Function\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"10 gantt views in space\",\n          \"5 calendar views in space\",\n          \"20 forms in space\",\n          \"5 mirrors in space\",\n          \"5 dashbords in space\",\n          \"Widget is free for a limited time\",\n          \"Basic colors for rainbow tags\",\n          \"Record activity goes back 14 days\",\n          \"Trash goes back 14 days\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"10 field permissions in space\",\n          \"10 field permissions in space\",\n          \"3 admins in space\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"community service\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"plus\",\n    \"btnText\": \"Choose Plus\",\n    \"btnHref\": \"/login\",\n    \"primaryContent\": [\n      \"300 file nodes\",\n      \"10,000 records per datasheet\",\n      \"5G/seats attachments storage in space\"\n    ],\n    \"details\": [{\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"300 file nodes\",\n          \"10,000 records per datasheet\",\n          \"3,0000,000 records in space\",\n          \"5G/seats attachments storage in space\"\n        ]\n      },\n      {\n        \"name\": \"Function\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"50 gantt views in space\",\n          \"50 calendar views in space\",\n          \"100 forms in space\",\n          \"50 mirrors in space\",\n          \"50 dashbords in space\",\n          \"Widget is free for a limited time\",\n          \"Advanced colors for rainbow tags\",\n          \"Record activity goes back 3 months\",\n          \"Trash goes back 3 months\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"50 field permissions in space\",\n          \"50 field permissions in space\",\n          \"5 admins in space\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"community service\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"pro\",\n    \"btnText\": \"Choose Pro\",\n    \"btnHref\": \"/login\",\n    \"primaryContent\": [\n      \"1,000 file nodes\",\n      \"20,000 records per datasheet\",\n      \"7G/seats attachments storage in space\",\n      \"Custom embedding\"\n    ],\n    \"details\": [{\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"1,000 file nodes\",\n          \"20,000 records per datasheet\",\n          \"20,000,000 records in space\", \n          \"7G/seats attachments storage in space\"\n        ]\n      },\n      {\n        \"name\": \"Function\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"200 gantt views in space\",\n          \"300 calendar views in space\",\n          \"300 forms in space\",\n          \"100 mirrors in space\",\n          \"100 dashbords in space\",\n          \"Widget is free for a limited time\",\n          \"Advanced colors for rainbow tags\",\n          \"Custom embedding\",\n          \"Record activity goes back 6 months\",\n          \"Trash goes back 6 months\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"200 field permissions in space\",\n          \"200 field permissions in space\",\n          \"10 admins in space\",\n          \"Prohibit data export\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"community service\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"enterprise\",\n    \"btnText\": \"Contacts us\",\n    \"btnHref\": \"\",\n    \"primaryContent\": [\n      \"10,000 file nodes\",\n      \"50,000 records per datasheet\",\n      \"10G/seats attachments storage in space\",\n      \"Unlimited permission and security settings\",\n      \"Consultancy service\"\n    ],\n    \"details\": [{\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"10,000 file nodes\",\n          \"50,000 records per datasheet\",\n          \"50,0000,000 records in space\",\n          \"10G/seats attachments storage in space\"\n        ]\n      },\n      {\n        \"name\": \"Function\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"Gantt views are unlimited\",\n          \"Calendar views are unlimited\",\n          \"Forms are unlimited\",\n          \"Mirrors are unlimited\",\n          \"Dashbords are unlimited\",\n          \"Widget is free for a limited time\",\n          \"Advanced colors for rainbow tags\",\n          \"Custom embedding\",\n          \"Record activity goes back 24 months\",\n          \"Trash goes back 24 months\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"Permissions are unlimited\",\n          \"Permissions are unlimited\",\n          \"Admins are unlimited\",\n          \"Watermark\",\n          \"Prohibit data export\",\n          \"Prohibit opening public links\",\n          \"Prohibit copying datas\",\n          \"Prohibit downloadimg files\",\n          \"Prohibit inviting off-space user\",\n          \"Single sign-on(SSO)\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"Consultancy service\",\n          \"Custom function development (additional cost)\",\n          \"Enterprise-level consulting training\"\n        ]\n      }\n    ]\n  }\n  ]",
+            "en_US": "[\n  {\n      \"grade\": \"free\",\n      \"btnText\": \"Start Now\",\n      \"btnHref\": \"/login\",\n      \"primaryContent\": [\n          \"30 file nodes\",\n          \"5,000 records per datasheet\",\n          \"1G attachments storage per sapce\"\n      ],\n      \"details\": [\n          {\n              \"name\": \"Usage\",\n              \"rules\": [\n                  \"30 file nodes\",\n                  \"5,000 records per datasheet\",\n                  \"20,000 records per sapce\",\n                  \"1G attachments storage per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Features\",\n              \"rules\": [\n                  \"Pin file nodes\",\n                  \"Gallery view,Kanban view and Architecture view are unlimited\",\n                  \"10 gantt views per sapce\",\n                  \"5 calendar views per sapce\",\n                  \"20 forms per sapce\",\n                  \"5 mirrors per sapce\",\n                  \"5 dashbords per sapce\",\n                  \"Widget is free for a limited time\",\n                  \"Basic colors for rainbow tags\",\n                  \"Record activity goes back 14 days\",\n                  \"Trash goes back 14 days\",\n                  \"API is free for a limited time\",\n                  \"Robot is free for a limited time\"\n              ]\n          },\n          {\n              \"name\": \"Management and security\",\n              \"rules\": [\n                  \"10 field permissions per sapce\",\n                  \"10 field permissions per sapce\",\n                  \"3 admins per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Support service\",\n              \"rules\": [\n                  \"community service\"\n              ]\n          }\n      ]\n  },\n  {\n      \"grade\": \"plus\",\n      \"btnText\": \"Choose Plus\",\n      \"btnHref\": \"/login\",\n      \"primaryContent\": [\n          \"300 file nodes\",\n          \"10,000 records per datasheet\",\n          \"5G/seats attachments storage per sapce\"\n      ],\n      \"details\": [\n          {\n              \"name\": \"Usage\",\n              \"rules\": [\n                  \"300 file nodes\",\n                  \"10,000 records per datasheet\",\n                  \"3,0000,000 records per sapce\",\n                  \"5G/seats attachments storage per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Features\",\n              \"rules\": [\n                  \"Pin file nodes\",\n                  \"Gallery view,Kanban view and Architecture view are unlimited\",\n                  \"50 gantt views per sapce\",\n                  \"50 calendar views per sapce\",\n                  \"100 forms per sapce\",\n                  \"50 mirrors per sapce\",\n                  \"50 dashbords per sapce\",\n                  \"Widget is free for a limited time\",\n                  \"Advanced colors for rainbow tags\",\n                  \"Record activity goes back 3 months\",\n                  \"Trash goes back 3 months\",\n                  \"API is free for a limited time\",\n                  \"Robot is free for a limited time\"\n              ]\n          },\n          {\n              \"name\": \"Management and security\",\n              \"rules\": [\n                  \"50 field permissions per sapce\",\n                  \"50 field permissions per sapce\",\n                  \"5 admins per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Support service\",\n              \"rules\": [\n                  \"community service\"\n              ]\n          }\n      ]\n  },\n  {\n      \"grade\": \"pro\",\n      \"btnText\": \"Choose Pro\",\n      \"btnHref\": \"/login\",\n      \"primaryContent\": [\n          \"1,000 file nodes\",\n          \"20,000 records per datasheet\",\n          \"7G/seats attachments storage per sapce\",\n          \"Custom embedding\"\n      ],\n      \"details\": [\n          {\n              \"name\": \"Usage\",\n              \"rules\": [\n                  \"1,000 file nodes\",\n                  \"20,000 records per datasheet\",\n                  \"20,000,000 records per sapce\",\n                  \"7G/seats attachments storage per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Features\",\n              \"rules\": [\n                  \"Pin file nodes\",\n                  \"Gallery view,Kanban view and Architecture view are unlimited\",\n                  \"200 gantt views per sapce\",\n                  \"300 calendar views per sapce\",\n                  \"300 forms per sapce\",\n                  \"100 mirrors per sapce\",\n                  \"100 dashbords per sapce\",\n                  \"Widget is free for a limited time\",\n                  \"Advanced colors for rainbow tags\",\n                  \"Custom embedding\",\n                  \"Record activity goes back 6 months\",\n                  \"Trash goes back 6 months\",\n                  \"API is free for a limited time\",\n                  \"Robot is free for a limited time\"\n              ]\n          },\n          {\n              \"name\": \"Management and security\",\n              \"rules\": [\n                  \"200 field permissions per sapce\",\n                  \"200 field permissions per sapce\",\n                  \"10 admins per sapce\",\n                  \"Prohibit data export\"\n              ]\n          },\n          {\n              \"name\": \"Support service\",\n              \"rules\": [\n                  \"community service\"\n              ]\n          }\n      ]\n  },\n  {\n      \"grade\": \"enterprise\",\n      \"btnText\": \"Contacts us\",\n      \"btnHref\": \"\",\n      \"primaryContent\": [\n          \"10,000 file nodes\",\n          \"50,000 records per datasheet\",\n          \"10G/seats attachments storage per sapce\",\n          \"Unlimited permission and security settings\",\n          \"Consultancy service\"\n      ],\n      \"details\": [\n          {\n              \"name\": \"Usage\",\n              \"rules\": [\n                  \"10,000 file nodes\",\n                  \"50,000 records per datasheet\",\n                  \"50,0000,000 records per sapce\",\n                  \"10G/seats attachments storage per sapce\"\n              ]\n          },\n          {\n              \"name\": \"Features\",\n              \"rules\": [\n                  \"Pin file nodes\",\n                  \"Gallery view,Kanban view and Architecture view are unlimited\",\n                  \"Gantt views are unlimited\",\n                  \"Calendar views are unlimited\",\n                  \"Forms are unlimited\",\n                  \"Mirrors are unlimited\",\n                  \"Dashbords are unlimited\",\n                  \"Widget is free for a limited time\",\n                  \"Advanced colors for rainbow tags\",\n                  \"Custom embedding\",\n                  \"Record activity goes back 24 months\",\n                  \"Trash goes back 24 months\",\n                  \"API is free for a limited time\",\n                  \"Robot is free for a limited time\"\n              ]\n          },\n          {\n              \"name\": \"Management and security\",\n              \"rules\": [\n                  \"Permissions are unlimited\",\n                  \"Permissions are unlimited\",\n                  \"Admins are unlimited\",\n                  \"Watermark\",\n                  \"Prohibit data export\",\n                  \"Prohibit opening public links\",\n                  \"Prohibit copying datas\",\n                  \"Prohibit downloadimg files\",\n                  \"Prohibit inviting off-space user\"\n              ]\n          },\n          {\n              \"name\": \"Support service\",\n              \"rules\": [\n                  \"Consultancy service\",\n                  \"Custom function development (additional cost)\",\n                  \"Enterprise-level consulting training\"\n              ]\n          }\n      ]\n  }\n]",
             "zh_HK": "[{\n\t\t\"grade\": \"bronze\",\n\t\t\"btnText\": \"立即體驗\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持創建 30 個文件節點\",\n\t\t\t\"單表可創建 5,000 行記錄\",\n\t\t\t\"支持相冊、看板、架構、甘特、日曆視圖與神奇表單\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持創建 30 個文件節點\",\n\t\t\t\t\t\"單表可創建 5,000 行記錄\",\n\t\t\t\t\t\"空間站可創建 2 萬行記錄\",\n\t\t\t\t\t\"附件容量 1GB（默認）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星標\",\n\t\t\t\t\t\"支持相冊視圖、看板視圖、架構視圖\",\n\t\t\t\t\t\"單空間站可創建 10 個甘特視圖\",\n\t\t\t\t\t\"單空間站可創建 5 個日曆視圖\",\n\t\t\t\t\t\"單空間站可創建 20 張神奇表單\",\n\t\t\t\t\t\"單空間站可創建 5 個鏡像文件（行權限）\",\n\t\t\t\t\t\"支持基礎和自建小程序，不限量\",\n\t\t\t\t\t\"單空間站可創建 5 個儀錶盤\",\n\t\t\t\t\t\"支持基礎色系的彩虹標籤（20 個）\",\n\t\t\t\t\t\"支持全平台客戶端\",\n\t\t\t\t\t\"時光機（歷史記錄）可追溯 14 天\",\n\t\t\t\t\t\"回收艙（歷史文件）可追溯 14 天\",\n\t\t\t\t\t\"每月支持 1 萬次 API 請求\",\n\t\t\t\t\t\"支持創建和使用機器人（限時免費）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"單空間站支持配置 10 個列權限\",\n\t\t\t\t\t\"單空間站支持配置 10 個文件權限\",\n\t\t\t\t\t\"支持配置 3 個管理員\",\n\t\t\t\t\t\"支持 Office 文件預覽\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服務\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"基礎在線支持\",\n\t\t\t\t\t\"用戶社群支持\",\n\t\t\t\t\t\"中英文郵件支持\",\n\t\t\t\t\t\"免費在線視頻培訓\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"silver\",\n\t\t\"btnText\": \"立即體驗\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持創建 300 個文件節點\",\n\t\t\t\"單表可創建 1 萬行記錄\",\n\t\t\t\"附件容量 5 GB/席位，全空間站共享\",\n\t\t\t\"支持相冊、看板、架構、甘特、日曆視圖與神奇表單\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持創建 300 個文件節點\",\n\t\t\t\t\t\"單表可創建 1 萬行記錄\",\n\t\t\t\t\t\"空間站可創建 300 萬行記錄\",\n\t\t\t\t\t\"附件容量 5 GB/席位，全空間站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星標\",\n\t\t\t\t\t\"支持相冊視圖、看板視圖、架構視圖\",\n\t\t\t\t\t\"單空間站可創建 50 個甘特視圖\",\n\t\t\t\t\t\"單空間站可創建 50 個日曆視圖\",\n\t\t\t\t\t\"單空間站可創建 100 張神奇表單\",\n\t\t\t\t\t\"單空間站可創建 50 個鏡像文件（行權限）\",\n\t\t\t\t\t\"支持基礎和自建小程序，不限量\",\n\t\t\t\t\t\"單空間站可創建 50 個儀錶盤\",\n\t\t\t\t\t\"支持彩虹色系的標籤（50 個）\",\n\t\t\t\t\t\"支持全平台客戶端\",\n\t\t\t\t\t\"時光機（歷史記錄）可追溯 3 個月\",\n\t\t\t\t\t\"回收艙（歷史文件）可追溯 3 個月\",\n\t\t\t\t\t\"每月支持 10 萬次 API 請求\",\n\t\t\t\t\t\"支持創建和使用機器人（限時免費）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"單空間站支持配置 50 個列權限\",\n\t\t\t\t\t\"單空間站支持配置 50 個文件權限\",\n\t\t\t\t\t\"支持配置 5 個管理員\",\n\t\t\t\t\t\"支持 Office 文件預覽\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服務\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"高級在線支持\",\n\t\t\t\t\t\"高級客戶群支持\",\n\t\t\t\t\t\"中英文郵件支持\",\n\t\t\t\t\t\"免費在線視頻培訓\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"gold\",\n\t\t\"btnText\": \"立即體驗\",\n\t\t\"btnHref\": \"/login\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持創建 1000 個文件節點\",\n\t\t\t\"單表可創建 2 萬行記錄\",\n\t\t\t\"附件容量 7 GB/席位，全空間站共享\",\n\t\t\t\"支持相冊、看板、架構、甘特、日曆視圖與神奇表單\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持創建 1000 個文件節點\",\n\t\t\t\t\t\"單表可創建 2 萬行記錄\",\n\t\t\t\t\t\"空間站可創建 2000 萬行記錄\",\n\t\t\t\t\t\"附件容量 7 GB/席位，全空間站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星標\",\n\t\t\t\t\t\"支持相冊視圖、看板視圖、架構視圖\",\n\t\t\t\t\t\"單空間站可創建 200 個甘特視圖\",\n\t\t\t\t\t\"單空間站可創建 200 個日曆視圖\",\n\t\t\t\t\t\"單空間站可創建 300 張神奇表單\",\n\t\t\t\t\t\"單空間站可創建 100 個鏡像文件（行權限）\",\n\t\t\t\t\t\"支持基礎和自建小程序，不限量\",\n\t\t\t\t\t\"單空間站可創建 100 個儀錶盤\",\n\t\t\t\t\t\"支持彩虹色系的標籤（50 個）\",\n\t\t\t\t\t\"支持全平台客戶端\",\n\t\t\t\t\t\"時光機（歷史記錄）可追溯 6 個月\",\n\t\t\t\t\t\"回收艙（歷史文件）可追溯 6 個月\",\n\t\t\t\t\t\"每月支持 50 萬次 API 請求\",\n\t\t\t\t\t\"支持創建和使用機器人（限時免費）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"單空間站支持配置 200 個列權限\",\n\t\t\t\t\t\"單空間站支持配置 200 個文件權限\",\n\t\t\t\t\t\"支持配置 10 個管理員\",\n\t\t\t\t\t\"支持 Office 文件預覽\",\n\t\t\t\t\t\"禁止導出數據\",\n\t\t\t\t\t\"通訊錄顯示手機號\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服務\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"專業顧問 24 小時在線支持\",\n\t\t\t\t\t\"高級客戶群支持\",\n\t\t\t\t\t\"中英文郵件支持\",\n\t\t\t\t\t\"免費在線視頻培訓\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\t\"grade\": \"enterprise\",\n\t\t\"btnText\": \"聯繫我們\",\n\t\t\"btnHref\": \"https://vika.cn/share/shrlRw3YWmqZ4BMl0B7qZ/fomUMtKMblNchCG7Ef\",\n\t\t\"primaryContent\": [\n\t\t\t\"支持創建 1 萬個文件節點\",\n\t\t\t\"單表可創建 5 萬行記錄\",\n\t\t\t\"附件容量 10 GB/席位，全空間站共享\",\n\t\t\t\"支持全部視圖、神奇表單和列權限等全部高級功能\",\n\t\t\t\"支持第三方 IM 集成、全局水印等安全管理功能\",\n\t\t\t\"專屬 V+ 顧問提供全程支持服務\"\n\t\t],\n\t\t\"details\": [{\n\t\t\t\t\"name\": \"用量\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持創建 1 萬個文件節點\",\n\t\t\t\t\t\"單表可創建 5 萬行記錄\",\n\t\t\t\t\t\"空間站可創建 5 億行記錄\",\n\t\t\t\t\t\"附件容量 10 GB/席位，全空間站共享\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"功能\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"支持星標\",\n\t\t\t\t\t\"支持相冊視圖、看板視圖、架構視圖\",\n\t\t\t\t\t\"甘特視圖不限量\",\n\t\t\t\t\t\"日曆視圖不限量\",\n\t\t\t\t\t\"神奇表單不限量\",\n\t\t\t\t\t\"鏡像文件（行權限）不限量\",\n\t\t\t\t\t\"支持基礎、自建和定制小程序，不限量\",\n\t\t\t\t\t\"儀錶盤不限量\",\n\t\t\t\t\t\"支持彩虹色系的標籤（50 個）\",\n\t\t\t\t\t\"支持全平台客戶端\",\n\t\t\t\t\t\"時光機（歷史記錄）可追溯 24 個月\",\n\t\t\t\t\t\"回收艙（歷史文件）可追溯 24 個月\",\n\t\t\t\t\t\"每月支持 100 萬次 API 請求\",\n\t\t\t\t\t\"支持創建和使用機器人（限時免費）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"管理和安全\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"列權限不限量\",\n\t\t\t\t\t\"文件權限不限量\",\n\t\t\t\t\t\"管理員不限量\",\n\t\t\t\t\t\"支持 Office 文件預覽\",\n\t\t\t\t\t\"支持飛書、釘釘、企業微信集成\",\n\t\t\t\t\t\"支持全局水印\",\n\t\t\t\t\t\"禁止導出數據\",\n\t\t\t\t\t\"禁止創建公開鏈接\",\n\t\t\t\t\t\"禁止複制數據\",\n\t\t\t\t\t\"禁止下載附件\",\n\t\t\t\t\t\"禁止邀請站外用戶\",\n\t\t\t\t\t\"通訊錄顯示手機號\",\n\t\t\t\t\t\"*支持單點登錄（SSO）\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"name\": \"支持服務\",\n\t\t\t\t\"rules\": [\n\t\t\t\t\t\"VIP 顧問 24 小時在線支持\",\n\t\t\t\t\t\"VIP 客戶群支持\",\n\t\t\t\t\t\"中英文郵件支持\",\n\t\t\t\t\t\"免費在線視頻培訓\",\n\t\t\t\t\t\"專屬 V+ 顧問\",\n\t\t\t\t\t\"定制功能開發（費用另計）\",\n\t\t\t\t\t\"企業級諮詢培訓\"\n\t\t\t\t]\n\t\t\t}\n\t\t]\n\t}\n]"
         },
         "subscription_grades_checklist_mobile_selfhost": {
             "zh_CN": "[\n  {\n    \"grade\": \"community\",\n    \"btnText\": \"联系客服\",\n    \"primaryContent\": [\n        \"文件节点数不限\",\n        \"单表行记录数不限\",\n        \"支持相册、看板、架构、甘特、日历视图与神奇表单\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"用量\",\n        \"rules\": [\n            \"文件节点数不限\",\n            \"单表行记录数不限\",\n            \"空间站总记录数不限\",\n            \"附件容量不限\"\n        ]\n      },\n      {\n        \"name\": \"功能\",\n        \"rules\": [\n            \"支持星标\",\n            \"支持相册视图、看板视图、架构视图\",\n            \"甘特视图不限量\",\n            \"日历视图不限量\",\n            \"神奇表单不限量\",\n            \"镜像文件（行权限）不限量\",\n            \"支持基础、自建和定制小程序，不限量\",\n            \"仪表盘不限量\",\n            \"支持彩虹色系的标签（30 个）\",\n            \"支持时光机（历史记录）\",\n            \"支持回收舱（历史文件）\",\n            \"API 请求不限\",\n            \"支持创建和使用机器人（限时免费）\"\n        ]\n      },\n      {\n        \"name\": \"管理和安全\",\n        \"rules\": [\n          \"无\"\n        ]\n      },\n      {\n        \"name\": \"支持服务\",\n        \"rules\": [\n          \"基础在线支持\",\n          \"用户社群支持\",\n          \"中英文邮件支持\",\n          \"免费在线视频培训\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"custom\",\n    \"btnText\": \"联系客服\",\n    \"primaryContent\": [\n        \"支持全部视图、神奇表单和列权限等全部高级功能\",\n        \"支持第三方 IM 集成、全局水印等安全管理功能\",\n        \"专属 V+ 顾问提供全程支持服务\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"用量\",\n        \"rules\": [\n          \"文件节点数不限\",\n          \"单表行记录数不限\",\n          \"空间站总记录数不限\",\n          \"附件容量不限\"\n        ]\n      },\n      {\n        \"name\": \"功能\",\n        \"rules\": [\n            \"支持星标\",\n            \"支持相册视图、看板视图、架构视图\",\n            \"甘特视图不限量\",\n            \"日历视图不限量\",\n            \"神奇表单不限量\",\n            \"镜像文件（行权限）不限量\",\n            \"支持基础、自建和定制小程序，不限量\",\n            \"仪表盘不限量\",\n            \"支持彩虹色系的标签（50 个）\",\n            \"支持全平台客户端\",\n            \"支持时光机（历史记录）\",\n            \"支持回收舱（历史文件）\",\n            \"API 请求不限\",\n            \"支持创建和使用机器人（限时免费）\"\n        ]\n      },\n      {\n        \"name\": \"管理和安全\",\n        \"rules\": [\n\t\t\t\t\t\"列权限不限量\",\n\t\t\t\t\t\"文件权限不限量\",\n\t\t\t\t\t\"管理员不限量\",\n\t\t\t\t\t\"支持 Office 文件预览\",\n\t\t\t\t\t\"支持飞书、钉钉、企业微信集成\",\n\t\t\t\t\t\"支持全局水印\",\n\t\t\t\t\t\"禁止导出数据\",\n\t\t\t\t\t\"禁止创建公开链接\",\n\t\t\t\t\t\"禁止复制数据\",\n\t\t\t\t\t\"禁止下载附件\",\n\t\t\t\t\t\"禁止邀请站外用户\",\n\t\t\t\t\t\"通讯录显示手机号\",\n\t\t\t\t\t\"*支持单点登录（SSO）\"\n        ]\n      },\n      {\n        \"name\": \"支持服务\",\n        \"rules\": [\n\t\t\t\t\t\"VIP 顾问 24 小时在线支持\",\n\t\t\t\t\t\"VIP 客户群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\",\n\t\t\t\t\t\"专属 V+ 顾问\",\n\t\t\t\t\t\"定制功能开发（费用另计）\",\n\t\t\t\t\t\"企业级咨询培训\"\n        ]\n      }\n    ]\n  }\n]",
-            "en_US": "[\n    {\n      \"grade\": \"community\",\n      \"btnText\": \"Dowload\",\n      \"primaryContent\": [\n        \"10,000 file nodes\",\n        \"50,000 records per datasheet\",\n        \"Unlimitied attachments storage in space\"\n      ],\n      \"details\": [\n        {\n          \"name\": \"用量\",\n          \"rules\": [\n            \"10,000 file nodes\",\n            \"50,000 records per datasheet\",\n            \"50,0000,000 records in space\",\n            \"Unlimitied attachments storage in space\"\n          ]\n        },\n        {\n          \"name\": \"功能\",\n          \"rules\": [\n            \"Pin file nodes\",\n            \"Gallery view,Kanban view and Architecture view are unlimited\",\n            \"Gantt views are unlimited\",\n            \"Calendar views are unlimited\",\n            \"Forms are unlimited\",\n            \"Mirrors are unlimited\",\n            \"Dashbords are unlimited\",\n            \"Widget is free for a limited time\",\n            \"Basic colors for rainbow tags\",\n            \"Record activity goes back 24 months\",\n            \"Trash goes back 24 months\",\n            \"API is free for a limited time\",\n            \"Robot is free for a limited time\"\n          ]\n        },\n        {\n          \"name\": \"Management and security\",\n          \"rules\": [\n            \"Not supported\"\n          ]\n        },\n        {\n          \"name\": \"Support service\",\n          \"rules\": [\n            \"community service\"\n          ]\n        }\n      ]\n    },\n    {\n      \"grade\": \"custom\",\n      \"btnText\": \"Require Trial\",\n      \"primaryContent\": [\n        \"10,000 file nodes\",\n        \"50,000 records per datasheet\",\n        \"10G/seats attachments storage in space\",\n        \"Unlimited permission and security settings\",\n        \"Consultancy service\"\n      ],\n      \"details\": [\n        {\n          \"name\": \"Usage\",\n          \"rules\": [\n            \"10,000 file nodes\",\n            \"50,000 records per datasheet\",\n            \"50,0000,000 records in space\",\n            \"Unlimited attachments storage in space\"\n          ]\n        },\n        {\n          \"name\": \"Function\",\n          \"rules\": [\n            \"Pin file nodes\",\n            \"Gallery view,Kanban view and Architecture view are unlimited\",\n            \"Gantt views are unlimited\",\n            \"Calendar views are unlimited\",\n            \"Forms are unlimited\",\n            \"Mirrors are unlimited\",\n            \"Dashbords are unlimited\",\n            \"Widget is free for a limited time\",\n            \"Advanced colors for rainbow tags\",\n            \"Custom embedding\",\n            \"Record activity goes back 24 months\",\n            \"Trash goes back 24 months\",\n            \"API is free for a limited time\",\n            \"Robot is free for a limited time\"\n          ]\n        },\n        {\n          \"name\": \"Management and security\",\n          \"rules\": [\n            \"Permissions are unlimited\",\n            \"Permissions are unlimited\",\n            \"Admins are unlimited\",\n            \"Watermark\",\n            \"Prohibit data export\",\n            \"Prohibit opening public links\",\n            \"Prohibit copying datas\",\n            \"Prohibit downloadimg files\",\n            \"Prohibit inviting off-space user\",\n            \"Single sign-on(SSO)\"\n          ]\n        },\n        {\n          \"name\": \"Support service\",\n          \"rules\": [\n            \"Consultancy service\",\n            \"Custom function development (additional cost)\",\n            \"Enterprise-level consulting training\"\n          ]\n        }\n      ]\n    }\n  ]",
+            "en_US": "[\n  {\n    \"grade\": \"community\",\n    \"btnText\": \"Dowload\",\n    \"primaryContent\": [\n      \"10,000 file nodes\",\n      \"50,000 records per datasheet\",\n      \"Unlimitied attachments storage per sapce\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"10,000 file nodes\",\n          \"50,000 records per datasheet\",\n          \"50,0000,000 records per sapce\",\n          \"Unlimitied attachments storage per sapce\"\n        ]\n      },\n      {\n        \"name\": \"Features\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"Gantt views are unlimited\",\n          \"Calendar views are unlimited\",\n          \"Forms are unlimited\",\n          \"Mirrors are unlimited\",\n          \"Dashbords are unlimited\",\n          \"Widget is free for a limited time\",\n          \"Basic colors for rainbow tags\",\n          \"Record activity goes back 24 months\",\n          \"Trash goes back 24 months\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"Not supported\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"community service\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"custom\",\n    \"btnText\": \"Contacts us\",\n    \"primaryContent\": [\n      \"10,000 file nodes\",\n      \"50,000 records per datasheet\",\n      \"10G/seats attachments storage per sapce\",\n      \"Unlimited permission and security settings\",\n      \"Consultancy service\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"Usage\",\n        \"rules\": [\n          \"10,000 file nodes\",\n          \"50,000 records per datasheet\",\n          \"50,0000,000 records per sapce\",\n          \"Unlimited attachments storage per sapce\"\n        ]\n      },\n      {\n        \"name\": \"Features\",\n        \"rules\": [\n          \"Pin file nodes\",\n          \"Gallery view,Kanban view and Architecture view are unlimited\",\n          \"Gantt views are unlimited\",\n          \"Calendar views are unlimited\",\n          \"Forms are unlimited\",\n          \"Mirrors are unlimited\",\n          \"Dashbords are unlimited\",\n          \"Widget is free for a limited time\",\n          \"Advanced colors for rainbow tags\",\n          \"Custom embedding\",\n          \"Record activity goes back 24 months\",\n          \"Trash goes back 24 months\",\n          \"API is free for a limited time\",\n          \"Robot is free for a limited time\"\n        ]\n      },\n      {\n        \"name\": \"Management and security\",\n        \"rules\": [\n          \"Permissions are unlimited\",\n          \"Permissions are unlimited\",\n          \"Admins are unlimited\",\n          \"Watermark\",\n          \"Prohibit data export\",\n          \"Prohibit opening public links\",\n          \"Prohibit copying datas\",\n          \"Prohibit downloadimg files\",\n          \"Prohibit inviting off-space user\"\n        ]\n      },\n      {\n        \"name\": \"Support service\",\n        \"rules\": [\n          \"Consultancy service\",\n          \"Custom function development (additional cost)\",\n          \"Enterprise-level consulting training\"\n        ]\n      }\n    ]\n  }\n]",
             "zh_HK": "[\n  {\n    \"grade\": \"community\",\n    \"btnText\": \"联系客服\",\n    \"primaryContent\": [\n        \"文件节点数不限\",\n        \"单表行记录数不限\",\n        \"支持相册、看板、架构、甘特、日历视图与神奇表单\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"用量\",\n        \"rules\": [\n            \"文件节点数不限\",\n            \"单表行记录数不限\",\n            \"空间站总记录数不限\",\n            \"附件容量不限\"\n        ]\n      },\n      {\n        \"name\": \"功能\",\n        \"rules\": [\n            \"支持星标\",\n            \"支持相册视图、看板视图、架构视图\",\n            \"甘特视图不限量\",\n            \"日历视图不限量\",\n            \"神奇表单不限量\",\n            \"镜像文件（行权限）不限量\",\n            \"支持基础、自建和定制小程序，不限量\",\n            \"仪表盘不限量\",\n            \"支持彩虹色系的标签（30 个）\",\n            \"支持时光机（历史记录）\",\n            \"支持回收舱（历史文件）\",\n            \"API 请求不限\",\n            \"支持创建和使用机器人（限时免费）\"\n        ]\n      },\n      {\n        \"name\": \"管理和安全\",\n        \"rules\": [\n          \"无\"\n        ]\n      },\n      {\n        \"name\": \"支持服务\",\n        \"rules\": [\n          \"基础在线支持\",\n          \"用户社群支持\",\n          \"中英文邮件支持\",\n          \"免费在线视频培训\"\n        ]\n      }\n    ]\n  },\n  {\n    \"grade\": \"custom\",\n    \"btnText\": \"联系客服\",\n    \"primaryContent\": [\n        \"支持全部视图、神奇表单和列权限等全部高级功能\",\n        \"支持第三方 IM 集成、全局水印等安全管理功能\",\n        \"专属 V+ 顾问提供全程支持服务\"\n    ],\n    \"details\": [\n      {\n        \"name\": \"用量\",\n        \"rules\": [\n          \"文件节点数不限\",\n          \"单表行记录数不限\",\n          \"空间站总记录数不限\",\n          \"附件容量不限\"\n        ]\n      },\n      {\n        \"name\": \"功能\",\n        \"rules\": [\n            \"支持星标\",\n            \"支持相册视图、看板视图、架构视图\",\n            \"甘特视图不限量\",\n            \"日历视图不限量\",\n            \"神奇表单不限量\",\n            \"镜像文件（行权限）不限量\",\n            \"支持基础、自建和定制小程序，不限量\",\n            \"仪表盘不限量\",\n            \"支持彩虹色系的标签（50 个）\",\n            \"支持全平台客户端\",\n            \"支持时光机（历史记录）\",\n            \"支持回收舱（历史文件）\",\n            \"API 请求不限\",\n            \"支持创建和使用机器人（限时免费）\"\n        ]\n      },\n      {\n        \"name\": \"管理和安全\",\n        \"rules\": [\n\t\t\t\t\t\"列权限不限量\",\n\t\t\t\t\t\"文件权限不限量\",\n\t\t\t\t\t\"管理员不限量\",\n\t\t\t\t\t\"支持 Office 文件预览\",\n\t\t\t\t\t\"支持飞书、钉钉、企业微信集成\",\n\t\t\t\t\t\"支持全局水印\",\n\t\t\t\t\t\"禁止导出数据\",\n\t\t\t\t\t\"禁止创建公开链接\",\n\t\t\t\t\t\"禁止复制数据\",\n\t\t\t\t\t\"禁止下载附件\",\n\t\t\t\t\t\"禁止邀请站外用户\",\n\t\t\t\t\t\"通讯录显示手机号\",\n\t\t\t\t\t\"*支持单点登录（SSO）\"\n        ]\n      },\n      {\n        \"name\": \"支持服务\",\n        \"rules\": [\n\t\t\t\t\t\"VIP 顾问 24 小时在线支持\",\n\t\t\t\t\t\"VIP 客户群支持\",\n\t\t\t\t\t\"中英文邮件支持\",\n\t\t\t\t\t\"免费在线视频培训\",\n\t\t\t\t\t\"专属 V+ 顾问\",\n\t\t\t\t\t\"定制功能开发（费用另计）\",\n\t\t\t\t\t\"企业级咨询培训\"\n        ]\n      }\n    ]\n  }\n]"
         },
         "subscription_information": {
@@ -22663,7 +22831,7 @@
         },
         "support_access_to_editors": {
             "zh_CN": "当前空间站支持进入编辑",
-            "en_US": "You are allowed to access the current Space to edit.",
+            "en_US": "You are allowed to access the current space to edit.",
             "zh_HK": "當前空間站支持進入編輯"
         },
         "support_attachment_formats": {
@@ -23578,6 +23746,11 @@
             "en_US": "Unlimited Time Machine Histories",
             "zh_HK": "歷史記錄無限期保存"
         },
+        "time_zone_inconsistent_tips": {
+            "zh_CN": "当时区不一致时，默认取开始时间的时区",
+            "en_US": "When time zones are inconsistent, the time zone of the start time will be used by default",
+            "zh_HK": "當時區不一致時，默認取開始時間的時區"
+        },
         "timemachine_help_url": {
             "zh_CN": "https://help.vika.cn/docs/guide/manual-timemachine",
             "en_US": "https://help.vika.cn/docs/guide/manual-timemachine",
@@ -23825,7 +23998,7 @@
         },
         "total_records": {
             "zh_CN": "空间站记录数",
-            "en_US": "Total records",
+            "en_US": "Total Records",
             "zh_HK": "空間站記錄數"
         },
         "total_saving": {
@@ -24353,6 +24526,11 @@
             "en_US": "My Settings",
             "zh_HK": "個人設置"
         },
+        "user_setting_time_zone_title": {
+            "zh_CN": "时区",
+            "en_US": "Time zone",
+            "zh_HK": "時區"
+        },
         "user_space_member_limited_tips": {
             "zh_CN": "哟，你的 ${space} 空间站，已经达到上限 ${spec} 张维格表了\n",
             "en_US": "Hey, your ${space} Space has reached the upper limit of ${spec} datasheets",
@@ -24597,8 +24775,8 @@
             "zh_HK": "${count} 個鏡像"
         },
         "view_name_length_err": {
-            "zh_CN": "名称要求 1~30 字符以内",
-            "en_US": "The name must be between 1 and 30 characters in length",
+            "zh_CN": "名称要求 1~${maxCount} 字符以内",
+            "en_US": "The name must be between 1 and ${maxCount} characters in length",
             "zh_HK": "名稱要求 1~30 字符以內"
         },
         "view_name_repetition": {
@@ -24742,9 +24920,9 @@
             "zh_HK": "當前表單有字段新增/類型變更"
         },
         "vika_invite_link_template": {
-            "zh_CN": "【维格表】- ${nickName}邀请你加入「${spaceName}」空间站，为了更好的体验，建议通过电脑浏览器访问。",
-            "en_US": "From vikadata: ${nickName} invited you to join \"${spaceName}\" Space. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}邀請你加入「${spaceName}」空間站，為了更好的體驗，建議通過電腦瀏覽器訪問。"
+            "zh_CN": "【维格表】- ${nickName}邀请你加入「${spaceName}」空间站",
+            "en_US": "From vikadata: You were invited to join the \"${spaceName}\" Space by ${nickName}.",
+            "zh_HK": "【維格表】- ${nickName}邀請你加入「${spaceName}」空間站"
         },
         "vika_official_accounts": {
             "zh_CN": "官方公众号",
@@ -24757,9 +24935,9 @@
             "zh_HK": "《維格隱私政策》"
         },
         "vika_share_link_template": {
-            "zh_CN": "【维格表】- ${nickName}给你分享了《${nodeName}》，为了更好的体验，建议通过电脑浏览器访问",
-            "en_US": "From vikadata: ${nickName} shared the \"${nodeName}\" file with you. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}給你分享了《${nodeName}》，為了更好的體驗，建議通過電腦瀏覽器訪問"
+            "zh_CN": "【维格表】- ${nickName}给你分享了《${nodeName}》",
+            "en_US": "From vikadata: ${nickName} has shared the \"${nodeName}\" file with you.",
+            "zh_HK": "【維格表】- ${nickName}給你分享了《${nodeName}》"
         },
         "vika_small_classroom": {
             "zh_CN": "维格课堂",
@@ -25287,7 +25465,7 @@
         },
         "welcome_more_help": {
             "zh_CN": "更多帮助",
-            "en_US": "More Help",
+            "en_US": "More",
             "zh_HK": "更多幫助"
         },
         "welcome_sub_title1": {
@@ -25441,9 +25619,9 @@
             "zh_HK": "空間站自建"
         },
         "widget_cli_upgrade_tip": {
-            "zh_CN": "你当前的 widget-cli 工具版本过低，请前往终端重新执行 npm i -g @vikadata/widget-cli 命令以升级工具",
-            "en_US": "Your widget-cli tool has a low version. Please execute \"npm i -g @vikadata/widget-cli\" in your terminal to upgrade it.",
-            "zh_HK": "你當前的 widget-cli 工具版本過低，請前往終端重新執行 npm i -g @vikadata/widget-cli 命令以升級工具"
+            "zh_CN": "你当前的 widget-cli 工具版本过低，请前往终端重新执行 npm i -g @apitable/widget-cli 命令以升级工具",
+            "en_US": "Your widget-cli tool has a low version. Please execute \"npm i -g @apitable/widget-cli\" in your terminal to upgrade it.",
+            "zh_HK": "你當前的 widget-cli 工具版本過低，請前往終端重新執行 npm i -g @apitable/widget-cli 命令以升級工具"
         },
         "widget_collapse_tooltip": {
             "zh_CN": "折叠小程序",
@@ -26042,7 +26220,7 @@
         },
         "without_day": {
             "zh_CN": "无期限",
-            "en_US": "unlimited",
+            "en_US": "indefinite",
             "zh_HK": "無期限"
         },
         "wizard_14_success_message": {
@@ -26131,9 +26309,9 @@
             "zh_HK": "顯示全局水印"
         },
         "workbench_share_link_template": {
-            "zh_CN": "【维格表】- ${nickName}给你分享了《${nodeName}》，为了更好的体验，建议通过电脑浏览器访问",
-            "en_US": "From vikadata: ${nickName} shared the \"${nodeName}\" file with you. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}給你分享了《${nodeName}》，為了更好的體驗，建議通過電腦瀏覽器訪問"
+            "zh_CN": "【维格表】- ${nickName}给你分享了《${nodeName}》",
+            "en_US": "From vikadata: ${nickName} has shared the \"${nodeName}\" file with you.",
+            "zh_HK": "【維格表】- ${nickName}給你分享了《${nodeName}》"
         },
         "workbench_side_space_template": {
             "zh_CN": "空间站模版",

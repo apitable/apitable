@@ -32,9 +32,12 @@ const initState = {
 export const RobotContext = createContext<{
   state: IRobotContext,
   dispatch: React.Dispatch<any>
-}>({ state: initState, dispatch: () => { } });
+}>({
+  state: initState, dispatch: () => {
+  },
+});
 
-const reducer = (state: IRobotContext, action) => {
+const reducer = (state: IRobotContext, action: any) => {
   switch (action.type) {
     case 'setIsEditingRobotName':
       return produce(state, draft => {
@@ -85,19 +88,19 @@ const reducer = (state: IRobotContext, action) => {
       });
       return {
         ...state,
-        robotList: newRobotList
+        robotList: newRobotList,
       };
     case 'updateRobotList':
       return {
         ...state,
-        robotList: action.payload.robotList
+        robotList: action.payload.robotList,
       };
     default:
       throw new Error('error action type');
   }
 };
 
-export const RobotContextProvider = (props) => {
+export const RobotContextProvider = (props: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   return <RobotContext.Provider value={{ state, dispatch }}>

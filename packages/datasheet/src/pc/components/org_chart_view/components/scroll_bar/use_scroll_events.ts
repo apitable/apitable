@@ -138,7 +138,7 @@ export const useScrollEvents = (direction: ScrollBarType, containerRef: React.Re
     // eslint-disable-next-line
   }, [translateX, translateY, scale]);
 
-  const scrollHandler = e => {
+  const scrollHandler = (e: any) => {
     if (direction === ScrollBarType.Horizontal) {
       const _scrollLeft = e.currentTarget.scrollLeft;
       const initialTranslateX = containerWidth - left * scale;

@@ -26,7 +26,7 @@ export interface ITextInputProps extends InputProps {
   err?: string;
 }
 
-export const TextInput: FC<ITextInputProps> = props => {
+export const TextInput: FC<React.PropsWithChildren<ITextInputProps>> = props => {
   const { err, width = 330, height = 50, ...rest } = props;
   return (
     <div

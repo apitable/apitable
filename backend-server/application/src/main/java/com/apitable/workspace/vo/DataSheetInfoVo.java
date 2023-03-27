@@ -18,66 +18,64 @@
 
 package com.apitable.workspace.vo;
 
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Result view of data table information
+ * Result view of data table information.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-@ApiModel("Result view of data table information")
+@Schema(description = "Result view of data table information")
 public class DataSheetInfoVo {
 
-    @ApiModelProperty(value = "Node Description", position = 1)
+    @Schema(description = "Node Description")
     private String description;
 
-    @ApiModelProperty(value = "Whether the node is shared", position = 1)
+    @Schema(description = "Whether the node is shared")
     private Boolean nodeShared;
 
-    @ApiModelProperty(value = "Whether the node permission is set", position = 2)
+    @Schema(description = "Whether the node permission is set")
     private Boolean nodePermitSet;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Digital meter icon", example = "smile", position = 2)
+    @Schema(description = "Digital meter icon", example = "smile")
     private String icon;
 
-    @ApiModelProperty(value = "Number table name", example = "E-commerce project workbench", position = 2)
+    @Schema(description = "Number table name", example = "E-commerce project workbench")
     private String name;
 
-    @ApiModelProperty(value = "Number table custom ID", position = 3)
+    @Schema(description = "Number table custom ID")
     private String id;
 
-    @ApiModelProperty(value = "Parent Node Id", example = "nod10", position = 4)
+    @Schema(description = "Parent Node Id", example = "nod10")
     private String parentId;
 
-    @ApiModelProperty(value = "Version No", example = "0", position = 4)
+    @Schema(description = "Version No", example = "0")
     private Long revision;
 
-    @ApiModelProperty(value = "Owner", position = 7)
+    @Schema(description = "Owner")
     private Long ownerId;
 
-    @ApiModelProperty(value = "Creator", position = 8)
+    @Schema(description = "Creator")
     private Long creatorId;
 
-    @ApiModelProperty(value = "Space id", position = 9)
+    @Schema(description = "Space id")
     private String spaceId;
 
-    @ApiModelProperty(value = "Role", example = "editor", position = 13)
+    @Schema(description = "Role", example = "editor")
     private String role;
 
-    @ApiModelProperty(value = "Node Permissions", position = 14)
+    @Schema(description = "Node Permissions")
     private NodePermissionView permissions;
 }

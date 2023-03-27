@@ -27,7 +27,7 @@ interface IOptionalCellContainerProps {
   className?: string;
 }
 
-export const OptionalCellContainer: React.FC<IOptionalCellContainerProps> = props => {
+export const OptionalCellContainer: React.FC<React.PropsWithChildren<IOptionalCellContainerProps>> = props => {
   const { children, className, displayMinWidth, viewRowHeight, ...rest } = props;
 
   return <div

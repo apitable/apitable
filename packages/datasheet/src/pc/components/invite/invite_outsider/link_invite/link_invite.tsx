@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, ITeamTreeNode, StoreActions, Strings, t } from '@apitable/core';
 import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Input, TreeSelect } from 'antd';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
@@ -24,23 +24,16 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { copy2clipBoard } from 'pc/utils';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
-import HistoryIcon from 'static/icon/common/common_icon_history.svg';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
-import RetractIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
+import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
+import type { DataNode } from 'antd/es/tree';
 
 const { TreeNode } = TreeSelect;
 
-export interface ILinkInviteProps {
-  shareId?: string;
-}
-
-export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
+export const LinkInvite = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const { linkList, userInfo, teamList } = useSelector(
@@ -82,22 +75,27 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
     setShowPopconfirmKey(visible ? key : '');
   };
 
-  const renderTreeNodes = (data: ITeamList[]) => {
+  const renderTreeNodes = (data: ITeamTreeNode[]) => {
     const tempList = linkList.map(item => item.teamId);
+    if (!data || data.length === 0) {
+      return <></>;
+    }
     return data.map(item => {
       const config = {
         title: item.teamName,
         value: item.teamId,
         disabled: tempList.includes(item.teamId),
       };
-      if (item.children && item.children.length) {
-        return (
-          <TreeNode {...config} key={item.teamId}>
-            {renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode {...config} isLeaf={userInfo!.isAdmin && item.children?.length ? false : true} key={item.teamId} />;
+      
+      return (
+        <TreeNode 
+          {...config} 
+          key={item.teamId}
+          isLeaf={!item.hasChildren}
+        >
+          { item.children && item.children.length > 0 && renderTreeNodes(item.children)}
+        </TreeNode>
+      );
     });
   };
 
@@ -163,7 +161,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
             <ButtonGroup withSeparate>
               <Tooltip title={t(Strings.copy_link)} placement="top">
                 <Button onClick={() => copy2clipBoard(`${item.token} ${inviteText}`)}>
-                  <CopyIcon fill={colors.secondLevelText} />
+                  <CopyOutlined color={colors.secondLevelText} />
                 </Button>
               </Tooltip>
               <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -179,7 +177,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
                   onVisibleChange={v => popconfirmVisibleChange(item.token, v)}
                 >
                   <Button>
-                    <DeleteIcon fill={colors.secondLevelText} />
+                    <DeleteOutlined color={colors.secondLevelText} />
                   </Button>
                 </Popconfirm>
               </ComponentDisplay>
@@ -194,7 +192,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
                     });
                   }}
                 >
-                  <DeleteIcon fill={colors.secondLevelText} />
+                  <DeleteOutlined color={colors.secondLevelText} />
                 </Button>
               </ComponentDisplay>
             </ButtonGroup>
@@ -203,6 +201,14 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
       );
     });
   };
+
+  const onExpand = (expandedKeys: DataNode['key'][]) => {   
+    const teamId = expandedKeys[expandedKeys.length - 1];
+    
+    dispatch(StoreActions.getSubTeam(teamId));
+  
+  };
+
   return (
     <div className={styles.linkInvite}>
       <InviteAlert />
@@ -216,13 +222,14 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
               value={value === '' ? undefined : value}
               placeholder={t(Strings.placeholder_choose_group)}
               onChange={value => onChange(value)}
-              suffixIcon={<PulldownIcon />}
+              suffixIcon={<ChevronDownOutlined />}
               treeIcon
-              switcherIcon={<RetractIcon />}
+              switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
               dropdownClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
               listHeight={200}
+              onTreeExpand={onExpand}
             >
               {renderTreeNodes(teamList || [])}
             </TreeSelect>
@@ -235,7 +242,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
       {linkList.length > 0 && (
         <>
           <div className={styles.historyTitle}>
-            <HistoryIcon />
+            <TimeOutlined />
             {t(Strings.invitation_link_old)}
           </div>
           <div className={styles.linkWrapper}>{renderLinkList()}</div>

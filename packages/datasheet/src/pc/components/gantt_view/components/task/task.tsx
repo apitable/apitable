@@ -17,7 +17,17 @@
  */
 
 import { lightColors } from '@apitable/components';
-import { CollaCommandName, DropDirectionType, FieldType, GanttColorType, GanttRowHeight, KONVA_DATASHEET_ID, Strings, t } from '@apitable/core';
+import {
+  CollaCommandName,
+  DropDirectionType,
+  FieldType,
+  GanttColorType,
+  GanttRowHeight,
+  getTimeZoneAbbrByUtc,
+  KONVA_DATASHEET_ID,
+  Strings,
+  t,
+} from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Context } from 'konva/lib/Context';
 import { KonvaEventObject } from 'konva/lib/Node';
@@ -53,7 +63,12 @@ interface ITaskProps {
   isTransform: boolean;
   leftAnchorEnable?: boolean;
   rightAnchorEnable?: boolean;
-  setTooltipInfo: (info) => void;
+  setTooltipInfo: (info: {
+    visible: boolean,
+    text?: string,
+    x?: number,
+    y?: number,
+  }) => void;
   targetTaskInfo: ITargetTaskInfo | null;
 }
 
@@ -107,7 +122,7 @@ const moveRow = (viewId: string, dragTaskId: string, dropRecordId: string, direc
 
 const formatStr = 'YYYY/MM/DD';
 
-const Task: FC<ITaskProps> = (props) => {
+const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
   const {
     x,
     y,
@@ -140,7 +155,7 @@ const Task: FC<ITaskProps> = (props) => {
   const {
     workDays, onlyCalcWorkDay,
     unitWidth, rowHeight, columnWidth, columnThreshold,
-    containerWidth: ganttWidth,
+    containerWidth: ganttWidth
   } = instance;
   const taskHeight = rowHeight;
   const threshold = unitWidth / 2;
@@ -165,7 +180,7 @@ const Task: FC<ITaskProps> = (props) => {
     distanceToBoundaryLeft: 0,
     distanceToBoundaryRight: 0,
   });
-  const { colorOption } = ganttStyle;
+  const { colorOption, startFieldId } = ganttStyle;
   const {
     x: _x, y: _y, width, isOperating, transformType,
     distanceToTaskLeft, distanceToBoundaryLeft, distanceToTaskTop, distanceToBoundaryRight
@@ -218,7 +233,7 @@ const Task: FC<ITaskProps> = (props) => {
 
   const isDrawTargetTask = targetTaskInfo?.recordId === recordId;
 
-  const setTaskPosition = (data) => _setTaskPosition(prev => ({ ...prev, ...data }));
+  const setTaskPosition = (data: any) => _setTaskPosition(prev => ({ ...prev, ...data }));
 
   const onTooltipShow = (taskX: number, taskWidth: number, toolTipX: number, toolTipY: number, tipType = TipType.All) => {
     if (wheelingRef.current) return;
@@ -227,23 +242,29 @@ const Task: FC<ITaskProps> = (props) => {
       let text = '';
       const unitStartIndex = instance.getUnitIndex(taskX);
       const unitStopIndex = instance.getUnitIndex(taskX + taskWidth) - 1;
-      const startTime = instance.getDateFromStartDate(unitStartIndex);
-      const endTime = instance.getDateFromStartDate(unitStopIndex);
+      let startTime = instance.getDateFromStartDate(unitStartIndex);
+      let endTime = instance.getDateFromStartDate(unitStopIndex);
+      const startFieldTimeZone = fieldMap[startFieldId]?.property.timeZone;
       const totalCount = onlyCalcWorkDay ? getDiffCountByWorkdays(startTime, endTime, workDays) : getDiffCount(startTime, endTime) + 1;
-      const totalText = onlyCalcWorkDay ?
+      let totalText = onlyCalcWorkDay ?
         t(Strings.gantt_task_total_workdays, { count: totalCount }) :
         t(Strings.gantt_task_total_date, { count: totalCount });
+      if (startFieldTimeZone) {
+        startTime = startTime.tz(startFieldTimeZone);
+        endTime = endTime.tz(startFieldTimeZone);
+        totalText = ` (${getTimeZoneAbbrByUtc(startFieldTimeZone)})，${totalText}`;
+      }
       switch (tipType) {
         case TipType.Left: {
-          text = `${startTime.format(formatStr)}，${totalText}`;
+          text = `${startTime.format(formatStr)}${totalText}`;
           break;
         }
         case TipType.Right: {
-          text = `${endTime.format(formatStr)}，${totalText}`;
+          text = `${endTime.format(formatStr)}${totalText}`;
           break;
         }
         case TipType.All: {
-          text = `${startTime.format(formatStr)} - ${endTime.format(formatStr)}，${totalText}`;
+          text = `${startTime.format(formatStr)} - ${endTime.format(formatStr)}${totalText}`;
         }
       }
       setTooltipInfo({
@@ -289,7 +310,7 @@ const Task: FC<ITaskProps> = (props) => {
     if (isTouchLeft) {
       return scrollHandler.scrollByValue({
         columnSpeed: -getSpeed(leftSpacing),
-        scrollCb: ({ scrollLeft, totalScrollX }) => {
+        scrollCb: ({ scrollLeft, totalScrollX }: { scrollLeft: number, totalScrollX: number }) => {
           const diffFactor = isLeft ? 1 : -1;
           setTaskPosition({
             x: isLeft ? scrollLeft + pointX - gridWidth - distanceToTaskLeft : curX,
@@ -303,7 +324,7 @@ const Task: FC<ITaskProps> = (props) => {
     if (isTouchRight) {
       return scrollHandler.scrollByValue({
         columnSpeed: getSpeed(rightSpacing),
-        scrollCb: ({ scrollLeft, totalScrollX, maxScrollSize }) => {
+        scrollCb: ({ scrollLeft, totalScrollX, maxScrollSize }: { scrollLeft: number, totalScrollX: number, maxScrollSize: number }) => {
           const curCount = totalScrollX % maxScrollSize > maxScrollSize - x ? 1 : 0;
           const prevCount = Math.floor(totalScrollX / maxScrollSize);
           const diffFactor = isLeft ? -1 : 1;
@@ -326,7 +347,7 @@ const Task: FC<ITaskProps> = (props) => {
     }
   };
 
-  const onTransformEnd = (e: KonvaEventObject<Event>) => {
+  const onTransformEnd = () => {
     setLocking(false);
     scrollHandler.stopScroll();
     setTooltipInfo({ visible: false });
@@ -367,9 +388,9 @@ const Task: FC<ITaskProps> = (props) => {
       setTaskPosition({ x: curX, y: curY });
       onTooltipShow(curX, taskWidth, pointX, pointY + 20);
     };
-    const horizontalScrollCb = ({ scrollLeft }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
-    const verticalScrollCb = ({ scrollTop }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
-    const allScrollCb = ({ scrollLeft, scrollTop }) => setTaskPosition({
+    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
+    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
+    const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number, scrollTop: number }) => setTaskPosition({
       x: scrollLeft + pointX - gridWidth - distanceToTaskLeft,
       y: scrollTop + pointY - distanceToTaskTop
     });
@@ -378,7 +399,7 @@ const Task: FC<ITaskProps> = (props) => {
       scrollHandler,
       gridWidth,
       instance, 
-      scrollState, 
+      scrollState as any,
       pointPosition,
       noScrollCb,
       horizontalScrollCb,
@@ -460,7 +481,7 @@ const Task: FC<ITaskProps> = (props) => {
       ctx.fillStrokeShape(shape);
     }
 
-    function roundRect(x, y, width, height, tlRadius = 0, trRadius = 0, brRadius = 0, blRadius = 0) {
+    function roundRect(x: number, y: number, width: number, height: number, tlRadius = 0, trRadius = 0, brRadius = 0, blRadius = 0) {
       ctx.beginPath();
       ctx.moveTo(x + tlRadius, y);
       ctx.lineTo(x + width - trRadius, y);
@@ -502,7 +523,7 @@ const Task: FC<ITaskProps> = (props) => {
   const getTaskStroke = () => {
     if(isTransform || isDrawTargetTask) {
       if(isTaskLineDrawing) {
-        return targetTaskInfo?.dashEnabled ? colors.fc10 : colors.deepPurple[500];
+        return targetTaskInfo?.dashEnabled ? colors.fc10 : colors.borderBrandDefault;
       } 
       return colorMap.handlerColor;
       

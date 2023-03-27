@@ -21,6 +21,7 @@ import {
   BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
   NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t,
 } from '@apitable/core';
+import { ChevronRightOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
@@ -35,9 +36,6 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import WarnIcon from 'static/icon/common/common_icon_warning.svg';
-import WarnTriangleIcon from 'static/icon/common/common_icon_warning_triangle.svg';
-import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { isNumber } from 'util';
 import { getFieldTypeIcon } from '../../field_setting';
 import settingStyles from '../../field_setting/styles.module.less';
@@ -92,7 +90,7 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
   }
   if (showFormatType === BasicValueType.Number || showFormatType === BasicValueType.Boolean) {
     const fieldFormatting = () => ({
-      symbol: '¥',
+      symbol: '$',
       precision: 0,
       formatType: FieldType.Number,
     });
@@ -110,7 +108,7 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
   return newCurrentField;
 };
 
-export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormateLookUpProps) => {
+export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps>> = memo((props: IFormateLookUpProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, datasheetId } = props;
   const activeDstId = useSelector(state => datasheetId || Selectors.getActiveDatasheetId(state))!;
@@ -284,7 +282,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
       <div className={settingStyles.sectionInfo}>
         <div className={classNames(settingStyles.text)}>{renderInner()}</div>
         <div className={settingStyles.arrow}>
-          <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+          <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
         </div>
       </div>
     );
@@ -324,7 +322,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                 )}
               </div>
               <div className={settingStyles.arrow}>
-                <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+                <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
               </div>
             </div>
           }
@@ -332,7 +330,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
 
         {linkFields.length === 0 && (
           <span className={lookupStyles.warningText}>
-            <WarnIcon fill={colors.thirdLevelText} width={12} height={12} /> {t(Strings.table_link_err)}
+            <WarnCircleFilled color={colors.thirdLevelText} size={12} /> {t(Strings.table_link_err)}
           </span>
         )}
       </section>
@@ -385,7 +383,7 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
               >
                 {isFilterTypeSwitch && (
                   <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement='top'>
-                    <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
+                    <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
                   </Tooltip>
                 )}
                 <div className={classNames(settingStyles.text)}>
@@ -398,13 +396,13 @@ export const FormateLookUp: React.FC<IFormateLookUpProps> = memo((props: IFormat
                   </span>
                 </div>
                 <div className={settingStyles.arrow}>
-                  <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+                  <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
                 </div>
               </div>
             ) : (
               <div className={settingStyles.sectionClear}>
                 <div>
-                  <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} className={settingStyles.warningIcon} />
+                  <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
                   {t(Strings.filter_delete_tip)}
                 </div>
                 <TextButton color='danger' size='small' onClick={() => setFieldProperty('filterInfo')(undefined)}>

@@ -27,7 +27,7 @@ import { generateTargetName } from 'pc/components/gantt_view';
 import { memo, useContext, useState } from 'react';
 import { emojiUrl } from 'pc/utils';
 
-export const CellRating: React.FC<ICellProps> = memo((props) => {
+export const CellRating: React.FC<React.PropsWithChildren<ICellProps>> = memo((props) => {
   const {
     x,
     y,
@@ -82,7 +82,7 @@ export const CellRating: React.FC<ICellProps> = memo((props) => {
     });
   };
 
-  const handleMouseOut = (v: number) => {
+  const handleMouseOut = () => {
     setPendingValue(cellValue);
     clearTooltipInfo();
   };

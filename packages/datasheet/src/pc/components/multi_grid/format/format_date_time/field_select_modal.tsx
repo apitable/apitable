@@ -36,7 +36,7 @@ interface IFieldSelectModalProps {
   onOk: (collection: string[]) => void;
 }
 
-export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IFieldSelectModalProps) => {
+export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModalProps>> = (props: IFieldSelectModalProps) => {
   const { onCancel, onOk, field: currentField } = props;
   const currentFieldId = currentField.id;
   const fieldIdCollection = currentField.property.fieldIdCollection!;
@@ -93,7 +93,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
           <Button size="small" onClick={() => setCollection([])}>
             {t(Strings.clear_all_fields)}
           </Button>
-          <Button size="small" onClick={setAllFieldsHandler}>
+          <Button className={styles.button} size="small" onClick={setAllFieldsHandler}>
             {t(Strings.select_all_fields)}
           </Button>
         </div>
@@ -112,7 +112,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const SelectedFieldItem = ({ fieldId }) => {
+  const SelectedFieldItem = ({ fieldId }: { fieldId: string }) => {
     if (!fieldMap[fieldId]) {
       return <></>;
     }

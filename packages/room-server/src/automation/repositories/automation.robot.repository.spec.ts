@@ -32,8 +32,9 @@ describe('AutomationRobotRepository', () => {
   const theUserId = 'theUserId';
   let module: TestingModule;
   let entity: AutomationRobotEntity;
+  let addRobot: Function;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -46,21 +47,24 @@ describe('AutomationRobotRepository', () => {
     }).compile();
 
     automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
-    const robot: DeepPartial<AutomationRobotEntity> = {
-      resourceId: theRobotResourceId,
-      robotId: theRobotId,
-      name: 'robot',
-      description: 'the test robot',
-      isActive: true,
-      createdBy: theUserId,
-      updatedBy: theUserId,
+    addRobot = async(robotId: string): Promise<AutomationRobotEntity> => {
+      const robot: DeepPartial<AutomationRobotEntity> = {
+        resourceId: theRobotResourceId,
+        robotId,
+        name: 'robot',
+        description: 'the test robot',
+        isActive: true,
+        createdBy: theUserId,
+        updatedBy: theUserId,
+      };
+      const record = automationRobotRepository.create(robot);
+      return await automationRobotRepository.save(record);
     };
-    const record = automationRobotRepository.create(robot);
-    entity = await automationRobotRepository.save(record);
+    entity = await addRobot(theRobotId);
     expect(entity).toBeDefined();
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await automationRobotRepository.delete(entity.id);
     await automationRobotRepository.manager.connection.close();
   });
@@ -69,7 +73,7 @@ describe('AutomationRobotRepository', () => {
     expect(automationRobotRepository).toBeDefined();
   });
 
-  it('given one active robot entity when get active robots by resource id', async () => {
+  it('given one active robot entity when get active robots by resource id', async() => {
     const resourceRobotDtos = await automationRobotRepository.getActiveRobotsByResourceIds([theRobotResourceId]);
     expect(resourceRobotDtos).toBeDefined();
     expect(resourceRobotDtos.length).toEqual(1);
@@ -77,10 +81,35 @@ describe('AutomationRobotRepository', () => {
     expect(resourceRobotDtos[0]!.robotId).toEqual(theRobotId);
   });
 
-  it('given one active robot entity when get robot id by resource id', async () => {
-    const robotIds = await automationRobotRepository.getRobotIdByResourceId(theRobotResourceId);
+  it('given one active robot entity when get robot id by resource id', async() => {
+    const robotIds = await automationRobotRepository.selectRobotIdByResourceId(theRobotResourceId);
     expect(robotIds).toBeDefined();
     expect(robotIds.length).toEqual(1);
     expect(robotIds[0]!.robotId).toEqual(theRobotId);
+  });
+
+  it('should be get the resource\'s robotIds info', async() => {
+    const robots = {};
+    for (let i = 0; i < 3; i++) {
+      const robot = await addRobot(`test-${i}`);
+      robots[robot.robotId] = robot;
+    }
+    const wrappedRobotIds = await automationRobotRepository.selectRobotIdsByResourceId(theRobotResourceId);
+    expect(wrappedRobotIds).toBeDefined();
+    expect(wrappedRobotIds.length).toEqual(4);
+    const robotIds = wrappedRobotIds.map(wrappedRobotId => wrappedRobotId.robotId);
+    for (let i = 0; i < 4; i++) {
+      if (robotIds[i] === theRobotId) continue;
+      expect(robots[robotIds[i]!]).toBeDefined();
+      await automationRobotRepository.delete(robots[robotIds[i]!].id);
+    }
+  });
+
+  it('should be get robots by robot ids', async() => {
+    const testRobot = await addRobot('test');
+    const robot = await automationRobotRepository.selectRobotBaseInfoDtoByRobotIds([theRobotId, testRobot.robotId]);
+    expect(robot).toBeDefined();
+    expect(robot.length).toEqual(2);
+    await automationRobotRepository.delete(testRobot.id);
   });
 });

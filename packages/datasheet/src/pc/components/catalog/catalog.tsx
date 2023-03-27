@@ -32,7 +32,7 @@ import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_si
 import { DndProvider } from 'react-dnd';
 import { dndH5Manager } from 'pc/utils/dnd_manager';
 
-export const CatalogBase: React.FC = () => {
+export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   // Whether the node is loaded or not (expand the node)
   const [isLoaded, setIsLoaded] = useState(false);
   // Type of operation to perform, 0 means add folder node, 1 means add file node, 2 means import excel
@@ -89,7 +89,7 @@ export const CatalogBase: React.FC = () => {
     // eslint-disable-next-line
   }, [isLoaded, optType]);
 
-  const openCatalogPanel = cb => {
+  const openCatalogPanel = (cb: Function) => {
     const state = store.getState();
     const sideBarVisible = state.space.sideBarVisible;
     !sideBarVisible && dispatch(StoreActions.setSideBarVisible(true));

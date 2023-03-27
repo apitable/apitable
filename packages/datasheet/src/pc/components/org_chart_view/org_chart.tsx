@@ -22,15 +22,7 @@ import { FC, useContext, useRef } from 'react';
 import * as React from 'react';
 import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { DragLayer, CustomEdge, BezierEdge, CustomNode } from './components/custom';
-import {
-  DEFAULT_ZOOM,
-  MAX_ZOOM,
-  MIN_ZOOM,
-  ORG_NODE_MENU,
-  ORG_EDGE_MENU,
-  DragNodeType,
-  NodeType
-} from './constants';
+import { DEFAULT_ZOOM, MAX_ZOOM, MIN_ZOOM, ORG_NODE_MENU, ORG_EDGE_MENU, DragNodeType, NodeType } from './constants';
 import { ConfigConstant, Selectors } from '@apitable/core';
 import { FlowContext } from './context/flow_context';
 import { DropWrapper } from './components/drop_wrapper';
@@ -54,8 +46,7 @@ import { ScrollBar } from './components/scroll_bar';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
 
-export const OrgChart: FC = () => {
-
+export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
   const {
     initialElements,
     unhandledNodes,
@@ -81,18 +72,12 @@ export const OrgChart: FC = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const reactFlowInstance = useRef<OnLoadParams>();
 
-  const {
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    fitView,
-    setCenter,
-  } = useZoomPanHelper();
+  const { zoomIn, zoomOut, zoomTo, fitView, setCenter } = useZoomPanHelper();
 
   const nodes = useStoreState(state => state.nodes);
   const [, , scale] = useStoreState(state => state.transform);
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchItem);
+  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
 
   const focusNode = (id: string) => {
     const node = nodes.find(n => n.id === id);
@@ -103,7 +88,7 @@ export const OrgChart: FC = () => {
     }
   };
 
-  const handleNodeContextMenu = (event: React.MouseEvent, node) => {
+  const handleNodeContextMenu = (event: React.MouseEvent, node: any) => {
     event.preventDefault();
     if (node.type !== NodeType.GhostNode) {
       showNodeMenu(event as React.MouseEvent<HTMLElement>, {
@@ -180,15 +165,17 @@ export const OrgChart: FC = () => {
     const curGuideWizardId = hooks?.curGuideWizardId;
     const handledCount = rowsCount - handlingCount - unhandledNodes.length;
 
-    if (initialElements.length === 1) { // Add the first node
+    if (initialElements.length === 1) {
+      // Add the first node
       // The current wizard is 79 and 79 is complete before 80 can be executed
-      if (curGuideWizardId === ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL
-        && getWizardRunCount(state.user, ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL)
+      if (
+        curGuideWizardId === ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL &&
+        getWizardRunCount(state.user, ConfigConstant.WizardIdConstant.ORG_VIEW_PANEL)
       ) {
         TriggerCommands.clear_guide_all_ui?.();
         TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.ORG_VIEW_ADD_FIRST_NODE);
       }
-    } 
+    }
     // Add link nodes
     else if (unhandledNodes.length !== initialElements.length && handledCount === 2) {
       // The current wizard is 80 in order to execute 81
@@ -207,11 +194,7 @@ export const OrgChart: FC = () => {
         onDrop={handleDropNode}
         onMouseOver={() => {
           if (overGhostRef.current) {
-            const {
-              id = '',
-              hiddenLastNode,
-              setEdgeVisibleFuncsMap,
-            } = overGhostRef.current;
+            const { id = '', hiddenLastNode, setEdgeVisibleFuncsMap } = overGhostRef.current;
             hiddenLastNode?.();
             setEdgeVisibleFuncsMap?.[id]?.(false);
             overGhostRef.current.id = undefined;
@@ -231,16 +214,16 @@ export const OrgChart: FC = () => {
           defaultZoom={DEFAULT_ZOOM}
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
-          zoomOnPinch={isWindowsOS() ? false : true}
+          zoomOnPinch={!isWindowsOS()}
           zoomActivationKeyCode={isWindowsOS() ? KeyCode.Alt : KeyCode.Meta}
           nodeTypes={{
-            [NodeType.CustomNode]: CustomNode,
-            [NodeType.GhostNode]: GhostNode,
+            [NodeType.CustomNode]: CustomNode as any,
+            [NodeType.GhostNode]: GhostNode as any,
           }}
           edgeTypes={{
-            [NodeType.CustomEdge]: CustomEdge,
-            [NodeType.BezierEdge]: BezierEdge,
-            [NodeType.GhostEdge]: GhostEdge,
+            [NodeType.CustomEdge]: CustomEdge as any,
+            [NodeType.BezierEdge]: BezierEdge as any,
+            [NodeType.GhostEdge]: GhostEdge as any,
           }}
           onlyRenderVisibleElements
           panOnScrollSpeed={1}
@@ -259,34 +242,30 @@ export const OrgChart: FC = () => {
       </DropWrapper>
       {unhandledNodes.length === rowsCount && (
         <AddFirstNode
-          onAdd={() => addRecord(viewId, rowsCount)}
+          onAdd={async() => (await addRecord(viewId, rowsCount))!}
           mode={rowsCount === 0 ? 'add' : 'none'}
           reactFlowInstance={reactFlowInstance}
         />
       )}
-      {quickAddRecId && (
+      {quickAddRecId &&
         ReactDOM.createPortal(
           <>
-            <Modal
-              recordId={quickAddRecId}
-            />
+            <Modal recordId={quickAddRecId} />
             <div
               className={styles.mask}
               onClick={() => {
                 setQuickAddRecId(undefined);
               }}
             />
-          </>
-          ,
-          document.body
-        )
-      )}
-      {initialElements.length > 0 &&
+          </>,
+          document.body,
+        )}
+      {initialElements.length > 0 && (
         <>
           <ScrollBar type={ScrollBarType.Horizontal} />
           <ScrollBar type={ScrollBarType.Vertical} />
         </>
-      }
+      )}
     </>
   );
 };

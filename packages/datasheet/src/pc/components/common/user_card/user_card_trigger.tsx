@@ -30,7 +30,7 @@ interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {
   avatarProps?: IAvatarProps;
 }
 
-export const UserCardTrigger: FC<IUserCardTrigger> = props => {
+export const UserCardTrigger: FC<React.PropsWithChildren<IUserCardTrigger>> = props => {
   const { userId, memberId, spareName, spareSrc, spaceName, children, action = ['click'], isAlien,
     destroyPopupOnHide = true, scrollTarget, permissionVisible, isDeleted, isActive, avatarProps, ...rest } = props;
   const shareId = useSelector((state: IReduxState) => state.pageParams.shareId);

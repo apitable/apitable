@@ -21,7 +21,7 @@ import {
   CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, StoreActions, Strings, t,
   WidgetApi, WidgetApiInterface,
 } from '@apitable/core';
-import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
@@ -37,6 +37,8 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
 import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -49,7 +51,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
-import { InstallPosition, installToDashboard, installToPanel, installWidget } from '../widget_center';
 import { Steps } from './steps';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise';
@@ -93,7 +94,7 @@ interface IWidgetCreateModalProps {
   closeModal?: (closeWidgetCenter?: boolean) => void;
 }
 
-const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
+const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
@@ -149,14 +150,14 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
       <Typography variant={'h6'} component={'div'}>{t(Strings.create_widget)}</Typography>
       <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
         <a href={getEnvVariables().WIDGET_CREATE_WIDGET_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-          <InformationSmallOutlined color={colors.fc3} />
+          <QuestionCircleOutlined color={colors.fc3} />
         </a>
       </CommonTooltip>
     </div>
   );
   const isValid = widgetName && selectTemplate;
   return (
-    <Modal
+    (<Modal
       title={<Title />}
       visible
       centered
@@ -222,7 +223,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
         </div>
         {templateDataLoading && <Loading style={{ backgroundColor: colors.defaultBg }} />}
       </div>
-    </Modal>
+    </Modal>)
   );
 };
 
@@ -263,14 +264,14 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
 const WidgetCretInvalidError = () => (
   <div className={styles.widgetCretInvalidError}>
     <div className={styles.title}>
-      <ErrorFilled size={24} />
+      <WarnCircleFilled size={24} />
       <span>{t(Strings.widget_cret_invalid_error_title)}</span>
     </div>
     <div className={styles.content}>{parser(t(Strings.widget_cret_invalid_error_content))}</div>
   </div>
 );
 
-const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) => {
+const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreateStepsProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
@@ -315,7 +316,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
         {
           label: t(Strings.widget_step_install_content_label2),
           type: 'info',
-          value: `npm install -g @${getEnvVariables().WIDGET_REPO_PREFIX}/widget-cli`
+          value: 'npm install -g @apitable/widget-cli'
         },
       ],
       helpLink: getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL
@@ -399,7 +400,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
     });
   };
 
-  const copyLinkHandler = (text, index) => {
+  const copyLinkHandler = (text: string, index: number) => {
     if (isCopiedIndex !== null) {
       return;
     }
@@ -435,13 +436,13 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
               <span className={styles.stepContentTitleMain}>{config?.[current].title}</span>
               <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
                 <a href={config?.[current].helpLink} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-                  <InformationSmallOutlined size={16} color={colors.thirdLevelText} />
+                  <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
                 </a>
               </CommonTooltip>
             </Typography>
             <div className={styles.stepContentDesc}>{config?.[current].desc}</div>
             {
-              config?.[current].content.map((contentItem, index) => (
+              config?.[current].content.map((contentItem: any, index: number) => (
                 <div className={classNames(styles.contentItem, contentItem.value ?? styles.contentItemNoMargin)} key={index}>
                   <div className={styles.contentItemLabel}>{contentItem.label}</div>
                   {(contentItem.type === 'info' && contentItem.value || contentItem.type === 'input') && <div className={styles.contentItemValue}>
@@ -523,7 +524,7 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
   ));
 };
 
-const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
+const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevConfigProps>> = (props) => {
   const colors = useThemeColors();
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);
@@ -568,7 +569,7 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
           <span className={styles.stepContentTitleMain}>{t(Strings.preview_widget)}</span>
           <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
             <a href={getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-              <InformationSmallOutlined size={16} color={colors.thirdLevelText} />
+              <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
             </a>
           </CommonTooltip>
         </Typography>
@@ -601,7 +602,7 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
         </div>
         <div className={classNames(styles.contentFooter, styles.configContentFooter)}>
           <Button color='primary' onClick={startDev} disabled={!devUrl}>{t(Strings.widget_start_dev)}</Button>
-          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<GuideOutlined />} onClick={() => {
+          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<BulbOutlined color={colors.thirdLevelText} />} onClick={() => {
             expandWidgetCreateSteps({
               widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl,
             });
@@ -637,7 +638,7 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
             <span className={styles.stepContentTitleMain}>{t(Strings.widget_operate_publish_help)}</span>
             <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
               <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
-                <InformationSmallOutlined size={16} color={colorVars.thirdLevelText} />
+                <QuestionCircleOutlined size={16} color={colorVars.thirdLevelText} />
               </a>
             </CommonTooltip>
           </Typography>

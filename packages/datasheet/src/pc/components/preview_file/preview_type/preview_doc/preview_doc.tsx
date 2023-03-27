@@ -35,7 +35,7 @@ interface IPreviewDoc {
   disabledDownload: boolean;
 }
 
-export const PreviewDoc: React.FC<IPreviewDoc> = ({
+export const PreviewDoc: React.FC<React.PropsWithChildren<IPreviewDoc>> = ({
   file,
   icon,
   previewEnable,

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Alert } from '@apitable/components';
+import { Alert, ThemeName } from '@apitable/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
@@ -25,7 +25,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import OrgImage from 'static/icon/organization/organization_img_default.png';
+import OrgImageLight from 'static/icon/organization/contacts_empty_light.png';
+import OrgImageDark from 'static/icon/organization/contacts_empty_dark.png';
 import { ComponentDisplay } from '../common/component_display';
 import { ScreenSize } from '../common/component_display/enum';
 import { CommonSide } from '../common_side';
@@ -36,38 +37,39 @@ import { MemberInfo } from './member_info';
 import { MemberList } from './member_list';
 import styles from './style.module.less';
 
-export const AddressList: React.FC = () => {
+const _SplitPane: any = SplitPane;
+
+export const AddressList: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
-  const { selectedTeamInfo, memberList, memberInfo, spaceId, spaceInfo, user } = useSelector(
+  const { selectedTeamInfo, memberList, memberInfo, spaceInfo, user , memberListTotal } = useSelector(
     (state: IReduxState) => ({
       selectedTeamInfo: state.addressList.selectedTeamInfo,
       memberList: state.addressList.memberList,
       memberInfo: state.addressList.memberInfo,
       teamList: state.addressList.teamList,
-      spaceId: state.space.activeId || '',
       spaceInfo: state.space.curSpaceInfo,
       user: state.user.info,
+      memberListTotal: state.addressList.memberListTotal,
     }),
     shallowEqual,
   );
-  // Permission-related information
-  // const [isMainAdmin, setIsMainAdmin] = useState(false);
-  // const [permissionList, setPermissionList] = useState<string[]>([]);
   const contactSyncing = isSocialDingTalk?.(spaceInfo) && isContactSyncing?.(spaceInfo);
+  const themeName = useSelector(state => state.theme);
+  const OrgImage = themeName === ThemeName.Light ? OrgImageLight : OrgImageDark;
 
   useEffect(() => {
     dispatch(StoreActions.getTeamListData(user!));
-  }, [spaceId, dispatch, user]);
+  }, [dispatch, user]);
 
   useEffect(() => {
     selectedTeamInfo.teamId && dispatch(StoreActions.getMemberListData(selectedTeamInfo.teamId));
-  }, [spaceId, selectedTeamInfo, dispatch]);
+  }, [selectedTeamInfo, dispatch]);
 
   // Get permission
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
     // eslint-disable-next-line
-  }, [spaceId, dispatch, user!.isAdmin, user!.isMainAdmin]);
+  }, [dispatch, user!.isAdmin, user!.isMainAdmin]);
 
   const MainComponent = () => (
     <div className={styles.rightWrapper}>
@@ -82,7 +84,7 @@ export const AddressList: React.FC = () => {
             <div className={styles.title}>{selectedTeamInfo.teamTitle}</div>
           </ComponentDisplay>
           <span>
-            （{memberList.length}
+            （{memberListTotal}
             {t(Strings.person)}）
           </span>
         </div>
@@ -90,7 +92,7 @@ export const AddressList: React.FC = () => {
       <div className={styles.memberWrapper}>
         {memberList.length > 0 ? (
           <>
-            <div className={styles.memberList}>
+            <div className={styles.memberList} >
               {contactSyncing && (
                 <div style={{ padding: '0 20px 24px' }}>
                   <Alert type="default" content={t(Strings.dingtalk_admin_contact_syncing_tips)} />
@@ -121,12 +123,12 @@ export const AddressList: React.FC = () => {
   return (
     <div className={styles.addressList}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <SplitPane minSize={280} maxSize={800} defaultSize={280}>
+        <_SplitPane minSize={280} maxSize={800} defaultSize={280}>
           <div className={styles.splitLeft}>
             <CommonSide />
           </div>
           <div className={styles.splitRight}>{MainComponent()}</div>
-        </SplitPane>
+        </_SplitPane>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

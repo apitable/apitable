@@ -195,7 +195,7 @@
     </select>
 
     <select id="selectLocaleAndEmailByIds" resultType="com.apitable.user.dto.UserLangDTO">
-        SELECT id, locale, email FROM ${tablePrefix}user
+        SELECT id, locale, email, time_zone FROM ${tablePrefix}user
         WHERE id IN
         <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
             #{id}

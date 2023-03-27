@@ -20,7 +20,8 @@ import { Injectable } from '@nestjs/common';
 import { isDevMode } from 'app.environment';
 import { utilities as nestWinstonModuleUtilities, WinstonModuleOptions, WinstonModuleOptionsFactory } from 'nest-winston';
 import { join, resolve } from 'path';
-import { APPLICATION_NAME } from 'shared/common';
+import { APPLICATION_NAME } from 'shared/common/constants/bootstrap.constants';
+import { escFormat, tracingFormat } from 'shared/helpers/logger/logger.format.helper';
 import * as winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
@@ -31,14 +32,14 @@ export class LoggerConfigService implements WinstonModuleOptionsFactory {
   private defaultAppName = APPLICATION_NAME;
 
   // logger directory
-  private logDir = resolve(process.cwd(), 'logs');
+  private logDir = resolve(process.cwd(), `logs/${this.defaultAppName}`);
 
   // logger exception file
   private exceptionFile = join(this.logDir, 'exceptions.log');
   // logger error file
   private errorFile = join(this.logDir, 'error.log');
   // logger app file
-  private logFile = join(this.logDir, `${this.defaultAppName}-%DATE%.log`);
+  private logFile = join(this.logDir, '%DATE%.log');
 
   // logger level
   private defaultLogLevel = process.env.LOG_LEVEL || 'info';
@@ -47,16 +48,21 @@ export class LoggerConfigService implements WinstonModuleOptionsFactory {
   private defaultMaxSize = process.env.LOGGING_MAX_FILE_SIZE || '50m';
 
   // logger rotate maxFiles
-  private defaultMaxFiles = '14d';
+  private defaultMaxFiles = process.env.LOGGER_MAX_HISTORY_DAYS || '7d';
 
   // logger formatter
   private formatter = winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    isDevMode ?
-      // Development environment friendly output log format
-      nestWinstonModuleUtilities.format.nestLike(this.defaultAppName, { colors: true, prettyPrint: true }) :
-      // Production environment using Json format + elk to analyze logs
-      winston.format.json()
+    ...isDevMode ?
+      [
+        tracingFormat(),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+        // Development environment friendly output log format
+        nestWinstonModuleUtilities.format.nestLike(this.defaultAppName, { colors: true, prettyPrint: true }),
+      ] :
+      [
+        // Production environment using Json format + elk to analyze logs
+        escFormat({ format: 'YYYY-MM-DD HH:mm:ss.SSS' })
+      ]
   );
 
   // logger transports

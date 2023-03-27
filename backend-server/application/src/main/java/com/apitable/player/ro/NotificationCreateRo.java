@@ -18,58 +18,58 @@
 
 package com.apitable.player.ro;
 
-import java.util.List;
-
-import javax.validation.constraints.NotBlank;
-
 import cn.hutool.json.JSONObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import com.apitable.shared.constants.NotificationConstants;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * <p>
- * User notification list parameters
+ * User notification list parameters.
  * </p>
  */
 @Data
-@ApiModel("User notification list parameters")
+@Schema(description = "User notification list parameters")
 public class NotificationCreateRo {
 
-    @ApiModelProperty(value = "ID of the notified user (optional)", position = 1)
+    @Schema(description = "ID of the notified user (optional)")
     private List<String> toUserId;
 
-    @ApiModelProperty(value = "Either the member ID or to User Id of the notified user (optional)", position = 2)
+    @Schema(description = "Either the member ID or to User Id of the notified user (optional)")
     private List<String> toMemberId;
 
-    @ApiModelProperty(value = "Either the organizational unit ID or to User ID of the notified user (optional)", position = 12)
+    @Schema(description = "Either the organizational unit ID or to User ID of the notified user "
+        + "(optional)")
     private List<String> toUnitId;
 
-    @ApiModelProperty(value = "Send the notification user ID, and the system notifies the user as 0 (optional)", example = "1261273764218", position = 3)
+    @Schema(description = "Send the notification user ID, and the system notifies the user as 0 "
+        + "(optional)", example = "1261273764218")
     private String fromUserId = "0";
 
-    @ApiModelProperty(value = "Node ID (optional)", example = "nod10", position = 4)
+    @Schema(description = "Node ID (optional)", example = "nod10")
     private String nodeId = null;
 
-    @ApiModelProperty(value = "Space ID (optional)", example = "spcHKrd0liUcl", position = 5)
+    @Schema(description = "Space ID (optional)", example = "spcHKrd0liUcl")
     private String spaceId = null;
 
     @NotBlank
-    @ApiModelProperty(value = "Template ID", example = "user_filed", required = true, position = 6)
+    @Schema(description = "Template ID", example = "user_filed", required = true)
     private String templateId;
 
-    @ApiModelProperty(value = "Additional fields for notification (optional)" + NotificationConstants.BODY_REQUEST_DESC,
-            example = NotificationConstants.BODY_REQUEST_EXAMPLE, position = 7)
+    @Schema(description = "Additional fields for notification (optional)"
+        + NotificationConstants.BODY_REQUEST_DESC,
+        example = NotificationConstants.BODY_REQUEST_EXAMPLE)
     private JSONObject body;
 
-    @ApiModelProperty(value = "Version number (optional)", example = "v0.12.1.release", position = 8)
+    @Schema(description = "Version number (optional)", example = "v0.12.1.release")
     private String version;
 
-    @ApiModelProperty(value = "Expiration time (optional) accurate to milliseconds", example = "1614587900000", position = 9)
+    @Schema(description = "Expiration time (optional) accurate to milliseconds", example =
+        "1614587900000")
     private String expireAt;
 
-    @ApiModelProperty(value = "Notification ID (optional)", example = "1614587900000", position = 10)
+    @Schema(description = "Notification ID (optional)", example = "1614587900000")
     private String notifyId = null;
 }

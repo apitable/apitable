@@ -28,7 +28,7 @@ import { getFieldLock } from 'pc/components/field_permission';
 interface IGroupCardTitleProps {
   recordId: string;
 }
-export const GroupCardTitle: FC<IGroupCardTitleProps> = ({ recordId }) => {
+export const GroupCardTitle: FC<React.PropsWithChildren<IGroupCardTitleProps>> = ({ recordId }) => {
   const colors = useThemeColors();
   function partOfCellValue(recordId: string) {
     const state = store.getState();

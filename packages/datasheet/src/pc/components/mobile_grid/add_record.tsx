@@ -17,27 +17,28 @@
  */
 
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import styles from './styles.module.less';
-import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { useThemeColors } from '@apitable/components';
 import { ExecuteResult } from '@apitable/core';
 import { expandRecordIdNavigate } from '../expand_record';
+import { AddOutlined } from '@apitable/icons';
 
 interface IAddRecordProps {
   recordId?: string;
   size?: 'large' | 'default';
 }
 
-export const AddRecord: React.FC<IAddRecordProps> = props => {
+export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = props => {
   const colors = useThemeColors();
   const {
     recordId,
     size = 'default',
   } = props;
 
-  const onClick = () => {
-    const result = appendRow({ recordId });
+  const onClick = async() => {
+    const result = await appendRow({ recordId });
     if (result.result === ExecuteResult.Success) {
       const _recordId = result.data && result.data[0];
       expandRecordIdNavigate(_recordId);
@@ -54,10 +55,12 @@ export const AddRecord: React.FC<IAddRecordProps> = props => {
       style={{
         width: outerSize,
         height: outerSize,
+        background: getEnvVariables().ADD_RECORD_BUTTON_BG_COLOR,
+        boxShadow: getEnvVariables().ADD_RECORD_BUTTON_BG_COLOR ? 'unset' : ''
       }}
     >
       <div className={styles.btnWrapper}>
-        <AddIcon width={innerSize} height={innerSize} fill={colors.black[50]} />
+        <AddOutlined size={innerSize} color={colors.black[50]} />
       </div>
     </div>
   );

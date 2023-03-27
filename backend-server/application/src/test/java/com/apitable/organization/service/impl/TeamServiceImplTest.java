@@ -45,6 +45,27 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
     private TeamMemberRelServiceImpl teamMemberRelService;
 
     @Test
+    void testGetTeamTree() throws IOException {
+        String resourceName = "sql/orgIsolated-data.sql";
+        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
+        String sqlStr = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        String[] sqlArray = sqlStr.split(";");
+        for (String sql : sqlArray) {
+            execute(sql);
+        }
+        // Member in root team
+        List<TeamTreeVo> treeVos =
+            iTeamService.getTeamTree("spczdmQDfBAn5", 1478202310895792131L, 2);
+        assertThat(treeVos.size()).isEqualTo(1);
+        assertThat(treeVos.get(0).getChildren().size()).isEqualTo(3);
+
+        // Member does not in root team
+        List<TeamTreeVo> treeVos2 =
+            iTeamService.getTeamTree("spczdmQDfBAn5", 1478202310895792130L, 1);
+        assertThat(treeVos2.size()).isEqualTo(3);
+    }
+
+    @Test
     void testGetMemberTeamTree() throws IOException {
         List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
         String resourceName = "sql/orgIsolated-vut-data.sql";

@@ -25,9 +25,9 @@ import { useThemeColors } from '@apitable/components';
 import Trigger from 'rc-trigger';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
-import FormIcon from 'static/icon/datasheet/toolbar_form.svg';
 import { TComponent } from 'pc/components/common/t_component';
 import { useEffect } from 'react';
+import { FormOutlined } from '@apitable/icons';
 
 interface IForeignFormProps {
   className: string;
@@ -35,7 +35,7 @@ interface IForeignFormProps {
   isHide?: boolean;
 }
 
-export const ForeignForm: FC<IForeignFormProps> = (props) => {
+export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (props) => {
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
@@ -50,7 +50,7 @@ export const ForeignForm: FC<IForeignFormProps> = (props) => {
   } = useSelector(state => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
-    const activeView = Selectors.getActiveView(state)!;
+    const activeView = Selectors.getActiveViewId(state)!;
     const views = datasheet?.snapshot.meta.views || [];
     const viewName = views.find((item) => item.id === activeView)?.name;
     return {
@@ -125,10 +125,9 @@ export const ForeignForm: FC<IForeignFormProps> = (props) => {
               t(Strings.view_form)
           }
           icon={
-            <FormIcon
-              width={16}
-              height={16}
-              fill={panelVisible ? colors.primaryColor : colors.secondLevelText}
+            <FormOutlined
+              size={16}
+              color={panelVisible ? colors.primaryColor : colors.secondLevelText}
               className={styles.toolIcon}
             />
           }

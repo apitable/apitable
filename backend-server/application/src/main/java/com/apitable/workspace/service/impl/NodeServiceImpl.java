@@ -18,25 +18,9 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.core.constants.RedisConstants.getTemplateQuoteKey;
+import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
+import static com.apitable.shared.util.NodeUtil.sortNode;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -53,15 +37,6 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.apitable.widget.service.IWidgetService;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.poi.EncryptedDocumentException;
-
 import com.apitable.base.enums.ActionException;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
@@ -69,6 +44,14 @@ import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.tree.DefaultTreeBuildFactory;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.FileTool;
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.integration.grpc.BasicResult;
+import com.apitable.integration.grpc.NodeCopyRo;
+import com.apitable.integration.grpc.NodeDeleteRo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -98,12 +81,14 @@ import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.template.enums.TemplateException;
+import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeData;
 import com.apitable.workspace.dto.NodeExtraDTO;
+import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.dto.UrlNodeInfoDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.DatasheetMetaEntity;
@@ -120,7 +105,6 @@ import com.apitable.workspace.enums.ViewType;
 import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.ExcelSheetsDataListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
-import com.apitable.workspace.mapper.DatasheetMetaMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.ro.CreateDatasheetRo;
@@ -144,7 +128,6 @@ import com.apitable.workspace.service.INodeRelService;
 import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
-import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
 import com.apitable.workspace.vo.NodeInfo;
@@ -158,25 +141,43 @@ import com.apitable.workspace.vo.NodeSearchResult;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
 import com.apitable.workspace.vo.SimpleSortableNodeInfo;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.tree.DefaultTreeBuildFactory;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.FileTool;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.core.util.SqlTool;
-import com.apitable.integration.grpc.BasicResult;
-import com.apitable.integration.grpc.NodeCopyRo;
-import com.apitable.integration.grpc.NodeDeleteRo;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.poi.EncryptedDocumentException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.apitable.shared.util.NodeUtil.sortNode;
-import static com.apitable.core.constants.RedisConstants.getTemplateQuoteKey;
-
+/**
+ * node service implement.
+ */
 @Service
 @Slf4j
 public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> implements INodeService {
@@ -198,9 +199,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private IDatasheetRecordService iDatasheetRecordService;
-
-    @Resource
-    private DatasheetMetaMapper datasheetMetaMapper;
 
     @Resource
     private IResourceMetaService iResourceMetaService;
@@ -258,6 +256,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private IWidgetService iWidgetService;
+
+    @Resource
+    private RedisLockRegistry redisLockRegistry;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -343,7 +344,62 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<String> getPathParentNode(String nodeId) {
         log.info("Query the node path of node [{}]", nodeId);
-        return nodeMapper.selectParentNodePath(nodeId);
+        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        return parentPathNodes.stream()
+            .filter(i -> !i.getType().equals(NodeType.ROOT.getNodeType()))
+            .map(NodeBaseInfoDTO::getNodeId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
+        log.info("Get the node parent path ");
+        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        return parentPathNodes.stream()
+            .map(i -> {
+                if (i.getType().equals(NodeType.ROOT.getNodeType())) {
+                    String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+                    return new NodePathVo(i.getNodeId(), spaceName);
+                }
+                return new NodePathVo(i.getNodeId(), i.getNodeName());
+            })
+            .collect(Collectors.toList());
+    }
+
+    private List<NodeBaseInfoDTO> getParentPathNodes(String nodeId) {
+        List<NodeBaseInfoDTO> nodes = new ArrayList<>();
+        while (true) {
+            NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
+            nodes.add(baseNodeInfo);
+            nodeId = baseNodeInfo.getParentId();
+            if (baseNodeInfo.getType().equals(NodeType.ROOT.getNodeType())) {
+                return CollUtil.reverse(nodes);
+            }
+            if (nodes.stream().anyMatch(i -> i.getNodeId().equals(baseNodeInfo.getParentId()))) {
+                throw new BusinessException("Data Exception!");
+            }
+        }
+    }
+
+    @Override
+    public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
+        Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
+        Set<String> parentIds = new HashSet<>(nodeIds);
+        while (!parentIds.isEmpty()) {
+            List<NodeBaseInfoDTO> nodes =
+                nodeMapper.selectNodeBaseInfosByNodeIds(parentIds, false);
+            parentIds = new HashSet<>();
+            for (NodeBaseInfoDTO node : nodes) {
+                if (nodeIdToNodeMap.containsKey(node.getNodeId())
+                    || (!includeRootNode && node.getType().equals(NodeType.ROOT.getNodeType()))) {
+                    continue;
+                }
+                if (!nodeIdToNodeMap.containsKey(node.getParentId())) {
+                    parentIds.add(node.getParentId());
+                }
+                nodeIdToNodeMap.put(node.getNodeId(), node);
+            }
+        }
+        return new ArrayList<>(nodeIdToNodeMap.values());
     }
 
     @Override
@@ -353,12 +409,34 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId,
+                                                 List<String> nodeIds) {
+        log.info("Query the view information of multiple nodes ");
+        if (CollUtil.isEmpty(nodeIds)) {
+            return new ArrayList<>();
+        }
+        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, nodeIds);
+        if (roleDict.isEmpty()) {
+            return new ArrayList<>();
+        }
+        // Batch query node information
+        List<NodeInfoVo> infos = nodeMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
+        // Node switches to memory custom sorting
+        CollectionUtil.customSequenceSort(infos, NodeInfoVo::getNodeId,
+            new ArrayList<>(roleDict.keySet()));
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        setRole(infos, roleDict, feature);
+        return infos;
+    }
+
+    @Override
     public String checkNodeIfExist(String spaceId, String nodeId) {
         log.info("Check if the node exists");
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(nodeSpaceId, PermissionException.NODE_NOT_EXIST);
         // When the space Id is not empty, check whether the space is cross-space.
-        ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || nodeSpaceId.equals(spaceId), SpaceException.NOT_IN_SPACE);
+        ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || nodeSpaceId.equals(spaceId),
+            SpaceException.NOT_IN_SPACE);
         return nodeSpaceId;
     }
 
@@ -368,17 +446,21 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         switch (nodeType) {
             case FORM:
             case MIRROR:
-                ExceptionUtil.isTrue(extra != null && StrUtil.isNotBlank(extra.getDatasheetId()) &&
-                        StrUtil.isNotBlank(extra.getViewId()), ParameterException.INCORRECT_ARG);
+                ExceptionUtil.isTrue(extra != null && StrUtil.isNotBlank(extra.getDatasheetId())
+                    && StrUtil.isNotBlank(extra.getViewId()), ParameterException.INCORRECT_ARG);
                 // Determine whether the datasheet does not exist or is accessed across space.
                 this.checkNodeIfExist(spaceId, extra.getDatasheetId());
                 // Check whether the specified view of the datasheet exists.
                 iDatasheetMetaService.checkViewIfExist(extra.getDatasheetId(), extra.getViewId());
-                // The form requires the editable permission of the source datasheet and the mirror requires the management.
-                NodePermission permission = nodeType.equals(NodeType.FORM) ? NodePermission.EDIT_NODE : NodePermission.MANAGE_NODE;
+                // The form requires the editable permission of the source datasheet and the
+                // mirror requires the management.
+                NodePermission permission =
+                    nodeType.equals(NodeType.FORM) ? NodePermission.EDIT_NODE :
+                        NodePermission.MANAGE_NODE;
                 // Check whether the datasheet has the specified operation permission
                 controlTemplate.checkNodePermission(memberId, extra.getDatasheetId(), permission,
-                        status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+                    status -> ExceptionUtil.isTrue(status,
+                        PermissionException.NODE_OPERATION_DENIED));
                 break;
             default:
                 break;
@@ -404,28 +486,102 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // fuzzy search results
         List<String> nodeIds = nodeMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
-        return formatNodeSearchResults(spaceId, nodeInfos);
+        return formatNodeSearchResults(nodeInfos);
     }
 
     @Override
     public NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth) {
         log.info("Query node tree ");
-        List<String> nodeIds = nodeMapper.selectSubNodesByOrder(spaceId, nodeId, depth);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(nodeId, depth);
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, nodeIds);
     }
 
     @Override
-    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType) {
-        log.info("Query the list of child nodes ");
-        // Get a direct child node
-        List<String> subNodeIds = nodeMapper.selectOrderSubNodeIds(nodeId, nodeType);
-        return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
+    public List<NodeShareTree> getSubNodes(String nodeId) {
+        List<String> subNodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
+        subNodeIds.remove(nodeId);
+        if (subNodeIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return nodeMapper.selectShareTree(subNodeIds);
     }
 
     @Override
-    public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
-        log.info("Get the node parent path ");
-        return nodeMapper.selectParentNodeListByNodeId(spaceId, nodeId);
+    public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth) {
+        return this.getNodeIdsInNodeTree(nodeId, depth, false);
+    }
+
+    @Override
+    public List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish) {
+        return this.getNodeIdsInNodeTree(Collections.singletonList(nodeId), depth, isRubbish);
+    }
+
+    private List<String> getNodeIdsInNodeTree(List<String> nodeIds, Integer depth, Boolean isRubbish) {
+        Set<String> nodeIdSet = new LinkedHashSet<>(nodeIds);
+        List<String> parentIds = nodeIds.stream()
+            .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum()))
+            .collect(Collectors.toList());
+        while (!parentIds.isEmpty() && depth != 0) {
+            List<NodeTreeDTO> subNode =
+                nodeMapper.selectNodeTreeDTOByParentIdIn(parentIds, isRubbish);
+            if (subNode.isEmpty()) {
+                break;
+            }
+            parentIds = subNode.stream()
+                .map(NodeTreeDTO::getNodeId)
+                .filter(i -> i.startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())
+                    && !nodeIdSet.contains(i))
+                .collect(Collectors.toList());
+            Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
+                subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
+            for (List<NodeTreeDTO> sub : parentIdToSubNodeMap.values()) {
+                nodeIdSet.addAll(this.sortNodeAtSameLevel(sub));
+            }
+            depth--;
+        }
+        return new ArrayList<>(nodeIdSet);
+    }
+
+    @Override
+    public List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub) {
+        return this.sortNodeAtSameLevel(sub, null);
+    }
+
+    private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
+        Optional<NodeTreeDTO> first =
+            sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
+        if (!first.isPresent()) {
+            return sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        }
+        String preNodeId = first.get().getNodeId();
+        List<String> nodeIds = new ArrayList<>();
+        if (nodeType == null || first.get().getType() == nodeType.getNodeType()) {
+            nodeIds.add(preNodeId);
+        }
+        Map<String, NodeTreeDTO> preNodeIdToNodeMap = sub.stream()
+            .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, i -> i, (k1, k2) -> k2));
+        while (preNodeIdToNodeMap.containsKey(preNodeId)) {
+            NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
+            preNodeId = nodeTreeDTO.getNodeId();
+            if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
+                nodeIds.add(preNodeId);
+            }
+        }
+        return nodeIds;
+    }
+
+    @Override
+    public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId,
+        NodeType nodeType) {
+        log.info("Query the list of child nodes ");
+        // Get a direct child node
+        List<NodeTreeDTO> subNode =
+            nodeMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId), false);
+        if (subNode.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<String> subNodeIds = this.sortNodeAtSameLevel(subNode, nodeType);
+        return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
     }
 
     @Override
@@ -437,8 +593,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // ---- b
         // ------ c
         // At this time, when obtaining node c, it should return [c, b, a]
-        List<String> parentNodeIds = nodeMapper.selectParentNodePath(nodeId);
-        // No parent node should report an error, but the location node does not need to return empty directly.
+        List<String> parentNodeIds = this.getPathParentNode(nodeId);
+        // No parent node should report an error,
+        // but the location node does not need to return empty directly.
         if (parentNodeIds.isEmpty()) {
             return null;
         }
@@ -460,9 +617,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> viewNodeIds = new ArrayList<>(firstLevelNodes);
         viewNodeIds.add(rootNodeId);
         for (int i = 0; i < parentNodeIds.size() - 1; i++) {
-            List<SimpleSortableNodeInfo> subNodeList = nodeMapper.selectSubNodeInfo(parentNodeIds.get(i));
+            List<SimpleSortableNodeInfo> subNodeList =
+                nodeMapper.selectSubNodeInfo(parentNodeIds.get(i));
             List<SimpleSortableNodeInfo> sortedNodeList = sortNode(subNodeList);
-            List<String> subNodeIds = sortedNodeList.stream().map(SimpleSortableNodeInfo::getNodeId).collect(Collectors.toList());
+            List<String> subNodeIds = sortedNodeList.stream().map(SimpleSortableNodeInfo::getNodeId)
+                .collect(Collectors.toList());
             viewNodeIds.addAll(subNodeIds);
         }
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, viewNodeIds);
@@ -479,43 +638,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId, List<String> nodeIds) {
-        log.info("Query the view information of multiple nodes ");
-        if (CollUtil.isEmpty(nodeIds)) {
-            return new ArrayList<>();
-        }
-        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, nodeIds);
-        if (roleDict.isEmpty()) {
-            return new ArrayList<>();
-        }
-        // Batch query node information
-        List<NodeInfoVo> infos = nodeMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
-        // Node switches to memory custom sorting
-        CollectionUtil.customSequenceSort(infos, NodeInfoVo::getNodeId, new ArrayList<>(roleDict.keySet()));
-        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        setRole(infos, roleDict, feature);
-        return infos;
-    }
-
-    @Override
-    public NodeInfoTreeVo getNodeInfoTreeByNodeIds(String spaceId, Long memberId, List<String> nodeIds) {
+    public NodeInfoTreeVo getNodeInfoTreeByNodeIds(String spaceId, Long memberId,
+                                                   List<String> nodeIds) {
         log.info("Query the views of multiple nodes and construct a tree structure ");
-        // Constructing a tree requires data structure support to construct a tree, first construct the tree, and then integrate and delete it.
+        // Constructing a tree requires data structure support to construct a tree,
+        // first construct the tree, and then integrate and delete it.
         ControlRoleDict roleDict = controlTemplate.fetchNodeTreeNode(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), PermissionException.NODE_ACCESS_DENIED);
-        List<NodeInfoTreeVo> treeList = nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
+        List<NodeInfoTreeVo> treeList =
+            nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
         // Node switches to memory custom sort
-        CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId, new ArrayList<>(roleDict.keySet()));
+        CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId,
+            new ArrayList<>(roleDict.keySet()));
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         setRole(treeList, roleDict, feature);
-        List<NodeInfoTreeVo> nodeTrees = new DefaultTreeBuildFactory<NodeInfoTreeVo>().doTreeBuild(treeList);
+        List<NodeInfoTreeVo> nodeTrees =
+            new DefaultTreeBuildFactory<NodeInfoTreeVo>().doTreeBuild(treeList);
         return CollUtil.isNotEmpty(nodeTrees) ? nodeTrees.get(0) : null;
     }
 
-    private <T extends NodeInfoVo> void setRole(List<T> list, ControlRoleDict roleDict, SpaceGlobalFeature feature) {
+    private <T extends NodeInfoVo> void setRole(List<T> list, ControlRoleDict roleDict,
+                                                SpaceGlobalFeature feature) {
         list.forEach(node -> {
             node.setRole(roleDict.get(node.getNodeId()).getRoleTag());
-            node.setPermissions(roleDict.get(node.getNodeId()).permissionToBean(NodePermissionView.class, feature));
+            node.setPermissions(
+                roleDict.get(node.getNodeId()).permissionToBean(NodePermissionView.class, feature));
         });
     }
 
@@ -527,22 +674,26 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         //     // Verify that the number of nodes reaches the upper limit
         //     iSubscriptionService.checkSheetNums(spaceId, 1);
         // }
-        //The parent id and space id must match. The parent node belongs to this space to prevent cross-space and cross-node operations.
+        // The parent id and space id must match.
+        // The parent node belongs to this space to prevent cross-space and cross-node operations.
         this.checkNodeIfExist(spaceId, nodeOpRo.getParentId());
-        String name = duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(), null);
+        String name =
+            duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(),
+                null);
         String nodeId = IdUtil.createNodeId(nodeOpRo.getType());
         // If the new node is a file, it corresponds to the creation of a datasheet form.
         this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());
-        // When an empty string is not passed in, if the pre-node is deleted or not under the parent Id, the move fails.
+        // When an empty string is not passed in,
+        // if the pre-node is deleted or not under the parent Id, the move fails.
         String preNodeId = this.verifyPreNodeId(nodeOpRo.getPreNodeId(), nodeOpRo.getParentId());
         NodeEntity nodeEntity = NodeEntity.builder()
-                .parentId(nodeOpRo.getParentId())
-                .spaceId(spaceId)
-                .preNodeId(preNodeId)
-                .nodeName(name)
-                .type(nodeOpRo.getType())
-                .nodeId(nodeId)
-                .build();
+            .parentId(nodeOpRo.getParentId())
+            .spaceId(spaceId)
+            .preNodeId(preNodeId)
+            .nodeName(name)
+            .type(nodeOpRo.getType())
+            .nodeId(nodeId)
+            .build();
         // Change the front node ID of the next node to the new node ID(A <- C => B <- C)
         nodeMapper.updatePreNodeIdBySelf(nodeId, preNodeId, nodeOpRo.getParentId());
         boolean flag = save(nodeEntity);
@@ -561,7 +712,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // Add description information
         if (ro.needToInsertDesc()) {
             NodeDescEntity descEntity = NodeDescEntity.builder().id(IdWorker.getId())
-                    .nodeId(nodeId).description(ro.getDescription()).build();
+                .nodeId(nodeId).description(ro.getDescription()).build();
             nodeDescService.insertBatch(Collections.singletonList(descEntity));
         }
         return nodeId;
@@ -570,18 +721,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String createChildNode(Long userId, CreateNodeDto dto) {
         NodeEntity nodeEntity = NodeEntity.builder()
-                .spaceId(dto.getSpaceId())
-                .nodeId(dto.getNewNodeId())
-                .nodeName(dto.getNodeName())
-                .parentId(dto.getParentId())
-                .type(dto.getType())
-                .icon(dto.getIcon())
-                .cover(dto.getCover())
-                .preNodeId(dto.getPreNodeId())
-                .extra(dto.getExtra())
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
+            .spaceId(dto.getSpaceId())
+            .nodeId(dto.getNewNodeId())
+            .nodeName(dto.getNodeName())
+            .parentId(dto.getParentId())
+            .type(dto.getType())
+            .icon(dto.getIcon())
+            .cover(dto.getCover())
+            .preNodeId(dto.getPreNodeId())
+            .extra(dto.getExtra())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
 
         boolean flag = save(nodeEntity);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -612,7 +763,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public void edit(Long userId, String nodeId, NodeUpdateOpRo opRo) {
         log.info("Edit node ");
         NodeEntity nodeEntity = this.getByNodeId(nodeId);
-        ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()), NodeException.NOT_ALLOW);
+        ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()),
+            NodeException.NOT_ALLOW);
         // modify name
         this.updateNodeName(userId, nodeId, opRo.getNodeName(), nodeEntity);
 
@@ -623,13 +775,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         this.updateNodeCover(userId, nodeId, opRo.getCover(), nodeEntity.getCover());
 
         // Modify whether to display the history of the record
-        if (ObjectUtil.isNotNull(opRo.getShowRecordHistory()) && nodeEntity.getType() == NodeType.DATASHEET.getNodeType()) {
+        if (ObjectUtil.isNotNull(opRo.getShowRecordHistory())
+            && nodeEntity.getType() == NodeType.DATASHEET.getNodeType()) {
             boolean flag;
-            String newValue = JSONUtil.toJsonStr(Dict.create().set(NodeExtraConstants.SHOW_RECORD_HISTORY, opRo.getShowRecordHistory()));
+            String newValue = JSONUtil.toJsonStr(Dict.create()
+                .set(NodeExtraConstants.SHOW_RECORD_HISTORY, opRo.getShowRecordHistory()));
             if (ObjectUtil.isNotNull(nodeEntity.getExtra())) {
-                flag = SqlHelper.retBool(nodeMapper.updateExtraShowRecordHistoryByNodeId(nodeId, opRo.getShowRecordHistory()));
-            }
-            else {
+                flag = SqlHelper.retBool(nodeMapper.updateExtraShowRecordHistoryByNodeId(nodeId,
+                    opRo.getShowRecordHistory()));
+            } else {
                 flag = SqlHelper.retBool(nodeMapper.updateExtraByNodeId(nodeId, newValue));
             }
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -652,7 +806,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_NAME, StrUtil.nullToEmpty(entity.getNodeName()));
         info.set(AuditConstants.NODE_NAME, nodeName);
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.RENAME_NODE).userId(userId).nodeId(nodeId).info(info).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.RENAME_NODE).userId(userId)
+                .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
 
@@ -670,7 +826,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_ICON, StrUtil.nullToEmpty(oldNodeIcon));
         info.set(AuditConstants.NODE_ICON, icon);
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_ICON).userId(userId).nodeId(nodeId).info(info).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_ICON).userId(userId)
+                .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
 
@@ -692,7 +850,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_COVER, StrUtil.nullToEmpty(oldNodeCover));
         info.set(AuditConstants.NODE_COVER, StrUtil.nullToEmpty(cover));
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_COVER).userId(userId).nodeId(nodeId).info(info).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_COVER).userId(userId)
+                .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
 
@@ -701,14 +861,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public List<String> move(Long userId, NodeMoveOpRo opRo) {
         log.info("Move node");
         NodeEntity nodeEntity = this.getByNodeId(opRo.getNodeId());
-        ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()), NodeException.NOT_ALLOW);
+        ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()),
+            NodeException.NOT_ALLOW);
         // The input parameter. The node ID is the same as the pre-node ID.
-        ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getPreNodeId()), ParameterException.INCORRECT_ARG);
-        ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getParentId()), ParameterException.INCORRECT_ARG);
+        ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getPreNodeId()),
+            ParameterException.INCORRECT_ARG);
+        ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getParentId()),
+            ParameterException.INCORRECT_ARG);
         // When this node is a folder, it is prevented from moving into child and descendant nodes.
         if (nodeEntity.getType().equals(NodeType.FOLDER.getNodeType())) {
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeEntity.getNodeId());
-            ExceptionUtil.isFalse(CollUtil.isNotEmpty(subNodeIds) && subNodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
+            List<String> nodeIds =
+                this.getNodeIdsInNodeTree(nodeEntity.getNodeId(), -1);
+            ExceptionUtil.isFalse(CollUtil.isNotEmpty(nodeIds)
+                && nodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
         }
         AuditSpaceAction action = AuditSpaceAction.MOVE_NODE;
         JSONObject info = JSONUtil.createObj();
@@ -722,37 +887,60 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             parentId = opRo.getParentId();
             // Check whether the new parent node exists and is in the same space
             this.checkNodeIfExist(nodeEntity.getSpaceId(), parentId);
-            name = this.duplicateNameModify(parentId, nodeEntity.getType(), nodeEntity.getNodeName(), null);
+            name =
+                this.duplicateNameModify(parentId, nodeEntity.getType(), nodeEntity.getNodeName(),
+                    null);
             // The node is a datasheet, and the name changes corresponding to the modification.
-            if (nodeEntity.getType() == NodeType.DATASHEET.getNodeType() && !nodeEntity.getNodeName().equals(name)) {
+            if (nodeEntity.getType() == NodeType.DATASHEET.getNodeType()
+                && !nodeEntity.getNodeName().equals(name)) {
                 iDatasheetService.updateDstName(userId, nodeEntity.getNodeId(), name);
             }
             // Parent nodes that record new and old locations
             nodeIds.add(nodeEntity.getParentId());
             nodeIds.add(opRo.getParentId());
             info.set(AuditConstants.OLD_PARENT_ID, nodeEntity.getParentId());
-        }
-        else {
-            // Sort at the same level, the old and new front nodes are the same, that is, no movement has occurred.
-            if (Optional.ofNullable(opRo.getPreNodeId()).orElse("").equals(Optional.ofNullable(nodeEntity.getPreNodeId()).orElse(""))) {
+        } else {
+            // Sort at the same level, the old and new front nodes are the same,
+            // that is, no movement has occurred.
+            if (Optional.ofNullable(opRo.getPreNodeId()).orElse("")
+                .equals(Optional.ofNullable(nodeEntity.getPreNodeId()).orElse(""))) {
                 return new ArrayList<>();
             }
             action = AuditSpaceAction.SORT_NODE;
         }
-        // When an empty string is not passed in, if the pre-node is deleted or not under the parent Id, the move fails.
+        // When an empty string is not passed in,
+        // if the pre-node is deleted or not under the parent Id, the move fails.
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
         // The next node that records the old and new locations
-        List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
+        List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
+            CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
         nodeIds.addAll(suffixNodeIds);
-        // Update the front node of the latter node to the front node of the node (A <- B <- C => A <- C)
-        nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(), nodeEntity.getNodeId(), nodeEntity.getParentId());
-        // Update the sequence relationship of nodes before and after the move (D <- E => D <- B <- E)
-        nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
-        // Update the information of this node (the ID of the previous node may be updated to null, so update By Id is not used)
-        nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
+        Lock lock = redisLockRegistry.obtain(parentId);
+        try {
+            if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                // Update the front node of the latter node
+                // to the front node of the node (A <- X <- C => A <- C)
+                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(),
+                    nodeEntity.getNodeId(), nodeEntity.getParentId());
+                // Update the sequence relationship of nodes before
+                // and after the move (D <- E => D <- X <- E)
+                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
+                // Update the information of this node (the ID of the previous
+                // node may be updated to null, so update By id is not used)
+                nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
+            } else {
+                throw new BusinessException("Frequent operations");
+            }
+        } catch (InterruptedException e) {
+            throw new BusinessException("Frequent operations");
+        } finally {
+            lock.unlock();
+        }
         // Publish Space Audit Events
         info.set(AuditConstants.MOVE_EFFECT_SUFFIX_NODES, CollUtil.emptyIfNull(suffixNodeIds));
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(action).userId(userId).nodeId(opRo.getNodeId()).info(info).build();
+        AuditSpaceArg arg =
+            AuditSpaceArg.builder().action(action).userId(userId).nodeId(opRo.getNodeId())
+                .info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return nodeIds;
     }
@@ -765,20 +953,26 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> idList = Arrays.asList(ids);
         List<NodeEntity> list = this.getByNodeIds(new HashSet<>(idList));
         // verify root node
-        long count = list.stream().filter(node -> node.getType().equals(NodeType.ROOT.getNodeType())).count();
+        long count = list.stream()
+            .filter(node -> node.getType().equals(NodeType.ROOT.getNodeType()))
+            .count();
         ExceptionUtil.isFalse(count > 0, NodeException.NOT_ALLOW);
         // get the superior path
-        List<String> parentIds = list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
-        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
+        List<String> parentIds =
+            list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
+        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         // give delete node role
-        iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId, new HashSet<>(idList));
-        // Obtain the node ID and the corresponding datasheet ID set of the node and its child descendants.
-        List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(idList, false);
+        iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId,
+            new HashSet<>(idList));
+        // Obtain the node ID and the corresponding datasheet ID set of the node
+        // and its child descendants.
+        List<String> nodeIds = this.getNodeIdsInNodeTree(idList, -1, false);
         // delete all nodes and child descendants
         if (CollUtil.isNotEmpty(nodeIds)) {
             this.nodeDeleteChangeset(nodeIds);
             iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
-            boolean flag = SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
+            boolean flag =
+                SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
             ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
             // disable node sharing
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
@@ -787,31 +981,39 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         list.forEach(nodeEntity -> {
             // The previous node corresponding to the updated node
-            // (Large datasheet processing takes a long time, nodeEntity.getPreNodeId() may have changed, so updatePreNodeIdBySelf is not used directly)
+            // (Large datasheet processing takes a long time, nodeEntity.getPreNodeId() may have
+            // changed, so updatePreNodeIdBySelf is not used directly)
             nodeMapper.updatePreNodeIdByJoinSelf(nodeEntity.getNodeId(), nodeEntity.getParentId());
-            // Save the path of the deletion. Specify that the deleted node is attached to the parent node -1.
-            String delPath = MapUtil.isNotEmpty(parentIdToPathMap) ? parentIdToPathMap.get(nodeEntity.getParentId()) : null;
+            // Save the path of the deletion.
+            // Specify that the deleted node is attached to the parent node -1.
+            String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
+                ? parentIdToPathMap.get(nodeEntity.getParentId()) : null;
             nodeMapper.updateDeletedPathByNodeId(nodeEntity.getNodeId(), delPath);
             // publish space audit events
-            AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_NODE).userId(userId).nodeId(nodeEntity.getNodeId()).build();
-            SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
+            AuditSpaceArg arg =
+                AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_NODE).userId(userId)
+                    .nodeId(nodeEntity.getNodeId()).build();
+            SpringContextHolder.getApplicationContext()
+                .publishEvent(new AuditSpaceEvent(this, arg));
         });
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delTemplateRefNode(Long userId, String... nodeIds) {
+    public void delTemplateRefNode(Long userId, String nodeId) {
         log.info("Delete template mapping node ");
         // Obtain the node ID of the node and its child descendants.
-        List<String> subNodeIds = nodeMapper.selectBatchAllSubNodeIds(Arrays.asList(nodeIds), false);
-        if (CollUtil.isNotEmpty(subNodeIds)) {
-            // delete node and datasheet information
-            boolean flag = SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, subNodeIds, true));
-            ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-            iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, true);
-            // delete the spatial attachment resource of the node
-            iSpaceAssetService.updateIsDeletedByNodeIds(subNodeIds, true);
+        List<String> nodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
+        if (CollUtil.isEmpty(nodeIds)) {
+            return;
         }
+        // delete node and datasheet information
+        boolean flag =
+            SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
+        ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+        iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
+        // delete the spatial attachment resource of the node
+        iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
     }
 
     @Override
@@ -822,7 +1024,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         NodeType nodeType = NodeType.toEnum(copyNode.getType());
         // Restrict replication of root nodes and folders
         ExceptionUtil.isFalse(nodeType.equals(NodeType.ROOT), NodeException.NOT_ALLOW);
-        ExceptionUtil.isFalse(nodeType.equals(NodeType.FOLDER), NodeException.NODE_COPY_FOLDER_ERROR);
+        ExceptionUtil.isFalse(nodeType.equals(NodeType.FOLDER),
+            NodeException.NODE_COPY_FOLDER_ERROR);
         // Verify that the number of nodes reaches the upper limit
         // iSubscriptionService.checkSheetNums(copyNode.getSpaceId(), 1);
 
@@ -830,42 +1033,48 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         param.put("file_name", copyNode.getNodeName());
         String nodeName = StringUtil.format(I18nStringsUtil.t("default_file_copy"), param);
 
-        String name = duplicateNameModify(copyNode.getParentId(), copyNode.getType(), nodeName, null);
+        String name =
+            duplicateNameModify(copyNode.getParentId(), copyNode.getType(), nodeName, null);
         CreateNodeDto createNodeDto = CreateNodeDto.builder()
-                .spaceId(copyNode.getSpaceId())
-                .parentId(copyNode.getParentId())
-                .nodeName(name)
-                .type(copyNode.getType())
-                .preNodeId(opRo.getNodeId())
-                .newNodeId(IdUtil.createNodeId(copyNode.getType()))
-                .icon(copyNode.getIcon())
-                .cover(copyNode.getCover())
-                .extra(copyNode.getExtra())
-                .build();
+            .spaceId(copyNode.getSpaceId())
+            .parentId(copyNode.getParentId())
+            .nodeName(name)
+            .type(copyNode.getType())
+            .preNodeId(opRo.getNodeId())
+            .newNodeId(IdUtil.createNodeId(copyNode.getType()))
+            .icon(copyNode.getIcon())
+            .cover(copyNode.getCover())
+            .extra(copyNode.getExtra())
+            .build();
         // Update the former node of the latter node to the copied node (A <- B => A <- A' <- B)
-        nodeMapper.updatePreNodeIdBySelf(createNodeDto.getNewNodeId(), opRo.getNodeId(), copyNode.getParentId());
+        nodeMapper.updatePreNodeIdBySelf(createNodeDto.getNewNodeId(), opRo.getNodeId(),
+            copyNode.getParentId());
         // save node
         String copyNodeId = createChildNode(userId, createNodeDto);
         // component node id map
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(copyNode.getNodeId(), copyNodeId);
-        NodeCopyEffectDTO copyEffect = NodeCopyEffectDTO.builder().nodeId(opRo.getNodeId()).copyNodeId(copyNodeId).build();
+        NodeCopyEffectDTO copyEffect =
+            NodeCopyEffectDTO.builder().nodeId(opRo.getNodeId()).copyNodeId(copyNodeId).build();
         // different types of node processing
         switch (nodeType) {
             case FORM:
                 // copy form
                 iNodeRelService.copy(userId, opRo.getNodeId(), copyNodeId);
-                iResourceMetaService.copyBatch(userId, Collections.singletonList(opRo.getNodeId()), newNodeMap);
+                iResourceMetaService.copyBatch(userId, Collections.singletonList(opRo.getNodeId()),
+                    newNodeMap);
                 iSpaceAssetService.copyBatch(newNodeMap, copyNode.getSpaceId());
                 return copyEffect;
             case DASHBOARD:
                 // copy dashboard
-                iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(), opRo.getNodeId(), copyNodeId, ResourceType.DASHBOARD);
+                iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(),
+                    opRo.getNodeId(), copyNodeId, ResourceType.DASHBOARD);
                 return copyEffect;
             case MIRROR:
                 // copy mirror
                 iNodeRelService.copy(userId, opRo.getNodeId(), copyNodeId);
-                iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(), opRo.getNodeId(), copyNodeId, ResourceType.MIRROR);
+                iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(),
+                    opRo.getNodeId(), copyNodeId, ResourceType.MIRROR);
                 return copyEffect;
             default:
                 break;
@@ -875,12 +1084,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         NodeCopyOptions options = NodeCopyOptions.create(copyData, true);
         // get permissions for all fields in a datasheet
         Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, copyNode.getSpaceId());
-        Map<String, FieldPermissionInfo> fieldPermissionMap = iFieldRoleService.getFieldPermissionMap(memberId, copyNode.getNodeId(), null);
+        Map<String, FieldPermissionInfo> fieldPermissionMap =
+            iFieldRoleService.getFieldPermissionMap(memberId, copyNode.getNodeId(), null);
         if (MapUtil.isNotEmpty(fieldPermissionMap)) {
             // filter fields without field permissions
             List<String> fieldIds = fieldPermissionMap.entrySet().stream()
-                    .filter(entry -> !Boolean.TRUE.equals(entry.getValue().getHasRole()))
-                    .map(Entry::getKey).collect(Collectors.toList());
+                .filter(entry -> !Boolean.TRUE.equals(entry.getValue().getHasRole()))
+                .map(Entry::getKey).collect(Collectors.toList());
             if (!fieldIds.isEmpty()) {
                 Map<String, List<String>> dstPermissionFieldsMap = new HashMap<>(1);
                 dstPermissionFieldsMap.put(copyNode.getNodeId(), fieldIds);
@@ -888,10 +1098,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 options.setFilterPermissionField(true);
             }
         }
-        List<String> linkFieldIds = iDatasheetService.copy(userId, copyNode.getSpaceId(), copyNode.getNodeId(),
+        List<String> linkFieldIds =
+            iDatasheetService.copy(userId, copyNode.getSpaceId(), copyNode.getNodeId(),
                 createNodeDto.getNewNodeId(), createNodeDto.getNodeName(), options, newNodeMap);
         if (copyData) {
-            // When you select to copy data, copy the spatial attachment resources referenced by the node at the same time.
+            // When you select to copy data,
+            // copy the spatial attachment resources referenced by the node at the same time.
             iSpaceAssetService.copyBatch(newNodeMap, copyNode.getSpaceId());
         }
         // copy node description
@@ -901,37 +1113,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<BaseNodeInfo> getForeignSheet(String nodeId) {
-        log.info("Query the associated datasheet information of the node ");
-        // Whether it is a folder or a datasheet, if the datasheet is related, it needs to be fully queried.
-        NodeType nodeType = NodeType.toEnum(SqlTool.retCount(nodeMapper.selectNodeTypeByNodeId(nodeId)));
-        ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
-        List<BaseNodeInfo> nodes = new ArrayList<>();
-        if (nodeType == NodeType.FOLDER) {
-            // folder
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
-            if (CollUtil.isNotEmpty(subNodeIds)) {
-                getForeignDstIdsFilterSelf(nodes, subNodeIds);
-            }
-        }
-        else if (nodeType == NodeType.DATASHEET) {
-            // datasheet
-            getForeignDstIdsFilterSelf(nodes, Collections.singletonList(nodeId));
-        }
-        return nodes;
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public String copyNodeToSpace(Long userId, String spaceId, String destParentId, String sourceNodeId, NodeCopyOptions options) {
+    public String copyNodeToSpace(Long userId, String spaceId, String destParentId,
+                                  String sourceNodeId, NodeCopyOptions options) {
         log.info("Copy node to space ");
         // No parent node is specified, take the root node as the parent node
         if (StrUtil.isBlank(destParentId)) {
             destParentId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
         }
         NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
-        String name = StrUtil.isNotBlank(options.getNodeName()) ? options.getNodeName() : shareNode.getNodeName();
-        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId()) ? options.getNodeId() : IdUtil.createNodeId(shareNode.getType());
+        String name = StrUtil.isNotBlank(options.getNodeName()) ? options.getNodeName()
+            : shareNode.getNodeName();
+        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId()) ? options.getNodeId()
+            : IdUtil.createNodeId(shareNode.getType());
         // component node id map
         Map<String, String> newNodeMap = CollUtil.newHashMap();
         newNodeMap.put(sourceNodeId, toSaveNodeId);
@@ -939,7 +1133,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (!options.isTemplate()) {
             // check for the same name
             name = duplicateNameModify(destParentId, shareNode.getType(), name, null);
-            // update the original first node, and move the position one bit later, that is, the pre-node is the shared node that is transferred.
+            // update the original first node, and move the position one bit later,
+            // that is, the pre-node is the shared node that is transferred.
             nodeMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
         }
 
@@ -948,7 +1143,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case ROOT:
                 throw new BusinessException(NodeException.NOT_ALLOW);
             case FOLDER:
-                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(), sourceNodeId, newNodeMap, options);
+                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(), sourceNodeId,
+                    newNodeMap, options);
                 break;
             case DATASHEET:
                 // if (options.isVerifyNodeCount()) {
@@ -957,7 +1153,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 // }
                 if (options.isFilterPermissionField()) {
                     // Obtain the field that has the permission to enable the column.
-                    List<String> permissionFieldIds = iFieldRoleService.getPermissionFieldIds(sourceNodeId);
+                    List<String> permissionFieldIds =
+                        iFieldRoleService.getPermissionFieldIds(sourceNodeId);
                     if (!permissionFieldIds.isEmpty()) {
                         Map<String, List<String>> dstPermissionFieldsMap = new HashMap<>(1);
                         dstPermissionFieldsMap.put(sourceNodeId, permissionFieldIds);
@@ -965,7 +1162,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     }
                 }
                 // copyTableData
-                iDatasheetService.copy(userId, spaceId, sourceNodeId, toSaveNodeId, name, options, newNodeMap);
+                iDatasheetService.copy(userId, spaceId, sourceNodeId, toSaveNodeId, name, options,
+                    newNodeMap);
                 break;
             case FORM:
             case DASHBOARD:
@@ -988,16 +1186,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             extraObj.set(NodeExtraConstants.SOURCE_TEMPLATE_ID, options.getSourceTemplateId());
             // The save cache is used to display tips on the client side.
             redisTemplate.opsForValue().set(getTemplateQuoteKey(spaceId, toSaveNodeId),
-                    options.getSourceTemplateId(), 2, TimeUnit.MINUTES);
-        }
-        else {
+                options.getSourceTemplateId(), 2, TimeUnit.MINUTES);
+        } else {
             extraObj.remove(NodeExtraConstants.SOURCE_TEMPLATE_ID);
         }
         if (StrUtil.isNotBlank(options.getDingTalkDaTemplateKey())) {
             extraObj.set(NodeExtraConstants.DING_TALK_DA_STATUS, 1);
-            extraObj.set(NodeExtraConstants.DING_TALK_DA_TEMPLATE_KEY, options.getDingTalkDaTemplateKey());
-        }
-        else {
+            extraObj.set(NodeExtraConstants.DING_TALK_DA_TEMPLATE_KEY,
+                options.getDingTalkDaTemplateKey());
+        } else {
             // In order to prevent others from transferring share DingTalk to build a template
             extraObj.remove(NodeExtraConstants.DING_TALK_DA_STATUS);
             extraObj.remove(NodeExtraConstants.DING_TALK_DA_TEMPLATE_KEY);
@@ -1015,27 +1212,32 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         return toSaveNodeId;
     }
 
-    private void copyFolderProcess(Long userId, String spaceId, String originSpaceId, String folderId,
-            Map<String, String> newNodeMap, NodeCopyOptions options) {
-        List<NodeShareTree> subTrees = nodeMapper.selectShareTreeByNodeId(originSpaceId, folderId);
+    private void copyFolderProcess(Long userId, String spaceId, String originSpaceId,
+                                   String folderId,
+                                   Map<String, String> newNodeMap, NodeCopyOptions options) {
+        List<NodeShareTree> subTrees = this.getSubNodes(folderId);
         if (CollUtil.isEmpty(subTrees)) {
             return;
         }
         // grouping by node type
         Map<Integer, List<NodeShareTree>> nodeTypeToNodeIdsMap = subTrees.stream()
-                .collect(Collectors.groupingBy(NodeShareTree::getType));
+            .collect(Collectors.groupingBy(NodeShareTree::getType));
         // set of node ids to be filtered
-        List<String> filterNodeIds = CollUtil.isEmpty(options.getFilterNodeIds()) ? new ArrayList<>() : options.getFilterNodeIds();
+        List<String> filterNodeIds =
+            CollUtil.isEmpty(options.getFilterNodeIds()) ? new ArrayList<>()
+                : options.getFilterNodeIds();
         // Collect tables and image preprocessing, and filter the parts that are skipped.
-        this.processNodeHasSourceDatasheet(NodeType.FORM.getNodeType(), filterNodeIds, nodeTypeToNodeIdsMap);
-        this.processNodeHasSourceDatasheet(NodeType.MIRROR.getNodeType(), filterNodeIds, nodeTypeToNodeIdsMap);
+        this.processNodeHasSourceDatasheet(NodeType.FORM.getNodeType(), filterNodeIds,
+            nodeTypeToNodeIdsMap);
+        this.processNodeHasSourceDatasheet(NodeType.MIRROR.getNodeType(), filterNodeIds,
+            nodeTypeToNodeIdsMap);
 
         // Verify that the number of nodes reaches the upper limit
         // if (options.isVerifyNodeCount()) {
         //     int subCount;
         //     if (nodeTypeToNodeIdsMap.containsKey(NodeType.FOLDER.getNodeType())) {
-        //         List<String> fodIds = nodeTypeToNodeIdsMap.get(NodeType.FOLDER.getNodeType()).stream()
-        //                 .map(NodeShareTree::getNodeId).collect(Collectors.toList());
+        //         List<String> fodIds = nodeTypeToNodeIdsMap.get(NodeType.FOLDER.getNodeType())
+        //         .stream().map(NodeShareTree::getNodeId).collect(Collectors.toList());
         //         // Take out the double union to avoid some folders already in the filtered list.
         //         subCount = CollUtil.unionDistinct(fodIds, filterNodeIds).size();
         //     }
@@ -1067,7 +1269,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setNodeId(newNodeMap.get(shareTree.getNodeId()));
             node.setNodeName(shareTree.getNodeName());
             if (shareTree.getPreNodeId() != null) {
-                // The original pre-node ID, if it is in the filter column, recursively until the transferred node is found or ends in the first place.
+                // The original pre-node ID, if it is in the filter column,
+                // recursively until the transferred node is found or ends in the first place.
                 String preNodeId = shareTree.getPreNodeId();
                 while (preNodeId != null && filterNodeIds.contains(preNodeId)) {
                     preNodeId = originNodeToPreNodeMap.get(preNodeId);
@@ -1094,27 +1297,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 // Obtain the datasheet and the field set of the corresponding column permission
                 Map<String, List<String>> dstPermissionFieldsMap = new HashMap<>(16);
                 nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()).stream()
-                        .filter(subNode -> !filterNodeIds.contains(subNode.getNodeId()))
-                        .forEach(subNode -> {
-                            List<String> permissionFieldIds = iFieldRoleService.getPermissionFieldIds(subNode.getNodeId());
-                            if (!permissionFieldIds.isEmpty()) {
-                                dstPermissionFieldsMap.put(subNode.getNodeId(), permissionFieldIds);
-                            }
-                        });
+                    .filter(subNode -> !filterNodeIds.contains(subNode.getNodeId()))
+                    .forEach(subNode -> {
+                        List<String> permissionFieldIds =
+                            iFieldRoleService.getPermissionFieldIds(subNode.getNodeId());
+                        if (!permissionFieldIds.isEmpty()) {
+                            dstPermissionFieldsMap.put(subNode.getNodeId(), permissionFieldIds);
+                        }
+                    });
                 options.setDstPermissionFieldsMap(dstPermissionFieldsMap);
             }
-            for (NodeShareTree subNode : nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType())) {
+            for (NodeShareTree subNode : nodeTypeToNodeIdsMap.get(
+                NodeType.DATASHEET.getNodeType())) {
                 if (filterNodeIds.contains(subNode.getNodeId())) {
                     continue;
                 }
-                iDatasheetService.copy(userId, spaceId, subNode.getNodeId(), newNodeMap.get(subNode.getNodeId()), subNode.getNodeName(), options, newNodeMap);
+                iDatasheetService.copy(userId, spaceId, subNode.getNodeId(),
+                    newNodeMap.get(subNode.getNodeId()), subNode.getNodeName(), options,
+                    newNodeMap);
             }
         }
         // Copy form processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.FORM.getNodeType())) {
             List<String> formIds = nodeTypeToNodeIdsMap.get(NodeType.FORM.getNodeType()).stream()
-                    .map(NodeShareTree::getNodeId)
-                    .filter(nodeId -> !filterNodeIds.contains(nodeId)).collect(Collectors.toList());
+                .map(NodeShareTree::getNodeId)
+                .filter(nodeId -> !filterNodeIds.contains(nodeId)).collect(Collectors.toList());
             if (CollUtil.isNotEmpty(formIds)) {
                 iNodeRelService.copyBatch(userId, formIds, newNodeMap);
                 iResourceMetaService.copyBatch(userId, formIds, newNodeMap);
@@ -1122,32 +1329,44 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // Copy dashboard processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DASHBOARD.getNodeType())) {
-            List<String> dashboardIds = nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()).stream()
+            List<String> dashboardIds =
+                nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()).stream()
                     .map(NodeShareTree::getNodeId)
                     .filter(nodeId -> !filterNodeIds.contains(nodeId))
                     .collect(Collectors.toList());
             if (CollUtil.isNotEmpty(dashboardIds)) {
-                iResourceMetaService.batchCopyResourceMeta(userId, spaceId, dashboardIds, newNodeMap, ResourceType.DASHBOARD);
+                iResourceMetaService.batchCopyResourceMeta(userId, spaceId, dashboardIds,
+                    newNodeMap, ResourceType.DASHBOARD);
             }
         }
         // Copy mirror processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.MIRROR.getNodeType())) {
-            List<String> mirrorIds = nodeTypeToNodeIdsMap.get(NodeType.MIRROR.getNodeType()).stream()
+            List<String> mirrorIds =
+                nodeTypeToNodeIdsMap.get(NodeType.MIRROR.getNodeType()).stream()
                     .map(NodeShareTree::getNodeId)
                     .filter(nodeId -> !filterNodeIds.contains(nodeId)).collect(Collectors.toList());
             if (CollUtil.isNotEmpty(mirrorIds)) {
                 iNodeRelService.copyBatch(userId, mirrorIds, newNodeMap);
-                iResourceMetaService.batchCopyResourceMeta(userId, spaceId, mirrorIds, newNodeMap, ResourceType.MIRROR);
+                iResourceMetaService.batchCopyResourceMeta(userId, spaceId, mirrorIds, newNodeMap,
+                    ResourceType.MIRROR);
             }
         }
     }
 
-    public void processNodeHasSourceDatasheet(Integer nodeType, List<String> filterNodeIds, Map<Integer, List<NodeShareTree>> nodeTypeToNodeIdsMap) {
+    /**
+     * process node hash source.
+     *
+     * @param nodeType             node type
+     * @param filterNodeIds        node ids
+     * @param nodeTypeToNodeIdsMap map of node id with type
+     */
+    public void processNodeHasSourceDatasheet(Integer nodeType, List<String> filterNodeIds,
+                                              Map<Integer, List<NodeShareTree>> nodeTypeToNodeIdsMap) {
         if (!nodeTypeToNodeIdsMap.containsKey(nodeType)) {
             return;
         }
         List<String> allFormIds = nodeTypeToNodeIdsMap.get(nodeType).stream()
-                .map(NodeShareTree::getNodeId).collect(Collectors.toList());
+            .map(NodeShareTree::getNodeId).collect(Collectors.toList());
         // Take the difference set of all form images and filter nodes
         List<String> nodeIds = CollUtil.subtractToList(allFormIds, filterNodeIds);
         // If the difference set is empty, all form images have been filtered.
@@ -1155,24 +1374,28 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeTypeToNodeIdsMap.remove(nodeType);
             return;
         }
-        // If numerous tables in the file are transferred, all the collected datasheet images are skipped for transfer.
+        // If numerous tables in the file are transferred,
+        // all the collected datasheet images are skipped for transfer.
         if (!nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
             filterNodeIds.addAll(nodeIds);
             return;
         }
         List<String> dstIds = nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()).stream()
-                .map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        // All the datasheets are in the filter list. Similarly, all the images of the forms are skipped for transfer.
+            .map(NodeShareTree::getNodeId).collect(Collectors.toList());
+        // All the datasheets are in the filter list. Similarly,
+        // all the images of the forms are skipped for transfer.
         if (CollUtil.containsAll(filterNodeIds, dstIds)) {
             filterNodeIds.addAll(nodeIds);
             nodeTypeToNodeIdsMap.remove(NodeType.DATASHEET.getNodeType());
             return;
         }
         // Obtain the collected datasheet image and the mapped datasheet MAP.
-        Map<String, String> nodeIdToSourceDatasheetIdMap = iNodeRelService.getRelNodeToMainNodeMap(nodeIds);
+        Map<String, String> nodeIdToSourceDatasheetIdMap =
+            iNodeRelService.getRelNodeToMainNodeMap(nodeIds);
         for (String nodeId : nodeIds) {
             String datasheet = nodeIdToSourceDatasheetIdMap.get(nodeId);
-            // The mapped datasheet is in the filter column or not in the dump file, and the form image skips the dump.
+            // The mapped datasheet is in the filter column or not in the dump file,
+            // and the form image skips the dump.
             if (filterNodeIds.contains(datasheet) || !dstIds.contains(datasheet)) {
                 filterNodeIds.add(nodeId);
             }
@@ -1180,20 +1403,24 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public String importExcel(Long userId, String spaceId, ImportExcelOpRo opRo) throws IOException {
+    public String importExcel(Long userId, String spaceId, ImportExcelOpRo opRo)
+        throws IOException {
         log.info("Import new node ");
         // Verify that the number of nodes reaches the upper limit
         // iSubscriptionService.checkSheetNums(spaceId, 1);
         MultipartFile file = opRo.getFile();
         ExceptionUtil.isNotNull(file, ActionException.FILE_EMPTY);
         ExceptionUtil.isNotBlank(file.getOriginalFilename(), ActionException.FILE_EMPTY);
-        ExceptionUtil.isTrue(file.getSize() <= limitProperties.getMaxFileSize(), ActionException.FILE_EXCEED_LIMIT);
+        ExceptionUtil.isTrue(file.getSize() <= limitProperties.getMaxFileSize(),
+            ActionException.FILE_EXCEED_LIMIT);
         // fileName
         String mainName = cn.hutool.core.io.FileUtil.mainName(file.getOriginalFilename());
         if (StrUtil.isBlank(mainName)) {
             throw new BusinessException("File name is empty ");
         }
-        mainName = duplicateNameModify(opRo.getParentId(), NodeType.DATASHEET.getNodeType(), mainName, null);
+        int nodeType = NodeType.DATASHEET.getNodeType();
+        mainName =
+            duplicateNameModify(opRo.getParentId(), nodeType, mainName, null);
         // file type suffix
         String fileSuffix = cn.hutool.core.io.FileUtil.extName(file.getOriginalFilename());
         if (StrUtil.isBlank(fileSuffix)) {
@@ -1204,7 +1431,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             // identification file code
             String charset = FileTool.identifyCoding(file.getInputStream());
             Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withNullString("").parse(
-                    new InputStreamReader(file.getInputStream(), charset)
+                new InputStreamReader(file.getInputStream(), charset)
             );
             List<List<Object>> readAll = new ArrayList<>();
             for (CSVRecord csvRecord : csvRecords) {
@@ -1214,8 +1441,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     String value = csvRecord.get(i);
                     if (StrUtil.isBlank(value)) {
                         csvRow.add("");
-                    }
-                    else {
+                    } else {
                         csvRow.add(value);
                     }
                 }
@@ -1224,40 +1450,46 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return this.processExcel(readAll, opRo.getParentId(), spaceId, userId, mainName);
         }
         // When importing a node, the uploaded file is in XLS or XLSX format.
-        if (fileSuffix.equals(FileSuffixConstants.XLS) || fileSuffix.equals(FileSuffixConstants.XLSX)) {
+        if (fileSuffix.equals(FileSuffixConstants.XLS)
+            || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             ExcelReader excelReader = null;
             try {
                 // ExcelListener (cannot be handed over to spring container management)
                 ExcelSheetsDataListener sheetsDataListener = new ExcelSheetsDataListener();
-                excelReader = EasyExcel.read(file.getInputStream(), null, sheetsDataListener).build();
+                excelReader =
+                    EasyExcel.read(file.getInputStream(), null, sheetsDataListener).build();
                 List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
                 // If there is a WPS hidden table, the removal will not be processed.
-                readSheets.removeIf(readSheet -> "WpsReserved_CellImgList".equals(readSheet.getSheetName()));
+                String wps = "WpsReserved_CellImgList";
+                readSheets.removeIf(readSheet -> wps.equals(readSheet.getSheetName()));
                 // Excel contains only one worksheet
                 if (readSheets.size() == 1) {
-                    List<List<Object>> read = this.importSingleSheetByEasyExcel(excelReader, sheetsDataListener, readSheets.get(0));
+                    List<List<Object>> read =
+                        this.importSingleSheetByEasyExcel(excelReader, sheetsDataListener,
+                            readSheets.get(0));
                     return this.processExcel(read, opRo.getParentId(), spaceId, userId, mainName);
                 }
                 // Excel contains multiple worksheets
-                Map<String, List<List<Object>>> readAll = this.importMultipleSheetsByEasyExcel(excelReader, sheetsDataListener, readSheets);
+                Map<String, List<List<Object>>> readAll =
+                    this.importMultipleSheetsByEasyExcel(excelReader, sheetsDataListener,
+                        readSheets);
                 return this.processExcels(readAll, opRo.getParentId(), spaceId, userId, mainName);
-            }
-            catch (EncryptedDocumentException e) {
+            } catch (EncryptedDocumentException e) {
                 throw new BusinessException(ActionException.FILE_HAS_PASSWORD);
-            }
-            finally {
+            } finally {
                 if (Objects.nonNull(excelReader)) {
                     excelReader.finish();
                 }
             }
-        }
-        else {
+        } else {
             throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }
     }
 
     @Override
-    public Map<String, List<List<Object>>> importMultipleSheetsByEasyExcel(ExcelReader excelReader, ExcelSheetsDataListener sheetsDataListener, List<ReadSheet> readSheets) {
+    public Map<String, List<List<Object>>> importMultipleSheetsByEasyExcel(ExcelReader excelReader,
+                                                                           ExcelSheetsDataListener sheetsDataListener,
+                                                                           List<ReadSheet> readSheets) {
         Map<String, List<List<Object>>> readAll = new LinkedHashMap<>(readSheets.size());
         // inverse Excel Sheet
         Collections.reverse(readSheets);
@@ -1285,7 +1517,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public List<List<Object>> importSingleSheetByEasyExcel(ExcelReader excelReader, ExcelSheetsDataListener sheetsDataListener, ReadSheet readSheet) {
+    public List<List<Object>> importSingleSheetByEasyExcel(ExcelReader excelReader,
+                                                           ExcelSheetsDataListener sheetsDataListener,
+                                                           ReadSheet readSheet) {
         excelReader.read(readSheet);
         List<Object> sheetHeader = sheetsDataListener.getSheetHeader();
         List<List<Object>> sheetData = sheetsDataListener.getSheetData();
@@ -1307,22 +1541,23 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * processing excel data
+     * processing excel data.
      */
-    private String processExcel(List<List<Object>> readAll, String parentId, String spaceId, Long userId, String name) {
+    private String processExcel(List<List<Object>> readAll, String parentId, String spaceId,
+                                Long userId, String name) {
         Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         checkEnableOperateNodeBySpaceFeature(memberId, spaceId, parentId);
         // long maxRowLimit = iSubscriptionService.getPlanMaxRows(spaceId);
-        // ExceptionUtil.isTrue(readAll != null && readAll.size() <= maxRowLimit + 1, SubscribeFunctionException.ROW_LIMIT);
+        // ExceptionUtil.isTrue(readAll != null && readAll.size() <= maxRowLimit + 1,
+        // SubscribeFunctionException.ROW_LIMIT);
         // If the table is empty, create an initialization table
         if (readAll.size() == 0) {
             return this.createNode(userId, spaceId, NodeOpRo.builder()
-                    .type(NodeType.DATASHEET.getNodeType())
-                    .parentId(parentId)
-                    .nodeName(name)
-                    .build());
-        }
-        else {
+                .type(NodeType.DATASHEET.getNodeType())
+                .parentId(parentId)
+                .nodeName(name)
+                .build());
+        } else {
             boolean first = true;
             JSONObject recordMap = JSONUtil.createObj();
             JSONObject fieldMap = JSONUtil.createObj();
@@ -1343,30 +1578,32 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     }
                     list = CollUtil.sub(list, 0, i + 1);
                 }
-                ExceptionUtil.isTrue(list.size() <= limitProperties.getMaxColumnCount(), ActionException.COLUMN_EXCEED_LIMIT);
+                ExceptionUtil.isTrue(list.size() <= limitProperties.getMaxColumnCount(),
+                    ActionException.COLUMN_EXCEED_LIMIT);
                 if (first) {
                     fieldIds = new ArrayList<>(list.size());
                     first = false;
                     int i = 1;
                     for (Object fieldName : list) {
-                        this.addField(fieldIds, columns, fieldMap, null == fieldName ? null : fieldName.toString(), i, fldNameList);
+                        this.addField(fieldIds, columns, fieldMap,
+                            null == fieldName ? null : fieldName.toString(), i, fldNameList);
                         i++;
                     }
                     viewMapRo = ViewMapRo.builder()
-                            .id(IdUtil.createViewId())
-                            .name(I18nStringsUtil.t("default_view"))
-                            .type(ViewType.GRID.getType())
-                            .columns(columns)
-                            .frozenColumnCount(1)
-                            .build();
+                        .id(IdUtil.createViewId())
+                        .name(I18nStringsUtil.t("default_view"))
+                        .type(ViewType.GRID.getType())
+                        .columns(columns)
+                        .frozenColumnCount(1)
+                        .build();
                     if (readAll.size() == 1) {
                         // Only one line acts as a field condition and fills a blank line.
                         this.addRecord(recordMap, rows, null, null, null, null, null, fldNameList);
                     }
-                }
-                else {
+                } else {
                     // processing record
-                    this.addRecord(recordMap, rows, list, fieldIds, columns, fieldMap, viewMapRo, fldNameList);
+                    this.addRecord(recordMap, rows, list, fieldIds, columns, fieldMap, viewMapRo,
+                        fldNameList);
                 }
             }
             viewMapRo.setRows(rows);
@@ -1378,20 +1615,22 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeMapper.updatePreNodeIdBySelf(nodeId, null, parentId);
             // create node datasheet
             this.createChildNode(userId, CreateNodeDto.builder()
-                    .spaceId(spaceId)
-                    .parentId(parentId)
-                    .nodeName(name)
-                    .newNodeId(nodeId)
-                    .type(NodeType.DATASHEET.getNodeType()).build());
+                .spaceId(spaceId)
+                .parentId(parentId)
+                .nodeName(name)
+                .newNodeId(nodeId)
+                .type(NodeType.DATASHEET.getNodeType()).build());
             iDatasheetService.create(userId, spaceId, nodeId, name, metaMapRo, recordMap);
             return nodeId;
         }
     }
 
     /**
-     * add records
+     * add records.
      */
-    private void addRecord(JSONObject recordMap, JSONArray rows, List<Object> list, List<String> fieldIds, JSONArray columns, JSONObject fieldMap, ViewMapRo viewMapRo, List<String> fldNameList) {
+    private void addRecord(JSONObject recordMap, JSONArray rows, List<Object> list,
+                           List<String> fieldIds, JSONArray columns, JSONObject fieldMap,
+                           ViewMapRo viewMapRo, List<String> fldNameList) {
         String recordId = IdUtil.createRecordId();
         JSONObject recordJson = JSONUtil.createObj();
         recordJson.set("recordId", recordId);
@@ -1407,7 +1646,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 }
                 if (ObjectUtil.isNotNull(text) && text != "") {
                     JSONArray filedArray = JSONUtil.createArray();
-                    filedArray.add(RecordDataRo.builder().text(text.toString()).type(FieldType.TEXT.getFieldType()).build());
+                    filedArray.add(RecordDataRo.builder().text(text.toString())
+                        .type(FieldType.TEXT.getFieldType()).build());
                     data.set(fieldIds.get(i), filedArray);
                 }
                 i++;
@@ -1417,9 +1657,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * add field
+     * add field.
      */
-    private void addField(List<String> fieldIds, JSONArray columns, JSONObject fieldMap, String fieldName, int i, List<String> fldNameList) {
+    private void addField(List<String> fieldIds, JSONArray columns, JSONObject fieldMap,
+                          String fieldName, int i, List<String> fldNameList) {
         String fieldId = IdUtil.createFieldId();
         fieldIds.add(fieldId);
         JSONObject fieldJson = JSONUtil.createObj();
@@ -1441,16 +1682,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         fldNameList.add(fieldName);
         fieldMap.set(fieldId, FieldMapRo.builder()
-                .id(fieldId)
-                .name(fieldName)
-                .type(FieldType.TEXT.getFieldType()).build());
+            .id(fieldId)
+            .name(fieldName)
+            .type(FieldType.TEXT.getFieldType()).build());
     }
 
     /**
-     * duplicate name modification
+     * duplicate name modification.
      */
     @Override
-    public String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId) {
+    public String duplicateNameModify(String parentId, int nodeType, String nodeName,
+                                      String nodeId) {
         List<String> nameList = nodeMapper.selectNameList(parentId, nodeType, nodeId);
         int i = 2;
         String name = nodeName;
@@ -1462,38 +1704,23 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public boolean judgeAllSubNodeContainMemberFld(String nodeId) {
-        NodeType nodeType = this.getTypeByNodeId(nodeId);
-        ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
-        String keyword = "\"type\": 13";
-        if (nodeType == NodeType.FOLDER) {
-            // folder
-            List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
-            if (CollUtil.isNotEmpty(subNodeIds)) {
-                return SqlTool.retCount(datasheetMetaMapper.countByMetaData(subNodeIds, keyword)) > 0;
-            }
-        }
-        else if (nodeType == NodeType.DATASHEET) {
-            // datasheet
-            return SqlTool.retCount(datasheetMetaMapper.countByMetaData(Collections.singletonList(nodeId), keyword)) > 0;
-        }
-        return false;
-    }
-
-    @Override
     public List<String> checkSubNodePermission(Long memberId, String nodeId, ControlRole role) {
         boolean hasChildren = nodeMapper.selectHasChildren(nodeId);
         if (!hasChildren) {
             return null;
         }
         // Check the node permissions of all children and descendants
-        List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
+        List<String> subNodeIds = this.getNodeIdsInNodeTree(nodeId, -1);
+        subNodeIds.remove(nodeId);
+
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, subNodeIds);
-        ExceptionUtil.isFalse(roleDict.isEmpty(), TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
+        ExceptionUtil.isFalse(roleDict.isEmpty(),
+            TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
         List<String> filterNodeIds = roleDict.entrySet().stream()
-                .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(role))
-                .map(Map.Entry::getKey).collect(Collectors.toList());
-        ExceptionUtil.isTrue(subNodeIds.size() == filterNodeIds.size(), TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
+            .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(role))
+            .map(Map.Entry::getKey).collect(Collectors.toList());
+        ExceptionUtil.isTrue(subNodeIds.size() == filterNodeIds.size(),
+            TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
         return subNodeIds;
     }
 
@@ -1502,12 +1729,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (ObjectUtil.isNotEmpty(effect.getLinkFieldIds())) {
             LoginUserDto user = LoginContext.me().getLoginUser();
             NodeCopyRo nodeCopyRo = NodeCopyRo.newBuilder()
-                    .addAllFieldIds(effect.getLinkFieldIds())
-                    .setUserId(user.getUserId().toString())
-                    .setUuid(user.getUuid())
-                    .setCopyNodeId(effect.getCopyNodeId())
-                    .setNodeId(effect.getNodeId())
-                    .build();
+                .addAllFieldIds(effect.getLinkFieldIds())
+                .setUserId(user.getUserId().toString())
+                .setUuid(user.getUuid())
+                .setCopyNodeId(effect.getCopyNodeId())
+                .setNodeId(effect.getNodeId())
+                .build();
             BasicResult result = grpcClientService.nodeCopyChangeset(nodeCopyRo);
             if (!result.getSuccess()) {
                 log.error("Copy node error [{}]", result);
@@ -1519,17 +1746,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public void nodeDeleteChangeset(List<String> nodeIds) {
-        // If the associated datasheet of the deleted datasheet is not in the deleted column, the corresponding associated column in the linked datasheet is converted to a text field.
+        // If the associated datasheet of the deleted datasheet is not in the deleted column, the
+        // corresponding associated column in the linked datasheet is converted to a text field.
         Map<String, List<String>> map = iDatasheetService.getForeignDstIds(nodeIds, true);
         if (MapUtil.isNotEmpty(map)) {
             List<String> linkNodeId =
-                    map.values().stream().flatMap(List::stream).distinct().collect(Collectors.toList());
+                map.values().stream().flatMap(List::stream).distinct().collect(Collectors.toList());
             LoginUserDto user = LoginContext.me().getLoginUser();
             NodeDeleteRo nodeDeleteRo = NodeDeleteRo.newBuilder()
-                    .setUserId(user.getUserId().toString())
-                    .setUuid(user.getUuid())
-                    .addAllDeleteNodeId(map.keySet())
-                    .addAllLinkNodeId(linkNodeId).build();
+                .setUserId(user.getUserId().toString())
+                .setUuid(user.getUuid())
+                .addAllDeleteNodeId(map.keySet())
+                .addAllLinkNodeId(linkNodeId).build();
             // Middle tier deletion failed to continue to delete nodes
             this.grpcClientService.nodeDeleteChangeset(nodeDeleteRo);
         }
@@ -1537,33 +1765,40 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * Create an association between a form and a mapping datasheet
+     * Create an association between a form and a mapping datasheet.
      */
     private void createNodeRel(Long userId, String nodeId, NodeRelRo extra) {
         NodeRelRo relExtra = new NodeRelRo(extra.getViewId());
         // create node association relationship
-        iNodeRelService.create(userId, extra.getDatasheetId(), nodeId, JSONUtil.toJsonStr(relExtra));
+        iNodeRelService.create(userId, extra.getDatasheetId(), nodeId,
+            JSONUtil.toJsonStr(relExtra));
     }
 
-    private void createFileMeta(Long userId, String spaceId, String nodeId, Integer type, String name, NodeRelRo nodeRel) {
+    private void createFileMeta(Long userId, String spaceId, String nodeId, Integer type,
+                                String name, NodeRelRo nodeRel) {
         switch (NodeType.toEnum(type)) {
             case DATASHEET:
-                iDatasheetService.create(spaceId, nodeId, name, userId);
+                String viewName = nodeRel != null
+                    ? nodeRel.getViewName() : null;
+                iDatasheetService.create(userId, spaceId, nodeId, name, viewName);
                 break;
             case FORM:
                 // create node association relationship
                 this.createNodeRel(userId, nodeId, nodeRel);
                 // create resource metadata
-                String extra = JSONUtil.createObj().set("title", name).set("fillAnonymous", true).toString();
+                String extra =
+                    JSONUtil.createObj().set("title", name).set("fillAnonymous", true).toString();
                 iResourceMetaService.create(userId, nodeId, ResourceType.FROM.getValue(), extra);
                 break;
             case DASHBOARD:
-                iResourceMetaService.create(userId, nodeId, ResourceType.DASHBOARD.getValue(), JSONUtil.createObj().toString());
+                iResourceMetaService.create(userId, nodeId, ResourceType.DASHBOARD.getValue(),
+                    JSONUtil.createObj().toString());
                 break;
             case MIRROR:
                 // create node association relationship
                 this.createNodeRel(userId, nodeId, nodeRel);
-                iResourceMetaService.create(userId, nodeId, ResourceType.MIRROR.getValue(), JSONUtil.createObj().toString());
+                iResourceMetaService.create(userId, nodeId, ResourceType.MIRROR.getValue(),
+                    JSONUtil.createObj().toString());
                 break;
             default:
                 break;
@@ -1576,56 +1811,46 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private String verifyPreNodeId(String preNodeId, String parentId) {
         if (StrUtil.isBlank(preNodeId)) {
             return null;
-        }
-        else {
+        } else {
             String id = nodeMapper.selectParentIdByNodeId(preNodeId);
             ExceptionUtil.isTrue(parentId.equals(id), PermissionException.NODE_ACCESS_DENIED);
             return preNodeId;
         }
     }
 
-    private void getForeignDstIdsFilterSelf(List<BaseNodeInfo> nodes, List<String> nodeIds) {
-        Map<String, List<String>> map = iDatasheetService.getForeignDstIds(nodeIds, true);
-        if (MapUtil.isNotEmpty(map)) {
-            List<String> filters = CollUtil.newArrayList();
-            Collection<List<String>> foreignDstIdLists = map.values();
-            for (List<String> foreignDstIdList : foreignDstIdLists) {
-                filters.addAll(foreignDstIdList);
-            }
-            nodes.addAll(nodeMapper.selectBaseNodeInfoByNodeIds(filters));
-        }
-    }
-
     /**
-     * operate multiple excel sheet
+     * operate multiple excel sheet.
      *
-     * @param readAll all records
+     * @param readAll  all records
      * @param parentId parent node id
-     * @param spaceId space id
-     * @param userId user id
-     * @param name node name
+     * @param spaceId  space id
+     * @param userId   user id
+     * @param name     node name
      * @return node id
      */
-    private String processExcels(Map<String, List<List<Object>>> readAll, String parentId, String spaceId, Long userId, String name) {
+    private String processExcels(Map<String, List<List<Object>>> readAll, String parentId,
+                                 String spaceId, Long userId, String name) {
         String nodeId = this.createNode(userId, spaceId, NodeOpRo.builder()
-                .type(NodeType.FOLDER.getNodeType())
-                .parentId(parentId)
-                .nodeName(name)
-                .build());
-        readAll.forEach((sheetName, read) -> processExcel(read, nodeId, spaceId, userId, sheetName));
+            .type(NodeType.FOLDER.getNodeType())
+            .parentId(parentId)
+            .nodeName(name)
+            .build());
+        readAll.forEach(
+            (sheetName, read) -> processExcel(read, nodeId, spaceId, userId, sheetName));
         return nodeId;
     }
 
     /**
-     * Get the superior path, split by "/", do not retain the root node
+     * Get the superior path, split by "/", do not retain the root node.
      */
-    private Map<String, String> getSuperiorPathByParentIds(String spaceId, List<String> parentIds) {
+    private Map<String, String> getSuperiorPathByParentIds(List<String> parentIds) {
         // gets all parent nodes other than the non root node
-        List<NodeBaseInfoDTO> parentNodes = nodeMapper.selectParentNodeByNodeIds(spaceId, parentIds);
+        List<NodeBaseInfoDTO> parentNodes = this.getParentPathNodes(parentIds, false);
         if (CollUtil.isEmpty(parentNodes)) {
             return null;
         }
-        Map<String, NodeBaseInfoDTO> nodeIdToInfoMap = parentNodes.stream().collect(Collectors.toMap(NodeBaseInfoDTO::getNodeId, dto -> dto));
+        Map<String, NodeBaseInfoDTO> nodeIdToInfoMap =
+            parentNodes.stream().collect(Collectors.toMap(NodeBaseInfoDTO::getNodeId, dto -> dto));
         Map<String, String> nodeIdToPathMap = new HashMap<>(parentIds.size());
         for (String nodeId : parentIds) {
             if (nodeIdToPathMap.get(nodeId) != null) {
@@ -1651,25 +1876,28 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String parseExcel(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId, String fileName, String fileSuffix, InputStream inputStream) {
+    public String parseExcel(Long userId, String uuid, String spaceId,
+        Long memberId, String parentNodeId, String viewName, String fileName,
+        String fileSuffix, InputStream inputStream) {
         ExcelReader excelReader = null;
-        MultiSheetReadListener readListener = new MultiSheetReadListener(this, userId, uuid, spaceId, memberId, parentNodeId, fileName);
+        MultiSheetReadListener readListener =
+            new MultiSheetReadListener(this, userId, uuid, spaceId, memberId,
+                parentNodeId, viewName, fileName);
         ExcelReaderBuilder readerBuilder;
-        ExcelTypeEnum excelType = FileSuffixConstants.XLS.equals(fileSuffix) ?
-                ExcelTypeEnum.XLS :
-                ExcelTypeEnum.XLSX;
+        ExcelTypeEnum excelType = FileSuffixConstants.XLS.equals(fileSuffix)
+            ? ExcelTypeEnum.XLS : ExcelTypeEnum.XLSX;
         try {
             readerBuilder = EasyExcel.read(inputStream)
-                    .excelType(excelType)
-                    .ignoreEmptyRow(false).autoTrim(false);
+                .excelType(excelType)
+                .ignoreEmptyRow(false).autoTrim(false);
             excelReader = readerBuilder.registerReadListener(readListener).build();
             List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
             excelReader.read(readSheets);
             return readListener.getRetNodeData().getNodeId();
-        }
-        finally {
+        } finally {
             if (excelReader != null) {
-                // Don't forget to close it here. Temporary files will be created when reading, and the disk will collapse.
+                // Don't forget to close it here.
+                // Temporary files will be created when reading, and the disk will collapse.
                 excelReader.finish();
             }
         }
@@ -1677,20 +1905,23 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String parseCsv(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId, String fileName, InputStream inputStream) {
+    public String parseCsv(Long userId, String uuid, String spaceId, Long memberId,
+        String parentNodeId, String viewName, String fileName, InputStream inputStream) {
         ExcelReader excelReader = null;
-        CsvReadListener readListener = new CsvReadListener(this, userId, uuid, spaceId, memberId, parentNodeId, fileName);
+        CsvReadListener readListener =
+            new CsvReadListener(this, userId, uuid, spaceId, memberId,
+                parentNodeId, viewName, fileName);
         try {
             excelReader = EasyExcel.read(inputStream)
-                    .excelType(ExcelTypeEnum.CSV)
-                    .registerReadListener(readListener)
-                    .build();
+                .excelType(ExcelTypeEnum.CSV)
+                .registerReadListener(readListener)
+                .build();
             excelReader.readAll();
             return readListener.getRetNodeId();
-        }
-        finally {
+        } finally {
             if (excelReader != null) {
-                // Don't forget to close it here. Temporary files will be created when reading, and the disk will collapse.
+                // Don't forget to close it here.
+                // Temporary files will be created when reading, and the disk will collapse.
                 excelReader.finish();
             }
         }
@@ -1698,7 +1929,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void batchCreateDataSheet(NodeData data, List<NodeEntity> nodeEntities, List<DatasheetEntity> datasheetEntities, List<DatasheetMetaEntity> metaEntities, List<DatasheetRecordEntity> recordEntities) {
+    public void batchCreateDataSheet(NodeData data, List<NodeEntity> nodeEntities,
+                                     List<DatasheetEntity> datasheetEntities,
+                                     List<DatasheetMetaEntity> metaEntities,
+                                     List<DatasheetRecordEntity> recordEntities) {
 
         nodeMapper.updatePreNodeIdBySelf(data.getNodeId(), null, data.getParentId());
 
@@ -1729,7 +1963,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
         if (connectInfo != null && connectInfo.getAppId() != null) {
             if (connectInfo.isEnabled()) {
-                String suiteKey = socialServiceFacade.getSuiteKeyByDingtalkSuiteId(connectInfo.getAppId());
+                String suiteKey =
+                    socialServiceFacade.getSuiteKeyByDingtalkSuiteId(connectInfo.getAppId());
                 if (suiteKey != null) {
                     extraVo.setDingTalkSuiteKey(suiteKey);
                     extraVo.setDingTalkDaStatus(nodeExtraDTO.getDingTalkDaStatus());
@@ -1740,7 +1975,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isNotBlank(nodeExtraDTO.getSourceTemplateId())) {
             extraVo.setSourceTemplateId(nodeExtraDTO.getSourceTemplateId());
         }
-        extraVo.setShowTips(Boolean.TRUE.equals(redisTemplate.hasKey(getTemplateQuoteKey(spaceId, nodeId))));
+        extraVo.setShowTips(
+            Boolean.TRUE.equals(redisTemplate.hasKey(getTemplateQuoteKey(spaceId, nodeId))));
         return extraVo;
     }
 
@@ -1748,11 +1984,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public NodeInfoWindowVo getNodeWindowInfo(String nodeId) {
         NodeEntity node = getByNodeId(nodeId);
         // query node creator basic information
-        MemberDTO memberDto = memberMapper.selectMemberDtoByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
+        MemberDTO memberDto =
+            memberMapper.selectMemberDtoByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
         // construct node information window objects
         MemberInfo memberInfo = MemberInfo.builder()
-                .time(node.getCreatedAt())
-                .build();
+            .time(node.getCreatedAt())
+            .build();
         if (memberDto != null) {
             memberInfo.setMemberName(memberDto.getMemberName());
             memberInfo.setAvatar(memberDto.getAvatar());
@@ -1762,12 +1999,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             memberInfo.setNickName(memberDto.getNickName());
         }
         return NodeInfoWindowVo.builder()
-                .nodeId(nodeId)
-                .nodeName(node.getNodeName())
-                .nodeType(node.getType())
-                .icon(node.getIcon())
-                .creator(memberInfo)
-                .build();
+            .nodeId(nodeId)
+            .nodeName(node.getNodeName())
+            .nodeType(node.getType())
+            .icon(node.getIcon())
+            .creator(memberInfo)
+            .build();
     }
 
     @Override
@@ -1776,12 +2013,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
             // share id
             result.setSpaceId(nodeShareSettingMapper.selectSpaceIdByShareIdIncludeDeleted(nodeId));
-        }
-        else if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.WIDGET.getIdRulePrefixEnum())) {
+        } else if (StrUtil.startWithIgnoreEquals(nodeId,
+            IdRulePrefixEnum.WIDGET.getIdRulePrefixEnum())) {
             // widget id
             result.setSpaceId(iWidgetService.getSpaceIdByWidgetId(nodeId));
-        }
-        else {
+        } else {
             // all other condition query node id
             result.setSpaceId(this.getSpaceIdByNodeIdIncludeDeleted(nodeId));
         }
@@ -1802,12 +2038,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             // 2. Query the member Id in the space based on the user id.
             // Gets the member ID by determining whether the user is in this space.
             Long memberId = LoginContext.me().getMemberId(userId, urlNodeInfo.getSpaceId());
-            // 3. Query whether the user has permissions on the node in the corresponding space according to the member Id.
-            // check whether there is permission under the node
+            // 3. Query whether the user has permissions on the node in the corresponding space
+            // according to the member id. check whether there is permission under the node
             controlTemplate.fetchNodeRole(memberId, nodeId);
             return Optional.ofNullable(urlNodeInfo.getNodeName());
-        }
-        catch (BusinessException ex) {
+        } catch (BusinessException ex) {
             return Optional.empty();
         }
     }
@@ -1827,13 +2062,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public void checkEnableOperateRootNodeBySpaceFeature(Long memberId, String spaceId) {
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         Boolean rootManageable = feature.rootManageableOrDefault();
-        // 1. Whether the security settings turn on the normal member root directory operable permission control
+        // 1. Whether the security settings turn on the normal member
+        // root directory operable permission control
         if (rootManageable) {
             return;
         }
-        List<Long> adminsWithWorkbench = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
+        List<Long> adminsWithWorkbench =
+            iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         // 2. Whether the user has the administrative permission of the workbench permission
-        ExceptionUtil.isTrue(CollUtil.contains(adminsWithWorkbench, memberId), PermissionException.ROOT_NODE_OP_DENIED);
+        ExceptionUtil.isTrue(CollUtil.contains(adminsWithWorkbench, memberId),
+            PermissionException.ROOT_NODE_OP_DENIED);
     }
 
     @Override
@@ -1845,28 +2083,36 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeSearchResult> recentList(String spaceId, Long memberId) {
-        List<String> nodeIds = multiDatasourceAdapterTemplate.getRecentlyVisitNodeIds(memberId, NodeType.FOLDER);
+        List<String> nodeIds =
+            multiDatasourceAdapterTemplate.getRecentlyVisitNodeIds(memberId, NodeType.FOLDER);
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
-        return formatNodeSearchResults(spaceId, nodeInfos);
+        return formatNodeSearchResults(nodeInfos);
     }
 
     @Override
     public Long getCreatedMemberId(String nodeId) {
         NodeEntity node = baseMapper.selectByNodeId(nodeId);
         if (null != node && null != node.getCreatedBy()) {
-            return iMemberService.getMemberIdByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
+            return iMemberService.getMemberIdByUserIdAndSpaceId(node.getCreatedBy(),
+                node.getSpaceId());
         }
         return null;
     }
 
-    private List<NodeSearchResult> formatNodeSearchResults(String spaceId, List<NodeInfoVo> nodeInfoList) {
+    @Override
+    public String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName) {
+        return baseMapper.selectNodeIdByParentIdAndNodeName(parentNodeId, nodeName);
+    }
+
+    private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {
         if (CollUtil.isEmpty(nodeInfoList)) {
             return new ArrayList<>();
         }
         // format the tree
         List<NodeSearchResult> results = new ArrayList<>(nodeInfoList.size());
-        List<String> parentIds = nodeInfoList.stream().map(NodeInfoVo::getParentId).collect(Collectors.toList());
-        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
+        List<String> parentIds =
+            nodeInfoList.stream().map(NodeInfoVo::getParentId).collect(Collectors.toList());
+        Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         nodeInfoList.forEach(info -> {
             NodeSearchResult result = new NodeSearchResult();
             BeanUtil.copyProperties(info, result);

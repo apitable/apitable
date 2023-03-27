@@ -21,15 +21,33 @@ import { FillDirection, ICell, ICellValue, IFieldRanges, IRange, IRecordRanges, 
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
 import {
-  CellType, GalleryStyleKeyType, IUnitValue, IUserValue, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType,
+  CellType,
+  GalleryStyleKeyType,
+  IUnitValue,
+  IUserValue,
+  LayoutType,
+  RowHeightLevel,
+  ViewType,
+  WhyRecordMoveType,
 } from '../../../../../../exports/store';
 import * as actions from '../../../../../shared/store/action_constants';
 import {
-  CalendarColorType, CalendarStyleKeyType, GanttColorType, GanttStyleKeyType, OrgChartStyleKeyType,
+  CalendarColorType,
+  CalendarStyleKeyType,
+  GanttColorType,
+  GanttStyleKeyType,
+  OrgChartStyleKeyType,
+  RecordMoveType,
 } from '../../../../../shared/store/constants';
 import { IPermissions, Role } from '../../../../../space/store/interfaces/catalog_tree';
 import {
-  ICalendarViewStatus, IGanttViewStatus, IGridViewActiveFieldState, IGridViewDragState, IKanbanViewStatus, IOrgChartViewStatus, ISearchResult,
+  ICalendarViewStatus,
+  IGanttViewStatus,
+  IGridViewActiveFieldState,
+  IGridViewDragState,
+  IKanbanViewStatus,
+  IOrgChartViewStatus,
+  ISearchResult,
   IWidgetPanelStatus,
 } from './client';
 
@@ -360,6 +378,72 @@ export interface IActiveNewRowInfo {
 
 export type IActiveRowInfo = IActiveUpdateRowInfo | IActiveNewRowInfo;
 
+export interface IViewDerivation {
+  // The map of the original row order of the view.
+  rowsIndexMap: Map<string, number>;
+
+  rowsWithoutSearch: IViewRow[];
+
+  // Visible row data.
+  visibleRows: IViewRow[];
+
+  // A map with recordId as key and order as value.
+  visibleRowsIndexMap: Map<string, number>;
+
+  // Pre-sorted or delayed sorted move types.
+  recordMoveType?: RecordMoveType;
+
+  // Row order data after view property calculation.
+  pureVisibleRows: IViewRow[];
+
+  // map of the row order data after the view property is calculated.
+  pureVisibleRowsIndexMap: Map<string, number>;
+
+  // Kanban middle properties.
+  kanbanGroupMap?: { [key: string]: IRecord[] };
+
+  // Search Results.
+  searchResults?: ISearchResult;
+  // Grouping breakpoint data.
+  /**
+   * groupBreakpoint
+   * field1 grouping breakpoint 0---------10---------20
+   * field2 level grouping breakpoint 0--3-5-6--10----15---20
+   *
+   * field1: [0, 10, 20]
+   * field2: [0, 3, 5, 6, 10, 15, 20]
+   */
+  groupBreakpoint?: { [key: string]: number[] };
+
+  /**
+   * Guide the table view to draw the structured data of the table,
+   * with the hierarchical structure reflected by depth.
+   * [
+   *    Blank 0
+   *    GroupTab 0
+   *      GroupTab 1
+   *        GroupTab 2
+   *          Record 3
+   *        Add 2
+   *        Blank 2
+   *      Blank 1
+   *    Blank 0
+   * ]
+   */
+  linearRows?: ILinearRow[];
+
+  /**
+   * [`${row.type}_${row.recordId}`, index]
+   */
+  linearRowsIndexMap?: Map<string, number>;
+
+  // Uncollapsed UI grouped row data.
+  pureLinearRows?: ILinearRow[];
+
+  // Grouped rows of data for album view.
+  galleryGroupedRows?: string[][];
+}
+
 export interface IDatasheetClientState {
   collaborators?: ICollaborator[];
 
@@ -390,6 +474,8 @@ export interface IDatasheetClientState {
   operateViewIds?: string[] | null;
   isTimeMachinePanelOpen?: boolean;
   exportViewId?: string | null;
+  // View-derived data, all content obtained by calculation, is uniformly maintained here.
+  viewDerivation: { [viewId: string]: IViewDerivation };
 }
 
 export interface INetworking {
@@ -571,6 +657,12 @@ export interface IViewPropertyBase {
   filterInfo?: IFilterInfo;
   sortInfo?: ISortInfo;
   lockInfo?: IViewLockInfo;
+
+  /**
+   * @desc The hidden fields of the original table can be optionally displayed in the mirrored table.
+   * @default false
+   */
+  displayHiddenColumnWithinMirror?: boolean;
 }
 
 export interface IGridViewColumn extends IViewColumn {
@@ -1130,6 +1222,7 @@ export interface IRecordAlarm {
   alarmUsers?: IAlarmUser[];
   recordId?: string;
   fieldId?: string;
+  alarmAt?: string
 }
 
 /**
@@ -1154,4 +1247,44 @@ export interface IAlarmUser {
 export enum AlarmUsersType {
   Field = 'field',
   Member = 'member',
+}
+
+export interface ISetViewDerivation {
+  type: typeof actions.SET_VIEW_DERIVATION;
+  payload: {
+    viewId: string;
+    viewDerivation: IViewDerivation;
+  };
+}
+
+export interface IPatchViewDerivation {
+  type: typeof actions.PATCH_VIEW_DERIVATION;
+  payload: {
+    viewId: string;
+    viewDerivation: Partial<IViewDerivation>;
+  };
+}
+
+export interface IDeleteViewDerivation {
+  type: typeof actions.DELETE_VIEW_DERIVATION;
+  payload: {
+    viewId: string;
+  };
+}
+
+export interface ITriggerViewDerivationComputed {
+  type: typeof actions.TRIGGER_VIEW_DERIVATION_COMPUTED;
+  payload: {
+    datasheetId: string;
+    viewId: string;
+  };
+}
+
+export interface IClearActiveRowInfo {
+  type: typeof actions.CLEAR_ACTIVE_ROW_INFO;
+}
+
+export interface ISetActiveRowInfo {
+  type: typeof actions.SET_ACTIVE_ROW_INFO;
+  payload: IActiveRowInfo;
 }

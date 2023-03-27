@@ -17,8 +17,7 @@
  */
 
 import { Button, colorVars, Message, Modal, Typography } from '@apitable/components';
-import { Events, Player } from '@apitable/core';
-import { LS_DATASHEET_NAMESPACE } from '@apitable/core/dist/config/constant';
+import { Events, Player, ConfigConstant } from '@apitable/core';
 import dayjs from 'dayjs';
 import { resourceService } from 'pc/resource_service';
 import { useEffect, useState } from 'react';
@@ -30,7 +29,7 @@ export const ApplyBackupData = () => {
   const [updater, setUpdater] = useState(false);
 
   useEffect(() => {
-    const backupStorage = store.namespace(`${LS_DATASHEET_NAMESPACE}.backup`);
+    const backupStorage = store.namespace(`${ConfigConstant.LS_DATASHEET_NAMESPACE}.backup`);
     const backupMap = backupStorage.getAll();
 
     for (const timestamp in backupMap) {

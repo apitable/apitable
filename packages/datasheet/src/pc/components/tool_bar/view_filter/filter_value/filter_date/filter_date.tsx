@@ -29,8 +29,7 @@ import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { IFilterDateProps } from '../../interface';
 import styles from '../style.module.less';
@@ -40,7 +39,7 @@ import { LocalFormat } from './local_format';
 
 const { RangePicker } = DatePicker;
 
-export const FilterDate: React.FC<IFilterDateProps> = props => {
+export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = props => {
   const { changeFilter, condition, field, conditionIndex, onChange } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
@@ -56,17 +55,12 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       durationValue = FilterDuration.Today;
     }
   }
-  let noDateProperty;
+  let noDateProperty: IDateTimeField;
   const ref = useRef<HTMLDivElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
 
-  const [showRangeCalendar, setShowRangeCalendar] = useState(false);
-
-  useEffect(() => {
-    if (condition.value[0] !== FilterDuration.DateRange) return;
-    setShowRangeCalendar(true);
-  }, [condition.value]);
+  const showRangeCalendar = durationValue === FilterDuration.DateRange;
 
   if (field.type === FieldType.DateTime) {
     noDateProperty = {
@@ -163,12 +157,13 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
     }
     if (condition.value[0] === FilterDuration.DateRange) {
       const lang = getLanguage().split('-')[0];
+
       return (
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div ref={divRef}>
               {
-                divRef.current && showRangeCalendar && ReactDOM.render(<RangePicker
+                showRangeCalendar && <RangePicker
                   onChange={(value) => {rangePickerChange(value);}}
                   format='YYYY-MM-DD'
                   className={styles.dateRange}
@@ -177,7 +172,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
                   value={dataValue as any}
                   locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
                   getPopupContainer={() => divRef.current!}
-                />, divRef.current)
+                />
               }
             </div>
           </ComponentDisplay>

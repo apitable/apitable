@@ -18,6 +18,17 @@
 
 package com.apitable.control.infrastructure.request;
 
+import com.apitable.control.infrastructure.ControlRoleDict;
+import com.apitable.control.infrastructure.ControlType;
+import com.apitable.control.infrastructure.role.ControlRoleManager;
+import com.apitable.control.infrastructure.role.DefaultWorkbenchRole;
+import com.apitable.control.infrastructure.role.NodeRole;
+import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.control.mapper.ControlRoleMapper;
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.workspace.dto.ControlRoleInfo;
+import com.apitable.workspace.dto.SimpleNodeInfo;
+import com.apitable.workspace.service.INodeRoleService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,21 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.apitable.control.infrastructure.role.ControlRoleManager;
-import com.apitable.control.infrastructure.role.RoleConstants.Node;
-import com.apitable.control.infrastructure.ControlRoleDict;
-import com.apitable.control.infrastructure.ControlType;
-import com.apitable.control.infrastructure.role.NodeRole;
-import com.apitable.control.infrastructure.role.DefaultWorkbenchRole;
-import com.apitable.control.mapper.ControlRoleMapper;
-import com.apitable.workspace.mapper.NodeMapper;
-import com.apitable.workspace.dto.ControlRoleInfo;
-import com.apitable.workspace.dto.SimpleNodeInfo;
-import com.apitable.core.util.SpringContextHolder;
 
 /**
  * node control executor
@@ -368,8 +366,11 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     private List<SimpleNodeInfo> getSimpleNodeInfos() {
-        // Query the parent node corresponding to the node. In order to improve performance, query all parent nodes at one time to obtain all the superiors of the current node.
-        List<SimpleNodeInfo> nodeList = SpringContextHolder.getBean(NodeMapper.class).selectAllParentNodeIdsByNodeIds(nodeIds, false);
+        // Query the parent node corresponding to the node.
+        // In order to improve performance,
+        // query all parent nodes at one time to obtain all the superiors of the current node.
+        INodeRoleService iNodeRoleService = SpringContextHolder.getBean(INodeRoleService.class);
+        List<SimpleNodeInfo> nodeList = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
         // is not generating a share tree, or the share node is at the first level
         if (!shareTreeBuilding || nodeList.size() == getControlIds().size()) {
             return nodeList;

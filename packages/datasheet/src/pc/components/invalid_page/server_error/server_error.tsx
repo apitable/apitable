@@ -28,7 +28,7 @@ import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
 
 // TODO add qrcode img
-export const ServerError: FC = () => {
+export const ServerError: FC<React.PropsWithChildren<unknown>> = () => {
   const refresh = () => {
     window.location.reload();
   };

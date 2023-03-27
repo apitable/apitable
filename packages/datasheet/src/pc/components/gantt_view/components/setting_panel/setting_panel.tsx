@@ -23,7 +23,7 @@ import {
   LinkFieldSet, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
 import {
-  AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, WarnCircleOutlined, ChevronDownOutlined
 } from '@apitable/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
@@ -102,7 +102,7 @@ interface ISettingPanelProps {
   ganttViewStatus: IGanttViewStatus;
 }
 
-export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) => {
+export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = memo(({ ganttViewStatus }) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { view, fieldMap, ganttStyle, fieldPermissionMap, permissions, exitFieldNames } = useSelector(state => {
@@ -189,7 +189,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
           value: columnFieldId,
           label: fieldMap[columnFieldId].name,
           disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
-          prefixIcon: <ColumnLinktableFilled color={colors.thirdLevelText} />,
+          prefixIcon: <LinktableOutlined color={colors.thirdLevelText} />,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });
@@ -220,7 +220,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     });
   };
 
-  const onGanttStyleChange = (styleKey, styleValue) => {
+  const onGanttStyleChange = (styleKey: GanttStyleKeyType, styleValue: any) => {
     executeCommandWithMirror(
       () => {
         resourceService.instance!.commandManager.execute({
@@ -287,21 +287,21 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     onGanttStyleChange(styleKey, value);
   };
 
-  const onColorOptionSelect = option => {
+  const onColorOptionSelect = (option: { value: any; }) => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
       type: option.value,
     });
   };
 
-  const onSingleFieldSelect = option => {
+  const onSingleFieldSelect = (option: { value: any; }) => {
     onGanttStyleChange(GanttStyleKeyType.ColorOption, {
       ...colorOption,
       fieldId: option.value,
     });
   };
 
-  const onColorPick = (type: OptionSetting, id: string, value: string | number) => {
+  const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
     if (type === OptionSetting.SETCOLOR) {
       onGanttStyleChange(GanttStyleKeyType.ColorOption, {
         ...colorOption,
@@ -361,7 +361,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
     }
   };
 
-  const onLinkFieldIdChange = option => {
+  const onLinkFieldIdChange = (option: any) => {
     if (option.value === LinkFieldSet.Add) {
       onFieldSelect(GanttStyleKeyType.LinkFieldId, LinkFieldSet.Add);
     } else {
@@ -403,18 +403,18 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
           <Typography variant='body1'>{t(Strings.gantt_setting)}</Typography>
           <Tooltip content={t(Strings.gantt_setting_help_tips)}>
             <a href={t(Strings.gantt_setting_help_url)} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseMiddleOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
+        <CloseOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
       </header>
 
       {/* Video teaching button */}
       {
         getEnvVariables().GANTT_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
-            <ClassroomOutlined size={16} color={colors.primaryColor} />
+            <ClassOutlined size={16} color={colors.primaryColor} />
             <Typography variant='body3' color={colors.secondLevelText}>
               {t(Strings.play_guide_video_of_gantt_view)}
             </Typography>
@@ -467,6 +467,12 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+          <div className={styles.timeZoneTip}>
+            <WarnCircleOutlined color={colors.textCommonTertiary} />
+            <span>{t(Strings.time_zone_inconsistent_tips)}</span>
+          </div>
+        )}
       </div>
 
       {/* Set taskbar colour */}
@@ -478,7 +484,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
           {
             env.GANTT_CONFIG_COLOR_HELP_URL && <Tooltip content={t(Strings.gantt_config_color_help)}>
               <a href={env.GANTT_CONFIG_COLOR_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-                <InformationSmallOutlined color={colors.thirdLevelText} />
+                <QuestionCircleOutlined color={colors.thirdLevelText} />
               </a>
             </Tooltip>
           }
@@ -559,6 +565,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
             tokenSeparators={[',']}
             defaultValue={workDays}
             size={'middle'}
+            suffixIcon={<ChevronDownOutlined color={colors.black[500]} />}
           >
             {weekOptions.map(item => {
               return (
@@ -589,7 +596,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
             <a href={getEnvVariables().GANTT_SET_TASK_RELATION_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
-              <InformationSmallOutlined color={colors.thirdLevelText} />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>

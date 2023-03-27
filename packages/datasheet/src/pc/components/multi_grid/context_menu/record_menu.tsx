@@ -17,10 +17,10 @@
  */
 
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
-import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
+import { CollaCommandName, DatasheetApi, ExecuteResult, ICollaCommandExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
-  DuplicateOutlined, ExpandRecordOutlined,
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, LinkOutlined, CopyOutlined, DeleteOutlined,
+  DuplicateOutlined, ExpandOutlined,
 } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { isInteger } from 'lodash';
@@ -41,7 +41,7 @@ import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
 import * as React from 'react';
-import { KeyboardEvent, useRef } from 'react';
+import { KeyboardEvent, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { copy2clipBoard } from '../../../utils/dom';
@@ -64,22 +64,22 @@ interface IRecordMenuProps {
   extraData?: any[];
 }
 
-export function copyRecord(recordId: string) {
+export function copyRecord(recordId: string): Promise<ICollaCommandExecuteResult<string[]>> {
   return appendRow({
     recordId,
     isDuplicate: true,
   });
 }
 
-export const RecordMenu: React.FC<IRecordMenuProps> = props => {
+export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = props => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
   const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
   const view = useSelector(state => Selectors.getCurrentView(state))!;
+  const isOrgChart = view.type === ViewType.OrgChart;
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
   const isKanban = view.type === ViewType.Kanban;
-  const commandManager = resourceService.instance!.commandManager;
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -127,7 +127,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       data.push(recordId);
     }
     // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
-    const { result } = commandManager.execute({
+    const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.DeleteRecords,
       data,
     });
@@ -167,7 +167,12 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
     });
   }
 
-  const subOrUnsubText = React.useMemo((): string => {
+  const getSubOrUnsubText = useCallback((recordId: string): string => {
+    // Compatibility of views for Calendar, Kanban, Gallery and OrgChart views
+    if (isCalendar || isKanban || isGallery || isOrgChart) {
+      return subscriptions.includes(recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
+    }
+
     if (hasSelection) {
       const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
 
@@ -197,7 +202,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
     }
 
     return t(Strings.record_watch_single);
-  }, [subscriptions, selection, recordRanges, hasSelection]);
+  }, [isCalendar, isKanban, isGallery, isOrgChart, subscriptions, selection, recordRanges, hasSelection]);
 
   const onSubOrUnsub = (recordId: string) => {
     if (onlyOperateOneRecord) {
@@ -270,7 +275,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
     }
   };
 
-  const handleCopy = e => {
+  const handleCopy = (e: ClipboardEvent) => {
     resourceService.instance!.clipboard.copy(e);
   };
 
@@ -297,10 +302,10 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   let data: Partial<IContextMenuItemProps>[][] = [
     [
       {
-        icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
+        icon: <LinkOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_copy_record_url, { recordShowName }),
         hidden: !onlyOperateOneRecord || !!embedId,
-        onClick: ({ props: { recordId }}) => {
+        onClick: ({ props: { recordId }}: any) => {
           copyLink(recordId);
         },
       },
@@ -308,22 +313,22 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_duplicate_record, { recordShowName }),
         hidden: !onlyOperateOneRecord || !rowCreatable,
-        onClick: ({ props: { recordId }}) => copyRecord(recordId),
+        onClick: ({ props: { recordId }}: any) => copyRecord(recordId),
       },
       {
-        icon: <ExpandRecordOutlined color={colors.thirdLevelText} />,
+        icon: <ExpandOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_expand_record, { recordShowName }),
         shortcutKey: getShortcutKeyString(ShortcutActionName.ExpandRecord),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId }}) => {
+        onClick: ({ props: { recordId }}: any) => {
           expandRecordIdNavigate(recordId);
         },
       },
       {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
-        text: subOrUnsubText,
+        text: ({ props: { recordId }}: any) => getSubOrUnsubText(recordId),
         hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE || !!embedId,
-        onClick: ({ props: { recordId }}) => onSubOrUnsub(recordId),
+        onClick: ({ props: { recordId }}: any) => onSubOrUnsub(recordId),
       },
     ],
     [
@@ -331,7 +336,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: getDeleteString(),
         hidden: !rowRemovable,
-        onClick: ({ props: { recordId }}) => {
+        onClick: ({ props: { recordId }}: any) => {
           deleteRecord(recordId);
         },
       },
@@ -355,7 +360,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.PrependRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId }}) =>
+          onClick: ({ props: { recordId }}: any) =>
             appendRow({
               recordId,
               direction: Direction.Up,
@@ -376,7 +381,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.AppendRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId }}) =>
+          onClick: ({ props: { recordId }}: any) =>
             appendRow({
               recordId,
               direction: Direction.Down,

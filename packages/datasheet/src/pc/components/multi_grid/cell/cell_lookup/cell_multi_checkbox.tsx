@@ -24,7 +24,7 @@ import styles from '../cell_checkbox/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { store } from 'pc/store';
 
-export const CellMultiCheckbox: React.FC<ICellComponentProps> = props => {
+export const CellMultiCheckbox: React.FC<React.PropsWithChildren<ICellComponentProps>> = props => {
   const { className, field: propsField, cellValue } = props;
   const field = Selectors.findRealField(store.getState(), propsField);
 
@@ -41,7 +41,7 @@ export const CellMultiCheckbox: React.FC<ICellComponentProps> = props => {
       }}
     >
       {
-        field && (cellValue as boolean[]).filter(i => i).map((i, index) =>
+        field && (cellValue as boolean[]).filter(i => i).map((_i, index) =>
           (
             <span key={index} style={{ padding: '0 2px' }}>
               <Emoji emoji={field.property.icon} size={ConfigConstant.CELL_EMOJI_SIZE} />

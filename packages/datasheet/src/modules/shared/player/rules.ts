@@ -59,7 +59,7 @@ export const getConditionValue = (str: string) => {
     const strKey = Object.keys(tempObj)[0];
     switch (strKey) {
       case 'wizard': {
-        const id = tempObj[strKey].findIndex(item => item);
+        const id = tempObj[strKey].findIndex((item: any) => item);
         return (userWizards && userWizards.hasOwnProperty(id)) ? userWizards[id] : 0;
       }
       default: {
@@ -147,15 +147,15 @@ export const isRulePassed = (conditionValue: any, operator: IPlayerRulesOperator
     }
     case 'ONE_OF_TRUE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.find(item => conditionValue.includes(item)));
+      return Boolean(conditionArr.find((item: any) => conditionValue.includes(item)));
     }
     case 'ALL_OF_TRUE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.every(item => conditionValue.includes(item)));
+      return Boolean(conditionArr.every((item: any) => conditionValue.includes(item)));
     }
     case 'ALL_OF_FALSE': {
       const conditionArr = eval('(' + conditionArgs + ')');
-      return Boolean(conditionArr.every(item => !conditionValue.includes(item)));
+      return Boolean(conditionArr.every((item: any) => !conditionValue.includes(item)));
     }
     case 'INCLUDES': {
       const conditionArgsValue = getConditionArgsValue(conditionArgs);
@@ -170,12 +170,12 @@ export const isRulePassed = (conditionValue: any, operator: IPlayerRulesOperator
   }
 };
 
-export const isRulesPassed = (rulesConfig, ruleIds: string[] | undefined) => {
+export const isRulesPassed = (rulesConfig: any[] | undefined, ruleIds: string[] | undefined) => {
   if (!ruleIds) {
     return true;
   }
   const someIsNotPass = ruleIds.find(ruleId => {
-    const curRule = rulesConfig.find(item => item.id === ruleId);
+    const curRule = rulesConfig?.find(item => item.id === ruleId);
     if (!curRule) {
       return true;
     }

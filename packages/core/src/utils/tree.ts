@@ -17,7 +17,7 @@
  */
 
 import { ConfigConstant } from '../config';
-import { ITreeNode, ITreeNodesMap, INode, INodesMapItem } from '../exports/store/interfaces';
+import type { ITreeNode, ITreeNodesMap, INode, INodesMapItem } from 'exports/store/interfaces';
 
 // Collect the ids of all nodes under the specified node (including itself)
 export const collectProperty = (treeNodesMap: ITreeNodesMap, rootId: string) => {

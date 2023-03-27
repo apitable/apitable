@@ -19,6 +19,7 @@
 // TODO Reconstructing the address book
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
+import { UserAddOutlined } from '@apitable/icons';
 import { BaseModal } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
@@ -30,7 +31,6 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import InviteIcon from 'static/icon/space/space_icon_invite.svg';
 import { SelectUnitLeft } from './select_unit_left';
 import { SelectUnitPopup } from './select_unit_popup';
 import { SelectUnitRight } from './select_unit_right';
@@ -60,7 +60,7 @@ export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   showTab?: boolean; // show role and org tab
 }
 
-export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
+export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>> = props => {
   const {
     isSingleSelect,
     checkedList: propsCheckedList,
@@ -86,7 +86,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
   const linkId = useSelector(Selectors.getLinkId);
   const formId = useSelector(state => state.pageParams.formId);
 
-  const onCancel = (e?) => {
+  const onCancel = () => {
     propsCancel('');
   };
 
@@ -117,7 +117,7 @@ export const SelectUnitModal: FC<ISelectUnitModalProps> = props => {
               expandInviteModal();
             }}
           >
-            <InviteIcon />
+            <UserAddOutlined />
             {t(Strings.invite_member)}
           </span>
         )}

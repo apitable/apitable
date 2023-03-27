@@ -69,38 +69,12 @@ interface ICardProps {
   giftRemainText: string;
 }
 
-export const CapacityWithRewardCard: FC<ICardProps> = props => {
+export const CapacityWithRewardCard: FC<React.PropsWithChildren<ICardProps>> = props => {
   const {
-    title,
-
-    allTotalText,
-
-    usedPercent,
-    usedText,
-    remainText,
-    totalText,
-    remainPercent,
-
-    trailColor,
-    strokeColor,
-    unit,
-    titleTip,
-    titleLink,
-    titleButton,
-    valueIntro,
-    showPercent,
-    usedTextIsFloat,
-    minHeight = 302,
-    className,
-    level,
-    isMobile,
-
-    giftUsedText,
-    giftUsedPercent,
-    giftRemainPercent,
-    giftRemainText,
+    title, allTotalText, usedPercent, usedText, remainText, totalText, remainPercent, trailColor, strokeColor, unit,
+    titleTip, titleLink, titleButton, valueIntro, showPercent, usedTextIsFloat,
+    minHeight = 302, className, level, isMobile, giftUsedText, giftUsedPercent, giftRemainPercent, giftRemainText,
   } = props;
-
   const colors = useThemeColors();
   const overflow = usedPercent === 100;
   const _strokeColor = overflow ? colors.red[500] : strokeColor;
@@ -245,9 +219,9 @@ interface IDescProps {
   usedPercent: number;
 }
 
-const Desc: FC<IDescProps> = ({ color, label, text, unit, showPercent, usedPercent }) => {
+const Desc: FC<React.PropsWithChildren<IDescProps>> = ({ color, label, text, unit, showPercent, usedPercent }) => {
   return (
-    <Typography variant="body4" className={styles.descItem}>
+    <Typography variant='body4' className={styles.descItem}>
       <span className={styles.before} style={{ backgroundColor: color }} />
       <span>{label}</span>
       <span className={styles.customFont} style={{ fontSize: 14 }}>
@@ -274,7 +248,7 @@ interface IProgressInCardProps extends ProgressProps {
   color?: string;
 }
 
-const ProgressInCard: FC<IProgressInCardProps> = props => {
+const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = props => {
   const color = props.color;
 
   const colors = useThemeColors();
@@ -285,7 +259,7 @@ const ProgressInCard: FC<IProgressInCardProps> = props => {
     strokeColor: 'red',
     trailColor: colors.lineColor,
     format: percent => (
-      <Typography variant="h3" color={color} className={styles.progressFormat}>
+      <Typography variant='h3' color={color} className={styles.progressFormat}>
         {percent}
         <PercentOutlined color={color} />
       </Typography>

@@ -30,7 +30,7 @@ import { omit } from 'lodash';
 const DEFAULT_MENU_WIDTH = 240;
 const SYADOW_HEIGHT = 20;
 
-const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
+const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (props) => {
   const {
     children,
     contextMenu,
@@ -57,7 +57,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
     return info;
   };
 
-  const getHidden = React.useCallback((hidden) => {
+  const getHidden = React.useCallback((hidden: any) => {
     if (!offset) {
       return;
     }
@@ -123,7 +123,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
   };
 
   // out menu click listen function
-  const handleOuterClick = React.useCallback((e) => {
+  const handleOuterClick = React.useCallback((e: any) => {
     const menu = menuRef.current;
     if (!menu) return;
 
@@ -201,7 +201,7 @@ const ContextMenuWrapper: FC<IContextMenuProps> = (props) => {
         >
           {icon}
           <StyledMenuItemContent variant="body2" ellipsis>
-            {label}
+            {typeof label === 'function' ? label(getExtraInfo(extraInfo)): label}
           </StyledMenuItemContent>
           {extraElement && <StyledMenuItemExtra>{extraElement}</StyledMenuItemExtra>}
           {!extraElement && arrow && <StyledMenuItemArrow>{arrow}</StyledMenuItemArrow>}

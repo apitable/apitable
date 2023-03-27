@@ -18,64 +18,63 @@
 
 package com.apitable.template.vo;
 
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.apitable.workspace.vo.NodeShareTree;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.workspace.vo.NodeShareTree;
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Template Catalog View
+ * Template Catalog View.
  * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Template Catalog View")
+@Schema(description = "Template Catalog View")
 public class TemplateDirectoryVo {
 
-    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1)
+    @Schema(description = "Template ID", example = "tplHTbkg7qbNJ")
     private String templateId;
 
-    @ApiModelProperty(value = "Template classification code", example = "tpcCq88sqNqEv", position = 2)
+    @Schema(description = "Template classification code", example = "tpcCq88sqNqEv")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String categoryCode;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "Template Classification Name", example = "TV play", position = 2)
+    @Schema(description = "Template Classification Name", example = "TV play")
     private String categoryName;
 
-    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 2)
+    @Schema(description = "Template Name", example = "This is a template")
     private String templateName;
 
-    @ApiModelProperty(value = "Node tree of template mapping", position = 7)
+    @Schema(description = "Node tree of template mapping")
     private NodeShareTree nodeTree;
 
-    @ApiModelProperty(value = "Creator user ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 8)
+    @Schema(description = "Creator user ID (the actual return is uuid)", type = "java.lang"
+        + ".String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
-    @ApiModelProperty(value = "Creator User UUID", dataType = "java.lang.String", example = "1", position = 8)
+    @Schema(description = "Creator User UUID", type = "java.lang.String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
-    @ApiModelProperty(value = "Creator's avatar", example = "public/2020/...", position = 9)
+    @Schema(description = "Creator's avatar", example = "public/2020/...")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 
-    @ApiModelProperty(value = "Creator nickname", example = "Zhang San", position = 10)
+    @Schema(description = "Creator nickname", example = "Zhang San")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String nickName;
 
-    @ApiModelProperty(value = "Space name", example = "station", position = 11)
+    @Schema(description = "Space name", example = "station")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String spaceName;
 }

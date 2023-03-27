@@ -39,7 +39,7 @@ interface IViewFieldOptions {
   isAddNewOption?: boolean; // Whether the operation of the current option is to add a new option.
 }
 
-export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
+export const ViewFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOptions>> = memo(props => {
   const colors = useThemeColors();
   const { onChange, isAddNewOption, defaultFieldId, existFieldIds, invalidFieldIds = [], invalidTip, isCryptoField, fieldNotFound } = props;
   const currentViewAllField = useSelector(state => Selectors.getCurrentView(state))!.columns;
@@ -53,7 +53,7 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
     onChange(targetId);
   }
 
-  function toggleClick(e: React.MouseEvent) {
+  function toggleClick() {
     setIsOpen(!isOpen);
   }
 
@@ -67,7 +67,7 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
     return true;
   }
 
-  const getSuffixIcon = (fieldId: string, isFieldInvalid) => {
+  const getSuffixIcon = (fieldId: string, isFieldInvalid: boolean) => {
     if (fieldPermissionMap && fieldPermissionMap[fieldId]) {
       return <FieldPermissionLock fieldId={fieldId} />;
     }
@@ -148,6 +148,7 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
         hideSelectedOption
         openSearch
         searchPlaceholder={t(Strings.search)}
+        noDataTip={t(Strings.no_search_result)}
       />
     </div>
   );

@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { supportedLanguages } from 'app.environment';
 import { I18nParser, I18nTranslation } from 'nestjs-i18n';
-
-export const DEFAULT_LANGUAGE = 'zh-CN';
-export const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, 'en-US'];
 
 export class I18nJsonParser extends I18nParser {
   constructor() {
@@ -27,7 +25,7 @@ export class I18nJsonParser extends I18nParser {
   }
 
   languages(): Promise<string[]> {
-    return Promise.resolve(SUPPORTED_LANGUAGES);
+    return Promise.resolve(supportedLanguages);
   }
 
   parse(): Promise<I18nTranslation> {

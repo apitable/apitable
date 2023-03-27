@@ -35,7 +35,7 @@ const TaskItem = (props: IElementRenderProps<IElement<ITaskElementData>>) => {
   const checked = data.checked;
   const readOnly = useReadOnly();
 
-  const handleChange = useCallback((next) => {
+  const handleChange = useCallback((next: any) => {
     try {
       const path = ReactEditor.findPath(editor, element);
       updateElementData(editor, { ...data, checked: next }, path, false);

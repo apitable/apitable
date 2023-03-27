@@ -19,7 +19,7 @@
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import { Button } from '@apitable/components';
-import { CloseLargeOutlined } from '@apitable/icons';
+import { CloseOutlined } from '@apitable/icons';
 import { BatchDeleteNode } from 'pc/components/development/dev_tools_panel/batch_delete_node/batch_delete_node';
 import { TestFunctions } from './test_functions';
 import { ApplyBackupData } from 'pc/components/development/dev_tools_panel/apply_backup_data';
@@ -33,10 +33,15 @@ enum MenuItemName {
 }
 
 interface IDevMenuProps {
-  onClick(name: MenuItemName)
+  onClick: (name: MenuItemName) => void;
 }
 
-const Container = props => <div style={{
+interface IContainer {
+  children: any;
+  onClose: (visible: false) => void;
+}
+
+const Container = (props: IContainer) => <div style={{
   fontSize: 12,
   height: '100%',
   overflow: 'hidden',
@@ -56,12 +61,13 @@ const Container = props => <div style={{
       zIndex: 9
     }}
     onClick={() => props.onClose(false)}>
-    <CloseLargeOutlined color="#666" size={24} />
+    <CloseOutlined color="#666" size={24} />
   </span>
 </div>;
 
 export const openEruda = () => {
   Message.loading({ content: 'opening ...' });
+  // @ts-ignore
   import('eruda')
     .then(module => module.default)
     .then(eruda => {
@@ -69,7 +75,7 @@ export const openEruda = () => {
       Message.destroy();
     });
 };
-const DevMenu: React.FC<IDevMenuProps> = props => {
+const DevMenu: React.FC<React.PropsWithChildren<IDevMenuProps>> = props => {
   return (
     <div style={{
       display: 'flex',
@@ -86,10 +92,10 @@ const DevMenu: React.FC<IDevMenuProps> = props => {
 };
 
 interface IDevToolsPanel {
-  onClose?: (visible: false) => void;
+  onClose: (visible: false) => void;
 }
 
-export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose = (visible: false) => { } }) => {
+export const DevToolsPanel: React.FC<React.PropsWithChildren<IDevToolsPanel>> = ({ onClose }) => {
   const [name, setName] = useState<MenuItemName>(MenuItemName.Empty);
   const contentMap = useMemo(() => [
     <DevMenu onClick={setName} key="devMenu" />,

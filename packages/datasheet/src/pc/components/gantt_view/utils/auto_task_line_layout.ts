@@ -18,7 +18,7 @@
 
 import { getDiffOriginalCount } from 'pc/components/gantt_view';
 import { originalChange } from './date';
-import { ISetRecordOptions, Selectors, fastCloneDeep } from '@apitable/core';
+import { ISetRecordOptions, Selectors, fastCloneDeep, IViewRow, IGanttViewStyle } from '@apitable/core';
 import { getAllTaskLine, detectCyclesStack } from './task_line';
 import { store } from 'pc/store';
 
@@ -28,7 +28,7 @@ interface ISourceRecordData {
   targetRecordId?: string;
 }
 
-export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISourceRecordData) => {
+export const autoTaskScheduling = (visibleRows: IViewRow[], ganttStyle: IGanttViewStyle, sourceRecord?: ISourceRecordData) => {
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state)!;
   const { linkFieldId, startFieldId, endFieldId } = ganttStyle;
@@ -62,13 +62,13 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
   
   const rowsTimeList = fastCloneDeep(visibleRowsTime);
 
-  const autoDFS = sourceId => {
+  const autoDFS = (sourceId: string) => {
     // Check if there are associated tasks
     if (!sourceAdj[sourceId] || !rowsTimeList[sourceId]) return;
 
     if (rowsTimeList[sourceId].diffCount < 0) return;
 
-    sourceAdj[sourceId].forEach(targetId => {
+    sourceAdj[sourceId]?.forEach(targetId => {
       if (cycleEdges.includes(`taskLine-${sourceId}-${targetId}`) || !rowsTimeList[targetId]) return;
       const { diffCount } = rowsTimeList[targetId];
       if (diffCount < 0) return;
@@ -77,7 +77,7 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
       let recentRecordId = sourceId;
       let recentTime = rowsTimeList[sourceId].endTime ?? rowsTimeList[sourceId].startTime;
 
-      targetAdj[targetId].forEach(sourceItem => {
+      targetAdj[targetId].forEach((sourceItem: string) => {
         const { diffCount: sourceItemDiffTime } = rowsTimeList[sourceItem];
         if (sourceItemDiffTime < 0) {
           return;
@@ -121,7 +121,7 @@ export const autoTaskScheduling = (visibleRows, ganttStyle, sourceRecord?: ISour
     rowsTimeList[sourceId].endTime = endTime;
 
     if (targetId) {
-      sourceAdj[sourceId] = sourceAdj[sourceId] ? [...sourceAdj[sourceId], targetId] : [targetId];
+      sourceAdj[sourceId] = sourceAdj[sourceId] ? [...sourceAdj[sourceId]!, targetId] : [targetId];
       targetAdj[targetId] = targetAdj[targetId] ? [...targetAdj[targetId], sourceId] : [sourceId];
     }
     autoDFS(sourceId);

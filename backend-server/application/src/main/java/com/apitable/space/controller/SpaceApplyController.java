@@ -18,6 +18,10 @@
 
 package com.apitable.space.controller;
 
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
+import static com.apitable.shared.constants.NotificationConstants.APPLY_ID;
+import static com.apitable.shared.constants.NotificationConstants.APPLY_STATUS;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
@@ -44,118 +48,101 @@ import com.apitable.space.service.ISpaceApplyService;
 import com.apitable.space.service.ISpaceMemberRoleRelService;
 import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.service.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
-import static com.apitable.shared.constants.NotificationConstants.APPLY_ID;
-import static com.apitable.shared.constants.NotificationConstants.APPLY_STATUS;
-
 /**
  * Apply Joining Space Api.
- *
- * @author Chambers
  */
 @RestController
-@Api(tags = "Space - Apply Joining Space Api")
+@Tag(name = "Space - Apply Joining Space Api")
 @ApiResource(path = "/space/apply")
 public class SpaceApplyController {
 
-    /** */
     @Resource
     private ISpaceApplyService iSpaceApplyService;
 
-    /** */
     @Resource
     private SpaceMapper spaceMapper;
 
-    /** */
     @Resource
     private ISpaceMemberRoleRelService spaceMemberRoleRelService;
 
-    /** */
     @Resource
     private MemberMapper memberMapper;
 
-    /** */
     @Resource
     private ConstProperties constProperties;
 
-    /** */
     @Resource
     private IUserService userService;
 
     /**
-     *
-     * @param ro SpaceJoinApplyRo
-     * @return ResponseData<Void>
+     * Applying to join the space.
      */
     @Notification(templateId = NotificationTemplateId.SPACE_JOIN_APPLY)
     @PostResource(path = "/join", requiredPermission = false)
-    @ApiOperation(value = "Applying to join the space")
+    @Operation(summary = "Applying to join the space")
     public ResponseData<Void> apply(
-            @RequestBody @Valid final SpaceJoinApplyRo ro) {
+        @RequestBody @Valid final SpaceJoinApplyRo ro) {
         Long userId = SessionContext.getUserId();
         // generate application records
         Long applyId = iSpaceApplyService.create(userId, ro.getSpaceId());
         // generate and send notifications
         NotificationRenderFieldHolder.set(NotificationRenderField.builder()
-                .spaceId(ro.getSpaceId())
-                .bodyExtras(Dict.create().set(APPLY_ID, applyId)
-                        .set(APPLY_STATUS,
-                                SpaceApplyStatus.PENDING.getStatus()))
-                .fromUserId(userId)
-                .build());
+            .spaceId(ro.getSpaceId())
+            .bodyExtras(Dict.create().set(APPLY_ID, applyId)
+                .set(APPLY_STATUS,
+                    SpaceApplyStatus.PENDING.getStatus()))
+            .fromUserId(userId)
+            .build());
         List<Long> memberIds = spaceMemberRoleRelService.getMemberId(
-                ro.getSpaceId(),
-                ListUtil.toList(
-                        NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE)
+            ro.getSpaceId(),
+            ListUtil.toList(
+                NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE)
         );
         memberIds.add(spaceMapper.selectSpaceMainAdmin(ro.getSpaceId()));
         List<String> emails =
-                memberMapper.selectEmailByBatchMemberId(memberIds);
+            memberMapper.selectEmailByBatchMemberId(memberIds);
         if (CollUtil.isNotEmpty(emails)) {
             Dict dict = Dict.create();
             dict.set("USER_NAME",
-                    LoginContext.me().getLoginUser().getNickName());
+                LoginContext.me().getLoginUser().getNickName());
             dict.set("SPACE_NAME",
-                    spaceMapper.selectSpaceNameBySpaceId(ro.getSpaceId()));
+                spaceMapper.selectSpaceNameBySpaceId(ro.getSpaceId()));
             dict.set("URL", constProperties.getServerDomain() + "/notify");
             dict.set("YEARS", LocalDate.now().getYear());
             final String defaultLang =
-                    LocaleContextHolder.getLocale().toLanguageTag();
+                LocaleContextHolder.getLocale().toLanguageTag();
             List<UserLangDTO> emailsWithLang =
-                    userService.getLangByEmails(defaultLang, emails);
+                userService.getLangByEmails(defaultLang, emails);
             List<MailWithLang> tos = emailsWithLang.stream()
-                    .map(emailWithLang ->
-                            new MailWithLang(emailWithLang.getLocale(),
-                                    emailWithLang.getEmail()))
-                    .collect(Collectors.toList());
+                .map(emailWithLang ->
+                    new MailWithLang(emailWithLang.getLocale(),
+                        emailWithLang.getEmail()))
+                .collect(Collectors.toList());
             TaskManager.me().execute(() ->
-                    NotifyMailFactory.me().sendMail(SUBJECT_SPACE_APPLY, dict,
-                            dict, tos));
+                NotifyMailFactory.me().sendMail(SUBJECT_SPACE_APPLY, dict,
+                    dict, tos));
         }
         return ResponseData.success();
     }
 
     /**
-     *
-     * @param ro SpaceJoinProcessRo
-     * @return ResponseData<Void>
+     * Process joining application.
      */
     @PostResource(path = "/process", requiredPermission = false)
-    @ApiOperation(value = "Process joining application")
+    @Operation(summary = "Process joining application")
     public ResponseData<Void> process(
-            @RequestBody @Valid final SpaceJoinProcessRo ro) {
+        @RequestBody @Valid final SpaceJoinProcessRo ro) {
         Long userId = SessionContext.getUserId();
         iSpaceApplyService.process(userId, ro.getNotifyId(), ro.getAgree());
         return ResponseData.success();

@@ -67,7 +67,7 @@ interface IGalleryViewProps {
   width?: number;
 }
 
-export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerWidth, height }) => {
+export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps>> = ({ width: containerWidth, height }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const {
@@ -79,7 +79,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     getCurrentGalleryViewStyle,
     getActiveDatasheetId,
     getPermissions,
-    getCurrentSearchItem,
+    getCurrentSearchRecordId,
     getActiveViewGroupInfo,
     getActiveViewSortInfo,
     getGalleryGroupedRows,
@@ -96,7 +96,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     rowsIndexMap,
     activeView,
     galleryStyle,
-    currentSearchItem,
+    currentSearchRecordId,
     permissions,
     visibleFields,
     fieldMap,
@@ -123,7 +123,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       activeView: getCurrentView(state)!,
       rowsIndexMap: getRowsIndexMap(state),
       permissions: getPermissions(state),
-      currentSearchItem: getCurrentSearchItem(state),
+      currentSearchRecordId: getCurrentSearchRecordId(state),
       groupInfo,
       keepSort: getActiveViewSortInfo(state)?.keepSort,
       groupRows: [[]] as string[][],
@@ -137,7 +137,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
       editable: datasheet?.permissions.editable,
     };
     if (isGrouped) {
-      res.groupRows = getGalleryGroupedRows(state);
+      res.groupRows = getGalleryGroupedRows(state)!;
     }
     return res;
   }, shallowEqual);
@@ -289,19 +289,18 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   }, [cardWidth]);
 
   useEffect(() => {
-    if (currentSearchItem) {
+    if (currentSearchRecordId) {
       galleryViewRef &&
         galleryViewRef.current &&
-        galleryViewRef.current.scrollToItem(getSearchItemIndex(currentSearchItem as string, linearRows, _visibleRecords, columnCount, isGrouped));
+        galleryViewRef.current.scrollToItem(getSearchItemIndex(currentSearchRecordId, linearRows, _visibleRecords, columnCount, isGrouped));
     }
-  }, [currentSearchItem, _visibleRecords, columnCount, linearRows, isGrouped]);
+  }, [currentSearchRecordId, _visibleRecords, columnCount, linearRows, isGrouped]);
 
   const commitMove = () => {
     if (!commitRef.current) {
       return;
     }
     const { dragRecordId, dropRecordId, direction } = commitRef.current;
-    const commandManager = resourceService.instance!.commandManager;
     const data = [
       {
         recordId: dragRecordId,
@@ -309,7 +308,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
         direction,
       },
     ];
-    commandManager!.execute({
+    resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
       viewId,
       data,
@@ -336,7 +335,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
   };
 
   const onDoTransition = React.useCallback(
-    recordId => {
+    (recordId: any) => {
       if (groupingCollapseIds == null) return;
       if (recordId) {
         setTransitionRecordIds(recordIds => [...recordIds, recordId]);
@@ -372,7 +371,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     groupRows,
     _visibleRecords,
   };
-  const itemKey = ({ columnIndex, rowIndex }) => {
+  const itemKey = ({ columnIndex, rowIndex }: { columnIndex: number; rowIndex: number  }) => {
     const realIndex = columnIndex + rowIndex * columnCount;
     const record = linearRows[realIndex];
     if (!record) return realIndex;
@@ -380,7 +379,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
     return `${record.type}_${recordId}`;
   };
 
-  const getRowHeightByFieldType = (field: IField, paddingTop: number) => {
+  const getRowHeightByFieldType = (field: IField, paddingTop: number): number => {
     switch (field.type) {
       case FieldType.Text:
       case FieldType.URL:
@@ -454,7 +453,7 @@ export const GalleryViewBase: React.FC<IGalleryViewProps> = ({ width: containerW
             paddingBottom: PADDING_BOTTOM,
           }}
           columnCount={columnCount}
-          columnWidth={index => cardWidth}
+          columnWidth={() => cardWidth}
           rowCount={linearRows.length}
           rowHeight={index => getRowHeight(index)}
           itemKey={itemKey}

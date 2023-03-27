@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IField, IAttachmentValue, RowHeightLevel } from '@apitable/core';
+import { IAttachmentValue, RowHeightLevel, IAttacheField } from '@apitable/core';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { UploadCore, UploadCoreSize } from 'pc/components/upload_modal/upload_core';
 import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
@@ -27,7 +27,7 @@ import { useMount } from 'ahooks';
 interface IExpandAttachmentBaseProps {
   datasheetId: string;
   recordId: string;
-  field: IField;
+  field: IAttacheField;
   onClick: (e: React.MouseEvent) => void;
   editable: boolean;
   cellValue: IAttachmentValue[];

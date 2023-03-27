@@ -16,12 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CommentBjEntireFilled } from '@apitable/icons';
-import { ILinearRowRecord, RowHeight } from '@apitable/core';
+import { CommentBgFilled } from '@apitable/icons';
+import { ILinearRow, ILinearRowRecord, RowHeight } from '@apitable/core';
 import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
+import { ILightOrDarkThemeColors } from '@apitable/components';
+import * as React from 'react';
 
-const CommentBjFilledPath = CommentBjEntireFilled.toString();
+interface IFirstCell {
+  row: ILinearRow;
+  style: React.CSSProperties;
+  isActiveRow: boolean;
+  isCheckedRow: boolean;
+  isHoverRow: boolean;
+  isDraggingRow: boolean;
+  isThisCellWillMove: boolean;
+  commentCount: any;
+  commentVisible?: boolean;
+  colors: ILightOrDarkThemeColors;
+}
+
+const CommentBjFilledPath = CommentBgFilled.toString();
 
 export class RecordRowLayout extends GridLayout {
   private renderFirstCell({
@@ -35,7 +50,7 @@ export class RecordRowLayout extends GridLayout {
     commentCount,
     commentVisible,
     colors
-  }) {
+  }: IFirstCell) {
     if (!this.isFirst) return;
 
     const { depth } = row;
@@ -86,11 +101,13 @@ export class RecordRowLayout extends GridLayout {
     });
     if (commentVisible) {
       this.path({
-        x: groupOffset + 47.5,
-        y: y + (RowHeight.Short - GRID_ICON_COMMON_SIZE) / 2,
+        x: groupOffset + 44.5,
+        y: y + (RowHeight.Short - GRID_ICON_COMMON_SIZE) / 2 - 5,
         data: CommentBjFilledPath,
         size: GRID_ICON_COMMON_SIZE,
-        fill: colors.teal[50],
+        scaleX: 0.375,
+        scaleY: 0.375,
+        fill: colors.rainbowTeal1,
       });
       this.text({
         x: groupOffset + 48.5 + GRID_ICON_COMMON_SIZE / 2,
@@ -106,7 +123,7 @@ export class RecordRowLayout extends GridLayout {
     row,
     style,
     colors,
-  }) {
+  }: Pick<IFirstCell, 'row' | 'style' | 'colors'>) {
     if (!this.isLast) return;
     this.renderAddFieldBlank(row);
     if (this.isFirst) return;
@@ -128,7 +145,7 @@ export class RecordRowLayout extends GridLayout {
     }
   }
 
-  private renderCommonCell({ style, colors }) {
+  private renderCommonCell({ style, colors }: Pick<IFirstCell, 'style' | 'colors'>) {
     if (this.isFirst || this.isLast) return;
 
     const { fill, stroke } = style;
@@ -142,7 +159,7 @@ export class RecordRowLayout extends GridLayout {
     });
   }
 
-  render(props) {
+  render(props: IFirstCell) {
     const { 
       row, 
       style,

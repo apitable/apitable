@@ -18,24 +18,21 @@
 
 package com.apitable.space.vo;
 
-import java.time.LocalDateTime;
-
+import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
+import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * Instrument cluster space information vo
+ * Instrument cluster space information vo.
  * </p>
  */
 
@@ -43,112 +40,115 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("Instrument cluster space information vo")
+@Schema(description = "Instrument cluster space information vo")
 public class SpaceInfoVO {
 
-    @ApiModelProperty(value = "Space name", example = "My Workspace", position = 1)
+    @Schema(description = "Space name", example = "My Workspace")
     private String spaceName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Space logo", example = "http://...", position = 2)
+    @Schema(description = "Space logo", example = "http://...")
     private String spaceLogo;
 
-    @ApiModelProperty(value = "Creator name", example = "Zhang San", position = 3)
+    @Schema(description = "Creator name", example = "Zhang San")
     private String creatorName;
 
-    @ApiModelProperty(value = "Whether the member (creator) has modified the nickname", notes = "Currently, it is only applicable to the control WeCom isv uses to determine the display name", position = 4)
+    @Schema(description = "Whether the member (creator) has modified the nickname")
     private Boolean isCreatorNameModified;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Creator's avatar", example = "http://...", position = 4)
+    @Schema(description = "Creator's avatar", example = "http://...")
     private String creatorAvatar;
 
-    @ApiModelProperty(value = "Space owner name", example = "Li Si", position = 5)
+    @Schema(description = "Space owner name", example = "Li Si")
     private String ownerName;
 
-    @ApiModelProperty(value = "Whether the member (owner) has modified the nickname", notes = "Currently, it is only applicable to the control WeCom isv uses to determine the display name", position = 5)
+    @Schema(description = "Whether the member (owner) has modified the nickname")
     private Boolean isOwnerNameModified;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "Space owner's avatar", example = "http://...", position = 6)
+    @Schema(description = "Space owner's avatar", example = "http://...")
     private String ownerAvatar;
 
-    @ApiModelProperty(value = "Creation timestamp (ms)", example = "1573561644000", position = 7)
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing = NullNumberSerializer.class)
+    @Schema(description = "Creation timestamp (ms)", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing =
+        NullNumberSerializer.class)
     private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "Formal deletion timestamp (ms)", example = "1573561644000", position = 8)
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing = NullNumberSerializer.class)
+    @Schema(description = "Formal deletion timestamp (ms)", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing =
+        NullNumberSerializer.class)
     private LocalDateTime delTime;
 
-    @ApiModelProperty(value = "Third party integration binding information", position = 9)
+    @Schema(description = "Third party integration binding information")
     private SpaceSocialConfig social;
 
-    @ApiModelProperty(value = "Number of departments", example = "5", position = 10)
+    @Schema(description = "Number of departments", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long deptNumber;
 
-    @ApiModelProperty(value = "Number of seats", example = "5", position = 11)
+    @Schema(description = "Number of seats", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long seats;
 
-    @ApiModelProperty(value = "Number of tables", example = "5", position = 12)
+    @Schema(description = "Number of tables", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long sheetNums;
 
-    @ApiModelProperty(value = "Total rows of all tables in the space", example = "5", position = 13)
+    @Schema(description = "Total rows of all tables in the space", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long recordNums;
 
-    @ApiModelProperty(value = "Number of space administrators", example = "5", position = 14)
+    @Schema(description = "Number of space administrators", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long adminNums;
 
-    @ApiModelProperty(value = "Used attachment capacity (in bytes)", example = "1024", position = 15)
+    @Schema(description = "Used attachment capacity (in bytes)", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long capacityUsedSizes;
 
-    @ApiModelProperty(value = "Cumulative usage of API calls", example = "10", position = 16)
+    @Schema(description = "Cumulative usage of API calls", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long apiRequestCountUsage;
 
-    @ApiModelProperty(value = "Total number of field permission settings", example = "10", position = 17)
+    @Schema(description = "Total number of field permission settings", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long fieldRoleNums;
 
-    @ApiModelProperty(value = "Total number of file permission settings", example = "10", position = 17)
+    @Schema(description = "Total number of file permission settings", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long nodeRoleNums;
 
-    @ApiModelProperty(value = "Total Kanban Views", example = "10", position = 18)
+    @Schema(description = "Total Kanban Views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long kanbanViewNums;
 
-    @ApiModelProperty(value = "Total Album Views", example = "10", position = 19)
+    @Schema(description = "Total Album Views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long galleryViewNums;
 
-    @ApiModelProperty(value = "Total Gantt Views", example = "10", position = 20)
+    @Schema(description = "Total Gantt Views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long ganttViewNums;
 
-    @ApiModelProperty(value = "Total Calendar Views", example = "10", position = 21)
+    @Schema(description = "Total Calendar Views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long calendarViewNums;
 
-    @ApiModelProperty(value = "Total Form Views", example = "10", position = 22)
+    @Schema(description = "Total Form Views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long formViewNums;
 
-    @ApiModelProperty(value = "Used current package attachment capacity (unit: bytes)", example = "1024", position = 23)
+    @Schema(description = "Used current package attachment capacity (unit: bytes)", example =
+        "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long currentBundleCapacityUsedSizes;
 
-    @ApiModelProperty(value = "Used complimentary accessory capacity (unit: bytes)", example = "1024", position = 24)
+    @Schema(description = "Used complimentary accessory capacity (unit: bytes)", example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long giftCapacityUsedSizes;
 
-    @ApiModelProperty(value = "Number of tables (mirrors)", example = "5", position = 25)
+    @Schema(description = "Number of tables (mirrors)", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long mirrorNums;
 }

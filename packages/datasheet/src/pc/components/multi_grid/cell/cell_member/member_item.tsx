@@ -24,8 +24,8 @@ import { getSocialWecomUnitName } from 'enterprise';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.less';
-import MemberIcon from 'static/icon/space/space_icon_account.svg';
 import { getThemeColors } from '@apitable/components';
+import { UserOutlined } from '@apitable/icons';
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;
@@ -40,7 +40,7 @@ export function isUnitLeave(unit: IUnitValue | IUserValue) {
   return unit.type === MemberType.Member && !unit.isActive;
 }
 
-export const MemberItem: React.FC<IMemberItemProps> = props => {
+export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = props => {
   const { unitInfo, children, style, selected, showTeams } = props;
   const { unitId, avatar, avatarColor, nickName, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
@@ -62,11 +62,13 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
           src={avatar}
           type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
           style={{ minWidth: 20 }}
-          defaultIcon={isSelf ? <MemberIcon width={12} height={12} fill={colors.defaultBg} /> : undefined}
+          defaultIcon={isSelf ? <UserOutlined size={12} color={colors.defaultBg} /> : undefined}
         />
         <div className={styles.memberWithTeamsDesc}>
-          <div className={classNames('unitName', styles.unitName)}>
-            {title}
+          <div className={styles.unitNameWrap}>
+            <span className={classNames('unitName', styles.unitName)}>
+              {title}
+            </span>
             {!isActive && <div className={styles.unInvited}>{t(Strings.pending_invite)}</div>}
           </div>
           {team && <div className={styles.teams}>{team}</div>}
@@ -75,14 +77,13 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
       </div>
     );
   }
-  
+
   return (
     <span
       className={classNames('unitMember', {
         [styles.unitItemWrapper]: true,
-        [styles.unitTeam]: unitInfo.type === MemberType.Team,
         [styles.unitMember]: unitInfo.type === MemberType.Member,
-        [styles.unitTeam]: unitInfo.type === MemberType.Role,
+        [styles.unitTeam]: unitInfo.type === MemberType.Role || unitInfo.type === MemberType.Team,
         [styles.isLeave]: isUnitLeave(unitInfo),
         [styles.selected]: selected,
       })}
@@ -96,7 +97,7 @@ export const MemberItem: React.FC<IMemberItemProps> = props => {
         avatarColor={avatarColor}
         type={type === MemberType.Member ? AvatarType.Member : AvatarType.Team}
         style={{ minWidth: 20 }}
-        defaultIcon={isSelf ? <MemberIcon width={12} height={12} fill={colors.defaultBg} /> : undefined}
+        defaultIcon={isSelf ? <UserOutlined size={12} color={colors.defaultBg} /> : undefined}
       />
       <span className={classNames('unitName', styles.unitName)}>{title}</span>
       {desc && <span className={styles.unitDesc}>{`（${desc}）`}</span>}

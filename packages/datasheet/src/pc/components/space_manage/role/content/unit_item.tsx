@@ -24,7 +24,7 @@ import classNames from 'classnames';
 import styles from './style.module.less';
 import { IMemberItem } from '../interface';
 
-export const UnitItem: React.FC<IMemberItem> = (record) => {
+export const UnitItem: React.FC<React.PropsWithChildren<IMemberItem>> = (record) => {
   const colors = useThemeColors();
 
   return (

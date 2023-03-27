@@ -20,13 +20,18 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference types="react" />
 /// <reference types="react-dom" />
-
 declare namespace NodeJS {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface ProcessEnv {
     readonly NODE_ENV: 'development' | 'production' | 'test';
     readonly PUBLIC_URL: string;
   }
+}
+
+declare module 'react-dom/client' {
+  // typing module default export as `any` will allow you to access its members without compiler warning
+  const createRoot: any;
+  export { createRoot };
 }
 
 declare module '*.json' {

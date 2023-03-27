@@ -31,9 +31,9 @@ import styles from './styles.module.less';
 import { store } from 'pc/store';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { Tooltip } from 'pc/components/common';
-import WarnIcon from 'static/icon/common/common_icon_warning_triangle.svg';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';
+import { WarnCircleFilled } from '@apitable/icons';
 
 export enum ShowType {
   LinkField,
@@ -44,14 +44,14 @@ export interface IFieldSearchPanelProps {
   showType: ShowType;
   fields: IField[];
   field?: ILookUpField;
-  onChange(id: string);
+  onChange(id: string): void;
   errTip?: string;
   activeFieldId?: string;
-  setSearchPanelVisible?(v: boolean);
+  setSearchPanelVisible?(v: boolean): void;
   prefix?: React.ReactNode;
 }
 
-const NoLookupField = ({ showType, value }) => {
+const NoLookupField = ({ showType, value }: { showType: ShowType, value: string }) => {
   const colors = useThemeColors();
   return (
     <div
@@ -74,19 +74,31 @@ const NoLookupField = ({ showType, value }) => {
   );
 };
 
-const WarnTip = ({ text }) => {
+const WarnTip = ({ text } : { text: string }) => {
   const colors = useThemeColors();
   return (
     <Tooltip
       title={text}
       placement="top"
     >
-      <WarnIcon fill={colors.warningColor} width={15} height={13} className={styles.warningIcon} />
+      <WarnCircleFilled color={colors.warningColor} size={15} className={styles.warningIcon} />
     </Tooltip>
   );
 };
 
-const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }) => {
+interface IFieldItem {
+  showType: ShowType;
+  handleFieldClick: (fieldId: string) => void;
+  field: IField;
+  activeFieldId?: string;
+  index: number;
+  currentIndex: number;
+  renderInlineNodeName: (dst: string) => React.ReactNode;
+  warnText?: string;
+  keyword: string;
+}
+
+const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }: IFieldItem) => {
   const colors = useThemeColors();
   const foreignDatasheetReadable = useMemo(() => {
     if (showType !== ShowType.LinkField) {
@@ -163,7 +175,7 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
     },
   });
 
-  const renderInlineNodeName = (datasheetId) => {
+  const renderInlineNodeName = (datasheetId: string) => {
     const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
     return (
       <InlineNodeName

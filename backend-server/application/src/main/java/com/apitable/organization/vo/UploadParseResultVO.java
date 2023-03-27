@@ -18,28 +18,26 @@
 
 package com.apitable.organization.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Data;
 
 /**
  * <p>
- * Template resolution result view
+ * Template resolution result view.
  * </p>
  */
 @Data
-@ApiModel("Template resolution result view、")
+@Schema(description = "Template resolution result view、")
 public class UploadParseResultVO {
 
-    @ApiModelProperty(value = "Total number of resolutions", example = "100", position = 1)
+    @Schema(description = "Total number of resolutions", example = "100")
     private Integer rowCount;
 
-    @ApiModelProperty(value = "Number of successful parsing", example = "198", position = 2)
+    @Schema(description = "Number of successful parsing", example = "198")
     private Integer successCount;
 
-    @ApiModelProperty(value = "Number of failed parsing", example = "2", position = 3)
+    @Schema(description = "Number of failed parsing", example = "2")
     private Integer errorCount;
 
     private List<ParseErrorRecordVO> errorList;
