@@ -157,7 +157,7 @@ APITableは、個人から企業まで幅広い機能を提供します。
   - **リアルタイムのコラボレーションによる100k+** データ行。
   - `データ` から `メタデータ` まで、フルスタック API アクセス。
   - 一方向/双方向テーブルリンクと `無限クロスリンク`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - 美しくリッチなデータベース表計算用UI
   - `CRUD`: 作成、読み込み、更新、テーブル、列、行の削除
   - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+また、 [pm2](https://pm2.keymetrics.io/) をベースにしたオールインワンの画像をデモやテスト用に提供しています(企業や本番での使用には推奨されません)。
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+環境によっては、すべてのサービスが開始されるまでに数分かかる場合があります。 この画像は amd64 (x86_64) のみで、arm64 や appleシリコンでかなりパフォーマンスが悪くなることがあります。
 
 ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
@@ -268,7 +268,7 @@ Depending on your environment, you may need to wait several minutes for all the 
 
 APITableに貢献していただき、ありがとうございます！
 
-In addition to writing code, there are many ways for you to contribute.
+コードを書く以外にも、貢献できる方法はたくさんあります。
 
 以下の方法で貢献することができます：
 - Crowdin 翻訳プロジェクトに参加して翻訳を修正する
@@ -278,12 +278,12 @@ In addition to writing code, there are many ways for you to contribute.
 - [コードを貢献する](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
-- Follow our [Twitter](https://twitter.com/apitable_com)
-- Create [Documentation](./docs)
-- [Contributing Code](./docs/contribute/developer-guide.md)
+以下のようになります。
+- [Crowdin 翻訳プロジェクト](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)に参加する
+- [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
+- [Twitter](https://twitter.com/apitable_com) をフォロー
+- [ドキュメント](./docs) を作成する
+- [コードの貢献](./docs/contribute/developer-guide.md)
 
 
 このリポジトリの [コントリビューションガイドライン](./CONTRIBUTING.md) を読んで、コントリビューションの方法を学ぶことができます。
@@ -317,7 +317,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 - バージョン管理とタグ付け方法は? [セマンティックバージョン](https://semver.org/)
 - Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Rust Coding Guidelineとは何ですか? -> [Rust API ガイドライン](https://rust-lang.github.io/api-guidelines/about.html)
 - アーキテクチャ概要とは何ですか？ APITableのアーキテクチャ概要を理解する
 
 ### 文書
@@ -333,7 +333,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 ### 今後の機能
 
 - ヘビーコードインターフェースビルダー
-- Embeddable 3rd party documentation components
+- 埋め込み可能なサードパーティ製ドキュメントコンポーネント
 - SQLのようなドメイン固有の言語
 - IdPとして
 - 高度な自動化ロボット
@@ -400,7 +400,7 @@ APITableに貢献するためのクイックガイドはこちらです。
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
 </p>
 
 ## 🥰 ライセンス
