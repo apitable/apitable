@@ -377,11 +377,16 @@ interface IFetchDatasheetPack {
 
 export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch, getState, isPartOfData = false }: IFetchDatasheetPack) {
   if (responseBody.success) {
+    const state = getState();
     const dataPack = responseBody.data;
     const dispatchActions: AnyAction[] = [];
     if (dataPack.foreignDatasheetMap) {
       Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
         const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
+        const dst = getDatasheet(state, foreignDstId);
+        if (dst) {
+          return;
+        }
         dispatchActions.push(receiveDataPack(foreignDatasheetPack, { isPartOfData: true }));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));
@@ -389,6 +394,10 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
       });
     }
     if (dataPack.datasheet) {
+      const dst = getDatasheet(state, dataPack.datasheet.id);
+      if (!dst?.isPartOfData) {
+        return;
+      }
       dispatchActions.push(receiveDataPack(dataPack, { isPartOfData, getState }));
       if (dataPack.units) {
         // init unityMap, for `member` field use
