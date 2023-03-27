@@ -36,7 +36,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Clint task class.
+ * Client task class.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "TEST_ENABLED", havingValue = "false", matchIfMissing = true)
