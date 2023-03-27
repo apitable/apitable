@@ -157,7 +157,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 实时协作 **100k+** 数据行
   - 从 `数据(Data)` 到 `元数据(MetaData)` 的全栈式API访问。
   - 单向/双向表链接和 `无限交叉链接`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - 社区友好的编程语言和框架，TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) 和 Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - 美观和齐全的多维表格UI界面
   - `CRUD`: 创建、浏览、更新、删除表、列和行
   - `字段操作`: 排序、过滤、分组、隐藏/取消隐藏、高度设置。
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 用你的浏览器打开[http://localhost:80](http://localhost:80)并浏览。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+我们还提供了一个基于 [pm2](https://pm2.keymetrics.io/) 的完整镜像，用于演示或测试目的(不推荐用于企业或生产用途)：
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+根据您的环境，您可能需要等待几分钟才能开始所有服务。 这张图片只是amd64 (x86_64)，你可能会在arm64 或苹果硅上遇到相当坏的性能。
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
