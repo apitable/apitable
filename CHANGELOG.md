@@ -3,6 +3,30 @@
 
 
 
+## [v0.19.0-beta](https://github.com/apitable/apitable/releases/tag/v0.19.0-beta) (2023-03-27)
+
+
+### Bug fixes
+
+* fix: sign up password placeholder string @laboonly 
+* fix: sign up password placeholder string ([#590](https://github.com/apitable/apitable/pull/590)) @laboonly 
+* fix: subscription key undefined check ([#629](https://github.com/apitable/apitable/pull/629)) @wangkailang 
+* fix: level card subscription check ([#648](https://github.com/apitable/apitable/pull/648)) @wangkailang 
+
+### What's more
+
+* docs: update developer-guide.md ([#605](https://github.com/apitable/apitable/pull/605)) @mr-kelly 
+* doc: answer api document address ([#606](https://github.com/apitable/apitable/pull/606)) @shawndenggh 
+* docs: answer smtp configure & the limitation of widget quantity in da… ([#608](https://github.com/apitable/apitable/pull/608)) @ChambersChan 
+* docs: answer default port and upgrade @paylm 
+* docs: answer default port  ([#613](https://github.com/apitable/apitable/pull/613)) @paylm 
+* sync: hosted cloud ([#611](https://github.com/apitable/apitable/pull/611)) @ChambersChan 
+* docs: developer guide questions ([#609](https://github.com/apitable/apitable/pull/609)) @yort-feng 
+* chore: contributing in readme ([#624](https://github.com/apitable/apitable/pull/624)) @mr-kelly 
+* chore: update async view config @wmEvie 
+* chore: update async view config ([#632](https://github.com/apitable/apitable/pull/632)) @wmEvie 
+* chore: heartbeat cron ([#641](https://github.com/apitable/apitable/pull/641)) @ChambersChan 
+* sync: hosted cloud ([#642](https://github.com/apitable/apitable/pull/642)) @yort-feng 
 ## [v0.19.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.19.0-alpha) (2023-03-20)
 
 
