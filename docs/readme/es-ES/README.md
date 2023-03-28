@@ -310,15 +310,15 @@ Aquí hay un flujo de trabajo general APITable git:
 
 Utilizar estas convenciones comunes:
 
-- ¿Cuál es nuestro modelo de sucursal Git? ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- ¿Cómo colaborar en sus proyectos de bifurcación? ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- ¿Cómo escribir un buen mensaje de confirmación? ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
-- ¿Cuál es nuestro formato de registro de cambios? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/) ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
-- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
-- ¿Qué es la guía de código de Java? Guía de codificación en Java | Plugin de Intellij IDEA
-- ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- ¿Qué es la Visión General de la Arquitectura? ¿Qué es la Visión General de la Arquitectura? -> [ Comprender APITable - Visión General de la Arquitectura.](./docs/contribute/architecute-overview.md)
+- ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
+- ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
+- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/)
+- ¿Qué es la guía de código de Java? [Guía de código Java](https://google.github.io/styleguide/javaguide.html) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
+- ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- ¿Qué es la guía de código de TypeScript? -> [Directrices API de Rust](https://rust-lang.github.io/api-guidelines/about.html)
+- ¿Qué es la Visión General de la Arquitectura? -> [Interfaz APITable - Resumen de Archivos](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
 
