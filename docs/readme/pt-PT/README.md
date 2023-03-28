@@ -49,19 +49,19 @@
 </p>
 
 <p align="center">
-  English
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ Início Rápido
@@ -252,7 +252,7 @@ Para instalar apitable usando o docker compose, abra o seu terminal e execute-o:
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Depois abra http://localhost:80 no seu navegador para o visitar.  (nome de utilizador predefinido `admin@apitable.com ` e palavra-passe  `Apitable2022 `)
+Depois abra http://localhost:80 no seu navegador para o visitar.  (nome de utilizador predefinido `admin@apitable.com` e palavra-passe  `Apitable2022`)
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
@@ -272,10 +272,10 @@ In addition to writing code, there are many ways for you to contribute.
 
 Pode contribuir da seguinte forma:
 - Junte-se e modifique traduções no nosso Projecto de Tradução [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- [Criar Problemas](https://github.com/apitable/apitable/issues/new/choose)
-- Siga o nosso [Twitter](https://twitter.com/apitable_com)
-- [Criar Documentação](./docs)
-- [Código Contribuinte](./docs/contribute/developer-guide.md)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 Such as the following:
@@ -293,7 +293,7 @@ Aqui está um guia rápido para o ajudar a contribuir para a APITable.
 
 ### Ambiente de desenvolvimento
 
-Saiba como criar o seu ambiente local, consulte o nosso Guia do [](./docs/contribute/developer-guide.md)Desenvolvedor<0>.
+Saiba como criar o seu ambiente local, consulte o nosso Guia do [](./docs/contribute/developer-guide.md)Desenvolvedor
 
 ### Git fluxo de trabalho básico
 
