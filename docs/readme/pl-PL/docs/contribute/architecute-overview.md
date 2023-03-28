@@ -10,7 +10,7 @@ Bardziej konkretny schemat można zobaczyć poniżej:
 
 ![Architecture Overview](../static/architecture-overview.png)
 
-- `UI`: zapewnia niezwykle płynny, przyjazny dla użytkownika, superszybki interfejs baza danych-arkusz w. <canvas> Rendering Engine
+- `UI`: zapewnia niezwykle płynny, przyjazny dla użytkownika, superszybki interfejs baza danych-arkusz w. <canvas> Renderowanie
 - `Web Server`: buduje superdoładowane, przyjazne dla SEO i niezwykle przyjazne dla użytkownika statyczne strony i aplikacje internetowe przy użyciu Nextjs
 - `Backend Server`: obsługuje żądania HTTP dotyczące węzłów, użytkowników, organizacji itp.
 - `Socket Server`: nawiązuje długie połączenie z klientami poprzez protokół WebSocket, umożliwiając dwukierunkową komunikację i współpracę w czasie rzeczywistym, powiadomienia i inne funkcje.
