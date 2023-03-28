@@ -49,19 +49,19 @@
 </p>
 
 <p align="center">
-  English
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ Швидкий старт
@@ -272,10 +272,10 @@ In addition to writing code, there are many ways for you to contribute.
 
 Ви можете зробити свій внесок наступним чином:
 - Приєднатися та змінювати переклади у нашому проекті перекладу [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Створювати [випуски](https://github.com/apitable/apitable/issues/new/choose)
-- [Слідкуйте за нашим твіттером](https://twitter.com/apitable_com)
-- [Створити документацію](./docs)
-- [Кодекс дописувача](./docs/contribute/developer-guide.md)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 Such as the following:
