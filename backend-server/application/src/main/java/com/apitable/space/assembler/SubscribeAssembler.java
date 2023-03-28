@@ -81,7 +81,7 @@ public class SubscribeAssembler {
         result.setMaxAuditQueryDays(feature.getAuditQueryDays().getValue());
 
         result.setUnExpireGiftCapacity(subscriptionInfo.getGiftCapacity().getValue());
-        result.setSubscriptionCapacity(feature.getCapacitySize().getValue() - subscriptionInfo.getGiftCapacity().getValue());
+        result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue() - subscriptionInfo.getGiftCapacity().getValue());
         return result;
     }
 }

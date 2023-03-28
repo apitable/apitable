@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SuccessIcon from 'static/icon/common/common_icon_success.svg';
-import InfoIcon from 'static/icon/common/common_icon_default.svg';
 import { colorVars } from '@apitable/components';
-import { WarnFilled, ErrorFilled } from '@apitable/icons';
+import { WarnCircleFilled, CheckCircleFilled, InfoCircleFilled } from '@apitable/icons';
 // const modulesFiles = require.context('./modules', true, /.js$/)
 
 enum StatusType {
@@ -33,25 +31,24 @@ enum StatusType {
 
 interface IStatusIconFuncProps {
   type: string,
+  size?: number;
   fillColor?: string;
-  width?: number;
-  height?: number;
 }
 export const StatusIconFunc = (props: IStatusIconFuncProps) => {
-  const { type, fillColor, width = 24, height = 24 } = props;
+  const { type, fillColor, size = 20 } = props;
   switch (type) {
     case StatusType.Info:
-      return <InfoIcon width={width} height={height} fill={fillColor || colorVars.primaryColor} />;
+      return InfoCircleFilled({ size, color: fillColor || colorVars.primaryColor });
     case StatusType.Primary:
-      return <InfoIcon width={width} height={height} fill={fillColor || colorVars.primaryColor} />;
+      return InfoCircleFilled({ size, color: fillColor || colorVars.primaryColor });
     case StatusType.Success:
-      return <SuccessIcon width={width} height={height} fill={fillColor || colorVars.successColor } />;
+      return CheckCircleFilled({ size, color: fillColor || colorVars.successColor });
     case StatusType.Error:
-      return ErrorFilled({ size: width });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Danger:
-      return ErrorFilled({ size: width });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textDangerDefault });
     case StatusType.Warning:
-      return WarnFilled({ size: width });
+      return WarnCircleFilled({ size, color: fillColor || colorVars.textWarnDefault });
     default:
       return null;
   }

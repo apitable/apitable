@@ -18,15 +18,18 @@
 
 package com.apitable.workspace.service;
 
+import com.apitable.organization.vo.UnitMemberVo;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.workspace.dto.ControlRoleInfo;
+import com.apitable.workspace.dto.SimpleNodeInfo;
+import com.apitable.workspace.vo.NodeRoleMemberVo;
+import com.apitable.workspace.vo.NodeRoleUnit;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.apitable.workspace.vo.NodeRoleMemberVo;
-import com.apitable.workspace.vo.NodeRoleUnit;
-import com.apitable.organization.vo.UnitMemberVo;
-import com.apitable.workspace.dto.ControlRoleInfo;
 
 public interface INodeRoleService {
 
@@ -135,6 +138,29 @@ public interface INodeRoleService {
      */
     List<NodeRoleMemberVo> getNodeRoleMembers(String spaceId, String nodeId);
 
+
+    /**
+     * GetNodeRoleMembersPage.
+     *
+     * @param page      page param
+     * @param spaceId   space id
+     * @return IPage<NodeRoleMemberVo>
+     * @author Chambers
+     */
+    IPage<NodeRoleMemberVo> getNodeRoleMembersPage(Page<NodeRoleMemberVo> page, String spaceId);
+
+    /**
+     * GetNodeRoleMembersPageInfo.
+     *
+     * @param page      page param
+     * @param spaceId   space id
+     * @param nodeId    node id
+     * @return PageInfo<NodeRoleMemberVo>
+     * @author Chambers
+     */
+    PageInfo<NodeRoleMemberVo> getNodeRoleMembersPageInfo(Page<NodeRoleMemberVo> page,
+        String spaceId, String nodeId);
+
     /**
      * Gets the node with the most recently specified permission
      *
@@ -174,7 +200,8 @@ public interface INodeRoleService {
      * @param memberId member id
      * @param nodeIds  nodeIds
      */
-    void copyExtendNodeRoleIfExtend(Long userId, String spaceId, Long memberId, Collection<String> nodeIds);
+    void copyExtendNodeRoleIfExtend(Long userId, String spaceId, Long memberId,
+        Collection<String> nodeIds);
 
     /**
      * Gets the unit Ids of each role under the control of the role of the node.
@@ -189,11 +216,12 @@ public interface INodeRoleService {
     Map<String, Set<Long>> getRoleToUnitIds(boolean isParent, String spaceId, String nodeId);
 
     /**
-     * handle node role member's team path name, show full hierarchy team name
+     * Get node information with permission status.
      *
-     * @param nodeRoleUnits node role units
-     * @param spaceId space id
+     * @param nodeIds   node ids
+     * @return List<SimpleNodeInfo>
+     * @author Chambers
      */
-    void handleNodeRoleUnitsTeamPathName(List<NodeRoleUnit> nodeRoleUnits, String spaceId);
+    List<SimpleNodeInfo> getNodeInfoWithPermissionStatus(List<String> nodeIds);
 
 }

@@ -18,10 +18,12 @@
 
 import { IconButton, Typography, useContextMenu, useThemeColors } from '@apitable/components';
 import {
-  ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
+  ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t, TrackEvents,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@apitable/icons';
+import {
+  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteFilled, PlanetOutlined
+} from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -30,7 +32,7 @@ import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';
 import { NodeContextMenu } from 'pc/components/catalog/node_context_menu';
 import { PermissionSettingsPlus } from 'pc/components/catalog/permission_settings_plus';
-import { Search } from 'pc/components/catalog/search';
+import { expandSearch } from 'pc/components/quick_search';
 import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -46,15 +48,12 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import InviteIcon from 'static/icon/common/common_icon_invite.svg';
-import ArrowIcon from 'static/icon/common/common_icon_up_line.svg';
-import TrashIcon from 'static/icon/workbench/catalogue/recycle_closed.svg';
-import TemplateIcon from 'static/icon/workbench/catalogue/template.svg';
 import { Catalog } from '../../catalog';
 import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
+import { usePostHog } from 'posthog-js/react';
 
 const { Panel } = Collapse;
 
@@ -68,7 +67,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
   const [activeKey, setActiveKey] = useState<string[]>([]);
-  const [isSearch, setIsSearch] = useState(false);
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const {
     spaceId,
@@ -111,6 +109,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useAppDispatch();
+  const posthog = usePostHog();
 
   const userInfo = useSelector(state => state.user.info);
   const spaceFeatures = useSelector(state => state.space.spaceFeatures);
@@ -136,12 +135,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         ShortcutActionName.SaveAsTemplate,
         () => {
           dispatch(StoreActions.updateSaveAsTemplateModalNodeId(activeNodeId || ''));
-        },
-      ],
-      [
-        ShortcutActionName.SearchNode,
-        () => {
-          setIsSearch(!isSearch);
         },
       ],
     ]);
@@ -228,7 +221,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       id: rootId,
       module: ConfigConstant.Modules.CATALOG,
       contextMenuType: ConfigConstant.ContextMenuType.DEFAULT,
-      level: '0', 
+      level: '0',
     });
     onSetContextMenu(e);
   };
@@ -283,19 +276,15 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.header}>
           <SpaceInfo />
           <div className={styles.search}>
-            {isSearch ? (
-              <Search closeSearch={() => setIsSearch(false)} />
-            ) : (
-              <IconButton
-                shape='square'
-                className={styles.searchBtn}
-                icon={SearchOutlined}
-                onClick={e => {
-                  stopPropagation(e);
-                  setIsSearch(true);
-                }}
-              />
-            )}
+            <IconButton
+              shape='square'
+              className={styles.searchBtn}
+              icon={SearchOutlined}
+              onClick={e => {
+                stopPropagation(e);
+                expandSearch();
+              }}
+            />
           </div>
         </div>
 
@@ -312,11 +301,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 key={ConfigConstant.Modules.FAVORITE}
                 header={
                   <div className={styles.groupName}>
-                    <FavoriteFilled color={colors.warningColor} />
+                    <StarFilled color={colors.warningColor} />
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.favorite)}
                     </Typography>
-                    <ArrowIcon
+                    <ChevronUpOutlined
                       className={classnames(styles.arrow, {
                         [styles.active]: activeKey.includes(ConfigConstant.Modules.FAVORITE),
                       })}
@@ -334,11 +323,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 key={ConfigConstant.Modules.CATALOG}
                 header={
                   <div className={styles.groupName}>
-                    <TitleWorkFilled color={colors.primaryColor} />
+                    <FolderNormalFilled color={colors.primaryColor} />
                     <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
                       {t(Strings.catalog)}
                     </Typography>
-                    <ArrowIcon
+                    <ChevronUpOutlined
                       className={classnames(styles.arrow, {
                         [styles.active]: activeKey.includes(ConfigConstant.Modules.CATALOG),
                       })}
@@ -347,7 +336,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 }
                 extra={
                   rootManageable ? (
-                    <IconButton style={{ marginRight: 10 }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
+                    <IconButton style={{ margin: '4px 10px 0 0' }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
                   ) : null
                 }
                 showArrow={false}
@@ -362,20 +351,26 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.fixedGroup}>
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
-              <div className={styles.groupItem} onClick={jumpTrash} data-sensors-click id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
-                <TrashIcon fill={colors.rc04} />
+              <div className={styles.groupItem} onClick={jumpTrash} id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
+                <DeleteFilled color={colors.rc04} />
               </div>
             </Tooltip>
           )}
           <Tooltip title={t(Strings.workbench_side_space_template)}>
-            <div className={styles.groupItem} onClick={jumpSpaceTemplate} data-sensors-click id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
-              <TemplateIcon fill={colors.rc02} />
+            <div className={styles.groupItem} onClick={jumpSpaceTemplate} id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
+              <PlanetOutlined color={colors.rc02} />
             </div>
           </Tooltip>
           {inviteStatus && !isIdassPrivateDeployment() && (
             <Tooltip title={t(Strings.invite_friends)}>
-              <div className={styles.groupItem} onClick={() => expandInviteModal()}>
-                <InviteIcon fill={colors.primaryColor} />
+              <div
+                className={styles.groupItem}
+                onClick={() => {
+                  posthog?.capture(TrackEvents.InviteByWorkbench);
+                  expandInviteModal();
+                }}
+              >
+                <UserAddOutlined color={colors.primaryColor} />
               </div>
             </Tooltip>
           )}

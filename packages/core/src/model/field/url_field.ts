@@ -61,16 +61,15 @@ export class URLField extends TextBaseField {
     return (cv as IHyperlinkSegment[]).map(seg => seg.text).join('') || null;
   }
 
-  // Do not rewrite cellValueToString directly, it will cause problems with the value of the grouped fusion API. 
-  // Judging from the outside is to display cellValueToString or cellValueToURLTitle
-  cellValueToURLTitle(cellValue: ICellValue): string | null {
+  override cellValueToString(cellValue: ICellValue): string | null {
     if (cellValue === null) {
       return '';
     }
 
     const cv = [cellValue].flat();
+    const isRecogURLFlag = this.field.property?.isRecogURLFlag;
 
-    return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
+    return (cv as IHyperlinkSegment[]).map(seg => isRecogURLFlag ? (seg?.title || seg?.text) : seg?.text).join('') || null;
   }
 
   override validateProperty() {

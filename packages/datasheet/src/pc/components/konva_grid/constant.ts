@@ -52,6 +52,7 @@ export const GRID_CELL_ADD_ITEM_BUTTON_SIZE = 22; // New button size for Member/
 export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE = 8; // Member/Option/Link etc. field delete button size
 export const GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET = 8; // Member/Option/Link fields remove the offset of the button size
 export const GRID_CELL_MULTI_ITEM_MIN_WIDTH = 36; // Minimum width of Option/Link etc. field item
+export const GRID_CELL_ABBR_MIN_WIDTH = 20; // Minimum width of time zone abbr
 
 // Member
 export const GRID_CELL_MEMBER_ITEM_HEIGHT = 24; // Member field item height

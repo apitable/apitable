@@ -33,7 +33,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const _canaryTestingUrlFlag = 'spaceId';
 
 const urlCheck = (path: string) => {
-  const allowPath = ['/', '/workbench', '/org', 'management', '/notify', '/template'];
+  const allowPath = ['/', '/workbench', '/org', '/management', '/notify', '/template'];
   return allowPath.some(v => path === v);
 };
 
@@ -47,7 +47,7 @@ const urlCheck = (path: string) => {
  *  @param request next request object
  *  @see https://vikadata.feishu.cn/docx/doxcnD8Syt3UxJUTlRGRhxbLC3f [Gateway grayscale processing flow]
  */
-const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<NextResponse> => {
+const canaryTestingByFillUpUrlPathFlag = async(request: NextRequest): Promise<NextResponse> => {
   const url = request.nextUrl.clone();
   const searchParams = url.searchParams;
 

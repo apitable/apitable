@@ -31,7 +31,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@apitable/icons';
+import { AddOutlined, InfoCircleOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -209,18 +209,13 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
 
           {field.desc && !hideDesc && (
             <div className={styles.iconDisplayIcon} onMouseDown={stopPropagation}>
-              <span onClick={toggleCollapseDesc}>{showDesc ? <EditDescribeFilled /> : <EditDescribeOutlined />}</span>
+              <span onClick={toggleCollapseDesc}>{showDesc ? <InfoCircleOutlined /> : <InfoCircleOutlined />}</span>
             </div>
           )}
         </div>
         <div className={classNames('right', styles.right)}>
           {field.type === FieldType.Attachment && (cellValue as IAttachmentValue[])?.length && !isMobile && allowDownload && (
             <BulkDownload files={cellValue as IAttachmentValue[]} className="more" datasheetId={datasheetId} />
-          )}
-          {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
-            <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
-              {t(Strings.task_reminder_entry)}
-            </LinkButton>
           )}
 
           {!hideLock && <FieldPermissionLockEnhance fieldId={fieldId} className="more" />}
@@ -247,6 +242,12 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
                 />
               </Tooltip>
             </div>
+          )}
+
+          {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
+            <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
+              {t(Strings.task_reminder_entry)}
+            </LinkButton>
           )}
         </div>
 

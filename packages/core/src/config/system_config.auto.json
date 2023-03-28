@@ -329,6 +329,12 @@
         "permission_config_in_workbench_page": {
             "value": "[{\"key\":0,\"title\":\"表格内的操作权限\",\"detail\":[{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删维格列\",\"permissions\":[0,1]},{\"title\":\"编辑维格列属性（列名/类型/描述）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏）\",\"permissions\":[0,1]},{\"title\":\"编辑行（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"将继承切换为指定权限\",\"permissions\":[0,1]},{\"title\":\"将指定切换为继承权限\",\"permissions\":[0]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]"
         },
+        "quick_search_default_dark": {
+            "value": "space/2023/03/15/42dc46843161478fb56d27efb43a50b8"
+        },
+        "quick_search_default_light": {
+            "value": "space/2023/03/15/0fd81978a8c04d96a483f4c785736b62"
+        },
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
@@ -474,7 +480,7 @@
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
         },
         "widget_cli_miumum_version": {
-            "value": "0.0.12"
+            "value": "0.0.1"
         },
         "widget_custom_widget_empty_img": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
@@ -687,9 +693,7 @@
             "id": "cmd+c",
             "command": "Copy",
             "description": "复制",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -702,9 +706,7 @@
             "id": "cmd+v",
             "command": "Paste",
             "description": "粘贴",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -716,9 +718,7 @@
             "id": "cmd+x",
             "command": "None",
             "description": "剪切",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -731,9 +731,7 @@
             "id": "space",
             "command": "ExpandRecord",
             "description": "展开行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -746,9 +744,7 @@
             "id": "escape",
             "command": "ExitEditing",
             "description": "退出编辑或关闭窗口",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -761,9 +757,7 @@
             "id": "shift+enter",
             "command": "AppendRow",
             "description": "向下插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -776,9 +770,7 @@
             "id": "cmd+shift+enter",
             "command": "PrependRow",
             "description": "向上插入行",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -791,9 +783,7 @@
             "id": "enter",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -806,9 +796,7 @@
             "id": "F2",
             "command": "ToggleNextEditing",
             "description": "激活单元格编辑状态",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -821,9 +809,7 @@
             "id": "backspace",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -836,9 +822,7 @@
             "id": "delete",
             "command": "Clear",
             "description": "清除单元格内容",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -851,9 +835,7 @@
             "id": "tab",
             "command": "CellTab",
             "description": "完成编辑并向右一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -866,9 +848,7 @@
             "id": "shift+tab",
             "command": "CellShiftTab",
             "description": "完成编辑并向左一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -881,9 +861,7 @@
             "id": "up",
             "command": "CellUp",
             "description": "向上移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -896,9 +874,7 @@
             "id": "down",
             "command": "CellDown",
             "description": "向下移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -911,9 +887,7 @@
             "id": "left",
             "command": "CellLeft",
             "description": "向左移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -926,9 +900,7 @@
             "id": "right",
             "command": "CellRight",
             "description": "向右移动一个单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -941,9 +913,7 @@
             "id": "cmd+up",
             "command": "CellUpEdge",
             "description": "移动到顶部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -956,9 +926,7 @@
             "id": "cmd+down",
             "command": "CellDownEdge",
             "description": "移动到底部单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -971,9 +939,7 @@
             "id": "cmd+left",
             "command": "CellLeftEdge",
             "description": "移动到最左侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -986,9 +952,7 @@
             "id": "cmd+right",
             "command": "CellRightEdge",
             "description": "移动到最右侧单元格",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1001,9 +965,7 @@
             "id": "fn+↑",
             "command": "None",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1016,9 +978,7 @@
             "id": "pageup",
             "command": "PageUp",
             "description": "向上滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1031,9 +991,7 @@
             "id": "fn+↓",
             "command": "None",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1046,9 +1004,7 @@
             "id": "pagedown",
             "command": "PageDown",
             "description": "向下滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1061,9 +1017,7 @@
             "id": "fn+←",
             "command": "None",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1076,9 +1030,7 @@
             "id": "home",
             "command": "PageLeft",
             "description": "向左滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1091,9 +1043,7 @@
             "id": "fn+→",
             "command": "None",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1106,9 +1056,7 @@
             "id": "end",
             "command": "PageRight",
             "description": "向右滚动一屏",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1121,9 +1069,7 @@
             "id": "cmd+a",
             "command": "SelectionAll",
             "description": "全选",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1136,9 +1082,7 @@
             "id": "shift+up",
             "command": "SelectionUp",
             "description": "单元格选区向上",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1151,9 +1095,7 @@
             "id": "shift+down",
             "command": "SelectionDown",
             "description": "单元格选区向下",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1166,9 +1108,7 @@
             "id": "shift+left",
             "command": "SelectionLeft",
             "description": "单元格选区向左",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1181,9 +1121,7 @@
             "id": "shift+right",
             "command": "SelectionRight",
             "description": "单元格选区向右",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1196,9 +1134,7 @@
             "id": "cmd+shift+up",
             "command": "SelectionUpEdge",
             "description": "单元格选区向上至顶部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1211,9 +1147,7 @@
             "id": "cmd+shift+down",
             "command": "SelectionDownEdge",
             "description": "单元格选区向下至底部",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1226,9 +1160,7 @@
             "id": "cmd+shift+left",
             "command": "SelectionLeftEdge",
             "description": "单元格选区向左到边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1241,9 +1173,7 @@
             "id": "cmd+shift+right",
             "command": "SelectionRightEdge",
             "description": "单元格选区向右至边缘",
-            "type": [
-                "gird_view_shortcuts"
-            ]
+            "type": []
         },
         {
             "show": true,
@@ -1351,13 +1281,13 @@
         },
         {
             "show": true,
-            "key": "cmd+g",
-            "winKey": "ctrl+g",
+            "key": "cmd+k",
+            "winKey": "ctrl+k",
             "name": [
                 "open_quickgo_panel"
             ],
             "when": "!isRecordExpanding",
-            "id": "cmd+g",
+            "id": "cmd+k",
             "command": "SearchNode",
             "description": "打开工作台的搜索栏",
             "type": [
@@ -1368,9 +1298,7 @@
             "show": true,
             "key": "ctrl+n",
             "winKey": "alt+n",
-            "name": [
-                "new_datasheet"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+n",
             "command": "NewDatasheet",
@@ -1428,9 +1356,7 @@
             "show": true,
             "key": "ctrl+p",
             "winKey": "alt+p",
-            "name": [
-                "permission_setting"
-            ],
+            "name": [],
             "when": "!isRecordExpanding",
             "id": "ctrl+p",
             "command": "Permission",
@@ -1518,6 +1444,34 @@
             "when": "!isRecordExpanding",
             "id": "cmd+alt+d",
             "command": "ToggleDevPanel"
+        },
+        {
+            "key": "up",
+            "winKey": "up",
+            "when": "isQuickSearchExpanding",
+            "id": "up",
+            "command": "QuickSearchUp"
+        },
+        {
+            "key": "down",
+            "winKey": "down",
+            "when": "isQuickSearchExpanding",
+            "id": "down",
+            "command": "QuickSearchDown"
+        },
+        {
+            "key": "tab",
+            "winKey": "tab",
+            "when": "isQuickSearchExpanding",
+            "id": "tab",
+            "command": "QuickSearchTab"
+        },
+        {
+            "key": "enter",
+            "winKey": "enter",
+            "when": "isQuickSearchExpanding",
+            "id": "enter",
+            "command": "QuickSearchEnter"
         }
     ],
     "country_code_and_phone_code": {
@@ -3065,7 +3019,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_9f3930dd7d7ad00c",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_async_compute",
-                "info_image": "space/2022/01/25/83d9e37eac454877a5d2a9c1a6bdacae"
+                "info_image": "ASYNC_COMPUTE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3088,7 +3042,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_a08120b120fad00e",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_prompt",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_PROMPT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3111,7 +3065,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_robot",
-                "info_image": "space/2022/01/25/7679e8085aa0473e9aaa86809cf1bdeb"
+                "info_image": "ROBOT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3134,7 +3088,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_widget",
-                "info_image": "space/2022/01/25/3828da03312f4035a37912edd6db6f0b"
+                "info_image": "WIDGET_CENTER_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3156,7 +3110,7 @@
                 "info": "test_function_modal_info_render_normal",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_normal",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_NORMAL_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3178,7 +3132,7 @@
                 "info": "test_function_modal_info_view_manual_save",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_view_manual_save",
-                "info_image": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
+                "info_image": "VIEW_MANUAL_SAVE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3199,9 +3153,9 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00"
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00"
                 ],
-                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00],[open_guide_wizards([4])]",
+                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00],[open_guide_wizards([4])]",
                 "event": [
                     "address_shown"
                 ]
@@ -3256,6 +3210,18 @@
             },
             {
                 "actions": [
+                    "open_guide_wizard(106)"
+                ],
+                "rules": [
+                    "device_IS_pc"
+                ],
+                "id": "datasheet_create_mirror_tip,[device_IS_pc],[open_guide_wizard(106)]",
+                "event": [
+                    "datasheet_create_mirror_tip"
+                ]
+            },
+            {
+                "actions": [
                     "open_guide_wizard(30)"
                 ],
                 "rules": [
@@ -3300,11 +3266,11 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
+                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
                 "event": [
                     "datasheet_wigdet_empty_panel_shown"
                 ]
@@ -3374,11 +3340,11 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
+                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
                 "event": [
                     "template_center_shown"
                 ]
@@ -3495,58 +3461,75 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+                "event": [
+                    "workbench_show_trial_tip"
+                ]
+            },
+            {
+                "actions": [
+                    "open_guide_wizards([105, 104])"
+                ],
+                "rules": [
+                    "device_IS_pc",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
+                    "url_EXCLUDES_templateId",
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_apitable"
+                ],
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([1, 24])"
+                    "open_guide_wizards([24, 1])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([24, 1])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 102])"
+                    "open_guide_wizards([29, 76, 107])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 102])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 102])"
+                    "open_guide_wizards([76, 107])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 102])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3556,12 +3539,13 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
-                    "device_IS_app"
+                    "device_IS_app",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app, edition_IS_vika],[open_guide_wizards([76, 87])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3592,6 +3576,15 @@
             "datasheet_add_new_view": {
                 "module": "datasheet",
                 "name": "add_new_view"
+            },
+            "datasheet_create_mirror_tip": {
+                "module": "datasheet",
+                "name": "create_mirror_tip",
+                "guide": {
+                    "step": [
+                        "recixOMO4Roib"
+                    ]
+                }
             },
             "datasheet_dashboard_panel_shown": {
                 "module": "datasheet",
@@ -3662,7 +3655,12 @@
             },
             "datasheet_search_panel_shown": {
                 "module": "datasheet",
-                "name": "search_panel_shown"
+                "name": "search_panel_shown",
+                "guide": {
+                    "step": [
+                        "reczmcUK1NLK4"
+                    ]
+                }
             },
             "datasheet_shown": {
                 "module": "datasheet",
@@ -3806,6 +3804,10 @@
                 "module": "workbench",
                 "name": "no_emit"
             },
+            "workbench_show_trial_tip": {
+                "module": "workbench",
+                "name": "show_trial_tip"
+            },
             "workbench_shown": {
                 "module": "workbench",
                 "name": "shown"
@@ -3891,14 +3893,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_AFTER_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_BEFORE_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "EXCLUDES",
@@ -4036,6 +4038,11 @@
                 "commandArgs": "{\"clearAllPrevUi\":true}"
             },
             {
+                "id": "open_guide_wizard(106)",
+                "command": "open_guide_wizard",
+                "commandArgs": "106"
+            },
+            {
                 "id": "open_guide_wizard(18)",
                 "command": "open_guide_wizard",
                 "commandArgs": "18"
@@ -4146,11 +4153,6 @@
                 "commandArgs": "88"
             },
             {
-                "id": "open_guide_wizards([1, 24])",
-                "command": "open_guide_wizards",
-                "commandArgs": "[1, 24]"
-            },
-            {
                 "id": "open_guide_wizards([105, 104])",
                 "command": "open_guide_wizards",
                 "commandArgs": "[105, 104]"
@@ -4166,9 +4168,14 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 102])",
+                "id": "open_guide_wizards([24, 1])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 102]"
+                "commandArgs": "[24, 1]"
+            },
+            {
+                "id": "open_guide_wizards([29, 76, 107])",
+                "command": "open_guide_wizards",
+                "commandArgs": "[29, 76, 107]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4181,9 +4188,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 102])",
+                "id": "open_guide_wizards([76, 107])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 102]"
+                "commandArgs": "[76, 107]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4424,7 +4431,12 @@
             },
             "29": {
                 "completeIndex": 0,
-                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]"
+                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ"
+                    ]
+                }
             },
             "30": {
                 "completeIndex": 0,
@@ -4691,7 +4703,14 @@
                 "steps": "[[93]]"
             },
             "76": {
-                "steps": "[[93]]"
+                "steps": "[[93]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ",
+                        "recEIcl9v4jzr",
+                        "recZmyGfgUNR6"
+                    ]
+                }
             },
             "77": {
                 "steps": "[[111]]"
@@ -4769,13 +4788,7 @@
             },
             "90": {
                 "completeIndex": -1,
-                "steps": "[[145]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[145]]"
             },
             "91": {
                 "completeIndex": -1,
@@ -4823,15 +4836,10 @@
             },
             "102": {
                 "completeIndex": -1,
-                "steps": "[[164]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[164]]"
             },
             "104": {
+                "repeat": true,
                 "completeIndex": 0,
                 "steps": "[[166]]",
                 "player": {
@@ -4848,6 +4856,32 @@
                         "recRyoECYFqBv"
                     ]
                 }
+            },
+            "106": {
+                "manualActions": [
+                    "open_guide_wizard(106)"
+                ],
+                "steps": "[[168]]",
+                "player": {
+                    "action": [
+                        "recO09HUv27dd"
+                    ]
+                }
+            },
+            "107": {
+                "completeIndex": -1,
+                "steps": "[[169]]",
+                "player": {
+                    "action": [
+                        "recEIcl9v4jzr",
+                        "recBtbbzXDolQ"
+                    ]
+                }
+            },
+            "108": {
+                "completeIndex": -1,
+                "endTime": 1677677940000,
+                "steps": "[[169]]"
             }
         },
         "step": {
@@ -4887,7 +4921,7 @@
                 ],
                 "next": "确定",
                 "nextId": "confirm",
-                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过维格表解决哪些问题？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"工作规划\",\n        \"客户服务\",\n        \"项目管理\",\n        \"采购供应\",\n        \"内容生产\",\n        \"电商运营\",\n        \"活动策划\",\n        \"人力资源\",\n        \"行政管理\",\n        \"财务管理\",\n        \"网络直播\",\n        \"高校管理\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"管理者\",\n        \"项目经理\",\n        \"产品经理\",\n        \"设计师\",\n        \"研发、工程师\",\n        \"运营、编辑\",\n        \"销售、客服\",\n        \"人事、行政\",\n        \"财务、会计\",\n        \"律师、法务\",\n        \"市场\",\n        \"教师\",\n        \"学生\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的公司名称是？\",\n      \"type\": \"input\",\n      \"submit\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"请留下你的邮箱/手机/微信号，以便我们及时提供帮助。\",\n      \"type\": \"input\",\n      \"submit\": true\n    },\n    {\n      \"key\": 5,\n      \"title\": \"感谢你的填写，请加一下客服号以备不时之需\",\n      \"platform\": {\n        \"website\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n        \"dingtalk\": \"https://s1.vika.cn/space/2022/02/09/5dfcfc63236d48c78e938969bceb2d06\",\n        \"wecom\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n        \"feishu\": \"https://u.vika.cn/z9ygm\"\n      },\n      \"type\": \"contactUs\",\n      \"next\": true\n    }\n  ]\n}\n",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过维格表解决哪些问题？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"工作规划\",\n        \"客户服务\",\n        \"项目管理\",\n        \"采购供应\",\n        \"内容生产\",\n        \"电商运营\",\n        \"活动策划\",\n        \"人力资源\",\n        \"行政管理\",\n        \"财务管理\",\n        \"网络直播\",\n        \"高校管理\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"管理者\",\n        \"项目经理\",\n        \"产品经理\",\n        \"设计师\",\n        \"研发、工程师\",\n        \"运营、编辑\",\n        \"销售、客服\",\n        \"人事、行政\",\n        \"财务、会计\",\n        \"律师、法务\",\n        \"市场\",\n        \"教师\",\n        \"学生\",\n        \"其它\"\n      ],\n      \"lastAllowInput\": true\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的公司名称是？\",\n      \"type\": \"input\",\n      \"submit\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"请留下你的邮箱/手机/微信号，以便我们及时提供帮助。\",\n      \"type\": \"input\",\n      \"submit\": true\n    },\n    {\n      \"key\": 5,\n      \"title\": \"感谢你的填写，请加一下客服号以备不时之需\",\n      \"platform\": {\n        \"website\": \"https://s1.vika.cn/space/2023/03/02/b34e3205a9154463be16f497524f1327\",\n        \"dingtalk\": \"https://s1.vika.cn/space/2023/03/02/4b16cef6602a4586a21d6346bf25d300\",\n        \"wecom\": \"https://s1.vika.cn/space/2023/03/02/60119b1b69b64aa887bd1be6a2928bec\",\n        \"feishu\": \"https://u.vika.cn/z9ygm\"\n      },\n      \"type\": \"contactUs\",\n      \"next\": true\n    }\n  ]\n}\n",
                 "onClose": [
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
@@ -5900,7 +5934,7 @@
                 ],
                 "next": "已完成添加",
                 "nextId": "player_contact_us_confirm_btn",
-                "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"Hello~\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/15/696b6ba95dd743f1a6668daeeef2c4f7\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/30ecf54d91cc43389a37e182d4349c65\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/04/26/9ce1dcfc51374ba19ade19c5a8e7118c?attname=125_866034f0cb9febc960f82a093d13e732.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2022/02/09/b9cab8d995a146a3ac7c0fcdaee1a919\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2022/02/09/d94a1a6777b04c43aa394587de6a68b9\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+                "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"你好\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/964be5e3217b4fa8bfa74ef47a980093?attname=dingtalk-vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -6383,8 +6417,7 @@
                 "nextId": "claim_special_offer",
                 "uiConfig": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
                 "onClose": [
-                    "open_guide_next_step({\"clearAllPrevUi\":true})",
-                    "open_guide_wizard(18)"
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
             },
             "167": {
@@ -6396,8 +6429,36 @@
                 ],
                 "next": "确定",
                 "nextId": "confirm",
-                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"项目管理\",\n        \"市场营销\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的团队规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"只有我\",\n        \"2-5\",\n        \"6-10\",\n        \"11-15\",\n        \"16-25\",\n        \"25-50\",\n        \"51-100\",\n        \"101-500\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"您的公司规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"1-19\",\n        \"20-49\",\n        \"50-99\",\n        \"100-250\",\n        \"251-500\",\n        \"501-1500\",\n        \"1500+\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 5,\n      \"name\": \"answer5\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 6,\n      \"name\": \"answer6\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
                 "onClose": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})",
+                    "open_guide_wizard(18)"
+                ]
+            },
+            "168": {
+                "uiConfigId": "player_step_ui_config_168",
+                "uiType": "customTemplate",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "我知道了",
+                "nextId": "i_knew_it",
+                "byEvent": [
+                    "datasheet_create_mirror_tip"
+                ],
+                "uiConfig": "{\n\"templateKey\":\"createMirrorTip\"\n}"
+            },
+            "169": {
+                "uiConfigId": "player_step_ui_config_165",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高请求速度</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
             }
@@ -7215,9 +7276,7 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "be_invited_to_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7226,9 +7285,7 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "complete_bind_email"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "action_name": "完成绑定邮箱奖励"
@@ -7236,26 +7293,20 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_email"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定邮箱奖励"
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "first_bind_phone"
-                ],
+                "display_name": [],
                 "integral_value": 1000,
                 "action_name": "首次绑定手机奖励"
             },
             "fission_reward": {
                 "action_code": "fission_reward",
-                "display_name": [
-                    "fission_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "notify": true,
                 "action_name": "「“友”福同享」活动 - XX空间"
@@ -7263,9 +7314,7 @@
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 1000,
                 "notify": true,
@@ -7282,9 +7331,7 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "official_invitation_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 500,
                 "notify": true,
@@ -7293,27 +7340,21 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "redemption_code"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 0,
                 "action_name": "兑换码"
             },
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
-                "display_name": [
-                    "wallet_activity_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "action_name": "XXX 活动奖励"
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "智能引导奖励"
@@ -7321,9 +7362,7 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "day_max_integral_value": 0,
-                "display_name": [
-                    "wizard_video_reward"
-                ],
+                "display_name": [],
                 "online": true,
                 "integral_value": 200,
                 "action_name": "观看引导视频奖励"

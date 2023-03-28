@@ -17,31 +17,49 @@
  */
 
 import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
-import { In } from 'typeorm';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
+import { In } from 'typeorm';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 
 @Injectable()
 export class DatasheetRecordService {
+  // private nativeModule: typeof import('@apitable/room-native-api') | undefined | null;
+
   constructor(
     private readonly recordRepo: DatasheetRecordRepository,
     private readonly recordCommentService: RecordCommentService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
   ) {}
 
+  // private async getNativeModule(): Promise<typeof import('@apitable/room-native-api') | null> {
+  //   if (this.nativeModule === undefined) {
+  //     try {
+  //       this.nativeModule = await import('@apitable/room-native-api');
+  //     } catch (_e) {
+  //       this.nativeModule = null;
+  //     }
+  //   }
+  //   return this.nativeModule;
+  // }
+
+  @Span()
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
+    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
@@ -50,7 +68,14 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, commentCountMap);
   }
 
+  @Span()
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    if (recordIds.length === 0) {
+      return this.formatRecordMap([], {}, recordIds);
+    }
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
+    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
@@ -59,6 +84,19 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, commentCountMap, recordIds);
   }
 
+  @Span()
+  async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+    // if (await this.getNativeModule()) {
+    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
+    // }
+    const records = await this.recordRepo.find({
+      select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
+      where: { recordId: In(recordIds), dstId, isDeleted },
+    });
+    return this.formatRecordMap(records, {}, recordIds);
+  }
+
+  @Span()
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
     if (recordIds) {
       // recordMap follows the order of 'records'

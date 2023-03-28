@@ -20,7 +20,7 @@ import { FC, useContext } from 'react';
 import { Select } from '@apitable/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@apitable/core';
-import { GanttOpenupOutlined, GanttPackupOutlined } from '@apitable/icons';
+import { Collapse3OpenOutlined, Collapse3Outlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
@@ -116,7 +116,7 @@ export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = props =
         {!isMobile && (
           <div className={styles.toggleBtnWrapper} style={{ left: gridVisible ? gridWidth - 11 : -11 }}>
             <ButtonPlus.Icon
-              icon={gridVisible ? <GanttPackupOutlined color={colors.thirdLevelText} /> : <GanttOpenupOutlined color={colors.thirdLevelText} />}
+              icon={gridVisible ? <Collapse3Outlined color={colors.thirdLevelText} /> : <Collapse3OpenOutlined color={colors.thirdLevelText} />}
               size="x-small"
               className={styles.toggleBtn}
               onClick={onToggleBtnClick}

@@ -14,7 +14,16 @@ services:
       - MYSQL_USER=apitable
       - MYSQL_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
-    command: ['mysqld', '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: [ 'mysqld',
+               '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION',
+               '--default-authentication-plugin=mysql_native_password',
+               '--lower-case-table-names=1',
+               '--connect_timeout=600',
+               '--net_read_timeout=600',
+               '--net_write_timeout=600',
+               '--character-set-server=utf8mb4',
+               '--collation-server=utf8mb4_unicode_ci'
+    ]
     healthcheck:
       test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
       interval: 30s
@@ -32,7 +41,7 @@ services:
     environment:
       - TZ=Asia/Singapore
     healthcheck:
-      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      test: [ 'CMD', 'redis-cli', '--raw', 'incr', 'ping' ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -40,7 +49,7 @@ services:
 
   test-rabbitmq:
     container_name: test-rabbitmq
-    image: rabbitmq:3.11.7-management
+    image: rabbitmq:3.11.9-management
     ports:
       - '5672:5672'
     networks:
@@ -51,6 +60,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_DEFAULT_USER=apitable
       - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit handshake_timeout 60000
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -87,6 +97,8 @@ services:
       target: builder
     volumes:
       - ./packages/room-server/coverage:/app/packages/room-server/coverage
+      - ./packages/room-native-api/coverage:/app/packages/room-native-api/coverage
+      - ./packages/room-native-api/target:/app/packages/room-native-api/target
     environment:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql

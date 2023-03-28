@@ -162,7 +162,8 @@ export const ModifyMobileModal: FC<React.PropsWithChildren<IModifyMobileModalPro
     if (errMsg.accountErrMsg) {
       setErrMsg({ accountErrMsg: '' });
     }
-    setState({ areaCode, account: phone });
+    const newValue = phone.replace(/\D/g, '');
+    setState({ areaCode, account: newValue });
   };
 
   const handleIdentifyingCodeChange = (
@@ -172,7 +173,7 @@ export const ModifyMobileModal: FC<React.PropsWithChildren<IModifyMobileModalPro
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
 
-    const value = e.target.value.trim();
+    const value = e.target.value.replace(/\s/g, '');
     setState({ identifyingCode: value });
   };
 
@@ -186,6 +187,7 @@ export const ModifyMobileModal: FC<React.PropsWithChildren<IModifyMobileModalPro
               error={Boolean(errMsg.accountErrMsg)}
               autoFocus
               block
+              value={state.account}
             />
           </WithTipWrapper>
           <WithTipWrapper tip={errMsg.identifyingCodeErrMsg} captchaVisible>
@@ -200,6 +202,7 @@ export const ModifyMobileModal: FC<React.PropsWithChildren<IModifyMobileModalPro
                 errMsg.accountErrMsg ||
                 errMsg.identifyingCodeErrMsg
               )}
+              value={state.identifyingCode}
             />
           </WithTipWrapper>
         </Form>

@@ -1,6 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { IconUseInCanvas } from './examples/icon-in-canvas';
-import { TitleFavoriteFilled } from '@apitable/icons';
+import { StarFilled } from '@apitable/icons';
 import { StoryType } from './constants';
 
 <Meta title={`en/components/Icons`} />
@@ -12,32 +12,32 @@ import { StoryType } from './constants';
 Import the required icons from the '@apitable/icons' library.
 
 ```jsx
-import { TitleFavoriteFilled } from '@apitable/icons';
+import { StarFilled } from '@apitable/icons';
 ```
 
 ## Basic Examples
 
 <Canvas>
-    <TitleFavoriteFilled />
+    <StarFilled />
 </Canvas>
 
 ## Color
 
 <Canvas>
-    <TitleFavoriteFilled color="rgb(123, 103, 238)" />
+    <StarFilled color="rgb(123, 103, 238)" />
 </Canvas>
 
 ## Size
 
 <Canvas>
-    <TitleFavoriteFilled color="rgb(123, 103, 238)" size={32} />
+    <StarFilled color="rgb(123, 103, 238)" size={32} />
 </Canvas>
 
 ## Inherit Parent Color
 
 <Canvas>
   <span style={{ color: 'rgb(123, 103, 238)' }}>
-    <TitleFavoriteFilled currentColor size={32} />
+    <StarFilled currentColor size={32} />
   </span>
 </Canvas>
 
@@ -48,7 +48,7 @@ The icon is formatted by the 'toString' method and becomes a graph drawn by Path
 
 ```tsx
 import React, { useEffect } from 'react';
-import { TitleFavoriteFilled } from '@apitable/icons';
+import { StarFilled } from '@apitable/icons';
 
 export const Icon2Canvas = () => {
   useEffect(()=>{
@@ -56,13 +56,13 @@ export const Icon2Canvas = () => {
     if (canvas){
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = 'red';
-      const p = new Path2D(TitleFavoriteFilled.toString());
+      const p = new Path2D(StarFilled.toString());
       ctx.fill(p);
     }
   },[])
   return (
     <div>
-      <TitleFavoriteFilled />
+      <StarFilled />
       <canvas id="canvas" height="50" style={{ backgroundColor: '#eee' }}/>
     </div>
   )

@@ -76,7 +76,7 @@ export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <Drawer
       width={'80%'}
-      visible={sideBarVisible}
+      open={sideBarVisible}
       onClose={() => {
         setSideBarVisible(false);
       }}

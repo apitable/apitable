@@ -17,7 +17,18 @@
  */
 
 // import App from 'next/app'
-import { Api, integrateCdnHost, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t, IUserInfo, TIMEZONES } from '@apitable/core';
+import {
+  Api,
+  integrateCdnHost,
+  Navigation,
+  StatusCode,
+  StoreActions,
+  Strings,
+  SystemConfig,
+  t,
+  IUserInfo,
+  getTimeZoneOffsetByUtc,
+} from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
@@ -60,18 +71,32 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
-import '../public/file/js/sensors';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+    autocapture: false,
+    capture_pageview: false,
+    capture_pageleave: false,
+    // Disable in development
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+    }
+  });
+}
 
 export interface IUserInfoError {
   code: number;
@@ -151,6 +176,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     };
     const handleComplete = () => {
+
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -186,7 +212,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       let userInfoError: IUserInfoError | undefined;
 
       /**
-       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same, so there is no need to repeat the request.
+       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same,
+       * so there is no need to repeat the request.
        */
       if (
         pathUrl &&
@@ -259,11 +286,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = defaultsDeep({
+      window.__initialization_data__.wizards = defaultsDeep(JSON.parse(res.data.wizards), {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      }, JSON.parse(res.data.wizards));
-
+      });
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -315,32 +341,36 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         setUserData({
           ...userData!,
           timeZone,
-        })
+        });
         cb?.();
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
       // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const offset = getTimeZoneOffsetByUtc(timeZone)!;
       if (!timeZone) return;
       // set default timeZone
       if (curTimezone === null) {
         updateUserTimeZone(timeZone);
       } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
         updateUserTimeZone(timeZone, () => {
-          const currentTimeZoneData = TIMEZONES.find((tz: { utc: string; tzCode: string; }) => tz.tzCode === timeZone);
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
-            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${currentTimeZoneData?.utc}(${timeZone})` }),
-          })
-        })
+            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
+            maskClosable: false,
+            onOk: () => {
+              window.location.reload();
+            }
+          });
+        });
       }
-    }
+    };
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 30 * 1000);
+    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
     return () => {
       clearInterval(interval);
     };
@@ -365,7 +395,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
 
-    <Script strategy='lazyOnload' id={'error'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`
             window.addEventListener('error', function(event) {
             if (
@@ -376,33 +406,33 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             }
           })
         `}
-    </Script>
+    </Script>}
     {/*Baidu Statistics*/}
-    {!env.DISABLE_AWSC && <Script id={'baiduAnalyse'}>
+    {env.BAIDU_ANALYSE_ID && <Script id={'baiduAnalyse'}>
       {`
           var _hmt = _hmt || [];
           (function() {
             var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?39ab4bbbb01e48bee90b6b17a067b9f1";
+            hm.src = "https://hm.baidu.com/hm.js?${env.BAIDU_ANALYSE_ID}";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
           })();
         `}
     </Script>}
-    <Script id={'userAgent'}>
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
             !(function(c,i,e,b){var h=i.createElement("script");
             var f=i.getElementsByTagName("script")[0];
             h.type="text/javascript";
             h.crossorigin=true;
-            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"dta_2_83919"}));
+            h.onload=function(){c[b]||(c[b]=new c.wpkReporter({bid:"${env.DINGTALK_MONITOR_PLATFORM_ID}"}));
             c[b].installAll()};
             f.parentNode.insertBefore(h,f);
             h.src=e})(window,document,"https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js","__wpk");
           }
         `}
-    </Script>
+    </Script>}
     {/* script loading js */}
     <Script id={'loadingAnimation'} strategy='lazyOnload'>
       {`
@@ -428,24 +458,34 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <>
         <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
         <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
-        <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
       </>
     }
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
-      <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
-        {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
-          <Provider store={store}>
-            <RouterProvider>
-              <ThemeWrapper>
-                <Component {...pageProps} userInfo={userData} />
-              </ThemeWrapper>
-            </RouterProvider>
-          </Provider>
+      <div className={'__next_main'}>
+        {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
+          <PostHogProvider client={posthog}>
+            <Provider store={store}>
+              <RouterProvider>
+                <ThemeWrapper>
+                  <Component {...pageProps} userInfo={userData} />
+                </ThemeWrapper>
+              </RouterProvider>
+            </Provider>
+          </PostHogProvider>
         </div>}
         {
-          ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-            <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-            <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!)} className='script-loading-logo-text-img' alt='logo_text_dark'/>
+          <div
+            className={classNames(
+              'script-loading-wrap-default',
+              { 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }
+            )}>
+            {
+              ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
+              </div>
+            }
           </div>
         }
       </div>
@@ -468,8 +508,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 }
 
 /**
- * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus. When an offset is detected, it needs to be reset manually.
- * The reason why the onBlur event is not used here is that after the editing element is out of focus, other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
+ * When editing a cell in Safari, main will be shifted up by 7 pixels after the element is out of focus.
+ * When an offset is detected, it needs to be reset manually.
+ * The reason why the onBlur event is not used here is that after the editing element is out of focus,
+ * other elements will be focused, and the focused element is a child of main, so onBlur will not be triggered as expected.
  * @param e
  */
 const onScroll = (e: React.UIEvent<HTMLDivElement>) => {

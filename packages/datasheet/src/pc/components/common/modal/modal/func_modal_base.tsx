@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
@@ -23,7 +24,6 @@ import { store } from 'pc/store';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { IModalFuncBaseProps } from './modal.interface';
 import { ModalWithTheme } from './modal_with_theme';
 import styles from './style.module.less';
@@ -61,7 +61,7 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
   //   }, 0);
   // }
   const finalIcon = icon ||
-    (type ? <div className={styles.statusIcon}>{StatusIconFunc({ type, width: 24, height: 24 })}</div> : null);
+    (type ? <div className={styles.statusIcon}>{StatusIconFunc({ type })}</div> : null);
 
   const finalOnOk = () => {
     onOk && onOk();
@@ -87,7 +87,7 @@ export const FuncModalBase = (config: IModalFuncBaseProps) => {
             width={416}
             closable={false}
             centered
-            closeIcon={<CloseIcon />}
+            closeIcon={<CloseOutlined />}
             className={classNames(styles.funcModal, className)}
             onOk={finalOnOk}
             {...rest}

@@ -47,7 +47,7 @@ public class ResourceDefinition implements Serializable {
 
     private String resourceName;
 
-    private String resourceUrl;
+    private String[] resourceUrls;
 
     private String[] tags;
 

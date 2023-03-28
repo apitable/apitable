@@ -18,7 +18,7 @@
 
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
+import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 // @ts-ignore
@@ -41,12 +41,12 @@ import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/sto
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
+import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
-import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
-import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -230,7 +230,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
         () => {
           handleSetSideBarByUser(!sideBarVisible, panelVisible);
         },
-      ],
+      ]
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -346,7 +346,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
                     }}
                     data-test-id='sidebar-toggle-btn'
                   >
-                    {!sideBarVisible ? <ExpandOutlined /> : <CollapseOutlined />}
+                    {!sideBarVisible ? <CollapseOpenOutlined /> : <CollapseOutlined />}
                   </div>
                 </Tooltip>
               </div>

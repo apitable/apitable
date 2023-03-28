@@ -17,9 +17,9 @@
  */
 
 import { FC } from 'react';
-import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
 import styles from './style.module.less';
 import { t, Strings } from '@apitable/core';
+import { WarnOutlined } from '@apitable/icons';
 
 interface IErrorContentProps {
   err?: string;
@@ -30,7 +30,7 @@ export const Fail: FC<React.PropsWithChildren<IErrorContentProps>> = props => {
   return (
     <div className={styles.fail}>
       <span className={styles.errorIcon}>
-        <WarnIcon />
+        <WarnOutlined />
       </span>
       <div className={styles.text}>
         <span>{err || t(Strings.import_failed)}</span>

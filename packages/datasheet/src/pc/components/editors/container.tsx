@@ -45,7 +45,7 @@ import {
   ViewType
 } from '@apitable/core';
 
-import { isEqual, noop } from 'lodash';
+import { isEqual, noop, omit } from 'lodash';
 import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { useDispatch } from 'pc/hooks';
@@ -64,6 +64,7 @@ import { AttachmentEditor } from './attachment_editor';
 import { CheckboxEditor } from './checkbox_editor';
 import { DateTimeEditor } from './date_time_editor';
 import { EnhanceTextEditor } from './enhance_text_editor';
+import { CascaderEditor } from './cascader_editor';
 import { useCellEditorVisibleStyle } from './hooks';
 import { IContainerEdit, IEditor } from './interface';
 import { LinkEditor } from './link_editor';
@@ -83,6 +84,7 @@ import { useUnmount } from 'ahooks';
 import { setEndEditCell } from './end_edit_cell';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
+import dayjs from 'dayjs';
 
 export interface IEditorPosition {
   width: number;
@@ -126,7 +128,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
     return null;
   });
-  const viewId = useSelector(state => Selectors.getActiveView(state))!;
+  const viewId = useSelector(state => Selectors.getActiveViewId(state))!;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const recordEditable = field ? Field.bindModel(field).recordEditable() : false;
@@ -384,8 +386,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     cellMove(CellDirection.Left);
   };
 
-  const appendNewRow = () => {
-    appendRow();
+  const appendNewRow = async() => {
+    await appendRow();
     const state = store.getState();
     setTimeout(() => {
       const activeCellUIIndex = Selectors.getCellUIIndex(state, activeCell!);
@@ -681,17 +683,35 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       return;
     }
     const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
-    const formatCurAlarm = curAlarm ? {
-      ...curAlarm,
-      time: curAlarm.time === '' ? '00:00' : curAlarm.time
-    } : undefined;
+
+    let formatCurAlarm = curAlarm;
+
+    if (curAlarm) {
+      const subtractMatch = curAlarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
+      if (!curAlarm?.subtract || (subtractMatch[2] !== 'm' && subtractMatch[2] !== 'h')) {
+        const noChange = curAlarm?.alarmAt && !curAlarm?.time;
+        if (!noChange) {
+          const timeZone = field.property.timeZone;
+          let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
+          if (subtractMatch) {
+            alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
+          }
+          const time = curAlarm?.time || (timeZone ? dayjs(curAlarm?.alarmAt).tz(timeZone) : dayjs(curAlarm?.alarmAt)).format('HH:mm');
+          alarmAt = dayjs.tz(`${alarmAt.format('YYYY-MM-DD')} ${time}`, timeZone);
+          formatCurAlarm = {
+            ...omit(formatCurAlarm, 'time'),
+            alarmAt: alarmAt.valueOf()
+          };
+        }
+      }
+    }
 
     if (
       field.type === FieldType.DateTime && isEqual(cellValue, value) &&
       !isEqual(alarm, formatCurAlarm) &&
       convertAlarmStructure
     ) {
-      resourceService.instance!.commandManager!.execute({
+      resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetDateTimeCellAlarm,
         recordId: record.id,
         fieldId: field.id,
@@ -767,6 +787,17 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.Text:
       case FieldType.SingleText:
         return <TextEditor style={editorRect} ref={editorRef} {...commonProps} />;
+      case FieldType.Cascader:
+        return (
+          <CascaderEditor
+            style={editorRect}
+            ref={editorRef}
+            {...commonProps}
+            field={field}
+            toggleEditing={toggleEditing}
+            recordId={record.id}
+          />
+        );
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:

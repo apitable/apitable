@@ -59,7 +59,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         excludes.add("/swagger-resources/**");
         excludes.add("/swagger-ui/**");
         excludes.add("/swagger-ui.html");
-        excludes.add("/v3/api-docs");
         excludes.add("/v3/api-docs/**");
         registry.addInterceptor(resourceInterceptor)
             .excludePathPatterns(excludes);

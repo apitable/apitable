@@ -21,7 +21,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { FC, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { ErrorWidget } from '../widget_loader';
+import { ErrorWidget } from '../error_widget';
 
 enum PreLoadErrorCode {
   NotSupportMobile,

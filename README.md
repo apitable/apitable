@@ -157,7 +157,7 @@ APITable provides a range of amazing features, from the personal to the enterpri
   - **100k+** data rows with real-time collaboration.
   - Full-stack API access, from `Data` to `Metadata`.
   - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
 - Beautiful and Rich Database-Spreadsheet UI
   - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
   - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
@@ -269,10 +269,18 @@ If you want to set up your local development environment, read our [🧑‍💻 
 
 Welcome, and thank you for your interest in contributing to APITable!
 
-In addition to writing code, there are many ways for you to contribue.
+In addition to writing code, there are many ways for you to contribute.
 
 You can contribute as following:
 - Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
+
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -310,6 +318,7 @@ APITable use these common conventions:
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
 - What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - What is the Architecture Overview? -> [Understand APITable - Architecture Overview](./docs/contribute/architecute-overview.md)
 
 ### Documentations
@@ -325,7 +334,7 @@ APITable use these common conventions:
 ### Future Features
 
 - Heavy-code Interface Builder
-- Embbedable 3rd party documentation components
+- Embeddable 3rd party documentation components
 - SQL-like Domain-Specific Languages
 - As an IdP
 - Advanced automation robot

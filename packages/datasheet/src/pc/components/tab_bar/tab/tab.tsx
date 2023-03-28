@@ -36,7 +36,6 @@ import { KeyCode, stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import IconOption from 'static/icon/datasheet/viewtoolbar/datasheet_icon_viewlist.svg';
 // import { Display } from '../../tool_bar/display/display';
 // import { DescriptionModal } from '../description_modal';
 import { TabAddView } from '../tab_add_view';
@@ -182,7 +181,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
         isOnlyView ?
           <div className={styles.embedTitle}>
             {
-              viewEditor ? <>
+              viewEditor && editable ? <>
                 <input
                   className={classNames(styles.inputBox, {
                     [styles.error]: errMsg

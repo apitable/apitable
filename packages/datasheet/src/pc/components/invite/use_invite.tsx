@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions, IInviteLinkInfo, IInviteEmailInfo } from '@apitable/core';
+import { Api, IInviteMemberList, IReduxState, Navigation, StoreActions, IInviteLinkInfo, IInviteEmailInfo, StatusCode } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { IParams } from 'pc/components/route_manager/interface';
 import { secondStepVerify } from 'pc/hooks/utils';
@@ -24,7 +24,7 @@ import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Message } from 'pc/components/common';
 interface IJoinFuncProps {
   fromLocalStorage?: boolean;
 }
@@ -47,7 +47,7 @@ export const useLinkInvite = () => {
       if (success) {
         Api.joinViaSpace(linkToken, nodeId).then(res => {
           if (res.data.success) {
-            Router.redirect(Navigation.WORKBENCH, { params: { spaceId: info.spaceId }, clearQuery: true });
+            Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
           }
         });
@@ -70,11 +70,13 @@ export const useLinkInvite = () => {
       reGetLinkInfo(linkToken, nodeId);
       return;
     }
+        
     // Get data from the store
     if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
       Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then(res => {
+
         if (res.data.success) {
-          Router.redirect(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
+          Router.redirect(Navigation.WORKBENCH, { query: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
           Router.redirect(Navigation.WORKBENCH,);
         }
@@ -153,6 +155,11 @@ export const useEmailInviteInModal = (
         if (secondStepVerify(code)) {
           return;
         }
+        if(code === StatusCode.COMMON_ERR) {
+          Message.error({ content: message });
+          return;
+        }
+        
         setErr(message);
       }
     });

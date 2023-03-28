@@ -18,28 +18,15 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.control.entity.ControlRoleEntity;
 import com.apitable.control.infrastructure.ControlType;
 import com.apitable.control.infrastructure.role.ControlRole;
@@ -48,9 +35,11 @@ import com.apitable.control.infrastructure.role.DefaultWorkbenchRole;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.UnitMapper;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IOrganizationService;
@@ -66,25 +55,41 @@ import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.constants.AuditConstants;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.page.PageHelper;
+import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.service.ISpaceRoleService;
+import com.apitable.workspace.dto.ControlMemberDTO;
 import com.apitable.workspace.dto.ControlRoleInfo;
 import com.apitable.workspace.dto.ControlRoleUnitDTO;
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.SimpleNodeInfo;
+import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.service.INodeRoleService;
+import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleUnit;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SpringContextHolder;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 @Service
 @Slf4j
@@ -95,6 +100,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Resource
     private MemberMapper memberMapper;
+
+    @Resource
+    private INodeService iNodeService;
 
     @Resource
     private NodeMapper nodeMapper;
@@ -129,36 +137,6 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     @Resource
     private IRoleService iRoleService;
 
-    @Resource
-    private TeamMapper teamMapper;
-
-    private static SimpleNodeInfo findParentRolesExtend(List<SimpleNodeInfo> simpleNodeInfos, SimpleNodeInfo simpleNodeInfo) {
-        SimpleNodeInfo parent = null;
-        for (SimpleNodeInfo nodeInfo : simpleNodeInfos) {
-            if (simpleNodeInfo.getParentId().equals(nodeInfo.getNodeId())) {
-                if (!nodeInfo.getExtend()) {
-                    parent = nodeInfo;
-                    break;
-                }
-                else {
-                    parent = findParentRolesExtend(simpleNodeInfos, nodeInfo);
-                }
-            }
-        }
-        return parent;
-    }
-
-    private static SimpleNodeInfo findNode(List<SimpleNodeInfo> nodeTrees, String nodeId) {
-        SimpleNodeInfo node = null;
-        for (SimpleNodeInfo nodeTree : nodeTrees) {
-            if (nodeTree.getNodeId().equals(nodeId)) {
-                node = nodeTree;
-                break;
-            }
-        }
-        return node;
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void enableNodeRole(Long userId, String spaceId, String nodeId, boolean includeExtend) {
@@ -166,13 +144,13 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         // Enable the node to specify permissions and set the current member organization unit role to Owner
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
         log.info("「{}」open node「{}」specify permissions，and set up units「{}」role「{}」", userId, nodeId, unitId, Node.OWNER);
+        if (includeExtend) {
+            addExtendNodeRole(userId, spaceId, nodeId);
+        }
         // create a permission control unit
         iControlService.create(userId, spaceId, nodeId, ControlType.NODE);
         // create a control unit role
         iControlRoleService.addControlRole(userId, nodeId, Collections.singletonList(unitId), Node.OWNER);
-        if (includeExtend) {
-            addExtendNodeRole(userId, spaceId, nodeId);
-        }
     }
 
     @Override
@@ -330,16 +308,24 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     @Override
     public String getNodeExtendNodeId(String nodeId) {
         log.info("Gets the node ID inherited by the node");
-        // Query the parent node ID corresponding to the node. In order to improve performance, query all parent nodes at one time to obtain the parent tree structure of the current node.
-        List<SimpleNodeInfo> nodeList = nodeMapper.selectAllParentNodeIdsByNodeIds(Collections.singletonList(nodeId), false);
-        // Query whether the parent directory has the specified mode
-        SimpleNodeInfo node = findNode(nodeList, nodeId);
-        SimpleNodeInfo parent = findParentRolesExtend(nodeList, node);
-        if (parent == null) {
-            // None of the parent nodes have the right to inherit, and return null directly.
-            return null;
+        List<String> nodeIds = new ArrayList<>();
+        nodeIds.add(nodeId);
+        String parentId = nodeId;
+        while (true) {
+            SimpleNodeInfo node = nodeMapper.selectNodeInfoWithPermissionStatus(parentId);
+            if (node == null || node.getType() == NodeType.ROOT.getNodeType()) {
+                return null;
+            }
+            if (!node.getExtend()) {
+                return node.getNodeId();
+            }
+            parentId = node.getParentId();
+            // prevent infinite loop
+            if (nodeIds.contains(parentId)) {
+                throw new BusinessException("Data Exception!");
+            }
+            nodeIds.add(parentId);
         }
-        return parent.getNodeId();
     }
 
     @Override
@@ -456,7 +442,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         results.forEach(result -> {
             result.setRole(defaultControlRole.getRoleTag());
-            result.setIsAdmin(admins.contains(result.getMemberId()));
+            result.setIsWorkbenchAdmin(admins.contains(result.getMemberId()));
         });
 
         return results;
@@ -464,29 +450,59 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<NodeRoleMemberVo> getNodeRoleMembers(String spaceId, String nodeId) {
-        // administrator
+        Map<Long, ControlMemberDTO> memberControlRoleMap =
+            this.getMemberControlRoleMap(spaceId, nodeId);
+        List<NodeRoleMemberVo> results =
+            memberMapper.selectNodeRoleMemberByIds(memberControlRoleMap.keySet());
+        // Give permission value
+        results.forEach(result -> {
+            ControlMemberDTO controlMemberDTO = memberControlRoleMap.get(result.getMemberId());
+            result.setRole(controlMemberDTO.getControlRoleTag());
+            result.setIsWorkbenchAdmin(controlMemberDTO.getIsAdmin());
+        });
+        return results;
+    }
+
+    private Map<Long, ControlMemberDTO> getMemberControlRoleMap(String spaceId, String nodeId) {
+        Map<Long, ControlMemberDTO> memberRoleMap = new LinkedHashMap<>();
+        // Administrator and control owner
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         Long ownerId = this.getNodeOwnerId(nodeId);
-        // group by role
+        for (Long memberId : admins) {
+            if (memberRoleMap.containsKey(memberId)) {
+                continue;
+            }
+            memberRoleMap.put(memberId, new ControlMemberDTO(memberId, true,
+                Objects.equals(memberId, ownerId), Node.MANAGER));
+        }
+        if (ownerId != null && !memberRoleMap.containsKey(ownerId)) {
+            memberRoleMap.put(ownerId, new ControlMemberDTO(ownerId, false,
+                true, Node.MANAGER));
+        }
+
+        // Get unit group by role
         Map<String, List<ControlRoleUnitDTO>> roleUnitMap = groupRoleByNodeId(nodeId);
-        Map<String, List<Long>> roleMemberMap = new LinkedHashMap<>(roleUnitMap.size());
-        roleMemberMap.put(Node.MANAGER, (List<Long>) CollUtil.union(admins, Collections.singletonList(ownerId)));
         for (Map.Entry<String, List<ControlRoleUnitDTO>> entry : roleUnitMap.entrySet()) {
             List<Long> memberIds = new ArrayList<>();
             List<Long> teamIds = new ArrayList<>();
             List<Long> roleIds = new ArrayList<>();
             for (ControlRoleUnitDTO nodeRoleDto : entry.getValue()) {
                 UnitType unitType = UnitType.toEnum(nodeRoleDto.getUnitType());
-                if (unitType == UnitType.TEAM) {
-                    teamIds.add(nodeRoleDto.getUnitRefId());
-                }
-                else if (unitType == UnitType.MEMBER) {
-                    memberIds.add(nodeRoleDto.getUnitRefId());
-                }
-                else if (unitType == UnitType.ROLE) {
-                    roleIds.add(nodeRoleDto.getUnitRefId());
+                switch (unitType) {
+                    case TEAM:
+                        teamIds.add(nodeRoleDto.getUnitRefId());
+                        break;
+                    case MEMBER:
+                        memberIds.add(nodeRoleDto.getUnitRefId());
+                        break;
+                    case ROLE:
+                        roleIds.add(nodeRoleDto.getUnitRefId());
+                        break;
+                    default:
+                        break;
                 }
             }
+            // Summary query team and role
             if (CollUtil.isNotEmpty(teamIds)) {
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
                 if (CollUtil.isNotEmpty(teamMemberIds)) {
@@ -497,37 +513,68 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(roleIds);
                 memberIds.addAll(roleMemberIds);
             }
-            if (entry.getKey().equals(Node.MANAGER)) {
-                List<Long> values = roleMemberMap.get(entry.getKey());
-                values.addAll(memberIds);
-                roleMemberMap.put(entry.getKey(), values);
-            }
-            else {
-                roleMemberMap.put(entry.getKey(), CollUtil.distinct(memberIds));
-            }
-        }
-
-        // filter duplicate permissions
-        Map<Long, String> memberRoleMap = new LinkedHashMap<>();
-        for (Map.Entry<String, List<Long>> entry : roleMemberMap.entrySet()) {
-            if (CollUtil.isNotEmpty(entry.getValue())) {
-                for (Long memberId : entry.getValue()) {
-                    if (!memberRoleMap.containsKey(memberId)) {
-                        memberRoleMap.put(memberId, entry.getKey());
-                    }
+            for (Long memberId : memberIds) {
+                if (memberRoleMap.containsKey(memberId)) {
+                    continue;
                 }
+                memberRoleMap.put(memberId, new ControlMemberDTO(memberId, entry.getKey()));
             }
         }
+        return memberRoleMap;
+    }
 
-        List<NodeRoleMemberVo> results = memberMapper.selectNodeRoleMemberByIds(memberRoleMap.keySet());
-
-        // give permission value
-        results.forEach(result -> {
-            result.setRole(memberRoleMap.get(result.getMemberId()));
-            result.setIsAdmin(admins.contains(result.getMemberId()));
+    @Override
+    public IPage<NodeRoleMemberVo> getNodeRoleMembersPage(Page<NodeRoleMemberVo> page,
+        String spaceId) {
+        // Query page member id
+        IPage<NodeRoleMemberVo> result =
+            memberMapper.selectIncompleteMemberVo(page, spaceId);
+        if (result.getRecords().isEmpty()) {
+            return result;
+        }
+        // Query member information
+        List<Long> memberIds =
+            result.getRecords().stream().map(NodeRoleMemberVo::getMemberId).collect(Collectors.toList());
+        List<NodeRoleMemberVo> memberVos =
+            memberMapper.selectNodeRoleMemberByIds(memberIds);
+        result.setRecords(memberVos);
+        // Give permission value
+        String defaultRoleTag = (new DefaultWorkbenchRole()).getRoleTag();
+        List<Long> admins =
+            iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
+        result.getRecords().forEach(record -> {
+            record.setRole(defaultRoleTag);
+            record.setIsWorkbenchAdmin(admins.contains(record.getMemberId()));
         });
+        return result;
+    }
 
-        return results;
+    @Override
+    public PageInfo<NodeRoleMemberVo> getNodeRoleMembersPageInfo(Page<NodeRoleMemberVo> page,
+        String spaceId, String nodeId) {
+        Map<Long, ControlMemberDTO> memberControlRoleMap =
+            this.getMemberControlRoleMap(spaceId, nodeId);
+        //
+        int sub = (int) (page.getCurrent() - 1) * (int) page.getSize();
+        if (sub > memberControlRoleMap.size()) {
+            return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+                memberControlRoleMap.size(), new ArrayList<>());
+        }
+
+        int end = (sub + page.getSize()) > memberControlRoleMap.size()
+            ? memberControlRoleMap.size() : sub + (int) page.getSize();
+        List<Long> memberIds =
+            new ArrayList<>(memberControlRoleMap.keySet()).subList(sub, end);
+        List<NodeRoleMemberVo> results = memberMapper.selectNodeRoleMemberByIds(memberIds);
+        // Give permission value
+        results.forEach(result -> {
+            ControlMemberDTO controlMemberDTO = memberControlRoleMap.get(result.getMemberId());
+            result.setRole(controlMemberDTO.getControlRoleTag());
+            result.setIsWorkbenchAdmin(controlMemberDTO.getIsAdmin());
+            result.setIsControlOwner(controlMemberDTO.getIsControlOwner());
+        });
+        return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+            memberControlRoleMap.size(), results);
     }
 
     @Override
@@ -591,16 +638,18 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     }
 
     @Override
-    public void handleNodeRoleUnitsTeamPathName(List<NodeRoleUnit> nodeRoleMemberVos, String spaceId) {
-        // get all member's ids
-        List<Long> memberIds = nodeRoleMemberVos.stream().map(NodeRoleUnit::getUnitId).collect(toList());
-        // handle member's team name. get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
-        for (NodeRoleUnit member : nodeRoleMemberVos) {
-            if (memberToTeamPathInfoMap.containsKey(member.getUnitId())) {
-                member.setTeamData(memberToTeamPathInfoMap.get(member.getUnitId()));
-            }
+    public List<SimpleNodeInfo> getNodeInfoWithPermissionStatus(List<String> nodeIds) {
+        List<NodeBaseInfoDTO> parentNodes = iNodeService.getParentPathNodes(nodeIds, true);
+        if (CollUtil.isEmpty(parentNodes)) {
+            return new ArrayList<>();
         }
+        List<String> controlIds = parentNodes.stream()
+            .map(NodeBaseInfoDTO::getNodeId).collect(toList());
+        List<String> existedControlIds = iControlService.getExistedControlId(controlIds);
+        return parentNodes.stream()
+            .map(i -> new SimpleNodeInfo(i.getNodeId(), i.getParentId(), i.getType(),
+                !existedControlIds.contains(i.getNodeId())))
+            .collect(Collectors.toList());
     }
 
     private void addExtendNodeRole(Long userId, String spaceId, String nodeId) {

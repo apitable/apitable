@@ -446,17 +446,18 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             .orElseThrow(() -> new BusinessException("invite member error"));
         // history member can be restored
         if (existedMember.getIsDeleted()) {
-          member.setUserId(emailUserMap.get(inviteEmail));
-          member.setIsActive(emailUserMap.containsKey(inviteEmail));
-          restoreMembers.add(existedMember);
+            existedMember.setUserId(emailUserMap.get(inviteEmail));
+            existedMember.setIsActive(emailUserMap.containsKey(inviteEmail));
+            existedMember.setIsPoint(true);
+            restoreMembers.add(existedMember);
         }
         shouldSendInvitationNotify.add(existedMember.getId());
-      } else {
-        // email is not exist in space
-        member.setId(IdWorker.getId());
-        createInactiveMember(member, spaceId, inviteEmail);
-        members.add(member);
+        return;
       }
+      // email is not exist in space
+      member.setId(IdWorker.getId());
+      createInactiveMember(member, spaceId, inviteEmail);
+      members.add(member);
 
       // check email user if existed
       if (emailUserMap.containsKey(inviteEmail)) {
@@ -531,6 +532,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
       log.error("Send invitation email {} fail, Cause: {}", email, e);
       // record fail
       spaceInviteRecordMapper.insert(record.setSendStatus(false).setStatusDesc("Fail"));
+      throw new BusinessException(e.getMessage());
     }
   }
 
@@ -590,7 +592,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
           memberIds.addAll(members);
         } else {
           List<Long> subIds =
-              teamMapper.selectAllSubTeamIdsByParentId(value.getId(), true);
+              iTeamService.getAllTeamIdsInTeamTree(value.getId());
           List<Long> members = teamMemberRelMapper.selectMemberIdsByTeamIds(subIds);
           memberIds.addAll(members);
         }

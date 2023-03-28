@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ActionConstants } from '../../../../exports/store';
-import { ISubscriptions } from '../../../../exports/store/interfaces';
+import { ActionConstants } from 'exports/store';
+import { ISubscriptions } from 'exports/store/interfaces';
 import { getSubscriptions } from '../../api/datasheet_api';
 
 /**

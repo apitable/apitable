@@ -18,30 +18,16 @@
 
 import { colorVars, TextButton, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName,
-  DATASHEET_ID,
-  Events,
-  ExecuteResult,
-  FieldType,
-  IDatasheetClientState,
-  IGalleryViewProperty,
-  IGridViewProperty,
-  IKanbanViewProperty,
-  IViewProperty,
-  LayoutType,
-  Player,
-  ResourceType,
-  RowHeightLevel,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-  UN_GROUP,
-  ViewType,
+  CollaCommandName, DATASHEET_ID, Events, ExecuteResult, FieldType, IDatasheetClientState, IGalleryViewProperty, IGridViewProperty,
+  IKanbanViewProperty, IViewProperty, LayoutType, Player, ResourceType, RowHeightLevel, Selectors, StoreActions, Strings, t, UN_GROUP, ViewType,
 } from '@apitable/core';
-import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@apitable/icons';
+import {
+  AddCircleOutlined, ApiOutlined, ChevronDownOutlined, EyeOpenOutlined, FilterOutlined, GalleryOutlined, GroupOutlined, HistoryFilled, ListOutlined,
+  RankOutlined, RobotOutlined, SettingFilled, SettingOutlined, ShareOutlined, StyleOutlined, WidgetOutlined,
+} from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
+import { get } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
@@ -51,20 +37,12 @@ import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { getEnvVariables, isIframe } from 'pc/utils/env';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import IconAdd from 'static/icon/datasheet/addrow.svg';
-import GalleryListIcon from 'static/icon/datasheet/gallery/datasheet_icon_list.svg';
-import SettingIcon from 'static/icon/datasheet/gallery/datasheet_icon_setting.svg';
-import GalleryIcon from 'static/icon/datasheet/gallery/datasheet_icon_tiling.svg';
-import FiltrationIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_filter_normal.svg';
-import GroupIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_group_normal.svg';
-import HideIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_hide_normal.svg';
-import RankIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rank_normal.svg';
-import ShareIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_share_normal.svg';
 import { Share } from '../catalog/share';
 import { Collapse, ICollapseFunc } from '../common/collapse';
 import { ScreenSize } from '../common/component_display';
@@ -79,8 +57,6 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
-import { get } from 'lodash';
-import { getEnvVariables, isIframe } from 'pc/utils/env';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -214,8 +190,7 @@ const ToolbarBase = () => {
   const appendRecord = () => {
     const state = store.getState();
     const view = Selectors.getCurrentView(state)!;
-    const collaCommandManager = resourceService.instance!.commandManager;
-    const result = collaCommandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -362,11 +337,11 @@ const ToolbarBase = () => {
   }, [setIsFindOpen, sideBarVisible, toggleType, isFindOpen, size, offsetWidth]);
 
   // Mutually exclusive with the right-hand area.
-  const handleToggleRightBar = (toggleKey: ShortcutActionName) => {
+  const handleToggleRightBar = async(toggleKey: ShortcutActionName) => {
     // Close sidebar.
     if (isSideRecordOpen) {
       store.dispatch(StoreActions.toggleSideRecord(false));
-      closeAllExpandRecord();
+      await closeAllExpandRecord();
     }
 
     const panelMap = {
@@ -375,14 +350,14 @@ const ToolbarBase = () => {
       [ShortcutActionName.ToggleRobotPanel]: isRobotPanelOpen,
       [ShortcutActionName.ToggleTimeMachinePanel]: isTimeMachinePanelOpen,
     };
-    Object.keys(panelMap).forEach((key: string) => {
+    for (const key in panelMap) {
       if (panelMap[key] && key !== toggleKey) {
-        ShortcutActionManager.trigger(key as ShortcutActionName);
+        await ShortcutActionManager.trigger(key as ShortcutActionName);
       }
-    });
+    }
 
     onSetClickType && onSetClickType(SideBarClickType.ToolBar);
-    ShortcutActionManager.trigger(toggleKey);
+    await ShortcutActionManager.trigger(toggleKey);
   };
 
   const embedSetting = useMemo(() => {
@@ -491,7 +466,7 @@ const ToolbarBase = () => {
       component: (
         <ToolItem
           key='timeMachine'
-          icon={<RecoverOutlined size={16} />}
+          icon={<HistoryFilled size={16} />}
           text={t(Strings.time_machine)}
           onClick={() => handleToggleRightBar(ShortcutActionName.ToggleTimeMachinePanel)}
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isTimeMachinePanelOpen })}
@@ -519,7 +494,7 @@ const ToolbarBase = () => {
             disabled={!permissions.rowCreatable}
             className={styles.toolbarItem}
             onClick={appendRecord}
-            icon={<IconAdd width={16} height={16} fill={colors.secondLevelText} className={styles.toolIcon} />}
+            icon={<AddCircleOutlined size={16} color={colors.secondLevelText} className={styles.toolIcon} />}
             text={isGanttView ? t(Strings.gantt_add_record) : t(Strings.insert_record)}
             id={'toolInsertRecord'}
           />
@@ -567,7 +542,7 @@ const ToolbarBase = () => {
           <ToolItem
             id={DATASHEET_ID.TOOL_BAR_VIEW_SETTING}
             showLabel={showIconBarLabel}
-            icon={<SettingIcon width={16} height={16} fill={colors.secondLevelText} className={styles.toolIcon} />}
+            icon={<SettingOutlined size={16} color={colors.secondLevelText} className={styles.toolIcon} />}
             text={t(Strings.org_chart_setting)}
             disabled={!visualizationEditable || disabledWithMirror}
             isActive={orgChartViewStatus?.settingPanelVisible}
@@ -621,7 +596,7 @@ const ToolbarBase = () => {
                 isActive={hiddenKanbanGroupCount > 0}
                 onClick={toggleKanbanGroupSettingVisible}
                 className={classNames(styles.filter, styles.toolbarItem, 'toolBarFilter')}
-                icon={<HideIcon width={16} height={16} fill={colors.primaryColor} className={styles.toolIcon} />}
+                icon={<EyeOpenOutlined size={16} color={colors.primaryColor} className={styles.toolIcon} />}
                 text={
                   hiddenKanbanGroupCount > 0 ? t(Strings.hidden_groups_by_count, { count: hiddenKanbanGroupCount }) : t(Strings.hide_kanban_grouping)
                 }
@@ -653,7 +628,7 @@ const ToolbarBase = () => {
                 [styles.toolbarItem]: true,
               })}
               icon={
-                <GroupIcon width={16} height={16} className={styles.toolIcon} fill={isExitGroup ? colors.primaryColor : colors.secondLevelText} />
+                <GroupOutlined size={16} className={styles.toolIcon} color={isExitGroup ? colors.primaryColor : colors.secondLevelText} />
               }
               text={
                 isExitGroup
@@ -676,7 +651,7 @@ const ToolbarBase = () => {
               className={classNames({
                 [styles.toolbarItem]: true,
               })}
-              icon={<RankIcon width={16} height={16} fill={keepSort ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
+              icon={<RankOutlined size={16} color={keepSort ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
               text={keepSort && !isMobile ? t(Strings.sort_count_tip, { count: activeView.sortInfo!.rules.length }) : t(Strings.sort)}
               showViewLockModal={showViewLockModal}
             />
@@ -690,25 +665,23 @@ const ToolbarBase = () => {
               disabled={!visualizationEditable || disabledWithMirror}
               className={styles.toolbarItem}
               icon={getRowHeightIcon((activeView as IGridViewProperty).rowHeightLevel || RowHeightLevel.Short, {
-                fill: colors.secondLevelText,
+                color: colors.secondLevelText,
                 className: styles.toolIcon,
-                width: '16',
-                height: '16',
+                size: 16,
               })}
               text={t(Strings.row_height)}
               showViewLockModal={showViewLockModal}
             />
           </Display>
         )}
-        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && embedSetting.shareBtn && !isIframe() && (
+        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && !embedId && !isIframe() && (
           <Display type={ToolHandleType.Share}>
             <ToolItem
               showLabel={showIconBarLabel}
               icon={
-                <ShareIcon
-                  width={16}
-                  height={16}
-                  fill={nodeShared ? colors.primaryColor : colors.secondLevelText}
+                <ShareOutlined
+                  size={16}
+                  color={nodeShared ? colors.primaryColor : colors.secondLevelText}
                   className={styles.toolIcon}
                 />
               }
@@ -774,9 +747,9 @@ function GalleryLayoutNode(activeView: IViewProperty, showLabel: boolean, disabl
         className={styles.toolbarItem}
         icon={
           activeView.style.layoutType === LayoutType.List ? (
-            <GalleryListIcon width={15} height={15} className={styles.toolIcon} fill={colorVars.secondLevelText} />
+            <ListOutlined size={15} className={styles.toolIcon} color={colorVars.secondLevelText} />
           ) : (
-            <GalleryIcon width={15} height={15} className={styles.toolIcon} fill={colorVars.secondLevelText} />
+            <GalleryOutlined size={15} className={styles.toolIcon} color={colorVars.secondLevelText} />
           )
         }
         text={t(Strings.layout)}
@@ -800,7 +773,7 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
         showLabel={showLabel}
         disabled={disabled}
         className={classNames(styles.filter, styles.toolbarItem, 'toolBarFilter')}
-        icon={<FiltrationIcon width={16} height={16} fill={colorVars.secondLevelText} className={styles.toolIcon} />}
+        icon={<FilterOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />}
         text={t(Strings.filter)}
       />
     );
@@ -816,7 +789,7 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLock
       disabled={disabled}
       isActive
       className={classNames(styles.filter, styles.toolbarItem, 'toolBarFilter')}
-      icon={<FiltrationIcon width={16} height={16} fill={colorVars.primaryColor} className={styles.toolIcon} />}
+      icon={<FilterOutlined size={16} color={colorVars.primaryColor} className={styles.toolIcon} />}
       text={
         isMobile
           ? t(Strings.filter)
@@ -834,7 +807,6 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
   const isGridType = viewType === ViewType.Grid;
   const isGanttType = viewType === ViewType.Gantt;
   const isCalendarType = viewType === ViewType.Calendar;
-  const isOrgType = viewType === ViewType.OrgChart;
   const isExclusive = type === ToolHandleType.HideExclusiveField;
   const hideFieldString = isGanttType && isExclusive ? Strings.hide_one_graphic_field : Strings.hide_fields;
   const toolName = isMobile ? t(Strings.tool_bar_hidden) : t(hideFieldString);
@@ -851,10 +823,10 @@ const HideFieldNode = ({ id, type, viewType, actualColumnCount, visibleColumnsCo
         [styles.hide]: true,
       })}
       icon={
-        isGridType || isGanttType || isCalendarType || isOrgType ? (
-          <HideIcon width={16} height={16} fill={hasHide ? colorVars.primaryColor : colorVars.secondLevelText} className={styles.toolIcon} />
+        isGridType || isGanttType || isCalendarType ? (
+          <EyeOpenOutlined size={16} color={hasHide ? colorVars.primaryColor : colorVars.secondLevelText} className={styles.toolIcon} />
         ) : (
-          <SettingIcon width={16} height={16} fill={colorVars.secondLevelText} className={styles.toolIcon} />
+          <StyleOutlined size={16} color={colorVars.secondLevelText} className={styles.toolIcon} />
         )
       }
       text={

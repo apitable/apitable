@@ -18,7 +18,7 @@
 
 import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { WarningTriangleFilled, ChevronDownOutlined } from '@apitable/icons';
+import { WarnCircleFilled, ChevronDownOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
@@ -69,7 +69,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
                 display="flex"
                 alignItems="center"
               >
-                <WarningTriangleFilled />
+                <WarnCircleFilled />
               </Box>
             </Tooltip>
           </Box>

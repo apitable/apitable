@@ -18,6 +18,7 @@
 
 import { useThemeColors } from '@apitable/components';
 import { isGif, Strings, t } from '@apitable/core';
+import { AddOutlined, EditOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { ICropShape } from 'pc/components/common';
@@ -26,8 +27,6 @@ import { useResponsive } from 'pc/hooks';
 import { getCellValueThumbSrc } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
-import IconAdd from 'static/icon/common/add_big.svg';
-import BannerEditIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import { ButtonPlus } from '../../../common';
 import { IBasePropEditorProps, IModeEnum } from '../interface';
 import { ImgBaseUploader } from './img_base_uploader';
@@ -76,14 +75,14 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
             <div className={styles.logoImg} onClick={() => setModalShow(true)}>
               {!logoUrl && (
                 <div className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
-                  <IconAdd width={logoAddIconSize} height={logoAddIconSize} fill={colors.fourthLevelText} />
+                  <AddOutlined size={logoAddIconSize} color={colors.fourthLevelText} />
                   <span>{t(Strings.add_form_logo)}</span>
                 </div>
               )}
               {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'} />}
               {logoUrl && (
                 <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<BannerEditIcon />} />
+                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<EditOutlined />} />
                 </div>
               )}
             </div>

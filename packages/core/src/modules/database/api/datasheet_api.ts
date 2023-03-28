@@ -17,7 +17,8 @@
  */
 
 import {
-  IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, ISubOrUnsubByRecordIdsReq,
+  IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, IGetTreeSelectDataReq,
+  IGetTreeSelectDataRes, IGetTreeSelectSnapshotReq, IGetTreeSelectSnapshotRes, ISubOrUnsubByRecordIdsReq, IUpdateTreeSelectSnapshotReq,
 } from 'modules/database/api/datasheet_api.interface';
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
@@ -385,3 +386,57 @@ export const unsubscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISu
 export const batchDeletePermissionRole = (dstId: string, fieldId: string, option: { unitIds: string[] }) => {
   return axios.delete<IApiWrapper>(urlcat(Url.BATCH_DELETE_PERMISSION_ROLE, { dstId, fieldId }), { data: option });
 };
+
+
+// Get cascader data
+export const getCascaderData = ({
+  spaceId,
+  datasheetId,
+  linkedViewId,
+  linkedFieldIds,
+}: IGetTreeSelectDataReq) => axios.get<IApiWrapper & IGetTreeSelectDataRes>(urlcat(Url.CASCADER_DATA, {
+  spaceId,
+  datasheetId,
+}), {
+  baseURL,
+  params: {
+    linkedViewId,
+    linkedFieldIds,
+  },
+});
+
+// get cascader snapshot data
+export const getCascaderSnapshot = ({
+  spaceId,
+  datasheetId,
+  fieldId,
+  linkedFieldIds,
+}: IGetTreeSelectSnapshotReq) => axios.get<IApiWrapper & { data: IGetTreeSelectSnapshotRes }>(urlcat(Url.CASCADER_SNAPSHOT, {
+  spaceId,
+  datasheetId,
+  fieldId,
+}), {
+  baseURL,
+  params: {
+    linkedFieldIds,
+  },
+});
+
+// update cascader snapshot data
+export const updateCascaderSnapshot = ({
+  spaceId,
+  datasheetId,
+  fieldId, // snapshot field ID
+  linkedDatasheetId,
+  linkedViewId,
+}: IUpdateTreeSelectSnapshotReq) => axios.put<IApiWrapper & { data: boolean }>(urlcat(Url.CASCADER_SNAPSHOT, {
+  spaceId,
+  datasheetId,
+  fieldId,
+}), undefined, {
+  baseURL,
+  params: {
+    linkedDatasheetId,
+    linkedViewId,
+  },
+});

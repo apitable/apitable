@@ -23,15 +23,15 @@ import { EntityRepository, Repository } from 'typeorm';
 @EntityRepository(NodeRelEntity)
 export class NodeRelRepository extends Repository<NodeRelEntity> {
 
-  selectMainNodeIdByRelNodeId(relNodeId: string): Promise<{ mainNodeId: string } | undefined> {
-    return this.findOne({
+  public async selectMainNodeIdByRelNodeId(relNodeId: string): Promise<{ mainNodeId: string } | undefined> {
+    return await this.findOne({
       select: ['mainNodeId'],
       where: [{ relNodeId }],
     });
   }
 
-  selectRelNodeIdByMainNodeId(mainNodeId: string): Promise<NodeRelEntity[]> {
-    return this.createQueryBuilder('vnr')
+  public async selectRelNodeIdByMainNodeId(mainNodeId: string): Promise<NodeRelEntity[]> {
+    return await this.createQueryBuilder('vnr')
       .select('vnr.rel_node_id', 'relNodeId')
       .innerJoin(`${this.manager.connection.options.entityPrefix}node`, 'vn', 'vnr.rel_node_id = vn.node_id')
       .where('vnr.main_node_id = :mainNodeId', { mainNodeId })
@@ -39,8 +39,8 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       .getRawMany();
   }
 
-  selectNodeRelInfo(relNodeId: string): Promise<NodeRelInfo | undefined> {
-    return this.createQueryBuilder('vnr')
+  public async selectNodeRelInfo(relNodeId: string): Promise<NodeRelInfo | undefined> {
+    return await this.createQueryBuilder('vnr')
       .select('vnr.main_node_id', 'datasheetId')
       .addSelect("JSON_UNQUOTE(JSON_EXTRACT(vnr.extra, '$.viewId'))", 'viewId')
       .addSelect('vn.node_name', 'datasheetName')
@@ -52,8 +52,8 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       .getRawOne<NodeRelInfo>();
   }
 
-  selectNodeRelInfoByIds(relNodeIds: string[]): Promise<NodeRelInfo[] | undefined> {
-    return this.createQueryBuilder('vnr')
+  public async selectNodeRelInfoByIds(relNodeIds: string[]): Promise<NodeRelInfo[] | undefined> {
+    return await this.createQueryBuilder('vnr')
       .select('vnr.main_node_id', 'datasheetId')
       .addSelect('vnr.rel_node_id', 'relNodeId')
       .addSelect("JSON_UNQUOTE(JSON_EXTRACT(vnr.extra, '$.viewId'))", 'viewId')

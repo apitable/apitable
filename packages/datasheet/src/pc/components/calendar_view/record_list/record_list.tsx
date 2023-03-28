@@ -18,7 +18,7 @@
 
 import { Fragment, FC, useContext } from 'react';
 import { Typography, ListDeprecate, Button, black } from '@apitable/components';
-import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { DragItem } from './drag_item';
 import { DropList } from './drop_list';
 import styles from './styles.module.less';
@@ -42,8 +42,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
   const { keyword, setKeyword, view, onCloseGrid } = useContext(CalendarContext);
 
   const appendRecord = () => {
-    const collaCommandManager = resourceService.instance!.commandManager;
-    const result = collaCommandManager.execute({
+    const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddRecords,
       count: 1,
       viewId: view.id,
@@ -79,7 +78,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
           <Typography variant="h6">
             {t(Strings.calendar_pre_record_list)}
           </Typography>
-          <CloseMiddleOutlined
+          <CloseOutlined
             className={styles.closeIcon}
             size={16}
             color={black[500]}

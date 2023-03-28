@@ -71,6 +71,7 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
     offsetTop,
     columns,
     orgChartViewStatus,
+    datasheetId
   } = useContext(FlowContext);
 
   const {
@@ -156,6 +157,7 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
         }}
       >
         <RecordCard
+          datasheetId={datasheetId}
           className={styles.draggingCard}
           showEmptyCover={SHOW_EPMTY_COVER}
           coverFieldId={coverFieldId}

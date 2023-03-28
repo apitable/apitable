@@ -24,10 +24,10 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SuccessIcon from 'static/icon/common/common_icon_success.svg';
 import { SelectAdmin } from '../select_admin';
 import { VerifyAdmin } from '../verify_admin';
 import styles from './style.module.less';
+import { CheckCircleFilled } from '@apitable/icons';
 
 const { Step } = Steps;
 
@@ -71,7 +71,7 @@ export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cance
   const successStep = () => {
     return (
       <div className={styles.successStep}>
-        <SuccessIcon className={styles.successIcon} />
+        <CheckCircleFilled className={styles.successIcon} />
         <div className={styles.successText}>{t(Strings.change_primary_admin_succeed)}</div>
         <Button
           style={{ marginTop: '30px' }}

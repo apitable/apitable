@@ -206,6 +206,7 @@ export class RatingFieldPropertyDto extends CheckboxFieldPropertyDto {
 export class DateTimeFieldPropertyDto {
   @ApiProperty({
     type: String,
+    required: true,
     example: 'YYYY/MM/DD HH:mm',
     description:
       'Date Format ' +
@@ -218,6 +219,7 @@ export class DateTimeFieldPropertyDto {
 
   @ApiProperty({
     type: Boolean,
+    required: true,
     example: true,
     description: 'Whether the time is automatically filled when a new record is created',
   })
@@ -225,10 +227,27 @@ export class DateTimeFieldPropertyDto {
 
   @ApiProperty({
     type: Boolean,
+    required: true,
     example: true,
     description: 'Whether to display the time',
   })
   includeTime!: boolean;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+    example: 'America/Toronto',
+    description: 'The time zone of the date time',
+  })
+  timeZone!: string;
+
+  @ApiProperty({
+    required: false,
+    type: Boolean,
+    example: true,
+    description: 'Whether to show time zone',
+  })
+  includeTimeZone?: boolean;
 }
 
 @ApiExtraModels(ExtraModel)

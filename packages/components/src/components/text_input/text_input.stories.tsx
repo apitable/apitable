@@ -21,7 +21,7 @@ import { TextInput } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ITextInputProps } from './text_input.interface';
-import { PhonenumberFilled } from '@apitable/icons';
+import { TelephoneOutlined } from '@apitable/icons';
 
 const COMPONENT_NAME = 'TextInput';
 
@@ -73,40 +73,40 @@ LargeSize.args = {
 
 export const Prefix = Template.bind({});
 Prefix.args = {
-  prefix: <PhonenumberFilled />,
+  prefix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };
 
 export const Suffix = Template.bind({});
 Suffix.args = {
-  suffix: <PhonenumberFilled />,
+  suffix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };
 
 export const AddonBefore = Template.bind({});
 AddonBefore.args = {
   addonBefore: <div>http://</div>,
-  prefix: <PhonenumberFilled />,
+  prefix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };
 
 export const AddonAfter = Template.bind({});
 AddonAfter.args = {
   addonAfter: <div>.com</div>,
-  prefix: <PhonenumberFilled />,
+  prefix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };
 
 export const ErrorStatus = Template.bind({});
 ErrorStatus.args = {
   error: true,
-  prefix: <PhonenumberFilled />,
+  prefix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  prefix: <PhonenumberFilled />,
+  prefix: <TelephoneOutlined />,
   placeholder: 'please input something'
 };

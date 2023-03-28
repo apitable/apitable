@@ -19,10 +19,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import styles from './style.module.less';
-import FileIcon from 'static/icon/datasheet/datasheet_icon_file_normal.svg';
 import { useThemeColors } from '@apitable/components';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
-import { MirrorOutlined } from '@apitable/icons';
+import { DatasheetOutlined, MirrorOutlined } from '@apitable/icons';
 
 const Budget: React.FC<React.PropsWithChildren<unknown>> = props => {
   return (
@@ -54,7 +53,7 @@ export const File: React.FC<React.PropsWithChildren<{
         >
           {
             isMirror ? <MirrorOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} /> :
-              <FileIcon className={styles.leftIcon} fill={active ? colors.primaryColor : colors.fourthLevelText} />
+              <DatasheetOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} />
           }
 
           {richContent ?

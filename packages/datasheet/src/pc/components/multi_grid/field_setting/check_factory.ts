@@ -18,14 +18,15 @@
 
 import {
   ComputeRefManager, Field, FieldType, FieldTypeDescriptionMap, getComputeRefManager, getUniqName, IField, IFormulaField, ILinkField, ILookUpField,
-  IMultiSelectField, ISingleSelectField, LookUpField, Selectors, Strings, t,
+  IMultiSelectField, ISingleSelectField, Selectors, Strings, t, ICascaderField,
 } from '@apitable/core';
 import produce from 'immer';
 import keyBy from 'lodash/keyBy';
 import { store } from 'pc/store';
 import { getTestFunctionAvailable } from 'pc/utils/storage';
 
-const compose = (...args: any) => (value: any, datasheetId: string) => args.reduceRight((preValue: any, curFn: (arg0: any, arg1: string) => any) => curFn(preValue, datasheetId), value);
+const compose = (...args: any) => (value: any, datasheetId: string) =>
+  args.reduceRight((preValue: any, curFn: (arg0: any, arg1: string) => any) => curFn(preValue, datasheetId), value);
 
 export const checkComputeRef = (curField: string | ILookUpField | IFormulaField) => {
   if (typeof curField === 'string') {
@@ -179,7 +180,7 @@ class CheckFieldLookUp {
     if (typeof preResult === 'string') {
       return preResult;
     }
-    const lookUpEntityField = (Field.bindModel(preResult) as LookUpField).getLookUpEntityField();
+    const lookUpEntityField = (Field.bindModel(preResult) as any).getLookUpEntityField();
     if (!lookUpEntityField) {
       return t(Strings.no_lookup_field);
     }
@@ -188,7 +189,7 @@ class CheckFieldLookUp {
   }
 
   static checkExitLinkField(curField: ILookUpField) {
-    const relatedLinkField = (Field.bindModel(curField) as LookUpField).getRelatedLinkField();
+    const relatedLinkField = (Field.bindModel(curField) as any).getRelatedLinkField();
     if (!relatedLinkField) {
       return t(Strings.no_foreignDstId);
     }
@@ -214,10 +215,28 @@ class CheckFieldFormula {
   }
 }
 
+class CheckFieldCascader {
+  static checkCascaderDatasource(curField: ICascaderField) {
+    if (!curField.property.linkedDatasheetId) return t(Strings.cascader_no_datasheet_error);
+    if (!curField.property.linkedViewId) return t(Strings.cascader_no_view_error);
+    if (curField.property.linkedFields.length < 1) return t(Strings.cascader_no_rules_error);
+
+    return curField;
+  }
+
+  static checkStream(curField: ICascaderField, datasheetId?: string) {
+    return compose(
+      CheckFieldCascader.checkCascaderDatasource,
+      CheckFieldSettingBase.checkStream,
+    )(curField, datasheetId!);
+  }
+}
+
 export const checkFactory = {
   [FieldType.MultiSelect]: CheckFieldOption.checkStream,
   [FieldType.SingleSelect]: CheckFieldOption.checkStream,
   [FieldType.LookUp]: CheckFieldLookUp.checkStream,
   [FieldType.Link]: CheckFieldLink.checkStream,
   [FieldType.Formula]: CheckFieldFormula.checkStream,
+  [FieldType.Cascader]: CheckFieldCascader.checkStream,
 };

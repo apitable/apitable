@@ -18,31 +18,28 @@
 
 package com.apitable.shared.filter;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.extern.slf4j.Slf4j;
+import static com.apitable.shared.constants.FilterConstants.REQUEST_THREAD_HOLDER_FILTER;
 
 import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.holder.UserHolder;
-
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import static com.apitable.shared.constants.FilterConstants.REQUEST_THREAD_HOLDER_FILTER;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 
 /**
  * <p>
- * Thread Holder Filter
+ * Thread Holder Filter.
  * </p>
  *
  * @author Shawn Deng
@@ -52,17 +49,21 @@ import static com.apitable.shared.constants.FilterConstants.REQUEST_THREAD_HOLDE
 public class RequestThreadHolderFilter extends OncePerRequestFilter implements Ordered {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain) throws ServletException, IOException {
         UserHolder.init();
         LoginUserHolder.init();
         SpaceHolder.init();
         MemberHolder.init();
         NotificationRenderFieldHolder.init();
 
+        ContentCachingRequestWrapper wrappedRequest =
+            new ContentCachingRequestWrapper(httpServletRequest);
+
         try {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }
-        finally {
+            filterChain.doFilter(wrappedRequest, httpServletResponse);
+        } finally {
             UserHolder.remove();
             LoginUserHolder.remove();
             SpaceHolder.remove();

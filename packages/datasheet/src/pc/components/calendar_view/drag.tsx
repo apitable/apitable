@@ -44,7 +44,7 @@ interface IDrag {
 const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
   const { startDate, endDate, title } = task;
   const {
-    columns, setRecordModal, recordModal, currentSearchCell, draggable,
+    columns, setRecordModal, recordModal, currentSearchRecordId, draggable,
     isCryptoStartField, isCryptoEndField, isMobile, activeCell
   } = useContext(CalendarContext);
 
@@ -81,7 +81,7 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
     }),
   }));
 
-  const isCurrentSearchCell = currentSearchCell === id;
+  const isCurrentSearchCell = currentSearchRecordId === id;
 
   const formatStartDate = startDate ? dayjs(startDate).format(FORMAT_DATE) : '';
   const formatEndDate = endDate ? dayjs(endDate).format(FORMAT_DATE) : '';

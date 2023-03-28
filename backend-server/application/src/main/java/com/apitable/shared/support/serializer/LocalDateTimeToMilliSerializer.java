@@ -18,22 +18,53 @@
 
 package com.apitable.shared.support.serializer;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import static java.time.ZoneId.getAvailableZoneIds;
 
+import com.apitable.shared.cache.bean.LoginUserDto;
+import com.apitable.shared.config.ServerConfig;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.context.SessionContext;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Set;
+import javax.annotation.Resource;
 
 /**
- * LocalDateTime to timestamp（mills）
+ * LocalDateTime to timestamp（mills）.
+ *
  * @author Shawn Deng
  */
 public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime> {
 
+    @Resource
+    private ServerConfig serverConfig;
+
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeNumber(value.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider)
+        throws IOException {
+        // Get user timeZone
+        Long userId = SessionContext.getUserIdWithoutException();
+        String userTimeZone;
+        if (userId != null) {
+            LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
+            userTimeZone = loginUserDto != null && loginUserDto.getTimeZone() != null
+                ? loginUserDto.getTimeZone() : serverConfig.getTimeZoneId().toString();
+        } else {
+            userTimeZone = serverConfig.getTimeZoneId().toString();
+        }
+        // get Available ZoneIds
+        Set<String> zoneIds = getAvailableZoneIds();
+        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : serverConfig.getTimeZone().toString();
+        // server config timeZone time
+        ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, serverConfig.getTimeZoneId());
+        // target timeZone time
+        ZonedDateTime targetZonedDateTime =
+            originalZonedDateTime.withZoneSameInstant(ZoneId.of(userTimeZone));
+        gen.writeNumber(targetZonedDateTime.toInstant().toEpochMilli());
     }
 }

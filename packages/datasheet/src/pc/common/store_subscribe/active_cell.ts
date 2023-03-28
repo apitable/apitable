@@ -28,7 +28,7 @@ store.subscribe(function activeCellChange() {
   const state = store.getState();
   const { viewId, datasheetId } = state.pageParams;
   if (!viewId || !datasheetId) return;
-  const activeView = Selectors.getActiveView(state);
+  const activeView = Selectors.getActiveViewId(state);
   if (!activeView) return;
 
   activeCell = Selectors.getActiveCell(state);
@@ -52,8 +52,7 @@ store.subscribe(function activeCellChange() {
   }
   if (activeCell) {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-    const visibleRows = Selectors.getPureVisibleRows(state);
-    const visibleRowsIndexMap = Selectors.getVisibleRowsIndexMapBase(visibleRows);
+    const visibleRowsIndexMap = Selectors.getVisibleRowsIndexMap(state);
     const { recordId, fieldId } = activeCell;
     const visibleRowIndex = visibleRowsIndexMap.get(recordId);
     if (visibleRowIndex == null) {
@@ -65,7 +64,7 @@ store.subscribe(function activeCellChange() {
       visibleRowIndex,
       isInit: false,
     };
-    const recordSnapshot = Selectors.getRecordSnapshot(state, recordId);
+    const recordSnapshot = Selectors.getRecordSnapshot(state, datasheetId, recordId);
     if (!recordSnapshot) return;
 
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;

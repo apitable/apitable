@@ -29,14 +29,28 @@ import { isNullValue } from 'model/utils';
 import { IReduxState } from '../../exports/store';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
 import {
-  BasicValueType, DateFormat, FieldType, ICreatedTimeField, IDateTimeBaseFieldProperty, IDateTimeField, ILastModifiedTimeField, IStandardValue,
-  ITimestamp, TimeFormat
+  BasicValueType,
+  DateFormat,
+  FieldType,
+  ICreatedTimeField,
+  IDateTimeBaseFieldProperty,
+  IDateTimeField,
+  IDateTimeFieldProperty,
+  ILastModifiedTimeField,
+  IStandardValue,
+  ITimestamp,
+  TimeFormat,
 } from 'types/field_types';
 import { FilterDuration, FOperator, IFilterCondition, IFilterDateTime } from 'types/view_types';
 import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'utils';
-import { ICellValue } from '../record';
-import { Field } from './field';
+import { ICellToStringOption, ICellValue } from '../record';
+import { Field, ICellApiStringValueOptions } from './field';
 import { StatTranslate, StatType } from './stat';
+import { getTimeZoneAbbrByUtc } from '../../config';
+import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
+import Joi from 'joi';
+import { DEFAULT_TIME_ZONE } from 'model';
+import { isServer } from 'utils/env';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -101,19 +115,13 @@ dayjs.extend(utc);
 dayjs.extend(patchDayjsTimezone(timezone));
 declare const window: any;
 
-export interface IOptionalDateTimeFieldProperty {
-  // date format
-  dateFormat?: DateFormat;
-  // time format
-  timeFormat?: TimeFormat;
-  // whether includes time
-  includeTime?: boolean;
-}
+export type IOptionalDateTimeFieldProperty = Partial<IDateTimeFieldProperty>;
 
 const defaultProps = {
   dateFormat: DateFormat['YYYY/MM/DD'],
   timeFormat: TimeFormat['HH:mm'],
   includeTime: false,
+  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
 };
 
 export const getDateTimeFormat = (props: IOptionalDateTimeFieldProperty) => {
@@ -125,6 +133,7 @@ export const getDateTimeFormat = (props: IOptionalDateTimeFieldProperty) => {
 export const dateTimeFormat = (
   timestamp: any,
   props?: IOptionalDateTimeFieldProperty,
+  userTimeZone?: string,
 ) => {
   if (!timestamp) {
     return null;
@@ -141,10 +150,24 @@ export const dateTimeFormat = (
     dayjs.locale(formatLocale);
     format += ' a';
   }
-  // server-side
-  if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    const date = dayjs(Number(timestamp));
-    return date.format(format);
+  let timeZone = props.timeZone || userTimeZone;
+  if (isServer()) {
+    timeZone = timeZone || DEFAULT_TIME_ZONE;
+  }
+  try {
+    if (props.includeTimeZone) {
+      timeZone = timeZone || defaultProps.timeZone;
+      const abbr = getTimeZoneAbbrByUtc(timeZone)!;
+      return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
+    }
+    if (!props.includeTimeZone && timeZone) {
+      return dayjs(Number(timestamp)).tz(timeZone).format(format);
+    }
+  } catch (e) {
+    if (e instanceof RangeError) {
+      return 'Invalid Date';
+    }
+    throw e;
   }
   return dayjs(Number(timestamp)).format(format);
 };
@@ -198,10 +221,12 @@ export abstract class DateTimeBaseField extends Field {
     return DateTimeBaseField.FOperatorDescMap[type];
   }
 
-  get apiMetaProperty(): IAPIMetaDateTimeBaseFieldProperty {
+  override get apiMetaProperty(): IAPIMetaDateTimeBaseFieldProperty {
     const res: IAPIMetaDateTimeBaseFieldProperty = {
       format: getDateTimeFormat(this.field.property),
       includeTime: this.field.property.includeTime,
+      timeZone: this.field.property.timeZone,
+      includeTimeZone : this.field.property.includeTimeZone
     };
     if ((this.field.property as any).autoFill) {
       res.autoFill = true;
@@ -337,8 +362,8 @@ export abstract class DateTimeBaseField extends Field {
     return isEqual(dateTimeFormat(cv1, this.field.property), dateTimeFormat(cv2, this.field.property));
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
-    return dateTimeFormat(cellValue, this.field.property);
+  override cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
+    return dateTimeFormat(cellValue, this.field.property, options?.userTimeZone);
   }
 
   cellValueToStdValue(cellValue: ITimestamp | null): IStandardValue {
@@ -550,7 +575,7 @@ export abstract class DateTimeBaseField extends Field {
       return cellValue != null;
     }
     const [filterDuration] = conditionValue;
-    let timestamp: number | undefined | null;
+    let timestamp: string | number | undefined | null;
     if (
       filterDuration === FilterDuration.ExactDate ||
       filterDuration === FilterDuration.DateRange ||
@@ -629,8 +654,8 @@ export abstract class DateTimeBaseField extends Field {
     return cellValue;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue): string | null {
-    return cellValue ? this.cellValueToString(cellValue) : null;
+  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
+    return cellValue ? this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone }) : null;
   }
 
   cellValueToOpenValue(cellValue: ICellValue): string | null {
@@ -639,5 +664,71 @@ export abstract class DateTimeBaseField extends Field {
 
   openWriteValueToCellValue(openWriteValue: string | Date | null) {
     return isNullValue(openWriteValue) ? null : new Date(openWriteValue).getTime();
+  }
+
+  static _filterValueToOpenFilterValue(value: IFilterDateTime): IOpenFilterValueDataTime {
+    if (!value || !Array.isArray(value)) {
+      return null;
+    }
+    const operator = value[0];
+    const _value = value[1];
+    if (operator === FilterDuration.DateRange) {
+      const range = typeof _value === 'string' ? _value.split('-').map(v => Number(v)) : [];
+      return range.length === 2 ? [operator, range[0]!, range[1]!] : [operator, null];
+    }
+    if (operator === FilterDuration.ExactDate) {
+      return [operator, _value as number | null];
+    }
+    if (operator === FilterDuration.SomeDayBefore || operator === FilterDuration.SomeDayAfter) {
+      return [operator, _value == null ? null : Number(_value)];
+    }
+    return [operator];
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterDateTime): IOpenFilterValueDataTime {
+    return DateTimeBaseField._filterValueToOpenFilterValue(value);
+  }
+
+  static _openFilterValueToFilterValue(value: IOpenFilterValueDataTime): IFilterDateTime {
+    if (!value || !Array.isArray(value)) {
+      return null;
+    }
+    const [operator, ..._value] = value;
+    if (operator === FilterDuration.DateRange) {
+      return _value.length === 2 ? [operator, _value.join('-')] : [operator, null];
+    }
+    if (operator === FilterDuration.ExactDate) {
+      return [operator, _value.length === 1 ? _value[0] : null];
+    }
+    if (operator === FilterDuration.SomeDayBefore || operator === FilterDuration.SomeDayAfter) {
+      return [operator, _value.length === 1 ? _value[0] : null] as any;
+    }
+    return [operator];
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueDataTime): IFilterDateTime {
+    return DateTimeBaseField._openFilterValueToFilterValue(value);
+  }
+
+  static _validateOpenFilterValue(value: IOpenFilterValueDataTime) {
+    if (!value) {
+      return Joi.allow(null).validate(value);
+    }
+    const [op, ..._value] = value;
+    if (op === FilterDuration.DateRange) {
+      return Joi.array().items(Joi.number().allow(null)).min(2).max(2).allow(null).validate(_value);
+    }
+    if (op === FilterDuration.ExactDate) {
+      return Joi.array().items(Joi.number().allow(null)).max(1).allow(null).validate(_value);
+    }
+    if (op === FilterDuration.SomeDayBefore || op === FilterDuration.SomeDayAfter) {
+      return Joi.array().items(Joi.number().allow(null)).max(1).allow(null).validate(_value);
+    }
+    return Joi.array().max(0).validate(_value);
+
+  }
+
+  override validateOpenFilterValue(value: IOpenFilterValueDataTime) {
+    return DateTimeBaseField._validateOpenFilterValue(value);
   }
 }

@@ -22,14 +22,12 @@ import * as React from 'react';
 import { Collapse, Row, Col } from 'antd';
 import { t, Strings } from '@apitable/core';
 import { hexToRGB } from 'pc/utils';
-import SelectIcon from 'static/icon/space/space_icon_select24.svg';
-import PullDownIcon from 'static/icon/datasheet/rightclick/rightclick_icon_retract.svg';
 import classNames from 'classnames';
 import styles from './style.module.less';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import { Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { colorVars } from '@apitable/components';
+import { CheckOutlined, QuestionCircleOutlined, TriangleRightFilled } from '@apitable/icons';
 
 const { Panel } = Collapse;
 
@@ -79,17 +77,17 @@ export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> =
     return config.map((per: any) => {
       const { title, detail, key } = per;
       return (
-        <Panel header={<div className={styles.panelHeader}><PullDownIcon />{title}</div>} key={key}>
+        <Panel header={<div className={styles.panelHeader}><TriangleRightFilled />{title}</div>} key={key}>
           {
             detail.map((item: any) => (
               <Row className={styles.perItem} key={item.title}>
                 <Col span={7} className={styles.perItemLeft}>{item.title}</Col>
                 <Col span={17} className={classNames(styles.tagTitleRight, styles.perItemRight)}>
-                  <SelectIcon fill={item.permissions.includes(0) ? colorArr[0] : colorVars.lineColor} />
-                  <SelectIcon fill={item.permissions.includes(1) ? colorArr[1] : colorVars.lineColor} />
-                  <SelectIcon fill={item.permissions.includes(2) ? colorArr[2] : colorVars.lineColor} />
-                  <SelectIcon fill={item.permissions.includes(3) ? colorArr[0] : colorVars.lineColor} />
-                  <SelectIcon fill={item.permissions.includes(4) ? colorArr[3] : colorVars.lineColor} />
+                  <CheckOutlined color={item.permissions.includes(0) ? colorArr[0] : colorVars.lineColor} />
+                  <CheckOutlined color={item.permissions.includes(1) ? colorArr[1] : colorVars.lineColor} />
+                  <CheckOutlined color={item.permissions.includes(2) ? colorArr[2] : colorVars.lineColor} />
+                  <CheckOutlined color={item.permissions.includes(3) ? colorArr[0] : colorVars.lineColor} />
+                  <CheckOutlined color={item.permissions.includes(4) ? colorArr[3] : colorVars.lineColor} />
                 </Col>
               </Row>
             ))
@@ -128,7 +126,7 @@ export const PermissionDescModal: FC<React.PropsWithChildren<IModalProps>> = pro
           <Tooltip title={t(Strings.permission_setting_tip)}>
             <span>
               <a href={t(Strings.set_permission_modal_help)} target="_blank" rel="noreferror noreferrer" style={{ display: 'flex' }}>
-                <HelpIcon width={16} height={16} fill={colorVars.thirdLevelText} />
+                <QuestionCircleOutlined size={16} color={colorVars.thirdLevelText} />
               </a>
             </span>
           </Tooltip>

@@ -22,7 +22,7 @@ import { HorizontalScroll } from 'pc/components/common';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import RightArrowIcon from 'static/icon/common/common_icon_level_right.svg';
+import { ChevronRightOutlined } from '@apitable/icons';
 
 interface IFolderBreadcrumbProps {
   parents: IParent[];
@@ -36,13 +36,14 @@ export const FolderBreadcrumb: React.FC<React.PropsWithChildren<IFolderBreadcrum
     <div className={styles.breadCrumb}>
       <HorizontalScroll>
         <Breadcrumb
-          separator={<RightArrowIcon width={10} height={10} fill={colors.thirdLevelText} />}
+          separator={<ChevronRightOutlined size={10} color={colors.thirdLevelText} />}
         >
           {
             parents.map(breadItem => (
               <Breadcrumb.Item
                 key={breadItem.nodeId || breadItem.nodeName}
                 onClick={() => onNodeClick('Folder', breadItem.nodeId!)}
+                className={styles.folderBreadItem}
               >
                 {breadItem.nodeName}
               </Breadcrumb.Item>

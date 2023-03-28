@@ -25,7 +25,7 @@ export const CellMemberWrapperStyled = styled.div`
 export const CellMemberStyled = styled.div`
   display: flex;
   padding: 4px 10px 4px 2px;
-  background-color: #E8EAED;
+  background-color: var(--fc11);
   border-radius: 16px;
   margin: 2px 8px 2px 0;
 `;
@@ -37,7 +37,7 @@ export const AvatarStyled = styled.div<{ avatar?: string; bg?: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   user-select: none;
-  border: 1px solid #E8EAED;
+  border: 1px solid var(--shadowColor);
   background-position: center;
   background-color: rgb(255, 255, 255);
   ${props => {
@@ -64,6 +64,7 @@ export const AvatarStyled = styled.div<{ avatar?: string; bg?: string }>`
 `;
 
 export const NameStyled = styled.span`
+  line-height: 20px;
   padding-left: 2px;
   font-size: 13px;
   overflow: hidden;

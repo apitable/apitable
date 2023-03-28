@@ -32,6 +32,7 @@ import { IOption, ISelectProps } from './interface';
 import {
   GlobalStyle, hightLightCls, OptionOutside, StyledArrowIcon, StyledListContainer, StyledSelectedContainer, StyledSelectTrigger
 } from './styled';
+import debounce from 'lodash/debounce';
 
 const _renderValue = (option: IOption) => {
   return option.label;
@@ -46,7 +47,8 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
     openSearch = false, searchPlaceholder, highlightStyle, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
-    onSelected, hideSelectedOption, dropdownRender, disabled, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240
+    onSelected, hideSelectedOption, dropdownRender, disabled, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240,
+    popupStyle = {}
   } = props;
   const [isInit, setIsInit] = useState(true);
   const theme = useProviderTheme();
@@ -62,8 +64,10 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const OFFSET = [0, 4];
   const selectedOption = options.filter(item => Boolean(item)).find(item => item!.value === value);
 
+  const setKeywordDebounce = debounce(setKeyword, 300);
+
   const inputOnChange = (_e: React.ChangeEvent, keyword: string) => {
-    setKeyword(keyword);
+    setKeywordDebounce(keyword);
   };
 
   useEffect(() => {
@@ -96,7 +100,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
     return <OptionOutside
       currentIndex={index}
       id={item.value as string}
-      key={item.value as string}
+      key={`${item.value as string}-${index}`}
       {...item}
     >
       <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>
@@ -195,6 +199,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
         width: 'max-content',
         position: 'absolute',
         zIndex: 1200, // Same level as antd modal
+        ...popupStyle,
       }}
       ref={triggerRef}
       popupVisible={visible}

@@ -21,12 +21,12 @@ import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowUpOutlined,
 
-  ColumnUrlOutlined,
+  LinkOutlined,
   CopyOutlined, DeleteOutlined,
 
-  ExpandRecordOutlined, EyeCloseOutlined,
+  ExpandOutlined, EyeCloseOutlined,
 
-  EyeNormalOutlined
+  EyeOpenOutlined
 } from '@apitable/icons';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -91,19 +91,19 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
           {
             icon: <ArrowUpOutlined />,
             text: t(Strings.org_chart_insert_into_parent),
-            onClick: ({ props: { node }}: any) => {
+            onClick: async({ props: { node }}: any) => {
               const parent = node?.data?.parents?.[0] as INode;
               if (parent) {
                 const { id: preId } = parent;
-                const newRecordId = addRecord(viewId, rowsCount);
+                const newRecordId = await addRecord(viewId, rowsCount);
                 onChange([
                   {
                     recordId: preId,
                     fieldId: linkFieldId,
-                    value: parent.data.linkIds.filter(id => id !== node.id).concat(newRecordId),
+                    value: parent.data.linkIds.filter(id => id !== node.id).concat(newRecordId!),
                   },
                   {
-                    recordId: newRecordId,
+                    recordId: newRecordId!,
                     fieldId: linkFieldId,
                     value: [node.id],
                   }
@@ -163,7 +163,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             },
           },
           {
-            icon: <EyeNormalOutlined color={colors.thirdLevelText} />,
+            icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_expand_node),
             onClick: ({ props: { node }}: any) => {
               toggleNodeCollapse(node.id);
@@ -175,7 +175,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
         ],
         [
           {
-            icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
+            icon: <LinkOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_copy_record_url),
             onClick: ({ props: { node }}: any) => {
               copyLink(node.id);
@@ -184,8 +184,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
           {
             icon: <CopyOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_create_a_node_copy),
-            onClick: ({ props: { node }}: any) => {
-              const result = copyRecord(node.id);
+            onClick: async({ props: { node }}: any) => {
+              const result = await copyRecord(node.id);
               if (result.result === ExecuteResult.Success) {
                 const newRecordId = result.data && result.data[0];
                 const parent = node?.data.parents?.[0];
@@ -223,7 +223,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             },
           },
           {
-            icon: <ExpandRecordOutlined color={colors.thirdLevelText} />,
+            icon: <ExpandOutlined color={colors.thirdLevelText} />,
             text: t(Strings.org_chart_expand_record),
             onClick: ({ props: { node }}: any) => {
               expandRecordIdNavigate(node.id);

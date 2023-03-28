@@ -29,6 +29,7 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.organization.mapper.MemberMapper;
@@ -125,6 +126,9 @@ public class SpaceController {
     @Resource
     private SocialServiceFacade socialServiceFacade;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
     /**
      * Get space capacity info.
      */
@@ -190,11 +194,12 @@ public class SpaceController {
      * Create space.
      */
     @PostResource(path = "/create", requiredPermission = false)
-    @Operation(summary = "Create space")
+    @Operation(summary = "Create Space")
     public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
+        entitlementServiceFacade.createSubscription(spaceId, userId);
         // release space audit events
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId)
@@ -233,7 +238,7 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true, schema =
         @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId,
-        @RequestBody @Valid SpaceDeleteRo param) {
+                                     @RequestBody @Valid SpaceDeleteRo param) {
         // This operation cannot be performed when binding to a third party
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();

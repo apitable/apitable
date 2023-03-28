@@ -19,7 +19,6 @@
 import { Api, Selectors } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { Spin } from 'antd';
-import dynamic from 'next/dynamic';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { Portal } from 'pc/components/portal';
@@ -33,8 +32,8 @@ import { GENERATOR } from '../../elements';
 import { getValidPopupPosition, getValidSelection } from '../../helpers/utils';
 import { IVikaEditor } from '../../interface/editor';
 import styles from './mention.module.less';
+import { LoadingOutlined } from '@apitable/icons';
 
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 export const MentionPanel = () => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const visibleRef = useRef(false);
@@ -228,7 +227,7 @@ export const MentionPanel = () => {
       <div className={styles.wrap} ref={wrapRef}>
         {loading ? (
           <div className={styles.loading}>
-            <Spin size='small' indicator={<LoadingOutlined />} />
+            <Spin size='small' indicator={<LoadingOutlined className="circle-loading" />} />
           </div>
         ) : (
           <MemberOptionList

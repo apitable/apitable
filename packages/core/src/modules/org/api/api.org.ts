@@ -42,6 +42,10 @@ export function getTeamList() {
   return axios.get(Url.TEAM_LIST);
 }
 
+export function getTeamListLayered() {
+  return axios.get(Url.TEAM_LIST_LAYERED);
+}
+
 /**
  * Contact list, get members
  * 
@@ -185,7 +189,7 @@ export function BatchDeleteMember(teamId: string, memberId: string[], isDeepDel:
  * 
  * @param teamId Team ID
  */
-export function getSubTeams(teamId: string) {
+export function getSubTeams(teamId: string | number) {
   return axios.get(Url.READ_SUB_TEAMS, {
     params: {
       teamId,

@@ -33,13 +33,14 @@ interface IPopStructureProps {
   width: number;
   className: string;
   style: React.CSSProperties;
+  disableMinWidth?: boolean;
   onClose(): void;
 }
 
 const SECURITY_PADDING = 30; 
 
 export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>> = props => {
-  const { children, editing, height, className, style, width, onClose } = props;
+  const { children, editing, height, className, style, width, onClose, disableMinWidth } = props;
 
   const [position, setPosition] = useState({});
   const [restHeight, setRestHeight] = useState(0);
@@ -107,7 +108,7 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
             ...style,
             ...position,
             minHeight: 'auto',
-            minWidth: style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto',
+            minWidth: disableMinWidth ? 'auto' : (style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
           }}
         >
           <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>

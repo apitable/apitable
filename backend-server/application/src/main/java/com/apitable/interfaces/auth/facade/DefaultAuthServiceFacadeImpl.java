@@ -48,15 +48,4 @@ public class DefaultAuthServiceFacadeImpl implements AuthServiceFacade {
     public UserLogout logout(final UserAuth userAuth) {
         return null;
     }
-
-    /**
-     * user reset password.
-     *
-     * @param userAuth {@link UserAuth}
-     * @return boolean
-     */
-    @Override
-    public boolean resetPassword(final UserAuth userAuth) {
-        return false;
-    }
 }

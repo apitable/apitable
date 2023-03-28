@@ -42,7 +42,7 @@ export interface ICalendarContext {
   calendarStyle: ICalendarViewStyle;
   view: IViewProperty;
   permissions: IPermissions;
-  currentSearchCell: string | [string, string] | undefined;
+  currentSearchRecordId: string | undefined;
   calendarViewStatus: ICalendarViewStatus;
   firstFieldId: string;
   isSearching: boolean;

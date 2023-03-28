@@ -17,13 +17,12 @@
  */
 
 import { FC, useState } from 'react';
-import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import styles from './style.module.less';
 import { IUploadFileResponse } from '../interface';
-import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
 import { Button, TextButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Records } from './records';
+import { CheckOutlined, WarnOutlined } from '@apitable/icons';
 
 interface IErrorContentProps {
   responseInfo: IUploadFileResponse | null;
@@ -45,8 +44,8 @@ export const Success: FC<React.PropsWithChildren<IErrorContentProps>> = ({ respo
     <div className={styles.success}>
       {
         !hasErr ?
-          <span className={styles.successIcon}><SuccessIcon /></span> :
-          <span className={styles.errorIcon}><WarnIcon /></span>
+          <span className={styles.successIcon}><CheckOutlined /></span> :
+          <span className={styles.errorIcon}><WarnOutlined /></span>
       }
       <div className={styles.text}>
         <span>{t(Strings.total_import_employee_by_count, {

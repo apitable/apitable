@@ -40,12 +40,11 @@ import * as React from 'react';
 import { ExecuteFilterFn } from '../interface';
 import classNames from 'classnames';
 import styles from './style.module.less';
-import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'pc/components/common';
-import WarnTriangleIcon from 'static/icon/common/common_icon_warning_triangle.svg';
+import { ChevronDownOutlined, WarnCircleFilled } from '@apitable/icons';
 
 interface IFilterFieldListProps {
   conditionIndex: number;
@@ -90,7 +89,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
           conditionId: condition.conditionId,
           operator: Field.bindModel(field).acceptFilterOperators[0],
           value: getDefaultValue(valueType) as any,
-        };
+        } as any;
         return draft;
       });
     });
@@ -151,7 +150,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
           >
             <span>{options.filter(option => option.value === condition.fieldId)[0]?.label}</span>
             {renderComputeFieldError(fieldMap[condition.fieldId], t(Strings.error_configuration_and_invalid_filter_option))}
-            <ArrowIcon className={styles.arrow} width={16} height={16} fill={colors.fourthLevelText} />
+            <ChevronDownOutlined className={styles.arrow} size={16} color={colors.fourthLevelText} />
           </div>
         }
       />
@@ -170,14 +169,15 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
       dropdownMatchSelectWidth={false}
       openSearch
       searchPlaceholder={t(Strings.search)}
+      popupStyle={{
+        zIndex: 1000
+      }}
       suffixIcon={
         checkTypeSwitch(condition, fieldMap[condition.fieldId]) && !isCryptoField ? (
           <Tooltip title={t(Strings.lookup_filter_condition_tip)} placement="top">
-            <WarnTriangleIcon fill={colors.warningColor} width={20} height={16} />
+            <WarnCircleFilled color={colors.warningColor} size={20} />
           </Tooltip>
-        ) : (
-          undefined
-        )
+        ) : undefined
       }
     />
   );

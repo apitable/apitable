@@ -22,6 +22,7 @@ import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import SwipeOut from 'rc-swipeout';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -102,7 +103,9 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
             }
             if (!validator(value)) {
               Message.error({
-                content: t(Strings.view_name_length_err),
+                content: t(Strings.view_name_length_err, {
+                  maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
+                })
               });
               return;
             }
@@ -123,7 +126,6 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
       text: t(Strings.delete),
       onPress: async() => {
         const formList = await StoreActions.fetchForeignFormList(datasheetId!, view.id!);
-        console.log(formList);
         Modal.warning({
           title: t(Strings.delete),
           content: formList.length > 0 ? t(Strings.notes_delete_the_view_linked_to_form, {
@@ -176,7 +178,7 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
         )}
         <ViewIcon
           viewType={view.type}
-          fill={fillColor}
+          color={fillColor}
         />
         <span
           className={style.text}

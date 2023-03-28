@@ -121,7 +121,7 @@ public class InternalUserController {
         // After obtaining the specified cooling-off period, there has been an operation to
         // cancel the application within 30 days before.
         List<PausedUserHistoryDto> userHistoryDtos = userHistoryService
-            .selectUserHistoryDtos(createdBefore, now, UserOperationType.APPLY_FOR_CLOSING);
+            .getUserHistoryDtos(createdBefore, now, UserOperationType.APPLY_FOR_CLOSING);
         // Find out which accounts are still in the cooling-off period.
         List<Long> userIds = userHistoryDtos.stream().map(PausedUserHistoryDto::getUserId)
             .collect(Collectors.toList());

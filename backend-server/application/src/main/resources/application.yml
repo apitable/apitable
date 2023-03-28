@@ -53,9 +53,10 @@ spring:
     otel:
       exporter:
         jaeger:
-          enabled: false
+          enabled: ${OTEL_JAEGER_ENABLED:false}
+          endpoint: ${OTEL_JAEGER_ENDPOINT:}
       config:
-        trace-id-ratio-based: 0.1
+        trace-id-ratio-based: ${OTEL_JAEGER_TRACE_ID_RATIO_BASED:0.1}
   logger:
     max-history-days: ${LOGGER_MAX_HISTORY_DAYS:7}
 
@@ -67,14 +68,16 @@ const:
   callback-domain: ${CALLBACK_DOMAIN:}
   oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
   ossBuckets:
-    vk_assets_ltd:
-      resource-url: ${VK_ASSETS_LTD_URL:}
-      bucket-name: ${VK_ASSETS_LTD_BUCKET:}
-      type: ${VK_ASSETS_LTD_TYPE:QNY1}
+    assets_ltd:
+      resource-url: ${ASSETS_LTD_URL:}
+      bucket-name: ${ASSETS_LTD_BUCKET:}
+      type: ${ASSETS_LTD_TYPE:QNY1}
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
+  cooling-off-period: ${COOLING_OFF_PERIOD:30}
+  close-paused-user-cron: ${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}
 limit:
   space-max-count: ${SPACE_MAX_COUNT:10}
   max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}
@@ -114,6 +117,10 @@ starter:
       callback:
         url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
         body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}
+    huawei-cloud:
+      access-key: ${HUAWEICLOUD_OBS_ACCESS_KEY:}
+      secret-key: ${HUAWEICLOUD_OBS_SECRET_KEY:}
+      endpoint: ${HUAWEICLOUD_OBS_ENDPOINT:obs.cn-south-1.myhuaweicloud.com}
     minio:
       endpoint: ${MINIO_ENDPOINT:http://minio:9000}
       access-key: ${MINIO_ACCESS_KEY:apitable}
@@ -167,14 +174,5 @@ grpc:
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
   api-docs:
-    path: /v3/api-docs
-    enabled: false
-
-knife4j:
-  enable: true
-  setting:
-    enable-open-api: true
-    language: en
+    enabled: ${API_DOCS_ENABLED:false}

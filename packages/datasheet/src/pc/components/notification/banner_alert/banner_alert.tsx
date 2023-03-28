@@ -18,11 +18,11 @@
 
 import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
 import { createRoot } from 'react-dom/client';
-import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import Vikaby from 'static/icon/workbench/vikaby-good.png';
 import styles from './style.module.less';
 
@@ -58,7 +58,7 @@ export const AlertUi = (props: IAlertProps) => {
         </span>
         <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade)}</span>
       </Button>}
-      {closable && <span onClick={onClose} className={styles.close}><CloseIcon /></span>}
+      {closable && <span onClick={onClose} className={styles.close}><CloseOutlined /></span>}
     </div>
   );
 };

@@ -26,4 +26,4 @@ export const recordVision = produce((recordVisionModeDraft: RecordVision = Recor
     return action.payload;
   }
   return recordVisionModeDraft;
-}, RecordVision.Center);
+}, RecordVision.Center as RecordVision);

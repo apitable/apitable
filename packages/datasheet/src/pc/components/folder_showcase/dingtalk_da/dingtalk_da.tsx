@@ -20,7 +20,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC } from 'react';
 import { Settings, Strings, t } from '@apitable/core';
-import { GotoLargeOutlined } from '@apitable/icons';
+import { GotoOutlined } from '@apitable/icons';
 import { Button, black, ContextMenu, useContextMenu } from '@apitable/components';
 import styles from './style.module.less';
 import { flatContextData } from 'pc/utils';
@@ -81,7 +81,7 @@ export const DingTalkDa: FC<React.PropsWithChildren<IDingTalkDaProps>> = (props)
         className={styles.dingTalkDaBtn}
         shape="round"
         size="small"
-        prefixIcon={<GotoLargeOutlined size={16} color={black[1000]} />}
+        prefixIcon={<GotoOutlined size={16} color={black[1000]} />}
         onClick={(e) => show(e)}
       >
         {t(Strings.dingtalk_da)}

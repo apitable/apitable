@@ -19,6 +19,7 @@
 package com.apitable.workspace.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -27,6 +28,7 @@ import lombok.Data;
  * </p>
  */
 @Data
+@AllArgsConstructor
 @Schema(description = "Node Path View")
 public class NodePathVo {
 

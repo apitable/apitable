@@ -138,16 +138,6 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
 
     @Override
     public void asyncActionsForSuccessJoinSpace(InvitationUserDTO dto) {
-        // Determine whether a new user has joined the space station, and issue rewards, asynchronous operation
-        TaskManager.me().execute(() -> {
-            String userName = userMapper.selectNickNameById(dto.getUserId());
-            String key = RedisConstants.getUserInvitedJoinSpaceKey(dto.getUserId(), dto.getSpaceId());
-            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-                // Order a 300 MB add-on subscription plan to invite users to increase the capacity of the add-on
-                entitlementServiceFacade.rewardGiftCapacity(dto.getSpaceId(), new EntitlementRemark(dto.getUserId(), userName));
-                redisTemplate.delete(key);
-            }
-        });
         // Send invitation notification, asynchronous operation
         TaskManager.me().execute(() -> {
             Long creatorUserId = memberMapper.selectUserIdByMemberId(dto.getCreator());

@@ -26,9 +26,8 @@ import {
   fetchEmbedForeignDatasheetPack,
 } from '../../../../api/datasheet_api';
 import { StatusCode } from 'config';
-import { Strings, t } from '../../../../../../exports/i18n';
-import { isString } from 'lodash';
-import { Events, Player } from '../../../../../shared/player';
+import { Strings, t } from 'exports/i18n';
+import { Events, Player } from 'modules/shared/player';
 import { AnyAction, Dispatch } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 import {
@@ -45,7 +44,8 @@ import {
   ISetFieldInfoState,
   ISnapshot,
   ModalConfirmKey,
-} from '../../../../../../exports/store';
+  IViewDerivation,
+} from 'exports/store';
 import {
   ACTIVE_EXPORT_VIEW_ID,
   ACTIVE_OPERATE_VIEW_ID,
@@ -105,13 +105,16 @@ import {
   UPDATE_DATASHEET_COMPUTED,
   UPDATE_DATASHEET_NAME,
   UPDATE_SNAPSHOT,
-} from '../../../../../shared/store/action_constants';
-import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from '../../../../../../exports/store/actions';
-import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../exports/store/selectors';
-import { FieldType } from 'types';
-import { consistencyCheck } from 'utils';
+  PATCH_VIEW_DERIVATION,
+  SET_VIEW_DERIVATION,
+  TRIGGER_VIEW_DERIVATION_COMPUTED,
+  DELETE_VIEW_DERIVATION,
+} from 'modules/shared/store/action_constants';
+import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
+import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
+import { checkInnerConsistency } from 'utils';
 import produce from 'immer';
-import { checkLinkConsistency } from 'utils/link_consistency_check';
+import { checkLinkConsistency } from 'utils/link_consistency';
 
 export function requestDatasheetPack(datasheetId: string) {
   return {
@@ -147,14 +150,14 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
     }
   }
 
-  const errorInfo = consistencyCheck(snapshot);
+  const errorInfo = checkInnerConsistency(snapshot);
 
   if (errorInfo) {
     Player.doTrigger(Events.app_error_logger, {
       error: new Error(t(Strings.error_data_consistency_and_check_the_snapshot)),
       metaData: {
         datasheetId: datasheet.id,
-        errorInfo,
+        errors: errorInfo,
       },
     });
 
@@ -162,16 +165,19 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
       key: ModalConfirmKey.FixInnerConsistency,
       metaData: {
         datasheetId: datasheet.id,
+        errors: errorInfo,
       },
     });
   }
 }
 
-function ensureLinkConsistency(state: IReduxState) {
-  const error = checkLinkConsistency(state);
-  if (!error || !error.missingRecords.size) {
+function ensureLinkConsistency(state: IReduxState, loadedForeignDstId: string) {
+  const error = checkLinkConsistency(state, loadedForeignDstId);
+  if (!error || !error.errorRecordIds.size) {
     return;
   }
+
+  console.log('found link inconsistency', error);
 
   Player.doTrigger(Events.app_error_logger, {
     error: new Error(t(Strings.error_data_consistency_and_check_the_snapshot)),
@@ -209,7 +215,7 @@ const checkSortInto = (snapshot: ISnapshot) => {
       if (Array.isArray(v.sortInfo)) {
         v.sortInfo = {
           keepSort: true,
-          rules: v.sortInfo
+          rules: v.sortInfo,
         };
       }
     }
@@ -257,13 +263,6 @@ export const recordNodeDesc = (datasheetId: string, desc: string) => {
   };
 };
 
-interface IFetchDatasheetSuccess {
-  responseBody: IApiWrapper & { data: IServerDatasheetPack };
-  datasheetId: string;
-  dispatch: Dispatch;
-  getState: () => IReduxState;
-}
-
 export const fetchDatasheetApi = (datasheetId: string, shareId?: string, templateId?: string, embedId?: string, recordIds?: string | string[]) => {
   let requestMethod = fetchDatasheetPack;
   if (shareId) {
@@ -280,13 +279,7 @@ export const fetchDatasheetApi = (datasheetId: string, shareId?: string, templat
   return requestMethod(datasheetId, recordIds);
 };
 
-export function fetchDatasheet(
-  datasheetId: string,
-  successCb?: (props?: IFetchDatasheetSuccess) => void,
-  overWrite = false,
-  extra?: { recordIds: string[] },
-  failCb?: () => void,
-) {
+export function fetchDatasheet(datasheetId: string, successCb?: () => void, overWrite = false, extra?: { recordIds: string[] }, failCb?: () => void) {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
     const datasheet = getDatasheet(state, datasheetId);
@@ -314,7 +307,7 @@ export function fetchDatasheet(
         .then(props => {
           // recordIds exits means that only part of recordsIds data is needed @boris
           fetchDatasheetPackSuccess({ ...props, isPartOfData: Boolean(recordIds) });
-          props.responseBody.success ? successCb && successCb(props) : failCb && failCb();
+          props.responseBody.success ? successCb && successCb() : failCb && failCb();
         });
     }
     successCb && successCb();
@@ -325,10 +318,6 @@ export function fetchDatasheet(
 /**
  * in the expanded UI modal that select related records, request this api to get the related table's permission
  * no need to consider templates
- *
- * @param {string} dstId
- * @param {string} foreignDstId
- * @returns {(dispatch: any, getState: () => IReduxState) => (undefined | Promise<void>)}
  */
 export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, forceFetch?: boolean) {
   return (dispatch: any, getState: () => IReduxState) => {
@@ -368,7 +357,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
           if (props.responseBody.success) {
             if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
               dispatch((_dispatch: any, getState: () => IReduxState) => {
-                ensureLinkConsistency(getState());
+                ensureLinkConsistency(getState(), foreignDstId);
               });
             }
           }
@@ -377,48 +366,6 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
     return;
   };
 }
-
-/**
- * edit the response data that server returns
- * @param data
- */
-export const hackData = (data: IServerDatasheetPack): IServerDatasheetPack | undefined => {
-  // replace old datetime format
-  if (!data) {
-    return;
-  }
-  Object.values(data.snapshot.meta.fieldMap).forEach(field => {
-    if (field.type === FieldType.DateTime) {
-      if (isString(field.property.dateFormat)) {
-        switch (field.property.dateFormat) {
-          case 'YYYY/MM/DD':
-          case 'yyyy/MM/dd':
-            field.property.dateFormat = 0;
-            break;
-          case 'YYYY-MM-DD':
-          case 'yyyy-MM-dd':
-            field.property.dateFormat = 1;
-            break;
-          case 'DD/MM/YYYY':
-          case 'dd/MM/yyyy':
-            field.property.dateFormat = 2;
-            break;
-          case 'MM-DD':
-          case 'MM-dd':
-            field.property.dateFormat = 3;
-            break;
-          default:
-            break;
-        }
-      }
-      if (isString(field.property.timeFormat) && field.property.timeFormat) {
-        field.property.includeTime = true;
-      }
-      field.property.timeFormat = 0;
-    }
-  });
-  return data;
-};
 
 interface IFetchDatasheetPack {
   datasheetId: string;
@@ -429,40 +376,37 @@ interface IFetchDatasheetPack {
 }
 
 export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch, getState, isPartOfData = false }: IFetchDatasheetPack) {
-  const data = responseBody.data;
-
-  if (responseBody.success && data) {
+  if (responseBody.success) {
+    const dataPack = responseBody.data;
     const dispatchActions: AnyAction[] = [];
-    if (data.foreignDatasheetMap) {
-      Object.keys(data.foreignDatasheetMap).forEach(datasheetPack => {
-        const foreignDatasheetPack = data.foreignDatasheetMap![datasheetPack]!;
+    if (dataPack.foreignDatasheetMap) {
+      Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
+        const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
         dispatchActions.push(receiveDataPack(foreignDatasheetPack, { isPartOfData: true }));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));
         }
       });
     }
-    if (data.datasheet) {
-      dispatchActions.push(receiveDataPack(data, { isPartOfData, getState }));
-      if (data.units) {
+    if (dataPack.datasheet) {
+      dispatchActions.push(receiveDataPack(dataPack, { isPartOfData, getState }));
+      if (dataPack.units) {
         // init unityMap, for `member` field use
         const unitMap = {};
-        data.units.filter(unit => unit.unitId).forEach(unit => (unitMap[unit.unitId!] = unit));
+        dataPack.units.filter(unit => unit.unitId).forEach(unit => (unitMap[unit.unitId!] = unit));
         dispatch(updateUnitMap(unitMap));
 
         // init UserMap, for `CreatedBy`/`LastModifiedBy` field use
         const userMap = {};
-        data.units.filter(unit => unit.userId).forEach(user => (userMap[user.userId!] = user));
+        dataPack.units.filter(unit => unit.userId).forEach(user => (userMap[user.userId!] = user));
         dispatch(updateUserMap(userMap));
       }
     }
-    if (data.fieldPermissionMap) {
-      dispatch(loadFieldPermissionMap(data.fieldPermissionMap, datasheetId));
+    if (dataPack.fieldPermissionMap) {
+      dispatch(loadFieldPermissionMap(dataPack.fieldPermissionMap, datasheetId));
     }
     dispatch(batchActions(dispatchActions));
-  }
-
-  if (!responseBody.success) {
+  } else {
     dispatch(datasheetErrorCode(datasheetId, responseBody.code));
   }
 }
@@ -909,5 +853,38 @@ export const resetExportViewId = (datasheetId: string) => {
   return {
     type: RESET_EXPORT_VIEW_ID,
     datasheetId,
+  };
+};
+
+export const setViewDerivation = (datasheetId: string, payload: { viewId: string; viewDerivation: IViewDerivation }) => {
+  return {
+    datasheetId,
+    type: SET_VIEW_DERIVATION,
+    payload,
+  };
+};
+
+// As opposed to set, patch means partial update
+export const patchViewDerivation = (datasheetId: string, payload: { viewId: string; viewDerivation: Partial<IViewDerivation> }) => {
+  return {
+    datasheetId,
+    type: PATCH_VIEW_DERIVATION,
+    payload,
+  };
+};
+
+export const deleteViewDerivation = (datasheetId: string, viewId: string) => {
+  return {
+    datasheetId,
+    type: DELETE_VIEW_DERIVATION,
+    payload: { viewId },
+  };
+};
+
+export const triggerViewDerivationComputed = (datasheetId: string, viewId: string) => {
+  return {
+    datasheetId,
+    type: TRIGGER_VIEW_DERIVATION_COMPUTED,
+    payload: { datasheetId, viewId },
   };
 };

@@ -19,6 +19,7 @@
 package com.apitable.organization.vo;
 
 import com.apitable.core.support.tree.Tree;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -48,11 +49,16 @@ public class TeamTreeVo implements Tree {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
-    @Schema(description = "Number of department members", example = "3")
+    @Deprecated
+    @Schema(description = "Number of department members", example = "3", deprecated = true)
     private Integer memberCount;
 
     @Schema(description = "Sort No", example = "1")
     private Integer sequence;
+
+    @Schema(description = "Whether there are sub teams.", example = "true")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean hasChildren;
 
     @Schema(description = "Subsidiary department")
     private List<TeamTreeVo> children = new ArrayList<>();

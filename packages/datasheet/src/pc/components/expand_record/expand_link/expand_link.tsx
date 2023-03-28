@@ -18,7 +18,7 @@
 
 import { Button, useThemeColors } from '@apitable/components';
 import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronDownOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { RecordCard } from 'pc/components/common/record_card';
@@ -26,6 +26,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { useCellEditorVisibleStyle } from 'pc/components/editors/hooks';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { LinkEditor, LinkEditorModalLayout } from 'pc/components/editors/link_editor';
+import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';
 import { expandRecordInCenter } from 'pc/components/expand_record/expand_record.utils';
 import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault, useResponsive } from 'pc/hooks';
@@ -35,7 +36,6 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconPullDown from 'static/icon/common/common_icon_pulldown_line.svg';
 import { IExpandFieldEditRef } from '../field_editor';
 import style from './style.module.less';
 
@@ -249,21 +249,28 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
                   return <></>;
                 }
                 return (
-                  <RecordCard
-                    className={style.recordCard}
+                  <ExpandLinkContext.Provider
+                    value={{
+                      ignoreMirror: true,
+                      baseDatasheetId: field.property.foreignDatasheetId
+                    }}
                     key={keyPrefix ? `${keyPrefix}-${index}` : recordId}
-                    record={record}
-                    fieldMap={foreignSnapshot.meta.fieldMap}
-                    columns={visibleColumns}
-                    onClick={clickRecord}
-                    onDelete={editable ? deleteRecord : undefined}
-                    datasheetId={field.property.foreignDatasheetId}
-                  />
+                  >
+                    <RecordCard
+                      className={style.recordCard}
+                      record={record}
+                      fieldMap={foreignSnapshot.meta.fieldMap}
+                      columns={visibleColumns}
+                      onClick={clickRecord}
+                      onDelete={editable ? deleteRecord : undefined}
+                      datasheetId={field.property.foreignDatasheetId}
+                    />
+                  </ExpandLinkContext.Provider>
                 );
               })}
             {hasShowMoreBtn && (
               <div className={style.showMore} onClick={() => setIsShowMoreOpen(true)}>
-                <IconPullDown fill={colors.thirdLevelText} />
+                <ChevronDownOutlined color={colors.thirdLevelText} />
                 <span className={style.showMoreText}>
                   {t(Strings.expand_rest_records_by_count, {
                     record_count: getRestRecordsCount(),

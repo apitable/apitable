@@ -24,12 +24,12 @@ import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
+import { getEnvVariables } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, WidgetNarrowOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
+import { AddFilled, AddOutlined, NarrowOutlined, ImportOutlined, ExpandOutlined, ListOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -122,7 +122,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
 
   const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
 
-  const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= ConfigConstant.DASHBOARD_MAX_WIDGET_COUNT;
+  const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
   const { setSideBarVisible } = useSideBarVisible();
   const toolbarRef = useRef(null);
   const size = useSize(toolbarRef);
@@ -156,15 +156,18 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
 
   if (isMobile) {
     return <div className={styles.mobileBar}>
-      <div
-        onClick={() => setSideBarVisible(true)}
-        className={styles.side}
-        style={{
-          backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
-        }}
-      >
-        <IconSide width={20} height={20} fill={colors.defaultBg} />
-      </div>
+      {
+        !embedId ? <div
+          onClick={() => setSideBarVisible(true)}
+          className={styles.side}
+          style={{
+            backgroundColor: isSkuPage ? colors.defaultBg : colors.primaryColor
+          }}
+        >
+          <ListOutlined size={20} color={colors.defaultBg} />
+        </div> : <span className={styles.ghost} />
+      }
+
       <InlineNodeName className={styles.nodeName} nodeId={dashboardId} nodeIcon={dashboardIcon} nodeName={dashboardName} />
       <span className={styles.ghost} />
     </div>;
@@ -218,7 +221,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
           <WrapperTooltip wrapper={Boolean(reachInstalledLimit)} tip={t(Strings.reach_limit_installed_widget)}>
             <TextButton
               className={styles.atcButton}
-              prefixIcon={<AddFilled size={16} color={[colors.primaryColor, 'white']} />}
+              prefixIcon={<AddFilled size={16} color={openTrigger ? colors.primaryColor : colors.secondLevelText} />}
               onClick={() => { setOpenTrigger(true); }}
               style={{
                 color: openTrigger ? colors.primaryColor : colors.secondLevelText,
@@ -247,7 +250,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
         isEnoughToShowButton &&
         (!embedId || embedInfo.viewControl?.toolBar.fullScreenBtn) &&
         <TextButton
-          prefixIcon={isFullscreen ? <WidgetNarrowOutlined /> : <WidgetExpandOutlined />}
+          prefixIcon={isFullscreen ? <NarrowOutlined /> : <ExpandOutlined />}
           onClick={toggleFullscreen}
           className={styles.atcButton}
         >
@@ -255,8 +258,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
         </TextButton>
       }
       {
-        !isFullscreen && !readonly && isEnoughToShowButton && !hideReadonlyEmbedItem &&
-        (!embedId || embedInfo.viewControl?.toolBar.addWidgetBtn) &&
+        !isFullscreen && !readonly && isEnoughToShowButton && !embedId &&
         <a href={t(Strings.intro_dashboard)} target='_blank' className={styles.shareDoc} rel='noreferrer'>
           {t(Strings.form_tour_desc)}
         </a>

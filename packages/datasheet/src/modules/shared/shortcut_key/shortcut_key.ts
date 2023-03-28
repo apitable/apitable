@@ -33,6 +33,7 @@ import { Message } from 'pc/components/common/message/message';
 import { notify } from 'pc/components/common/notify/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { EXPAND_RECORD, expandRecordIdNavigate } from 'pc/components/expand_record';
+import { EXPAND_SEARCH } from 'pc/components/quick_search/const';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getParentNodeByClass } from 'pc/utils/dom';
@@ -129,6 +130,9 @@ export class ShortcutContext {
       return hasPermissions().editable;
     },
     [ContextName.modalVisible]: () => false,
+    [ContextName.isQuickSearchExpanding]: () => {
+      return Boolean(document.querySelectorAll(`.${EXPAND_SEARCH}`).length);
+    }
   };
 
   static bind(key: ContextName, fn: () => boolean) {
@@ -152,7 +156,7 @@ export class ShortcutContext {
 export class ShortcutActionManager {
   private constructor() {}
 
-  static actionMap = new Map<ShortcutActionName, () => boolean | void>([
+  static actionMap = new Map<ShortcutActionName, () => boolean | void | Promise<boolean | void>>([
     [
       ShortcutActionName.None,
       () => {
@@ -206,7 +210,7 @@ export class ShortcutActionManager {
       },
     ],
     [ShortcutActionName.Clear, clear],
-    [ShortcutActionName.PrependRow, prependRow],
+    [ShortcutActionName.PrependRow, () => prependRow().then(() => true)],
     [
       ShortcutActionName.ToggleApiPanel,
       () => {
@@ -228,9 +232,9 @@ export class ShortcutActionManager {
     this.actionMap.delete(key);
   }
 
-  static trigger(key: ShortcutActionName): boolean | void {
+  static async trigger(key: ShortcutActionName): Promise<boolean | void> {
     const fn = this.actionMap.get(key);
-    const result = fn ? fn() : false;
+    const result = fn ? await fn() : false;
     return result;
   }
 }
@@ -261,7 +265,6 @@ const getUndoManager = () => {
 export function clear() {
   const state = store.getState();
   const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!);
-  const commandManager = resourceService.instance!.commandManager;
   const uploadManager = resourceService.instance!.uploadManager;
   const data: ISetRecordOptions[] = [];
   const cellMatrixFromRange = Selectors.getCellMatrixFromSelection(state);
@@ -296,13 +299,13 @@ export function clear() {
       }),
       btnText: t(Strings.undo),
       key: NotifyKey.ClearRecordData,
-      btnFn() {
-        ShortcutActionManager.trigger(ShortcutActionName.Undo);
+      async btnFn(): Promise<void> {
+        await ShortcutActionManager.trigger(ShortcutActionName.Undo);
         notify.close(NotifyKey.ClearRecordData);
       },
     });
 
-  commandManager.execute({
+  resourceService.instance!.commandManager.execute({
     cmd: CollaCommandName.SetRecords,
     data,
   });

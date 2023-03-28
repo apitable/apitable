@@ -105,6 +105,8 @@ import styles from './style.module.less';
 import { getAllTaskLine, detectCyclesStack, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
 import { Message } from 'pc/components/common';
 import { useDisabledOperateWithMirror } from '../tool_bar/hooks';
+import dayjs from 'dayjs';
+
 interface IGanttViewProps {
   height: number;
   width: number;
@@ -177,8 +179,8 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
       ganttVisibleColumns: Selectors.getGanttVisibleColumns(state),
       fieldMap: Selectors.getFieldMap(state, datasheetId)!,
       entityFieldMap: Selectors.getFieldMapIgnorePermission(state)!,
-      linearRows: Selectors.getLinearRows(state),
-      ganttLinearRows: Selectors.getGanttLinearRows(state),
+      linearRows: Selectors.getLinearRows(state)!,
+      ganttLinearRows: Selectors.getPureLinearRows(state)!,
       permissions: Selectors.getPermissions(state),
       rowHeightLevel,
       rowHeight: Selectors.getGanttRowHeightFromLevel(rowHeightLevel),
@@ -187,7 +189,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
       ganttStyle: Selectors.getGanttStyle(state)!,
       visibleRows: Selectors.getVisibleRows(state),
       recordRanges: Selectors.getSelectionRecordRanges(state),
-      rowsIndexMap: Selectors.getLinearRowsIndexMap(state),
+      rowsIndexMap: Selectors.getLinearRowsIndexMap(state) || new Map(),
       visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
       selectRanges: Selectors.getSelectRanges(state),
       fillHandleStatus: Selectors.getFillHandleStatus(state),
@@ -805,6 +807,13 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
         StoreActions.setGanttDateUnitType(defaultGanttViewStatus.dateUnitType || DateUnitType.Month, datasheetId),
       ]),
     );
+
+    // set gantt default timeZone to start field timeZone
+    const startField = fieldMap[startFieldId];
+    const timeZone = startField?.property.timeZone;
+    if (timeZone) {
+      dayjs.tz.setDefault(timeZone);
+    }
     // eslint-disable-next-line
   }, [view?.id]);
 

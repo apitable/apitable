@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus, ICollaCommandOptions } from '@apitable/core';
+import { databus, IReduxState, IServerDatasheetPack } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { OtService } from 'database/ot/services/ot.service';
+import { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { IServerDatasheetOptions } from './interfaces';
-import { ServerDataLoader } from './server.data.loader';
-import { IServerSaveOptions, ServerDataSaver } from './server.data.saver';
+import { IServerLoadDatasheetPackOptions, ServerDataStorageProvider } from './server.data.storage.provider';
 
 @Injectable()
 export class DataBusService {
@@ -43,40 +42,54 @@ export class DataBusService {
     @InjectLogger() private readonly logger: Logger,
   ) {
     this.databus = databus.DataBus.create({
-      dataLoader: new ServerDataLoader(datasheetService, redisService, logger, { useCache: false }),
-      dataSaver: new ServerDataSaver(otService, changesetSourceService, logger),
+      dataStorageProvider: new ServerDataStorageProvider(
+        {
+          datasheetService,
+          redisService,
+          otService,
+          changesetSourceService,
+          loadOptions: {
+            useCache: false,
+          },
+        },
+        logger,
+      ),
       storeProvider: {
         createStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)),
       },
     });
     this.database = this.databus.getDatabase();
+    this.database.addEventHandler({
+      type: databus.event.DatasheetEventType.CommandExecuted,
+      handle: (event: databus.event.IDatasheetCommandExecutedEvent) => {
+        if (event.execResult === databus.event.CommandExecutionResultType.Error) {
+          this.logger.error('CommandExecuteError', { error: event.error });
+          return;
+        }
+
+        return;
+      },
+    });
   }
 
   async getDatasheet(dstId: string, options: IServerDatasheetOptions): Promise<databus.Datasheet | null> {
-    const datasheet = await this.database.getDatasheet(dstId, options);
+    const datasheet = await this.database.getDatasheet(
+      dstId,
+      options.createStore ? (options as Required<IServerDatasheetOptions>) : { storeOptions: {}, ...options },
+    );
     if (datasheet === null) {
       return null;
     }
-    datasheet.addEventHandler({
-      type: databus.DatasheetEventType.CommandExecuted,
-      handle: (event: databus.IDatasheetCommandExecutedEvent) => {
-        if ('error' in event) {
-          this.logger.error('CommandExecuteError', { error: event.error });
-          return Promise.resolve();
-        }
-
-        return Promise.resolve();
-      },
-    });
 
     return datasheet;
   }
+}
 
+export interface IServerDatasheetOptions {
   /**
-   * This method is a simple wrapper of the `Datasheet.doCommand` method, providing type safety for `saveOptions`.
-   *
+   * Creates the internal redux store of the datasheet, overriding the store provider.
    */
-  doCommand<R>(dst: databus.Datasheet, command: ICollaCommandOptions, saveOptions: IServerSaveOptions): Promise<databus.ICommandExecutionResult<R>> {
-    return dst.doCommand(command, saveOptions);
-  }
+  createStore?: (dst: IServerDatasheetPack) => Promise<Store<IReduxState>> | Store<IReduxState>;
+
+  loadOptions: IServerLoadDatasheetPackOptions;
 }

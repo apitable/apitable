@@ -32,8 +32,6 @@ import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@apitable/components';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import * as React from 'react';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import styles from '../styles.module.less';
 import settingStyles from '../../field_setting/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -46,6 +44,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useClickAway } from 'ahooks';
 import omit from 'lodash/omit';
+import { QuestionCircleOutlined, ChevronRightOutlined } from '@apitable/icons';
 
 interface IFieldTypeSelectProps {
   currentField: IField;
@@ -82,7 +81,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
       if (type === currentField.type) {
         return setVisible(false);
       }
-      setCurrentField(pre => {
+      setCurrentField((pre: IField) => {
         let property = pre.property;
 
         // Determines whether the fields are converted between single and multiple choice, and if so, does not change the value in the property
@@ -105,14 +104,14 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
           const stdVals = cellValues.map(cv => {
             return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
           });
-          property = Field.bindModel({ ...pre, type, property }).enrichProperty(stdVals);
+          property = Field.bindModel({ ...pre, type, property } as IField).enrichProperty(stdVals);
         }
 
         return {
           ...pre,
           type,
           property,
-        };
+        } as IField;
       });
       setVisible(false);
       // eslint-disable-next-line
@@ -121,7 +120,9 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
   );
 
   const getFieldHelpLink = () => {
-    const helpURL = new URL(FieldTypeDescriptionMap[currentField.type].help);
+    const help = FieldTypeDescriptionMap[currentField.type].help;
+    if (!help) return '';
+    const helpURL = new URL(help);
     return helpURL.toString();
   };
 
@@ -138,8 +139,13 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
       <div className={styles.sectionTitle}>
         {t(Strings.field_type)}
         <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
-          <a href={getFieldHelpLink()} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
-            <HelpIcon style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 8 }} fill={colors.thirdLevelText} />
+          <a 
+            href={getFieldHelpLink()} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.25em', marginLeft: 8 }}
+          >
+            <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
           </a>
         </Tooltip>
       </div>
@@ -147,7 +153,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         <div className={settingStyles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
         <div className={styles.text}>{FieldTypeDescriptionMap[currentField.type].title}</div>
         <div className={styles.arrow}>
-          <IconArrow width={10} height={10} fill={colors.thirdLevelText} />
+          <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
         </div>
       </div>
       {visible && (

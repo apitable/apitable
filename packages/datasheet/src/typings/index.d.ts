@@ -17,9 +17,10 @@
  */
 
 import { ThemeName } from '@apitable/components';
-import { IReduxState, IUserInfo,
+import {
+  IReduxState, IUserInfo,
   // @ts-ignore
-  IWizardsConfig
+  IWizardsConfig, TrackEvents,
 } from '@apitable/core';
 import { getEnvVars } from 'get_env';
 import 'react-redux';
@@ -45,6 +46,14 @@ export interface IInitializationData {
   locale: string;
   lang?: string;
   envVars: IEnvVars;
+}
+
+export interface ISensors {
+  login(userId: string, cb?: () => void):any;
+  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void):any;
+  setProfile(props: { [key: string]: any }, cb?: () => void):any;
+  setOnceProfile(props: { [key: string]: any }, cb?: () => void):any;
+  quick(key: string, target: Element | EventTarget, props?: { [key: string]: any }, cb?: () => void):any
 }
 
 declare global {

@@ -46,14 +46,17 @@ import com.apitable.base.service.ParamVerificationService;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
+import com.apitable.interfaces.auth.model.UserAuth;
 import com.apitable.interfaces.eventbus.facade.EventBusFacade;
 import com.apitable.interfaces.eventbus.model.UserInfoChangeEvent;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
+import com.apitable.interfaces.user.facade.UserServiceFacade;
 import com.apitable.organization.ro.CheckUserEmailRo;
 import com.apitable.organization.ro.UserLinkEmailRo;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.bean.UserSpaceDto;
+import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.CodeValidateScope;
@@ -78,6 +81,7 @@ import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
 import com.apitable.user.ro.EmailCodeValidateRo;
+import com.apitable.user.ro.EmailVerificationRo;
 import com.apitable.user.ro.RetrievePwdOpRo;
 import com.apitable.user.ro.SmsCodeValidateRo;
 import com.apitable.user.ro.UpdatePwdOpRo;
@@ -191,6 +195,12 @@ public class UserController {
      */
     @Resource
     private IMemberService iMemberService;
+
+    @Resource
+    private UserServiceFacade userServiceFacade;
+
+    @Resource
+    private LoginUserCacheService loginUserCacheService;
 
     /**
      * Get personal information.
@@ -359,7 +369,7 @@ public class UserController {
         + "/inviteEmail", requiredPermission = false)
     @Operation(summary = "Associate the invited mail", description = "Users can "
         + "only associate with invited mail when they have no other mail")
-    public ResponseData<Void> bindEmail(
+    public ResponseData<Void> linkInviteEmail(
         @RequestBody @Valid final UserLinkEmailRo data) {
         String email = data.getEmail();
         String spaceId = data.getSpaceId();
@@ -377,7 +387,7 @@ public class UserController {
     @PostResource(name = "Bind mail", path = "/bindEmail",
         requiredPermission = false)
     @Operation(summary = "Bind mail", description = "Bind mail and modify mail")
-    public ResponseData<Void> verifyEmail(
+    public ResponseData<Void> bindEmail(
         @RequestBody @Valid final EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessorManage.me()
@@ -643,6 +653,8 @@ public class UserController {
         iUserService.applyForClosingAccount(user);
         // Destroy user cookies and maintain sessions
         iUserService.closeMultiSession(userId, true);
+        // delete user cache
+        loginUserCacheService.delete(userId);
         return ResponseData.success();
     }
 
@@ -769,5 +781,36 @@ public class UserController {
         Long userId = SessionContext.getUserId();
         userActiveSpaceCacheService.delete(userId);
         return ResponseData.success();
+    }
+
+    /**
+     * reset password router.
+     *
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/resetPassword")
+    @Operation(summary = "reset password router")
+    public ResponseData<Void> resetPassword() {
+        Long userId = SessionContext.getUserId();
+        boolean result = userServiceFacade.resetPassword(new UserAuth(userId));
+        if (result) {
+            return ResponseData.success();
+        }
+        return ResponseData.error();
+    }
+
+    /**
+     * reset password router.
+     *
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/verifyEmail", requiredLogin = false)
+    @Operation(summary = "verify user's email", hidden = true)
+    public ResponseData<Void> verifyEmail(@RequestBody @Valid EmailVerificationRo ro) {
+        boolean result = userServiceFacade.verifyEmail(ro.getEmail());
+        if (result) {
+            return ResponseData.success();
+        }
+        return ResponseData.error();
     }
 }

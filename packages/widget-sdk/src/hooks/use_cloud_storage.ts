@@ -21,7 +21,6 @@ import { Dispatch, SetStateAction, useContext, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CloudStorage } from '../model/cloud_storage';
 import { WidgetContext } from '../context';
-import { usePermission } from './private/use_permission';
 
 /**
  * Widget data storage.
@@ -59,16 +58,16 @@ import { usePermission } from './private/use_permission';
  */
 export function useCloudStorage<S>(key: string, initValue?: S | (() => S)): [S, Dispatch<SetStateAction<S>>, boolean] {
   const [_initValue] = useState(initValue);
-  const { resourceService: datasheetService, id } = useContext<IWidgetContext>(WidgetContext);
-  const editable = usePermission().storage.editable;
+  const { id } = useContext<IWidgetContext>(WidgetContext);
+  const editable = useSelector(state => state.permission.storage.editable);
   const cloudStorageData = useSelector(state => state.widget?.snapshot.storage ?? null);
   // Bring up the value for caching to avoid components refresh due to storage changes.
-  const storage = new CloudStorage(cloudStorageData, datasheetService, id);
+  const storage = new CloudStorage(cloudStorageData, id);
   const value = storage.get(key) as any;
 
   return useMemo(() => {
-    const storage = new CloudStorage(cloudStorageData, datasheetService, id);
+    const storage = new CloudStorage(cloudStorageData, id);
     const setValue = (v?: any) => storage.set(key, v);
     return [storage.has(key) ? value : _initValue, setValue, editable];
-  }, [cloudStorageData, datasheetService, id, value, _initValue, editable, key]);
+  }, [cloudStorageData, id, value, _initValue, editable, key]);
 }

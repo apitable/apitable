@@ -198,6 +198,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
     case FieldType.Formula:
     case FieldType.SingleText:
     case FieldType.AutoNumber:
+    case FieldType.Cascader:
       return (
         <CellText
           cellValue={cellValue as any}

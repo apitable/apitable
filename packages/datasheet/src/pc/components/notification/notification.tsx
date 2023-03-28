@@ -18,6 +18,7 @@
 
 import { Button, TextButton } from '@apitable/components';
 import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@apitable/core';
+import { NotificationCheckOutlined } from '@apitable/icons';
 import { useMount, useSize } from 'ahooks';
 import { Tabs } from 'antd';
 import { Loading } from 'pc/components/common';
@@ -27,7 +28,6 @@ import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import ToReadIcon from 'static/icon/workbench/notification/workbench_icon_notification_read.svg';
 import { Card } from './card';
 import { NoData } from './no_data';
 import styles from './style.module.less';
@@ -166,7 +166,7 @@ export const Notification: FC<React.PropsWithChildren<unknown>> = () => {
             allToReadBtnLoading ? (
               <Loading />
             ) : (
-              <TextButton onClick={allToRead} prefixIcon={<ToReadIcon fill="currentColor" />}>
+              <TextButton onClick={allToRead} prefixIcon={<NotificationCheckOutlined color="currentColor" />}>
                 {t(Strings.mark_all_as_processed)}
               </TextButton>
             )
@@ -175,7 +175,7 @@ export const Notification: FC<React.PropsWithChildren<unknown>> = () => {
               color="primary"
               onClick={allToRead}
               loading={allToReadBtnLoading}
-              prefixIcon={<ToReadIcon fill="currentColor" width={16} height={16} />}
+              prefixIcon={<NotificationCheckOutlined color="currentColor" size={16} />}
               variant="jelly"
             >
               {t(Strings.mark_all_as_processed)}

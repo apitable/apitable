@@ -228,12 +228,12 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                         : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
         // With the node manageable group, take out the corresponding user uuid
         Map<Boolean, List<String>> isManagerToUuidsMap = roleMembers.stream()
-                .filter(vo -> vo.getUuid() != null && (vo.getIsAdmin() || !vo.getUuid().equals(arg.getUuid())))
+                .filter(vo -> vo.getUuid() != null && (vo.getIsWorkbenchAdmin() || !vo.getUuid().equals(arg.getUuid())))
                 .collect(Collectors.groupingBy(vo -> {
                             if (BooleanUtil.isFalse(arg.getIncludeExtend())) {
-                                return vo.getIsAdmin().equals(Boolean.TRUE);
+                                return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE);
                             }
-                            return vo.getIsAdmin().equals(Boolean.TRUE) || ControlRoleManager.parseNodeRole(vo.getRole())
+                            return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE) || ControlRoleManager.parseNodeRole(vo.getRole())
                                     .isGreaterThan(ControlRoleManager.parseNodeRole(Node.READER));
                         },
                         Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));

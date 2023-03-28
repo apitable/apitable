@@ -31,9 +31,9 @@ import styles from './styles.module.less';
 import { store } from 'pc/store';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { Tooltip } from 'pc/components/common';
-import WarnIcon from 'static/icon/common/common_icon_warning_triangle.svg';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';
+import { WarnCircleFilled } from '@apitable/icons';
 
 export enum ShowType {
   LinkField,
@@ -81,7 +81,7 @@ const WarnTip = ({ text } : { text: string }) => {
       title={text}
       placement="top"
     >
-      <WarnIcon fill={colors.warningColor} width={15} height={13} className={styles.warningIcon} />
+      <WarnCircleFilled color={colors.warningColor} size={15} className={styles.warningIcon} />
     </Tooltip>
   );
 };

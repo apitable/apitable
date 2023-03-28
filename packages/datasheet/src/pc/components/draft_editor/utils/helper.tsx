@@ -89,7 +89,8 @@ function transformNode2Link(node: ITextNode): ITextNode | ITextNode[]{
   return res;
 }
 
-export function transformNodes2Link(nodes: ITextNode[]): ITextNode[] {
+export function transformNodes2Link(nodes?: ITextNode[]): ITextNode[] {
+  if (!nodes) return [];
   const res: ITextNode[] = [];
   for (const node of nodes) {
     const _node = transformNode2Link(node);

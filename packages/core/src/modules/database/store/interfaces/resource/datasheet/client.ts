@@ -108,7 +108,7 @@ export type ISearchCellResult = [string, string][];
  */
 export type ISearchRecordResult = string[];
 
-export type ISearchResult = ISearchCellResult | ISearchRecordResult;
+export type ISearchResult = ISearchCellResult;
 
 export interface IWidgetPanelStatus {
   opening: boolean;
@@ -143,4 +143,10 @@ export interface IOrgChartViewStatus {
 
 export interface IKanbanViewStatus {
   groupSettingVisible: boolean;
+}
+
+export interface ISetSearchKeyword {
+  type: typeof actions.SET_SEARCH_KEYWORD;
+  payload: string;
+  datasheetId: string;
 }

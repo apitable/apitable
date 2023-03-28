@@ -1,7 +1,7 @@
 import { Divider, IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import {
-  CloseMiddleOutlined, DragOutlined, MoreOutlined, RefreshOutlined, SettingOutlined, WidgetExpandOutlined, WidgetNarrowOutlined,
+  CloseOutlined, DragOutlined, MoreOutlined, ReloadOutlined, SettingOutlined, ExpandOutlined, NarrowOutlined,
 } from '@apitable/icons';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
@@ -12,14 +12,13 @@ import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import IconExpand from 'static/icon/datasheet/datasheet_icon_expand_record.svg';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
-import { IWidgetLoaderRefs } from '../../widget_loader';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
+import { IWidgetBlockRefs } from './widget_block';
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;
@@ -32,7 +31,7 @@ interface IWidgetHeaderProps extends IWidgetPropsBase {
   toggleWidgetDevMode?: () => void;
   dragging: boolean;
   setDragging: Function;
-  widgetLoader: React.RefObject<IWidgetLoaderRefs>;
+  widgetLoader: React.RefObject<IWidgetBlockRefs>;
   refreshVersion: (delta?: number | undefined) => void;
   isFullScreenWidget: boolean;
   toggleFullScreenWidget: () => void;
@@ -125,7 +124,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
     }
     expandWidgetRoute(widgetId);
   };
-  const ReactIconExpand = () => <IconExpand width={16} height={16} fill={colors.thirdLevelText} />;
+  const ReactIconExpand = () => <ExpandOutlined size={16} color={colors.thirdLevelText} />;
   const ReactMoreOutlined = () => <MoreOutlined size={16} color={colors.thirdLevelText} className={styles.rotateIcon} />;
 
   const DividerMargin8 = () => <Divider style={{ margin: '8px' }} orientation='vertical' />;
@@ -162,7 +161,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
     >
       {!config.hideDrag && (
         <span className={classNames(styles.dragHandle, styles.operateButton)}>
-          <DragOutlined size={10} color={colors.thirdLevelText} />
+          <DragOutlined size={14} color={colors.thirdLevelText} />
         </span>
       )}
       <span className={styles.widgetName}>
@@ -249,7 +248,7 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
           }}
         >
           <Tooltip title={t(Strings.widget_operate_refresh)} placement={tooltipPlacement}>
-            <IconButton icon={RefreshOutlined} size='small' />
+            <IconButton icon={ReloadOutlined} size='small' />
           </Tooltip>
         </span>
       )}
@@ -278,13 +277,13 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
             placement={tooltipPlacement}
           >
             <IconButton
-              icon={isFullScreenWidget ? WidgetNarrowOutlined : WidgetExpandOutlined}
+              icon={isFullScreenWidget ? NarrowOutlined : ExpandOutlined}
               style={{ marginRight: 8 }}
               onClick={() => toggleFullScreenWidget()}
             />
           </Tooltip>
           <IconButton
-            icon={CloseMiddleOutlined}
+            icon={CloseOutlined}
             size='small'
             onClick={() => {
               isFullScreenWidget && toggleFullScreenWidget();

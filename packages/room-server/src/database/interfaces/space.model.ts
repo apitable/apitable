@@ -38,3 +38,10 @@ export class InternalCreateDatasheetVo {
   datasheetId!: string;
   createdAt!: number;
 }
+
+export class InternalSpaceInfoVo {
+  spaceId!: string;
+  labs!: {
+    viewManualSave: boolean
+  };
+}

@@ -23,8 +23,10 @@ import { useHover } from 'ahooks';
 interface ICustomScrollbarsProps {
   onScroll?: (e: any) => void;
   style?: React.CSSProperties;
+  autoHide?: boolean;
 }
 export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (props) => {
+  const { autoHide = true } = props;
   const ref = React.useRef(null);
   const isHovering = useHover(ref);
 
@@ -33,7 +35,7 @@ export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (p
       borderRadius: 6,
       backgroundColor: 'rgba(191, 193, 203, 0.5)',
       zIndex: 1,
-      opacity: isHovering ? '1' : '0',
+      opacity: (!autoHide || isHovering) ? '1' : '0',
     };
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
@@ -43,6 +45,7 @@ export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (p
       renderThumbVertical={renderThumb}
       autoHideTimeout={500}
       autoHideDuration={200} 
+      autoHide={autoHide}
       {...props}
     > 
       <div ref={ref} style={props.style}>

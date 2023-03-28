@@ -40,6 +40,9 @@ export const updateFormProps: ICollaCommandDef<IUpdateFormProps> = {
     }
     
     const updateFormPropsAction = FormAction.updatePropsAction(snapshot.formProps, { partialProps });
+    if (updateFormPropsAction.length === 0) {
+      return null;
+    }
     return {
       result: ExecuteResult.Success,
       resourceId: formId,

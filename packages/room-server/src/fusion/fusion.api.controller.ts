@@ -18,28 +18,21 @@
 
 import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
 import {
-  Body,
-  CacheTTL,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  Put,
-  Query,
-  Req,
-  Res,
-  UseGuards,
-  UseInterceptors,
+  Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
-import { InternalCreateDatasheetVo } from 'database/interfaces';
-import { AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
 import { AttachmentService } from 'database/attachment/services/attachment.service';
+import { InternalCreateDatasheetVo } from 'database/interfaces';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
+import { ApiAuthGuard } from 'fusion/middleware/guard/api.auth.guard';
+import { ApiDatasheetGuard } from 'fusion/middleware/guard/api.datasheet.guard';
+import { ApiFieldGuard } from 'fusion/middleware/guard/api.field.guard';
+import { ApiNodeGuard } from 'fusion/middleware/guard/api.node.guard';
+import { ApiSpaceGuard } from 'fusion/middleware/guard/api.space.guard';
+import { ApiUsageGuard } from 'fusion/middleware/guard/api.usage.guard';
+import { NodePermissionGuard } from 'fusion/middleware/guard/node.permission.guard';
+import { AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
 import { RecordDeleteVo } from 'fusion/vos/record.delete.vo';
 import { I18nService } from 'nestjs-i18n';
@@ -50,14 +43,11 @@ import { ApiCacheInterceptor, apiCacheTTLFactory } from 'shared/interceptor/api.
 import { ApiNotifyInterceptor } from 'shared/interceptor/api.notify.interceptor';
 import { ApiUsageInterceptor } from 'shared/interceptor/api.usage.interceptor';
 import { IFileInterface } from 'shared/interfaces/file.interface';
-import { ApiAuthGuard } from 'fusion/middleware/guard/api.auth.guard';
-import { ApiDatasheetGuard } from 'fusion/middleware/guard/api.datasheet.guard';
-import { ApiFieldGuard } from 'fusion/middleware/guard/api.field.guard';
-import { ApiNodeGuard } from 'fusion/middleware/guard/api.node.guard';
-import { ApiSpaceGuard } from 'fusion/middleware/guard/api.space.guard';
-import { ApiUsageGuard } from 'fusion/middleware/guard/api.usage.guard';
-import { NodePermissionGuard } from 'fusion/middleware/guard/node.permission.guard';
 import { RestService } from 'shared/services/rest/rest.service';
+import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
+import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
+import { FieldPipe } from './middleware/pipe/field.pipe';
+import { QueryPipe } from './middleware/pipe/query.pipe';
 import { AssetUploadQueryRo } from './ros/asset.query';
 import { DatasheetCreateRo } from './ros/datasheet.create.ro';
 import { FieldCreateRo } from './ros/field.create.ro';
@@ -79,10 +69,6 @@ import { FieldListVo } from './vos/field.list.vo';
 import { RecordListVo } from './vos/record.list.vo';
 import { RecordPageVo } from './vos/record.page.vo';
 import { ViewListVo } from './vos/view.list.vo';
-import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
-import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
-import { FieldPipe } from './middleware/pipe/field.pipe';
-import { QueryPipe } from './middleware/pipe/query.pipe';
 
 /**
  * TODO: cache response data, send notification while member changed, should maintain the data in the same server and cache them
@@ -111,7 +97,11 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request: FastifyRequest): Promise<RecordPageVo> {
+  public async getRecords(
+    @Param() param: RecordParamRo,
+    @Query(QueryPipe) query: RecordQueryRo,
+    @Req() request: FastifyRequest,
+  ): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
     return ApiResponse.success(pageVo);
   }
@@ -151,15 +141,20 @@ export class FusionApiController {
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
   public async getPresignedUrl(@Query() query: AssetUploadQueryRo, @Req() req: FastifyRequest): Promise<AssetView> {
-    // check space capacity
+    await this.checkSpaceCapacity(req);
+    const datasheet = req[DATASHEET_HTTP_DECORATE];
+    const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
+    return ApiResponse.success({ results });
+  }
+
+  private async checkSpaceCapacity(req: FastifyRequest) {
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
     if (spaceCapacityOverLimit) {
       const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
       return Promise.reject(error);
     }
-    const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
-    return ApiResponse.success({ results });
+    return;
   }
 
   @Post('/datasheets/:datasheetId/attachments')
@@ -183,13 +178,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   // TODO: Waiting for nestjs official inheritance multi and fastify
   public async addAttachment(@Param() param: RecordParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
-    // check space capacity
-    const datasheet = req[DATASHEET_HTTP_DECORATE];
-    const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
-    if (spaceCapacityOverLimit) {
-      const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
-      return Promise.reject(error);
-    }
+    await this.checkSpaceCapacity(req);
     const service = this.attachService;
     const i18nService = this.i18n;
     const newFiles: IFileInterface[] = [];
@@ -249,7 +238,7 @@ export class FusionApiController {
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
-  public async updateRecord(
+  public async updateRecords(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
     @Body(FieldPipe) body: RecordUpdateRo,
@@ -275,13 +264,12 @@ export class FusionApiController {
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
-  public async updateRecordOfPut(
+  public updateRecordsByPut(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
     @Body(FieldPipe) body: RecordUpdateRo,
   ): Promise<RecordListVo> {
-    const listVo = await this.fusionApiService.updateRecords(param.datasheetId, body, query.viewId!);
-    return ApiResponse.success(listVo);
+    return this.updateRecords(param, query, body);
   }
 
   @Delete('/datasheets/:datasheetId/records')
@@ -292,7 +280,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async deleteRecord(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
+  public async deleteRecords(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordDeleteRo): Promise<RecordDeleteVo> {
     if (!query.recordIds) {
       throw ApiException.tipError(ApiTipConstant.api_params_empty_error, { property: 'recordIds' });
     }
@@ -314,13 +302,12 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async datasheetFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
+  public async getFields(@Param() param: RecordParamRo, @Query() query: FieldQueryRo): Promise<FieldListVo> {
     const fields = await this.fusionApiService.getFieldList(param.datasheetId, query);
-    return ApiResponse.success({
-      fields: fields.map(field =>
-        field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
-      ),
-    });
+    const fieldDtos = fields.map(field =>
+      field.getViewObject((f, { state }) => Field.bindContext(f, state).getApiMeta(param.datasheetId) as DatasheetFieldDto),
+    );
+    return ApiResponse.success({ fields: fieldDtos });
   }
 
   @Get('/datasheets/:datasheetId/views')
@@ -331,7 +318,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
-  public async datasheetViews(@Param() param: RecordParamRo): Promise<ViewListVo> {
+  public async getViews(@Param() param: RecordParamRo): Promise<ViewListVo> {
     const metaViews = await this.fusionApiService.getViewList(param.datasheetId);
     if (metaViews) {
       return ApiResponse.success({ views: metaViews });
@@ -346,7 +333,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async spaceList() {
+  public async getSpaces() {
     // This interface does not count API usage for now
     const spaceList = await this.fusionApiService.getSpaceList();
     return ApiResponse.success({
@@ -458,7 +445,7 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async nodeList(@Param() param: NodeListParamRo) {
+  public async getNodes(@Param() param: NodeListParamRo) {
     const { spaceId } = param;
     const nodeList = await this.fusionApiService.getNodeList(spaceId);
     return ApiResponse.success({
@@ -477,10 +464,8 @@ export class FusionApiController {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async _nodeDetail(@Param() param: OldNodeDetailParamRo) {
-    const { nodeId } = param;
-    const nodeInfo = await this.fusionApiService.getNodeDetail(nodeId);
-    return ApiResponse.success(nodeInfo);
+  public _nodeDetail(@Param() param: OldNodeDetailParamRo) {
+    return this.nodeDetail(param);
   }
 
   @Get('/nodes/:nodeId')

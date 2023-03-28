@@ -981,6 +981,14 @@
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
+            "api_favicon_value_error": {
+                "code": 400,
+                "id": "api_favicon_value_error",
+                "isRecordTimes": true,
+                "message": "api_favicon_value_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
             "api_param_basic_tools_type_error": {
                 "code": 400,
                 "id": "api_param_basic_tools_type_error",

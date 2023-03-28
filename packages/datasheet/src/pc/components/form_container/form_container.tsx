@@ -19,13 +19,15 @@
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
   Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
-  IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors,
-  StatusCode, StoreActions, string2Segment, Strings, t,
+  IFormState, IRecord, ISegment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors, StatusCode, StoreActions,
+  string2Segment, Strings, t,
 } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, EditOutlined, InfoCircleOutlined } from '@apitable/icons';
 import * as Sentry from '@sentry/nextjs';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
+// @ts-ignore
+import { triggerUsageAlertForDatasheet } from 'enterprise';
 import produce from 'immer';
 import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
@@ -56,8 +58,6 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
-// @ts-ignore
-import { triggerUsageAlertForDatasheet } from 'enterprise';
 
 enum IFormContentType {
   Form = 'Form',
@@ -392,11 +392,6 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
     Message.success({ content: t(Strings.form_submit_success) });
     if (shareId) {
       setContentType(IFormContentType.Welcome);
-    }
-    try {
-      !isPrivateDeployment() && (window as any).sensors.track('formSubmitSuccess', { $url: window.location.href });
-    } catch (error) {
-      Sentry.captureMessage(String(error));
     }
   };
 
@@ -767,7 +762,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         )}
 
         {/* Top left: brand logo */}
-        {shareId && !fullScreen && !isMobile && (
+        {brandVisible && shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
               <Logo theme={theme}/>
@@ -807,7 +802,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
                   onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
-                  icon: <EditDescribeOutlined color={colors.thirdLevelText} />,
+                  icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.editing_field_desc),
                   onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },

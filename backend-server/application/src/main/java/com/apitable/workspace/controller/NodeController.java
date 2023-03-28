@@ -18,7 +18,10 @@
 
 package com.apitable.workspace.controller;
 
+import static com.apitable.workspace.enums.NodeException.DUPLICATE_NODE_NAME;
+
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -473,6 +476,15 @@ public class NodeController {
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
             nodeOpRo.getExtra());
+        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())) {
+            String oldNodeId = iNodeService.getNodeIdByParentIdAndNodeName(nodeOpRo.getParentId(),
+                nodeOpRo.getNodeName());
+            if (StrUtil.isNotBlank(oldNodeId)) {
+                return ResponseData.status(false, DUPLICATE_NODE_NAME.getCode(),
+                        DUPLICATE_NODE_NAME.getMessage())
+                    .data(iNodeService.getNodeInfoByNodeId(spaceId, oldNodeId, role));
+            }
+        }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
         // publish space audit events
         AuditSpaceArg arg =
@@ -491,13 +503,11 @@ public class NodeController {
     @Operation(summary = "Edit node", description = "node id must. name, icon is not required"
         + ROLE_DESC)
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
-        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
+        @Parameter(name = "nodeId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id", schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
-    public ResponseData<Void> update(@PathVariable("nodeId") String nodeId,
-        @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
+    public ResponseData<NodeInfoVo> update(@PathVariable("nodeId") String nodeId,
+                                           @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
         ExceptionUtil.isTrue(
             StrUtil.isNotBlank(nodeOpRo.getNodeName()) || ObjectUtil.isNotNull(nodeOpRo.getIcon())
                 || ObjectUtil.isNotNull(nodeOpRo.getCover()) || ObjectUtil.isNotNull(
@@ -512,7 +522,9 @@ public class NodeController {
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         iNodeService.edit(userId, nodeId, nodeOpRo);
-        return ResponseData.success();
+        return ResponseData.success(
+            iNodeService.getNodeInfoByNodeIds(spaceId, memberId, ListUtil.toList(nodeId)).stream()
+                .findFirst().orElse(null));
     }
 
     /**
@@ -723,7 +735,7 @@ public class NodeController {
      * Import excel.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
-    @PostResource(path = "/import", requiredPermission = false)
+    @PostResource(path = { "/import", "/{parentId}/importExcel" }, requiredPermission = false)
     @Operation(summary = "Import excel", description = "all parameters must be")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
@@ -764,12 +776,15 @@ public class NodeController {
                 new ByteArrayInputStream(
                     IOUtils.toString(data.getFile().getInputStream(), encoding).getBytes());
             createNodeId =
-                iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(), mainName,
-                    targetInputStream);
-        } else {
+                iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(),
+                    data.getViewName(), mainName, targetInputStream);
+        } else if (fileSuffix.equals(FileSuffixConstants.XLS)
+            || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             createNodeId =
                 iNodeService.parseExcel(userId, uuid, spaceId, memberId, data.getParentId(),
-                    mainName, fileSuffix, data.getFile().getInputStream());
+                    data.getViewName(), mainName, fileSuffix, data.getFile().getInputStream());
+        } else {
+            throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }
         // publish space audit events
         AuditSpaceArg arg =

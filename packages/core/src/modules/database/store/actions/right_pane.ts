@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as actions from '../../../shared/store/action_constants';
+import * as actions from 'modules/shared/store/action_constants';
 
 export const setRightPaneWidth = (width: number | string) => {
   return (dispatch: any) => {
