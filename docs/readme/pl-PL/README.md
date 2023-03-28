@@ -327,10 +327,12 @@ APITable używa tych wspólnych konwencji:
 - [Centrum pomocy](https://help.apitable.com/)
 - [👩‍💻 Centrum programistów](https://developers.apitable.com/)
   - [🪡 Dokumenty REST API](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (wkrótce...)
+  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - Skryptowanie (wkrótce...)
 
 ## 🛣 Mapa drogowa
+
+Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 
 ### Przyszłe funkcje
 
@@ -368,7 +370,7 @@ Zawsze szukamy dobrych talentów dla APITable:
 
 - **Full-stack developer:**Masz doświadczenie z React, NestJS, TypeScript, Spring Boot, Java, Terraform. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
 - **Back-end developer**:Masz doświadczenie z NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
-- **Front-end developer:** Masz doświadczenie z React, NextJS, TypeScript, WebPack. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
+- **Front-end developer:** Masz doświadczenie z React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Niezależnie od czasu i warunków, jeśli chcesz zaangażować się do zespołu APITable, nie zwlekaj i wyślij swoje CV na adres <talent@apitable.com>.
 
