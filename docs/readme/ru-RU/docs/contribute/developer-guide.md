@@ -71,7 +71,7 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## Какой инструмент сборки мы используем?
 
 Мы используем `make` как наш основной инструмент сборки, который управляет другими инструментами сборки, такими как `gradle` / `npm` / `yarn`.
 
@@ -85,7 +85,7 @@ make
 
 
 
-## How to start development environment?
+## Запуск среды разработки?
 
 APITable consists of 3 processes:
 
@@ -118,7 +118,7 @@ make run # enter 3
 
 
 
-## What IDE should you use?
+## Какой IDE вы должны использовать?
 
 Мы рекомендуем вам использовать Visual Studio Code или Intellij IDEA в качестве IDE.
 
@@ -128,11 +128,11 @@ APITable подготовил отладочные конфигурации дл
 
 
 
-## How to configure the SMTP server?
+## Как настроить SMTP-сервер?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+По умолчанию, APITable не настраивает SMTP-сервер, что означает, что вы не можете пригласить пользователей, так как для этого требуется возможность отправки электронной почты.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+Необходимо модифицировать конфигурацию .env с помощью самоэлектронной почты и перезапустить сервер.
 
 `
 MAIL_ENABLED=true
@@ -143,42 +143,42 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+Кроме того, некоторые почтовые ящики должны быть включены в фоновом режиме, чтобы использовать smtp. Для получения подробной информации вы можете найти учебник по адресу xxx mailbox smtp.
 
 
-## Performance problem under macOS M1 docker run?
+## Проблемы с производительностью в macOS M1 docker run?
 
-## Where is the API documentation?
+## Где находится документация для разработчиков?
 
-You can access the API documentation by starting a local server:
+Вы можете получить доступ к документации по API, запустив локальный сервер:
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
+1. Адрес документации сервера бэкэнда: http://localhost:8081/api/v1/doc.html
 
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
+2. Адрес документации для сервера Room: http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+Если вас интересуют интерфейсы API облачных сервисов, вы также можете получить прямой доступ к документации по API по адресу https://developers.apitable.com/api/introduction.
 
-## How to set the limitation of widget quantity in dashboard? (30 by default)
+## Как установить ограничение количества виджета на панели управления? (по умолчанию 30)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+Это можно сделать, установив параметр `DSB_WIDGET_MAX_COUNT` в файле `.env`.
 
-## Can I increase request rate limit of the API? (5 by default)
+## Могу ли я увеличить лимит запросов API? (по умолчанию 5)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+В файле `.env.default` из `комнат-сервера`есть два параметра, которые могут настраивать частоту запроса:
 
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+1. Вы можете установить `LIMIT_POINTS` и `LIMIT_DURATION` , чтобы указать количество запросов, которые могут быть сделаны за единичный период времени. Если LIMIT_POINTS - это количество раз, а LIMIT_DURATION - это длительность, измеряемая в секундах.
 
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
+2. Вы можете установить параметр `LIMIT_WHITE_LIST` , чтобы установить отдельную частоту запросов для определенных пользователей. Его значение является JSON строкой, и его структура может ссылаться на `Map<string, IBaseRateLimiter>`.
 
-## How to increase the number of records inserted per API call? (10 by default)
+## Как увеличить количество записей, добавляемых во время вызова API? (по умолчанию 10)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
-
-
-## How to upgrade to the newest release version?
+Это можно сделать, установив параметр `API_MAX_MODIFY_RECORD_COUNTS` в файле `.env.default` в `room-server`.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## Как обновиться до последней версии?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## Как изменить стандартный 80 порт?
+Свойства конфигурации в файле `.env` также можно переопределить путем указания их env vars `NGINX_HTTP_PORT`
+
+например: Она будет установлена как NGINX_HTTP_PORT=8080
