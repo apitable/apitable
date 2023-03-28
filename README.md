@@ -326,10 +326,12 @@ APITable use these common conventions:
 - [Help Center](https://help.apitable.com/)
 - [👩‍💻 Developer Center](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
+  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - Scripting (Coming soon...)
 
 ## 🛣 Roadmap
+
+Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 
 ### Future Features
 
