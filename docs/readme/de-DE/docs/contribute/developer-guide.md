@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
 ```bash
-## erforderlich erforderlich
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,39 +129,40 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 Standardmäßig konfiguriert APITable den SMTP-Server nicht, was bedeutet, dass Sie keine Benutzer einladen können, da dies die E-Mail-Sendefunktion erfordert.
 
-Es ist erforderlich, die .env-Konfiguration mit Self-E-Mail zu ändern und den Back-End-Server neu zu starten.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
-MAIL_PASSWORD=Ihr_E-Mail-Passwort
+MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
-MAIL_SSL_ENABLE=wahr
+MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=Ihre_E-Mail`
+MAIL_USERNAME=your_email
+```
 
-Darüber hinaus müssen einige Postfächer im Hintergrund aktiviert werden, um SMTP verwenden zu können. Für Details können Sie nach dem xxx-Postfach-smtp-Tutorial suchen.
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## Performance-Problem unter macOS M1 Docker-Lauf?
 
 ## Wo ist die API-Dokumentation?
 
-Sie können auf die API-Dokumentation zugreifen, indem Sie einen lokalen Server starten:
+You can access the API documentation by starting a local server:
 
 1. Die Dokumentationsadresse für den backend-server lautet: http://localhost:8081/api/v1/doc.html
 
 2. Die Dokumentationsadresse für den room-server lautet: http://localhost:3333/nest/v1/docs
 
-Wenn Sie an Cloud-Service-API-Schnittstellen interessiert sind, können Sie auch direkt auf die Online-API-Dokumentation unter https://developers.apitable.com/api/introduction zugreifen.
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## Wie stelle ich die Begrenzung der Widget-Menge im Dashboard ein? (standardmäßig 30)
 
-Dies kann durch Setzen des Parameters `DSB_WIDGET_MAX_COUNT` in der `.env`-Datei erreicht werden.
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## Kann ich das Anforderungsratenlimit der API erhöhen? (standardmäßig 5)
 
-In der `.env.default`-Datei von `room-server` gibt es zwei Parameter, die die Anfragehäufigkeit anpassen können:
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. Sie können „LIMIT_POINTS“ und „LIMIT_DURATION“ festlegen, um die Anzahl der Anforderungen anzugeben, die in einer Zeiteinheit erfolgen können. Dabei ist LIMIT_POINTS die Anzahl der Male und LIMIT_DURATION die Dauer, gemessen in Sekunden.
 
@@ -168,13 +170,13 @@ In der `.env.default`-Datei von `room-server` gibt es zwei Parameter, die die An
 
 ## Wie kann die Anzahl der pro API-Aufruf eingefügten Datensätze erhöht werden? (10 standardmäßig)
 
-Dies kann durch Setzen des Parameters `API_MAX_MODIFY_RECORD_COUNTS` in der `.env.default`-Datei von `room-server` erreicht werden.
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## Wie aktualisiere ich auf die neueste Release-Version?
 
 
 ## Wie ändere ich den Standardport 80?
-Konfigurationseigenschaften in der `.env`-Datei können auch überschrieben werden, indem sie env vars `NGINX_HTTP_PORT` angeben
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-Zum Beispiel. Es würde als NGINX_HTTP_PORT=8080 festgelegt werden
+For example. It would be set as NGINX_HTTP_PORT=8080
