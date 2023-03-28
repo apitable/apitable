@@ -1,40 +1,40 @@
-# Developer Guide
+# 開發者指南
 
-This guide helps you get started developing APITable.
+本指南幫助您開始開發 APITable 。
 
-## Dependencies
+## 依賴關係
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+請確保您在設置開發者環境之前安裝了以下依賴關係和編程語言：
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
 
 
-### Programming Language
+### 編程語言
 
-If you are using macOS or Linux. We recommend install programming language with SDK manager `sdkman` and `nvm`.
+如果您使用 macOS 或 Linux。 我們建議使用 SDK 管理器 `sdkman` 和 `nvm` 安裝編程語言。
 
 ```bash
-# quick install nvm
+# 安裝 nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+# 安裝 sdkman
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
+# 安裝 nodejs 
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
+# 安裝 java 開發者環境
 sdk env install
+# 安裝 rust 工具鏈
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+我們建議使用 [Homebrew](https://brew.sh/) 來安裝任何缺失的依賴包：
 
 ```bash
-## necessary required
+## 必須要有以下依賴
 brew install git
 brew install --cask docker
 brew install make
@@ -42,14 +42,14 @@ brew install make
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+在 CentOS / RHEL或其他 Linux 發行版使用 `yum`
 
 ```bash
 sudo yum install git
 sudo yum install make
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+在 Ubuntu / Debian 或其他 Linux 發行版使用 `apt`
 
 ```bash
 sudo apt update
@@ -60,9 +60,9 @@ sudo apt install make
 
 ### Windows
 
-If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+如果您正在Windows 10/11上運行 APITable ，我們建議在Windows上安裝[Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) 和 [Windows Terminal](https://aka.ms/terminal), 您可以在 [官方網站](https://learn.microsoft.com/en-us/windows/wsl) 了解更多關於 Windows 子系統 的Linux (WSL) 的信息。
 
-Install missing dependencies on Ubuntu using `apt`:
+使用 `apt` 在 Ubuntu 上安裝缺少的依賴：
 
 ```bash
 sudo apt update
@@ -71,46 +71,42 @@ sudo apt install make
 ```
 
 
-## Build Tool
+## 我們使用什麼構建工具？
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+我們使用 `make` 作為我們的中心構建工具，來驅動其他構建工具，如 `gradle` / `npm` / `yarn`
 
-So you can just input `make` command and see all build commands:
+所以您可以只輸入 `make` 命令並看到所有構建命令：
 
 ```bash
 make
 ```
 
-![make command screenshot](../static/make.png)
+![命令截圖](../static/make.png)
 
 
 
-## Start Development Environment
+## 如何設置開發環境？
 
-APITable consists of 3 processes:
+APITable 由 3 個進程組成:
 
 1. backend-server
 2. room-server
 3. web-server
 
-To start the development environment locally, run these commands:
+要啟動本地開發環境，請運行這些命令：
 
 ```bash
-# start databases in dockers
+# 在 Docker 中啟動數據庫
 make dataenv 
-
-# install dependencies
+# 安裝依賴關係
 make install 
-
-#start backend-server
+# 啟動 backend-server
 make run # enter 1  
-
-# and then switch to a new terminal
-# start room-server
+# 然後切換到新的終端
+# 啟動 room-server
 make run # enter 2
-
-# and then switch to a new terminal
-# start web-server
+# 然後切換到新的終端
+# 啟動 web-server
 make run # enter 3
 
 ```
@@ -118,10 +114,67 @@ make run # enter 3
 
 
 
-## IDE
+## 您應該使用什麼IDE？
 
-We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
+我們建議您使用 `Visual Studio Code` 或 `Intellij IDEA` 為您的 IDE。
 
-APITable have prepared these two IDE's debug configs.
+APITable 已準備好這兩個IDE調試配置。
 
-Just open APITable's root directory with IDE.
+只需打開 IDE 的 APITable 根目錄。
+
+
+
+## 如何配置SMTP服務器？
+
+默認情況下，APITable 不配置SMTP服務器，這意味著您不能邀請用戶，因為它需要電子郵件發送功能。
+
+需要使用自己的郵箱修改.env配置，重啟 backend-server。
+
+`
+MAIL_ENABLED=true
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=your_email_password
+MAIL_PORT=465
+MAIL_SSL_ENABLE=true
+MAIL_TYPE=smtp
+MAIL_USERNAME=your_email`
+
+另外，有些郵箱需要在後台啟用smtp。 詳細可以搜索xxx郵箱smtp教程。
+
+
+## macOS M1 下 docker 運行的性能問題？
+
+## API文檔在哪裡？
+
+您可以通過啟動本地服務器來訪問 API 文檔：
+
+1. backend-server 的文檔地址為: http://localhost:8081/api/v1/doc.html
+
+2. room-rserver 的文檔地址為: http://localhost:3333/nest/v1/docs
+
+如果您對雲服務 API 接口感興趣，也可以直接訪問 https://developers.apitable.com/api/introduction 獲取在線 API 文檔。
+
+## 如何在儀表板中設置小部件數量限制？ （默認為 30）
+
+可以在`.env`文件中設置`DSB_WIDGET_MAX_COUNT`參數來實現。
+
+## 我可以增加 API 的請求速率限制嗎？ （默認為 5）
+
+在 `room-server` 下的 `.env.default` 文件中，有兩個參數可以調整請求頻率：
+
+1. 您可以設置參數 `LIMIT_POINTS` 和 `LIMIT_DURATION` 來設置在單位時間段內可以發出的請求數。 其中 LIMIT_POINTS 是次數，LIMIT_DURATION 是持續時間，以秒為單位。
+
+2. 您可以設置參數 `LIMIT_WHITE_LIST` 來為特定用戶設置單獨的請求頻率。 它的值為一個JSON字符串，其結構可以參考`Map<string, IBaseRateLimiter>`。
+
+## 如何增加每次 API 調用插入行記錄的數量？ （默認為 10）
+
+可以通過在 `room-server` 下的 `.env.default` 文件中設置 `API_MAX_MODIFY_RECORD_COUNTS` 參數來實現。
+
+
+## 如何更新到最新的版本?
+
+
+## 如何更改默認的80端口?
+`.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
+
+例如： 可以通過這種方式設置: NGINX_HTTP_PORT=8080

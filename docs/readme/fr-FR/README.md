@@ -42,6 +42,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Better Uptime-->
+    <a target="_blank" href="https://apitable.betteruptime.com/">
+        <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -62,16 +66,15 @@
 
 ## ✨ Démarrage rapide
 
-> APITable est actuellement un `travail en cours`.
-> 
-> Nous publierons la première version fin janvier 2023.
-> 
-> Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.com/apitable_com) pour rester en contact.<!-- If you just want try out APITable\[^info], using our hosted version at [apitable.com\](https://apitable.com). -->Si vous voulez juste essayer APITable[^info], cliquez ici pour [⚡Gitpod démo en ligne](https://gitpod.io/#https://github.com/apitable/apitable).
+Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
+
+Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
 
 Si vous voulez installer APITable dans votre environnement de calcul local ou cloud, voir [💾 Installation](#installation)
 
-Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Si vous voulez configurer votre environnement de développement local, lisez notre [🧑Developer Guide](./docs/contribute/developer-guide.md)
 
+Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.com/apitable_com) pour rester en contact.
 ## 🔥 Fonctionnalités
 
 <table>
@@ -154,7 +157,7 @@ APITable offre une gamme de fonctionnalités étonnantes, du personnel à l'entr
   - **100k+** lignes de données avec collaboration en temps réel.
   - Accès à l'API Full-stack, de `Data` à `Métadonnées`.
   - Lien de table direction / Bi-direction et `Liens Croisés infinis`
-  - langages de programmation et cadre conviviaux, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) et Java ([Spring Boot](https://spring.io/projects/spring-boot))
+  - langages de programmation et cadre conviviaux, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) et Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Feuille de calcul de la base de données magnifique et riche
   - `CRUD`: créer, lire, mettre à jour, supprimer les tableaux, colonnes et lignes
   - `Opérations de champs`: tri, filtre, regroupement, masquer/démasquer, réglage de hauteur.
@@ -237,17 +240,29 @@ Partagez votre table ou dossier de fiches techniques. Intégrez-les en copiant e
 
 ## Installation
 
-Assurez-vous que vous avez `docker` & `curl` installé localement.
+Avant de commencer :
+* Un hôte avec docker et docker-compose v2 installés.
+* 4 CPUs/8GB RAM ou plus sont recommandés.
+* Un shell bash avec des utilitaires de base comme curl installés.
+* Les images de conteneurs natives arm64 (apple silicon) ne sont pas encore prêtes et peuvent entraîner de mauvaises performances.
 
-Si vous avez installé Docker Machine, ouvrez votre terminal et lancez ceci :
+Pour installer apitable en utilisant docker compose, ouvrez votre terminal et exécutez ceci:
 
 ```
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Puis ouvrez [https://localhost:80](https://localhost:80) dans votre navigateur pour le visiter. (nom d'utilisateur par défaut `admin@apitable.com` et mot de passe `Apitable2022`)
+Ouvrez ensuite http://localhost:80 dans votre navigateur pour le visiter. (nom d'utilisateur par défaut `admin@apitable.com` et mot de passe `Apitable2022`)
 
-Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Nous fournissons également une image tout-en-un basée sur [pm2](https://pm2.keymetrics.io/) à des fins de démonstration ou de test (non recommandé pour les entreprises ou les utilisations de production):
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+Selon votre environnement, vous devrez peut-être attendre plusieurs minutes pour que tous les services soient lancés. Cette image est amd64 (x86_64) seulement, vous pouvez rencontrer de très mauvaises performances sur arm64 ou le silicium pomme.
+
+Si vous voulez configurer votre environnement de développement local, lisez notre [🧑Developer Guide](./docs/contribute/developer-guide.md)
 
 ## 💻 Contribution
 
@@ -255,13 +270,30 @@ Bienvenue, et merci de votre intérêt à contribuer à APITable!
 
 Il y a de nombreuses façons de contribuer, au-delà de l'écriture de code.
 
+Vous pouvez contribuer de la manière suivante :
+- Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- https://github.com/apitable/apitable/issues/new/choose
+- Suivre notre [Twitter](https://twitter.com/apitable_com)
+- Créer de la [documentation](./docs)
+- [Contribuer au code](./docs/contribute/developer-guide.md)
+
+
+Voici ce qui suit :
+- Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- https://github.com/apitable/apitable/issues/new/choose
+- Suivre notre [Twitter](https://twitter.com/apitable_com)
+- Créer de la [documentation](./docs)
+- [Contribuer au code](./docs/contribute/developer-guide.md)
+
+
 Vous pouvez lire les [directives de contribution de ce dépôt](./CONTRIBUTING.md) pour apprendre comment contribuer.
 
 Voici un guide rapide pour vous aider à contribuer à APITable.
 
+
 ### Environnement de développement
 
-Apprenez comment configurer votre environnement local, dans notre [Guide de Développement](./docs/contribute/developer-guide.md).
+Pour savoir comment configurer votre environnement local, consultez notre  [Developer Guide](./docs/contribute/developer-guide.md).
 
 ### Git workflow basique
 
@@ -285,16 +317,20 @@ Utilisez ces conventions communes APITables :
 - Comment versionner et étiqueter ? [Versioning sémantique](https://semver.org/)
 - Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- Qu'est-ce que la directive de codage Rust ? -> [Lignes directrices de l'API Rust](https://rust-lang.github.io/api-guidelines/about.html)
+- Qu'est-ce que la vue d'ensemble de l'architecture? -> [Comprendre APITable - Aperçu de l'architecture](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
 - [Centre d'aide](https://help.apitable.com/)
 - [👩‍💻 Centre de développement](https://developers.apitable.com/)
   - [<unk> Docs REST API](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (à venir...)
+  - [SDK du widget](https://developers.apitable.com/widget/introduction/)
   - Scripting (à venir...)
 
 ## 🛣 Feuille de route
+
+Veuillez vous référer à la [Feuille de route de l'APITable](https://apitable.com/roadmap)
 
 ### Fonctionnalités futures
 
@@ -302,6 +338,7 @@ Utilisez ces conventions communes APITables :
 - Composants de documentation de tiers incorporables
 - Langues spécifiques au domaine de type SQL
 - En tant qu'IdP
+- Robot d'automatisation avancé
 - Fonctionnalités Web 3
 - ...
 
@@ -312,6 +349,7 @@ Utilisez ces conventions communes APITables :
 - Authentification unique
 - Audit
 - Sauvegarde de la base de données
+- Intégrer avec ChatGPT, Zapier, Slack, Google Workspace......
 - Filigrane
 
 Pour plus d'informations, veuillez nous contacter à <support@apitable.com>.

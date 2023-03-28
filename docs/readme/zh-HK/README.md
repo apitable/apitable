@@ -254,6 +254,14 @@ curl https://apitable.github.io/install.sh | bash
 
 然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可 (默認用戶名 `admin@apitable.com` 和密碼 `Apitable2022`)
 
+我們還提供了一個基於 [pm2](https://pm2.keymetrics.io/) 的一體化鏡像，用於演示或測試目的（不推薦用於企業或生產用途）：
+
+```bash
+sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
+```
+
+根據您的環境，您可能需要等待幾分鐘才能啟動所有服務。 此映像僅適用於 amd64 (x86_64)，您可能會在 arm64 或 apple silicon 上遇到非常糟糕的性能。
+
 如果您想要配置本地開發環境，請參考我們的 [🧑‍💻開發者指南](./docs/contribute/developer-guide.md)
 
 ## 🧑‍💻 作出貢獻
@@ -263,6 +271,14 @@ curl https://apitable.github.io/install.sh | bash
 除了編寫程式外，還有許多途徑為我們提供幫助
 
 您可以：
+- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
+- 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- 關注我們的 [Twitter](https://twitter.com/apitable_com)
+- 創建 [文檔](./docs)
+- [編寫程式](./docs/contribute/developer-guide.md)
+
+
+比如下面的：
 - 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
@@ -301,6 +317,7 @@ APITable 使用以下常見約定：
 - 如何進行版本控制和標記？ [Semantic Versioning](https://semver.org/)
 - 我們的 Java 編碼規範是什麼？ [Java 編碼準則](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 我們的 TypeScript 編碼規範是什麼？ -> [TypeScript 樣式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- 我們的 Java 編碼規範是什麼？ -> [Rust API 指南](https://rust-lang.github.io/api-guidelines/about.html)
 - 我們的技術架構是什麼？ -> [瞭解 APITable - 技術架構](./docs/contribute/architecute-overview.md)
 
 ### 文檔
@@ -308,10 +325,12 @@ APITable 使用以下常見約定：
 - [幫助中心](https://help.apitable.com/)
 - [👩‍💻 開發者中心](https://developers.apitable.com/)
   - [🪡 REST API](https://developers.apitable.com/api/introduction/)
-  - 小部件 SDK (即將到來...)
+  - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - 腳本 (即將到來...)
 
 ## 🛣 路線圖
+
+可參考[路線圖](https://apitable.com/roadmap)
 
 ### 未來的功能
 
@@ -347,9 +366,9 @@ APITable 使用以下常見約定：
 
 我們總是為APITable尋找優秀人才：
 
-- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **後端開發者**: 擁有 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **前端開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
+- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
