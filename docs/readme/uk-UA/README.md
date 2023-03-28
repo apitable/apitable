@@ -10,9 +10,9 @@
         <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="- Інтегроване середовище розробки" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="Мова TypeScript, NestJS Framework" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Мова Java і весна Фреймворк" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -28,7 +28,7 @@
     <br />
     <!-- LICENSE -->
     <a target="_blank" href="https://github.com/apitable/apitable/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
+        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="Знак ліцензії APITable AGPL" />
     </a>
     <!-- Discord -->
     <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
@@ -254,7 +254,7 @@ curl https://apitable.github.io/install.sh | bash
 
 Потім відкрийте [http://localhost:80](http://localhost:80) у вашому браузері, щоб відвідати його. (типове ім'я користувача admin@apitable.com і пароль `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+Ми також надаємо комплексне зображення на основі [pm2](https://pm2.keymetrics.io/) для демонстрації чи тестування (не рекомендовано для корпоративного чи виробничого використання):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
@@ -373,34 +373,34 @@ APITable використовує ці загальні домовленості
 ## 📺Скріншот
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="Зображення знімка екрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Зображення знімка екрана APITable" />
 </p>
 
 ## 🥰Ліцензія
