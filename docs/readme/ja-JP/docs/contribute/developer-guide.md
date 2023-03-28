@@ -7,7 +7,7 @@
 開発者環境を設定する前に、次の依存関係とプログラミング言語がインストールされていることを確認してください。
 
 - `git`
-- [ドッカー](https://docs.docker.com/engine/install/)
+- [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
