@@ -7,7 +7,7 @@ Esta guía lo ayuda a comenzar a desarrollar APITable.
 Asegúrese de tener instalados los siguientes lenguajes de programación y dependencias antes de configurar su entorno de desarrollador:
 
 - `git`
-- [acoplador](https://docs.docker.com/engine/install/)
+- [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
