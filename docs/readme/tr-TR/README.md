@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="Varsayılan Kapak Resmi" />
     </a>
 </p>
 
