@@ -325,10 +325,12 @@ APITable bu ortak kuralları kullanır:
 - [Yardım Merkezi](https://help.apitable.com/)
 - [👩‍💻 Geliştirici Merkezi](https://developers.apitable.com/)
   - [🪡 REST API Dokümanları](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Çok yakında...)
+  - [Widget SDK'sı](https://developers.apitable.com/widget/introduction/)
   - Scripting (Çok yakında...)
 
 ## 🛣 Yol Haritası
+
+Lütfen [APITable Yol Haritasına](https://apitable.com/roadmap) bakın
 
 ### Geleceğin Özellikleri
 
