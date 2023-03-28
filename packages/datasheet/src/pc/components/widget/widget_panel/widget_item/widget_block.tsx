@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading } from '@apitable/components';
 import { getLanguage, Selectors, StoreActions } from '@apitable/core';
 import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, MessageType, RuntimeEnv } from '@apitable/widget-sdk';
 import { useUnmount } from 'ahooks';
@@ -24,18 +23,44 @@ import classnames from 'classnames';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise';
 import { resourceService } from 'pc/resource_service';
+import { IRecordPickerProps } from 'pc/components/record_picker';
 import { store } from 'pc/store';
 import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 // import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 import * as React from 'react';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useWidgetCanRender } from '../../context';
+import { useManageWidgetRenderTask, useWidgetCanRender } from '../../context';
 import { widgetRenderTask } from '../../context/widget_render_task';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import styles from './style.module.less';
 import { patchDatasheet } from './utils';
+import { WidgetLoading } from './widget_loading';
+import * as components from '@apitable/components';
+import * as core from '@apitable/core';
+import * as icons from '@apitable/icons';
+import * as widgetSdk from '@apitable/widget-sdk';
+import { getEnvVariables } from 'pc/utils/env';
+import ReactDOM from 'react-dom';
+
+(() => {
+  if (!process.env.SSR) {
+    const prefix = getEnvVariables().WIDGET_REPO_PREFIX;
+    window['_React'] = React;
+    window['_ReactDom'] = ReactDOM;
+    window['_@apitable/components'] = components;
+    window['_@apitable/widget-sdk'] = widgetSdk;
+    window['_@apitable/core'] = core;
+    window['_@apitable/icons'] = icons;
+    if (prefix !== 'apitable') {
+      window[`_@${prefix}/components`] = components;
+      window[`_@${prefix}/widget-sdk`] = widgetSdk;
+      window[`_@${prefix}/core`] = core;
+      window[`_@${prefix}/icons`] = icons;
+    }
+  }
+})();
 
 let WIDGET_IFRAME_PATH: string;
 if (process.env.NODE_ENV !== 'production') {
@@ -61,6 +86,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
   toggleSetting(state?: boolean | undefined): any;
   toggleFullscreen(state?: boolean | undefined): any;
   expandRecord(props: IExpandRecordProps): any;
+  expandRecordPicker: (props: IRecordPickerProps) => any;
   nodeId: string;
   isDevMode?: boolean;
   setDevWidgetId?: ((widgetId: string) => void) | undefined;
@@ -69,9 +95,11 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
 }> = (props, ref) => {
   const {
     widgetId, widgetPackageId, isExpandWidget, isSettingOpened, isDevMode, nodeId, toggleFullscreen, toggleSetting, expandRecord, dragging,
-    setDevWidgetId, runtimeEnv
+    setDevWidgetId, runtimeEnv, expandRecordPicker
   } = props;
+  useManageWidgetRenderTask(widgetId);
   const [connected, setConnected] = useState<boolean>();
+  const [iframeLoading, setIframeLoading] = useState<boolean>(true);
   const widgetCanRender = useWidgetCanRender(widgetId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
@@ -222,6 +250,21 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     mainMessage.onExpandRecord(widgetId, expandRecord);
     return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_RECORD);
   }, [connected, widgetId, expandRecord]);
+
+  useEffect(() => {
+    if (!connected) {
+      return;
+    }
+    mainMessage.onExpandRecordPicker(widgetId, (datasheetId: string, messageId?: string) => expandRecordPicker({ 
+      datasheetId,
+      isSingle: true,
+      onSave: (recordIds: string[]) => {
+        mainMessage.syncRecordPickerResult(widgetId, recordIds, messageId);
+      },
+      onClose: () => mainMessage.syncRecordPickerResult(widgetId, [], messageId)
+    }));
+    return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_RECORD_PICKER);
+  }, [connected, widgetId, expandRecordPicker]);
   
   useEffect(() => {
     if (!connected) {
@@ -238,11 +281,11 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
   }, [connected, setDevWidgetId, setCodeUrl, widgetPackageId, widgetId, codeUrl]);
   
   if (!widgetCanRender) {
-    return <Loading />;
+    return <WidgetLoading/>;
   }
 
   if (!nodeConnected) {
-    return <Loading />;
+    return <WidgetLoading/>;
   }
 
   return <>
@@ -251,12 +294,16 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       styles.iframeMask,
       dragging && styles.iframeMasking,
     )} />
+    {iframeLoading && <div className={styles.iframeLoadingWarp}>
+      <WidgetLoading/>
+    </div>}
     <iframe
       style={{
         width: '100%',
         height: '100%',
         border: 0
       }}
+      onLoad={() => setIframeLoading(false)}
       ref={iframeRef}
       src={`${WIDGET_IFRAME_PATH}/?widgetId=${widgetId}&lang=${getLanguage()}&isSocialWecom=${isWecom}&runtimeEnv=${runtimeEnv}`} />
   </>;

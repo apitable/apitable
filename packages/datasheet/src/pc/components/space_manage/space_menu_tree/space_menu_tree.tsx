@@ -19,8 +19,8 @@
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { 
-  FileSearchOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
-  TriangleRightFilled, DashboardOutlined, OrganizationalOutlined, WorkbenchOutlined 
+  LogOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
+  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined 
 } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
@@ -71,7 +71,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   Log && {
     title: t(Strings.space_log_title),
     key: 'log',
-    icon: <FileSearchOutlined />,
+    icon: <LogOutlined />,
     valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
     routeAddress: '/log',
   },
@@ -92,7 +92,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   {
     title: t(Strings.organization_and_role),
     key: 'addressManage',
-    icon: <OrganizationalOutlined />,
+    icon: <DepartmentOutlined />,
     valid:
       isMainAdmin ||
       permissions.includes(ConfigConstant.PermissionCode.TEAM) ||

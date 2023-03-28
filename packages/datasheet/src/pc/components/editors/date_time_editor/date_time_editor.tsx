@@ -108,7 +108,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   override state: IDateTimeEditorState = {
     dateValue: '',
-    displayDateStr: this.props.dataValue ? dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
+    displayDateStr: this.props.dataValue ?
+      dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
     timeValue: '',
     dateOpen: false,
     timeOpen: false,
@@ -144,8 +145,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     this.timestamp = timestamp;
     const dateTime = dayjs(timestamp);
     this.setState({
-      dateValue: dateTime.format(DEFAULT_FORMAT),
-      displayDateStr: dateTime.format(dateFormat),
+      dateValue: timeZone ? dateTime.tz(timeZone).format(DEFAULT_FORMAT) : dateTime.format(DEFAULT_FORMAT),
+      displayDateStr: timeZone ? dateTime.tz(timeZone).format(dateFormat) : dateTime.format(dateFormat),
       timeValue: timeZone ? dateTime.tz(timeZone).format(timeFormat) : dateTime.format(timeFormat),
     });
   }
@@ -459,7 +460,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         onClick={e => e.stopPropagation}
         onWheel={stopPropagation}
       >
-        <Tooltip visible={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement='top'>
+        <Tooltip open={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement='top'>
           <div className={style.dateWrapper}>
             <div
               className={classNames(style.dateContent, {
@@ -490,12 +491,13 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && (
+                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && dateValue && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}
                         fieldId={field.id}
                         includeTime={field.property.includeTime}
+                        timeZone={timeZone}
                         dateValue={dateValue}
                         timeValue={timeValue}
                         curAlarm={this.props.curAlarm}

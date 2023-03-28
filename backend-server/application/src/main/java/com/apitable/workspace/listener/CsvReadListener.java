@@ -84,14 +84,18 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
     private final String parentNodeId;
 
+    private final String viewName;
+
     private final String fileName;
 
-    public CsvReadListener(INodeService iNodeService, Long userId, String uuid, String spaceId, Long memberId, String parentNodeId, String fileName) {
+    public CsvReadListener(INodeService iNodeService, Long userId, String uuid,
+        String spaceId, Long memberId, String parentNodeId, String viewName, String fileName) {
         this.iNodeService = iNodeService;
         this.userId = userId;
         this.spaceId = spaceId;
         this.memberId = memberId;
         this.parentNodeId = parentNodeId;
+        this.viewName = viewName;
         this.fileName = fileName;
 
         this.retNodeId = IdUtil.createDstId();
@@ -116,7 +120,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         // The sequence definition order for the first default view,
         View view = new View(headSize, 0);
         view.id = IdUtil.createViewId();
-        view.name = I18nStringsUtil.t("default_view");
+        view.name = viewName != null ? viewName: I18nStringsUtil.t("default_view");
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 

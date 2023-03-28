@@ -68,7 +68,7 @@ public class InternalNodePermissionController {
         @Parameter(name = "shareId", description = "Share ID", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "shrFPXT8qnyFJglX6elJi")
     })
-    @ThirdPartControl()
+    @ThirdPartControl
     public ResponseData<DatasheetPermissionView> getNodePermission(
         @PathVariable("nodeId") String nodeId,
         @RequestParam(value = "shareId", required = false) String shareId) {

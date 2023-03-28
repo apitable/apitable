@@ -121,7 +121,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
         paddingLeft: isMobile || (!isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) ? 0 : embedInfo.viewControl?.tabBar ? '24px' : '32px'
       }}
     >
-      { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+      {isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
       </ComponentDisplay> }
       <div style={{ flex: '1 1 auto', height: '100%', paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : '' }}>

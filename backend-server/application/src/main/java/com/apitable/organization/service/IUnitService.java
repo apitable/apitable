@@ -18,15 +18,13 @@
 
 package com.apitable.organization.service;
 
-import java.util.Collection;
-import java.util.List;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.organization.enums.UnitType;
-import com.apitable.organization.vo.UnitInfoVo;
 import com.apitable.organization.dto.UnitInfoDTO;
 import com.apitable.organization.entity.UnitEntity;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.vo.UnitInfoVo;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Collection;
+import java.util.List;
 
 public interface IUnitService extends IService<UnitEntity> {
 
@@ -84,11 +82,6 @@ public interface IUnitService extends IService<UnitEntity> {
     void removeByTeamId(Long teamId);
 
     /**
-     * @param teamIds team ids
-     */
-    void batchRemoveByTeamId(List<Long> teamIds);
-
-    /**
      * @param memberIds member ids
      */
     void removeByMemberId(List<Long> memberIds);
@@ -113,9 +106,9 @@ public interface IUnitService extends IService<UnitEntity> {
      * @param refIds unit's ref ids
      * @param unitType unit type
      * @param isDeleted isDeleted
-     * @return boolean
      */
-    boolean batchUpdateIsDeletedBySpaceIdAndRefId(String spaceId, List<Long> refIds, UnitType unitType, Boolean isDeleted);
+    void batchUpdateIsDeletedBySpaceIdAndRefId(String spaceId, List<Long> refIds, UnitType unitType,
+        Boolean isDeleted);
 
     /**
      * @param unitIds unit ids

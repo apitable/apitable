@@ -28,7 +28,7 @@ import {
   UserAddOutlined,
   TimeOutlined,
   SelectSingleOutlined,
-  CurrencyCnyOutlined,
+  CurrencyUsdOutlined,
   EmailOutlined,
   FormulaOutlined,
   PercentOutlined,
@@ -42,6 +42,7 @@ import {
   TelephoneOutlined,
   LookupOutlined,
   StarOutlined,
+  CascadeOutlined
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -60,7 +61,7 @@ const FieldIconMap = {
   [FieldType.Member]: UserOutlined,
   [FieldType.LookUp]: LookupOutlined,
   [FieldType.Formula]: FormulaOutlined,
-  [FieldType.Currency]: CurrencyCnyOutlined,
+  [FieldType.Currency]: CurrencyUsdOutlined,
   [FieldType.Percent]: PercentOutlined,
   [FieldType.SingleText]: TextOutlined,
   [FieldType.AutoNumber]: AutonumberOutlined,
@@ -68,6 +69,7 @@ const FieldIconMap = {
   [FieldType.LastModifiedTime]: HistoryFilled,
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
+  [FieldType.Cascader]: CascadeOutlined,
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16) => {

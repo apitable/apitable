@@ -42,6 +42,7 @@ import { DateTimeEditor } from 'pc/components/editors/date_time_editor';
 import { RatingEditor } from 'pc/components/editors/rating_editor';
 import { EnhanceTextEditor } from 'pc/components/editors/enhance_text_editor';
 import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
+import { CascaderEditor } from 'pc/components/editors/cascader_editor';
 import { FormContext } from '../form_context';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -259,6 +260,8 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
       );
     case FieldType.Member:
       return <MemberFieldEditor {...commonProps} cellValue={cellValue} isFocus={isFocus} onClose={onClose} />;
+    case FieldType.Cascader:
+      return <CascaderEditor ref={ref} {...commonProps} recordId={recordId} toggleEditing={onClose} editing={isFocus} />;
     case FieldType.Link:
       return editable ? (
         <ExpandLink

@@ -27,8 +27,19 @@ import com.apitable.interfaces.user.model.RewardedUser;
  * user service facade.
  */
 public interface UserServiceFacade {
+    void onUserChangeEmailAction(Long userId, String email);
 
-    void onUserChangeNicknameAction(Long userId, String nickname);
+    /**
+     * event on user change avatar.
+     *
+     * @param userId    user id
+     * @param avatarUrl avatar url
+     */
+    void onUserChangeAvatarAction(Long userId, String avatarUrl);
+
+    void onUserChangeNicknameAction(Long userId, String nickname, Boolean init);
+
+    void onUserCloseAccount(Long userId);
 
     InvitationCode getUserInvitationCode(Long userId);
 
@@ -51,7 +62,7 @@ public interface UserServiceFacade {
     /**
      * user verification on email.
      *
-     * @param userAuth {@link UserAuth}
+     * @param email email
      */
-    boolean verifyEmail(UserAuth userAuth);
+    boolean verifyEmail(String email);
 }

@@ -30,6 +30,7 @@ import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER
 import static com.apitable.shared.constants.PageConstants.PAGE_DESC;
 import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
 import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
+import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
@@ -231,7 +232,7 @@ public class MemberController {
             return ResponseData.success(resultList);
         }
         // query the ids of all sub departments
-        List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
         if (CollUtil.isNotEmpty(resultList)) {
             // handle member's team name, get full hierarchy team names
@@ -274,7 +275,7 @@ public class MemberController {
             }
             return ResponseData.success(PageHelper.build(pageResult));
         }
-        List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
+        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         IPage<MemberPageVo> resultList =
             teamMapper.selectMemberPageByTeamId(page, teamIds, isActive);
         if (ObjectUtil.isNotNull(resultList)) {
@@ -320,8 +321,8 @@ public class MemberController {
         @RequestParam(value = "memberId", required = false) Long memberId,
         @RequestParam(value = "uuid", required = false) String uuid) {
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
+        String spaceId = LoginContext.me().getSpaceId();
         if (StrUtil.isNotBlank(uuid)) {
-            String spaceId = LoginContext.me().getSpaceId();
             List<Long> userIds = userMapper.selectIdByUuidList(Collections.singletonList(uuid));
             ExceptionUtil.isNotEmpty(userIds, NOT_EXIST_MEMBER);
             memberId = memberMapper.selectIdByUserIdAndSpaceId(userIds.get(0), spaceId);
@@ -329,6 +330,7 @@ public class MemberController {
         }
         MemberInfoVo memberInfoVo = memberMapper.selectInfoById(memberId);
         ExceptionUtil.isNotNull(memberInfoVo, NOT_EXIST_MEMBER);
+        ExceptionUtil.isTrue(spaceId.equals(memberInfoVo.getSpaceId()), NOT_IN_SPACE);
         // handle member's team name, get full hierarchy team path name
         iMemberService.handleMemberTeamInfo(memberInfoVo);
         List<RoleVo> roleVos = iRoleService.getRoleVosByMemberId(memberId);

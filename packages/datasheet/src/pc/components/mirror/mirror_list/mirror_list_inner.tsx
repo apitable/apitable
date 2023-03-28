@@ -76,6 +76,7 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
     return manageable && folderManageable;
   });
   const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
+  const { editable } = useSelector(state => Selectors.getPermissions(state));
 
   const { addTreeNode } = useCatalog();
 
@@ -124,7 +125,7 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
         infoUrl={t(Strings.mirror_help_url)}
         className={styles.boxTop}
         rightContent={
-          <div className={styles.switchCoverFit}>
+          editable ? <div className={styles.switchCoverFit}>
             <Checkbox
               checked={typeof view!.displayHiddenColumnWithinMirror === 'boolean' ? view!.displayHiddenColumnWithinMirror : true}
               onChange={switchShowHiddenFieldWithinMirror}
@@ -133,7 +134,7 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
             <span style={{ paddingLeft: 4 }}>
               {t(Strings.mirror_show_hidden_checkbox)}
             </span>
-          </div>
+          </div> : undefined
         }
       />
       {loading ? (

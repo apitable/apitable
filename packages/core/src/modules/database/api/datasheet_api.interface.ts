@@ -72,3 +72,50 @@ export interface ISubOrUnsubByRecordIdsReq {
   mirrorId?: string;
   recordIds: string[];
 }
+
+export interface IGetTreeSelectDataReq {
+  spaceId: string;
+  datasheetId: string;
+  linkedViewId: string;
+  linkedFieldIds: string[];
+}
+
+export interface ICascaderNode {
+  linkedFieldId: string;
+  linkedRecordId: string;
+  text: string;
+  children?: ICascaderNode[]
+}
+
+export interface ILinkedField {
+  id: string;
+  name: string;
+  type: number;
+}
+
+export interface IGetTreeSelectDataRes {
+  data?: {
+    linkedFields: ILinkedField[];
+    treeSelects: ICascaderNode[];
+  }
+}
+
+export interface IGetTreeSelectSnapshotReq {
+  spaceId: string;
+  datasheetId: string;
+  fieldId: string;
+  linkedFieldIds: string[];
+}
+
+export interface IGetTreeSelectSnapshotRes {
+  treeSelectNodes: ICascaderNode[];
+}
+
+export interface IUpdateTreeSelectSnapshotReq {
+  spaceId: string;
+  datasheetId: string;
+  fieldId: string;
+  linkedDatasheetId: string;
+  linkedViewId: string;
+}
+

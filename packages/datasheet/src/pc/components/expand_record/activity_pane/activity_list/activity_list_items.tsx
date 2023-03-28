@@ -24,7 +24,7 @@ import {
 import { Spin } from 'antd';
 import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
-import dynamic from 'next/dynamic';
+import { LoadingOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
@@ -42,8 +42,6 @@ import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-
-const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
@@ -84,6 +82,7 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
   const productName = useSelector(state => String(state.billing?.subscription?.product).toLowerCase());
   const themeName = useSelector(state => state.theme);
   const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
+  const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state));
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';
@@ -394,7 +393,7 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
   if (isEmpty(recordList) && cancelsRef.current.length > 0 && loading) {
     return (
       <div className={styles.spin}>
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+        <Spin indicator={<LoadingOutlined size={24} className='circle-loading' />} />
       </div>
     );
   }
@@ -442,13 +441,15 @@ export const ActivityListItems: FC<React.PropsWithChildren<IActivityListProps & 
             cacheFieldOptions={cacheFieldOptions}
             setChooseComment={setChooseComment}
             unit={unit}
+            fieldPermissionMap={fieldPermissionMap}
+            isMirror={Boolean(mirrorId)}
           />
         );
       })}
       {more && <div className={styles.loadTrigger} ref={topRef} onClick={() => loadMore()} />}
       {isAdding && (
         <div className={styles.spin}>
-          <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
+          <Spin indicator={<LoadingOutlined size={14} className='circle-loading' />} />
         </div>
       )}
       {end &&

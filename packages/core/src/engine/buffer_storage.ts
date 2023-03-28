@@ -17,11 +17,9 @@
  */
 
 import { LS_DATASHEET_NAMESPACE } from 'config/constant';
-import { ILocalChangeset, IOperation, composeOperations } from './ot';
-import { generateRandomString } from 'utils';
 import { ResourceType } from 'types';
-import { Events, Player } from '../modules/shared/player';
-import { TrackEvents } from 'config';
+import { generateRandomString } from 'utils';
+import { composeOperations, ILocalChangeset, IOperation } from './ot';
 
 // Local cache processing interface
 export interface IStoredData {
@@ -175,7 +173,7 @@ export class BufferStorage {
   }
   /**
    * @description reads the data of opBuffer and clears the opBuffer,
-   * Considering the delay of the network layer, the front end cannot receive the ack in time, 
+   * Considering the delay of the network layer, the front end cannot receive the ack in time,
    * here will save a copy of the opsBuffer data in the storage
    * @param {number} revision
    * @returns
@@ -250,7 +248,7 @@ export class BufferStorage {
       return;
     }
     if (changeset['datasheetId']) {
-      // The datasheetId in the attribute can be considered as the old data structure, 
+      // The datasheetId in the attribute can be considered as the old data structure,
       // and the userId still exists in the old structure, which can be discarded
       const newLocalChangeset = {
         baseRevision: changeset.baseRevision,
@@ -259,13 +257,6 @@ export class BufferStorage {
         operations: changeset.operations,
         messageId: changeset.messageId,
       };
-      Player.doTrigger(Events.app_tracker, {
-        name: TrackEvents.OldLocalChangeset,
-        props: {
-          oldLocalChangeset: changeset,
-          newLocalChangeset: newLocalChangeset,
-        },
-      });
       return newLocalChangeset;
     }
     return changeset;

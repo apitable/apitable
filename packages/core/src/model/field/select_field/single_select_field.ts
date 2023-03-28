@@ -29,6 +29,7 @@ import { FOperator, IFilterCondition, IFilterSingleSelect } from 'types/view_typ
 import { DatasheetActions } from '../../datasheet';
 import { isOptionId, SelectField } from './common_select_field';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
+import { IOpenFilterValueSelect } from 'types/open/open_filter_types';
 
 export class SingleSelectField extends SelectField {
   constructor(public override field: ISingleSelectField, public override state: IReduxState) {
@@ -272,5 +273,26 @@ export class SingleSelectField extends SelectField {
       return result;
     }
     return this.validateWriteOpenOptionsEffect(updateProperty, effectOption);
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterSingleSelect): IOpenFilterValueSelect {
+    if (Array.isArray(value)) {
+      const _value = value.filter(v => this.findOptionById(v));
+      return _value.length ? _value[0]! : null;
+    }
+    return null;
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueSelect): IFilterSingleSelect {
+    if (value) {
+      return this.findOptionById(value) ? [value] : null;
+    }
+    return null;
+  }
+
+  static validateOpenFilterSchema = Joi.string().allow(null);
+
+  override validateOpenFilterValue(value: IOpenFilterValueSelect) {
+    return SingleSelectField.validateOpenFilterSchema.validate(value);
   }
 }

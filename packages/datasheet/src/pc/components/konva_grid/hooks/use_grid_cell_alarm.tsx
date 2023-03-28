@@ -49,7 +49,8 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
     linearRows,
     visibleColumns,
     fieldMap,
-    snapshot
+    snapshot,
+    permissions,
   } = useContext(KonvaGridViewContext);
   const { setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const {
@@ -125,6 +126,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
   const pointField = fieldMap[pointFieldId];
   if (
+    permissions.editable &&
     AlarmIcon &&
     !isScrolling &&
     row?.type === CellType.Record &&

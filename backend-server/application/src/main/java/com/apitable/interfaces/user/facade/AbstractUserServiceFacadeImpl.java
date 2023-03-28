@@ -27,9 +27,23 @@ import com.apitable.interfaces.user.model.RewardedUser;
  * Abstract user service facade.
  */
 public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade {
+    @Override
+    public void onUserChangeEmailAction(Long userId, String email) {
+
+    }
 
     @Override
-    public void onUserChangeNicknameAction(Long userId, String nickname) {
+    public void onUserChangeAvatarAction(Long userId, String avatarUrl) {
+
+    }
+
+    @Override
+    public void onUserChangeNicknameAction(Long userId, String nickname, Boolean init) {
+
+    }
+
+    @Override
+    public void onUserCloseAccount(Long userId) {
 
     }
 
@@ -63,7 +77,7 @@ public abstract class AbstractUserServiceFacadeImpl implements UserServiceFacade
     }
 
     @Override
-    public boolean verifyEmail(UserAuth userAuth) {
+    public boolean verifyEmail(String email) {
         return false;
     }
 

@@ -17,41 +17,42 @@ export interface IUtcOption {
 export const getTimeZoneOffsetByUtc = (utc: string) => {
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
   return currentTimeZoneData?.offset;
-}
+};
 
 export const getTimeZoneAbbrByUtc = (utc: string) => {
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
   return currentTimeZoneData?.abbr;
-}
+};
 
 export const getUtcOptionList = () => {
   let list: IUtcOption[] = [];
 
   for(let i = 0; i < TIMEZONES.length; i++) {
-    const { abbr, offset, utc } = TIMEZONES[i]!;
-    list = list.concat(utc.map((tz: string) => {
+    const { abbr, offset, utc, isdst } = TIMEZONES[i]!;
+    if (isdst) continue;
+    list = list.concat(utc.filter((tz: string) => !tz.includes('Etc/GMT')).map((tz: string) => {
       return {
         abbr,
         offset,
-        label: `UTC${offset > 0  ? '+' : ''}${offset}(${tz})`,
+        label: `UTC${offset > 0 ? '+' : ''}${offset}(${tz})`,
         value: tz,
-      }
-    }))
+      };
+    }));
   }
 
   return list;
-}
+};
 
 export const getClientTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
   const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(clientTimeZone))!;
   const { offset } = currentTimeZoneData;
-  return `UTC${offset > 0  ? '+' : ''}${offset}(${clientTimeZone})`;
-}
-
+  return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;
+};
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
+// compare to https://github.com/vikadata/vikadata/blob/new-teamx/apitable/packages/datasheet/src/pc/components/editors/cascader_editor/cascader_editor.tsx
 export const TIMEZONES = [
   {
     value: 'Dateline Standard Time',
@@ -1143,7 +1144,8 @@ export const TIMEZONES = [
     text: '(UTC+06:00) Dhaka',
     utc: [
       'Asia/Dhaka',
-      'Asia/Thimphu'
+      'Asia/Thimphu',
+      'Asia/Omsk'
     ]
   },
   {
@@ -1184,8 +1186,7 @@ export const TIMEZONES = [
     text: '(UTC+07:00) Novosibirsk',
     utc: [
       'Asia/Novokuznetsk',
-      'Asia/Novosibirsk',
-      'Asia/Omsk'
+      'Asia/Novosibirsk'
     ]
   },
   {
@@ -1485,5 +1486,15 @@ export const TIMEZONES = [
     utc: [
       'Pacific/Apia'
     ]
+  },
+  {
+    value: '',
+    abbr: 'LINT',
+    offset: 14,
+    isdst: false,
+    text: '(UTC+14:00) Kiritimati',
+    utc: [
+      'Pacific/Kiritimati'
+    ]
   }
-]
+];

@@ -20,7 +20,10 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { useContext, useMemo } from 'react';
 import * as React from 'react';
 import { IActivityPaneProps, IChooseComment } from '../interface';
-import { CollaCommandName, IDPrefix, IJOTAction, IOperation, IRemoteChangeset, IUnitValue, jot, Strings, t, WithOptional } from '@apitable/core';
+import {
+  CollaCommandName, ConfigConstant, IDPrefix, IFieldPermissionMap, IJOTAction, IOperation, IRemoteChangeset, IUnitValue, jot, Selectors, Strings, t,
+  WithOptional
+} from '@apitable/core';
 import { Avatar, AvatarSize, Emoji, Modal } from 'pc/components/common';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
@@ -47,10 +50,12 @@ type IChangesetItem = IActivityPaneProps & {
   cacheFieldOptions: object;
   datasheetId: string;
   setChooseComment: (item: IChooseComment) => void;
+  fieldPermissionMap: IFieldPermissionMap | undefined
+  isMirror: boolean
 };
 
 const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = props => {
-  const { expandRecordId, changeset, cacheFieldOptions, datasheetId, setChooseComment, unit } = props;
+  const { expandRecordId, changeset, cacheFieldOptions, datasheetId, setChooseComment, unit, fieldPermissionMap, isMirror } = props;
   const { operations, userId, createdAt, revision } = changeset;
 
   const { mobile: isMobile } = usePlatform();
@@ -78,9 +83,23 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
         p: [...p, 'data', k],
       }));
     }
-    actionArr = actionArr.concat(actions);
+
+    actionArr = actionArr.concat(actions).filter(item => {
+      if (!isMirror) {
+        return true;
+      }
+      const { p } = item as any;
+      if (p.length === 4 && p[0] === 'recordMap' && p[1].startsWith(IDPrefix.Record)) {
+        const fieldId = p[3];
+        const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
+        const isCryptoField = Boolean(fieldRole && fieldRole === ConfigConstant.Role.None);
+        return !isCryptoField;
+      }
+      return true;
+    });
     return actionArr;
   }, []);
+
   const { cmd } = operations[0];
 
   const selfUserId = useSelector(state => state.user.info?.userId);
@@ -139,7 +158,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
     return itemActions;
   }, [commentOperations, restOperations]);
 
-  if (!unit) {
+  if (!unit || !actions.length) {
     return <></>;
   }
 
@@ -218,17 +237,17 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
                         content={
                           <div className={styles.emojiList}>
                             <span onClick={() => handleEmoji('good')}>
-                              <Emoji emoji="+1" size={16} />
+                              <Emoji emoji='+1' size={16} />
                             </span>
                             <span onClick={() => handleEmoji('ok')}>
-                              <Emoji emoji="ok_hand" size={16} />
+                              <Emoji emoji='ok_hand' size={16} />
                             </span>
                           </div>
                         }
                       >
-                        <IconButton icon={EmojiOutlined} shape="square" className={styles.icon} />
+                        <IconButton icon={EmojiOutlined} shape='square' className={styles.icon} />
                       </Popover>
-                      <IconButton onClick={handleReply} icon={CommentOutlined} shape="square" className={cls('replyIcon', styles.icon)} />
+                      <IconButton onClick={handleReply} icon={CommentOutlined} shape='square' className={cls('replyIcon', styles.icon)} />
                       {allowDeleteComment && (
                         <IconButton
                           onClick={() => {
@@ -258,7 +277,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
                               });
                             }
                           }}
-                          shape="square"
+                          shape='square'
                           icon={DeleteOutlined}
                           className={styles.icon}
                           data-test-id={EXPAND_RECORD_DELETE_COMMENT_MORE}
@@ -276,11 +295,13 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = pro
             </div>
           </div>
           <div className={styles.activityBody}>
-            {action ? (
-              <ReplyBox action={action} handleEmoji={handleEmoji} datasheetId={datasheetId} expandRecordId={expandRecordId} />
-            ) : (
-              <ChangesetItemAction revision={revision} actions={actions} datasheetId={datasheetId} cacheFieldOptions={cacheFieldOptions} />
-            )}
+            {
+              action ? (
+                <ReplyBox action={action} handleEmoji={handleEmoji} datasheetId={datasheetId} expandRecordId={expandRecordId} />
+              ) : (
+                <ChangesetItemAction revision={revision} actions={actions} datasheetId={datasheetId} cacheFieldOptions={cacheFieldOptions} />
+              )
+            }
           </div>
         </div>
       ))}

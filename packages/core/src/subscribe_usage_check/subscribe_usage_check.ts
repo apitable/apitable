@@ -32,7 +32,7 @@ export class SubscribeUsageCheck {
     */
   underUsageLimit(functionName: keyof ISubscription, usage?: any) {
     const state = this.store.getState();
-    const subscription = state.billing.subscription;
+    const subscription = state.billing?.subscription;
 
     if (!subscription) {
       return true;

@@ -30,7 +30,7 @@ export const FieldInput = ({ field, fop, onChange, value }: IFieldInputProps) =>
 
   // Here the incoming value is converted to a single filterInfo, which has only one expression. 
   // Our goal is to get the value of the input from filterValue.
-  const filterInfo: IFilterInfo = useMemo(() => {
+  const filterInfo = useMemo(() => {
     return {
       conjunction: FilterConjunction.And,
       conditions: [{
@@ -40,7 +40,7 @@ export const FieldInput = ({ field, fop, onChange, value }: IFieldInputProps) =>
         fieldType: field.type,
         value: value,
       }]
-    };
+    } as IFilterInfo;
   }, [value, field, fop]);
 
   // IExpression => IFilterCondition

@@ -1,6 +1,7 @@
 use crate::datasheet::database;
 use crate::datasheet::entities::record;
 use crate::datasheet::services::record_comment;
+use crate::json::fix_json;
 use crate::HashMap;
 use sea_orm::prelude::*;
 
@@ -21,6 +22,7 @@ pub async fn get_records(
   dst_id: String,
   record_ids: Option<Vec<String>>,
   is_deleted: bool,
+  with_comment: bool,
 ) -> Result<HashMap<String, Record>, anyhow::Error> {
   let mut cond = record::Column::DstId
     .eq(&dst_id)
@@ -29,7 +31,7 @@ pub async fn get_records(
     cond = cond.and(record::Column::RecordId.is_in(record_ids));
   }
   let record_list = record::Entity::find().filter(cond).all(database::connection()).await?;
-  let comment_counts = record_comment::get_record_comment_map_by_dst_id(dst_id).await?;
+  let comment_counts = get_comment_count_map(dst_id, with_comment).await?;
   let mut record_map = HashMap::default();
   for record in record_list {
     let record_id = record.record_id;
@@ -38,18 +40,25 @@ pub async fn get_records(
       record_id.clone(),
       Record {
         id: record_id,
-        data: record.data.unwrap_or_else(|| Json::Object(Default::default())),
+        data: fix_json(record.data.unwrap_or_else(|| Json::Object(Default::default()))),
         comment_count,
         created_at: record.created_at.timestamp_millis(),
         updated_at: record.updated_at.map(|d| d.timestamp_millis()),
         revision_history: record
           .revision_history
           .map(|s| s.split(',').map(|n| n.parse().unwrap_or(0)).collect()),
-        record_meta: record.record_meta,
+        record_meta: record.record_meta.map(fix_json),
       },
     );
   }
   Ok(record_map)
+}
+
+async fn get_comment_count_map(dst_id: String, with_comments: bool) -> Result<HashMap<String, i64>, anyhow::Error> {
+  if !with_comments {
+    return Ok(HashMap::default());
+  }
+  return record_comment::get_record_comment_map_by_dst_id(dst_id).await;
 }
 
 #[cfg(test)]
@@ -92,7 +101,7 @@ mod tests {
         data: Some(json!({ "fld1": 889 })),
         revision_history: Some("4".to_owned()),
         revision: Some(4),
-        record_meta: Some(json!( { "createdAt": 1676945874561i64 } )),
+        record_meta: Some(json!( { "createdAt": 1676945874561f64 } )),
         is_deleted,
         created_by: Some(1),
         updated_by: Some(1),
@@ -150,17 +159,17 @@ mod tests {
       .append_query_results(mock_record_query_results(false))
       .append_query_results([vec![
         btreemap! {
-          "0" => Value::String(Some(box "rec1".to_owned())),
+          "0" => Value::String(Some(Box::new("rec1".to_owned()))),
           "1" => Value::BigInt(Some(2)),
         },
         btreemap! {
-          "0" => Value::String(Some(box "rec2".to_owned())),
+          "0" => Value::String(Some(Box::new("rec2".to_owned()))),
           "1" => Value::BigInt(Some(1)),
         },
       ]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, false, true).await);
 
     assert_eq!(
       record_map,
@@ -186,7 +195,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
@@ -212,12 +221,18 @@ mod tests {
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );
@@ -237,7 +252,8 @@ mod tests {
       get_records(
         "dst1".to_owned(),
         Some(vec!["rec1".to_owned(), "rec2".to_owned(), "rec3".to_owned(),]),
-        false
+        false,
+        true
       )
       .await
     );
@@ -266,7 +282,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
@@ -308,17 +324,20 @@ mod tests {
         AND (`apitable_datasheet_record`.`is_deleted` = ?) \
         AND (`apitable_datasheet_record`.`record_id` IN (?, ?, ?))",
           [
-            Value::String(Some(box "dst1".to_owned())),
+            Value::String(Some(Box::new("dst1".to_owned()))),
             Value::Bool(Some(false)),
-            Value::String(Some(box "rec1".to_owned())),
-            Value::String(Some(box "rec2".to_owned())),
-            Value::String(Some(box "rec3".to_owned()))
+            Value::String(Some(Box::new("rec1".to_owned()))),
+            Value::String(Some(Box::new("rec2".to_owned()))),
+            Value::String(Some(Box::new("rec3".to_owned())))
           ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );
@@ -334,7 +353,7 @@ mod tests {
       .append_query_results::<MockRow, _, _>([vec![]])
       .into_connection();
     database::mock_connection(db).await;
-    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true).await);
+    let record_map = assert_ok!(get_records("dst1".to_owned(), None, true, true).await);
 
     assert_eq!(
       record_map,
@@ -360,7 +379,7 @@ mod tests {
             created_at: 1676945874561,
             updated_at: Some(1676945875562),
             revision_history: Some(vec![4]),
-            record_meta: Some(json! { { "createdAt": 1676945874561i64 }}),
+            record_meta: Some(json! { { "createdAt": 1676945874561f64 }}),
           }
         ),
         (
@@ -386,12 +405,18 @@ mod tests {
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(true))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(true))
+          ]
         ),
         Transaction::from_sql_and_values(
           DatabaseBackend::MySql,
           MOCK_RECORD_COMMENT_QUERY_SQL,
-          [Value::String(Some(box "dst1".to_owned())), Value::Bool(Some(false))]
+          [
+            Value::String(Some(Box::new("dst1".to_owned()))),
+            Value::Bool(Some(false))
+          ]
         )
       ]
     );

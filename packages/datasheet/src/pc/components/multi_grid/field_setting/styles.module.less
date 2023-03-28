@@ -57,6 +57,15 @@
         margin-top: 2px;
       }
     }
+    .sectionTitleTip {
+      display: inline-block;
+      vertical-align: -0.25em;
+      margin-left: 8px;
+      cursor: pointer;
+      &.noCursor {
+        cursor: unset;
+      }
+    }
   }
 
   .renameWrapper {
@@ -234,6 +243,14 @@
 
 :export {
   fieldSettingBoxWidth: @fieldSettingBoxWidth;
+}
+
+.cascaderMobileTip {
+  color: var(--textCommonTertiary);
+  svg {
+    vertical-align: -0.25em;
+    margin-right: 4px;
+  }
 }
 
 .requiredBox {

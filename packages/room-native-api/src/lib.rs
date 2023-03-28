@@ -1,5 +1,5 @@
 #![deny(clippy::all)]
-#![feature(async_closure, box_syntax)]
+#![feature(async_closure)]
 
 use datasheet::database::InitDbOptions;
 use futures::TryFutureExt;
@@ -7,6 +7,7 @@ use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use std::env;
 
 mod datasheet;
+mod json;
 mod types;
 
 use types::*;
@@ -44,6 +45,7 @@ pub fn get_records(
   dst_id: String,
   record_ids: Option<Vec<String>>,
   is_deleted: bool,
+  with_comment: bool,
 ) -> napi::Result<JsObject> {
-  env.spawn_future(datasheet::services::record::get_records(dst_id, record_ids, is_deleted).err_into())
+  env.spawn_future(datasheet::services::record::get_records(dst_id, record_ids, is_deleted, with_comment).err_into())
 }

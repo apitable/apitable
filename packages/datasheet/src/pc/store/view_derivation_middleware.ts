@@ -72,6 +72,9 @@ const handleAction = (
       if (action.payload.isPartOfData) { 
         return;
       }
+      if (preState.pageParams.datasheetId !== datasheetId) {
+        return;
+      }
       dispatchNewViewDerivation(store, datasheetId);
       return;
     }

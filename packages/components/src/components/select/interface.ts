@@ -137,6 +137,8 @@ export interface ISelectProps {
    * Show trigger text
    */
   triggerLabel?: string | React.ReactNode;
+
+  popupStyle?: React.CSSProperties;
 }
 
 export interface IOption {

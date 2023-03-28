@@ -36,7 +36,10 @@ export const getView = createCachedSelector(
     (state: IWidgetState, _viewId: string, datasheetId: string) => getViews(state, datasheetId),
     getFieldPermissionMap,
     (_state: IWidgetState, viewId: string) => viewId,
-    (state: IWidgetState) => state.pageParams?.mirrorId && state.mirrorMap?.[state.pageParams.mirrorId]?.mirror
+    (state: IWidgetState) => {
+      const mirrorId = state.widget?.snapshot.sourceId;
+      return mirrorId?.startsWith('mir') && state.mirrorMap?.[mirrorId]?.mirror;
+    }
   ],
   (views, fieldPermissionMap, viewId, mirror) => {
     if (!views) {

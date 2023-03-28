@@ -18,22 +18,19 @@
 
 package com.apitable.user.vo;
 
-import static com.apitable.shared.constants.DateFormatConstants.TIME_SIMPLE_PATTERN;
-
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.bean.UserLinkInfo;
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullJsonObjectSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -114,19 +111,15 @@ public class UserInfoVo implements Serializable {
     /**
      * sign up time.
      */
-    @Schema(description = "Registration time", example = "2019-01-01 "
-        + "10:12:13")
-    @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Schema(description = "Registration time", example = "1677727626000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime signUpTime;
 
     /**
      * last login time.
      */
-    @Schema(description = "Last logon time", example = "2019-01-01 "
-        + "10:12:13")
-    @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Schema(description = "Last logon time", example = "1677727626000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime lastLoginTime;
 
     /**
@@ -253,10 +246,8 @@ public class UserInfoVo implements Serializable {
     /**
      * close time.
      */
-    @Schema(description = "Account destruction time", example = "2022-01"
-        + "-03 00:00:00")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
+    @Schema(description = "Account destruction time", example = "1677727626000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime closeAt;
 
     /**
@@ -375,7 +366,7 @@ public class UserInfoVo implements Serializable {
      * Transfer data from dto.
      *
      * @param userLinkInfo UserLinkInfo
-     * @param userLinkVos UserLinkVo list
+     * @param userLinkVos  UserLinkVo list
      */
     public void transferDataFromDto(final UserLinkInfo userLinkInfo,
         final List<UserLinkVo> userLinkVos) {

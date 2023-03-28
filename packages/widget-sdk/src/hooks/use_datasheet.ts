@@ -22,7 +22,8 @@ import { WidgetContext } from '../context';
 import { useMeta } from './use_meta';
 import { Datasheet } from '../model';
 import { getWidgetDatasheetPack } from 'store';
-import { widgetMessage } from 'message';
+import { eventMessage, widgetMessage } from 'message';
+import { isSandbox } from 'utils/private';
 
 /**
  * A hook for connecting a React component to your datasheet's schema.
@@ -70,7 +71,7 @@ export function useDatasheet(datasheetId?: string | undefined) {
   const _datasheetId = datasheetId || metaDatasheetId;
   const datasheetObj = getWidgetDatasheetPack(context.widgetStore.getState(), datasheetId);
   if (datasheetId && (!datasheetObj || datasheetObj.datasheet?.isPartOfData)) {
-    widgetMessage.fetchDatasheet({ datasheetId });
+    isSandbox() ? widgetMessage.fetchDatasheet({ datasheetId }) : eventMessage.fetchDatasheet({ datasheetId }, context.id);
   }
 
   return useMemo(() => {

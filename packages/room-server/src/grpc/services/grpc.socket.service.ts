@@ -18,6 +18,7 @@
 
 import { ICollaborator, OtErrorCode } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
@@ -259,6 +260,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   /**
    * User changes node contents in the room
    */
+  @Span()
   public async roomChange(message: IRoomChannelMessage, auth: IAuthHeader): Promise<IClientRoomChangeResult[]> {
     this.logger.info(
       `Start processing CLIENT_ROOM_CHANGE,room:[${message.roomId}],shareId: ${message.shareId},changesets length:[${message.changesets.length}]`,

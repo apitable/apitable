@@ -20,26 +20,29 @@ import { generateRandomString } from '@apitable/core';
 import { INestApplication } from '@nestjs/common';
 import { LoggerService } from '@nestjs/common/services/logger.service';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { disableHSTS, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
 import { DatabaseModule } from 'database/database.module';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { DeveloperService } from 'developer/services/developer.service';
 import { FastifyInstance } from 'fastify';
+import helmet from 'fastify-helmet';
+import fastifyMultipart from 'fastify-multipart';
 import {
   CheckboxFieldPropertyDto, CurrencyFieldPropertyDto, DateTimeFieldPropertyDto, FormulaFieldPropertyDto, LinkFieldPropertyDto, LookupFieldPropertyDto,
   MemberFieldPropertyDto, NumberFieldPropertyDto, RatingFieldPropertyDto, SelectFieldPropertyDto, SingleTextPropertyDto, UserPropertyDto,
 } from 'fusion/dtos/field.property.dto';
 import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
+import { HelmetOptions } from 'helmet';
 import { NodeRepository } from 'node/repositories/node.repository';
 import path, { join } from 'path';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
 import { SocketConstants } from 'shared/common/constants/socket.module.constants';
-import { SentryTraces } from 'shared/helpers/sentry/sentry.traces.sampler';
 import { RedisIoAdapter } from 'socket/adapter/redis/redis-io.adapter';
 import { SocketIoService } from 'socket/services/socket-io/socket-io.service';
 import {
@@ -80,6 +83,36 @@ export const initSwagger = (app: INestApplication) => {
     });
     SwaggerModule.setup('nest/v1/docs', app, document);
   }
+};
+
+export const initFastify = (): FastifyAdapter => {
+  const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
+  fastifyAdapter.register(fastifyMultipart);
+  // registe helmet in fastify to avoid conflict with swagger
+  let helmetOptions: HelmetOptions = {
+    // update script-src to be compatible with swagger
+    contentSecurityPolicy: {
+      directives: {
+        'default-src': ["'self'"],
+        'base-uri': ["'self'"],
+        'block-all-mixed-content': [],
+        'font-src': ["'self'", 'https:', 'data:'],
+        'frame-ancestors': ["'self'"],
+        'img-src': ["'self'", 'data:'],
+        'object-src': ["'none'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'script-src-attr': ["'none'"],
+        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
+        'upgrade-insecure-requests': [],
+      },
+    },
+  };
+  if (disableHSTS) {
+    helmetOptions = { ...helmetOptions, hsts: false };
+  }
+  fastifyAdapter.register(helmet, helmetOptions);
+
+  return fastifyAdapter;
 };
 
 export const initHttpHook = (app: INestApplication) => {
@@ -175,7 +208,6 @@ export const initSentry = (_app: INestApplication) => {
       }),
       new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
     ],
-    tracesSampler: new SentryTraces(0.2).tracesSampler(),
     ignoreErrors: ['ServerException', 'ApiException'],
   });
 };

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
+import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -28,6 +28,7 @@ import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
+import { usePostHog } from 'posthog-js/react';
 
 export interface IUsingTemplateModalProps {
   onCancel: React.Dispatch<React.SetStateAction<string>>;
@@ -54,6 +55,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
   const { usingTemplateReq } = useTemplateRequest();
   const { data: NodeTreeData } = useRequest(getNodeTreeReq);
   const { run: usingTemplate, loading } = useRequest(usingTemplateReq, { manual: true });
+  const posthog = usePostHog();
 
   useEffect(() => {
     if (NodeTreeData) {
@@ -96,6 +98,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
     if (!templateId) {
       return;
     }
+    posthog?.capture(TrackEvents.TemplateConfirmUse);
     const result = await usingTemplate(templateId, nodeId, isContainData);
     if (result && spaceId) {
       dispatch(StoreActions.getSpaceInfo(spaceId!, true));

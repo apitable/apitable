@@ -24,6 +24,7 @@ import { Socket } from 'socket.io';
 import { HttpExceptionFilter } from 'socket/filter/http-exception.filter';
 import { ExecuteTimeInterceptor } from 'socket/interceptor/execute-time.interceptor';
 import { RoomService } from 'socket/services/room/room.service';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 
 @UseFilters(HttpExceptionFilter)
 @WebSocketGateway(GatewayConstants.ROOM_PORT, {
@@ -42,6 +43,7 @@ export class RoomGateway {
   @WebSocketServer() server: any;
 
   @SubscribeMessage(RequestTypes.WATCH_ROOM)
+  @Span()
   async watchRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<any | null> {
     return await this.roomService.watchRoom(message, client);
   }
@@ -54,6 +56,7 @@ export class RoomGateway {
 
   @UseInterceptors(ExecuteTimeInterceptor)
   @SubscribeMessage(RequestTypes.CLIENT_ROOM_CHANGE)
+  @Span()
   async roomChange(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<any> {
     return await this.roomService.roomChange(message, client);
   }

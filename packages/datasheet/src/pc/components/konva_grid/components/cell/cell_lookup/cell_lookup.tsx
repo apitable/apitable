@@ -114,6 +114,7 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props =
     case FieldType.SingleText:
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
+    case FieldType.Cascader:
       return (
         <CellText {...commonProps} />
       );

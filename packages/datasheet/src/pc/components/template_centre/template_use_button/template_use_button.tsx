@@ -17,7 +17,7 @@
  */
 
 import { Button } from '@apitable/components';
-import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
+import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t, TrackEvents } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 // @ts-ignore
 import { LoginModal, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 import { ArrowRightOutlined } from '@apitable/icons';
+import { usePostHog } from 'posthog-js/react';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;
@@ -37,7 +38,7 @@ interface ITemplateUseButtonProps {
   block?: boolean;
 }
 
-const calcNodeNum = (directory: ITemplateTree[]):number => {
+const calcNodeNum = (directory: ITemplateTree[]): number => {
   return directory.reduce<number>((total, cur) => {
     if (!cur.children.length) {
       return total + 1;
@@ -57,6 +58,7 @@ export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseBut
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
+  const posthog = usePostHog();
 
   const nodeNumber = useMemo(() => {
     return calcNodeNum(templateDirectory!.nodeTree.children);
@@ -70,6 +72,7 @@ export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseBut
   }, [openTemplateModal]);
 
   const openUseTemplateModal = () => {
+    posthog?.capture(TrackEvents.TemplateUse);
     // Current user is not logged in
     if (!userInfo) {
       Modal.confirm({
@@ -125,7 +128,7 @@ export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseBut
             style={{ ...style }}
             block={block}
             color='warning'
-            size="middle"
+            size='middle'
           >
             {t(Strings.apply_template)}
             {showIcon && <ArrowRightOutlined color='white' />}

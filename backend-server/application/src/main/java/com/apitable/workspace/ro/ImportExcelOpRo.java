@@ -41,4 +41,7 @@ public class ImportExcelOpRo {
     @Schema(description = "Import File", required = true)
     @NotNull(message = "The import file cannot be empty")
     private MultipartFile file;
+
+    @Schema(description = "View Name", example = "nod10")
+    private String viewName;
 }

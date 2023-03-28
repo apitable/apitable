@@ -21,15 +21,33 @@ import { FillDirection, ICell, ICellValue, IFieldRanges, IRange, IRecordRanges, 
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
 import {
-  CellType, GalleryStyleKeyType, IUnitValue, IUserValue, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType,
+  CellType,
+  GalleryStyleKeyType,
+  IUnitValue,
+  IUserValue,
+  LayoutType,
+  RowHeightLevel,
+  ViewType,
+  WhyRecordMoveType,
 } from '../../../../../../exports/store';
 import * as actions from '../../../../../shared/store/action_constants';
 import {
-  CalendarColorType, CalendarStyleKeyType, GanttColorType, GanttStyleKeyType, OrgChartStyleKeyType, RecordMoveType,
+  CalendarColorType,
+  CalendarStyleKeyType,
+  GanttColorType,
+  GanttStyleKeyType,
+  OrgChartStyleKeyType,
+  RecordMoveType,
 } from '../../../../../shared/store/constants';
 import { IPermissions, Role } from '../../../../../space/store/interfaces/catalog_tree';
 import {
-  ICalendarViewStatus, IGanttViewStatus, IGridViewActiveFieldState, IGridViewDragState, IKanbanViewStatus, IOrgChartViewStatus, ISearchResult,
+  ICalendarViewStatus,
+  IGanttViewStatus,
+  IGridViewActiveFieldState,
+  IGridViewDragState,
+  IKanbanViewStatus,
+  IOrgChartViewStatus,
+  ISearchResult,
   IWidgetPanelStatus,
 } from './client';
 
@@ -1204,6 +1222,7 @@ export interface IRecordAlarm {
   alarmUsers?: IAlarmUser[];
   recordId?: string;
   fieldId?: string;
+  alarmAt?: string
 }
 
 /**

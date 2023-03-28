@@ -198,6 +198,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { editable } = useSelector(state => Selectors.getPermissions(state));
 
   const { style } = useListenVisualHeight({
     listenNode: containerRef,
@@ -613,7 +614,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
 
         {/* Config: Do not display hidden fields in mirror? */}
         {
-          !mirrorId && !isExclusive && <div className={styles.switchCoverFit}>
+          !mirrorId && !isExclusive && editable && <div className={styles.switchCoverFit}>
             <Checkbox
               checked={typeof activeView.displayHiddenColumnWithinMirror === 'boolean' ? activeView.displayHiddenColumnWithinMirror : true}
               onChange={switchShowHiddenFieldWithinMirror}

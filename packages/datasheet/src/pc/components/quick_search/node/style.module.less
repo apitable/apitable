@@ -1,0 +1,62 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.nodeContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--rowSelectedBg);
+  }
+
+  .superiorPath {
+    line-height: 18px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--thirdLevelText);
+  }
+}
+
+.node {
+  width: 100%;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    // margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    & > span {
+      width: 16px;
+      height: 16px;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--secondLevelText);
+    }
+  }
+
+  .nodeName {
+    flex: 1;
+    font-size: 14px;
+    color: var(--secondLevelText);
+    font-weight: normal;
+    padding-left: 4px;
+    .ellipsis();
+  }
+
+  :global {
+    .keyword {
+      color: var(--primaryColor);
+    }
+  }
+}

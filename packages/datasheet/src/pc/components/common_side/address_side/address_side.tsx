@@ -18,7 +18,7 @@
 
 import { Button } from '@apitable/components';
 import {
-  ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t,
+  ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t, TrackEvents,
 } from '@apitable/core';
 import { AddOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
 import { Input } from 'antd';
@@ -41,6 +41,7 @@ import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
+import { usePostHog } from 'posthog-js/react';
 
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useSelector(
@@ -51,6 +52,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
+  const posthog = usePostHog();
 
   const { isAdmin } = userInfo!;
 
@@ -83,10 +85,12 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
               teamId: data.teamId,
             }),
           );
+          dispatch(StoreActions.updateMemberListPageNo(1));
         }
       });
       isMobile && setSideBarVisible(false);
       dispatch(StoreActions.updateMemberInfo({ memberId: '', email: '' }));
+      dispatch(StoreActions.updateMemberListPageNo(1));
     },
     [isMobile, setSideBarVisible, dispatch],
   );
@@ -149,7 +153,10 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
               [styles.inviteBtnMobile!]: isMobile,
               [styles.isSyncingMembers!]: isSyncingMembers,
             })}
-            onClick={() => expandInviteModal({ resUpdate: () => teamClick(ConfigConstant.ROOT_TEAM_ID) })}
+            onClick={() => {
+              posthog?.capture(TrackEvents.InviteByContacts);
+              expandInviteModal({ resUpdate: () => teamClick(ConfigConstant.ROOT_TEAM_ID) });
+            }}
           >
             {isSyncingMembers ? t(Strings.other_invitation_rule) : t(Strings.invite_member)}
           </Button>

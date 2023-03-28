@@ -56,6 +56,7 @@ import com.apitable.organization.ro.UserLinkEmailRo;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.bean.UserSpaceDto;
+import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.CodeValidateScope;
@@ -80,6 +81,7 @@ import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
 import com.apitable.user.ro.EmailCodeValidateRo;
+import com.apitable.user.ro.EmailVerificationRo;
 import com.apitable.user.ro.RetrievePwdOpRo;
 import com.apitable.user.ro.SmsCodeValidateRo;
 import com.apitable.user.ro.UpdatePwdOpRo;
@@ -196,6 +198,9 @@ public class UserController {
 
     @Resource
     private UserServiceFacade userServiceFacade;
+
+    @Resource
+    private LoginUserCacheService loginUserCacheService;
 
     /**
      * Get personal information.
@@ -648,6 +653,8 @@ public class UserController {
         iUserService.applyForClosingAccount(user);
         // Destroy user cookies and maintain sessions
         iUserService.closeMultiSession(userId, true);
+        // delete user cache
+        loginUserCacheService.delete(userId);
         return ResponseData.success();
     }
 
@@ -797,11 +804,10 @@ public class UserController {
      *
      * @return {@link ResponseData}
      */
-    @PostResource(path = "/verifyEmail")
+    @PostResource(path = "/verifyEmail", requiredLogin = false)
     @Operation(summary = "verify user's email", hidden = true)
-    public ResponseData<Void> verifyEmail() {
-        Long userId = SessionContext.getUserId();
-        boolean result = userServiceFacade.verifyEmail(new UserAuth(userId));
+    public ResponseData<Void> verifyEmail(@RequestBody @Valid EmailVerificationRo ro) {
+        boolean result = userServiceFacade.verifyEmail(ro.getEmail());
         if (result) {
             return ResponseData.success();
         }

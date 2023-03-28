@@ -17,6 +17,7 @@
  */
 
 import { ResourceIdPrefix, ResourceType } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { InjectLogger } from '../../../shared/common';
 import { Logger } from 'winston';
@@ -41,6 +42,7 @@ export class ResourceChangeHandler {
     private readonly datasheetFieldHandler: DatasheetFieldHandler,
   ) {}
 
+  @Span()
   async handleResourceChange(roomId: string, values: any[]) {
     this.logger.info(
       `HandleResourceChange. roomId: ${roomId} values: ${JSON.stringify(

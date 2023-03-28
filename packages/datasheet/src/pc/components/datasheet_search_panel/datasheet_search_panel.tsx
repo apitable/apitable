@@ -62,6 +62,13 @@ interface ISearchPanelProps {
   showMirrorNode?: boolean;
 }
 
+export interface ISearchChangeProps {
+  datasheetId?: string;
+  mirrorId?: string;
+  viewId?: string;
+  widgetIds?: string[];
+}
+
 export enum SubColumnType {
   Widget,
   View,
@@ -378,7 +385,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
         {showSubColumnWithView && (
           <Tooltip title={t(Strings.form_tour_desc)}>
             <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
-              <QuestionCircleOutlined color={colors.firstLevelText} />
+              <QuestionCircleOutlined color={colors.textCommonTertiary} />
             </a>
           </Tooltip>
         )}

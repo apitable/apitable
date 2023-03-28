@@ -24,14 +24,17 @@ import com.apitable.shared.clock.DefaultClock;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.component.SystemEnvironmentVariable;
 import com.apitable.shared.config.ServerConfig;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
+/**
+ * clock manager.
+ */
 @Component
 @Slf4j
 public class ClockManager implements InitializingBean {
@@ -51,15 +54,25 @@ public class ClockManager implements InitializingBean {
         return SpringContextHolder.getBean(ClockManager.class);
     }
 
+    /**
+     * get mock clock.
+     *
+     * @return MockClock
+     */
     public MockClock getMockClock() {
         if (!environmentVariable.isTestEnabled()) {
-            throw new UnsupportedOperationException("System has not been configured to update the time");
+            throw new UnsupportedOperationException(
+                "System has not been configured to update the time");
         }
         return (MockClock) clock;
     }
 
-
-    public OffsetDateTime getUTCNow() {
+    /**
+     * get utc now.
+     *
+     * @return OffsetDateTime
+     */
+    public OffsetDateTime getUtcNow() {
         if ((clock instanceof MockClock)) {
             log.info("mock clock");
             MockClock mockClock = (MockClock) clock;
@@ -69,16 +82,35 @@ public class ClockManager implements InitializingBean {
         return defaultClock.getUTCNow();
     }
 
+    /**
+     * get LocalDate of now.
+     *
+     * @return LocalDate
+     */
     public LocalDate getLocalDateNow() {
-        OffsetDateTime utcNow = getUTCNow();
+        OffsetDateTime utcNow = getUtcNow();
         log.info("utc now: {}", utcNow);
         return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDate();
     }
 
+    /**
+     * get LocalDateTime of now.
+     *
+     * @return LocalDateTime
+     */
     public LocalDateTime getLocalDateTimeNow() {
-        OffsetDateTime utcNow = getUTCNow();
+        OffsetDateTime utcNow = getUtcNow();
         log.info("utc now: {}", utcNow);
         return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDateTime();
+    }
+
+    /**
+     * get server timezone.
+     *
+     * @return ZoneId
+     */
+    public ZoneId getDefaultTimeZone() {
+        return this.serverConfig.getTimeZoneId();
     }
 
     @Override

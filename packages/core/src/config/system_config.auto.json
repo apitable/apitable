@@ -329,6 +329,12 @@
         "permission_config_in_workbench_page": {
             "value": "[{\"key\":0,\"title\":\"表格内的操作权限\",\"detail\":[{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删维格列\",\"permissions\":[0,1]},{\"title\":\"编辑维格列属性（列名/类型/描述）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏）\",\"permissions\":[0,1]},{\"title\":\"编辑行（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"将继承切换为指定权限\",\"permissions\":[0,1]},{\"title\":\"将指定切换为继承权限\",\"permissions\":[0]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]"
         },
+        "quick_search_default_dark": {
+            "value": "space/2023/03/15/42dc46843161478fb56d27efb43a50b8"
+        },
+        "quick_search_default_light": {
+            "value": "space/2023/03/15/0fd81978a8c04d96a483f4c785736b62"
+        },
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
@@ -1275,13 +1281,13 @@
         },
         {
             "show": true,
-            "key": "cmd+g",
-            "winKey": "ctrl+g",
+            "key": "cmd+k",
+            "winKey": "ctrl+k",
             "name": [
                 "open_quickgo_panel"
             ],
             "when": "!isRecordExpanding",
-            "id": "cmd+g",
+            "id": "cmd+k",
             "command": "SearchNode",
             "description": "打开工作台的搜索栏",
             "type": [
@@ -1438,6 +1444,34 @@
             "when": "!isRecordExpanding",
             "id": "cmd+alt+d",
             "command": "ToggleDevPanel"
+        },
+        {
+            "key": "up",
+            "winKey": "up",
+            "when": "isQuickSearchExpanding",
+            "id": "up",
+            "command": "QuickSearchUp"
+        },
+        {
+            "key": "down",
+            "winKey": "down",
+            "when": "isQuickSearchExpanding",
+            "id": "down",
+            "command": "QuickSearchDown"
+        },
+        {
+            "key": "tab",
+            "winKey": "tab",
+            "when": "isQuickSearchExpanding",
+            "id": "tab",
+            "command": "QuickSearchTab"
+        },
+        {
+            "key": "enter",
+            "winKey": "enter",
+            "when": "isQuickSearchExpanding",
+            "id": "enter",
+            "command": "QuickSearchEnter"
         }
     ],
     "country_code_and_phone_code": {
@@ -2985,7 +3019,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_9f3930dd7d7ad00c",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_async_compute",
-                "info_image": "space/2022/01/25/83d9e37eac454877a5d2a9c1a6bdacae"
+                "info_image": "ASYNC_COMPUTE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3008,7 +3042,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_a08120b120fad00e",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_prompt",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_PROMPT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3031,7 +3065,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_robot",
-                "info_image": "space/2022/01/25/7679e8085aa0473e9aaa86809cf1bdeb"
+                "info_image": "ROBOT_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3054,7 +3088,7 @@
                 "btn_action": "https://vika.cn/share/shrL1BVlA2ZhkSE7nYEgt",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_widget",
-                "info_image": "space/2022/01/25/3828da03312f4035a37912edd6db6f0b"
+                "info_image": "WIDGET_CENTER_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3076,7 +3110,7 @@
                 "info": "test_function_modal_info_render_normal",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_render_normal",
-                "info_image": "space/2022/01/25/e2957e5c44aa4b40a7deee427c37cf30"
+                "info_image": "RENDER_NORMAL_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3098,7 +3132,7 @@
                 "info": "test_function_modal_info_view_manual_save",
                 "btn_type": "primary",
                 "info的副本": "test_function_card_info_view_manual_save",
-                "info_image": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
+                "info_image": "VIEW_MANUAL_SAVE_INFO_IMAGE"
             },
             "card": {
                 "btn_open_action": "/",
@@ -3119,9 +3153,9 @@
                 "rules": [
                     "identity_ALL_OF_TRUE_['main_admin']",
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00"
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00"
                 ],
-                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00],[open_guide_wizards([4])]",
+                "id": "address_shown,[identity_ALL_OF_TRUE_['main_admin'], device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00],[open_guide_wizards([4])]",
                 "event": [
                     "address_shown"
                 ]
@@ -3232,11 +3266,11 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
+                "id": "datasheet_wigdet_empty_panel_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([31])]",
                 "event": [
                     "datasheet_wigdet_empty_panel_shown"
                 ]
@@ -3306,11 +3340,11 @@
                 "rules": [
                     "device_IS_pc",
                     "identity_ALL_OF_TRUE_['main_admin']",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId"
                 ],
-                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
+                "id": "template_center_shown,[device_IS_pc, identity_ALL_OF_TRUE_['main_admin'], sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([19])]",
                 "event": [
                     "template_center_shown"
                 ]
@@ -3427,58 +3461,75 @@
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_apitable"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+                "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+                "event": [
+                    "workbench_show_trial_tip"
+                ]
+            },
+            {
+                "actions": [
+                    "open_guide_wizards([105, 104])"
+                ],
+                "rules": [
+                    "device_IS_pc",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
+                    "url_EXCLUDES_templateId",
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_apitable"
+                ],
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([1, 24])"
+                    "open_guide_wizards([24, 1])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_AFTER_2022-09-29 22:00",
+                    "sign_up_time_IS_AFTER_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
                     "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([24, 1])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([29, 76, 102])"
+                    "open_guide_wizards([29, 76, 107])"
                 ],
                 "rules": [
                     "device_IS_pc",
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([29, 76, 102])]",
+                "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
             },
             {
                 "actions": [
-                    "open_guide_wizards([76, 102])"
+                    "open_guide_wizards([76, 107])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "device_IS_mobile",
                     "url_EXCLUDES_templateId",
-                    "url_EXCLUDES_shareId"
+                    "url_EXCLUDES_shareId",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizards([76, 102])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 107])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3488,12 +3539,13 @@
                     "open_guide_wizards([76, 87])"
                 ],
                 "rules": [
-                    "sign_up_time_IS_BEFORE_2022-09-29 22:00",
+                    "sign_up_time_IS_BEFORE_2023-03-17 09:00",
                     "url_EXCLUDES_templateId",
                     "url_EXCLUDES_shareId",
-                    "device_IS_app"
+                    "device_IS_app",
+                    "edition_IS_vika"
                 ],
-                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2022-09-29 22:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app],[open_guide_wizards([76, 87])]",
+                "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-03-17 09:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app, edition_IS_vika],[open_guide_wizards([76, 87])]",
                 "event": [
                     "workbench_shown"
                 ]
@@ -3603,7 +3655,12 @@
             },
             "datasheet_search_panel_shown": {
                 "module": "datasheet",
-                "name": "search_panel_shown"
+                "name": "search_panel_shown",
+                "guide": {
+                    "step": [
+                        "reczmcUK1NLK4"
+                    ]
+                }
             },
             "datasheet_shown": {
                 "module": "datasheet",
@@ -3747,6 +3804,10 @@
                 "module": "workbench",
                 "name": "no_emit"
             },
+            "workbench_show_trial_tip": {
+                "module": "workbench",
+                "name": "show_trial_tip"
+            },
             "workbench_shown": {
                 "module": "workbench",
                 "name": "shown"
@@ -3832,14 +3893,14 @@
             {
                 "operator": "IS_AFTER",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_AFTER_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_AFTER_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "IS_BEFORE",
                 "condition": "sign_up_time",
-                "id": "sign_up_time_IS_BEFORE_2022-09-29 22:00",
-                "conditionArgs": "2022-09-29 22:00"
+                "id": "sign_up_time_IS_BEFORE_2023-03-17 09:00",
+                "conditionArgs": "2023-03-17 09:00"
             },
             {
                 "operator": "EXCLUDES",
@@ -4092,11 +4153,6 @@
                 "commandArgs": "88"
             },
             {
-                "id": "open_guide_wizards([1, 24])",
-                "command": "open_guide_wizards",
-                "commandArgs": "[1, 24]"
-            },
-            {
                 "id": "open_guide_wizards([105, 104])",
                 "command": "open_guide_wizards",
                 "commandArgs": "[105, 104]"
@@ -4112,9 +4168,14 @@
                 "commandArgs": "[21]"
             },
             {
-                "id": "open_guide_wizards([29, 76, 102])",
+                "id": "open_guide_wizards([24, 1])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[29, 76, 102]"
+                "commandArgs": "[24, 1]"
+            },
+            {
+                "id": "open_guide_wizards([29, 76, 107])",
+                "command": "open_guide_wizards",
+                "commandArgs": "[29, 76, 107]"
             },
             {
                 "id": "open_guide_wizards([31])",
@@ -4127,9 +4188,9 @@
                 "commandArgs": "[4]"
             },
             {
-                "id": "open_guide_wizards([76, 102])",
+                "id": "open_guide_wizards([76, 107])",
                 "command": "open_guide_wizards",
-                "commandArgs": "[76, 102]"
+                "commandArgs": "[76, 107]"
             },
             {
                 "id": "open_guide_wizards([76, 87])",
@@ -4370,7 +4431,12 @@
             },
             "29": {
                 "completeIndex": 0,
-                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]"
+                "steps": "[[47,48],[49],[50],[51,52],[53],[54]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ"
+                    ]
+                }
             },
             "30": {
                 "completeIndex": 0,
@@ -4637,7 +4703,14 @@
                 "steps": "[[93]]"
             },
             "76": {
-                "steps": "[[93]]"
+                "steps": "[[93]]",
+                "player": {
+                    "action": [
+                        "recBtbbzXDolQ",
+                        "recEIcl9v4jzr",
+                        "recZmyGfgUNR6"
+                    ]
+                }
             },
             "77": {
                 "steps": "[[111]]"
@@ -4715,13 +4788,7 @@
             },
             "90": {
                 "completeIndex": -1,
-                "steps": "[[145]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[145]]"
             },
             "91": {
                 "completeIndex": -1,
@@ -4769,15 +4836,10 @@
             },
             "102": {
                 "completeIndex": -1,
-                "steps": "[[164]]",
-                "player": {
-                    "action": [
-                        "recEIcl9v4jzr",
-                        "recBtbbzXDolQ"
-                    ]
-                }
+                "steps": "[[164]]"
             },
             "104": {
+                "repeat": true,
                 "completeIndex": 0,
                 "steps": "[[166]]",
                 "player": {
@@ -4805,6 +4867,21 @@
                         "recO09HUv27dd"
                     ]
                 }
+            },
+            "107": {
+                "completeIndex": -1,
+                "steps": "[[169]]",
+                "player": {
+                    "action": [
+                        "recEIcl9v4jzr",
+                        "recBtbbzXDolQ"
+                    ]
+                }
+            },
+            "108": {
+                "completeIndex": -1,
+                "endTime": 1677677940000,
+                "steps": "[[169]]"
             }
         },
         "step": {
@@ -6340,8 +6417,7 @@
                 "nextId": "claim_special_offer",
                 "uiConfig": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
                 "onClose": [
-                    "open_guide_next_step({\"clearAllPrevUi\":true})",
-                    "open_guide_wizard(18)"
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
             },
             "167": {
@@ -6353,9 +6429,10 @@
                 ],
                 "next": "确定",
                 "nextId": "confirm",
-                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"市场营销\",\n        \"项目管理\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
+                "uiConfig": "{\n  \"config\": [\n    {\n      \"key\": 1,\n      \"name\": \"answer1\",\n      \"title\": \"您希望通过 APITable 解决哪些问题？\",\n      \"type\": \"multiButton\",\n      \"answers\": [\n        \"IT 运维支持\",\n        \"教育\",\n        \"项目管理\",\n        \"市场营销\",\n        \"产品管理\",\n        \"招聘管理\",\n        \"运营\",\n        \"金融财务\",\n        \"销售 & 客户管理\",\n        \"软件开发\",\n        \"人力资源 & 合规\",\n        \"设计 & 创意\",\n        \"非盈利组织\",\n        \"制造业\",\n        \"其他\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 2,\n      \"name\": \"answer2\",\n      \"title\": \"您的工作岗位是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"企业主\",\n        \"团队负责人\",\n        \"团队成员\",\n        \"自由职业者\",\n        \"主管\",\n        \"高管层\",\n        \"副总裁\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 3,\n      \"name\": \"answer3\",\n      \"title\": \"您的团队规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"只有我\",\n        \"2-5\",\n        \"6-10\",\n        \"11-15\",\n        \"16-25\",\n        \"25-50\",\n        \"51-100\",\n        \"101-500\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 4,\n      \"name\": \"answer4\",\n      \"title\": \"您的公司规模是？\",\n      \"type\": \"radio\",\n      \"answers\": [\n        \"1-19\",\n        \"20-49\",\n        \"50-99\",\n        \"100-250\",\n        \"251-500\",\n        \"501-1500\",\n        \"1500+\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 5,\n      \"name\": \"answer5\",\n      \"title\": \"您从哪种途径了解到我们？\",\n      \"type\": \"checkbox\",\n      \"answers\": [\n        \"搜索引擎\",\n        \"YouTube\",\n        \"Product Hunt\",\n        \"Github\",\n        \"推特\",\n        \"领英\",\n        \"朋友推荐\"\n      ],\n      \"lastAllowInput\": false\n    },\n    {\n      \"key\": 6,\n      \"name\": \"answer6\",\n      \"title\": \"加入我们的Discord社区，和全世界 APITable 的使用者一起讨论使用心得吧！在使用过程中如果遇到任何问题，可以随时在社区获得解答和帮助。\",\n      \"type\": \"joinUs\",\n      \"url\": \"https://discord.gg/2UXAbDTJTX\",\n      \"confirmText\": \"加入社区\",\n      \"skipText\": \"跳过\",\n      \"submit\": true\n    }\n  ]\n}",
                 "onClose": [
-                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                    "open_guide_next_step({\"clearAllPrevUi\":true})",
+                    "open_guide_wizard(18)"
                 ]
             },
             "168": {
@@ -6370,6 +6447,20 @@
                     "datasheet_create_mirror_tip"
                 ],
                 "uiConfig": "{\n\"templateKey\":\"createMirrorTip\"\n}"
+            },
+            "169": {
+                "uiConfigId": "player_step_ui_config_165",
+                "uiType": "notice",
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/03/16/8374ca1295664675bd1155b077555113\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-03-16-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>镜像功能再次升级，可禁止查看已隐藏的字段</li><li>个人设置追加时区信息，日期字段可指定时区</li><li>「全局搜索」优化，新增搜索结果分类</li><li>神奇表单支持隐藏官方标识</li><li>API 性能优化，大幅提高请求速度</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
             }
         }
     },

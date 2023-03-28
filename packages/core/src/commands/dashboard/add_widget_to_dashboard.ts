@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '../../exports/i18n';
+import { getCustomConfig } from 'config';
 import { ResourceType } from 'types';
 import { CollaCommandName } from '..';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { DashboardAction } from '../../model/dashboard';
+import { Strings, t } from '../../exports/i18n';
 import { IDashboardLayout, Selectors } from '../../exports/store';
-import { DASHBOARD_MAX_WIDGET_COUNT } from 'config/constant';
+import { DashboardAction } from '../../model/dashboard';
 
 export interface IAddWidgetToDashboard {
   cmd: CollaCommandName.AddWidgetToDashboard;
@@ -47,8 +47,8 @@ export const addWidgetToDashboard: ICollaCommandDef<IAddWidgetToDashboard> = {
 
     const layout = dashboardSnapshot.widgetInstallations.layout || [];
 
-    if (layout.length + widgetIds.length > DASHBOARD_MAX_WIDGET_COUNT) {
-      throw new Error(t(Strings.reach_dashboard_installed_limit, { count: DASHBOARD_MAX_WIDGET_COUNT }));
+    if (layout.length + widgetIds.length > Number(getCustomConfig().DASHBOARD_WIDGET_MAX_NUM)) {
+      throw new Error(t(Strings.reach_dashboard_installed_limit, { count: getCustomConfig().DASHBOARD_WIDGET_MAX_NUM }));
     }
 
     const newLayouts: IDashboardLayout[] = widgetIds.map((widgetId, index) => {

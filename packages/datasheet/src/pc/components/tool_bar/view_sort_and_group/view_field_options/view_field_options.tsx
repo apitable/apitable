@@ -148,6 +148,7 @@ export const ViewFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
         hideSelectedOption
         openSearch
         searchPlaceholder={t(Strings.search)}
+        noDataTip={t(Strings.no_search_result)}
       />
     </div>
   );

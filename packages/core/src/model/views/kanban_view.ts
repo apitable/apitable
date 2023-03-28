@@ -101,7 +101,7 @@ export class KanbanView extends CardView {
       rows: this.defaultRows(srcView),
       style: this.defaultStyle(snapshot, activeViewId!),
       groupInfo: [{ fieldId: this.findGroupFieldId(srcView, snapshot.meta.fieldMap)!, desc: false }],
-      displayHiddenColumnWithinMirror: false
+      displayHiddenColumnWithinMirror: true
     };
   }
 

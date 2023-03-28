@@ -61,6 +61,7 @@ import { ExpandLink } from '../expand_link';
 import { ExpandLookUp } from '../expand_lookup';
 import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
+import { ExpandCascader } from '../expand_cascader';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
 
@@ -284,6 +285,16 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
           <CellCreatedBy field={field} cellValue={cellValue} isFromExpand />
           {FocusHolderWrapper}
         </>
+      );
+    case FieldType.Cascader:
+      return (
+        <ExpandCascader
+          {...commonProps}
+          isFocus={isFocus}
+          cellValue={cellValue}
+          field={commonProps.field as ILinkField}
+          style={mobileEditorWidth}
+        />
       );
     default:
       return <div />;

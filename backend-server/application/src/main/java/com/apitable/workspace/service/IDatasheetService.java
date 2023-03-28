@@ -18,19 +18,17 @@
 
 package com.apitable.workspace.service;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.workspace.enums.FieldType;
+import com.apitable.workspace.dto.NodeCopyOptions;
+import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.ro.MetaMapRo;
 import com.apitable.workspace.ro.RemindMemberRo;
 import com.apitable.workspace.ro.SnapshotMapRo;
-import com.apitable.workspace.dto.NodeCopyOptions;
-import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.vo.BaseNodeInfo;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+import java.util.Map;
 
 public interface IDatasheetService extends IService<DatasheetEntity> {
 
@@ -59,7 +57,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param metaMapRo meta map
      * @param recordMap record map
      */
-    void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo, JSONObject recordMap);
+    void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo,
+        JSONObject recordMap);
 
     /**
      * update the datasheet name according to node id
@@ -89,8 +88,9 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param newNodeMap  source node ID - new node ID MAP（all nodes transferred）
      * @return List<String>
      */
-    List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId, String destDstName,
-            NodeCopyOptions options, Map<String, String> newNodeMap);
+    List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId,
+        String destDstName,
+        NodeCopyOptions options, Map<String, String> newNodeMap);
 
     /**
      *
@@ -99,6 +99,13 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @return WidgetPanels
      */
     JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap);
+
+    /**
+     * @param dstIds    datasheet ids
+     * @author Chambers
+     * @return List<BaseNodeInfo>
+     */
+    List<BaseNodeInfo> getForeignDstIdsFilterSelf(List<String> dstIds);
 
     /**
      * the id of the query number table and the id of the corresponding associated number table.
@@ -118,7 +125,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param saveDb     whether save to database
      * @return snapshot
      */
-    SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds, boolean saveDb);
+    SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds,
+        boolean saveDb);
 
     /**
      * get multiple tables and corresponding snapshot
@@ -138,7 +146,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param newNodeIdMap original node id - new node id map
      * @return delFieldIds
      */
-    List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo, Map<String, String> newNodeIdMap);
+    List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo,
+        Map<String, String> newNodeIdMap);
 
     /**
      * Member field mentions other people's record operation
@@ -148,24 +157,6 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param ro      request parameters
      */
     void remindMemberRecOp(Long userId, String spaceId, RemindMemberRo ro);
-
-    /**
-     * convert the deleted associated field
-     *
-     * @param userId user id
-     * @param dstIdToDelDstIdsMap datasheet id - deleted associated datasheet id map
-     */
-    void transformDeletedLinkField(Long userId, Map<String, List<String>> dstIdToDelDstIdsMap);
-
-    /**
-     * parse the cell data of the number table
-     *
-     * @param fieldType field type
-     * @param property  field properties
-     * @param cellVal   source data
-     * @return value after parse
-     */
-    String parseCellData(FieldType fieldType, JSONObject property, Object cellVal);
 
     /**
      * Get the node information of the external association table.

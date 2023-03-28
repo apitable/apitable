@@ -18,7 +18,8 @@
 
 package com.apitable.shared.support.serializer;
 
-import cn.hutool.core.util.ObjectUtil;
+import static java.time.ZoneId.getAvailableZoneIds;
+
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.config.ServerConfig;
 import com.apitable.shared.context.LoginContext;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import javax.annotation.Resource;
 
 /**
@@ -50,11 +52,14 @@ public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime
         String userTimeZone;
         if (userId != null) {
             LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
-            userTimeZone = ObjectUtil.isNotEmpty(loginUserDto) ? loginUserDto.getTimeZone()
-                : serverConfig.getTimeZoneId().toString();
+            userTimeZone = loginUserDto != null && loginUserDto.getTimeZone() != null
+                ? loginUserDto.getTimeZone() : serverConfig.getTimeZoneId().toString();
         } else {
             userTimeZone = serverConfig.getTimeZoneId().toString();
         }
+        // get Available ZoneIds
+        Set<String> zoneIds = getAvailableZoneIds();
+        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : serverConfig.getTimeZone().toString();
         // server config timeZone time
         ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, serverConfig.getTimeZoneId());
         // target timeZone time

@@ -291,6 +291,8 @@ export interface ICreatedTimeFieldProperty {
   dateFormat: DateFormat; // date format
   timeFormat: TimeFormat; // time format
   includeTime: boolean; // whether to include time
+  timeZone?: string;
+  includeTimeZone?: boolean;
 }
 
 export interface ICreatedTimeField extends IBaseField {
@@ -312,6 +314,8 @@ export interface ILastModifiedTimeFieldProperty {
   timeFormat: TimeFormat;
   // whether to include time
   includeTime: boolean;
+  timeZone?: string;
+  includeTimeZone?: boolean;
   // dependent field collection type
   collectType: CollectType;
   // dependent fields
@@ -540,6 +544,25 @@ export interface ISingleTextField extends IBaseField {
   property: ISingleTextProperty;
 }
 
+export interface ICascaderField extends IBaseField {
+  type: FieldType.Cascader;
+  property: ICascaderProperty;
+}
+
+interface ILinkedFields {
+  id: string;
+  name: string;
+  type: number;
+}
+
+interface ICascaderProperty {
+  showLasted: boolean,
+  linkedDatasheetId: string,
+  linkedViewId: string,
+  linkedFields: ILinkedFields[],
+  fullLinkedFields: ILinkedFields[],
+}
+
 export type IField =
   | INotSupportField
   | IDeniedField
@@ -565,7 +588,8 @@ export type IField =
   | ICreatedTimeField
   | ILastModifiedTimeField
   | ICreatedByField
-  | ILastModifiedByField;
+  | ILastModifiedByField
+  | ICascaderField;
 
 export enum FieldType {
   NotSupport = 0,
@@ -593,6 +617,7 @@ export enum FieldType {
   LastModifiedTime = 22,
   CreatedBy = 23,
   LastModifiedBy = 24,
+  Cascader = 25,
   DeniedField = 999, // no permission column
 }
 
@@ -841,6 +866,16 @@ export const FieldTypeDescriptionMap: {
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,
     help: t(Strings.field_help_last_modified_by),
+    hasOptSetting: true,
+  },
+  [FieldType.Cascader]: {
+    title: t(Strings.field_title_tree_select),
+    subTitle: t(Strings.field_title_tree_select),
+    type: FieldType.Cascader,
+    canBePrimaryField: false,
+    fieldGroup: FieldGroup.Advanced,
+    // TODO(Cascader help link)
+    help: '',
     hasOptSetting: true,
   },
 };

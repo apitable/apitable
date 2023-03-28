@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,10 +8,10 @@
     "build": "rm -rf ./dist && tsc && tsc-alias",
     "build:publish": "rm -rf ./dist && tsc -p tsconfig.publish.json && tsc-alias -p tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
-    "test": "TZ=UTC-8 jest",
-    "test:databus": "TZ=UTC-8 jest databus",
-    "test:watch": "TZ=UTC-8 jest --watch",
-    "test:cov": "TZ=UTC-8 jest --coverage",
+    "test": "TZ=Asia/Shanghai jest",
+    "test:databus": "TZ=Asia/Shanghai jest databus",
+    "test:watch": "TZ=Asia/Shanghai jest --watch",
+    "test:cov": "TZ=Asia/Shanghai jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "author": "APITable Ltd. <support@apitable.com>",

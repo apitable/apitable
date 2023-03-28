@@ -59,8 +59,8 @@ const bronzeAndFree = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   cardTagPosition: Position.L,
   cardBg: BronzeCardBg,
@@ -95,8 +95,8 @@ const silverAndPlus = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   logo: <SilverFilled size={24} />,
   getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
@@ -122,8 +122,8 @@ const goldenAndPro = {
   skinStyle: {
     right: 16,
     top: 0,
-    width: '68px',
-    height: '82px',
+    width: '80px',
+    height: '80px',
   },
   logo: <GoldFilled size={24} />,
   getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>

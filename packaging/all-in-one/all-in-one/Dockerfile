@@ -99,7 +99,7 @@ ENV \
     SMS_ENABLED=false \
     \
     MAIL_ENABLED=false \
-    MAIL_TYPE=stmp \
+    MAIL_TYPE=smtp \
     MAIL_HOST= \
     MAIL_PASSWORD= \
     MAIL_PORT= \
@@ -115,5 +115,5 @@ ENV \
     AWS_REGION=us-east-1 \
     \
     OSS_BUCKET_NAME=assets \
-    VK_ASSETS_LTD_BUCKET=assets \
-    VK_ASSETS_LTD_URL=assets
+    ASSETS_LTD_BUCKET=assets \
+    ASSETS_LTD_URL=assets

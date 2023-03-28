@@ -125,7 +125,12 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     });
   }
 
-  public recordVoTransform(record: IRecord, options: databus.IRecordVoTransformOptions, cellFormat = CellFormatEnum.JSON): ApiRecordDto {
+  public recordVoTransform(
+    record: IRecord,
+    options: databus.IRecordVoTransformOptions,
+    userTimeZone: string | undefined,
+    cellFormat = CellFormatEnum.JSON,
+  ): ApiRecordDto {
     const { store, fieldKeys, columnMap, fieldMap } = options;
     const state = store.getState();
     const snapshot = Selectors.getSnapshot(state)!;
@@ -140,6 +145,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
           record,
           store,
           cellFormat,
+          userTimeZone,
         });
         if (value !== undefined) {
           fields[field] = value;

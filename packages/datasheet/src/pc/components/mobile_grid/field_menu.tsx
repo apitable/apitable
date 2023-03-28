@@ -23,7 +23,7 @@ import {
   isSelectField, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState
 } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
+  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, DuplicateOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined,
   FilterOutlined, EyeOpenOutlined, LockOutlined
 } from '@apitable/icons';
 import { Message, MobileContextMenu } from 'pc/components/common';
@@ -277,7 +277,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = (
         onClick: () => addField(fieldIndex + 1, fieldId, 1),
       },
       {
-        icon: <CopyOutlined color={colors.thirdLevelText} />,
+        icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.duplicate_field),
         hidden: !fieldCreatable || fieldError || !fieldPropertyEditable,
         onClick: () => copyField(fieldIndex + 1, fieldId, 1),
