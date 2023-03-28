@@ -29,7 +29,7 @@ SDK-Env installieren
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### Mac OS
+### macOS
 
 Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
@@ -73,9 +73,9 @@ sudo apt install make
 
 ## Welches Build-Tool verwenden wir?
 
-Wir verwenden „make“ als unseren zentralen Build-Tool-Eintrag, der andere Build-Tools wie „gradle“ / „npm“ / „yarn“ steuert.
+Wir verwenden `make` als unseren zentrischen Buildwerkzeug, der andere Buildwerkzeuge wie `Gradle` / `npm` / `Garn` antreibt.
 
-Sie können also einfach den Befehl "make" eingeben und alle Build-Befehle sehen:
+So können Sie einfach `make` Befehl eingeben und alle Build-Befehle sehen:
 
 ```bash
 make
