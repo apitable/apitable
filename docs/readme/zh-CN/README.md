@@ -228,7 +228,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-## :hear_with_ribbon: Embed-friendly
+## ## 💝 嵌入友好
 
 #### 分享和嵌入
 
@@ -240,7 +240,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 
 ## 安装
 
-在你开始之前：
+在您开始之前
 * 安装 docker 和 docker-compose v2 的主机。
 * 有4 个或更多 CPU/8GB RAM。
 * 一个安装了 curl 等基本实用程序的 bash shell。
@@ -260,9 +260,9 @@ curl https://apitable.github.io/install.sh | bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-根据您的环境，您可能需要等待几分钟才能开始所有服务。 这张图片只是amd64 (x86_64)，你可能会在arm64 或苹果硅上遇到相当坏的性能。
+根据您的环境，您可能需要等待几分钟才能开始所有服务。 该镜像只在amd64 (x86_64) 下，你可能会在arm64 或 apple silicon 上遇到相当坏的性能。
 
-如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
+如果您想在本地开发环境启动，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
 ## 🧑‍💻 贡献
 
@@ -312,8 +312,8 @@ APITable 可适用这些通用的约定：
 
 - 我们的 Git 分支模型是什么？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - 如何在派生项目上进行合作？ [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- 如何写入好的提交消息？ [常规承诺](https://www.conventionalcommits.org/)
-- 我们的更新日志格式是什么？ [保留更新日志](https://keepachangelog.com/en/1.0.0/)
+- 如何写入好的提交消息？ [Conventional Commits](https://www.conventionalcommits.org/)
+- 我们的更新日志格式是什么？ [ Keep Changelog ](https://keepachangelog.com/en/1.0.0/)
 - 如何进行版本控制和标记？ [语义化版本控制](https://semver.org/)
 - Java 编码准则是什么？ [Java 编码准则](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript 编码准则是什么？ -> [TypeScript 风格指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
@@ -330,13 +330,13 @@ APITable 可适用这些通用的约定：
 
 ## 🛣 规划路线
 
-请参考 [路径图](https://apitable.com/roadmap)
+请参考 [路线图](https://apitable.com/roadmap)
 
 ### 未来的功能
 
 - 重代码界面生成器
 - 可嵌入的第三方文档组件
-- SQL类域特定语言
+- 类似 SQL 的 DSL
 - 作为一个 IdP
 - 先进的自动化机器人
 - 与 ChatGPT、Zapier、Slack、Google Workspace 集成……
