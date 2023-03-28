@@ -72,7 +72,7 @@ Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergé
 
 Si vous voulez installer APITable dans votre environnement de calcul local ou cloud, voir [💾 Installation](#installation)
 
-Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Si vous voulez configurer votre environnement de développement local, lisez notre [🧑Developer Guide](./docs/contribute/developer-guide.md)
 
 Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.com/apitable_com) pour rester en contact.
 ## 🔥 Fonctionnalités
@@ -262,7 +262,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 Selon votre environnement, vous devrez peut-être attendre plusieurs minutes pour que tous les services soient lancés. Cette image est amd64 (x86_64) seulement, vous pouvez rencontrer de très mauvaises performances sur arm64 ou le silicium pomme.
 
-Si vous voulez configurer votre environnement de développement local, lisez notre [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Si vous voulez configurer votre environnement de développement local, lisez notre [🧑Developer Guide](./docs/contribute/developer-guide.md)
 
 ## 💻 Contribution
 
@@ -318,7 +318,7 @@ Utilisez ces conventions communes APITables :
 - Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - Qu'est-ce que la directive de codage Rust ? -> [Lignes directrices de l'API Rust](https://rust-lang.github.io/api-guidelines/about.html)
-- Qu'est-ce que la vue d'ensemble de l'architecture? -> Comprendre APITable - Aperçu de l'architecture
+- Qu'est-ce que la vue d'ensemble de l'architecture? -> [Comprendre APITable - Aperçu de l'architecture](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
