@@ -150,23 +150,23 @@ MAIL_USERNAME=your_email`
 In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
-## Performance problem under macOS M1 docker run?
+## macOS M1 도커 실행 시 성능 문제가 있습니까?
 
-## Where is the API documentation?
+## 개발자 문서는 어디에 있습니까?
 
-You can access the API documentation by starting a local server:
+로컬 서버를 시작하여 API 문서에 액세스할 수 있습니다:
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
+1. Backend server 의 문서 주소는 다음과 같습니다: http://localhost:8081/api/v1/doc.html
 
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
+2. room-server 의 문서 주소는 다음과 같습니다. http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+클라우드 서비스 API 인터페이스에 관심이 있는 경우 다음에서 온라인 API 설명서에 직접 액세스할 수도 있습니다 https://developers.apitable.com/api/introduction.
 
-## How to set the limitation of widget quantity in dashboard? (30 by default)
+## 대시보드에서 위젯 수량 제한을 설정하는 방법은 무엇입니까? (기본적으로 30개)
 
 This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
-## Can I increase request rate limit of the API? (5 by default)
+## Can I increase request rate limit of the API? (기본적으로 5개)
 
 In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
