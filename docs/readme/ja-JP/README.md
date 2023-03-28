@@ -66,15 +66,15 @@
 
 ## クイックスタート
 
-APITableを試してみたいだけの場合は、apitable.comのクラウドホストバージョンを使用してください
+APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable.com) でクラウドホストのバージョンを使用してください。
 
-このAPITableオープンソースプロジェクトをデモしたい場合は、⚡️Gitpod Online Demoをクリックしてください。
+このAPITableオープンソースプロジェクトをデモしたい場合は、こちらをクリックしてください [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-ローカルまたはクラウドコンピューティング環境にAPITableをインストールしたい場合は、💾インストールを参照してください。
+ローカルまたはクラウドコンピューティング環境にAPITableをインストールしたい場合は、 [💾 インストール](#installation) を参照してください。
 
-ローカル開発環境をセットアップしたい場合は、🧑💻デベロッパーガイドを読んでください。
+ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
-DiscordまたはTwitterに参加して、連絡を取り合いましょう。
+[Discord](https://discord.gg/TwNb9nfdBU) や [Twitter](https://twitter.com/apitable_com) に参加して連絡を取り合いましょう。
 ## 🔥 特徴
 
 <table>
@@ -272,9 +272,9 @@ APITableに貢献していただき、ありがとうございます！
 
 以下の方法で貢献することができます：
 - Crowdin 翻訳プロジェクトに参加して翻訳を修正する
-- Issue を作成する
-- Twitter をフォローする
-- ドキュメンテーションを作成する
+- [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
+- [Twitter](https://twitter.com/apitable_com) をフォロー
+- [ドキュメント](./docs) を作成する
 - [コードを貢献する](./docs/contribute/developer-guide.md)
 
 
@@ -293,7 +293,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 ### 開発環境
 
-ローカル環境を設定する方法については、当社の開発者ガイドを参照してください。
+ローカルの開発環境を設定したい場合は、 [ 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
 ### Git ワークフロー 基本
 
@@ -318,7 +318,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 - Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - Rust Coding Guidelineとは何ですか? -> [Rust API ガイドライン](https://rust-lang.github.io/api-guidelines/about.html)
-- アーキテクチャ概要とは何ですか？ APITableのアーキテクチャ概要を理解する
+- アーキテクチャ概要とは何ですか？ -> [APITable - アーキテクチャ概要を理解する](./docs/contribute/architecute-overview.md)
 
 ### 文書
 
