@@ -1145,15 +1145,27 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(destParentId)) {
             destParentId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
         }
-        NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
-        String name = StrUtil.isNotBlank(options.getNodeName()) ? options.getNodeName()
-            : shareNode.getNodeName();
-        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId()) ? options.getNodeId()
-            : IdUtil.createNodeId(shareNode.getType());
-        // component node id map
-        Map<String, String> newNodeMap = CollUtil.newHashMap();
-        newNodeMap.put(sourceNodeId, toSaveNodeId);
+        Lock lock = redisLockRegistry.obtain(destParentId);
+        try {
+            if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                return this.saveDumpedNode(userId, spaceId, destParentId, sourceNodeId, options);
+            } else {
+                throw new BusinessException("Frequent operations");
+            }
+        } catch (InterruptedException e) {
+            throw new BusinessException("Frequent operations");
+        } finally {
+            lock.unlock();
+        }
+    }
 
+    private String saveDumpedNode(Long userId, String spaceId, String destParentId,
+        String sourceNodeId, NodeCopyOptions options) {
+        NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
+        String name = StrUtil.isNotBlank(options.getNodeName())
+            ? options.getNodeName() : shareNode.getNodeName();
+        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId())
+            ? options.getNodeId() : IdUtil.createNodeId(shareNode.getType());
         if (!options.isTemplate()) {
             // check for the same name
             name = duplicateNameModify(destParentId, shareNode.getType(), name, null);
@@ -1162,13 +1174,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
         }
 
+        // component node id map
+        Map<String, String> newNodeMap = CollUtil.newHashMap();
+        newNodeMap.put(sourceNodeId, toSaveNodeId);
         NodeType nodeType = NodeType.toEnum(shareNode.getType());
         switch (nodeType) {
             case ROOT:
                 throw new BusinessException(NodeException.NOT_ALLOW);
             case FOLDER:
-                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(), sourceNodeId,
-                    newNodeMap, options);
+                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(),
+                    sourceNodeId, newNodeMap, options);
                 break;
             case DATASHEET:
                 // if (options.isVerifyNodeCount()) {
@@ -1185,9 +1200,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         options.setDstPermissionFieldsMap(dstPermissionFieldsMap);
                     }
                 }
-                // copyTableData
-                iDatasheetService.copy(userId, spaceId, sourceNodeId, toSaveNodeId, name, options,
-                    newNodeMap);
+                // copy table data
+                iDatasheetService.copy(userId, spaceId, sourceNodeId,
+                    toSaveNodeId, name, options, newNodeMap);
                 break;
             case FORM:
             case DASHBOARD:
