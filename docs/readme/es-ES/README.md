@@ -325,10 +325,12 @@ Utilizar estas convenciones comunes:
 - [Centro de ayuda](https://help.apitable.com/)
 - [👩‍💻 Centro de Desarrolladores](https://developers.apitable.com/)
   - [► Documentos de API REST](https://developers.apitable.com/api/introduction/)
-  - SDK Widget (Próximamente...)
+  - [SDK del Widget](https://developers.apitable.com/widget/introduction/)
   - Scripting (Próximamente...)
 
 ## :autovía: Hoja de ruta
+
+Por favor, consulte el mapa de ruta [de APITable](https://apitable.com/roadmap)
 
 ### Características futuras
 
