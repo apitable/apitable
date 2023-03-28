@@ -7,12 +7,12 @@
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Geliştirme Ortamı" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Dili, NestJS Çerçevesi" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Dili, Bahar Çerçevesi" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -28,7 +28,7 @@
     <br />
     <!-- LICENSE -->
     <a target="_blank" href="https://github.com/apitable/apitable/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
+        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable Lisans Rozeti AGPL" />
     </a>
     <!-- Discord -->
     <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 Ardından ziyaret etmek için tarayıcınızda http://localhost:80 adresini açın. (varsayılan kullanıcı adı `admin@apitable.com` ve şifre `Apitable2022`)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+Ayrıca demo veya test amacıyla [pm2](https://pm2.keymetrics.io/) tabanlı hepsi bir arada bir görüntü sağlıyoruz (kurumsal veya üretim amaçlı kullanım için önerilmez):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Depending on your environment, you may need to wait several minutes for all the services to start. Bu görüntü yalnızca amd64 (x86_64) içindir, arm64 veya apple silikonda oldukça kötü performansla karşılaşabilirsiniz.
 
 Yerel geliştirme ortamınızı kurmak istiyorsanız [🧑‍💻 Geliştirici Kılavuzumuzu okuyun](./docs/contribute/developer-guide.md)
 
@@ -373,34 +373,34 @@ Zaman ve koşullar ne olursa olsun, APITable ekibine dahil olmak istiyorsanız, 
 ## 📺 Ekran Görüntüsü
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Ekran Görüntüsü Görüntüsü" />
 </p>
 
 ## 🥰 Lisans
