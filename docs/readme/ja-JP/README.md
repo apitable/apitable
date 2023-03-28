@@ -325,10 +325,12 @@ APITableに貢献するためのクイックガイドはこちらです。
 - [ヘルプセンター](https://help.apitable.com/)
 - [👩‍💻 開発者センター](https://developers.apitable.com/)
   - [<unk> REST API ドキュメント](https://developers.apitable.com/api/introduction/)
-  - ウィジェット SDK (近日公開予定...)
+  - [ウィジェットSDK](https://developers.apitable.com/widget/introduction/)
   - スクリプト (近日公開...)
 
 ## 🛣 Roadmap
+
+[APITableのロードマップ](https://apitable.com/roadmap)を参照してください
 
 ### 今後の機能
 
@@ -366,7 +368,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、クリアなドキュメンテーションとユニットテストを備えた、高品質のコードを書くことが好きです。
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 
 時間や状況に関係なく、APITableのチームに参加したい場合は、ためらわずに履歴書を talent@apitable.com に送信してください。
 
