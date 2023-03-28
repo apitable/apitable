@@ -89,9 +89,9 @@ make
 
 APITable se compose de 3 processus :
 
-1. serveur backend
-2. serveur de salle
-3. serveur Web
+1. backend-server
+2. room-server
+3. web-server
 
 Pour démarrer l'environnement de développement localement, exécutez ces commandes :
 
@@ -152,9 +152,9 @@ De plus, certaines boîtes aux lettres doivent être activées en arrière-plan 
 
 Vous pouvez accéder à la documentation de l'API en démarrant un serveur local :
 
-1. L'adresse de la documentation du serveur Backend est : http://localhost:8081/api/v1/doc.html
+1. L'adresse de la documentation du backend-server est : http://localhost:8081/api/v1/doc.html
 
-2. L'adresse de la documentation du serveur de salle est : http://localhost:3333/nest/v1/docs
+2. L'adresse de documentation pour le room-server est :http://localhost:3333/nest/v1/docs
 
 Si vous êtes intéressé par les interfaces API des services cloud, vous pouvez également accéder directement à la documentation API en ligne à l'adresse https://developers.apitable.com/api/introduction.
 
