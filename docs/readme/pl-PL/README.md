@@ -49,19 +49,21 @@
 </p>
 
 <p align="center">
+  <a href="../../../README.md">English</a>
+  | 
   Polski
   | 
-  <a href="docs/readme/fr-FR/README.md">Francuski</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Hiszpański</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Niemiecki</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">Chiński uproszczony</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">Chiński tradycyjny</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">Japońśki</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ Szybki start
@@ -252,7 +254,7 @@ Aby zainstalować apitable używając docker compose, otwórz terminal i uruchom
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić. (domyślna nazwa użytkownika `admin@apitable.com` i hasło `Apitable2022`)
+Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić. Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić. (domyślna nazwa użytkownika `admin@apitable.com` i hasło `Apitable2022`)
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
@@ -272,10 +274,10 @@ In addition to writing code, there are many ways for you to contribute.
 
 Możesz wnieść swój wkład w następujący sposób:
 - Dołącz i modyfikuj tłumaczenia w naszym projekcie [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- [Tworzenie zagadnień](https://github.com/apitable/apitable/issues/new/choose)
-- [Śledź naszego Twittera](https://twitter.com/apitable_com)
-- [Twórz dokumentację](./docs)
-- [Dodawanie kodu](./docs/contribute/developer-guide.md)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 Such as the following:
@@ -394,8 +396,7 @@ Niezależnie od czasu i warunków, jeśli chcesz zaangażować się do zespołu 
     <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image
-" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
