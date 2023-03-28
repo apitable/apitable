@@ -1,18 +1,18 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="Imagem de capa APITable" />
     </a>
 </p>
 
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="Ambiente de Desenvolvimento do Gitpod APITable" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="Linguagem TypeScript, NestJS Framework" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Idioma do Java, Framework do Spring" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -157,7 +157,7 @@ APITable fornece uma gama de características surpreendentes, desde o pessoal at
   - 100k+ linhas de dados com colaboração em tempo real.
   - Acesso API em pilha completa, de Dados a Metadados.
   - Ligação de uma direcção / Ligação de tabela bidireccional e ligações cruzadas infinitas
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Linguagens e um quadro de programação amigáveis TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) e Java ([Spring Boot](https://spring.io/projects/spring-boot)), e estamos a avançar gradualmente para Rust.
 - Bela e rica base de dados - Folha de cálculo UI
   - `CRUD`: Criar, Ler, Actualizar, Apagar as Tabelas, Colunas, e Linhas
   - `Operações de campo`: classificar, filtrar, agrupar, esconder/desconder, definir altura.
@@ -260,7 +260,7 @@ We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) f
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Depending on your environment, you may need to wait several minutes for all the services to start. Esta imagem é apenas amd64 (x86_64), você pode encontrar um desempenho muito mau em arm64 ou silicon de maçã.
 
 Se quiser criar o seu ambiente de desenvolvimento local, leia o nosso [🧑💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -373,34 +373,34 @@ Independentemente do tempo e das condições, se quiser envolver-se com a equipa
 ## 📺 Captura de ecrã
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="Imagem de captura de tela da APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Imagem de captura de tela da APITable" />
 </p>
 
 ## 🥰 Licença
