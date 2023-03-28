@@ -317,7 +317,7 @@ APITable ใช้แบบแผนทั่วไปเหล่านี้:
 - การกำหนดเวอร์ชันและการติดแท็กทำอย่างไร การกำหนดเวอร์ชันความหมาย การกำหนดเวอร์ชันความหมาย
 - Java Coding Guideline คืออะไร? แนวทางการเขียนโค้ด Java | ปลั๊กอิน Intellij IDEA
 - What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Rust Coding Guideline คืออะไร? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - ภาพรวมสถาปัตยกรรมคืออะไร? -> ทำความเข้าใจ APITable - ภาพรวมสถาปัตยกรรม
 
 ### เอกสาร
