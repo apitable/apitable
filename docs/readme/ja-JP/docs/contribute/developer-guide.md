@@ -29,7 +29,7 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profileminimal -y && source "$HOME/.cargo/env"
 ```
 
-### ＃＃＃ マックOS
+### macOS
 
 不足している依存関係をインストールするには、[Homebrew](https://brew.sh/) を使用することをお勧めします。
 
@@ -58,9 +58,9 @@ sudo apt install make
 ```
 
 
-### ＃＃＃ ウィンドウズ
+### Windows
 
-Windows 10/11 で APITable を実行している場合は、[Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/)、\[Ubuntu on WSL\](https:/ /ubuntu.com/wsl) および [Windows ターミナル](https://aka.ms/terminal)、 Windows Subsystem for Linux (WSL) の詳細については、[公式サイト](https://learn.microsoft.com/en-us/windows/wsl) を参照してください。
+Windows 10/11 で APITable を実行している場合は、[Windows に Docker デスクトップ](https://docs.docker.com/desktop/install/windows-install/)、[WSL に Ubuntu](https://ubuntu.com/wsl)、および [Windows ターミナル](https://aka.ms/terminal) をインストールすることをお勧めします。 Windows Subsystem for Linux (WSL) の詳細については、[公式サイト](https://learn.microsoft.com/en-us/windows/wsl)をご覧ください。
 
 `apt` を使用して、不足している依存関係を Ubuntu にインストールします。
 
