@@ -325,10 +325,12 @@ APITable 可适用这些通用的约定：
 - [帮助中心](https://help.apitable.com/)
 - [👩‍💻 开发者中心](https://developers.apitable.com/)
   - [REST API 文档](https://developers.apitable.com/api/introduction/)
-  - 小部件 SDK （即将到来...）
+  - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - 脚本（即将到来...）
 
 ## 🛣 规划路线
+
+请参考 [路径图](https://apitable.com/roadmap)
 
 ### 未来的功能
 
