@@ -313,12 +313,12 @@ APITable ใช้แบบแผนทั่วไปเหล่านี้:
 - โมเดลการแยกย่อย Git ของเราคืออะไร โมเดลการแยกย่อย Git ของเราคืออะไร [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - จะทำงานร่วมกันในโครงการส้อมของคุณได้อย่างไร? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - วิธีการเขียนข้อความยืนยันที่ดี? [Conventional Commits](https://www.conventionalcommits.org/)
-- รูปแบบบันทึกการเปลี่ยนแปลงของเราคืออะไร เก็บบันทึกการเปลี่ยนแปลง เก็บบันทึกการเปลี่ยนแปลง
-- การกำหนดเวอร์ชันและการติดแท็กทำอย่างไร การกำหนดเวอร์ชันความหมาย การกำหนดเวอร์ชันความหมาย
-- Java Coding Guideline คืออะไร? แนวทางการเขียนโค้ด Java | ปลั๊กอิน Intellij IDEA
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- Rust Coding Guideline คืออะไร? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- ภาพรวมสถาปัตยกรรมคืออะไร? -> ทำความเข้าใจ APITable - ภาพรวมสถาปัตยกรรม
+- รูปแบบบันทึกการเปลี่ยนแปลงของเราคืออะไร เก็บบันทึกการเปลี่ยนแปลง [ผู้ที่ต้องการให้กลับมามีประโยชน์](https://keepachangelog.com/en/1.0.0/)
+- การกำหนดเวอร์ชันและการติดแท็กทำอย่างไร การกำหนดเวอร์ชันความหมาย [การกำหนดเวอร์ชันความหมาย](https://semver.org/)
+- Java Coding Guideline คืออะไร? [แนวทางการเขียนโค้ด Java](https://google.github.io/styleguide/javaguide.html) | [ปลั๊กอิน Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
+- What is the Rust Coding Guideline? -> [คู่มือสไตล์ TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- Rust Coding Guideline คืออะไร? -> [หลักเกณฑ์ของ Rust API](https://rust-lang.github.io/api-guidelines/about.html)
+- ภาพรวมสถาปัตยกรรมคืออะไร? -> [ทำความเข้าใจ APITable - ภาพรวมสถาปัตยกรรม](./docs/contribute/architecute-overview.md)
 
 ### เอกสาร
 
