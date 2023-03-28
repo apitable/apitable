@@ -32,7 +32,9 @@ import * as React from 'react';
 import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
 import { shallowEqual, useSelector } from 'react-redux';
-import { CreateTeamModal, RenameTeamModal } from '../modal';
+import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
+import { RenameTeamModal } from '../modal/rename_team_modal';
+
 // @ts-ignore
 import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
@@ -177,13 +179,14 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       if (data) {
+        const clickTeam = data;
         Api.readTeam(data.teamId).then(res => {
           const { success, data } = res.data;
           if (success) {
             if (data.hasChildren || data.memberCount > 0) {
               rejectDeleteTeam();
             } else {
-              confirmDeleteTeam(data.teamId);
+              confirmDeleteTeam(clickTeam);
             }
           }
         });
@@ -196,13 +199,16 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       content: t(Strings.warning_exists_sub_team_or_member),
     });
   };
-  const confirmDeleteTeam = (teamId: string) => {
+  const confirmDeleteTeam = (data: ISelectedTeamInfoInSpace) => {
     const confirmDelTeamOk = () => {
       if (user) {
-        Api.deleteTeam(teamId).then(res => {
+        Api.deleteTeam(data.teamId).then(res => {
           const { success } = res.data;
+          const parent = data.parentId ? data.parentId : ConfigConstant.ROOT_TEAM_ID;
           if (success) {
-            dispatch(StoreActions.getTeamListDataInSpace(spaceId, user));
+            
+            dispatch(StoreActions.getSubTeam(parent));
+            
             Message.success({ content: t(Strings.del_team_success) });
           } else {
             Message.error({ content: t(Strings.delete_team_fail) });

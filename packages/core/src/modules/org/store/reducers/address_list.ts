@@ -76,20 +76,45 @@ const findParent = (data: ITeamTreeNode[], id: string): null | ITeamTreeNode => 
     return null;
   }, null);
 };
-const reUpdateTeamTree = (originTree: ITeamTreeNode[], parentId: string, childrenTree: ITeamTreeNode[]) => {
+
+const getReplacedTeamList = (oldTeamList: ITeamTreeNode[], newTeamList: ITeamTreeNode[]) => {
+
+  const parentChildrenMap = oldTeamList.reduce((acc, item) => {
+    acc.set(item.teamId, item.children);
+    return acc;
+  }, new Map());
+
+  return newTeamList.map(item => {
+    return {
+      ...item,
+      children: parentChildrenMap[item.teamId] || []
+    };
+  });
+
+};
+
+const updateTeamTree = (originTree: ITeamTreeNode[], parentId: string, childrenTree: ITeamTreeNode[]) => {
   const parent = findParent(originTree, parentId);
   if (!parent) {
+    originTree = getReplacedTeamList(originTree, childrenTree);
     return;
   }
-  if((!parent.children || parent.children?.length === 0 ) && parent.hasChildren) { 
+
+  if(!parent.children || parent.children.length === 0) {
     parent.children = childrenTree;
+  } else {
+    parent.children = getReplacedTeamList(parent.children, childrenTree);
   }
 };
 
 export const addressList = produce((data: IAddressList = defaultState, action: IAddressListActions) => {
   switch (action.type) {
     case actions.UPDATE_TEAM_LIST: {
-      data.teamList = action.payload;
+      if(!data.teamList || data.teamList.length === 0) {
+        data.teamList = action.payload;
+      } else {
+        data.teamList = getReplacedTeamList(data.teamList, action.payload);
+      }
       return data;
     }
     case actions.UPDATE_MEMBER_LIST_PAGE: {
@@ -119,7 +144,7 @@ export const addressList = produce((data: IAddressList = defaultState, action: I
     }
     case actions.UPDATE_ADDRESS_TREE: {
       const { parentId, childrenTree } = action.payload;
-      reUpdateTeamTree(data.teamList, parentId, childrenTree);
+      updateTeamTree(data.teamList, parentId, childrenTree);
       return data;
     }
     case actions.UPDATE_MEMBER_LIST_TOTAL: {

@@ -17,7 +17,7 @@
  */
 
 import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
-import { IRoleMember, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, UserGroupOutlined } from '@apitable/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';
@@ -32,7 +32,7 @@ import { PermissionSelectMobile } from './unit_item/permission_select_mobile';
 
 export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
   isExtend?: boolean;
-  members: IRoleMember[];
+  totalMember: number;
   defaultRole: IRoleOption[];
   className?: string;
   readonly?: boolean;
@@ -49,7 +49,7 @@ export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
 }>> = props => {
   const {
     isExtend,
-    members,
+    totalMember,
     defaultRole,
     className,
     tipOptions,
@@ -108,7 +108,7 @@ export const PermissionInfoSetting: React.FC<React.PropsWithChildren<{
         <div className={styles.viewByPersonBtn} onClick={() => toggleIsMemberDetail()}>
           <Typography variant="body3" color={colors.textCommonSecondary}>
             {t(Strings.share_and_permission_member_detail, {
-              count: members.length,
+              count: totalMember,
             })}
           </Typography>
         </div>
