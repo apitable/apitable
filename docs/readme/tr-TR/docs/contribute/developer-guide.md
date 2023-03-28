@@ -71,7 +71,7 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## Hangi Oluşturma Aracını kullanıyoruz?
 
 `gradle` / `npm` / `yarn` gibi diğer derleme araçlarını yönlendiren merkezi derleme aracı girişimiz olarak make kullanıyoruz.
 
@@ -81,13 +81,13 @@ Böylece sadece make komutunu girebilir ve tüm derleme komutlarını görebilir
 make
 ```
 
-![make command screenshot](../static/make.png)
+![komut ekran görüntüsü](../static/make.png)
 
 
 
-## How to start development environment?
+## Geliştirme ortamınızı nasıl kurulur?
 
-APITable consists of 3 processes:
+APITable 3 işlemden oluşmaktadır:
 
 1. backend-server
 2. room-server
@@ -110,7 +110,7 @@ make run # enter 1
 make run # enter 2
 
 # and then switch to a new terminal
-# start web-server
+# start  wen-server
 make run # enter 3
 
 ```
@@ -128,11 +128,11 @@ Sadece APITable'ın kök dizinini IDE ile açın.
 
 
 
-## How to configure the SMTP server?
+## SMTP sunucusu nasıl yapılandırılır?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+APITable varsayılan olarak SMTP sunucusunu yapılandırmaz, bu da e-posta gönderme özelliği gerektirdiğinden kullanıcıları davet edemeyeceğiniz anlamına gelir.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+Kendi kendine e-posta kullanarak .env yapılandırmasını değiştirmek ve arka uç sunucusunu yeniden başlatmak gerekir.
 
 `
 MAIL_ENABLED=true
@@ -143,42 +143,42 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+Ayrıca, smtp'yi kullanmak için bazı posta kutularının arka planda etkinleştirilmesi gerekir. Ayrıntılar için xxx mailbox smtp öğreticisini arayabilirsiniz.
 
 
-## Performance problem under macOS M1 docker run?
+## macOS M1 liman işçisi çalıştırması altında performans sorunu mu yaşıyorsunuz?
 
-## Where is the API documentation?
+## Geliştirici dökümanları nerededir?
 
-You can access the API documentation by starting a local server:
+Yerel bir sunucu başlatarak API belgelerine erişebilirsiniz:
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
+1. backend-server için dokümantasyon adresi: http://localhost:8081/api/v1/doc.html
 
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
+2. room-server için dokümantasyon adresi: http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+Bulut hizmeti API arayüzleriyle ilgileniyorsanız, https://developers.apitable.com/api/introduction adresinden çevrimiçi API belgelerine de doğrudan erişebilirsiniz.
 
-## How to set the limitation of widget quantity in dashboard? (30 by default)
+## Panodaki widget miktarının sınırlaması nasıl ayarlanır? (varsayılan olarak 30)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+Bu, `.env` dosyasında `DSB_WIDGET_MAX_COUNT` parametresi ayarlanarak elde edilebilir.
 
-## Can I increase request rate limit of the API? (5 by default)
+## API'nin istek oranı sınırını artırabilir miyim? (varsayılan olarak 5)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+`room-server` `.env.default` dosyasında, istek sıklığını ayarlayabilen iki parametre vardır:
 
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+1. Birim zaman diliminde yapılabilecek istek sayısını belirtmek için `LIMIT_POINTS` ve `LIMIT_DURATION` ayarlayabilirsiniz. LIMIT_POINTS, tekrar sayısıdır ve LIMIT_DURATION, saniye cinsinden ölçülen süredir.
 
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
+2. Belirli kullanıcılar için ayrı bir istek sıklığı ayarlamak üzere `LIMIT_WHITE_LIST` parametresini ayarlayabilirsiniz. Değeri bir JSON dizisidir ve yapısı ` Map <string, IBaseRateLimiter>`'ya başvurabilir.
 
-## How to increase the number of records inserted per API call? (10 by default)
+## API çağrısı başına eklenen kayıt sayısı nasıl artırılır? (varsayılan olarak 10)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
-
-
-## How to upgrade to the newest release version?
+Bu, `room-server` `.env.default` dosyasında `API_MAX_MODIFY_RECORD_COUNTS` parametresi ayarlanarak elde edilebilir.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## En yeni yayın sürümüne nasıl yükseltilir?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## Varsayılan 80 bağlantı noktası nasıl değiştirilir?
+`.env` dosyasındaki yapılandırma özellikleri, env değişkenleri `NGINX_HTTP_PORT` belirtilerek geçersiz kılınabilir.
+
+Örneğin: NGINX_HTTP_PORT=8080 olarak ayarlanacaktır.
