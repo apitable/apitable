@@ -395,7 +395,7 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
     }
     if (dataPack.datasheet) {
       const dst = getDatasheet(state, dataPack.datasheet.id);
-      if (dst && !dst.isPartOfData) {
+      if (dst?.snapshot && !dst.isPartOfData) {
         return;
       }
       dispatchActions.push(receiveDataPack(dataPack, { isPartOfData, getState }));
