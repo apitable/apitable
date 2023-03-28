@@ -49,19 +49,19 @@
 </p>
 
 <p align="center">
-  English
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ بداية سريعة
@@ -272,7 +272,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 يمكنك المساهمة على النحو التالي:
 - انضم إلى الترجمات وعدّلها في [ مشروع Crowdin للترجمة ](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- قم بإنشاء مشاكل [ ](https://github.com/apitable/apitable/issues/new/choose)
+- https://github.com/apitable/apitable/issues/new/choose
 - تابعنا على [ Twitter ](https://twitter.com/apitable_com)
 - قم بإنشاء وثائق [ ](./docs)
 - [رمز المساهمة](./docs/contribute/developer-guide.md)
@@ -295,10 +295,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 تعرف على كيفية إعداد بيئتك المحلية ، انتقل إلى
 
- دليل المطور </ 0>.</p> 
-
-
-
 ### سير عمل Git الأساسي
 
 إليك سير عمل بوابة عامة:
@@ -309,8 +305,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 4. قم بالتغييرات الخاصة بك (`git obligation -am 'إضافة بعض الميزات'`)
 5. نشر الفرع (`git push الأصل my-new-feat`)
 6. إنشاء طلب سحب جديد -> [إنشاء طلب سحب عبر الشوكات](https://github.com/apitable/apitable/compare)
-
-
 
 ### اتفاقيات العمل
 
@@ -326,21 +320,15 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 - ما هو دليل برمجة الروستين؟ -> [تطبيق إرشادات API](https://rust-lang.github.io/api-guidelines/about.html)
 - ما هي نظرة عامة على العمارة؟ [ فهم APITable - نظرة عامة على البنية ](./docs/contribute/architecute-overview.md)
 
-
-
-### روبوت أتمتة متقدم
+### ./docs
 
 - [مركز المساعدة](https://help.apitable.com/)
-- [👩‍💻 مركز المطور](https://developers.apitable.com/) 
-    - [<unk> مستندات REST API](https://developers.apitable.com/api/introduction/)
+- [👩‍💻 مركز المطور](https://developers.apitable.com/)
+  - [<unk> مستندات REST API](https://developers.apitable.com/api/introduction/)
   - أداة SDK (قريباً...)
   - سكريبت (قريبًا...)
 
-
-
 ## 🛣 خارطة الطريق
-
-
 
 ### ميزات المستقبل
 
@@ -351,8 +339,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 - روبوت أتمتة متقدم
 - ميزات ويب 3
 - ...
-
-
 
 ### الإصدارات المستضافة والمؤسسة تقدم ميزات متقدمة
 
@@ -366,11 +352,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 لمزيد من المعلومات، يرجى الاتصال بنا على <support@apitable.com>.
 
-
-
 ## 👫 اشترك
-
-
 
 ### :globe_showing_Asi-Australia: لماذا نقوم بإنشاء APITable ومفتوح المصدر؟
 
@@ -378,19 +360,15 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 - نعتقد أن إنشاء `قاعدة بيانات مرئية مع واجهة مستخدم غنية وسهلة للجميع` يمكن أن يقلل من صعوبة صناعة البرمجيات ويزيد من اعتماد رقمنة العالم.
 - نحن نعتقد أن استخدام المصدر المفتوح `APITable` يمكن `دفع البشر إلى الأمام`.
 
-
-
 ### نحن نستخدم عن بعد!
 
 نحن دائما نبحث عن مواهب جيدة لتطبيق APITable:
 
 - **المطور الخلفي**: لديك تجربة مع NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
 - **مطور المكدس الكامل**: لديك تجربة مع React. NestJS, TypeScript, Spring Boot, Java, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
-- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. وترغب في كتابة أكواد عالية الجودة بتوثيق واضح واختبارات وحدة.
+- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
 
-بغض النظر عن الوقت والشروط، إذا كنت ترغب في المشاركة في فريق APITable، لا تتردد في إرسال السيرة الذاتية الخاصة بك إلى talent@apitable .</p> 
-
-
+بغض النظر عن الوقت والشروط، إذا كنت ترغب في المشاركة في فريق APITable، لا تتردد في إرسال السيرة الذاتية الخاصة بك إلى talent@apitable .
 
 ## :التلفزيون: لقطة الشاشة
 
@@ -427,8 +405,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 ## 🥰 ترخيص
 
-
-
 > يحتوي هذا المستودع على رمز مصدر الطبعة المفتوحة المصدر من APITabl، التي صدرت تحت AGPL.
 > 
 > إذا كنت ترغب في تشغيل نسختك الخاصة من APITable أو المساهمة في التطوير، فهذا هو المكان بالنسبة لك.
@@ -439,7 +415,4 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 <br/>
 
-
-
-[^info]:    
-    مرخص بواسطة AGPL-3.0. مصممة بواسطة [APITable Ltd](https://apitable.com).
+[^info]: مرخص بواسطة AGPL-3.0. مصممة بواسطة [APITable Ltd](https://apitable.com).
