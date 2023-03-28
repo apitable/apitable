@@ -1,13 +1,13 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="Типова обкладинка" />
     </a>
 </p>
 
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="- Інтегроване середовище розробки" />
     </a>
     <!-- NodeJS -->
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
@@ -260,7 +260,7 @@ We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) f
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Залежно від вашого середовища, може знадобитися зачекати кілька хвилин, щоб всі послуги почалися. Це зображення amd64 (x86_64). Ви можете зіткнутися з досить поганою продуктивністю для arm64 або яблука кремнію.
 
 Якщо ви хочете налаштувати своє локальне середовище розробки, прочитайте наш [🧑‍💻 Посібник розробника](./docs/contribute/developer-guide.md)
 
@@ -317,7 +317,7 @@ APITable використовує ці загальні домовленості
 - Як працювати з версіями та тегами? [Семантичне керування версіями](https://semver.org/)
 - Що таке Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Плагін Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
 - Що таке настанова з кодування TypeScript? -> [Посібник зі стилів TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- Що таке Rust Coding Guideline? -> [Посібник з API Rust](https://rust-lang.github.io/api-guidelines/about.html)
 - Що таке огляд архітектури? -> [Розуміння APITable - огляд архітектури](./docs/contribute/architecute-overview.md)
 
 ### Документація
