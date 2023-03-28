@@ -169,7 +169,7 @@ MAIL_USERNAME=your_email</code>
 
 ## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
 
-في ملف `.env.الإفتراضي` `room-server`، هناك معلمان يمكن ضبط تكرار الطلب:
+في ملف `.env.default` `room-server`، هناك معلمان يمكن ضبط تكرار الطلب:
 
 1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
 
@@ -177,13 +177,13 @@ MAIL_USERNAME=your_email</code>
 
 ## كيفية زيادة عدد السجلات المدخلة في كل استدعاء API؟ (10 افتراضيًا)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `API_MAX_MODIFY_RECORD_COUNTS` في ملف `.env.default` من `room-server`.
 
 
 ## كيف يمكنك الترقية إلى الإصدار الأحدث؟
 
 
 ## كيفية تغيير منفذ 80 الافتراضي؟
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+يمكن أيضًا تجاوز خصائص التهيئة في ملف `.env` من خلال تحديد متغيرات البيئة الخاصة بها`NGINX_HTTP_PORT`
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+على سبيل المثال. على سبيل المثال ، سيتم تعيينه كـ NGINX_HTTP_PORT = 8080
