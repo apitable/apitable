@@ -893,8 +893,8 @@
         },
         "api_panel_type_desc_url": {
             "zh_CN": "URL 地址（字符串）",
-            "en_US": "Returns URL address (string)",
-            "zh_HK": "URL 地址（字符串）"
+            "en_US": "Returns a URL object, including title (webpage title), text (webpage address), favicon (webpage icon)",
+            "zh_HK": "返回一个 URL 对象，其中包括 title(网页标题)、text(网页地址)、favicon(网页 ICON)"
         },
         "api_panel_update_records": {
             "zh_CN": "更新记录",
@@ -1824,6 +1824,16 @@
             "en_US": "Auto",
             "zh_HK": "自適應"
         },
+        "auto_save_has_been_opend": {
+            "zh_CN": "自动保存视图配置已开启",
+            "en_US": "Auto saving view configuration",
+            "zh_HK": "自動保存視圖配置已開啟"
+        },
+        "auto_save_has_been_opend_content": {
+            "zh_CN": "所有成员修改当前视图配置会自动保存并同步给其他成员。（视图配置包括：筛选、分组、排序、隐藏列、布局、样式等）",
+            "en_US": "All members modify the current view configurations will be automatically saved and synchronized to other members.",
+            "zh_HK": "所有成員修改當前視圖配置會自動保存並同步給其他成員。 （視圖配置包括：篩選、分組、排序、隱藏列、佈局、樣式等）"
+        },
         "autofill_createtime": {
             "zh_CN": "新增记录自动填写创建时间",
             "en_US": "Autofill creation time when record created",
@@ -2750,6 +2760,21 @@
             "zh_CN": "关闭",
             "en_US": "Close",
             "zh_HK": "關閉"
+        },
+        "close_auto_save_success": {
+            "zh_CN": "关闭自动保存视图配置成功",
+            "en_US": "Closing the Autosave view was configured successfully",
+            "zh_HK": "關閉自動保存視圖配置成功"
+        },
+        "close_auto_save_warn_content": {
+            "zh_CN": "成员进行视图配置后仅对个人生效，不会保存并同步给其他成员。（视图配置包括：筛选、分组、排序、隐藏列、布局、样式等）",
+            "en_US": "After a member configures the view, it will only take effect for the individual, and will not be saved and synchronized to other members. ",
+            "zh_HK": "成員進行視圖配置後僅對個人生效，不會保存並同步給其他成員。 （視圖配置包括：篩選、分組、排序、隱藏列、佈局、樣式等）"
+        },
+        "close_auto_save_warn_title": {
+            "zh_CN": "关闭自动保存视图配置",
+            "en_US": "Turn off autosave view",
+            "zh_HK": "關閉自動保存視圖配置"
         },
         "close_card": {
             "zh_CN": "关闭卡片 Esc",
@@ -5377,6 +5402,11 @@
             "en_US": "https://help.vika.cn/docs/guide/manual-autonumber",
             "zh_HK": "https://help.vika.cn/docs/guide/manual-autonumber"
         },
+        "field_help_cascader": {
+            "zh_CN": "https://vika.cn/help/manual-field-cascader",
+            "en_US": "https://vika.cn/help/manual-field-cascader",
+            "zh_HK": "https://vika.cn/help/manual-field-cascader"
+        },
         "field_help_checkbox": {
             "zh_CN": "https://help.vika.cn/docs/guide/manual-field-checkbox",
             "en_US": "https://help.vika.cn/docs/guide/manual-field-checkbox",
@@ -5512,6 +5542,11 @@
             "en_US": "Field permissions",
             "zh_HK": "列權限"
         },
+        "field_permission_open_warning": {
+            "zh_CN": "如果将本列设置为筛选、分组、排序的条件，无权限的成员访问表格时对应的视图配置会失效。",
+            "en_US": "Once enabled, if you add this field as the condition for filters, groups, or sorting, all these view settings will be invalid for members who can't view this field.",
+            "zh_HK": "如果將本列設置為篩選、分組、排序的條件，無權限的成員訪問表格時對應的視圖配置會失效。"
+        },
         "field_range": {
             "zh_CN": "指定范围",
             "en_US": "Specify fields",
@@ -5644,7 +5679,7 @@
         },
         "field_title_tree_select": {
             "zh_CN": "多级联动",
-            "en_US": "Tree select",
+            "en_US": "Cascader",
             "zh_HK": "多級聯動"
         },
         "field_title_url": {
@@ -9376,6 +9411,11 @@
             "en_US": "Enabled",
             "zh_HK": " 啟用成功"
         },
+        "marketplace_integration_btncard_btntext_open": {
+            "zh_CN": "开通使用",
+            "en_US": "Enable",
+            "zh_HK": "開通使用"
+        },
         "martinique": {
             "zh_CN": "马提尼克",
             "en_US": "Martinique",
@@ -10614,6 +10654,21 @@
             "en_US": "Open API panel",
             "zh_HK": "打開 API 示例面板"
         },
+        "open_auto_save_success": {
+            "zh_CN": "开启自动保存视图配置成功",
+            "en_US": "Autosave view is turned on successfully",
+            "zh_HK": "開啟自動保存視圖配置成功"
+        },
+        "open_auto_save_warn_content": {
+            "zh_CN": "所有成员修改当前视图配置会自动保存并同步给其他成员。（视图配置包括：筛选、分组、排序、隐藏列、布局、样式等）",
+            "en_US": "All changes under this view are automatically saved and synchronized with other members.",
+            "zh_HK": "所有成員修改當前視圖配置會自動保存並同步給其他成員。 （視圖配置包括：篩選、分組、排序、隱藏列、佈局、樣式等）"
+        },
+        "open_auto_save_warn_title": {
+            "zh_CN": "开启自动保存视图配置",
+            "en_US": "Turn on autosave view",
+            "zh_HK": "開啟自動保存視圖配置"
+        },
         "open_failed": {
             "zh_CN": "查看失败",
             "en_US": "Open failed",
@@ -11368,6 +11423,21 @@
         "player_step_ui_config_168": {
             "zh_CN": "{\n\"templateKey\":\"createMirrorTip\"\n}",
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
+        },
+        "player_step_ui_config_78": {
+            "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",
+            "en_US": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"Unsynchronized view\",\n\"description\": \"Temporary filtering, grouping, sorting, etc., will not be synchronized to others without being saved, and your temporary configuration will become invalid after refreshing the page.\" \n}",
+            "zh_HK": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"視圖配置不協同\",\n\"description\": \"現在，臨時的篩選、分組、排序等配置在未保存的情況下，不會同步給其他人，你的臨時配置也將在刷新後失效。\" \n}"
+        },
+        "player_step_ui_config_79": {
+            "zh_CN": "{\n \"element\": \"#DATASHEET_VIEW_TAB_BAR #view_item_sync_icon\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"当前视图配置未保存\",\n\"description\": \"你刚修改了某些视图配置（筛选、分组、排序...），它们现在还没有保存哦。这意味着它们仅对你自己临时生效。你可以点击此处保存并同步给其他人\" \n}",
+            "en_US": "{\n \"element\": \"#DATASHEET_VIEW_TAB_BAR #view_item_sync_icon\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"view configuration is unsaved\",\n\"description\": \"You have just modified some view configurations (filtering, grouping, sorting...), they haven't  been saved yet. This means that they are only temporarily effective for you. You can click here to save and sync to others\" \n}",
+            "zh_HK": "{\n \"element\": \"#DATASHEET_VIEW_TAB_BAR #view_item_sync_icon\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"當前視圖配置未保存\",\n\"description\": \"你剛修改了某些視圖配置（篩選、分組、排序...），它們現在還沒有保存哦。這意味著它們僅對你自己臨時生效。你可以點擊此處保存並同步給其他人\" \n}"
+        },
+        "player_step_ui_config_80": {
+            "zh_CN": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"当前视图已开启自动保存\",\n\"description\": \"你现在进行筛选、分组、排序等视图配置操作会自动保存并同步给其他人\" \n}",
+            "en_US": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"This view is now autosave\",\n\"description\": \"You now change view configuration such as filtering, grouping, sorting, etc. will be automatically saved and synchronized to others\" \n}",
+            "zh_HK": "{\n \"element\": \"#AUTO_SAVE_SVG_ID\",\n\"placement\": \"bottomLeft\",\n \"arrowStyle\": { \"left\": \"6px\" },\n \"title\": \"當前視圖已開啟自動保存\",\n\"description\": \"你現在進行篩選、分組、排序等視圖配置操作會自動保存並同步給其他人\" \n}"
         },
         "please": {
             "zh_CN": "请",
@@ -15241,10 +15311,25 @@
             "en_US": "Experimental features",
             "zh_HK": "實驗性功能"
         },
+        "test_function_btncard_btntext_open": {
+            "zh_CN": "去启用",
+            "en_US": "Enable",
+            "zh_HK": "去啟用"
+        },
+        "test_function_card_info_view_manual_save": {
+            "zh_CN": "成员修改视图配置后不会同步给其他成员，仅对自己临时生效",
+            "en_US": "View configurations modified by members only take effect temporarily for themselves",
+            "zh_HK": "成員修改視圖配置後不會同步給其他成員，僅對自己臨時生效"
+        },
         "test_function_desc": {
             "zh_CN": "实验性功能可能因为产品策略或计价策略变动而调整，请仔细阅读功能影响范围后再启用",
             "en_US": "Experimental features may be adjusted due to changes in product strategy or billing strategy, please read the scope of impact of the features carefully before enabling them",
             "zh_HK": "實驗性功能可能因為產品策略或計價策略變動而調整，請仔細閱讀功能影響範圍後再啟用"
+        },
+        "test_function_modal_info_view_manual_save": {
+            "zh_CN": "<p>当多个成员在同一个视图下修改筛选、分组或排序时经常会产生冲突，因为每个人都想根据自己的需求进行配置。开启此功能后「视图」和「镜像」内支持临时的视图配置，减少冲突场景</p>\n\n<p>该功能开启后影响：</p>\n<ul>\n<li>「视图」内成员修改视图配置后仅对自己临时生效，刷新后恢复默认配置。成员可选择手动保存视图配置并同步给其他成员</li>\n<li>「镜像」内也支持临时的视图配置。特例：无法在镜像内修改源表视图下的筛选条件</li>\n<li>「只读」权限的用户也允许临时修改视图配置。</li>\n<li>视图配置包括：筛选、分组、排序、隐藏列、样式、布局、列顺序、统计栏等</li>\n</ul>",
+            "en_US": "<p>Conflicts often arise when members modify filtering, grouping, or sorting in the same view, as each wants to configure it to suit their needs. After enabling this feature, temporary view configuration is supported in \"Datasheet\" and \"Mirror\" to reduce conflicts. </p>\n\n<p>After this feature is enabled, it affects:</p>\n<ul>\n<li>After members in \"View\" modify the view configuration, it will only take effect temporarily for themselves. After refreshing, the default configuration will be restored. Members can choose to manually save the view configuration and sync it to other members</li>\n<li>Temporary view configurations are also supported on Mirror. Special case: The filter conditions of the source datasheet view cannot be modified in the mirror</li>\n<li>Users with \"read-only\" permission are also allowed to temporarily modify the view configuration.</li>\n<li>View configuration includes: filter, group, sort, hide fields, style, layout, field order, statistics, etc.</li>\n</ul>",
+            "zh_HK": "<p>當多個成員在同一個視圖下修改篩選、分組或排序時經常會產生衝突，因為每個人都想根據自己的需求進行配置。開啟此功能後「視圖」和「鏡像」內支持臨時的視圖配置，減少衝突場景</p>\n\n<p>該功能開啟後影響：</p>\n<ul>\n<li>「視圖」內成員修改視圖配置後僅對自己臨時生效，刷新後恢復默認配置。成員可選擇手動保存視圖配置並同步給其他成員</li>\n<li>「鏡像」內也支持臨時的視圖配置。特例：無法在鏡像內修改源表視圖下的篩選條件</li>\n<li>「只讀」權限的用戶也允許臨時修改視圖配置。 </li>\n<li>視圖配置包括：篩選、分組、排序、隱藏列、樣式、佈局、列順序、統計欄等</li>\n</ul>"
         },
         "test_function_normal_modal_close_content": {
             "zh_CN": "当前实验性功能已成功停用，刷新后即可生效",
@@ -16195,6 +16280,11 @@
             "en_US": "This view is locked, please unlock it before you edit it and save the view settings",
             "zh_HK": "“可以管理”權限的成員解鎖視圖後才可修改和保存視圖配置"
         },
+        "view_manual_save": {
+            "zh_CN": "视图配置不协同",
+            "en_US": "Unsynchronized view",
+            "zh_HK": "視圖配置不協同"
+        },
         "view_mirror_count": {
             "zh_CN": "${count} 个镜像",
             "en_US": "${count} mirror(s)",
@@ -16209,6 +16299,16 @@
             "zh_CN": "已存在该视图名称",
             "en_US": "The view name already exists",
             "zh_HK": "已存在該視圖名稱"
+        },
+        "view_property_sync_content": {
+            "zh_CN": "你修改的视图配置仅临时生效，其他人不会看到。你可以选择保存，并同步给其他成员。",
+            "en_US": "Saving will update the view for everyone.",
+            "zh_HK": "你修改的視圖配置僅臨時生效，其他人不會看到。你可以選擇保存，並同步給其他成員。"
+        },
+        "view_property_sync_content_2": {
+            "zh_CN": "视图配置包括：筛选、分组、排序、隐藏列、布局、样式等",
+            "en_US": "View configuration includes filtering, grouping, sorting, hiding fields, layout, styles, etc.",
+            "zh_HK": "視圖配置包括：篩選、分組、排序、隱藏列、佈局、樣式等"
         },
         "view_property_sync_success": {
             "zh_CN": "视图配置已保存并同步给其他成员",
@@ -16249,6 +16349,16 @@
             "zh_CN": "视图配置处于协同中，你的操作也会同步给其他成员",
             "en_US": "Your changes to the settings will impact others' views",
             "zh_HK": "視圖配置處於協同中，你的操作也會同步給其他成員"
+        },
+        "view_sync_property_tip_close_auto_save": {
+            "zh_CN": "视图配置未保存，你的操作仅对自己生效，刷新后恢复默认配置",
+            "en_US": "The view changes has not been saved, which will only take effect for you",
+            "zh_HK": "視圖配置未保存，你的操作僅對自己生效，刷新後恢復默認配置"
+        },
+        "view_sync_property_tip_open_auto_save": {
+            "zh_CN": "视图配置处于自动保存中，你的操作会实时保存并同步给其他成员",
+            "en_US": "Your changes to the settings wiil be auto-saved and synchronized to others",
+            "zh_HK": "視圖配置處於自動保存中，你的操作會實時保存並同步給其他成員"
         },
         "view_sync_property_tip_short": {
             "zh_CN": "你的操作会同步给其他成员",

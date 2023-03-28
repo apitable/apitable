@@ -874,8 +874,7 @@ export const FieldTypeDescriptionMap: {
     type: FieldType.Cascader,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,
-    // TODO(Cascader help link)
-    help: '',
+    help:  t(Strings.field_help_cascader),
     hasOptSetting: true,
   },
 };
