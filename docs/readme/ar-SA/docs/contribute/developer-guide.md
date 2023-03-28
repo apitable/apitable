@@ -34,7 +34,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 نوصي باستخدام [Homebrew](https://brew.sh/) لتثبيت أي تبعيات مفقودة:
 
 ```bash
-## necessary required
+## مطلوب
 brew install git
 brew install --cask docker
 brew install make
@@ -133,40 +133,43 @@ make run # enter 3
 
 بشكل افتراضي ، لا يقوم APITable بتكوين خادم SMTP ، مما يعني أنه لا يمكنك دعوة المستخدمين لأنه يتطلب ميزة إرسال البريد الإلكتروني.
 
-It is needed to modify `.env` configuration using self email, and restart backend server.
+هناك حاجة لتعديل إعدادات `.env` باستخدام البريد الإلكتروني الذاتي، وإعادة تشغيل خادم نهاية الخلفية.
 
 ```
+<code>
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email
+MAIL_USERNAME=your_email</code>
 ```
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+</code>
+
+بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
 
 ## مشكلة في الأداء في ظل تشغيل عامل ميناء macOS M1؟
 
 ## أين وثائق API؟
 
-You can access the API documentation by starting a local server:
+يمكنك الوصول إلى وثائق API عن طريق بدء خادم محلي:
 
 1. عنوان التوثيق لخادم الواجهة الخلفية هو: http://localhost:8081/api/v1/doc.html
 
 2. عنوان التوثيق لخادم الغرفة هو:http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+إذا كنت مهتمًا بواجهات API الخاصة بالخدمة السحابية ، فيمكنك أيضًا الوصول مباشرة إلى وثائق API عبر الإنترنت على https://developers.apitable.com/api/introduction.
 
 ## كيفية ضبط حدود كمية عنصر واجهة المستخدم في لوحة القيادة؟ (30 افتراضيًا)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `DSB_WIDGET_MAX_COUNT` في ملف`.env`.
 
 ## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+في ملف `.env.الإفتراضي` `room-server`، هناك معلمان يمكن ضبط تكرار الطلب:
 
 1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
 
