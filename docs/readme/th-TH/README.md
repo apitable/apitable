@@ -1,18 +1,18 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="ภาพหน้าจอ APITable" />
     </a>
 </p>
 
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="สภาพแวดล้อมการพัฒนา APITable Gitpod" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="ภาษา TypeScript, NestJS Framework" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="ภาษา Java, Spring Framework" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -28,7 +28,7 @@
     <br />
     <!-- LICENSE -->
     <a target="_blank" href="https://github.com/apitable/apitable/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
+        <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="ป้ายใบอนุญาต APITable AGPL" />
     </a>
     <!-- Discord -->
     <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
@@ -81,10 +81,10 @@
   
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">การทำงานร่วมกันแบบเรียลไทม์</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">แบบฟอร์มอัตโนมัติ</a>
     </th>
 
   </tr>
@@ -104,10 +104,10 @@
 
   <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">API แผงแรก</a>
     </th>
     <th>
-      <a href="#">Unlimited cross-table links</a>
+      <a href="#">ลิงค์ข้ามโต๊ะไม่จำกัด</a>
     </th>
 </tr>
 
@@ -126,10 +126,10 @@
 
  <tr>
     <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
+      <a href="#">สิทธิ์แถว/คอลัมน์ที่มีประสิทธิภาพ</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">ฝัง</a>
     </th>
   </tr>
 
@@ -157,7 +157,7 @@ APITable มีคุณสมบัติที่น่าทึ่งตั�
   - รองรับข้อมูลกว่า 100,000 แถวด้วยการทำงานร่วมกันแบบเรียลไทม์
   - การเข้าถึง API แบบ Full-stack ทั้งจากข้อมูลไปจนถึงเมตาดาต้า
   - การเชื่อมตารางแบบ One-direction / Bi-direction และ Infinite Cross Links
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - ภาษาโปรแกรมและเฟรมเวิร์กที่เป็นมิตรต่อชุมชน, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) และ Java ([Spring Boot](https://spring.io/projects/spring-boot)) และเรากำลังค่อยๆ เปลี่ยนไปใช้ Rust
 - อินเทอร์เฟซสเปรดชีตฐานข้อมูลที่สวยงามและมีความหลากหลาย
   - การ CRUD: Create, Read, Update, Delete ตาราง, คอลัมน์ และแถว
   - การดำเนินการกับฟิลด์: เรียงลำดับ, กรอง, จัดกลุ่ม, ซ่อน / แสดง, ตั้งค่าความสูง
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 จากนั้นเปิด [http://localhost:80](http://localhost:80)  ในเบราว์เซอร์ของคุณเพื่อเยี่ยมชม (ชื่อผู้ใช้เริ่มต้น admin@apitable.com และรหัสผ่าน APITable2022) (ชื่อผู้ใช้เริ่มต้น admin@apitable.com และรหัสผ่าน APITable2022)
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+นอกจากนี้ เรายังจัดเตรียมภาพแบบครบวงจรที่ใช้ [pm2](https://pm2.keymetrics.io/) เพื่อวัตถุประสงค์ในการสาธิตหรือทดสอบ (ไม่แนะนำสำหรับการใช้งานระดับองค์กรหรือการผลิต):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Depending on your environment, you may need to wait several minutes for all the services to start. รูปภาพนี้เป็น amd64 (x86_64) เท่านั้น คุณอาจพบประสิทธิภาพที่ค่อนข้างแย่ใน arm64 หรือ apple silicon.
 
 หากคุณต้องการตั้งค่าสภาพแวดล้อมการพัฒนาในพื้นที่ โปรดอ่าน [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
@@ -373,34 +373,34 @@ APITable ใช้แบบแผนทั่วไปเหล่านี้:
 ## 📺 ภาพหน้าจอ
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="ภาพหน้าจอ APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="ภาพหน้าจอ APITable" />
 </p>
 
 ## 🥰ใบอนุญาติ
