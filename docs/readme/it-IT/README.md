@@ -325,10 +325,12 @@ APITable utilizza queste convenzioni comuni:
 - [Centro assistenza](https://help.apitable.com/)
 - [👩‍💻Centro sviluppatori ](https://developers.apitable.com/)
   - [🪡 Documenti API REST](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Prossimamente...)
+  - [SDK Widget](https://developers.apitable.com/widget/introduction/)
   - Scripting (Prossimamente...)
 
 ## 🛣 Tabella di marcia
+
+Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 
 ### Caratteristiche future
 
