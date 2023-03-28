@@ -453,7 +453,6 @@ export class FusionApiService {
         auth,
         recordIds,
         linkedRecordMap,
-        meta,
       },
     });
     if (datasheet === null) {
@@ -608,7 +607,6 @@ export class FusionApiService {
         auth,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
-        meta,
       },
     });
     if (datasheet === null) {
