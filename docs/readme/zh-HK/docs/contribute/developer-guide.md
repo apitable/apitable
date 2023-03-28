@@ -148,9 +148,9 @@ MAIL_USERNAME=your_email`
 
 您可以通過啟動本地服務器來訪問 API 文檔：
 
-1. Backend server 的文檔地址為: http://localhost:8081/api/v1/doc.html
+1. backend-server 的文檔地址為: http://localhost:8081/api/v1/doc.html
 
-2. Room server 的文檔地址為: http://localhost:3333/nest/v1/docs
+2. room-rserver 的文檔地址為: http://localhost:3333/nest/v1/docs
 
 如果您對雲服務 API 接口感興趣，也可以直接訪問 https://developers.apitable.com/api/introduction 獲取在線 API 文檔。
 
@@ -177,4 +177,4 @@ MAIL_USERNAME=your_email`
 ## 如何更改默認的80端口?
 `.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
 
-例如： 例如： 例如，可以通過這種方式設置: NGINX_HTTP_PORT=8080
+例如： 可以通過這種方式設置: NGINX_HTTP_PORT=8080
