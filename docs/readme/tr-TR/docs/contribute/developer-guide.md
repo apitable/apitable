@@ -118,7 +118,7 @@ make run # enter 3
 
 
 
-## What IDE should you use?
+## Ne yapmalıyım?
 
 IDE'niz için Visual Studio Code veya Intellij IDEA kullanmanızı öneririz.
 
