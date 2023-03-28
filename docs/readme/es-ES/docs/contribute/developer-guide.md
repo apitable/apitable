@@ -45,8 +45,8 @@ brew install make
 En CentOS/RHEL u otra distribución de Linux con `yum`
 
 ```bash
-sudo yum instalar git
-sudo yum instalar make
+sudo yum install git
+sudo yum install make
 ```
 
 En Ubuntu/Debian u otra distribución de Linux con `apt`
@@ -89,9 +89,9 @@ make
 
 APITable consta de 3 procesos:
 
-1. servidor backend
-2. servidor de la habitación
-3. servidor web
+1. backend-server
+2. room-server
+3. web-server
 
 Para iniciar el entorno de desarrollo localmente, ejecute estos comandos:
 
@@ -158,11 +158,11 @@ Puede acceder a la documentación de la API iniciando un servidor local:
 
 Si está interesado en las interfaces de la API del servicio en la nube, también puede acceder directamente a la documentación de la API en línea en https://developers.apitable.com/api/introduction.
 
-## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero? (30 por defecto) (30 por defecto)
+## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto)
 
 Esto se puede lograr configurando el parámetro `DSB_WIDGET_MAX_COUNT` en el archivo `.env`.
 
-## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto) (5 por defecto)
+## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto)
 
 En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden ajustar la frecuencia de la solicitud:
 
@@ -170,7 +170,7 @@ En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden aj
 
 2. Puede configurar el parámetro `LIMIT_WHITE_LIST` para establecer una frecuencia de solicitud separada para usuarios específicos. Su valor es una cadena JSON y su estructura puede hacer referencia a `Map<string, IBaseRateLimiter>`.
 
-## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto) (10 por defecto)
+## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto)
 
 Esto se puede lograr configurando el parámetro `API_MAX_MODIFY_RECORD_COUNTS` en el archivo `.env.default` de `room-server`.
 
