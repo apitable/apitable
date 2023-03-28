@@ -325,12 +325,12 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - [도움말 센터](https://help.apitable.com/)
 - [👩‍💻 개발자 센터](https://developers.apitable.com/)
   - [🪡 REST API 문서](https://developers.apitable.com/api/introduction/)
-  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
+  - [SDK 받기](https://developers.apitable.com/widget/introduction/)
   - 스크립팅 (곧 출시 예정)
 
 ## 🛣 로드맵
 
-Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
+Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 
 ### 미래 기능
 
@@ -368,7 +368,7 @@ Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 
 - 풀 스택 개발자: React, NestJS, TypeScript, Spring Boot, Java, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
 - 백엔드 개발자: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
-- 프론트엔드 개발자: And you like to write high quality code with clear documentation and unit tests.
+- 프론트엔드 개발자: React, NextJS, TypeScript, WebPack 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
 
 시간과 조건에 상관없이 APITable 팀에 참여하고 싶다면 언제든지 talent@apitable.com으로 이력서를 보내주십시오.
 
