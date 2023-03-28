@@ -81,7 +81,7 @@ sudo apt install make
 make
 ```
 
-![make command screenshot](../static/make.png)
+![명령 스크린샷 만들기](../static/make.png)
 
 
 
@@ -147,7 +147,7 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+또한 일부 사서함은 smtp를 사용하려면 백그라운드에서 활성화해야 합니다. 자세한 내용은 xxx 사서함 smtp 자습서를 검색할 수 있습니다.
 
 
 ## macOS M1 도커 실행 시 성능 문제가 있습니까?
@@ -164,25 +164,25 @@ In addition, some mailboxes need to be enabled in the background to use smtp. Fo
 
 ## 대시보드에서 위젯 수량 제한을 설정하는 방법은 무엇입니까? (기본적으로 30개)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+`.env` 파일에서 `DSB_WIDGET_MAX_COUNT` 매개변수를 설정하면 됩니다.
 
-## Can I increase request rate limit of the API? (기본적으로 5개)
+## API의 요청 속도 제한을 늘릴 수 있습니까? (기본적으로 5개)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+`room-server`의 `.env.default` 파일에는 요청 빈도를 조정할 수 있는 두 개의 매개변수가 있습니다.
 
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+1. `LIMIT_POINTS` 및 `LIMIT_DURATION`을 설정하여 단위 기간 동안 수행할 수 있는 요청 수를 나타낼 수 있습니다. 여기서 LIMIT_POINTS는 횟수이고 LIMIT_DURATION은 초 단위로 측정된 기간입니다.
 
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
+2. `LIMIT_WHITE_LIST` 매개변수를 설정하여 특정 사용자에 대해 별도의 요청 빈도를 설정할 수 있습니다. 해당 값은 JSON 문자열이며 해당 구조는 `Map<string, IBaseRateLimiter>`을 참조할 수 있습니다.
 
-## How to increase the number of records inserted per API call? (10 by default)
+## API 호출당 삽입되는 레코드 수를 늘리는 방법은 무엇입니까? (기본적으로 10개)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
-
-
-## How to upgrade to the newest release version?
+`room-server`의 `.env.default` 파일에서 `API_MAX_MODIFY_RECORD_COUNTS` 매개변수를 설정하면 됩니다.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## 최신 릴리스 버전으로 업그레이드하는 방법은 무엇입니까?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## 기본 80 포트를 변경하는 방법은 무엇입니까?
+`.env` 파일의 구성 속성은 env vars `NGINX_HTTP_PORT`를 지정하여 재정의할 수도 있습니다.
+
+예: NGINX_HTTP_PORT=8080으로 설정됩니다.
