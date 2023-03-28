@@ -71,7 +71,7 @@ sudo apt install make
 ```
 
 
-## What Build Tool we use?
+## Qual ferramenta de compilação utilizamos?
 
 Usamos como nossa entrada de ferramenta de construção cêntrica que conduz outras ferramentas de construção como `gradle` / `npm` / `fio`.
 
@@ -81,11 +81,11 @@ Assim, pode simplesmente introduzir o comando make e ver todos os comandos de co
 make
 ```
 
-![make command screenshot](../static/make.png)
+![fazer captura de tela de comando](../static/make.png)
 
 
 
-## How to start development environment?
+## Como iniciar o ambiente de desenvolvimento?
 
 APITable consists of 3 processes:
 
@@ -118,7 +118,7 @@ make run # enter 3
 
 
 
-## What IDE should you use?
+## Qual IDE você deve usar?
 
 Recomendamos-lhe que utilize Visual Studio Code ou Intellij IDEA para a sua IDE.
 
@@ -128,11 +128,11 @@ Basta abrir o directório raiz do APITable com IDE.
 
 
 
-## How to configure the SMTP server?
+## Como configurar o servidor SMTP?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+Por padrão, a APITable não configura o servidor SMTP, o que significa que você não pode convidar usuários, pois requer o recurso de envio de email.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+É necessário para modificar a configuração .env usando o email e reiniciar o servidor backend.
 
 `
 MAIL_ENABLED=true
@@ -141,44 +141,44 @@ MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=seu_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
-
-
-## Performance problem under macOS M1 docker run?
-
-## Where is the API documentation?
-
-You can access the API documentation by starting a local server:
-
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
-
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
-
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
-
-## How to set the limitation of widget quantity in dashboard? (30 by default)
-
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
-
-## Can I increase request rate limit of the API? (5 by default)
-
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
-
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
-
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
-
-## How to increase the number of records inserted per API call? (10 by default)
-
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+Além disso, algumas caixas de correio precisam ser habilitadas em segundo plano para usar smtp. Para detalhes, você pode pesquisar por tutorial de xxx mailbox smtp.
 
 
-## How to upgrade to the newest release version?
+## Problema de desempenho na execução docker do macOS M1?
+
+## Onde fica a documentação da API?
+
+Você pode acessar a documentação da API iniciando um servidor local:
+
+1. O endereço da documentação para o servidor do Backend é: http://localhost:8081/api/v1/doc.html
+
+2. O endereço da documentação para o room-server é:http://localhost:3333/nest/v1/docs
+
+Se estiver interessado em interfaces de API de serviço em nuvem, também pode acessar diretamente a documentação da API online em https://developers.apitable.com/api/introduction.
+
+## Como definir a limitação da quantidade de widget no painel? (30 por padrão)
+
+Isso pode ser alcançado definindo o parâmetro `DSB_WIDGET_MAX_COUNT` no arquivo `.env`.
+
+## Posso aumentar a taxa de solicitação do limite da API? (5 por padrão)
+
+No arquivo `.env.default` de `servidor-ambiente`, existem dois parâmetros que podem ajustar a frequência requisitada:
+
+1. Você pode definir `LIMIT_POINTS` e `LIMIT_DURATION` para indicar o número de solicitações que podem ser feitas em um período de tempo unitário. Onde LIMIT_POINTS é o número de vezes e LIMIT_DURATION é a duração, medida em segundos.
+
+2. Você pode definir o parâmetro `LIMIT_WHIT_LIST` para definir uma frequência de solicitação separada para usuários específicos. Seu valor é uma string JSON, e sua estrutura pode se referir ao `Mapa<string, IBaseRateLimiter>`.
+
+## Como aumentar o número de registros inseridos por chamada de API? (10 por padrão)
+
+Isso pode ser alcançado configurando o parâmetro `API_MAX_MODIFY_RECORD_COUNTS` no arquivo `.env.default` de `room-server`.
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## Como atualizar para a versão mais recente?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## Como mudar a porta padrão 80?
+Propriedades da configuração do arquivo `.env` também podem ser sobrescritas especificando-os para vars env `NGINX_HTTP_PORT`
+
+Por exemplo: Seria definido como NGINX_HTTP_PORT=8080
