@@ -38,6 +38,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -132,39 +133,40 @@ APITable підготував налагоджувальні конфігура�
 
 За замовчуванням, APITable не налаштувати SMTP-сервер, що означає, що Вам не потрібно відправляти листи функції відправки.
 
-Потрібно змінити конфігурацію .env за допомогою власної електронної пошти та перезапустити сервер.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
-MAIL_TYPE=smp
-MAIL_USERNAME=your_email`
+MAIL_TYPE=smtp
+MAIL_USERNAME=your_email
+```
 
-Крім того, деякі поштові скриньки потрібно увімкнути на задньому плані, щоб використовувати smtp. Для подробиць ви можете шукати тестову розсилку xxx smtp підручник.
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## Проблема продуктивності в роботі macOS M1 docker?
 
 ## Де знаходиться документація для розробників?
 
-Ви можете отримати доступ до документації API, запустивши локальний сервер:
+You can access the API documentation by starting a local server:
 
 1. Документаційна адреса сервера Backend: http://localhost:8081/api/v1/doc.html
 
 2. Документаційна адреса сервера Backend: http://localhost:3333/api/v1/docs
 
-Якщо ви зацікавлені в хмарному сервіс-API інтерфейсі, ви також можете безпосередньо отримати доступ до онлайн-API документації на https://developers.apitable.com/api/introduction.
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## Як встановити обмеження кількості віджетів на панелі керування? (30 за замовчуванням)
 
-Цього можна досягти, встановивши параметр `DSB_WIDGET_MAX_COUNT` у файлі `.env`.
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## Чи можна збільшити обмеження ставок запиту в API? (5 за замовчуванням)
 
-У `.env.default` файл `сервера`є два параметри, які можуть налаштувати частоту запиту:
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. Ви можете встановити `LIMIT_POINTS` та `LIMIT_DURATION`, щоб вказати кількість запитів, які можна робити за одиницю часу. Там, де LIMIT_POINTS - це кількість часу, а LIMIT_URATION - це тривалість виміру, яка вимірюється в секундах.
 
@@ -172,13 +174,13 @@ MAIL_USERNAME=your_email`
 
 ## Як збільшити кількість записів, що завантажуються в API виклик? (10 за замовчуванням)
 
-Цього можна досягти, встановивши параметр `API_MAX_MODIFY_RECORD_COUNTS` на файлі `.env.default` з `room-server`.
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## Як оновитися до найновішої версії релізу?
 
 
 ## Як змінити 80 порт за замовчуванням?
-Властивості конфігурації в файлі `.env` можна змінити шляхом зазначення їх env vars `NGINX_HTTP_PORT`
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-Наприклад: Воно буде задано як NGINX_HTTP_PORT=8080
+For example. It would be set as NGINX_HTTP_PORT=8080
