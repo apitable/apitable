@@ -18,16 +18,7 @@
 
 // import App from 'next/app'
 import {
-  Api,
-  integrateCdnHost,
-  Navigation,
-  StatusCode,
-  StoreActions,
-  Strings,
-  SystemConfig,
-  t,
-  IUserInfo,
-  getTimeZoneOffsetByUtc,
+  Api, getTimeZoneOffsetByUtc, integrateCdnHost, IUserInfo, Navigation, StatusCode, StoreActions, Strings, SystemConfig, t,
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -62,6 +53,8 @@ import 'pc/styles/global.less';
 import 'pc/styles/global_components/index.less';
 import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
 import { initWorkerStore } from 'pc/worker';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 import 'prismjs/themes/prism.css';
 import 'rc-swipeout/assets/index.css';
 import 'rc-trigger/assets/index.css';
@@ -76,11 +69,8 @@ import '../src/index.less';
 import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
-import { getInitialProps } from '../utils/get_initial_props';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
 
-const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
+const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: false });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
@@ -134,9 +124,9 @@ function MyApp(props: AppProps & { envVars: string }) {
   return MyAppMain(props);
 }
 
-function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: string }) {
+function MyAppMain({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const env = JSON.parse(envVars);
+  const env = !process.env.SSR ? window.__initialization_data__.envVars : {};
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
       return LoadingStatus.Complete;
@@ -523,8 +513,6 @@ const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
 
 export default MyApp;
 reportWebVitals();
-
-MyApp.getInitialProps = getInitialProps;
 
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);
