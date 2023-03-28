@@ -167,4 +167,8 @@ public class IdUtil {
     public static boolean isForm(String id) {
         return IdRulePrefixEnum.FORM.getIdRulePrefixEnum().equals(id);
     }
+
+    public static boolean isEmbed(String id) {
+        return IdRulePrefixEnum.EMB.getIdRulePrefixEnum().equals(id);
+    }
 }

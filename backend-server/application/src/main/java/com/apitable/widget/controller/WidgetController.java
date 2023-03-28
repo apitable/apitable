@@ -33,6 +33,7 @@ import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.util.IdUtil;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.widget.enums.WidgetException;
 import com.apitable.widget.mapper.WidgetMapper;
@@ -219,8 +220,7 @@ public class WidgetController {
     })
     public ResponseData<List<WidgetPack>> findWidgetPackByWidgetIds(
         @RequestParam("widgetIds") final List<String> widgetIds,
-        @RequestParam(value = "linkId", required = false) final String linkId,
-        @RequestParam(value = "userId", required = false) final String userId) {
+        @RequestParam(value = "linkId", required = false) final String linkId) {
         ExceptionUtil.isNotEmpty(widgetIds, ParameterException.INCORRECT_ARG);
         String widgetSpaceId = iWidgetService.checkByWidgetIds(widgetIds);
         if (StrUtil.isBlank(linkId)) {
@@ -228,7 +228,7 @@ public class WidgetController {
             userSpaceCacheService.getMemberId(SessionContext.getUserId(),
                 widgetSpaceId);
         } else {
-            if (StrUtil.isBlank(userId)) {
+            if (!IdUtil.isEmbed(linkId)) {
                 // out of station access
                 String spaceId = iSpaceService.getSpaceIdByLinkId(linkId);
                 ExceptionUtil.isTrue(widgetSpaceId.equals(spaceId),
