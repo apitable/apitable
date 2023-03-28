@@ -34,7 +34,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Si consiglia di utilizzare Homebrew per installare le dipendenze mancanti:
 
 ```bash
-## necessary required
+## necessario
 brew install git
 brew install --cask docker
 brew install make
@@ -133,7 +133,7 @@ Basta aprire la cartella principale di APITable con l'IDE.
 
 Per impostazione predefinita, APITable non configura il server SMTP, il che significa che non è possibile invitare gli utenti dal momento che richiede la funzione di invio e-mail.
 
-It is needed to modify `.env` configuration using self email, and restart backend server.
+È necessario modificare la configurazione di `.env` usando l'email di auto e riavviare il server backend.
 
 ```
 MAIL_ENABLED=true
@@ -145,28 +145,28 @@ MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
 ```
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+Inoltre, alcune caselle di posta devono essere abilitate in background per utilizzare smtp. Per i dettagli, è possibile cercare xxx mailbox smtp tutorial.
 
 
 ## Problema di prestazioni sotto macOS M1 docker eseguire?
 
 ## Dov'è la documentazione API?
 
-You can access the API documentation by starting a local server:
+È possibile accedere alla documentazione API avviando un server locale:
 
 1. L'indirizzo di documentazione del server Backend è: http://localhost:8081/api/v1/doc.html
 
 2. L'indirizzo di documentazione del server Room è: http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+Se sei interessato alle interfacce API di servizio cloud, puoi anche accedere direttamente alla documentazione API online su https://developers.apitable.com/api/introduzione.
 
 ## Come impostare la limitazione della quantità di widget nella dashboard? (30 di default)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+Questo può essere ottenuto impostando il parametro `DSB_WIDGET_MAX_COUNT` nel file `.env`.
 
 ## Posso aumentare il limite di richiesta dell'API? (5 di default)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+Nel file `.env.default` di `room-server`ci sono due parametri che possono regolare la frequenza di richiesta:
 
 1. È possibile impostare `LIMIT_POINTS` e `LIMIT_DURATION` per indicare il numero di richieste che possono essere fatte in un periodo di tempo unitario. Dove LIMIT_POINTS è il numero di volte e LIMIT_DURATION è la durata, misurata in secondi.
 
@@ -174,13 +174,13 @@ In the `.env.default` file of `room-server`, there are two parameters that can a
 
 ## Come aumentare il numero di record inseriti per chiamata API? (10 di default)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+Questo può essere ottenuto impostando il parametro `API_MAX_MODIFY_RECORD_COUNTS` nel file `.env.default` del `room-server`.
 
 
 ## Come aggiornare alla versione più recente rilascio?
 
 
 ## Come modificare la porta predefinita 80?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+Le proprietà di configurazione nel file `.env` possono anche essere sovrascritte specificandole vars env `NGINX_HTTP_PORT`
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+Ad esempio. Sarebbe impostato come NGINX_HTTP_PORT=8080
