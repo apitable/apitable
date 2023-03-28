@@ -325,10 +325,12 @@ APITable 使用以下常見約定：
 - [幫助中心](https://help.apitable.com/)
 - [👩‍💻 開發者中心](https://developers.apitable.com/)
   - [🪡 REST API](https://developers.apitable.com/api/introduction/)
-  - 小部件 SDK (即將到來...)
+  - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - 腳本 (即將到來...)
 
 ## 🛣 路線圖
+
+可參考[路線圖](https://apitable.com/roadmap)
 
 ### 未來的功能
 
