@@ -35,9 +35,9 @@ Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren f
 
 ```bash
 ## erforderlich erforderlich
-braue installiere git
+brew install git
 brew install --cask docker
-brauen installieren machen
+brew install make
 ```
 
 ### Linux
@@ -45,16 +45,16 @@ brauen installieren machen
 Auf CentOS / RHEL oder anderen Linux-Distributionen mit `yum`
 
 ```bash
-sudo yum installiere git
+sudo yum install git
 sudo yum install make
 ```
 
 Auf Ubuntu / Debian oder anderen Linux-Distributionen mit `apt`
 
 ```bash
-sudo apt aktualisieren
-sudo apt installiere git
-sudo apt install machen
+sudo apt update
+sudo apt install git
+sudo apt install make
 ```
 
 
@@ -65,9 +65,9 @@ Wenn Sie APITable unter Windows 10/11 ausführen, empfehlen wir die Installation
 Installieren Sie fehlende Abhängigkeiten auf Ubuntu mit `apt`:
 
 ```bash
-sudo apt aktualisieren
-sudo apt installiere git
-sudo apt install machen
+sudo apt update
+sudo apt install git
+sudo apt install make
 ```
 
 
@@ -97,17 +97,17 @@ Um die Entwicklungsumgebung lokal zu starten, führen Sie diese Befehle aus:
 
 ```bash
 # Datenbanken in Dockern starten
-Datenumgebung erstellen
+make dataenv
 # Abhängigkeiten installieren
-Installation machen
+make install
 # Backend-Server starten
 make run # geben Sie 1 ein
 # und dann zu einem neuen Terminal wechseln
 # Raumserver starten
-Ausführen ausführen # 2 eingeben
+make run  # 2 eingeben
 # und dann zu einem neuen Terminal wechseln
 # Webserver starten
-Ausführen ausführen # 3 eingeben
+make run # 3 eingeben
 
 ```
 
