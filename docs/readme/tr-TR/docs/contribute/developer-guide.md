@@ -133,7 +133,7 @@ Sadece APITable'ın kök dizinini IDE ile açın.
 
 APITable varsayılan olarak SMTP sunucusunu yapılandırmaz, bu da e-posta gönderme özelliği gerektirdiğinden kullanıcıları davet edemeyeceğiniz anlamına gelir.
 
-It is needed to modify `.env` configuration using self email, and restart backend server.
+Kendi kendine e-posta kullanarak `.env` yapılandırmasını değiştirmek ve arka uç sunucusunu yeniden başlatmak gerekir.
 
 ```
 MAIL_ENABLED=true
@@ -145,28 +145,28 @@ MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
 ```
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+Ayrıca, smtp'yi kullanmak için bazı posta kutularının arka planda etkinleştirilmesi gerekir. Ayrıntılar için xxx mailbox smtp öğreticisini arayabilirsiniz.
 
 
 ## macOS M1 liman işçisi çalıştırması altında performans sorunu mu yaşıyorsunuz?
 
 ## Geliştirici dökümanları nerededir?
 
-You can access the API documentation by starting a local server:
+Yerel bir sunucu başlatarak API belgelerine erişebilirsiniz:
 
 1. backend-server için dokümantasyon adresi: http://localhost:8081/api/v1/doc.html
 
 2. room-server için dokümantasyon adresi: http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+Bulut hizmeti API arayüzleriyle ilgileniyorsanız, https://developers.apitable.com/api/introduction adresinden çevrimiçi API belgelerine de doğrudan erişebilirsiniz.
 
 ## Panodaki widget miktarının sınırlaması nasıl ayarlanır? (varsayılan olarak 30)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+Bu, `.env` dosyasında `DSB_WIDGET_MAX_COUNT` parametresi ayarlanarak elde edilebilir.
 
 ## API'nin istek oranı sınırını artırabilir miyim? (varsayılan olarak 5)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+`room-server` `.env.default` dosyasında, istek sıklığını ayarlayabilen iki parametre vardır:
 
 1. Birim zaman diliminde yapılabilecek istek sayısını belirtmek için `LIMIT_POINTS` ve `LIMIT_DURATION` ayarlayabilirsiniz. LIMIT_POINTS, tekrar sayısıdır ve LIMIT_DURATION, saniye cinsinden ölçülen süredir.
 
@@ -174,13 +174,13 @@ In the `.env.default` file of `room-server`, there are two parameters that can a
 
 ## API çağrısı başına eklenen kayıt sayısı nasıl artırılır? (varsayılan olarak 10)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+Bu, `room-server` `.env.default` dosyasında `API_MAX_MODIFY_RECORD_COUNTS` parametresi ayarlanarak elde edilebilir.
 
 
 ## En yeni yayın sürümüne nasıl yükseltilir?
 
 
 ## Varsayılan 80 bağlantı noktası nasıl değiştirilir?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+`.env` dosyasındaki yapılandırma özellikleri, env değişkenleri `NGINX_HTTP_PORT` belirtilerek geçersiz kılınabilir
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+Örneğin. NGINX_HTTP_PORT=8080 olarak ayarlanacaktır
