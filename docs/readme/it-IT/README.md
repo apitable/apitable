@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="Cambia immagine di copertina" />
     </a>
 </p>
 
@@ -373,34 +373,34 @@ Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel tea
 ## 📺 Screenshot
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Immagine dello screenshot della APITable" />
 </p>
 
 ## 🥰 Licenza
