@@ -49,7 +49,7 @@
 </p>
 
 <p align="center">
-  English
+  <a href="README.md">English</a>
   | 
   <a href="docs/readme/fr-FR/README.md">Français</a>
   | 
@@ -59,7 +59,7 @@
   | 
   <a href="docs/readme/zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  繁體中文
   | 
   <a href="docs/readme/ja-JP/README.md">日本語</a>
 </p>
@@ -252,7 +252,7 @@ APITable 將提供一個數據表查詢語言(DQL)來查詢您的數據庫電子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可 (默認用戶名 `admin@apitable.com` 和密碼 `Apitable2022`)
+然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可 然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可 (默認用戶名 `admin@apitable.com` 和密碼 `Apitable2022`)
 
 我們還提供了一個基於 [pm2](https://pm2.keymetrics.io/) 的一體化鏡像，用於演示或測試目的（不推薦用於企業或生產用途）：
 
@@ -364,9 +364,9 @@ APITable 使用以下常見約定：
 
 我們總是為APITable尋找優秀人才：
 
-- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **後端開發者**: 擁有 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **前端開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
+- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
