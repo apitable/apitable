@@ -35,9 +35,9 @@ Nous vous recommandons d'utiliser [Homebrew](https://brew.sh/) pour installer le
 
 ```bash
 ## nécessaire requis
-brasser installer git
+brew install git
 brew install --cask docker
-brasser installer make
+brew install make
 ```
 
 ### Linux
@@ -45,16 +45,16 @@ brasser installer make
 Sur CentOS / RHEL ou une autre distribution Linux avec `yum`
 
 ```bash
-sudo miam installer git
-sudo yum installer make
+sudo yum install git
+sudo yum install make
 ```
 
 Sur Ubuntu / Debian ou autre distribution Linux avec `apt`
 
 ```bash
-mise à jour sudo apt
-sudo apt installer git
-sudo apt installer make
+sudo apt update
+sudo apt install git
+sudo apt install make
 ```
 
 
@@ -65,9 +65,9 @@ Si vous exécutez APITable sur Windows 10/11, nous vous recommandons d'installer
 Installez les dépendances manquantes sur Ubuntu en utilisant `apt` :
 
 ```bash
-mise à jour sudo apt
-sudo apt installer git
-sudo apt installer make
+sudo apt update
+sudo apt install git
+sudo apt install make
 ```
 
 
@@ -96,18 +96,22 @@ APITable se compose de 3 processus :
 Pour démarrer l'environnement de développement localement, exécutez ces commandes :
 
 ```bash
-# démarrer les bases de données dans les dockers
-make dataenv
-# installer les dépendances
-make install
-#démarrer le serveur principal
-makr run # entrer 1
-# puis passez à un nouveau terminal
-# démarrer le serveur de salle
-makr run # entrer 2
-# puis passez à un nouveau terminal
-# démarrer le serveur Web
-makr run # entrer 3
+# démarrer les bases de données dans dockers
+make dataenv 
+
+# install dependencies
+make install 
+
+#start backend-server
+make run # enter 1  
+
+# puis basculer vers un nouveau terminal
+# start room-server
+make run # enter 2
+
+# and then switch to a new terminal
+# start web-server
+make run # enter 3
 
 ```
 
