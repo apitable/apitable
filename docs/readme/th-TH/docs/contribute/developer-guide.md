@@ -7,9 +7,9 @@
 ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้งการอ้างอิงและภาษาการเขียนโปรแกรมต่อไปนี้ก่อนตั้งค่าสภาพแวดล้อมสำหรับนักพัฒนาของคุณ:
 
 - `git`
-- [นักเทียบท่า](https://docs.docker.com/engine/install/)
-- [นักเทียบท่าเขียน v2](https://docs.docker.com/engine/install/)
-- `ทำ`
+- [docker](https://docs.docker.com/engine/install/)
+- [docker-compose v2](https://docs.docker.com/engine/install/)
+- `make`
 
 
 ### ภาษาโปรแกรม
@@ -81,7 +81,7 @@ sudo apt install make
 make
 ```
 
-![make command screenshot](../static/make.png)
+![ภาพหน้าจอคำสั่ง](../static/make.png)
 
 
 
@@ -130,9 +130,9 @@ APITable ได้เตรียมการกำหนดค่าการ�
 
 ## How to configure the SMTP server?
 
-By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
+ตามค่าเริ่มต้น APITable จะไม่กำหนดค่าเซิร์ฟเวอร์ SMTP ซึ่งหมายความว่าคุณไม่สามารถเชิญผู้ใช้ได้เนื่องจากต้องใช้คุณลักษณะการส่งอีเมล
 
-It is needed to modify .env configuration using self email, and restart backend server.
+จำเป็นต้องแก้ไขการกำหนดค่า .env โดยใช้อีเมลตัวเอง และรีสตาร์ทเซิร์ฟเวอร์ส่วนหลัง
 
 `
 MAIL_ENABLED=true
@@ -143,42 +143,42 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email`
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+นอกจากนี้ กล่องจดหมายบางกล่องจำเป็นต้องเปิดใช้งานในพื้นหลังเพื่อใช้ smtp. สำหรับรายละเอียด คุณสามารถค้นหา xxx mailbox smtp tutorial.
 
 
-## Performance problem under macOS M1 docker run?
+## ปัญหาประสิทธิภาพการทำงานภายใต้การรัน macOS M1 docker?
 
-## Where is the API documentation?
+## เอกสาร API อยู่ที่ไหน
 
-You can access the API documentation by starting a local server:
+คุณสามารถเข้าถึงเอกสาร API ได้โดยเริ่มต้นเซิร์ฟเวอร์ภายในเครื่อง:
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
+1. ที่อยู่เอกสารสำหรับเซิร์ฟเวอร์ส่วนหลังคือ:http://localhost:8081/api/v1/doc.html
 
-2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
+2. ที่อยู่เอกสารสำหรับเซิร์ฟเวอร์ห้องคือ:http://localhost:3333/nest/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+หากคุณสนใจอินเทอร์เฟซ API ของบริการคลาวด์ คุณสามารถเข้าถึงเอกสาร API ออนไลน์ได้โดยตรงที่: https://developers.apitable.com/api/introduction.
 
-## How to set the limitation of widget quantity in dashboard? (30 by default)
+## จะตั้งค่าข้อ จำกัด ของปริมาณวิดเจ็ตในแดชบอร์ดได้อย่างไร? (30 โดยค่าเริ่มต้น)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+ซึ่งสามารถทำได้โดยการตั้งค่าพารามิเตอร์ `DSB_WIDGET_MAX_COUNT` ในไฟล์ `.env`
 
-## Can I increase request rate limit of the API? (5 by default)
+## ฉันสามารถเพิ่มขีดจำกัดอัตราคำขอของ API ได้หรือไม่ (5 โดยค่าเริ่มต้น)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+ในไฟล์ `.env.default` ของ `room-server` มีพารามิเตอร์สองตัวที่สามารถปรับความถี่ของคำขอได้:
 
-1. You can set `LIMIT_POINTS` and `LIMIT_DURATION` to indicate the number of requests that can be made in a unit time period. Where LIMIT_POINTS is the number of times and LIMIT_DURATION is the duration, measured in seconds.
+1. คุณสามารถตั้งค่า `LIMIT_POINTS` และ `LIMIT_DURATION` เพื่อระบุจำนวนคำขอที่สามารถทำได้ในช่วงเวลาหนึ่งหน่วย. โดยที่ LIMIT_POINTS คือจำนวนครั้ง และ LIMIT_DURATION คือระยะเวลา วัดเป็นวินาที.
 
-2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. Its value is a JSON string, and its structure can refer to `Map<string, IBaseRateLimiter>`.
+2. You can set the parameter `LIMIT_WHITE_LIST` to set a separate request frequency for specific users. ค่าของมันคือสตริง JSON และโครงสร้างสามารถอ้างถึง `Map<string, IBaseRateLimiter>`
 
-## How to increase the number of records inserted per API call? (10 by default)
+## How to increase the number of records inserted per API call? (10 โดยค่าเริ่มต้น)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
-
-
-## How to upgrade to the newest release version?
+สามารถทำได้โดยการตั้งค่าพารามิเตอร์ `API_MAX_MODIFY_RECORD_COUNTS` ในไฟล์ `.env.default` ของ `room-server`
 
 
-## How to change the default 80 port?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+## จะอัพเกรดเป็นเวอร์ชั่นล่าสุดได้อย่างไร?
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+
+## จะเปลี่ยนพอร์ต 80 เริ่มต้นได้อย่างไร?
+คุณสมบัติการกำหนดค่าในไฟล์ `.env` ยังสามารถแทนที่ได้ด้วยการระบุ env vars `NGINX_HTTP_PORT`
+
+ยกตัวอย่างเช่น: จะถูกตั้งค่าเป็น NGINX_HTTP_PORT=8080
