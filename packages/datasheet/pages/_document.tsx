@@ -17,10 +17,10 @@
  */
 
 import { integrateCdnHost } from '@apitable/core';
-import { getEnvVars } from 'get_env';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
+import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 
 interface IClientInfo {
@@ -33,26 +33,12 @@ interface IClientInfo {
 class MyDocument extends Document<IClientInfo> {
   static override async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
-    const initData = this._getInitialProps();
+    const initData = await getInitialProps({ ctx }) as any;
     return {
       ...initialProps,
       ...initData,
     };
   }
-
-  static _getInitialProps = () => {
-    const envVars = getEnvVars();
-
-    const baseResponse = {
-      env: process.env.ENV,
-      version: process.env.WEB_CLIENT_VERSION,
-      envVars: JSON.stringify(envVars),
-    };
-
-    return {
-      ...baseResponse,
-    };
-  };
 
   override render() {
     const { env, version, envVars, locale } = this.props;

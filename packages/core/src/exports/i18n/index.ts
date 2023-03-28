@@ -40,29 +40,7 @@ declare const global: any;
 
 const _global = global || window;
 
-const getCookie = (name: string, cookie: string) => {
-  const value = `; ${cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length >= 2) return parts[1]?.split(';').shift();
-  return null;
-};
-
-const LANG_MAP = {
-  en_US: 'en-US',
-  zh_CN: 'zh-CN',
-};
-
 export function getLanguage() {
-  if (typeof window === 'object') {
-    const defaultLang = _global.__initialization_data__.envVars.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE;
-    let locale = defaultLang ? LANG_MAP[defaultLang] : 'zh-CN';
-    // server lang
-    const langParts = getCookie('lang', _global.document.cookie);
-    // client cache cookie while language toggle
-    const localeParts = getCookie('client-lang', _global.document.cookie);
-    locale = localeParts || langParts;
-    _global.__initialization_data__.locale = locale;
-  }
   const language = typeof _global == 'object' && _global.__initialization_data__ && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';
   return language || defaultLang;
