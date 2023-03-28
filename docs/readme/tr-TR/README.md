@@ -49,19 +49,19 @@
 </p>
 
 <p align="center">
-  English
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ Hızlı Başlangıç
@@ -129,7 +129,7 @@ Yerel geliştirme ortamınızı kurmak istiyorsanız 🧑‍💻 [Geliştirici K
       <a href="#">Güçlü Satır/Sütun</a>
     </th>
     <th>
-      <a href="#">İzinleri Gömme</a>
+      <a href="#">Denetim</a>
     </th>
   </tr>
 
@@ -272,10 +272,10 @@ In addition to writing code, there are many ways for you to contribute.
 
 Aşağıdaki şekilde katkıda bulunabilirsiniz:
 - [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) Çeviri Projemize katılın ve çevirileri değiştirin
-- [Crowdin Çeviri Projemize katılın ve çevirileri değiştirin](https://github.com/apitable/apitable/issues/new/choose)
-- [Twitter'ımızı takip edin](https://twitter.com/apitable_com)
-- [Dokümantasyon Oluşturun](./docs)
-- [Katkıda Bulunan Kod](./docs/contribute/developer-guide.md)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 Such as the following:
@@ -322,7 +322,7 @@ APITable bu ortak kuralları kullanır:
 
 ### Belgeler
 
-- [Yardım Merkezi ](https://help.apitable.com/)
+- [Yardım Merkezi](https://help.apitable.com/)
 - [👩‍💻 Geliştirici Merkezi](https://developers.apitable.com/)
   - [🪡 REST API Dokümanları](https://developers.apitable.com/api/introduction/)
   - Widget SDK (Çok yakında...)
