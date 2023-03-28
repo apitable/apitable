@@ -38,6 +38,7 @@ Zalecamy użycie Homebrew do zainstalowania wszelkich brakujących zależności:
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -132,39 +133,40 @@ Wystarczy otworzyć katalog główny APITable za pomocą IDE.
 
 Domyślnie APITable nie konfiguruje serwera SMTP, co oznacza, że nie możesz zaprosić użytkowników, ponieważ wymaga to funkcji wysyłania wiadomości e-mail.
 
-Jest to konieczne do zmodyfikowania konfiguracji .env przy użyciu własnego adresu e-mail i ponownego uruchomienia serwera backend.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
-Ponadto niektóre skrzynki pocztowe muszą być włączone w tle, aby używać smtp. Aby uzyskać więcej informacji, możesz wyszukać samouczek smtp xxx.
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## Problem z wydajnością w docker macOS M1?
 
 ## Gdzie jest dokumentacja API?
 
-Możesz uzyskać dostęp do dokumentacji API, uruchamiając lokalny serwer:
+You can access the API documentation by starting a local server:
 
 1. Adres dokumentacji dla serwera Backend to: http://localhost:8081/api/v1/doc.html
 
 2. Adres dokumentacji dla room-server to: http://localhost:3333/nest/v1/docs
 
-Jeśli jesteś zainteresowany interfejsami API usługi w chmurze, możesz również uzyskać bezpośredni dostęp do dokumentacji API online na https://developers.apitable.com/api/introduction.
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## Jak ustawić ograniczenie ilości widżetu w panelu nawigacyjnym? (domyślnie 30)
 
-Można to osiągnąć poprzez ustawienie parametru `DSB_WIDGET_MAX_COUNT` w pliku `.env`.
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## Czy mogę zwiększyć limit stawki żądania API? (domyślnie 5)
 
-W pliku `.env.default` z `serwerów pokoju`istnieją dwa parametry, które mogą dostosować częstotliwość żądania:
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. Możesz ustawić `LIMIT_POINTS` i `LIMIT_DURATION`, aby wskazać liczbę żądań, które można złożyć w jednostkowym okresie czasu. Gdzie LIMIT_POINTS jest liczbą razy, a LIMIT_DURATION to czas trwania, mierzony w sekundach.
 
@@ -172,13 +174,13 @@ W pliku `.env.default` z `serwerów pokoju`istnieją dwa parametry, które mogą
 
 ## Jak zwiększyć liczbę wpisów na wywołanie API? (domyślnie 10)
 
-Można to osiągnąć, ustawiając parametr `API_MAX_MODIFY_RECORD_COUNTS` w pliku `.env.default` serwera `room-server`.
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## Jak zaktualizować do najnowszej wersji?
 
 
 ## Jak zmienić domyślny port 80?
-Właściwości konfiguracji w pliku `.env` mogą być również nadpisane przez określenie ich env vars `NGINX_HTTP_PORT`
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-Na przykład: Jest on ustawiony jako NGINX_HTTP_PORT=8080
+For example. It would be set as NGINX_HTTP_PORT=8080
