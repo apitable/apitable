@@ -17,15 +17,15 @@
 إذا كنت تستخدم macOS أو Linux. نوصي بتثبيت لغة البرمجة مع مدير SDK `sdkman` و `nvm`.
 
 ```bash
-# quick install nvm
+# التثبيت السريع nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+# التثبيت السريع sdkman
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
+# تثبيت nodejs 
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
+# تثبيت java development kit
 sdk env install
-# install rust toolchain
+# تثبيت rust toolchain
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
