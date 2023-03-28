@@ -51,17 +51,17 @@
 <p align="center">
   <a href="README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
   简体中文
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ 快速开始
@@ -373,19 +373,19 @@ APITable 可适用这些通用的约定：
 ## 📺 截图
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
@@ -394,13 +394,13 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="可用屏幕截图图像" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable 截图图像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 许可协议
