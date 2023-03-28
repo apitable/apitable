@@ -1,7 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image
-" />
+        <img src="docs/static/cover.png" alt="APITable Cover Image" />
     </a>
 </p>
 
@@ -50,21 +49,19 @@
 </p>
 
 <p align="center">
-  English
+  <a href="../../../README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  <a href="../fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  <a href="../es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  <a href="../de-DE/README.md">Deutsch</a>
   | 
-  <a href="docs/readme/zh-CN/README.md">简体中文</a>
+  <a href="../zh-CN/README.md">简体中文</a>
   | 
-  <a href="docs/readme/zh-HK/README.md">繁體中文</a>
+  <a href="../zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">日本語</a>
-  | 
- <5>Italiano</5>
+  <a href="../ja-JP/README.md">日本語</a>
 </p>
 
 ## ✨ Introduzione rapida
@@ -275,10 +272,10 @@ In addition to writing code, there are many ways for you to contribute.
 
 Potete contribuire come segue:
 - Partecipare e modificare le traduzioni nel nostro sito [Progetto di traduzione di Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- Creare [Issue](https://github.com/apitable/apitable/issues/new/choose)
-- Seguire il nostro [Twitter](https://twitter.com/apitable_com)
-- Creare [Documentazione](./docs)
-- [Contribuire al codice](./docs/contribute/developer-guide.md)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 Such as the following:
