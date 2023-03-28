@@ -318,7 +318,7 @@ APITable utilizza queste convenzioni comuni:
 - Cos'è la Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Cos'è la linea guida per la codifica di TypeScript? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- Cos'è la Panoramica dell'architettura? -> Capire APITable - Panoramica dell'architettura
+- Cos'è la Panoramica dell'architettura? -> [Capire APITabile - Panoramica Architettura](./docs/contribute/architecute-overview.md)
 
 ### Documentazione
 
