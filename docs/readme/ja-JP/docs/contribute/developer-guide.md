@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profilem
 不足している依存関係をインストールするには、[Homebrew](https://brew.sh/) を使用することをお勧めします。
 
 ```bash
-## 必須必須
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,39 +129,40 @@ APITable のルート ディレクトリを IDE で開くだけです。
 
 デフォルトでは、APITable は SMTP サーバーを構成しません。 つまり、メール送信機能が必要なため、ユーザーを招待することはできません。
 
-自己メールを使用して .env 構成を変更し、バックエンド サーバーを再起動する必要があります。
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
-MAIL_ENABLED=真
+```
+MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
-メールポート=465
-MAIL_SSL_ENABLE=真
+MAIL_PORT=465
+MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
-さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックス smtp チュートリアルを検索してください。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## macOS M1 docker run でのパフォーマンスの問題?
 
 ## API ドキュメントはどこにありますか?
 
-ローカル サーバーを起動すると、API ドキュメントにアクセスできます。
+You can access the API documentation by starting a local server:
 
 1. バックエンド サーバーのドキュメント アドレスは次のとおりです: http://localhost:8081/api/v1/doc.html
 
 2. ルーム サーバーのドキュメント アドレスは次のとおりです。 http://localhost:3333/nest/v1/docs
 
-クラウド サービス API インターフェースに関心がある場合は、https://developers.apitable.com/api/introduction でオンライン API ドキュメントに直接アクセスすることもできます。
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## ダッシュボードでウィジェット数の制限を設定するには? (デフォルトでは 30)
 
-これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS`パラメータを設定することで実現できます。
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)
 
-「room-server」の「.env.default」ファイルには、リクエストの頻度を調整できる 2 つのパラメーターがあります。
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. `LIMIT_POINTS` と `LIMIT_DURATION` を設定して、単位時間内に行うことができるリクエストの数を示すことができます。 ここで、LIMIT_POINTS は回数、LIMIT_DURATION は継続時間で、秒単位で測定されます。
 
@@ -168,13 +170,13 @@ MAIL_USERNAME=your_email`
 
 ## API 呼び出しごとに挿入されるレコードの数を増やすには? (デフォルトで 10)
 
-これは、`.env` ファイルで `DSB_WIDGET_MAX_COUNT` パラメータを設定することで実現できます。
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## 最新のリリース バージョンにアップグレードするには?
 
 
 ## デフォルトの 80 ポートを変更するには?
-`.env` ファイルの構成プロパティは、環境変数 `NGINX_HTTP_PORT` を指定することでオーバーライドすることもできます
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-例えば。 NGINX_HTTP_PORT=8080 として設定されます
+For example. It would be set as NGINX_HTTP_PORT=8080
