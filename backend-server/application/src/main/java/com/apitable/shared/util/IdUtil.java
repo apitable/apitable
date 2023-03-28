@@ -169,6 +169,9 @@ public class IdUtil {
     }
 
     public static boolean isEmbed(String id) {
-        return IdRulePrefixEnum.EMB.getIdRulePrefixEnum().equals(id);
+        if (null == id) {
+            return false;
+        }
+        return id.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum());
     }
 }
