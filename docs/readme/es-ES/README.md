@@ -49,10 +49,11 @@
 </p>
 
 <p align="center">
-    | 
+  <a href="README.md">English</a>
+  | 
   <a href="docs/readme/fr-FR/README.md">Français</a>
   | 
-  <a href="docs/readme/es-ES/README.md">Español</a>
+  Español
   | 
   <a href="docs/readme/de-DE/README.md">Deutsch</a>
   | 
@@ -151,7 +152,7 @@ APITable proporciona una amplia gama de características increíbles, desde lo p
 
 - Pila de tecnología avanzada y código abierto
   - `La colaboración en tiempo real` permite a varios usuarios editar juntos en tiempo real, o simultáneamente con el algoritmo `Transformación operacional (OT)`.
-  - Interfaz de base de datos-hoja de cálculo extremadamente suave, fácil de usar y súper rápida en el motor de renderizado de ` canvas`.
+  - Interfaz de base de datos-hoja de cálculo extremadamente suave, fácil de usar y súper rápida en el motor de renderizado de `canvas`.
   - Arquitectura nativa de base de datos: Cambios / Operación / Acción / Instantánea y así sucesivamente.
   - **100k+** filas de datos con colaboración en tiempo real.
   - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
@@ -312,12 +313,12 @@ Utilizar estas convenciones comunes:
 - ¿Cuál es nuestro modelo de sucursal Git? ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - ¿Cómo colaborar en sus proyectos de bifurcación? ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - ¿Cómo escribir un buen mensaje de confirmación? ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
-- ¿Cuál es nuestro formato de registro de cambios? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
-- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
+- ¿Cuál es nuestro formato de registro de cambios? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/) ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
+- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Versionado semántico](https://semver.org/)
 - ¿Qué es la guía de código de Java? Guía de codificación en Java | Plugin de Intellij IDEA
 - ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- ¿Qué es la guía de código de TypeScript? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- ¿Qué es la Visión General de la Arquitectura? -> [ Comprender APITable - Visión General de la Arquitectura.](./docs/contribute/architecute-overview.md)
+- ¿Qué es la guía de código de TypeScript? ¿Qué es la guía de código de TypeScript? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
+- ¿Qué es la Visión General de la Arquitectura? ¿Qué es la Visión General de la Arquitectura? -> [ Comprender APITable - Visión General de la Arquitectura.](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
 
@@ -346,7 +347,7 @@ Utilizar estas convenciones comunes:
 - Inicio de sesión simple
 - Auditoría
 - Copia de seguridad de base de datos
-- Avanzado robot de automatización. Integración con ChatGPT, Zapier, Slack, Google Workspace...
+- Integración con ChatGPT, Zapier, Slack, Google Workspace...
 - Marca de agua
 
 Para más información, por favor contáctenos en <support@apitable.com>.
@@ -372,19 +373,19 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
 ## 📺 Captura de pantalla
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
@@ -393,13 +394,13 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
     <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licencia
