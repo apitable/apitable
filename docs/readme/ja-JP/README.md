@@ -49,7 +49,7 @@
 </p>
 
 <p align="center">
-  English
+  <a href="README.md">English</a>
   | 
   <a href="docs/readme/fr-FR/README.md">Français</a>
   | 
@@ -61,7 +61,7 @@
   | 
   <a href="docs/readme/zh-HK/README.md">繁體中文</a>
   | 
-  <a href="docs/readme/ja-JP/README.md">やまと</a>
+  日本語
 </p>
 
 ## クイックスタート
@@ -252,7 +252,7 @@ Docker Composeを使用してapitableをインストールするには、ター�
 curl https://apitable.github.io/install.sh | bash
 ```
 
-次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
+次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください 次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
 
 また、 [pm2](https://pm2.keymetrics.io/) をベースにしたオールインワンの画像をデモやテスト用に提供しています(企業や本番での使用には推奨されません)。
 
@@ -411,7 +411,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 > 
 > 詳細は [ライセンス](./LICENSING.md) を参照してください。
 > 
-> もしオンラインでAPITableを使用したい場合は、このコードを実行する必要はありません。私たちは、グローバルアクセラレータに最適化されたアプリのホスティングサービス「APITable.com」を提供しています。
+> もしオンラインでAPITableを使用したい場合は、このコードを実行する必要はありません。 私たちは、グローバルアクセラレータに最適化されたアプリのホスティングサービス「APITable.com」を提供しています。
 
 <br/>
 
