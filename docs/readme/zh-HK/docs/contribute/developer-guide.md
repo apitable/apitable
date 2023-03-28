@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 我們建議使用 [Homebrew](https://brew.sh/) 來安裝任何缺失的依賴包：
 
 ```bash
-## 必須要有以下依賴
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,39 +129,40 @@ APITable 已準備好這兩個IDE調試配置。
 
 默認情況下，APITable 不配置SMTP服務器，這意味著您不能邀請用戶，因為它需要電子郵件發送功能。
 
-需要使用自己的郵箱修改.env配置，重啟 backend-server。
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
-另外，有些郵箱需要在後台啟用smtp。 詳細可以搜索xxx郵箱smtp教程。
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## macOS M1 下 docker 運行的性能問題？
 
 ## API文檔在哪裡？
 
-您可以通過啟動本地服務器來訪問 API 文檔：
+You can access the API documentation by starting a local server:
 
 1. backend-server 的文檔地址為: http://localhost:8081/api/v1/doc.html
 
 2. room-rserver 的文檔地址為: http://localhost:3333/nest/v1/docs
 
-如果您對雲服務 API 接口感興趣，也可以直接訪問 https://developers.apitable.com/api/introduction 獲取在線 API 文檔。
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## 如何在儀表板中設置小部件數量限制？ （默認為 30）
 
-可以在`.env`文件中設置`DSB_WIDGET_MAX_COUNT`參數來實現。
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## 我可以增加 API 的請求速率限制嗎？ （默認為 5）
 
-在 `room-server` 下的 `.env.default` 文件中，有兩個參數可以調整請求頻率：
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. 您可以設置參數 `LIMIT_POINTS` 和 `LIMIT_DURATION` 來設置在單位時間段內可以發出的請求數。 其中 LIMIT_POINTS 是次數，LIMIT_DURATION 是持續時間，以秒為單位。
 
@@ -168,13 +170,13 @@ MAIL_USERNAME=your_email`
 
 ## 如何增加每次 API 調用插入行記錄的數量？ （默認為 10）
 
-可以通過在 `room-server` 下的 `.env.default` 文件中設置 `API_MAX_MODIFY_RECORD_COUNTS` 參數來實現。
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## 如何更新到最新的版本?
 
 
 ## 如何更改默認的80端口?
-`.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-例如： 可以通過這種方式設置: NGINX_HTTP_PORT=8080
+For example. It would be set as NGINX_HTTP_PORT=8080
