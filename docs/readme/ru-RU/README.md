@@ -1,18 +1,18 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+        <img src="docs/static/cover.png" alt="Скриншот APTable" />
     </a>
 </p>
 
 <p align="center">
     <!-- Gitpod -->
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
+        <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="Среда разработки APITable Gitpod" />
     </a>
     <!-- NodeJS -->
-    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Язык, NestJS Framework" />
     <!-- Java -->
-    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Язык Java, Spring Framework" />
     <!-- hub.docker.com-->
     <a target="_blank" href="#installation">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
@@ -254,13 +254,13 @@ curl https://apitable.github.io/install.sh | bash
 
 Затем откройте http://localhost:80 в браузере, чтобы посетить его. (имя пользователя по умолчанию `admin@apitable.com` и пароль `Apitable2022`).
 
-We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
+Мы также предоставляем универсальный образ на основе [pm2](https://pm2.keymetrics.io/) для демонстрации или тестирования (не рекомендуется для корпоративного или производственного использования):
 
 ```bash
 sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/all-in-one:latest
 ```
 
-Depending on your environment, you may need to wait several minutes for all the services to start. This image is amd64 (x86_64) only, you may encounter pretty bad performance on arm64 or apple silicon.
+Depending on your environment, you may need to wait several minutes for all the services to start. Этот образ предназначен только для amd64 (x86_64), вы можете столкнуться с довольно низкой производительностью на arm64 или Apple Silicon.
 
 Если вы хотите настроить локальную среду разработки, [прочитайте наше руководство для разработчиков 🧑‍💻](./docs/contribute/developer-guide.md).
 
@@ -373,34 +373,34 @@ APITable использует эти общие соглашения:
 ## 📺 Скриншот
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Изображение экрана APITable" />
 </p>
 
 ## 🥰 Лицензия
