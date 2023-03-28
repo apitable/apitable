@@ -133,7 +133,7 @@ APITable підготував налагоджувальні конфігура�
 
 За замовчуванням, APITable не налаштувати SMTP-сервер, що означає, що Вам не потрібно відправляти листи функції відправки.
 
-It is needed to modify `.env` configuration using self email, and restart backend server.
+Потрібно змінити конфігурацію `.env`, використовуючи самоелектронну пошту та перезапустити сервер.
 
 ```
 MAIL_ENABLED=true
@@ -141,32 +141,32 @@ MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
-MAIL_TYPE=smtp
+MAIL_TYPE=smp
 MAIL_USERNAME=your_email
 ```
 
-In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
+Крім того, деякі поштові скриньки потрібно увімкнути на задньому плані, щоб використовувати smtp. Для подробиць ви можете шукати тестову розсилку xxx smtp підручник.
 
 
 ## Проблема продуктивності в роботі macOS M1 docker?
 
 ## Де знаходиться документація для розробників?
 
-You can access the API documentation by starting a local server:
+Ви можете отримати доступ до документації API, запустивши локальний сервер:
 
 1. Документаційна адреса сервера Backend: http://localhost:8081/api/v1/doc.html
 
 2. Документаційна адреса сервера Backend: http://localhost:3333/api/v1/docs
 
-If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
+Якщо ви зацікавлені в хмарному сервіс-API інтерфейсі, ви також можете безпосередньо отримати доступ до онлайн-API документації на https://developers.apitable.com/api/introduction.
 
 ## Як встановити обмеження кількості віджетів на панелі керування? (30 за замовчуванням)
 
-This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
+Цього можна досягти, встановивши параметр `DSB_WIDGET_MAX_COUNT` у файлі `.env`.
 
 ## Чи можна збільшити обмеження ставок запиту в API? (5 за замовчуванням)
 
-In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
+У `.env.default` файл `сервера`є два параметри, які можуть налаштувати частоту запиту:
 
 1. Ви можете встановити `LIMIT_POINTS` та `LIMIT_DURATION`, щоб вказати кількість запитів, які можна робити за одиницю часу. Там, де LIMIT_POINTS - це кількість часу, а LIMIT_URATION - це тривалість виміру, яка вимірюється в секундах.
 
@@ -174,13 +174,13 @@ In the `.env.default` file of `room-server`, there are two parameters that can a
 
 ## Як збільшити кількість записів, що завантажуються в API виклик? (10 за замовчуванням)
 
-This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
+Цього можна досягти, встановивши параметр `API_MAX_MODIFY_RECORD_COUNTS` на файлі `.env.default` з `room-server`.
 
 
 ## Як оновитися до найновішої версії релізу?
 
 
 ## Як змінити 80 порт за замовчуванням?
-Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
+Властивості конфігурації в файлі `.env` можна змінити шляхом зазначення їх env vars `NGINX_HTTP_PORT`
 
-For example. It would be set as NGINX_HTTP_PORT=8080
+Наприклад. Воно буде задано як NGINX_HTTP_PORT=8080
