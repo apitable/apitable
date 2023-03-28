@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 نوصي باستخدام [Homebrew](https://brew.sh/) لتثبيت أي تبعيات مفقودة:
 
 ```bash
-## ضروري مطلوب
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -132,40 +133,40 @@ make run # enter 3
 
 بشكل افتراضي ، لا يقوم APITable بتكوين خادم SMTP ، مما يعني أنه لا يمكنك دعوة المستخدمين لأنه يتطلب ميزة إرسال البريد الإلكتروني.
 
-يلزم تعديل تكوين .env باستخدام البريد الإلكتروني الذاتي ، وإعادة تشغيل خادم الخلفية.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
-<code>
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`</code>
+MAIL_USERNAME=your_email
+```
 
-بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## مشكلة في الأداء في ظل تشغيل عامل ميناء macOS M1؟
 
 ## أين وثائق API؟
 
-يمكنك الوصول إلى وثائق API عن طريق بدء خادم محلي:
+You can access the API documentation by starting a local server:
 
 1. عنوان التوثيق لخادم الواجهة الخلفية هو: http://localhost:8081/api/v1/doc.html
 
 2. عنوان التوثيق لخادم الغرفة هو:http://localhost:3333/nest/v1/docs
 
-إذا كنت مهتمًا بواجهات API الخاصة بالخدمة السحابية ، فيمكنك أيضًا الوصول مباشرة إلى وثائق API عبر الإنترنت على https://developers.apitable.com/api/introduction.
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## كيفية ضبط حدود كمية عنصر واجهة المستخدم في لوحة القيادة؟ (30 افتراضيًا)
 
-يمكن تحقيق ذلك عن طريق تعيين المعلمة `DSB_WIDGET_MAX_COUNT` في ملف`.env`.
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
 
-في ملف ".env.default" الخاص بـ "خادم الغرفة" ، توجد معلمتان يمكنهما ضبط تردد الطلب:
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
 
@@ -173,13 +174,13 @@ MAIL_USERNAME=your_email`</code>
 
 ## كيفية زيادة عدد السجلات المدخلة في كل استدعاء API؟ (10 افتراضيًا)
 
-يمكن تحقيق ذلك عن طريق تعيين المعلمة `API_MAX_MODIFY_RECORD_COUNTS` في ملف `.env.default` من `room-server`.
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## كيف يمكنك الترقية إلى الإصدار الأحدث؟
 
 
 ## كيفية تغيير منفذ 80 الافتراضي؟
-يمكن أيضًا تجاوز خصائص التهيئة في ملف `.env` من خلال تحديد متغيرات البيئة الخاصة بها`NGINX_HTTP_PORT`
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-على سبيل المثال. على سبيل المثال ، سيتم تعيينه كـ NGINX_HTTP_PORT = 8080
+For example. It would be set as NGINX_HTTP_PORT=8080
