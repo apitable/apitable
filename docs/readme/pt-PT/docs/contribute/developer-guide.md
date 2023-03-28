@@ -87,7 +87,7 @@ make
 
 ## Como iniciar o ambiente de desenvolvimento?
 
-APITable consists of 3 processes:
+APITable consiste em 3 processos:
 
 1. backend-server
 2. room-server
