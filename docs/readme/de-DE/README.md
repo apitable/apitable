@@ -262,7 +262,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 Abhängig von Ihrer Umgebung müssen Sie eventuell mehrere Minuten warten, bis alle Dienste gestartet werden. Dieses Bild ist nur amd64 (x86_64) und auf arm64 oder Apfelsilicons kann es zu schlechten Leistungen kommen.
 
-Wenn Sie Ihre lokale Entwicklungsumgebung einrichten möchten, lesen Sie unseren [🧑<unk> 💻 Developer Guide](./docs/contribute/developer-guide.md)
+Wenn Sie Ihre lokale Entwicklungsumgebung einrichten möchten, lesen Sie unseren [🧑Entwicklerhandbuch](./docs/contribute/developer-guide.md)
 
 ## 💻 Mitwirken
 
@@ -293,7 +293,7 @@ Hier ist eine kurze Anleitung, die Ihnen hilft, zu APITable beizutragen.
 
 ### Entwicklungsumgebung
 
-Um zu erfahren, wie Sie Ihre lokale Umgebung einrichten, besuchen Sie unsere [Developer Guide](./docs/contribute/developer-guide.md).
+Um zu erfahren, wie Sie Ihre lokale Umgebung einrichten, besuchen Sie unsere [Entwicklerhandbuch](./docs/contribute/developer-guide.md).
 
 ### Git Workflow einfach
 
@@ -325,10 +325,12 @@ APITable use these common convention:
 - [Hilfe-Center](https://help.apitable.com/)
 - [👩‍💻 Entwicklerzentrum](https://developers.apitable.com/)
   - [REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Kommt bald...)
+  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - Skripting (Kommt bald...)
 
 ## :Autobahn: Fahrplan
+
+Bitte beachten Sie die [Roadmap von APITable](https://apitable.com/roadmap)
 
 ### Zukünftige Funktionen
 
@@ -366,7 +368,7 @@ Wir suchen immer nach guten Talenten für APITable:
 
 - **Vollstack-Entwickler**: Sie haben Erfahrung mit React, NestJS, TypeScript, Spring Boot, Java, Terraform. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
 - **Back-End-Entwickler**: Sie haben Erfahrung mit NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
-- **Front-End-Entwickler**: Sie haben Erfahrung mit React, NextJS, TypeScript, WebPack. Und Sie schreiben gerne qualitativ hochwertigen Code mit klarer Dokumentation und Unit-Tests.
+- **Front-End-Entwickler**: Sie haben Erfahrung mit React, NextJS, TypeScript, WebPack. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
 
 Unabhängig von Zeit und Bedingungen, wenn Sie sich an das APITable-Team beteiligen möchten zögern Sie nicht und senden Sie Ihren Lebenslauf an [talent@apitable. om](mailto:talent@apitable.com).
 
