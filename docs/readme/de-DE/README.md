@@ -49,13 +49,13 @@
 </p>
 
 <p align="center">
-  English
+  <a href="README.md">English</a>
   | 
   <a href="docs/readme/fr-FR/README.md">Français</a>
   | 
   <a href="docs/readme/es-ES/README.md">Español</a>
   | 
-  <a href="docs/readme/de-DE/README.md">Deutsch</a>
+  Deutsch
   | 
   <a href="docs/readme/zh-CN/README.md">简体中文</a>
   | 
@@ -272,7 +272,7 @@ Es gibt viele Möglichkeiten, einen Beitrag zu leisten, abgesehen vom Schreiben 
 
 Sie können wie folgt beitragen:
 - An unserem [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) teilnehmen und Übersetzungen ändern
-- [Issues erstellen](https://github.com/apitable/apitable/issues/new/choose)
+- https://github.com/apitable/apitable/issues/new/choose
 - Unserem [Twitter](https://twitter.com/apitable_com) folgen
 - [Dokumentation](./docs) erstellen
 - [Code beisteuern](./docs/contribute/developer-guide.md)
@@ -373,35 +373,34 @@ Unabhängig von Zeit und Bedingungen, wenn Sie sich an das APITable-Team beteili
 ## 📺 Screenshot
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image
-" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Lizenz
