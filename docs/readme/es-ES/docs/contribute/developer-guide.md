@@ -1,4 +1,4 @@
-# Guía del desarrollador
+# Guía de Desarrollador
 
 Esta guía lo ayuda a comenzar a desarrollar APITable.
 
@@ -97,17 +97,21 @@ Para iniciar el entorno de desarrollo localmente, ejecute estos comandos:
 
 ```bash
 # iniciar bases de datos en dockers
-make dataenv
-# instalar dependencias
-make install
-#start backend-servidor
-make run # entrar 1
-# y luego cambie a una nueva terminal
-# iniciar servidor de sala
-make run # entrar 2
-# y luego cambie a una nueva terminal
-# iniciar servidor web
-make run # entrar 3
+make dataenv 
+
+# install dependencies
+make install 
+
+#start backend-server
+make run # enter 1  
+
+# y luego cambiar a un nuevo terminal
+# start room-server
+make run # enter 2
+
+# y luego cambiar a un nuevo terminal
+# start web-server
+make run # enter 3
 
 ```
 
