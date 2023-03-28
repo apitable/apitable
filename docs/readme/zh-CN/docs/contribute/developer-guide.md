@@ -179,4 +179,4 @@ MAIL_USERNAME=your_email
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如： 可以通过这种方式设置 NGINX_HTTP_PORT=8080
+例如：NGINX_HTTP_PORT=8080
