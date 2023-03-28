@@ -87,7 +87,7 @@ make
 
 ## Запуск середовища розробки?
 
-APITable consists of 3 processes:
+APITable складається з 3 процесів:
 
 1. backend-server
 2. room-server
