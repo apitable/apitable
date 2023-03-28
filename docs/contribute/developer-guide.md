@@ -39,6 +39,7 @@ We recommend using [Homebrew](https://brew.sh/) for installing any missing depen
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -134,9 +135,9 @@ Just open APITable's root directory with IDE.
 
 By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
 
-It is needed to modify .env configuration using self email, and restart backend server.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-``
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
@@ -144,7 +145,7 @@ MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
-``
+```
 
 In addition, some mailboxes need to be enabled in the background to use smtp.
 For details, you can search for xxx mailbox smtp tutorial.
@@ -156,7 +157,7 @@ For details, you can search for xxx mailbox smtp tutorial.
 
 You can access the API documentation by starting a local server:
 
-1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html 
+1. The documentation address for the Backend server is: http://localhost:8081/api/v1/doc.html
 
 2. The documentation address for the Room server is: http://localhost:3333/nest/v1/docs
 

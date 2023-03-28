@@ -38,6 +38,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -130,14 +131,15 @@ APITable 已准备好这两个IDE调试配置。
 
 需要使用自己的邮箱修改.env配置，重启 backend-server。
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 另外，有些邮箱需要在后台启用smtp。 详细可以搜索xxx邮箱smtp教程。
 
@@ -177,4 +179,4 @@ MAIL_USERNAME=your_email`
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如： 可以通过这种方式设置: NGINX_HTTP_PORT=8080
+例如：NGINX_HTTP_PORT=8080
