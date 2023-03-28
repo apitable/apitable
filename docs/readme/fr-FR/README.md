@@ -49,9 +49,9 @@
 </p>
 
 <p align="center">
-  English
+  <a href="README.md">English</a>
   | 
-  <a href="docs/readme/fr-FR/README.md">Français</a>
+  Français
   | 
   <a href="docs/readme/es-ES/README.md">Español</a>
   | 
@@ -272,7 +272,7 @@ Il y a de nombreuses façons de contribuer, au-delà de l'écriture de code.
 
 Vous pouvez contribuer de la manière suivante :
 - Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- [Créer des problèmes](https://github.com/apitable/apitable/issues/new/choose)
+- https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
 - Créer de la [documentation](./docs)
 - [Contribuer au code](./docs/contribute/developer-guide.md)
@@ -280,7 +280,7 @@ Vous pouvez contribuer de la manière suivante :
 
 Voici ce qui suit :
 - Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
-- [Créer des problèmes](https://github.com/apitable/apitable/issues/new/choose)
+- https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
 - Créer de la [documentation](./docs)
 - [Contribuer au code](./docs/contribute/developer-guide.md)
@@ -373,35 +373,34 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
 ## 📺 Capture d'écran
 
 <p align="center">
-    <img src="docs/static/screenshot-realtime.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-auto-form.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-api-panel.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-permissions.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-extensible.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image
-" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-hr.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-it.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licence
