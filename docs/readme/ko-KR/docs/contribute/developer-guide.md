@@ -38,6 +38,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -136,39 +137,40 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 기본적으로 APITable은 SMTP 서버를 구성하지 않습니다. 즉, 이메일 전송 기능이 필요하므로 사용자를 초대할 수 없습니다.
 
-자체 이메일을 사용하여 .env 구성을 수정하고 백엔드 서버를 다시 시작해야 합니다.
+It is needed to modify `.env` configuration using self email, and restart backend server.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
-또한 일부 사서함은 smtp를 사용하려면 백그라운드에서 활성화해야 합니다. 자세한 내용은 xxx 사서함 smtp 자습서를 검색할 수 있습니다.
+In addition, some mailboxes need to be enabled in the background to use smtp. For details, you can search for xxx mailbox smtp tutorial.
 
 
 ## macOS M1 도커 실행 시 성능 문제가 있습니까?
 
 ## 개발자 문서는 어디에 있습니까?
 
-로컬 서버를 시작하여 API 문서에 액세스할 수 있습니다:
+You can access the API documentation by starting a local server:
 
 1. Backend server 의 문서 주소는 다음과 같습니다: http://localhost:8081/api/v1/doc.html
 
 2. room-server 의 문서 주소는 다음과 같습니다. http://localhost:3333/nest/v1/docs
 
-클라우드 서비스 API 인터페이스에 관심이 있는 경우 다음에서 온라인 API 설명서에 직접 액세스할 수도 있습니다 https://developers.apitable.com/api/introduction.
+If you are interested in cloud service API interfaces, you can also directly access the online API documentation at https://developers.apitable.com/api/introduction.
 
 ## 대시보드에서 위젯 수량 제한을 설정하는 방법은 무엇입니까? (기본적으로 30개)
 
-`.env` 파일에서 `DSB_WIDGET_MAX_COUNT` 매개변수를 설정하면 됩니다.
+This can be achieved by setting the `DSB_WIDGET_MAX_COUNT` parameter in the `.env` file.
 
 ## API의 요청 속도 제한을 늘릴 수 있습니까? (기본적으로 5개)
 
-`room-server`의 `.env.default` 파일에는 요청 빈도를 조정할 수 있는 두 개의 매개변수가 있습니다.
+In the `.env.default` file of `room-server`, there are two parameters that can adjust request frequency:
 
 1. `LIMIT_POINTS` 및 `LIMIT_DURATION`을 설정하여 단위 기간 동안 수행할 수 있는 요청 수를 나타낼 수 있습니다. 여기서 LIMIT_POINTS는 횟수이고 LIMIT_DURATION은 초 단위로 측정된 기간입니다.
 
@@ -176,13 +178,13 @@ MAIL_USERNAME=your_email`
 
 ## API 호출당 삽입되는 레코드 수를 늘리는 방법은 무엇입니까? (기본적으로 10개)
 
-`room-server`의 `.env.default` 파일에서 `API_MAX_MODIFY_RECORD_COUNTS` 매개변수를 설정하면 됩니다.
+This can be achieved by setting the `API_MAX_MODIFY_RECORD_COUNTS` parameter in the `.env.default` file of `room-server`.
 
 
 ## 최신 릴리스 버전으로 업그레이드하는 방법은 무엇입니까?
 
 
 ## 기본 80 포트를 변경하는 방법은 무엇입니까?
-`.env` 파일의 구성 속성은 env vars `NGINX_HTTP_PORT`를 지정하여 재정의할 수도 있습니다.
+Configuration properties in  the `.env` file can also be overridden  by specifying them env vars `NGINX_HTTP_PORT`
 
-예: NGINX_HTTP_PORT=8080으로 설정됩니다.
+For example. It would be set as NGINX_HTTP_PORT=8080
