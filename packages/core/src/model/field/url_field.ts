@@ -56,6 +56,16 @@ export class URLField extends TextBaseField {
     return result;
   }
 
+  cellValueToURL(cellValue: ICellValue): string | null {
+    if (cellValue === null) {
+      return '';
+    }
+
+    const cv = [cellValue].flat();
+
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.text).join('') || null;
+  }
+
   override cellValueToString(cellValue: ICellValue): string | null {
     if (cellValue === null) {
       return '';
