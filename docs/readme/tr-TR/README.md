@@ -252,7 +252,7 @@ Docker compose kullanarak apitable yüklemek için terminalinizi açın ve bunu 
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [http://localhost:80](http://localhost:80) in your browser to visit it.
+Ardından ziyaret etmek için tarayıcınızda http://localhost:80 adresini açın.
 
 Ayrıca demo veya test amacıyla [pm2](https://pm2.keymetrics.io/) tabanlı hepsi bir arada bir görüntü sağlıyoruz (kurumsal veya üretim amaçlı kullanım için önerilmez):
 
