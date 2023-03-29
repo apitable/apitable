@@ -133,9 +133,9 @@ Just open APITable's root directory with IDE.
 
 ## How to contribute translations?
 
-We accept two ways to perfect the multilingual translation of your project:
+We have two ways to improve the translation of APITable:
 
-1. Modify the source code and submit a PR
+1. Modify the source code and create a PR
 2. Find the `strings` to be modified in [Crowdin](https://crowdin.com/project/apitablecode) and modify them online
 
 In the collaboration of multilingual translation, we follow the following process:
