@@ -252,7 +252,7 @@ APITable предоставляет язык запросов Datasheet Query La
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [http://localhost:80](http://localhost:80) in your browser to visit it.
+Затем откройте http://localhost:80 в браузере, чтобы посетить его.
 
 Мы также предоставляем универсальный образ на основе [pm2](https://pm2.keymetrics.io/) для демонстрации или тестирования (не рекомендуется для корпоративного или производственного использования):
 
