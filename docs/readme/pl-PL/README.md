@@ -254,7 +254,7 @@ Aby zainstalować apitable używając docker compose, otwórz terminal i uruchom
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [http://localhost:80](http://localhost:80) in your browser to visit it.
+Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić.
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
