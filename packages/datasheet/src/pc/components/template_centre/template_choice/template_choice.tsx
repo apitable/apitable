@@ -18,34 +18,25 @@
 
 import { Typography } from '@apitable/components';
 import {
-  Api,
-  ConfigConstant,
-  getImageThumbSrc,
-  integrateCdnHost,
-  IReduxState,
-  Navigation,
-  Settings,
-  Strings,
-  t,
-  TEMPLATE_CENTER_ID,
-  api,
+  Api, api, ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
 } from '@apitable/core';
+import { useRequest } from 'ahooks';
 import { Col, Row } from 'antd';
-import { TemplateRecommendContext } from 'context/template_recommend';
+// @ts-ignore
+import { isDingtalkFunc } from 'enterprise';
 import { take, takeRight } from 'lodash';
+import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
+import { useTemplateRequest } from 'pc/hooks';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
-// @ts-ignore
-import { isDingtalkFunc } from 'enterprise';
-import { Method } from 'pc/components/route_manager/const';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
@@ -62,7 +53,8 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
   const [_templateRecommendData, setTemplateRecommendData] = useState<api.ITemplateRecommendResponse>();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const { recommendData: templateRecommendData } = useContext(TemplateRecommendContext);
+  const { templateRecommendReq } = useTemplateRequest();
+  const { data: templateRecommendData } = useRequest(templateRecommendReq);
   const env = getEnvVariables();
 
   useEffect(() => {
@@ -205,7 +197,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                         <div className={styles.templateItemWrapper} key={template.templateId}>
                           <TemplateItem
                             templateId={template.templateId}
-                            type="card"
+                            type='card'
                             nodeType={template.nodeType}
                             img={imgUrl(template.cover || defaultBanner, 160)}
                             name={template.templateName}
@@ -225,9 +217,9 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
         </Col>
       </Row>
       {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
-        <Typography className={styles.notFoundTip} variant="body2" align="center">
-          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, { 
-            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
+        <Typography className={styles.notFoundTip} variant='body2' align='center'>
+          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab
           })}>
             {t(Strings.template_not_found)}
           </span>

@@ -63,7 +63,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
   const space = useSelector(state => state.space);
-  const onTrial = useSelector((state: IReduxState) => state.billing.subscription?.onTrial);
+  const onTrial = useSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {

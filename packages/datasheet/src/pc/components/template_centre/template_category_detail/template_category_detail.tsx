@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ThemeName, Typography } from '@apitable/components';
 import {
   ConfigConstant, integrateCdnHost, IReduxState, ITemplate, ITemplateCategory, Navigation, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
-import { Typography, ThemeName } from '@apitable/components';
 import { Col, Row } from 'antd';
-import { TemplateListContext } from 'context/template_list';
+// @ts-ignore
+import { isDingtalkFunc, isWecomFunc } from 'enterprise';
 import parser from 'html-react-parser';
 import { isEmpty } from 'lodash';
 import Image from 'next/image';
-// @ts-ignore
-import { isWecomFunc, isDingtalkFunc } from 'enterprise';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
@@ -35,7 +34,7 @@ import { useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useTemplateRequest } from 'pc/hooks/use_template_request';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
@@ -53,7 +52,6 @@ export interface ITemplateCategoryDetailProps {
 
 export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategoryDetailProps>> = props => {
   const { setUsingTemplate, templateCategory } = props;
-  const { templateListData } = useContext(TemplateListContext);
   const [templateList, setTemplateList] = useState<ITemplate[] | {
     albums: {
       albumId: string;
@@ -62,9 +60,7 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
       description: string;
     }[];
     templates: ITemplate[];
-  } | null>(() => {
-    return templateListData || null;
-  });
+  } | null>(null);
   const [isOfficial, setIsOfficial] = useState(true);
   const dispatch = useAppDispatch();
   const user = useSelector((state: IReduxState) => state.user.info);
@@ -174,8 +170,8 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
                       <Typography className={styles.notFoundTip} variant='body2' align='center'>
                         <span
                           className={styles.text}
-                          onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, { 
-                            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
+                          onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+                            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab
                           })}
                         >
                           {t(Strings.template_not_found)}
