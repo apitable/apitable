@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 
 /**
@@ -60,11 +59,8 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
         NotificationRenderFieldHolder.init();
         ClientOriginInfoHolder.init();
 
-        ContentCachingRequestWrapper wrappedRequest =
-            new ContentCachingRequestWrapper(httpServletRequest);
-
         try {
-            filterChain.doFilter(wrappedRequest, httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         } finally {
             UserHolder.remove();
             LoginUserHolder.remove();
