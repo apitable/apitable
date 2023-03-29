@@ -138,7 +138,10 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         List<TeamTreeVo> treeVos =
             new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
         treeVos.stream().filter(i -> Objects.equals(i.getTeamId(), rootTeamId))
-            .forEach(i -> i.setTeamId(0L));
+            .forEach(i -> {
+                i.setTeamId(0L);
+                i.getChildren().forEach(c -> c.setParentId(0L));
+            });
         return treeVos;
     }
 
