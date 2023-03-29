@@ -252,7 +252,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-用你的浏览器打开[http://localhost:80](http://localhost:80)并浏览。 (默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
+用你的浏览器打开[http://localhost:80](http://localhost:80)并浏览。
 
 我们还提供了一个基于 [pm2](https://pm2.keymetrics.io/) 的完整镜像，用于演示或测试目的(不推荐用于企业或生产用途)：
 

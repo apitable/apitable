@@ -252,7 +252,7 @@ APITable จะให้ Datasheet Query Language (DQL) เพื่อสอบ
 curl https://apitable.github.io/install.sh | bash
 ```
 
-จากนั้นเปิด [http://localhost:80](http://localhost:80)  ในเบราว์เซอร์ของคุณเพื่อเยี่ยมชม (ชื่อผู้ใช้เริ่มต้น admin@apitable.com และรหัสผ่าน APITable2022) (ชื่อผู้ใช้เริ่มต้น admin@apitable.com และรหัสผ่าน APITable2022)
+จากนั้นเปิด [http://localhost:80](http://localhost:80)  ในเบราว์เซอร์ของคุณเพื่อเยี่ยมชม
 
 นอกจากนี้ เรายังจัดเตรียมภาพแบบครบวงจรที่ใช้ [pm2](https://pm2.keymetrics.io/) เพื่อวัตถุประสงค์ในการสาธิตหรือทดสอบ (ไม่แนะนำสำหรับการใช้งานระดับองค์กรหรือการผลิต):
 

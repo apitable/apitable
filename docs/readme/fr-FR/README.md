@@ -252,7 +252,7 @@ Pour installer apitable en utilisant docker compose, ouvrez votre terminal et ex
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Ouvrez ensuite http://localhost:80 dans votre navigateur pour le visiter. (nom d'utilisateur par défaut `admin@apitable.com` et mot de passe `Apitable2022`)
+Ouvrez ensuite http://localhost:80 dans votre navigateur pour le visiter.
 
 Nous fournissons également une image tout-en-un basée sur [pm2](https://pm2.keymetrics.io/) à des fins de démonstration ou de test (non recommandé pour les entreprises ou les utilisations de production):
 

@@ -252,7 +252,7 @@ Docker Composeを使用してapitableをインストールするには、ター�
 curl https://apitable.github.io/install.sh | bash
 ```
 
-次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください 次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください (デフォルトのユーザー名 `admin@apitable.com` とパスワード `Apitable2022`)
+次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください 次に、ブラウザで http://localhost:80 を開いて、Apitableにアクセスしてください
 
 また、 [pm2](https://pm2.keymetrics.io/) をベースにしたオールインワンの画像をデモやテスト用に提供しています(企業や本番での使用には推奨されません)。
 

@@ -252,7 +252,7 @@ APITable.com은 보안에 더 적합한 기업용 임베드 기능을 제공합�
 curl https://apitable.github.io/install.sh | bash
 ```
 
-그런 다음 브라우저에서 http://localhost:80을 열어 방문하십시오. (기본 사용자 이름은 admin@apitable.com이고 비밀번호는 Apitable2022입니다)
+그런 다음 브라우저에서 http://localhost:80을 열어 방문하십시오.
 
 또한 데모 또는 테스트 목적으로 [pm2](https://pm2.keymetrics.io/) 기반의 올인원 이미지를 제공합니다(엔터프라이즈 또는 프로덕션 용도로는 권장되지 않음).
 
