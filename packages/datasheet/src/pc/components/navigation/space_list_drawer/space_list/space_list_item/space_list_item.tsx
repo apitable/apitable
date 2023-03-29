@@ -18,16 +18,17 @@
 
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, ISpaceInfo, IUserInfo, Navigation, Strings, t } from '@apitable/core';
+import { LogoutOutlined, MoreStandOutlined, SettingOutlined } from '@apitable/icons';
 import { useUpdateEffect } from 'ahooks';
 import { Popover } from 'antd';
 import classnames from 'classnames';
+// @ts-ignore
+import { isSocialPlatformEnabled, SocialPlatformMap } from 'enterprise';
 import { truncate } from 'lodash';
 import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType, ButtonPlus, ContextmenuItem, Modal, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
-// @ts-ignore
-import { SocialPlatformMap, isSocialPlatformEnabled } from 'enterprise';
 import { NavigationContext } from 'pc/components/navigation/navigation_context';
 import { Router } from 'pc/components/route_manager/router';
 import { useNotificationCreate, useResponsive } from 'pc/hooks';
@@ -35,7 +36,6 @@ import * as React from 'react';
 import { FC, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
-import { LogoutOutlined, MoreStandOutlined, SettingOutlined } from '@apitable/icons';
 
 export interface ISpaceListItemProps {
   spaceInfo: ISpaceInfo;
@@ -113,7 +113,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
           closeSpaceListDrawer();
           return;
         }
-        window.location.href = `${domain}/workbench?spaceId=${spaceId}`;
+        window.location.href = `${domain}/space/${spaceId}/workbench`;
       }}
     >
       <div className={styles.logo}>
