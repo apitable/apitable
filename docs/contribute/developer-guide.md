@@ -131,6 +131,17 @@ Just open APITable's root directory with IDE.
 
 
 
+## How to contribute translations?
+
+We accept two ways to perfect the multilingual translation of your project:
+
+1. Modify the source code and submit a PR
+2. Find the `strings` to be modified in [Crowdin](https://crowdin.com/project/apitablecode) and modify them online
+
+In the collaboration of multilingual translation, we follow the following process:
+
+![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+
 ## How to configure the SMTP server?
 
 By default, APITable doesn't configure the SMTP server, which means you cannot invite users since it require the email sending feature.
