@@ -67,7 +67,6 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
 
   const onChange = (values?: (string | number)[]) => {
     if (!onSave) return;
-
     onSave(values ? string2Segment(values.join('/')) : undefined);
 
     onClose();

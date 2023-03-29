@@ -2378,6 +2378,22 @@
             "en_US": "Cape Verde",
             "zh_HK": "開普"
         },
+        "cascader_data_source": {
+            "zh_CN": "数据来源：",
+            "en_US": "Data sources:"
+        },
+        "cascader_linked_datasheet_data": {
+            "zh_CN": "使用关联表数据",
+            "en_US": "Use linked datasheet data"
+        },
+        "cascader_old_snapshot_data": {
+            "zh_CN": "使用旧级联快照数据",
+            "en_US": "Use old cascader snapshot data"
+        },
+        "cascader_snapshot_update_text": {
+            "zh_CN": "当前多级联动字段的数据源有内容变更，请从下方选择一个生效方式",
+            "en_US": "The data source of the cascader field has changed. Please select an effective method from below"
+        },
         "catalog": {
             "zh_CN": "工作目录",
             "en_US": "Explorer",
