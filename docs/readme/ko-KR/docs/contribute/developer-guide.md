@@ -134,6 +134,17 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 
 
+## How to contribute translations?
+
+We have two ways to improve the translation of APITable:
+
+1. You can modify the markdown files in source code and create a PR directly
+2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+
+In the collaboration of multilingual translation, we follow the following process:
+
+![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+
 ## SMTP 서버를 구성하는 방법은 무엇입니까?
 
 기본적으로 APITable은 SMTP 서버를 구성하지 않습니다. 즉, 이메일 전송 기능이 필요하므로 사용자를 초대할 수 없습니다.
