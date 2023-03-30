@@ -112,14 +112,6 @@ public interface INotificationFactory {
     List<Long> getMemberUserId(List<Long> memberIds, String spaceId);
 
     /**
-     * parse object to json.
-     *
-     * @param object object
-     * @return JSON Object
-     */
-    JSONObject getJsonObject(Object object);
-
-    /**
      * build extra.
      *
      * @param extras  extra json object

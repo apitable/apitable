@@ -28,6 +28,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -292,11 +293,12 @@ public class NotificationHelper {
 
         if (paramLocation == ParamLocation.RESPONSE) {
             JSONObject response = JSONUtil.parseObj(responseData);
-            JSONObject data = response.getJSONObject("data");
-            if (ObjectUtil.isNotNull(data)) {
-                Object value = data.get(paramName);
-                if (ObjectUtil.isNotNull(value) && StrUtil.isNotBlank(value.toString())) {
-                    if (isNodeId(value.toString())) {
+            Object data = response.get("data");
+            if (data != null) {
+                JSON json = JSONUtil.parse(data);
+                if (json instanceof JSONObject) {
+                    String value = ((JSONObject) json).getStr(paramName);
+                    if (isNodeId(value)) {
                         return value;
                     }
                 }
