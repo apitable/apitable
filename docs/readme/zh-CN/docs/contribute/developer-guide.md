@@ -125,6 +125,17 @@ APITable 已准备好这两个IDE调试配置。
 
 
 
+## How to contribute translations?
+
+We have two ways to improve the translation of APITable:
+
+1. You can modify the markdown files in source code and create a PR directly
+2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+
+In the collaboration of multilingual translation, we follow the following process:
+
+![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+
 ## 如何配置SMTP服务器？
 
 默认情况下，APITable 不配置SMTP服务器，这意味着您不能邀请用户，因为它需要电子邮件发送功能。
