@@ -129,16 +129,16 @@ make run # enter 3
 
 
 
-## How to contribute translations?
+## ساهم في الترجمة؟
 
-We have two ways to improve the translation of APITable:
+لدينا طريقتان لتحسين ترجمة APITable:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. يمكنك تعديل ملفات markdown في التعليمات البرمجية المصدر وإنشاء PR مباشرة
+2. انضم إلى [Crowdin](https://crowdin.com/project/apitablecode) للعثور على `strings` لتعديل
 
-In the collaboration of multilingual translation, we follow the following process:
+وبالتعاون مع الترجمة المتعددة اللغات، نتابع العملية التالية:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![لقطة شاشة لعملية الترجمة متعددة اللغات](../static/collaboration_of_multilingual_translation.png)
 
 ## كيف يتم تكوين خادم SMTP؟
 
