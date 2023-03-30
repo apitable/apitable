@@ -15,6 +15,7 @@ interface ICascader {
   cascaderRef: MutableRefObject<any>;
   value: string[][] | string[];
   displayRender?: (label: string[]) => React.ReactNode;
+  disabled?: boolean;
 }
 
 export const Cascader = (props: ICascader) => {

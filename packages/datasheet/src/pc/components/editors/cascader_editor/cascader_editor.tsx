@@ -18,6 +18,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
   editing,
   toggleEditing,
   onSave,
+  editable,
 }, ref) => {
   const spaceId = useSelector(Selectors.activeSpaceId)!;
 
@@ -94,6 +95,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
           onChange={onChange}
           options={options}
           editing={editing}
+          disabled={!editable}
           cascaderRef={cascaderRef}
           displayRender={label => {
             return field.property.showAll ? label.join('/') : label[label.length - 1];
