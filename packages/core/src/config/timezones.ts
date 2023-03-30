@@ -1,3 +1,5 @@
+import momentTimezone from 'moment-timezone';
+
 export interface ITimeZone {
   value: string;
   abbr: string;
@@ -20,8 +22,12 @@ export const getTimeZoneOffsetByUtc = (utc: string) => {
 };
 
 export const getTimeZoneAbbrByUtc = (utc: string) => {
-  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
-  return currentTimeZoneData?.abbr;
+  const abbr = momentTimezone.tz(utc).zoneAbbr();
+  const abbrNum = Number(abbr);
+  if (isNaN(abbrNum)) {
+    return abbr;
+  }
+  return `UTC${abbrNum > 0 ? '+' : ''}${abbr}`;
 };
 
 export const getUtcOptionList = () => {
@@ -52,7 +58,7 @@ export const getClientTimeZone = () => {
 };
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
-// compare to https://github.com/vikadata/vikadata/blob/new-teamx/apitable/packages/datasheet/src/pc/components/editors/cascader_editor/cascader_editor.tsx
+// compare to https://github.com/omsrivastava/timezones-list/blob/master/src/timezones.json
 export const TIMEZONES = [
   {
     value: 'Dateline Standard Time',
