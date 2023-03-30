@@ -33,6 +33,7 @@ import { DatasheetChangesetService } from './datasheet.changeset.service';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 import { In } from 'typeorm';
 import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
+import { DatasheetRecordCombineQueryDto } from '../dtos/datasheet.record.combine.query.dto';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -94,6 +95,18 @@ export class DatasheetRecordService {
       where: { recordId: In(recordIds), dstId, isDeleted },
     });
     return this.formatRecordMap(records, {}, recordIds);
+  }
+
+  // get recordMap by arrays of combining datasheetId and recordId
+  public async getRecordMapByCombineQueryDTO(combineDtos: DatasheetRecordCombineQueryDto[]): Promise<RecordMap> {
+    const combineQueryArray = combineDtos.map(dto => {
+      return { dstId: dto.dstId, recordId: dto.recordId };
+    });
+    const records = await this.recordRepo.find({
+      select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
+      where: combineQueryArray
+    });
+    return this.formatRecordMap(records, {}, undefined);
   }
 
   @Span()
