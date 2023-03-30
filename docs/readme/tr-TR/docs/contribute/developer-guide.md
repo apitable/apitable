@@ -129,16 +129,16 @@ Sadece APITable'ın kök dizinini IDE ile açın.
 
 
 
-## How to contribute translations?
+## Çevirilere nasıl katkıda bulunulur?
 
-We have two ways to improve the translation of APITable:
+APITable'ın çevirisini iyileştirmenin iki yolu var:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. Markdown dosyalarını kaynak kodunda değiştirebilir ve doğrudan bir PR oluşturabilirsiniz
+2. Değiştirilecek `strings` bulmak için [Crowdin](https://crowdin.com/project/apitablecode)'e katılın
 
-In the collaboration of multilingual translation, we follow the following process:
+Çok dilli çeviri işbirliğinde aşağıdaki süreci takip ediyoruz:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![Çok dilli çeviri işleminin ekran görüntüsü](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP sunucusu nasıl yapılandırılır?
 
