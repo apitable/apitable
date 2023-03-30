@@ -130,7 +130,7 @@ APITable 已准备好这两个IDE调试配置。
 我们有两种方法改进APITable的翻译：
 
 1. 您可以修改源代码中的 Markdown 文件并直接创建 PR
-2. 加入 [Crowdin](https://crowdin.com/project/apitablecode) 来找到 `strings` 来修改
+2. 加入 [Crowdin](https://crowdin.com/project/apitablecode) 找到 `strings` 进行修改
 
 在多语种翻译的协作下，我们遵循以下程序：
 
@@ -190,4 +190,4 @@ MAIL_USERNAME=your_email
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如：NGINX_HTTP_PORT=8080
+例如： NGINX_HTTP_PORT=8080
