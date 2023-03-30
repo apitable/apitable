@@ -135,7 +135,7 @@ Just open APITable's root directory with IDE.
 
 We have two ways to improve the translation of APITable:
 
-1. You can modify the markdown files in source code and create a PR directly.
+1. You can modify the markdown files in source code and create a PR directly
 2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
 
 In the collaboration of multilingual translation, we follow the following process:
