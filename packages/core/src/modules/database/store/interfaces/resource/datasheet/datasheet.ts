@@ -272,6 +272,16 @@ export interface ICommentMsg {
   };
 }
 
+export interface IRecordDependencies {
+  [fieldId: string]: IRecordDependency[];
+}
+
+export interface IRecordDependency {
+  datasheetId: string;
+  fieldIds: string[];
+  recordIds: string[];
+}
+
 export interface IStandardValueTable {
   datasheetId?: string;
   viewId?: string;
