@@ -31,6 +31,7 @@ import { batchActions } from 'redux-batched-actions';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+import { getUrlWithHost } from 'pc/utils';
 
 interface IRecommendWidgetPanelProps {
   setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>;
@@ -162,7 +163,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
                       </div>
                       <div className={styles.widgetCover}>
                         <Image
-                          src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover_img.value)}
+                          src={getUrlWithHost(item.widgetPackageCover) || integrateCdnHost(Settings.widget_default_cover_img.value)}
                           alt=''
                           layout={'fill'}
                         />
