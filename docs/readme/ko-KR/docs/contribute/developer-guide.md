@@ -134,16 +134,16 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 
 
-## How to contribute translations?
+## 번역에 기여하는 방법?
 
-We have two ways to improve the translation of APITable:
+APITable의 번역을 개선하는 두 가지 방법이 있습니다.
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. 소스 코드에서 마크다운 파일을 수정하여 직접 PR을 생성할 수 있습니다.
+2. [Crowdin](https://crowdin.com/project/apitablecode)에 가입하여 수정할 `strings`을 찾으세요.
 
-In the collaboration of multilingual translation, we follow the following process:
+다국어 번역 협력에서 우리는 다음 프로세스를 따릅니다.
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![다국어 번역 프로세스 스크린샷](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP 서버를 구성하는 방법은 무엇입니까?
 
