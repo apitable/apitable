@@ -125,16 +125,16 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 
 
-## How to contribute translations?
+## Wie kann ich zur Übersetzung beitragen?
 
-We have two ways to improve the translation of APITable:
+Wir haben zwei Möglichkeiten, die Übersetzung von APITable zu verbessern:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. Sie können die Markdown-Dateien im Quellcode ändern und direkt eine PR-Datei erstellen
+2. Treten Sie unserem [Crowdin](https://crowdin.com/project/apitablecode) bei, um die `strings` zu finden, um sie zu ändern
 
-In the collaboration of multilingual translation, we follow the following process:
+In Zusammenarbeit mit mehrsprachigen Übersetzungen folgen wir dem folgenden Prozess:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![Screenshot des mehrsprachigen Übersetzungsprozesses](../static/collaboration_of_multilingual_translation.png)
 
 ## Wie konfiguriere ich den SMTP-Server?
 
