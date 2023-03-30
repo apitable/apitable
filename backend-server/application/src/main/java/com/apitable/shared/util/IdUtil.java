@@ -176,4 +176,11 @@ public class IdUtil {
         }
         return id.startsWith(IdRulePrefixEnum.FORM.getIdRulePrefixEnum());
     }
+
+    public static boolean isEmbed(String id) {
+        if (null == id) {
+            return false;
+        }
+        return id.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum());
+    }
 }

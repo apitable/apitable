@@ -16,105 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  fetchDatasheetPack,
-  fetchForeignDatasheetPack,
-  fetchShareDatasheetPack,
-  fetchShareForeignDatasheetPack,
-  fetchTemplateDatasheetPack,
-  fetchEmbedDatasheetPack,
-  fetchEmbedForeignDatasheetPack,
-} from '../../../../api/datasheet_api';
 import { StatusCode } from 'config';
 import { Strings, t } from 'exports/i18n';
-import { Events, Player } from 'modules/shared/player';
-import { AnyAction, Dispatch } from 'redux';
-import { batchActions } from 'redux-batched-actions';
 import {
-  DateUnitType,
-  IActiveRowInfo,
-  IApiWrapper,
-  IDatasheetPack,
-  IDragTarget,
-  ILoadedDataPackAction,
-  ILoadingRecordAction,
-  INodeMeta,
-  IReduxState,
-  IServerDatasheetPack,
-  ISetFieldInfoState,
-  ISnapshot,
-  ModalConfirmKey,
-  IViewDerivation,
+  DateUnitType, IActiveRowInfo, IApiWrapper, IDatasheetPack, IDragTarget, ILoadedDataPackAction, ILoadingRecordAction, INodeMeta, IReduxState,
+  IServerDatasheetPack, ISetFieldInfoState, ISnapshot, IViewDerivation, ModalConfirmKey,
 } from 'exports/store';
-import {
-  ACTIVE_EXPORT_VIEW_ID,
-  ACTIVE_OPERATE_VIEW_ID,
-  ADD_DATASHEET,
-  CHANGE_VIEW,
-  CHANGE_WIDGET_PANEL_WIDTH,
-  CLEAR_ACTIVE_ROW_INFO,
-  CLEAR_FIELD_INFO,
-  DATAPACK_LOADED,
-  DATAPACK_REQUEST,
-  DATASHEET_CONNECTED,
-  DATASHEET_ERROR_CODE,
-  RECORD_NODE_DESC,
-  REFRESH_SNAPSHOT,
-  RESET_DATASHEET,
-  RESET_EXPORT_VIEW_ID,
-  RESET_OPERATE_VIEW_ID,
-  SET_ACTIVE_FIELD_STATE,
-  SET_ACTIVE_ROW_INFO,
-  SET_CALENDAR_GRID_WIDTH,
-  SET_CALENDAR_SETTING_PANEL_WIDTH,
-  SET_CLOSE_SYNC_VIEW_ID,
-  SET_DATASHEET_COMPUTED,
-  SET_DATASHEET_SYNCING,
-  SET_DRAG_TARGET,
-  SET_EDIT_STATUS,
-  SET_GANTT_DATE_UNIT_TYPE,
-  SET_GANTT_GRID_WIDTH,
-  SET_GANTT_SETTING_PANEL_WIDTH,
-  SET_GRID_VIEW_HOVER_FIELD_ID,
-  SET_GROUPING_COLLAPSE,
-  SET_HIGHLIGHT_FIELD_ID,
-  SET_HOVER_GROUP_PATH,
-  SET_HOVER_RECORD_ID,
-  SET_HOVER_ROW_OF_ADD_RECORD,
-  SET_KANBAN_GROUPING_EXPAND,
-  SET_LOADING_RECORD,
-  SET_NEW_RECORD_EXPECT_INDEX,
-  SET_ORG_CHART_GRID_WIDTH as SET_ORG_CHART_GRID_PANEL_WIDTH,
-  SET_ORG_CHART_SETTING_PANEL_WIDTH,
-  SET_ROBOT_PANEL_STATUS,
-  SET_SEARCH_KEYWORD,
-  SET_SEARCH_RESULT_CURSOR_INDEX,
-  SWITCH_ACTIVE_PANEL,
-  TOGGLE_CALENDAR_GRID,
-  TOGGLE_CALENDAR_GUIDE_STATUS,
-  TOGGLE_CALENDAR_SETTING_PANEL,
-  TOGGLE_GANTT_GRID,
-  TOGGLE_GANTT_SETTING_PANEL,
-  TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
-  TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL,
-  TOGGLE_ORG_CHART_GUIDE_STATUS,
-  TOGGLE_ORG_CHART_SETTING_PANEL,
-  TOGGLE_TIME_MACHINE_PANEL,
-  TOGGLE_WIDGET_PANEL,
-  UPDATE_DATASHEET,
-  UPDATE_DATASHEET_COMPUTED,
-  UPDATE_DATASHEET_NAME,
-  UPDATE_SNAPSHOT,
-  PATCH_VIEW_DERIVATION,
-  SET_VIEW_DERIVATION,
-  TRIGGER_VIEW_DERIVATION_COMPUTED,
-  DELETE_VIEW_DERIVATION,
-} from 'modules/shared/store/action_constants';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
 import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
-import { checkInnerConsistency } from 'utils';
 import produce from 'immer';
+import { Events, Player } from 'modules/shared/player';
+import {
+  ACTIVE_EXPORT_VIEW_ID, ACTIVE_OPERATE_VIEW_ID, ADD_DATASHEET, CHANGE_VIEW, CHANGE_WIDGET_PANEL_WIDTH, CLEAR_ACTIVE_ROW_INFO, CLEAR_FIELD_INFO,
+  DATAPACK_LOADED, DATAPACK_REQUEST, DATASHEET_CONNECTED, DATASHEET_ERROR_CODE, DELETE_VIEW_DERIVATION, PATCH_VIEW_DERIVATION, RECORD_NODE_DESC,
+  REFRESH_SNAPSHOT, RESET_DATASHEET, RESET_EXPORT_VIEW_ID, RESET_OPERATE_VIEW_ID, SET_ACTIVE_FIELD_STATE, SET_ACTIVE_ROW_INFO,
+  SET_CALENDAR_GRID_WIDTH, SET_CALENDAR_SETTING_PANEL_WIDTH, SET_CLOSE_SYNC_VIEW_ID, SET_DATASHEET_COMPUTED, SET_DATASHEET_SYNCING, SET_DRAG_TARGET,
+  SET_EDIT_STATUS, SET_GANTT_DATE_UNIT_TYPE, SET_GANTT_GRID_WIDTH, SET_GANTT_SETTING_PANEL_WIDTH, SET_GRID_VIEW_HOVER_FIELD_ID, SET_GROUPING_COLLAPSE,
+  SET_HIGHLIGHT_FIELD_ID, SET_HOVER_GROUP_PATH, SET_HOVER_RECORD_ID, SET_HOVER_ROW_OF_ADD_RECORD, SET_KANBAN_GROUPING_EXPAND, SET_LOADING_RECORD,
+  SET_NEW_RECORD_EXPECT_INDEX, SET_ORG_CHART_GRID_WIDTH as SET_ORG_CHART_GRID_PANEL_WIDTH, SET_ORG_CHART_SETTING_PANEL_WIDTH, SET_ROBOT_PANEL_STATUS,
+  SET_SEARCH_KEYWORD, SET_SEARCH_RESULT_CURSOR_INDEX, SET_VIEW_DERIVATION, SWITCH_ACTIVE_PANEL, TOGGLE_CALENDAR_GRID, TOGGLE_CALENDAR_GUIDE_STATUS,
+  TOGGLE_CALENDAR_SETTING_PANEL, TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
+  TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL, TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL,
+  TOGGLE_WIDGET_PANEL, TRIGGER_VIEW_DERIVATION_COMPUTED, UPDATE_DATASHEET, UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT,
+} from 'modules/shared/store/action_constants';
+import { AnyAction, Dispatch } from 'redux';
+import { batchActions } from 'redux-batched-actions';
+import { checkInnerConsistency } from 'utils';
 import { checkLinkConsistency } from 'utils/link_consistency';
+import {
+  fetchDatasheetPack, fetchEmbedDatasheetPack, fetchEmbedForeignDatasheetPack, fetchForeignDatasheetPack, fetchShareDatasheetPack,
+  fetchShareForeignDatasheetPack, fetchTemplateDatasheetPack,
+} from '../../../../api/datasheet_api';
 
 export function requestDatasheetPack(datasheetId: string) {
   return {
@@ -353,7 +285,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
           throw e;
         })
         .then(props => {
-          fetchDatasheetPackSuccess(props);
+          fetchDatasheetPackSuccess({ ...props, forceFetch });
           if (props.responseBody.success) {
             if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
               dispatch((_dispatch: any, getState: () => IReduxState) => {
@@ -373,15 +305,21 @@ interface IFetchDatasheetPack {
   dispatch: Dispatch;
   getState: () => IReduxState;
   isPartOfData?: boolean;
+  forceFetch?: boolean;
 }
 
-export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch, getState, isPartOfData = false }: IFetchDatasheetPack) {
+export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch, getState, isPartOfData = false, forceFetch }: IFetchDatasheetPack) {
   if (responseBody.success) {
+    const state = getState();
     const dataPack = responseBody.data;
     const dispatchActions: AnyAction[] = [];
     if (dataPack.foreignDatasheetMap) {
       Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
         const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
+        const dst = getDatasheet(state, foreignDstId);
+        if (dst) {
+          return;
+        }
         dispatchActions.push(receiveDataPack(foreignDatasheetPack, { isPartOfData: true }));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));
@@ -389,6 +327,10 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
       });
     }
     if (dataPack.datasheet) {
+      const dst = getDatasheet(state, dataPack.datasheet.id);
+      if (dst?.snapshot && !dst.isPartOfData && !forceFetch) {
+        return;
+      }
       dispatchActions.push(receiveDataPack(dataPack, { isPartOfData, getState }));
       if (dataPack.units) {
         // init unityMap, for `member` field use
