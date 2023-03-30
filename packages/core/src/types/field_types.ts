@@ -556,7 +556,7 @@ interface ILinkedFields {
 }
 
 interface ICascaderProperty {
-  showLasted: boolean,
+  showAll: boolean,
   linkedDatasheetId: string,
   linkedViewId: string,
   linkedFields: ILinkedFields[],

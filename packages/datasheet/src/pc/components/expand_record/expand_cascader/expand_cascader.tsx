@@ -83,7 +83,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
         options={options}
         cascaderRef={cascaderRef}
         displayRender={label => {
-          return field.property.showLasted ? label[label.length - 1] : label.join('/');
+          return field.property.showAll ? label.join('/') : label[label.length - 1];
         }}
         value={cascaderValue.map(cv => cv.split(('/')))}
       />
