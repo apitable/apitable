@@ -125,6 +125,17 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 
 
+## How to contribute translations?
+
+We have two ways to improve the translation of APITable:
+
+1. You can modify the markdown files in source code and create a PR directly
+2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+
+In the collaboration of multilingual translation, we follow the following process:
+
+![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+
 ## Wie konfiguriere ich den SMTP-Server?
 
 Standardmäßig konfiguriert APITable den SMTP-Server nicht, was bedeutet, dass Sie keine Benutzer einladen können, da dies die E-Mail-Sendefunktion erfordert.
