@@ -156,3 +156,8 @@ export const NODE_MAX_EMBED_LINK_COUNTS = process.env.NODE_MAX_EMBED_LINK_COUNTS
 export const SERVER_DOMAIN = process.env.SERVER_DOMAIN ? process.env.SERVER_DOMAIN : '';
 
 export const EMBED_LINK_URL_TEMPLATE = SERVER_DOMAIN + '/embed/%s';
+
+/**
+ * enable record lazy association mode
+ */
+export const RECORD_LAZY_ASSOCIATION_MODE = Object.is(process.env.RECORD_LAZY_ASSOCIATION_MODE, true);
