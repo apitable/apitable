@@ -125,16 +125,16 @@ APITable 已准备好这两个IDE调试配置。
 
 
 
-## How to contribute translations?
+## 如何贡献翻译？
 
-We have two ways to improve the translation of APITable:
+我们有两种方法改进APITable的翻译：
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. 您可以修改源代码中的 Markdown 文件并直接创建 PR
+2. 加入 [Crowdin](https://crowdin.com/project/apitablecode) 来找到 `strings` 来修改
 
-In the collaboration of multilingual translation, we follow the following process:
+在多语种翻译的协作下，我们遵循以下程序：
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![多语种翻译流程的截图](../static/collaboration_of_multilingual_translation.png)
 
 ## 如何配置SMTP服务器？
 
