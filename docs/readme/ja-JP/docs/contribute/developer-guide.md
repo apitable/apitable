@@ -125,16 +125,16 @@ APITable のルート ディレクトリを IDE で開くだけです。
 
 
 
-## How to contribute translations?
+## 翻訳に貢献するには?
 
-We have two ways to improve the translation of APITable:
+APITableの翻訳を改善するには2つの方法があります。
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. ソースコード内のマークダウンファイルを変更し、直接PRを作成することができます。
+2. [Crowdin](https://crowdin.com/project/apitablecode) に参加して、 `strings` を見つけて修正してください
 
-In the collaboration of multilingual translation, we follow the following process:
+多言語翻訳のコラボレーションでは、以下の手順に従います。
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![多言語翻訳プロセスのスクリーンショット](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP サーバーの設定方法は?
 
