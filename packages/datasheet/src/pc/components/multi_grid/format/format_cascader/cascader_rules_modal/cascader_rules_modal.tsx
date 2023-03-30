@@ -8,8 +8,6 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
-import { isEqual } from 'lodash';
-import { CascaderSnapshotUpdateModal } from '../cascader_snapshot_update_modal';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -38,12 +36,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const [cascaderPreviewLoading, setCascaderPreviewLoading] = useState(false);
   const [previewNodesMatrix, setPreviewNodesMatrix] = useState<ICascaderNode[][]>([]);
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
-  const [snapshotTreeNodes, setSnapshotTreeNodes] = useState<ICascaderNode[][]>([]);
-  const [showSnapshotModal, setShowSnapshotModal] = useState(false);
-  const [isRefresh, setIsRefresh] = useState(false);
 
   const onCancel = () => {
-    if (isRefresh) setIsRefresh(false);
     setVisible(false);
   };
 
@@ -56,7 +50,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         fullLinkedFields,
       },
     });
-    if (isRefresh) setIsRefresh(false);
     setVisible(false);
   };
 
@@ -72,11 +65,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       Message.error({
         content: t(Strings.cascader_min_field_error),
       });
-      return;
-    }
-    // check id cascader snapshot update
-    if (isRefresh && !isEqual(previewNodesMatrix, snapshotTreeNodes)) {
-      setShowSnapshotModal(true);
       return;
     }
     updateField();
@@ -166,6 +154,25 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     setPreviewNodesMatrix([...previewNodesMatrix.slice(0, index + 1), node.children || []]);
   };
 
+  const handleRefresh = () => {
+    Modal.warning({
+      title: t(Strings.please_note),
+      content: t(Strings.cascader_snapshot_update_text),
+      hiddenCancelBtn: false,
+      onOk: () => {
+        DatasheetApi.updateCascaderSnapshot({
+          spaceId,
+          datasheetId,
+          fieldId: currentField.id,
+          linkedDatasheetId: linkedDatasheetId,
+          linkedViewId: linkedViewId,
+        }).then(() => {
+          onRefreshConfig();
+        });
+      },
+    });
+  };
+
   useEffect(() => {
     if (!visible) return;
     if (currFieldLinkedFields?.length > 0) {
@@ -186,23 +193,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
     fetchData();
   }, [visible]); // eslint-disable-line
-
-  useEffect(() => {
-    if (!visible || !isRefresh) return;
-    const fetchSnapshotData = async() => {
-      const res = await DatasheetApi.getCascaderSnapshot({
-        spaceId,
-        datasheetId,
-        fieldId: currentField.id,
-        linkedFieldIds: currFieldLinkedFields.map((linkedField: ILinkedField) => linkedField.id),
-      });
-      const nodes: ICascaderNode[] = res?.data?.data?.treeSelectNodes || [];
-      setSnapshotTreeNodes([nodes]);
-    };
-
-    fetchSnapshotData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, isRefresh]);
 
   const RenderContent = () => {
     if (cascaderPreviewLoading)
@@ -303,7 +293,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       title={
         <p className={styles.modalTitle}>
           <span style={{ marginRight: 6 }}>{t(Strings.cascader_rules)}</span>
-          {/* TODO: help doc is not ready, waiting for Liam's feedback */}
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
             <InformationSmallOutlined color={colors.fc3} />
           </Tooltip>
@@ -319,10 +308,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
             block={false}
             className={styles.refreshButton}
             component="button"
-            onClick={() => {
-              setIsRefresh(true);
-              onRefreshConfig();
-            }}
+            onClick={handleRefresh}
             prefixIcon={<ReloadOutlined color={colors.primaryColor} />}
             underline={false}
           >
@@ -330,16 +316,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           </LinkButton>
         </div>
         {visible && <RenderContent/>}
-        {showSnapshotModal && (
-          <CascaderSnapshotUpdateModal
-            setShowSnapshotModal={setShowSnapshotModal}
-            linkedDatasheet={linkedDatasheet}
-            updateField={updateField}
-            spaceId={spaceId}
-            datasheetId={datasheetId}
-            field={currentField}
-          />
-        )}
       </div>
     </Modal>
   );
