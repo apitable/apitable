@@ -129,16 +129,16 @@ APITable ได้เตรียมการกำหนดค่าการ�
 
 
 
-## How to contribute translations?
+## จะร่วมแปลได้อย่างไร?
 
-We have two ways to improve the translation of APITable:
+เรามีสองวิธีในการปรับปรุงการแปล APITable:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. คุณสามารถแก้ไขไฟล์มาร์กดาวน์ในซอร์สโค้ดและสร้าง PR ได้โดยตรง
+2. เข้าร่วม [Crowdin](https://crowdin.com/project/apitablecode) ของเราเพื่อค้นหา `strings` ที่จะแก้ไข
 
-In the collaboration of multilingual translation, we follow the following process:
+ในการทำงานร่วมกันของการแปลหลายภาษา เราปฏิบัติตามขั้นตอนต่อไปนี้:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![ภาพหน้าจอของกระบวนการแปลหลายภาษา](../static/collaboration_of_multilingual_translation.png)
 
 ## จะกำหนดค่าเซิร์ฟเวอร์ SMTP ได้อย่างไร?
 
