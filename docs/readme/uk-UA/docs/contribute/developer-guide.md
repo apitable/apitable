@@ -129,16 +129,16 @@ APITable підготував налагоджувальні конфігура�
 
 
 
-## How to contribute translations?
+## Як внести свій внесок в переклади?
 
-We have two ways to improve the translation of APITable:
+У нас є два способи поліпшити переклад АДМІНІСТІ:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. Ви можете змінювати файли markdown в вихідному коді і створювати їх безпосередньо
+2. Приєднуйтесь до нашої [Crowdin](https://crowdin.com/project/apitablecode), щоб знайти `strings` для зміни
 
-In the collaboration of multilingual translation, we follow the following process:
+У співпраці з багатомовним перекладом ми слідуємо наступному процесі:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![Скріншот багатомовного перекладу процесу](../static/collaboration_of_multilingual_translation.png)
 
 ## Як налаштувати SMTP сервер?
 
