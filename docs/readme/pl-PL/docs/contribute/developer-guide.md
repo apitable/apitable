@@ -129,16 +129,16 @@ Wystarczy otworzyć katalog główny APITable za pomocą IDE.
 
 
 
-## How to contribute translations?
+## Jak przyczynić się do tłumaczeń?
 
-We have two ways to improve the translation of APITable:
+Mamy dwa sposoby, aby usprawnić tłumaczenie APITable:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. Możesz modyfikować pliki markdown w kodzie źródłowym i bezpośrednio utworzyć PR
+2. Dołącz do naszego [Crowdin](https://crowdin.com/project/apitablecode) aby znaleźć `strings` aby zmodyfikować
 
-In the collaboration of multilingual translation, we follow the following process:
+We współpracy z tłumaczeniem wielojęzycznym śledzimy następujący proces:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![Zrzut ekranu procesu wielojęzycznego tłumaczenia](../static/collaboration_of_multilingual_translation.png)
 
 ## Jak skonfigurować serwer SMTP?
 
