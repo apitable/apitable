@@ -40,8 +40,12 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
   const [snapshotTreeNodes, setSnapshotTreeNodes] = useState<ICascaderNode[][]>([]);
   const [showSnapshotModal, setShowSnapshotModal] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
 
-  const onCancel = () => setVisible(false);
+  const onCancel = () => {
+    if (isRefresh) setIsRefresh(false);
+    setVisible(false);
+  };
 
   const updateField = () => {
     setCurrentField({
@@ -52,6 +56,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         fullLinkedFields,
       },
     });
+    if (isRefresh) setIsRefresh(false);
     setVisible(false);
   };
 
@@ -70,7 +75,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       return;
     }
     // check id cascader snapshot update
-    if (!isEqual(previewNodesMatrix, snapshotTreeNodes)) {
+    if (isRefresh && !isEqual(previewNodesMatrix, snapshotTreeNodes)) {
       setShowSnapshotModal(true);
       return;
     }
@@ -183,7 +188,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   }, [visible]); // eslint-disable-line
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || !isRefresh) return;
     const fetchSnapshotData = async() => {
       const res = await DatasheetApi.getCascaderSnapshot({
         spaceId,
@@ -197,7 +202,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
     fetchSnapshotData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [visible, isRefresh]);
 
   const RenderContent = () => {
     if (cascaderPreviewLoading)
@@ -314,7 +319,10 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
             block={false}
             className={styles.refreshButton}
             component="button"
-            onClick={onRefreshConfig}
+            onClick={() => {
+              setIsRefresh(true);
+              onRefreshConfig();
+            }}
             prefixIcon={<ReloadOutlined color={colors.primaryColor} />}
             underline={false}
           >
