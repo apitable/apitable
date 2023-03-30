@@ -129,16 +129,16 @@ APITable подготовил отладочные конфигурации дл
 
 
 
-## How to contribute translations?
+## Как сделать перевод?
 
-We have two ways to improve the translation of APITable:
+У нас есть два способа улучшить перевод APITable:
 
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+1. Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
+2. Присоединяйтесь к нашим [Crowdin](https://crowdin.com/project/apitablecode), чтобы найти `strings` для изменения
 
-In the collaboration of multilingual translation, we follow the following process:
+В сотрудничестве с многоязычным переводом мы следуем следующему процессу:
 
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
+![Скриншот процесса многоязычного перевода](../static/collaboration_of_multilingual_translation.png)
 
 ## Как настроить SMTP-сервер?
 
