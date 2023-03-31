@@ -4839,7 +4839,6 @@
                 "steps": "[[164]]"
             },
             "104": {
-                "repeat": true,
                 "completeIndex": 0,
                 "steps": "[[166]]",
                 "player": {
@@ -6415,7 +6414,7 @@
                 ],
                 "next": "获取特殊优惠",
                 "nextId": "claim_special_offer",
-                "uiConfig": "{\n  \"title\": \"现在订阅 Pro 方案，立享 5 折！\",\n  \"description\": \"只需要简单几步升级到 APITable Pro，你就可以享受低至五折的早鸟优惠价\",\n  \"listHeader\": \"升级权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/pricing/\"\n}",
+                "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\n}",
                 "onClose": [
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
