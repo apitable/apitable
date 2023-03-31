@@ -35,7 +35,6 @@ import { Switch } from 'antd';
 import settingStyles from '../../field_setting/styles.module.less';
 import { CollectTypeSelect } from './collect_type_select';
 import { FieldSelectModal } from './field_select_modal';
-import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect, Tooltip } from 'pc/components/common';
 import { Checkbox, Select, colorVars } from '@apitable/components';
@@ -217,14 +216,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
       </ComponentDisplay>
       <section className={settingStyles.section} style={{ marginTop: 16 }}>
         <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.include_time)}
-          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
-        </div>
-      </section>
-      {includeTime && <Divider />}
-      {includeTime && (
-        <section className={settingStyles.section}>
-          <div className={settingStyles.sectionTitle}>
+          <div className={styles.timeTitle}>
             {t(Strings.field_incluede_time_and_time_zone_title)}
             <Tooltip title={t(Strings.date_setting_time_zone_tooltips)} trigger={'hover'}>
               <span className={classNames(settingStyles.sectionTitleTip, settingStyles.noCursor)}>
@@ -232,63 +224,68 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               </span>
             </Tooltip>
           </div>
-          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <Select
-              triggerCls={styles.customSelect}
-              dropdownMatchSelectWidth={false}
-              value={timeFormat}
-              onSelected={handleTimeFormatChange}
-              options={optionTimeFormatData}
-            />
-            <Select
-              triggerCls={styles.timeZoneSelect}
-              dropdownMatchSelectWidth={false}
-              value={timeZone}
-              onSelected={handleTimeZoneChange}
-              renderValue={option => {
-                if (!option.value) {
-                  return `${option.label}: ${getClientTimeZone()}`;
-                }
-                return option.label;
-              }}
-              options={[{
-                label: t(Strings.follow_system_time_zone),
-                value: '',
-              }, ...getUtcOptionList()]}
-              openSearch
-              searchPlaceholder={t(Strings.search)}
-              highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: colorVars.fc1, borderRadius: '4px' }}
-            />
-            <div className={styles.showTimeZone}>
-              <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
-                {t(Strings.field_display_time_zone)}
-              </Checkbox>
-            </div>
-          </ComponentDisplay>
+          <Switch size="small" checked={includeTime} onChange={handleIncludeTimeChange} />
+        </div>
+        {includeTime && (
+          <>
+            <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+              <Select
+                triggerCls={styles.customSelect}
+                dropdownMatchSelectWidth={false}
+                value={timeFormat}
+                onSelected={handleTimeFormatChange}
+                options={optionTimeFormatData}
+              />
+              <Select
+                triggerCls={styles.timeZoneSelect}
+                dropdownMatchSelectWidth={false}
+                value={timeZone}
+                onSelected={handleTimeZoneChange}
+                renderValue={option => {
+                  if (!option.value) {
+                    return `${option.label}: ${getClientTimeZone()}`;
+                  }
+                  return option.label;
+                }}
+                options={[{
+                  label: t(Strings.follow_system_time_zone),
+                  value: '',
+                }, ...getUtcOptionList()]}
+                openSearch
+                searchPlaceholder={t(Strings.search)}
+                highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: colorVars.fc1, borderRadius: '4px' }}
+              />
+              <div className={styles.showTimeZone}>
+                <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
+                  {t(Strings.field_display_time_zone)}
+                </Checkbox>
+              </div>
+            </ComponentDisplay>
 
-          <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <MobileSelect
-              defaultValue={timeFormat}
-              optionData={optionTimeFormatData}
-              onChange={value => handleTimeFormatChange({ value })}
-              style={selectTriggerStyle}
-            />
-            <MobileSelect
-              defaultValue={timeZone}
-              onChange={value => handleTimeZoneChange({ value })}
-              optionData={[{
-                label: t(Strings.follow_system_time_zone),
-                value: '',
-              }, ...getUtcOptionList()]}
-            />
-            <div className={styles.showTimeZone}>
-              <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
-                {t(Strings.field_display_time_zone)}
-              </Checkbox>
-            </div>
-          </ComponentDisplay>
-        </section>
-      )}
+            <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+              <MobileSelect
+                defaultValue={timeFormat}
+                optionData={optionTimeFormatData}
+                onChange={value => handleTimeFormatChange({ value })}
+                style={selectTriggerStyle}
+              />
+              <MobileSelect
+                defaultValue={timeZone}
+                onChange={value => handleTimeZoneChange({ value })}
+                optionData={[{
+                  label: t(Strings.follow_system_time_zone),
+                  value: '',
+                }, ...getUtcOptionList()]}
+              />
+              <div className={styles.showTimeZone}>
+                <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>
+                  {t(Strings.field_display_time_zone)}
+                </Checkbox>
+              </div>
+            </ComponentDisplay>
+          </>
+        )}
+      </section>
       {currentField.type === FieldType.DateTime && (
         <section className={settingStyles.section}>
           <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>

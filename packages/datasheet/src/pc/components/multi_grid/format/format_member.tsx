@@ -23,6 +23,7 @@ import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
+import { useSelector } from 'react-redux';
 
 interface IFormatmember {
   currentField: IMemberField;
@@ -51,6 +52,9 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
   };
 
   const { isMulti, shouldSendMsg } = props.currentField.property;
+
+  const embedId = useSelector(state => state.pageParams.embedId);
+
   return (
     <div className={styles.section}>
       <section className={settingStyles.section}>
@@ -64,14 +68,14 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
         </div>
       </section>
       <section className={settingStyles.section}>
-        <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+        {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
           {t(Strings.field_member_property_notify)}
           <Switch
             size="small"
             checked={shouldSendMsg}
             onChange={handleShouldSendMsgChange}
           />
-        </div>
+        </div>}
       </section>
     </div>
   );

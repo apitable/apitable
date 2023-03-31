@@ -131,7 +131,6 @@ export const getStringifyCellValue = (
   if (!(cacheValue as any).ignoreCache) {
     CacheManager.setCellCache(dsId, fieldId, recordId, cacheValue);
   }
-
   return cacheValue.cellStr;
 };
 

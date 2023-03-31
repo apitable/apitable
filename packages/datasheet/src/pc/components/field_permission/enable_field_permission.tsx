@@ -237,14 +237,10 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
             {
               value: ConfigConstant.permission.editor,
               label: t(Strings.can_edit),
-              disabled: !item.canEdit,
-              disabledTip: t(Strings.cannot_switch_field_permission),
             },
             {
               value: ConfigConstant.permission.reader,
               label: t(Strings.can_read),
-              disabled: !item.canRead,
-              disabledTip: t(Strings.cannot_switch_field_permission),
             },
           ];
           return (

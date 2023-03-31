@@ -327,7 +327,7 @@
         UPDATE ${tablePrefix}node
         SET is_rubbish = #{isRubbish}, updated_by = #{userId}
         WHERE node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
         </foreach>
         AND is_rubbish != #{isRubbish} AND is_deleted = 0
@@ -341,7 +341,10 @@
 
     <update id="updateDeletedPathByNodeId">
         UPDATE ${tablePrefix}node
-        SET deleted_path = #{delPath}, parent_id = -1
+        SET deleted_path = #{delPath},
+            parent_id    = -1,
+            is_rubbish   = 1,
+            updated_by   = #{userId}
         WHERE node_id = #{nodeId}
     </update>
 

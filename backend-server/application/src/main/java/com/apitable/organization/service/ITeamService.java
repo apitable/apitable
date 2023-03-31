@@ -18,33 +18,50 @@
 
 package com.apitable.organization.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-
+import com.apitable.organization.dto.MemberIsolatedInfo;
+import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.MemberPageVo;
+import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.UnitTeamVo;
-import com.apitable.organization.dto.MemberIsolatedInfo;
-import com.apitable.organization.vo.MemberTeamPathInfo;
-import com.apitable.organization.entity.TeamEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public interface ITeamService extends IService<TeamEntity> {
 
     /**
-     * query the member's team includes all parent team.
+     * Get team Tree.
      *
-     * @param spaceId space id
-     * @param memberId member id
-     * @return team ids
+     * @param spaceId   space id
+     * @param memberId  member id
+     * @param depth     recursive depth, min 1
+     * @return List<TeamTreeVo>
+     * @author Chambers
      */
-    Set<Long> getTeamIdsByMemberId(String spaceId, Long memberId);
+    List<TeamTreeVo> getTeamTree(String spaceId, Long memberId, Integer depth);
+
+    /**
+     * Get all team id in team tree.
+     *
+     * @param teamId team id
+     * @return AllTeamId
+     * @author Chambers
+     */
+    List<Long> getAllTeamIdsInTeamTree(Long teamId);
+
+    /**
+     * Get all team id in team tree.
+     *
+     * @param teamIds team ids
+     * @return AllTeamId
+     * @author Chambers
+     */
+    List<Long> getAllTeamIdsInTeamTree(List<Long> teamIds);
 
     /**
      * Check whether the team has members or teams
@@ -113,14 +130,6 @@ public interface ITeamService extends IService<TeamEntity> {
     Long getParentId(Long teamId);
 
     /**
-     * get all sub teams id, excluding self.
-     *
-     * @param teamId team id
-     * @return team ids
-     */
-    List<Long> getAllSubTeamIdsByParentId(Long teamId);
-
-    /**
      *  Get the maximum sorting value of sub team in the team.
      *
      * @param parentId parent team's id
@@ -172,11 +181,10 @@ public interface ITeamService extends IService<TeamEntity> {
     Long getByTeamNamePath(String spaceId, List<String> teamNames);
 
     /**
-     * @param spaceId space id
      * @param teamId team id, root team default 0
      * @return TeamInfoVo
      */
-    TeamInfoVo getTeamInfoById(String spaceId, Long teamId);
+    TeamInfoVo getTeamInfoById(Long teamId);
 
     /**
      * @param teamId team id
@@ -204,12 +212,6 @@ public interface ITeamService extends IService<TeamEntity> {
     void deleteTeam(Collection<Long> teamIds);
 
     /**
-     * @param spaceId space id
-     * @param teamId team id
-     */
-    void deleteSubTeam(String spaceId, Long teamId);
-
-    /**
      * Count the number of people in the team in the space. the team's members include sub teams'.
      *
      * @param spaceId space id
@@ -226,14 +228,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @return TeamTreeVos
      */
     List<TeamTreeVo> buildTree(String spaceId, List<Long> teamIds);
-
-    /**
-     * Count the number of people in the team and it's sub team in the space. the team's members include sub teams'.
-     *
-     * @param teamId team id
-     * @return team id - the member amount
-     */
-    Map<Long, Integer> getTeamMemberCountMap(Long teamId);
 
     /**
      * @param spaceId space id
@@ -293,11 +287,12 @@ public interface ITeamService extends IService<TeamEntity> {
     /**
      * get member's each team's full hierarchy team name
      *
-     * @paarm memberTeamMap member and team rel map
+     * @param memberTeamMap member and team rel map
      * @param spaceId space id
      * @return map
      */
-    Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap, String spaceId);
+    Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap,
+        String spaceId);
 
     /**
      * batch handle team name, get full hierarchy team names and teamId
@@ -306,5 +301,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param spaceId space id
      * @return map member's team path names
      */
-    Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds, String spaceId);
+    Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds,
+        String spaceId);
 }

@@ -1,0 +1,152 @@
+.cascaderRulesModal {
+  :global {
+    .ant-modal-header {
+      padding-bottom: 16px;
+    }
+
+    .ant-modal-body {
+      padding-top: 16px;
+    }
+
+    .ant-modal-footer {
+      padding-bottom: 24px;
+    }
+  }
+}
+
+.modalTitle {
+  align-items: center;
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.cascaderRulesContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tipRow {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.refreshButton {
+  justify-content: flex-end !important;
+  min-width: 132px;
+  padding: 0 !important;
+}
+
+.loadingContainer {
+  align-items: center;
+  justify-content: center;
+}
+
+.fieldSelectsContainer {
+  border: 1px solid var(--borderCommonDefault);
+  border-radius: 4px;
+  display: flex;
+  flex-grow: 1;
+  height: 360px;
+}
+
+.fieldSelectCol {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100px;
+}
+
+.fieldSelect {
+  align-items: center;
+  border-bottom: 1px solid var(--borderCommonDefault);
+  border-right: 1px solid var(--borderCommonDefault);
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+}
+
+.select {
+  cursor: pointer;
+  flex-grow: 1;
+  max-width: calc(100% - 32px);
+}
+
+.fullWidth {
+  max-width: 100%;
+}
+
+.deleteButton {
+  margin-left: 8px;
+}
+
+.fieldPreview {
+  border-right: 1px solid var(--borderCommonDefault);
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.buttonAddWrapper {
+  border-bottom: 1px solid var(--borderCommonDefault);
+  height: 57px;
+  line-height: 57px;
+}
+
+.buttonAdd {
+  margin: 0 2px;
+}
+
+.previewOption {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 4px;
+
+  > span {
+    &:first-of-type {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  svg {
+    fill: var(--bgBrandLightActive);
+  }
+}
+
+.previewOptionUnselected {
+  background-color: var(--defaultBg) !important;
+
+  &:hover {
+    background-color: var(--bgBglessHover) !important;
+  }
+
+  &:active {
+    background-color: var(--bgBglessActive) !important;
+  }
+  &.previewOption {
+    color: var(--textCommonPrimary) !important;
+    svg {
+      fill: var(--textCommonPrimary);
+    }
+  }
+}
+
+.cancelButton {
+  border: none;
+  box-shadow: none;
+}

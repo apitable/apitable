@@ -42,7 +42,7 @@ import { installToDashboard, installToPanel, installWidget } from 'pc/components
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { copy2clipBoard } from 'pc/utils';
+import { copy2clipBoard, getUrlWithHost } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
@@ -196,7 +196,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
             )} key={item.widgetPackageId} onClick={() => setSelectTemplate(item)}>
               <div className={styles.checkbox} />
               <div className={styles.templateCover}>
-                <Image src={item.extras?.templateCover} alt={''} width={40} height={40} />
+                <Image src={getUrlWithHost(item.extras?.templateCover)} alt={''} width={40} height={40} />
               </div>
               <div className={styles.templateInfo}>
                 <div className={styles.templateName}>{item.name}</div>

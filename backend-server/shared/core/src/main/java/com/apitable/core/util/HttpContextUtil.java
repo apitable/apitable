@@ -18,6 +18,10 @@
 
 package com.apitable.core.util;
 
+import static org.springframework.http.HttpHeaders.ORIGIN;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,22 +29,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Objects;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
-
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static org.springframework.http.HttpHeaders.ORIGIN;
-
 /**
  * <p>
- *  HttpServletRequest & HttpServletResponse shortcut actions
+ * HttpServletRequest & HttpServletResponse shortcut actions.
  * </p>
  */
 public class HttpContextUtil {
@@ -70,53 +67,48 @@ public class HttpContextUtil {
     public static final int MAX_IP_LENGTH = 15;
 
     /**
-     * get the current request's HttpServletRequest Object
+     * get the current request's HttpServletRequest Object.
      *
      * @return HttpServletRequest
      */
     public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        return ((ServletRequestAttributes) Objects.requireNonNull(
+            RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
     /**
-     * get the current request's HttpServletResponse Object
+     * get the current request's HttpServletResponse Object.
      *
      * @return HttpServletResponse
      */
     public static HttpServletResponse getResponse() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getResponse();
+        return ((ServletRequestAttributes) Objects.requireNonNull(
+            RequestContextHolder.getRequestAttributes())).getResponse();
     }
 
     /**
-     * Whether there is a cookies session
+     * Whether there is a cookies session.
+     *
      * @return true | false
      */
     public static boolean hasSession() {
         return getSession(false) != null;
     }
 
-    public static boolean hasSession(HttpServletRequest request) {
-        return request.getSession(false) != null;
-    }
-
     /**
      * Returns the current HttpSession associated with this request or,
      * if there is no current session and create is true, returns a new session.
      *
-     * @param create    true to create a new session for this request if necessary;
-     *                  false to return null if there's no current session
+     * @param create true to create a new session for this request if necessary;
+     *               false to return null if there's no current session
      * @return HttpSession
      */
     public static HttpSession getSession(boolean create) {
         return getRequest().getSession(create);
     }
 
-    public static String getParameter(String name) {
-        return getRequest().getParameter(name);
-    }
-
     /**
-     * get the remote IP address
+     * get the remote IP address.
      *
      * @param request servlet's request
      * @return the request's IP address
@@ -148,9 +140,9 @@ public class HttpContextUtil {
                 InetAddress inet;
                 try {
                     inet = InetAddress.getLocalHost();
-                }
-                catch (UnknownHostException e) {
-                    throw new IllegalStateException(String.format("get IP address, exception: %s", e.getMessage()), e);
+                } catch (UnknownHostException e) {
+                    throw new IllegalStateException(
+                        String.format("get IP address, exception: %s", e.getMessage()), e);
                 }
                 assert inet != null;
                 ipAddress = inet.getHostAddress();
@@ -168,7 +160,7 @@ public class HttpContextUtil {
     }
 
     /**
-     * get the remote domain name
+     * get the remote domain name.
      *
      * @param request servlet's request
      * @return the request's domain name
@@ -179,16 +171,13 @@ public class HttpContextUtil {
         String realHost;
         if (StrUtil.isNotBlank(realHost = request.getHeader(X_REAL_HOST))) {
             requestHost = realHost;
-        }
-        else if (StrUtil.isNotBlank(realHost = request.getHeader(ORIGIN))) {
+        } else if (StrUtil.isNotBlank(realHost = request.getHeader(ORIGIN))) {
             try {
                 requestHost = new URL(realHost).getHost();
-            }
-            catch (MalformedURLException ignored) {
+            } catch (MalformedURLException ignored) {
                 requestHost = "";
             }
-        }
-        else {
+        } else {
             requestHost = request.getServerName();
         }
 
@@ -196,7 +185,7 @@ public class HttpContextUtil {
     }
 
     /**
-     * get scheme
+     * get scheme.
      *
      * @param request servlet request
      * @return request's scheme
@@ -210,6 +199,9 @@ public class HttpContextUtil {
         return scheme;
     }
 
+    /**
+     * Symbol class.
+     */
     public static final class Symbol {
         private Symbol() {
         }
@@ -224,26 +216,11 @@ public class HttpContextUtil {
         /**
          * The constant UNDER_LINE.
          */
-        public final static String UNDER_LINE = "_";
+        public static final String UNDER_LINE = "_";
 
-        /**
-         * The constant PER_CENT.
-         */
-        public final static String PER_CENT = "%";
+        public static final String SHORT_LINE = "-";
 
-        /**
-         * The constant AT.
-         */
-        public final static String AT = "@";
-
-        /**
-         * The constant PIPE.
-         */
-        public final static String PIPE = "||";
-
-        public final static String SHORT_LINE = "-";
-
-        public final static String SPACE = " ";
+        public static final String SPACE = " ";
 
         public static final String SLASH = "/";
 
@@ -252,7 +229,7 @@ public class HttpContextUtil {
     }
 
     /**
-     * response
+     * response.
      *
      * @param response    HttpServletResponse
      * @param contentType content-type
@@ -261,12 +238,20 @@ public class HttpContextUtil {
      * @throws IOException IOException
      */
     public static void makeResponse(HttpServletResponse response, String contentType,
-            int status, Object value) throws IOException {
+                                    int status, Object value) throws IOException {
         response.setContentType(contentType);
         response.setStatus(status);
         response.getOutputStream().write(JSONUtil.toJsonStr(value).getBytes());
     }
 
+    /**
+     * get request body.
+     *
+     * @param request servlet request.
+     * @return body content
+     * @throws IOException exception
+     */
+    @Deprecated
     public static String getBody(HttpServletRequest request) throws IOException {
         BufferedReader reader = request.getReader();
         // get http body content

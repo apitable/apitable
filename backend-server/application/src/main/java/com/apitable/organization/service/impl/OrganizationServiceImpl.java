@@ -222,7 +222,12 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
-        return memberMapper.selectUnitMemberByMemberIds(memberIds);
+        List<UnitMemberVo> vos = new ArrayList<>();
+        List<List<Long>> split = CollUtil.split(memberIds, 1000);
+        for (List<Long> ids : split) {
+            vos.addAll(memberMapper.selectUnitMemberByMemberIds(ids));
+        }
+        return vos;
     }
 
     @Override
@@ -230,7 +235,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
-        List<UnitMemberVo> unitMemberVos = memberMapper.selectUnitMemberByMemberIds(memberIds);
+        List<UnitMemberVo> unitMemberVos = this.findUnitMemberVo(memberIds);
         // handle member's team name, get full hierarchy team name
         nodeRoleService.handleNodeMemberTeamName(unitMemberVos, spaceId);
         return unitMemberVos;

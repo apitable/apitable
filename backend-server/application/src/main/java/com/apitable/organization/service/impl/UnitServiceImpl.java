@@ -18,6 +18,32 @@
 
 package com.apitable.organization.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
+import com.apitable.base.enums.DatabaseException;
+import com.apitable.control.service.IControlRoleService;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
+import com.apitable.organization.dto.MemberBaseInfoDTO;
+import com.apitable.organization.dto.RoleBaseInfoDto;
+import com.apitable.organization.dto.TeamBaseInfoDTO;
+import com.apitable.organization.dto.UnitInfoDTO;
+import com.apitable.organization.entity.MemberEntity;
+import com.apitable.organization.entity.TeamEntity;
+import com.apitable.organization.entity.UnitEntity;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.mapper.TeamMapper;
+import com.apitable.organization.mapper.TeamMemberRelMapper;
+import com.apitable.organization.mapper.UnitMapper;
+import com.apitable.organization.service.IRoleMemberService;
+import com.apitable.organization.service.IRoleService;
+import com.apitable.organization.service.ITeamService;
+import com.apitable.organization.service.IUnitService;
+import com.apitable.organization.vo.MemberTeamPathInfo;
+import com.apitable.organization.vo.UnitInfoVo;
+import com.apitable.shared.util.ibatis.ExpandServiceImpl;
+import com.apitable.workspace.enums.PermissionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,45 +51,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.base.enums.DatabaseException;
-import com.apitable.organization.enums.UnitType;
-import com.apitable.organization.vo.UnitInfoVo;
-import com.apitable.control.service.IControlRoleService;
-import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.organization.mapper.TeamMapper;
-import com.apitable.organization.mapper.TeamMemberRelMapper;
-import com.apitable.organization.mapper.UnitMapper;
-import com.apitable.organization.dto.MemberBaseInfoDTO;
-import com.apitable.organization.vo.MemberTeamPathInfo;
-import com.apitable.organization.dto.RoleBaseInfoDto;
-import com.apitable.organization.dto.TeamBaseInfoDTO;
-import com.apitable.organization.dto.UnitInfoDTO;
-import com.apitable.organization.service.IRoleMemberService;
-import com.apitable.organization.service.IRoleService;
-import com.apitable.organization.service.ITeamService;
-import com.apitable.organization.service.IUnitService;
-import com.apitable.shared.util.ibatis.ExpandServiceImpl;
-import com.apitable.workspace.enums.PermissionException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-import com.apitable.organization.entity.MemberEntity;
-import com.apitable.organization.entity.TeamEntity;
-import com.apitable.organization.entity.UnitEntity;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> implements IUnitService {
+public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
+    implements IUnitService {
 
     @Resource
     private MemberMapper memberMapper;
@@ -150,24 +146,13 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     }
 
     @Override
-    @Transactional(rollbackFor =  Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void removeByRefId(Long refId) {
         Long unitId = baseMapper.selectUnitIdByRefId(refId);
         boolean flag = removeById(unitId);
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
         // delete node role or field role
         iControlRoleService.removeByUnitIds(Collections.singletonList(unitId));
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void batchRemoveByTeamId(List<Long> teamIds) {
-        log.info("Batch delete an organizational Unit(team)，team ids：[{}]", teamIds);
-        List<Long> unitIds = baseMapper.selectIdsByRefIds(teamIds);
-        boolean flag = removeByIds(unitIds);
-        ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-        // delete node role or field role
-        iControlRoleService.removeByUnitIds(unitIds);
     }
 
     @Override
@@ -187,35 +172,39 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     public List<UnitInfoVo> getUnitInfoList(String spaceId, List<Long> unitIds) {
         List<UnitEntity> unitEntities = baseMapper.selectByUnitIds(unitIds);
         Map<Long, UnitEntity> unitEntityMap = unitEntities.stream()
-                .filter(unit -> spaceId.equals(unit.getSpaceId()))
-                .collect(Collectors.toMap(UnitEntity::getId, entity -> entity));
+            .filter(unit -> spaceId.equals(unit.getSpaceId()))
+            .collect(Collectors.toMap(UnitEntity::getId, entity -> entity));
         Map<Integer, List<UnitEntity>> groupUnitMap = unitEntities.stream()
-                .collect(Collectors.groupingBy(UnitEntity::getUnitType));
+            .collect(Collectors.groupingBy(UnitEntity::getUnitType));
         List<UnitInfoVo> unitInfoList = new ArrayList<>();
         Map<Long, MemberBaseInfoDTO> memberInfoMap = MapUtil.newHashMap();
         Map<Long, TeamBaseInfoDTO> teamBaseInfoMap = MapUtil.newHashMap();
         Map<Long, RoleBaseInfoDto> roleBaseInfoMap = MapUtil.newHashMap();
         groupUnitMap.forEach((unitType, units) -> {
             UnitType typeEnum = UnitType.toEnum(unitType);
-            List<Long> refIds = units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
+            List<Long> refIds =
+                units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
             if (typeEnum == UnitType.MEMBER) {
                 // load the required member information
-                List<MemberBaseInfoDTO> memberBaseInfoDTOList = memberMapper.selectBaseInfoDTOByIds(refIds);
+                List<MemberBaseInfoDTO> memberBaseInfoDTOList =
+                    memberMapper.selectBaseInfoDTOByIds(refIds);
                 memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
-            }
-            else if (typeEnum == UnitType.TEAM) {
+            } else if (typeEnum == UnitType.TEAM) {
                 // load the required team information
-                List<TeamBaseInfoDTO> teamBaseInfoDTOList = teamMapper.selectBaseInfoDTOByIds(refIds);
+                List<TeamBaseInfoDTO> teamBaseInfoDTOList =
+                    teamMapper.selectBaseInfoDTOByIds(refIds);
                 teamBaseInfoDTOList.forEach(info -> teamBaseInfoMap.put(info.getId(), info));
-            }
-            else if (typeEnum == UnitType.ROLE) {
+            } else if (typeEnum == UnitType.ROLE) {
                 // load required role information
-                List<RoleBaseInfoDto> roleBaseInfoDtoList = iRoleService.getBaseInfoDtoByRoleIds(refIds);
+                List<RoleBaseInfoDto> roleBaseInfoDtoList =
+                    iRoleService.getBaseInfoDtoByRoleIds(refIds);
                 roleBaseInfoDtoList.forEach(info -> roleBaseInfoMap.put(info.getId(), info));
             }
         });
         // handle member's team name, get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(new ArrayList<>(memberInfoMap.keySet()), spaceId);
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+            iTeamService.batchGetFullHierarchyTeamNames(new ArrayList<>(memberInfoMap.keySet()),
+                spaceId);
         // insert data in order
         for (Long unitId : unitIds) {
             UnitEntity unitEntity = unitEntityMap.get(unitId);
@@ -242,7 +231,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                     unitInfoVo.setIsNickNameModified(baseInfo.getIsNickNameModified());
                     unitInfoVo.setIsMemberNameModified(baseInfo.getIsMemberNameModified());
                     if (memberToTeamPathInfoMap.containsKey(unitEntity.getUnitRefId())) {
-                        unitInfoVo.setTeamData(memberToTeamPathInfoMap.get(unitEntity.getUnitRefId()));
+                        List<MemberTeamPathInfo> teamPathInfos =
+                            memberToTeamPathInfoMap.get(unitEntity.getUnitRefId());
+                        unitInfoVo.setTeamData(teamPathInfos);
                     }
                 }
                 // cooling-off-period/cancelled user
@@ -262,8 +253,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                 if (baseInfo != null) {
                     unitInfoVo.setName(baseInfo.getTeamName());
                 }
-            }
-            else if (unitType == UnitType.ROLE) {
+            } else if (unitType == UnitType.ROLE) {
                 RoleBaseInfoDto baseInfo = roleBaseInfoMap.get(unitEntity.getUnitRefId());
                 if (baseInfo != null) {
                     unitInfoVo.setName(baseInfo.getRoleName());
@@ -282,7 +272,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
         if (CollUtil.isEmpty(entities)) {
             return new ArrayList<>();
         }
-        Map<Integer, List<Long>> typeToRefIdsMap = entities.stream().collect(Collectors.groupingBy(UnitEntity::getUnitType,
+        Map<Integer, List<Long>> typeToRefIdsMap =
+            entities.stream().collect(Collectors.groupingBy(UnitEntity::getUnitType,
                 Collectors.mapping(UnitEntity::getUnitRefId, Collectors.toList())));
         if (typeToRefIdsMap.isEmpty()) {
             return new ArrayList<>();
@@ -292,8 +283,10 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
             UnitType type = UnitType.toEnum(entry.getKey());
             switch (type) {
                 case TEAM:
-                    List<Long> subTeamIds = teamMapper.selectAllSubTeamIds(entry.getValue());
-                    List<Long> teamMemberIds = teamMemberRelMapper.selectMemberIdsByTeamIds(CollUtil.union(entry.getValue(), subTeamIds));
+                    Collection<Long> teamIds =
+                        iTeamService.getAllTeamIdsInTeamTree(entry.getValue());
+                    List<Long> teamMemberIds =
+                        teamMemberRelMapper.selectMemberIdsByTeamIds(teamIds);
                     if (CollUtil.isNotEmpty(teamMemberIds)) {
                         memberIds.addAll(teamMemberIds);
                     }
@@ -302,7 +295,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                     memberIds.addAll(entry.getValue());
                     break;
                 case ROLE:
-                    List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
+                    List<Long> roleMemberIds =
+                        iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
                     memberIds.addAll(roleMemberIds);
                 default:
                     break;
@@ -312,9 +306,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     }
 
     @Override
-    public boolean batchUpdateIsDeletedBySpaceIdAndRefId(String spaceId, List<Long> refIds, UnitType unitType,
-            Boolean isDeleted) {
-        return SqlHelper.retBool(baseMapper.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, refIds, unitType, isDeleted));
+    public void batchUpdateIsDeletedBySpaceIdAndRefId(String spaceId, List<Long> refIds,
+        UnitType unitType, Boolean isDeleted) {
+        baseMapper.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, refIds, unitType, isDeleted);
     }
 
     @Override
@@ -324,20 +318,22 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
         List<UnitEntity> unitEntities = baseMapper.selectByUnitIds(unitIds);
         // grouping by unit type
         Map<Integer, List<UnitEntity>> groupUnitMap = unitEntities.stream()
-                .collect(Collectors.groupingBy(UnitEntity::getUnitType));
+            .collect(Collectors.groupingBy(UnitEntity::getUnitType));
         groupUnitMap.forEach((unitType, units) -> {
             UnitType typeEnum = UnitType.toEnum(unitType);
-            Map<Long, Long> refIdToUnitIdMap = units.stream().collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
+            Map<Long, Long> refIdToUnitIdMap = units.stream()
+                .collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
             Set<Long> refIds = refIdToUnitIdMap.keySet();
             if (typeEnum == UnitType.MEMBER) {
                 // querying member information
                 List<MemberEntity> members = memberMapper.selectByMemberIdsIgnoreDelete(refIds);
-                members.forEach(member -> unitInfoList.add(new UnitInfoDTO(refIdToUnitIdMap.get(member.getId()), member.getMemberName())));
-            }
-            else if (typeEnum == UnitType.TEAM) {
+                members.forEach(member -> unitInfoList.add(
+                    new UnitInfoDTO(refIdToUnitIdMap.get(member.getId()), member.getMemberName())));
+            } else if (typeEnum == UnitType.TEAM) {
                 // querying department information
                 List<TeamEntity> teams = teamMapper.selectByTeamIdsIgnoreDelete(refIds);
-                teams.forEach(team -> unitInfoList.add(new UnitInfoDTO(refIdToUnitIdMap.get(team.getId()), team.getTeamName())));
+                teams.forEach(team -> unitInfoList.add(
+                    new UnitInfoDTO(refIdToUnitIdMap.get(team.getId()), team.getTeamName())));
             }
         });
         return unitInfoList;

@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,11 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ITemplate } from '@apitable/core';
-import { createContext } from 'react';
+package com.apitable.workspace.dto;
 
-interface ITemplateListContext {
-  templateListData: ITemplate[]
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+/**
+ * <p>
+ * ControlMemberDTO.
+ * </p>
+ *
+ * @author Chambers
+ */
+@Data
+@AllArgsConstructor
+public class ControlMemberDTO {
+
+    private Long memberId;
+
+    private Boolean isAdmin;
+
+    private Boolean isControlOwner;
+
+    private String controlRoleTag;
+
+    public ControlMemberDTO(Long memberId, String controlRoleTag) {
+        this.memberId = memberId;
+        this.controlRoleTag = controlRoleTag;
+    }
 }
-
-export const TemplateListContext = createContext<ITemplateListContext>({ templateListData: {}} as ITemplateListContext);

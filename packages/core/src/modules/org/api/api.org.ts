@@ -33,13 +33,8 @@ export function getUnitsByMember() {
   return axios.get(Url.MEMBER_UNITS);
 }
 
-/**
- * Contact List, get teams
- * 
- * @returns 
- */
-export function getTeamList() {
-  return axios.get(Url.TEAM_LIST);
+export function getTeamListLayered() {
+  return axios.get(Url.TEAM_LIST_LAYERED);
 }
 
 /**
@@ -185,7 +180,7 @@ export function BatchDeleteMember(teamId: string, memberId: string[], isDeepDel:
  * 
  * @param teamId Team ID
  */
-export function getSubTeams(teamId: string) {
+export function getSubTeams(teamId: string | number) {
   return axios.get(Url.READ_SUB_TEAMS, {
     params: {
       teamId,
@@ -361,4 +356,13 @@ export function linkValid(token: string, nodeId?: string) {
  */
 export function joinViaSpace(token: string, nodeId?: string) {
   return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
+}
+
+export function getCollaboratorListPage(pageObjectParams: string, nodeId: string) {
+  return axios.get(Url.COLLABORATOR_LIST_PAGE,{
+    params: { 
+      pageObjectParams,
+      nodeId
+    }
+  });
 }

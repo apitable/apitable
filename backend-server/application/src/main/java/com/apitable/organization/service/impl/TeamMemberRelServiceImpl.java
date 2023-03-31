@@ -18,33 +18,29 @@
 
 package com.apitable.organization.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.organization.entity.TeamMemberRelEntity;
+import com.apitable.organization.enums.OrganizationException;
+import com.apitable.organization.mapper.TeamMemberRelMapper;
+import com.apitable.organization.service.ITeamMemberRelService;
+import com.apitable.organization.service.ITeamService;
+import com.apitable.shared.util.ibatis.ExpandServiceImpl;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.organization.enums.OrganizationException;
-import com.apitable.organization.mapper.TeamMapper;
-import com.apitable.organization.mapper.TeamMemberRelMapper;
-import com.apitable.organization.service.ITeamMemberRelService;
-import com.apitable.shared.util.ibatis.ExpandServiceImpl;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.organization.entity.TeamMemberRelEntity;
-
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity> implements ITeamMemberRelService {
     @Resource
-    private TeamMapper teamMapper;
+    private ITeamService iTeamService;
 
     @Override
     public void addMemberTeams(List<Long> memberIds, List<Long> teamIds) {
@@ -99,8 +95,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     @Override
     public void removeByTeamId(Long teamId) {
         log.info("Delete the binding relationship between member and department");
-        List<Long> subTeamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
-        subTeamIds.add(teamId);
+        List<Long> subTeamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
         baseMapper.deleteByTeamIds(subTeamIds);
     }
 

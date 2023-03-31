@@ -181,7 +181,7 @@ export function renderFileIconUrl(curFile: IFileLikeProps) {
 }
 
 export const imageSizeExceeded = (size: number) => {
-  if(getEnvVariables().IGNORE_IMG_SIZE_LIMIT){
+  if (getEnvVariables().IGNORE_IMG_SIZE_LIMIT) {
     return false;
   }
   const MAX_FILE_SIZE = 20;

@@ -927,7 +927,7 @@ export class DatasheetOtService {
       }
     } else {
       // Operations on linked datasheet, requires editable permission
-      if (permission.editable) {
+      if (permission.editable || ('li' in action && permission.rowCreatable)) {
         return;
       }
       // If no, maybe this datasheet delete linking fields two-way or undo this operation, causing

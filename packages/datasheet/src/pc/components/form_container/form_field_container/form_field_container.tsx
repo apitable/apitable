@@ -124,6 +124,7 @@ export const FormFieldContainer: FC<React.PropsWithChildren<IFormFieldContainerP
                       FieldType.URL,
                       FieldType.Phone,
                       FieldType.Email,
+                      FieldType.Cascader,
                     ].includes(type)}
                   >
                     <div

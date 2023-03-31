@@ -23,7 +23,7 @@ import {
   CurrencyUsdOutlined, FormulaOutlined, UserEditOutlined, HistoryFilled,
   LongtextOutlined, LookupOutlined, UserOutlined, PercentOutlined, TelephoneOutlined, StarOutlined,
   SelectMultipleOutlined, SelectSingleOutlined, LinkOutlined, NumberOutlined, EmailOutlined,
-  LinktableOutlined, CalendarOutlined, TextOutlined, 
+  LinktableOutlined, CalendarOutlined, TextOutlined, CascadeOutlined
 } from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 
@@ -50,6 +50,7 @@ const ColumnLookupFilledPath = LookupOutlined.toString();
 const ColumnMemberFilledPath = UserOutlined.toString();
 const ColumnPercentFilledPath = PercentOutlined.toString();
 const ColumnRatingFilledPath = StarOutlined.toString();
+const ColumnCascadeOutlinedPath = CascadeOutlined.toString();
 
 interface IFieldIconProps {
   fieldType: FieldType;
@@ -110,6 +111,8 @@ export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((pro
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnCreatedbyFilledPath} fill={fill} />;
     case FieldType.LastModifiedBy:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnLastmodifiedbyFilledPath} fill={fill} />;
+    case FieldType.Cascader:
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnCascadeOutlinedPath} fill={fill} />;
     default:
       return null;
   }

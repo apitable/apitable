@@ -16,21 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getServerSideProps(context: any) {
-  const spaceId = context.query.spaceId;
-  const [path, query] = context.resolvedUrl.split('?');
-  if(spaceId) {
-    const search = new URLSearchParams(query);
-    search.delete('spaceId');
-    const queryStr = search.toString();
-    return {
-      redirect: {
-        destination: path + (queryStr ? `?${queryStr}` : ''),
-        permanent: false,
-      }
-    };
-  }
-  return {
-    props: {}
-  };
+import { ApiProperty } from '@nestjs/swagger';
+import { CascaderChildren } from '../models/cascader.children';
+
+export class CascaderSnapshotVo {
+  @ApiProperty({
+    type: [CascaderChildren],
+    description: 'Cascader Snapshot',
+  })
+  treeSelectNodes!: CascaderChildren[];
 }

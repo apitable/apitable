@@ -18,7 +18,7 @@
 
 import { Button, Loading } from '@apitable/components';
 import {
-  Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamListInSpace, StoreActions, Strings, t
+  Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamTreeNode, StoreActions, Strings, t
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
@@ -32,11 +32,14 @@ import * as React from 'react';
 import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
 import { shallowEqual, useSelector } from 'react-redux';
-import { CreateTeamModal, RenameTeamModal } from '../modal';
+import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
+import { RenameTeamModal } from '../modal/rename_team_modal';
+
 // @ts-ignore
 import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';
+import type { DataNode } from 'antd/es/tree';
 
 const _ContextMenu: any = ContextMenu;
 const _MenuItem: any = MenuItem;
@@ -59,7 +62,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     user,
     spaceInfo,
   } = useSelector((state: IReduxState) => ({
-    teamListInSpace: state.spaceMemberManage.teamListInSpace,
+    teamListInSpace: state.addressList.teamList,
     spaceId: state.space.activeId || '',
     spaceResource: state.spacePermissionManage.spaceResource,
     user: state.user.info,
@@ -76,7 +79,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const { loading, changeSelectTeam: changeSelectTeamHook } = useSelectTeamChange();
 
   useMount(() => {
-    dispatch(StoreActions.getTeamListDataInSpace(spaceId, user!));
+    dispatch(StoreActions.getTeamListData(user!));
     dispatch(StoreActions.getTeamInfo(spaceId, ConfigConstant.ROOT_TEAM_ID));
     dispatch(StoreActions.getMemberListDataInSpace(1, ConfigConstant.ROOT_TEAM_ID));
   });
@@ -97,49 +100,12 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     props.setRightLoading(loading);
   }, [loading, props]);
 
-  const renderTreeNode = (data: ITeamListInSpace[]) => {
+  const renderTreeNode = (data: ITeamTreeNode[]) => {
+    if (!data || data.length === 0) {
+      return <></>;
+    }
     return data.map((item) => {
       const nodeRef = React.createRef<any>();
-      if (item.children && item.children.length > 0) {
-        return (
-          <TreeNode
-            title={
-              <_ContextMenuTrigger
-                id={item.teamId === ConfigConstant.ROOT_TEAM_ID ? TEAM_ROOT_OPERATE : TEAM_OPERATE}
-                holdToDisplay={-1}
-                ref={nodeRef}
-                collect={fileCollect}
-                {...{
-                  teamId: item.teamId,
-                  teamTitle: item.teamName,
-                  memberCount: item.memberCount,
-                  parentId: item.parentId,
-                }}
-              >
-                <Tooltip title={item.teamName} placement="bottomLeft" textEllipsis>
-                  <div>{item.teamName}</div>
-                </Tooltip>
-                {
-                  teamOperate && item.teamId === ConfigConstant.ROOT_TEAM_ID &&
-                  <span
-                    onClick={e => moreClick(e, nodeRef)}
-                    style={{ visibility: 'visible' }}
-                  >
-                    <AddOutlined />
-                  </span>
-                }
-                {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-                <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
-              </_ContextMenuTrigger>
-            }
-            key={item.teamId}
-          >
-            {
-              renderTreeNode(item.children)
-            }
-          </TreeNode>
-        );
-      }
       return (
         <TreeNode
           title={
@@ -158,24 +124,26 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
               <Tooltip title={item.teamName} placement="bottomLeft" textEllipsis>
                 <div>{item.teamName}</div>
               </Tooltip>
-
               {
                 teamOperate && item.teamId === ConfigConstant.ROOT_TEAM_ID &&
-                <span
-                  onClick={e => moreClick(e, nodeRef)}
-                  style={{ visibility: 'visible' }}
-                >
-                  <AddOutlined />
-                </span>
+                  <span
+                    onClick={e => moreClick(e, nodeRef)}
+                    style={{ visibility: 'visible' }}
+                  >
+                    <AddOutlined />
+                  </span>
               }
               {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-              <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+                <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
             </_ContextMenuTrigger>
           }
           key={item.teamId}
-          isLeaf
-        />
+          isLeaf={!item.hasChildren}
+        >
+          { item.children && item.children.length > 0 && renderTreeNode(item.children)}
+        </TreeNode>
       );
+    
     });
   };
   const getRightClickDeptInfo = (data: ISelectedTeamInfoInSpace) => {
@@ -211,13 +179,14 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     socialPlatPreOperateCheck(() => {
       getRightClickDeptInfo(data);
       if (data) {
+        const clickTeam = data;
         Api.readTeam(data.teamId).then(res => {
           const { success, data } = res.data;
           if (success) {
             if (data.hasChildren || data.memberCount > 0) {
               rejectDeleteTeam();
             } else {
-              confirmDeleteTeam(data.teamId);
+              confirmDeleteTeam(clickTeam);
             }
           }
         });
@@ -230,13 +199,16 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       content: t(Strings.warning_exists_sub_team_or_member),
     });
   };
-  const confirmDeleteTeam = (teamId: string) => {
+  const confirmDeleteTeam = (data: ISelectedTeamInfoInSpace) => {
     const confirmDelTeamOk = () => {
       if (user) {
-        Api.deleteTeam(teamId).then(res => {
+        Api.deleteTeam(data.teamId).then(res => {
           const { success } = res.data;
+          const parent = data.parentId ? data.parentId : ConfigConstant.ROOT_TEAM_ID;
           if (success) {
-            dispatch(StoreActions.getTeamListDataInSpace(spaceId, user));
+            
+            dispatch(StoreActions.getSubTeam(parent));
+            
             Message.success({ content: t(Strings.del_team_success) });
           } else {
             Message.error({ content: t(Strings.delete_team_fail) });
@@ -348,6 +320,18 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
 
   }, [isBindDingtalk, refreshBtnLoading, changeSelectTeam, spaceResource, isBindWecom, spaceInfo]);
 
+  const onExpand = (expandedKeys: DataNode['key'][], info: {
+    expanded: boolean;
+    node: DataNode;
+}) => {   
+    if(info.expanded && !info.node.children) {
+      const teamId = expandedKeys[expandedKeys.length - 1];
+    
+      dispatch(StoreActions.getSubTeam(teamId));
+    
+    } 
+  };
+
   return (
     <div className={styles.addressTreeMenuWrapper}>
       <div className={styles.searchTitle}>
@@ -369,6 +353,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
               showIcon={false}
               expandAction={false}
               defaultExpandedKeys={[ConfigConstant.ROOT_TEAM_ID]}
+              onExpand={onExpand}
             >
               {renderTreeNode(teamListInSpace)}
             </DirectoryTree>

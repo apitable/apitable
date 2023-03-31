@@ -21,21 +21,17 @@ package com.apitable.shared.component.adapter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.apitable.shared.util.information.ClientOriginInfo;
-import com.apitable.shared.util.information.InformationUtil;
-
-
+/**
+ * abstract datasource adapter.
+ */
 public abstract class AbstractDatasourceAdapter implements DatasourceAdapter {
 
     private static final int RECENTLY_NODE_ID_LENGTH = 10;
 
-    protected ClientOriginInfo getClientOriginInfo() {
-        return InformationUtil.getClientOriginInfoInCurrentHttpContext(true, false);
-    }
-
     protected List<String> getTheLatestVisitedNodeIds(List<String> originNodeIds, String nodeId) {
         // filter current node id
-        List<String> nodeIds = originNodeIds.stream().filter(i -> !nodeId.equals(i)).collect(Collectors.toList());
+        List<String> nodeIds =
+            originNodeIds.stream().filter(i -> !nodeId.equals(i)).collect(Collectors.toList());
         if (nodeIds.size() >= RECENTLY_NODE_ID_LENGTH) {
             nodeIds.remove(0);
         }

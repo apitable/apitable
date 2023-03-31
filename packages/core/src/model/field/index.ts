@@ -59,7 +59,7 @@ import {
   ILastModifiedByField,
   ISingleTextField,
   IDeniedField,
-  INotSupportField,
+  INotSupportField, ICascaderField,
 } from 'types/field_types';
 import { Field } from './field';
 import { EmailField } from './email_field';
@@ -72,6 +72,7 @@ import { MemberField } from './member_field';
 import { CreatedByField } from './created_by_field';
 import { LastModifiedByField } from './last_modified_by_field';
 import { SingleTextField } from './single_text_field';
+import { CascaderField } from './cascader_field';
 import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
 
@@ -125,6 +126,7 @@ export interface IBindFieldModel {
   (field: ILastModifiedTimeField, state?: IReduxState, newInstance?: boolean): LastModifiedTimeField;
   (field: ICreatedByField, state?: IReduxState, newInstance?: boolean): CreatedByField;
   (field: ILastModifiedByField, state?: IReduxState, newInstance?: boolean): LastModifiedByField;
+  (field: ICascaderField, state?: IReduxState, newInstance?: boolean): CascaderField;
   (field: IDeniedField, state?: IReduxState, newInstance?: boolean): DeniedField;
   (field: INotSupportField, state?: IReduxState, newInstance?: boolean): NotSupportField;
   (field: IField, state?: IReduxState, newInstance?: boolean): Field;
@@ -154,6 +156,7 @@ export interface IBindFieldContext {
   (field: ILastModifiedTimeField, state: IReduxState): LastModifiedTimeField;
   (field: ICreatedByField, state: IReduxState): CreatedByField;
   (field: ILastModifiedByField, state: IReduxState): LastModifiedByField;
+  (field: ICascaderField, state: IReduxState): CascaderField;
   (field: IDeniedField, state: IReduxState): DeniedField;
   (field: INotSupportField, state: IReduxState): NotSupportField;
   (field: IField, state: IReduxState): Field;
@@ -233,6 +236,9 @@ export const getFieldClass = (type: FieldType) => {
     case FieldType.SingleText: {
       return SingleTextField;
     }
+    case FieldType.Cascader: {
+      return CascaderField;
+    }
     case FieldType.DeniedField: {
       return DeniedField;
     }
@@ -263,6 +269,7 @@ export const bindModel = (() => {
     // Force initialize a new instance
     if (newInstance) {
       const FieldClass = getFieldClass(field.type);
+      // @ts-ignore
       return new FieldClass(field as any, state);
     }
 

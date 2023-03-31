@@ -16,11 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiInterface } from '@apitable/core';
-import { createContext } from 'react';
+export class CascaderSnapshotUpdateDto {
+  spaceId!: string;
 
-interface ITemplateRecommendContext {
-  recommendData: ApiInterface.ITemplateRecommendResponse;
+  datasheetId!: string;
+
+  fieldId!: string;
+
+  linkedDatasheetId!: string;
+
+  linkedViewId!: string;
 }
-
-export const TemplateRecommendContext = createContext<ITemplateRecommendContext>({ recommendData: {}} as ITemplateRecommendContext);

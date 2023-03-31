@@ -89,7 +89,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
           conditionId: condition.conditionId,
           operator: Field.bindModel(field).acceptFilterOperators[0],
           value: getDefaultValue(valueType) as any,
-        };
+        } as any;
         return draft;
       });
     });
@@ -169,14 +169,15 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
       dropdownMatchSelectWidth={false}
       openSearch
       searchPlaceholder={t(Strings.search)}
+      popupStyle={{
+        zIndex: 1000
+      }}
       suffixIcon={
         checkTypeSwitch(condition, fieldMap[condition.fieldId]) && !isCryptoField ? (
           <Tooltip title={t(Strings.lookup_filter_condition_tip)} placement="top">
             <WarnCircleFilled color={colors.warningColor} size={20} />
           </Tooltip>
-        ) : (
-          undefined
-        )
+        ) : undefined
       }
     />
   );

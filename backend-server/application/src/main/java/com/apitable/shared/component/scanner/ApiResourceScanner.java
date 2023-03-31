@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -232,14 +233,17 @@ public class ApiResourceScanner
 
     final String name = invokeAnnotationMethod(apiResource, "name");
     resourceDefinition.setResourceName(name);
-    final String[] path = invokeAnnotationMethod(apiResource, "path");
-    resourceDefinition.setResourceUrl(
-        getControllerClassRequestPath(clazz) + path[0]);
+    final String[] paths = invokeAnnotationMethod(apiResource, "path");
+    String[] resourceUrls = new String[paths.length];
+    for (int i = 0; i < paths.length; i++) {
+      resourceUrls[i] = getControllerClassRequestPath(clazz) + paths[i];
+    }
+    resourceDefinition.setResourceUrls(resourceUrls);
     final Boolean requiredLogin =
         invokeAnnotationMethod(apiResource, "requiredLogin");
     resourceDefinition.setRequiredLogin(requiredLogin);
     if (!requiredLogin) {
-      IgnorePathHelper.getInstant().add(resourceDefinition.getResourceUrl());
+      IgnorePathHelper.getInstant().addAll(Arrays.asList(resourceDefinition.getResourceUrls()));
     }
     final Boolean requiredPermission =
         invokeAnnotationMethod(apiResource, "requiredPermission");

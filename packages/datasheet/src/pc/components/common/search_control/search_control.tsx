@@ -33,8 +33,8 @@ interface ISearchControlProps {
   onCancelClick?: () => void;
   onFocus?: () => void;
   onkeyDown?: (e: React.KeyboardEvent) => void;
-  checked: boolean;
-  checkboxText: string;
+  checked?: boolean;
+  checkboxText?: string;
   value: string;
   placeholder?: string;
   switchVisible?: boolean;
@@ -43,7 +43,7 @@ interface ISearchControlProps {
 const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISearchControlProps> = (props, ref) => {
   const {
     value,
-    checked,
+    checked = false,
     onValueChange,
     onSwitcherChange,
     onCancelClick,

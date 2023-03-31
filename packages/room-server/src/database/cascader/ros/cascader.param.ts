@@ -16,21 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getServerSideProps(context: any) {
-  const spaceId = context.query.spaceId;
-  const [path, query] = context.resolvedUrl.split('?');
-  if(spaceId) {
-    const search = new URLSearchParams(query);
-    search.delete('spaceId');
-    const queryStr = search.toString();
-    return {
-      redirect: {
-        destination: path + (queryStr ? `?${queryStr}` : ''),
-        permanent: false,
-      }
-    };
-  }
-  return {
-    props: {}
-  };
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
+import { ApiTipConstant } from '@apitable/core';
+
+export class CascaderParam {
+  @ApiProperty({
+    type: String,
+    example: 'spc***',
+    description: 'Space ID',
+  })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  spaceId!: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'dst***',
+    description: 'Datasheet ID',
+  })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  datasheetId!: string;
 }
