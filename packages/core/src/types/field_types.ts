@@ -556,7 +556,7 @@ interface ILinkedFields {
 }
 
 interface ICascaderProperty {
-  showLasted: boolean,
+  showAll: boolean,
   linkedDatasheetId: string,
   linkedViewId: string,
   linkedFields: ILinkedFields[],
@@ -874,8 +874,7 @@ export const FieldTypeDescriptionMap: {
     type: FieldType.Cascader,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,
-    // TODO(Cascader help link)
-    help: '',
+    help:  t(Strings.field_help_cascader),
     hasOptSetting: true,
   },
 };

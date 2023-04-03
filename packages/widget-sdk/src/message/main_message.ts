@@ -11,6 +11,8 @@ interface IWidget {
   connect: ConnectStatus;
   /** Manage widget view cache subscriptions */
   subscribeViews: ISubscribeView[];
+  /** bind datasheet ID */
+  bindDatasheetId: string;
 }
 
 /**
@@ -68,7 +70,7 @@ class MainMessage {
    * @param window 
    * @returns 
    */
-  initWidgetWindow(widgetId: string, window: IContentWindow) {
+  initWidgetWindow(widgetId: string, window: IContentWindow, bindDatasheetId: string) {
     // SYN_SENT
     const widget = this.widgets.get(widgetId);
     // Parameter checking, sandbox type widget must be passed in window.
@@ -81,7 +83,8 @@ class MainMessage {
     }
     this.widgets.set(widgetId, {
       connect: ConnectStatus.SYN_SENT,
-      subscribeViews: []
+      subscribeViews: [],
+      bindDatasheetId
     });
     this.messageBridge.addWindow(widgetId, window!);
   }
@@ -261,17 +264,7 @@ class MainMessage {
    * Broadcast action.
    * @param action
    */
-  syncActionBroadcast(action: AnyAction, dependenceDstIds?: string[]) {
-    const subscribeViews = this.subscribeViews();
-    if (!subscribeViews.length) {
-      return;
-    }
-    if (action.datasheetId) {
-      const needEmit = subscribeViews.find(item => dependenceDstIds?.includes(item.datasheetId) || item.datasheetId === action.datasheetId);
-      if (!needEmit) {
-        return ;
-      }
-    }
+  syncActionBroadcast(action: AnyAction) {
     this.emitBroadcast(MessageType.MAIN_SYNC_ACTION, action);
   }
   

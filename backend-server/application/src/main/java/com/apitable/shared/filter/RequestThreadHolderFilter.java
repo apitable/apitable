@@ -20,6 +20,7 @@ package com.apitable.shared.filter;
 
 import static com.apitable.shared.constants.FilterConstants.REQUEST_THREAD_HOLDER_FILTER;
 
+import com.apitable.shared.holder.ClientOriginInfoHolder;
 import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
@@ -34,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 
 /**
@@ -57,18 +57,17 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
         SpaceHolder.init();
         MemberHolder.init();
         NotificationRenderFieldHolder.init();
-
-        ContentCachingRequestWrapper wrappedRequest =
-            new ContentCachingRequestWrapper(httpServletRequest);
+        ClientOriginInfoHolder.init();
 
         try {
-            filterChain.doFilter(wrappedRequest, httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         } finally {
             UserHolder.remove();
             LoginUserHolder.remove();
             SpaceHolder.remove();
             MemberHolder.remove();
             NotificationRenderFieldHolder.remove();
+            ClientOriginInfoHolder.remove();
         }
     }
 

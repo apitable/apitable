@@ -455,6 +455,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
           columnCount={columnCount}
           columnWidth={() => cardWidth}
           rowCount={linearRows.length}
+          key={cardHeight}
           rowHeight={index => getRowHeight(index)}
           itemKey={itemKey}
           itemData={itemContextData}

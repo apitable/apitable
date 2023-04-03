@@ -31,3 +31,4 @@ export * from './flat';
 export * from './url_recognition';
 export * from './emoji_url';
 export * from './tree';
+export * from './get_url_with_host';

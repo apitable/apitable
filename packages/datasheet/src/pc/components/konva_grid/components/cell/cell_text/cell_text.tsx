@@ -69,7 +69,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
 
     const isRecogURLFlag = field.type === FieldType.URL && field.property?.isRecogURLFlag;
 
-    _handleEnhanceTextClick(type, isRecogURLFlag ? Field.bindModel(field).cellValueToString(cellValue as ISegment[]) || '' : text);
+    _handleEnhanceTextClick(type, isRecogURLFlag ? Field.bindModel(field).cellValueToURL(cellValue as ISegment[]) || '' : text);
   };
 
   const onMouseEnter = (item: {
@@ -81,7 +81,13 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   }) => {
     if (field.type === FieldType.URL && field.property?.isRecogURLFlag && !!cellValue) {
       const { offsetX: innerX, offsetY: innerY, width } = item;
-      const text = Field.bindModel(field).cellValueToString(cellValue as ISegment[]) || '';
+      let text = '';
+      if (field.type === FieldType.URL && field.property?.isRecogURLFlag) {
+        text = Field.bindModel(field).cellValueToURL(cellValue)!;
+      } else {
+        text = Field.bindModel(field).cellValueToString(cellValue as ISegment[]) || '';
+      }
+
       setTooltipInfo({
         title: text,
         visible: true,

@@ -19,19 +19,17 @@
 package com.apitable.shared.listener.event;
 
 import cn.hutool.json.JSONObject;
+import com.apitable.space.enums.AuditSpaceAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.apitable.space.enums.AuditSpaceAction;
-
 import org.springframework.context.ApplicationEvent;
 
 /**
  * <p>
- * Space audit Event
+ * Space audit Event.
  * </p>
  *
  * @author Chambers
@@ -45,6 +43,9 @@ public class AuditSpaceEvent extends ApplicationEvent {
         this.arg = arg;
     }
 
+    /**
+     * space audit argument.
+     */
     @Getter
     @Setter
     @NoArgsConstructor
@@ -59,6 +60,10 @@ public class AuditSpaceEvent extends ApplicationEvent {
         private String spaceId;
 
         private String nodeId;
+
+        private String requestUserAgent;
+
+        private String requestIp;
 
         private JSONObject info;
     }

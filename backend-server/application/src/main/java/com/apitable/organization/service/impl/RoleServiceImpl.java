@@ -82,11 +82,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public Long createRole(Long userId, String spaceId, String roleName) {
         log.info("create role: {}", roleName);
-        int maxSequence = getMaxSequenceBySpaceId(spaceId);
+        int sequence = getSequenceBySpaceId(spaceId);
         RoleEntity role = new RoleEntity();
         role.setSpaceId(spaceId);
         role.setRoleName(roleName);
-        role.setPosition(maxSequence * 2);
+        role.setPosition(sequence);
         role.setCreateBy(userId);
         boolean flag = save(role);
         ExceptionUtil.isTrue(flag, OrganizationException.CREATE_ROLE_ERROR);
@@ -285,9 +285,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         });
     }
 
-    private int getMaxSequenceBySpaceId(String spaceId) {
+    private int getSequenceBySpaceId(String spaceId) {
         Integer maxSequence = baseMapper.selectMaxSequenceBySpaceId(spaceId);
-        return ObjectUtil.isNull(maxSequence) ? 1000 : maxSequence;
+        return ObjectUtil.isNull(maxSequence) ? 1000 : maxSequence + 100;
     }
 
 }

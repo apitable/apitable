@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, IField } from '@apitable/core';
+import { ApiTipConstant, ICellValue, IField, IHyperlinkSegment, SegmentType } from '@apitable/core';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { isString } from 'class-validator';
+import { isObject } from 'class-validator';
 import { FieldManager } from 'fusion/field.manager';
 import { BaseTextField } from 'fusion/field/base.text.field';
+import { isString } from 'lodash';
+import { ApiException } from 'shared/exception';
 import { IFieldValue } from 'shared/interfaces';
 
 @Injectable()
@@ -29,10 +31,39 @@ export class UrlField extends BaseTextField implements OnApplicationBootstrap {
     FieldManager.setService(UrlField.name, this);
   }
 
-  override validate(fieldValue: IFieldValue, field: IField, extra?: { [key: string]: string }) {
+  // eslint-disable-next-line require-await
+  override async roTransform(fieldValue: IFieldValue, _field: IField): Promise<ICellValue> {
+    if (fieldValue == null) {
+      return null;
+    }
+    if (isString(fieldValue)) {
+      return [
+        {
+          text: fieldValue!.toString(),
+          type: SegmentType.Text,
+        },
+      ];
+    }
+    const cellValue: IHyperlinkSegment = {
+      link: fieldValue['text'],
+      text: fieldValue['text'],
+      title: fieldValue['title'],
+      type: SegmentType.Url,
+      favicon: fieldValue['favicon']
+    };
+    return [cellValue];
+  }
+
+  override validate(fieldValue: IFieldValue, field: IField) {
     if (fieldValue === null) return;
+    if (isObject(fieldValue)) {
+      if (!fieldValue['text']) {
+        throw ApiException.tipError(ApiTipConstant.api_params_instance_error, { property: field.name, value: 'text' });
+      }
+      return;
+    }
     if (!isString(fieldValue)) {
-      this.throwException(field, ApiTipConstant.api_param_url_field_type_error, extra);
+      throw ApiException.tipError(ApiTipConstant.api_param_url_field_type_error, { field: field.name });
     }
   }
 }

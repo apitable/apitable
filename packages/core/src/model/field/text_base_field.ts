@@ -227,7 +227,7 @@ export abstract class TextBaseField extends Field {
     });
   }
 
-  cellValueToApiStandardValue(cellValue: ISegment[] | null): string | null {
+  cellValueToApiStandardValue(cellValue: ISegment[] | null): ISegment |string | null {
     return this.cellValueToString(cellValue);
   }
 

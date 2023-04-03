@@ -96,7 +96,6 @@ export const MemberList: FC<React.PropsWithChildren<IMemberList>> = props => {
     <div className={styles.memberListContainer}>
       <List
         itemLayout='horizontal'
-      
       >
         <VirtualList
           data={memberList}

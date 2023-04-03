@@ -50,10 +50,12 @@ export const getNoPermissionMemberList = async(nodeId: string, unitsIds: string[
 };
 
 export const verificationPermission = async(commitRemindParam: IApi.ICommitRemind) => {
+  const state = store.getState();
+  const embedId = state.pageParams.embedId;
+  if(embedId) return;
   const newCommitRemindParam = fastCloneDeep(commitRemindParam);
   dispatch(StoreActions.setPermissionCommitRemindParameter(newCommitRemindParam));
-
-  const state = store.getState();
+ 
   const nodeId = commitRemindParam.nodeId || '';
   const unitsIds = newCommitRemindParam.unitRecs.map(unitRec => unitRec.unitIds).flat();
   const noPermissionMemberData = await getNoPermissionMemberList(nodeId, unitsIds);
@@ -181,7 +183,7 @@ export const NotificationVerificationModal: React.FC<React.PropsWithChildren<IUn
   );
 };
 
-const MessageContent = ({ members }: { members:  IApi.INoPermissionMemberResponseData[] }) => {
+const MessageContent = ({ members }: { members: IApi.INoPermissionMemberResponseData[] }) => {
   const memberList = members.slice(0, 3);
   return (
     <>

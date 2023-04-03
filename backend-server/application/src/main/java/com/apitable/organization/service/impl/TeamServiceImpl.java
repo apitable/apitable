@@ -77,6 +77,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * team service implement.
+ */
 @Service
 @Slf4j
 public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> implements ITeamService {
@@ -138,7 +141,10 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         List<TeamTreeVo> treeVos =
             new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);
         treeVos.stream().filter(i -> Objects.equals(i.getTeamId(), rootTeamId))
-            .forEach(i -> i.setTeamId(0L));
+            .forEach(i -> {
+                i.setTeamId(0L);
+                i.getChildren().forEach(c -> c.setParentId(0L));
+            });
         return treeVos;
     }
 
@@ -335,7 +341,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<Long> createBatchByTeamName(String spaceId, Long rootTeamId,
-        List<String> teamNames) {
+                                            List<String> teamNames) {
         List<Long> teamIds = new ArrayList<>();
         // Take the last index, or there may be only one department level
         int lastIndex = teamNames.size() - 1;
@@ -378,7 +384,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         return teamPathName.getOrDefault(withoutBlankTeamNamePath, null);
     }
 
-    public Map<String, Long> buildTreeTeamList(List<TeamEntity> teamEntities, String teamName) {
+    private Map<String, Long> buildTreeTeamList(List<TeamEntity> teamEntities, String teamName) {
         Map<String, Long> teamPathMap = new HashMap<>();
         List<Long> teamIds = teamEntities.stream()
             .filter(e -> e.getTeamName().equals(teamName))
@@ -393,7 +399,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     private void findParentTeam(List<TeamEntity> teamEntities, Long teamId,
-        Consumer<String> teamPath) {
+                                Consumer<String> teamPath) {
         for (TeamEntity teamEntity : teamEntities) {
             if (teamEntity.getId().equals(teamId) && !teamEntity.getParentId().equals(0L)) {
                 teamPath.accept(teamEntity.getTeamName());
@@ -404,9 +410,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public TeamInfoVo getTeamInfoById(Long teamId) {
-        log.info("get team info by id");
-        TeamEntity team = teamMapper.selectById(teamId);
         TeamInfoVo teamInfo = new TeamInfoVo();
+        TeamEntity team = teamMapper.selectById(teamId);
+        if (team == null) {
+            return teamInfo;
+        }
         teamInfo.setTeamName(team.getTeamName());
         if (team.getParentId() == 0L) {
             teamInfo.setTeamId(0L);
@@ -482,12 +490,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         for (TeamMemberDTO node : results) {
             List<Long> memberIds = new ArrayList<>();
             recurse(results, node, memberIds);
-            List<Long> mIds = CollUtil.distinct(memberIds);
+            List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
             TeamTreeVo teamTreeVo = new TeamTreeVo();
             teamTreeVo.setTeamId(node.getTeamId());
             teamTreeVo.setTeamName(node.getTeamName());
             teamTreeVo.setParentId(node.getParentId());
-            teamTreeVo.setMemberCount(mIds.size());
+            teamTreeVo.setMemberCount(distinctMemberIds.size());
             teamTreeVo.setSequence(node.getSequence());
             res.add(teamTreeVo);
         }
@@ -506,12 +514,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         for (TeamMemberDTO node : resultList) {
             List<Long> memberIds = new ArrayList<>();
             recurse(resultList, node, memberIds);
-            List<Long> mIds = CollUtil.distinct(memberIds);
+            List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
             TeamTreeVo teamTreeVo = new TeamTreeVo();
             teamTreeVo.setTeamId(node.getTeamId());
             teamTreeVo.setTeamName(node.getTeamName());
             teamTreeVo.setParentId(node.getParentId().equals(rootTeamId) ? 0L : node.getParentId());
-            teamTreeVo.setMemberCount(mIds.size());
+            teamTreeVo.setMemberCount(distinctMemberIds.size());
             teamTreeVo.setSequence(node.getSequence());
             res.add(teamTreeVo);
         }
@@ -549,9 +557,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // Gets a member's department's and all sub-departments' id
         List<TeamCteInfo> allTeamIds =
             teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
-        List<Long> tIds =
+        List<Long> filterTeamIds =
             allTeamIds.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
-        return this.buildTree(spaceId, tIds);
+        return this.buildTree(spaceId, filterTeamIds);
     }
 
     @Override
@@ -615,15 +623,15 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds,
-        String spaceId) {
+                                                                              String spaceId) {
         if (CollUtil.isEmpty(memberIds)) {
             return new HashMap<>();
         }
         // batch get memberId and teamId
-        List<MemberTeamInfoDTO> memberTeamInfoDTOS =
+        List<MemberTeamInfoDTO> memberTeamInfoList =
             memberMapper.selectTeamIdsByMemberIds(memberIds);
         // group by memberId
-        Map<Long, List<Long>> memberTeamMap = memberTeamInfoDTOS.stream()
+        Map<Long, List<Long>> memberTeamMap = memberTeamInfoList.stream()
             .collect(Collectors.groupingBy(MemberTeamInfoDTO::getMemberId,
                 Collectors.mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
         // get member's each full hierarchy team name
@@ -651,7 +659,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap,
-        String spaceId) {
+                                                             String spaceId) {
         // get all teamIds
         Set<Long> allTeamIds = new HashSet<>();
         for (Entry<Long, List<Long>> entry : memberTeamMap.entrySet()) {
@@ -669,7 +677,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // TODO:optimize just recurse first level nodeId
         for (TeamTreeVo treeVo : treeVos) {
             // current team full hierarchy team name
-            List<String> teamNames = new ArrayList<>();
+            final List<String> teamNames = new ArrayList<>();
             List<TeamVo> teamVos = new ArrayList<>();
             // build team info object, include teamId and teamName
             TeamVo teamVo = new TeamVo();
@@ -690,17 +698,18 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * recurse get member's teamId and teamName
+     * recurse get member's teamId and teamName.
      *
-     * @param treeVo team tree view
-     * @param teamVos team's view
-     * @param allTeamIds member's all teamIds
-     * @param teamNames member's team path name
+     * @param treeVo          team tree view
+     * @param teamVos         team's view
+     * @param allTeamIds      member's all teamIds
+     * @param teamNames       member's team path name
      * @param teamIdToPathMap memberId with member's team name map
      */
     private void recurseGetBranchAllTeamIdsAndTeamNames(List<TeamTreeVo> treeVo,
-        List<TeamVo> teamVos, Set<Long> allTeamIds, List<String> teamNames,
-        Map<Long, List<String>> teamIdToPathMap) {
+                                                        List<TeamVo> teamVos, Set<Long> allTeamIds,
+                                                        List<String> teamNames,
+                                                        Map<Long, List<String>> teamIdToPathMap) {
         for (TeamTreeVo team : treeVo) {
             if (allTeamIds.contains(team.getTeamId())) {
                 List<String> branchNames = new ArrayList<>(teamNames);
@@ -722,7 +731,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * recursive processing
+     * recursive processing.
      *
      * @param resultList list
      * @param node       node
@@ -739,7 +748,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * get child nodes
+     * get child nodes.
      *
      * @param resultList list
      * @param node       node

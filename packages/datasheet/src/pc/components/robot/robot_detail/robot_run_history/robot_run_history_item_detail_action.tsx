@@ -56,6 +56,24 @@ const webhookJsonSchema = {
   }
 };
 
+const mailJsonSchema = {
+  schema: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        title: 'message'
+      }
+    },
+    additionalProperties: false,
+  },
+  uiSchema: {
+    'ui:order': [
+      'message',
+    ]
+  }
+};
+
 export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail) => {
   const { nodeDetail } = props;
 
@@ -63,6 +81,8 @@ export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail)
   const nodeType = produce(props.nodeType, nodeType => {
     if (nodeType.endpoint === 'sendRequest') {
       nodeType.outputJsonSchema = { ...webhookJsonSchema };
+    } else if(nodeType.endpoint === 'sendMail') {
+      nodeType.outputJsonSchema = { ...mailJsonSchema };
     } else {
       nodeType.outputJsonSchema = undefined;
     }

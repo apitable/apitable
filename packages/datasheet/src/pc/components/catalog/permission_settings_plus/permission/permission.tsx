@@ -17,7 +17,8 @@
  */
 
 import { Box, IOption, Skeleton } from '@apitable/components';
-import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
+import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, 
+  IReduxState, IUnitValue, StoreActions, Strings, t, IRoleMember } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common/message/message';
@@ -39,6 +40,11 @@ export interface IPermissionSettingProps {
   data: INodePermissionData;
 }
 
+export type IMemberList = IRoleMember & {
+  isWorkbenchAdmin: boolean;
+  isControlOwner: boolean;
+};
+
 type IRoleMap = INodeRoleMap & { belongRootFolder: boolean };
 
 export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = ({ data }) => {
@@ -47,13 +53,18 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
   // Whether to display the View Member Details modal box
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const ownUnitId = useSelector((state: IReduxState) => state.user.info?.unitId);
-  const { getNodeRoleListReq } = useCatalogTreeRequest();
+  const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
   const { run: getNodeRoleMap, data: roleMap } = useRequest<IRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
   const nodeAssignable = treeNodesMap[data.nodeId]?.permissions.nodeAssignable;
   const unitListScroll = useRef<HTMLDivElement>(null);
   const spaceId = useSelector(state => state.space.activeId)!;
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const [pageNo, setPageNo] = useState<number>(1);
+  const [memberList, setMemberList] = useState<IMemberList[]>([]);
+  const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
+    manual: true
+  });
 
   useEffect(() => {
     if (!roleMap) {
@@ -74,6 +85,17 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
     }
     // eslint-disable-next-line
   }, [roleMap]);
+
+  useEffect(() => {
+    getCollaboratorReq(pageNo);
+  }, [pageNo, getCollaboratorReq]);
+
+  useEffect(() => {
+    if(collaboratorInfo) {
+      setMemberList([...memberList, ...collaboratorInfo.records]);
+    }
+    // eslint-disable-next-line
+  }, [collaboratorInfo, setMemberList]);
 
   /**
    * Turn off inheritance mode of operation
@@ -260,8 +282,8 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
             />
           </div>
         }
-        <PermissionInfoSetting
-          members={roleMap.members}
+        {collaboratorInfo && <PermissionInfoSetting
+          totalMember={collaboratorInfo.total}
           isExtend={!isAppointMode}
           resetPermission={resetPermission}
           toggleIsMemberDetail={toggleIsMemberDetail}
@@ -275,7 +297,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
             resetPopConfirmContent: isRootNode ? t(Strings.close_permission_warning_content) : t(Strings.reset_permission_content),
             resetPermissionDesc: isRootNode ? t(Strings.reset_permission_desc_root) : t(Strings.reset_permission_desc),
           }}
-        />
+        />}
       </div>
       <div className={styles.scrollContainer} ref={unitListScroll}>
         <UnitList
@@ -293,8 +315,11 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
         isMemberDetail &&
         (
           <MembersDetail
-            data={roleMap}
+            data={collaboratorInfo}
+            memberList={memberList}
+            setPageNo={setPageNo}
             onCancel={toggleIsMemberDetail}
+            pageNo={pageNo}
           />
         )
       }

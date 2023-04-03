@@ -21,6 +21,7 @@ import styles from './style.module.less';
 import { nodeTypeList, TabNodeType, TypeTab } from './type_tab';
 import { DefaultContent } from './default_content';
 import { FooterTips } from './footer_tips';
+import { Loading } from '../common/loading';
 
 let reqToken: () => void;
 
@@ -40,6 +41,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
   const [dataNodeList, setDataNodeList] = useState<ISearchNode[]>([]);
   const [tabType, setTabType] = useState<TabNodeType>(TabNodeType.ALL_TYPE);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
+  const [loading, setLoading] = useState<boolean>();
   
   const inputRef = useRef<InputRef>(null);
   const listContainerRef = useRef<any>(null);
@@ -105,6 +107,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
   };
 
   const getNodeList = throttle((val: string) => {
+    setLoading(true);
     if (reqToken) {
       reqToken();
     }
@@ -114,9 +117,11 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
         if (success) {
           setDataNodeList(data);
         }
+        setLoading(false);
       })
       .catch(() => {
         console.log('Capture cancellation requests');
+        setLoading(false);
       });
   }, 500);
 
@@ -163,6 +168,13 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     closeSearch();
   };
 
+  const Empty = () => (
+    <div className={styles.emptyResult}>
+      <Image src={EmptyResultIcon} alt={t(Strings.quick_search_not_found)} />
+      <div className={styles.tip}>{t(Strings.quick_search_not_found)}</div>
+    </div>
+  );
+
   return (
     <div className={classnames(styles.searchWrapper, className)} ref={ref}>
       <div className={styles.searchContent}>
@@ -190,29 +202,32 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
             }
           />
         </Form>
-        { keyword && dataNodeList.length > 0 && <TypeTab nodeType={tabType} onChange={setTabType}/> }
         { !keyword && <DefaultContent />}
-        {!totalSearchResultItemsCount && keyword && (
-          <div className={styles.emptyResult}>
-            <Image src={EmptyResultIcon} alt={t(Strings.quick_search_not_found)} />
-            <div className={styles.tip}>{t(Strings.quick_search_not_found)}</div>
-          </div>
-        )}
-        {keyword && totalSearchResultItemsCount > 0 && (
-          <div
-            className={styles.nodeList}
-            onClick={handleNodeClick}
-            style={{ background: 'transparent' }}
-            ref={listContainerRef}
-          >
-            {nodeList.map(node => {
-              const nodeClasses = nodeList[currentIndex]?.nodeId === node.nodeId ? `${styles.hover} active` : '';
-              return <Node key={node.nodeId} node={node} onMouseDown={handleNodeClick} className={nodeClasses} />;
-            })}
-          </div>
-        )}
+        {/** content */}
+        { keyword && <>
+          <TypeTab nodeType={tabType} onChange={setTabType}/>
+          {
+            !loading && <>
+              {!totalSearchResultItemsCount ? <Empty/> : <div
+                className={styles.nodeList}
+                onClick={handleNodeClick}
+                style={{ background: 'transparent' }}
+                ref={listContainerRef}
+              >
+                {nodeList.map(node => {
+                  const nodeClasses = nodeList[currentIndex]?.nodeId === node.nodeId ? `${styles.hover} active` : '';
+                  return <Node key={node.nodeId} node={node} onMouseDown={handleNodeClick} className={nodeClasses} />;
+                })}
+              </div>}
+            </>
+          }
+          {loading && <div className={styles.loadingWrap}>
+            <Loading className={styles.loading} showText={false}/>
+            <Typography color={colors.textCommonTertiary} variant={'body2'}>{t(Strings.quick_search_loading)}</Typography>
+          </div>}
+        </> }
       </div>
-      {!isMobile && !(keyword && dataNodeList.length < 1) && <FooterTips shortcutEsc={!keyword}/>}
+      {!isMobile && keyword && <FooterTips shortcutEsc={!keyword}/>}
     </div>
   );
 };

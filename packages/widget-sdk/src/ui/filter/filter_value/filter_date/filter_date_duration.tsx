@@ -14,7 +14,7 @@ const DurationStringsMap = {
   [FilterDuration.PreviousMonth]: t(Strings.previous_month),
   [FilterDuration.ThisYear]: t(Strings.this_year),
   [FilterDuration.SomeDayBefore]: t(Strings.some_day_before),
-  [FilterDuration.SomeDayAfter]: t(Strings.some_day_before),
+  [FilterDuration.SomeDayAfter]: t(Strings.some_day_after),
   [FilterDuration.TheLastWeek]: t(Strings.the_last_week),
   [FilterDuration.TheNextWeek]: t(Strings.the_next_week),
   [FilterDuration.TheLastMonth]: t(Strings.the_last_month),

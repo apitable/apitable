@@ -33,7 +33,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
       ...currentField,
       property: {
         ...currentField.property,
-        showLasted: !currentField.property.showLasted,
+        showAll: !currentField.property.showAll,
       },
     });
   };
@@ -91,8 +91,8 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
       {currentField.property.linkedDatasheetId && currentField.property.linkedViewId && currentField.property.linkedFields?.length > 0 && (
         <section className={commonStyles.section} style={{ marginBottom: 0 }}>
           <div className={classNames(commonStyles.sectionTitle, commonStyles.sub)} style={{ marginBottom: 0 }}>
-            <Switch checked={currentField.property.showLasted} onChange={onSwitchShowLastField} size="small" style={{ marginRight: 8 }} />
-            {t(Strings.cascader_show_lasted)}
+            <Switch checked={currentField.property.showAll} onChange={onSwitchShowLastField} size="small" style={{ marginRight: 8 }} />
+            {t(Strings.cascader_show_all)}
           </div>
         </section>
       )}

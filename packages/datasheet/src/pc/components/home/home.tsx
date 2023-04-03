@@ -27,6 +27,7 @@ import { PcHome } from './pc_home';
 //@ts-ignore
 import { Home as EnterpriseHome } from 'enterprise';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 configResponsive({
   large: 1023.98,
@@ -63,6 +64,6 @@ const HomeBase: FC<React.PropsWithChildren<unknown>> = () => {
 };
 
 export const Home = () => {
-  return EnterpriseHome ? <EnterpriseHome/> : <HomeBase/>;
+  return EnterpriseHome && !getEnvVariables().USE_CE_LOGIN_PAGE ? <EnterpriseHome/> : <HomeBase/>;
 };
 

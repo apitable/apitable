@@ -80,7 +80,7 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
     case FieldType.DateTime:
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
-      return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField as  React.Dispatch<SetStateAction<IDateTimeBaseField>>} />;
+      return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField as React.Dispatch<SetStateAction<IDateTimeBaseField>>} />;
     case FieldType.Link:
       return <FormateLink currentField={currentField} setCurrentField={setCurrentField} hideOperateBox={hideOperateBox} datasheetId={datasheetId} />;
     case FieldType.Formula:
