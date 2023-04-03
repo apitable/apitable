@@ -1,40 +1,40 @@
 # 開発者ガイド
 
-このガイドは、APITableの開発を開始するのに役立ちます。
+このガイドは、APITable の開発を開始するのに役立ちます。
 
 ## 依存関係
 
-開発者環境を設定する前に、以下の依存関係とプログラミング言語がインストールされていることを確認してください。
+開発者環境を設定する前に、次の依存関係とプログラミング言語がインストールされていることを確認してください。
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `作る`
-- [sdkman](https://sdkman.io/): `java`, Java SDK 8 をインストールする
-- [nvm](https://github.com/nvm-sh/nvm): インストール用 `ノード`, NodeJS v16.15.0
+- `make`
 
 
 ### プログラミング言語
 
-macOS または Linux を使用している場合。 SDKマネージャー `sdkman` と `nvm` を使用してプログラミング言語をインストールすることをお勧めします。
+macOS または Linux を使用している場合。 macOS または Linux を使用している場合。 SDKマネージャー`sdkman`と`nvm`でプログラミング言語をインストールすることをお勧めします。
 
 ```bash
-# quick install nvm
+# クイック インストール nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-# quick install sdkman
+# sdkman のクイック インストール
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
+# nodejs をインストール
 nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
-# install java development kit
+# Java 開発キットをインストール
 sdk env install
+# Rust ツールチェーンのインストール
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profileminimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS
 
-不足している依存関係をインストールするには、 [Homebrew](https://brew.sh/) を使用することをお勧めします：
+不足している依存関係をインストールするには、[Homebrew](https://brew.sh/) を使用することをお勧めします。
 
 ```bash
-## necessary required
+## 必須必須
 brew install git
 brew install --cask docker
 brew install make
@@ -42,14 +42,14 @@ brew install make
 
 ### Linux
 
-CentOS / RHEL または `yum` を含む Linux ディストリビューションでは
+CentOS / RHEL または `yum` を使用するその他の Linux ディストリビューション
 
 ```bash
 sudo yum install git
 sudo yum install make
 ```
 
-Ubuntu / Debian または他の Linux ディストリビューションで `apt`
+`apt` を使用した Ubuntu / Debian またはその他の Linux ディストリビューション
 
 ```bash
 sudo apt update
@@ -60,9 +60,9 @@ sudo apt install make
 
 ### Windows
 
-If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal), You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+Windows 10/11 で APITable を実行している場合は、[Windows に Docker デスクトップ](https://docs.docker.com/desktop/install/windows-install/)、[WSL に Ubuntu](https://ubuntu.com/wsl)、および [Windows ターミナル](https://aka.ms/terminal) をインストールすることをお勧めします。 Windows Subsystem for Linux (WSL) の詳細については、[公式サイト](https://learn.microsoft.com/en-us/windows/wsl)をご覧ください。
 
-`apt` を使用してUbuntuに不足している依存関係をインストールする :
+`apt` を使用して、不足している依存関係を Ubuntu にインストールします。
 
 ```bash
 sudo apt update
@@ -71,58 +71,110 @@ sudo apt install make
 ```
 
 
-## ビルドツール
+## 使用するビルド ツールは?
 
-`make` を中心としたビルドツールエントリとして `gradle` / `npm` / `yarn` のような他のビルドツールを駆動します。
+`gradle` / `npm` / `yarn` などの他のビルド ツールを駆動する中心的なビルド ツール エントリとして `make` を使用します。
 
-ですから、 `make` コマンドを入力するだけで、すべてのビルドコマンドを確認できます。
+したがって、`make` コマンドを入力するだけで、すべてのビルド コマンドを表示できます。
 
 ```bash
-作る
+make
 ```
 
-![コマンドのスクリーンショット作成](../static/make.png)
+![make コマンドのスクリーンショット](../static/make.png)
 
 
 
-## 開発環境を開始
+## 開発環境の起動方法は?
 
-APITableは以下の4つのプロセスで構成されています。
+APITable は 3 つのプロセスで構成されています。
 
-1. バックエンドサーバー
+1. backend-server
 2. room-server
-3. ソケットサーバー
-4. web-server
+3. web-server
 
-開発環境をローカルで起動するには、以下のコマンドを実行します。
+開発環境をローカルで開始するには、次のコマンドを実行します。
 
 ```bash
-# start databases in dockers
+# Docker でデータベースを起動
 make dataenv 
-
-# install dependencies
+# 依存関係をインストール
 make install 
-
-#start backend-server
-make run # enter 1  
-
-# and then switch to a new terminal
-# start room-server
-make run # enter 2
-
-# and then switch to a new terminal
-# start web-server
-make run # enter 3
+#backend-server を起動
+make run # 1 を入力
+# その後、新しいターミナルに切り替えます
+# ルームサーバー起動
+make run # 2 を入力してください
+# その後、新しいターミナルに切り替えます
+# ウェブサーバー起動
+make run # 3 を入力
 
 ```
 
 
 
 
-## IDE
+## どの IDE を使用する必要がありますか?
 
-ご使用の IDE に `Visual Studio Code` または `Intellij IDEA` を使用することをお勧めします。
+IDE には「Visual Studio Code」または「Intellij IDEA」を使用することをお勧めします。
 
-APITableは、これらの2つのIDEのデバッグ設定を用意しています。
+APITable は、これら 2 つの IDE のデバッグ構成を準備しました。
 
-IDEでAPITableのルートディレクトリを開くだけです。
+APITable のルート ディレクトリを IDE で開くだけです。
+
+
+
+## SMTP サーバーの設定方法は?
+
+デフォルトでは、APITable は SMTP サーバーを構成しません。 つまり、メール送信機能が必要なため、ユーザーを招待することはできません。
+
+自己メールを使用して .env 構成を変更し、バックエンド サーバーを再起動する必要があります。
+
+`
+MAIL_ENABLED=真
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=your_email_password
+メールポート=465
+MAIL_SSL_ENABLE=真
+MAIL_TYPE=smtp
+MAIL_USERNAME=your_email`
+
+さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックス smtp チュートリアルを検索してください。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
+
+
+## macOS M1 docker run でのパフォーマンスの問題?
+
+## API ドキュメントはどこにありますか?
+
+ローカル サーバーを起動すると、API ドキュメントにアクセスできます。
+
+1. バックエンド サーバーのドキュメント アドレスは次のとおりです: http://localhost:8081/api/v1/doc.html
+
+2. ルーム サーバーのドキュメント アドレスは次のとおりです。 http://localhost:3333/nest/v1/docs
+
+クラウド サービス API インターフェースに関心がある場合は、https://developers.apitable.com/api/introduction でオンライン API ドキュメントに直接アクセスすることもできます。
+
+## ダッシュボードでウィジェット数の制限を設定するには? (デフォルトでは 30)
+
+これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS`パラメータを設定することで実現できます。
+
+## API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)
+
+「room-server」の「.env.default」ファイルには、リクエストの頻度を調整できる 2 つのパラメーターがあります。
+
+1. `LIMIT_POINTS` と `LIMIT_DURATION` を設定して、単位時間内に行うことができるリクエストの数を示すことができます。 ここで、LIMIT_POINTS は回数、LIMIT_DURATION は継続時間で、秒単位で測定されます。
+
+2. パラメータ `LIMIT_WHITE_LIST` を設定して、特定のユーザーに個別のリクエスト頻度を設定できます。 その値は JSON 文字列であり、その構造は `Map<string, IBaseRateLimiter>` を参照できます。
+
+## API 呼び出しごとに挿入されるレコードの数を増やすには? (デフォルトで 10)
+
+これは、`.env` ファイルで `DSB_WIDGET_MAX_COUNT` パラメータを設定することで実現できます。
+
+
+## 最新のリリース バージョンにアップグレードするには?
+
+
+## デフォルトの 80 ポートを変更するには?
+`.env` ファイルの構成プロパティは、環境変数 `NGINX_HTTP_PORT` を指定することでオーバーライドすることもできます
+
+例えば。 NGINX_HTTP_PORT=8080 として設定されます

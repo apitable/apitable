@@ -1,55 +1,55 @@
 # Guide du développeur
 
-Ce guide vous aide à commencer à développer APITable.
+Ce guide vous aide à démarrer le développement d'APITable.
 
 ## Dépendances
 
-Assurez-vous d'avoir les dépendances suivantes et les langages de programmation installés avant de configurer votre environnement de développeur:
+Assurez-vous que les dépendances et les langages de programmation suivants sont installés avant de configurer votre environnement de développement :
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `faire`
-- [sdkman](https://sdkman.io/): pour installer `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): pour installer `noeud`, NodeJS v16.15.0
+- `make`
 
 
-### Langue de programmation
+### Langage de programmation
 
-Si vous utilisez macOS ou Linux. Nous recommandons d'installer le langage de programmation avec le gestionnaire SDK `sdkman` et `nvm`.
+Si vous utilisez macOS ou Linux. Nous vous recommandons d'installer le langage de programmation avec le gestionnaire de SDK `sdkman` et `nvm`.
 
 ```bash
-# quick install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install. h | bash
-# installation rapide sdkman
-curl -s "https://get.sdkman.io" | bash
-# installer nodejs 
-nvm install 16. 5.0 && nvm utilise 16.15. && corepack active
+# installation rapide nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | frapper
+# sdkman d'installation rapide
+curl -s "https://get.sdkman.io" | frapper
+# installer nodejs
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 # installer le kit de développement java
-sdk env install
+installation de l'env du SDK
+# installer la chaîne d'outils de rouille
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+### mac OS
 
-Nous recommandons d'utiliser [Homebrew](https://brew.sh/) pour installer les dépendances manquantes :
+Nous vous recommandons d'utiliser [Homebrew](https://brew.sh/) pour installer les dépendances manquantes :
 
 ```bash
-## nécessaire
+## nécessaire requis
 brew install git
 brew install --cask docker
-brew install make make
+brew install make
 ```
 
 ### Linux
 
-Sur CentOS / RHEL ou toute autre distribution Linux avec `yum`
+Sur CentOS / RHEL ou une autre distribution Linux avec `yum`
 
 ```bash
 sudo yum install git
-sudo yum install make make
+sudo yum install make
 ```
 
-Sur Ubuntu / Debian ou toute autre distribution Linux avec `apt`
+Sur Ubuntu / Debian ou autre distribution Linux avec `apt`
 
 ```bash
 sudo apt update
@@ -58,11 +58,11 @@ sudo apt install make
 ```
 
 
-### Fenêtres
+### Les fenêtres
 
-Si vous exécutez APITable sous Windows 10/11, nous vous recommandons d'installer [Docker Desktop sous Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu sur WSL](https://ubuntu.com/wsl) et [Terminal Windows](https://aka.ms/terminal), Vous pouvez en savoir plus sur Windows Subsystem pour Linux (WSL) dans [le site officiel](https://learn.microsoft.com/en-us/windows/wsl).
+Si vous exécutez APITable sur Windows 10/11, nous vous recommandons d'installer [Docker Desktop sur Windows](https://docs.docker.com/desktop/install/windows-install/), \[Ubuntu sur WSL\](https:/ /ubuntu.com/wsl) et [Terminal Windows](https://aka.ms/terminal), Vous pouvez en savoir plus sur le sous-système Windows pour Linux (WSL) sur [le site officiel](https://learn.microsoft.com/en-us/windows/wsl).
 
-Installer les dépendances manquantes sur Ubuntu en utilisant `apt`:
+Installez les dépendances manquantes sur Ubuntu en utilisant `apt` :
 
 ```bash
 sudo apt update
@@ -71,29 +71,29 @@ sudo apt install make
 ```
 
 
-## Outil de construction
+## Quel outil de compilation utilisons-nous ?
 
-Nous utilisons `make` comme entrée d'outil de construction centrée qui conduit d'autres outils de construction comme `gradle` / `npm` / `yarn`.
+Nous utilisons `make` comme entrée d'outil de construction centrée qui pilote d'autres outils de construction comme `gradle` / `npm` / `yarn`.
 
-Donc vous pouvez simplement entrer la commande `make` et voir toutes les commandes de build :
+Vous pouvez donc simplement saisir la commande `make` et voir toutes les commandes de construction :
 
 ```bash
-faire
+make
 ```
 
-![faire une capture d'écran de commande](../static/make.png)
+![capture d'écran de la commande make](../static/make.png)
 
 
 
-## Démarrer l'environnement de développement
+## Comment démarrer l'environnement de développement ?
 
-APITable se compose de 3 processus :
+APITable se compose de 3 processus :
 
-1. serveur backend
+1. backend-server
 2. room-server
-3. serveur web
+3. web-server
 
-Pour démarrer l'environnement de développement localement, exécutez ces commandes :
+Pour démarrer l'environnement de développement localement, exécutez ces commandes :
 
 ```bash
 # démarrer les bases de données dans dockers
@@ -118,10 +118,67 @@ make run # enter 3
 
 
 
-## IDE
+## Quel IDE devez-vous utiliser ?
 
 Nous vous recommandons d'utiliser `Visual Studio Code` ou `Intellij IDEA` pour votre IDE.
 
-APITable a préparé ces deux configurations de débogage d'IDE.
+APITable a préparé les configurations de débogage de ces deux IDE.
 
 Ouvrez simplement le répertoire racine d'APITable avec IDE.
+
+
+
+## Comment configurer le serveur SMTP ?
+
+Par défaut, APITable ne configure pas le serveur SMTP, ce qui signifie que vous ne pouvez pas inviter d'utilisateurs car il nécessite la fonctionnalité d'envoi d'e-mails.
+
+Il est nécessaire de modifier la configuration .env à l'aide de l'auto-e-mail et de redémarrer le serveur principal.
+
+`
+MAIL_ENABLED=vrai
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=votre_email_mot de passe
+MAIL_PORT=465
+MAIL_SSL_ENABLE=vrai
+MAIL_TYPE=smtp
+MAIL_USERNAME=votre_email`
+
+De plus, certaines boîtes aux lettres doivent être activées en arrière-plan pour utiliser smtp. Pour plus de détails, vous pouvez rechercher le didacticiel smtp de la boîte aux lettres xxx.
+
+
+## Problème de performances sous macOS M1 docker run ?
+
+## Où est la documentation de l'API ?
+
+Vous pouvez accéder à la documentation de l'API en démarrant un serveur local :
+
+1. L'adresse de la documentation du backend-server est : http://localhost:8081/api/v1/doc.html
+
+2. L'adresse de documentation pour le room-server est :http://localhost:3333/nest/v1/docs
+
+Si vous êtes intéressé par les interfaces API des services cloud, vous pouvez également accéder directement à la documentation API en ligne à l'adresse https://developers.apitable.com/api/introduction.
+
+## Comment définir la limitation de la quantité de widgets dans le tableau de bord ? (30 par défaut)
+
+Ceci peut être réalisé en définissant le paramètre `DSB_WIDGET_MAX_COUNT` dans le fichier `.env`.
+
+## Puis-je augmenter la limite du taux de requêtes de l'API ? (5 par défaut)
+
+Dans le fichier `.env.default` de `room-server`, il y a deux paramètres qui peuvent ajuster la fréquence des requêtes :
+
+1. Vous pouvez définir `LIMIT_POINTS` et `LIMIT_DURATION` pour indiquer le nombre de demandes pouvant être effectuées dans une période unitaire. Où LIMIT_POINTS est le nombre de fois et LIMIT_DURATION est la durée, mesurée en secondes.
+
+2. Vous pouvez définir le paramètre `LIMIT_WHITE_LIST` pour définir une fréquence de demande distincte pour des utilisateurs spécifiques. Sa valeur est une chaîne JSON et sa structure peut faire référence à `Map<string, IBaseRateLimiter>`.
+
+## Comment augmenter le nombre d'enregistrements insérés par appel API ? (10 par défaut)
+
+Ceci peut être réalisé en définissant le paramètre `API_MAX_MODIFY_RECORD_COUNTS` dans le fichier `.env.default` de `room-server`.
+
+
+## Comment mettre à niveau vers la dernière version ?
+
+
+## Comment changer le port 80 par défaut ?
+Les propriétés de configuration dans le fichier `.env` peuvent également être remplacées en les spécifiant env vars `NGINX_HTTP_PORT`
+
+Par exemple. Il serait défini comme NGINX_HTTP_PORT=8080

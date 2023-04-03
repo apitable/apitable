@@ -41,6 +41,11 @@ export class DatasheetFieldCascaderSnapshotService {
   public async getCascaderSnapshot(dto: CascaderSnapshotQueryDto): Promise<CascaderSnapshotVo> {
     const { spaceId, datasheetId, fieldId, linkedFieldIds } = dto;
     const cascaderData: DatasheetCascaderFieldEntity[] = await this.datasheetCascaderFieldRepository.selectRecordData(spaceId, datasheetId, fieldId,);
+    if (!linkedFieldIds || linkedFieldIds.length > 100) { // Prevents DoS.
+      return {
+        treeSelectNodes: [],
+      };
+    }
     const treeNodes = this.flatDataToTree(linkedFieldIds, cascaderData);
     return {
       treeSelectNodes: treeNodes,

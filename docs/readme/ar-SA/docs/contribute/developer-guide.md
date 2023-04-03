@@ -7,11 +7,9 @@
 تأكد من أن لديك التبعيات التالية ولغات البرمجة مثبتة قبل إعداد بيئة المطور الخاص بك:
 
 - `git`
-- [مخزن](https://docs.docker.com/engine/install/)
-- [المرفأ - تكوين v2](https://docs.docker.com/engine/install/)
-- `اصنع`
-- [sdkman](https://sdkman.io/): لتثبيت `جافا`، جافا SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): لتثبيت `عقدة`, NodeJS v16.15.0
+- [docker](https://docs.docker.com/engine/install/)
+- [docker-compose v2](https://docs.docker.com/engine/install/)
+- `make`
 
 
 ### لغة البرمجة
@@ -19,14 +17,16 @@
 إذا كنت تستخدم macOS أو Linux. نوصي بتثبيت لغة البرمجة مع مدير SDK `sdkman` و `nvm`.
 
 ```bash
-# تثبيت سريع nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install. (ح) <unk> bash
-# تثبيت سريع sdkman
-curl -s "https://get.sdkman.io" <unk> bash
+# التثبيت السريع nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+# التثبيت السريع sdkman
+curl -s "https://get.sdkman.io" | bash
 # تثبيت nodejs 
-nvm تثبيت 16. 5.0 && nvm يستخدم 16.15. && تمكين الحزمة
-# تثبيت مجموعة تطوير جافا
-sdk تثبيت جافا 8. .342-amzn && sdk استخدم java 8.0.342-amzn
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
+# تثبيت java development kit
+sdk env install
+# تثبيت rust toolchain
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS
@@ -35,9 +35,9 @@ sdk تثبيت جافا 8. .342-amzn && sdk استخدم java 8.0.342-amzn
 
 ```bash
 ## ضروري مطلوب
-التثبيت git
-التثبيت --كاسك دكر
-التثبيت
+brew install git
+brew install --cask docker
+brew install make
 ```
 
 ### Linux
@@ -45,8 +45,8 @@ sdk تثبيت جافا 8. .342-amzn && sdk استخدم java 8.0.342-amzn
 في CentOS / RHEL أو أي توزيع آخر لـ Linux مع `yum`
 
 ```bash
-sudo yum تثبيت git
-sudo yum التثبيت
+sudo yum install git
+sudo yum install make
 ```
 
 على Ubuntu / Debian أو أي توزيع آخر لـ Linux مع `Apt`
@@ -71,58 +71,115 @@ sudo apt install make
 ```
 
 
-## أداة البناء
+## أي أداة بناء نستخدمها؟
 
 نحن نستخدم `صنع` كإدخال لأداة البناء المركزي لدينا التي تقود أداة بناء أخرى مثل `صف` / `npm` / `yarn`.
 
 لذا يمكنك فقط إدخال `صنع أمر` ومشاهدة جميع أوامر الإنشاء:
 
 ```bash
-اصنع
+make
 ```
 
-![اصنع لقطة للأوامر](../static/make.png)
+![لقطة شاشة لأمر make](../static/make.png)
 
 
 
-## بدء بيئة التطوير
+## كيفية بدء بيئة التطوير؟
 
-APITable يتألف من 4 عمليات:
+يتكون APITable من 3 عمليات:
 
-1. الخادم الخلفي
-2. الغرفة-الخادم
-3. مقطعة-خادم
-4. خادم ويب
+1. backend-server
+2. room-server
+3. web-server
 
 لبدء بيئة التطوير محلياً، قم بتشغيل هذه الأوامر:
 
 ```bash
-# بدء قواعد البيانات في قاعدة البيانات
-جعل البياناتينيف 
+# start databases in dockers
+make dataenv 
 
-# تثبيت الإعتمادات
-جعل التثبيت 
+# install dependencies
+make install 
 
-#start backend server
-جعل تشغيل # ادخل 1  
+#start backend-server
+make run # enter 1  
 
-# ثم قم بالتبديل الى محطة طرفية جديدة
-# بدء غرفة الخادم
-جعل تشغيل # ادخل 2
+# and then switch to a new terminal
+# start room-server
+make run # enter 2
 
-# ثم قم بالتبديل الى محطة طرفية جديدة
-# ابدأ web-server
-جعل التشغيل # ادخل 3
+# and then switch to a new terminal
+# start web-server
+make run # enter 3
 
 ```
 
 
 
 
-## IDE
+## ما IDE الذي يجب أن تستخدمه؟
 
 ننصحك باستخدام `Visual Studio Code` أو `Intellij IDEA` من أجل IDE الخاص بك.
 
 لقد قام APITable بإعداد تكوينين لتصحيح أخطاء الـ IDE.
 
 فقط قم بفتح دليل APITabL الجذري باستخدام IDE.
+
+
+
+## كيف يتم تكوين خادم SMTP؟
+
+بشكل افتراضي ، لا يقوم APITable بتكوين خادم SMTP ، مما يعني أنه لا يمكنك دعوة المستخدمين لأنه يتطلب ميزة إرسال البريد الإلكتروني.
+
+يلزم تعديل تكوين .env باستخدام البريد الإلكتروني الذاتي ، وإعادة تشغيل خادم الخلفية.
+
+`
+<code>
+MAIL_ENABLED=true
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=your_email_password
+MAIL_PORT=465
+MAIL_SSL_ENABLE=true
+MAIL_TYPE=smtp
+MAIL_USERNAME=your_email`</code>
+
+بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
+
+
+## مشكلة في الأداء في ظل تشغيل عامل ميناء macOS M1؟
+
+## أين وثائق API؟
+
+يمكنك الوصول إلى وثائق API عن طريق بدء خادم محلي:
+
+1. عنوان التوثيق لخادم الواجهة الخلفية هو: http://localhost:8081/api/v1/doc.html
+
+2. عنوان التوثيق لخادم الغرفة هو:http://localhost:3333/nest/v1/docs
+
+إذا كنت مهتمًا بواجهات API الخاصة بالخدمة السحابية ، فيمكنك أيضًا الوصول مباشرة إلى وثائق API عبر الإنترنت على https://developers.apitable.com/api/introduction.
+
+## كيفية ضبط حدود كمية عنصر واجهة المستخدم في لوحة القيادة؟ (30 افتراضيًا)
+
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `DSB_WIDGET_MAX_COUNT` في ملف`.env`.
+
+## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
+
+في ملف ".env.default" الخاص بـ "خادم الغرفة" ، توجد معلمتان يمكنهما ضبط تردد الطلب:
+
+1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
+
+2. يمكنك تعيين المعلمة `LIMIT_WHITE_LIST` لتحديد تردد الطلبات المنفصل للمستخدمين المحددين. قيمتها هي سلسلة JSON ، ويمكن الرجوع إلى هيكلها من خلال `Map&lt;string، IBaseRateLimiter&gt;`.
+
+## كيفية زيادة عدد السجلات المدخلة في كل استدعاء API؟ (10 افتراضيًا)
+
+يمكن تحقيق ذلك عن طريق تعيين المعلمة `API_MAX_MODIFY_RECORD_COUNTS` في ملف `.env.default` من `room-server`.
+
+
+## كيف يمكنك الترقية إلى الإصدار الأحدث؟
+
+
+## كيفية تغيير منفذ 80 الافتراضي؟
+يمكن أيضًا تجاوز خصائص التهيئة في ملف `.env` من خلال تحديد متغيرات البيئة الخاصة بها`NGINX_HTTP_PORT`
+
+على سبيل المثال. على سبيل المثال ، سيتم تعيينه كـ NGINX_HTTP_PORT = 8080

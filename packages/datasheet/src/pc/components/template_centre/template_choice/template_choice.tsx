@@ -37,6 +37,9 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
+// @ts-ignore
+import { isDingtalkFunc } from 'enterprise';
+import { Method } from 'pc/components/route_manager/const';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 

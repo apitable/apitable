@@ -1,6 +1,6 @@
 # Entwicklerhandbuch
 
-Diese Anleitung hilft Ihnen bei der Entwicklung von APITable.
+Dieser Leitfaden hilft Ihnen beim Einstieg in die Entwicklung von APITable.
 
 ## Abhängigkeiten
 
@@ -9,35 +9,35 @@ Stellen Sie sicher, dass Sie die folgenden Abhängigkeiten und Programmiersprach
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
-- `machen`
-- [sdkman](https://sdkman.io/): Installation `Java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): für `Knoten`, NodeJS v16.15.0
+- `make`
 
 
 ### Programmiersprache
 
-Wenn Sie macOS oder Linux verwenden. Wir empfehlen die Installation der Programmiersprache mit dem SDK-Manager `sdkman` und `nvm`.
+Wenn Sie macOS oder Linux verwenden. Wir empfehlen, die Programmiersprache mit dem SDK-Manager „sdkman“ und „nvm“ zu installieren.
 
 ```bash
-# Schnellinstallation nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install. h | bash
-# quick install sdkman
+# schnell installieren nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+# sdkman schnell installieren
 curl -s "https://get.sdkman.io" | bash
-# install nodejs 
-nvm install 16. 5.0 && nvm verwenden 16.15. && corepack aktivieren
-# install Java Development Kit
-sdk env install
+# installiere nodejs
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
+# Java-Entwicklungskit installieren
+SDK-Env installieren
+# Rust-Toolchain installieren
+curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
 ### macOS
 
-Wir empfehlen [Homebrew](https://brew.sh/) zur Installation fehlender Abhängigkeiten zu verwenden:
+Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
 ```bash
-## erforderlich
-braut Installation git
-braut Installation --cask docker
-braut install make
+## erforderlich erforderlich
+brew install git
+brew install --cask docker
+brew install make
 ```
 
 ### Linux
@@ -49,7 +49,7 @@ sudo yum install git
 sudo yum install make
 ```
 
-Auf Ubuntu / Debian oder andere Linux-Distribution mit `apt`
+Auf Ubuntu / Debian oder anderen Linux-Distributionen mit `apt`
 
 ```bash
 sudo apt update
@@ -60,9 +60,9 @@ sudo apt install make
 
 ### Fenster
 
-Wenn Sie APITable unter Windows 10/11 ausführen, empfehlen wir die Installation von [Docker Desktop unter Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu auf WSL](https://ubuntu.com/wsl) und [Windows Terminal](https://aka.ms/terminal), Mehr über Windows Subsystem für Linux (WSL) erfahren Sie unter [der offiziellen Seite](https://learn.microsoft.com/en-us/windows/wsl).
+Wenn Sie APITable unter Windows 10/11 ausführen, empfehlen wir die Installation von [Docker Desktop unter Windows](https://docs.docker.com/desktop/install/windows-install/), \[Ubuntu on WSL\](https:/ /ubuntu.com/wsl) und \[Windows Terminal\] (https://aka.ms/terminal), Weitere Informationen zum Windows-Subsystem für Linux (WSL) finden Sie auf [der offiziellen Website](https://learn.microsoft.com/en-us/windows/wsl).
 
-Fehlende Abhängigkeiten auf Ubuntu mit `apt` installieren:
+Installieren Sie fehlende Abhängigkeiten auf Ubuntu mit `apt`:
 
 ```bash
 sudo apt update
@@ -71,57 +71,110 @@ sudo apt install make
 ```
 
 
-## Erstelle Werkzeug
+## Welches Build-Tool verwenden wir?
 
 Wir verwenden `make` als unseren zentrischen Buildwerkzeug, der andere Buildwerkzeuge wie `Gradle` / `npm` / `Garn` antreibt.
 
 So können Sie einfach `make` Befehl eingeben und alle Build-Befehle sehen:
 
 ```bash
-machen
+make
 ```
 
-![erstelle einen Screenshot](../static/make.png)
+![Screenshot des Befehls erstellen](../static/make.png)
 
 
 
-## Entwicklungsumgebung starten
+## Wie starte ich die Entwicklungsumgebung?
 
 APITable besteht aus 3 Prozessen:
 
-1. backend-Server
-2. room-Server
+1. backend-server
+2. room-server
 3. web-server
 
 Um die Entwicklungsumgebung lokal zu starten, führen Sie diese Befehle aus:
 
 ```bash
 # Datenbanken in Dockern starten
-make dataenv 
-
-# # Installationsabhängigkeiten
-install 
-
-#Start backend-server
-make run # 1  
-
+make dataenv
+# Abhängigkeiten installieren
+make install
+# Backend-Server starten
+make run # geben Sie 1 ein
 # und dann zu einem neuen Terminal wechseln
-# Starte Raum-Server
-make run # 2
-
-# ein und wechseln Sie zu einem neuen Terminal
-# Start Webserver
-make run # geben Sie 3 ein #
+# Raumserver starten
+make run  # 2 eingeben
+# und dann zu einem neuen Terminal wechseln
+# Webserver starten
+make run # 3 eingeben
 
 ```
 
 
 
 
-## IDE
+## Welche IDE sollten Sie verwenden?
 
-Wir empfehlen Ihnen, `Visual Studio Code` oder `Intellij IDEA` für Ihre IDE zu verwenden.
+Wir empfehlen die Verwendung von „Visual Studio Code“ oder „Intellij IDEA“ für Ihre IDE.
 
-APITable haben diese beiden IDE Debug-Konfigurationen vorbereitet.
+APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
-Öffnen Sie einfach das Hauptverzeichnis von APITable mit IDE.
+Öffnen Sie einfach das Stammverzeichnis von APITable mit IDE.
+
+
+
+## Wie konfiguriere ich den SMTP-Server?
+
+Standardmäßig konfiguriert APITable den SMTP-Server nicht, was bedeutet, dass Sie keine Benutzer einladen können, da dies die E-Mail-Sendefunktion erfordert.
+
+Es ist erforderlich, die .env-Konfiguration mit Self-E-Mail zu ändern und den Back-End-Server neu zu starten.
+
+`
+MAIL_ENABLED=true
+MAIL_HOST=smtp.xxx.com
+MAIL_PASSWORD=Ihr_E-Mail-Passwort
+MAIL_PORT=465
+MAIL_SSL_ENABLE=wahr
+MAIL_TYPE=smtp
+MAIL_USERNAME=Ihre_E-Mail`
+
+Darüber hinaus müssen einige Postfächer im Hintergrund aktiviert werden, um SMTP verwenden zu können. Für Details können Sie nach dem xxx-Postfach-smtp-Tutorial suchen.
+
+
+## Performance-Problem unter macOS M1 Docker-Lauf?
+
+## Wo ist die API-Dokumentation?
+
+Sie können auf die API-Dokumentation zugreifen, indem Sie einen lokalen Server starten:
+
+1. Die Dokumentationsadresse für den backend-server lautet: http://localhost:8081/api/v1/doc.html
+
+2. Die Dokumentationsadresse für den room-server lautet: http://localhost:3333/nest/v1/docs
+
+Wenn Sie an Cloud-Service-API-Schnittstellen interessiert sind, können Sie auch direkt auf die Online-API-Dokumentation unter https://developers.apitable.com/api/introduction zugreifen.
+
+## Wie stelle ich die Begrenzung der Widget-Menge im Dashboard ein? (standardmäßig 30)
+
+Dies kann durch Setzen des Parameters `DSB_WIDGET_MAX_COUNT` in der `.env`-Datei erreicht werden.
+
+## Kann ich das Anforderungsratenlimit der API erhöhen? (standardmäßig 5)
+
+In der `.env.default`-Datei von `room-server` gibt es zwei Parameter, die die Anfragehäufigkeit anpassen können:
+
+1. Sie können „LIMIT_POINTS“ und „LIMIT_DURATION“ festlegen, um die Anzahl der Anforderungen anzugeben, die in einer Zeiteinheit erfolgen können. Dabei ist LIMIT_POINTS die Anzahl der Male und LIMIT_DURATION die Dauer, gemessen in Sekunden.
+
+2. Sie können den Parameter `LIMIT_WHITE_LIST` setzen, um eine separate Anforderungshäufigkeit für bestimmte Benutzer festzulegen. Sein Wert ist ein JSON-String, und seine Struktur kann auf `Map<string, IBaseRateLimiter>` verweisen.
+
+## Wie kann die Anzahl der pro API-Aufruf eingefügten Datensätze erhöht werden? (10 standardmäßig)
+
+Dies kann durch Setzen des Parameters `API_MAX_MODIFY_RECORD_COUNTS` in der `.env.default`-Datei von `room-server` erreicht werden.
+
+
+## Wie aktualisiere ich auf die neueste Release-Version?
+
+
+## Wie ändere ich den Standardport 80?
+Konfigurationseigenschaften in der `.env`-Datei können auch überschrieben werden, indem sie env vars `NGINX_HTTP_PORT` angeben
+
+Zum Beispiel. Es würde als NGINX_HTTP_PORT=8080 festgelegt werden
