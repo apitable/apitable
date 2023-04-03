@@ -25,6 +25,7 @@ import { StorageName, getStorage, setStorage } from 'pc/utils/storage/storage';
 let viewId: string | undefined;
 let datasheetActiveViewId: string | undefined;
 let mirrorId: string | undefined;
+let datasheetId: string | undefined;
 
 const restoreGroupExpanding = () => {
   // Recovering grouped expanded information in localStorage
@@ -42,25 +43,34 @@ store.subscribe(() => {
   const snapshot = Selectors.getSnapshot(state);
   const previousViewId = viewId;
   const previousMirrorId = mirrorId;
-  const previousDatasheetActiveViewId = datasheetActiveViewId;
+  let previousDatasheetActiveViewId = datasheetActiveViewId;
+  const previousDatasheetId = datasheetId;
+  datasheetId = state.pageParams.datasheetId;
   viewId = state.pageParams.viewId;
   mirrorId = state.pageParams.mirrorId;
   datasheetActiveViewId = Selectors.getActiveViewId(state);
+
+  // Handling a special case, namely:
+  // 1. There are two different nodes with the same default viewId for their respective views;
+  // 2. When switching from one node to another, due to the identical default viewId,
+  // routing will not automatically locate the default view after the node switch.
+  if (!mirrorId && previousDatasheetId !== datasheetId && datasheetActiveViewId === previousDatasheetActiveViewId) {
+    previousDatasheetActiveViewId = undefined;
+  }
 
   // Wait until the datasheet is loaded before starting the later checks
   if (!snapshot || !datasheetActiveViewId) {
     return;
   }
 
-  const datasheetId = state.pageParams.datasheetId;
   const spaceId = state.space.activeId;
   const uniqueId = `${spaceId},${datasheetId}`;
 
   if (viewId && previousViewId !== viewId) {
     /**
-     * Because the conditional judgement above already filters out most changes, 
-     * the necessary traversal comparisons are only made when the view changes 
-     * */ 
+         * Because the conditional judgement above already filters out most changes,
+         * the necessary traversal comparisons are only made when the view changes
+         * */
     if (snapshot.meta.views.find(view => view.id === viewId)) {
       dispatch(StoreActions.switchView(datasheetId!, viewId));
       setStorage(StorageName.DatasheetView, { [uniqueId]: viewId });
@@ -75,22 +85,21 @@ store.subscribe(() => {
     dispatch(StoreActions.setDatasheetComputed({}, datasheetId!));
     compensator.clearAll();
   }
-
   /**
-   * Purpose: If there is no viewId, then jump to the currently active view, i.e. the first view
-   * 1. when viewId == null, although the intention is to jump to a particular view, 
-   * the redux will be triggered frequently during the jump, resulting in multiple calls to changeView.
-   * In the context of the above, the previousDatasheetActiveViewId ! == datasheetActiveViewId to reduce the number of changeView calls
-   * 2. The reason is that the mirror and the original table share a copy of the data, 
-   * and when jumping from the mirror to the original table, the previousDatasheetActiveViewId must be equal to
-   * datasheetActiveViewId。So a new previousMirrorId && !mirrorId is added to determine 
-   * if the current route is leaving from a mirror when the previous condition is false
-   * (PS: In addition to the above idea, there is another way to update the data in the pageParams immediately, 
-   * the reason for this problem is that the routing changes do not update the pageParams immediately, 
-   * so as long as the pageParams are updated in time, this problem can also be avoided.
-   * (However, in the current project, pageParams are modified via the usePageParams hook, 
-   * so this solution is not used in order not to break the logic)
-   */
+     * Purpose: If there is no viewId, then jump to the currently active view, i.e. the first view
+     * 1. when viewId == null, although the intention is to jump to a particular view,
+     * the redux will be triggered frequently during the jump, resulting in multiple calls to changeView.
+     * In the context of the above, the previousDatasheetActiveViewId ! == datasheetActiveViewId to reduce the number of changeView calls
+     * 2. The reason is that the mirror and the original table share a copy of the data,
+     * and when jumping from the mirror to the original table, the previousDatasheetActiveViewId must be equal to
+     * datasheetActiveViewId。So a new previousMirrorId && !mirrorId is added to determine
+     * if the current route is leaving from a mirror when the previous condition is false
+     * (PS: In addition to the above idea, there is another way to update the data in the pageParams immediately,
+     * the reason for this problem is that the routing changes do not update the pageParams immediately,
+     * so as long as the pageParams are updated in time, this problem can also be avoided.
+     * (However, in the current project, pageParams are modified via the usePageParams hook,
+     * so this solution is not used in order not to break the logic)
+     */
   if (!viewId && (previousDatasheetActiveViewId !== datasheetActiveViewId || (previousMirrorId && !mirrorId))) {
     const nextViewId = getStorage(StorageName.DatasheetView)?.[uniqueId] || datasheetActiveViewId;
     changeView(nextViewId);
