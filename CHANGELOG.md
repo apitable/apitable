@@ -3,6 +3,22 @@
 
 
 
+## [v0.19.0-rc](https://github.com/apitable/apitable/releases/tag/v0.19.0-rc) (2023-04-03)
+
+
+### Bug fixes
+
+* fix: widget package submit error issue ([#671](https://github.com/apitable/apitable/pull/671)) @ChambersChan 
+
+### What's more
+
+* docs: widget-sdk documentation ([#652](https://github.com/apitable/apitable/pull/652)) @mr-kelly 
+* docs: Improve translation of README and developer-guide in other languages ([#285](https://github.com/apitable/apitable/pull/285)) @mr-kelly 
+* docs: add brew install canvas ([#599](https://github.com/apitable/apitable/pull/599)) (#654) @Exclamation-mark 
+* docs: remove description of default username in readme ([#657](https://github.com/apitable/apitable/pull/657)) @ChambersChan 
+* docs: developer-guide add multilingual translation (l10n) workflow ([#661](https://github.com/apitable/apitable/pull/661)) @Exclamation-mark 
+* docs: add multi-language images ([#663](https://github.com/apitable/apitable/pull/663)) @luoyunyao 
+* sync: hosted cloud ([#670](https://github.com/apitable/apitable/pull/670)) @yort-feng 
 ## [v0.19.0-beta](https://github.com/apitable/apitable/releases/tag/v0.19.0-beta) (2023-03-27)
 
 
