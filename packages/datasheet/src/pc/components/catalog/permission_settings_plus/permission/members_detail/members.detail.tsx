@@ -107,6 +107,7 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
                         key={memberId}
                         unit={{
                           id: memberId,
+                          memberId: memberId,
                           avatar,
                           avatarColor,
                           nickName,

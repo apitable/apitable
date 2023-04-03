@@ -252,7 +252,7 @@ export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionLis
             return <span className={styles.noResult}>
               {uniqId == 'unitId' ? t(Strings.cell_not_find_member_or_team) : t(Strings.cell_not_find_member)}
               {
-                (showInviteTip && !formId && !shareId) &&
+                (showInviteTip && !formId && !shareId && !embedId) &&
                 <span className={styles.inviteMember} onClick={() => expandInviteModal()}>
                   {t(Strings.invite_member)}
                 </span>
