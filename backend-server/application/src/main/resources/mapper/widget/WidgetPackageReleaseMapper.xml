@@ -90,7 +90,7 @@
                      INNER JOIN ${tablePrefix}widget_package_release vwpr
                 ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.is_deleted = 0
-          AND widget_body - > '$.fatherWidgetId' = #{fatherWidgetId} LIMIT 1
+          AND widget_body -> '$.fatherWidgetId' = #{fatherWidgetId} LIMIT 1
     </select>
 
     <select id="selectByFatherWidgetIdAndVersion"
