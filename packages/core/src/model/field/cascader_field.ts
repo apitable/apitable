@@ -8,7 +8,7 @@ export class CascaderField extends TextBaseField {
 
   static defaultProperty() {
     return {
-      showLasted: true, // only show last level data
+      showAll: false, // only show last level data
       linkedDatasheetId: '', // linked datasheet ID
       linkedViewId: '', // linked datasheet view ID
       linkedFields: [], // linked datasheet fields，arrange levels in array order
@@ -17,7 +17,7 @@ export class CascaderField extends TextBaseField {
   }
 
   static override propertySchema = Joi.object({
-    showLasted: Joi.bool().required(),
+    showAll: Joi.bool().required(),
     linkedDatasheetId: Joi.string().required(),
     linkedViewId: Joi.string().required(),
     linkedFields: Joi.array().items(Joi.object({
@@ -49,10 +49,10 @@ export class CascaderField extends TextBaseField {
     if (cellValue == null) {
       return null;
     }
-    const showLasted = this.field.property.showLasted;
+    const showAll = this.field.property.showAll;
     const cv = [cellValue].flat();
     return (cv as ISegment[]).map(seg => {
-      if (showLasted) {
+      if (!showAll) {
         const segArr = seg.text.split('/');
         return segArr[segArr.length - 1];
       }

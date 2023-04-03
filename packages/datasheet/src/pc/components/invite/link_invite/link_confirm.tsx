@@ -57,6 +57,13 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
           return;
         }
         if (INVITE_USER_BY_AUTH0) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const info = {
+            inviteLinkInfo,
+            linkToken: inviteLinkToken,
+            inviteCode: urlParams.get('inviteCode'),
+          };
+          localStorage.setItem('invite_link_data', JSON.stringify(info));
           Router.push(Navigation.WORKBENCH);
           return;
         }

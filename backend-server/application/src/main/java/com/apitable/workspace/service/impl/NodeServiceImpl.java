@@ -73,6 +73,8 @@ import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.CollectionUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.StringUtil;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.mapper.SpaceAssetMapper;
@@ -789,8 +791,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_NAME, StrUtil.nullToEmpty(entity.getNodeName()));
         info.set(AuditConstants.NODE_NAME, nodeName);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.RENAME_NODE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -809,8 +815,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_ICON, StrUtil.nullToEmpty(oldNodeIcon));
         info.set(AuditConstants.NODE_ICON, icon);
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_ICON).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -833,8 +843,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_COVER, StrUtil.nullToEmpty(oldNodeCover));
         info.set(AuditConstants.NODE_COVER, StrUtil.nullToEmpty(cover));
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_COVER).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -921,8 +935,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // Publish Space Audit Events
         info.set(AuditConstants.MOVE_EFFECT_SUFFIX_NODES, CollUtil.emptyIfNull(suffixNodeIds));
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(action).userId(userId).nodeId(opRo.getNodeId())
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return nodeIds;
@@ -931,18 +949,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String spaceId, Long memberId, String... ids) {
-        log.info("Delete node ");
+        log.info("Delete node {}", (Object) ids);
         Long userId = memberMapper.selectUserIdByMemberId(memberId);
         List<String> idList = Arrays.asList(ids);
-        List<NodeEntity> list = this.getByNodeIds(new HashSet<>(idList));
+        List<NodeEntity> nodes = this.getByNodeIds(new HashSet<>(idList));
         // verify root node
-        long count = list.stream()
+        long count = nodes.stream()
             .filter(node -> node.getType().equals(NodeType.ROOT.getNodeType()))
             .count();
         ExceptionUtil.isFalse(count > 0, NodeException.NOT_ALLOW);
         // get the superior path
         List<String> parentIds =
-            list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
+            nodes.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
         Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(parentIds);
         // give delete node role
         iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId,
@@ -954,31 +972,54 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (CollUtil.isNotEmpty(nodeIds)) {
             this.nodeDeleteChangeset(nodeIds);
             iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
-            boolean flag =
-                SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
-            ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+            Collection<String> subNodeIds = CollUtil.disjunction(nodeIds, idList);
+            if (!subNodeIds.isEmpty()) {
+                boolean flag =
+                    SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId,
+                        subNodeIds, true));
+                ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
+            }
             // disable node sharing
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
             // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
         }
-        list.forEach(nodeEntity -> {
-            // The previous node corresponding to the updated node
-            // (Large datasheet processing takes a long time, nodeEntity.getPreNodeId() may have
-            // changed, so updatePreNodeIdBySelf is not used directly)
-            nodeMapper.updatePreNodeIdByJoinSelf(nodeEntity.getNodeId(), nodeEntity.getParentId());
-            // Save the path of the deletion.
-            // Specify that the deleted node is attached to the parent node -1.
-            String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
-                ? parentIdToPathMap.get(nodeEntity.getParentId()) : null;
-            nodeMapper.updateDeletedPathByNodeId(nodeEntity.getNodeId(), delPath);
-            // publish space audit events
-            AuditSpaceArg arg =
-                AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_NODE).userId(userId)
-                    .nodeId(nodeEntity.getNodeId()).build();
-            SpringContextHolder.getApplicationContext()
-                .publishEvent(new AuditSpaceEvent(this, arg));
-        });
+        for (NodeEntity node : nodes) {
+            Lock lock = redisLockRegistry.obtain(node.getParentId());
+            try {
+                if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                    String nodeId = node.getNodeId();
+                    // The previous node corresponding to the updated node
+                    // (Large datasheet processing takes a long time,
+                    // node.getPreNodeId() may have changed,
+                    // so updatePreNodeIdBySelf is not used directly)
+                    nodeMapper.updatePreNodeIdByJoinSelf(nodeId, node.getParentId());
+                    // Save the path of the deletion.
+                    // Specify that the deleted node is attached to the parent node -1.
+                    String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
+                        ? parentIdToPathMap.get(node.getParentId()) : null;
+                    nodeMapper.updateDeletedPathByNodeId(userId, nodeId, delPath);
+                    // publish space audit events
+                    ClientOriginInfo clientOriginInfo = InformationUtil
+                        .getClientOriginInfoInCurrentHttpContext(true, false);
+                    AuditSpaceArg arg = AuditSpaceArg.builder()
+                        .action(AuditSpaceAction.DELETE_NODE)
+                        .userId(userId)
+                        .nodeId(nodeId)
+                        .requestIp(clientOriginInfo.getIp())
+                        .requestUserAgent(clientOriginInfo.getUserAgent())
+                        .build();
+                    SpringContextHolder.getApplicationContext()
+                        .publishEvent(new AuditSpaceEvent(this, arg));
+                } else {
+                    throw new BusinessException("Frequent operations");
+                }
+            } catch (InterruptedException e) {
+                throw new BusinessException("Frequent operations");
+            } finally {
+                lock.unlock();
+            }
+        }
     }
 
     @Override
@@ -1104,15 +1145,27 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(destParentId)) {
             destParentId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
         }
-        NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
-        String name = StrUtil.isNotBlank(options.getNodeName()) ? options.getNodeName()
-            : shareNode.getNodeName();
-        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId()) ? options.getNodeId()
-            : IdUtil.createNodeId(shareNode.getType());
-        // component node id map
-        Map<String, String> newNodeMap = CollUtil.newHashMap();
-        newNodeMap.put(sourceNodeId, toSaveNodeId);
+        Lock lock = redisLockRegistry.obtain(destParentId);
+        try {
+            if (lock.tryLock(2, TimeUnit.MINUTES)) {
+                return this.saveDumpedNode(userId, spaceId, destParentId, sourceNodeId, options);
+            } else {
+                throw new BusinessException("Frequent operations");
+            }
+        } catch (InterruptedException e) {
+            throw new BusinessException("Frequent operations");
+        } finally {
+            lock.unlock();
+        }
+    }
 
+    private String saveDumpedNode(Long userId, String spaceId, String destParentId,
+        String sourceNodeId, NodeCopyOptions options) {
+        NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
+        String name = StrUtil.isNotBlank(options.getNodeName())
+            ? options.getNodeName() : shareNode.getNodeName();
+        String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId())
+            ? options.getNodeId() : IdUtil.createNodeId(shareNode.getType());
         if (!options.isTemplate()) {
             // check for the same name
             name = duplicateNameModify(destParentId, shareNode.getType(), name, null);
@@ -1121,13 +1174,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
         }
 
+        // component node id map
+        Map<String, String> newNodeMap = CollUtil.newHashMap();
+        newNodeMap.put(sourceNodeId, toSaveNodeId);
         NodeType nodeType = NodeType.toEnum(shareNode.getType());
         switch (nodeType) {
             case ROOT:
                 throw new BusinessException(NodeException.NOT_ALLOW);
             case FOLDER:
-                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(), sourceNodeId,
-                    newNodeMap, options);
+                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(),
+                    sourceNodeId, newNodeMap, options);
                 break;
             case DATASHEET:
                 // if (options.isVerifyNodeCount()) {
@@ -1144,9 +1200,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         options.setDstPermissionFieldsMap(dstPermissionFieldsMap);
                     }
                 }
-                // copyTableData
-                iDatasheetService.copy(userId, spaceId, sourceNodeId, toSaveNodeId, name, options,
-                    newNodeMap);
+                // copy table data
+                iDatasheetService.copy(userId, spaceId, sourceNodeId,
+                    toSaveNodeId, name, options, newNodeMap);
                 break;
             case FORM:
             case DASHBOARD:

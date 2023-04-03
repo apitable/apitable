@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, t, Strings } from '@apitable/core';
 import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import { store } from 'pc/store';
@@ -6,23 +6,21 @@ import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
-import { useThemeColors } from '@apitable/components';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
+import classNames from 'classnames';
 
 export interface IRecordCardProps {
   datasheetId: string;
   row: IViewRow;
   columns: IViewColumn[];
   fieldMap: IFieldMap;
-  style?: CSSProperties;
   onClick?: (recordId: string) => void;
 }
 
 export const RecordCard: React.FC<IRecordCardProps> = props => {
-  const { datasheetId, row, columns, fieldMap, style, onClick } = props;
+  const { datasheetId, row, columns, fieldMap, onClick } = props;
   const state = store.getState();
   const snapshot = useSelector(Selectors.getSnapshot)!;
-  const colors = useThemeColors();
   const recordId = row.recordId;
   const [frozenColumn, ...remainColumns] = columns;
   const primaryFieldId = frozenColumn.fieldId;
@@ -76,7 +74,6 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
   return (
     <div className={styles.recordCardContainer}>
       <div
-        style={style}
         className={styles.recordCardStyled}
         onClick={() => onClick?.(recordId)}
       >
@@ -85,8 +82,7 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
             <>
               <div className={styles.recordCardRow}>
                 <h3
-                  className={styles.recordCardTitle}
-                  style={{ color: !Boolean(title) ? colors.fourthLevelText : colors.firstLevelText }}
+                  className={classNames(styles.recordCardTitle, !Boolean(title) && styles.recordCardTitleEmpty)}
                 >
                   {title || t(Strings.record_unnamed)}
                 </h3>

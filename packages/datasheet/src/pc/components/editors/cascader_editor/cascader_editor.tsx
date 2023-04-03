@@ -18,6 +18,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
   editing,
   toggleEditing,
   onSave,
+  editable,
 }, ref) => {
   const spaceId = useSelector(Selectors.activeSpaceId)!;
 
@@ -67,7 +68,6 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
 
   const onChange = (values?: (string | number)[]) => {
     if (!onSave) return;
-
     onSave(values ? string2Segment(values.join('/')) : undefined);
 
     onClose();
@@ -95,9 +95,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
           onChange={onChange}
           options={options}
           editing={editing}
+          disabled={!editable}
           cascaderRef={cascaderRef}
           displayRender={label => {
-            return field.property.showLasted ? label[label.length - 1] : label.join('/');
+            return field.property.showAll ? label.join('/') : label[label.length - 1];
           }}
           value={cascaderValue.map(cv => cv.split(('/')))}
         />

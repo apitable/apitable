@@ -18,9 +18,64 @@
 
 package com.apitable.workspace.service.impl;
 
+import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
+import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.apitable.base.enums.ParameterException;
+import com.apitable.control.infrastructure.ControlRoleDict;
+import com.apitable.control.infrastructure.ControlTemplate;
+import com.apitable.control.infrastructure.role.ControlRole;
+import com.apitable.control.infrastructure.role.ControlRoleManager;
+import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.tree.DefaultTreeBuildFactory;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
+import com.apitable.core.util.SpringContextHolder;
+import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.shared.constants.AuditConstants;
+import com.apitable.shared.listener.event.AuditSpaceEvent;
+import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.listener.event.NodeShareDisableEvent;
+import com.apitable.shared.util.CollectionUtil;
+import com.apitable.shared.util.IdUtil;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
+import com.apitable.space.entity.LabsApplicantEntity;
+import com.apitable.space.entity.SpaceEntity;
+import com.apitable.space.enums.AuditSpaceAction;
+import com.apitable.space.enums.LabsFeatureEnum;
+import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.service.ILabsApplicantService;
+import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.workspace.dto.MemberInfoDTO;
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeCopyOptions;
+import com.apitable.workspace.dto.NodeSharePropsDTO;
+import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.entity.NodeShareSettingEntity;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
+import com.apitable.workspace.enums.NodeException;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.mapper.NodeMapper;
+import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IDatasheetService;
+import com.apitable.workspace.service.INodeService;
+import com.apitable.workspace.service.INodeShareService;
+import com.apitable.workspace.service.INodeShareSettingService;
+import com.apitable.workspace.vo.BaseNodeInfo;
+import com.apitable.workspace.vo.NodeShareInfoVO;
+import com.apitable.workspace.vo.NodeShareSettingInfoVO;
+import com.apitable.workspace.vo.NodeShareSettingPropsVO;
+import com.apitable.workspace.vo.NodeShareTree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,70 +84,16 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.base.enums.ParameterException;
-import com.apitable.space.enums.LabsFeatureEnum;
-import com.apitable.space.service.ILabsApplicantService;
-import com.apitable.organization.dto.MemberDTO;
-import com.apitable.shared.constants.AuditConstants;
-import com.apitable.control.infrastructure.ControlRoleDict;
-import com.apitable.control.infrastructure.ControlTemplate;
-import com.apitable.control.infrastructure.role.ControlRole;
-import com.apitable.control.infrastructure.role.ControlRoleManager;
-import com.apitable.control.infrastructure.role.RoleConstants.Node;
-import com.apitable.space.enums.AuditSpaceAction;
-import com.apitable.workspace.enums.PermissionException;
-import com.apitable.shared.listener.event.AuditSpaceEvent;
-import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.apitable.shared.listener.event.NodeShareDisableEvent;
-import com.apitable.space.vo.SpaceGlobalFeature;
-import com.apitable.workspace.dto.NodeBaseInfoDTO;
-import com.apitable.workspace.vo.BaseNodeInfo;
-import com.apitable.workspace.vo.NodeShareInfoVO;
-import com.apitable.workspace.vo.NodeShareSettingInfoVO;
-import com.apitable.workspace.vo.NodeShareSettingPropsVO;
-import com.apitable.workspace.vo.NodeShareTree;
-import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.space.mapper.SpaceMapper;
-import com.apitable.workspace.mapper.NodeMapper;
-import com.apitable.workspace.mapper.NodeShareSettingMapper;
-import com.apitable.workspace.dto.MemberInfoDTO;
-import com.apitable.workspace.dto.NodeCopyOptions;
-import com.apitable.workspace.dto.NodeSharePropsDTO;
-import com.apitable.workspace.service.INodeService;
-import com.apitable.workspace.service.INodeShareService;
-import com.apitable.workspace.service.INodeShareSettingService;
-import com.apitable.shared.util.CollectionUtil;
-import com.apitable.shared.util.IdUtil;
-import com.apitable.workspace.enums.NodeException;
-import com.apitable.workspace.enums.NodeType;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.tree.DefaultTreeBuildFactory;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-import com.apitable.space.entity.LabsApplicantEntity;
-import com.apitable.workspace.entity.NodeEntity;
-import com.apitable.workspace.entity.NodeShareSettingEntity;
-import com.apitable.space.entity.SpaceEntity;
-
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
-import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
-
+/**
+ * node share service implement.
+ */
 @Service
 @Slf4j
 public class NodeShareServiceImpl implements INodeShareService {
@@ -142,10 +143,12 @@ public class NodeShareServiceImpl implements INodeShareService {
         if (setting != null && setting.getIsEnabled()) {
             settingInfoVO.setShareId(setting.getShareId());
             settingInfoVO.setShareOpened(true);
-            settingInfoVO.setProps(JSONUtil.toBean(setting.getProps(), NodeShareSettingPropsVO.class));
+            settingInfoVO.setProps(
+                JSONUtil.toBean(setting.getProps(), NodeShareSettingPropsVO.class));
             // turn on sharers
             String spaceId = nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
-            MemberDTO dto = memberMapper.selectDtoByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
+            MemberDTO dto =
+                memberMapper.selectDtoByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
             // compatible member no longer in space station
             if (dto == null) {
                 settingInfoVO.setOperatorHasPermission(false);
@@ -153,16 +156,17 @@ public class NodeShareServiceImpl implements INodeShareService {
             }
             settingInfoVO.setShareOpenOperator(dto.getMemberName());
             // Obtain the node permissions of the sharer
-            ControlRoleDict roleDict = controlTemplate.fetchNodeRole(dto.getId(), Collections.singletonList(nodeId));
+            ControlRoleDict roleDict =
+                controlTemplate.fetchNodeRole(dto.getId(), Collections.singletonList(nodeId));
             if (roleDict.isEmpty()) {
                 settingInfoVO.setOperatorHasPermission(false);
-            }
-            else {
+            } else {
                 // If sharing editable is enabled, check whether the sharer has node editable or above permissions.
                 JSONObject props = JSONUtil.parseObj(setting.getProps());
                 String roleCole = props.getBool("canBeEdited", false) ? Node.EDITOR : Node.READER;
                 ControlRole requireRole = ControlRoleManager.parseNodeRole(roleCole);
-                settingInfoVO.setOperatorHasPermission(roleDict.get(nodeId).isGreaterThanOrEqualTo(requireRole));
+                settingInfoVO.setOperatorHasPermission(
+                    roleDict.get(nodeId).isGreaterThanOrEqualTo(requireRole));
             }
         }
         this.appendDatasheetInfo(settingInfoVO, nodeId);
@@ -170,7 +174,7 @@ public class NodeShareServiceImpl implements INodeShareService {
     }
 
     private void appendDatasheetInfo(final NodeShareSettingInfoVO settingInfoVO,
-        final String nodeId) {
+                                     final String nodeId) {
         // Query association table information
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         ExceptionUtil.isTrue(nodeType != NodeType.ROOT, NodeException.ROOT_NODE_CAN_NOT_SHARE);
@@ -223,8 +227,7 @@ public class NodeShareServiceImpl implements INodeShareService {
         JSONObject info = JSONUtil.createObj();
         if (setting == null || Boolean.FALSE.equals(setting.getIsEnabled())) {
             action = AuditSpaceAction.ENABLE_NODE_SHARE;
-        }
-        else {
+        } else {
             info.set(AuditConstants.OLD_SHARE_PROPS, JSONUtil.parseObj(setting.getProps()));
             info.set(AuditConstants.SHARE_PROPS, propsJson);
         }
@@ -232,7 +235,8 @@ public class NodeShareServiceImpl implements INodeShareService {
             // Node verification. Dashboards are not allowed to be shared separately.
             NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
             ExceptionUtil.isFalse(nodeType.equals(NodeType.ROOT), NodeException.NOT_ALLOW);
-            ExceptionUtil.isFalse(nodeType.equals(NodeType.DASHBOARD), NodeException.OPEN_SHARE_ERROR);
+            ExceptionUtil.isFalse(nodeType.equals(NodeType.DASHBOARD),
+                NodeException.OPEN_SHARE_ERROR);
             // Open sharing and set up a new sharing link
             setting = new NodeShareSettingEntity();
             setting.setNodeId(nodeId);
@@ -247,7 +251,13 @@ public class NodeShareServiceImpl implements INodeShareService {
         redisTemplate.delete(lockKey);
         // Publish Space Audit Events
         info.set(AuditConstants.SHARE_ID, setting.getShareId());
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(action).userId(userId).nodeId(nodeId).info(info).build();
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
+        AuditSpaceArg arg = AuditSpaceArg.builder().action(action)
+            .userId(userId).nodeId(nodeId).info(info)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return setting.getShareId();
     }
@@ -265,27 +275,34 @@ public class NodeShareServiceImpl implements INodeShareService {
         NodeEntity node = nodeMapper.selectByNodeId(setting.getNodeId());
         ExceptionUtil.isNotNull(node, NodeException.SHARE_EXPIRE);
         // Check whether it is the root node to ensure accurate sharing.
-        ExceptionUtil.isTrue(node.getType() != NodeType.ROOT.getNodeType(), NodeException.SHARE_EXPIRE);
+        ExceptionUtil.isTrue(node.getType() != NodeType.ROOT.getNodeType(),
+            NodeException.SHARE_EXPIRE);
         // settings
         nodeShareInfoVo.setSpaceId(node.getSpaceId());
         // Check whether the space has been deleted
         SpaceEntity space = spaceMapper.selectBySpaceId(node.getSpaceId());
-        ExceptionUtil.isFalse(Objects.isNull(space) || !Objects.isNull(space.getPreDeletionTime()), NodeException.SHARE_EXPIRE);
+        ExceptionUtil.isFalse(Objects.isNull(space) || !Objects.isNull(space.getPreDeletionTime()),
+            NodeException.SHARE_EXPIRE);
         SpaceGlobalFeature feature = JSONUtil.toBean(space.getProps(), SpaceGlobalFeature.class);
         // If "Allow file sharing" is closed, the public link will become invalid
         Boolean fileSharable = feature.getFileSharable();
-        ExceptionUtil.isTrue(Objects.isNull(fileSharable) || fileSharable, NodeException.SHARE_EXPIRE);
+        ExceptionUtil.isTrue(Objects.isNull(fileSharable) || fileSharable,
+            NodeException.SHARE_EXPIRE);
         // settings
         Boolean allowApply = feature.getJoinable();
         nodeShareInfoVo.setAllowApply(allowApply);
         Boolean allowCopyDataToExternal = feature.getAllowCopyDataToExternal();
-        nodeShareInfoVo.setAllowCopyDataToExternal(Objects.isNull(allowCopyDataToExternal) || allowCopyDataToExternal);
+        nodeShareInfoVo.setAllowCopyDataToExternal(
+            Objects.isNull(allowCopyDataToExternal) || allowCopyDataToExternal);
         Boolean allowDownloadAttachment = feature.getAllowDownloadAttachment();
-        nodeShareInfoVo.setAllowDownloadAttachment(Objects.isNull(allowDownloadAttachment) || allowDownloadAttachment);
+        nodeShareInfoVo.setAllowDownloadAttachment(
+            Objects.isNull(allowDownloadAttachment) || allowDownloadAttachment);
         nodeShareInfoVo.setSpaceName(space.getName());
         // laboratory feature
         // At present, there is only one, which directly queries a single one, and there are multiple requirements behind it. Expand it
-        LabsApplicantEntity spaceLabs = iLabsApplicantService.getApplicantByApplicantAndFeatureKey(node.getSpaceId(), LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
+        LabsApplicantEntity spaceLabs =
+            iLabsApplicantService.getApplicantByApplicantAndFeatureKey(node.getSpaceId(),
+                LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
         nodeShareInfoVo.setFeatureViewManualSave(Objects.nonNull(spaceLabs));
 
         if (!JSONUtil.isNull(setting.getProps())) {
@@ -294,7 +311,9 @@ public class NodeShareServiceImpl implements INodeShareService {
             nodeShareInfoVo.setAllowEdit(props.getBool("canBeEdited", false));
         }
         // Get the last operator info
-        MemberInfoDTO memberInfo = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(setting.getUpdatedBy(), node.getSpaceId());
+        MemberInfoDTO memberInfo =
+            memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(setting.getUpdatedBy(),
+                node.getSpaceId());
         ExceptionUtil.isNotNull(memberInfo, NodeException.SHARE_EXPIRE);
         nodeShareInfoVo.setIsDeleted(memberInfo.getIsDeleted());
         MemberDTO member = memberMapper.selectDtoByMemberId(memberInfo.getId());
@@ -315,16 +334,19 @@ public class NodeShareServiceImpl implements INodeShareService {
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberInfo.getId(), nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), NodeException.SHARE_EXPIRE);
         // Filter nodes. If you allow others to edit the nodes, you need to edit the above permissions before you can display the nodes. Otherwise, you only need to view the permissions.
-        ControlRole requireRole = ControlRoleManager.parseNodeRole(nodeShareInfoVo.getAllowEdit() ? Node.EDITOR : Node.READER);
+        ControlRole requireRole = ControlRoleManager.parseNodeRole(
+            nodeShareInfoVo.getAllowEdit() ? Node.EDITOR : Node.READER);
         List<String> filterNodeIds = roleDict.entrySet().stream()
-                .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(requireRole))
-                .map(Map.Entry::getKey).collect(Collectors.toList());
+            .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(requireRole))
+            .map(Map.Entry::getKey).collect(Collectors.toList());
         ExceptionUtil.isNotEmpty(filterNodeIds, NodeException.SHARE_EXPIRE);
         // query sharing node tree
         List<NodeShareTree> list = nodeMapper.selectShareTree(filterNodeIds);
         // node switches to memory custom sort
-        CollectionUtil.customSequenceSort(list, NodeShareTree::getNodeId, new ArrayList<>(filterNodeIds));
-        List<NodeShareTree> treeList = new DefaultTreeBuildFactory<NodeShareTree>(node.getNodeId()).doTreeBuild(list);
+        CollectionUtil.customSequenceSort(list, NodeShareTree::getNodeId,
+            new ArrayList<>(filterNodeIds));
+        List<NodeShareTree> treeList =
+            new DefaultTreeBuildFactory<NodeShareTree>(node.getNodeId()).doTreeBuild(list);
         NodeShareTree nodeTree = new NodeShareTree();
         nodeTree.setNodeId(node.getNodeId());
         nodeTree.setNodeName(node.getNodeName());
@@ -362,32 +384,42 @@ public class NodeShareServiceImpl implements INodeShareService {
         log.info("Turn off node sharing");
         NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(nodeId);
         ExceptionUtil.isNotNull(setting, NodeException.CLOSE_SHARE_ERROR);
-        JSONObject oldProps = JSONUtil.parseObj(setting.getProps());
+        final JSONObject oldProps = JSONUtil.parseObj(setting.getProps());
         setting.setIsEnabled(false);
         setting.setProps(JSONUtil.createObj().toString());
         setting.setUpdatedBy(userId);
         boolean flag = iNodeShareSettingService.updateById(setting);
         ExceptionUtil.isTrue(flag, NodeException.CLOSE_SHARE_ERROR);
         // Publish node sharing shutdown event
-        SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, Collections.singletonList(nodeId)));
+        SpringContextHolder.getApplicationContext()
+            .publishEvent(new NodeShareDisableEvent(this, Collections.singletonList(nodeId)));
         // Publish Space Audit Events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.SHARE_ID, setting.getShareId());
         info.set(AuditConstants.OLD_SHARE_PROPS, oldProps);
-        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DISABLE_NODE_SHARE).userId(userId).nodeId(nodeId).info(info).build();
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
+        AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DISABLE_NODE_SHARE)
+            .userId(userId).nodeId(nodeId).info(info)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void disableNodeSharesByUserId(Long userId) {
-        List<NodeShareSettingEntity> nodeShareSettings = nodeShareSettingMapper.selectEnabledByUserId(userId);
-        List<String> nodeIds = nodeShareSettings.stream().map(setting -> setting.getNodeId()).collect(Collectors.toList());
+        List<NodeShareSettingEntity> nodeShareSettings =
+            nodeShareSettingMapper.selectEnabledByUserId(userId);
+        List<String> nodeIds = nodeShareSettings.stream().map(NodeShareSettingEntity::getNodeId)
+            .collect(Collectors.toList());
         if (nodeIds.size() > 0) {
             int res = nodeShareSettingMapper.disableByNodeIds(nodeIds);
             ExceptionUtil.isTrue(res > 0, NodeException.CLOSE_SHARE_ERROR);
             // Publish node sharing shutdown event
-            SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, nodeIds));
+            SpringContextHolder.getApplicationContext()
+                .publishEvent(new NodeShareDisableEvent(this, nodeIds));
         }
     }
 
@@ -397,12 +429,16 @@ public class NodeShareServiceImpl implements INodeShareService {
         log.info("Transfer sharing node");
         NodeShareSettingEntity nodeSetting = nodeShareSettingMapper.selectByShareId(shareId);
         ExceptionUtil.isNotNull(nodeSetting, NodeException.SHARE_NODE_STORE_FAIL);
-        ExceptionUtil.isTrue(!JSONUtil.isNull(nodeSetting.getProps()) && JSONUtil.parseObj(nodeSetting.getProps()).getBool("canBeStored", false), NodeException.SHARE_NODE_DISABLE_SAVE);
+        ExceptionUtil.isTrue(!JSONUtil.isNull(nodeSetting.getProps())
+                && JSONUtil.parseObj(nodeSetting.getProps()).getBool("canBeStored", false),
+            NodeException.SHARE_NODE_DISABLE_SAVE);
         // Query the space where the sharing is located
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeSetting.getNodeId());
         ExceptionUtil.isNotNull(nodeSpaceId, NodeException.SHARE_EXPIRE);
         // Get the last operator to determine if it does not exist.
-        MemberInfoDTO member = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(nodeSetting.getUpdatedBy(), nodeSpaceId);
+        MemberInfoDTO member =
+            memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(nodeSetting.getUpdatedBy(),
+                nodeSpaceId);
         ExceptionUtil.isNotNull(member.getId(), NodeException.SHARE_EXPIRE);
         // Obtain the node ID of the node and its child descendants.
         List<String> nodeIds =
@@ -410,12 +446,14 @@ public class NodeShareServiceImpl implements INodeShareService {
         // Filter the required permissions of the node and share the display logic of the node tree synchronously.
         ControlRoleDict roleDict = controlTemplate.fetchShareNodeTree(member.getId(), nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), NodeException.SHARE_EXPIRE);
-        NodeCopyOptions options = NodeCopyOptions.builder().copyData(true).verifyNodeCount(true).filterPermissionField(true).build();
+        NodeCopyOptions options = NodeCopyOptions.builder().copyData(true).verifyNodeCount(true)
+            .filterPermissionField(true).build();
         if (roleDict.keySet().size() != nodeIds.size()) {
             List<String> filterNodeIds = CollUtil.subtractToList(nodeIds, roleDict.keySet());
             options.setFilterNodeIds(filterNodeIds);
         }
-        return iNodeService.copyNodeToSpace(userId, spaceId, null, nodeSetting.getNodeId(), options);
+        return iNodeService.copyNodeToSpace(userId, spaceId, null, nodeSetting.getNodeId(),
+            options);
     }
 
     @Override

@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,11 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiInterface } from '@apitable/core';
-import { createContext } from 'react';
+package com.apitable.widget.enums;
 
-interface ITemplateRecommendContext {
-  recommendData: ApiInterface.ITemplateRecommendResponse;
+import com.apitable.core.support.serializer.IBaseEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum WidgetPackageAuthType implements IBaseEnum {
+
+    BOUND_SPACE(0),
+
+    AUTH_SPACE(1);
+
+    private final Integer value;
+
 }
-
-export const TemplateRecommendContext = createContext<ITemplateRecommendContext>({ recommendData: {}} as ITemplateRecommendContext);

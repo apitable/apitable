@@ -164,7 +164,23 @@ public class IdUtil {
             + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
     }
 
+    /**
+     * is form.
+     *
+     * @param id node id
+     * @return boolean
+     */
     public static boolean isForm(String id) {
-        return IdRulePrefixEnum.FORM.getIdRulePrefixEnum().equals(id);
+        if (null == id) {
+            return false;
+        }
+        return id.startsWith(IdRulePrefixEnum.FORM.getIdRulePrefixEnum());
+    }
+
+    public static boolean isEmbed(String id) {
+        if (null == id) {
+            return false;
+        }
+        return id.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum());
     }
 }

@@ -144,7 +144,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
               mainMessage.initWidgetWindow(widgetId, {
                 window: iframeRef.current.contentWindow,
                 origin: WIDGET_IFRAME_PATH
-              });
+              }, nodeId);
             }
           }
         }
@@ -301,7 +301,8 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
       style={{
         width: '100%',
         height: '100%',
-        border: 0
+        border: 0,
+        borderRadius: '0 0 8px 8px'
       }}
       onLoad={() => setIframeLoading(false)}
       ref={iframeRef}

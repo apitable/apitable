@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,21 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getServerSideProps(context: any) {
-  const spaceId = context.query.spaceId;
-  const [path, query] = context.resolvedUrl.split('?');
-  if(spaceId) {
-    const search = new URLSearchParams(query);
-    search.delete('spaceId');
-    const queryStr = search.toString();
-    return {
-      redirect: {
-        destination: path + (queryStr ? `?${queryStr}` : ''),
-        permanent: false,
-      }
-    };
-  }
-  return {
-    props: {}
-  };
+package com.apitable.widget.enums;
+
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.serializer.IBaseEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum WidgetPackageType implements IBaseEnum {
+
+    THIRD_PARTY(0),
+
+    OFFICIAL(1);
+
+    private final Integer value;
+
+    public static WidgetPackageType toEnum(Integer type) {
+        if (null != type) {
+            for (WidgetPackageType e : WidgetPackageType.values()) {
+                if (e.getValue().equals(type)) {
+                    return e;
+                }
+            }
+        }
+        throw new BusinessException("Wrong widget package type");
+    }
 }

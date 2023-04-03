@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ITemplate } from '@apitable/core';
-import { createContext } from 'react';
+package com.apitable.widget.dto;
 
-interface ITemplateListContext {
-  templateListData: ITemplate[]
+import lombok.Data;
+
+@Data
+public class LastSubmitWidgetVersionDTO {
+
+    private Long lastPackageId;
+
+    private Long lastPackageReleaseId;
+
+    private Long lastPackageAuthSpaceId;
 }
-
-export const TemplateListContext = createContext<ITemplateListContext>({ templateListData: {}} as ITemplateListContext);

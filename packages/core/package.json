@@ -34,6 +34,7 @@
     "json-schema": "^0.4.0",
     "lodash": "4.17.21",
     "lru-cache": "^5.1.1",
+    "moment-timezone": "^0.5.42",
     "ot-json0": "^1.1.0",
     "phone": "^3.1.10",
     "re-reselect": "^4.0.0",

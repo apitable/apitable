@@ -35,8 +35,8 @@ const Content: FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <>
-      <OrganizationHead className={styles.spaceName} hideTooltip />
       <div className={styles.logo}>{logo}</div>
+      <OrganizationHead className={styles.spaceName} hideTooltip />
     </>
   );
 };
@@ -46,8 +46,8 @@ export const SpaceInfo: FC<React.PropsWithChildren<unknown>> = () => {
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Popover
-          trigger="hover"
-          placement="bottomLeft"
+          trigger='hover'
+          placement='bottomLeft'
           align={{
             offset: [10, 0],
           }}

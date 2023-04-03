@@ -19,18 +19,39 @@ interface ICascaderRulesModalProps {
 const initLinkedFields = (linkedFields: ILinkedField[]): (ILinkedField | undefined)[] => (!linkedFields.length ? [undefined] : linkedFields);
 
 export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurrentField }: ICascaderRulesModalProps): JSX.Element => {
+  const {
+    linkedDatasheetId, linkedViewId,
+    linkedFields: currFieldLinkedFields,
+    fullLinkedFields: currFieldFullLinkedFields
+  } = currentField.property;
+
   const spaceId = useSelector(Selectors.activeSpaceId)!;
-  const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, currentField.property.linkedDatasheetId));
+  const datasheetId = useSelector(Selectors.getDatasheet)?.id!;
+  const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
 
   const colors = useThemeColors();
 
-  const [linkedFields, setLinkedFields] = useState<(ILinkedField | undefined)[]>(initLinkedFields(currentField.property.linkedFields));
-  const [fullLinkedFields, setFullLinkedFields] = useState<ILinkedField[]>(currentField.property.fullLinkedFields);
+  const [linkedFields, setLinkedFields] = useState<(ILinkedField | undefined)[]>(initLinkedFields(currFieldLinkedFields));
+  const [fullLinkedFields, setFullLinkedFields] = useState<ILinkedField[]>(currFieldFullLinkedFields);
   const [cascaderPreviewLoading, setCascaderPreviewLoading] = useState(false);
   const [previewNodesMatrix, setPreviewNodesMatrix] = useState<ICascaderNode[][]>([]);
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([]);
 
-  const onCancel = () => setVisible(false);
+  const onCancel = () => {
+    setVisible(false);
+  };
+
+  const updateField = () => {
+    setCurrentField({
+      ...currentField,
+      property: {
+        ...currentField?.property,
+        linkedFields: linkedFields as ILinkedField[],
+        fullLinkedFields,
+      },
+    });
+    setVisible(false);
+  };
 
   const onOk = () => {
     if (linkedFields.some((linkedField) => !linkedField)) {
@@ -46,16 +67,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       });
       return;
     }
-
-    setCurrentField({
-      ...currentField,
-      property: {
-        ...currentField?.property,
-        linkedFields: linkedFields as ILinkedField[],
-        fullLinkedFields,
-      },
-    });
-    setVisible(false);
+    updateField();
   };
 
   const loadData = async(_linkedFields: ILinkedField[], isLoading?: boolean) => {
@@ -63,8 +75,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
     const res = await DatasheetApi.getCascaderData({
       spaceId,
-      datasheetId: currentField.property.linkedDatasheetId,
-      linkedViewId: currentField.property.linkedViewId,
+      datasheetId: linkedDatasheetId,
+      linkedViewId,
       linkedFieldIds: _linkedFields.map((linkedField) => linkedField.id),
     });
 
@@ -142,19 +154,37 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     setPreviewNodesMatrix([...previewNodesMatrix.slice(0, index + 1), node.children || []]);
   };
 
+  const handleRefresh = () => {
+    Modal.warning({
+      title: t(Strings.please_note),
+      content: t(Strings.cascader_snapshot_update_text),
+      hiddenCancelBtn: false,
+      onOk: () => {
+        DatasheetApi.updateCascaderSnapshot({
+          spaceId,
+          datasheetId,
+          fieldId: currentField.id,
+          linkedDatasheetId: linkedDatasheetId,
+          linkedViewId: linkedViewId,
+        }).then(() => {
+          onRefreshConfig();
+        });
+      },
+    });
+  };
+
   useEffect(() => {
     if (!visible) return;
-
+    if (currFieldLinkedFields?.length > 0) {
+      setLinkedFields(currFieldLinkedFields);
+    }
     const fetchData = async() => {
       try {
-        const res = await loadData(currentField.property.linkedFields);
-
+        const res = await loadData(currFieldLinkedFields);
         setPreviewNodesMatrix(res?.treeSelects ? [res.treeSelects] : []);
-
         // set two initial fields for the first-time config
-        if (!currentField.property.linkedFields?.length && res?.linkedFields) {
+        if (!currFieldLinkedFields?.length && res?.linkedFields) {
           setFullLinkedFields(res.linkedFields);
-          setLinkedFields(res.linkedFields.slice(0, 5));
         }
       } catch (e: any) {
         onRefreshConfig();
@@ -256,13 +286,13 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       className={styles.cascaderRulesModal}
       closable={false}
       destroyOnClose
+      maskClosable={false}
       okText={t(Strings.confirm)}
       onCancel={onCancel}
       onOk={onOk}
       title={
         <p className={styles.modalTitle}>
           <span style={{ marginRight: 6 }}>{t(Strings.cascader_rules)}</span>
-          {/* TODO: help doc is not ready, waiting for Liam's feedback */}
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
             <InformationSmallOutlined color={colors.fc3} />
           </Tooltip>
@@ -278,7 +308,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
             block={false}
             className={styles.refreshButton}
             component="button"
-            onClick={onRefreshConfig}
+            onClick={handleRefresh}
             prefixIcon={<ReloadOutlined color={colors.primaryColor} />}
             underline={false}
           >

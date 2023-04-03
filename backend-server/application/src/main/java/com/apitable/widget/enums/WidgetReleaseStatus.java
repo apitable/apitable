@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,21 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function getServerSideProps(context: any) {
-  const spaceId = context.query.spaceId;
-  const [path, query] = context.resolvedUrl.split('?');
-  if(spaceId) {
-    const search = new URLSearchParams(query);
-    search.delete('spaceId');
-    const queryStr = search.toString();
-    return {
-      redirect: {
-        destination: path + (queryStr ? `?${queryStr}` : ''),
-        permanent: false,
-      }
-    };
-  }
-  return {
-    props: {}
-  };
+package com.apitable.widget.enums;
+
+import com.apitable.core.support.serializer.IBaseEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum WidgetReleaseStatus implements IBaseEnum {
+
+    WAIT_REVIEW(0),
+
+    PASS_REVIEW(1),
+
+    REJECT(2);
+
+    private final int value;
+
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
 }

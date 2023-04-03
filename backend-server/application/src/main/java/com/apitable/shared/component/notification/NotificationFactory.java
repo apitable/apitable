@@ -52,7 +52,6 @@ import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.mapper.NodeDescMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,7 +62,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -89,9 +87,6 @@ public class NotificationFactory implements INotificationFactory {
 
     @Resource
     private SpaceMapper spaceMapper;
-
-    @Resource
-    private ObjectMapper objectMapper;
 
     @Resource
     private NodeDescMapper nodeDescMapper;
@@ -182,22 +177,14 @@ public class NotificationFactory implements INotificationFactory {
         return null;
     }
 
-    @SneakyThrows
-    @Override
-    public JSONObject getJsonObject(Object object) {
-        if (ObjectUtil.isNotNull(object)) {
-            return JSONUtil.parseObj(JSONUtil.toJsonStr(object));
-        }
-        return null;
-    }
-
     @Override
     public JSONObject formatExtra(JSONObject extras, Map<Long, PlayerBaseVo> members) {
         JSONArray memberIds = NotificationHelper.getMemberIdsFromExtras(extras);
         if (ObjectUtil.isNotNull(memberIds) && !memberIds.isEmpty()) {
             List<JSONObject> involvedMembers = new ArrayList<>();
             memberIds.forEach(memberId -> involvedMembers.add(
-                getJsonObject(members.get(Convert.toLong(memberId)))));
+                JSONUtil.parseObj(members.get(Convert.toLong(memberId)), false)
+            ));
             extras.putOnce(INVOLVE_MEMBER_DETAIL, involvedMembers);
         }
         return extras;

@@ -872,17 +872,12 @@ export class CellHelper extends KonvaDrawer {
         }
       }
 
-      const { text: titleText, textWidth: titleWidth } = this.textEllipsis({
-        text: title,
-        maxWidth: columnWidth && realMaxTextWidth,
-      });
-
       const { text, textWidth: primaryWidth } = this.textEllipsis({
         text: name,
         maxWidth: columnWidth && realMaxTextWidth,
       });
 
-      const itemNameWidth = title ? titleWidth : primaryWidth;
+      const itemNameWidth = primaryWidth;
 
       const itemWidth = isOperating ? itemNameWidth + itemOtherWidth + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : itemNameWidth + itemOtherWidth;
 
@@ -931,7 +926,7 @@ export class CellHelper extends KonvaDrawer {
           x: x + currentX + avatarSize + GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
           y: y + currentY + (itemHeight - 13) / 2,
           fillStyle: colors.fc1,
-          text: titleText || text,
+          text: title || text,
         });
         ctx.restore();
       }

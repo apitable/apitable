@@ -67,13 +67,13 @@ public class ChainOnNotificationAspect extends BaseAspectSupport {
     public void doAfterReturning(Notification notification, Object result) {
         try {
             NotificationRenderField renderField = NotificationRenderFieldHolder.get();
-
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes())
                 .getRequest();
-            ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
+            ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
             RequestStorage requestStorage = RequestStorage.create(requestWrapper);
-            boolean isNodeOperate = NotificationHelper.isNodeOperate(request.getServletPath());
+            boolean isNodeOperate =
+                NotificationHelper.isNodeOperate(requestStorage.getServletPath());
             final String spaceId;
             final Long fromUserId;
             final List<Long> playerIds;

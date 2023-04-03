@@ -17,7 +17,6 @@
  */
 
 import {
-  IUserInfo,
   ISelectedTeamInfoInSpace,
   IMemberInfoInSpace,
   ISubTeamListInSpaceBase,
@@ -93,22 +92,7 @@ export function selecteTeamRowsInModal(arr: ISubTeamListInSpaceBase[]) {
     payload: arr,
   };
 }
-/**
- * Space - Team List
- * Query and get specific team list
- */
-export function getTeamListDataInSpace(_spaceId: string, _user: IUserInfo) {
-  let teamListInSpace: ITeamListInSpace[] = [];
-  return (dispatch: any) => {
-    Api.getTeamList().then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        teamListInSpace = data;
-      }
-      dispatch(updateTeamListInSpace(teamListInSpace));
-    });
-  };
-}
+
 /**
  * Contacts - Team List
  * Get Team Info

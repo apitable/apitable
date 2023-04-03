@@ -15,6 +15,7 @@ export const FilterCascader = (props: any) => {
       toggleEditing={() => toggleEditing(!editing)}
       onSave={onChange}
       datasheetId={datasheetId}
+      editable
       width={100}
       height={40}
       style={{}}

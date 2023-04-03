@@ -30,7 +30,7 @@ import static com.apitable.shared.constants.NotificationConstants.EMAIL_URL;
 import static com.apitable.shared.constants.NotificationConstants.EMAIL_VIEW_ID;
 import static com.apitable.shared.constants.NotificationConstants.EXPIRE_AT;
 import static com.apitable.shared.constants.NotificationConstants.INVOLVE_RECORD_IDS;
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -481,7 +481,8 @@ public class PlayerNotificationServiceImpl
                 ZonedDateTime value = ZonedDateTime.ofInstant(
                     Instant.ofEpochMilli(Long.parseLong(dict.get(key).toString())),
                     ZoneId.of(timeZone));
-                dict.set(StrUtil.toUnderlineCase(key).toUpperCase(), value.format(ISO_DATE_TIME));
+                dict.set(StrUtil.toUnderlineCase(key).toUpperCase(),
+                    value.format(ISO_OFFSET_DATE_TIME));
             }
             NotifyMailFactory.me().sendMail(template.getMailTemplateSubject(), dict, dict,
                 timeZonesGroups.get(timeZone));

@@ -63,6 +63,7 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
@@ -487,9 +488,14 @@ public class NodeController {
         }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_NODE).userId(userId)
-                .nodeId(nodeId).build();
+                .nodeId(nodeId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
+                .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         // The new node inherits parent node permissions by default
         return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, nodeId, role));
@@ -547,7 +553,11 @@ public class NodeController {
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         iNodeDescService.edit(opRo.getNodeId(), opRo.getDescription());
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.UPDATE_NODE_DESC)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
             .userId(SessionContext.getUserId()).nodeId(opRo.getNodeId()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -661,9 +671,13 @@ public class NodeController {
         NodeCopyEffectDTO copyEffect = iNodeService.copy(userId, nodeOpRo);
         iNodeService.nodeCopyChangeset(copyEffect);
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.COPY_NODE).userId(userId)
                 .nodeId(copyEffect.getCopyNodeId())
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.SOURCE_NODE_ID, nodeOpRo.getNodeId())
                     .set(AuditConstants.RECORD_COPYABLE, nodeOpRo.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -787,8 +801,12 @@ public class NodeController {
             throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.IMPORT_NODE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .nodeId(createNodeId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, createNodeId, role));

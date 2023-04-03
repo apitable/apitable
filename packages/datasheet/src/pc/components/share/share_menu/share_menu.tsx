@@ -137,6 +137,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
       okText: t(Strings.go_login),
       onOk: () => {
         if (env.INVITE_USER_BY_AUTH0) {
+          localStorage.setItem('share_login_reference', window.location.href);
           Router.push(Navigation.WORKBENCH);
         } else {
           Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});

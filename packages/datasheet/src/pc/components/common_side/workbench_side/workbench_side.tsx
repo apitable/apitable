@@ -22,7 +22,7 @@ import {
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
 import {
-  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteFilled, PlanetOutlined
+  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteOutlined, PlanetOutlined
 } from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
@@ -352,7 +352,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
               <div className={styles.groupItem} onClick={jumpTrash} id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
-                <DeleteFilled color={colors.rc04} />
+                <DeleteOutlined color={colors.rc04} />
               </div>
             </Tooltip>
           )}

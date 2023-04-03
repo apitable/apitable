@@ -21,6 +21,7 @@ package com.apitable.shared.listener;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.apitable.player.dto.NotificationModelDTO;
 import com.apitable.player.entity.PlayerNotificationEntity;
 import com.apitable.player.service.IPlayerNotificationService;
@@ -96,7 +97,7 @@ public class NotificationCreateListener implements
                 detailVo.setUpdatedAt(ClockManager.me().getLocalDateTimeNow());
                 detailVo.setIsRead(0);
                 socketClientTemplate.emit(EventType.NOTIFY.name(),
-                    notificationFactory.getJsonObject(detailVo));
+                    JSONUtil.parseObj(detailVo, false));
             }
         });
     }

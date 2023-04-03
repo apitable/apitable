@@ -21,6 +21,7 @@ import accept from 'attr-accept';
 import mime from 'mime-types';
 import { browser } from 'modules/shared/browser';
 import { byte2Mb } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_placeholder_filled.png'; // img
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt
 import IconZip from 'static/icon/datasheet/attachment/datasheet_img_attachment_compressed_placeholder.png'; // zip
@@ -180,6 +181,9 @@ export function renderFileIconUrl(curFile: IFileLikeProps) {
 }
 
 export const imageSizeExceeded = (size: number) => {
+  if (getEnvVariables().IGNORE_IMG_SIZE_LIMIT) {
+    return false;
+  }
   const MAX_FILE_SIZE = 20;
   return byte2Mb(size) >= MAX_FILE_SIZE;
 };

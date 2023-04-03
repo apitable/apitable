@@ -241,16 +241,6 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     },
   ]);
 
-  navList.splice(1, 0, {
-    component: () => {
-      return (
-        <div className={styles.navItem} onClick={() => expandSearch()}>
-          <SearchOutlined className={styles.navIcon}/>
-        </div>
-      );
-    }
-  });
-
   const NotificationNav = React.useMemo((): React.ReactElement => {
     const dom = (
       <Badge
