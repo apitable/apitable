@@ -43,9 +43,6 @@ const CorpCertifiedTag = ({ certified, isSocialEnabled, spaceId }: Props) => {
 
 const CertifiedTag = () => (
   <span className={classnames(styles.tag, styles.tagCorpCertified)}>
-    <span className={styles.icon}>
-      <IconCertified fill={colorVars.fc0} />
-    </span>
     <span className={styles.text}>{t(Strings.space_corp_certified)}</span>
   </span>
 );
@@ -61,9 +58,6 @@ const UncertifiedTag = ({ spaceId }: {spaceId: string}) => {
     <Tooltip title={t(Strings.space_corp_uncertified_tooltip)} placement="top">
       <a className={classnames(styles.tag, styles.tagCorpUncertified)}
         href={formUrl} target="_blank" rel="noopener noreferrer">
-        <span className={styles.icon}>
-          <IconCertified fill={colorVars.fc3} />
-        </span>
         <span className={styles.text}>{t(Strings.space_corp_uncertified)}</span>
       </a>
     </Tooltip>
