@@ -295,28 +295,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
 
     // If a mounted dom is specified, no prompt will be given
     if (ExecuteResult.Success === result.result && !targetDOM) {
-      // cascader field update need update cascader snapshot
-      if (newField.type === FieldType.Cascader) {
-        DatasheetApi.updateCascaderSnapshot({
-          spaceId,
-          datasheetId,
-          fieldId: newField.id,
-          linkedDatasheetId: newField.property.linkedDatasheetId,
-          linkedViewId: newField.property.linkedViewId,
-        }).then(() => {
-          notify.open({
-            message: t(Strings.toast_field_configuration_success),
-            key: NotifyKey.ChangeFieldSetting,
-          });
-          hideOperateBox();
-          return;
-        });
-      } else {
-        notify.open({
-          message: t(Strings.toast_field_configuration_success),
-          key: NotifyKey.ChangeFieldSetting,
-        });
-      }
+      notify.open({
+        message: t(Strings.toast_field_configuration_success),
+        key: NotifyKey.ChangeFieldSetting,
+      });
     }
     hideOperateBox();
   };

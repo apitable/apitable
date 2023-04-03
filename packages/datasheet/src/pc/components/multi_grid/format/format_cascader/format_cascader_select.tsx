@@ -50,7 +50,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
       <section className={commonStyles.section}>
         <div className={classNames(commonStyles.sectionTitle, styles.sectionTitleWithTip)}>
           <span>{`1 ${t(Strings.cascader_datasource)}`}</span>
-          <LinkButton color={colors.thirdLevelText} href="" className={styles.tip}>
+          <LinkButton color={colors.thirdLevelText} href={t(Strings.field_help_cascader)} className={styles.tip}>
             {t(Strings.cascader_how_to_label)}
           </LinkButton>
         </div>

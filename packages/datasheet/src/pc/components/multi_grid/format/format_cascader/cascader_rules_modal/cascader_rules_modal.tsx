@@ -294,7 +294,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         <p className={styles.modalTitle}>
           <span style={{ marginRight: 6 }}>{t(Strings.cascader_rules)}</span>
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
-            <InformationSmallOutlined color={colors.fc3} />
+            <span><InformationSmallOutlined color={colors.fc3} /></span>
           </Tooltip>
         </p>
       }
