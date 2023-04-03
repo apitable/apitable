@@ -96,12 +96,14 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
           </div>
         </section>
       )}
-      <CascaderRulesModal
-        visible={rulesModalVisible}
-        setVisible={setRulesModalVisible}
-        currentField={currentField}
-        setCurrentField={setCurrentField}
-      />
+      {rulesModalVisible && (
+        <CascaderRulesModal
+          visible={rulesModalVisible}
+          setVisible={setRulesModalVisible}
+          currentField={currentField}
+          setCurrentField={setCurrentField}
+        />
+      )}
     </div>
   );
 };

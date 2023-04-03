@@ -23,7 +23,8 @@ export const CascaderDatasourceDatasheetSelect = ({
   const datasheetParentId = useSelector((state: IReduxState) => Selectors.getDatasheet(state)?.parentId) || '';
 
   const onSelectDatasource = ({ datasheetId }: ISearchChangeProps) => {
-    if (!datasheetId) return;
+    const isDstChange = datasheetId !== currentField.property.linkedDatasheetId;
+    if (!datasheetId || !isDstChange) return;
 
     setSearchPanelVisible(false);
     setCurrentField({
@@ -32,6 +33,9 @@ export const CascaderDatasourceDatasheetSelect = ({
         ...currentField?.property,
         linkedDatasheetId: datasheetId,
         linkedViewId: '',
+        // toggle datasheet should clear cache fields
+        linkedFields: [],
+        fullLinkedFields: [],
       },
     });
   };
