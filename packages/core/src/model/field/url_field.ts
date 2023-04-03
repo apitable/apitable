@@ -62,7 +62,6 @@ export class URLField extends TextBaseField {
     }
 
     const cv = [cellValue].flat();
-    const isRecogURLFlag = this.field.property?.isRecogURLFlag;
 
     return (cv as IHyperlinkSegment[]).map(seg => seg?.text).join('') || null;
   }
