@@ -59,9 +59,6 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
         NotificationRenderFieldHolder.init();
         ClientOriginInfoHolder.init();
 
-        ContentCachingRequestWrapper wrappedRequest =
-            new ContentCachingRequestWrapper(httpServletRequest);
-
         try {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } finally {
