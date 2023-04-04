@@ -870,7 +870,7 @@ export const FieldTypeDescriptionMap: {
   },
   [FieldType.Cascader]: {
     title: t(Strings.field_title_tree_select),
-    subTitle: t(Strings.field_title_tree_select),
+    subTitle: t(Strings.field_desc_cascader),
     type: FieldType.Cascader,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,

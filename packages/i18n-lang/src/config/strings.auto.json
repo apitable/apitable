@@ -806,6 +806,11 @@
             "en_US": "Returns a positive number. The system automatically generates the numbers so you can't write into the field by API.",
             "zh_HK": "數值，正整數  創建記錄時自動生成，不支持手動寫入"
         },
+        "api_panel_type_desc_cascader": {
+            "zh_CN": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
+            "en_US": "Returns the selected options as an array of strings",
+            "zh_HK": "多級聯動，適合作為有層級關系選項的文本，例如省區市的選擇。"
+        },
         "api_panel_type_desc_checkbox": {
             "zh_CN": "布尔类型的true 或 空  当此字段被勾选时返回“true”。除此以外，记录中不返回此字段！",
             "en_US": "Returns true as boolean format if the checkbox is checked. Otherwise the return result will not include this Checkbox field.  ",
@@ -5270,6 +5275,11 @@
             "zh_CN": "你可以为每一行记录添加一个唯一且自增的数字",
             "en_US": "Add a unique and self-increasing number for each record",
             "zh_HK": "你可以為每一行記錄添加一個唯一且自增的數字"
+        },
+        "field_desc_cascader": {
+            "zh_CN": "你可以在单元格内通过级联的方式添加预选项",
+            "en_US": "Using a cascading approach, select pre-options.",
+            "zh_HK": "你可以在單元格內通過級聯的方式添加預選項"
         },
         "field_desc_checkbox": {
             "zh_CN": "你可以在单元格内标记勾选状态",
@@ -11427,6 +11437,10 @@
         "player_step_ui_config_168": {
             "zh_CN": "{\n\"templateKey\":\"createMirrorTip\"\n}",
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
+        },
+        "player_step_ui_config_169": {
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>新增「多级联动」字段，层级菜单易维护</li><li>Script小程序在线编程，扩展功能大升级</li><li>通知提醒新方式，机器人新增「发送邮件」</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>Added \"Cascader\" field, with easy maintenance of hierarchical menus</li><li>Script Widget online programming, with greatly expanded features</li><li>New notification alert method, with the robot now able to \"send emails\"</li></ul>\"\n}"
         },
         "player_step_ui_config_78": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",
