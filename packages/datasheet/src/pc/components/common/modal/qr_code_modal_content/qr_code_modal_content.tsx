@@ -69,7 +69,7 @@ export const QRCodeModalContent: React.FC<React.PropsWithChildren<IModalContentP
 
 export const getModalConfig = (props: any) => {
   const { isShowQrcode = true, title, content, onOk, okText, modalButtonType } = props;
-  const qrcodeVisible = getEnvVariables().ERROR_PAGE_CUSTOMER_SERVICE_QRCODE_VISIBLE;
+  const qrcodeVisible = getEnvVariables().CUSTOMER_SERVICE_QRCODE_VISIBLE;
 
   if(isShowQrcode && qrcodeVisible) {
     return {
