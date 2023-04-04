@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
@@ -49,6 +50,7 @@ import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.service.ISpaceService;
@@ -347,7 +349,10 @@ public class OrganizationController {
         if (StrUtil.isBlank(linkId)) {
             return LoginContext.me().getSpaceId();
         }
-        // non-official website access
-        return iSpaceService.getSpaceIdByLinkId(linkId);
+        // non-official website access, filter embed
+        if (!IdUtil.isEmbed(linkId)) {
+            return iSpaceService.getSpaceIdByLinkId(linkId);
+        }
+        return CharSequenceUtil.EMPTY;
     }
 }
