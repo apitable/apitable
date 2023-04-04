@@ -162,14 +162,6 @@
         <result column="updated_at" property="updatedAt"/>
         <result column="is_nick_name_modified" property="isNickNameModified"/>
         <result column="is_member_name_modified" property="isMemberNameModified"/>
-        <collection property="teams" ofType="com.apitable.organization.vo.TeamVo">
-            <result column="team_id" property="teamId"/>
-            <result column="team_name" property="teamName"/>
-        </collection>
-        <collection property="tags" ofType="com.apitable.organization.vo.TagVo">
-            <result column="tag_id" property="tagId"/>
-            <result column="tag_name" property="tagName"/>
-        </collection>
     </resultMap>
 
     <select id="selectInfoById" resultMap="memberInfo">
@@ -183,10 +175,6 @@
                vom.mobile,
                vom.email,
                vom.position,
-               vod.id as team_id,
-               vod.team_name,
-               votmr.tag_id,
-               vot.tag_name,
                vom.is_active,
                IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
                vom.is_admin,
@@ -196,10 +184,6 @@
                IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
         FROM ${tablePrefix}unit_member vom
         LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
-        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
-        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
-        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
-        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
         LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
         WHERE vom.id = #{memberId} AND vom.is_deleted = 0
     </select>
@@ -215,10 +199,6 @@
         vom.mobile,
         vom.email,
         vom.position,
-        vod.id AS team_id,
-        vod.team_name,
-        votmr.tag_id,
-        vot.tag_name,
         vom.is_active,
         vom.is_admin,
         IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
@@ -228,10 +208,6 @@
         IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
         FROM ${tablePrefix}unit_member vom
         LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
-        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
-        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
-        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
-        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
         LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
         WHERE vom.space_id = #{spaceId} AND vom.is_deleted = 0
     </select>
@@ -247,10 +223,6 @@
         vom.mobile,
         vom.email,
         vom.position,
-        vod.id AS team_id,
-        vod.team_name,
-        votmr.tag_id,
-        vot.tag_name,
         vom.is_active,
         vom.is_admin,
         IF(vsmrr.id IS NULL, 0, 1) AS is_sub_admin,
@@ -260,10 +232,6 @@
         IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
         FROM ${tablePrefix}unit_member vom
         LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
-        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vom.id = vodmr.member_id
-        LEFT JOIN ${tablePrefix}unit_team vod ON vodmr.team_id = vod.id AND vod.parent_id != 0 AND vod.is_deleted = 0 AND vod.space_id = vom.space_id
-        LEFT JOIN ${tablePrefix}unit_tag_member_rel votmr ON votmr.member_id = vom.id
-        LEFT JOIN ${tablePrefix}unit_tag vot ON votmr.tag_id = vot.id
         LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
         WHERE vodmr.team_id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">

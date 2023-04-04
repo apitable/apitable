@@ -18,12 +18,8 @@
 
 package com.apitable.shared.grpc;
 
-import javax.annotation.Resource;
-
-import io.grpc.stub.StreamObserver;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.server.service.GrpcService;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
 
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.integration.grpc.ApiServingServiceGrpc;
@@ -31,15 +27,16 @@ import com.apitable.integration.grpc.BasicResult;
 import com.apitable.integration.grpc.NodeBrowsingRo;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.component.adapter.MultiDatasourceAdapterTemplate;
-import com.apitable.user.enums.UserException;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.service.INodeService;
-
-import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
-import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
+import io.grpc.stub.StreamObserver;
+import javax.annotation.Resource;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 /**
  * backend grp serving service
@@ -65,8 +62,7 @@ public class BackendServingServiceImpl extends ApiServingServiceGrpc.ApiServingS
         String spaceId = iNodeService.getSpaceIdByNodeId(req.getNodeId());
         // only for folder
         if (req.getNodeId().startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())) {
-            Long userId = iUserService.getUserIdByUuid(req.getUuid());
-            ExceptionUtil.isNotNull(userId, UserException.USER_NOT_EXIST);
+            Long userId = iUserService.getUserIdByUuidWithCheck(req.getUuid());
             Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
             ExceptionUtil.isNotNull(memberId, PermissionException.MEMBER_NOT_IN_SPACE);
             multiDatasourceAdapterTemplate.saveOrUpdateNodeVisitRecord(spaceId, memberId, req.getNodeId(), NodeType.FOLDER);

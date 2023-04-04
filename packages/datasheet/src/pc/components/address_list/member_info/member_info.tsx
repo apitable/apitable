@@ -66,7 +66,7 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
     if (memberInfo.memberId === user!.memberId) {
       editOwnMemberNameInAddress(memberInfo.memberId, e.target.value);
     } else {
-      const teamIds = memberInfo.teams ? memberInfo.teams.map(item => item.teamId) : [];
+      const teamIds = memberInfo.teamData ? memberInfo.teamData.map(item => item.teamId) : [];
       editMemberName({ memberId: memberInfo.memberId, memberName: e.target.value, teamIds });
     }
   };
