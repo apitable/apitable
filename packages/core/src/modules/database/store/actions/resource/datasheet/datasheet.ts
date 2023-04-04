@@ -19,33 +19,102 @@
 import { StatusCode } from 'config';
 import { Strings, t } from 'exports/i18n';
 import {
-  DateUnitType, IActiveRowInfo, IApiWrapper, IDatasheetPack, IDragTarget, ILoadedDataPackAction, ILoadingRecordAction, INodeMeta, IReduxState,
-  IServerDatasheetPack, ISetFieldInfoState, ISnapshot, IViewDerivation, ModalConfirmKey,
+  DateUnitType,
+  IActiveRowInfo,
+  IApiWrapper,
+  IDatasheetPack,
+  IDragTarget,
+  ILoadedDataPackAction,
+  ILoadingRecordAction,
+  INodeMeta,
+  IRecordMap,
+  IReduxState,
+  IServerDatasheetPack,
+  ISetFieldInfoState,
+  ISnapshot,
+  IViewDerivation,
+  ModalConfirmKey,
 } from 'exports/store';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
-import { getDatasheet, getDatasheetLoading, getMirror } from 'exports/store/selectors';
+import { getDatasheet, getDatasheetLoading, getMirror, getSnapshot } from 'exports/store/selectors';
 import produce from 'immer';
 import { Events, Player } from 'modules/shared/player';
 import {
-  ACTIVE_EXPORT_VIEW_ID, ACTIVE_OPERATE_VIEW_ID, ADD_DATASHEET, CHANGE_VIEW, CHANGE_WIDGET_PANEL_WIDTH, CLEAR_ACTIVE_ROW_INFO, CLEAR_FIELD_INFO,
-  DATAPACK_LOADED, DATAPACK_REQUEST, DATASHEET_CONNECTED, DATASHEET_ERROR_CODE, DELETE_VIEW_DERIVATION, PATCH_VIEW_DERIVATION, RECORD_NODE_DESC,
-  REFRESH_SNAPSHOT, RESET_DATASHEET, RESET_EXPORT_VIEW_ID, RESET_OPERATE_VIEW_ID, SET_ACTIVE_FIELD_STATE, SET_ACTIVE_ROW_INFO,
-  SET_CALENDAR_GRID_WIDTH, SET_CALENDAR_SETTING_PANEL_WIDTH, SET_CLOSE_SYNC_VIEW_ID, SET_DATASHEET_COMPUTED, SET_DATASHEET_SYNCING, SET_DRAG_TARGET,
-  SET_EDIT_STATUS, SET_GANTT_DATE_UNIT_TYPE, SET_GANTT_GRID_WIDTH, SET_GANTT_SETTING_PANEL_WIDTH, SET_GRID_VIEW_HOVER_FIELD_ID, SET_GROUPING_COLLAPSE,
-  SET_HIGHLIGHT_FIELD_ID, SET_HOVER_GROUP_PATH, SET_HOVER_RECORD_ID, SET_HOVER_ROW_OF_ADD_RECORD, SET_KANBAN_GROUPING_EXPAND, SET_LOADING_RECORD,
-  SET_NEW_RECORD_EXPECT_INDEX, SET_ORG_CHART_GRID_WIDTH as SET_ORG_CHART_GRID_PANEL_WIDTH, SET_ORG_CHART_SETTING_PANEL_WIDTH, SET_ROBOT_PANEL_STATUS,
-  SET_SEARCH_KEYWORD, SET_SEARCH_RESULT_CURSOR_INDEX, SET_VIEW_DERIVATION, SWITCH_ACTIVE_PANEL, TOGGLE_CALENDAR_GRID, TOGGLE_CALENDAR_GUIDE_STATUS,
-  TOGGLE_CALENDAR_SETTING_PANEL, TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
-  TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL, TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL,
-  TOGGLE_WIDGET_PANEL, TRIGGER_VIEW_DERIVATION_COMPUTED, UPDATE_DATASHEET, UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT,
+  ACTIVE_EXPORT_VIEW_ID,
+  ACTIVE_OPERATE_VIEW_ID,
+  ADD_DATASHEET,
+  CHANGE_VIEW,
+  CHANGE_WIDGET_PANEL_WIDTH,
+  CLEAR_ACTIVE_ROW_INFO,
+  CLEAR_FIELD_INFO,
+  DATAPACK_LOADED,
+  DATAPACK_REQUEST,
+  DATASHEET_CONNECTED,
+  DATASHEET_ERROR_CODE,
+  DELETE_VIEW_DERIVATION,
+  PATCH_VIEW_DERIVATION,
+  RECORD_NODE_DESC,
+  REFRESH_SNAPSHOT,
+  RESET_DATASHEET,
+  RESET_EXPORT_VIEW_ID,
+  RESET_OPERATE_VIEW_ID,
+  SET_ACTIVE_FIELD_STATE,
+  SET_ACTIVE_ROW_INFO,
+  SET_CALENDAR_GRID_WIDTH,
+  SET_CALENDAR_SETTING_PANEL_WIDTH,
+  SET_CLOSE_SYNC_VIEW_ID,
+  SET_DATASHEET_COMPUTED,
+  SET_DATASHEET_SYNCING,
+  SET_DRAG_TARGET,
+  SET_EDIT_STATUS,
+  SET_GANTT_DATE_UNIT_TYPE,
+  SET_GANTT_GRID_WIDTH,
+  SET_GANTT_SETTING_PANEL_WIDTH,
+  SET_GRID_VIEW_HOVER_FIELD_ID,
+  SET_GROUPING_COLLAPSE,
+  SET_HIGHLIGHT_FIELD_ID,
+  SET_HOVER_GROUP_PATH,
+  SET_HOVER_RECORD_ID,
+  SET_HOVER_ROW_OF_ADD_RECORD,
+  SET_KANBAN_GROUPING_EXPAND,
+  SET_LOADING_RECORD,
+  SET_NEW_RECORD_EXPECT_INDEX,
+  SET_ORG_CHART_GRID_WIDTH as SET_ORG_CHART_GRID_PANEL_WIDTH,
+  SET_ORG_CHART_SETTING_PANEL_WIDTH,
+  SET_ROBOT_PANEL_STATUS,
+  SET_SEARCH_KEYWORD,
+  SET_SEARCH_RESULT_CURSOR_INDEX,
+  SET_VIEW_DERIVATION,
+  SWITCH_ACTIVE_PANEL,
+  TOGGLE_CALENDAR_GRID,
+  TOGGLE_CALENDAR_GUIDE_STATUS,
+  TOGGLE_CALENDAR_SETTING_PANEL,
+  TOGGLE_GANTT_GRID,
+  TOGGLE_GANTT_SETTING_PANEL,
+  TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
+  TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL,
+  TOGGLE_ORG_CHART_GUIDE_STATUS,
+  TOGGLE_ORG_CHART_SETTING_PANEL,
+  TOGGLE_TIME_MACHINE_PANEL,
+  TOGGLE_WIDGET_PANEL,
+  TRIGGER_VIEW_DERIVATION_COMPUTED,
+  UPDATE_DATASHEET,
+  UPDATE_DATASHEET_COMPUTED,
+  UPDATE_DATASHEET_NAME,
+  UPDATE_SNAPSHOT,
 } from 'modules/shared/store/action_constants';
 import { AnyAction, Dispatch } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 import { checkInnerConsistency } from 'utils';
 import { checkLinkConsistency } from 'utils/link_consistency';
 import {
-  fetchDatasheetPack, fetchEmbedDatasheetPack, fetchEmbedForeignDatasheetPack, fetchForeignDatasheetPack, fetchShareDatasheetPack,
-  fetchShareForeignDatasheetPack, fetchTemplateDatasheetPack,
+  fetchDatasheetPack,
+  fetchEmbedDatasheetPack,
+  fetchEmbedForeignDatasheetPack,
+  fetchForeignDatasheetPack,
+  fetchShareDatasheetPack,
+  fetchShareForeignDatasheetPack,
+  fetchTemplateDatasheetPack,
 } from '../../../../api/datasheet_api';
 
 export function requestDatasheetPack(datasheetId: string) {
@@ -154,12 +223,18 @@ const checkSortInto = (snapshot: ISnapshot) => {
   });
 };
 
+const mergeRecordMap = (snapshot: ISnapshot, recordMap: IRecordMap) => {
+  return produce(snapshot, draft => {
+    draft.recordMap = { ...recordMap, ...draft.recordMap };
+  });
+};
+
 export function receiveDataPack<T extends IServerDatasheetPack = IServerDatasheetPack>(
   payload: T,
-  options?: { isPartOfData?: boolean; fixConsistency?: boolean; getState?: () => IReduxState },
+  options?: { isPartOfData?: boolean; fixConsistency?: boolean; toMergeRecordMap?: IRecordMap; getState?: () => IReduxState },
 ): ILoadedDataPackAction {
   const { snapshot, datasheet } = payload;
-  const { isPartOfData = false, fixConsistency = true, getState } = options ?? {};
+  const { isPartOfData = false, fixConsistency = true, toMergeRecordMap, getState } = options ?? {};
 
   if (fixConsistency && !isPartOfData) {
     // TODO: move data consistency check  to node layer, and ensure full recover mechanism
@@ -167,12 +242,17 @@ export function receiveDataPack<T extends IServerDatasheetPack = IServerDatashee
     ensureInnerConsistency(payload, getState);
   }
 
+  let newSnapshot = checkSortInto(snapshot);
+  if (toMergeRecordMap) {
+    newSnapshot = mergeRecordMap(snapshot, toMergeRecordMap);
+  }
+
   return {
     type: DATAPACK_LOADED,
     datasheetId: datasheet.id,
     payload: {
       ...datasheet,
-      snapshot: checkSortInto(snapshot),
+      snapshot: newSnapshot,
       isPartOfData,
       activeView: getActiveViewFromData(datasheet, snapshot, getState)!,
     },
@@ -308,6 +388,15 @@ interface IFetchDatasheetPack {
   forceFetch?: boolean;
 }
 
+function newRecordMapContainsNewRecords(oldRecordMap: Readonly<IRecordMap>, newRecordMap: IRecordMap): boolean {
+  for (const newRecordId in newRecordMap) {
+    if (!(newRecordId in oldRecordMap)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch, getState, isPartOfData = false, forceFetch }: IFetchDatasheetPack) {
   if (responseBody.success) {
     const state = getState();
@@ -317,10 +406,16 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
       Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
         const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
         const dst = getDatasheet(state, foreignDstId);
+        let toMergeRecordMap = undefined;
         if (dst) {
-          return;
+          const oldRecordMap = getSnapshot(state, foreignDstId)!.recordMap;
+          const newRecordMap = foreignDatasheetPack.snapshot.recordMap;
+          if (!newRecordMapContainsNewRecords(oldRecordMap, newRecordMap)) {
+            return;
+          }
+          toMergeRecordMap = oldRecordMap;
         }
-        dispatchActions.push(receiveDataPack(foreignDatasheetPack, { isPartOfData: true }));
+        dispatchActions.push(receiveDataPack(foreignDatasheetPack, { isPartOfData: true, toMergeRecordMap }));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));
         }
