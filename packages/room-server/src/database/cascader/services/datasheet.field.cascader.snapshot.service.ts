@@ -185,7 +185,9 @@ export class DatasheetFieldCascaderSnapshotService {
           continue;
         }
         // -------------------------Begin get the node-----------------------------//
-        let node: CascaderChildren = this.getNode(treeNodesMap, linkedFieldId, linkRecordData[linkedFieldId]!.text);
+        const branch = this.getBranch(linkRecordData, linkedFieldId, fieldIdToParentFieldId);
+        const branchKey = sha1(branch);
+        let node: CascaderChildren = this.getNode(treeNodesMap, linkedFieldId, branchKey);
         let isNewNode: boolean = false;
         if (!node) {
           isNewNode = true;
@@ -195,7 +197,7 @@ export class DatasheetFieldCascaderSnapshotService {
             linkedRecordId: row.linkedRecordId,
             children: [],
           };
-          this.setNode(treeNodesMap, linkedFieldId, node.text, node);
+          this.setNode(treeNodesMap, linkedFieldId, branchKey, node);
         }
         // ------------------------------- End --------------------------------------//
         this.linkNodeToParentNode(
@@ -208,6 +210,16 @@ export class DatasheetFieldCascaderSnapshotService {
       }
     }
     return treeNodes;
+  }
+
+  private getBranch(linkRecordData: ILinkRecordData, linkedFieldId: string, fieldIdToParentFieldId: { [p: string]: string }) {
+    let branch = linkRecordData[linkedFieldId]!.text;
+    let parentNodePosition = fieldIdToParentFieldId[linkedFieldId];
+    while (parentNodePosition) {
+      branch += linkRecordData[parentNodePosition!] ? linkRecordData[parentNodePosition!]!.text : '';
+      parentNodePosition = fieldIdToParentFieldId[parentNodePosition];
+    }
+    return branch;
   }
 
   private linkNodeToParentNode(
@@ -230,7 +242,9 @@ export class DatasheetFieldCascaderSnapshotService {
       if (!linkRecordData[parentFieldId]) {
         return;
       }
-      const parentNode: CascaderChildren = this.getNode(treeNodesMap, parentFieldId, linkRecordData[parentFieldId]!.text);
+      const branch = this.getBranch(linkRecordData, parentFieldId, fieldIdToParentFieldId);
+      const branchKey = sha1(branch);
+      const parentNode: CascaderChildren = this.getNode(treeNodesMap, parentFieldId, branchKey);
       // the link exist, save that node has more than one parent node
       const parentSet: Set<CascaderChildren> = this.getValueByGroupAndKey(groupToTextToSet, linkedFieldId, node.linkedRecordId);
       if (!parentSet.has(parentNode)) {
@@ -258,13 +272,11 @@ export class DatasheetFieldCascaderSnapshotService {
   }
 
   private getNode(nodesMap: ITreeNodeMap, group: string, key: string): CascaderChildren {
-    const keySha1 = sha1(key);
-    return nodesMap[group]![keySha1]!;
+    return nodesMap[group]![key]!;
   }
 
   private setNode(nodesMap: ITreeNodeMap, group: string, key: string, value: CascaderChildren) {
-    const keySha1 = sha1(key);
-    nodesMap[group]![keySha1] = value;
+    nodesMap[group]![key] = value;
   }
 }
 
