@@ -8,6 +8,7 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
+import { compact, find, take } from 'lodash';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -93,8 +94,26 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     return;
   };
 
+  // update preview nodes matrix while selected node ids changes
+  const updatePreviewMatrixBySelectedNode = (_selectedNodeIds: string[], treeSelects?: ICascaderNode[]) => {
+    if (!treeSelects) {
+      setPreviewNodesMatrix([]);
+      setSelectedNodeIds([]);
+    }
+    const _previewNodesMatrix: ICascaderNode[][] = [];
+    let child = treeSelects!;
+    for(let i = 0; i <= _selectedNodeIds.length; i++) {
+      _previewNodesMatrix.push(child);
+      const selectedNodeId = _selectedNodeIds[i];
+      const selectdNodesMatrix = find(child, ({ linkedFieldId, linkedRecordId }) => `${linkedFieldId}-${linkedRecordId}` === selectedNodeId);
+      child = selectdNodesMatrix?.children!;
+    }
+    setPreviewNodesMatrix(_previewNodesMatrix);
+    setSelectedNodeIds(_selectedNodeIds);
+  };
+
   const onRefreshConfig = async() => {
-    const res = await loadData([], true);
+    const res = await loadData(compact(linkedFields), true);
 
     if (res?.linkedFields && res.linkedFields.length > 0) {
       setFullLinkedFields(res.linkedFields);
@@ -117,8 +136,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     // TODO(Perhaps the client should cache and maintain this cascade structure data)
     const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
     if (res?.treeSelects && res.treeSelects.length > 0) {
-      setPreviewNodesMatrix([res.treeSelects]);
-      setSelectedNodeIds([]);
+      const _selectedNodeIds = take(selectedNodeIds, selectedIndex);
+      updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
     }
   };
 
@@ -135,8 +154,9 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     if (linkedFieldId) {
       const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
       if (res?.treeSelects) {
-        setPreviewNodesMatrix([res.treeSelects]);
-        setSelectedNodeIds([]);
+        // const _previewNodesMatrix = previewNodesMatrix.filter((_pm, _index) => _index === index);
+        const _selectedNodeIds = selectedNodeIds.filter((_sn, _index) => _index !== index);
+        updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
       }
     }
   };
