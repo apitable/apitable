@@ -171,7 +171,7 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
             {roleList && (
               <div className={styles.collaboratorIcon}>
                 {
-                  roleList.members.slice(0, 5).map((v, i) => (
+                  memberList.slice(0, 5).map((v, i) => (
                     <div key={v.memberId} className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
                       <Tooltip title={v.memberName}>
                         <div>
