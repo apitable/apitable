@@ -65,6 +65,15 @@ export function getMemberInfo({ memberId, uuid }: { memberId?: string; uuid?: st
   });
 }
 
+export function getNodeCollaboratorInfo({ uuid, nodeId }: { uuid?: string; nodeId: string }) {
+  return axios.get<IApiWrapper & { data: IMemberInfoInAddressList }>(Url.COLLABORATOR_INFO, {
+    params: {
+      uuid,
+      nodeId
+    },
+  });
+}
+
 /**
  * Get member list by pagination
  * 

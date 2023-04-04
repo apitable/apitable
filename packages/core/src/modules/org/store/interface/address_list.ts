@@ -105,6 +105,7 @@ export interface IMemberInfoInAddressList {
   teamData?: ITeamData[];
   isPrimary?: boolean;
   isSubAdmin?: boolean;
+  role?: string;
 }
 
 export interface IAddressList {
