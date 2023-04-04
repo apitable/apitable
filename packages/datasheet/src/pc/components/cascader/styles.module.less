@@ -18,6 +18,15 @@
   }
 }
 :global {
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled),
+  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover,
+  .ant-cascader-menu-item:hover {
+    background-color: var(--bgBrandLightDefault) !important;
+    color: var(--textBrandDefault);
+    svg {
+      fill: var(--textBrandDefault);
+    }
+  }
   .ant-select-selection-placeholder {
     padding-left: 8px;
     display: flex;
@@ -28,6 +37,21 @@
     &:hover {
       svg {
         fill: var(--bgControlsHover);
+      }
+    }
+  }
+  
+  .ant-cascader-menu-item {
+    width: 144px;
+    margin: 2px 8px;
+    border-radius: 4px;
+    &-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .emptyPlaceholder {
+        width: 160px;
+        padding: 0;
       }
     }
   }

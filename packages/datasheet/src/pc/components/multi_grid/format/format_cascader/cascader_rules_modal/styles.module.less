@@ -119,8 +119,17 @@
   flex-direction: row;
   justify-content: space-between;
   margin-top: 4px;
+  padding: 9px 16px;
+  background-color: var(--bgBrandLightDefault);
+  border-radius: 4px;
+  cursor: pointer;
+
+  &.isLast {
+    cursor: default;
+  }
 
   > span {
+    color: var(--primaryColor);
     &:first-of-type {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -129,21 +138,28 @@
   }
   svg {
     fill: var(--bgBrandLightActive);
+    min-width: 20px;
   }
 }
 
 .previewOptionUnselected {
-  background-color: var(--defaultBg) !important;
-
-  &:hover {
-    background-color: var(--bgBglessHover) !important;
+  background-color: transparent;
+  > span {
+    color: unset;
   }
 
-  &:active {
-    background-color: var(--bgBglessActive) !important;
+  &:not(.isLast) {
+    &:hover {
+      background-color: var(--bgBglessHover);
+    }
+
+    &:active {
+      background-color: var(--bgBglessActive);
+    }
   }
+
   &.previewOption {
-    color: var(--textCommonPrimary) !important;
+    color: var(--textCommonPrimary);
     svg {
       fill: var(--textCommonPrimary);
     }

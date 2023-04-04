@@ -1,6 +1,6 @@
-import { Button, IconButton, IOption, LinkButton, Loading, Select, useThemeColors } from '@apitable/components';
+import { IconButton, IOption, LinkButton, Loading, Typography, Select, useThemeColors } from '@apitable/components';
 import { DatasheetApi, ICascaderField, ICascaderNode, IField, ILinkedField, IReduxState, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined, ChevronRightOutlined, DeleteOutlined, InformationSmallOutlined, ReloadOutlined } from '@apitable/icons';
+import { AddOutlined, ChevronRightOutlined, DeleteOutlined, QuestionCircleOutlined, ReloadOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -200,7 +200,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     }
     const fetchData = async() => {
       try {
-        const res = await loadData(currFieldLinkedFields);
+        const res = await loadData(currFieldLinkedFields, true);
         setPreviewNodesMatrix(res?.treeSelects ? [res.treeSelects] : []);
         // set two initial fields for the first-time config
         if (!currFieldLinkedFields?.length && res?.linkedFields) {
@@ -249,10 +249,17 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
                 }
               />
               {linkedFields.length > 2 && (
-                <IconButton className={styles.deleteButton} icon={DeleteOutlined} onClick={() => onRemoveLinkedField(linkedField?.id, index)} />
+                <IconButton
+                  shape="square"
+                  className={styles.deleteButton}
+                  icon={DeleteOutlined}
+                  onClick={() => onRemoveLinkedField(linkedField?.id, index)}
+                />
               )}
             </div>
-            <div className={styles.fieldPreview}>{<RenderPreview linkedField={linkedField} index={index} />}</div>
+            <div className={styles.fieldPreview}>
+              {<RenderPreview isLast={linkedFields.length === index} linkedField={linkedField} index={index} />}
+            </div>
           </div>
         ))}
         <div className={styles.columnAdd}>
@@ -266,7 +273,9 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     );
   };
 
-  const RenderPreview = ({ linkedField, index }: React.PropsWithChildren<{ linkedField: ILinkedField | undefined, index: number }>) => {
+  const RenderPreview = ({ linkedField, index, isLast }: React.PropsWithChildren<{
+    linkedField: ILinkedField | undefined, index: number, isLast: boolean
+  }>) => {
     if (!linkedField) return null;
 
     return (
@@ -276,17 +285,14 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           const isSelect = selectedNodeIds.some((nodeId) => nodeId === `${_node.linkedFieldId}-${_node.linkedRecordId}`);
 
           return (
-            <Button
-              block
-              className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected])}
-              color={isSelect ? 'primary' : 'default'}
+            <div
+              className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, !isLast && styles.isLast])}
               key={_node.linkedRecordId}
               onClick={() => onPreviewCascaderSelect(_node, index, isLeaf)}
-              suffixIcon={isLeaf ? undefined : <ChevronRightOutlined />}
-              variant="jelly"
             >
-              <span title={_node?.text}>{_node?.text}</span>
-            </Button>
+              <Typography component="span" variant="body3" ellipsis>{_node?.text}</Typography>
+              {isLeaf ? undefined : <ChevronRightOutlined />}
+            </div>
           );
         })}
       </div>
@@ -314,7 +320,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         <p className={styles.modalTitle}>
           <span style={{ marginRight: 6 }}>{t(Strings.cascader_rules)}</span>
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
-            <span><InformationSmallOutlined color={colors.fc3} /></span>
+            <span><QuestionCircleOutlined color={colors.fc3} /></span>
           </Tooltip>
         </p>
       }

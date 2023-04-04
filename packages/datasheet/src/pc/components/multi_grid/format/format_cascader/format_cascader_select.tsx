@@ -1,6 +1,6 @@
 import { Button, LinkButton, useThemeColors, Typography } from '@apitable/components';
 import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { SettingFilled } from '@apitable/icons';
+import { SettingOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Switch } from 'antd';
 import classNames from 'classnames';
@@ -101,7 +101,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
               className={styles.rulesButton}
               disabled={ruleBtnDisabled}
               onClick={() => setRulesModalVisible(true)}
-              prefixIcon={<SettingFilled/>}
+              prefixIcon={<SettingOutlined />}
               variant="fill"
             >
               <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
