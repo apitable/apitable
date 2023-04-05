@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
 ```bash
-## erforderlich erforderlich
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -124,22 +125,34 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 
 
+## Wie kann ich zur Übersetzung beitragen?
+
+Wir haben zwei Möglichkeiten, die Übersetzung von APITable zu verbessern:
+
+1. Sie können die Markdown-Dateien im Quellcode ändern und direkt eine PR-Datei erstellen
+2. Treten Sie unserem [Crowdin](https://crowdin.com/project/apitablecode) bei, um die `strings` zu finden, um sie zu ändern
+
+In Zusammenarbeit mit mehrsprachigen Übersetzungen folgen wir dem folgenden Prozess:
+
+![Screenshot des mehrsprachigen Übersetzungsprozesses](../static/collaboration_of_multilingual_translation.png)
+
 ## Wie konfiguriere ich den SMTP-Server?
 
 Standardmäßig konfiguriert APITable den SMTP-Server nicht, was bedeutet, dass Sie keine Benutzer einladen können, da dies die E-Mail-Sendefunktion erfordert.
 
-Es ist erforderlich, die .env-Konfiguration mit Self-E-Mail zu ändern und den Back-End-Server neu zu starten.
+Es wird benötigt um die Konfiguration von `.env` mittels Selbst-E-Mail zu ändern und den Backend-Server neu zu starten.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=Ihr_E-Mail-Passwort
 MAIL_PORT=465
 MAIL_SSL_ENABLE=wahr
 MAIL_TYPE=smtp
-MAIL_USERNAME=Ihre_E-Mail`
+MAIL_USERNAME=Ihre_E-Mail
+```
 
-Darüber hinaus müssen einige Postfächer im Hintergrund aktiviert werden, um SMTP verwenden zu können. Für Details können Sie nach dem xxx-Postfach-smtp-Tutorial suchen.
+Darüber hinaus müssen einige Postfächer im Hintergrund aktiviert werden, um Smtp verwenden zu können. Für Details können Sie nach dem xxx-Postfach-smtp-Tutorial suchen.
 
 
 ## Performance-Problem unter macOS M1 Docker-Lauf?

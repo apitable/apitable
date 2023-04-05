@@ -38,6 +38,7 @@ Eksik bağımlılıkları yüklemek için Homebrew kullanmanızı öneririz:
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ Sadece APITable'ın kök dizinini IDE ile açın.
 
 
 
+## Çevirilere nasıl katkıda bulunulur?
+
+APITable'ın çevirisini iyileştirmenin iki yolu var:
+
+1. Markdown dosyalarını kaynak kodunda değiştirebilir ve doğrudan bir PR oluşturabilirsiniz
+2. Değiştirilecek `strings` bulmak için [Crowdin](https://crowdin.com/project/apitablecode)'e katılın
+
+Çok dilli çeviri işbirliğinde aşağıdaki süreci takip ediyoruz:
+
+![Çok dilli çeviri işleminin ekran görüntüsü](../static/collaboration_of_multilingual_translation.png)
+
 ## SMTP sunucusu nasıl yapılandırılır?
 
 APITable varsayılan olarak SMTP sunucusunu yapılandırmaz, bu da e-posta gönderme özelliği gerektirdiğinden kullanıcıları davet edemeyeceğiniz anlamına gelir.
 
-Kendi kendine e-posta kullanarak .env yapılandırmasını değiştirmek ve arka uç sunucusunu yeniden başlatmak gerekir.
+Kendi kendine e-posta kullanarak `.env` yapılandırmasını değiştirmek ve arka uç sunucusunu yeniden başlatmak gerekir.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 Ayrıca, smtp'yi kullanmak için bazı posta kutularının arka planda etkinleştirilmesi gerekir. Ayrıntılar için xxx mailbox smtp öğreticisini arayabilirsiniz.
 
@@ -179,6 +192,6 @@ Bu, `room-server` `.env.default` dosyasında `API_MAX_MODIFY_RECORD_COUNTS` para
 
 
 ## Varsayılan 80 bağlantı noktası nasıl değiştirilir?
-`.env` dosyasındaki yapılandırma özellikleri, env değişkenleri `NGINX_HTTP_PORT` belirtilerek geçersiz kılınabilir.
+`.env` dosyasındaki yapılandırma özellikleri, env değişkenleri `NGINX_HTTP_PORT` belirtilerek geçersiz kılınabilir
 
-Örneğin: NGINX_HTTP_PORT=8080 olarak ayarlanacaktır.
+Örneğin. NGINX_HTTP_PORT=8080 olarak ayarlanacaktır

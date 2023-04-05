@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Мы рекомендуем использовать Homebrew для установки всех недостающих зависимостей:
 
 ```bash
-## necessary required
+## Требуется
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ APITable подготовил отладочные конфигурации дл
 
 
 
+## Как сделать перевод?
+
+У нас есть два способа улучшить перевод APITable:
+
+1. Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
+2. Присоединяйтесь к нашим [Crowdin](https://crowdin.com/project/apitablecode), чтобы найти `strings` для изменения
+
+В сотрудничестве с многоязычным переводом мы следуем следующему процессу:
+
+![Скриншот процесса многоязычного перевода](../static/collaboration_of_multilingual_translation.png)
+
 ## Как настроить SMTP-сервер?
 
 По умолчанию, APITable не настраивает SMTP-сервер, что означает, что вы не можете пригласить пользователей, так как для этого требуется возможность отправки электронной почты.
 
-Необходимо модифицировать конфигурацию .env с помощью самоэлектронной почты и перезапустить сервер.
+Необходимо изменить конфигурацию `.env` используя собственную электронную почту и перезапустить бэкэнд сервер.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 Кроме того, некоторые почтовые ящики должны быть включены в фоновом режиме, чтобы использовать smtp. Для получения подробной информации вы можете найти учебник по адресу xxx mailbox smtp.
 
@@ -181,4 +194,4 @@ MAIL_USERNAME=your_email`
 ## Как изменить стандартный 80 порт?
 Свойства конфигурации в файле `.env` также можно переопределить путем указания их env vars `NGINX_HTTP_PORT`
 
-например: Она будет установлена как NGINX_HTTP_PORT=8080
+Например. Она будет установлена как NGINX_HTTP_PORT=8080

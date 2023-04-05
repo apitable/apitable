@@ -254,7 +254,7 @@ Aby zainstalować apitable używając docker compose, otwórz terminal i uruchom
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić. Następnie otwórz http://localhost:80 w przeglądarce, aby go odwiedzić.
+Następnie otwórz [http://localhost:80](http://localhost:80) w przeglądarce, aby go odwiedzić.
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
@@ -327,12 +327,12 @@ APITable używa tych wspólnych konwencji:
 - [Centrum pomocy](https://help.apitable.com/)
 - [👩‍💻 Centrum programistów](https://developers.apitable.com/)
   - [🪡 Dokumenty REST API](https://developers.apitable.com/api/introduction/)
-  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
+  - [Pobierz SDK](https://developers.apitable.com/widget/introduction/)
   - Skryptowanie (wkrótce...)
 
 ## 🛣 Mapa drogowa
 
-Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
+Proszę zapoznać się z [mapą drogową APITable](https://apitable.com/roadmap)
 
 ### Przyszłe funkcje
 
@@ -370,7 +370,7 @@ Zawsze szukamy dobrych talentów dla APITable:
 
 - **Full-stack developer:**Masz doświadczenie z React, NestJS, TypeScript, Spring Boot, Java, Terraform. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
 - **Back-end developer**:Masz doświadczenie z NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
-- **Front-end developer:** Masz doświadczenie z React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- **Front-end developer:** Masz doświadczenie z React, NextJS, TypeScript, WebPack. I lubisz pisać wysokiej jakości kod z przejrzystą dokumentacją i testami jednostkowymi.
 
 Niezależnie od czasu i warunków, jeśli chcesz zaangażować się do zespołu APITable, nie zwlekaj i wyślij swoje CV na adres <talent@apitable.com>.
 

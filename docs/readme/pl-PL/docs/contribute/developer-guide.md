@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Zalecamy użycie Homebrew do zainstalowania wszelkich brakujących zależności:
 
 ```bash
-## necessary required
+## wymagane jest
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ Wystarczy otworzyć katalog główny APITable za pomocą IDE.
 
 
 
+## Jak przyczynić się do tłumaczeń?
+
+Mamy dwa sposoby, aby usprawnić tłumaczenie APITable:
+
+1. Możesz modyfikować pliki markdown w kodzie źródłowym i bezpośrednio utworzyć PR
+2. Dołącz do naszego [Crowdin](https://crowdin.com/project/apitablecode) aby znaleźć `strings` aby zmodyfikować
+
+We współpracy z tłumaczeniem wielojęzycznym śledzimy następujący proces:
+
+![Zrzut ekranu procesu wielojęzycznego tłumaczenia](../static/collaboration_of_multilingual_translation.png)
+
 ## Jak skonfigurować serwer SMTP?
 
 Domyślnie APITable nie konfiguruje serwera SMTP, co oznacza, że nie możesz zaprosić użytkowników, ponieważ wymaga to funkcji wysyłania wiadomości e-mail.
 
-Jest to konieczne do zmodyfikowania konfiguracji .env przy użyciu własnego adresu e-mail i ponownego uruchomienia serwera backend.
+Jest to konieczne, aby zmodyfikować konfigurację `.env` używając własnej wiadomości e-mail i zrestartować serwer backend.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 Ponadto niektóre skrzynki pocztowe muszą być włączone w tle, aby używać smtp. Aby uzyskać więcej informacji, możesz wyszukać samouczek smtp xxx.
 
@@ -181,4 +194,4 @@ Można to osiągnąć, ustawiając parametr `API_MAX_MODIFY_RECORD_COUNTS` w pli
 ## Jak zmienić domyślny port 80?
 Właściwości konfiguracji w pliku `.env` mogą być również nadpisane przez określenie ich env vars `NGINX_HTTP_PORT`
 
-Na przykład: Jest on ustawiony jako NGINX_HTTP_PORT=8080
+Na przykład. Jest on ustawiony jako NGINX_HTTP_PORT=8080
