@@ -30,6 +30,7 @@ import { AssetModule } from './asset/asset.module';
 import { OtModule } from './ot/ot.module';
 import { CommandModule } from './command/command.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CascaderModule } from './cascader/cascader.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     WidgetModule,
     OtModule,
     CommandModule,
+    CascaderModule,
   ],
   providers: [],
   exports: [
@@ -61,6 +63,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     WidgetModule,
     OtModule,
     CommandModule,
+    CascaderModule,
   ]
 })
 export class DatabaseModule {}

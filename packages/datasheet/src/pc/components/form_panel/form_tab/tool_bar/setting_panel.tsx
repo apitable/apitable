@@ -69,7 +69,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
     if (compactMode) set.add(IFormOptionType.CompactMode);
     return set;
   });
-  const product = useSelector(state => state.billing.subscription?.product);
+  const product = useSelector(state => state.billing?.subscription?.product);
 
   const updateProps = (id: IFormOptionType, selected: boolean) => {
     switch (id) {

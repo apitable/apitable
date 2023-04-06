@@ -268,9 +268,13 @@ public class TemplateController {
         TaskManager.me().execute(() -> socialServiceFacade.eventCall(
             new TemplateQuoteEvent(spaceId, nodeId, ro.getTemplateId(), memberId)));
         // Publish space audit event
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.QUOTE_TEMPLATE).userId(userId)
                 .spaceId(spaceId).nodeId(nodeId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, ro.getTemplateId())
                     .set(AuditConstants.TEMPLATE_NAME, info.getName())
                     .set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
@@ -321,9 +325,13 @@ public class TemplateController {
         // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // Publish space audit event
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_TEMPLATE).userId(userId)
                 .spaceId(spaceId).nodeId(ro.getNodeId())
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)
                     .set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -360,9 +368,13 @@ public class TemplateController {
         // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
         // Publish space audit event
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_TEMPLATE).userId(userId)
                 .spaceId(spaceId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();

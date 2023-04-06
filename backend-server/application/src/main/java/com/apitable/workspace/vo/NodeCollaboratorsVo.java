@@ -55,7 +55,8 @@ public class NodeCollaboratorsVo implements Serializable {
     @Schema(description = "Organization unit list of node role")
     private List<NodeRoleUnit> roleUnits;
 
-    @Schema(description = "Node Role Member List")
+    @Deprecated
+    @Schema(description = "Node Role Member List", deprecated = true)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeRoleMemberVo> members;
 

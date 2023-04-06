@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
-import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
-import { LoadingOutlined } from '@apitable/icons';
-import { AutosaveOutlined, ChevronRightOutlined, LockOutlined } from '@apitable/icons';
+import { AutosaveOutlined, ChevronRightOutlined, LoadingOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
+// @ts-ignore
+import { triggerUsageAlert } from 'enterprise';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
@@ -38,8 +39,6 @@ import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// @ts-ignore
-import { triggerUsageAlert } from 'enterprise';
 
 interface IContextMenuProps {
   activeViewId: string | undefined;
@@ -90,7 +89,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
   const spaceManualSaveViewIsOpen = useSelector(state => {
     return state.labs.includes('view_manual_save');
   });
-  const spaceInfo = useSelector(state => { return state.space.curSpaceInfo; });
 
   const isViewCountOverLimit = Boolean(viewList.length >= getMaxViewCountPerSheet());
 
@@ -211,7 +209,6 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
   };
 
   const addForm = () => {
-    triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo!.formViewNums + 1 });
     const activeViewName = viewList.find(item => item.id === activeViewId)?.name;
     const nodeName = activeViewName ?
       `${activeViewName}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` :

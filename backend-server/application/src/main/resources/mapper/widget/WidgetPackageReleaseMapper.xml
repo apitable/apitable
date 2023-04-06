@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.widget.mapper.WidgetPackageReleaseMapper">
+    <select id="selectReleaseShaToId" resultType="java.lang.Long">
+        SELECT vwpr.id
+        FROM ${tablePrefix}widget_package_release vwpr
+        WHERE vwpr.release_sha = #{releaseSha}
+        <if test="releaseStatus != null">
+            AND vwpr.status = #{releaseStatus}
+        </if>
+        LIMIT 1;
+    </select>
+
+    <select id="selectReleasePage"
+            resultType="com.apitable.widget.vo.WidgetReleaseListVo">
+        SELECT vwpr.id as releaseId,
+               vwpr.release_sha,
+               vwpr.version,
+               vwpr.status,
+               vwpr.release_code_bundle,
+               vwpr.source_code_bundle
+        FROM ${tablePrefix}widget_package_release vwpr
+        WHERE vwpr.package_id = #{packageId}
+          AND vwpr.is_deleted = 0
+    </select>
+
+    <select id="selectWaitReviewWidgetList"
+            resultMap="com.apitable.widget.mapper.WidgetPackageMapper.selectWidgetStoreListResultMap">
+        SELECT vwp.package_id AS widgetPackageId,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${condition.language}"'), vwp.i18n_name ->>
+        '$."${condition.language}"', vwp.i18n_name ->> '$."en-US"') AS name,
+        vwp.icon,
+        vwp.cover,
+        IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${condition.language}"'), vwp.i18n_description ->>
+        '$."${condition.language}"', vwp.i18n_description ->> '$."en-US"') AS description,
+        vwpr.version,
+        vwp.status,
+        vwp.author_name,
+        vwp.author_email,
+        vwp.author_link,
+        vwp.author_icon,
+        vwp.package_type,
+        vwp.release_type,
+        vwp.widget_body ->> '$.website' AS website,
+        vwp.install_env_code,
+        vwp.runtime_env_code,
+        vwpas.widget_sort
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND
+        vwpas.is_deleted = 0
+        INNER JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+        AND vwp.is_template = 0
+        AND vwp.release_type = 10
+        AND vwpr.STATUS = 0
+        AND vwp.STATUS = 3
+        AND vwp.is_enabled = 0
+        <if test="condition.previewSearchKeyword != null and condition.previewSearchKeyword != ''">
+            AND ( vwp.widget_body -> '$.fatherWidgetId' = #{condition.previewSearchKeyword} OR
+            JSON_CONTAINS(vwp.i18n_name -> '$.*', '"${condition.previewSearchKeyword}"') = 1 )
+        </if>
+    </select>
+
+    <select id="selectLastWidgetVersionInfoByFatherWidgetId"
+            resultType="com.apitable.widget.dto.LastSubmitWidgetVersionDTO">
+        SELECT vwp.id   AS lastPackageId,
+               vwpr.id  AS lastPackageReleaseId,
+               vwpas.id AS lastPackageAuthSpaceId
+        FROM ${tablePrefix}widget_package vwp
+                     INNER JOIN ${tablePrefix}widget_package_auth_space vwpas
+                ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+                     INNER JOIN ${tablePrefix}widget_package_release vwpr
+                ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        WHERE vwp.is_deleted = 0
+          AND widget_body -> '$.fatherWidgetId' = #{fatherWidgetId} LIMIT 1
+    </select>
+
+    <select id="selectByFatherWidgetIdAndVersion"
+            resultType="com.apitable.widget.entity.WidgetPackageReleaseEntity">
+        SELECT vwpr.*
+        FROM ${tablePrefix}widget_package vwp,
+             ${tablePrefix}widget_package_release vwpr
+        WHERE vwp.package_id = vwpr.package_id
+          AND vwp.widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
+          AND vwpr.version = #{version}
+          AND vwp.is_deleted = 0
+          AND vwp.release_type = 10
+    </select>
+</mapper>

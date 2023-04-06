@@ -81,7 +81,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
       if (type === currentField.type) {
         return setVisible(false);
       }
-      setCurrentField(pre => {
+      setCurrentField((pre: IField) => {
         let property = pre.property;
 
         // Determines whether the fields are converted between single and multiple choice, and if so, does not change the value in the property
@@ -104,14 +104,14 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
           const stdVals = cellValues.map(cv => {
             return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
           });
-          property = Field.bindModel({ ...pre, type, property }).enrichProperty(stdVals);
+          property = Field.bindModel({ ...pre, type, property } as IField).enrichProperty(stdVals);
         }
 
         return {
           ...pre,
           type,
           property,
-        };
+        } as IField;
       });
       setVisible(false);
       // eslint-disable-next-line
@@ -120,7 +120,9 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
   );
 
   const getFieldHelpLink = () => {
-    const helpURL = new URL(FieldTypeDescriptionMap[currentField.type].help);
+    const help = FieldTypeDescriptionMap[currentField.type].help;
+    if (!help) return '';
+    const helpURL = new URL(help);
     return helpURL.toString();
   };
 
@@ -151,7 +153,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         <div className={settingStyles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
         <div className={styles.text}>{FieldTypeDescriptionMap[currentField.type].title}</div>
         <div className={styles.arrow}>
-          <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
+          <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
         </div>
       </div>
       {visible && (

@@ -63,7 +63,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       foreignDatasheetErrorCode: Selectors.getDatasheetErrorCode(state, foreignDatasheetId),
     };
   });
-  const { readable: foreignDatasheetReadable, editable: foreignDatasheetEditable } = useSelector(state => {
+  const { readable: foreignDatasheetReadable, rowCreatable: foreignDatasheetEditable } = useSelector(state => {
     return Selectors.getPermissions(state, foreignDatasheetId);
   });
   const { formId, mirrorId, datasheetId: urlDsId } = useSelector(state => state.pageParams);
@@ -88,7 +88,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         foreignColumns: Selectors.getVisibleColumnsBase(foreignView),
       };
     }
-   
+
     let foreignRows = foreignDatasheet.snapshot.meta.views[0].rows;
     if (formId) {
       foreignRows = foreignRows.filter((item) => !item.recordId.endsWith('_temp'));
@@ -209,7 +209,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   useUpdateEffect(() => setSearchedFlag(true), [_searchValue]);
 
   // First construct a search array and convert all cell values to string for temporary use by the search engine.
-  // Currently only changes in the number of rows in the associated table, 
+  // Currently only changes in the number of rows in the associated table,
   // the dstId and whether or not to "see only selected records" will cause the search set to be reconstructed.
   const searchSource = useMemo(() => {
     let rows: IViewRow[] = entityForeignRows;

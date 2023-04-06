@@ -41,6 +41,8 @@ import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.workspace.dto.NodeSharePropsDTO;
 import com.apitable.workspace.enums.PermissionException;
@@ -195,9 +197,13 @@ public class NodeShareController {
         NotificationRenderFieldHolder.set(
             NotificationRenderField.builder().spaceId(params.getSpaceId()).build());
         // publish space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.STORE_SHARE_NODE).userId(userId)
                 .nodeId(newNodeId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.SHARE_ID, params.getShareId()))
                 .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));

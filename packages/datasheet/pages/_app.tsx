@@ -201,14 +201,18 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   useEffect(() => {
     const getUser = async() => {
-      const res = await axios.get('/client/info');
+      const pathUrl = window.location.pathname;
+      const query = new URLSearchParams(window.location.search);
+      const spaceId = query.get('spaceId') || getRegResult(pathUrl, spaceIdReg) || '';
+      const res = await axios.get('/client/info', {
+        params: {
+          spaceId
+        }
+      });
       let userInfo = JSON.parse(res.data.userInfo);
       setUserData(userInfo);
 
-      const pathUrl = window.location.pathname;
       const { nodeId } = getPageParams(pathUrl || '');
-      const query = new URLSearchParams(window.location.search);
-      const spaceId = query.get('spaceId') || '';
       let userInfoError: IUserInfoError | undefined;
 
       /**
@@ -228,7 +232,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         ) &&
         (nodeId || spaceId)
       ) {
-        const spaceId = getRegResult(pathUrl, spaceIdReg);
         const res = await Api.getUserMe({ nodeId, spaceId }, false);
         const { data, success, message, code } = res.data;
 

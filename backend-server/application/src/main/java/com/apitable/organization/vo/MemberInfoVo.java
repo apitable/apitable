@@ -40,17 +40,17 @@ import lombok.Data;
 @Schema(description = "Member Details View")
 public class MemberInfoVo {
 
-    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
     @JsonIgnore
     private String spaceId;
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String",
+        example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
-        + ".com/2019/11/12/17123187253.png")
+    @Schema(description = "Head portrait address",
+        example = "https://apitable.com/assets/2019/11/12/17123187253.png")
     private String avatar;
 
     @Schema(description = "User nickname", example = "This is a user nickname")
@@ -66,16 +66,19 @@ public class MemberInfoVo {
     private String position;
 
     @Schema(description = "Phone number", example = "13610102020")
-    @JsonSerialize(nullsUsing = NullStringSerializer.class, using = MobilePhoneHideSerializer.class)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = MobilePhoneHideSerializer.class)
     private String mobile;
 
     @Schema(description = "Email", example = "example@qq.com")
     private String email;
 
-    @Schema(description = "Department")
+    @Deprecated
+    @Schema(description = "Department", deprecated = true)
     private List<TeamVo> teams;
 
-    @Schema(description = "Label")
+    @Deprecated
+    @Schema(description = "Label", deprecated = true)
     private List<TagVo> tags;
 
     @Schema(description = "role")

@@ -22,13 +22,18 @@ h1, h2, h3, h4, h5, h6 {
 .ant-tabs-tab,
 .ant-drawer-title,
 .ant-radio-wrapper,
+.ant-select-dropdown,
 .ant-checkbox-wrapper {
   color: var(--fc1);
 }
 
-.ant-picker-separator,
+.ant-cascader-menu-item-loading-icon,
+.ant-cascader-menu-item-expand-icon,
 .ant-progress-text {
   color: var(--fc1) !important;
+}
+.ant-cascader-menu-item-expand-icon svg {
+  vertical-align: -0.2em;
 }
 
 .adm-popup-body,
@@ -172,6 +177,10 @@ circle.ant-progress-circle-trail {
   border-color: var(--fc3);
 }
 
+.ant-cascader-menu {
+  border-color: var(--lineColor);
+}
+
 .ant-table-filter-trigger-container-open {
   .ant-table-filter-trigger:hover {
     color: var(--primaryHover);
@@ -250,6 +259,12 @@ button:focus-visible {
 .circle-loading {
   animation: loading 1s linear infinite;
 }
+
+.cp-time-picker-input::placeholder {
+  color: #7e8791;
+  opacity: 1;
+}
+
 
 @media screen and (max-width: 768px) {
   .ant-drawer {

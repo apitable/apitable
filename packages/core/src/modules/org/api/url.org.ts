@@ -71,6 +71,8 @@ export const GET_SUB_UNIT_LIST = '/org/getSubUnitList';
 // Query the list of organizational units that belong to the space
 export const MEMBER_UNITS = '/org/member/units';
 
+export const COLLABORATOR_INFO = 'node/collaborator/info';
+
 /**
  * Edit Member Info
  */
@@ -92,3 +94,5 @@ export const GET_MEMBER_LIST_BY_ROLE = '/org/roles/:roleId/members';
 export const ADD_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const DELETE_ROLE_MEMBER = '/org/roles/:roleId/members';
 export const INIT_ROLE = '/org/roles/init';
+export const TEAM_LIST_LAYERED = 'org/team/tree';
+export const COLLABORATOR_LIST_PAGE = '/node/collaborator/page';

@@ -17,7 +17,7 @@
  */
 
 import { Typography, useThemeColors } from '@apitable/components';
-import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { Api, ConfigConstant, IShareSettings, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
 import { Avatar, Loading, Tag } from 'pc/components/common';
 // @ts-ignore
@@ -67,18 +67,31 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   const [tagType, setTagType] = useState('');
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
-  const { getNodeRoleListReq, shareSettingsReq } = useCatalogTreeRequest();
+  const { shareSettingsReq } = useCatalogTreeRequest();
   const { data: memberInfo, loading } = useRequest(getMemberInfo);
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });
   const dispatch = useDispatch();
 
   // Get member information
   function getMemberInfo() {
-    return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
+    if(memberId) {
+      return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
+        const { success, data } = res.data;
+        if (success) {
+          setTagType(TAGTYPE.Member);
+          permissionVisible && getMemberRole(data.memberId);
+          return data;
+        }
+        permissionVisible && getMemberRole();
+        setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
+        return null;
+      });
+    }
+    return Api.getNodeCollaboratorInfo({ uuid: userId, nodeId: activeNodeId }).then(res => {
       const { success, data } = res.data;
       if (success) {
         setTagType(TAGTYPE.Member);
-        permissionVisible && getMemberRole(data.memberId);
+        permissionVisible && getMemberRole(data.memberId, data.role);
         return data;
       }
       permissionVisible && getMemberRole();
@@ -88,20 +101,10 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   }
 
   // Get the member's role by memberId
-  async function getMemberRoleReq(memberId?: string) {
+  async function getMemberRoleReq(memberId?: string, role?: string) {
+
     if (memberId) {
-      try {
-        const data = await getNodeRoleListReq(activeNodeId!);
-        if (data) {
-          const members: IRoleMember[] = data.members;
-          const member = members.filter(item => item.memberId === memberId);
-          if (member[0]?.role) {
-            return member[0].role;
-          }
-        }
-      } catch (e) {
-        console.log('Get member role error', e);
-      }
+      return role;
     }
 
     // External visitors

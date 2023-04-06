@@ -7,6 +7,7 @@ use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use std::env;
 
 mod datasheet;
+mod json;
 mod types;
 
 use types::*;

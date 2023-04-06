@@ -101,11 +101,11 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
         };
       }
 
-      const field: IField = {
+      const field = {
         ...fieldOption.data,
         id: fieldOption.data.id ? fieldOption.data.id : newFieldId,
         property: fieldOption.data.property,
-      };
+      } as IField;
 
       // Calculated fields need to determine their own datasheet through the field property, 
       // here we force him to specify the datasheetId of the current command

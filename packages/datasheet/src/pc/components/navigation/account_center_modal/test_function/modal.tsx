@@ -25,6 +25,7 @@ import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate'
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 import { WECOM_ROBOT_URL } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
@@ -133,7 +134,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
           </div>
           {config.modal?.info_image && <div className={style.modalImg}>
             <Image
-              src={integrateCdnHost(config.modal?.info_image)}
+              src={integrateCdnHost(getEnvVariables()[config.modal?.info_image])}
               width='100%'
               layout={'fill'}
             />

@@ -491,12 +491,13 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && (
+                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && dateValue && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}
                         fieldId={field.id}
                         includeTime={field.property.includeTime}
+                        timeZone={timeZone}
                         dateValue={dateValue}
                         timeValue={timeValue}
                         curAlarm={this.props.curAlarm}

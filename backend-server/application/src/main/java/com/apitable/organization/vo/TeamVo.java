@@ -29,6 +29,7 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Deprecated
 @Schema(description = "Department View")
 public class TeamVo {
 

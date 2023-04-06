@@ -18,26 +18,23 @@
 
 package com.apitable.shared.util.information;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.StrUtil;
-
-import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.core.util.HttpContextUtil;
+import com.apitable.shared.constants.ParamsConstants;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * general information processing tool
+ * general information processing tool.
  *
  * @author Chambers
  */
 public class InformationUtil {
 
     /**
-     * enumeration of supported desensitization types
+     * enumeration of supported desensitization types.
      */
     public enum InformationType {
         SECRET_KEY,
@@ -45,30 +42,41 @@ public class InformationUtil {
     }
 
     /**
-     * keyword highlighting
+     * keyword highlighting.
      */
     public static String keywordHighlight(String originName, String keyword, String className) {
         if (StrUtil.isNotBlank(keyword)) {
-            Pattern pattern = Pattern.compile(Pattern.quote(EscapeUtil.escapeHtml4(keyword)), Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile(Pattern.quote(EscapeUtil.escapeHtml4(keyword)),
+                Pattern.CASE_INSENSITIVE);
             Matcher mc = pattern.matcher(EscapeUtil.escapeHtml4(originName));
             StringBuffer sb = new StringBuffer();
             while (mc.find()) {
-                mc.appendReplacement(sb, StrUtil.format("<span class = \"{}\">{}</span>", className, mc.group()));
+                mc.appendReplacement(sb,
+                    StrUtil.format("<span class = \"{}\">{}</span>", className, mc.group()));
             }
             mc.appendTail(sb);
             return sb.toString();
-        }
-        else {
+        } else {
             return originName;
         }
     }
 
-    public static ClientOriginInfo getClientOriginInfoInCurrentHttpContext(boolean fetchIp, boolean fetchCookies) {
+    public static ClientOriginInfo getClientOriginInfoInCurrentHttpContext(boolean fetchIp,
+                                                                           boolean fetchCookies) {
         HttpServletRequest req = HttpContextUtil.getRequest();
         return getClientOriginInfo(req, fetchIp, fetchCookies);
     }
 
-    public static ClientOriginInfo getClientOriginInfo(HttpServletRequest req, boolean fetchIp, boolean fetchCookies) {
+    /**
+     * get client origin info from request.
+     *
+     * @param req          servlet request
+     * @param fetchIp      whether fetch ip
+     * @param fetchCookies whether fetch cookies
+     * @return ClientOriginInfo
+     */
+    public static ClientOriginInfo getClientOriginInfo(HttpServletRequest req, boolean fetchIp,
+                                                       boolean fetchCookies) {
         ClientOriginInfo originInfo = new ClientOriginInfo();
         originInfo.setUserAgent(req.getHeader(ParamsConstants.USER_AGENT));
         if (fetchIp) {
@@ -82,10 +90,10 @@ public class InformationUtil {
 
 
     /**
-     * Desensitization, using the default desensitization strategy
+     * Desensitization, using the default desensitization strategy.
      *
-     * @param str              strings
-     * @param informationType  Desensitization type; can be desensitized: key, mobile phone number
+     * @param str             strings
+     * @param informationType Desensitization type; can be desensitized: key, mobile phone number
      * @return string after desensitization
      */
     public static String desensitized(String str, InformationUtil.InformationType informationType) {
@@ -105,7 +113,7 @@ public class InformationUtil {
     }
 
     /**
-     * [Mobile phone number] The first three, the last three, the others are hidden, such as 135210
+     * [Mobile phone number] The first three, the last three, the others are hidden, such as 135210.
      *
      * @param value phone number
      * @return cell phone number after desensitization
@@ -125,7 +133,7 @@ public class InformationUtil {
     }
 
     /**
-     * [Key] Replace all characters of the key with
+     * [Key] Replace all characters of the key with.
      *
      * @param secretKey key
      * @return desensitized key

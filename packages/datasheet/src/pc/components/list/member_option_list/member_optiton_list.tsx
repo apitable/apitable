@@ -30,8 +30,6 @@ import {
   Strings,
   t,
   UnitItem,
-  Selectors,
-  PermissionType
 } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
@@ -79,7 +77,6 @@ export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionLis
   const containerRef = useRef<HTMLDivElement>(null);
   const { formId, embedId } = useSelector(state => state.pageParams);
   const shareId = useSelector(state => state.pageParams.shareId);
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const refreshMemberList = useCallback(() => {
     // listData is not passed in, use stash directly
@@ -255,7 +252,7 @@ export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionLis
             return <span className={styles.noResult}>
               {uniqId == 'unitId' ? t(Strings.cell_not_find_member_or_team) : t(Strings.cell_not_find_member)}
               {
-                (showInviteTip && !formId && !shareId) &&
+                (showInviteTip && !formId && !shareId && !embedId) &&
                 <span className={styles.inviteMember} onClick={() => expandInviteModal()}>
                   {t(Strings.invite_member)}
                 </span>
@@ -267,7 +264,7 @@ export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionLis
           run(keyword);
         }}
         // The share page is not allowed to appear View More, the organization in the space station will be leaked
-        footerComponent={showMoreTipButton && !shareId && !(embedId && embedInfo.permissionType !== PermissionType.PRIVATEEDIT) ? () => {
+        footerComponent={showMoreTipButton && !shareId && !embedId ? () => {
           return <div
             className={styles.seeMore}
             onMouseUp={() => {

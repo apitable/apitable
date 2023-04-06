@@ -125,7 +125,6 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
     }
     return `${t(Strings.node_permission_item_tips_other_he, { role: label })}${disabled ? '' : t(Strings.node_permission_item_tips_other_he_edit)}`;
   };
-
   const itemContentMain = (
     <div className={classnames(styles.unitItem, className, !disabled && styles.unitItemOperation, (isDetail || isMobile) && styles.unitItemMobile)}>
       <div className={styles.unitInfo}>

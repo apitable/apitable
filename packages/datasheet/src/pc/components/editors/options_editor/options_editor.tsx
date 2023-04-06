@@ -48,6 +48,7 @@ export interface IEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
   editing: boolean;
   recordId: string;
+  editable: boolean;
   toggleEditing?: (next?: boolean) => void;
 }
 

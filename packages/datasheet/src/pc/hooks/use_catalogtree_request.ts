@@ -582,12 +582,26 @@ export const useCatalogTreeRequest = () => {
     });
   };
 
+  const getCollaboratorListPageReq = (pageNo: number, nodeId: string) => {
+    const pageObjectParams = {
+      pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
+    };
+    return Api.getCollaboratorListPage(JSON.stringify({ ...pageObjectParams, pageNo }), nodeId).then(res => {
+      const { success, data, message } = res.data; 
+      if(success){
+        return data;
+      } 
+      Message.error({ content: message });
+      
+    });
+  };
+
   return {
     addNodeReq, deleteNodeReq, copyNodeReq, getChildNodeListReq, getSubUnitListReq,
     getNodeRoleListReq, searchUnitReq, updateRoleReq, getUnitsByMemberReq,
     getNodeShowcaseReq, updateNodeReq, updateNodeDescriptionReq, getNodeTreeReq,
     getPositionNodeReq, getShareSettingsReq, nodeMoveReq, shareSettingsReq,
     getFavoriteNodeListReq, updateNodeFavoriteStatusReq, moveFavoriteNodeReq, updateNextNode, getTreeDataReq,
-    renameNodeReq, updateNodeIconReq, updateNodeRecordHistoryReq, disableShareReq,
+    renameNodeReq, updateNodeIconReq, updateNodeRecordHistoryReq, disableShareReq, getCollaboratorListPageReq
   };
 };

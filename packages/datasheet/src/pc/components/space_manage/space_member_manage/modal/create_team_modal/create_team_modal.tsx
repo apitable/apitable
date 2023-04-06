@@ -20,7 +20,8 @@ import { FC, useState } from 'react';
 import * as React from 'react';
 import { t, Strings, IReduxState, MAX_NAME_STRING_LENGTH, ConfigConstant } from '@apitable/core';
 import { useSelector, shallowEqual } from 'react-redux';
-import { NormalModal, WithTipTextInput } from 'pc/components/common';
+import { NormalModal } from 'pc/components/common/modal/normal_modal';
+import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
 import { verifyTeamName } from '../../utils';
 import { useCreateSubTeam } from 'pc/hooks';
 
@@ -32,7 +33,6 @@ export const CreateTeamModal: FC<React.PropsWithChildren<IModalProps>> = props =
   const [err, setErr] = useState('');
   const {
     spaceId,
-    user,
     rightClickTeamInfoInSpace,
   } = useSelector((state: IReduxState) => ({
     spaceId: state.space.activeId || '',
@@ -40,7 +40,7 @@ export const CreateTeamModal: FC<React.PropsWithChildren<IModalProps>> = props =
     rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,
   }), shallowEqual);
   const teamId = rightClickTeamInfoInSpace.teamId ? rightClickTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID;
-  const { createTeam } = useCreateSubTeam(inputContent, spaceId, teamId, user!);
+  const { createTeam } = useCreateSubTeam(inputContent, teamId);
 
   const validCreate = () => {
     createTeam().then(() => {

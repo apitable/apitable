@@ -1,10 +1,12 @@
 import { IReduxState } from 'exports/store';
 import { IOpenFilterInfo } from 'types/open';
 
+const singleTextFieldId = 'fldatcBb73HmF';
+const dateFieldId = 'fldx3xuCoKZWp';
 export const openFilterInfoMock: IOpenFilterInfo = { 
   or: [
     {
-      fieldKey: 'fldatcBb73HmF', // field name or ID
+      fieldKey: singleTextFieldId, // field name or ID
       SingleText: {
         is: '1' // Operators: value
       }
@@ -12,7 +14,7 @@ export const openFilterInfoMock: IOpenFilterInfo = {
   ],
   and: [
     {
-      fieldKey: 'fldatcBb73HmF', // field name or ID
+      fieldKey: singleTextFieldId, // field name or ID
       SingleText: {
         is: '1' // Operators: value
       }
@@ -20,14 +22,14 @@ export const openFilterInfoMock: IOpenFilterInfo = {
     {
       or: [
         {
-          fieldKey: 'fldx3xuCoKZWp', // field name or ID,
+          fieldKey: dateFieldId, // field name or ID,
           // Operators: value -> [date operators, value]
           DateTime: {
             is: ['ExactDate', 1651507200000]
           }
         },
         {
-          fieldKey: 'fldx3xuCoKZWp', // field name or ID,
+          fieldKey: dateFieldId, // field name or ID,
           DateTime: {
             // [opeartor, value]
             is: ['DateRange', 1651507200000, 1651507200000]

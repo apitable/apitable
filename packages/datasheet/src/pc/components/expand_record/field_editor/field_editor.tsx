@@ -94,7 +94,8 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
 
   useEffect(() => {
     editorRef.current && editorRef.current.setValue(cellValue as number);
-  }, [cellValue]);
+    // Cascader field.type to text should update value
+  }, [cellValue, field.type]);
 
   useLayoutEffect(() => {
     return () => {

@@ -1578,6 +1578,11 @@
             "zh_HK": "社區版",
             "en_US": "Community",
             "zh_CN": "社区版"
+        },
+        "new_user_welcome_notify": {
+            "zh_HK": "歡迎加入 APITable，我們為你準備了一份免費學習 APITable 的見面禮，點擊這條消息即可跳轉了解詳情。",
+            "en_US": "Welcome to APITable. We have prepared a free meeting gift for you to learn APITable. Click here to learn more.",
+            "zh_CN": "欢迎加入 APITable，我们为你准备了一份免费学习 APITable 的见面礼，点击这条消息即可跳转了解详情。"
         }
     }
 }

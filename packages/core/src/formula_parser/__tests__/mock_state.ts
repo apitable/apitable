@@ -318,6 +318,9 @@ export const generateMockState = (fieldMap: IFieldMap): IReduxState => ({
       memberId: '',
       email: '',
     },
+    memberListPageNo: 0,
+    memberListTotal: 0,
+    memberListLoading: false,
   },
   spaceMemberManage: {
     memberListInSpace: [],
@@ -558,6 +561,8 @@ export const mockState = {
       memberId: '',
       email: '',
     },
+    memberListPageNo: 0,
+    memberListTotal: 0,
   },
   spaceMemberManage: {
     memberListInSpace: [],

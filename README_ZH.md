@@ -245,7 +245,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。(默认用户名 `admin@apitable.com` 和密码 `Apitable2022`)
+然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 

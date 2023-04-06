@@ -34,7 +34,7 @@ export const ModalWrapper: FC<React.PropsWithChildren<IModalWrapper>> = (props) 
       width={isMobile ? '90%' : '60%'}
       footer={null}
       centered
-      zIndex={1000}
+      zIndex={2004}
       title={<Title />}
     >
       {props.children}

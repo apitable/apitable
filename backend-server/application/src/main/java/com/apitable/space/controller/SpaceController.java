@@ -29,6 +29,7 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.organization.mapper.MemberMapper;
@@ -54,6 +55,8 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.information.ClientOriginInfo;
+import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
@@ -125,6 +128,9 @@ public class SpaceController {
     @Resource
     private SocialServiceFacade socialServiceFacade;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
     /**
      * Get space capacity info.
      */
@@ -190,15 +196,20 @@ public class SpaceController {
      * Create space.
      */
     @PostResource(path = "/create", requiredPermission = false)
-    @Operation(summary = "Create space")
+    @Operation(summary = "Create Space")
     public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
+        entitlementServiceFacade.createSubscription(spaceId, userId);
         // release space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId)
                 .spaceId(spaceId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
                 .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -233,7 +244,7 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true, schema =
         @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId,
-        @RequestBody @Valid SpaceDeleteRo param) {
+                                     @RequestBody @Valid SpaceDeleteRo param) {
         // This operation cannot be performed when binding to a third party
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
@@ -258,8 +269,12 @@ public class SpaceController {
         // delete cache
         userSpaceCacheService.delete(userId, spaceId);
         // release space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_SPACE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -281,8 +296,12 @@ public class SpaceController {
         Long userId = SessionContext.getUserId();
         iSpaceService.deleteSpace(userId, Collections.singletonList(spaceId));
         // release space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.ACTUAL_DELETE_SPACE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -307,8 +326,12 @@ public class SpaceController {
         NotificationRenderFieldHolder.set(
             NotificationRenderField.builder().fromUserId(userId).build());
         // release space audit events
+        ClientOriginInfo clientOriginInfo = InformationUtil
+            .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CANCEL_DELETE_SPACE).userId(userId)
+                .requestIp(clientOriginInfo.getIp())
+                .requestUserAgent(clientOriginInfo.getUserAgent())
                 .spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();

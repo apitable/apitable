@@ -1,0 +1,37 @@
+.cascaderEditor {
+  background: var(--defaultBg);
+  border-radius: 4px;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.cascaderContainer {
+  background: var(--bgCommonHighest);
+  border-radius: 4px;
+
+  :global {
+    .ant-cascader-input {
+      border: none;
+      height: 32px;
+
+      &:focus {
+        border: none;
+      }
+    }
+
+    .ant-cascader-picker-arrow {
+      display: none;
+    }
+
+    .ant-select-selector .ant-select-selection-item {
+      white-space: break-spaces;
+      word-break: break-all;
+      line-height: 1.5715 !important;
+      padding-top: 4px !important;
+    }
+  }
+}
+.emptyPlaceholder {
+  padding: 12px 8px;
+  color: var(--secondLevelText);
+}

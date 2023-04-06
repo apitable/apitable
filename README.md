@@ -253,7 +253,7 @@ To install apitable using docker compose, open your terminal and run this:
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [http://localhost:80](http://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
+Then open [http://localhost:80](http://localhost:80) in your browser to visit it.
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
@@ -273,6 +273,14 @@ In addition to writing code, there are many ways for you to contribute.
 
 You can contribute as following:
 - Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
+- Follow our [Twitter](https://twitter.com/apitable_com)
+- Create [Documentation](./docs)
+- [Contributing Code](./docs/contribute/developer-guide.md)
+
+
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -318,10 +326,12 @@ APITable use these common conventions:
 - [Help Center](https://help.apitable.com/)
 - [👩‍💻 Developer Center](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - Widget SDK (Coming soon...)
+  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - Scripting (Coming soon...)
 
 ## 🛣 Roadmap
+
+Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 
 ### Future Features
 
