@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Selectors } from '@apitable/core';
 import { useClickAway } from 'ahooks';
-import { Selectors, t, Strings } from '@apitable/core';
+import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
+import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 import RcTrigger from 'rc-trigger';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
@@ -30,26 +32,12 @@ import { useAllFields } from '../../hooks';
 import { INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 // import { getSchemaType } from '../node_form/core/utils';
-import {
-  enrichDatasheetTriggerOutputSchema,
-  formData2SlateValue,
-  insertMagicVariable, transformSlateValue, withMagicVariable
-} from './helper';
+import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
 import styles from './styles.module.less';
-import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
-};
-
-const map2Text = {
-  url: t(Strings.robot_enter_request_address_placeholder),
-  key: t(Strings.robot_enter_key_placeholder),
-  value: t(Strings.robot_enter_value_placeholder),
-  data: t(Strings.robot_enter_body_text_placeholder),
-  webhookUrl: t(Strings.robot_enter_webhook_placeholder),
-  content: t(Strings.robot_enter_message_content_placeholder)
 };
 
 type IMagicTextFieldProps = IWidgetProps & {
@@ -162,13 +150,13 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
         }
       }}>
         {/* <span onClick={(e) => {
-          e.preventDefault();
-          setOpen(true);
-        }}>
-          <IconButton
-            icon={AddOutlined}
-          />
-        </span> */}
+         e.preventDefault();
+         setOpen(true);
+         }}>
+         <IconButton
+         icon={AddOutlined}
+         />
+         </span> */}
         <RcTrigger
           ref={triggerRef}
           getPopupContainer={() => ref.current!}

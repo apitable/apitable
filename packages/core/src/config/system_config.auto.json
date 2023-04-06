@@ -4960,10 +4960,10 @@
             },
             "108": {
                 "completeIndex": -1,
-                "endTime": 1677677940000,
-                "steps": "[[169]]"
+                "endTime": 1677677940000
             },
             "109": {
+                "repeat": true,
                 "completeIndex": -1,
                 "steps": "[[170]]",
                 "player": {
@@ -6555,7 +6555,16 @@
             "170": {
                 "uiConfigId": "player_step_ui_config_169",
                 "uiType": "notice",
-                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>新增「多级联动」字段，层级菜单易维护</li><li>Script小程序在线编程，扩展功能大升级</li><li>通知提醒新方式，机器人新增「发送邮件」</li></ul>\"\n}"
+                "onNext": [
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ],
+                "next": "查看详情",
+                "nextId": "check_detail",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>新增「多级联动」字段，层级菜单易维护</li><li>Script小程序在线编程，扩展功能大升级</li><li>通知提醒新方式，机器人新增「发送邮件」「发送到Slack」</li></ul>\"\n}",
+                "onClose": [
+                    "set_wizard_completed({\"curWizard\": true})",
+                    "open_guide_next_step({\"clearAllPrevUi\":true})"
+                ]
             }
         }
     },
