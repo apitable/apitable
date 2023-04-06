@@ -16,6 +16,7 @@ interface ICascader {
   value: string[][] | string[];
   displayRender?: (label: string[]) => React.ReactNode;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 export const Cascader = (props: ICascader) => {

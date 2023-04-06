@@ -9,6 +9,7 @@ import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
 import { compact, find, take } from 'lodash';
+import * as React from 'react';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -134,7 +135,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     setLinkedFields(newLinkedFields);
 
     // TODO(Perhaps the client should cache and maintain this cascade structure data)
-    const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
+    const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[], true);
     if (res?.treeSelects) {
       const _selectedNodeIds = take(selectedNodeIds, selectedIndex);
       updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
@@ -319,7 +320,15 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         <p className={styles.modalTitle}>
           <span style={{ marginRight: 6 }}>{t(Strings.cascader_rules)}</span>
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
-            <span><QuestionCircleOutlined color={colors.fc3} /></span>
+            <a
+              href={t(Strings.field_help_cascader)}
+              rel="noopener noreferrer" target="_blank"
+              style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
+            >
+              <QuestionCircleOutlined
+                color={colors.thirdLevelText}
+              />
+            </a>
           </Tooltip>
         </p>
       }

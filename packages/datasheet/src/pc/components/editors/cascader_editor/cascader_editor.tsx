@@ -21,6 +21,8 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
   editable,
 }, ref) => {
   const spaceId = useSelector(Selectors.activeSpaceId)!;
+  const rowHeightLevel = useSelector(Selectors.getViewRowHeight);
+  const rowHeight = Selectors.getRowHeightFromLevel(rowHeightLevel) - 2;
 
   const cascaderRef = useRef<any>(null);
 
@@ -97,6 +99,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
           editing={editing}
           disabled={!editable}
           cascaderRef={cascaderRef}
+          style={{
+            height: `${rowHeight}px`,
+            lineHeight: `${rowHeight}px`,
+          }}
           displayRender={label => {
             return field.property.showAll ? label.join('/') : label[label.length - 1];
           }}

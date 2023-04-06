@@ -81,6 +81,10 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
         loading={loading}
         onChange={onChange}
         options={options}
+        style={{
+          height: '32px',
+          lineHeight: '32px'
+        }}
         cascaderRef={cascaderRef}
         displayRender={label => {
           return field.property.showAll ? label.join('/') : label[label.length - 1];
