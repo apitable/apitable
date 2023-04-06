@@ -71,8 +71,15 @@ export class CascaderController {
     const client = this.redisService.getClient();
     const cacheKey =  util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
     const cache = await client.get(cacheKey);
+    const depth = query.linkedFieldIds.reduce((result, linkedFieldId) => {
+      result += linkedFieldId;
+      return result;
+    }, '');
     if (cache) {
-      return JSON.parse(cache);
+      const cacheObject = JSON.parse(cache);
+      if(cacheObject.depth === depth) {
+        return cacheObject.treeSelects;
+      }
     }
     const cascader =  await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
       spaceId: param.spaceId,
@@ -80,7 +87,10 @@ export class CascaderController {
       fieldId: param.fieldId,
       linkedFieldIds: query.linkedFieldIds,
     });
-    client.setex(cacheKey, 60, JSON.stringify(cascader));
+    client.setex(cacheKey, 60, JSON.stringify({
+      depth,
+      treeSelects: cascader,
+    }));
     return cascader;
   }
 
