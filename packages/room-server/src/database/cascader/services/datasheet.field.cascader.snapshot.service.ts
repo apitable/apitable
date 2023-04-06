@@ -78,12 +78,14 @@ export class DatasheetFieldCascaderSnapshotService {
       datasheetId,
       fieldId,
     );
-    await this.datasheetCascaderFieldRepository.delete({
-      spaceId,
-      datasheetId,
-      fieldId,
+    await this.datasheetCascaderFieldRepository.manager.transaction(async() => {
+      await this.datasheetCascaderFieldRepository.delete({
+        spaceId,
+        datasheetId,
+        fieldId,
+      });
+      await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     });
-    await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     return true;
   }
 
