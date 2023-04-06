@@ -159,7 +159,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
                   return <section className={styles.widgetItem} key={item.widgetId}>
                     <div className={styles.widgetContainers}>
                       <div className={styles.widgetIconBox}>
-                        <Image src={item.widgetPackageIcon} alt='' width={16} height={16} />
+                        <Image src={getUrlWithHost(item.widgetPackageIcon)} alt='' width={16} height={16} />
                       </div>
                       <div className={styles.widgetCover}>
                         <Image
