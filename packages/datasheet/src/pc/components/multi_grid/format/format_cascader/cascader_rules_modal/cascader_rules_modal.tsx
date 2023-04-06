@@ -69,6 +69,17 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       });
       return;
     }
+
+    if (previewNodesMatrix.length === 0 || (
+      previewNodesMatrix[0].length === 0
+    ) || (
+      previewNodesMatrix[0].every(pv => pv?.children?.length === 0)
+    )) {
+      Message.error({
+        content: t(Strings.cascader_no_data_field_error),
+      });
+      return;
+    }
     updateField();
   };
 
@@ -205,6 +216,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         // set two initial fields for the first-time config
         if (!currFieldLinkedFields?.length && res?.linkedFields) {
           setFullLinkedFields(res.linkedFields);
+          setLinkedFields(res.linkedFields.slice(0, 2));
         }
       } catch (e: any) {
         onRefreshConfig();
