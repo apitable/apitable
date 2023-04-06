@@ -84,6 +84,9 @@ describe('DatasheetFieldTreeSelectService', () => {
             delete: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
+            manager: {
+              transaction: jest.fn(),
+            }
           },
         },
       ],
