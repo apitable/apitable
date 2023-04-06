@@ -40,15 +40,6 @@
   }
 }
 :global {
-  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled),
-  .ant-cascader-menu-item-active:not(.ant-cascader-menu-item-disabled):hover,
-  .ant-cascader-menu-item:hover {
-    background-color: var(--bgBrandLightDefault) !important;
-    color: var(--textBrandDefault);
-    svg {
-      fill: var(--textBrandDefault);
-    }
-  }
   .ant-select-selection-placeholder {
     padding-left: 8px;
     display: flex;
@@ -69,6 +60,16 @@
     width: 144px;
     margin: 2px 8px;
     border-radius: 4px;
+    &:hover {
+      background-color: var(--bgBglessHover) !important;
+      color: var(--textBrandDefault);
+      svg {
+        fill: var(--textBrandDefault);
+      }
+    }
+    &-active {
+      background-color: var(--bgBrandLightDefault) !important;
+    }
     &-content {
       overflow: hidden;
       text-overflow: ellipsis;
