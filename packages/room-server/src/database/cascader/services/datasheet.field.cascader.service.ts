@@ -21,13 +21,13 @@ import { IAuthHeader } from 'shared/interfaces';
 import { CascaderLinkedField } from '../models/cascader.link.field';
 import { CascaderVo } from '../vos/cascader.vo';
 import { CascaderDatabusService, CascaderSourceDataView } from './cascader.databus.service';
-import { groupBy, indexOf, slice } from 'lodash';
+import { groupBy, reduce, slice } from 'lodash';
 import { CascaderChildren } from '../models/cascader.children';
 import sha1 from 'sha1';
-import { getText, IFieldMethods } from '../utils/cell.value.to.string';
+import { getTextByCellValue, IFieldMethods } from '../utils/cell.value.to.string';
 import { Injectable } from '@nestjs/common';
-
-type TreeNode = Omit<CascaderChildren, 'children'> & { children: Map<string, TreeNode> };
+import { ILinkRecordData } from '../models/link.record.data';
+import { getBranch, getNode, initStorageContainers, linkNodeToParentNode, setNode } from '../utils/tree.util';
 
 @Injectable()
 export class DatasheetFieldCascaderService {
@@ -77,91 +77,48 @@ export class DatasheetFieldCascaderService {
   }
 
   private buildByRecursive(rows: IViewRow[], recordMap: IRecordMap, linkedFieldIds: string[], fieldMethods: IFieldMethods): CascaderChildren[] {
-    const trees = new Map<string, any>();
+    const { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet } = initStorageContainers(linkedFieldIds);
+    const treeNodes: CascaderChildren[] = [];
     for (const row of rows) {
-      const text = getText(recordMap[row.recordId]!, linkedFieldIds[0]!, fieldMethods);
-      // There is no straight skip in the first column
-      if (!text) {
-        continue;
-      }
-      const textSha1 = sha1(text);
-      // The child nodes have been traversed.
-      if (trees.has(textSha1)) {
-        continue;
-      }
-      const children = this.findChildren(
-        {
-          text,
-          linkedRecordId: row.recordId,
-          linkedFieldId: linkedFieldIds[0]!,
-          children: new Map<string, TreeNode>(),
+      const fieldIdToCellValue = recordMap[row.recordId]!.data;
+      const linkedRecordData: ILinkRecordData = reduce(
+        fieldIdToCellValue,
+        (result, cellValue, fldId) => {
+          result[fldId] = { text: getTextByCellValue(cellValue, fldId, fieldMethods) };
+          return result;
         },
-        rows,
-        recordMap,
-        text,
-        linkedFieldIds[0]!,
-        linkedFieldIds[1]!,
-        linkedFieldIds,
-        fieldMethods,
+        {} as ILinkRecordData,
       );
-      trees.set(textSha1, children);
-    }
-    return this.formatByRecursive(trees);
-  }
+      for (const linkedFieldId of linkedFieldIds) {
+        if (!linkedRecordData[linkedFieldId]) {
+          continue;
+        }
 
-  private findChildren(
-    treeSelect: TreeNode,
-    rows: IViewRow[],
-    recordMap: IRecordMap,
-    parentValue: string,
-    parentLinkedFieldId: string,
-    linkedFieldId: string | undefined,
-    linkedFieldIds: string[],
-    fieldMethods: IFieldMethods,
-  ): TreeNode {
-    if (!linkedFieldId) {
-      return treeSelect;
-    }
-    for (const row of rows) {
-      const text = getText(recordMap[row.recordId]!, linkedFieldId, fieldMethods);
-      const treeNode = {
-        text,
-        linkedRecordId: row.recordId,
-        linkedFieldId,
-        children: new Map<string, TreeNode>(),
-      };
-      if (getText(recordMap[row.recordId]!, parentLinkedFieldId, fieldMethods) === parentValue) {
-        if (!text) {
-          continue;
+        // -------------------------Begin get the node-----------------------------//
+        const branch = getBranch(linkedRecordData, linkedFieldId, fieldIdToParentFieldId);
+        const branchKey = sha1(branch);
+        let node: CascaderChildren = getNode(treeNodesMap, linkedFieldId, branchKey);
+        let isNewNode: boolean = false;
+        if (!node) {
+          isNewNode = true;
+          node = {
+            text: linkedRecordData[linkedFieldId]!.text,
+            linkedFieldId,
+            linkedRecordId: row.recordId,
+            children: [],
+          };
+          setNode(treeNodesMap, linkedFieldId, branchKey, node);
         }
-        const textSha1 = sha1(text);
-        if (treeSelect.children.has(textSha1)) {
-          continue;
-        }
-        const childFieldId = linkedFieldIds[indexOf(linkedFieldIds, linkedFieldId) + 1];
-        treeSelect.children.set(
-          textSha1,
-          this.findChildren(treeNode, rows, recordMap, text, linkedFieldId, childFieldId, linkedFieldIds, fieldMethods),
+        // ------------------------------- End --------------------------------------//
+        linkNodeToParentNode(
+          { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet, treeNodes },
+          linkedFieldId,
+          linkedRecordData,
+          node,
+          isNewNode,
         );
       }
     }
-    return treeSelect;
-  }
-
-  private formatByRecursive(trees: Map<string, TreeNode>): CascaderChildren[] {
-    const treeSelect: CascaderChildren[] = [];
-    trees.forEach(value => {
-      const tree = { ...value, children: [] };
-      treeSelect.push(this.formatChildren(tree, value));
-    });
-    return treeSelect;
-  }
-
-  private formatChildren(tree: CascaderChildren, treeSelect: TreeNode): CascaderChildren {
-    treeSelect.children.forEach(value => {
-      const childTree = { ...value, children: [] };
-      tree.children.push(this.formatChildren(childTree, value));
-    });
-    return tree;
+    return treeNodes;
   }
 }
