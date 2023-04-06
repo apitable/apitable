@@ -36,6 +36,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: var(--textCommonSecondary);
 
   a {
     text-decoration: underline;
@@ -124,7 +125,7 @@
   border-radius: 4px;
   cursor: pointer;
 
-  &.isLast {
+  &.isLeaf {
     cursor: default;
   }
 
@@ -148,7 +149,7 @@
     color: unset;
   }
 
-  &:not(.isLast) {
+  &:not(.isLeaf) {
     &:hover {
       background-color: var(--bgBglessHover);
     }

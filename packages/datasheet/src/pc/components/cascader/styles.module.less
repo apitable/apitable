@@ -2,6 +2,28 @@
   width: 100% !important;
 }
 
+.cascaderHeader {
+  display: flex;
+  .cascaderHeaderItem {
+    width: 160px;
+    padding-left: 14px;
+    line-height: 32px;
+    font-weight: bold;
+  }
+}
+
+.closeBtn {
+  svg {
+    fill: var(--textCommonTertiary);
+  }
+  &:hover {
+    background-color: var(--bgBglessHover) !important;
+  }
+  &:active {
+    background-color: var(--bgBglessActive) !important;
+  }
+}
+
 .emptyPlaceholder {
   text-align: center;
   padding: 32px 16px;
@@ -34,11 +56,8 @@
   }
   .ant-select-clear {
     background-color: transparent !important;
-    &:hover {
-      svg {
-        fill: var(--bgControlsHover);
-      }
-    }
+    top: 14px;
+    right: 20px;
   }
   
   .ant-cascader-menu-item {

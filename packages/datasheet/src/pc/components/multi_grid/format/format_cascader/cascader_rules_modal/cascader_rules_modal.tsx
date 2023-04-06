@@ -135,7 +135,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
     // TODO(Perhaps the client should cache and maintain this cascade structure data)
     const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
-    if (res?.treeSelects && res.treeSelects.length > 0) {
+    if (res?.treeSelects) {
       const _selectedNodeIds = take(selectedNodeIds, selectedIndex);
       updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
     }
@@ -154,7 +154,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     if (linkedFieldId) {
       const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
       if (res?.treeSelects) {
-        // const _previewNodesMatrix = previewNodesMatrix.filter((_pm, _index) => _index === index);
         const _selectedNodeIds = selectedNodeIds.filter((_sn, _index) => _index !== index);
         updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
       }
@@ -258,7 +257,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
               )}
             </div>
             <div className={styles.fieldPreview}>
-              {<RenderPreview isLast={linkedFields.length === index} linkedField={linkedField} index={index} />}
+              {<RenderPreview linkedField={linkedField} index={index} />}
             </div>
           </div>
         ))}
@@ -273,8 +272,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     );
   };
 
-  const RenderPreview = ({ linkedField, index, isLast }: React.PropsWithChildren<{
-    linkedField: ILinkedField | undefined, index: number, isLast: boolean
+  const RenderPreview = ({ linkedField, index }: React.PropsWithChildren<{
+    linkedField: ILinkedField | undefined, index: number
   }>) => {
     if (!linkedField) return null;
 
@@ -286,7 +285,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
           return (
             <div
-              className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, !isLast && styles.isLast])}
+              className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, isLeaf && styles.isLeaf])}
               key={_node.linkedRecordId}
               onClick={() => onPreviewCascaderSelect(_node, index, isLeaf)}
             >

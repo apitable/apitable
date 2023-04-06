@@ -55,7 +55,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
     <div className={commonStyles.section} style={{ marginBottom: 8 }}>
       <section className={commonStyles.section}>
         <div className={classNames(commonStyles.sectionTitle, styles.sectionTitleWithTip)}>
-          <span>{`1 ${t(Strings.cascader_datasource)}`}</span>
+          <span>{`1.${t(Strings.cascader_datasource)}`}</span>
           <LinkButton color={colors.thirdLevelText} href={t(Strings.field_help_cascader)} className={styles.tip}>
             {t(Strings.cascader_how_to_label)}
           </LinkButton>
@@ -63,19 +63,21 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
         <div className={styles.datasourceSelectRow}>
           <CascaderDatasourceDatasheetSelect
             currentField={currentField}
-            linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
           />
+        </div>
+        <div className={commonStyles.section}>
+          <div className={commonStyles.sectionTitle}>
+            2.{t(Strings.cascader_select_view)}
+          </div>
           <CascaderDatasourceViewSelect
             currentField={currentField}
             linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
           />
         </div>
-      </section>
-      <section className={commonStyles.section}>
         <div className={commonStyles.sectionTitle}>
-          <span>{`2 ${t(Strings.cascader_rules)}`}</span>
+          <span>{`3.${t(Strings.cascader_rules)}`}</span>
         </div>
         <div>
           {linkedFields?.length > 0 ? (
