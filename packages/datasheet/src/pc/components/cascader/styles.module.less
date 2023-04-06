@@ -47,13 +47,12 @@
   }
   .ant-select-clear {
     background-color: transparent !important;
-    right: 20px;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
+    top: 12px !important;
   }
 
   .ant-select-selector {
     height: 100% !important;
-    align-items: center;
   }
   
   .ant-cascader-menu-item {
@@ -83,5 +82,20 @@
 
   .ant-select-selector .ant-select-selection-item {
     color: var(--firstLevelText) !important;
+    line-height: 30px !important;
+    font-size: 13px;
+  }
+  @media screen and (max-width: 768px) {
+    .ant-cascader-menu {
+      min-width: auto !important;
+    }
+    .ant-cascader-menu-item {
+      width: 64px;
+      padding: 0 !important;
+      margin: 2px 4px !important;
+      .ant-cascader-menu-item-content {
+        font-size: 12px;
+      }
+    }
   }
 }
