@@ -18,28 +18,28 @@
 
 package com.apitable.workspace.service.impl;
 
+import static com.apitable.workspace.enums.PermissionException.ROOT_NODE_OP_DENIED;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.util.Lists.list;
+
+import com.apitable.AbstractIntegrationTest;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeTreeDTO;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
+import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodePathVo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Test;
-
-import com.apitable.AbstractIntegrationTest;
-import com.apitable.mock.bean.MockUserSpace;
-import com.apitable.space.vo.SpaceGlobalFeature;
-import com.apitable.user.entity.UserEntity;
-import com.apitable.workspace.enums.NodeType;
-import com.apitable.workspace.ro.NodeOpRo;
-import com.apitable.workspace.vo.NodeInfoVo;
-import com.apitable.core.exception.BusinessException;
-
-import static com.apitable.workspace.enums.PermissionException.ROOT_NODE_OP_DENIED;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author tao
@@ -152,6 +152,35 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         boolean nodeInRootFolder = iNodeService.isNodeBelongRootFolder(userSpace.getSpaceId(), nodeId);
         assertThat(nodeInRootFolder).isTrue();
+    }
+
+    @Test
+    void testSortNodeAtSameLevel() {
+        // 1
+        NodeTreeDTO node1 = new NodeTreeDTO();
+        node1.setNodeId("1");
+        node1.setPreNodeId(null);
+        // 2
+        NodeTreeDTO node2 = new NodeTreeDTO();
+        node2.setNodeId("2");
+        node2.setPreNodeId("1");
+        // 3
+        NodeTreeDTO node3 = new NodeTreeDTO();
+        node3.setNodeId("3");
+        node3.setPreNodeId("2");
+        // 4
+        NodeTreeDTO node4 = new NodeTreeDTO();
+        node4.setNodeId("4");
+        node4.setPreNodeId("3");
+        // 5
+        NodeTreeDTO node5 = new NodeTreeDTO();
+        node5.setNodeId("5");
+        node5.setPreNodeId("4");
+
+        List<NodeTreeDTO> nodes = list(node3, node5, node1, node4, node2);
+        List<String> nodeIds = iNodeService.sortNodeAtSameLevel(nodes);
+        assertThat(nodeIds).isNotEmpty();
+        assertThat(nodeIds).containsExactly("1", "2", "3", "4", "5");
     }
 
     @Test

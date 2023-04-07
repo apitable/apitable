@@ -133,13 +133,6 @@
         WHERE parent_id = #{parentId} and is_rubbish = 0
     </select>
 
-    <select id="selectSubNodeInfo"
-            resultType="com.apitable.workspace.vo.SimpleSortableNodeInfo">
-        SELECT node_id, pre_node_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{parentId} and is_rubbish = 0
-    </select>
-
     <select id="selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
