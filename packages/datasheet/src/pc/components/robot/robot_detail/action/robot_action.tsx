@@ -109,7 +109,7 @@ export const RobotAction = (props: IRobotActionProps) => {
 
   return <NodeForm
     nodeId={action.id}
-    type="action"
+    type='action'
     index={index}
     key={action.id}
     // noValidate
@@ -121,7 +121,7 @@ export const RobotAction = (props: IRobotActionProps) => {
     formData={propsFormData}
     serviceLogo={integrateCdnHost(actionType.service.logo)}
     schema={schema}
-    uiSchema={uiSchema}
+    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
     nodeOutputSchemaList={prevActionSchemaList}
     widgets={
       {
