@@ -40,7 +40,8 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
             const thisRowFields = properties.filter(ele => rowFieldNames.includes(ele.name));
             if (thisRowFields.length) {
               const width = isInline ? `${Math.round(100 / thisRowFields.length)}%` : '100%';
-              return <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })} key={index}>
+              return <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })}
+                key={index}>
                 {thisRowFields.map((element, index: number) => (
                   <div
                     key={index} // FIXME: better key
@@ -92,7 +93,10 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
     schema,
     formData,
     onAddClick,
+    description
   } = props;
+
+  const DescriptionField = props.registry.fields.DescriptionField as any;
   const TitleField = props.registry.fields.TitleField as any;
   const hasCollapse = 'ui:options' in uiSchema && 'collapse' in uiSchema['ui:options']!;
   const showTitle = 'ui:options' in uiSchema && 'showTitle' in uiSchema['ui:options']! ? Boolean(uiSchema['ui:options']!['showTitle']) : true;
@@ -101,6 +105,7 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
   const [collapse, setCollapse] = useState<boolean>(defaultCollapse);
   // const isInline = Boolean(uiSchema['ui:options']?.inline);
   // if (currentObjectDepth > 3) return null;
+
   return (
     <div className={styles.objectFieldTemplateWrapper}>
       {(uiSchema['ui:title'] || title) && (
@@ -115,12 +120,12 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
           style={{ fontSize: 14, fontWeight: 'bold', color: '#636363', paddingTop: 16 }}
         />
       )}
-      {/* {description && (
-       <DescriptionField
-       id={`${idSchema.$id}-description`}
-       description={description}
-       />
-       )} */}
+      {description && (
+        <DescriptionField
+          id={`${idSchema.$id}-description`}
+          description={description}
+        />
+      )}
       {
         !collapse && <div>
           <ObjectFieldLayout {...props} />
