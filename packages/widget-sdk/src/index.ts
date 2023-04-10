@@ -24,6 +24,7 @@ export * from './model';
 export * from './store';
 export * from './ui';
 export * from './context';
+export * from './error_message';
 export * from './error_boundary';
 export * from './interface';
 export * from './utils';

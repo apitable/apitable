@@ -41,6 +41,7 @@ export interface IFormatSelectItem {
 export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
   const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
+  const isTypingRef = useRef(false);
   const colors = useThemeColors();
   const onChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -76,6 +77,7 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
   };
 
   const pressEnter = (e: React.KeyboardEvent) => {
+    if (isTypingRef.current) return;
     (e.target as HTMLInputElement).blur();
     addNewItem();
   };
@@ -106,6 +108,8 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
             value={item.name}
             autoFocus={index === currentField.property.options.length - 1}
             onPressEnter={pressEnter}
+            onCompositionStart={() => isTypingRef.current = true}
+            onCompositionEnd={() => isTypingRef.current = false}
           />
         </div>
         <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>

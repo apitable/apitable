@@ -17,7 +17,7 @@
  */
 
 import { getLanguage, Selectors, StoreActions } from '@apitable/core';
-import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, MessageType, RuntimeEnv } from '@apitable/widget-sdk';
+import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, MessageType, RuntimeEnv, ErrorMessage } from '@apitable/widget-sdk';
 import { useUnmount } from 'ahooks';
 import classnames from 'classnames';
 // @ts-ignore
@@ -113,6 +113,12 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     const { templateId } = state.pageParams;
     return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
+  const errorCode = useSelector(state => {
+    const widget = Selectors.getWidget(state, widgetId)!;
+    const { sourceId, datasheetId } = widget.snapshot;
+    return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
+  });
+  const theme = useSelector(state => state.theme);
 
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
@@ -280,11 +286,16 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<IWidgetBlockRefs, {
     return () => mainMessage.removeListenEvent(widgetId, MessageType.WIDGET_EXPAND_DEV_CONFIG);
   }, [connected, setDevWidgetId, setCodeUrl, widgetPackageId, widgetId, codeUrl]);
   
-  if (!widgetCanRender) {
-    return <WidgetLoading/>;
+  if (errorCode) {
+    return (
+      <ErrorMessage
+        errorCode={errorCode}
+        themeName={theme}
+      />
+    );
   }
 
-  if (!nodeConnected) {
+  if (!widgetCanRender || !nodeConnected) {
     return <WidgetLoading/>;
   }
 
