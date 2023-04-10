@@ -6,6 +6,7 @@ export class ClientStoreProvider implements databus.IStoreProvider {
   constructor(private readonly store: Store<IReduxState>) {}
 
   createStore(dataPack: IServerDatasheetPack, options: IClientStoreOptions): Store<IReduxState> {
+    // TODO outdated. Refer to fetchDatasheetPackSuccess for latest code.
     const { isPartOfData, needLoad } = options;
     if (!needLoad) {
       return this.store;

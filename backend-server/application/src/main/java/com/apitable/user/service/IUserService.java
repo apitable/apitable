@@ -351,7 +351,7 @@ public interface IUserService extends IService<UserEntity> {
      * @param uuid User uuid
      * @return User ID
      */
-    Long getUserIdByUuid(String uuid);
+    Long getUserIdByUuidWithCheck(String uuid);
 
     /**
      * Query users by user's name.

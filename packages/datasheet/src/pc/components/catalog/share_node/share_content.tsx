@@ -31,10 +31,10 @@ import { permissionMenuData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MembersDetail } from '../permission_settings/permission/members_detail';
+import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
 import { PublicShareInviteLink } from './public_link';
 import styles from './style.module.less';
-
+import { IMemberList } from 'pc/components/catalog/permission_settings_plus/permission';
 export interface IShareContentProps {
   /** Information about the node being operated on */
   data: {
@@ -53,9 +53,24 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const socketData = useSelector(state => state.catalogTree.socketData);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const { getNodeRoleListReq } = useCatalogTreeRequest();
+  const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
   const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
-  // const { run: checkEmail } = useRequest(checkEmailReq, { manual: true });
+  const [pageNo, setPageNo] = useState<number>(1);
+  const [memberList, setMemberList] = useState<IMemberList[]>([]);
+  const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
+    manual: true
+  });
+
+  useEffect(() => {
+    getCollaboratorReq(pageNo);
+  }, [pageNo, getCollaboratorReq]);
+
+  useEffect(() => {
+    if(collaboratorInfo) {
+      setMemberList([...memberList, ...collaboratorInfo.records]);
+    }
+    // eslint-disable-next-line
+  }, [collaboratorInfo, setMemberList]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
@@ -156,7 +171,7 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
             {roleList && (
               <div className={styles.collaboratorIcon}>
                 {
-                  roleList.members.slice(0, 5).map((v, i) => (
+                  memberList.slice(0, 5).map((v, i) => (
                     <div key={v.memberId} className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
                       <Tooltip title={v.memberName}>
                         <div>
@@ -175,7 +190,7 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
               </div>
             )}
             <Typography variant='body3' className={styles.collaboratorNumber}>
-              {t(Strings.collaborator_number, { number: roleList?.members.length })}
+              {t(Strings.collaborator_number, { number: collaboratorInfo?.total })}
             </Typography>
           </div>
           {
@@ -194,7 +209,11 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
           isMobile={isMobile}
         />
       </div>
-      {detailModalVisible && roleList && <MembersDetail data={roleList} onCancel={() => setDetailModalVisible(false)} />}
+      { detailModalVisible && <MembersDetail 
+        data={collaboratorInfo}
+        memberList={memberList}
+        setPageNo={setPageNo}
+        pageNo={pageNo} onCancel={() => setDetailModalVisible(false)} />}
     </>
   );
 };

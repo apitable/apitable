@@ -20,7 +20,6 @@ package com.apitable.workspace.service.impl;
 
 import static com.apitable.core.constants.RedisConstants.getTemplateQuoteKey;
 import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.apitable.shared.util.NodeUtil.sortNode;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -142,7 +141,6 @@ import com.apitable.workspace.vo.NodePermissionView;
 import com.apitable.workspace.vo.NodeSearchResult;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.ShowcaseVo.NodeExtra;
-import com.apitable.workspace.vo.SimpleSortableNodeInfo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -346,16 +344,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<String> getPathParentNode(String nodeId) {
         log.info("Query the node path of node [{}]", nodeId);
-        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        List<NodeBaseInfoDTO> parentPathNodes =
+            this.getParentPathNodes(Collections.singletonList(nodeId), false);
         return parentPathNodes.stream()
-            .filter(i -> !i.getType().equals(NodeType.ROOT.getNodeType()))
             .map(NodeBaseInfoDTO::getNodeId).collect(Collectors.toList());
     }
 
     @Override
     public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
         log.info("Get the node parent path ");
-        List<NodeBaseInfoDTO> parentPathNodes = this.getParentPathNodes(nodeId);
+        List<NodeBaseInfoDTO> parentPathNodes =
+            this.getParentPathNodes(Collections.singletonList(nodeId), true);
         return parentPathNodes.stream()
             .map(i -> {
                 if (i.getType().equals(NodeType.ROOT.getNodeType())) {
@@ -365,21 +364,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 return new NodePathVo(i.getNodeId(), i.getNodeName());
             })
             .collect(Collectors.toList());
-    }
-
-    private List<NodeBaseInfoDTO> getParentPathNodes(String nodeId) {
-        List<NodeBaseInfoDTO> nodes = new ArrayList<>();
-        while (true) {
-            NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
-            nodes.add(baseNodeInfo);
-            nodeId = baseNodeInfo.getParentId();
-            if (baseNodeInfo.getType().equals(NodeType.ROOT.getNodeType())) {
-                return CollUtil.reverse(nodes);
-            }
-            if (nodes.stream().anyMatch(i -> i.getNodeId().equals(baseNodeInfo.getParentId()))) {
-                throw new BusinessException("Data Exception!");
-            }
-        }
     }
 
     @Override
@@ -572,12 +556,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public NodeInfoTreeVo position(String spaceId, Long memberId, String nodeId) {
         log.info("positioning node ");
-        // Get all parent nodes of the node, assuming the node structure is as follows
-        // root
-        // -- a
-        // ---- b
-        // ------ c
-        // At this time, when obtaining node c, it should return [c, b, a]
+        // Get all parent nodes of the node
         List<String> parentNodeIds = this.getPathParentNode(nodeId);
         // No parent node should report an error,
         // but the location node does not need to return empty directly.
@@ -596,18 +575,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // Query root node
         String rootNodeId = getRootNodeIdBySpaceId(spaceId);
-        // Query the first layer node under the root node
-        List<String> firstLevelNodes = nodeMapper.selectSubNodeIds(rootNodeId);
+        parentNodeIds.add(0, rootNodeId);
+        parentNodeIds.remove(nodeId);
         // The parent node supplements the tree node load.
-        List<String> viewNodeIds = new ArrayList<>(firstLevelNodes);
+        List<NodeTreeDTO> subNode =
+            nodeMapper.selectNodeTreeDTOByParentIdIn(parentNodeIds, false);
+        Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
+            subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
+        List<String> viewNodeIds = new ArrayList<>();
         viewNodeIds.add(rootNodeId);
-        for (int i = 0; i < parentNodeIds.size() - 1; i++) {
-            List<SimpleSortableNodeInfo> subNodeList =
-                nodeMapper.selectSubNodeInfo(parentNodeIds.get(i));
-            List<SimpleSortableNodeInfo> sortedNodeList = sortNode(subNodeList);
-            List<String> subNodeIds = sortedNodeList.stream().map(SimpleSortableNodeInfo::getNodeId)
-                .collect(Collectors.toList());
-            viewNodeIds.addAll(subNodeIds);
+        for (String parentId : parentNodeIds) {
+            List<NodeTreeDTO> sub = parentIdToSubNodeMap.get(parentId);
+            viewNodeIds.addAll(this.sortNodeAtSameLevel(sub));
         }
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, viewNodeIds);
     }

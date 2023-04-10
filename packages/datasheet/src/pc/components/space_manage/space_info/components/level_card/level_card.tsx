@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -34,15 +34,21 @@ import { useLevelInfo } from '../../utils';
 import styles from './style.module.less';
 
 interface ILevelCard {
-  type: ISpaceLevelType;
-  onUpgrade: () => void;
-  minHeight?: number | string;
-  deadline?: string;
-  className?: string;
-  isMobile?: boolean;
+    type: ISpaceLevelType;
+    onUpgrade: () => void;
+    minHeight?: number | string;
+    deadline?: string;
+    className?: string;
+    isMobile?: boolean;
 }
 
-export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHeight, deadline, className, isMobile }) => {
+export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({
+  type,
+  minHeight,
+  deadline,
+  className,
+  isMobile
+}) => {
   const {
     title,
     levelCard: {
@@ -105,6 +111,10 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
       return (
         <Button
           onClick={() => {
+            if (type === LevelType.Enterprise && getEnvVariables().IS_APITABLE) {
+              Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' }});
+              return;
+            }
             type === LevelType.Bronze ? window.open(`/space/${space.activeId}/upgrade`, '_blank', 'noopener,noreferrer') : showUpgradeContactUs?.();
           }}
           color={colors.black[50]}
@@ -162,13 +172,13 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
       </ButtonGroup>
     );
     // eslint-disable-next-line
-  }, [appType, space.activeId, type]);
+    }, [appType, space.activeId, type]);
 
   return (
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
-      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} />}
+      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'}/>}
       {cardSkin && (
-        <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle} />
+        <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle}/>
       )}
       <div className={classnames(styles.tag, { [styles.tagLeft]: isLeftTag })} style={tagStyle}>
         {onTrial ? t(Strings.trial_subscription) : tagText}
@@ -180,7 +190,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         {!isMobile && (
           <Tooltip title={titleTip || t(Strings.grade_desc)} placement='top'>
             <span className={styles.infoIcon}>
-              <QuestionCircleOutlined color={secondTextColor || strokeColor} />
+              <QuestionCircleOutlined color={secondTextColor || strokeColor}/>
             </span>
           </Tooltip>
         )}

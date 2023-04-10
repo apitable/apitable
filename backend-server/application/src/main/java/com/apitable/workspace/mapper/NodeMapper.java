@@ -29,7 +29,6 @@ import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.RubbishNodeVo;
-import com.apitable.workspace.vo.SimpleSortableNodeInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -192,14 +191,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return children node
      */
     List<String> selectSubNodeIds(@Param("parentId") String parentId);
-
-    /**
-     * Query the ID of the direct child node.
-     *
-     * @param parentId parent node id
-     * @return children node
-     */
-    List<SimpleSortableNodeInfo> selectSubNodeInfo(@Param("parentId") String parentId);
 
     /**
      * share tree view according to node ids query.

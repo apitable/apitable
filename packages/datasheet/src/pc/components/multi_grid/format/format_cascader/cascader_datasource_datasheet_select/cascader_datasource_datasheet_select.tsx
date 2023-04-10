@@ -1,18 +1,20 @@
-import { IOption, Select, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Selectors, Strings, t } from '@apitable/core';
-import { ColumnFigureFilled } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
+import { IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { ChevronRightOutlined } from '@apitable/icons';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Emoji } from 'pc/components/common/emoji';
 import { ISearchChangeProps, SearchPanel } from 'pc/components/datasheet_search_panel';
 import { IFormatCascaderProps } from '../format_cascader_select';
 import styles from './styles.module.less';
+import settingStyles from '../../../field_setting/styles.module.less';
+import * as React from 'react';
+import classNames from 'classnames';
+import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 
 export const CascaderDatasourceDatasheetSelect = ({
   currentField,
   setCurrentField,
-  linkedDatasheetLoading,
-}: IFormatCascaderProps & { linkedDatasheetLoading: boolean }): JSX.Element => {
+}: IFormatCascaderProps): JSX.Element => {
   const propLinkedDatasheetId = currentField.property.linkedDatasheetId || undefined;
 
   const colors = useThemeColors();
@@ -23,7 +25,8 @@ export const CascaderDatasourceDatasheetSelect = ({
   const datasheetParentId = useSelector((state: IReduxState) => Selectors.getDatasheet(state)?.parentId) || '';
 
   const onSelectDatasource = ({ datasheetId }: ISearchChangeProps) => {
-    if (!datasheetId) return;
+    const isDstChange = datasheetId !== currentField.property.linkedDatasheetId;
+    if (!datasheetId || !isDstChange) return;
 
     setSearchPanelVisible(false);
     setCurrentField({
@@ -32,6 +35,9 @@ export const CascaderDatasourceDatasheetSelect = ({
         ...currentField?.property,
         linkedDatasheetId: datasheetId,
         linkedViewId: '',
+        // toggle datasheet should clear cache fields
+        linkedFields: [],
+        fullLinkedFields: [],
       },
     });
   };
@@ -40,30 +46,18 @@ export const CascaderDatasourceDatasheetSelect = ({
     setSearchPanelVisible(true);
   };
 
-  const renderPrefixIcon = () => {
-    if (!linkedDatasheet) return null;
-
-    return linkedDatasheet?.icon ? (
-      <Emoji emoji={linkedDatasheet.icon} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />
-    ) : (
-      <ColumnFigureFilled color={colors.fc3} />
-    );
-  };
-
   return (
     <>
-      <div onClick={onOpenDatasource} className={styles.datasourceSelect}>
-        <Select
-          disabled={linkedDatasheetLoading}
-          listCls={styles.datasourceDropdownList}
-          openSearch={searchPanelVisible}
-          options={linkedDatasheet ? [{ value: linkedDatasheet.id, label: linkedDatasheet.name }] : []}
-          placeholder={t(Strings.cascader_datasource_placeholder)}
-          prefixIcon={renderPrefixIcon()}
-          renderValue={(option: IOption) => option.label}
-          triggerCls={styles.viewSelectInner}
-          value={linkedDatasheet?.id}
-        />
+      <div onClick={onOpenDatasource} className={classNames(styles.datasourceSelect, settingStyles.section)}>
+        <div className={settingStyles.sectionInfo}>
+          <div className={settingStyles.iconType}>
+            <NodeIcon nodeId="foreignDatasheetIcon" icon={linkedDatasheet?.icon} editable={false} size={16} />
+          </div>
+          <div className={settingStyles.text}>{linkedDatasheet?.name || t(Strings.cascader_datasource_placeholder)}</div>
+          <div className={settingStyles.arrow}>
+            <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
+          </div>
+        </div>
       </div>
       {searchPanelVisible && (
         <SearchPanel

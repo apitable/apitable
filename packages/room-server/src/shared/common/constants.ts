@@ -20,13 +20,14 @@
 
 // Redis keys
 export enum CacheKeys {
-  SOCKET = 'vikadata:nest:socket:%s',
-  ROOM_RELATE = 'vikadata:nest:room:%s',
-  RESOURCE_RELATE = 'vikadata:nest:resource:%s',
-  DATASHEET_FIELD_REF = 'vikadata:nest:fieldRef:%s',
-  DATASHEET_FIELD_RE_REF = 'vikadata:nest:fieldReRef:%s',
-  DATASHEET_REVISION_CACHE = 'vikadata:nest:datasheetCacheRevision:%s',
-  DATASHEET_PACK_CACHE = 'vikadata:nest:datasheetCache:%s',
+  SOCKET = 'apitable:nest:socket:%s',
+  ROOM_RELATE = 'apitable:nest:room:%s',
+  RESOURCE_RELATE = 'apitable:nest:resource:%s',
+  DATASHEET_FIELD_REF = 'apitable:nest:fieldRef:%s',
+  DATASHEET_FIELD_RE_REF = 'apitable:nest:fieldReRef:%s',
+  DATASHEET_REVISION_CACHE = 'apitable:nest:datasheetCacheRevision:%s',
+  DATASHEET_PACK_CACHE = 'apitable:nest:datasheetCache:%s',
+  DATASHEET_CASCADER_TREE = 'apitable:nest:datasheetCascaderCache:%s:%s'
 }
 
 // Redis expire time, units are in seconds

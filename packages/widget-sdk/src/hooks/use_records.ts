@@ -89,6 +89,7 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
   const viewId = isDatasheet ? param2 as string : param1 as string;
   const query = isDatasheet ? param3 as IRecordQuery : param2 as IRecordQuery;
   const { datasheetId: metaDatasheetId } = useMeta();
+  const snapshot = useSelector(getSnapshot);
   const datasheetId = isDatasheet ? (param1 as Datasheet).datasheetId : metaDatasheetId;
   useReferenceCount(datasheetId, viewId);
 
@@ -123,5 +124,6 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
       _visibleRows = viewFilterDerivate.getFilterRowsBase({ filterInfo, rows: _visibleRows, recordMap: snapshot.recordMap });
     }
     return _visibleRows.map(row => new Record(datasheetId, context, row.recordId));
-  }, [datasheetId, visibleRows, query, context]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [datasheetId, visibleRows, query, context, snapshot]);
 }

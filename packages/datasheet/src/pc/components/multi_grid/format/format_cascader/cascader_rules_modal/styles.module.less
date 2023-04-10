@@ -20,6 +20,9 @@
   font-size: 16px;
   font-weight: bold;
   margin: 0;
+  svg {
+    vertical-align: -0.125em;
+  }
 }
 
 .cascaderRulesContainer {
@@ -33,6 +36,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 16px;
+  color: var(--textCommonSecondary);
 
   a {
     text-decoration: underline;
@@ -90,6 +94,7 @@
 
 .deleteButton {
   margin-left: 8px;
+  color: var(--textCommonTertiary) !important;
 }
 
 .fieldPreview {
@@ -115,8 +120,17 @@
   flex-direction: row;
   justify-content: space-between;
   margin-top: 4px;
+  padding: 9px 16px;
+  background-color: var(--bgBrandLightDefault);
+  border-radius: 4px;
+  cursor: pointer;
+
+  &.isLeaf {
+    cursor: default;
+  }
 
   > span {
+    color: var(--primaryColor);
     &:first-of-type {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -124,22 +138,29 @@
     }
   }
   svg {
-    fill: var(--bgBrandLightActive);
+    fill: var(--textBrandDefault);
+    min-width: 20px;
   }
 }
 
 .previewOptionUnselected {
-  background-color: var(--defaultBg) !important;
-
-  &:hover {
-    background-color: var(--bgBglessHover) !important;
+  background-color: transparent;
+  > span {
+    color: unset;
   }
 
-  &:active {
-    background-color: var(--bgBglessActive) !important;
+  &:not(.isLeaf) {
+    &:hover {
+      background-color: var(--bgBglessHover);
+    }
+
+    &:active {
+      background-color: var(--bgBglessActive);
+    }
   }
+
   &.previewOption {
-    color: var(--textCommonPrimary) !important;
+    color: var(--textCommonPrimary);
     svg {
       fill: var(--textCommonPrimary);
     }

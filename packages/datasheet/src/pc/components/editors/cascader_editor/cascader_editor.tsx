@@ -97,6 +97,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
           editing={editing}
           disabled={!editable}
           cascaderRef={cascaderRef}
+          style={{
+            height: `${height}px`,
+            lineHeight: `${height}px`,
+          }}
           displayRender={label => {
             return field.property.showAll ? label.join('/') : label[label.length - 1];
           }}

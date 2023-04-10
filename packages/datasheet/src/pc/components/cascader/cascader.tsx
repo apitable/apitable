@@ -2,7 +2,7 @@ import { Cascader as AntCascader } from 'antd';
 import styles from './styles.module.less';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, AddOutlined, CloseOutlined } from '@apitable/icons';
-import { colorVars } from '@apitable/components';
+import { colorVars, IconButton } from '@apitable/components';
 import { ICascaderOption } from 'pc/utils';
 import { MutableRefObject } from 'react';
 import React from 'react';
@@ -16,6 +16,7 @@ interface ICascader {
   value: string[][] | string[];
   displayRender?: (label: string[]) => React.ReactNode;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 export const Cascader = (props: ICascader) => {
@@ -34,7 +35,7 @@ export const Cascader = (props: ICascader) => {
       onChange={onChange}
       options={options}
       placeholder={<AddOutlined color={colorVars.secondLevelText} size={16}/>}
-      clearIcon={<CloseOutlined size={14} />}
+      clearIcon={<IconButton className={styles.closeBtn} icon={CloseOutlined}/>}
       popupVisible={editing}
       ref={cascaderRef}
       suffixIcon={null}

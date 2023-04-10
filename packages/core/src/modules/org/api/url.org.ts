@@ -71,6 +71,8 @@ export const GET_SUB_UNIT_LIST = '/org/getSubUnitList';
 // Query the list of organizational units that belong to the space
 export const MEMBER_UNITS = '/org/member/units';
 
+export const COLLABORATOR_INFO = 'node/collaborator/info';
+
 /**
  * Edit Member Info
  */

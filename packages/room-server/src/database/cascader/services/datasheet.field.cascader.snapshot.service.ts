@@ -30,6 +30,7 @@ import { IRecordMap, IViewRow } from '@apitable/core';
 import { getTextByCellValue, IFieldMethods } from '../utils/cell.value.to.string';
 import { CascaderSnapshotUpdateDto } from '../dtos/cascader.snapshot.update.dto';
 import { CascaderSnapshotDeleteDto } from '../dtos/cascader.snapshot.delete.dto';
+import { getBranch, getNode, initStorageContainers, linkNodeToParentNode, setNode } from '../utils/tree.util';
 
 @Injectable()
 export class DatasheetFieldCascaderSnapshotService {
@@ -78,12 +79,14 @@ export class DatasheetFieldCascaderSnapshotService {
       datasheetId,
       fieldId,
     );
-    await this.datasheetCascaderFieldRepository.delete({
-      spaceId,
-      datasheetId,
-      fieldId,
+    await this.datasheetCascaderFieldRepository.manager.transaction(async() => {
+      await this.datasheetCascaderFieldRepository.delete({
+        spaceId,
+        datasheetId,
+        fieldId,
+      });
+      await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     });
-    await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     return true;
   }
 
@@ -130,29 +133,6 @@ export class DatasheetFieldCascaderSnapshotService {
     }, [] as DatasheetCascaderFieldEntity[]);
   }
 
-  private initStorageContainers(linkedFieldIds: string[]) {
-    // fieldIdToParentFieldId
-    const fieldIdToParentFieldId: { [index: string]: string } = {};
-    // fieldIdToTextToNode
-    const treeNodesMap: ITreeNodeMap = {};
-    // fieldIdToRecordIdToSet
-    const groupToTextToSet: { [index: string]: { [index: string]: Set<CascaderChildren> } } = {};
-    for (let i = 0; i < linkedFieldIds.length; i++) {
-      const linkedFieldId: string = linkedFieldIds[i]!;
-      if (i == 0) {
-        fieldIdToParentFieldId[linkedFieldId] = '';
-      } else {
-        fieldIdToParentFieldId[linkedFieldId] = linkedFieldIds[i - 1]!;
-      }
-      treeNodesMap[linkedFieldId] = {};
-    }
-    return {
-      fieldIdToParentFieldId,
-      treeNodesMap,
-      groupToTextToSet,
-    };
-  }
-
   /**
    *           ｜ fld41 ｜ fld24
    *  rec1  ｜ level-1-1 ｜level-2-1
@@ -172,10 +152,9 @@ export class DatasheetFieldCascaderSnapshotService {
    *  }
    *
    *  ps: Depth-First traversing to build tree.
-   *  Breadth-First traversing to build tree see datasheet.field.cascader.service.ts#buildByRecursive.
    */
   private flatDataToTree(linkedFieldIds: string[], rows: DatasheetCascaderFieldEntity[]): CascaderChildren[] {
-    const { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet } = this.initStorageContainers(linkedFieldIds);
+    const { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet } = initStorageContainers(linkedFieldIds);
     const treeNodes: CascaderChildren[] = [];
     // transform flat data structure to tree.
     for (const row of rows) {
@@ -185,7 +164,9 @@ export class DatasheetFieldCascaderSnapshotService {
           continue;
         }
         // -------------------------Begin get the node-----------------------------//
-        let node: CascaderChildren = this.getNode(treeNodesMap, linkedFieldId, linkRecordData[linkedFieldId]!.text);
+        const branch = getBranch(linkRecordData, linkedFieldId, fieldIdToParentFieldId);
+        const branchKey = sha1(branch);
+        let node: CascaderChildren = getNode(treeNodesMap, linkedFieldId, branchKey);
         let isNewNode: boolean = false;
         if (!node) {
           isNewNode = true;
@@ -195,10 +176,10 @@ export class DatasheetFieldCascaderSnapshotService {
             linkedRecordId: row.linkedRecordId,
             children: [],
           };
-          this.setNode(treeNodesMap, linkedFieldId, node.text, node);
+          setNode(treeNodesMap, linkedFieldId, branchKey, node);
         }
         // ------------------------------- End --------------------------------------//
-        this.linkNodeToParentNode(
+        linkNodeToParentNode(
           { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet, treeNodes },
           linkedFieldId,
           linkRecordData,
@@ -210,64 +191,4 @@ export class DatasheetFieldCascaderSnapshotService {
     return treeNodes;
   }
 
-  private linkNodeToParentNode(
-    context: {
-      fieldIdToParentFieldId: { [p: string]: string };
-      treeNodesMap: ITreeNodeMap;
-      groupToTextToSet: { [p: string]: { [p: string]: Set<CascaderChildren> } };
-      treeNodes: CascaderChildren[];
-    },
-    linkedFieldId: string,
-    linkRecordData: ILinkRecordData,
-    node: CascaderChildren,
-    isNewNode: boolean,
-  ) {
-    const { fieldIdToParentFieldId, treeNodesMap, groupToTextToSet, treeNodes } = context;
-    // parent node
-    const parentFieldId: string = fieldIdToParentFieldId[linkedFieldId]!;
-    if (!!parentFieldId) {
-      // -----------------Begin link node and parent node---------------------//
-      if (!linkRecordData[parentFieldId]) {
-        return;
-      }
-      const parentNode: CascaderChildren = this.getNode(treeNodesMap, parentFieldId, linkRecordData[parentFieldId]!.text);
-      // the link exist, save that node has more than one parent node
-      const parentSet: Set<CascaderChildren> = this.getValueByGroupAndKey(groupToTextToSet, linkedFieldId, node.linkedRecordId);
-      if (!parentSet.has(parentNode)) {
-        // set link
-        parentNode.children.push(node);
-        parentSet.add(parentNode);
-      }
-      // ----------------End link node and parent node------------------------//
-    } else {
-      // root node
-      if (isNewNode) {
-        treeNodes.push(node);
-      }
-    }
-  }
-
-  private getValueByGroupAndKey(
-    groupToMap: { [_: string]: { [_: string]: Set<CascaderChildren> } },
-    group: string,
-    key: string,
-  ): Set<CascaderChildren> {
-    groupToMap[group] = groupToMap[group] || {};
-    groupToMap[group]![key] = groupToMap[group]![key] || new Set();
-    return groupToMap[group]![key]!;
-  }
-
-  private getNode(nodesMap: ITreeNodeMap, group: string, key: string): CascaderChildren {
-    const keySha1 = sha1(key);
-    return nodesMap[group]![keySha1]!;
-  }
-
-  private setNode(nodesMap: ITreeNodeMap, group: string, key: string, value: CascaderChildren) {
-    const keySha1 = sha1(key);
-    nodesMap[group]![keySha1] = value;
-  }
-}
-
-interface ITreeNodeMap {
-  [_: string]: { [_: string]: CascaderChildren };
 }

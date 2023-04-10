@@ -1088,8 +1088,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     @Override
-    public Long getUserIdByUuid(final String uuid) {
-        return userMapper.selectIdByUuid(uuid);
+    public Long getUserIdByUuidWithCheck(final String uuid) {
+        Long userId = userMapper.selectIdByUuid(uuid);
+        ExceptionUtil.isNotNull(userId, USER_NOT_EXIST);
+        return userId;
     }
 
     private String nullToDefaultNickName(

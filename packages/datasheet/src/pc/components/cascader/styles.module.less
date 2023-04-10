@@ -2,9 +2,31 @@
   width: 100% !important;
 }
 
+.cascaderHeader {
+  display: flex;
+  .cascaderHeaderItem {
+    width: 160px;
+    padding-left: 14px;
+    line-height: 32px;
+    font-weight: bold;
+  }
+}
+
+.closeBtn {
+  svg {
+    fill: var(--textCommonTertiary);
+  }
+  &:hover {
+    background-color: var(--bgBglessHover) !important;
+  }
+  &:active {
+    background-color: var(--bgBglessActive) !important;
+  }
+}
+
 .emptyPlaceholder {
   text-align: center;
-  padding: 32px 0;
+  padding: 32px 16px;
 
   .img {
     width: 160px;
@@ -25,14 +47,55 @@
   }
   .ant-select-clear {
     background-color: transparent !important;
+    transform: translate(-50%, 0);
+    top: 12px !important;
+  }
+
+  .ant-select-selector {
+    height: 100% !important;
+  }
+  
+  .ant-cascader-menu-item {
+    width: 144px;
+    margin: 2px 8px;
+    border-radius: 4px;
     &:hover {
+      background-color: var(--bgBglessHover) !important;
+      color: var(--textBrandDefault);
       svg {
-        fill: var(--bgControlsHover);
+        fill: var(--textBrandDefault);
+      }
+    }
+    &-active {
+      background-color: var(--bgBrandLightDefault) !important;
+    }
+    &-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .emptyPlaceholder {
+        width: 160px;
+        padding: 0;
       }
     }
   }
 
-  .ant-select-selection-item {
+  .ant-select-selector .ant-select-selection-item {
     color: var(--firstLevelText) !important;
+    line-height: 30px !important;
+    font-size: 13px;
+  }
+  @media screen and (max-width: 768px) {
+    .ant-cascader-menu {
+      min-width: auto !important;
+    }
+    .ant-cascader-menu-item {
+      width: 64px;
+      padding: 0 !important;
+      margin: 2px 4px !important;
+      .ant-cascader-menu-item-content {
+        font-size: 12px;
+      }
+    }
   }
 }

@@ -25,6 +25,7 @@ import { getDashboard } from '../modules/database/store/selectors/resource/dashb
 import { getForm } from '../modules/database/store/selectors/resource/form';
 import { getWidget } from '../modules/database/store/selectors/resource/widget';
 import { ResourceType } from '../types/resource_types';
+import { FieldType } from 'types';
 
 /**
  * Register event prototype decorator
@@ -141,8 +142,9 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
       cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       newFields[fieldId] = cellValue;
     }
-    const fieldEventValue = Field.bindContext(field, state).cellValueToOpenValue(cellValue);
-    eventFields[fieldId] = fieldEventValue;
+    eventFields[fieldId] = field.type === FieldType.Formula
+      ? eventFields[fieldId] = Field.bindContext(field, state).cellValueToString(cellValue)
+      : Field.bindContext(field, state).cellValueToOpenValue(cellValue);
   });
   return {
     fields: newFields,
