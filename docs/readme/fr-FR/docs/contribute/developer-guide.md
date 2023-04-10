@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Nous vous recommandons d'utiliser [Homebrew](https://brew.sh/) pour installer les dépendances manquantes :
 
 ```bash
-## nécessaire requis
+## nécessaire
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ Ouvrez simplement le répertoire racine d'APITable avec IDE.
 
 
 
+## Aidez-nous en contribuant aux traductions?
+
+Nous avons deux façons d'améliorer la traduction de APITable :
+
+1. Vous pouvez modifier les fichiers markdown dans le code source et créer une PR directement
+2. Rejoignez notre [Crowdin](https://crowdin.com/project/apitablecode) pour trouver les `strings` à modifier
+
+Dans la collaboration de la traduction multilingue, nous suivons le processus suivant :
+
+![Capture d'écran du processus de traduction multilingue](../static/collaboration_of_multilingual_translation.png)
+
 ## Comment configurer le serveur SMTP ?
 
 Par défaut, APITable ne configure pas le serveur SMTP, ce qui signifie que vous ne pouvez pas inviter d'utilisateurs car il nécessite la fonctionnalité d'envoi d'e-mails.
 
-Il est nécessaire de modifier la configuration .env à l'aide de l'auto-e-mail et de redémarrer le serveur principal.
+Il est nécessaire de modifier la configuration `.env` à l'aide de l'email et de redémarrer le serveur backend.
 
-`
+```
 MAIL_ENABLED=vrai
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=votre_email_mot de passe
 MAIL_PORT=465
 MAIL_SSL_ENABLE=vrai
 MAIL_TYPE=smtp
-MAIL_USERNAME=votre_email`
+MAIL_USERNAME=votre_email
+```
 
 De plus, certaines boîtes aux lettres doivent être activées en arrière-plan pour utiliser smtp. Pour plus de détails, vous pouvez rechercher le didacticiel smtp de la boîte aux lettres xxx.
 

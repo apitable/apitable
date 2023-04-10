@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 نوصي باستخدام [Homebrew](https://brew.sh/) لتثبيت أي تبعيات مفقودة:
 
 ```bash
-## ضروري مطلوب
+## مطلوب
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,13 +129,24 @@ make run # enter 3
 
 
 
+## ساهم في الترجمة؟
+
+لدينا طريقتان لتحسين ترجمة APITable:
+
+1. يمكنك تعديل ملفات markdown في التعليمات البرمجية المصدر وإنشاء PR مباشرة
+2. انضم إلى [Crowdin](https://crowdin.com/project/apitablecode) للعثور على `strings` لتعديل
+
+وبالتعاون مع الترجمة المتعددة اللغات، نتابع العملية التالية:
+
+![لقطة شاشة لعملية الترجمة متعددة اللغات](../static/collaboration_of_multilingual_translation.png)
+
 ## كيف يتم تكوين خادم SMTP؟
 
 بشكل افتراضي ، لا يقوم APITable بتكوين خادم SMTP ، مما يعني أنه لا يمكنك دعوة المستخدمين لأنه يتطلب ميزة إرسال البريد الإلكتروني.
 
-يلزم تعديل تكوين .env باستخدام البريد الإلكتروني الذاتي ، وإعادة تشغيل خادم الخلفية.
+هناك حاجة لتعديل إعدادات `.env` باستخدام البريد الإلكتروني الذاتي، وإعادة تشغيل خادم نهاية الخلفية.
 
-`
+```
 <code>
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
@@ -142,7 +154,10 @@ MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`</code>
+MAIL_USERNAME=your_email</code>
+```
+
+</code>
 
 بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
@@ -165,7 +180,7 @@ MAIL_USERNAME=your_email`</code>
 
 ## هل يمكنني زيادة حد معدل الطلب لواجهة برمجة التطبيقات؟ (5 افتراضيًا)
 
-في ملف ".env.default" الخاص بـ "خادم الغرفة" ، توجد معلمتان يمكنهما ضبط تردد الطلب:
+في ملف `.env.default` `room-server`، هناك معلمان يمكن ضبط تكرار الطلب:
 
 1. يمكنك تعيين `LIMIT_POINTS` و `LIMIT_DURATION` للإشارة إلى عدد الطلبات التي يمكن إجراؤها في فترة زمنية للوحدة. حيث يمثل LIMIT_POINTS عدد المرات و LIMIT_DURATION هي المدة ، ويتم قياسها بالثواني.
 

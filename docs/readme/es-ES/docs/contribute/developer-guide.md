@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 Recomendamos usar [Homebrew](https://brew.sh/) para instalar las dependencias que falten:
 
 ```bash
-## necesario requerido
+## necesario
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ Simplemente abra el directorio raíz de APITable con IDE.
 
 
 
+## ¿Cómo contribuir con las traducciones?
+
+Tenemos dos maneras de mejorar la traducción de APITable:
+
+1. Puede modificar los archivos de markdown en el código fuente y crear un PR directamente
+2. Únete a nuestro [Crowdin](https://crowdin.com/project/apitablecode) para encontrar las `strings` para modificar
+
+En colaboración con la traducción multilingüe, seguimos el siguiente proceso:
+
+![Captura de pantalla del proceso de traducción multilingüe](../static/collaboration_of_multilingual_translation.png)
+
 ## ¿Cómo configurar el servidor SMTP?
 
 De forma predeterminada, APITable no configura el servidor SMTP, lo que significa que no puede invitar a los usuarios, ya que requiere la función de envío de correo electrónico.
 
-Es necesario modificar la configuración de .env usando el correo electrónico y reiniciar el servidor backend.
+Es necesario modificar la configuración de `.env` usando autoemail, y reiniciar el servidor de backend.
 
-`
+```
 MAIL_ENABLED=verdadero
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=tu_contraseña_de_correo electrónico
 CORREO_PUERTO=465
 MAIL_SSL_ENABLE=verdadero
 MAIL_TYPE=smtp
-MAIL_USERNAME=tu_correo electrónico`
+MAIL_USERNAME=tu_correo electrónico
+```
 
 Además, algunos buzones deben habilitarse en segundo plano para usar smtp. Para obtener más información, puede buscar el tutorial smtp del buzón xxx.
 
@@ -179,6 +192,6 @@ Esto se puede lograr configurando el parámetro `API_MAX_MODIFY_RECORD_COUNTS` e
 
 
 ## ¿Cómo cambiar el puerto 80
-predeterminado?Konfigurationseigenschaften in der `.env`-Datei können auch überschrieben werden, indem sie env vars `NGINX_HTTP_PORT` angeben
+Predeterminado?Konfigurationseigenschaften in der `.env`-Datei können auch überschrieben werden, indem sie env vars `NGINX_HTTP_PORT` angeben
 
 Zum Beispiel. Es würde als NGINX_HTTP_PORT=8080 festgelegt werden
