@@ -1381,6 +1381,11 @@
             "en_US": "Can't update/delete/create more than {count}  records in one single request",
             "zh_HK": "單次請求修改/刪除/新增的記錄不能超過 {count} 條"
         },
+        "api_params_tree_select_can_not_operate": {
+            "zh_CN": "多级联动列暂不允许编辑",
+            "en_US": "It is now allowed to edit cascader field",
+            "zh_HK": "多級聯動列暫不允許編輯"
+        },
         "api_params_updated_time_can_not_operate": {
             "zh_CN": "修改时间列的值由系统自动生成，不允许编辑",
             "en_US": "Last Edited Time field can't be edited",
@@ -2383,9 +2388,118 @@
             "en_US": "Cape Verde",
             "zh_HK": "開普"
         },
+        "cascader_config": {
+            "zh_CN": "级联关系配置",
+            "en_US": "Cascader config",
+            "zh_HK": "級聯關係配置"
+        },
+        "cascader_datasource": {
+            "zh_CN": "关联的级联配置表",
+            "en_US": "Configuration datasheet",
+            "zh_HK": "關聯的級聯配置錶"
+        },
+        "cascader_datasource_placeholder": {
+            "zh_CN": "请选择数据源",
+            "en_US": "Please select cascader datasource",
+            "zh_HK": "請選擇數據源"
+        },
+        "cascader_datasource_refresh": {
+            "zh_CN": "拉取最新数据",
+            "en_US": "Fetch",
+            "zh_HK": "拉取最新數據"
+        },
+        "cascader_field_config_placeholder": {
+            "zh_CN": "选择数据源表并进行多级联动配置",
+            "en_US": "Select datasource to config cascader",
+            "zh_HK": "選擇數據源表並進行多級聯動配置"
+        },
+        "cascader_field_select_placeholder": {
+            "zh_CN": "选择一个字段",
+            "en_US": "Select a field",
+            "zh_HK": "选择一个字段"
+        },
+        "cascader_how_to_label": {
+            "zh_CN": "如何配置？",
+            "en_US": "How to config?",
+            "zh_HK": "如何配置？"
+        },
+        "cascader_max_field_tip": {
+            "zh_CN": "多级联动最多选择五个字段作为层级关系",
+            "en_US": "Cascader must have maximum five levels",
+            "zh_HK": "多級聯動最多選擇五個字段作為層級關係"
+        },
+        "cascader_min_field_error": {
+            "zh_CN": "多级联动至少需要选择两个字段作为层级关系",
+            "en_US": "Cascader must have minimum two levels",
+            "zh_HK": "多級聯動至少需要選擇兩個字段作為層級關係"
+        },
+        "cascader_mobile_unavailable_tip": {
+            "zh_CN": "手机端无法编辑数据源和规则",
+            "en_US": "Not supported to edit cascader source and rules on mobile devices",
+            "zh_HK": "手机端无法编辑数据源和规则"
+        },
+        "cascader_new_field_tip": {
+            "zh_CN": "选择列",
+            "en_US": "choose field"
+        },
+        "cascader_no_data_field_error": {
+            "zh_CN": "存在没有数据的字段，请重新选择或者补充数据后再进行尝试",
+            "en_US": "Some fields have no data. Please reselect or create data and try again",
+            "zh_HK": "存在沒有數據的字段，請重新選擇或者補充數據後再進行嘗試"
+        },
+        "cascader_no_datasheet_error": {
+            "zh_CN": "请选择数据源",
+            "en_US": "Please select cascader datasource",
+            "zh_HK": "請選擇數據源"
+        },
+        "cascader_no_rules_error": {
+            "zh_CN": "请配置级联规则",
+            "en_US": "Please set cascader rules",
+            "zh_HK": "請配置級聯規則"
+        },
+        "cascader_no_sync_tip": {
+            "zh_CN": "以下数据不会跟随<a href=\"${url}\" target=\"_blank\">「${datasheetName}」</a>实时更新，如有变更，请点击右侧的按钮拉取最新的数据",
+            "en_US": "The following data will not syncronize with <a href=\"${url}\" target=\"_blank\">「${datasheetName}」</a>. Click button right to fetch latest data if updated.",
+            "zh_HK": "以下數據不會跟隨<a href=\"${url}\" target=\"_blank\">「${datasheetName}」</a>實時更新，如有變更，請點擊右側的按鈕拉取最新的數據"
+        },
+        "cascader_no_view_error": {
+            "zh_CN": "请选择一个视图",
+            "en_US": "Please select a view",
+            "zh_HK": "請選擇一個視圖"
+        },
+        "cascader_rules": {
+            "zh_CN": "级联规则",
+            "en_US": "Cascader rules",
+            "zh_HK": "級聯規則"
+        },
+        "cascader_rules_help_tip": {
+            "zh_CN": "帮助文档",
+            "en_US": "Help documentation",
+            "zh_HK": "级联规则帮助"
+        },
+        "cascader_select_tip": {
+            "zh_CN": "选择上方数据源表，展示级联关系",
+            "en_US": "Select data datasource above to show cascader",
+            "zh_HK": "選擇上方數據源表，展示級聯關係"
+        },
+        "cascader_select_view": {
+            "zh_CN": "请选择视图",
+            "en_US": "Select view",
+            "zh_HK": "請選擇視圖"
+        },
+        "cascader_show_all": {
+            "zh_CN": "显示完整的层级路径",
+            "en_US": "Display the full hierarchy path",
+            "zh_HK": "顯示完整的層級路徑"
+        },
         "cascader_snapshot_update_text": {
             "zh_CN": "拉取最新数据后，新创建的记录将会采用最新的级联关系",
             "en_US": "After fetching the latest data, any new records created will use the latest cascading relationships."
+        },
+        "cascader_undefined_field_error": {
+            "zh_CN": "当前有字段未配置",
+            "en_US": "There exists unselected field. Please select the field and try again",
+            "zh_HK": "當前有字段未配置"
         },
         "catalog": {
             "zh_CN": "工作目录",
@@ -5521,6 +5635,11 @@
             "en_US": "https://help.vika.cn/docs/guide/manual-field-text",
             "zh_HK": "https://help.vika.cn/docs/guide/manual-field-text"
         },
+        "field_help_tree_select": {
+            "zh_CN": "这里是多级联动的帮助页面",
+            "en_US": "This is the help page of Cascader",
+            "zh_HK": "這裡是多級聯動的幫助頁面"
+        },
         "field_help_url": {
             "zh_CN": "https://help.vika.cn/docs/guide/manual-field-url",
             "en_US": "https://help.vika.cn/docs/guide/manual-field-url",
@@ -5530,6 +5649,11 @@
             "zh_CN": "显示时间与时区",
             "en_US": "Include time and time zone",
             "zh_HK": "顯示時間與時區"
+        },
+        "field_map_tips_for_python": {
+            "zh_CN": "存在与变量规则不匹配的字段名称，请打开“使用 Field ID”，否则下面的代码示例可能无法运行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以帮你解决这个问题。",
+            "en_US": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
+            "zh_HK": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以幫你解決這個問題。"
         },
         "field_member_property_multi": {
             "zh_CN": "允许添加多个成员",
@@ -6217,7 +6341,7 @@
         },
         "freeze_current_column": {
             "zh_CN": "冻结至此列",
-            "en_US": "Freeze to the currtent column",
+            "en_US": "Freeze to this column",
             "zh_HK": "凍結至此列"
         },
         "freeze_line_tips": {
@@ -11439,8 +11563,8 @@
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
         },
         "player_step_ui_config_169": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>新增「多级联动」字段，层级菜单易维护</li><li>Script小程序在线编程，扩展功能大升级</li><li>通知提醒新方式，机器人新增「发送邮件」</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>Added \"Cascader\" field, with easy maintenance of hierarchical menus</li><li>Script Widget online programming, with greatly expanded features</li><li>New notification alert method, with the robot now able to \"send emails\"</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li></ul>\"\n}"
         },
         "player_step_ui_config_78": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",
@@ -12382,6 +12506,34 @@
             "zh_CN": "删除操作",
             "en_US": "Delete action",
             "zh_HK": "刪除操作"
+        },
+        "robot_action_send_mails_config_1_pleaseholder_1": {
+            "zh_CN": "smtp.example.com",
+            "en_US": "smtp.example.com"
+        },
+        "robot_action_send_mails_config_1_pleaseholder_2": {
+            "zh_CN": "465",
+            "en_US": "465"
+        },
+        "robot_action_send_mails_config_2_pleaseholder": {
+            "zh_CN": "name@example.com",
+            "en_US": "name@example.com"
+        },
+        "robot_action_send_mails_config_3_pleaseholder": {
+            "zh_CN": "123456",
+            "en_US": "123456"
+        },
+        "robot_action_send_mails_config_4_pleaseholder": {
+            "zh_CN": "name@example.com",
+            "en_US": "name@example.com"
+        },
+        "robot_action_send_mails_config_5_pleaseholder": {
+            "zh_CN": "例：任务提醒通知",
+            "en_US": "Example: task reminder notification"
+        },
+        "robot_action_send_mails_config_6_pleaseholder": {
+            "zh_CN": "填写邮件内容",
+            "en_US": "Enter message content"
         },
         "robot_action_send_web_request_add_formdata_button": {
             "zh_CN": "添加键值对",
