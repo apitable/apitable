@@ -51,4 +51,5 @@ export const FieldTypeEnum = new Enum([
   { key: 'LastModifiedTime', name: 'LastModifiedTimeField', value: FieldType.LastModifiedTime },
   { key: 'CreatedBy', name: 'CreatedByField', value: FieldType.CreatedBy },
   { key: 'LastModifiedBy', name: 'LastModifiedByField', value: FieldType.LastModifiedBy },
+  { key: 'Cascader', name: 'CascaderField', value: FieldType.Cascader },
 ]);
