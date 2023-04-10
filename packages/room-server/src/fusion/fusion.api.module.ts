@@ -19,7 +19,8 @@
 import { CacheModule, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  AttachmentField, AutoNumberField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
+  AttachmentField, AutoNumberField,
+  CascaderField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
   LastModifiedByField, LastModifiedTimeField, LinkField, LookUpField, MemberField, MultiSelectField, NumberField, PercentField, PhoneField,
   RatingField, SingleSelectField, SingleTextField, TextField, UrlField,
 } from 'fusion/field';
@@ -67,6 +68,7 @@ import { UnitModule } from 'unit/unit.module';
     // field service
     AttachmentField,
     AutoNumberField,
+    CascaderField,
     CheckboxField,
     CreatedByField,
     CreatedTimeField,
