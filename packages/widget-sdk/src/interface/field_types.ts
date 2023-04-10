@@ -862,7 +862,8 @@ export enum FieldType {
 
    * 
    */
-  LastModifiedBy = CoreFieldType.LastModifiedBy
+  LastModifiedBy = CoreFieldType.LastModifiedBy,
+  Cascader = CoreFieldType.Cascader
 }
 
 export interface IAttachmentValue {
