@@ -70,9 +70,10 @@ export class MirrorController {
       // if it is not a template, check if it belongs to this space
       const { userId } = await this.userService.getMe({ cookie });
       await this.nodeService.checkUserForNode(userId, mirrorId);
+      // check the user has the privileges of the node
+      await this.nodeService.checkNodePermission(mirrorId, { cookie });
     }
-    // check the user has the privileges of the node
-    await this.nodeService.checkNodePermission(mirrorId, { cookie });
+    //TODO check whether the user is in the space when getting the private space template mirror
     return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate, recordIds: query.recordIds });
   }
 
