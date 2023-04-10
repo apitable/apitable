@@ -81,7 +81,7 @@ describe('DatasheetFieldTreeSelectService', () => {
           provide: DatasheetCascaderFieldRepository,
           useValue: {
             selectRecordData: jest.fn(),
-            delete: jest.fn(),
+            update: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
             manager: {
