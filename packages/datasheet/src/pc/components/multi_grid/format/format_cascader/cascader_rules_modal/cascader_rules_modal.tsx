@@ -10,6 +10,7 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
 import { compact, find, take } from 'lodash';
 import * as React from 'react';
+import { ButtonOperateType } from 'pc/utils';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -30,6 +31,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const spaceId = useSelector(Selectors.activeSpaceId)!;
   const datasheetId = useSelector(Selectors.getDatasheet)?.id!;
   const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
+  const activeFieldState = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
 
   const colors = useThemeColors();
 
@@ -83,26 +85,51 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     updateField();
   };
 
-  const loadData = async(_linkedFields: ILinkedField[], isLoading?: boolean) => {
+  const loadData = async(_linkedFields: ILinkedField[], isLoading: boolean, isUpdateLinked?: boolean) => {
     isLoading && setCascaderPreviewLoading(true);
+    const isNewField = activeFieldState.fieldId === ButtonOperateType.AddField;
+    // cascader snapshot is empty while new field
+    if (isNewField) {
+      const res = await DatasheetApi.getCascaderData({
+        spaceId,
+        datasheetId: linkedDatasheetId,
+        linkedViewId,
+        linkedFieldIds: _linkedFields.map((linkedField) => linkedField.id),
+      });
 
-    const res = await DatasheetApi.getCascaderData({
-      spaceId,
-      datasheetId: linkedDatasheetId,
-      linkedViewId,
-      linkedFieldIds: _linkedFields.map((linkedField) => linkedField.id),
-    });
+      isLoading && setCascaderPreviewLoading(false);
 
-    isLoading && setCascaderPreviewLoading(false);
+      if (res.data.success) {
+        const linkedFields = res.data.data?.linkedFields;
+        if (linkedFields && linkedFields.length > 0) {
+          setFullLinkedFields(linkedFields);
+          // set two initial fields for the first-time config
+          if (isUpdateLinked && !currFieldLinkedFields?.length) {
+            setLinkedFields(linkedFields.slice(0, 2));
+          }
+        }
+        return res.data.data?.treeSelects;
+      }
+      Message.error({
+        content: res.data.message,
+      });
+    } else {
+      const res = await DatasheetApi.getCascaderSnapshot({
+        spaceId,
+        datasheetId,
+        fieldId: currentField.id,
+        linkedFieldIds: _linkedFields.map((linkedField) => linkedField.id),
+      });
 
-    if (res.data.success) {
-      return res.data.data;
+      isLoading && setCascaderPreviewLoading(false);
+
+      if (res.data.success) {
+        return res.data.data.treeSelectNodes;
+      }
+      Message.error({
+        content: res.data.message,
+      });
     }
-
-    Message.error({
-      content: res.data.message,
-    });
-
     return;
   };
 
@@ -125,14 +152,10 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   };
 
   const onRefreshConfig = async() => {
-    const res = await loadData(compact(linkedFields), true);
+    const treeSelects = await loadData(compact(linkedFields), true);
 
-    if (res?.linkedFields && res.linkedFields.length > 0) {
-      setFullLinkedFields(res.linkedFields);
-    }
-
-    if (res?.treeSelects && res.treeSelects.length > 0) {
-      setPreviewNodesMatrix([res.treeSelects]);
+    if (treeSelects && treeSelects.length > 0) {
+      setPreviewNodesMatrix([treeSelects]);
       setSelectedNodeIds([]);
     }
   };
@@ -146,10 +169,10 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     setLinkedFields(newLinkedFields);
 
     // TODO(Perhaps the client should cache and maintain this cascade structure data)
-    const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[], true);
-    if (res?.treeSelects) {
+    const treeSelects = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[], true);
+    if (treeSelects) {
       const _selectedNodeIds = take(selectedNodeIds, selectedIndex);
-      updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
+      updatePreviewMatrixBySelectedNode(_selectedNodeIds, treeSelects);
     }
   };
 
@@ -164,10 +187,10 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
     // reset cascader preview after field removement, or the preview could be confused
     if (linkedFieldId) {
-      const res = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[]);
-      if (res?.treeSelects) {
+      const treeSelects = await loadData(newLinkedFields.filter((linkedField) => !!linkedField) as ILinkedField[], false);
+      if (treeSelects) {
         const _selectedNodeIds = selectedNodeIds.filter((_sn, _index) => _index !== index);
-        updatePreviewMatrixBySelectedNode(_selectedNodeIds, res?.treeSelects);
+        updatePreviewMatrixBySelectedNode(_selectedNodeIds, treeSelects);
       }
     }
   };
@@ -211,13 +234,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     }
     const fetchData = async() => {
       try {
-        const res = await loadData(currFieldLinkedFields, true);
-        setPreviewNodesMatrix(res?.treeSelects ? [res.treeSelects] : []);
-        // set two initial fields for the first-time config
-        if (!currFieldLinkedFields?.length && res?.linkedFields) {
-          setFullLinkedFields(res.linkedFields);
-          setLinkedFields(res.linkedFields.slice(0, 2));
-        }
+        const treeSelects = await loadData(currFieldLinkedFields, true, true);
+        setPreviewNodesMatrix(treeSelects ? [treeSelects] : []);
       } catch (e: any) {
         onRefreshConfig();
       }
