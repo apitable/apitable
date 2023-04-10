@@ -3,20 +3,6 @@
 
 
 
-## [v0.20.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.20.0-alpha) (2023-04-10)
-
-
-### Bug fixes
-
-* fix: recommend widget icon display ([#681](https://github.com/apitable/apitable/pull/681)) @ChambersChan 
-* fix: recover deleted node failure issue ([#695](https://github.com/apitable/apitable/pull/695)) @ChambersChan 
-* fix: add cascader strings ([#696](https://github.com/apitable/apitable/pull/696)) @wangkailang 
-
-### What's more
-
-* New Crowdin updates ([#653](https://github.com/apitable/apitable/pull/653)) @mr-kelly 
-* docs: databus guide ([#683](https://github.com/apitable/apitable/pull/683)) @arucil 
-* sync: hosted cloud ([#689](https://github.com/apitable/apitable/pull/689)) @yort-feng 
 ## [v0.18.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.2) (2023-03-13)
 
 
