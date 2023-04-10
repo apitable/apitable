@@ -11,6 +11,8 @@ import styles from './styles.module.less';
 import { compact, find, take } from 'lodash';
 import * as React from 'react';
 import { ButtonOperateType } from 'pc/utils';
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -88,8 +90,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const loadData = async(_linkedFields: ILinkedField[], isLoading: boolean, isUpdateLinked?: boolean) => {
     isLoading && setCascaderPreviewLoading(true);
     const isNewField = activeFieldState.fieldId === ButtonOperateType.AddField;
-    // cascader snapshot is empty while new field
-    if (isNewField) {
+    // cascader snapshot is empty while new field or change linked datasheet
+    if (isNewField || !currFieldLinkedFields.length) {
       const res = await DatasheetApi.getCascaderData({
         spaceId,
         datasheetId: linkedDatasheetId,
@@ -288,7 +290,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
               )}
             </div>
             <div className={styles.fieldPreview}>
-              {<RenderPreview linkedField={linkedField} index={index} />}
+              <RenderPreview linkedField={linkedField} index={index}/>
             </div>
           </div>
         ))}
@@ -307,25 +309,44 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     linkedField: ILinkedField | undefined, index: number
   }>) => {
     if (!linkedField) return null;
+    const currentPreviewNodes = previewNodesMatrix[index];
+    if (!currentPreviewNodes) return null;
 
     return (
-      <div>
-        {previewNodesMatrix[index]?.map((_node: ICascaderNode) => {
-          const isLeaf = !_node?.children?.length;
-          const isSelect = selectedNodeIds.some((nodeId) => nodeId === `${_node.linkedFieldId}-${_node.linkedRecordId}`);
+      <AutoSizer style={{ width: '100%', height: '100%' }}>
+        {({ height, width }) => (
+          <List
+            height={height}
+            width={width}
+            itemCount={currentPreviewNodes.length}
+            itemSize={42}
+            itemKey={(idx: number) => `${currentPreviewNodes[idx].linkedFieldId}-${currentPreviewNodes[idx].linkedRecordId}`}
+            itemData={currentPreviewNodes}
+          >
+            {({ data, index: _index , style }) => {
+              const _node = data[_index];
+              const isLeaf = !_node?.children?.length;
+              const currNodeId = `${_node.linkedFieldId}-${_node.linkedRecordId}`;
+              const isSelect = selectedNodeIds.some((nodeId) => nodeId === currNodeId);
 
-          return (
-            <div
-              className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, isLeaf && styles.isLeaf])}
-              key={_node.linkedRecordId}
-              onClick={() => onPreviewCascaderSelect(_node, index, isLeaf)}
-            >
-              <Typography component="span" variant="body3" ellipsis>{_node?.text}</Typography>
-              {isLeaf ? undefined : <ChevronRightOutlined />}
-            </div>
-          );
-        })}
-      </div>
+              return (
+                <div
+                  key={currNodeId}
+                  style={style}
+                >
+                  <div
+                    className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, isLeaf && styles.isLeaf])}
+                    onClick={() => onPreviewCascaderSelect(_node, index, isLeaf)}
+                  >
+                    <Typography component="span" variant="body3" ellipsis>{_node?.text}</Typography>
+                    {isLeaf ? undefined : <ChevronRightOutlined />}
+                  </div>
+                </div>
+              );
+            }}
+          </List>
+        )}
+      </AutoSizer>
     );
   };
 
