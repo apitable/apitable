@@ -69,7 +69,7 @@ export class CascaderController {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, param.datasheetId);
     const client = this.redisService.getClient();
-    const cacheKey =  util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
+    const cacheKey = util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
     const cache = await client.get(cacheKey);
     const depth = query.linkedFieldIds.reduce((result, linkedFieldId) => {
       result += linkedFieldId;
@@ -81,7 +81,7 @@ export class CascaderController {
         return cacheObject.treeSelects;
       }
     }
-    const cascader =  await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
+    const cascader = await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
       spaceId: param.spaceId,
       datasheetId: param.datasheetId,
       fieldId: param.fieldId,
@@ -108,7 +108,7 @@ export class CascaderController {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, param.datasheetId);
     const client = this.redisService.getClient();
-    const cacheKey =  util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
+    const cacheKey = util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
     await client.del(cacheKey);
     return await this.datasheetFieldCascaderSnapshotService.updateCascaderSnapshot({ userId, cookie }, userId, {
       spaceId: param.spaceId,
@@ -132,7 +132,7 @@ export class CascaderController {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, param.datasheetId);
     const client = this.redisService.getClient();
-    const cacheKey =  util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
+    const cacheKey = util.format(CacheKeys.DATASHEET_CASCADER_TREE, param.datasheetId, param.fieldId);
     await client.del(cacheKey);
     return await this.datasheetFieldCascaderSnapshotService.deleteCascaderSnapshot({
       spaceId: param.spaceId,
