@@ -5531,6 +5531,11 @@
             "en_US": "Include time and time zone",
             "zh_HK": "顯示時間與時區"
         },
+        "field_map_tips_for_python": {
+            "zh_CN": "存在与变量规则不匹配的字段名称，请打开“使用 Field ID”，否则下面的代码示例可能无法运行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以帮你解决这个问题。",
+            "en_US": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
+            "zh_HK": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以幫你解決這個問題。"
+        },
         "field_member_property_multi": {
             "zh_CN": "允许添加多个成员",
             "en_US": "Allow adding multiple members",
@@ -6217,7 +6222,7 @@
         },
         "freeze_current_column": {
             "zh_CN": "冻结至此列",
-            "en_US": "Freeze to the currtent column",
+            "en_US": "Freeze to this column",
             "zh_HK": "凍結至此列"
         },
         "freeze_line_tips": {
@@ -11439,8 +11444,8 @@
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
         },
         "player_step_ui_config_169": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>新增「多级联动」字段，层级菜单易维护</li><li>Script小程序在线编程，扩展功能大升级</li><li>通知提醒新方式，机器人新增「发送邮件」</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/50eefa7248c44d73afb5caa302250478\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>Added \"Cascader\" field, with easy maintenance of hierarchical menus</li><li>Script Widget online programming, with greatly expanded features</li><li>New notification alert method, with the robot now able to \"send emails\"</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li></ul>\"\n}"
         },
         "player_step_ui_config_78": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",
@@ -12382,6 +12387,34 @@
             "zh_CN": "删除操作",
             "en_US": "Delete action",
             "zh_HK": "刪除操作"
+        },
+        "robot_action_send_mails_config_1_pleaseholder_1": {
+            "zh_CN": "smtp.example.com",
+            "en_US": "smtp.example.com"
+        },
+        "robot_action_send_mails_config_1_pleaseholder_2": {
+            "zh_CN": "465",
+            "en_US": "465"
+        },
+        "robot_action_send_mails_config_2_pleaseholder": {
+            "zh_CN": "name@example.com",
+            "en_US": "name@example.com"
+        },
+        "robot_action_send_mails_config_3_pleaseholder": {
+            "zh_CN": "123456",
+            "en_US": "123456"
+        },
+        "robot_action_send_mails_config_4_pleaseholder": {
+            "zh_CN": "name@example.com",
+            "en_US": "name@example.com"
+        },
+        "robot_action_send_mails_config_5_pleaseholder": {
+            "zh_CN": "例：任务提醒通知",
+            "en_US": "Example: task reminder notification"
+        },
+        "robot_action_send_mails_config_6_pleaseholder": {
+            "zh_CN": "填写邮件内容",
+            "en_US": "Enter message content"
         },
         "robot_action_send_web_request_add_formdata_button": {
             "zh_CN": "添加键值对",

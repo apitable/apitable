@@ -77,6 +77,7 @@ import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.LabsApplicantTypeEnum;
 import com.apitable.space.service.ILabsApplicantService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
@@ -201,6 +202,9 @@ public class UserController {
 
     @Resource
     private LoginUserCacheService loginUserCacheService;
+
+    @Resource
+    private ISpaceService iSpaceService;
 
     /**
      * Get personal information.
@@ -755,6 +759,8 @@ public class UserController {
         UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId,
             spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
+        // whether member is main admin
+        iSpaceService.checkMemberIsMainAdmin(spaceId, userSpace.getMemberId());
         String applicant =
             StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {

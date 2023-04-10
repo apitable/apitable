@@ -42,6 +42,7 @@ export enum APIMetaFieldType {
   LastModifiedTime = 'LastModifiedTime',
   CreatedBy = 'CreatedBy',
   LastModifiedBy = 'LastModifiedBy',
+  Cascader = 'Cascader',
 }
 
 export enum APIMetaViewType {

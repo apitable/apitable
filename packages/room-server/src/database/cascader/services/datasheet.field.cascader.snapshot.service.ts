@@ -80,10 +80,12 @@ export class DatasheetFieldCascaderSnapshotService {
       fieldId,
     );
     await this.datasheetCascaderFieldRepository.manager.transaction(async() => {
-      await this.datasheetCascaderFieldRepository.delete({
+      await this.datasheetCascaderFieldRepository.update({
         spaceId,
         datasheetId,
         fieldId,
+      }, {
+        isDeleted: true,
       });
       await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     });
