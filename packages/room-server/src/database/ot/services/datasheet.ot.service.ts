@@ -18,7 +18,7 @@
 
 import {
   CollaCommandName, Field, FieldType, IAttachmentValue, IComments, IField, IFieldMap, IFieldUpdatedMap, IJOTAction, IMeta, INodePermissions,
-  IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState,
+  IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMap, IRecordMeta, IReduxState,
   IRemoteChangeset, isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
@@ -39,7 +39,6 @@ import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
-import { RecordMap } from '../../interfaces';
 import { WidgetService } from '../../widget/services/widget.service';
 import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
 import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
@@ -2126,7 +2125,7 @@ export class DatasheetOtService {
       }
 
       // The view contains records
-      const prevRecordMap: RecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+      const prevRecordMap: IRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
       const recordMetaMap: Map<string, IRecordMeta> = effectMap.get(EffectConstantName.RecordMetaMap);
       const recordIdMap = new Map<string, number>();
       let nextId = 1;

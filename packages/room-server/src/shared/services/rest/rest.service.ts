@@ -17,24 +17,37 @@
  */
 
 import {
-  api, IDatasheetFieldPermission, IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage,
-  IUnitValue, IUserInfo
+  api,
+  IDatasheetFieldPermission,
+  IFieldPermissionMap,
+  IFieldPermissionRoleListData,
+  INode,
+  INodeRoleMap,
+  ISpaceInfo,
+  ISpacePermissionManage,
+  IUnitValue,
+  IUserInfo,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  InternalCreateDatasheetVo, InternalSpaceInfoVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap
+  InternalCreateDatasheetVo,
+  InternalSpaceInfoVo,
+  InternalSpaceSubscriptionView,
+  InternalSpaceUsageView,
+  WidgetMap,
 } from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
 import { keyBy } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { CommonStatusCode } from 'shared/common';
-import { CommonException, PermissionException, ServerException } from 'shared/exception';
+import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
 import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
+import { responseCodeHandler } from './response.code.handler';
 
 /**
  * RestApi service
@@ -96,30 +109,8 @@ export class RestService {
       res => {
         const restResponse = res.data as IHttpSuccessResponse<any>;
         if (!restResponse.success) {
-          this.logger.error(`Server request failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
-          // 403 not in this space
-          if (restResponse.code === 201 || restResponse.code === 403) {
-            throw new ServerException(CommonException.UNAUTHORIZED);
-          }
-          // node not exist
-          if (restResponse.code === 600) {
-            throw new ServerException(PermissionException.NODE_NOT_EXIST);
-          }
-          // access to node is denied
-          if (restResponse.code === 601) {
-            throw new ServerException(PermissionException.ACCESS_DENIED);
-          }
-          // operation on node is denied
-          if (restResponse.code === 602) {
-            throw new ServerException(PermissionException.OPERATION_DENIED);
-          }
-          if (restResponse.code === PermissionException.SPACE_NOT_EXIST.code) {
-            throw new ServerException(PermissionException.SPACE_NOT_EXIST);
-          }
-          if (restResponse.code === PermissionException.NO_ALLOW_OPERATE.code) {
-            throw new ServerException(PermissionException.NO_ALLOW_OPERATE);
-          }
-          throw new ServerException(CommonException.SERVER_ERROR);
+          this.logger.error(`Server request ${res.config.url} failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
+          responseCodeHandler(restResponse.code);
         }
         return restResponse;
       },
@@ -260,8 +251,8 @@ export class RestService {
         params: {
           widgetIds,
           linkId,
-          userId: headers.userId
-        }
+          userId: headers.userId,
+        },
       })
     );
     const data = response!.data;
@@ -542,9 +533,7 @@ export class RestService {
   }
 
   async getSpaceInfo(spaceId: string): Promise<InternalSpaceInfoVo> {
-    const response = await lastValueFrom(
-      this.httpService.get(sprintf(this.SPACE_INFO, { spaceId })),
-    );
+    const response = await lastValueFrom(this.httpService.get(sprintf(this.SPACE_INFO, { spaceId })));
     return response.data;
   }
 }

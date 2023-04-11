@@ -27,6 +27,6 @@ export class CascaderSnapshotParam extends CascaderParam {
     example: 'fld***',
     description: 'Field',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
   fieldId!: string;
 }
