@@ -62,7 +62,7 @@ export const CascaderDatasourceDatasheetSelect = ({
       {searchPanelVisible && (
         <SearchPanel
           folderId={linkedDatasheet ? linkedDatasheet.parentId : datasheetParentId}
-          activeDatasheetId=""
+          activeDatasheetId={linkedDatasheet ? linkedDatasheet.id : ''}
           setSearchPanelVisible={setSearchPanelVisible}
           onChange={onSelectDatasource}
         />
