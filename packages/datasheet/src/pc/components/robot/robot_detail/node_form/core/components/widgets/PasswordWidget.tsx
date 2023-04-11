@@ -63,7 +63,7 @@ function PasswordWidget(props: IBaseInputProps & any) {
     {...inputProps}
     list={schema.examples ? `examples_${inputProps.id}` : null}
     onChange={_onChange}
-    onBlur={onBlur && (event => props.onChange(literal2Operand(event.target.value)))}
+    onBlur={onBlur && (event => props.onChange(literal2Operand(event.target.value || null)))}
     onFocus={onFocus && (event => onFocus(inputProps.id, literal2Operand(event.target.value)))}
     type={'password'}
     style={{
