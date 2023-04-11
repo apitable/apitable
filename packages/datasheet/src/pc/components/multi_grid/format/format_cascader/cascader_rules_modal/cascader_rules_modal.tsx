@@ -8,7 +8,7 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
-import { compact, find, take } from 'lodash';
+import { compact, find, take, pick } from 'lodash';
 import * as React from 'react';
 import { ButtonOperateType } from 'pc/utils';
 import { FixedSizeList as List } from 'react-window';
@@ -118,7 +118,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       });
     } else {
       const res = await DatasheetApi.getCascaderSnapshot({
-        spaceId,
         datasheetId,
         fieldId: currentField.id,
         linkedFieldIds: _linkedFields.map((linkedField) => linkedField.id),
@@ -226,7 +225,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           linkedViewId: linkedViewId,
         }).then(() => {
           const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
-          const primaryFullLinkedFields = columns.map(column => fieldMap?.[column.fieldId]!);
+          const primaryFullLinkedFields = columns.map(column => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
           setFullLinkedFields(primaryFullLinkedFields);
           onRefreshConfig();
         });
