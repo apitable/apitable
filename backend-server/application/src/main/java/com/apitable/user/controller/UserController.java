@@ -759,8 +759,6 @@ public class UserController {
         UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId,
             spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
-        // whether member is main admin
-        iSpaceService.checkMemberIsMainAdmin(spaceId, userSpace.getMemberId());
         String applicant =
             StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {
