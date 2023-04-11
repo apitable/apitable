@@ -59,12 +59,9 @@ export class CascaderController {
   @ApiProduces('application/json')
   @ApiOkResponse({ type: CascaderSnapshotVo })
   public async cascaderSnapshot(
-    @Headers('cookie') cookie: string,
     @Param() param: GetCascaderSnapshotParam,
     @Query() query: CascaderSnapshotQueryRo
   ): Promise<CascaderSnapshotVo> {
-    const { userId } = await this.userService.getMe({ cookie });
-    await this.nodeService.checkUserForNode(userId, param.datasheetId);
     return await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
       datasheetId: param.datasheetId,
       fieldId: param.fieldId,
