@@ -18,15 +18,15 @@
 
 import {
   FieldType, ICreatedByProperty, IDatasheetUnits, IFieldMap, IForeignDatasheetMap, IFormulaField, ILinkFieldProperty, ILookUpProperty,
-  IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty
+  IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty, IRecordDependency, IRecord, ILinkIds, IRecordDependencies
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
-import { InjectLogger } from 'shared/common';
+import { InjectLogger, RECORD_LAZY_ASSOCIATION_MODE } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
-import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
+import { IAuthHeader, ICellValueMap, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
@@ -37,6 +37,10 @@ import { UserService } from 'user/services/user.service';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
+import { DatasheetRecordLazyAssociationService } from './datasheet.record.lazy.association.service';
+import { DatasheetRecordCombineQueryDto } from '../dtos/datasheet.record.combine.query.dto';
+import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 
 /**
  * <p>
@@ -58,17 +62,28 @@ export class DatasheetFieldHandler {
     private readonly datasheetRepository: DatasheetRepository,
     private readonly computeFieldReferenceManager: ComputeFieldReferenceManager,
     private readonly roomResourceRelService: RoomResourceRelService,
+    private readonly recordLazyAssociationService: DatasheetRecordLazyAssociationService,
   ) { }
 
-  initGlobalParameter(mainDstId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions, withoutPermission?: boolean) {
+  initGlobalParameter(spaceId: string, mainDstId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions, withoutPermission?: boolean) {
     origin.main = false;
+    const existingRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[] = [];
+    const currentRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[]= [];
+    const relatedRecords: DatasheetRecordEntity[] = [];
     return {
+      spaceId,
       mainDstId,
       auth,
       origin,
       // linked datasheet data
       // { [foreignDatasheetId: string]: IBaseDatasheetPack }
       foreignDstMap: {},
+      // record IDs of linked datasheet set
+      relatedRecords,
+      // existing record lazy associations
+      existingRecordLazyAssociations,
+      // current record lazy associations
+      currentRecordLazyAssociations,
       // datasheet ID -> primary field ID
       dstIdToHeadFieldIdMap: new Map<string, string>(),
       // unit IDs of a member field
@@ -98,7 +113,17 @@ export class DatasheetFieldHandler {
   ): Promise<IForeignDatasheetMap & IDatasheetUnits> {
     const beginTime = +new Date();
     this.logger.info(`Start processing special field [${mainDstId}]`);
+    // Get the space ID which the datasheet belongs to
+    const spaceId = await this.getSpaceIdByDstId(mainDstId);
     const globalParam = this.initGlobalParameter(mainDstId, auth, origin, withoutPermission);
+    if (RECORD_LAZY_ASSOCIATION_MODE) {
+      const recordIds = Object.keys(mainRecordMap);
+      const existingAssociations 
+       = await this.recordLazyAssociationService.getRecordAssociations(spaceId, mainDstId, recordIds);
+      const relatedRecords = await this.getRelatedRecords(existingAssociations);
+      globalParam.existingRecordLazyAssociations = existingAssociations;
+      globalParam.relatedRecords = relatedRecords;
+    }
 
     // Process all fields of the datasheet
     const fldIds = fieldIds?.length ? fieldIds : Object.keys(mainMeta.fieldMap);
@@ -106,8 +131,6 @@ export class DatasheetFieldHandler {
 
     const combineResult: IForeignDatasheetMap & IDatasheetUnits = {};
     combineResult.foreignDatasheetMap = globalParam.foreignDstMap;
-    // Get the space ID which the datasheet belongs to
-    const spaceId = await this.getSpaceIdByDstId(mainDstId);
     let tempUnitMap: (IUnitValue | IUserValue)[] = [];
     // Batch query member info
     if (globalParam.memberFieldUnitIds.size > 0) {
@@ -125,6 +148,26 @@ export class DatasheetFieldHandler {
     const endTime = +new Date();
     this.logger.info(`Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms`);
     return combineResult;
+  }
+
+  private async getRelatedRecords(existingAssociations: DatasheetRecordLazyAssociationEntity[]): Promise<DatasheetRecordEntity[]> {
+    // convert associations into combineDto array
+    const combineDtos: DatasheetRecordCombineQueryDto[] = [];
+    existingAssociations.forEach(association => {
+      Object.keys(association?.depends).forEach((fieldId: string) => {
+        const depends: IRecordDependency[]|undefined = association.depends[fieldId];
+        depends?.forEach(depend => {
+          depend.recordIds.forEach(recordId => {
+            const combineDto = new DatasheetRecordCombineQueryDto();
+            combineDto.dstId = depend.datasheetId;
+            combineDto.recordId = recordId;
+            combineDtos.push(combineDto);
+          });
+        });
+      });
+    });
+    const relatedRecords = await this.datasheetRecordService.getRecordMapByCombineQueryDTO(combineDtos);
+    return relatedRecords;
   }
 
   /**
@@ -243,6 +286,10 @@ export class DatasheetFieldHandler {
           break;
       }
     }
+    const { spaceId, mainDstId, currentRecordLazyAssociations } = globalParam;
+
+    this.fillInRelatedRecordAssociations(spaceId, dstId, currentRecordLazyAssociations
+      , fieldIdToLinkDstIdMap, recordMap, mainDstId === dstId);
 
     // ======= Load linked datasheet structure data (not including records) BEGIN =======
     for (const [fldId, foreignDstId] of fieldIdToLinkDstIdMap.entries()) {
@@ -256,7 +303,8 @@ export class DatasheetFieldHandler {
         fieldIdToLinkDstIdMap.delete(fldId);
         continue;
       }
-      globalParam.foreignDstMap[foreignDstId] = { snapshot: { meta, recordMap: {}, datasheetId: datasheet.id }, datasheet, fieldPermissionMap };
+      const recordMap = this.getRecordMapByDatasheetId(foreignDstId, globalParam.relatedRecordMapSnapshot);
+      globalParam.foreignDstMap[foreignDstId] = { snapshot: { meta, recordMap, datasheetId: datasheet.id }, datasheet, fieldPermissionMap };
     }
     // ======= Load linked datasheet structure data (not including records) END =======
 
@@ -342,6 +390,73 @@ export class DatasheetFieldHandler {
         await this.parseField(foreignDstId, foreignFieldMap, foreignRecordMap, Array.from(fieldIds), globalParam);
       }
     }
+  }
+
+  private getRecordMapByDatasheetId(datasheetId: string, relatedRecords: DatasheetRecordEntity[]): RecordMap {
+    const records: DatasheetRecordEntity[] = [];
+    relatedRecords.forEach((record: DatasheetRecordEntity) => {
+      if (record && record.dstId === datasheetId) {
+        records.push(record);
+      }
+    });
+    return this.datasheetRecordService.formatRecordMap(records, {}, undefined);
+  }
+
+  private fillInRelatedRecordAssociations(spaceId: string, datasheetId: string, currentRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[]
+    , fieldIdToLinkDstIdMap: Map<string, string>, recordMap: IRecordMap, mainDatasheet: boolean): void{
+    Object.keys(recordMap).forEach((recordId: string) => {
+      const record: IRecord|undefined = recordMap[recordId];
+      if (!record) {
+        return;
+      }
+      const depends: IRecordDependencies = this.getDepends(record.data, fieldIdToLinkDstIdMap);
+      if (Object.keys(depends).length === 0) {
+        return;
+      }
+      if (mainDatasheet) {
+        const association: DatasheetRecordLazyAssociationEntity = {
+          spaceId,
+          dstId: datasheetId,
+          recordId: record.id,
+          depends,
+        } as DatasheetRecordLazyAssociationEntity;
+        currentRecordLazyAssociations.push(association);
+      } else {
+        currentRecordLazyAssociations.forEach((association: DatasheetRecordLazyAssociationEntity) => {
+          Object.keys(association?.depends).forEach((fieldId: string) => {
+            const recordDependencies = association.depends[fieldId];
+            let related: boolean = false;
+            recordDependencies?.forEach((depend: IRecordDependency) => {
+              const { recordIds } = depend;
+              if (recordIds.includes(recordId)) {
+                related = true;
+              }
+            });
+            if (related) {
+              Object.keys(depends).forEach((fieldId: string) => {
+                const dependencies: IRecordDependency[]|undefined = depends[fieldId];
+                if (dependencies) {
+                  recordDependencies?.push(...dependencies);
+                }
+              });
+            }
+          });
+        });
+      }
+    });
+  }
+
+  private getDepends(recordData: ICellValueMap, fieldIdToLinkDstIdMap: Map<string, string>): IRecordDependencies {
+    const depends: IRecordDependencies = {};
+    Object.keys(recordData).forEach((fieldId: string) => {
+      const datasheetId = fieldIdToLinkDstIdMap.get(fieldId);
+      if (!datasheetId) return;
+      const recordIds = recordData[fieldId] as ILinkIds;
+      if (recordIds.length > 0) {
+        depends[fieldId] = [{ datasheetId, recordIds }];
+      }
+    });
+    return depends;
   }
 
   private getRelatedFieldIds(datasheetId: string, foreignDatasheetData: any

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IRecordDependencies, IRecordMeta } from '@apitable/core';
+import { IRecordDependencies } from '@apitable/core';
 import { IdWorker } from 'shared/helpers';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
@@ -58,14 +58,14 @@ export class DatasheetRecordLazyAssociationEntity {
     nullable: true,
     comment: 'record dependencies(related datasheets\' records and fields)',
   })
-  depends?: IRecordDependencies;
+  depends!: IRecordDependencies;
 
   @Column('timestamp', {
     name: 'created_at',
     comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createdAt!: Date;
+  createdAt?: Date;
 
   @Column('timestamp', {
     name: 'updated_at',

@@ -98,19 +98,18 @@ export class DatasheetRecordService {
   }
 
   // get recordMap by arrays of combining datasheetId and recordId
-  public async getRecordMapByCombineQueryDTO(combineDtos: DatasheetRecordCombineQueryDto[]): Promise<RecordMap> {
+  public async getRecordMapByCombineQueryDTO(combineDtos: DatasheetRecordCombineQueryDto[]): Promise<DatasheetRecordEntity[]> {
     const combineQueryArray = combineDtos.map(dto => {
       return { dstId: dto.dstId, recordId: dto.recordId };
     });
-    const records = await this.recordRepo.find({
-      select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
+    return await this.recordRepo.find({
+      select: ['dstId', 'recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
       where: combineQueryArray
     });
-    return this.formatRecordMap(records, {}, undefined);
   }
 
   @Span()
-  private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
+  public formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
     if (recordIds) {
       // recordMap follows the order of 'records'
       const recordMap = keyBy(records, 'recordId');

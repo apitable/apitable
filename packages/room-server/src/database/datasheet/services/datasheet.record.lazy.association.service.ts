@@ -65,8 +65,8 @@ export class DatasheetRecordLazyAssociationService {
       if (!existingAssociationsMap.has(key)) {
         associationsUpdated.push(association);
       } else {
-        const existingAssociation = existingAssociationsMap.get(key)?.depends;
-        if (JSON.stringify(existingAssociation.depends) === JSON.stringify(association.depends)) {
+        const existingAssociation = existingAssociationsMap.get(key);
+        if (existingAssociation && JSON.stringify(existingAssociation?.depends) === JSON.stringify(association.depends)) {
           existingAssociation.depends = association.depends;
           associationsUpdated.push(existingAssociation);
         }
