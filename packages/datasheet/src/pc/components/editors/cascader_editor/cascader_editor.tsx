@@ -88,6 +88,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
       onClose={onClose}
       className={styles.cascaderEditor}
       disableMinWidth
+      disableMobile
     >
       <div className={classNames(styles.cascaderContainer, 'cascaderContainer')}>
         <Cascader
