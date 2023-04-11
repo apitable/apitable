@@ -515,6 +515,7 @@ export type StringKeysMapType = {
   'cascader_select_view': 'cascader_select_view',
   'cascader_show_all': 'cascader_show_all',
   'cascader_snapshot_update_text': 'cascader_snapshot_update_text',
+  'cascader_snapshot_updating': 'cascader_snapshot_updating',
   'cascader_undefined_field_error': 'cascader_undefined_field_error',
   'catalog': 'catalog',
   'category_blank': 'category_blank',

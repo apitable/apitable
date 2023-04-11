@@ -6559,7 +6559,7 @@
                 ],
                 "next": "查看详情",
                 "nextId": "check_detail",
-                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li></ul>\"\n}",
+                "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-10-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li><li>维格表的AI探索，「GPT 内容生成」小程序发布</li></ul>\"\n}",
                 "onClose": [
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"

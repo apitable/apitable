@@ -2496,6 +2496,10 @@
             "zh_CN": "拉取最新数据后，新创建的记录将会采用最新的级联关系",
             "en_US": "After fetching the latest data, any new records created will use the latest cascading relationships."
         },
+        "cascader_snapshot_updating": {
+            "zh_CN": "正在更新级联配置，请耐心等待",
+            "en_US": "The cascader configuration is being updated, please be patient"
+        },
         "cascader_undefined_field_error": {
             "zh_CN": "当前有字段未配置",
             "en_US": "There exists unselected field. Please select the field and try again",
@@ -11563,8 +11567,8 @@
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
         },
         "player_step_ui_config_169": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li><li>维格表的AI探索，「GPT 内容生成」小程序发布</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li><li>Exploring AI: \"GPT Content Generator\" Widget Released</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-10-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li><li>维格表的AI探索，「GPT 内容生成」小程序发布</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-10-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li><li>Exploring AI: \"GPT Content Generator\" Widget Released</li></ul>\"\n}"
         },
         "player_step_ui_config_78": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",

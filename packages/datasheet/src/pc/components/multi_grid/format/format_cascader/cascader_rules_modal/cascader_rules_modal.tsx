@@ -34,6 +34,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const datasheetId = useSelector(Selectors.getDatasheet)?.id!;
   const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
   const activeFieldState = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const columns = useSelector(state => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
 
   const colors = useThemeColors();
 
@@ -216,6 +217,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       content: t(Strings.cascader_snapshot_update_text),
       hiddenCancelBtn: false,
       onOk: () => {
+        setCascaderPreviewLoading(true);
         DatasheetApi.updateCascaderSnapshot({
           spaceId,
           datasheetId,
@@ -223,6 +225,9 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           linkedDatasheetId: linkedDatasheetId,
           linkedViewId: linkedViewId,
         }).then(() => {
+          const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
+          const primaryFullLinkedFields = columns.map(column => fieldMap?.[column.fieldId]!);
+          setFullLinkedFields(primaryFullLinkedFields);
           onRefreshConfig();
         });
       },
