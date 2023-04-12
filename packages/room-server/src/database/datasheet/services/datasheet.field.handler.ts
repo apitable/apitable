@@ -24,7 +24,7 @@ import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
-import { InjectLogger, RECORD_LAZY_ASSOCIATION_MODE } from 'shared/common';
+import { InjectLogger } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
 import { IAuthHeader, ICellValueMap, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
@@ -118,12 +118,7 @@ export class DatasheetFieldHandler {
     const globalParam = this.initGlobalParameter(spaceId, mainDstId, auth, origin, withoutPermission);
     const RECORD_LAZY_ASSOCIATION_MODE = !!process.env.RECORD_LAZY_ASSOCIATION_MODE;
     if (RECORD_LAZY_ASSOCIATION_MODE) {
-      const recordIds = Object.keys(mainRecordMap);
-      const existingAssociations 
-       = await this.recordLazyAssociationService.getRecordAssociations(spaceId, mainDstId, recordIds.length > 10000 ? [] : recordIds);
-      const relatedRecords = await this.getRelatedRecords(existingAssociations);
-      globalParam.existingRecordLazyAssociations = existingAssociations;
-      globalParam.relatedRecords = relatedRecords;
+      this.setRelatedRecordsToGlobalParam(spaceId, mainDstId, mainRecordMap, globalParam);
     }
 
     // Process all fields of the datasheet
@@ -147,20 +142,33 @@ export class DatasheetFieldHandler {
     }
 
     if (RECORD_LAZY_ASSOCIATION_MODE) {
-      const { currentRecordLazyAssociations, existingRecordLazyAssociations } = globalParam;
-      const { associationsAdded, associationsUpdated } = this.recordLazyAssociationService
-        .diffRecordAssociations(currentRecordLazyAssociations, existingRecordLazyAssociations);
-      if (associationsAdded.length > 0 ){
-        await this.recordLazyAssociationService.insertRecordAssociations(associationsAdded);
-      }
-      if (associationsUpdated.length > 0) {
-        await this.recordLazyAssociationService.updateRecordAssociations(associationsUpdated);
-      }
+      this.persistRecordLazyAssociations(globalParam);
     }
 
     const endTime = +new Date();
     this.logger.info(`Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms`);
     return combineResult;
+  }
+
+  private async setRelatedRecordsToGlobalParam(spaceId: string, mainDstId: string, mainRecordMap: IRecordMap, globalParam: any): Promise<void> {
+    const recordIds = Object.keys(mainRecordMap);
+    const existingAssociations 
+       = await this.recordLazyAssociationService.getRecordAssociations(spaceId, mainDstId, recordIds.length > 10000 ? [] : recordIds);
+    const relatedRecords = await this.getRelatedRecords(existingAssociations);
+    globalParam.existingRecordLazyAssociations = existingAssociations;
+    globalParam.relatedRecords = relatedRecords;
+  }
+  
+  private async persistRecordLazyAssociations(globalParam: any): Promise<void> {
+    const { currentRecordLazyAssociations, existingRecordLazyAssociations } = globalParam;
+    const { associationsAdded, associationsUpdated } = this.recordLazyAssociationService
+      .diffRecordAssociations(currentRecordLazyAssociations, existingRecordLazyAssociations);
+    if (associationsAdded.length > 0 ){
+      await this.recordLazyAssociationService.insertRecordAssociations(associationsAdded);
+    }
+    if (associationsUpdated.length > 0) {
+      await this.recordLazyAssociationService.updateRecordAssociations(associationsUpdated);
+    }
   }
 
   private async getRelatedRecords(existingAssociations: DatasheetRecordLazyAssociationEntity[]): Promise<DatasheetRecordEntity[]> {
@@ -425,6 +433,10 @@ export class DatasheetFieldHandler {
   private fillInRelatedRecordAssociations(spaceId: string, datasheetId: string, currentRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[]
     , fieldIdToLinkDstIdMap: Map<string, string>, recordMap: IRecordMap, mainDatasheet: boolean): void{
     Object.keys(recordMap).forEach((recordId: string) => {
+      const RECORD_LAZY_ASSOCIATION_MODE = !!process.env.RECORD_LAZY_ASSOCIATION_MODE;
+      if (!RECORD_LAZY_ASSOCIATION_MODE) {
+        return;
+      }
       const record: IRecord|undefined = recordMap[recordId];
       if (!record) {
         return;

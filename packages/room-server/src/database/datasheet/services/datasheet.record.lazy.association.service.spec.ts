@@ -18,11 +18,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatasheetRecordLazyAssociationService } from './datasheet.record.lazy.association.service';
 import { DatasheetRecordLazyAssociationRepository } from '../repositories/datasheet.record.lazy.association.repository';
+import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
 
 describe('Test', () => {
   let module: TestingModule;
   let service: DatasheetRecordLazyAssociationService;
-  let repository: DatasheetRecordLazyAssociationRepository;
+  // let repository: DatasheetRecordLazyAssociationRepository;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -32,10 +33,69 @@ describe('Test', () => {
       ]
     }).compile();
     service = module.get<DatasheetRecordLazyAssociationService>(DatasheetRecordLazyAssociationService);
-    repository = module.get<DatasheetRecordLazyAssociationRepository>(DatasheetRecordLazyAssociationRepository);
+    // repository = module.get<DatasheetRecordLazyAssociationRepository>(DatasheetRecordLazyAssociationRepository);
   });
 
   beforeEach(() => {
+  });
+
+  describe('diffRecordAssociations', () => {
+    const association1 = {
+      id: '1',
+      spaceId: 'space1',
+      dstId: 'dst1',
+      recordId: 'record1',
+      depends: { field1: [{ datasheetId: '1', recordIds: ['value1', 'value2'] }, { datasheetId: '2', recordIds: ['value1', 'value2'] }] }
+    } as DatasheetRecordLazyAssociationEntity;
+    const association2 = {
+      id: '2',
+      spaceId: 'space2',
+      dstId: 'dst2',
+      recordId: 'record2',
+      depends: { field1: [{ datasheetId: '3', recordIds: ['value1', 'value2'] }, { datasheetId: '4', recordIds: ['value1', 'value2'] }] }
+    } as DatasheetRecordLazyAssociationEntity;
+    const existingAssociation1 = {
+      id: '3',
+      spaceId: 'space1',
+      dstId: 'dst1',
+      recordId: 'record1',
+      depends: { field1: [{ datasheetId: '1', recordIds: ['value1', 'value2'] }, { datasheetId: '2', recordIds: ['value1', 'value2'] }] }
+    } as DatasheetRecordLazyAssociationEntity;
+    const existingAssociation2 = {
+      id: '4',
+      spaceId: 'space2',
+      dstId: 'dst2',
+      recordId: 'record2',
+      depends: { field1: [{ datasheetId: '3', recordIds: ['value1', 'value2'] }, { datasheetId: '4', recordIds: ['value1', 'value2'] }] }
+    } as DatasheetRecordLazyAssociationEntity;
+    const associations = [association1, association2];
+    const existingAssociations = [existingAssociation1, existingAssociation2];
+    
+    it('should add new associations', () => {
+      const result = service.diffRecordAssociations(associations, existingAssociations);
+      expect(result.associationsAdded).toEqual([association1, association2]);
+      expect(result.associationsUpdated).toEqual([]);
+    });
+    
+    it('should update existing associations', () => {
+      const updatedAssociation1 = {
+        id: '3',
+        spaceId: 'space1',
+        dstId: 'dst1',
+        recordId: 'record1',
+        depends: { field1: [{ datasheetId: '3', recordIds: ['value1', 'value2'] }, { datasheetId: '4', recordIds: ['value1', 'value2'] }] }
+      } as DatasheetRecordLazyAssociationEntity;
+      const updatedExistingAssociations = [updatedAssociation1, existingAssociation2];
+      const result = service.diffRecordAssociations(associations, updatedExistingAssociations);
+      expect(result.associationsAdded).toEqual([]);
+      expect(result.associationsUpdated).toEqual([updatedAssociation1]);
+    });
+    
+    it('should not update existing associations if depends are the same', () => {
+      const result = service.diffRecordAssociations(associations, existingAssociations);
+      expect(result.associationsAdded).toEqual([]);
+      expect(result.associationsUpdated).toEqual([]);
+    });
   });
 
 });
