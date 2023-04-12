@@ -180,6 +180,10 @@ public class PlayerNotificationServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public void createNotify(NotificationCreateRo ro) {
         NotificationTemplate template = notificationFactory.getTemplateById(ro.getTemplateId());
+        if (null == template) {
+            log.error("notificationTemplateError:{}", ro.getTemplateId());
+            return;
+        }
         NotificationToTag toTag = NotificationToTag.getValue(template.getToTag());
         ExceptionUtil.isNotNull(toTag, NotificationException.TMPL_TO_TAG_ERROR);
         if (NotificationToTag.toUserTag(toTag)) {

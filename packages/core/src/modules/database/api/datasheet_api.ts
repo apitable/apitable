@@ -407,12 +407,10 @@ export const getCascaderData = ({
 
 // get cascader snapshot data
 export const getCascaderSnapshot = ({
-  spaceId,
   datasheetId,
   fieldId,
   linkedFieldIds,
 }: IGetTreeSelectSnapshotReq) => axios.get<IApiWrapper & { data: IGetTreeSelectSnapshotRes }>(urlcat(Url.CASCADER_SNAPSHOT, {
-  spaceId,
   datasheetId,
   fieldId,
 }), {
@@ -429,7 +427,7 @@ export const updateCascaderSnapshot = ({
   fieldId, // snapshot field ID
   linkedDatasheetId,
   linkedViewId,
-}: IUpdateTreeSelectSnapshotReq) => axios.put<IApiWrapper & { data: boolean }>(urlcat(Url.CASCADER_SNAPSHOT, {
+}: IUpdateTreeSelectSnapshotReq) => axios.put<IApiWrapper & { data: boolean }>(urlcat(Url.UPDATE_CASCADER_SNAPSHOT, {
   spaceId,
   datasheetId,
   fieldId,
