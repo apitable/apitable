@@ -381,7 +381,9 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   return <>
     <Head>
-      <title />
+      <title>
+        {t(Strings.system_configuration_product_name)}
+      </title>
       <meta name='description' content='' />
       <meta
         name='keywords'
