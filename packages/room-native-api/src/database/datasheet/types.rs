@@ -84,7 +84,7 @@ pub enum FieldKind {
   DeniedField = 999,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct UrlFieldProperty {
   #[serde(rename = "isRecogURLFlag")]
@@ -92,40 +92,56 @@ pub struct UrlFieldProperty {
   pub is_recog_url_flag: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct MemberFieldProperty {
   /// Optional single or multiple members.
-  pub is_multi: bool,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub is_multi: Option<bool>,
+
   /// Whether to send a message notification after selecting a member
-  pub should_send_msg: bool,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub should_send_msg: Option<bool>,
+
   pub unit_ids: Vec<String>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CreatedByFieldProperty {
   pub uuids: Vec<String>,
-  pub datasheet_id: String,
+
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub datasheet_id: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct LastModifiedByFieldProperty {
   pub uuids: Vec<String>,
-  pub datasheet_id: String,
+
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub datasheet_id: Option<String>,
+
   /// dependent field collection type
-  pub collect_type: i32,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub collect_type: Option<i32>,
+
   /// dependent fields
-  pub field_id_collection: Vec<String>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub field_id_collection: Option<Vec<String>>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct LookUpFieldProperty {
-  pub datasheet_id: String,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub datasheet_id: Option<String>,
+
   pub related_link_field_id: String,
-  pub look_up_target_field_id: String,
+
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub look_up_target_field_id: Option<String>,
 
   #[serde(skip_serializing_if = "Option::is_none")]
   pub roll_up_type: Option<String>,
@@ -140,11 +156,12 @@ pub struct LookUpFieldProperty {
   pub open_filter: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct FormulaFieldProperty {
   /// formula is computed property, it needs to locate the current datasheetId through fieldProperty;
   pub datasheet_id: String,
+
   pub expression: String,
 
   #[serde(skip_serializing_if = "Option::is_none")]
@@ -158,7 +175,7 @@ pub struct LookUpFilterInfo {
   pub conditions: Vec<Json>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct LinkFieldProperty {
   pub foreign_datasheet_id: String,

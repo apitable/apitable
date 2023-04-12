@@ -245,7 +245,10 @@ impl DependencyAnalyzer {
               property.related_link_field_id
             )
           })?;
-          let mut foreign_field_ids = hashset!(property.look_up_target_field_id);
+          let mut foreign_field_ids = hashset![];
+          if let Some(field_id) = property.look_up_target_field_id {
+            foreign_field_ids.insert(field_id);
+          }
           // Parse reference filter condition
           if property.open_filter.is_truthy() {
             if let Some(filter_into) = property.filter_info {
@@ -414,7 +417,7 @@ impl DependencyAnalyzer {
           .reference_manager
           .lock()
           .await
-          .create_field_reference(dst_id, field_id, foreign_dst_id, &hashset!(primary_field_id.clone()))
+          .create_field_reference(dst_id, field_id, foreign_dst_id, &hashset![primary_field_id.clone()])
           .await
           .with_context(|| {
             format!("create refs of link field: {dst_id}:{field_id} <-> {foreign_dst_id}:{{{primary_field_id}}}")
@@ -456,7 +459,7 @@ impl DependencyAnalyzer {
           dst_id,
           field_id,
           foreign_dst_id,
-          &hashset!(foreign_primary_field_id.to_owned()),
+          &hashset![foreign_primary_field_id.to_owned()],
         )
         .await
         .with_context(|| {
