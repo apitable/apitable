@@ -17,6 +17,8 @@
  */
 
 import { Injectable } from '@nestjs/common';
+import { IdWorker } from 'shared/helpers';
+import { In } from 'typeorm';
 import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
 import { DatasheetRecordLazyAssociationRepository } from '../repositories/datasheet.record.lazy.association.repository';
 
@@ -31,17 +33,20 @@ export class DatasheetRecordLazyAssociationService {
     const associations = await this.repository.find({
       where: {
         spaceId,
-        datasheetId,
-        recordId: recordIds,
+        dstId: datasheetId,
+        recordId: In(recordIds),
       },
     });
     return associations;
   }
 
-  public async insertOrUpdateRecordAssociations(associations: DatasheetRecordLazyAssociationEntity[]): Promise<void> {
+  public async updateRecordAssociations(associations: DatasheetRecordLazyAssociationEntity[]): Promise<void> {
     await this.repository.save(associations, { transaction: true });
   }
 
+  public async insertRecordAssociations(associations: DatasheetRecordLazyAssociationEntity[]): Promise<void> {
+    await this.repository.save(associations);
+  }
   /**
    *
    * @param associations 
@@ -50,7 +55,8 @@ export class DatasheetRecordLazyAssociationService {
    * 
    */
   public diffRecordAssociations(associations: DatasheetRecordLazyAssociationEntity[]
-    , existingAssociations: DatasheetRecordLazyAssociationEntity[]): DatasheetRecordLazyAssociationEntity[] {
+    , existingAssociations: DatasheetRecordLazyAssociationEntity[]): 
+    { associationsAdded: DatasheetRecordLazyAssociationEntity[], associationsUpdated: DatasheetRecordLazyAssociationEntity[] } {
     const associationsMap = new Map<string, DatasheetRecordLazyAssociationEntity>();
     for (const association of associations) {
       associationsMap.set(`${association.spaceId}-${association.dstId}-${association.recordId}`, association);
@@ -60,10 +66,12 @@ export class DatasheetRecordLazyAssociationService {
       existingAssociationsMap.set(`${association.spaceId}-${association.dstId}-${association.recordId}`, association);
     }
     const associationsUpdated = [];
+    const associationsAdded = [];
     for (const association of associations) {
       const key = `${association.spaceId}-${association.dstId}-${association.recordId}`;
       if (!existingAssociationsMap.has(key)) {
-        associationsUpdated.push(association);
+        association.id = IdWorker.nextId().toString();
+        associationsAdded.push(association);
       } else {
         const existingAssociation = existingAssociationsMap.get(key);
         if (existingAssociation && JSON.stringify(existingAssociation?.depends) === JSON.stringify(association.depends)) {
@@ -72,7 +80,7 @@ export class DatasheetRecordLazyAssociationService {
         }
       }
     }
-    return associationsUpdated;
+    return { associationsAdded ,associationsUpdated };
   }
 
 }

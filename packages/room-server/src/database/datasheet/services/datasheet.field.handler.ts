@@ -116,10 +116,11 @@ export class DatasheetFieldHandler {
     // Get the space ID which the datasheet belongs to
     const spaceId = await this.getSpaceIdByDstId(mainDstId);
     const globalParam = this.initGlobalParameter(spaceId, mainDstId, auth, origin, withoutPermission);
+    const RECORD_LAZY_ASSOCIATION_MODE = !!process.env.RECORD_LAZY_ASSOCIATION_MODE;
     if (RECORD_LAZY_ASSOCIATION_MODE) {
       const recordIds = Object.keys(mainRecordMap);
       const existingAssociations 
-       = await this.recordLazyAssociationService.getRecordAssociations(spaceId, mainDstId, recordIds);
+       = await this.recordLazyAssociationService.getRecordAssociations(spaceId, mainDstId, recordIds.length > 10000 ? [] : recordIds);
       const relatedRecords = await this.getRelatedRecords(existingAssociations);
       globalParam.existingRecordLazyAssociations = existingAssociations;
       globalParam.relatedRecords = relatedRecords;
@@ -147,9 +148,14 @@ export class DatasheetFieldHandler {
 
     if (RECORD_LAZY_ASSOCIATION_MODE) {
       const { currentRecordLazyAssociations, existingRecordLazyAssociations } = globalParam;
-      const associationsUpdated = this.recordLazyAssociationService
+      const { associationsAdded, associationsUpdated } = this.recordLazyAssociationService
         .diffRecordAssociations(currentRecordLazyAssociations, existingRecordLazyAssociations);
-      await this.recordLazyAssociationService.insertOrUpdateRecordAssociations(associationsUpdated);
+      if (associationsAdded.length > 0 ){
+        await this.recordLazyAssociationService.insertRecordAssociations(associationsAdded);
+      }
+      if (associationsUpdated.length > 0) {
+        await this.recordLazyAssociationService.updateRecordAssociations(associationsUpdated);
+      }
     }
 
     const endTime = +new Date();
@@ -158,6 +164,9 @@ export class DatasheetFieldHandler {
   }
 
   private async getRelatedRecords(existingAssociations: DatasheetRecordLazyAssociationEntity[]): Promise<DatasheetRecordEntity[]> {
+    if (!existingAssociations.length) {
+      return [];
+    }
     // convert associations into combineDto array
     const combineDtos: DatasheetRecordCombineQueryDto[] = [];
     const uniqueRecordIds = new Set<string>();
@@ -314,7 +323,7 @@ export class DatasheetFieldHandler {
         fieldIdToLinkDstIdMap.delete(fldId);
         continue;
       }
-      const recordMap = this.getRecordMapByDatasheetId(foreignDstId, globalParam.relatedRecordMapSnapshot);
+      const recordMap = this.getRecordMapByDatasheetId(foreignDstId, globalParam.relatedRecords);
       globalParam.foreignDstMap[foreignDstId] = { snapshot: { meta, recordMap, datasheetId: datasheet.id }, datasheet, fieldPermissionMap };
     }
     // ======= Load linked datasheet structure data (not including records) END =======

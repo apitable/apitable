@@ -43,6 +43,8 @@ import { DatasheetRecordSourceService } from './services/datasheet.record.source
 import { DatasheetService } from './services/datasheet.service';
 import { RecordCommentService } from './services/record.comment.service';
 import { DatasheetWidgetService } from './services/datasheet.widget.service';
+import { DatasheetRecordLazyAssociationRepository } from './repositories/datasheet.record.lazy.association.repository';
+import { DatasheetRecordLazyAssociationService } from './services/datasheet.record.lazy.association.service';
 
 @Module({
   imports: [
@@ -61,6 +63,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
       DatasheetRepository,
       DatasheetWidgetRepository,
       RecordCommentRepository,
+      DatasheetRecordLazyAssociationRepository,
     ]),
   ],
   providers: [
@@ -74,6 +77,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
     DatasheetWidgetService,
+    DatasheetRecordLazyAssociationService,
   ],
   controllers: [DatasheetController],
   exports: [
@@ -87,6 +91,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
     DatasheetWidgetService,
+    DatasheetRecordLazyAssociationService,
   ],
 })
 export class DatasheetModule {}
