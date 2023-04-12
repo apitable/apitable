@@ -115,7 +115,9 @@ impl NativeModule {
         ..Default::default()
       },
       ..Default::default()
-    }))?;
+    }))
+    .context("init redis")
+    .map_err(Self::wrap_anyhow_error)?;
 
     // initialize services
     let module = RootModule::builder()
@@ -137,7 +139,9 @@ impl NativeModule {
       .build();
 
     let repo: &dyn repository::Repository = module.resolve_ref();
-    block_on(repo.init())?;
+    block_on(repo.init())
+      .context("init repository")
+      .map_err(Self::wrap_anyhow_error)?;
 
     Ok(Self { module })
   }
@@ -170,32 +174,6 @@ impl NativeModule {
           .await
       }
       .map_err(Self::wrap_anyhow_error),
-    )
-  }
-
-  fn wrap_anyhow_error(err: anyhow::Error) -> napi::Error {
-    napi::Error::new(napi::Status::GenericFailure, format!("{err:?}"))
-  }
-
-  fn wrap_error<T, V>(result: anyhow::Result<T>) -> ControlFlow<anyhow::Result<DatasheetPackResult<V>>, T> {
-    result.map_or_else(
-      |err| match err.downcast::<AccessDeniedError>() {
-        Ok(AccessDeniedError { node_id }) => {
-          tracing::error!("access denied {node_id}");
-          ControlFlow::Break(Ok(DatasheetPackResult::AccessDenied(node_id)))
-        }
-        Err(err) => match err.downcast::<NodeNotExistError>() {
-          Ok(NodeNotExistError { node_id }) => {
-            tracing::error!("node not exist {node_id}");
-            ControlFlow::Break(Ok(DatasheetPackResult::NodeNotExist(node_id)))
-          }
-          Err(err) => match err.downcast::<RestError>() {
-            Ok(RestError { status_code }) => ControlFlow::Break(Ok(DatasheetPackResult::RestError(status_code))),
-            Err(err) => ControlFlow::Break(Err(anyhow!("{err:?}"))),
-          },
-        },
-      },
-      ControlFlow::Continue,
     )
   }
 
@@ -277,6 +255,32 @@ impl NativeModule {
         Ok(DatasheetPackResult::Success(DatasheetPackOutput { data_pack }))
       }
       .map_err(Self::wrap_anyhow_error),
+    )
+  }
+
+  fn wrap_anyhow_error(err: anyhow::Error) -> napi::Error {
+    napi::Error::new(napi::Status::GenericFailure, format!("{err:?}"))
+  }
+
+  fn wrap_error<T, V>(result: anyhow::Result<T>) -> ControlFlow<anyhow::Result<DatasheetPackResult<V>>, T> {
+    result.map_or_else(
+      |err| match err.downcast::<AccessDeniedError>() {
+        Ok(AccessDeniedError { node_id }) => {
+          tracing::error!("access denied {node_id}");
+          ControlFlow::Break(Ok(DatasheetPackResult::AccessDenied(node_id)))
+        }
+        Err(err) => match err.downcast::<NodeNotExistError>() {
+          Ok(NodeNotExistError { node_id }) => {
+            tracing::error!("node not exist {node_id}");
+            ControlFlow::Break(Ok(DatasheetPackResult::NodeNotExist(node_id)))
+          }
+          Err(err) => match err.downcast::<RestError>() {
+            Ok(RestError { status_code }) => ControlFlow::Break(Ok(DatasheetPackResult::RestError(status_code))),
+            Err(err) => ControlFlow::Break(Err(anyhow!("{err:?}"))),
+          },
+        },
+      },
+      ControlFlow::Continue,
     )
   }
 }

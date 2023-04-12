@@ -75,7 +75,7 @@ export class MirrorController {
       await this.nodeService.checkNodePermission(mirrorId, { cookie });
     }
     //TODO check whether the user is in the space when getting the private space template mirror
-    return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate, recordIds: query.recordIds });
+    return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate }, query.recordIds );
   }
 
   @Get(['shares/:shareId/mirrors/:mirrorId/dataPack', 'share/:shareId/mirror/:mirrorId/dataPack'])

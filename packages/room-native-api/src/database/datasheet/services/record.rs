@@ -33,16 +33,6 @@ pub struct DatasheetRecordServiceImpl {
   record_comment_service: Arc<dyn DatasheetRecordCommentService>,
 }
 
-#[derive(Debug, Clone)]
-struct RecordData {
-  pub record_id: String,
-  pub data: Option<Json>,
-  pub revision_history: Option<String>,
-  pub record_meta: Option<Json>,
-  pub created_at: PrimitiveDateTime,
-  pub updated_at: Option<PrimitiveDateTime>,
-}
-
 #[async_trait]
 impl DatasheetRecordService for DatasheetRecordServiceImpl {
   async fn get_records(
@@ -69,28 +59,6 @@ impl DatasheetRecordService for DatasheetRecordServiceImpl {
       query = query.append_in_condition(record_ids.len());
     }
     let mut client = self.repo.get_client().await?;
-    let record_list = client
-      .query_all(query, {
-        let mut values: Vec<Value> = vec![dst_id.into(), is_deleted.into()];
-        if let Some(record_ids) = &record_ids {
-          values.extend(record_ids.iter().map(Value::from));
-        }
-        Params::Positional(values)
-      })
-      .await?
-      .map_ok(
-        |(record_id, data, revision_history, record_meta, created_at, updated_at)| RecordData {
-          record_id,
-          data,
-          revision_history,
-          record_meta,
-          created_at,
-          updated_at,
-        },
-      )
-      .try_collect::<Vec<_>>()
-      .await
-      .with_context(|| format!("get records by dst id {dst_id}, record id {record_ids:?}"))?;
     let comment_counts = if with_comment {
       self
         .record_comment_service
@@ -100,26 +68,41 @@ impl DatasheetRecordService for DatasheetRecordServiceImpl {
     } else {
       HashMap::default()
     };
-    let mut record_map = HashMap::default();
-    for record in record_list {
-      let record_id = record.record_id;
-      let comment_count = comment_counts.get(&record_id).copied().unwrap_or(0) as u32;
-      record_map.insert(
-        record_id.clone(),
-        Record {
-          id: record_id,
-          data: fix_json(record.data.unwrap_or_else(|| Json::Object(Default::default()))),
+    let record_map = client
+      .query_all(query, {
+        let mut values: Vec<Value> = vec![dst_id.into(), is_deleted.into()];
+        if let Some(record_ids) = &record_ids {
+          values.extend(record_ids.iter().map(Value::from));
+        }
+        Params::Positional(values)
+      })
+      .await
+      .with_context(|| format!("get records stream by dst id {dst_id}, record id {record_ids:?}"))?
+      .map_ok(|row| {
+        let (record_id, data, revision_history, record_meta, created_at, updated_at): (
+          String,
+          Option<Json>,
+          Option<String>,
+          Option<Json>,
+          PrimitiveDateTime,
+          Option<PrimitiveDateTime>,
+        ) = row;
+        let comment_count = comment_counts.get(&record_id).copied().unwrap_or(0) as u32;
+        let record = Record {
+          id: record_id.clone(),
+          data: fix_json(data.unwrap_or_else(|| Json::Object(Default::default()))),
           comment_count,
-          created_at: self.repo.utc_timestamp(record.created_at),
-          updated_at: record.updated_at.map(|d| self.repo.utc_timestamp(d)),
-          revision_history: record
-            .revision_history
-            .map(|s| s.split(',').map(|n| n.parse().unwrap_or(0)).collect()),
-          record_meta: record.record_meta.map(fix_json),
-        },
-      );
-    }
-    Ok(record_map)
+          created_at: self.repo.utc_timestamp(created_at),
+          updated_at: updated_at.map(|d| self.repo.utc_timestamp(d)),
+          revision_history: revision_history.map(|s| s.split(',').map(|n| n.parse().unwrap_or(0)).collect()),
+          record_meta: record_meta.map(fix_json),
+        };
+        (record_id, record)
+      })
+      .try_collect::<RecordMap>()
+      .await
+      .with_context(|| format!("get records by dst id {dst_id}, record id {record_ids:?}"));
+    record_map
   }
 }
 
@@ -279,7 +262,6 @@ mod tests {
   #[tokio::test]
   async fn get_records_without_record_ids() {
     let module = init_module([
-      mock_record_query_results(false),
       mock_rows(
         [
           ("record_id", ColumnType::MYSQL_TYPE_VARCHAR),
@@ -287,6 +269,7 @@ mod tests {
         ],
         [["rec1".into(), 2i64.into()], ["rec2".into(), 1i64.into()]],
       ),
+      mock_record_query_results(false),
     ]);
     let record_service: &dyn DatasheetRecordService = module.resolve_ref();
 
@@ -342,22 +325,22 @@ mod tests {
       repo.take_logs().await,
       [
         MockSqlLog {
-          sql: MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL.into(),
-          params: Params::Positional(vec!["dst1".into(), false.into()])
-        },
-        MockSqlLog {
           sql: MOCK_RECORD_COMMENT_QUERY_SQL.into(),
           params: params! {
             "dst_id" => "dst1"
           },
-        }
+        },
+        MockSqlLog {
+          sql: MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL.into(),
+          params: Params::Positional(vec!["dst1".into(), false.into()])
+        },
       ]
     );
   }
 
   #[tokio::test]
   async fn get_records_with_record_ids() {
-    let module = init_module([mock_record_query_results(false), vec![]]);
+    let module = init_module([vec![], mock_record_query_results(false)]);
     let record_service: &dyn DatasheetRecordService = module.resolve_ref();
 
     let record_map = assert_ok!(
@@ -421,6 +404,12 @@ mod tests {
       repo.take_logs().await,
       [
         MockSqlLog {
+          sql: MOCK_RECORD_COMMENT_QUERY_SQL.into(),
+          params: params! {
+            "dst_id" => "dst1",
+          },
+        },
+        MockSqlLog {
           sql: "SELECT `record_id`, \
         `data`, \
         `revision_history`, \
@@ -440,19 +429,13 @@ mod tests {
             "rec3".into()
           ])
         },
-        MockSqlLog {
-          sql: MOCK_RECORD_COMMENT_QUERY_SQL.into(),
-          params: params! {
-            "dst_id" => "dst1",
-          },
-        },
       ]
     );
   }
 
   #[tokio::test]
   async fn get_records_deleted() {
-    let module = init_module([mock_record_query_results(true), vec![]]);
+    let module = init_module([vec![], mock_record_query_results(true)]);
     let record_service: &dyn DatasheetRecordService = module.resolve_ref();
 
     let record_map = assert_ok!(record_service.get_records("dst1", None, true, true).await);
@@ -507,15 +490,15 @@ mod tests {
       repo.take_logs().await,
       [
         MockSqlLog {
-          sql: MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL.into(),
-          params: Params::Positional(vec!["dst1".into(), true.into()])
-        },
-        MockSqlLog {
           sql: MOCK_RECORD_COMMENT_QUERY_SQL.into(),
           params: params! {
             "dst_id" => "dst1"
           },
-        }
+        },
+        MockSqlLog {
+          sql: MOCK_RECORD_WITHOUT_RECORD_IDS_QUERY_SQL.into(),
+          params: Params::Positional(vec!["dst1".into(), true.into()])
+        },
       ]
     );
   }
