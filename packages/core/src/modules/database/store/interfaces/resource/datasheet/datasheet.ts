@@ -278,7 +278,6 @@ export interface IRecordDependencies {
 
 export interface IRecordDependency {
   datasheetId: string;
-  fieldIds: string[];
   recordIds: string[];
 }
 

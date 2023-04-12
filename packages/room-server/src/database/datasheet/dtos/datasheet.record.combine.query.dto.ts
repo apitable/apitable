@@ -22,4 +22,8 @@ export class DatasheetRecordCombineQueryDto {
 
   recordId!: string;
 
+  businessKey(): string {
+    return `${this.dstId}-${this.recordId}`;
+  }
+
 }

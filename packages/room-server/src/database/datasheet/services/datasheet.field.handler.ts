@@ -115,7 +115,7 @@ export class DatasheetFieldHandler {
     this.logger.info(`Start processing special field [${mainDstId}]`);
     // Get the space ID which the datasheet belongs to
     const spaceId = await this.getSpaceIdByDstId(mainDstId);
-    const globalParam = this.initGlobalParameter(mainDstId, auth, origin, withoutPermission);
+    const globalParam = this.initGlobalParameter(spaceId, mainDstId, auth, origin, withoutPermission);
     if (RECORD_LAZY_ASSOCIATION_MODE) {
       const recordIds = Object.keys(mainRecordMap);
       const existingAssociations 
@@ -145,6 +145,13 @@ export class DatasheetFieldHandler {
       combineResult.units = tempUnitMap;
     }
 
+    if (RECORD_LAZY_ASSOCIATION_MODE) {
+      const { currentRecordLazyAssociations, existingRecordLazyAssociations } = globalParam;
+      const associationsUpdated = this.recordLazyAssociationService
+        .diffRecordAssociations(currentRecordLazyAssociations, existingRecordLazyAssociations);
+      await this.recordLazyAssociationService.insertOrUpdateRecordAssociations(associationsUpdated);
+    }
+
     const endTime = +new Date();
     this.logger.info(`Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms`);
     return combineResult;
@@ -153,6 +160,7 @@ export class DatasheetFieldHandler {
   private async getRelatedRecords(existingAssociations: DatasheetRecordLazyAssociationEntity[]): Promise<DatasheetRecordEntity[]> {
     // convert associations into combineDto array
     const combineDtos: DatasheetRecordCombineQueryDto[] = [];
+    const uniqueRecordIds = new Set<string>();
     existingAssociations.forEach(association => {
       Object.keys(association?.depends).forEach((fieldId: string) => {
         const depends: IRecordDependency[]|undefined = association.depends[fieldId];
@@ -161,7 +169,10 @@ export class DatasheetFieldHandler {
             const combineDto = new DatasheetRecordCombineQueryDto();
             combineDto.dstId = depend.datasheetId;
             combineDto.recordId = recordId;
-            combineDtos.push(combineDto);
+            if (!uniqueRecordIds.has(combineDto.businessKey())) {
+              uniqueRecordIds.add(combineDto.businessKey());
+              combineDtos.push(combineDto);
+            }
           });
         });
       });
