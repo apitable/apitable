@@ -125,9 +125,9 @@ module.exports = withPlugins(plugins, {
   },
   webpack (config, options) {
     // TODO: set symlinks false cause nextjs Fast Refresh not working
-    // if (process.env.IS_ENTERPRISE === 'true') {
-    //   config.resolve.symlinks = false
-    // }
+    if (process.env.IS_ENTERPRISE === 'true') {
+      config.resolve.symlinks = false
+    }
     const originalEntry = config.entry
 
     config.entry = async () => {
