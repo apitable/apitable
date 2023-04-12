@@ -318,7 +318,7 @@ export function fetchDatasheet(datasheetId: string, successCb?: () => void, over
         })
         .then(props => {
           // recordIds exits means that only part of recordsIds data is needed @boris
-          fetchDatasheetPackSuccess({ ...props, isPartOfData: Boolean(recordIds) });
+          fetchDatasheetPackSuccess({ ...props, isPartOfData: Boolean(recordIds), forceFetch: overWrite });
           props.responseBody.success ? successCb && successCb() : failCb && failCb();
         });
     }
