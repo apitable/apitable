@@ -200,7 +200,7 @@
     </select>
 
     <select id="selectInfoByNodeIds" resultType="com.apitable.workspace.vo.NodeInfo">
-        SELECT node_id, node_name, type, icon
+        SELECT node_id, node_name, type, icon, parent_id
         FROM ${tablePrefix}node
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">

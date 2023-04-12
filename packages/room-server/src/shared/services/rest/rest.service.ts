@@ -70,6 +70,7 @@ export class RestService {
   private API_USAGES = 'internal/space/%(spaceId)s/apiUsages';
   private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
+  private NODE_LIST = 'node/list';
   private NODE_TREE = 'node/tree';
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
@@ -345,6 +346,20 @@ export class RestService {
       res.children = nodeChildren!.data;
     }
     return res;
+  }
+
+  async getNodesList(headers: IAuthHeader, spaceId: string, type: number, role: string): Promise<INode[]> {
+    // Obtain node list
+    const response = await lastValueFrom(
+      this.httpService.get<INode>(this.NODE_LIST, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+        params: {
+          type,
+          role,
+        }
+      })
+    );
+    return response!.data as any;
   }
 
   async getNodeList(headers: IAuthHeader, spaceId: string): Promise<INode[] | undefined> {

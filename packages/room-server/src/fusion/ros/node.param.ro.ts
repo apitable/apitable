@@ -17,7 +17,8 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class NodeListParamRo {
   @ApiProperty({
@@ -60,3 +61,29 @@ export class NodeDetailParamRo {
   @IsString()
   nodeId!: string;
 }
+
+export class NodeListQueryRo {
+
+  @ApiProperty({
+    type: Number,
+    required: true,
+    example: '2',
+    description: '1: folder 2: datasheet 3:form 4:dashboard 5: mirror',
+  })
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  @Type(() => Number)
+  type!: number;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    example: 'reader',
+    description: 'reader | editor',
+  })
+  @IsString()
+  @IsOptional()
+  role?: 'reader' | 'editor';
+}
+

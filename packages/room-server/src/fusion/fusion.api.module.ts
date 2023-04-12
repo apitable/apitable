@@ -42,6 +42,8 @@ import { FusionApiFilter } from './filter/fusion.api.filter';
 import { UserModule } from 'user/user.module';
 import { NodeModule } from 'node/node.module';
 import { UnitModule } from 'unit/unit.module';
+import { FusionApiV2Controller } from './fusion.api.v2.controller';
+import { FusionNodeApiService } from './services/fusion.node.api.service';
 
 @Module({
   imports: [
@@ -56,10 +58,11 @@ import { UnitModule } from 'unit/unit.module';
       ApiUsageRepository,
     ]),
   ],
-  controllers: [FusionApiController],
+  controllers: [FusionApiController, FusionApiV2Controller],
   providers: [
     FusionApiRecordService,
     FusionApiService,
+    FusionNodeApiService,
     DataBusService,
     QueryPipe,
     FieldPipe,
