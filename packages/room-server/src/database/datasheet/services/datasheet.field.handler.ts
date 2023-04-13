@@ -18,7 +18,7 @@
 
 import {
   FieldType, ICreatedByProperty, IDatasheetUnits, IFieldMap, IForeignDatasheetMap, IFormulaField, ILinkFieldProperty, ILookUpProperty,
-  IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty, IRecordDependency, IRecord, ILinkIds, IRecordDependencies
+  IMemberProperty, IMeta, IRecordMap, IUnitValue, IUserValue, IViewProperty, IRecordDependency,
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
@@ -26,7 +26,7 @@ import { isEmpty } from 'class-validator';
 import { difference, head, intersection } from 'lodash';
 import { InjectLogger } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
-import { IAuthHeader, ICellValueMap, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
+import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
