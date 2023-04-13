@@ -93,11 +93,14 @@ describe('Datasheet Record Lazy Association Repository Test', () => {
     const recordIds = ['record1', 'record2'];
 
     it('should return an array of associations', async() => {
-      // act
       const result = await repository.selectRecordAssociations(spaceId, datasheetId, recordIds);
-      // assert
       expect(result.length).toEqual(2);
       expect(result).toEqual(associations);
+    });
+
+    it('should return an empty array', async() => {
+      const result = await repository.selectRecordAssociations('', datasheetId, recordIds);
+      expect(result.length).toEqual(0);
     });
   });
 });

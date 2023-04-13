@@ -19,6 +19,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatasheetRecordLazyAssociationService } from './datasheet.record.lazy.association.service';
 import { DatasheetRecordLazyAssociationRepository } from '../repositories/datasheet.record.lazy.association.repository';
 import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
+import { IRecordMap } from '@apitable/core';
 
 describe('Record Lazy Association Service Test', () => {
   let module: TestingModule;
@@ -95,6 +96,154 @@ describe('Record Lazy Association Service Test', () => {
       const result = service.diffRecordAssociations(existingAssociations, existingAssociations);
       expect(result.associationsAdded).toEqual([]);
       expect(result.associationsUpdated).toEqual([]);
+    });
+  });
+
+  describe('fillInRelatedRecordAssociations', () => {
+    process.env.RECORD_LAZY_ASSOCIATION_MODE = 'true';
+    const spaceId = 'spaceId';
+    const datasheetId = 'datasheetId';
+    const fieldIdToLinkDstIdMap = new Map<string, string>([
+      ['field1', 'datasheet2'],
+      ['field2', 'datasheet3'],
+      ['field3', 'datasheet4'],
+    ]);
+    const recordMap: IRecordMap = {
+      record1: {
+        id: 'record1',
+        data: { field1: ['record2', 'record3'], field2: ['record4'] },
+        commentCount: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      },
+      record2: {
+        id: 'record2',
+        data: { field3: ['record5'], field4: ['record6'] },
+        commentCount: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      },
+      record3: {
+        id: 'record3',
+        data: {},
+        commentCount: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      },
+      record4: {
+        id: 'record4',
+        data: { field1: [], field2: [] },
+        commentCount: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      },
+    };
+    const mainDatasheet = true;
+
+    it('should fill in the current record lazy associations for the main datasheet', () => {
+
+      const currentRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[] = [];
+
+      service.fillInRelatedRecordAssociations(spaceId, datasheetId, currentRecordLazyAssociations, fieldIdToLinkDstIdMap, recordMap, mainDatasheet);
+
+      expect(currentRecordLazyAssociations).toEqual([
+        {
+          spaceId,
+          dstId: datasheetId,
+          recordId: 'record1',
+          depends: {
+            field1: [{ datasheetId: 'datasheet2', recordIds: ['record2', 'record3'] }],
+            field2: [{ datasheetId: 'datasheet3', recordIds: ['record4'] }],
+          },
+        },
+        {
+          spaceId,
+          dstId: datasheetId,
+          recordId: 'record2',
+          depends: {
+            field3: [{ datasheetId: 'datasheet4', recordIds: ['record5'] }],
+          },
+        },
+      ]);
+    });
+
+    it('should fill in the current record lazy associations for a related datasheet example 1', () => {
+      const currentRecordLazyAssociations: DatasheetRecordLazyAssociationEntity[] = [];
+      currentRecordLazyAssociations.push({
+        spaceId,
+        dstId: 'datasheet2',
+        recordId: 'record2',
+        depends: {
+          field3: [{ datasheetId: datasheetId, recordIds: ['record1'] }],
+          field4: [{ datasheetId: 'datasheet4', recordIds: ['record6'] }],
+        },
+        id: ''
+      });
+
+      currentRecordLazyAssociations.push({
+        spaceId,
+        dstId: 'datasheet2',
+        recordId: 'record3',
+        depends: {},
+        id: ''
+      });
+  
+      service.fillInRelatedRecordAssociations(spaceId, 'datasheet2', currentRecordLazyAssociations, fieldIdToLinkDstIdMap, recordMap, false);
+  
+      expect(currentRecordLazyAssociations).toEqual([
+        {
+          spaceId,
+          dstId: 'datasheet2',
+          recordId: 'record2',
+          depends: {
+            field3: [{ datasheetId: datasheetId, recordIds: ['record1'] }
+              , { datasheetId: 'datasheet2', recordIds: ['record2', 'record3'] }
+              , { datasheetId: 'datasheet3', recordIds: ['record4'] }
+              , { datasheetId: 'datasheet4', recordIds: ['record5'] }],
+            field4: [{ datasheetId: 'datasheet4', recordIds: ['record6'] }],
+          },
+          id: '',
+        },
+        {
+          spaceId,
+          dstId: 'datasheet2',
+          recordId: 'record3',
+          depends: {},
+          id: '',
+        },
+      ]);
+    });
+
+  });
+  
+  describe('getDepends', () => {
+    it('should return the correct record dependencies', () => {
+      const recordData = { field1: ['record2', 'record3'], field2: [], field3: ['record4'] };
+      const fieldIdToLinkDstIdMap = new Map<string, string>([
+        ['field1', 'datasheet2'],
+        ['field2', 'datasheet3'],
+        ['field3', 'datasheet4'],
+      ]);
+  
+      const depends = service.getDepends(recordData, fieldIdToLinkDstIdMap);
+  
+      expect(depends).toEqual({
+        field1: [{ datasheetId: 'datasheet2', recordIds: ['record2', 'record3'] }],
+        field3: [{ datasheetId: 'datasheet4', recordIds: ['record4'] }],
+      });
+    });
+  
+    it('should return an empty object if there are no record dependencies', () => {
+      const recordData = { field1: [], field2: [], field3: [] };
+      const fieldIdToLinkDstIdMap = new Map<string, string>([
+        ['field1', 'datasheet2'],
+        ['field2', 'datasheet3'],
+        ['field3', 'datasheet4'],
+      ]);
+  
+      const depends = service.getDepends(recordData, fieldIdToLinkDstIdMap);
+  
+      expect(depends).toEqual({});
     });
   });
 
