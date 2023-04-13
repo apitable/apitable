@@ -258,6 +258,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
             fieldId={fieldId}
             setOpenAlarm={setOpenAlarm}
             includeTime={field.property.includeTime}
+            timeZone={field.property.timeZone}
             cellValue={cellValue}
           />
         )}
