@@ -26,7 +26,6 @@ import { DatasheetRecordLazyAssociationRepository } from './datasheet.record.laz
 describe('Datasheet Record Lazy Association Repository Test', () => {
   let module: TestingModule;
   let repository: DatasheetRecordLazyAssociationRepository;
-  // arrange
   const associations: DatasheetRecordLazyAssociationEntity[] = [
     {
       id: '1',
