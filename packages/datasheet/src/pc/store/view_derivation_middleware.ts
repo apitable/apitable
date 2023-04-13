@@ -44,11 +44,11 @@ import {
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { BatchAction } from 'redux-batched-actions';
 
-type IUpdateDerivationAction = 
-BatchAction |
-ILoadedDataPackAction | IJOTActionPayload | ISetGroupingCollapseAction | ISetActiveRowInfo |
-IClearActiveRowInfo | ISetPageParamsAction | ITriggerViewDerivationComputed | StoreActions.ISetMirrorDataAction | 
-ICacheTemporaryView | ISetSearchKeyword | IChangeViewAction;
+type IUpdateDerivationAction =
+  BatchAction |
+  ILoadedDataPackAction | IJOTActionPayload | ISetGroupingCollapseAction | ISetActiveRowInfo |
+  IClearActiveRowInfo | ISetPageParamsAction | ITriggerViewDerivationComputed | StoreActions.ISetMirrorDataAction |
+  ICacheTemporaryView | ISetSearchKeyword | IChangeViewAction;
 
 export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => next => (action: IUpdateDerivationAction) => {
   next(action);
@@ -62,17 +62,17 @@ export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => ne
 };
 
 const handleAction = (
-  store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, 
+  store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>,
   action: IUpdateDerivationAction
 ) => {
   const preState = store.getState();
-  switch(action.type) {
+  switch (action.type) {
     case ActionConstants.DATAPACK_LOADED: {
       const datasheetId = action.datasheetId;
-      if (action.payload.isPartOfData) { 
+      if (action.payload.isPartOfData) {
         return;
       }
-      if (preState.pageParams.datasheetId !== datasheetId) {
+      if (preState.pageParams.datasheetId !== datasheetId && datasheetId !== 'previewDatasheet') {
         return;
       }
       dispatchNewViewDerivation(store, datasheetId);
@@ -133,12 +133,12 @@ const handleAction = (
       return;
     }
     case ActionConstants.SET_GROUPING_COLLAPSE: {
-      // TODO SET_GROUPING_COLLAPSE triggered too often (toggle search input), 
+      // TODO SET_GROUPING_COLLAPSE triggered too often (toggle search input),
       // the follow-up to see how to optimize off
       const timeStart = Date.now();
       const state = store.getState();
       const viewPrepared = Selectors.getViewDerivatePrepared(state);
-      // Since the first load may read the grouped collapsed state dispatch from localStorage to redux, 
+      // Since the first load may read the grouped collapsed state dispatch from localStorage to redux,
       // there is no computational cache at this time.
       if (!viewPrepared) {
         return;
@@ -158,8 +158,7 @@ const handleAction = (
       }
 
       const viewGroupDerivate = new ViewGroupDerivate(state, datasheetId);
-      const linearRows = viewGroupDerivate.
-        getLinearRowsAndGroupAfterCollapse(pureLinearRows, datasheetClientState.groupingCollapseIds);
+      const linearRows = viewGroupDerivate.getLinearRowsAndGroupAfterCollapse(pureLinearRows, datasheetClientState.groupingCollapseIds);
 
       store.dispatch(StoreActions.patchViewDerivation(datasheetId, {
         viewId,
@@ -184,7 +183,7 @@ const handleAction = (
       }
 
       let viewDerivate: ViewDerivateGrid | ViewDerivateGantt | undefined;
-      switch(view.type) {
+      switch (view.type) {
         case ViewType.Grid: {
           viewDerivate = new ViewDerivateGrid(state, datasheetId);
           break;

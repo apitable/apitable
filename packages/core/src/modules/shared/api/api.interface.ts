@@ -126,7 +126,10 @@ export interface IUpdateSecuritySetting {
 export interface IAdData {
   linkText: string;
   linkTextEn: string;
-  linkUrl: string;
+  linkUrl: {
+    text: string;
+    title: string;
+  };
   banners: { url: string; name: string }[];
   desc: string;
   descEn: string;
