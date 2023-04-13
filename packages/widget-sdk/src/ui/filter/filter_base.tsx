@@ -63,6 +63,7 @@ export const FilterBase = (props: IFilterProps) => {
   const { datasheetId, hasParent = false, onChange, depth = 0 } = props;
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
+  const theme = useTheme();
   const isRoot = !hasParent;
   const updateFilter = useCallback((filter: any) => {
     setFilter(filter);
@@ -214,10 +215,9 @@ export const FilterBase = (props: IFilterProps) => {
                   }}
                 />
                 <IconButton
-                  shape="square"
-                  icon={DeleteOutlined} onClick={() => {
-                    deleteOperandByIndex(index);
-                  }} />
+                  icon={() => <DeleteOutlined size={16} color={theme.color.textCommonTertiary} />}
+                  onClick={() => deleteOperandByIndex(index)} 
+                />
               </React.Fragment>;
             })
           }
