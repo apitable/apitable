@@ -74,8 +74,4 @@ export class DatasheetRecordLazyAssociationEntity {
   })
   updatedAt?: Date;
 
-  // @BeforeInsert()
-  // beforeInsert() {
-  //   this.id = IdWorker.nextId().toString();
-  // }
 }

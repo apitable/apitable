@@ -20,7 +20,7 @@ import { DatasheetRecordLazyAssociationService } from './datasheet.record.lazy.a
 import { DatasheetRecordLazyAssociationRepository } from '../repositories/datasheet.record.lazy.association.repository';
 import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
 
-describe('Test', () => {
+describe('Record Lazy Association Service Test', () => {
   let module: TestingModule;
   let service: DatasheetRecordLazyAssociationService;
   // let repository: DatasheetRecordLazyAssociationRepository;

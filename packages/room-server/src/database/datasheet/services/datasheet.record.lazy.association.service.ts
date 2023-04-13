@@ -18,7 +18,6 @@
 
 import { Injectable } from '@nestjs/common';
 import { IdWorker } from 'shared/helpers';
-import { In } from 'typeorm';
 import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
 import { DatasheetRecordLazyAssociationRepository } from '../repositories/datasheet.record.lazy.association.repository';
 
@@ -30,14 +29,7 @@ export class DatasheetRecordLazyAssociationService {
   ) {}
 
   public async getRecordAssociations(spaceId: string, datasheetId: string, recordIds: string[]): Promise<DatasheetRecordLazyAssociationEntity[]> {
-    const associations = await this.repository.find({
-      where: {
-        spaceId,
-        dstId: datasheetId,
-        recordId: In(recordIds),
-      },
-    });
-    return associations;
+    return await this.repository.selectRecordAssociations(spaceId, datasheetId, recordIds);
   }
 
   public async updateRecordAssociations(associations: DatasheetRecordLazyAssociationEntity[]): Promise<void> {

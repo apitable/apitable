@@ -16,9 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { DatasheetRecordLazyAssociationEntity } from '../entities/datasheet.record.lazy.association.entity';
 
 @EntityRepository(DatasheetRecordLazyAssociationEntity)
 export class DatasheetRecordLazyAssociationRepository extends Repository<DatasheetRecordLazyAssociationEntity> {
+
+  public async selectRecordAssociations(spaceId: string, datasheetId: string, recordIds: string[]): Promise<DatasheetRecordLazyAssociationEntity[]> {
+    const associations = await this.find({
+      where: {
+        spaceId,
+        dstId: datasheetId,
+        recordId: In(recordIds),
+      },
+    });
+    return associations;
+  }
+
 }
