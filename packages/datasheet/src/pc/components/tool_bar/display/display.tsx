@@ -51,7 +51,7 @@ interface IDisplay extends Partial<TriggerProps> {
   children: React.ReactElement;
   className?: string;
   onVisibleChange?: (visible: boolean) => void;
-  // Automatically highlight the icon and text under the item when popup is open. 
+  // Automatically highlight the icon and text under the item when popup is open.
   // This feature is enabled by default, please turn it off if the icon coloring is abnormal.
   disableAutoActiveItem?: boolean;
 }
@@ -105,7 +105,7 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
       await closeAllExpandRecord();
     }
 
-    if (type !== ToolHandleType.ViewSwitcher && showViewLockModal && !mirrorId) {
+    if (type !== ToolHandleType.ViewSwitcher && type !== ToolHandleType.Share && showViewLockModal && !mirrorId) {
       expandViewLock(activeView.id);
       return;
     }
