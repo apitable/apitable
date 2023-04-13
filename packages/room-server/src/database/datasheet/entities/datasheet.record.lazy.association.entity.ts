@@ -17,8 +17,7 @@
  */
 
 import { IRecordDependencies } from '@apitable/core';
-import { IdWorker } from 'shared/helpers';
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
  * datasheet record lazy association

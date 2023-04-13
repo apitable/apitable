@@ -57,42 +57,42 @@ describe('Test', () => {
     const existingAssociation1 = {
       id: '3',
       spaceId: 'space1',
-      dstId: 'dst1',
-      recordId: 'record1',
+      dstId: 'dst3',
+      recordId: 'record3',
       depends: { field1: [{ datasheetId: '1', recordIds: ['value1', 'value2'] }, { datasheetId: '2', recordIds: ['value1', 'value2'] }] }
     } as DatasheetRecordLazyAssociationEntity;
     const existingAssociation2 = {
       id: '4',
       spaceId: 'space2',
-      dstId: 'dst2',
-      recordId: 'record2',
+      dstId: 'dst4',
+      recordId: 'record4',
       depends: { field1: [{ datasheetId: '3', recordIds: ['value1', 'value2'] }, { datasheetId: '4', recordIds: ['value1', 'value2'] }] }
     } as DatasheetRecordLazyAssociationEntity;
     const associations = [association1, association2];
     const existingAssociations = [existingAssociation1, existingAssociation2];
     
-    it('should add new associations', () => {
+    it('should return new associations', () => {
       const result = service.diffRecordAssociations(associations, existingAssociations);
       expect(result.associationsAdded).toEqual([association1, association2]);
       expect(result.associationsUpdated).toEqual([]);
     });
     
-    it('should update existing associations', () => {
+    it('should return updated associations', () => {
       const updatedAssociation1 = {
         id: '3',
         spaceId: 'space1',
-        dstId: 'dst1',
-        recordId: 'record1',
+        dstId: 'dst3',
+        recordId: 'record3',
         depends: { field1: [{ datasheetId: '3', recordIds: ['value1', 'value2'] }, { datasheetId: '4', recordIds: ['value1', 'value2'] }] }
       } as DatasheetRecordLazyAssociationEntity;
       const updatedExistingAssociations = [updatedAssociation1, existingAssociation2];
-      const result = service.diffRecordAssociations(associations, updatedExistingAssociations);
+      const result = service.diffRecordAssociations(updatedExistingAssociations, existingAssociations);
       expect(result.associationsAdded).toEqual([]);
       expect(result.associationsUpdated).toEqual([updatedAssociation1]);
     });
     
-    it('should not update existing associations if depends are the same', () => {
-      const result = service.diffRecordAssociations(associations, existingAssociations);
+    it('should return empty array', () => {
+      const result = service.diffRecordAssociations(existingAssociations, existingAssociations);
       expect(result.associationsAdded).toEqual([]);
       expect(result.associationsUpdated).toEqual([]);
     });

@@ -69,12 +69,12 @@ export class DatasheetRecordLazyAssociationService {
     const associationsAdded = [];
     for (const association of associations) {
       const key = `${association.spaceId}-${association.dstId}-${association.recordId}`;
-      if (!existingAssociationsMap.has(key)) {
+      const existingAssociation = existingAssociationsMap.get(key);
+      if (!existingAssociation) {
         association.id = IdWorker.nextId().toString();
         associationsAdded.push(association);
       } else {
-        const existingAssociation = existingAssociationsMap.get(key);
-        if (existingAssociation && JSON.stringify(existingAssociation?.depends) === JSON.stringify(association.depends)) {
+        if (JSON.stringify(existingAssociation?.depends) !== JSON.stringify(association.depends)) {
           existingAssociation.depends = association.depends;
           associationsUpdated.push(existingAssociation);
         }
