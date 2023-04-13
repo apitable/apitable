@@ -299,7 +299,11 @@ impl DependencyAnalyzer {
         FieldKind::CreatedBy | FieldKind::LastModifiedBy => {
           let property: CreatedByFieldProperty = serde_json::from_value(property.clone())
             .with_context(|| format!("convert property of field {field_id} to CreatedByFieldProperty"))?;
-          self.operator_field_uuids.extend(property.uuids);
+          for uuid in property.uuids {
+            if let Json::String(uuid) = uuid {
+              self.operator_field_uuids.insert(uuid);
+            }
+          }
         }
         FieldKind::Formula => {
           self
@@ -675,7 +679,7 @@ mod tests {
         "fld1w3",
         FieldKind::CreatedBy,
         json!({
-          "uuids": ["11", "12", "13", "15"],
+          "uuids": ["11", "12", "13", null, "15"],
           "datasheetId": "dst1"
         }
       )),
@@ -683,7 +687,7 @@ mod tests {
         "fld1w4",
         FieldKind::LastModifiedBy,
         json!({
-          "uuids": ["15", "18", "12", "16"],
+          "uuids": ["15", "18", "12", {}, "16"],
           "datasheetId": "dst1",
           "collectType": 1,
           "fieldIdCollection": []

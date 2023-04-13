@@ -109,7 +109,7 @@ pub struct MemberFieldProperty {
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CreatedByFieldProperty {
-  pub uuids: Vec<String>,
+  pub uuids: Vec<Json>,
 
   #[serde(skip_serializing_if = "Option::is_none")]
   pub datasheet_id: Option<String>,
@@ -118,7 +118,7 @@ pub struct CreatedByFieldProperty {
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct LastModifiedByFieldProperty {
-  pub uuids: Vec<String>,
+  pub uuids: Vec<Json>,
 
   #[serde(skip_serializing_if = "Option::is_none")]
   pub datasheet_id: Option<String>,

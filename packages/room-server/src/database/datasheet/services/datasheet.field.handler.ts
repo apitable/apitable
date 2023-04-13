@@ -242,7 +242,11 @@ export class DatasheetFieldHandler {
         case FieldType.CreatedBy:
         case FieldType.LastModifiedBy:
           const { uuids } = fieldInfo.property;
-          uuids.forEach((uuid: string) => globalParam.createdByFieldUuids.add(uuid));
+          uuids.forEach(uuid => {
+            if (typeof uuid === 'string') {
+              globalParam.createdByFieldUuids.add(uuid);
+            }
+          });
           break;
         case FieldType.Formula:
           await this.processFormulaField(fieldMap, fieldInfo, globalParam, recordMap);
