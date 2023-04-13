@@ -76,6 +76,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
     <div className={styles.expandCascader}>
       <Cascader
         loading={loading}
+        editing={editing}
         onChange={onChange}
         options={options}
         style={{

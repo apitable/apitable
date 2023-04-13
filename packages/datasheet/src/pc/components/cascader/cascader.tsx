@@ -3,24 +3,27 @@ import styles from './styles.module.less';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, AddOutlined, CloseOutlined } from '@apitable/icons';
 import { colorVars, IconButton } from '@apitable/components';
-import { ICascaderOption } from 'pc/utils';
-import { MutableRefObject } from 'react';
 import React from 'react';
-
-interface ICascader {
-  loading?: boolean;
-  options: ICascaderOption[];
-  onChange: (values: (string | number)[]) => void;
-  editing?: boolean;
-  cascaderRef: MutableRefObject<any>;
-  value: string[][] | string[];
-  displayRender?: (label: string[]) => React.ReactNode;
-  disabled?: boolean;
-  style?: React.CSSProperties;
-}
+import { useResponsive } from 'pc/hooks';
+import { ScreenSize } from '../common/component_display';
+import { ICascader } from './interface';
+import { MobileCascader } from './mobile_cascader';
 
 export const Cascader = (props: ICascader) => {
   const { loading, options, onChange, editing, cascaderRef, ...rest } = props;
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+
+  if (isMobile) {
+    return (
+      <MobileCascader
+        cascaderRef={cascaderRef}
+        options={options}
+        value={rest.value}
+        onChange={onChange}
+      />
+    );
+  }
   return (
     <AntCascader
       allowClear
@@ -41,5 +44,5 @@ export const Cascader = (props: ICascader) => {
       suffixIcon={null}
       {...rest}
     />
-  )
-}
+  );
+};
