@@ -399,6 +399,18 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       {/* In the pinning browser, join the monitoring center */}
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
+    {
+      env.ENABLED_REWARDFUL && <>
+        <Script id={'rewardful'}>
+          {
+            `
+        (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
+        `
+          }
+        </Script>
+        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
+      </>
+    }
 
     <Script id={'rewardful'}>
       {

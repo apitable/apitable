@@ -72,7 +72,8 @@ function PasswordWidget(props: IBaseInputProps & any) {
     placeholder={map2Text[placeholderKey]}
     type={'password'}
     style={{
-      borderColor: 'none'
+      borderColor: 'none',
+      width: '100%'
     }}
   />;
 }
