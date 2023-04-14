@@ -40,7 +40,7 @@ export class FusionNodeApiService {
         type: getAPINodeType(node.type),
         icon: getEmojiIconNativeString(node.icon),
         parentId: node.parentId,
-      }
+      };
     });
   }
 
