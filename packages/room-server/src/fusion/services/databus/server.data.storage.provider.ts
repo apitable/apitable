@@ -89,7 +89,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       datasheetPack = await this.loadDstPackWithCache(dstId, options);
     } else {
       if (USE_NATIVE_MODULE) {
-        datasheetPack = await this.nativeService.fetchDataPack('main datasheet', dstId, auth, { internal: true, main: true });
+        datasheetPack = await this.nativeService.fetchDataPack('main datasheet', dstId, auth, { internal: true, main: true }, options);
       } else {
         datasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, options);
       }
