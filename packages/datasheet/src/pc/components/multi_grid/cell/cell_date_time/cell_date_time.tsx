@@ -51,9 +51,10 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule, abbr] = cellString ? cellString.split(' ') : [];
   const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
+  const timeZone = field.property.timeZone
 
   const alarmRealTime = useMemo(() => {
-    let alarmDate = dayjs(cellValue as number);
+    let alarmDate = timeZone ? dayjs(cellValue as number).tz(timeZone) : dayjs(cellValue as number);
     const subtractMatch = alarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
 
     if (subtractMatch) {
@@ -101,7 +102,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
               fieldId: field.id,
               alarm: {
                 subtract: '',
-                time: field.property.includeTime ? dayjs(cellValue as number).format('HH:mm') : '09:00',
+                alarmAt: cellValue as string,
                 alarmUsers: [{
                   type: AlarmUsersType.Member,
                   data: user?.unitId!
