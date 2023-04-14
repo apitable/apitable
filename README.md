@@ -327,7 +327,7 @@ APITable use these common conventions:
 - [👩‍💻 Developer Center](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - [Widget SDK](https://developers.apitable.com/widget/introduction/)
-  - Scripting (Coming soon...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Roadmap
 
