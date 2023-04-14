@@ -66,7 +66,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const views = datasheet?.snapshot.meta.views;
   const isShowViewbar = get(embedInfo, 'viewControl.tabBar', true);
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
-  const isShowNodeInfoBar = get(embedInfo, 'viewControl.nodeInfoBar', true);
+  const isShowNodeInfoBar = get(embedInfo, 'nodeInfoBar', true);
 
   const { sideBarVisible } = useSideBarVisible();
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
@@ -188,13 +188,15 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
 
   return (
     <div
-      className={styles.nav}
+      className={classNames(styles.nav, {
+        [styles.isShowNodeInfoBar]: !isShowNodeInfoBar
+      })}
     >
       {
         isOnlyView ?
-          <div className={styles.embedTitle}>
+          isShowNodeInfoBar && <div className={styles.embedTitle}>
             {
-              viewEditor && editable ? <>
+              viewEditor && editable ? <div className={styles.embedOnlyViewName}>
                 <input
                   className={classNames(styles.inputBox, {
                     [styles.error]: errMsg
@@ -208,13 +210,14 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
                   onClick={(e: any) => e.stopPropagation()}
                   onMouseDown={stopPropagation}
                 />
+                {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
                 {
                   errMsg && <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
                     {errMsg}
                   </Typography>
                 }
 
-              </> : <div className={styles.embedOnlyViewName}>
+              </div> : <div className={styles.embedOnlyViewName}>
                 <p
                   onDoubleClick={() => setViewEditor(true)}
                 >
@@ -222,7 +225,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
                 </p>
                 {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
               </div>
-            }
+            } 
           </div> : (
             isShowNodeInfoBar && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
               {
