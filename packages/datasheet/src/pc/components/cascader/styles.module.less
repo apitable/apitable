@@ -2,6 +2,18 @@
   width: 100% !important;
 }
 
+.search {
+  :global {
+    .ant-cascader-menu-item {
+      width: auto;
+      .ant-cascader-menu-item-keyword {
+        color: var(--primaryColor);
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 .mobileCascaderText {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -61,6 +73,14 @@
 
   .ant-select-selector {
     height: 100% !important;
+  }
+
+  .ant-cascader {
+    .ant-select-selection-search {
+      input {
+        height: 100% !important;
+      }
+    }
   }
   
   .ant-cascader-menu-item {

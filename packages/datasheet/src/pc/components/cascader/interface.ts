@@ -13,9 +13,6 @@ export interface ICascader {
   style?: React.CSSProperties;
 }
 
-export interface IMobileCascader {
-  options: ICascaderOption[];
-  onChange: (values?: (string | number)[]) => void;
-  cascaderRef: MutableRefObject<any>;
-  value: string[][] | string[];
-}
+export type IMobileCascader = Pick<
+  ICascader,
+  'options' | 'onChange' | 'cascaderRef' | 'value'>;
