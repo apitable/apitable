@@ -2146,13 +2146,6 @@
             "descriptionId": "api_panel_type_desc_cascader",
             "defaultExample": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。"
         },
-        "Cascader": {
-            "defaultExampleId": "api_panel_type_desc_cascader",
-            "description": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
-            "descriptionId": "api_panel_type_desc_cascader",
-            "defaultExample": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
-            "valueType": "string"
-        },
         "Checkbox": {
             "defaultExampleId": "api_panel_type_default_example_checkbox",
             "valueType": "boolean",
