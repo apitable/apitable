@@ -173,6 +173,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     value: 'canBeEdited',
     label: t(Strings.can_edit),
     subLabel: t(Strings.share_and_editable_desc),
+    disabled: Boolean(isShareMirror)
   }, {
     value: 'canBeStored',
     label: t(Strings.can_duplicate),

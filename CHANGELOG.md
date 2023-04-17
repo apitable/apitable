@@ -3,6 +3,74 @@
 
 
 
+## [v0.20.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.20.0-alpha) (2023-04-10)
+
+
+### Bug fixes
+
+* fix: recommend widget icon display ([#681](https://github.com/apitable/apitable/pull/681)) @ChambersChan 
+* fix: recover deleted node failure issue ([#695](https://github.com/apitable/apitable/pull/695)) @ChambersChan 
+* fix: add cascader strings ([#696](https://github.com/apitable/apitable/pull/696)) @wangkailang 
+
+### What's more
+
+* New Crowdin updates ([#653](https://github.com/apitable/apitable/pull/653)) @mr-kelly 
+* docs: databus guide ([#683](https://github.com/apitable/apitable/pull/683)) @arucil 
+* sync: hosted cloud ([#689](https://github.com/apitable/apitable/pull/689)) @yort-feng 
+## [v0.19.0-rc](https://github.com/apitable/apitable/releases/tag/v0.19.0-rc) (2023-04-03)
+
+
+### Bug fixes
+
+* fix: widget package submit error issue ([#671](https://github.com/apitable/apitable/pull/671)) @ChambersChan 
+
+### What's more
+
+* docs: widget-sdk documentation ([#652](https://github.com/apitable/apitable/pull/652)) @mr-kelly 
+* docs: Improve translation of README and developer-guide in other languages ([#285](https://github.com/apitable/apitable/pull/285)) @mr-kelly 
+* docs: add brew install canvas ([#599](https://github.com/apitable/apitable/pull/599)) (#654) @Exclamation-mark 
+* docs: remove description of default username in readme ([#657](https://github.com/apitable/apitable/pull/657)) @ChambersChan 
+* docs: developer-guide add multilingual translation (l10n) workflow ([#661](https://github.com/apitable/apitable/pull/661)) @Exclamation-mark 
+* docs: add multi-language images ([#663](https://github.com/apitable/apitable/pull/663)) @luoyunyao 
+* sync: hosted cloud ([#670](https://github.com/apitable/apitable/pull/670)) @yort-feng 
+## [v0.19.0-beta](https://github.com/apitable/apitable/releases/tag/v0.19.0-beta) (2023-03-27)
+
+
+### Bug fixes
+
+* fix: sign up password placeholder string @laboonly 
+* fix: sign up password placeholder string ([#590](https://github.com/apitable/apitable/pull/590)) @laboonly 
+* fix: subscription key undefined check ([#629](https://github.com/apitable/apitable/pull/629)) @wangkailang 
+* fix: level card subscription check ([#648](https://github.com/apitable/apitable/pull/648)) @wangkailang 
+
+### What's more
+
+* docs: update developer-guide.md ([#605](https://github.com/apitable/apitable/pull/605)) @mr-kelly 
+* doc: answer api document address ([#606](https://github.com/apitable/apitable/pull/606)) @shawndenggh 
+* docs: answer smtp configure & the limitation of widget quantity in da… ([#608](https://github.com/apitable/apitable/pull/608)) @ChambersChan 
+* docs: answer default port and upgrade @paylm 
+* docs: answer default port  ([#613](https://github.com/apitable/apitable/pull/613)) @paylm 
+* sync: hosted cloud ([#611](https://github.com/apitable/apitable/pull/611)) @ChambersChan 
+* docs: developer guide questions ([#609](https://github.com/apitable/apitable/pull/609)) @yort-feng 
+* chore: contributing in readme ([#624](https://github.com/apitable/apitable/pull/624)) @mr-kelly 
+* chore: update async view config @wmEvie 
+* chore: update async view config ([#632](https://github.com/apitable/apitable/pull/632)) @wmEvie 
+* chore: heartbeat cron ([#641](https://github.com/apitable/apitable/pull/641)) @ChambersChan 
+* sync: hosted cloud ([#642](https://github.com/apitable/apitable/pull/642)) @yort-feng 
+## [v0.19.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.19.0-alpha) (2023-03-20)
+
+
+### Bug fixes
+
+* fix: remove unused test file ([#565](https://github.com/apitable/apitable/pull/565)) @shawndenggh 
+* fix: disable awsc ignore verification ([#577](https://github.com/apitable/apitable/pull/577)) @wangkailang 
+* fix: sign up password placeholder string @laboonly 
+* fix: sign up password placeholder string ([#590](https://github.com/apitable/apitable/pull/590)) @laboonly 
+
+### What's more
+
+* release: v0.18.0-rc.2 ([#556](https://github.com/apitable/apitable/pull/556)) @yort-feng 
+* sync: hosted cloud ([#589](https://github.com/apitable/apitable/pull/589)) @yort-feng 
 ## [v0.18.0-rc.2](https://github.com/apitable/apitable/releases/tag/v0.18.0-rc.2) (2023-03-13)
 
 
