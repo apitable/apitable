@@ -3,6 +3,18 @@
 
 
 
+## [v0.20.0-beta](https://github.com/apitable/apitable/releases/tag/v0.20.0-beta) (2023-04-17)
+
+
+### Bug fixes
+
+* fix: widget filter ([#714](https://github.com/apitable/apitable/pull/714)) @yort-feng 
+
+### What's more
+
+* release: v0.20.0-alpha ([#698](https://github.com/apitable/apitable/pull/698)) @yort-feng 
+* docs: add Scripting Widget documentation link ([#711](https://github.com/apitable/apitable/pull/711)) @mr-kelly 
+* sync: hosted cloud ([#713](https://github.com/apitable/apitable/pull/713)) @yort-feng 
 ## [v0.20.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.20.0-alpha) (2023-04-10)
 
 
