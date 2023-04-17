@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { TextInput } from '@apitable/components';
+import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container';
 import { literal2Operand } from 'pc/components/robot/robot_detail/node_form/ui/utils';
 import { ChangeEvent, useState } from 'react';
 
@@ -49,6 +50,9 @@ function PasswordWidget(props: IBaseInputProps & any) {
 
   const [inputValue, setInputValue] = useState(value == null ? '' : value.value);
 
+  const ids = props.id.split('_');
+  const placeholderKey = ids[ids.length - 1];
+
   const _onChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     setInputValue(value === '' ? options.emptyValue : value);
   };
@@ -63,11 +67,13 @@ function PasswordWidget(props: IBaseInputProps & any) {
     {...inputProps}
     list={schema.examples ? `examples_${inputProps.id}` : null}
     onChange={_onChange}
-    onBlur={onBlur && (event => props.onChange(literal2Operand(event.target.value)))}
+    onBlur={onBlur && (event => props.onChange(literal2Operand(event.target.value || null)))}
     onFocus={onFocus && (event => onFocus(inputProps.id, literal2Operand(event.target.value)))}
+    placeholder={map2Text[placeholderKey]}
     type={'password'}
     style={{
-      borderColor: 'none'
+      borderColor: 'none',
+      width: '100%'
     }}
   />;
 }

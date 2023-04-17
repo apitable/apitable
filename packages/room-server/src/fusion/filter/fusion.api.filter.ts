@@ -54,7 +54,7 @@ const getRowFilterOffLoadComplexityThreshold = () => {
     }
     return num;
   }
-  return 5000;
+  return Infinity;
 };
 
 /**

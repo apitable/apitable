@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Selectors, IReduxState, StoreActions } from '@apitable/core';
+import { Selectors, IReduxState, StoreActions, FieldType } from '@apitable/core';
 import { store } from 'pc/store';
 
 export const getDatasheetOrLoad = (
@@ -26,11 +26,16 @@ export const getDatasheetOrLoad = (
   const datasheet = Selectors.getDatasheet(state, foreignDatasheetId);
   const datasheetLoading = Selectors.getDatasheetLoading(state, foreignDatasheetId);
   const datasheetErrorCode = Selectors.getDatasheetErrorCode(state, foreignDatasheetId);
+  const fieldMap = datasheet?.snapshot.meta?.fieldMap;
+  // check if foreign datasheet has link relationship
+  const isforeignDatasheetIdRelated = fieldMap ? Object.values(fieldMap).some(field =>
+    field.type === FieldType.Link && field.property.foreignDatasheetId === foreignDatasheetId) : true;
 
   if (
-    forceFetch ||
+    isforeignDatasheetIdRelated &&
+    (forceFetch ||
     (!datasheet && !datasheetLoading && !datasheetErrorCode) ||
-    (datasheet?.isPartOfData && !datasheetLoading && !datasheetErrorCode)
+    (datasheet?.isPartOfData && !datasheetLoading && !datasheetErrorCode))
   ) {
     if (formId) {
       store.dispatch(StoreActions.fetchForeignDatasheet(formId, foreignDatasheetId, forceFetch));

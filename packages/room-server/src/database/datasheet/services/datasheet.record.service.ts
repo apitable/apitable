@@ -26,40 +26,23 @@ import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
-import { In } from 'typeorm';
 import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
+import { In } from 'typeorm';
 
 @Injectable()
 export class DatasheetRecordService {
-  // private nativeModule: typeof import('@apitable/room-native-api') | undefined | null;
-
   constructor(
     private readonly recordRepo: DatasheetRecordRepository,
     private readonly recordCommentService: RecordCommentService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
   ) {}
 
-  // private async getNativeModule(): Promise<typeof import('@apitable/room-native-api') | null> {
-  //   if (this.nativeModule === undefined) {
-  //     try {
-  //       this.nativeModule = await import('@apitable/room-native-api');
-  //     } catch (_e) {
-  //       this.nativeModule = null;
-  //     }
-  //   }
-  //   return this.nativeModule;
-  // }
-
   @Span()
-  async getRecordsByDstId(dstId: string): Promise<RecordMap> {
-    // if (await this.getNativeModule()) {
-    //   return (await this.getNativeModule())!.getRecords(dstId, undefined, false, true) as Promise<RecordMap>;
-    // }
+  async getRecordsByDstId(dstId: string): Promise<IRecordMap> {
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
@@ -69,13 +52,7 @@ export class DatasheetRecordService {
   }
 
   @Span()
-  async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
-    if (recordIds.length === 0) {
-      return this.formatRecordMap([], {}, recordIds);
-    }
-    // if (await this.getNativeModule()) {
-    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, true) as Promise<RecordMap>;
-    // }
+  async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<IRecordMap> {
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
@@ -85,7 +62,7 @@ export class DatasheetRecordService {
   }
 
   @Span()
-  async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
+  async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<IRecordMap> {
     // if (await this.getNativeModule()) {
     //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
     // }
@@ -97,11 +74,11 @@ export class DatasheetRecordService {
   }
 
   @Span()
-  private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
+  private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): IRecordMap {
     if (recordIds) {
       // recordMap follows the order of 'records'
       const recordMap = keyBy(records, 'recordId');
-      return recordIds.reduce<RecordMap>((pre, cur) => {
+      return recordIds.reduce<IRecordMap>((pre, cur) => {
         const record = recordMap[cur];
         if (record) {
           pre[cur] = {
@@ -117,7 +94,7 @@ export class DatasheetRecordService {
         return pre;
       }, {});
     }
-    return records.reduce<RecordMap>((pre, cur) => {
+    return records.reduce<IRecordMap>((pre, cur) => {
       if (!cur.recordId) {
         return pre;
       }
@@ -319,9 +296,5 @@ export class DatasheetRecordService {
     }
 
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]!) || '';
-  }
-
-  async selectIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<string[] | null> {
-    return await this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 }

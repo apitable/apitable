@@ -24,7 +24,7 @@ import { getApiMetaUserProperty } from 'model/utils';
 import { IRecord, IRecordMap, IReduxState, Selectors } from '../../exports/store';
 import { IAPIMetaCreateByFieldProperty } from 'types/field_api_property_types';
 import {
-  BasicValueType, FieldType, IAddOpenCreatedByFieldProperty, ICreatedByField, ICreatedByProperty, IField, IJsonSchema, IUuids
+  BasicValueType, FieldType, IAddOpenCreatedByFieldProperty, ICreatedByField, IField, IJsonSchema, IUuids
 } from '../../types';
 import { MemberBaseField, OtherTypeUnitId } from './member_base_field';
 import { datasheetIdString, joiErrorResult } from './validate_schema';
@@ -75,7 +75,7 @@ export class CreatedByField extends MemberBaseField {
 
   override get apiMetaProperty(): IAPIMetaCreateByFieldProperty {
     const userMap = Selectors.getUserMap(this.state);
-    return getApiMetaUserProperty((this.field.property as ICreatedByProperty).uuids, userMap);
+    return getApiMetaUserProperty(this.field.property.uuids, userMap);
   }
 
   get openValueJsonSchema(): IJsonSchema {

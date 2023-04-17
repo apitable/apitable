@@ -171,13 +171,13 @@ export class ComputeFieldReferenceManager {
     return dstToFiledMap;
   }
 
-  private async getRefFieldIds(members: string[]): Promise<string[]> {
+  private getRefFieldIds(members: string[]): string[] {
     if (!members.length) {
       return [];
     }
-    return await Promise.all(members.map(member => {
+    return members.map(member => {
       const [, fieldId] = member.split(':') as [string, string];
       return fieldId;
-    }));
+    });
   }
 }

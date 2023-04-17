@@ -17,8 +17,19 @@
  */
 
 import {
-  IBaseDatasheetPack, IFieldPermissionMap, IGetRecords, IOperation, IRecord, IRecordMap, IRemoteChangeset, IServerDatasheetPack, ISnapshot,
-  IUnitValue, IUserValue, IViewPack, IViewProperty, ResourceType,
+  IBaseDatasheetPack,
+  IFieldPermissionMap,
+  IGetRecords,
+  IOperation,
+  IRecordMap,
+  IRemoteChangeset,
+  IServerDatasheetPack,
+  ISnapshot,
+  IUnitValue,
+  IUserValue,
+  IViewPack,
+  IViewProperty,
+  ResourceType,
 } from '@apitable/core';
 import { NodeInfo } from './node.model';
 
@@ -31,10 +42,6 @@ export class ChangesetView implements IRemoteChangeset {
   resourceType!: ResourceType;
   operations!: IOperation[];
   createdAt!: number;
-}
-
-export class RecordMap implements IRecordMap {
-  [recordId: string]: IRecord;
 }
 
 export class RecordsMapView implements IGetRecords {
@@ -71,7 +78,7 @@ export class FieldPermissionMap {
 export class DatasheetPack extends FieldPermissionMap implements IServerDatasheetPack {
   snapshot!: ISnapshot;
   datasheet!: NodeInfo;
-  foreignDatasheetMap?: { [foreignDatasheetId: string]: IBaseDatasheetPack; };
+  foreignDatasheetMap?: { [foreignDatasheetId: string]: IBaseDatasheetPack };
   units?: (UserInfo | UnitInfo)[];
 }
 

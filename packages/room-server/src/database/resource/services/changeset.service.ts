@@ -51,7 +51,7 @@ export class ChangesetService {
       return await this.resourceMetaService.getRevisionByDstId(resourceId);
     }
     // non-datasheet resource
-    return await this.nodeService.getReversionByResourceId(resourceId);
+    return await this.nodeService.getRevisionByResourceId(resourceId);
   }
 
   /**

@@ -253,6 +253,11 @@
     }
     .cascaderContainer {
       background: var(--lowestBg) !important;
+      .ant-select-selector .ant-select-selection-item {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 30px !important;
+      }
     }
   }
 }
@@ -274,6 +279,12 @@
     :global {
       .ant-drawer-inline {
         position: fixed !important;
+      }
+      .cascaderContainer {
+        padding: 0 16px 0 6px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
       }
     }
   }

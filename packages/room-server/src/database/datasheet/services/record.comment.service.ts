@@ -112,7 +112,7 @@ export class RecordCommentService {
    * @date 2021/4/21 5:24 PM
    */
   async getRecordCommentRevisions(dstId: string, recordId: string, excludeDeleted = true): Promise<string[]> {
-    const result = await this.repo.selectReversionsByDstIdAndRecordId(dstId, recordId, excludeDeleted);
+    const result = await this.repo.selectRevisionsByDstIdAndRecordId(dstId, recordId, excludeDeleted);
     if (result) {
       return result.map(entity => entity.revision);
     }

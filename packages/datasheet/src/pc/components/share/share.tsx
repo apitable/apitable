@@ -188,16 +188,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
         featureViewManualSave: shareSpaceInfo.featureViewManualSave,
       }),
     );
-  });
-
-  const shareNodeTree = shareInfo?.shareNodeTree;
-  const isShareNodeTreeEmpty = shareNodeTree?.children.length === 0;
-  const isFolder = shareNodeTree?.type === ConfigConstant.NodeType.FOLDER;
-  const nodeId = shareNodeTree?.nodeId;
-  const _shareId = shareInfo?.shareId;
-  const isEmptyShareInfo = !shareInfo;
-  useEffect(() => {
-    if (isEmptyShareInfo || datasheetId || (isFolder && isShareNodeTreeEmpty)) {
+    if (datasheetId) {
       return;
     }
     const {
@@ -207,15 +198,15 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
       console.log('share navigationTo');
       Router.push(Navigation.SHARE_SPACE, {
         params: {
-          shareId: _shareId,
-          nodeId: curDatasheetId || folderId || formId || mirrorId || dashboardId || nodeId,
+          shareId: shareSpaceInfo.shareId,
+          nodeId: curDatasheetId || folderId || formId || mirrorId || dashboardId || shareNodeTree.nodeId,
           viewId,
           recordId,
           widgetId
         },
       });
     }, 0);
-  }, [_shareId, datasheetId, isEmptyShareInfo, isFolder, isShareNodeTreeEmpty, nodeId, router.asPath]);
+  });
 
   const component = useMemo(() => {
     if (!nodeTree) {

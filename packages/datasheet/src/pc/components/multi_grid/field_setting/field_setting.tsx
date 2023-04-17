@@ -138,13 +138,21 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     },
   });
 
+  const [submitPending, setSubmitPending] = useState(false);
+
   const hideOperateBox = useCallback(
     () => {
+      if (submitPending && field.type === FieldType.Cascader) {
+        Message.warning({
+          content: t(Strings.cascader_snapshot_updating),
+        });
+        return;
+      }
       dispatch(StoreActions.clearActiveFieldState(datasheetId));
       props.onClose?.();
     },
     // eslint-disable-next-line
-    [dispatch, datasheetId],
+    [dispatch, datasheetId, submitPending],
   );
 
   useEffect(() => {
@@ -296,7 +304,8 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     // If a mounted dom is specified, no prompt will be given
     if (ExecuteResult.Success === result.result && !targetDOM) {
       // cascader field linkedDatasheetId changes need update cascader snapshot
-      if (newField.type === FieldType.Cascader && fieldInfoForState.property.linkedDatasheetId !== newField.property.linkedDatasheetId) {
+      if (newField.type === FieldType.Cascader && fieldInfoForState.property?.linkedDatasheetId !== newField.property.linkedDatasheetId) {
+        setSubmitPending(true);
         DatasheetApi.updateCascaderSnapshot({
           spaceId,
           datasheetId,
@@ -304,6 +313,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
           linkedDatasheetId: newField.property.linkedDatasheetId,
           linkedViewId: newField.property.linkedViewId,
         }).then(() => {
+          setSubmitPending(false);
           notify.open({
             message: t(Strings.toast_field_configuration_success),
             key: NotifyKey.ChangeFieldSetting,
@@ -316,9 +326,12 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
           message: t(Strings.toast_field_configuration_success),
           key: NotifyKey.ChangeFieldSetting,
         });
+        hideOperateBox();
+        return;
       }
+    } else {
+      hideOperateBox();
     }
-    hideOperateBox();
   };
 
   const handleFieldRequiredChange = (required: boolean) => {
@@ -358,6 +371,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
       };
       // cascader field add need update cascader snapshot
       if (newField.type === FieldType.Cascader) {
+        setSubmitPending(true);
         DatasheetApi.updateCascaderSnapshot({
           spaceId,
           datasheetId,
@@ -365,6 +379,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
           linkedDatasheetId: newField.property.linkedDatasheetId,
           linkedViewId: newField.property.linkedViewId,
         }).then(() => {
+          setSubmitPending(false);
           resultCallback();
         });
       } else {
@@ -565,6 +580,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
               onClick={() => {
                 onSubmit();
               }}
+              loading={submitPending}
               color='primary'
             >
               {t(Strings.submit)}

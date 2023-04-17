@@ -60,11 +60,19 @@ export class UserRepository extends Repository<UserEntity> {
     const tableNamePrefix = this.manager.connection.options.entityPrefix;
     // todo(itou): replace dynamic sql
     const users: any[] = await queryRunner.query(`
-          SELECT vu.uuid userId, vu.uuid uuid, vu.color avatarColor, vu.nick_name nickName, vui.id unitId, 
-                 vui.is_deleted isDeleted, vui.unit_type type,
-          IFNULL(vum.member_name,vu.nick_name) name, vu.avatar avatar, vum.is_active isActive,
-          IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
-          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
+          SELECT
+            vu.uuid userId,
+            vu.uuid uuid,
+            vu.color avatarColor,
+            vu.nick_name nickName,
+            vui.id unitId, 
+            vui.is_deleted isDeleted,
+            vui.unit_type type,
+            IFNULL(vum.member_name,vu.nick_name) name,
+            vu.avatar avatar,
+            vum.is_active isActive,
+            IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+            IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
           FROM ${tableNamePrefix}user vu
           LEFT JOIN ${tableNamePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = ?
           LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id

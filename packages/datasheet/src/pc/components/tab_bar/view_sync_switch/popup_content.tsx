@@ -73,8 +73,9 @@ export const changeViewAutoSave = async(autoSave: boolean, datasheetId: string, 
   };
   const serverViewDate = _autoSave ? await requestServerView(datasheetId!, viewId, shareId) : undefined;
   const { result } = resourceService.instance!.commandManager.execute((_autoSave ? { ...baseOption, viewProperty: serverViewDate } : baseOption) as any);
-
+  
   if (ExecuteResult.Success === result) {
+    store.dispatch(StoreActions.resetOperateViewId(viewId!, datasheetId!));
     Message.success({
       content: _autoSave ? t(Strings.open_auto_save_success) : t(Strings.close_auto_save_success)
     });

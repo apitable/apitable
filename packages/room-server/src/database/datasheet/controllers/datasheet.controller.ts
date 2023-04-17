@@ -31,6 +31,7 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Datasheet APIs
@@ -50,17 +51,23 @@ export class DatasheetController {
 
   @Get(['datasheets/:dstId/dataPack', 'datasheet/:dstId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
-  async getDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: DatasheetPackRo,): Promise<DatasheetPack> {
+  async getDataPack(
+    @Headers('cookie') cookie: string,
+    @Param('dstId') dstId: string,
+    @Query() query: DatasheetPackRo,
+  ): Promise<DatasheetPackResponse | DatasheetPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
-    return await this.datasheetService.fetchDataPack(dstId, { cookie }, { recordIds: query.recordIds });
+    return this.datasheetService.fetchDataPackNative('main datasheet', dstId, { cookie }, { recordIds: query.recordIds });
   }
 
   @Get(['shares/:shareId/datasheets/:dstId/dataPack', 'share/:shareId/datasheet/:dstId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDataPack(
-    @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('dstId') dstId: string
+    @Headers('cookie') cookie: string,
+    @Param('shareId') shareId: string,
+    @Param('dstId') dstId: string,
   ): Promise<DatasheetPack> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
@@ -102,8 +109,7 @@ export class DatasheetController {
   }
 
   @Get(['datasheets/:dstId/views/:viewId/dataPack', 'datasheet/:dstId/view/:viewId/dataPack'])
-  async getViewPack(@Headers('cookie') cookie: string,
-                    @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
+  async getViewPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
@@ -113,8 +119,7 @@ export class DatasheetController {
   }
 
   @Get(['shares/:shareId/datasheets/:dstId/views/:viewId/dataPack', 'share/:shareId/datasheet/:dstId/view/:viewId/dataPack'])
-  async getShareViewPack(@Param('shareId') shareId: string,
-                         @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
+  async getShareViewPack(@Param('shareId') shareId: string, @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
     return await this.datasheetService.fetchViewPack(dstId, viewId);
@@ -125,7 +130,7 @@ export class DatasheetController {
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,
     @Param('recordId') recordId: string,
-    @Query('commentIds') commentIds: string
+    @Query('commentIds') commentIds: string,
   ): Promise<CommentReplyDto> {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);

@@ -17,7 +17,7 @@
  */
 
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
-import { ResourceType, ResourceIdPrefix, IWidget } from '@apitable/core';
+import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
 import { ApiResponse } from '../../../fusion/vos/api.response';
 import { Observable } from 'rxjs';
@@ -25,6 +25,7 @@ import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
+import { DatasheetPack } from 'database/interfaces';
 
 /**
  * Resource data interceptor
@@ -37,7 +38,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
     @InjectLogger() private readonly logger: Logger,
     private readonly roomResourceRelService: RoomResourceRelService,
     private readonly nodeService: NodeService,
-  ) { }
+  ) {}
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
     const info = await this.parseResourceType(request);
@@ -64,13 +65,18 @@ export class ResourceDataInterceptor implements NestInterceptor {
     const resourceIds: string[] = [];
     switch (resourceType) {
       case ResourceType.Datasheet:
+        if (Array.isArray(data.resourceIds)) {
+          return data.resourceIds;
+        }
+        data = data as DatasheetPack;
         // related datasheet
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         // widget panels
         if (data.snapshot.meta.widgetPanels) {
-          data.snapshot.meta.widgetPanels.filter((panel: any) => panel.widgets.size !== 0)
+          data.snapshot.meta.widgetPanels
+            .filter((panel: IWidgetPanel) => panel.widgets.length !== 0)
             .map((panel: any) => panel.widgets.map((widget: any) => resourceIds.push(widget.id)));
         }
         break;
@@ -83,7 +89,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         // 2. get related datasheets data by calling fetch data API
         resourceIds.push(data.datasheet.id);
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         break;

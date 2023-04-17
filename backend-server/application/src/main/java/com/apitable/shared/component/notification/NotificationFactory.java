@@ -27,6 +27,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -273,14 +274,18 @@ public class NotificationFactory implements INotificationFactory {
             List<PlayerBaseDTO> members =
                 memberMapper.selectMemberInfoByMemberIdsIncludeDelete(memberIds);
             players.putAll(members.stream()
-                .collect(Collectors.toMap(PlayerBaseDTO::getMemberId, a -> PlayerBaseVo
-                    .builder()
+                .collect(Collectors.toMap(PlayerBaseDTO::getMemberId, a -> PlayerBaseVo.builder()
                     .playerType(a.getIsMemberDeleted() ? PlayerType.MEMBER_DELETED.getType() :
                         PlayerType.MEMBER.getType())
-                    .userName(a.getUserName()).uuid(a.getUuid()).avatar(a.getAvatar())
-                    .email(a.getEmail())
-                    .memberId(a.getMemberId()).memberName(a.getMemberName()).team(a.getTeam())
-                    .avatarColor(a.getColor()).nickName(a.getNickName())
+                    .userName(StrUtil.nullToDefault(a.getUserName(), CharSequenceUtil.EMPTY))
+                    .uuid(StrUtil.nullToDefault(a.getUuid(), CharSequenceUtil.EMPTY))
+                    .avatar(StrUtil.nullToDefault(a.getAvatar(), CharSequenceUtil.EMPTY))
+                    .email(StrUtil.nullToDefault(a.getEmail(), CharSequenceUtil.EMPTY))
+                    .memberId(a.getMemberId())
+                    .memberName(StrUtil.nullToDefault(a.getMemberName(), CharSequenceUtil.EMPTY))
+                    .team(StrUtil.nullToDefault(a.getTeam(), CharSequenceUtil.EMPTY))
+                    .avatarColor(a.getColor())
+                    .nickName(StrUtil.nullToDefault(a.getNickName(), CharSequenceUtil.EMPTY))
                     .isNickNameModified(a.getIsNickNameModified())
                     .isMemberNameModified(a.getIsMemberNameModified())
                     .isDeleted(a.getIsMemberDeleted()).build(), (k1, k2) -> k1)));

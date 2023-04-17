@@ -423,6 +423,16 @@
             "en_US": "The admin can enable or apply for enabling the following experimental features that take effect for all members in the Space",
             "zh_HK": "管理員可以申請或開啟下列實驗性功能，啟用後會對整個空間站生效"
         },
+        "admin_transfer_space_widget_notify": {
+            "zh_CN": "管理员<a class=\"memberName\"></a>已将你发布的自建小程序「<a class=\"widgetName\"></a>」的发布权转交给<a class=\"involveMemberArr\"></a>",
+            "en_US": "The admin <a class=\"memberName\"></a> has transferred the ownership of your custom widget \"<a class=\"widgetName\"></a>\" to <a class=\"involveMemberArr\"></a>",
+            "zh_HK": "管理員<a class=\"memberName\"></a>已將你發布的自建小程序「<a class=\"widgetName\"></a>」的發布權轉交給<a class=\"involveMemberArr\"></a>"
+        },
+        "admin_unpublish_space_widget_notify": {
+            "zh_CN": "管理员<a class=\"memberName\"></a>已将你发布的自建小程序「<a class=\"widgetName\"></a>」从小程序中心下架",
+            "en_US": "The admin <a class=\"memberName\"></a> has unpublished your custom widget \"<a class=\"widgetName\"></a>\" from the Widget Center",
+            "zh_HK": "管理員<a class=\"memberName\"></a>已將你發布的自建小程序「<a class=\"widgetName\"></a>」從小程序中心下架"
+        },
         "admins_per_space": {
             "zh_CN": "管理员数量",
             "en_US": "Admins per space",
@@ -2495,6 +2505,10 @@
         "cascader_snapshot_update_text": {
             "zh_CN": "拉取最新数据后，新创建的记录将会采用最新的级联关系",
             "en_US": "After fetching the latest data, any new records created will use the latest cascading relationships."
+        },
+        "cascader_snapshot_updating": {
+            "zh_CN": "正在更新级联配置，请耐心等待",
+            "en_US": "The cascader configuration is being updated, please be patient"
         },
         "cascader_undefined_field_error": {
             "zh_CN": "当前有字段未配置",
@@ -5531,9 +5545,9 @@
             "zh_HK": "https://help.vika.cn/docs/guide/manual-autonumber"
         },
         "field_help_cascader": {
-            "zh_CN": "https://vika.cn/help/manual-field-cascader",
-            "en_US": "https://vika.cn/help/manual-field-cascader",
-            "zh_HK": "https://vika.cn/help/manual-field-cascader"
+            "zh_CN": "https://help.vika.cn/docs/guide/manual-field-cascader",
+            "en_US": "https://help.vika.cn/docs/guide/manual-field-cascader",
+            "zh_HK": "https://help.vika.cn/docs/guide/manual-field-cascader"
         },
         "field_help_checkbox": {
             "zh_CN": "https://help.vika.cn/docs/guide/manual-field-checkbox",
@@ -5651,9 +5665,9 @@
             "zh_HK": "顯示時間與時區"
         },
         "field_map_tips_for_python": {
-            "zh_CN": "存在与变量规则不匹配的字段名称，请打开“使用 Field ID”，否则下面的代码示例可能无法运行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以帮你解决这个问题。",
-            "en_US": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
-            "zh_HK": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以幫你解決這個問題。"
+            "zh_CN": "存在与变量规则不匹配的字段名称，请打开“使用 Field ID”，否则下面的代码示例可能无法运行！[字段映射](https://github.com/vikadata/vika.py#%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84)可以帮你解决这个问题。",
+            "en_US": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/vikadata/vika.py#%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84) can help you to solve this problem.",
+            "zh_HK": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/vikadata/vika.py#%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84)可以幫你解決這個問題。"
         },
         "field_member_property_multi": {
             "zh_CN": "允许添加多个成员",
@@ -8508,6 +8522,11 @@
             "en_US": "is empty",
             "zh_HK": "為空"
         },
+        "is_empty_widget_center_space": {
+            "zh_CN": "当前空间站还没有自建小程序",
+            "en_US": "No custom widgets",
+            "zh_HK": "當前空間站還沒有自建小程序"
+        },
         "is_empty_widget_panel_mobile": {
             "zh_CN": "小程序面板暂未添加小程序，请前往 PC 端添加",
             "en_US": "No widgets, please add widgets on the PC",
@@ -10042,6 +10061,11 @@
             "en_US": "+ ${count}",
             "zh_HK": "+ ${count}"
         },
+        "more_setting_tip": {
+            "zh_CN": "「模板中心管理」可以删除模板中心的空间站模板；「小程序中心管理」可以下架小程序中心的自建小程序，或者转交自建小程序的发布权",
+            "en_US": "Managing templates means that the sub-admin can delete space templates; Managing widgets means that the sub-admin can unpublish space widgets from the Widget Center and transfer ownership of space widgets",
+            "zh_HK": "「模板中心管理」可以刪除模板中心的空間站模板；「小程序中心管理」可以下架小程序中心的自建小程序，或者轉交自建小程序的發布權"
+        },
         "more_template": {
             "zh_CN": "更多模板",
             "en_US": "More",
@@ -10247,6 +10271,11 @@
             "en_US": " ",
             "zh_HK": " "
         },
+        "new_space_widget_notify": {
+            "zh_CN": "<a class=\"memberName\"></a>在空间站「<a class=\"spaceName\"></a>」发布了自建小程序「<a class=\"widgetName\"></a>」",
+            "en_US": "<a class=\"memberName\"></a> published a custom widget \"<a class=\"widgetName\"></a>\" in \"<a class=\"spaceName\"></a>\"",
+            "zh_HK": "<a class=\"memberName\"></a>在空間站「<a class=\"spaceName\"></a>」發布了自建小程序「<a class=\"widgetName\"></a>」"
+        },
         "new_view": {
             "zh_CN": "创建视图",
             "en_US": "Add view",
@@ -10406,6 +10435,21 @@
             "zh_CN": "暂无选项",
             "en_US": "No options",
             "zh_HK": "暫無選項"
+        },
+        "no_permission_add_widget": {
+            "zh_CN": "当前权限无法添加小程序",
+            "en_US": "No permission to install widgets",
+            "zh_HK": "當前權限無法添加小程序"
+        },
+        "no_permission_add_widget_panel": {
+            "zh_CN": "无权限添加小程序面板",
+            "en_US": "No permission to add widget board",
+            "zh_HK": "無權限添加小程序面板"
+        },
+        "no_permission_create_widget": {
+            "zh_CN": "无权限创建小程序",
+            "en_US": "No permission to create widget",
+            "zh_HK": "無權限創建小程序"
         },
         "no_previous_record_tips": {
             "zh_CN": "没有上一条记录",
@@ -11563,8 +11607,13 @@
             "en_US": "{\n\"templateKey\":\"createMirrorTip\"\n}"
         },
         "player_step_ui_config_169": {
-            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li></ul>\"\n}",
-            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li></ul>\"\n}"
+            "zh_CN": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-10-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li><li>维格表的AI探索，「GPT 内容生成」小程序发布</li></ul>\"\n}",
+            "en_US": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-10-updates\",\n    \"children\": \"<h3>🚀 Introduction of new functions</h3>\\n<ul><li>New field type \"Cascader\" is launched, making selection from a hierarchy of options on forms easier</li><li>\"Script\" widget is released, less code for more customization</li><li>Trigger Robot to send Emails, and get fast notifications</li><li>Trigger Robot to send a message to Slack, and inform your team in time</li><li>Exploring AI: \"GPT Content Generator\" Widget Released</li></ul>\"\n}"
+        },
+        "player_step_ui_config_50": {
+            "zh_CN": "{\n \"element\": \".style_widgetModal__eXmdB\",\n\"placement\": \"leftTop\",\n \"title\": \"小程序中心\", \n\"description\": \"官方推荐和空间站自建的小程序会发布到这里。你可以根据场景，在这里挑选合适的小程序放置到仪表盘或小程序面板里\", \"children\":\"\" \n}",
+            "en_US": "{\n \"element\": \".style_widgetModal__eXmdB\",\n\"placement\": \"leftTop\",\n \"title\": \"Widget Center\", \n\"description\": \"Officially recommended and custom widgets are published here. You can install any widget you want onto a dashboard or into a widget board of any datasheet.\", \"children\":\"\" \n}",
+            "zh_HK": "{\n \"element\": \".style_widgetModal__eXmdB\",\n\"placement\": \"leftTop\",\n \"title\": \"小程序中心\", \n\"description\": \"官方推薦和空間站自建的小程序會發佈到這裡。你可以根據場景，在這裡挑選合適的小程序放置到儀錶盤或小程序面板裡\", \"children\":\"\" \n}"
         },
         "player_step_ui_config_78": {
             "zh_CN": "{\n \"element\": \"#DATASHEET_TOOL_BAR .style_toolbarMiddle__2kxTf\",\n\"placement\": \"bottomRight\",\n \"arrowStyle\": { \"display\": \"none\" },\n \"title\": \"视图配置不协同\",\n\"description\": \"现在，临时的筛选、分组、排序等配置在未保存的情况下，不会同步给其他人，你的临时配置也将在刷新后失效。\" \n}",
@@ -13388,6 +13437,11 @@
             "en_US": "Manage templates",
             "zh_HK": "模板中心管理"
         },
+        "role_permission_manage_widget": {
+            "zh_CN": "小程序中心管理",
+            "en_US": "Manage Widget Center",
+            "zh_HK": "小程序中心管理"
+        },
         "rollup_choose_field": {
             "zh_CN": "选择要引用的字段",
             "en_US": "Select a field from linked datasheet",
@@ -13850,6 +13904,16 @@
             "zh_CN": "从下方视图读取数据",
             "en_US": "Select a view as the data source",
             "zh_HK": "從下方視圖讀取數據"
+        },
+        "select_wdget_Import_widget": {
+            "zh_CN": "选择你要导入小程序的维格表",
+            "en_US": "Select a datasheet to import widget",
+            "zh_HK": "選擇你要導入小程序的維格表"
+        },
+        "select_widget_Import_widget": {
+            "zh_CN": "从下方维格表导入小程序",
+            "en_US": "Import widget from the datasheet below",
+            "zh_HK": "從下方維格表導入小程序"
         },
         "select_y_axis_field": {
             "zh_CN": "统计指定字段",
@@ -15491,6 +15555,11 @@
             "en_US": "View configurations modified by members only take effect temporarily for themselves",
             "zh_HK": "成員修改視圖配置後不會同步給其他成員，僅對自己臨時生效"
         },
+        "test_function_card_info_widget": {
+            "zh_CN": "使用官方 SDK 自定义开发小程序，支持更丰富的数据可视化和数据传输方式，满足更多的业务场景",
+            "en_US": "Use widget SDK to develop custom widgets to meet more business needs",
+            "zh_HK": "使用官方 SDK 自定義開發小程序，支持更豐富的數據可視化和數據傳輸方式，滿足更多的業務場景"
+        },
         "test_function_desc": {
             "zh_CN": "实验性功能可能因为产品策略或计价策略变动而调整，请仔细阅读功能影响范围后再启用",
             "en_US": "Experimental features may be adjusted due to changes in product strategy or billing strategy, please read the scope of impact of the features carefully before enabling them",
@@ -15500,6 +15569,11 @@
             "zh_CN": "<p>当多个成员在同一个视图下修改筛选、分组或排序时经常会产生冲突，因为每个人都想根据自己的需求进行配置。开启此功能后「视图」和「镜像」内支持临时的视图配置，减少冲突场景</p>\n\n<p>该功能开启后影响：</p>\n<ul>\n<li>「视图」内成员修改视图配置后仅对自己临时生效，刷新后恢复默认配置。成员可选择手动保存视图配置并同步给其他成员</li>\n<li>「镜像」内也支持临时的视图配置。特例：无法在镜像内修改源表视图下的筛选条件</li>\n<li>「只读」权限的用户也允许临时修改视图配置。</li>\n<li>视图配置包括：筛选、分组、排序、隐藏列、样式、布局、列顺序、统计栏等</li>\n</ul>",
             "en_US": "<p>Conflicts often arise when members modify filtering, grouping, or sorting in the same view, as each wants to configure it to suit their needs. After enabling this feature, temporary view configuration is supported in \"Datasheet\" and \"Mirror\" to reduce conflicts. </p>\n\n<p>After this feature is enabled, it affects:</p>\n<ul>\n<li>After members in \"View\" modify the view configuration, it will only take effect temporarily for themselves. After refreshing, the default configuration will be restored. Members can choose to manually save the view configuration and sync it to other members</li>\n<li>Temporary view configurations are also supported on Mirror. Special case: The filter conditions of the source datasheet view cannot be modified in the mirror</li>\n<li>Users with \"read-only\" permission are also allowed to temporarily modify the view configuration.</li>\n<li>View configuration includes: filter, group, sort, hide fields, style, layout, field order, statistics, etc.</li>\n</ul>",
             "zh_HK": "<p>當多個成員在同一個視圖下修改篩選、分組或排序時經常會產生衝突，因為每個人都想根據自己的需求進行配置。開啟此功能後「視圖」和「鏡像」內支持臨時的視圖配置，減少衝突場景</p>\n\n<p>該功能開啟後影響：</p>\n<ul>\n<li>「視圖」內成員修改視圖配置後僅對自己臨時生效，刷新後恢復默認配置。成員可選擇手動保存視圖配置並同步給其他成員</li>\n<li>「鏡像」內也支持臨時的視圖配置。特例：無法在鏡像內修改源表視圖下的篩選條件</li>\n<li>「只讀」權限的用戶也允許臨時修改視圖配置。 </li>\n<li>視圖配置包括：篩選、分組、排序、隱藏列、樣式、佈局、列順序、統計欄等</li>\n</ul>"
+        },
+        "test_function_modal_info_widget": {
+            "zh_CN": "<p>如果说维格表是一款对小白用户友好的可视化数据库，小程序便是将这款数据库直接变成不同形态的 App 的最佳助手。现在，维格表内支持自建小程序，让开发者充分运用 SDK 能力，开发更多符合业务场景和个人需求的小程序。<a href=\"https://vika.cn/developers/widget/introduction\" target=\"_blank\">查看文档</a></p>\n\n<p>自建小程序示例</p>\n<ul><li>单元格查看器：一款方便你浏览不同列类型数据的小程序，以一种全新的方式来查看神奇引用、神奇关联、附件类型的数据</li>\n<li>维格地图：一款在谷歌地图里显示表格内的地址数据的小程序</li>\n<li>URL 预览：一款快速预览指定 URL 网页内容的小程序</li></ul>",
+            "en_US": "<p>As vikadata is essentially a visualized database, the widget is the best helper to quickly turn the database into different applications. Now, vikadata supports custom widgets, allowing developers to make full use of widget SDK to develop widgets that meet business scenarios and personal needs. <a href=\"https://vika.cn/developers/widget/introduction\" target=\"_blank\">See documentation</a></p>\n\n<p>Examples of custom widgets:</p>\n\n<ul><li>Cell viewer: help you easily browse data from different column types, such as Magic Link, Rollup, and Attachments</li>\n\n<li>Vika map: help you quickly render the addresses from a datasheet in a Google map </li>\n\n<li>URL preview: help you preview the webpage content from a URL</li></ul>",
+            "zh_HK": "<p>如果說維格表是一款對小白用戶友好的可視化數據庫，小程序便是將這款數據庫直接變成不同形態的 App 的最佳助手。現在，維格表內支持自建小程序，讓開發者充分運用 SDK 能力，開發更多符合業務場景和個人需求的小程序。 <a href=\"https://vika.cn/developers/widget/introduction\" target=\"_blank\">查看文檔</a></p>\n\n<p>自建小程序示例</p>\n<ul><li>單元格查看器：一款方便你瀏覽不同列類型數據的小程序，以一種全新的方式來查看神奇引用、神奇關聯、附件類型的數據</li>\n<li>維格地圖：一款在谷歌地圖裡顯示表格內的地址數據的小程序</li>\n<li>URL 預覽：一款快速預覽指定 URL 網頁內容的小程序</li></ul>"
         },
         "test_function_normal_modal_close_content": {
             "zh_CN": "当前实验性功能已成功停用，刷新后即可生效",
@@ -15880,6 +15954,11 @@
             "zh_CN": "隐藏",
             "en_US": "Hide",
             "zh_HK": "隱藏"
+        },
+        "tooltip_cannot_create_widget_from_dashboard": {
+            "zh_CN": "无法从仪表盘创建小程序，请前往一张维格表创建小程序",
+            "en_US": "You can only create a widget from a datasheet rather than a dashboard",
+            "zh_HK": "無法從儀錶盤創建小程序，請前往一張維格表創建小程序"
         },
         "tooltip_edit_form_formula_field": {
             "zh_CN": "当前字段的数据来自公式计算结果，不能编辑",
@@ -16767,6 +16846,16 @@
             "en_US": "See documentation",
             "zh_HK": "幫助文檔"
         },
+        "widget_center_install_modal_content": {
+            "zh_CN": "自建小程序可能会读取或写入表格数据，请确认已知风险后再安装使用。",
+            "en_US": "Custom widgets may read from or write to the datasheet. Please be aware of the risks before installing the widget.",
+            "zh_HK": "自建小程序可能會讀取或寫入表格數據，請確認已知風險後再安裝使用。"
+        },
+        "widget_center_install_modal_title": {
+            "zh_CN": "确认安装自建小程序",
+            "en_US": "Install the custom widget",
+            "zh_HK": "確認安裝自建小程序"
+        },
         "widget_center_menu_transfer": {
             "zh_CN": "移交小程序的发布权",
             "en_US": "Transfer widget ownership",
@@ -16787,10 +16876,20 @@
             "en_US": "Publisher: ",
             "zh_HK": "發布者："
         },
+        "widget_center_space_introduction": {
+            "zh_CN": "自建小程序由当前空间站的成员开发并发布，仅可在当前空间站安装使用",
+            "en_US": "Custom widgets are developed and published by your Space member and can be installed only in this Space",
+            "zh_HK": "自建小程序由當前空間站的成員開發並發布，僅可在當前空間站安裝使用"
+        },
         "widget_center_tab_official": {
             "zh_CN": "官方推荐",
             "en_US": "Recommended",
             "zh_HK": "官方推薦"
+        },
+        "widget_center_tab_space": {
+            "zh_CN": "空间站自建",
+            "en_US": "Custom",
+            "zh_HK": "空間站自建"
         },
         "widget_collapse_tooltip": {
             "zh_CN": "折叠小程序",
@@ -16962,6 +17061,11 @@
             "en_US": "Installation failed",
             "zh_HK": "安裝失敗"
         },
+        "widget_item_build": {
+            "zh_CN": "自建",
+            "en_US": "Custom",
+            "zh_HK": "自建"
+        },
         "widget_item_developing": {
             "zh_CN": "开发模式",
             "en_US": "Dev mode",
@@ -17036,6 +17140,11 @@
             "zh_CN": "更多设置",
             "en_US": "More settings",
             "zh_HK": "更多設置"
+        },
+        "widget_name": {
+            "zh_CN": "自建小程序",
+            "en_US": "Custom widget",
+            "zh_HK": "自建小程序"
         },
         "widget_name_length_error": {
             "zh_CN": "小程序的名称在 1~30 个字符之间",
@@ -17216,6 +17325,11 @@
             "zh_CN": "在终端中继续执行下列命令：",
             "en_US": "Then execute the following command: ",
             "zh_HK": "在終端中繼續執行下列命令："
+        },
+        "widget_step_init_desc": {
+            "zh_CN": "认证你的开发者身份，并创建小程序的项目文件",
+            "en_US": "Verify your developer identity and create project files for your new widget",
+            "zh_HK": "認證你的開發者身份，並創建小程序的項目文件"
         },
         "widget_step_init_title": {
             "zh_CN": "初始化小程序",

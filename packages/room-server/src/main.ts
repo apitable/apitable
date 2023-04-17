@@ -19,7 +19,7 @@
 import { LoggerService, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { environment, isDevMode } from 'app.environment';
+import { environment } from 'app.environment';
 import { AppModule } from 'app.module';
 import { useContainer } from 'class-validator';
 import * as immer from 'immer';
@@ -35,12 +35,6 @@ import { HttpResponseInterceptor } from 'shared/interceptor';
  */
 async function bootstrap() {
   immer.setAutoFreeze(false);
-  try {
-    const nativeApi = await import('@apitable/room-native-api');
-    await nativeApi.init(isDevMode);
-  } catch (e) {
-    console.log('initialize native module failed:', e);
-  }
 
   const fastifyAdapter = initFastify();
 

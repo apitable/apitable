@@ -41,6 +41,7 @@ import { useSelector } from 'react-redux';
 import { TabAddView } from '../tab_add_view';
 import styles from './style.module.less';
 import { ViewBar } from './view_bar';
+import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
 
 export interface ITabStateProps {
   width: number;
@@ -65,12 +66,21 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const views = datasheet?.snapshot.meta.views;
   const isShowViewbar = get(embedInfo, 'viewControl.tabBar', true);
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
-  const isShowNodeInfoBar = get(embedInfo, 'viewControl.nodeInfoBar', true);
+  const isShowNodeInfoBar = get(embedInfo, 'nodeInfoBar', true);
 
   const { sideBarVisible } = useSideBarVisible();
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
   const { errMsg, checkViewName } = useViewNameChecker();
   const colors = useThemeColors();
+  const operateViewIds = useSelector(state => {
+    return Selectors.getDatasheetClient(state)?.operateViewIds;
+  });
+  const [currentView, setCurrentView] = useState<IViewProperty>();
+  const [showSyncIcon, setShowSyncIcon] = useState<boolean>();
+
+  const getShowViewStatus = (item: IViewProperty) => {
+    return !!item.lockInfo || item.autoSave || operateViewIds?.includes(item.id);
+  };
 
   useEffect(() => {
     if (!activeView) {
@@ -82,6 +92,9 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
     if (!view) {
       switchView(null, views![0].id);
     }
+    setCurrentView(view);
+    const showSyncIcon = getShowViewStatus(view!);
+    setShowSyncIcon(showSyncIcon);
     // eslint-disable-next-line
   }, [views]);
 
@@ -175,13 +188,15 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
 
   return (
     <div
-      className={styles.nav}
+      className={classNames(styles.nav, {
+        [styles.isShowNodeInfoBar]: !isShowNodeInfoBar
+      })}
     >
       {
         isOnlyView ?
-          <div className={styles.embedTitle}>
+          isShowNodeInfoBar && <div className={styles.embedTitle}>
             {
-              viewEditor && editable ? <>
+              viewEditor && editable ? <div className={styles.embedOnlyViewName}>
                 <input
                   className={classNames(styles.inputBox, {
                     [styles.error]: errMsg
@@ -195,18 +210,22 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
                   onClick={(e: any) => e.stopPropagation()}
                   onMouseDown={stopPropagation}
                 />
+                {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
                 {
                   errMsg && <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
                     {errMsg}
                   </Typography>
                 }
 
-              </> : <p
-                onDoubleClick={() => setViewEditor(true)}
-              >
-                {embedOnlyViewName}
-              </p>
-            }
+              </div> : <div className={styles.embedOnlyViewName}>
+                <p
+                  onDoubleClick={() => setViewEditor(true)}
+                >
+                  {embedOnlyViewName}
+                </p>
+                {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
+              </div>
+            } 
           </div> : (
             isShowNodeInfoBar && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
               {

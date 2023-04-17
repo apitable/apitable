@@ -879,11 +879,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
      */
     @Override
     public void checkMemberIsMainAdmin(final String spaceId,
-                                       final Long memberId) {
+        final Long memberId, Consumer<Boolean> consumer) {
         log.info("checks whether specified member is main admin");
         Long owner = baseMapper.selectSpaceMainAdmin(spaceId);
-        boolean isMainAdmin = owner != null && owner.equals(memberId);
-        ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN);
+        consumer.accept(owner != null && owner.equals(memberId));
     }
 
     /**

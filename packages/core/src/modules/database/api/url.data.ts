@@ -121,5 +121,8 @@ export const GET_CONTENT_DISPOSITION = '/attach/getContentDisposition';
 // Cascader data
 export const CASCADER_DATA = '/spaces/:spaceId/datasheets/:datasheetId/cascader';
 
-// Cascader snapshot data
-export const CASCADER_SNAPSHOT = '/spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot';
+// Get cascader snapshot data
+export const CASCADER_SNAPSHOT = '/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot';
+
+// Update cascader snapshot data
+export const UPDATE_CASCADER_SNAPSHOT = '/spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot';

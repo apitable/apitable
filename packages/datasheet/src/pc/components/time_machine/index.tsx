@@ -18,13 +18,15 @@
 
 import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@apitable/components';
 import {
-  Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, 
+  Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset,
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
 import { message } from 'antd';
 import dayjs from 'dayjs';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 import { difference } from 'lodash';
 import { Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
@@ -37,8 +39,6 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
 
 import styles from './style.module.less';
 import { getForeignDatasheetIdsByOp } from './utils';
@@ -174,7 +174,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   }, [dispatch, changesetList, curDatasheet]);
 
   const execute = useCallback((index: number, preview = false) => {
-    const operations = changesetList.slice(0, index+1).map(cs => {
+    const operations = changesetList.slice(0, index + 1).map(cs => {
       // op needs to be executed in reverse when rolling back, so the order should also be reversed first
       return cs.operations.filter(op => !op.cmd.startsWith('System')).reverse();
     }).flat(1);
@@ -212,34 +212,12 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
     execute(index, true);
   }, [execute]);
 
-  const onRollbackClick = useCallback((index: number) => {
-    Modal.confirm({
-      title: t(Strings.rollback_title, { revision: changesetList![index].revision }),
-      width: 620,
-      zIndex: 5001,
-      content: <>
-        <p>操作前阅读：</p>
-        <p>点击确定后，会将数据从最新版本回滚到指定版本，目标版本以前的所有改动将会被撤销掉。 </p>
-        <p>回滚不是直接删除修改，而是通过新的操作把原来的操作抵消掉，所以回滚操作(Rollback)也会出现在历史记录中。</p>
-        <p>回滚过程中若遇到不可逆的操作，如：关联字段的关联表被删除，则不能恢复此操作相关的数据。</p>
-        <p className={styles.danger}>请在回滚之前先预览要回滚的版本，以确保回退到正确的版本。</p>
-        <p className={styles.danger}>回滚功能目前处于Beta版本，未经严格测试，具有一定风险性，请确认自己非常清楚正在做什么，否则有数据丢失的风险！</p>
-      </>,
-      okButtonProps: {
-        color: 'danger'
-      },
-      onOk() {
-        execute(index, false);
-      }
-    });
-  }, [changesetList, execute]);
-
   if (!changesetList) {
     return (
       <>
-        <Skeleton width="38%" />
+        <Skeleton width='38%' />
         <Skeleton count={2} />
-        <Skeleton width="61%"/>
+        <Skeleton width='61%' />
       </>
     );
   }
@@ -247,11 +225,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <Typography variant="h6">{t(Strings.time_machine)}</Typography>
-        <Tooltip content={t(Strings.robot_panel_help_tooltip)} placement="top-center">
-          <Box display="flex" alignItems="center">
+        <Typography variant='h6'>{t(Strings.time_machine)}</Typography>
+        <Tooltip content={t(Strings.robot_panel_help_tooltip)} placement='top-center'>
+          <Box display='flex' alignItems='center'>
             <IconButton
-              shape="square"
+              shape='square'
               icon={QuestionCircleOutlined} onClick={() => {
                 window.open(t(Strings.timemachine_help_url));
               }} />
@@ -259,7 +237,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         </Tooltip>
         <Beta />
         <IconButton
-          shape="square"
+          shape='square'
           onClick={() => onClose(false)}
           icon={CloseOutlined}
           style={{ position: 'absolute', right: 16 }}
@@ -292,10 +270,9 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                   </div>
                   <div className={styles.operation}>
                     <TextButton disabled={isEmpty} onClick={() => onExpandClick(index)}>
-                      { expanded ? t(Strings.collapse) : t(Strings.expand)}
+                      {expanded ? t(Strings.collapse) : t(Strings.expand)}
                     </TextButton>
-                    <TextButton color="primary" disabled={isEmpty} onClick={() => onPreviewClick(index)}>{t(Strings.preview_revision)}</TextButton>
-                    <TextButton color="danger" disabled={isEmpty} onClick={() => onRollbackClick(index)}>{t(Strings.rollback_revision)}</TextButton>
+                    <TextButton color='primary' disabled={isEmpty} onClick={() => onPreviewClick(index)}>{t(Strings.preview_revision)}</TextButton>
                   </div>
                 </div>
                 {expanded && <pre><code>{JSON.stringify(ops, null, 2)}</code></pre>}
