@@ -31,16 +31,19 @@ import { getTextByCellValue, IFieldMethods } from '../utils/cell.value.to.string
 import { CascaderSnapshotUpdateDto } from '../dtos/cascader.snapshot.update.dto';
 import { CascaderSnapshotDeleteDto } from '../dtos/cascader.snapshot.delete.dto';
 import { getBranch, getNode, initStorageContainers, linkNodeToParentNode, setNode } from '../utils/tree.util';
+import { NodeService } from 'node/services/node.service';
 
 @Injectable()
 export class DatasheetFieldCascaderSnapshotService {
   constructor(
     private readonly datasheetCascaderFieldRepository: DatasheetCascaderFieldRepository,
     private readonly cascaderDataBusService: CascaderDatabusService,
+    private readonly nodeService: NodeService,
   ) {}
 
   public async getCascaderSnapshot(dto: CascaderSnapshotQueryDto): Promise<CascaderSnapshotVo> {
-    const { spaceId, datasheetId, fieldId, linkedFieldIds } = dto;
+    const { datasheetId, fieldId, linkedFieldIds } = dto;
+    const spaceId = await this.nodeService.getSpaceIdByNodeId(datasheetId);
     const cascaderData: DatasheetCascaderFieldEntity[] = await this.datasheetCascaderFieldRepository.selectRecordData(spaceId, datasheetId, fieldId,);
     if (!linkedFieldIds || linkedFieldIds.length > 100) { // Prevents DoS.
       return {
@@ -80,10 +83,12 @@ export class DatasheetFieldCascaderSnapshotService {
       fieldId,
     );
     await this.datasheetCascaderFieldRepository.manager.transaction(async() => {
-      await this.datasheetCascaderFieldRepository.delete({
+      await this.datasheetCascaderFieldRepository.update({
         spaceId,
         datasheetId,
         fieldId,
+      }, {
+        isDeleted: true,
       });
       await this.datasheetCascaderFieldRepository.save(cascaderSnapshot);
     });

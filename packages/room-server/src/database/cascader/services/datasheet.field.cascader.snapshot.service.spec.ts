@@ -26,6 +26,7 @@ import { CommandService } from 'database/command/services/command.service';
 import { WinstonModule } from 'nest-winston';
 import { DatasheetCascaderFieldRepository } from '../repositories/datasheet.cascader.field.repository';
 import { IFieldMap, IMeta, IRecordMap, IViewProperty, Role } from '@apitable/core';
+import { NodeService } from 'node/services/node.service';
 
 function getDepthOfNode(root: CascaderChildren): number {
   let depth = 0;
@@ -53,6 +54,7 @@ describe('DatasheetFieldTreeSelectService', () => {
   let restService: RestService;
   let datasheetService: DatasheetService;
   let datasheetCascaderFieldRepository: DatasheetCascaderFieldRepository;
+  // let nodeService: NodeService;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -63,6 +65,12 @@ describe('DatasheetFieldTreeSelectService', () => {
       ],
       providers: [
         CommandService,
+        {
+          provide: NodeService,
+          useValue: {
+            getSpaceIdByNodeId: jest.fn(),
+          }
+        },
         {
           provide: RestService,
           useValue: {
@@ -81,7 +89,7 @@ describe('DatasheetFieldTreeSelectService', () => {
           provide: DatasheetCascaderFieldRepository,
           useValue: {
             selectRecordData: jest.fn(),
-            delete: jest.fn(),
+            update: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
             manager: {
@@ -94,6 +102,7 @@ describe('DatasheetFieldTreeSelectService', () => {
     restService = module.get<RestService>(RestService);
     datasheetService = module.get<DatasheetService>(DatasheetService);
     datasheetFieldCascaderSnapshotService = module.get<DatasheetFieldCascaderSnapshotService>(DatasheetFieldCascaderSnapshotService);
+    // nodeService = module.get<NodeService>(NodeService);
     datasheetCascaderFieldRepository = module.get<DatasheetCascaderFieldRepository>(DatasheetCascaderFieldRepository);
   });
 
@@ -173,7 +182,6 @@ describe('DatasheetFieldTreeSelectService', () => {
       },
     ] as any[]);
     const cascaderNodes = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: 'spc41',
       datasheetId: 'dst41',
       fieldId: 'fld41',
       linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24'],
@@ -242,7 +250,6 @@ describe('DatasheetFieldTreeSelectService', () => {
       },
     ] as any[]);
     const treeSelects = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: 'spc41',
       datasheetId: 'dst41',
       fieldId: 'fld41',
       linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24'],
@@ -298,7 +305,6 @@ describe('DatasheetFieldTreeSelectService', () => {
       },
     ] as any[]);
     const cascaderNodes = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: 'spc24',
       datasheetId: 'dst24',
       fieldId: 'fld24',
       linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24', 'linkedFld22', 'linkedFld21'],

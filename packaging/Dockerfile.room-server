@@ -42,6 +42,12 @@ RUN yarn build:sr
 
 RUN yarn build:room-native-api:arm64
 
+RUN rm -rf packages/room-native-api/target
+
+ARG KEEP_DEV_DEP
+
+RUN if [[ -z "$KEEP_DEV_DEP" ]] ; then yarn workspaces focus @apitable/room-server --production; fi
+
 # stage runner
 FROM apitable/node:v16.15.0 AS runner
 

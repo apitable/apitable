@@ -186,9 +186,12 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                 units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
             if (typeEnum == UnitType.MEMBER) {
                 // load the required member information
-                List<MemberBaseInfoDTO> memberBaseInfoDTOList =
-                    memberMapper.selectBaseInfoDTOByIds(refIds);
-                memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
+                List<List<Long>> split = CollUtil.split(refIds, 1000);
+                for (List<Long> ids : split) {
+                    List<MemberBaseInfoDTO> memberBaseInfoDTOList =
+                        memberMapper.selectBaseInfoDTOByIds(ids);
+                    memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
+                }
             } else if (typeEnum == UnitType.TEAM) {
                 // load the required team information
                 List<TeamBaseInfoDTO> teamBaseInfoDTOList =

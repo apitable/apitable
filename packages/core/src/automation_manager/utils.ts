@@ -20,6 +20,7 @@
  * utils for operand
  */
 import produce from 'immer';
+import { JSONSchema7 } from 'json-schema';
 import { isEqual } from 'lodash';
 import { EmptyNullOperand, EmptyObjectOperand, EmptyArrayOperand } from './const';
 
@@ -46,8 +47,8 @@ export const isObjectOperand = (operand: any) => {
 
 /**
  * get value of operand-object by key
- * @param objectOperand 
- * @param key 
+ * @param objectOperand
+ * @param key
  * @param propertySchema
  */
 export const getObjectOperandProperty = (objectOperand: any, key: string, propertySchema: any) => {
@@ -103,14 +104,19 @@ export const getOperandValueType = (operand: any) => {
   throw Error('must be operand');
 };
 
-export const isOperandNullValue = (operand: any, schema: any) => {
-  // if null 
+export const isOperandNullValue = (operand: any, schema: any): boolean => {
+  // if null
   if (operand.type === 'Literal' && operand.value === null) {
     return true;
   }
   switch (schema.type) {
-    case 'object':
-      return isEqual(operand, EmptyObjectOperand);
+    case 'object': {
+      return Object.keys(schema.properties!).some(propertyKey => {
+        const propertySchema = schema.properties![propertyKey] as JSONSchema7;
+        const propertyValue = getObjectOperandProperty(operand, propertyKey, propertySchema);
+        return isOperandNullValue(propertyValue, propertySchema);
+      });
+    }
     case 'array':
       return isEqual(operand, EmptyArrayOperand);
     case 'string':
@@ -120,12 +126,12 @@ export const isOperandNullValue = (operand: any, schema: any) => {
     case 'number':
       break;
   }
-  return;
+  return false;
 };
 
 /**
  * merge to the array of operands into one object operand
- * - ['key1',{k11:v11,k12:v12},'key1',{k11:v12,k22:v22},'key2','value22'] => 
+ * - ['key1',{k11:v11,k12:v12},'key1',{k11:v12,k22:v22},'key2','value22'] =>
  * {
  *   key1: {
  *      k11: v12, // params[0].key1.k11 is overrided by params[2].key1.k11
@@ -134,12 +140,12 @@ export const isOperandNullValue = (operand: any, schema: any) => {
  *   }
  *   key2: 'value22'
  * }
- * @param operands 
+ * @param operands
  */
 export const objectCombOperand = (operands: any[]) => {
   const newItems: any[] = [];
   for (let idx = 0; idx < operands.length; idx += 2) {
-    // idx 0 2 4 6 8 
+    // idx 0 2 4 6 8
     const itemKey = operands[idx]; // 0
     const itemValue = operands[idx + 1]; //1
     // even numbers is key & odd numbers is value
@@ -209,8 +215,8 @@ export const data2Operand = (data: any): any => {
 
 /**
  * merge two operands into one
- * @param operand1 
- * @param operand2 
+ * @param operand1
+ * @param operand2
  */
 export const mergeOperand = (operand1: any, operand2: any) => {
   if (isObjectOperand(operand1) && isObjectOperand(operand2)) {

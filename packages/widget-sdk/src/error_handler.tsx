@@ -18,14 +18,11 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, StatusCode, Strings, t } from 'core';
-// import { WidgetEmptyPath } from './ui/widget_empty';
-import { getWidgetDatasheet } from 'store';
-import { IReduxState } from '@apitable/core';
 import { useMeta } from 'hooks';
-import WidgetNoPermissionLight from './static/dashboard_widget_permission_light.png';
-import WidgetNoPermissionDark from './static/dashboard_widget_permission_dark.png';
-import { ThemeName } from '@apitable/components';
+import { getWidgetDatasheet } from 'store';
+import { Selectors, StatusCode } from 'core';
+import { IReduxState } from '@apitable/core';
+import { ErrorMessage } from './error_message';
 
 export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props => {
   let errorCode = useSelector(state => {
@@ -45,7 +42,6 @@ export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props =>
     const widgetState = state as any as IReduxState;
     return widgetState.theme;
   });
-  const widgetNoPermission = themeName === ThemeName.Light ? WidgetNoPermissionLight : WidgetNoPermissionDark;
 
   const { sourceId } = useMeta();
   const isLoading = useSelector(state => {
@@ -83,54 +79,13 @@ export const ErrorHandler: React.FC<React.PropsWithChildren<unknown>> = props =>
     </h1>;
   }
 
-  const getErrorTip = () => {
-    switch (errorCode) {
-      case StatusCode.NODE_DELETED:
-        return t(Strings.widget_datasheet_has_delete);
-      case StatusCode.NODE_NOT_EXIST:
-        return t(Strings.widget_no_access_datasheet);
-      default:
-        return t(Strings.widget_unknow_err, {
-          info: errorCode,
-        });
-    }
-  };
-
   if (errorCode) {
-    return <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)',
-        width: '100%',
-      }}
-    >
-      <div style={{
-        width: '160px',
-        height: '120px',
-        margin: '0 auto',
-      }}>
-        <img src={widgetNoPermission} alt='' width={160} height={120} style={{ margin: '0 auto' }} />
-      </div>
-      
-      <p
-        style={{
-          textAlign: 'center',
-          fontSize: 14,
-        }}
-      >
-        {
-          getErrorTip()
-        }，
-        <a href={t(Strings.dashboard_access_denied_help_link)} target="_blank" rel="noopener noreferrer" style={{
-          borderBottom: '1px solid',
-          paddingBottom: 2,
-        }}>
-          {t(Strings.know_more)}
-        </a>
-      </p>
-    </div>;
+    return (
+      <ErrorMessage 
+        errorCode={errorCode}
+        themeName={themeName}
+      />
+    );
   }
   return (props.children || null) as any;
 };

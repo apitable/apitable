@@ -46,11 +46,18 @@ export class UnitRepository extends Repository<UnitEntity> {
     // todo(itou): replace dynamic sql
     const unitInfo: any[] = await queryRunner.query(
       `
-          SELECT vu.id unitId, vu.unit_type type, vu.is_deleted isDeleted,
-          COALESCE(vut.team_name, vum.member_name, vur.role_name) name, u.avatar avatar, u.color avatarColor,
-          u.nick_name nickName,
-          IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
-          vum.is_active isActive, u.uuid userId, u.uuid uuid
+          SELECT
+            vu.id unitId,
+            vu.unit_type type,
+            vu.is_deleted isDeleted,
+            COALESCE(vut.team_name, vum.member_name, vur.role_name) name,
+            u.avatar avatar,
+            u.color avatarColor,
+            u.nick_name nickName,
+            IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified,
+            vum.is_active isActive,
+            u.uuid userId,
+            u.uuid uuid
           FROM ${tableNamePrefix}unit vu
           LEFT JOIN ${tableNamePrefix}unit_team vut ON vu.unit_ref_id = vut.id
           LEFT JOIN ${tableNamePrefix}unit_member vum ON vu.unit_ref_id = vum.id

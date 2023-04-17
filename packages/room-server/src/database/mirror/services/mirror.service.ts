@@ -19,14 +19,10 @@
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { IPermissions } from '@apitable/core';
-import { InjectLogger } from '../../../shared/common';
 import { DatasheetException } from '../../../shared/exception';
 import { IFetchDataOriginOptions, IAuthHeader } from '../../../shared/interfaces';
 import { omit } from 'lodash';
-import { DatasheetPack, MirrorInfo, UnitInfo, UserInfo } from '../../interfaces';
-import { Logger } from 'winston';
-import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
-import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
+import { DatasheetPack, MirrorInfo } from '../../interfaces';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
@@ -34,11 +30,8 @@ import { ResourceMetaRepository } from 'database/resource/repositories/resource.
 @Injectable()
 export class MirrorService {
   constructor(
-    @InjectLogger() private readonly logger: Logger,
     private readonly nodeService: NodeService,
     private readonly datasheetService: DatasheetService,
-    private readonly datasheetMetaService: DatasheetMetaService,
-    private readonly datasheetRecordService: DatasheetRecordService,
     private readonly resourceMetaRepository: ResourceMetaRepository,
   ) {}
 
@@ -53,35 +46,19 @@ export class MirrorService {
     return {
       mirror: omit(node, ['extra']),
       sourceInfo: nodeRelInfo,
-      snapshot: meta
+      snapshot: meta,
     };
   }
 
   @Span()
-  async fetchDataPack(mirrorId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<DatasheetPack> {
-    const beginTime = +new Date();
-    this.logger.info(`mirror[${mirrorId}] Start loading data`);
+  async fetchDataPack(mirrorId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions, recordIds?: string[]): Promise<DatasheetPack> {
     // Query info of referenced database and view
     const datasheetId = await this.nodeService.getMainNodeId(mirrorId);
-    // Query node info
-    const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(datasheetId, auth, origin);
-    // Query meta of referenced datasheet
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(datasheetId, DatasheetException.DATASHEET_NOT_EXIST);
-    const recordMap =
-      origin && origin.recordIds
-        ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(datasheetId, origin.recordIds)
-        : await this.datasheetRecordService.getRecordsByDstId(datasheetId);
-    // Query foreignDatasheetMap and unitMap
-    const combine = await this.datasheetService.processField(datasheetId, auth, meta, recordMap, origin);
-    const endTime = +new Date();
-    this.logger.info(`mirror[${mirrorId}] Finished loading data, duration: ${endTime - beginTime}ms`);
-    return {
-      datasheet: node,
-      snapshot: { meta, recordMap, datasheetId },
-      fieldPermissionMap,
-      foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as ((UserInfo | UnitInfo)[]),
-    };
+
+    return this.datasheetService.fetchCommonDataPack('mirror', datasheetId, auth, origin, {
+      recordIds,
+      metadataException: DatasheetException.DATASHEET_NOT_EXIST,
+    });
   }
 
   public rewriteMirrorPermission(permissions: IPermissions) {

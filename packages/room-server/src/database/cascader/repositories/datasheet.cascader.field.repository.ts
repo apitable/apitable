@@ -28,6 +28,7 @@ export class DatasheetCascaderFieldRepository extends Repository<DatasheetCascad
         spaceId,
         datasheetId,
         fieldId,
+        isDeleted: false,
       },
     });
   }

@@ -91,6 +91,8 @@ export function SchemaField(props: ISchemaFieldProps) {
   }
 
   const description = uiSchema['ui:description'] || props.schema.description || schema.description;
+  const hideDesc = 'ui:options' in uiSchema && 'hideDesc' in uiSchema['ui:options']! ? Boolean(uiSchema['ui:options']!['hideDesc']) : false;
+
   const errors = __errors;
   const help = uiSchema['ui:help'];
   const hidden = uiSchema['ui:widget'] === 'hidden';
@@ -105,11 +107,11 @@ export function SchemaField(props: ISchemaFieldProps) {
     .trim();
 
   const fieldProps = {
-    description: <DescriptionField id={id + '__description'} description={description} formContext={formContext}/>,
+    description: !hideDesc && <DescriptionField id={id + '__description'} description={description} formContext={formContext} />,
     rawDescription: description,
-    help: <Help id={id + '__help'} help={help}/>,
+    help: <Help id={id + '__help'} help={help} />,
     rawHelp: typeof help === 'string' ? help : undefined,
-    errors: <ErrorList errors={errors as any}/>,
+    errors: <ErrorList errors={errors as any} />,
     rawErrors: errors,
     id,
     label,
@@ -139,10 +141,10 @@ export function SchemaField(props: ISchemaFieldProps) {
         {field}
 
         {/*
-        If the schema `anyOf` or 'oneOf' can be rendered as a select control, don't
-        render the selection and let `StringField` component handle
-        rendering
-      */}
+         If the schema `anyOf` or 'oneOf' can be rendered as a select control, don't
+         render the selection and let `StringField` component handle
+         rendering
+         */}
         {schema.anyOf && !isSelect(schema) && (
           <_AnyOfField
             disabled={disabled}

@@ -1,7 +1,6 @@
 import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Cascader } from 'pc/components/cascader';
-import { string2Segment, ILinkedField, DatasheetApi, Selectors, ISegment, ICellValue, ICascaderNode } from '@apitable/core';
+import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICellValue, ICascaderNode } from '@apitable/core';
 import { IEditor, IBaseEditorProps } from 'pc/components/editors/interface';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
@@ -21,7 +20,6 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   editing,
   onSave,
 }, ref) => {
-  const spaceId = useSelector(Selectors.activeSpaceId)!;
 
   const cascaderRef = useRef<any>(null);
 
@@ -40,7 +38,6 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   const loadTreeSnapshot = useCallback(async() => {
     setLoading(false);
     const res = await DatasheetApi.getCascaderSnapshot({
-      spaceId,
       datasheetId,
       fieldId: field.id,
       linkedFieldIds: field.property.linkedFields.map((linkedField: ILinkedField) => linkedField.id),
@@ -52,7 +49,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
 
     setOptions(options);
     setLoading(true);
-  }, [spaceId, datasheetId, field.id, field.property.linkedFields]);
+  }, [datasheetId, field.id, field.property.linkedFields]);
 
   const onStartEdit = (value?: ISegment[] | null) => {
     if (!value) {

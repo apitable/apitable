@@ -1,6 +1,7 @@
 import { Selectors, StoreActions } from '@apitable/core';
 import {
-  eventMessage, getLanguage, IExpandRecordProps, initRootWidgetState, initWidgetStore, MessageType, RuntimeEnv, WidgetProvider
+  eventMessage, getLanguage, IExpandRecordProps, initRootWidgetState, 
+  initWidgetStore, MessageType, RuntimeEnv, WidgetProvider, ErrorMessage
 } from '@apitable/widget-sdk';
 import { useMount, useUnmount } from 'ahooks';
 import { dashboardReg } from 'pc/hooks';
@@ -43,6 +44,11 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
   const theme = useSelector(state => state.theme);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
   const [widgetStore, setWidgetStore] = useState<any>();
+  const errorCode = useSelector(state => {
+    const widget = Selectors.getWidget(state, widgetId)!;
+    const { sourceId, datasheetId } = widget.snapshot;
+    return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
+  });
 
   const nodeConnected = useSelector(state => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
@@ -141,6 +147,15 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
     };
   }, [widgetId, widgetStore]);
 
+  if (errorCode) {
+    return (
+      <ErrorMessage
+        errorCode={errorCode}
+        themeName={theme}
+      />
+    );
+  }
+  
   if (!nodeConnected || !widgetStore) {
     return <WidgetLoading/>;
   }

@@ -296,6 +296,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     MemberInfoDTO selectIdByUserIdAndSpaceIdExcludeDelete(@Param("userId") Long userId, @Param("spaceId") String spaceId);
 
     /**
+     * Query member information
+     *
+     * @param memberIds memberIds
+     * @return List<MemberInfoDTO>
+     * @author Chambers
+     */
+    List<MemberInfoDTO> selectMemberInfoDTOByIds(@Param("memberIds") Collection<Long> memberIds);
+
+    /**
      * query the user's member id in the space, even if member is deleted.
      *
      * @param userId user id

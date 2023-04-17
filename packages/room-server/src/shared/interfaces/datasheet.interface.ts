@@ -166,10 +166,6 @@ export interface IFetchDataOriginOptions {
    * form flag
    */
   form?: boolean;
-  /**
-   * record IDs
-   */
-  recordIds?: string[];
 }
 
 export interface INodeExtra {

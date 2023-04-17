@@ -116,7 +116,7 @@ export interface IEmailField extends IBaseField {
   property: IEmailProperty;
 }
 export interface IMemberProperty {
-  isMulti: boolean; // Optional single or multiple members.
+  isMulti?: boolean; // Optional single or multiple members.
   shouldSendMsg: boolean; // Whether to send a message notification after selecting a member
   unitIds: string[];
 }
@@ -137,7 +137,7 @@ export interface IMemberField extends IBaseField {
 export type IUuids = string[];
 
 export type ICreatedByProperty = {
-  uuids: string[];
+  uuids: (string | {} | null)[];
   datasheetId: string;
 };
 
@@ -146,7 +146,7 @@ export interface ICreatedByField extends IBaseField {
   property: ICreatedByProperty;
 }
 export interface ILastModifiedByProperty {
-  uuids: string[];
+  uuids: (string | {} | null)[];
   datasheetId: string;
   // dependent field collection type
   collectType: CollectType;

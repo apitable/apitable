@@ -173,6 +173,7 @@ const FieldTypeStringMap = {
   [FieldType.SingleText]: APIMetaFieldType.SingleText,
   [FieldType.Text]: APIMetaFieldType.Text,
   [FieldType.URL]: APIMetaFieldType.URL,
+  [FieldType.Cascader]: APIMetaFieldType.Cascader,
 };
 
 export const getFieldTypeString = (fieldType: FieldType) => {
@@ -281,11 +282,11 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
   return null;
 };
 
-export const getApiMetaUserProperty = (uuids: string[], userMap?: IUserMap | null) => {
+export const getApiMetaUserProperty = (uuids: (string | {} | null)[], userMap?: IUserMap | null) => {
   let options: IAPIMetaUser[] = [];
   if (userMap) {
     options = uuids.reduce<IAPIMetaUser[]>((pre, uuid) => {
-      if (userMap[uuid]) {
+      if (typeof uuid === 'string' && userMap[uuid]) {
         const { name, avatar } = userMap[uuid]!;
         pre.push({
           id: uuid,

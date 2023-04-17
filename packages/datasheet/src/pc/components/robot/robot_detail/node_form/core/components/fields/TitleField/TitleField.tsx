@@ -25,13 +25,13 @@ import cls from 'classnames';
 import { ChevronDownOutlined } from '@apitable/icons';
 
 export const TitleField = (props: Pick<IFieldProps, 'id' | 'title' | 'required'> & {
-  help?: IHelp;
-  hasCollapse?: boolean;
-  defaultCollapse?: boolean;
-  onChange?: (collapse: boolean) => void;
-  style?: React.CSSProperties;
+    help?: IHelp;
+    hasCollapse?: boolean;
+    defaultCollapse?: boolean;
+    onChange?: (collapse: boolean) => void;
+    style?: React.CSSProperties;
 }) => {
-  const { title, id, help, hasCollapse, style, defaultCollapse = false, onChange } = props;
+  const { title, id, help, hasCollapse, style, defaultCollapse = false, onChange, required } = props;
   const [, level] = (id || '').split('-');
   const titleLevel = Math.min(parseInt(level, 10) || 0, 2);
   const titleCls = cls(styles.h, {
@@ -48,10 +48,14 @@ export const TitleField = (props: Pick<IFieldProps, 'id' | 'title' | 'required'>
     setCollapse(newValue);
     onChange && onChange(newValue);
   };
-
   return <div className={titleCls} style={style} id={id} onClick={switchCollapse}>
+    {
+      required && <span style={{ color: 'red', width: 10 }}>*</span>
+    }
     {title}
-    {help && <HelpIconButton help={help} />}
-    {hasCollapse && <span className={cls(styles.suffixIcon, { [styles.isIconRotate]: !collapse })} > <ChevronDownOutlined color="#8C8C8C" /></span>}
+    {help && <HelpIconButton help={help}/>}
+    {hasCollapse &&
+            <span className={cls(styles.suffixIcon, { [styles.isIconRotate]: !collapse })}> <ChevronDownOutlined
+              color="#8C8C8C"/></span>}
   </div>;
 };

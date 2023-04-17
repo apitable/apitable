@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, Field, ISegment } from '@apitable/core';
-import { EmailOutlined, TelephoneOutlined, LinkOutlined } from '@apitable/icons';
+import { Field, FieldType, getTextFieldType, ISegment, KONVA_DATASHEET_ID, SegmentType } from '@apitable/core';
+import { AddOutlined, EmailOutlined, LinkOutlined, TelephoneOutlined } from '@apitable/icons';
 import { Icon, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE } from '../../../constant';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -49,7 +49,10 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     renderData,
     isActive,
     cellValue,
+    editable,
+    toggleEdit,
   } = props;
+  const [isAddIconHover, setAddIconHover] = useState(false);
   const { theme, setTooltipInfo, clearTooltipInfo } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
@@ -98,6 +101,8 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
       });
     }
   };
+
+  const AddOutlinedPath = AddOutlined.toString();
 
   const renderText = () => {
     if (renderContent == null) return null;
@@ -182,6 +187,23 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
       recordId={recordId}
       renderData={renderData}
     >
+      {
+        fieldType === FieldType.Cascader && renderContent == null && isActive && editable &&
+        <Icon
+          name={name}
+          x={GRID_CELL_VALUE_PADDING}
+          y={5}
+          data={AddOutlinedPath}
+          shape={'circle'}
+          backgroundWidth={22}
+          backgroundHeight={22}
+          background={isAddIconHover ? colors.rowSelectedBgSolid : 'transparent'}
+          onMouseEnter={() => setAddIconHover(true)}
+          onMouseOut={() => setAddIconHover(false)}
+          onClick={toggleEdit}
+          onTap={toggleEdit}
+        />
+      }
       {
         isActive &&
         renderText()

@@ -78,7 +78,7 @@ describe('Test NodeService', () => {
         {
           provide: MetaService,
           useValue: {
-            selectReversionByResourceId: jest.fn(),
+            selectRevisionByResourceId: jest.fn(),
           },
         },
         NodeService,
@@ -176,19 +176,19 @@ describe('Test NodeService', () => {
   });
 
   it('should be return revision', async() => {
-    jest.spyOn(metaService, 'selectReversionByResourceId').mockResolvedValue({ revision: '1' } as any);
-    const revision = await service.getReversionByResourceId('1');
+    jest.spyOn(metaService, 'selectRevisionByResourceId').mockResolvedValue({ revision: '1' } as any);
+    const revision = await service.getRevisionByResourceId('1');
     expect(revision).toEqual(1);
   });
 
   it('should be return whether record history', async() => {
-    jest.spyOn(nodeRepository, 'selectExtraByNodeId').mockResolvedValue({ extra: { showRecordHistory: true } });
+    jest.spyOn(nodeRepository, 'selectExtraByNodeId').mockResolvedValue({ extra: { showRecordHistory: true }});
     const isShowed = await service.showRecordHistory('1');
     expect(isShowed).toBeTruthy();
   });
 
   it('should be throw no show record history', async() => {
-    jest.spyOn(nodeRepository, 'selectExtraByNodeId').mockResolvedValue({ extra: { showRecordHistory: false } });
+    jest.spyOn(nodeRepository, 'selectExtraByNodeId').mockResolvedValue({ extra: { showRecordHistory: false }});
     await expect(async() => {
       await service.showRecordHistory('-1', true);
     }).rejects.toThrow(DatasheetException.SHOW_RECORD_HISTORY_NOT_PERMISSION.message);

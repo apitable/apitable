@@ -101,7 +101,6 @@ export interface IGetTreeSelectDataRes {
 }
 
 export interface IGetTreeSelectSnapshotReq {
-  spaceId: string;
   datasheetId: string;
   fieldId: string;
   linkedFieldIds: string[];

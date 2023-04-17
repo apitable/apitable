@@ -34,7 +34,7 @@ import {
   TelephoneOutlined,
   StarOutlined, SelectSingleOutlined, TextOutlined,
   LinkOutlined,
-  LockFilled
+  LockFilled, CascadeOutlined,
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -62,6 +62,7 @@ const FieldIconMap = {
   [FieldType.LastModifiedTime]: HistoryFilled,
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
+  [FieldType.Cascader]: CascadeOutlined,
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {

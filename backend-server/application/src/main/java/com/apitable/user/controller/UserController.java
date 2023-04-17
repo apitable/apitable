@@ -36,6 +36,7 @@ import static com.apitable.user.enums.UserException.PASSWORD_HAS_SETTING;
 import static com.apitable.user.enums.UserException.USER_NOT_BIND_EMAIL;
 import static com.apitable.user.enums.UserException.USER_NOT_BIND_PHONE;
 import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
 
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -77,6 +78,7 @@ import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.LabsApplicantTypeEnum;
 import com.apitable.space.service.ILabsApplicantService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
@@ -201,6 +203,9 @@ public class UserController {
 
     @Resource
     private LoginUserCacheService loginUserCacheService;
+
+    @Resource
+    private ISpaceService iSpaceService;
 
     /**
      * Get personal information.
@@ -755,6 +760,9 @@ public class UserController {
         UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId,
             spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
+        // Whether member is main admin
+        iSpaceService.checkMemberIsMainAdmin(spaceId, userSpace.getMemberId(),
+            isMainAdmin -> ExceptionUtil.isTrue(isMainAdmin, CAN_OP_MAIN_ADMIN));
         String applicant =
             StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {
