@@ -352,6 +352,18 @@
         ORDER BY is_deleted asc, id desc limit 1
     </select>
 
+    <select id="selectMemberInfoDTOByIds"
+            resultType="com.apitable.workspace.dto.MemberInfoDTO">
+        SELECT um.id, u.uuid
+        FROM ${tablePrefix}unit_member um
+        LEFT JOIN ${tablePrefix}user u ON u.id = um.user_id
+        WHERE um.id IN
+        <foreach item="item" index="index" collection="memberIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">
         select id
         from ${tablePrefix}unit_member
@@ -882,10 +894,6 @@
         <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
             #{item}
         </foreach>
-        ORDER BY FIELD(vum.id,
-        <foreach item="item" index="index" collection="memberIds" separator=",">
-            #{item}
-        </foreach>)
     </select>
 
     <select id="selectBySpaceId" resultType="com.apitable.organization.entity.MemberEntity">
