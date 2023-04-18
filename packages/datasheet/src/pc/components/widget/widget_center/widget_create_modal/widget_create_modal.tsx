@@ -18,7 +18,7 @@
 
 import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, StoreActions, Strings, t,
+  CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, ResourceType, Selectors, StoreActions, Strings, t,
   WidgetApi, WidgetApiInterface,
 } from '@apitable/core';
 import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -271,6 +271,12 @@ const WidgetCretInvalidError = () => (
   </div>
 );
 
+export const addCurrentDomainIfNeeded = (url: string) => {
+  const currentDomain = window.location.origin;
+  const parsedUrl = new URL(url, currentDomain);
+  return parsedUrl.toString();
+};
+
 const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreateStepsProps>> = (props) => {
   const colors = useThemeColors();
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
@@ -329,7 +335,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
         value:
           widgetCliCmd({
             apiToken: userInfo?.apiKey, spaceId: userInfo?.spaceId, env: window.location.origin, widgetName, widgetPackageId,
-            templateUrl: isPrivateDeployment() ? `${window.location.origin}${sourceCodeUrl}` : sourceCodeUrl,
+            templateUrl: sourceCodeUrl ? addCurrentDomainIfNeeded(sourceCodeUrl) : sourceCodeUrl,
           }),
         desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
       }],
