@@ -1581,8 +1581,8 @@
             "en_US": "APITable is an API-first, embed-friendly no-code database, the best Airtable open-source alternative. Get your data and projects managed magically."
         },
         "apitable_og_site_name_content": {
-            "zh_CN": "APITable | Open source no-code database and Airtable alternative",
-            "en_US": "APITable | Open source no-code database and Airtable alternative"
+            "zh_CN": "APITable | Incredibly Simple and Powerful Work Management OS",
+            "en_US": "APITable | Incredibly Simple and Powerful Work Management OS"
         },
         "apitable_origin_price_by_month": {
             "zh_CN": "{\n    \"silver\": \"$8\",\n    \"gold\": \"$10\"\n}",
@@ -2422,6 +2422,10 @@
             "zh_CN": "选择数据源表并进行多级联动配置",
             "en_US": "Select datasource to config cascader",
             "zh_HK": "選擇數據源表並進行多級聯動配置"
+        },
+        "cascader_field_configuration_err": {
+            "zh_CN": "请重新关联级联配置表",
+            "en_US": "Please re-link the cascader configuration datasheet"
         },
         "cascader_field_select_placeholder": {
             "zh_CN": "选择一个字段",
@@ -16528,6 +16532,10 @@
             "zh_CN": "“可以管理”权限的成员解锁视图后才可修改和保存视图配置",
             "en_US": "This view is locked, please unlock it before you edit it and save the view settings",
             "zh_HK": "“可以管理”權限的成員解鎖視圖後才可修改和保存視圖配置"
+        },
+        "view_lock_setting_desc": {
+            "zh_CN": "此视图已锁定，请在编辑并保存视图设置之前解锁。",
+            "en_US": "This view is locked, please unlock it before you edit it and save the view settings"
         },
         "view_manual_save": {
             "zh_CN": "视图配置不协同",

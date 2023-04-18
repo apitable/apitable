@@ -143,7 +143,7 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
   );
 };
 
-function filterCommonGroup(fieldType: FieldType) {
+export function filterCommonGroup(fieldType: FieldType) {
   return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Common;
 }
 
