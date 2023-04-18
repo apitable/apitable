@@ -70,7 +70,7 @@ const:
   ossBuckets:
     assets_ltd:
       resource-url: ${ASSETS_LTD_URL:}
-      bucket-name: ${ASSETS_LTD_BUCKET:}
+      bucket-name: ${ASSETS_LTD_BUCKET:assets}
       type: ${ASSETS_LTD_TYPE:QNY1}
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
