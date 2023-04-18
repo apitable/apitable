@@ -3,6 +3,7 @@ import { FieldType, IField, ICascaderField, ISegment } from 'types/field_types';
 import { DatasheetActions } from '../datasheet';
 import { TextBaseField } from './text_base_field';
 import { ICellValue } from '../record';
+import { Strings, t } from '../../exports/i18n';
 
 export class CascaderField extends TextBaseField {
 
@@ -42,13 +43,14 @@ export class CascaderField extends TextBaseField {
     };
   }
 
-  override get isComputed() {
-    return true;
-  }
-
   override get hasError(): boolean {
     const { linkedDatasheetId } = this.field.property;
-    return Boolean(linkedDatasheetId);
+    return !Boolean(linkedDatasheetId);
+  }
+
+  override get warnText(): string {
+    const { linkedDatasheetId } = this.field.property;
+    return Boolean(linkedDatasheetId) ? '' : t(Strings.cascader_field_configuration_err);
   }
 
   override validateProperty() {
