@@ -42,6 +42,15 @@ export class CascaderField extends TextBaseField {
     };
   }
 
+  override get isComputed() {
+    return true;
+  }
+
+  override get hasError(): boolean {
+    const { linkedDatasheetId } = this.field.property;
+    return Boolean(linkedDatasheetId);
+  }
+
   override validateProperty() {
     return CascaderField.propertySchema.validate(this.field.property);
   }
