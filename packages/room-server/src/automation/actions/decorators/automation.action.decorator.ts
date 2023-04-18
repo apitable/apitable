@@ -25,7 +25,7 @@ export const customActionTypeMetas = new Map<string, IActionTypeMeta>();
 export const customActionTypeMap = new Map<string, IActionType>();
 
 interface IAutomationActionOption {
-  logo?: string;
+  themeLogo?: { light: string, dark?: string };
   description?: string;
 }
 
@@ -39,7 +39,7 @@ interface IActionTypeMeta {
   service: {
     serviceId: string,
     name: string,
-    logo: string,
+    themeLogo: { light: string, dark?: string },
     slug: string
   }
 }
@@ -69,7 +69,7 @@ export function AutomationAction(name: string, option?: IAutomationActionOption)
         service: {
           serviceId: `asv${nameHash}`,
           name: name,
-          logo: option?.logo ? option.logo : 'space/2022/01/18/136999e8a2284067842f96b3f9b33e5b',
+          themeLogo: option?.themeLogo ? option.themeLogo : { light: 'space/2023/03/29/6e70cb7968cc482793459041c5eb56ca' },
           slug: nameHash
         }
       });

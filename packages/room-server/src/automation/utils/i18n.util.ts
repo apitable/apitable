@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isJSON } from 'class-validator';
+
 export function replaceSchemaByLanguage(language: string, source: any): any {
   if (Array.isArray(source)) {
     return source.map((item) => {
@@ -47,7 +49,8 @@ export function getTypeByItem(item: any, lang: string, type = 'action') {
     service: {
       serviceId: item.serviceId,
       name: serviceLanguage[item.serviceName],
-      logo: item.serviceLogo,
+      logo: isJSON(item.serviceLogo) ? JSON.parse(item.serviceLogo).light : item.serviceLogo,
+      themeLogo: isJSON(item.serviceLogo) ? JSON.parse(item.serviceLogo) : { light: item.serviceLogo },
       slug: item.serviceSlug
     }
   };
