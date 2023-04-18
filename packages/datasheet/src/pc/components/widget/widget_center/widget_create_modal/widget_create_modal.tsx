@@ -335,7 +335,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
         value:
           widgetCliCmd({
             apiToken: userInfo?.apiKey, spaceId: userInfo?.spaceId, env: window.location.origin, widgetName, widgetPackageId,
-            templateUrl: addCurrentDomainIfNeeded(sourceCodeUrl),
+            templateUrl: sourceCodeUrl ? addCurrentDomainIfNeeded(sourceCodeUrl) : sourceCodeUrl,
           }),
         desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
       }],
