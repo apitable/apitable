@@ -38,6 +38,7 @@ const editorMap = {
   [FieldType.CreatedBy]: EditorType.Member,
   [FieldType.LastModifiedBy]: EditorType.Member,
   [FieldType.SingleText]: EditorType.Text,
+  [FieldType.Cascader]: EditorType.Text,
 };
 
 export const getFieldEditorType = (field: IField): EditorType => {
