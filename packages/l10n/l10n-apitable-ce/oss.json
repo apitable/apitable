@@ -1,0 +1,172 @@
+{
+	"logo": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/01/03/76ecff32aa5a4d4a9324268289c591e0",
+		".说明": "首屏加载的图标、主题图标",
+		"FILE": [
+			{
+				"id": "atc5ozI4KYT5r",
+				"name": "apitable.svg",
+				"size": 2713,
+				"mimeType": "image/svg+xml",
+				"token": "space/2023/01/03/76ecff32aa5a4d4a9324268289c591e0",
+				"width": 0,
+				"height": 0,
+				"url": "https://s1.vika.cn/space/2023/01/03/76ecff32aa5a4d4a9324268289c591e0"
+			}
+		]
+	},
+	"common_img_logo": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2022/09/20/96bea81a3fc744f3aa87cc6cea83ed5a",
+		".说明": "登录页左上角logo",
+		"FILE": [
+			{
+				"id": "atcqD8KZN14Pg",
+				"name": "APITable标准版.svg",
+				"size": 6709,
+				"mimeType": "image/svg+xml",
+				"token": "space/2022/09/20/96bea81a3fc744f3aa87cc6cea83ed5a",
+				"width": 0,
+				"height": 0,
+				"url": "https://s1.vika.cn/space/2022/09/20/96bea81a3fc744f3aa87cc6cea83ed5a"
+			}
+		]
+	},
+	"favicon": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2022/12/08/f8693e8f39774a1c8f0b937f39da0e17",
+		".说明": "favicon，浏览器标签页的小logo",
+		"FILE": [
+			{
+				"id": "atcS8P0rucM6Z",
+				"name": "APITable_icon.ico",
+				"size": 34206,
+				"mimeType": "image/x-icon",
+				"token": "space/2022/09/20/eda5b37037254049a44a8a09a24685e2",
+				"width": 0,
+				"height": 0,
+				"url": "https://s1.vika.cn/space/2022/09/20/eda5b37037254049a44a8a09a24685e2"
+			}
+		]
+	},
+	"logo_text_dark": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/02/06/0bcefe67b12d4c39bd5082aafe062b24",
+		".说明": "logo 单个 文字(深色背景下使用的文字 logo)",
+		"FILE": [
+			{
+				"id": "atcahwmNm4hn0",
+				"name": "logo_text_dark.png",
+				"size": 6483,
+				"mimeType": "image/png",
+				"token": "space/2023/02/06/0bcefe67b12d4c39bd5082aafe062b24",
+				"width": 1146,
+				"height": 280,
+				"url": "https://s1.vika.cn/space/2023/02/06/0bcefe67b12d4c39bd5082aafe062b24"
+			}
+		]
+	},
+	"logo_text_light": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/02/02/c2d97652ebc44a93a1db9e96cb509c70",
+		".说明": "logo 单个 文字(浅色背景下使用的文字 logo)",
+		"FILE": [
+			{
+				"id": "atcqCQWvnCzjA",
+				"name": "logo_text_light.svg",
+				"size": 3663,
+				"mimeType": "image/svg+xml",
+				"token": "space/2023/02/02/c2d97652ebc44a93a1db9e96cb509c70",
+				"width": 0,
+				"height": 0,
+				"url": "https://s1.vika.cn/space/2023/02/02/c2d97652ebc44a93a1db9e96cb509c70"
+			}
+		]
+	},
+	"login_logo": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2022/12/23/c64a745ae147495b9d1ae96d822ae891",
+		".说明": "登录页logo",
+		"FILE": [
+			{
+				"id": "atcDYQtd4syyA",
+				"name": "image.png",
+				"size": 12418,
+				"mimeType": "image/png",
+				"token": "space/2022/12/23/c64a745ae147495b9d1ae96d822ae891",
+				"width": 528,
+				"height": 96,
+				"url": "https://s1.vika.cn/space/2022/12/23/c64a745ae147495b9d1ae96d822ae891"
+			}
+		]
+	},
+	"system_configuration_official_avatar": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a",
+		".说明": "官方模板里的官方头像，应用在模板详情中的头像资源",
+		"FILE": [
+			{
+				"id": "atcjBLEb9nixX",
+				"name": "image.png",
+				"size": 8136,
+				"mimeType": "image/png",
+				"token": "space/2023/01/06/67243d60689b46ec887bdd713b0d602f",
+				"width": 140,
+				"height": 140,
+				"url": "https://s1.vika.cn/space/2023/01/06/67243d60689b46ec887bdd713b0d602f"
+			}
+		]
+	},
+	"email_background_img_1": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/03/06/0caec6ec2ea64cf98464e92601eb02d0",
+		".说明": "邮件模板背景图片",
+		"FILE": [
+			{
+				"id": "atcRtXuQ4Yy9v",
+				"name": "image.png",
+				"size": 1187,
+				"mimeType": "image/png",
+				"token": "space/2023/03/06/0caec6ec2ea64cf98464e92601eb02d0",
+				"width": 129,
+				"height": 104,
+				"url": "https://s1.vika.cn/space/2023/03/06/0caec6ec2ea64cf98464e92601eb02d0"
+			}
+		]
+	},
+	"email_background_img_2": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/03/06/68fa5929946e49db87b4fe348d0786ec",
+		".说明": "邮件模板背景图片",
+		"FILE": [
+			{
+				"id": "atc23phtSHT7x",
+				"name": "image1.png",
+				"size": 2243,
+				"mimeType": "image/png",
+				"token": "space/2023/03/06/68fa5929946e49db87b4fe348d0786ec",
+				"width": 135,
+				"height": 80,
+				"url": "https://s1.vika.cn/space/2023/03/06/68fa5929946e49db87b4fe348d0786ec"
+			}
+		]
+	},
+	"email_background_img_3": {
+		"说明": "",
+		"OVERRIDDEN_KEY": "space/2023/03/06/4cf406daba124fc28e2f67aa3989ca74",
+		".说明": "邮件模板背景图片",
+		"FILE": [
+			{
+				"id": "atcGHcqbGHNAJ",
+				"name": "image2.png",
+				"size": 2107,
+				"mimeType": "image/png",
+				"token": "space/2023/03/06/4cf406daba124fc28e2f67aa3989ca74",
+				"width": 80,
+				"height": 122,
+				"url": "https://s1.vika.cn/space/2023/03/06/4cf406daba124fc28e2f67aa3989ca74"
+			}
+		]
+	}
+}

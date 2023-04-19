@@ -481,6 +481,10 @@ changelog: ## make changelog with github api
 	echo "TO: $$GIT_TO" ;\
 	npx github-changelog-builder --token $$GITHUB_TOKEN -o apitable -r apitable -f $$GIT_FROM -t $$GIT_TO -a CHANGELOG.md
 
+.PHONY: l10n-apitable-ce
+l10n-apitable-ce:
+	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/l10n-apitable-ce ./
+
 ### help
 .PHONY: search
 search:
