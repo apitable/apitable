@@ -36,7 +36,14 @@ import { isEmpty } from 'lodash';
 import { Store } from 'redux';
 import { InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
-import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordMap, ILoadBasePackOptions } from 'shared/interfaces';
+import {
+  IAuthHeader,
+  IFetchDataOptions,
+  IFetchDataOriginOptions,
+  IFetchDataPackOptions,
+  ILinkedRecordMap,
+  ILoadBasePackOptions,
+} from 'shared/interfaces';
 import { Logger } from 'winston';
 import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../repositories/datasheet.repository';
@@ -46,14 +53,8 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import { IBaseException } from 'shared/exception/base.exception';
 import { DatasheetPackResponse } from '@apitable/room-native-api';
 import { NativeService } from 'shared/services/native/native.service';
-
-interface IFetchDataPackOptions extends IFetchDataOptions {
-  isTemplate?: boolean;
-  metadataException?: IBaseException;
-}
 
 @Injectable()
 export class DatasheetService {
@@ -101,7 +102,18 @@ export class DatasheetService {
     return { view, revision: revision! };
   }
 
-  async fetchCommonDataPack(source: string, dstId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions, options?: IFetchDataPackOptions) {
+  async fetchCommonDataPack(
+    source: string,
+    dstId: string,
+    auth: IAuthHeader,
+    origin: IFetchDataOriginOptions,
+    allowNative: boolean,
+    options?: IFetchDataPackOptions,
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
+    if (USE_NATIVE_MODULE && allowNative) {
+      return this.nativeService.fetchDataPackResponse(source, dstId, auth, origin, options);
+    }
+
     const beginTime = +new Date();
     this.logger.info(`Start loading ${source} data [${dstId}], origin: ${JSON.stringify(origin)}`);
     // Query datasheet
@@ -109,11 +121,9 @@ export class DatasheetService {
     // Query snapshot
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException);
     const fetchDataPackProfiler = this.logger.startTimer();
-    const recordMap = USE_NATIVE_MODULE
-      ? await this.nativeService.getRecords(dstId, options?.recordIds ?? null, false, true)
-      : options?.recordIds
-        ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds)
-        : await this.datasheetRecordService.getRecordsByDstId(dstId);
+    const recordMap = options?.recordIds
+      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds)
+      : await this.datasheetRecordService.getRecordsByDstId(dstId);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(
@@ -140,21 +150,13 @@ export class DatasheetService {
    *
    * @param dstId datasheet ID
    * @param auth authorization
+   * @param allowNative if false, always return `DatasheetPack`.
    * @param options query parameters
    */
   @Span()
-  fetchDataPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
+  fetchDataPack(dstId: string, auth: IAuthHeader, allowNative: boolean, options?: IFetchDataOptions): Promise<DatasheetPack | DatasheetPackResponse> {
     const origin: IFetchDataOriginOptions = { internal: true, main: true };
-    return this.fetchCommonDataPack('datasheet', dstId, auth, origin, options);
-  }
-
-  @Span()
-  fetchDataPackNative(source: string, dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPackResponse | DatasheetPack> {
-    const origin: IFetchDataOriginOptions = { internal: true, main: true };
-    if (USE_NATIVE_MODULE) {
-      return this.nativeService.fetchDataPackResponse(source, dstId, auth, origin, options);
-    }
-    return this.fetchCommonDataPack(source, dstId, auth, origin, options);
+    return this.fetchCommonDataPack('datasheet', dstId, auth, origin, allowNative, { ...options, isDatasheet: true });
   }
 
   /**
@@ -163,12 +165,19 @@ export class DatasheetService {
    * @param shareId share ID
    * @param dstId datasheet ID
    * @param auth authorization
+   * @param allowNative if false, always return `DatasheetPack`.
    * @param options query parameters
    */
   @Span()
-  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
+  fetchShareDataPack(
+    shareId: string,
+    dstId: string,
+    auth: IAuthHeader,
+    allowNative: boolean,
+    options?: IFetchDataOptions,
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     const origin = { internal: false, main: true, shareId };
-    return this.fetchCommonDataPack('share', dstId, auth, origin, options);
+    return this.fetchCommonDataPack('share', dstId, auth, origin, allowNative, { ...options, isDatasheet: true });
   }
 
   /**
@@ -179,9 +188,9 @@ export class DatasheetService {
    * @param options query parameters
    */
   @Span()
-  fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
+  fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack | DatasheetPackResponse> {
     const origin = { internal: false, main: true };
-    return this.fetchCommonDataPack('template', dstId, auth, origin, {
+    return this.fetchCommonDataPack('template', dstId, auth, origin, true, {
       ...options,
       isTemplate: true,
     });
@@ -197,7 +206,10 @@ export class DatasheetService {
    */
   fetchSubmitFormForeignDatasheetPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions, shareId?: string): Promise<DatasheetPack> {
     const origin: IFetchDataOriginOptions = shareId ? { internal: false, main: true, shareId } : { internal: true, main: true, form: true };
-    return this.fetchCommonDataPack('form linked datasheet', dstId, auth, origin, { ...options, recordIds: options?.recordIds ?? [] });
+    return this.fetchCommonDataPack('form linked datasheet', dstId, auth, origin, false, {
+      ...options,
+      recordIds: options?.recordIds ?? [],
+    }) as Promise<DatasheetPack>;
   }
 
   /**
@@ -208,9 +220,16 @@ export class DatasheetService {
    * @param dstId datasheet ID
    * @param foreignDatasheetId linked datasheet ID
    * @param auth authorization
+   * @param allowNative if false, always return `DatasheetPack`.
    * @param shareId sharing ID
    */
-  async fetchForeignDatasheetPack(dstId: string, foreignDatasheetId: string, auth: IAuthHeader, shareId?: string): Promise<DatasheetPack> {
+  async fetchForeignDatasheetPack(
+    dstId: string,
+    foreignDatasheetId: string,
+    auth: IAuthHeader,
+    allowNative: boolean,
+    shareId?: string,
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     // Query datasheet meta
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has linked datasheet with foreighDatasheetId
@@ -225,8 +244,9 @@ export class DatasheetService {
     }
 
     const origin = { internal: shareId ? false : true, main: false, shareId };
-    return this.fetchCommonDataPack('linked datasheet', foreignDatasheetId, auth, origin, {
+    return this.fetchCommonDataPack('linked datasheet', foreignDatasheetId, auth, origin, allowNative, {
       metadataException: DatasheetException.FOREIGN_DATASHEET_NOT_EXIST,
+      isDatasheet: true,
     });
   }
 

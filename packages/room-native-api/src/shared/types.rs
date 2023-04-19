@@ -1,4 +1,5 @@
 use crate::types::{HashMap, Json};
+use crate::util::JsonExt;
 use serde::{Deserialize, Serialize};
 
 #[napi(object)]
@@ -26,6 +27,11 @@ pub struct FetchDataPackOptions {
   pub record_ids: Option<Vec<String>>,
   pub linked_record_map: Option<HashMap<String, Vec<String>>>,
   pub is_template: Option<bool>,
+  /**
+   * If true, the returned `resourceIds` will contain foreign datasheet IDs and widget IDs. Otherwise,
+   * `resourceIds` will contain the datasheet ID and foreign datasheet IDs.
+   */
+  pub is_datasheet: Option<bool>,
 }
 
 #[derive(Serialize, Debug, Clone)]
@@ -61,7 +67,7 @@ pub struct NodePermission {
   #[serde(skip_serializing_if = "Option::is_none")]
   pub node_favorite: Option<bool>,
 
-  #[serde(skip_serializing_if = "Option::is_none")]
+  #[serde(skip_serializing_if = "JsonExt::is_falsy")]
   pub field_permission_map: Option<Json>,
 
   #[serde(skip_serializing_if = "Option::is_none")]

@@ -197,6 +197,7 @@ impl NativeModule {
     let datasheet_service: Arc<dyn DatasheetService> = self.module.resolve();
     env.spawn_future(
       async move {
+        let is_datasheet = options.as_ref().and_then(|options| options.is_datasheet).is_truthy();
         let data_pack = match Self::wrap_error(
           datasheet_service
             .fetch_data_pack(&source, &dst_id, auth, origin, options)
@@ -205,7 +206,7 @@ impl NativeModule {
           ControlFlow::Break(r) => return r,
           ControlFlow::Continue(v) => v,
         };
-        let resource_ids = collect_datasheet_pack_resource_ids(&data_pack);
+        let resource_ids = collect_datasheet_pack_resource_ids(&data_pack, is_datasheet);
         let resp = HttpResponse {
           success: true,
           code: http::StatusCode::OK,

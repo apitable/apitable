@@ -63,9 +63,6 @@ export class DatasheetRecordService {
 
   @Span()
   async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<IRecordMap> {
-    // if (await this.getNativeModule()) {
-    //   return (await this.getNativeModule())!.getRecords(dstId, recordIds, isDeleted, false) as Promise<RecordMap>;
-    // }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },

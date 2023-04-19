@@ -1,7 +1,8 @@
 use crate::shared::errors::{RestError, ServerError};
 use crate::shared::types::{AuthHeader, HttpSuccessResponse, NodePermission};
 use crate::types::Json;
-use anyhow::Context;
+use crate::util::JsonExt;
+use anyhow::{anyhow, Context};
 use async_trait::async_trait;
 use futures::future::BoxFuture;
 use futures::TryFutureExt;
@@ -86,7 +87,9 @@ impl RestService for RestServiceImpl {
         })),
       )
       .await
-      .map(|resp| resp.data)
+      .and_then(|resp| {
+        Json::into_prop(resp.data, "fieldPermissionMap").map_err(|data| anyhow!("missing fieldPermissionMap: {data:?}"))
+      })
   }
 
   async fn has_login(&self, cookie: &str) -> anyhow::Result<bool> {

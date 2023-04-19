@@ -19,13 +19,13 @@
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
 import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
-import { ApiResponse } from '../../../fusion/vos/api.response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
-import { DatasheetPack } from 'database/interfaces';
+import { DashboardDataPack, DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Resource data interceptor
@@ -46,7 +46,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
       return next.handle().pipe();
     }
     return next.handle().pipe(
-      tap(async(data: ApiResponse<any>) => {
+      tap(async(data: any) => {
         const resourceIds = await this.getResourceIds(info.resourceType, data);
         // no need to create a new resource for mirror
         if (info.resourceType != ResourceType.Mirror) {
@@ -61,13 +61,16 @@ export class ResourceDataInterceptor implements NestInterceptor {
     );
   }
 
-  private async getResourceIds(resourceType: ResourceType, data: any): Promise<string[]> {
+  private async getResourceIds(
+    resourceType: ResourceType,
+    data: DatasheetPack | DatasheetPackResponse | DashboardDataPack | MirrorInfo | FormDataPack,
+  ): Promise<string[]> {
+    if ('resourceIds' in data && Array.isArray(data.resourceIds)) {
+      return data.resourceIds;
+    }
     const resourceIds: string[] = [];
     switch (resourceType) {
       case ResourceType.Datasheet:
-        if (Array.isArray(data.resourceIds)) {
-          return data.resourceIds;
-        }
         data = data as DatasheetPack;
         // related datasheet
         if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
@@ -81,21 +84,25 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         break;
       case ResourceType.Form:
+        data = data as DatasheetPack | FormDataPack;
         // 1. get form data by calling fetch data API
-        if (data.sourceInfo) {
+        if (data['sourceInfo']) {
+          data = data as FormDataPack;
           // reference datasheet
           resourceIds.push(data.sourceInfo.datasheetId);
           break;
         }
         // 2. get related datasheets data by calling fetch data API
+        data = data as DatasheetPack;
         resourceIds.push(data.datasheet.id);
         if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         break;
       case ResourceType.Dashboard:
+        data = data as DashboardDataPack;
         const sourceDatasheetIds: Set<string> = new Set();
-        for (const widget of Object.values(data.widgetMap as Record<string, IWidget>)) {
+        for (const widget of Object.values((data.widgetMap as any) as Record<string, IWidget>)) {
           resourceIds.push(widget.id);
           // reference count of the widget
           if (widget.snapshot.datasheetId && !sourceDatasheetIds.has(widget.snapshot.datasheetId)) {
@@ -107,9 +114,11 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         break;
       case ResourceType.Mirror:
+        data = data as MirrorInfo | DatasheetPack;
         // 1. call mirror information API
-        if (data.sourceInfo) {
+        if (data['sourceInfo']) {
           // exit if the mirror room has resource
+          data = data as MirrorInfo;
           const hasResource = await this.roomResourceRelService.hasResource(data.mirror.id);
           if (hasResource) {
             break;
@@ -121,9 +130,10 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         // 2. get the original datasheet by mirror
         // original datasheet
+        data = data as DatasheetPack;
         resourceIds.push(data.datasheet.id);
         // original datasheet related datasheet
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         break;

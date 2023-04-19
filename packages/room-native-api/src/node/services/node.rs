@@ -61,35 +61,41 @@ impl NodeService for NodeServiceImpl {
       .get_node_permission(node_id, auth, origin)
       .await
       .with_context(|| format!("get node permission {node_id}"))?;
+
     // Node base info
     let node_info = self
       .get_node_info(node_id)
       .await
       .with_context(|| format!("get node info {node_id}"))?;
+
     // Node description
     let description = self
       .node_desc_service
       .get_description(node_id)
       .await
       .with_context(|| format!("get description {node_id}"))?;
+
     // Node revision
     let revision = if origin.not_dst.is_truthy() {
       self.res_meta_service.get_revision_by_res_id(node_id).await?
     } else {
       self.dst_rev_service.get_revision_by_dst_id(node_id).await?
     };
+
     // Obtain node sharing state
     let node_shared = self
       .node_share_setting_service
       .get_share_status_by_node_id(node_id)
       .await
       .with_context(|| format!("get share status {node_id}"))?;
+
     // Obtain node permissions
     let node_permit_set = self
       .node_perm_service
       .get_node_permission_set_status(node_id)
       .await
       .with_context(|| format!("get node permission set status {node_id}"))?;
+
     Ok(NodeDetailInfo {
       node: NodeInfo {
         id: node_id.to_owned(),

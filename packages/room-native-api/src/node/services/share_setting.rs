@@ -56,7 +56,7 @@ impl NodeShareSettingService for NodeShareSettingServiceImpl {
         format!(
           "\
             SELECT `node_id`, `is_enabled`, `props` \
-            FROM `{prefix}share_setting` \
+            FROM `{prefix}node_share_setting` \
             WHERE `share_id` = :share_id",
           prefix = self.repo.table_prefix()
         ),
@@ -66,10 +66,10 @@ impl NodeShareSettingService for NodeShareSettingServiceImpl {
       )
       .await
       .with_context(|| format!("get share setting of node {node_id}, share {share_id}"))?;
-    let Some((share_node_id, is_enabled, props)) : Option<(String, bool, Option<Json>)> = share_setting else {
+    let Some((share_node_id, is_enabled, props)) : Option<(String, Option<bool>, Option<Json>)> = share_setting else {
       return Ok(None);
     };
-    if !is_enabled {
+    if !is_enabled.is_truthy() {
       return Ok(None);
     }
     // Check if the node enables sharing

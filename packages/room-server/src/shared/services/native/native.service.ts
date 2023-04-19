@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NativeModule, DatasheetPackResponse } from '@apitable/room-native-api';
 import { isDevMode } from 'app.environment';
 import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION, IRecordMap } from '@apitable/core';
-import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IOssConfig } from 'shared/interfaces';
+import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, IOssConfig } from 'shared/interfaces';
 import { HttpService } from '@nestjs/axios';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { Logger } from 'winston';
@@ -10,6 +10,7 @@ import { EnvConfigKey, InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
 import { responseCodeHandler } from '../rest/response.code.handler';
 import { EnvConfigService } from '../config/env.config.service';
 import { DatasheetPack } from 'database/interfaces';
+import { IBaseException } from 'shared/exception/base.exception';
 
 @Injectable()
 export class NativeService {
@@ -45,13 +46,13 @@ export class NativeService {
     dstId: string,
     auth: IAuthHeader,
     origin: IFetchDataOriginOptions,
-    options?: IFetchDataOptions,
+    options?: IFetchDataPackOptions,
   ): Promise<DatasheetPackResponse> {
     const result = await this.nativeModule!.fetchDatasheetPackResponse(source, dstId, auth, origin, options);
     if ('response' in result) {
       return result;
     }
-    this.handleDataPackError(dstId, auth, result);
+    this.handleDataPackError(dstId, auth, result, options?.metadataException);
   }
 
   async fetchDataPack(
@@ -72,12 +73,13 @@ export class NativeService {
     dstId: string,
     auth: IAuthHeader,
     error: { error: 'NODE_NOT_EXIST' | 'ACCESS_DENIED'; nodeId: string } | { error: 'REST'; code: number },
+    metadataException?: IBaseException,
   ): never {
     switch (error.error) {
       case 'ACCESS_DENIED':
         throw new ServerException(PermissionException.ACCESS_DENIED);
       case 'NODE_NOT_EXIST':
-        throw new ServerException(PermissionException.NODE_NOT_EXIST);
+        throw new ServerException(metadataException && error.nodeId === dstId ? metadataException : PermissionException.NODE_NOT_EXIST);
       case 'REST':
         responseCodeHandler(error.code!);
         break;
