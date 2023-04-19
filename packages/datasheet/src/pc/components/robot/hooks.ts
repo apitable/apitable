@@ -17,7 +17,7 @@
  */
 
 // import { Message } from '@apitable/components';
-import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@apitable/core';
+import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t, ThemeName } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -238,42 +238,56 @@ export const useRobot = (_robotId?: string) => {
   ]);
 };
 
+const covertThemeIcon = (data: (ITriggerType | IActionType)[] | undefined, theme: ThemeName) => {
+  return data?.map(item => {
+    return {
+      ...item,
+      service: {
+        ...item.service,
+        logo: (theme === ThemeName.Dark ? item.service.themeLogo?.dark : item.service.themeLogo?.light) || item.service.logo
+      }
+    };
+  }) as any || [];
+};
+
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
   const { data: triggerTypeData, error: triggerTypeError } = useSWR(`/robots/trigger-types?lang=${getLanguage()}`, nestReq);
   const { dispatch } = useRobotContext();
+  const themeName = useSelector(state => state.theme);
   useEffect(() => {
     if (triggerTypeData?.data.data) {
       dispatch({
         type: 'setTriggerTypes',
         payload: {
-          triggerTypes: triggerTypeData?.data.data || [],
+          triggerTypes: covertThemeIcon(triggerTypeData?.data.data, themeName) || [],
         }
       });
     }
-  }, [triggerTypeData, dispatch]);
+  }, [triggerTypeData, dispatch, themeName]);
   if (!triggerTypeData || triggerTypeError) {
     return {
       loading: true,
-      data: triggerTypeData?.data.data
+      data: (triggerTypeData?.data.data)
     };
   }
   return {
     loading: false,
-    data: triggerTypeData.data.data
+    data: covertThemeIcon(triggerTypeData.data.data, themeName)
   };
 };
 
 export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
   const { data: actionTypeData, error: actionTypeError } = useSWR(`/robots/action-types?lang=${getLanguage()}`, nestReq);
   const { dispatch } = useRobotContext();
+  const themeName = useSelector(state => state.theme);
   useEffect(() => {
     dispatch({
       type: 'setActionTypes',
       payload: {
-        actionTypes: actionTypeData?.data.data || [],
+        triggerTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
       }
     });
-  }, [actionTypeData?.data.data, dispatch]);
+  }, [actionTypeData?.data.data, dispatch, themeName]);
   if (!actionTypeData || actionTypeError) {
     return {
       loading: true,
@@ -282,7 +296,7 @@ export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
   }
   return {
     loading: false,
-    data: actionTypeData?.data.data
+    data: covertThemeIcon(actionTypeData?.data.data, themeName)
   };
 };
 
@@ -307,7 +321,7 @@ export const useRobotDispatch = () => {
   return dispatch;
 };
 
-// For triggers where there is only one option and a default value when the record is created, 
+// For triggers where there is only one option and a default value when the record is created,
 // the trigger is created with the default form information.
 export const useDefaultTriggerFormData = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
