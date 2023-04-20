@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ThemeProvider } from '@apitable/components';
+import { Button, ThemeProvider, WrapperTooltip } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import * as React from 'react';
@@ -84,6 +85,7 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const viewId = useSelector(Selectors.getActiveViewId)!;
   const isCryptoField = Boolean(groupFieldId && Selectors.getFieldRoleByFieldId(fieldPermissionMap, groupFieldId) === ConfigConstant.Role.None);
+  const isViewLock = useShowViewLockModal();
 
   const canUseKanbanFields = useMemo(() => {
     const ids = Object.values(fieldMap!).reduce<IField[]>((fields, field) => {
@@ -175,10 +177,15 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
               {
                 canUseKanbanFields.map(field => {
                   return <div key={field.id} className={styles.radioWrapper}>
-                    <Radio value={field.id} key={field.id} className={styles.radio} disabled={isCryptoField && field.id === groupFieldId}>
-                      {!isCryptoField && getFieldTypeIcon(field.type)}
-                      {field.name}
-                    </Radio>
+                    <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                      <span>
+                        <Radio value={field.id} key={field.id} className={styles.radio}
+                          disabled={(isCryptoField && field.id === groupFieldId) || isViewLock}>
+                          {!isCryptoField && getFieldTypeIcon(field.type)}
+                          {field.name}
+                        </Radio>
+                      </span>
+                    </WrapperTooltip>
                     <FieldPermissionLock fieldId={field.id} />
                   </div>;
                 })
@@ -188,14 +195,18 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
           {
             fieldCreatable &&
             <>
-              <div className={styles.fieldItem} onClick={() => setRoute(KanbanRoute.Option)}>
-                <AddOutlined className={styles.addIcon} />
-                {t(Strings.kanban_setting_create_option)}
-              </div>
-              <div className={styles.fieldItem} onClick={() => setRoute(KanbanRoute.Member)}>
-                <AddOutlined className={styles.addIcon} />
-                {t(Strings.kanban_setting_create_member)}
-              </div>
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <div className={classNames(styles.fieldItem, { [styles.disabled]: isViewLock })} onClick={() => setRoute(KanbanRoute.Option)}>
+                  <AddOutlined className={styles.addIcon} />
+                  {t(Strings.kanban_setting_create_option)}
+                </div>
+              </WrapperTooltip>
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <div className={classNames(styles.fieldItem, { [styles.disabled]: isViewLock })} onClick={() => setRoute(KanbanRoute.Member)}>
+                  <AddOutlined className={styles.addIcon} />
+                  {t(Strings.kanban_setting_create_member)}
+                </div>
+              </WrapperTooltip>
             </>
           }
           <Button

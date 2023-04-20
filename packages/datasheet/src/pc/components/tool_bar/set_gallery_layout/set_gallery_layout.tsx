@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 // import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import {
@@ -26,7 +27,7 @@ import styles from './style.module.less';
 import { stopPropagation } from 'pc/utils';
 import { Slider, Switch } from 'antd';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
-import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo } from '@apitable/components';
+import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -49,6 +50,7 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
     maxHeight: MAX_HEIGHT,
     triggerInfo,
   });
+  const isViewLock = useShowViewLockModal();
 
   const setGalleryStyle = (opt: Omit<ISetGalleryStyle, 'viewId' | 'cmd'>) => {
     executeCommandWithMirror(() => {
@@ -69,6 +71,7 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
   const layoutType = activeView && (activeView as IGalleryViewProperty).style.layoutType;
 
   const reduceCardCount = () => {
+    if (isViewLock) return;
     const cardCount = (activeView as IGalleryViewProperty).style.cardCount;
     if (cardCount > 1) {
       setGalleryStyle({
@@ -79,6 +82,7 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
   };
 
   const addCardCount = () => {
+    if (isViewLock) return;
     const cardCount = (activeView as IGalleryViewProperty).style.cardCount;
     if (cardCount < 6) {
       setGalleryStyle({
@@ -123,7 +127,7 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
               </div>
 
               <div className={styles.iconAndDesc}>
-                <Tooltip title={t(Strings.this_feature_is_not_yet_available)} placement="top">
+                <Tooltip title={t(Strings.this_feature_is_not_yet_available)} placement='top'>
                   <span style={{ cursor: 'not-allowed' }}>
                     <ListOutlined
                       size={28}
@@ -142,45 +146,59 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
             </div>
             <div className={styles.layoutSize}>
               <span className={styles.title}>{t(Strings.gallery_arrange_mode)}</span>
-              <div className={styles.layoutSizeWrapper}>
-                <Switch
-                  checked={activeView.style.isAutoLayout}
-                  size="small"
-                  onChange={(value: boolean) => setGalleryStyle({
-                    styleKey: GalleryStyleKeyType.IsAutoLayout,
-                    styleValue: value,
-                  })}
-                />
-                <span className={styles.title}>{t(Strings.auto)}</span>
-              </div>
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <div className={styles.layoutSizeWrapper}>
+                  <Switch
+                    checked={activeView.style.isAutoLayout}
+                    size='small'
+                    onChange={(value: boolean) => setGalleryStyle({
+                      styleKey: GalleryStyleKeyType.IsAutoLayout,
+                      styleValue: value,
+                    })}
+                    disabled={isViewLock}
+                  />
+                  <span className={styles.title}>{t(Strings.auto)}</span>
+                </div>
+              </WrapperTooltip>
             </div>
             {
               !activeView.style.isAutoLayout &&
               <div className={styles.setSliderCount}>
-                <ReduceIcon
-                  fill={activeView.style.cardCount > 1 ? colors.primaryColor : colors.thirdLevelText}
-                  width={16}
-                  height={16}
-                  onClick={reduceCardCount}
-                  className={styles.reduceCardCountIcon}
-                />
+                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                  <span>
+                    <ReduceIcon
+                      fill={(!isViewLock && activeView.style.cardCount > 1) ? colors.primaryColor : colors.thirdLevelText}
+                      width={16}
+                      height={16}
+                      onClick={reduceCardCount}
+                      className={styles.reduceCardCountIcon}
+                    />
+                  </span>
+                </WrapperTooltip>
+
                 <div style={{ width: '100%' }}>
                   <Slider
                     max={MAX_COLUMN_COUNT}
                     min={MIN_COLUMN_COUNT}
                     value={activeView.style.cardCount}
+                    disabled={isViewLock}
                     onChange={value => setGalleryStyle({
                       styleKey: GalleryStyleKeyType.CardCount,
                       styleValue: value as number,
                     })}
                   />
                 </div>
-                <AddOutlined
-                  color={activeView.style.cardCount < 6 ? colors.primaryColor : colors.thirdLevelText}
-                  size={16}
-                  onClick={addCardCount}
-                  className={styles.addCardCountIcon}
-                />
+                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                  <span>
+                    <AddOutlined
+                      color={(!isViewLock && activeView.style.cardCount < 6) ? colors.primaryColor : colors.thirdLevelText}
+                      size={16}
+                      onClick={addCardCount}
+                      className={styles.addCardCountIcon}
+                    />
+                  </span>
+                </WrapperTooltip>
+
               </div>
             }
           </div>

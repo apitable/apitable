@@ -37,6 +37,20 @@
     width: max-content;
     color: var(--secondLevelText);
 
+    &.disabled {
+      color: var(--secondLevelText) !important;
+      cursor: not-allowed;
+
+      svg {
+        fill: var(--secondLevelText) !important;
+      }
+
+      & > * {
+        opacity: 0.5;
+
+      }
+    }
+
     .iconAdd {
       display: flex;
       align-items: center;

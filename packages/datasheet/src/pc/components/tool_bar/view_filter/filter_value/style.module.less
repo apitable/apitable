@@ -21,8 +21,6 @@
       &:focus {
         outline: none;
         border: none;
-        box-shadow: 0px 0px 0px 1px var(--primaryColor);
-        background: var(--defaultBg);
       }
     }
   }
@@ -64,6 +62,11 @@
     justify-content: space-between;
     height: 100%;
     cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
 
     .content {
       flex: 1;

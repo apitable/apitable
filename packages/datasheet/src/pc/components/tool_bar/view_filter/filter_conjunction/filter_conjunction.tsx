@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
 import { FilterConjunction as CoreFilterConjunction, FilterConjunctionDescMap, IFilterInfo, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
@@ -24,7 +25,7 @@ import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Select } from '@apitable/components';
+import { Select, useThemeColors } from '@apitable/components';
 
 interface IConjunctionProps {
   conjunction: string;
@@ -34,13 +35,14 @@ interface IConjunctionProps {
 
 export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionProps>> = props => {
   const { conjunction, conditionIndex, changeFilter } = props;
-
+  const isViewLock = useShowViewLockModal();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const color = useThemeColors();
 
   if (conditionIndex === 0) {
     return (
-      <div className={styles.junction} style={{ paddingLeft: '10px' }}>
+      <div className={styles.junction} style={{ paddingLeft: '10px', color: isViewLock ? color.thirdLevelText : '' }}>
         {t(Strings.where)}
       </div>
     );
@@ -48,7 +50,7 @@ export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionPro
 
   if (conditionIndex !== 1) {
     return (
-      <div className={styles.junction} style={{ paddingLeft: '10px' }}>
+      <div className={styles.junction} style={{ paddingLeft: '10px', color: isViewLock ? color.thirdLevelText : '' }}>
         {FilterConjunctionDescMap[conjunction]}
       </div>
     );
@@ -76,6 +78,7 @@ export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionPro
         onChange={onChange}
         title={t(Strings.please_choose)}
         style={{ marginRight: 8, background: 'none', width: '100%', padding: '12px 8px' }}
+        disabled={isViewLock}
       />
     );
   }
@@ -93,6 +96,8 @@ export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionPro
       onSelected={option => onChange(option.value as CoreFilterConjunction)}
       openSearch={false}
       dropdownMatchSelectWidth={false}
+      disabled={isViewLock}
+      disabledTip={t(Strings.view_lock_setting_desc)}
     />
   );
 };

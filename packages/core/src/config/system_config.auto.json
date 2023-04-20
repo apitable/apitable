@@ -684,7 +684,9 @@
         },
         {
             "command": "Copy",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "复制",
             "key": "cmd+c",
             "id": "cmd+c",
@@ -697,7 +699,9 @@
         },
         {
             "command": "Paste",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "粘贴",
             "key": "cmd+v",
             "id": "cmd+v",
@@ -710,7 +714,9 @@
         },
         {
             "command": "None",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "剪切",
             "key": "cmd+x",
             "id": "cmd+x",
@@ -722,7 +728,9 @@
         },
         {
             "command": "ExpandRecord",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "展开行",
             "key": "space",
             "id": "space",
@@ -735,7 +743,9 @@
         },
         {
             "command": "ExitEditing",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "退出编辑或关闭窗口",
             "key": "escape",
             "id": "escape",
@@ -748,7 +758,9 @@
         },
         {
             "command": "AppendRow",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向下插入行",
             "key": "shift+enter",
             "id": "shift+enter",
@@ -761,7 +773,9 @@
         },
         {
             "command": "PrependRow",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向上插入行",
             "key": "cmd+shift+enter",
             "id": "cmd+shift+enter",
@@ -774,7 +788,9 @@
         },
         {
             "command": "ToggleNextEditing",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "激活单元格编辑状态",
             "key": "enter",
             "id": "enter",
@@ -787,7 +803,9 @@
         },
         {
             "command": "ToggleNextEditing",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "激活单元格编辑状态",
             "key": "F2",
             "id": "F2",
@@ -800,7 +818,9 @@
         },
         {
             "command": "Clear",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "清除单元格内容",
             "key": "backspace",
             "id": "backspace",
@@ -813,7 +833,9 @@
         },
         {
             "command": "Clear",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "清除单元格内容",
             "key": "delete",
             "id": "delete",
@@ -826,7 +848,9 @@
         },
         {
             "command": "CellTab",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "完成编辑并向右一个单元格",
             "key": "tab",
             "id": "tab",
@@ -839,7 +863,9 @@
         },
         {
             "command": "CellShiftTab",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "完成编辑并向左一个单元格",
             "key": "shift+tab",
             "id": "shift+tab",
@@ -852,7 +878,9 @@
         },
         {
             "command": "CellUp",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向上移动一个单元格",
             "key": "up",
             "id": "up",
@@ -865,7 +893,9 @@
         },
         {
             "command": "CellDown",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向下移动一个单元格",
             "key": "down",
             "id": "down",
@@ -878,7 +908,9 @@
         },
         {
             "command": "CellLeft",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向左移动一个单元格",
             "key": "left",
             "id": "left",
@@ -891,7 +923,9 @@
         },
         {
             "command": "CellRight",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向右移动一个单元格",
             "key": "right",
             "id": "right",
@@ -904,7 +938,9 @@
         },
         {
             "command": "CellUpEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "移动到顶部单元格",
             "key": "cmd+up",
             "id": "cmd+up",
@@ -917,7 +953,9 @@
         },
         {
             "command": "CellDownEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "移动到底部单元格",
             "key": "cmd+down",
             "id": "cmd+down",
@@ -930,7 +968,9 @@
         },
         {
             "command": "CellLeftEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "移动到最左侧单元格",
             "key": "cmd+left",
             "id": "cmd+left",
@@ -943,7 +983,9 @@
         },
         {
             "command": "CellRightEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "移动到最右侧单元格",
             "key": "cmd+right",
             "id": "cmd+right",
@@ -956,7 +998,9 @@
         },
         {
             "command": "None",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向上滚动一屏",
             "key": "fn+↑",
             "id": "fn+↑",
@@ -969,7 +1013,9 @@
         },
         {
             "command": "PageUp",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向上滚动一屏",
             "key": "pageup",
             "id": "pageup",
@@ -982,7 +1028,9 @@
         },
         {
             "command": "None",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向下滚动一屏",
             "key": "fn+↓",
             "id": "fn+↓",
@@ -995,7 +1043,9 @@
         },
         {
             "command": "PageDown",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向下滚动一屏",
             "key": "pagedown",
             "id": "pagedown",
@@ -1008,7 +1058,9 @@
         },
         {
             "command": "None",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向左滚动一屏",
             "key": "fn+←",
             "id": "fn+←",
@@ -1021,7 +1073,9 @@
         },
         {
             "command": "PageLeft",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向左滚动一屏",
             "key": "home",
             "id": "home",
@@ -1034,7 +1088,9 @@
         },
         {
             "command": "None",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向右滚动一屏",
             "key": "fn+→",
             "id": "fn+→",
@@ -1047,7 +1103,9 @@
         },
         {
             "command": "PageRight",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "向右滚动一屏",
             "key": "end",
             "id": "end",
@@ -1060,7 +1118,9 @@
         },
         {
             "command": "SelectionAll",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "全选",
             "key": "cmd+a",
             "id": "cmd+a",
@@ -1073,7 +1133,9 @@
         },
         {
             "command": "SelectionUp",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向上",
             "key": "shift+up",
             "id": "shift+up",
@@ -1086,7 +1148,9 @@
         },
         {
             "command": "SelectionDown",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向下",
             "key": "shift+down",
             "id": "shift+down",
@@ -1099,7 +1163,9 @@
         },
         {
             "command": "SelectionLeft",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向左",
             "key": "shift+left",
             "id": "shift+left",
@@ -1112,7 +1178,9 @@
         },
         {
             "command": "SelectionRight",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向右",
             "key": "shift+right",
             "id": "shift+right",
@@ -1125,7 +1193,9 @@
         },
         {
             "command": "SelectionUpEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向上至顶部",
             "key": "cmd+shift+up",
             "id": "cmd+shift+up",
@@ -1138,7 +1208,9 @@
         },
         {
             "command": "SelectionDownEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向下至底部",
             "key": "cmd+shift+down",
             "id": "cmd+shift+down",
@@ -1151,7 +1223,9 @@
         },
         {
             "command": "SelectionLeftEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向左到边缘",
             "key": "cmd+shift+left",
             "id": "cmd+shift+left",
@@ -1164,7 +1238,9 @@
         },
         {
             "command": "SelectionRightEdge",
-            "type": [],
+            "type": [
+                "gird_view_shortcuts"
+            ],
             "description": "单元格选区向右至边缘",
             "key": "cmd+shift+right",
             "id": "cmd+shift+right",
@@ -1305,7 +1381,9 @@
             "when": "!isRecordExpanding",
             "show": true,
             "winKey": "alt+n",
-            "name": []
+            "name": [
+                "new_datasheet"
+            ]
         },
         {
             "command": "NewFolder",
@@ -1363,7 +1441,9 @@
             "when": "!isRecordExpanding",
             "show": true,
             "winKey": "alt+p",
-            "name": []
+            "name": [
+                "permission_setting"
+            ]
         },
         {
             "command": "SaveAsTemplate",
@@ -2145,13 +2225,6 @@
             "description": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
             "descriptionId": "api_panel_type_desc_cascader",
             "defaultExample": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。"
-        },
-        "Cascader": {
-            "defaultExampleId": "api_panel_type_desc_cascader",
-            "description": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
-            "descriptionId": "api_panel_type_desc_cascader",
-            "defaultExample": "多级联动，适合作为有层级关系选项的文本，例如省区市的选择。",
-            "valueType": "string"
         },
         "Checkbox": {
             "defaultExampleId": "api_panel_type_default_example_checkbox",
@@ -6431,7 +6504,7 @@
                 "skipId": "maybe_later",
                 "uiType": "billingStrip",
                 "uiConfigId": "player_step_ui_config_166",
-                "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\n}",
+                "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Enterprise版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 500,000,000 行\",\n    \"空间站附件容量数提高至 50 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\n}",
                 "nextId": "claim_special_offer",
                 "backdrop": "around_mask",
                 "next": "获取特殊优惠"
@@ -7306,7 +7379,9 @@
             "be_invited_to_reward": {
                 "action_code": "be_invited_to_reward",
                 "action_name": "被邀请奖励",
-                "display_name": [],
+                "display_name": [
+                    "be_invited_to_reward"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 1000,
                 "notify": true,
@@ -7315,7 +7390,9 @@
             "complete_bind_email": {
                 "action_code": "complete_bind_email",
                 "action_name": "完成绑定邮箱奖励",
-                "display_name": [],
+                "display_name": [
+                    "complete_bind_email"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 1000,
                 "online": true
@@ -7323,28 +7400,36 @@
             "first_bind_email": {
                 "action_code": "first_bind_email",
                 "action_name": "首次绑定邮箱奖励",
-                "display_name": [],
+                "display_name": [
+                    "first_bind_email"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 1000
             },
             "first_bind_phone": {
                 "action_code": "first_bind_phone",
                 "action_name": "首次绑定手机奖励",
-                "display_name": [],
+                "display_name": [
+                    "first_bind_phone"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 1000
             },
             "fission_reward": {
                 "action_code": "fission_reward",
                 "action_name": "「“友”福同享」活动 - XX空间",
-                "display_name": [],
+                "display_name": [
+                    "fission_reward"
+                ],
                 "notify": true,
                 "online": true
             },
             "invitation_reward": {
                 "action_code": "invitation_reward",
                 "action_name": "邀请奖励",
-                "display_name": [],
+                "display_name": [
+                    "invitation_reward"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 1000,
                 "notify": true,
@@ -7361,7 +7446,9 @@
             "official_invitation_reward": {
                 "action_code": "official_invitation_reward",
                 "action_name": "官方邀请奖励",
-                "display_name": [],
+                "display_name": [
+                    "official_invitation_reward"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 500,
                 "notify": true,
@@ -7370,7 +7457,9 @@
             "redemption_code": {
                 "action_code": "redemption_code",
                 "action_name": "兑换码",
-                "display_name": [],
+                "display_name": [
+                    "redemption_code"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 0,
                 "online": true
@@ -7378,13 +7467,17 @@
             "wallet_activity_reward": {
                 "action_code": "wallet_activity_reward",
                 "action_name": "XXX 活动奖励",
-                "display_name": [],
+                "display_name": [
+                    "wallet_activity_reward"
+                ],
                 "online": true
             },
             "wizard_reward": {
                 "action_code": "wizard_reward",
                 "action_name": "智能引导奖励",
-                "display_name": [],
+                "display_name": [
+                    "wizard_reward"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 200,
                 "online": true
@@ -7392,7 +7485,9 @@
             "wizard_video_reward": {
                 "action_code": "wizard_video_reward",
                 "action_name": "观看引导视频奖励",
-                "display_name": [],
+                "display_name": [
+                    "wizard_video_reward"
+                ],
                 "day_max_integral_value": 0,
                 "integral_value": 200,
                 "online": true

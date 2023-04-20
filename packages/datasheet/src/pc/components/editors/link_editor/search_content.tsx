@@ -276,7 +276,6 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
     if (onlyShowRows) {
       rows = onlyShowRows;
     }
-
     // Theoretically fuse will not be null, but here is a compatibility
     if (!searchValue || fuse == null) {
       return rows;
