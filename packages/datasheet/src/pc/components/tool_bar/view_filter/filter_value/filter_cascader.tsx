@@ -9,7 +9,7 @@ import { ICascaderOption, mapTreeNodesRecursively } from '../../../../utils';
 interface IFilterCascader {
   field: ICascaderField;
   onChange: (val: any) => void;
-  value: string;
+  value: string[];
 }
 
 export const FilterCascader = (props: IFilterCascader) => {
@@ -18,7 +18,7 @@ export const FilterCascader = (props: IFilterCascader) => {
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const loadTreeSnapshot = useCallback(async() => {
     setLoading(true);
     const res = await DatasheetApi.getCascaderSnapshot({
@@ -53,7 +53,7 @@ export const FilterCascader = (props: IFilterCascader) => {
         displayRender={label => {
           return field.property.showAll ? label.join('/') : label[label.length - 1];
         }}
-        value={value?.split('/')}
+        value={value?.map(cv => cv.split(('/')))}
       />
     </div>
   );
