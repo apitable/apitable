@@ -32,16 +32,18 @@ import {
   IUnitValue,
   IUserInfo,
   IUserValue,
+  IWidget,
   Reducers,
   resourceOpsToChangesets,
   StoreActions,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { DashboardDataPack } from 'database/interfaces';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
 import thunkMiddleware from 'redux-thunk';
-import { Logger } from 'winston';
 import { InjectLogger } from 'shared/common';
+import { Logger } from 'winston';
 
 /**
  * @author Zoe zheng
@@ -49,7 +51,8 @@ import { InjectLogger } from 'shared/common';
  */
 @Injectable()
 export class CommandService {
-  constructor(@InjectLogger() private readonly logger: Logger) {}
+  constructor(@InjectLogger() private readonly logger: Logger) {
+  }
 
   fullFillStore(datasheetPack: IServerDatasheetPack, userInfo?: IUserInfo): Store<IReduxState> {
     const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
@@ -135,6 +138,18 @@ export class CommandService {
         ),
       );
     });
+    return store;
+  }
+
+  fillDashboardStore(payload: DashboardDataPack): Store<IReduxState> {
+    const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
+    store.dispatch(StoreActions.setDashboard(payload.dashboard, payload.dashboard.id));
+    store.dispatch(StoreActions.setPageParams({ dashboardId: payload.dashboard.id }));
+    return store;
+  }
+
+  setWidgetInstalled(widget: IWidget, store: Store<IReduxState>) {
+    store.dispatch(StoreActions.receiveInstallationWidget(widget.id, widget));
     return store;
   }
 

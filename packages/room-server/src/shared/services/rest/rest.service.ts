@@ -27,6 +27,7 @@ import {
   ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
+  IWidget,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -66,6 +67,7 @@ export class RestService {
   private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
   private GET_WIDGET = 'widget/get';
+  private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
   private GET_MULTI_NODE_PERMISSION = 'internal/node/field/permission';
@@ -268,6 +270,19 @@ export class RestService {
     );
     const data = response!.data;
     return keyBy(data, 'id');
+  }
+
+  async createWidget(headers: IAuthHeader, dashboardId: string, widgetPackageId: string, name?: string): Promise<IWidget> {
+    const response = await lastValueFrom(
+      this.httpService.post(this.CREATE_WIDGET, {
+        nodeId: dashboardId,
+        widgetPackageId,
+        name
+      }, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+    );
+    return response!.data;
   }
 
   /**
