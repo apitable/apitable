@@ -197,7 +197,8 @@ export class ViewFilterDerivate {
 
     const mirrorId = this.state.pageParams.mirrorId!;
     const mirrorFilter = this.state.mirrorMap[mirrorId]?.mirror?.temporaryView?.filterInfo;
-    if (!mirrorFilter) {
+    const mirrorSourceDatasheetId = this.state.mirrorMap[mirrorId]?.mirror?.sourceInfo?.datasheetId;
+    if (!mirrorFilter || snapshot.datasheetId !== mirrorSourceDatasheetId) {
       return viewRows;
     }
 
