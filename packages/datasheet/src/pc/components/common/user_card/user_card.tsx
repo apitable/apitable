@@ -204,7 +204,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
               <div className={styles.infoContent}>
                 {
                   getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
-                    { (isAlien || !memberId || !memberInfo) ? <div className={styles.infoText}>
+                    { (isAlien || !memberInfo) ? <div className={styles.infoText}>
                       <InfoCircleOutlined />
                       <p>{t(Strings.alien_tip_in_user_card)}</p>
                     </div> :

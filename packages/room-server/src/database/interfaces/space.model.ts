@@ -45,3 +45,8 @@ export class InternalSpaceInfoVo {
     viewManualSave: boolean
   };
 }
+
+export class InternalSpaceStatisticsRo {
+  viewCount?: {[key: number]: number};
+  recordCount?: number;
+}

@@ -137,7 +137,7 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
           }
           triggerBase={unit.isTeam ? undefined : triggerBase}
           memberId={unit.memberId || memberId}
-          description={get(teamData, '0.fullHierarchyTeamName', '')}
+          description={get(teamData, '0.fullHierarchyTeamName', '') || unit.info}
           extra={!isAppointMode ? t(Strings.node_permission_extend_desc) : ''}
           style={{ backgroundColor: 'transparent', height: 'auto' }}
           avatarProps={{

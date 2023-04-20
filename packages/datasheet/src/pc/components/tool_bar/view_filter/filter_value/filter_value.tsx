@@ -126,7 +126,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
                 setValue(value ? value.join('/') : '' );
                 submitFilterValue(value ? [value.join('/')] : null);
               }}
-              value={value}
+              value={[value]}
             />
           );
         }

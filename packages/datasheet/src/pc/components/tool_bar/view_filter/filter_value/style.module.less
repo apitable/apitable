@@ -29,6 +29,10 @@
     background: var(--lowestBg);
     border-radius: 4px;
     :global {
+      .mobileCascaderText {
+        line-height: 38px;
+        padding-left: 8px;
+      }
       .ant-select-selector .ant-select-selection-item {
         line-height: 38px !important;
       }
@@ -211,6 +215,9 @@
 }
 
 @media screen and (max-width: @w-md) {
+  .cascaderEditorContainer {
+    min-height: 48px;
+  }
   .ratingContainer {
     padding-top: 0;
   }
