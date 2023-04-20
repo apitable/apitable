@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 我們建議使用 [Homebrew](https://brew.sh/) 來安裝任何缺失的依賴包：
 
 ```bash
-## 必須要有以下依賴
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -124,20 +125,32 @@ APITable 已準備好這兩個IDE調試配置。
 
 
 
+## 如何貢獻翻譯？
+
+我們有兩種方法來改進 APITable 的翻譯：
+
+1. 您可以修改源碼中的markdown文件，直接創建PR
+2. 加入我們的[Crowdin](https://crowdin.com/project/apitablecode) 找到要修改的`字符串`
+
+在多語言翻譯協作中，我們遵循以下流程：
+
+![多語言翻譯過程截圖](../static/collaboration_of_multilingual_translation.png)
+
 ## 如何配置SMTP服務器？
 
 默認情況下，APITable 不配置SMTP服務器，這意味著您不能邀請用戶，因為它需要電子郵件發送功能。
 
 需要使用自己的郵箱修改.env配置，重啟 backend-server。
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 另外，有些郵箱需要在後台啟用smtp。 詳細可以搜索xxx郵箱smtp教程。
 

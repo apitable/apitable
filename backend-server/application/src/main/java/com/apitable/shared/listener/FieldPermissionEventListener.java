@@ -53,7 +53,6 @@ import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.listener.event.FieldPermissionEvent;
@@ -61,6 +60,7 @@ import com.apitable.shared.listener.event.FieldPermissionEvent.Arg;
 import com.apitable.shared.util.MultiValueMapUtils;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.workspace.dto.ControlRoleUnitDTO;
+import com.apitable.workspace.dto.MemberInfoDTO;
 import com.apitable.workspace.ro.FieldPermissionChangeNotifyRo;
 import com.apitable.workspace.ro.FieldPermissionChangeNotifyRo.ChangeObject;
 import com.apitable.workspace.service.INodeRoleService;
@@ -161,9 +161,9 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                     }
                 }
                 // load member information
-                List<MemberBaseInfoDTO> members = memberMapper.selectBaseInfoDTOByIds(memberIds);
+                List<MemberInfoDTO> members = memberMapper.selectMemberInfoDTOByIds(memberIds);
                 Map<Long, String> memberIdToUuidMap = members.stream().filter(info -> info.getUuid() != null)
-                        .collect(Collectors.toMap(MemberBaseInfoDTO::getId, MemberBaseInfoDTO::getUuid));
+                        .collect(Collectors.toMap(MemberInfoDTO::getId, MemberInfoDTO::getUuid));
                 // no active members exist just end
                 if (memberIdToUuidMap.isEmpty()) {
                     return;

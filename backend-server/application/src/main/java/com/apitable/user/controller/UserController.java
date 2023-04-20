@@ -36,6 +36,7 @@ import static com.apitable.user.enums.UserException.PASSWORD_HAS_SETTING;
 import static com.apitable.user.enums.UserException.USER_NOT_BIND_EMAIL;
 import static com.apitable.user.enums.UserException.USER_NOT_BIND_PHONE;
 import static com.apitable.user.enums.UserException.USER_NOT_EXIST;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
 
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -759,6 +760,9 @@ public class UserController {
         UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId,
             spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
+        // Whether member is main admin
+        iSpaceService.checkMemberIsMainAdmin(spaceId, userSpace.getMemberId(),
+            isMainAdmin -> ExceptionUtil.isTrue(isMainAdmin, CAN_OP_MAIN_ADMIN));
         String applicant =
             StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {

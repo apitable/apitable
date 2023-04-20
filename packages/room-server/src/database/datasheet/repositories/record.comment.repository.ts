@@ -45,7 +45,7 @@ export class RecordCommentRepository extends Repository<RecordCommentEntity> {
       });
   }
 
-  selectReversionsByDstIdAndRecordId(dstId: string, recordId: string, excludeDeleted: boolean): Promise<{ revision: string }[] | undefined> {
+  selectRevisionsByDstIdAndRecordId(dstId: string, recordId: string, excludeDeleted: boolean): Promise<{ revision: string }[] | undefined> {
     const query = this.createQueryBuilder('vrc')
       .select('vrc.revision', 'revision')
       .where('vrc.dst_id = :dstId', { dstId })
@@ -66,7 +66,7 @@ export class RecordCommentRepository extends Repository<RecordCommentEntity> {
       .getRawMany();
   }
 
-  selectEmojisByRevisions(dstId: string, recordId: string, revisions: number[]): Promise<{ emojis: any, commentId: string }[]> {
+  selectEmojisByRevisions(dstId: string, recordId: string, revisions: number[]): Promise<{ emojis: any; commentId: string }[]> {
     return this.createQueryBuilder('vrc')
       .select("vrc.comment_msg->'$.emojis'", 'emojis')
       .addSelect('vrc.commentId', 'commentId')
@@ -83,7 +83,11 @@ export class RecordCommentRepository extends Repository<RecordCommentEntity> {
     });
   }
 
-  selectCommentStateByCommentIds(dstId: string, recordId: string, commentIds: string[]): Promise<{ commentId: string, commentMsg: ICommentMsg, commentState: number }[]> {
+  selectCommentStateByCommentIds(
+    dstId: string,
+    recordId: string,
+    commentIds: string[],
+  ): Promise<{ commentId: string; commentMsg: ICommentMsg; commentState: number }[]> {
     return this.createQueryBuilder('vrc')
       .select('vrc.commentId', 'commentId')
       .addSelect('vrc.commentMsg', 'commentMsg')
@@ -93,5 +97,4 @@ export class RecordCommentRepository extends Repository<RecordCommentEntity> {
       .andWhere('vrc.commentId IN (:...commentIds)', { commentIds })
       .getRawMany();
   }
-
 }

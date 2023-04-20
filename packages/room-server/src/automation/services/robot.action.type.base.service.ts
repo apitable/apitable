@@ -16,13 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ActionTypeCreateRo } from '../ros/action.type.create.ro';
-import { IUserBaseInfo } from '../../shared/interfaces';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { customActionTypeMetas } from '../actions/decorators/automation.action.decorator';
-import { ActionTypeUpdateRo } from '../ros/action.type.update.ro';
 import { getTypeByItem } from '../utils';
-import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { ActionTypeDetailVo } from '../vos/action.type.detail.vo';
 import { Injectable } from '@nestjs/common';
@@ -30,16 +26,8 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export abstract class RobotActionTypeBaseService {
 
-  createActionType(_props: ActionTypeCreateRo, _user: IUserBaseInfo): Promise<AutomationActionTypeEntity | null> {
-    return Promise.resolve(null);
-  }
-
   getActionType(_lang = 'zh'): Promise<ActionTypeDetailVo[]> {
     return Promise.resolve([]);
-  }
-
-  updateActionType(_actionTypeId: string, _data: ActionTypeUpdateRo, _user: IUserBaseInfo): Promise<number> {
-    return Promise.resolve(0);
   }
 }
 

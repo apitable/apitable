@@ -2,13 +2,20 @@ import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useSta
 import { Cascader } from 'pc/components/cascader';
 import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode } from '@apitable/core';
 import { PopStructure } from '../pop_structure';
-import { IEditor } from '../interface';
-import { IEditorProps } from '../options_editor';
+import { IBaseEditorProps, IEditor } from '../interface';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
 import classNames from 'classnames';
+import * as React from 'react';
 
-const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
+export interface ICascaderEditorProps extends IBaseEditorProps {
+  style?: React.CSSProperties;
+  editing: boolean;
+  editable: boolean;
+  toggleEditing?: (next?: boolean) => void;
+}
+
+const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps> = ({
   field,
   style,
   datasheetId,

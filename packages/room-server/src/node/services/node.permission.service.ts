@@ -72,13 +72,13 @@ export class NodePermissionService {
     }
     // Off-space access: template or share
     if (!origin.shareId) {
-      this.logger.info('template access');
+      this.logger.info(`template access ${nodeId}`);
       return { hasRole: true, role: ConfigConstant.permission.templateVisitor, ...DEFAULT_READ_ONLY_PERMISSION };
     }
     const hasLogin = await this.userService.session(auth.cookie!);
     // Unlogged-in, anonymous user permission
     if (!hasLogin) {
-      this.logger.info('Share acces, user state: unlogged-in');
+      this.logger.info(`Share access ${origin.shareId}, node ${nodeId}, user state: unlogged-in`);
       const fieldPermissionMap = await this.restService.getFieldPermission(auth, nodeId, origin.shareId);
       if (origin.main) {
         // Main datasheet returns read-only permission
@@ -91,7 +91,7 @@ export class NodePermissionService {
       }
       return { hasRole: true, role: ConfigConstant.permission.anonymous, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }
-    this.logger.info('Share access, user state: logged-in');
+    this.logger.info(`Share access ${origin.shareId}, node ${nodeId}, user state: logged-in`);
     return await this.getNodeRole(nodeId, auth, origin.shareId);
   }
 

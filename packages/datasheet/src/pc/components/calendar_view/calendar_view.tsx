@@ -361,7 +361,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   let panelRight = <React.Fragment />;
   let size = 0;
   if (!isMobile) {
-    if (settingPanelVisible && !view.lockInfo) {
+    if (settingPanelVisible ) {
       panelRight = <CalendarSettingPanel calendarStyle={calendarStyle} />;
       size = settingPanelWidth;
     } else if (gridVisible) {

@@ -95,6 +95,8 @@ services:
       context: .
       dockerfile: packaging/Dockerfile.room-server
       target: builder
+      args:
+        KEEP_DEV_DEP: 1
     volumes:
       - ./packages/room-server/coverage:/app/packages/room-server/coverage
       - ./packages/room-native-api/coverage:/app/packages/room-native-api/coverage

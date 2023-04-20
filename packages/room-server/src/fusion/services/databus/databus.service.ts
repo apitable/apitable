@@ -25,6 +25,7 @@ import { DatasheetService } from 'database/datasheet/services/datasheet.service'
 import { OtService } from 'database/ot/services/ot.service';
 import { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
+import { NativeService } from 'shared/services/native/native.service';
 import { Logger } from 'winston';
 import { IServerLoadDatasheetPackOptions, ServerDataStorageProvider } from './server.data.storage.provider';
 
@@ -38,6 +39,7 @@ export class DataBusService {
     commandService: CommandService,
     redisService: RedisService,
     otService: OtService,
+    nativeService: NativeService,
     changesetSourceService: DatasheetChangesetSourceService,
     @InjectLogger() private readonly logger: Logger,
   ) {
@@ -47,6 +49,7 @@ export class DataBusService {
           datasheetService,
           redisService,
           otService,
+          nativeService,
           changesetSourceService,
           loadOptions: {
             useCache: false,

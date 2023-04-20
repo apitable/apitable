@@ -38,6 +38,8 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+
 ```
 
 ### Linux
@@ -132,20 +134,32 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 
 
+## 번역에 기여하는 방법?
+
+APITable의 번역을 개선하는 두 가지 방법이 있습니다.
+
+1. 소스 코드에서 마크다운 파일을 수정하여 직접 PR을 생성할 수 있습니다.
+2. [Crowdin](https://crowdin.com/project/apitablecode)에 가입하여 수정할 `strings`을 찾으세요.
+
+다국어 번역 협력에서 우리는 다음 프로세스를 따릅니다.
+
+![다국어 번역 프로세스 스크린샷](../static/collaboration_of_multilingual_translation.png)
+
 ## SMTP 서버를 구성하는 방법은 무엇입니까?
 
 기본적으로 APITable은 SMTP 서버를 구성하지 않습니다. 즉, 이메일 전송 기능이 필요하므로 사용자를 초대할 수 없습니다.
 
-자체 이메일을 사용하여 .env 구성을 수정하고 백엔드 서버를 다시 시작해야 합니다.
+자체 이메일을 사용하여 `.env` 구성을 수정하고 백엔드 서버를 다시 시작해야 합니다.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 또한 일부 사서함은 smtp를 사용하려면 백그라운드에서 활성화해야 합니다. 자세한 내용은 xxx 사서함 smtp 자습서를 검색할 수 있습니다.
 

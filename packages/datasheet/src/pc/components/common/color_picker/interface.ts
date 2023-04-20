@@ -26,4 +26,5 @@ export interface IColorPicker {
   option: ISelectFieldOption;
   mask?: boolean;
   triggerComponent?: React.ReactElement;
+  disabled?: boolean;
 }

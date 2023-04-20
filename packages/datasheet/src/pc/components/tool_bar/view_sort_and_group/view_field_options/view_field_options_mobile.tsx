@@ -18,6 +18,8 @@
 
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { useThemeColors } from '@apitable/components';
+import classNames from 'classnames';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
@@ -49,6 +51,7 @@ export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewField
   const colors = useThemeColors();
   const currentViewAllField = useSelector(state => Selectors.getCurrentView(state))!.columns;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const isViewLock = useShowViewLockModal();
 
   function predicate(item: IViewColumn) {
     if (existFieldIds.includes(item.fieldId)) {
@@ -78,8 +81,8 @@ export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewField
   return (
     <>
       <div
-        className={styles.addSortRules}
-        onClick={() => setOptionsVisible(true)}
+        className={classNames(styles.addSortRules, { [styles.disabled]: isViewLock })}
+        onClick={() => !isViewLock && setOptionsVisible(true)}
       >
         <span>{getDefaultLabel()}</span>
         <ChevronDownOutlined
@@ -91,7 +94,7 @@ export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewField
       <Popup
         open={optionsVisible}
         title={t(Strings.title_select_sorting_fields)}
-        height="50%"
+        height='50%'
         onClose={onClose}
         className={styles.optionsListMenu}
       >

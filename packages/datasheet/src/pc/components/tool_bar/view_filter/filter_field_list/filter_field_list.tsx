@@ -34,6 +34,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { useMemo } from 'react';
 import * as React from 'react';
@@ -62,7 +63,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
   const { conditionIndex, changeFilter, condition, fieldMap, columns, warnTextObj, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-
+  const isViewLock = useShowViewLockModal();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -142,6 +143,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
         onChange={onChange}
         defaultValue={condition.fieldId}
         title={t(Strings.please_choose)}
+        disabled={isViewLock}
         triggerComponent={
           <div
             className={classNames(styles.trigger, {
@@ -172,6 +174,8 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
       popupStyle={{
         zIndex: 1000
       }}
+      disabled={isViewLock}
+      disabledTip={t(Strings.view_lock_setting_desc)}
       suffixIcon={
         checkTypeSwitch(condition, fieldMap[condition.fieldId]) && !isCryptoField ? (
           <Tooltip title={t(Strings.lookup_filter_condition_tip)} placement="top">

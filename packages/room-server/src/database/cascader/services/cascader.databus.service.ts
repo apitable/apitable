@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus, Field, IFieldPermissionMap, Selectors } from '@apitable/core';
+import { databus, Field, IFieldPermissionMap, Selectors, ViewFilterDerivate } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
@@ -62,6 +62,8 @@ export class CascaderDatabusService {
         if (!view) {
           return null;
         }
+        const viewFilterDerivate = new ViewFilterDerivate(state, datasheet.id);
+        const rows = viewFilterDerivate.getFilteredRows(view);
         for (const key in fieldMap) {
           fieldMethods[key] = Field.bindContext(fieldMap[key]!, state);
         }
@@ -69,7 +71,7 @@ export class CascaderDatabusService {
           id: viewId,
           type: view.type,
           name: view.name,
-          rows: view.rows,
+          rows,
           columns: view.columns,
           fieldMap,
         };

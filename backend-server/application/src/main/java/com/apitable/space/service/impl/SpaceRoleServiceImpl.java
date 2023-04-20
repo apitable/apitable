@@ -76,6 +76,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
 import static com.apitable.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
 import static com.apitable.workspace.enums.PermissionException.DELETE_ROLE_ERROR;
 import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
@@ -238,7 +239,8 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public void checkBeforeCreate(String spaceId, Long memberId) {
         iSpaceService.checkMemberInSpace(spaceId, memberId);
-        iSpaceService.checkMemberIsMainAdmin(spaceId, memberId);
+        iSpaceService.checkMemberIsMainAdmin(spaceId, memberId,
+            isMainAdmin -> ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN));
         this.checkIsNotSubAdmin(spaceId, memberId);
     }
 

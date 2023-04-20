@@ -82,7 +82,7 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
   /**
    * Obtain the revision number of a resource
    */
-  selectReversionByResourceId(resourceId: string): Promise<{ revision: number } | undefined> {
+  selectRevisionByResourceId(resourceId: string): Promise<{ revision: number } | undefined> {
     return this.findOne({
       select: ['revision'],
       where: [{ resourceId, isDeleted: false }],

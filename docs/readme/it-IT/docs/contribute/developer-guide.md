@@ -38,6 +38,7 @@ Si consiglia di utilizzare Homebrew per installare le dipendenze mancanti:
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 ```
 
 ### Linux
@@ -128,20 +129,32 @@ Basta aprire la cartella principale di APITable con l'IDE.
 
 
 
+## Contribuisci alle traduzioni?
+
+Abbiamo due modi per migliorare la traduzione di APITable:
+
+1. È possibile modificare i file markdown nel codice sorgente e creare una PR direttamente
+2. Unisciti alla nostra [Crowdin](https://crowdin.com/project/apitablecode) per trovare le `strings` per modificare
+
+In collaborazione con la traduzione multilingue, seguiamo il seguente processo:
+
+![Screenshot del processo di traduzione multilingue](../static/collaboration_of_multilingual_translation.png)
+
 ## Come configurare il server SMTP?
 
 Per impostazione predefinita, APITable non configura il server SMTP, il che significa che non è possibile invitare gli utenti dal momento che richiede la funzione di invio e-mail.
 
-È necessario modificare la configurazione di .env usando l'e-mail di auto e riavviare il server backend.
+È necessario modificare la configurazione di `.env` usando l'email di auto e riavviare il server backend.
 
-`
+```
 MAIL_ENABLED=true
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 MAIL_PORT=465
 MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 Inoltre, alcune caselle di posta devono essere abilitate in background per utilizzare smtp. Per i dettagli, è possibile cercare xxx mailbox smtp tutorial.
 
@@ -181,4 +194,4 @@ Questo può essere ottenuto impostando il parametro `API_MAX_MODIFY_RECORD_COUNT
 ## Come modificare la porta predefinita 80?
 Le proprietà di configurazione nel file `.env` possono anche essere sovrascritte specificandole vars env `NGINX_HTTP_PORT`
 
-Ad esempio: Sarebbe impostato come NGINX_HTTP_PORT=8080
+Ad esempio. Sarebbe impostato come NGINX_HTTP_PORT=8080

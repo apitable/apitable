@@ -45,7 +45,7 @@ import styles from './style.module.less';
 import { useFocusEffect } from '../hooks/use_focus_effect';
 
 export interface IEditorProps extends IBaseEditorProps {
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   editing: boolean;
   recordId: string;
   editable: boolean;
@@ -162,7 +162,7 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
   return (
     <PopStructure style={style} height={height} editing={editing} className={styles.optionsEditor} width={width} onClose={onClose}>
       <OptionList
-        listData={Number(style.width) === 0 ? [] : options}
+        listData={Number(style?.width) === 0 ? [] : options}
         onAddHandle={fieldPropertyEditable ? insertNewItem : undefined}
         setCurrentField={setCurrentField}
         existValues={cellValue}

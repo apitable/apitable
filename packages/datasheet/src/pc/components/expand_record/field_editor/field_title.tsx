@@ -205,7 +205,8 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = p
             {field.name}
           </div>
 
-          {!hideDesc && Field.bindModel(field).isComputed && renderComputeFieldError(field, t(Strings.field_configuration_err), isMobile)}
+          {!hideDesc && (Field.bindModel(field).isComputed || field.type === FieldType.Cascader) &&
+            renderComputeFieldError(field, t(Strings.field_configuration_err), isMobile)}
 
           {field.desc && !hideDesc && (
             <div className={styles.iconDisplayIcon} onMouseDown={stopPropagation}>

@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceIdPrefix, ResourceType } from '@apitable/core';
+import { IViewProperty, ResourceIdPrefix, ResourceType, ViewType } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
-import { InjectLogger } from '../../../shared/common';
+import { InjectLogger } from 'shared/common';
+import { RestService } from 'shared/services/rest/rest.service';
 import { Logger } from 'winston';
 import { EffectConstantName } from '../interfaces/ot.interface';
 import { difference } from 'lodash';
@@ -40,7 +41,9 @@ export class ResourceChangeHandler {
     private readonly nodeService: NodeService,
     private readonly datasheetWidgetService: DatasheetWidgetService,
     private readonly datasheetFieldHandler: DatasheetFieldHandler,
-  ) {}
+    private readonly restService: RestService
+  ) {
+  }
 
   @Span()
   async handleResourceChange(roomId: string, values: any[]) {
@@ -53,8 +56,8 @@ export class ResourceChangeHandler {
       )}`,
     );
     const isDsbRoom = roomId.startsWith(ResourceIdPrefix.Dashboard);
-    for (const { effectMap, commonData, resultSet } of values) {
-      const { dstId, resourceId, resourceType } = commonData;
+    for (const {effectMap, commonData, resultSet} of values) {
+      const {dstId, resourceId, resourceType} = commonData;
       switch (resourceType) {
         case ResourceType.Datasheet:
           await this.parseDatasheetResultSet(dstId, effectMap, resultSet);
@@ -147,6 +150,7 @@ export class ResourceChangeHandler {
       // Update related node resource asynchronously
       relNodeIds.forEach(nodeId => this.roomResourceRelService.removeRel(nodeId, delResourceIds));
     }
+    await this.handleSpaceStatistics(resultSet);
   }
 
   private async parseDashboardResultSet(dashboardId: string, resultSet: { [key: string]: any }) {
@@ -184,6 +188,42 @@ export class ResourceChangeHandler {
         delResourceIds = difference<string>(delResourceIds, addResourceIds);
       }
       await this.roomResourceRelService.removeRel(dashboardId, delResourceIds);
+    }
+  }
+
+  @Span()
+  private async handleSpaceStatistics(resultSet: { [key: string]: any }) {
+    const viewCount: { [key: number]: number } = {};
+    if (resultSet.addViews.length || resultSet.deleteViews.length) {
+      this.calculateViewCount(viewCount, resultSet.addViews, false);
+      this.calculateViewCount(viewCount, resultSet.deleteViews, true);
+    }
+    const addRecordCount = resultSet.toCreateRecord.size;
+    const recordCount = addRecordCount - resultSet.toDeleteRecordIds.length;
+    if (Object.keys(viewCount).length || recordCount != 0) {
+      try {
+        await this.restService.updateSpaceStatistics(resultSet.spaceId, { viewCount, recordCount });
+      } catch (err: any) {
+        this.logger.error(`modifySpaceStatisticsError:${resultSet.spaceId}`, { message: err?.message, stack: err?.stack });
+      }
+    }
+  }
+
+  private calculateViewCount(viewCountMap: { [key: number]: number }, views: IViewProperty[], isDeleted: boolean): void {
+    // Limit view types to reduce network overhead
+    const needCachedViewTypes: ViewType[] = [ViewType.Kanban, ViewType.Gallery, ViewType.Calendar, ViewType.Gantt];
+    for (const view of views) {
+      if (!needCachedViewTypes.includes(view.type)) {
+        continue;
+      }
+      if (!viewCountMap[view.type]) {
+        viewCountMap[view.type] = 0;
+      }
+      if (isDeleted) {
+        viewCountMap[view.type] += -1;
+      } else {
+        viewCountMap[view.type] += 1;
+      }
     }
   }
 }

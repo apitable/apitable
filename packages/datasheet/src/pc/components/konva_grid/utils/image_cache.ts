@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getEnvVariables } from 'pc/utils/env';
+
 export const imageCache = (() => {
   const imageMap: { [name: string]: any } = {};
   const imgPromises: any = [];
@@ -24,8 +26,11 @@ export const imageCache = (() => {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
-      img.crossOrigin = 'Anonymous';
       img.referrerPolicy = 'no-referrer';
+
+      if (getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
+        img.crossOrigin = 'Anonymous';
+      }
       
       try {
         img.onload = () => {

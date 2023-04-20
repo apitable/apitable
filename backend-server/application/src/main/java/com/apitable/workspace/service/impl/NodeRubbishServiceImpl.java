@@ -215,7 +215,12 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         long retainDay = Boolean.TRUE.equals(limitProperties.getIsAllowOverLimit()) ?
                 limitProperties.getRubbishMaxRetainDay() : entitlementServiceFacade.getSpaceSubscription(spaceId).getFeature().getRemainTrashDays().getValue();
         // Subscription function restriction check
-        ExceptionUtil.isTrue(rubbishUpdatedAt.isAfter(LocalDateTime.of(ClockManager.me().getLocalDateNow().minusDays(retainDay), LocalTime.MAX)), RUBBISH_NODE_NOT_EXIST);
+        ExceptionUtil.isTrue(retainDay < 0
+            || rubbishUpdatedAt.isAfter(LocalDateTime.of(ClockManager.me()
+                .getLocalDateNow()
+                .minusDays(retainDay),
+            LocalTime.MAX)
+        ), RUBBISH_NODE_NOT_EXIST);
 
         // Check node permissions
         ControlRoleDict roleDict = controlTemplate.fetchRubbishNodeRole(memberId, Collections.singletonList(nodeId));

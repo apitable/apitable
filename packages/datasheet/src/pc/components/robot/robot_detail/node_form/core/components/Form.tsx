@@ -66,7 +66,8 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     const { errors, errorSchema, schema, uiSchema } = state;
     const { ErrorList, showErrorList, formContext } = props;
     if (showErrorList && errors.length) {
-      return <ErrorList errors={errors} errorSchema={errorSchema} schema={schema} uiSchema={uiSchema} formContext={formContext} />;
+      return <ErrorList errors={errors} errorSchema={errorSchema} schema={schema} uiSchema={uiSchema}
+        formContext={formContext} />;
     }
     return null;
   };
@@ -302,7 +303,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
         children
       ) : (
         <div>
-          <button type="submit" className="btn btn-info">
+          <button type='submit' className='btn btn-info'>
             Submit
           </button>
         </div>

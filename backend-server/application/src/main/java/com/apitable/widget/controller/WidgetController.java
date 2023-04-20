@@ -26,6 +26,7 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
@@ -92,6 +93,9 @@ public class WidgetController {
 
     @Resource
     private WidgetMapper widgetMapper;
+
+    @Resource
+    private IMemberService iMemberService;
 
     /**
      * Get widget store.
@@ -224,9 +228,11 @@ public class WidgetController {
         ExceptionUtil.isNotEmpty(widgetIds, ParameterException.INCORRECT_ARG);
         String widgetSpaceId = iWidgetService.checkByWidgetIds(widgetIds);
         if (StrUtil.isBlank(linkId)) {
-            // prevent access to unadded spaces
-            userSpaceCacheService.getMemberId(SessionContext.getUserId(),
-                widgetSpaceId);
+            Long userId = SessionContext.getUserIdWithoutException();
+            if (null != userId) {
+                // prevent access to unadded spaces
+                iMemberService.checkUserIfInSpace(SessionContext.getUserId(), widgetSpaceId);
+            }
         } else {
             if (!IdUtil.isEmbed(linkId)) {
                 // out of station access

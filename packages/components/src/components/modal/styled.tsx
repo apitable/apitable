@@ -97,10 +97,10 @@ export const ModalHeader = styled.div`
 
 export const CloseIconBox = styled.div`
   position: absolute;
-  width: 32px;
-  height: 32px;
-  top: 20px;
-  right: 20px;
+  width: 24px;
+  height: 24px;
+  top: 24px;
+  right: 24px;
 `;
 
 export const ModalFooter = styled.div`

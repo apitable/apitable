@@ -34,10 +34,11 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profilem
 不足している依存関係をインストールするには、[Homebrew](https://brew.sh/) を使用することをお勧めします。
 
 ```bash
-## 必須必須
+## necessary
 brew install git
 brew install --cask docker
 brew install make
+brew install pkg-config cairo pango libpng giflib librsvg pixman
 ```
 
 ### Linux
@@ -124,20 +125,32 @@ APITable のルート ディレクトリを IDE で開くだけです。
 
 
 
+## 翻訳に貢献するには?
+
+APITableの翻訳を改善するには2つの方法があります。
+
+1. ソースコード内のマークダウンファイルを変更し、直接PRを作成することができます。
+2. [Crowdin](https://crowdin.com/project/apitablecode) に参加して、 `strings` を見つけて修正してください
+
+多言語翻訳のコラボレーションでは、以下の手順に従います。
+
+![多言語翻訳プロセスのスクリーンショット](../static/collaboration_of_multilingual_translation.png)
+
 ## SMTP サーバーの設定方法は?
 
 デフォルトでは、APITable は SMTP サーバーを構成しません。 つまり、メール送信機能が必要なため、ユーザーを招待することはできません。
 
-自己メールを使用して .env 構成を変更し、バックエンド サーバーを再起動する必要があります。
+自己メールを使用して `.env` 設定を変更し、バックエンドサーバを再起動する必要があります。
 
-`
+```
 MAIL_ENABLED=真
 MAIL_HOST=smtp.xxx.com
 MAIL_PASSWORD=your_email_password
 メールポート=465
 MAIL_SSL_ENABLE=真
 MAIL_TYPE=smtp
-MAIL_USERNAME=your_email`
+MAIL_USERNAME=your_email
+```
 
 さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックス smtp チュートリアルを検索してください。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
 
@@ -156,11 +169,11 @@ MAIL_USERNAME=your_email`
 
 ## ダッシュボードでウィジェット数の制限を設定するには? (デフォルトでは 30)
 
-これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS`パラメータを設定することで実現できます。
+これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS</0>パラメータを設定することで実現できます。</p>
 
-## API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)
+<h2 spaces-before="0">API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)</h2>
 
-「room-server」の「.env.default」ファイルには、リクエストの頻度を調整できる 2 つのパラメーターがあります。
+<p spaces-before="0"><code>room-server` の `.env.default`ファイルには、リクエスト頻度を調整できる2つのパラメータがあります。
 
 1. `LIMIT_POINTS` と `LIMIT_DURATION` を設定して、単位時間内に行うことができるリクエストの数を示すことができます。 ここで、LIMIT_POINTS は回数、LIMIT_DURATION は継続時間で、秒単位で測定されます。
 
@@ -177,4 +190,4 @@ MAIL_USERNAME=your_email`
 ## デフォルトの 80 ポートを変更するには?
 `.env` ファイルの構成プロパティは、環境変数 `NGINX_HTTP_PORT` を指定することでオーバーライドすることもできます
 
-例えば。 NGINX_HTTP_PORT=8080 として設定されます
+例えば： NGINX_HTTP_PORT=8080 として設定されます

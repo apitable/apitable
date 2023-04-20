@@ -29,6 +29,7 @@ import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { setColor } from 'pc/components/multi_grid/format';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -55,6 +56,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   const isStartFieldDeleted = startFieldId && !isCryptoStartField && !fieldMap[startFieldId];
   const isEndFieldDeleted = endFieldId && !isCryptoEndField && !fieldMap[endFieldId];
   const columns = view.columns as ICalendarViewColumn[];
+  const isViewLock = useShowViewLockModal();
   const {
     spaceId,
     viewId,
@@ -259,6 +261,8 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
                   triggerStyle={{
                     border: isFieldDeleted ? `1px solid ${colors.rc08}` : 'none'
                   }}
+                  disabled={isViewLock}
+                  disabledTip={t(Strings.view_lock_setting_desc)}
                 >
                   {
                     (isStart ? fieldOptions.filter(f => f.value !== endFieldId) : [

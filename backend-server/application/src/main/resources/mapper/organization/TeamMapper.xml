@@ -390,10 +390,6 @@
             #{item}
         </foreach>
         AND is_deleted = 0
-        ORDER BY FIELD(id,
-        <foreach item="item" index="index" collection="teamIds" separator=",">
-            #{item}
-        </foreach>)
     </select>
 
     <select id="selectMemberCountByTeamId" resultType="java.lang.Integer">

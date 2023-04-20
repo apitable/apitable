@@ -32,4 +32,6 @@ public class MemberInfoDTO {
     private Long id;
 
     private Boolean isDeleted;
+
+    private String uuid;
 }

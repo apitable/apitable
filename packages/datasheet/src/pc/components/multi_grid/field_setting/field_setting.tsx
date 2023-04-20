@@ -508,7 +508,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
       />
       {isMobile && currentField.type === FieldType.Cascader ? (
         <div className={styles.cascaderMobileTip}>
-          <WarnCircleFilled />
+          <WarnCircleFilled color={colors.textCommonTertiary} />
           {t(Strings.cascader_mobile_unavailable_tip)}
         </div>
       ) : (

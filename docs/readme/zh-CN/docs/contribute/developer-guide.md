@@ -34,7 +34,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 我们建议使用 [Homebrew](https://brew.sh/) 来安装任何缺失的依赖包：
 
 ```bash
-## 必须要有以下依赖
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
@@ -125,6 +125,17 @@ APITable 已准备好这两个IDE调试配置。
 
 
 
+## 如何贡献翻译？
+
+我们有两种方法改进APITable的翻译：
+
+1. 您可以修改源代码中的 Markdown 文件并直接创建 PR
+2. 加入 [Crowdin](https://crowdin.com/project/apitablecode) 找到 `strings` 进行修改
+
+在多语种翻译的协作下，我们遵循以下程序：
+
+![多语种翻译流程的截图](../static/collaboration_of_multilingual_translation.png)
+
 ## 如何配置SMTP服务器？
 
 默认情况下，APITable 不配置SMTP服务器，这意味着您不能邀请用户，因为它需要电子邮件发送功能。
@@ -141,7 +152,7 @@ MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
 ```
 
-另外，有些邮箱需要在后台启用smtp。 详细可以搜索xxx邮箱smtp教程。
+此外，需要在后台启用某些邮件箱才能使用smtp。 详细可以搜索xxx邮箱smtp教程。
 
 
 ## macOS M1 下 docker 运行的性能问题？
@@ -179,4 +190,4 @@ MAIL_USERNAME=your_email
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如：NGINX_HTTP_PORT=8080
+例如： NGINX_HTTP_PORT=8080

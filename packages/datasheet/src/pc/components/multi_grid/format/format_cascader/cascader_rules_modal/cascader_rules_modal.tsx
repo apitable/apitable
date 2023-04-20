@@ -1,18 +1,19 @@
-import { IconButton, IOption, LinkButton, Loading, Typography, Select, useThemeColors } from '@apitable/components';
-import { DatasheetApi, ICascaderField, ICascaderNode, IField, ILinkedField, IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { IconButton, IOption, LinkButton, Loading, Select, Typography, useThemeColors } from '@apitable/components';
+import { DatasheetApi, FieldType, ICascaderField, ICascaderNode, IField, ILinkedField, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronRightOutlined, DeleteOutlined, QuestionCircleOutlined, ReloadOutlined } from '@apitable/icons';
 import classNames from 'classnames';
+import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
-import { compact, find, take, pick } from 'lodash';
-import * as React from 'react';
+import { compact, find, pick, take } from 'lodash';
 import { ButtonOperateType } from 'pc/utils';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { filterCommonGroup } from 'pc/components/multi_grid/type_select';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -20,6 +21,8 @@ interface ICascaderRulesModalProps {
   currentField: ICascaderField;
   setCurrentField: React.Dispatch<React.SetStateAction<IField>>;
 }
+
+const isCascaderLinkedField = (fieldType: FieldType) => filterCommonGroup(fieldType) && fieldType !== FieldType.Attachment;
 
 const initLinkedFields = (linkedFields: ILinkedField[]): (ILinkedField | undefined)[] => (!linkedFields.length ? [undefined] : linkedFields);
 
@@ -105,7 +108,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       if (res.data.success) {
         const linkedFields = res.data.data?.linkedFields;
         if (linkedFields && linkedFields.length > 0) {
-          setFullLinkedFields(linkedFields);
+          setFullLinkedFields(linkedFields.filter(lf => isCascaderLinkedField(lf.type)));
           // set two initial fields for the first-time config
           if (isUpdateLinked && !currFieldLinkedFields?.length) {
             setLinkedFields(linkedFields.slice(0, 2));
@@ -226,7 +229,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
         }).then(() => {
           const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
           const primaryFullLinkedFields = columns.map(column => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
-          setFullLinkedFields(primaryFullLinkedFields);
+          setFullLinkedFields(primaryFullLinkedFields.filter(lf => isCascaderLinkedField(lf.type)));
           onRefreshConfig();
         });
       },

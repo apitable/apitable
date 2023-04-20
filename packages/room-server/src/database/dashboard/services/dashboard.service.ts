@@ -31,9 +31,10 @@ export class DashboardService {
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
     private readonly resourceMetaService: MetaService,
-  ) {}
+  ) {
+  }
 
-  async fetchDashboardPack(dashboardId: string, auth: { token: string; cookie: string }): Promise<DashboardDataPack> {
+  async fetchDashboardPack(dashboardId: string, auth: IAuthHeader): Promise<DashboardDataPack> {
     const baseNodeInfo = await this.nodeService.getNodeDetailInfo(dashboardId, auth, { internal: true, notDst: true, main: true });
     return await this.fetchPack(dashboardId, auth, baseNodeInfo);
   }

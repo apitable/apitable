@@ -133,13 +133,6 @@
         WHERE parent_id = #{parentId} and is_rubbish = 0
     </select>
 
-    <select id="selectSubNodeInfo"
-            resultType="com.apitable.workspace.vo.SimpleSortableNodeInfo">
-        SELECT node_id, pre_node_id
-        FROM ${tablePrefix}node
-        WHERE parent_id = #{parentId} and is_rubbish = 0
-    </select>
-
     <select id="selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
@@ -207,7 +200,7 @@
     </select>
 
     <select id="selectInfoByNodeIds" resultType="com.apitable.workspace.vo.NodeInfo">
-        SELECT node_id, node_name, type, icon
+        SELECT node_id, node_name, type, icon, parent_id
         FROM ${tablePrefix}node
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">

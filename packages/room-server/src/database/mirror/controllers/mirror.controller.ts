@@ -25,6 +25,7 @@ import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { UserService } from 'user/services/user.service';
 import { DatasheetPackRo } from '../../datasheet/ros/datasheet.pack.ro';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * mirror interface
@@ -37,7 +38,7 @@ export class MirrorController {
     private readonly nodeShareSettingService: NodeShareSettingService,
     private readonly mirrorService: MirrorService,
     private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
-  ) { }
+  ) {}
 
   @Get(['mirrors/:mirrorId/info', 'mirror/:mirrorId/info'])
   @UseInterceptors(ResourceDataInterceptor)
@@ -54,7 +55,9 @@ export class MirrorController {
   @Get(['shares/:shareId/mirrors/:mirrorId/info', 'share/:shareId/mirror/:mirrorId/info'])
   @UseInterceptors(ResourceDataInterceptor)
   async getShareMirrorInfo(
-    @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('mirrorId') mirrorId: string
+    @Headers('cookie') cookie: string,
+    @Param('shareId') shareId: string,
+    @Param('mirrorId') mirrorId: string,
   ): Promise<MirrorInfo> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, mirrorId);
@@ -63,8 +66,11 @@ export class MirrorController {
 
   @Get(['mirrors/:mirrorId/dataPack', 'mirror/:mirrorId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
-  async getDataPack(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string,
-                    @Query() query: DatasheetPackRo,): Promise<DatasheetPack> {
+  async getDataPack(
+    @Headers('cookie') cookie: string,
+    @Param('mirrorId') mirrorId: string,
+    @Query() query: DatasheetPackRo,
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     const isTemplate = await this.nodeService.isTemplate(mirrorId);
     if (!isTemplate) {
       // if it is not a template, check if it belongs to this space
@@ -74,14 +80,16 @@ export class MirrorController {
       await this.nodeService.checkNodePermission(mirrorId, { cookie });
     }
     //TODO check whether the user is in the space when getting the private space template mirror
-    return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate, recordIds: query.recordIds });
+    return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate }, query.recordIds);
   }
 
   @Get(['shares/:shareId/mirrors/:mirrorId/dataPack', 'share/:shareId/mirror/:mirrorId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDataPack(
-    @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('mirrorId') mirrorId: string
-  ): Promise<DatasheetPack> {
+    @Headers('cookie') cookie: string,
+    @Param('shareId') shareId: string,
+    @Param('mirrorId') mirrorId: string,
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, mirrorId);
     return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: false, main: true, shareId });
@@ -98,7 +106,7 @@ export class MirrorController {
   }
 
   @Post(['mirrors/:mirrorId/records/subscriptions'])
-  async subscribeRecords(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string, @Body() data: {recordIds: string[]}) {
+  async subscribeRecords(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string, @Body() data: { recordIds: string[] }) {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, mirrorId);
     await this.nodeService.checkNodePermission(mirrorId, { cookie });
@@ -107,7 +115,7 @@ export class MirrorController {
   }
 
   @Delete(['mirrors/:mirrorId/records/subscriptions'])
-  async unsubscribeRecords(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string, @Body() data: {recordIds: string[]}) {
+  async unsubscribeRecords(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string, @Body() data: { recordIds: string[] }) {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, mirrorId);
     await this.nodeService.checkNodePermission(mirrorId, { cookie });

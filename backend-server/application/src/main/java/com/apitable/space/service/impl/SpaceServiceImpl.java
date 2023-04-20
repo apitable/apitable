@@ -582,8 +582,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             typeStaticsMap.containsKey(NodeType.FORM.getNodeType())
                 ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // table view statistics
-        DatasheetStaticsDTO viewVO =
-            iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
+        DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder().spaceName(entity.getName())
             .spaceLogo(entity.getLogo()).createTime(entity.getCreatedAt())
             .deptNumber(teamCount).seats(memberNumber).sheetNums(sheetNums)
@@ -879,11 +878,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
      */
     @Override
     public void checkMemberIsMainAdmin(final String spaceId,
-                                       final Long memberId) {
+        final Long memberId, Consumer<Boolean> consumer) {
         log.info("checks whether specified member is main admin");
         Long owner = baseMapper.selectSpaceMainAdmin(spaceId);
-        boolean isMainAdmin = owner != null && owner.equals(memberId);
-        ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN);
+        consumer.accept(owner != null && owner.equals(memberId));
     }
 
     /**

@@ -37,4 +37,8 @@ public class NodeInfo extends BaseNodeInfo {
     @Schema(description = "Node icon", example = ":smile")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String icon;
+
+    @Schema(description = "parent node id", example = "fldXxx")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
+    private String parentId;
 }

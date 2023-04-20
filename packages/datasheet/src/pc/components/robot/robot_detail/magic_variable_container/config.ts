@@ -7,7 +7,7 @@ export const map2Text = {
   data: t(Strings.robot_enter_body_text_placeholder),
   webhookUrl: t(Strings.robot_enter_webhook_placeholder),
   content: t(Strings.robot_enter_message_content_placeholder),
-  server: t(Strings.robot_action_send_mails_config_1_pleaseholder_1),
+  domain: t(Strings.robot_action_send_mails_config_1_pleaseholder_1),
   port: t(Strings.robot_action_send_mails_config_1_pleaseholder_2),
   account: t(Strings.robot_action_send_mails_config_2_pleaseholder),
   password: t(Strings.robot_action_send_mails_config_3_pleaseholder),

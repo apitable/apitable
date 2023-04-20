@@ -41,6 +41,7 @@ interface IPickerContentProps {
   includeTimeZone?: boolean;
   alarm?: WithOptional<IRecordAlarmClient, 'id'>;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  disabled?: boolean;
 }
 
 interface ICustomChildren {
@@ -49,6 +50,7 @@ interface ICustomChildren {
   onClick?(): void;
   value?: Date;
   arrowIcon?: JSX.Element | null;
+  disabled?: boolean;
 }
 
 export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> = props => {
@@ -57,6 +59,7 @@ export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> 
     children,
     value,
     arrowIcon,
+    disabled
   } = props;
   const colors = useThemeColors();
 
@@ -65,8 +68,11 @@ export const CustomChildren: React.FC<React.PropsWithChildren<ICustomChildren>> 
       className={classNames(
         style.pickerChildrenWrapper,
         'pickerChildrenWrapper',
+        {
+          [style.disabled]: disabled
+        }
       )}
-      onClick={onClick}
+      onClick={!disabled ? onClick : undefined}
     >
       <span
         style={{
@@ -98,7 +104,8 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
     alarm,
     setVisible,
     includeTimeZone,
-    timeZone
+    timeZone,
+    disabled
   } = props;
 
   const alarmRealTime = useMemo(() => {
@@ -111,13 +118,13 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
     return alarm?.time || alarmDate.format('HH:mm');
   }, [alarm?.subtract, alarm?.time, value]);
 
-  const getDefaultValue = () =>{
+  const getDefaultValue = () => {
     let abbr = '';
     if (includeTimeZone) {
       const tz = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
       abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
-    if(value){
+    if (value) {
       const dateTime = timeZone ? dayjs(value).tz(timeZone) : dayjs(value);
       return `${dateTime.format(mode == 'day' ? dateFormat : dateTimeFormat)}${abbr}`;
     }
@@ -130,7 +137,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
 
   return (
     <div className={style.mobileDatePicker}>
-      <CustomChildren value={value} arrowIcon={null} onClick={() => {setVisible(true);}}>
+      <CustomChildren value={value} arrowIcon={null} onClick={() => {!disabled && setVisible(true);}} disabled={disabled}>
         {getDefaultValue()}
       </CustomChildren>
       <DatePicker
