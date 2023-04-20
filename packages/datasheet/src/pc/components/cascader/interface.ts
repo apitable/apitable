@@ -6,7 +6,7 @@ export interface ICascader {
   options: ICascaderOption[];
   onChange: (values?: (string | number)[]) => void;
   editing?: boolean;
-  cascaderRef: MutableRefObject<any>;
+  cascaderRef?: MutableRefObject<any>;
   value: string[][] | string[];
   displayRender?: (label: string[]) => React.ReactNode;
   disabled?: boolean;

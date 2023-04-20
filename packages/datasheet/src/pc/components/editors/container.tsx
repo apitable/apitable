@@ -795,7 +795,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
             {...commonProps}
             field={field}
             toggleEditing={toggleEditing}
-            recordId={record.id}
           />
         );
       case FieldType.URL:

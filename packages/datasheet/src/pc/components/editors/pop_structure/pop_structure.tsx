@@ -32,7 +32,7 @@ interface IPopStructureProps {
   height: number;
   width: number;
   className: string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   disableMinWidth?: boolean;
   disableMobile?: boolean;
   onClose(): void;
@@ -108,7 +108,7 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
           ...style,
           ...position,
           minHeight: 'auto',
-          minWidth: disableMinWidth ? 'auto' : (style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
+          minWidth: disableMinWidth ? 'auto' : (style?.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
         }}
       >
         <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>
@@ -128,7 +128,7 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
             ...style,
             ...position,
             minHeight: 'auto',
-            minWidth: disableMinWidth ? 'auto' : (style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
+            minWidth: disableMinWidth ? 'auto' : (style?.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
           }}
         >
           <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>

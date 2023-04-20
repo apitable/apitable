@@ -32,9 +32,11 @@ import { FilterOptions } from './filter_options';
 import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
+import { FilterCascader } from './filter_cascader';
 
 export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
+  console.log('condition', condition);
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
@@ -114,6 +116,18 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           />
         );
       case EditorType.Text:
+        if (field.type === FieldType.Cascader) {
+          return (
+            <FilterCascader
+              field={field}
+              onChange={(value) => {
+                setValue(value ? value.join('/') : '' );
+                submitFilterValue(value ? [value.join('/')] : null);
+              }}
+              value={value}
+            />
+          );
+        }
         return (
           (
             <div className={styles.inputContainer}>
