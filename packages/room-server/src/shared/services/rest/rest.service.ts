@@ -36,6 +36,7 @@ import {
   InternalSpaceSubscriptionView,
   InternalSpaceUsageView,
   WidgetMap,
+  InternalSpaceStatisticsRo,
 } from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
@@ -44,7 +45,14 @@ import { lastValueFrom } from 'rxjs';
 import { CommonStatusCode } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
-import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
+import {
+  IAuthHeader,
+  IHttpSuccessResponse,
+  INotificationCreateRo,
+  IOpAttachCiteRo,
+  IUserBaseInfo,
+  NodePermission
+} from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
@@ -90,6 +98,8 @@ export class RestService {
   private UNIT_LOAD_OR_SEARCH = 'internal/org/loadOrSearch';
 
   private SPACE_INFO = 'internal/space/%(spaceId)s';
+
+  private SPACE_STATISTICS = 'internal/space/%(spaceId)s/statistics';
 
   private readonly logger = new Logger(RestService.name);
 
@@ -550,5 +560,11 @@ export class RestService {
   async getSpaceInfo(spaceId: string): Promise<InternalSpaceInfoVo> {
     const response = await lastValueFrom(this.httpService.get(sprintf(this.SPACE_INFO, { spaceId })));
     return response.data;
+  }
+
+  async updateSpaceStatistics(spaceId: string, ro: InternalSpaceStatisticsRo): Promise<void> {
+    await lastValueFrom(
+      this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro),
+    );
   }
 }

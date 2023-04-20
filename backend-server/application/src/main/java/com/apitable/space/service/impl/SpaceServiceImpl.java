@@ -582,8 +582,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             typeStaticsMap.containsKey(NodeType.FORM.getNodeType())
                 ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // table view statistics
-        DatasheetStaticsDTO viewVO =
-            iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
+        DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder().spaceName(entity.getName())
             .spaceLogo(entity.getLogo()).createTime(entity.getCreatedAt())
             .deptNumber(teamCount).seats(memberNumber).sheetNums(sheetNums)
