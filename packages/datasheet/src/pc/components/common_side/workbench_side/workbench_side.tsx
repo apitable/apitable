@@ -22,7 +22,7 @@ import {
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
 import {
-  SearchOutlined, UserAddOutlined, DeleteOutlined, PlanetOutlined, AddOutlined, ImportOutlined, FolderNormalFilled,
+  SearchOutlined, UserAddOutlined, DeleteOutlined, PlanetOutlined, AddOutlined, ImportOutlined, FolderAddOutlined,
 } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
@@ -309,7 +309,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                 </Radio>
               </RadioGroup>
             </div>
-            {activeKey === ConfigConstant.Modules.FAVORITE ? <Favorite /> : (
+            {activeKey === ConfigConstant.Modules.FAVORITE ? (
+              <div className={styles.scrollContainer}>
+                <Favorite />
+              </div>
+            ) : (
               <>
                 <div className={styles.catalogActions}>
                   <LinkButton
@@ -340,18 +344,20 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   <LinkButton
                     underline={false}
                     component="div"
-                    prefixIcon={<FolderNormalFilled color={colors.textCommonSecondary} />}
+                    prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} />}
                     color={colors.textCommonSecondary}
                     onClick={() => {
                       addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);
                     }}
                   >
                     <Tooltip title={t(Strings.new_folder_tooltip)}>
-                      {t(Strings.new_folder_btn_title)}
+                      {t(Strings.folder)}
                     </Tooltip>
                   </LinkButton>
                 </div>
-                <Catalog/>
+                <div className={styles.scrollContainer}>
+                  <Catalog/>
+                </div>
               </>
             )}
 
