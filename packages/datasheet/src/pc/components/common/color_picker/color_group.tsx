@@ -21,7 +21,7 @@ import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { setColor } from 'pc/components/multi_grid/format';
-import { rgbaToHex, stopPropagation } from 'pc/utils';
+import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -65,7 +65,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = props =
                 className={styles.inner}
                 style={{
                   background: colorIndex === -1 ? colors.defaultBg : setColor(colorIndex, cacheTheme),
-                  border: colorIndex === -1 ? `1px solid ${rgbaToHex(colors.fourthLevelText, 0.8)}` : 'none',
+                  border: colorIndex === -1 ? `1px solid ${colors.textCommonTertiary}` : 'none',
                 }}
               />
             </div>

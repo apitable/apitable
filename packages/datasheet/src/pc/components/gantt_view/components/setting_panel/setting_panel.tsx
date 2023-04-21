@@ -542,7 +542,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               mask
               triggerComponent={
                 <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-                  <div style={{ display: 'inline-block', cursor: isViewLock ? 'not-allowed' : '' }}>
+                  <div
+                    style={{ display: 'inline-block', cursor: isViewLock ? 'not-allowed' : '', color: isViewLock ? colors.textCommonDisabled : '' }}>
                     <Typography variant='body3' className={styles.more} component={'span'}>
                       {t(Strings.gantt_color_more)}
                     </Typography>
@@ -569,7 +570,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               mode='multiple'
               showArrow
               showSearch={false}
-              className={styles.workDaySelect}
+              className={classNames(styles.workDaySelect, { [styles.disabled]: isViewLock })}
               style={{ width: '100%' }}
               dropdownClassName={styles.workDaySelectDropdown}
               virtual={false}
