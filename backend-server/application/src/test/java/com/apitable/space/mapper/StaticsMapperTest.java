@@ -18,34 +18,29 @@
 
 package com.apitable.space.mapper;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * <p>
- *     Data access layer: related table calculation test
+ * Data access layer: related table calculation test
  * </p>
  */
-@Disabled
 public class StaticsMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
     StaticsMapper staticsMapper;
 
     @Test
-    @Sql({ "/sql/space-member-role-rel-data.sql", "/sql/space-role-resource-rel-data.sql"})
+    @Sql({"/sql/space-member-role-rel-data.sql", "/sql/space-role-resource-rel-data.sql"})
     void testCountSubAdminBySpaceId() {
         Long count = staticsMapper.countSubAdminBySpaceId("spc41");
         assertThat(count).isEqualTo(1);
@@ -66,7 +61,7 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql" })
+    @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testCountRecordsBySpaceId() {
         Long count = staticsMapper.countRecordsBySpaceId("spc41");
         assertThat(count).isEqualTo(3);
@@ -116,7 +111,7 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql" })
+    @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testSelectDstViewStaticsBySpaceId() {
         List<String> entities = staticsMapper.selectDstViewStaticsBySpaceId("spc41");
         assertThat(entities).isNotEmpty();

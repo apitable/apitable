@@ -75,7 +75,6 @@ dependencies {
     testImplementation rootProject.ext.dependencies['spring-test-starter']
     testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
     testImplementation 'org.rnorth.visible-assertions:visible-assertions:2.1.2'
-    testImplementation("org.json:json:${json_java_version}")
 
     // for clock module
     testImplementation rootProject.ext.dependencies['assertj']

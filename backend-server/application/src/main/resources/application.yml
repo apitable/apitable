@@ -73,8 +73,8 @@ const:
       bucket-name: ${ASSETS_BUCKET:}
       type: ${ASSETS_TYPE:QNY1}
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
-  quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
-  quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
+  quote-template-id: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
+  quoteEn-template-id: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
   cooling-off-period: ${COOLING_OFF_PERIOD:30}
   close-paused-user-cron: ${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}
@@ -175,4 +175,6 @@ grpc:
 
 springdoc:
   api-docs:
+    enabled: ${API_DOCS_ENABLED:false}
+  swagger-ui:
     enabled: ${API_DOCS_ENABLED:false}
