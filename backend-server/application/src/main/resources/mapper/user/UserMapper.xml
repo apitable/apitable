@@ -32,6 +32,13 @@
         WHERE id = #{userId}
     </select>
 
+    <select id="selectAvatarById" resultType="java.lang.String">
+        SELECT avatar
+        FROM ${tablePrefix}user
+        WHERE id = #{userId}
+          AND is_deleted = 0
+    </select>
+
     <select id="selectIdByMobile" resultType="java.lang.Long">
         SELECT id
         FROM ${tablePrefix}user

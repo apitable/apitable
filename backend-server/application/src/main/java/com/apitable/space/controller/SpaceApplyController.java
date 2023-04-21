@@ -50,7 +50,6 @@ import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -114,12 +113,13 @@ public class SpaceApplyController {
             memberMapper.selectEmailByBatchMemberId(memberIds);
         if (CollUtil.isNotEmpty(emails)) {
             Dict dict = Dict.create();
-            dict.set("USER_NAME",
-                LoginContext.me().getLoginUser().getNickName());
+            //TODO remove user_name at next version
+            String nickName = LoginContext.me().getLoginUser().getNickName();
+            dict.set("USER_NAME", nickName);
+            dict.set("MEMBER_NAME", nickName);
             dict.set("SPACE_NAME",
                 spaceMapper.selectSpaceNameBySpaceId(ro.getSpaceId()));
             dict.set("URL", constProperties.getServerDomain() + "/notify");
-            dict.set("YEARS", LocalDate.now().getYear());
             final String defaultLang =
                 LocaleContextHolder.getLocale().toLanguageTag();
             List<UserLangDTO> emailsWithLang =

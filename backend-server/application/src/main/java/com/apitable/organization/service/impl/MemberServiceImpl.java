@@ -104,7 +104,6 @@ import com.apitable.workspace.enums.PermissionException;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -574,13 +573,16 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();
+        //TODO remove user_name at next version
         dict.set("USER_NAME", inviterName);
         dict.set("SPACE_NAME", spaceName);
+        dict.set("MEMBER_NAME", inviterName);
         dict.set("INVITE_URL", inviteUrl);
-        dict.set("YEARS", LocalDate.now().getYear());
         Dict mapDict = Dict.create();
+        // remove user_name at next version
         mapDict.set("USER_NAME", inviterName);
         mapDict.set("SPACE_NAME", spaceName);
+        mapDict.set("MEMBER_NAME", inviterName);
         NotifyMailFactory.me()
             .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, mapDict, dict,
                 Collections.singletonList(emailAddress));
@@ -826,7 +828,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         final List<String> emails = baseMapper.selectEmailByBatchMemberId(memberIds);
         Dict dict = Dict.create();
         dict.set("SPACE_NAME", spaceName);
-        dict.set("YEARS", LocalDate.now().getYear());
         Dict mapDict = Dict.create();
         mapDict.set("SPACE_NAME", spaceName);
         final String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();

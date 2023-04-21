@@ -101,7 +101,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -808,9 +807,6 @@ public class WidgetPackageServiceImpl
 
         Dict dict = Dict.create();
         dict.set("WIDGET_NAME", widgetName);
-        dict.set("YEARS", LocalDate.now().getYear());
-        Dict mapDict = Dict.create();
-        mapDict.set("WIDGET_NAME", widgetName);
 
         // to email
         List<Long> toPlayerIds = ListUtil.toList(wpk.getOwner());
@@ -838,7 +834,7 @@ public class WidgetPackageServiceImpl
         List<MailWithLang> tos = MailWithLang.convert(emailsWithLang,
             emailWithLang -> new MailWithLang(emailWithLang.getLocale(), emailWithLang.getEmail()));
         TaskManager.me()
-            .execute(() -> NotifyMailFactory.me().sendMail(subjectType, mapDict, dict, tos));
+            .execute(() -> NotifyMailFactory.me().sendMail(subjectType, dict, dict, tos));
     }
 
     @SneakyThrows(JsonProcessingException.class)
@@ -865,7 +861,6 @@ public class WidgetPackageServiceImpl
         dict.set("SPACE_NAME", spaceName);
         dict.set("WIDGET_NAME", widgetName);
         dict.set("MEMBER_NAME", transferMember.getMemberName());
-        dict.set("YEARS", LocalDate.now().getYear());
         Dict mapDict = Dict.create();
         mapDict.set("WIDGET_NAME", widgetName);
         List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, emails);

@@ -18,33 +18,28 @@
 
 package com.apitable.shared.captcha.email;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import static com.apitable.base.enums.ActionException.EMAIL_SEND_MAX_COUNT_LIMIT;
+import static com.apitable.base.enums.ActionException.SMS_SEND_ONLY_ONE_MINUTE;
 
 import cn.hutool.core.lang.Dict;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.EmailCodeType;
-import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.core.constants.RedisConstants;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.shared.captcha.AbstractValidateCodeProcessor;
 import com.apitable.shared.captcha.ValidateCode;
 import com.apitable.shared.captcha.ValidateCodeRepository;
 import com.apitable.shared.captcha.ValidateTarget;
-import com.apitable.shared.util.DateHelper;
+import com.apitable.shared.component.notification.NotifyMailFactory;
 import com.apitable.shared.config.properties.SecurityProperties;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.HttpContextUtil;
-import com.apitable.core.constants.RedisConstants;
-
+import com.apitable.shared.util.DateHelper;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import static com.apitable.base.enums.ActionException.EMAIL_SEND_MAX_COUNT_LIMIT;
-import static com.apitable.base.enums.ActionException.SMS_SEND_ONLY_ONE_MINUTE;
 
 /**
  * <p>
@@ -77,7 +72,6 @@ public class EmailValidateCodeProcessor extends AbstractValidateCodeProcessor {
         String subject = EmailCodeType.ofName(validateCode.getScope()).getSubject();
         Dict dict = Dict.create();
         dict.set("VERIFICATION_CODE", validateCode.getCode());
-        dict.set("YEARS", LocalDate.now().getYear());
         final String lang = validateTarget.getLang();
         NotifyMailFactory.me().sendMail(lang, subject, dict, Collections.singletonList(target));
         // save the total number of sending after sending

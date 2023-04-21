@@ -92,6 +92,14 @@ public class ConstProperties {
             .getOrDefault(BucketKey.ASSETS, new OssBucketInfo());
     }
 
+    public String spliceAssetUrl(String token) {
+        if (token == null || token.equals(StrUtil.EMPTY)
+            || token.startsWith("http")) {
+            return token;
+        }
+        return StrUtil.format("{}/{}", this.getOssBucketByAsset(), token);
+    }
+
     public String defaultServerDomain() {
         return ReUtil.replaceAll(serverDomain, "http://|https://",
             StrUtil.EMPTY);
