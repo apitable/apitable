@@ -25,7 +25,7 @@ import { has, isEqual } from 'lodash';
 
 export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Partial<IViewProperty>, cb?: () => void) => {
   const state = store.getState();
-  const { mirrorId, viewId, datasheetId } = state.pageParams;
+  const { mirrorId, viewId, datasheetId, embedId } = state.pageParams;
   const { editable } = Selectors.getPermissions(state, datasheetId);
 
   if (!mirrorId) {
@@ -38,7 +38,9 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
     if (browser?.is('mobile')) {
       showViewManualSaveInMobile();
     } else {
-      Player.doTrigger(Events.view_notice_view_auto_false);
+      if(!embedId) {
+        Player.doTrigger(Events.view_notice_view_auto_false);
+      }
       // If you have not triggered the newbie guide for view configuration without collaboration, no save prompt will pop up after the operation
       (isPrivateDeployment() || state.user.info?.wizards.hasOwnProperty(51)) && editable && ShowViewManualSaveAlert();
     }

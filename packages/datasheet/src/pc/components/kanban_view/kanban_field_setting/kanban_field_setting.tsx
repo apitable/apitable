@@ -37,6 +37,8 @@ import { useCommand } from '../hooks/use_command';
 import { KanbanMember } from './kanban_member';
 import { KanbanOption } from './kanban_option/kanban_option';
 import styles from './styles.module.less';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
 
 enum KanbanRoute {
   Init,
@@ -86,6 +88,9 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
   const viewId = useSelector(Selectors.getActiveViewId)!;
   const isCryptoField = Boolean(groupFieldId && Selectors.getFieldRoleByFieldId(fieldPermissionMap, groupFieldId) === ConfigConstant.Role.None);
   const isViewLock = useShowViewLockModal();
+
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
 
   const canUseKanbanFields = useMemo(() => {
     const ids = Object.values(fieldMap!).reduce<IField[]>((fields, field) => {
@@ -146,7 +151,7 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
   useClickAway(() => {
     onClose && onClose();
   }, ref, 'mousedown');
-
+  const modalWidth = isMobile ? 330 : 480;
   return <Modal
     visible
     title={null}
@@ -155,7 +160,7 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
     destroyOnClose
     footer={null}
     maskClosable
-    width={480}
+    width={modalWidth}
     centered
     getContainer={() => document.getElementById(DATASHEET_VIEW_CONTAINER_ID)!}
     maskStyle={{ position: 'absolute' }}
@@ -165,7 +170,7 @@ export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFi
     <div style={{ height: modalHeight }} ref={ref} className={styles.kanbanFieldSetting}>
       <div
         className={styles.animation}
-        style={{ transform: `translateX(${route !== KanbanRoute.Init ? -480 : 0}px)` }}
+        style={{ transform: `translateX(${route !== KanbanRoute.Init ? -modalWidth : 0}px)` }}
       >
         <div className={styles.slide}>
           <SettingHead route={route} setRoute={setRoute} />
