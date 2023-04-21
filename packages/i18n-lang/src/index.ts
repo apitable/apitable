@@ -23,10 +23,16 @@ declare const window: any;
 declare const global: any;
 
 function loadAllLang() {
+  const newStrings = strings;
+  if (_strings) {
+    for (const key in strings) {
+      newStrings[key] = { ...strings[key], ..._strings[key] };
+    }
+  }
   if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
+    (window as any).apitable_i18n = newStrings;
   } else {
-    (global as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
+    (global as any).apitable_i18n = newStrings;
   }
 }
 

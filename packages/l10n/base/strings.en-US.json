@@ -1,4 +1,12 @@
 {
+  "catalog_add_from_template_btn_title": "Add from templates",
+  "catalog_empty_tips": "This workspace is empty now. Get started by using templates to create files.",
+  "new_folder_tooltip": "Create folder",
+  "new_folder_btn_title": "Folder",
+  "import_from_excel_tooltip": "Import .xlsx/.csv files",
+  "import_file_btn_title":  "Import",
+  "new_node_tooltip": "Create folders, datasheets, forms and more",
+  "new_node_btn_title": "Add",
   "tool_bar_hidden": "Hide",
   "add": "Add",
   "active_space": "Activate Space",

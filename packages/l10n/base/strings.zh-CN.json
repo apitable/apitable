@@ -1,4 +1,12 @@
 {
+  "catalog_add_from_template_btn_title": "从模板创建",
+  "catalog_empty_tips": "当前空间站没有文件，从模板创建文件、仪表盘，快速开始吧",
+  "new_folder_tooltip": "新建文件夹",
+  "new_folder_btn_title": "新建文件夹",
+  "import_from_excel_tooltip": "导入 .xlsx/.csv 文件",
+  "import_file_btn_title":  "导入",
+  "new_node_tooltip": "新建文件夹、维格表、神奇表单",
+  "new_node_btn_title": "新建",
   "tool_bar_hidden": "隐藏",
   "add": "添加",
   "active_space": "已激活空间",
