@@ -121,7 +121,13 @@ public class OrganizationServiceImpl implements IOrganizationService {
             List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
             if (CollUtil.isNotEmpty(memberIds)) {
                 List<UnitMemberVo> unitMemberList = findUnitMemberVo(memberIds);
+                // handle member's team name，get full hierarchy team name
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                    iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 unitMemberList.forEach(member -> {
+                    if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                        member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+                    }
                     member.setOriginName(member.getMemberName());
                     member.setMemberName(
                         InformationUtil.keywordHighlight(member.getMemberName(), likeWord,
