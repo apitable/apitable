@@ -23,10 +23,12 @@ Signing the CLA might sound scary but it's actually very simple and can be done 
 
 APITable Enterprise Edition source-code and binaries are released under our APITable Commercial Software License. The APITable Commercial Software License applies to all of the packages in APITable Enterprise Edition, though which Enterprise functionality you have access to depends on the package you purchase.
 
+For an overview of Enterprise features, contact <sales@apitable.com>, or check out our [Enterprise pricing](https://apitable.com/pricing/).
+
 ## APITable Embedding License
 
 ##### [Advanced embedding license](./licenses/LICENSE-EMBEDDING)
 
 Our Advanced Embedding License allows you to remove the “Powered by APITable” logo on embedded on embedded APITable page without making the embedding application subject to the AGPL.
 
-For an overview of Enterprise features, contact <sales@apitable.com>, or check out our Enterprise Guide.
+For an overview of Enterprise features, contact <sales@apitable.com>, or check out our [Enterprise pricing](https://apitable.com/pricing/).
