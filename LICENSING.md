@@ -17,6 +17,12 @@ However, you don't have to do this up-front; you can simply clone, fork, and sub
 Signing the CLA might sound scary but it's actually very simple and can be done in less than a minute.
 
 
+## APITable Enterprise Edition
+
+##### [APITable Commercial Software License](./licenses/LICENSE-COMMERCIAL)
+
+APITable Enterprise Edition source-code and binaries are released under our APITable Commercial Software License. The APITable Commercial Software License applies to all of the packages in APITable Enterprise Edition, though which Enterprise functionality you have access to depends on the package you purchase.
+
 ## APITable Embedding License
 
 ##### [Advanced embedding license](./licenses/LICENSE-EMBEDDING)
