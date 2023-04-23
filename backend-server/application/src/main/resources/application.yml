@@ -15,13 +15,13 @@ spring:
     timeout: ${SESSION_TIMEOUT:30d}
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true
-    username: ${MYSQL_USERNAME:apitable}
+    username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:apitable@com}
   # Redis
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     username: ${REDIS_USERNAME:}
-    password: ${REDIS_PASSWORD:}
+    password: ${REDIS_PASSWORD:apitable@com}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:0}
     timeout: 30000
