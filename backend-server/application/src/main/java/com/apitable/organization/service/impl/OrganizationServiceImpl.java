@@ -122,8 +122,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
             if (CollUtil.isNotEmpty(memberIds)) {
                 List<UnitMemberVo> unitMemberList = findUnitMemberVo(memberIds);
                 // handle member's team name，get full hierarchy team name
-                Map<Long, List<MemberTeamPathInfo>>
-                    memberToTeamPathInfoMap =
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
                     iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 unitMemberList.forEach(member -> {
                     if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
@@ -146,7 +145,13 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, openIds);
                 if (CollUtil.isNotEmpty(socialMemberIds)) {
                     List<UnitMemberVo> unitMemberList = findUnitMemberVo(socialMemberIds);
+                    // handle member's team name，get full hierarchy team name
+                    Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                        iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                     unitMemberList.forEach(member -> {
+                        if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                            member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+                        }
                         member.setOriginName(member.getMemberName());
                         // Wecom usernames need to be front-end rendered,
                         // and search results do not return highlighting
