@@ -184,7 +184,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   useEffect(() => {
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : [ConfigConstant.Modules.CATALOG];
+    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
     setActiveKey(defaultActiveKey);
   }, []);
 
@@ -319,7 +319,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   <LinkButton
                     underline={false}
                     component="div"
-                    prefixIcon={<AddOutlined color={colors.textCommonSecondary} />}
+                    prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12} />}
                     color={colors.textCommonSecondary}
                     disabled={!rootManageable}
                     onClick={openDefaultMenu}
@@ -331,7 +331,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   <LinkButton
                     underline={false}
                     component="div"
-                    prefixIcon={<ImportOutlined color={colors.textCommonSecondary} />}
+                    prefixIcon={<ImportOutlined color={colors.textCommonSecondary} size={12} />}
                     color={colors.textCommonSecondary}
                     onClick={() => {
                       dispatch(StoreActions.updateImportModalNodeId(rootId));
@@ -344,7 +344,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   <LinkButton
                     underline={false}
                     component="div"
-                    prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} />}
+                    prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} size={12} />}
                     color={colors.textCommonSecondary}
                     onClick={() => {
                       addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);

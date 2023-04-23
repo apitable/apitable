@@ -152,8 +152,11 @@
       margin-right: 16px;
       margin-bottom: 8px;
       :global {
-        .radio-label-btn-checked .radio-text {
-          color: var(--primaryColor);
+        .radio-label-btn-checked {
+          background-color: var(--bgControlsElevateDefault);
+          .radio-text {
+            color: var(--primaryColor);
+          }
         }
       }
     }
@@ -169,6 +172,21 @@
         border-right: 1px solid var(--borderCommonDefault);
         &:last-child {
           border: 0;
+        }
+        &:hover {
+          color: var(--textBrandHover);
+          svg {
+            fill: var(--textBrandHover);
+          }
+        }
+        &:active {
+          color: var(--textBrandActive);
+          svg {
+            fill: var(--textBrandActive);
+          }
+        }
+        & > span {
+          font-size: 12px;
         }
       }
     }
