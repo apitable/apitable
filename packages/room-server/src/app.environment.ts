@@ -44,7 +44,7 @@ export const PROJECT_DIR = __dirname;
 export const defaultLanguage = process.env.DEFAULT_LANGUAGE || 'en-US';
 
 export const supportedLanguages = process.env.SUPPORTED_LANGUAGES ? process.env.SUPPORTED_LANGUAGES.split(',') : ['zh-CN', 'en-US'];
-
+export const skipUsageVerification = Object.is(process.env.SKIP_USAGE_VERIFICATION, 'true');
 export default {
   isDevMode,
   isProdMode,
