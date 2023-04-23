@@ -31,13 +31,14 @@ import {
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
+import { skipUsageVerification } from 'app.environment';
 import {
   InternalCreateDatasheetVo,
   InternalSpaceInfoVo,
+  InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
   InternalSpaceUsageView,
   WidgetMap,
-  InternalSpaceStatisticsRo,
 } from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
@@ -46,14 +47,7 @@ import { lastValueFrom } from 'rxjs';
 import { CommonStatusCode } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
-import {
-  IAuthHeader,
-  IHttpSuccessResponse,
-  INotificationCreateRo,
-  IOpAttachCiteRo,
-  IUserBaseInfo,
-  NodePermission
-} from 'shared/interfaces';
+import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
@@ -207,6 +201,10 @@ export class RestService {
   }
 
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipCapacityOverLimit:${spaceId}`);
+      return true;
+    }
     const authHeaders = HttpHelper.createAuthHeaders(headers);
     // No headers, internal request does not relate to attachment field temporarily
     if (!authHeaders) {
@@ -330,6 +328,14 @@ export class RestService {
    * @param spaceId space ID
    */
   getApiUsage(headers: IAuthHeader, spaceId: string): Promise<any> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipApiUsage:${spaceId}`);
+      return Promise.resolve({
+        data: {
+          isAllowOverLimit: true,
+        }
+      });
+    }
     return lastValueFrom(
       this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
         headers: HttpHelper.createAuthHeaders(headers)
@@ -407,6 +413,18 @@ export class RestService {
    * @returns {Promise<InternalSpaceSubscriptionView>}
    */
   async getSpaceSubscription(spaceId: string): Promise<InternalSpaceSubscriptionView> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipSpaceSubscription:${spaceId}`);
+      return {
+        maxRowsPerSheet: -1,
+        maxRowsInSpace: -1,
+        maxGalleryViewsInSpace: -1,
+        maxKanbanViewsInSpace: -1,
+        maxGanttViewsInSpace: -1,
+        maxCalendarViewsInSpace: -1,
+        allowEmbed: true,
+      };
+    }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })));
     return response!.data;
   }
@@ -418,6 +436,16 @@ export class RestService {
    * @returns {Promise<InternalSpaceUsageView>}
    */
   async getSpaceUsage(spaceId: string): Promise<InternalSpaceUsageView> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipSpaceUsage:${spaceId}`);
+      return {
+        recordNums: 0,
+        galleryViewNums: 0,
+        kanbanViewNums: 0,
+        ganttViewNums: 0,
+        calendarViewNums: 0,
+      };
+    }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceUsageView>(sprintf(this.SPACE_USAGES, { spaceId })));
     return response!.data;
   }
