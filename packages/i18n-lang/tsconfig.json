@@ -22,7 +22,8 @@
     ]
   },
   "include": [
-    "src"
+    "src/index.ts",
+    "src/**/*.json"
   ],
   "exclude": [
     "dist",

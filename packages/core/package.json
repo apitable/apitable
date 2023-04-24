@@ -87,6 +87,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [
+      "../jest.setup.js",
       "@apitable/i18n-lang"
     ]
   }

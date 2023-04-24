@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 if (process.argv.length < 5) {
   throw new Error('Expected at least 4 arguments, but got ' + process.argv.length);
@@ -89,7 +89,9 @@ const writeMergedContent = (outputFolder: string, mergedContent: Record<string, 
         '\n};\n\n' +
         'export type StringKeysType = keyof StringKeysMapType;'
     );
-    fs.writeFileSync(path.join(outputFolder, 'strings.json'), JSON.stringify(sortedMergedContent, null, 2), 'utf-8');
+    Object.keys(sortedMergedContent).forEach(key => {
+      fs.writeFileSync(path.join(outputFolder, `strings.${key}.json`), JSON.stringify(sortedMergedContent[key], null, 2), 'utf-8');
+    });
   }
   if (generateType === 'properties') {
     for (const locale in sortedMergedContent) {

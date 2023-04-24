@@ -19,7 +19,7 @@
 import { APITipConfigInterface, Tips } from 'config/api_tip_config.interface';
 import apiTipConfigJson from './api_tip_config.auto.json';
 import systemConfigJson from './system_config.auto.json';
-import { SystemConfigInterface, SystemConfigInterfaceNotifications, Templates, Types } from './system_config.interface';
+import { SystemConfigInterface, Notifications, Templates, Types } from './system_config.interface';
 
 /**
  * config class, directly get the entire class of SystemConfig
@@ -47,7 +47,7 @@ const jsonToObject = (object: object) => {
   });
   return obj;
 };
-const Notifications = (SystemConfig.notifications as any) as SystemConfigInterfaceNotifications;
+const Notifications = (SystemConfig.notifications as any) as Notifications;
 
 const NotificationTypes = Notifications.types;
 const NotificationTemplates = Notifications.templates;

@@ -21,7 +21,6 @@
  */
 import { I18N } from '@apitable/i18n';
 import type { StringKeysMapType, StringKeysType } from 'config/stringkeys.interface';
-import type { StringSaaSKeysMapType, StringSaaSKeysType } from 'modules/enterprise';
 
 export * from 'config/stringkeys.interface';
 
@@ -30,7 +29,7 @@ export const Strings = new Proxy({}, {
   get: function(_target, key) {
     return key;
   },
-}) as (StringKeysMapType & StringSaaSKeysMapType) as any;
+}) as (StringKeysMapType) as any;
 
 /**
  * read Settings in config
@@ -46,8 +45,6 @@ export function getLanguage() {
   return language || defaultLang;
 }
 
-require('@apitable/i18n-lang');
-
 const rewriteI18nForEdition = () => {
   for (const k in _global.apitable_i18n) {
     if (_global.apitable_i18n_edition?.[k]) {
@@ -59,11 +56,19 @@ const rewriteI18nForEdition = () => {
   }
 };
 
+const currentLang = getLanguage();
+
+_global.currentLang = currentLang;
+if (undefined === _global.apitable_i18n) {
+  _global.apitable_i18n = {};
+}
+if (undefined === _global.apitable_i18n[currentLang]) {
+  _global.apitable_i18n[currentLang] = {};
+}
+require('@apitable/i18n-lang');
 rewriteI18nForEdition();
+const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
 
-// global singleton of I18N
-const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, getLanguage());
-
-export function t(stringKey: StringKeysType & StringSaaSKeysType, options: any = null, isPlural = false): string {
+export function t(stringKey: StringKeysType, options: any = null, isPlural = false): string {
   return i18n.getText(stringKey, options, isPlural);
 }

@@ -88,3 +88,5 @@ eslint-results.sarif
 /backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties.origin
 /backend-server/application/src/main/resources/sysconfig/i18n/exception/messages_zh_HK.properties
 /backend-server/application/src/main/resources/sysconfig/notification.origin.json
+/packages/datasheet/.env.development.origin
+/packages/i18n-lang/src/config/strings.en-US.origin.json
