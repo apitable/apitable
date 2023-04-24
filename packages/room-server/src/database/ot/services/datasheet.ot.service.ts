@@ -1718,6 +1718,14 @@ export class DatasheetOtService {
       if (!recordMetaMap[recordId] && !oldRecord?.recordMeta) {
         const recordAction = DatasheetOtService.generateJotAction(OTActionName.ObjectInsert, ['recordMap', recordId, 'recordMeta'], newRecordMeta);
         recordMapActions.push(recordAction);
+      } else if (!recordMetaMap[recordId] && oldRecord?.recordMeta && !oldRecord?.recordMeta.fieldUpdatedMap) {
+        // fix: https://github.com/vikadata/vikadata/issues/4628
+        const recordAction = DatasheetOtService.generateJotAction(
+          OTActionName.ObjectInsert,
+          ['recordMap', recordId, 'recordMeta', 'fieldUpdatedMap'],
+          {},
+        );
+        recordMapActions.push(recordAction);
       } else {
         const recordAction = DatasheetOtService.generateJotAction(
           OTActionName.ObjectReplace,
