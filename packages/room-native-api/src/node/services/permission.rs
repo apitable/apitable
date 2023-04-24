@@ -124,7 +124,6 @@ impl NodePermService for NodePermServiceImpl {
     }
 
     // Off-space access: template or share
-
     if origin.share_id.is_none() {
       tracing::info!("template access {node_id}");
       let default_permissions = self

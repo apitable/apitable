@@ -747,6 +747,7 @@
     "cascader_select_view": "Select view",
     "cascader_show_all": "Display the full hierarchy path",
     "cascader_snapshot_update_text": "After fetching the latest data, any new records created will use the latest cascading relationships.",
+    "cascader_snapshot_updating": "The cascader configuration is being updated, please be patient",
     "cascader_undefined_field_error": "There exists unselected field. Please select the field and try again",
     "catalog": "Explorer",
     "catalog_add_from_template_btn_title": "Add from templates",
