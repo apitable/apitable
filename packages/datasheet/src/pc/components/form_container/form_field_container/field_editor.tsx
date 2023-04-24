@@ -46,7 +46,7 @@ import { CascaderEditor } from 'pc/components/editors/cascader_editor';
 import { FormContext } from '../form_context';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { debounce, difference } from 'lodash';
+import { difference } from 'lodash';
 import { ExpandLookUpBase } from 'pc/components/expand_record/expand_lookup';
 import { ExpandFormula } from 'pc/components/expand_record/expand_formula';
 import { ComputedFieldWrapper } from './computed_field_wrapper';
@@ -166,11 +166,11 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     return attachmentRef.current as IAttachmentValue[];
   };
 
-  const handleFieldChange = debounce((value: string) => {
+  const handleFieldChange = (value: string) => {
     setFormErrors(field.id, '');
     setFormToStorage && setFormToStorage(field.id, value);
     onSave(value);
-  }, 300);
+  };
 
   const commonProps = { ...baseProps, onSave, onChange: handleFieldChange };
 
