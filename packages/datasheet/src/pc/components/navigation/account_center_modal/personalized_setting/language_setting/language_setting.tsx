@@ -23,7 +23,6 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import styles from './style.module.less';
 
-
 /**
  * read Settings in config
  */
