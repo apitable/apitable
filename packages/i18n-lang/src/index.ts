@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import * as languageManifest from './config/language.manifest.json';
+import * as langEnUs from './config/strings.en-US.json';
+import * as langZhCn from './config/strings.zh-CN.json';
 
 declare const window: any;
 declare const global: any;
@@ -24,11 +26,27 @@ const currentLang = typeof window !== 'undefined' ? (window as any).currentLang 
 
 if (typeof window !== 'undefined') {
   (window as any).languageManifest = languageManifest;
-} else {
+  (window as any).apitable_i18n = {};
+}else {
   (global as any).languageManifest = languageManifest;
+  (global as any).apitable_i18n = {};
 }
 
-loadStrings(currentLang).then(i => {});
+if (currentLang == 'en-US') {
+  if (typeof window !== 'undefined') {
+    (window as any).apitable_i18n[currentLang] = langEnUs;
+  }else {
+    (global as any).apitable_i18n[currentLang] = langEnUs;
+  }
+}else if (currentLang == 'zh-CN'){
+  if (typeof window !== 'undefined') {
+    (window as any).apitable_i18n[currentLang] = langZhCn;
+  }else {
+    (global as any).apitable_i18n[currentLang] = langZhCn;
+  }
+}else {
+  loadStrings(currentLang).then(i => {});
+}
 
 export async function loadStrings(locale: string) {
   if (!locale) {
@@ -36,10 +54,8 @@ export async function loadStrings(locale: string) {
   }
 
   if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n = {};
     (window as any).apitable_i18n[locale] = {};
   }else {
-    (global as any).apitable_i18n = {};
     (global as any).apitable_i18n[locale] = {};
   }
 
