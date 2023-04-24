@@ -6,7 +6,11 @@ L10N_BASE_DIR="$3"
 L10N_EDITION_DIR="$4"
 APITABLE_BASE_DIR="$5"
 
-if [ -e ${APITABLE_BASE_DIR}/packages/datasheet/.env.development ]; then
+if [ ! -d "$L10N_GEN_DIR" ]; then
+  mkdir "$L10N_GEN_DIR"
+fi
+
+if [ -e "${APITABLE_BASE_DIR}/packages/datasheet/.env.development" ]; then
     echo "datasheet env file exists"
 else
     ts-node "${L10N_SCRIPT_DIR}/mergeJsonFile.ts" "${L10N_GEN_DIR}/env.json" "env" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
@@ -26,11 +30,11 @@ if [ -e "${L10N_SCRIPT_DIR}/config/strings.en-US.json" ]; then
     echo "language file exists"
 else
     ts-node "${L10N_SCRIPT_DIR}/mergeJsonFile.ts" "${L10N_GEN_DIR}/language.manifest.json" "language.manifest" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
-    cp ${L10N_GEN_DIR}/language.manifest.json "${L10N_SCRIPT_DIR}/config/"
-    cp ${L10N_GEN_DIR}/language.manifest.json "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
+    cp "${L10N_GEN_DIR}/language.manifest.json" "${L10N_SCRIPT_DIR}/config/"
+    cp "${L10N_GEN_DIR}/language.manifest.json" "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
 
     ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
-    cp ${L10N_GEN_DIR}/strings.*-*.json "${L10N_SCRIPT_DIR}/config/"
+    cp "${L10N_GEN_DIR}/strings.*-*.json" "${L10N_SCRIPT_DIR}/config/"
     echo "successfully generate language json file"
     if [ -e "${L10N_GEN_DIR}/stringkeys.interface.ts" ]; then
         cp "${L10N_GEN_DIR}/stringkeys.interface.ts" "${APITABLE_BASE_DIR}packages/core/src/config/stringkeys.interface.ts"

@@ -5,7 +5,6 @@
       "jest",
       "node"
     ],
-    // "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": "src",
