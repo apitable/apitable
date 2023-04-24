@@ -3,6 +3,22 @@
 
 
 
+## [v0.20.0-rc](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc) (2023-04-25)
+
+
+### Features and enhancements
+
+* feat(l10n):Crowdin support translate strings.en-US.json ([#731](https://github.com/apitable/apitable/pull/731)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: init the custom widget command error ([#719](https://github.com/apitable/apitable/pull/719)) @Sky-FE 
+* fix: folder favorite click crash ([#735](https://github.com/apitable/apitable/pull/735)) @wangkailang 
+
+### What's more
+
+* sync: hosted cloud ([#730](https://github.com/apitable/apitable/pull/730)) @yort-feng 
+* sync: hosted cloud ([#739](https://github.com/apitable/apitable/pull/739)) @yort-feng 
 ## [v0.20.0-beta](https://github.com/apitable/apitable/releases/tag/v0.20.0-beta) (2023-04-17)
 
 
