@@ -169,6 +169,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const handleFieldChange = (value: string) => {
     setFormErrors(field.id, '');
     setFormToStorage && setFormToStorage(field.id, value);
+    onSave(value);
   };
 
   const commonProps = { ...baseProps, onSave, onChange: handleFieldChange };
