@@ -32,19 +32,15 @@ if (typeof window !== 'undefined') {
   (global as any).apitable_i18n = {};
 }
 
-if (currentLang == 'en-US') {
-  if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n[currentLang] = langEnUs;
-  }else {
-    (global as any).apitable_i18n[currentLang] = langEnUs;
-  }
-}else if (currentLang == 'zh-CN'){
-  if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n[currentLang] = langZhCn;
-  }else {
-    (global as any).apitable_i18n[currentLang] = langZhCn;
-  }
-}else {
+const langMap = {
+  'en-US': langEnUs,
+  'zh-CN': langZhCn,
+};
+
+if (currentLang in langMap) {
+  const target = typeof window !== 'undefined' ? window : global;
+  target.apitable_i18n[currentLang] = langMap[currentLang];
+} else {
   loadStrings(currentLang).then(i => {});
 }
 
