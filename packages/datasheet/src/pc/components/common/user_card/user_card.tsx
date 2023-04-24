@@ -191,21 +191,20 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                   <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
                 </div>
               </div>
+              { memberInfo?.email && 
               <div className={styles.infoWrapper}>
                 <div className={styles.email}>
-                  {
-                    memberInfo?.email &&
-                    <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
-                      {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-                    </Typography>
-                  }
+                  <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                    {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                  </Typography>
                 </div>
               </div>
+              }
               <div className={styles.infoContent}>
                 {
                   getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
                     { (isAlien || !memberInfo) ? <div className={styles.infoText}>
-                      <InfoCircleOutlined />
+                      <InfoCircleOutlined size={16} />
                       <p>{t(Strings.alien_tip_in_user_card)}</p>
                     </div> :
                       <>
