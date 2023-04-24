@@ -5369,12 +5369,15 @@
   "player_step_ui_config_169": "",
   "field_desc_cascader": "你可以在單元格內通過級聯的方式添加預選項",
   "api_panel_type_desc_cascader": "多級聯動，適合作為有層級關系選項的文本，例如省區市的選擇。",
-  "field_map_tips_for_python": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以幫你解決這個問題。",
+  "field_map_tips_for_python": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/vikadata/vika.py#%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84)可以幫你解決這個問題。",
   "robot_action_send_mails_config_1_pleaseholder_1": "",
   "robot_action_send_mails_config_1_pleaseholder_2": "",
   "robot_action_send_mails_config_2_pleaseholder": "",
   "robot_action_send_mails_config_3_pleaseholder": "",
   "robot_action_send_mails_config_4_pleaseholder": "",
   "robot_action_send_mails_config_5_pleaseholder": "",
-  "robot_action_send_mails_config_6_pleaseholder": ""
+  "robot_action_send_mails_config_6_pleaseholder": "",
+  "cascader_snapshot_updating": "",
+  "view_lock_setting_desc": "",
+  "cascader_field_configuration_err": ""
 }
